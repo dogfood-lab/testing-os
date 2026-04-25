@@ -10,11 +10,14 @@
     "packages/*"
   ],
   "scripts": {
+    "prebuild": "node scripts/sync-version.mjs",
     "build": "node scripts/build.mjs",
     "clean": "tsc --build --clean",
     "test": "npm test --workspaces --if-present",
     "test:vitest": "vitest run --passWithNoTests",
-    "verify": "npm run build && npm run test"
+    "verify": "npm run build && npm run test",
+    "sync-version": "node scripts/sync-version.mjs",
+    "sync-version:check": "node scripts/sync-version.mjs --check"
   },
   "repository": {
     "type": "git",
