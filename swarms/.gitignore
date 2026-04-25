@@ -1,0 +1,12 @@
+# Ignore in-progress swarm state — per-repo working directories
+# (named like `mcp-tool-shop-org--world-forge/`) and timestamped control-plane
+# working dirs (named like `swarm-1777041008-0081/`).
+# Keep the protocol, templates, schema, and .gitignore (committed infra).
+*--*/
+swarm-*/
+
+# SQLite control plane — local-only state, regenerated on use.
+control-plane.db
+control-plane.db-journal
+control-plane.db-shm
+control-plane.db-wal

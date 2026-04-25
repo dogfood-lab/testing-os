@@ -1,0 +1,104 @@
+/**
+ * dogfood-bridge.js — Bridge from swarm control plane to dogfood-labs evidence store.
+ *
+ * Transforms a canonical run export into a dogfood record submission
+ * compatible with tools/ingest/run.js and the dogfood-record-submission schema.
+ *
+ * Each wave becomes a scenario result. Verification steps become CI checks.
+ */
+
+import { buildSubmission } from '@dogfood-lab/report/build-submission.js';
+
+/**
+ * Build a dogfood submission from a canonical run export.
+ *
+ * @param {object} exportData — output of buildRunExport()
+ * @param {string} overallVerdict — pass/fail/partial/blocked
+ * @returns {object} — dogfood record submission
+ */
+export function buildDogfoodSubmission(exportData, overallVerdict) {
+  const run = exportData.run;
+  const waves = exportData.waves;
+
+  // Each wave becomes a scenario result
+  const scenarioResults = waves.map(w => {
+    const agentSteps = w.agents.map(a => ({
+      step_id: `agent-${a.domain}`,
+      status: a.status === 'complete' ? 'pass' :
+              ['invalid_output', 'ownership_violation'].includes(a.status) ? 'fail' :
+              ['dispatched', 'running'].includes(a.status) ? 'blocked' : 'fail',
+      notes: a.status !== 'complete' ? `Agent status: ${a.status}` : undefined,
+    }));
+
+    // Add verification step if present
+    if (w.verification) {
+      agentSteps.push({
+        step_id: 'verification',
+        status: w.verification.passed ? 'pass' : 'fail',
+        notes: `${w.verification.adapter} adapter, ${w.verification.test_count || 0} tests`,
+      });
+    }
+
+    // Determine wave verdict
+    const allAgentsPass = w.agents.every(a => a.status === 'complete');
+    const verifyPass = !w.verification || w.verification.passed;
+    const waveVerdict = allAgentsPass && verifyPass ? 'pass' :
+                        w.violations.length > 0 ? 'fail' : 'partial';
+
+    // Determine product surface from domain structure
+    const hasFrontend = w.agents.some(a => a.domain === 'frontend');
+    const surface = hasFrontend ? 'web' : 'cli';
+
+    return {
+      scenario_id: `swarm-wave-${w.number}-${w.phase}`,
+      scenario_name: `Wave ${w.number}: ${w.phase}`,
+      product_surface: surface,
+      execution_mode: 'bot',
+      verdict: waveVerdict,
+      step_results: agentSteps,
+      evidence: w.violations.length > 0 ? [{
+        kind: 'artifact',
+        url: `swarm://${run.id}/wave-${w.number}/violations`,
+        description: `${w.violations.length} ownership violation(s)`,
+      }] : undefined,
+    };
+  });
+
+  // Build CI checks from verification receipts
+  const ciChecks = exportData.verification.map(v => ({
+    id: `verify-wave-${v.wave}`,
+    kind: 'test',
+    status: v.passed ? 'pass' : 'fail',
+    value: v.test_count || 0,
+  }));
+
+  // Add finding summary as a check
+  const findingSummary = exportData.findings.summary;
+  if (findingSummary.total > 0) {
+    ciChecks.push({
+      id: 'findings-severity',
+      kind: 'security',
+      status: (findingSummary.by_severity?.CRITICAL || 0) > 0 ? 'fail' :
+              (findingSummary.by_severity?.HIGH || 0) > 0 ? 'fail' : 'pass',
+      value: findingSummary.total,
+    });
+  }
+
+  const startedAt = run.created || new Date().toISOString();
+  const finishedAt = run.completed || new Date().toISOString();
+
+  return buildSubmission({
+    repo: run.repo,
+    commitSha: run.commit_sha,
+    branch: run.branch,
+    workflow: 'swarm-control-plane',
+    providerRunId: run.id,
+    runUrl: `https://github.com/${run.repo}`,
+    startedAt,
+    finishedAt,
+    scenarioResults,
+    ciChecks: ciChecks.length > 0 ? ciChecks : undefined,
+    overallVerdict,
+    notes: `Swarm run ${run.id}: ${exportData.waves.length} waves, ${findingSummary.total} findings, ${exportData.promotions.length} promotions`,
+  });
+}

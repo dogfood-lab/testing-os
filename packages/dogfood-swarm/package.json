@@ -1,0 +1,38 @@
+{
+  "name": "@dogfood-lab/dogfood-swarm",
+  "version": "0.1.0-pre",
+  "private": true,
+  "type": "module",
+  "description": "10-phase parallel-agent protocol runner for testing-os. SQLite-backed control plane, durable receipts, domain-aware orchestration.",
+  "main": "cli.js",
+  "bin": {
+    "swarm": "./cli.js"
+  },
+  "exports": {
+    ".": "./cli.js",
+    "./persist-results.js": "./persist-results.js",
+    "./lib/*": "./lib/*"
+  },
+  "scripts": {
+    "test": "node --test control-plane.test.js hardening.test.js verify.test.js advance.test.js persist.test.js swarm.test.js"
+  },
+  "dependencies": {
+    "@dogfood-lab/report": "*",
+    "better-sqlite3": "^11.0.0",
+    "minimatch": "^10.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "mcp-tool-shop",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dogfood-lab/testing-os.git",
+    "directory": "packages/dogfood-swarm"
+  },
+  "homepage": "https://github.com/dogfood-lab/testing-os",
+  "bugs": {
+    "url": "https://github.com/dogfood-lab/testing-os/issues"
+  }
+}
