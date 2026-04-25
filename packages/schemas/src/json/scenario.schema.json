@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mcp-tool-shop-org/dogfood-labs/schemas/scenario.schema.json",
+  "title": "Dogfood Scenario Definition",
+  "description": "Authored in source repos under dogfood/scenarios/. Defines what constitutes a real dogfood exercise for a specific product surface. Steps are descriptive (what to verify), not executable (how to automate).",
+  "type": "object",
+  "required": [
+    "scenario_id",
+    "scenario_name",
+    "scenario_version",
+    "product_surface",
+    "execution_mode",
+    "description",
+    "steps",
+    "success_criteria"
+  ],
+  "additionalProperties": false,
+  "properties": {
+
+    "scenario_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Stable kebab-case ID. Referenced by policy and records. Must be unique within the repo."
+    },
+
+    "scenario_name": {
+      "type": "string",
+      "description": "Human-readable name for display."
+    },
+
+    "scenario_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semver. Bump when steps or success criteria change."
+    },
+
+    "product_surface": {
+      "type": "string",
+      "enum": ["cli", "desktop", "web", "api", "mcp-server", "npm-package", "plugin", "library"],
+      "description": "The product surface this scenario exercises."
+    },
+
+    "execution_mode": {
+      "type": "string",
+      "enum": ["bot", "human", "mixed"],
+      "description": "bot: fully automated. human: manual exercise. mixed: automation + human attestation."
+    },
+
+    "description": {
+      "type": "string",
+      "description": "What this scenario proves about the product."
+    },
+
+    "preconditions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Conditions that must be true before the scenario can run."
+    },
+
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Ordered steps describing the dogfood exercise.",
+      "items": {
+        "type": "object",
+        "required": ["id", "action"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$",
+            "description": "Stable step ID. Referenced by success_criteria.required_steps and record step_results."
+          },
+          "action": {
+            "type": "string",
+            "description": "What the operator does in this step."
+          },
+          "verifiable": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether this step produces a checkable outcome."
+          },
+          "expected": {
+            "type": "string",
+            "description": "What a passing result looks like. Required if verifiable is true."
+          }
+        }
+      }
+    },
+
+    "success_criteria": {
+      "type": "object",
+      "required": ["required_steps"],
+      "additionalProperties": false,
+      "properties": {
+        "required_steps": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Step IDs that must pass for the scenario to pass. Must reference valid step IDs."
+        },
+        "minimum_evidence": {
+          "type": "array",
+          "description": "Evidence types the verifier will require for this scenario.",
+          "items": {
+            "type": "object",
+            "required": ["kind"],
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": ["log", "screenshot", "recording", "transcript", "artifact", "other"]
+              },
+              "description": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Freeform tags for filtering and grouping."
+    },
+
+    "automation": {
+      "type": ["object", "null"],
+      "description": "Automation hints. Null means human-only scenario.",
+      "additionalProperties": false,
+      "properties": {
+        "script": {
+          "type": "string",
+          "description": "Path to automation script, relative to repo root."
+        },
+        "timeout_ms": {
+          "type": "integer",
+          "minimum": 1000,
+          "default": 120000
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mcp-tool-shop-org/dogfood-labs/schemas/dogfood-pattern.schema.json",
+  "title": "Dogfood Pattern",
+  "description": "A repeated lesson class backed by multiple accepted findings. Patterns represent recurrence, not individual incidents. Only accepted, non-invalidated findings may support a pattern.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "pattern_id",
+    "title",
+    "status",
+    "pattern_kind",
+    "summary",
+    "source_finding_ids",
+    "support",
+    "dimensions",
+    "transfer_scope"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "pattern_id": {
+      "type": "string",
+      "pattern": "^dpat-[a-z0-9][a-z0-9-]*$",
+      "minLength": 6
+    },
+    "title": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 200
+    },
+    "status": {
+      "type": "string",
+      "enum": ["candidate", "accepted", "rejected", "invalidated"]
+    },
+    "pattern_kind": {
+      "type": "string",
+      "enum": [
+        "recurring_failure",
+        "recurring_success",
+        "calibration_signal",
+        "coverage_gap",
+        "verification_seam",
+        "evidence_calibration"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 1000
+    },
+    "source_finding_ids": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Finding IDs that support this pattern. Minimum 2."
+    },
+    "support": {
+      "type": "object",
+      "required": ["finding_count", "repo_count"],
+      "additionalProperties": false,
+      "properties": {
+        "finding_count": { "type": "integer", "minimum": 2 },
+        "repo_count": { "type": "integer", "minimum": 1 },
+        "surface_count": { "type": "integer", "minimum": 1 },
+        "execution_modes": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["bot", "human", "mixed"] }
+        }
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "required": ["issue_kinds"],
+      "additionalProperties": false,
+      "properties": {
+        "product_surfaces": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["cli", "desktop", "web", "api", "mcp-server", "npm-package", "plugin", "library"] }
+        },
+        "issue_kinds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "root_cause_kinds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "remediation_kinds": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "transfer_scope": {
+      "type": "string",
+      "enum": ["repo_local", "surface_local", "surface_archetype", "execution_mode", "org_wide"]
+    },
+    "pattern_strength": {
+      "type": "string",
+      "enum": ["emerging", "strong", "portfolio_stable"]
+    },
+    "lineage_note": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reviewed_by": { "type": "string" },
+        "reviewed_at": { "type": "string", "format": "date-time" },
+        "decision_reason": { "type": "string", "maxLength": 1000 },
+        "last_action": { "type": "string", "enum": ["accept", "reject", "edit", "invalidate"] }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  }
+}

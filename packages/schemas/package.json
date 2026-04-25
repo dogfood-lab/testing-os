@@ -1,0 +1,50 @@
+{
+  "name": "@dogfood-lab/schemas",
+  "version": "0.1.0-pre",
+  "description": "JSON schemas for the testing-os contract spine — record, finding, pattern, recommendation, doctrine, policy, scenario, submission.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./json/*": "./src/json/*"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run --passWithNoTests"
+  },
+  "files": [
+    "dist",
+    "src/json",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "mcp-tool-shop",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dogfood-lab/testing-os.git",
+    "directory": "packages/schemas"
+  },
+  "homepage": "https://github.com/dogfood-lab/testing-os",
+  "bugs": {
+    "url": "https://github.com/dogfood-lab/testing-os/issues"
+  },
+  "keywords": [
+    "testing-os",
+    "dogfood-lab",
+    "json-schema",
+    "evidence",
+    "verification",
+    "contracts"
+  ]
+}

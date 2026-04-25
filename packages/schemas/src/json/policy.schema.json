@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mcp-tool-shop-org/dogfood-labs/schemas/policy.schema.json",
+  "title": "Dogfood Policy",
+  "description": "Per-repo or global policy defining verification rules. Global policy provides defaults and non-overridable rules. Repo policies define surface-specific requirements.",
+  "type": "object",
+  "required": ["policy_version"],
+  "additionalProperties": false,
+  "properties": {
+
+    "repo": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$",
+      "description": "Full org/repo. Absent in global policy."
+    },
+
+    "policy_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+
+    "enforcement": {
+      "type": "object",
+      "description": "How Gate F treats this repo. Defaults to required if omitted.",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["required", "warn-only", "exempt"],
+          "description": "required: Gate F fails on missing/stale/non-pass. warn-only: emits warning, exits 0. exempt: reports exempt status, exits 0."
+        },
+        "reason": {
+          "type": ["string", "null"],
+          "description": "Why this repo is warn-only or exempt. Required if mode is not 'required'."
+        },
+        "review_after": {
+          "type": ["string", "null"],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "Date (YYYY-MM-DD) to review enforcement mode. Required if mode is 'exempt'."
+        }
+      }
+    },
+
+    "surfaces": {
+      "type": "object",
+      "description": "Per-surface policy. Keys are product_surface values.",
+      "propertyNames": {
+        "enum": ["cli", "desktop", "web", "api", "mcp-server", "npm-package", "plugin", "library"]
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/surface_policy"
+      }
+    },
+
+    "defaults": {
+      "$ref": "#/$defs/surface_policy",
+      "description": "Default surface policy. Used when a surface has no explicit policy."
+    },
+
+    "global_rules": {
+      "type": "array",
+      "description": "Non-overridable rules. Only meaningful in global policy. Repo policies cannot weaken these.",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Stable rule ID for reporting and diagnostics."
+          },
+          "description": { "type": "string" },
+          "severity": {
+            "type": "string",
+            "enum": ["reject", "warn", "info"],
+            "description": "reject: fails verification. warn: accepted with warning. info: logged only."
+          }
+        }
+      }
+    },
+
+    "stale_thresholds": {
+      "type": "object",
+      "description": "Days since last accepted dogfood record. Used by CLI and indexes.",
+      "additionalProperties": false,
+      "properties": {
+        "critical": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Days until flagged critical (red)."
+        },
+        "warning": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Days until flagged warning (yellow)."
+        },
+        "healthy": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Days within which the repo is considered healthy (green)."
+        }
+      }
+    }
+  },
+
+  "$defs": {
+    "surface_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required_scenarios": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Scenario IDs that must have a recent accepted record."
+        },
+        "freshness": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "max_age_days": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum days since last accepted run before the surface is stale."
+            },
+            "warn_age_days": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Days since last accepted run before warning."
+            }
+          }
+        },
+        "execution_mode_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "allowed": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["bot", "human", "mixed"]
+              },
+              "description": "Which execution modes are accepted for this surface."
+            }
+          }
+        },
+        "ci_requirements": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "coverage_min": {
+              "type": ["number", "null"],
+              "description": "Minimum coverage percentage. Null means no coverage gate."
+            },
+            "tests_must_pass": {
+              "type": "boolean",
+              "description": "Whether all CI test checks must pass."
+            }
+          }
+        },
+        "evidence_requirements": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "required_kinds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["log", "screenshot", "recording", "transcript", "artifact", "other"]
+              },
+              "description": "Evidence kinds that must be present."
+            },
+            "min_evidence_count": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Minimum number of evidence items across all scenarios."
+            }
+          }
+        }
+      }
+    }
+  }
+}

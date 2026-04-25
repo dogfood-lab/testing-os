@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mcp-tool-shop-org/dogfood-labs/schemas/dogfood-doctrine.schema.json",
+  "title": "Dogfood Doctrine",
+  "description": "A hardened portfolio rule earned from repeated patterns. Doctrine represents durable operating law — the strongest tier of dogfood learning. Must be backed by multiple accepted patterns.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "doctrine_id",
+    "title",
+    "status",
+    "doctrine_kind",
+    "statement",
+    "rationale",
+    "based_on_pattern_ids",
+    "transfer_scope"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "doctrine_id": {
+      "type": "string",
+      "pattern": "^ddoc-[a-z0-9][a-z0-9-]*$",
+      "minLength": 6
+    },
+    "title": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 200
+    },
+    "status": {
+      "type": "string",
+      "enum": ["candidate", "accepted", "rejected"]
+    },
+    "doctrine_kind": {
+      "type": "string",
+      "enum": [
+        "rollout_law",
+        "evidence_law",
+        "surface_law",
+        "verification_law",
+        "calibration_law"
+      ]
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "description": "The doctrine rule itself. Must read as a directive, not a suggestion."
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 1000,
+      "description": "Why this doctrine exists. Must reference recurrence evidence."
+    },
+    "based_on_pattern_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "transfer_scope": {
+      "type": "string",
+      "enum": ["surface_archetype", "execution_mode", "org_wide"]
+    },
+    "strength": {
+      "type": "string",
+      "enum": ["emerging", "proven", "foundational"]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reviewed_by": { "type": "string" },
+        "reviewed_at": { "type": "string", "format": "date-time" },
+        "decision_reason": { "type": "string", "maxLength": 1000 },
+        "last_action": { "type": "string", "enum": ["accept", "reject", "edit"] }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  }
+}
