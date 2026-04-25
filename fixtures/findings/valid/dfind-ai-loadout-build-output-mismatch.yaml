@@ -1,0 +1,45 @@
+schema_version: "1.0.0"
+finding_id: dfind-ai-loadout-build-output-mismatch
+title: TypeScript CLI scenarios must exercise built artifacts not source files
+status: accepted
+repo: mcp-tool-shop-org/ai-loadout
+product_surface: cli
+execution_mode: bot
+journey_stage: first_run
+issue_kind: build_output_mismatch
+root_cause_kind: build_config_error
+remediation_kind: build_config_fix
+transfer_scope: surface_archetype
+summary: >
+  ai-loadout's dogfood scenario invoked src/cli.ts directly instead of the
+  built dist/cli.js. The CI workflow did not run the build step before the
+  scenario. This meant the scenario was exercising TypeScript source that
+  users never see, not the actual published artifact. The fix was to ensure
+  the workflow builds first and the scenario calls the dist entrypoint.
+doctrine_statement: >
+  Scenarios must exercise the built artifact, not source files. TypeScript
+  repos compile to dist/ or build/. The CI workflow must run the build step
+  before the scenario, and the scenario must call the built entrypoint.
+notes: >
+  This pattern was also observed in guardian and crawler. It applies to all
+  TypeScript repos regardless of surface type.
+source_record_ids:
+  - ai-loadout-23566269375-1
+scenario_ids:
+  - cli-resolve-and-list
+evidence:
+  - evidence_kind: record
+    record_id: ai-loadout-23566269375-1
+    note: Corrected record after build output fix.
+  - evidence_kind: doc
+    doc_ref: docs/rollout-doctrine.md
+    note: Build output truth doctrine rule extracted from this finding.
+fix_refs:
+  - ref_kind: workflow_change
+    ref: .github/workflows/dogfood.yml
+    note: Added npm run build step before scenario execution.
+  - ref_kind: scenario_change
+    ref: dogfood/scenarios/cli-resolve-and-list.yaml
+    note: Changed entrypoint from src/cli.ts to dist/cli.js.
+created_at: "2026-03-29T12:00:00Z"
+updated_at: "2026-03-29T12:00:00Z"

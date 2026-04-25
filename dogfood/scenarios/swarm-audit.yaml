@@ -1,0 +1,69 @@
+scenario_id: swarm-audit
+scenario_name: "Swarm Audit Protocol"
+scenario_version: "1.0.0"
+
+product_surface: cli
+
+execution_mode: bot
+
+description: >
+  Multi-agent parallel audit and remediation of a repository. A coordinator
+  explores the repo, decomposes it into components, assigns agent slots, runs
+  parallel audit passes, remediates prioritized findings, verifies fixes, and
+  persists evidence to the dogfood record and audit DB.
+
+preconditions:
+  - "Target repo exists and is cloneable"
+  - "Swarm manifest schema is loadable"
+  - "Audit standard controls are available"
+  - "Dogfood verifier is callable"
+
+steps:
+  - id: explore-repo
+    action: "Explore repository structure and identify components"
+    verifiable: true
+    expected: "Manifest contains a populated components array with ids, paths, and applicable domains"
+
+  - id: assign-components
+    action: "Map components to agent slots with file ownership"
+    verifiable: true
+    expected: "Manifest assignments object covers all components with non-overlapping file paths"
+
+  - id: audit-components
+    action: "Run parallel audit agents against each component"
+    verifiable: true
+    expected: "All agent slots report findings; manifest results.total_findings is populated"
+
+  - id: remediate-findings
+    action: "Run parallel remediation agents for prioritized findings"
+    verifiable: true
+    expected: "Critical and high findings are addressed; manifest results.fixed is updated"
+
+  - id: verify-fixes
+    action: "Run build/test/lint and validate all fixes pass"
+    verifiable: true
+    expected: "Build exits 0, tests pass, no lint regressions introduced"
+
+  - id: persist-evidence
+    action: "Write dogfood record and audit DB entry"
+    verifiable: true
+    expected: "Dogfood record exists at the sharded path and audit DB row is queryable"
+
+success_criteria:
+  required_steps:
+    - explore-repo
+    - assign-components
+    - audit-components
+    - remediate-findings
+    - verify-fixes
+    - persist-evidence
+  all_steps_pass: true
+
+tags:
+  - swarm
+  - audit
+  - multi-agent
+
+automation:
+  timeout_ms: 600000
+  retry_on_failure: false

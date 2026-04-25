@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0.0",
+  "policy_version": "1.0.0",
+  "run_id": "repo-crawler-mcp-23510482475-1",
+  "repo": "mcp-tool-shop-org/repo-crawler-mcp",
+  "ref": {
+    "branch": "main",
+    "commit_sha": "246c53a039ee6bae952c5835c70e68fd0b5698e5"
+  },
+  "source": {
+    "actor": "mcp-tool-shop",
+    "attempt": 1,
+    "provider": "github",
+    "provider_run_id": "23510482475",
+    "run_url": "https://github.com/mcp-tool-shop-org/repo-crawler-mcp/actions/runs/23510482475",
+    "workflow": "dogfood.yml"
+  },
+  "timing": {
+    "duration_ms": 0,
+    "finished_at": "2026-03-24T20:23:17Z",
+    "started_at": "2026-03-24T16:22:18-04:00"
+  },
+  "ci_checks": [],
+  "scenario_results": [
+    {
+      "evidence": [
+        {
+          "description": "CI run log with crawl output",
+          "kind": "log",
+          "url": "https://github.com/mcp-tool-shop-org/repo-crawler-mcp/actions/runs/23510482475"
+        }
+      ],
+      "execution_mode": "bot",
+      "notes": "Bot-driven crawl of mcp-tool-shop-org/shipcheck",
+      "product_surface": "mcp-server",
+      "scenario_id": "crawl-real-repo",
+      "scenario_name": "Start MCP server and verify initialization",
+      "scenario_version": "1.0.0",
+      "step_results": [
+        {
+          "status": "pass",
+          "step_id": "server-start"
+        },
+        {
+          "status": "pass",
+          "step_id": "crawl-via-stdio"
+        },
+        {
+          "status": "pass",
+          "step_id": "verify-output"
+        }
+      ],
+      "verdict": "pass"
+    }
+  ],
+  "overall_verdict": {
+    "proposed": "pass",
+    "verified": "pass",
+    "downgraded": false
+  },
+  "verification": {
+    "status": "accepted",
+    "verified_at": "2026-03-24T20:23:30.176Z",
+    "provenance_confirmed": true,
+    "schema_valid": true,
+    "policy_valid": true,
+    "rejection_reasons": [],
+    "provenance_remediation": {
+      "status": "stub_verified",
+      "note": "This record was ingested with stub provenance (always confirms). GitHub API provenance was NOT checked at ingestion time. Record may still be valid but provenance was not independently verified.",
+      "remediated_at": "2026-03-24T21:52:11.837Z",
+      "original_provenance_confirmed": true
+    }
+  },
+  "notes": "Phase 2 rollout: repo-crawler-mcp dogfood."
+}

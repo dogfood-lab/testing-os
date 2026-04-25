@@ -1,0 +1,20 @@
+# INVALID: missing issue_kind (required field)
+schema_version: "1.0.0"
+finding_id: dfind-test-missing-issue-kind
+title: This finding has no issue_kind classification
+status: candidate
+repo: mcp-tool-shop-org/shipcheck
+product_surface: cli
+journey_stage: first_run
+root_cause_kind: contract_drift
+remediation_kind: docs_change
+transfer_scope: repo_local
+summary: >
+  This finding intentionally omits issue_kind to test that the schema requires
+  the learning classification fields.
+source_record_ids:
+  - some-record-id
+evidence:
+  - evidence_kind: record
+    record_id: some-record-id
+    note: Valid evidence but issue classification is missing.

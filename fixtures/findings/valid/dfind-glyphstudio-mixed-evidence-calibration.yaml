@@ -1,0 +1,49 @@
+schema_version: "1.0.0"
+finding_id: dfind-glyphstudio-mixed-evidence-calibration
+title: Desktop mixed-mode evidence requirements should reflect natural outputs
+status: accepted
+repo: mcp-tool-shop-org/glyphstudio
+product_surface: desktop
+execution_mode: mixed
+journey_stage: verification
+issue_kind: evidence_overconstraint
+root_cause_kind: policy_overconstraint
+remediation_kind: evidence_requirement_change
+transfer_scope: surface_archetype
+summary: >
+  GlyphStudio's desktop surface initially required screenshot and artifact
+  evidence, but the natural output of a Tauri desktop dogfood exercise is a
+  transcript and log. Forcing screenshot evidence taught the repo to manufacture
+  compliance artifacts rather than demonstrate reality. Policy was calibrated
+  to accept transcript + log as sufficient evidence for mixed-mode desktop
+  exercises.
+doctrine_statement: >
+  Evidence requirements should reflect natural outputs, not forced artifacts.
+  Forced evidence is worse than no evidence — it teaches repos to manufacture
+  compliance rather than demonstrate reality.
+notes: >
+  This applies to all desktop repos with mixed-mode execution. Bot-only desktop
+  scenarios may have different natural evidence shapes.
+source_record_ids:
+  - glyphstudio-23325766223-1
+scenario_ids:
+  - desktop-launch-and-verify
+evidence:
+  - evidence_kind: record
+    record_id: glyphstudio-23325766223-1
+    note: Accepted record after evidence requirements were calibrated.
+  - evidence_kind: policy
+    policy_ref: policies/repos/mcp-tool-shop-org/glyphstudio.yaml
+    note: Policy was updated to require transcript + log instead of screenshot + artifact.
+  - evidence_kind: doc
+    doc_ref: docs/rollout-doctrine.md
+    note: Evidence truth doctrine rule extracted from this finding.
+fix_refs:
+  - ref_kind: policy_change
+    ref: policies/repos/mcp-tool-shop-org/glyphstudio.yaml
+    note: Changed required_kinds from [screenshot, artifact] to [transcript, log].
+  - ref_kind: doc
+    ref: docs/rollout-doctrine.md
+    note: Added evidence truth rule to rollout doctrine.
+created_at: "2026-03-29T12:00:00Z"
+updated_at: "2026-03-29T12:00:00Z"

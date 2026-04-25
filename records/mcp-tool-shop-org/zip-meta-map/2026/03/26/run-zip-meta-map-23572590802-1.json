@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0.0",
+  "policy_version": "1.0.0",
+  "run_id": "zip-meta-map-23572590802-1",
+  "repo": "mcp-tool-shop-org/zip-meta-map",
+  "ref": {
+    "branch": "main",
+    "commit_sha": "5ec306e46a8f8089e9baefc371ff2a393c455b20"
+  },
+  "source": {
+    "actor": "mcp-tool-shop",
+    "attempt": 1,
+    "provider": "github",
+    "provider_run_id": "23572590802",
+    "run_url": "https://github.com/mcp-tool-shop-org/zip-meta-map/actions/runs/23572590802",
+    "workflow": "dogfood.yml"
+  },
+  "timing": {
+    "duration_ms": 0,
+    "finished_at": "2026-03-26T01:16:09Z",
+    "started_at": "2026-03-25T21:15:44-04:00"
+  },
+  "ci_checks": [],
+  "scenario_results": [
+    {
+      "evidence": [
+        {
+          "description": "CI run log with profile output",
+          "kind": "log",
+          "url": "https://github.com/mcp-tool-shop-org/zip-meta-map/actions/runs/23572590802"
+        }
+      ],
+      "execution_mode": "bot",
+      "notes": "Bot-driven profile of the repo itself",
+      "product_surface": "cli",
+      "scenario_id": "profile-real-repo",
+      "scenario_name": "Profile the repo itself and verify output",
+      "scenario_version": "1.0.0",
+      "step_results": [
+        {
+          "status": "pass",
+          "step_id": "profile-self"
+        },
+        {
+          "status": "pass",
+          "step_id": "verify-output"
+        }
+      ],
+      "verdict": "pass"
+    }
+  ],
+  "overall_verdict": {
+    "proposed": "pass",
+    "verified": "pass",
+    "downgraded": false
+  },
+  "verification": {
+    "status": "accepted",
+    "verified_at": "2026-03-26T01:16:17.912Z",
+    "provenance_confirmed": true,
+    "schema_valid": true,
+    "policy_valid": true,
+    "rejection_reasons": []
+  },
+  "notes": "Phase 2 rollout: zip-meta-map CLI dogfood."
+}

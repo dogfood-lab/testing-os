@@ -1,0 +1,29 @@
+{
+  "name": "@dogfood-lab/report",
+  "version": "0.1.0-pre",
+  "private": true,
+  "type": "module",
+  "description": "Submission builder for testing-os — turns swarm/run results into the JSON envelope expected by the verifier.",
+  "main": "build-submission.js",
+  "exports": {
+    ".": "./build-submission.js",
+    "./build-submission.js": "./build-submission.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "mcp-tool-shop",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dogfood-lab/testing-os.git",
+    "directory": "packages/report"
+  },
+  "homepage": "https://github.com/dogfood-lab/testing-os",
+  "bugs": {
+    "url": "https://github.com/dogfood-lab/testing-os/issues"
+  }
+}

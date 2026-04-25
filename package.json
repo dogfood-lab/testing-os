@@ -12,7 +12,8 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "clean": "tsc --build --clean",
-    "test": "vitest run --passWithNoTests",
+    "test": "npm test --workspaces --if-present",
+    "test:vitest": "vitest run --passWithNoTests",
     "verify": "npm run build && npm run test"
   },
   "repository": {

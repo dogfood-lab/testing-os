@@ -1,0 +1,21 @@
+# INVALID: repo field uses bare name without org prefix
+schema_version: "1.0.0"
+finding_id: dfind-test-bad-repo
+title: This finding uses a bare repo name without org prefix
+status: candidate
+repo: shipcheck
+product_surface: cli
+journey_stage: first_run
+issue_kind: entrypoint_truth
+root_cause_kind: contract_drift
+remediation_kind: docs_change
+transfer_scope: repo_local
+summary: >
+  This finding intentionally uses a bare repo name without the org prefix.
+  The repo field must match the pattern org/repo.
+source_record_ids:
+  - some-record-id
+evidence:
+  - evidence_kind: record
+    record_id: some-record-id
+    note: Valid evidence but repo naming is wrong.

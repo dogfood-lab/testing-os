@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "policy_version": "1.0.0",
+  "run_id": "code-batch-23568447714-1",
+  "repo": "mcp-tool-shop-org/code-batch",
+  "ref": {
+    "branch": "main",
+    "commit_sha": "7213de09df975c2ac17461c1d280299223386e7f"
+  },
+  "source": {
+    "actor": "mcp-tool-shop",
+    "attempt": 1,
+    "provider": "github",
+    "provider_run_id": "23568447714",
+    "run_url": "https://github.com/mcp-tool-shop-org/code-batch/actions/runs/23568447714",
+    "workflow": "dogfood.yml"
+  },
+  "timing": {
+    "duration_ms": 0,
+    "finished_at": "2026-03-25T22:59:23Z",
+    "started_at": "2026-03-25T18:58:31-04:00"
+  },
+  "ci_checks": [],
+  "scenario_results": [
+    {
+      "evidence": [
+        {
+          "description": "CI run log with init and pipeline list output",
+          "kind": "log",
+          "url": "https://github.com/mcp-tool-shop-org/code-batch/actions/runs/23568447714"
+        }
+      ],
+      "execution_mode": "bot",
+      "notes": "Bot-driven store init and pipeline listing",
+      "product_surface": "cli",
+      "scenario_id": "init-and-run-pipeline",
+      "scenario_name": "Initialize store and list pipelines",
+      "scenario_version": "1.0.0",
+      "step_results": [
+        {
+          "status": "pass",
+          "step_id": "init-store"
+        },
+        {
+          "status": "pass",
+          "step_id": "list-pipelines"
+        },
+        {
+          "status": "pass",
+          "step_id": "verify-output"
+        }
+      ],
+      "verdict": "pass"
+    }
+  ],
+  "overall_verdict": {
+    "proposed": "pass",
+    "verified": "pass",
+    "downgraded": false
+  },
+  "verification": {
+    "status": "accepted",
+    "verified_at": "2026-03-25T22:59:34.105Z",
+    "provenance_confirmed": true,
+    "schema_valid": true,
+    "policy_valid": true,
+    "rejection_reasons": []
+  },
+  "notes": "Phase 2 rollout: code-batch CLI dogfood."
+}

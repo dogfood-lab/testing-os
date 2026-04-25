@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0.0",
+  "policy_version": "1.0.0",
+  "run_id": "vocal-synth-engine-23326986417-1",
+  "repo": "mcp-tool-shop-org/vocal-synth-engine",
+  "ref": {
+    "branch": "main",
+    "commit_sha": "6c8fc9cd41a5bd200fb887b6b129ecb7dd31d9bc"
+  },
+  "source": {
+    "actor": "mcp-tool-shop",
+    "attempt": 1,
+    "provider": "github",
+    "provider_run_id": "23326986417",
+    "run_url": "https://github.com/mcp-tool-shop-org/vocal-synth-engine/actions/runs/23326986417",
+    "workflow": "dogfood.yml"
+  },
+  "timing": {
+    "duration_ms": 0,
+    "finished_at": "2026-03-20T02:51:29Z",
+    "started_at": "2026-03-19T22:50:48-04:00"
+  },
+  "ci_checks": [],
+  "scenario_results": [
+    {
+      "evidence": [
+        {
+          "description": "CI run log with health + presets response",
+          "kind": "log",
+          "url": "https://github.com/mcp-tool-shop-org/vocal-synth-engine/actions/runs/23326986417"
+        }
+      ],
+      "execution_mode": "bot",
+      "notes": "Bot-driven API health and presets roundtrip",
+      "product_surface": "api",
+      "scenario_id": "health-and-presets-roundtrip",
+      "scenario_name": "Start server, verify health and presets endpoints",
+      "scenario_version": "1.0.0",
+      "step_results": [
+        {
+          "status": "fail",
+          "step_id": "start-server"
+        },
+        {
+          "status": "fail",
+          "step_id": "health-check"
+        },
+        {
+          "status": "fail",
+          "step_id": "presets-check"
+        },
+        {
+          "status": "fail",
+          "step_id": "verify-output"
+        }
+      ],
+      "verdict": "fail"
+    }
+  ],
+  "overall_verdict": {
+    "proposed": "fail",
+    "verified": "fail",
+    "downgraded": false
+  },
+  "verification": {
+    "status": "accepted",
+    "verified_at": "2026-03-20T02:51:37.667Z",
+    "provenance_confirmed": true,
+    "schema_valid": true,
+    "policy_valid": true,
+    "rejection_reasons": [],
+    "provenance_remediation": {
+      "status": "stub_verified",
+      "note": "This record was ingested with stub provenance (always confirms). GitHub API provenance was NOT checked at ingestion time. Record may still be valid but provenance was not independently verified.",
+      "remediated_at": "2026-03-24T21:49:40.099Z",
+      "original_provenance_confirmed": true
+    }
+  },
+  "notes": "Phase 2 rollout: vocal-synth-engine API dogfood."
+}

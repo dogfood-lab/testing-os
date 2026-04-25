@@ -1,0 +1,37 @@
+{
+  "name": "@dogfood-lab/verify",
+  "version": "0.1.0-pre",
+  "private": true,
+  "type": "module",
+  "description": "Central verifier for testing-os. Validates submissions against schema and policy, produces persisted records.",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./validators/*": "./validators/*",
+    "./validators/*.js": "./validators/*.js"
+  },
+  "scripts": {
+    "test": "node --test",
+    "verify": "node cli.js"
+  },
+  "dependencies": {
+    "@dogfood-lab/schemas": "*",
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1",
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "mcp-tool-shop",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dogfood-lab/testing-os.git",
+    "directory": "packages/verify"
+  },
+  "homepage": "https://github.com/dogfood-lab/testing-os",
+  "bugs": {
+    "url": "https://github.com/dogfood-lab/testing-os/issues"
+  }
+}

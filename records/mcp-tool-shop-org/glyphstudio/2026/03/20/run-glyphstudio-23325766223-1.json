@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "policy_version": "1.0.0",
+  "run_id": "glyphstudio-23325766223-1",
+  "repo": "mcp-tool-shop-org/glyphstudio",
+  "ref": {
+    "branch": "main",
+    "commit_sha": "711d827e0ee438356a166ef98baf4ad8773e05ef"
+  },
+  "source": {
+    "actor": "mcp-tool-shop",
+    "attempt": 1,
+    "provider": "github",
+    "provider_run_id": "23325766223",
+    "run_url": "https://github.com/mcp-tool-shop-org/glyphstudio/actions/runs/23325766223",
+    "workflow": "dogfood.yml"
+  },
+  "timing": {
+    "duration_ms": 0,
+    "finished_at": "2026-03-20T01:54:44Z",
+    "started_at": "2026-03-20T01:54:44Z"
+  },
+  "scenario_results": [
+    {
+      "attested_by": "mike",
+      "evidence": [
+        {
+          "description": "Canvas screenshot from dogfood session",
+          "kind": "screenshot",
+          "url": "https://github.com/organizations/mcp-tool-shop-org/settings/profile"
+        }
+      ],
+      "execution_mode": "mixed",
+      "notes": "testing",
+      "product_surface": "desktop",
+      "scenario_id": "export-roundtrip-16x16",
+      "scenario_name": "Export roundtrip: 16x16 sprite",
+      "scenario_version": "1.0.0",
+      "step_results": [
+        {
+          "status": "pass",
+          "step_id": "launch-app"
+        },
+        {
+          "status": "pass",
+          "step_id": "create-sprite"
+        },
+        {
+          "status": "pass",
+          "step_id": "draw-content"
+        },
+        {
+          "status": "pass",
+          "step_id": "export-png"
+        },
+        {
+          "status": "pass",
+          "step_id": "verify-export"
+        }
+      ],
+      "verdict": "pass"
+    }
+  ],
+  "overall_verdict": {
+    "proposed": "pass",
+    "verified": "pass",
+    "downgraded": false
+  },
+  "verification": {
+    "status": "accepted",
+    "verified_at": "2026-03-20T01:54:58.200Z",
+    "provenance_confirmed": true,
+    "schema_valid": true,
+    "policy_valid": true,
+    "rejection_reasons": [],
+    "provenance_remediation": {
+      "status": "stub_verified",
+      "note": "This record was ingested with stub provenance (always confirms). GitHub API provenance was NOT checked at ingestion time. Record may still be valid but provenance was not independently verified.",
+      "remediated_at": "2026-03-24T21:49:40.084Z",
+      "original_provenance_confirmed": true
+    }
+  },
+  "notes": "Dogfood session by mike. testing"
+}

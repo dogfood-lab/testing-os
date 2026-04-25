@@ -1,0 +1,47 @@
+schema_version: "1.0.0"
+finding_id: dfind-vocal-synth-process-lifecycle
+title: Background server processes require single-shell execution in GitHub Actions
+status: accepted
+repo: mcp-tool-shop-org/vocal-synth-engine
+product_surface: api
+execution_mode: bot
+journey_stage: first_run
+issue_kind: process_lifecycle
+root_cause_kind: process_model_mismatch
+remediation_kind: process_fix
+transfer_scope: surface_archetype
+summary: >
+  vocal-synth-engine's dogfood workflow started the server with & in step 1,
+  but GitHub Actions runs each step in a separate shell. The server was killed
+  before step 2 ran. The fix required all scenario steps that depend on a
+  running server to execute in a single run block. Additionally, the workflow
+  needed shell bash --noprofile --norc with set +e for steps that include
+  expected failures like curl polling a not-yet-ready server.
+doctrine_statement: >
+  Background server processes require single-shell execution. GitHub Actions
+  runs each step in a separate shell. A server started with & in step 1 is
+  killed before step 2 runs.
+notes: >
+  vocal-synth-engine failed three times before this was identified. Also hit
+  port and route discovery issues: actual port was 4321 not 3000, routes at
+  /api/* not root, cockpit catch-all returned 404 when UI was not built.
+source_record_ids:
+  - vocal-synth-engine-23572047723-1
+scenario_ids:
+  - api-health-check
+evidence:
+  - evidence_kind: record
+    record_id: vocal-synth-engine-23572047723-1
+    note: Accepted record after process lifecycle and routing fixes.
+  - evidence_kind: doc
+    doc_ref: docs/rollout-doctrine.md
+    note: Process truth and runtime truth doctrine rules from this finding.
+fix_refs:
+  - ref_kind: workflow_change
+    ref: .github/workflows/dogfood.yml
+    note: Consolidated server start + scenario steps into single run block with set +e.
+  - ref_kind: scenario_change
+    ref: dogfood/scenarios/api-health-check.yaml
+    note: Fixed port from 3000 to 4321 and route from / to /api/health.
+created_at: "2026-03-29T12:00:00Z"
+updated_at: "2026-03-29T12:00:00Z"

@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0.0",
+  "policy_version": "1.0.0",
+  "run_id": "vocal-synth-engine-23572047723-1",
+  "repo": "mcp-tool-shop-org/vocal-synth-engine",
+  "ref": {
+    "branch": "main",
+    "commit_sha": "dab182d657b9a41366cf0b7dcad61b82eb73e981"
+  },
+  "source": {
+    "actor": "mcp-tool-shop",
+    "attempt": 1,
+    "provider": "github",
+    "provider_run_id": "23572047723",
+    "run_url": "https://github.com/mcp-tool-shop-org/vocal-synth-engine/actions/runs/23572047723",
+    "workflow": "dogfood.yml"
+  },
+  "timing": {
+    "duration_ms": 0,
+    "finished_at": "2026-03-26T00:56:40Z",
+    "started_at": "2026-03-25T20:56:08-04:00"
+  },
+  "ci_checks": [],
+  "scenario_results": [
+    {
+      "evidence": [
+        {
+          "description": "CI run log with health + presets response",
+          "kind": "log",
+          "url": "https://github.com/mcp-tool-shop-org/vocal-synth-engine/actions/runs/23572047723"
+        }
+      ],
+      "execution_mode": "bot",
+      "notes": "Bot-driven API health and presets roundtrip",
+      "product_surface": "api",
+      "scenario_id": "health-and-presets-roundtrip",
+      "scenario_name": "Start server, verify health and presets endpoints",
+      "scenario_version": "1.0.0",
+      "step_results": [
+        {
+          "status": "pass",
+          "step_id": "start-server"
+        },
+        {
+          "status": "pass",
+          "step_id": "health-check"
+        },
+        {
+          "status": "pass",
+          "step_id": "presets-check"
+        },
+        {
+          "status": "pass",
+          "step_id": "verify-output"
+        }
+      ],
+      "verdict": "pass"
+    }
+  ],
+  "overall_verdict": {
+    "proposed": "pass",
+    "verified": "pass",
+    "downgraded": false
+  },
+  "verification": {
+    "status": "accepted",
+    "verified_at": "2026-03-26T00:56:55.968Z",
+    "provenance_confirmed": true,
+    "schema_valid": true,
+    "policy_valid": true,
+    "rejection_reasons": []
+  },
+  "notes": "Phase 2 rollout: vocal-synth-engine API dogfood."
+}

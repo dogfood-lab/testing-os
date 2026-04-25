@@ -1,0 +1,22 @@
+repo: mcp-tool-shop-org/glyphstudio
+policy_version: "1.0.0"
+
+enforcement:
+  mode: required
+
+surfaces:
+  desktop:
+    required_scenarios:
+      - export-roundtrip-16x16
+    freshness:
+      max_age_days: 30
+      warn_age_days: 14
+    execution_mode_policy:
+      allowed: [human, mixed]
+      # bot-only not accepted — desktop requires human attestation
+    ci_requirements:
+      coverage_min: null
+      tests_must_pass: false
+    evidence_requirements:
+      required_kinds: [screenshot]
+      min_evidence_count: 1

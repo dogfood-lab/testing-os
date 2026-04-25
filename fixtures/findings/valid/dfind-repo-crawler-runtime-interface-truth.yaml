@@ -1,0 +1,49 @@
+schema_version: "1.0.0"
+finding_id: dfind-repo-crawler-runtime-interface-truth
+title: MCP servers must be verified as protocol servers not fake CLIs
+status: accepted
+repo: mcp-tool-shop-org/repo-crawler-mcp
+product_surface: mcp-server
+execution_mode: bot
+journey_stage: verification
+issue_kind: interface_assumption
+root_cause_kind: surface_misclassification
+remediation_kind: classification_fix
+transfer_scope: surface_archetype
+summary: >
+  repo-crawler-mcp was initially treated as a CLI-shaped product during rollout,
+  which produced false verification expectations. The correct runtime contract was
+  stdio JSON-RPC MCP server behavior. Verification only succeeded after the
+  scenario was rewritten to send an initialize message over stdio instead of
+  invoking CLI subcommands.
+doctrine_statement: >
+  Verify runtime interface truth before authoring rollout scenarios or checks.
+  MCP servers are not CLIs unless they explicitly expose one. The honest test
+  is stdio JSON-RPC initialization.
+notes: >
+  Portable to all MCP server repos. Guardian hit the same issue. Surface enum
+  also required correction from 'mcp' to 'mcp-server'.
+source_record_ids:
+  - repo-crawler-mcp-23571073097-1
+scenario_ids:
+  - mcp-server-basic-handshake
+evidence:
+  - evidence_kind: record
+    record_id: repo-crawler-mcp-23571073097-1
+    note: Accepted record using corrected stdio JSON-RPC scenario.
+  - evidence_kind: scenario_result
+    record_id: repo-crawler-mcp-23571073097-1
+    scenario_id: mcp-server-basic-handshake
+    note: Successful verification using actual MCP protocol handshake.
+  - evidence_kind: doc
+    doc_ref: docs/rollout-doctrine.md
+    note: Protocol truth doctrine rule extracted from this finding.
+fix_refs:
+  - ref_kind: scenario_change
+    ref: dogfood/scenarios/mcp-server-basic-handshake.yaml
+    note: Rewrote scenario from CLI invocation to stdio JSON-RPC initialize.
+  - ref_kind: doc
+    ref: docs/rollout-doctrine.md
+    note: Added protocol truth rule to rollout doctrine.
+created_at: "2026-03-29T12:00:00Z"
+updated_at: "2026-03-29T12:00:00Z"

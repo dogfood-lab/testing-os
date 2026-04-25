@@ -1,0 +1,21 @@
+repo: mcp-tool-shop-org/voice-soundboard
+policy_version: "1.0.0"
+
+enforcement:
+  mode: required
+
+surfaces:
+  library:
+    required_scenarios:
+      - import-and-compile
+    freshness:
+      max_age_days: 30
+      warn_age_days: 14
+    execution_mode_policy:
+      allowed: [bot]
+    ci_requirements:
+      coverage_min: null
+      tests_must_pass: true
+    evidence_requirements:
+      required_kinds: [log]
+      min_evidence_count: 1

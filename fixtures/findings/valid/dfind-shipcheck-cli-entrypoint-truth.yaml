@@ -1,0 +1,45 @@
+schema_version: "1.0.0"
+finding_id: dfind-shipcheck-cli-entrypoint-truth
+title: CLI entrypoint flags must match actual argparse contract before writing scenarios
+status: accepted
+repo: mcp-tool-shop-org/shipcheck
+product_surface: cli
+execution_mode: bot
+journey_stage: first_run
+issue_kind: entrypoint_truth
+root_cause_kind: docs_code_drift
+remediation_kind: scenario_change
+transfer_scope: surface_archetype
+summary: >
+  Shipcheck's dogfood scenario used assumed CLI flags that did not match the
+  actual argparse contract. The scenario passed --store as a flag, but the real
+  CLI uses a positional argument for the init subcommand. This caused exit code 2
+  (argparse error) which the verifier correctly recorded as a fail.
+doctrine_statement: >
+  Read --help or the CLI source before writing any scenario. A wrong flag
+  produces exit code 2, which is an honest fail — not a scenario authoring
+  problem to paper over.
+notes: >
+  This pattern repeated across multiple CLI repos (code-batch, zip-meta-map).
+  The fix is always the same: verify the real entrypoint contract before
+  authoring scenario steps.
+source_record_ids:
+  - shipcheck-23571363808-1
+scenario_ids:
+  - cli-init-and-audit
+evidence:
+  - evidence_kind: record
+    record_id: shipcheck-23571363808-1
+    note: Corrected record after entrypoint fix. Prior runs failed with exit code 2.
+  - evidence_kind: doc
+    doc_ref: docs/rollout-doctrine.md
+    note: Entrypoint truth doctrine rule was extracted from this finding.
+fix_refs:
+  - ref_kind: scenario_change
+    ref: dogfood/scenarios/cli-init-and-audit.yaml
+    note: Fixed flag usage from --store to positional init argument.
+  - ref_kind: doc
+    ref: docs/rollout-doctrine.md
+    note: Added entrypoint truth rule to rollout doctrine.
+created_at: "2026-03-29T12:00:00Z"
+updated_at: "2026-03-29T12:00:00Z"

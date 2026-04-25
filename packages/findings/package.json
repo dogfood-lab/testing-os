@@ -1,0 +1,43 @@
+{
+  "name": "@dogfood-lab/findings",
+  "version": "0.1.0-pre",
+  "private": true,
+  "type": "module",
+  "description": "Finding contract spine for testing-os. Validates, reads, lists, and queries evidence-bound findings — the fourth contract alongside record, scenario, and policy.",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./reader.js": "./reader.js",
+    "./validate.js": "./validate.js",
+    "./derive/*": "./derive/*",
+    "./review/*": "./review/*",
+    "./synthesis/*": "./synthesis/*",
+    "./advise/*": "./advise/*"
+  },
+  "bin": {
+    "findings": "./cli.js"
+  },
+  "scripts": {
+    "test": "node --test findings.test.js derive/derive.test.js review/review.test.js synthesis/synthesis.test.js advise/advise.test.js"
+  },
+  "dependencies": {
+    "@dogfood-lab/schemas": "*",
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1",
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "mcp-tool-shop",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dogfood-lab/testing-os.git",
+    "directory": "packages/findings"
+  },
+  "homepage": "https://github.com/dogfood-lab/testing-os",
+  "bugs": {
+    "url": "https://github.com/dogfood-lab/testing-os/issues"
+  }
+}

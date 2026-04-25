@@ -1,0 +1,46 @@
+schema_version: "1.0.0"
+finding_id: dfind-voice-soundboard-read-after-write-timing
+title: Gate F reads via CDN cache that lags 3-5 minutes behind git truth
+status: reviewed
+repo: mcp-tool-shop-org/voice-soundboard
+product_surface: library
+execution_mode: bot
+journey_stage: rollout
+issue_kind: read_after_write_timing
+root_cause_kind: timing_race
+remediation_kind: docs_change
+transfer_scope: org_wide
+summary: >
+  After fresh ingestion, dogfood-labs indexes are updated immediately in git.
+  However, Gate F fetches via raw.githubusercontent.com which has a CDN cache
+  of 3-5 minutes. voice-soundboard and zip-meta-map both showed fail in Gate F
+  for approximately 3 minutes after their corrected runs were ingested and
+  verified as pass in git. This is an operational timing seam, not a product
+  failure.
+doctrine_statement: >
+  Gate F reads via the GitHub raw content CDN, which may serve stale data
+  for up to 5 minutes after ingestion. Do not fix this with cache-busting
+  or API switching. The CDN behavior is correct and expected.
+notes: >
+  Operators should expect fresh ingestion to show pass in git immediately
+  but Gate F may show previous state for 3-5 minutes. This resolves without
+  intervention. No retry or fix needed.
+source_record_ids:
+  - voice-soundboard-23572161533-1
+  - zip-meta-map-23572590802-1
+evidence:
+  - evidence_kind: record
+    record_id: voice-soundboard-23572161533-1
+    note: Accepted record that showed stale in Gate F for ~3 minutes after ingestion.
+  - evidence_kind: record
+    record_id: zip-meta-map-23572590802-1
+    note: Same timing seam observed independently on zip-meta-map.
+  - evidence_kind: doc
+    doc_ref: docs/rollout-doctrine.md
+    note: Read-after-write timing doctrine rule extracted from this finding.
+fix_refs:
+  - ref_kind: doc
+    ref: docs/rollout-doctrine.md
+    note: Documented CDN timing seam as expected behavior, not a bug.
+created_at: "2026-03-29T12:00:00Z"
+updated_at: "2026-03-29T12:00:00Z"

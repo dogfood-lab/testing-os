@@ -1,0 +1,21 @@
+# INVALID: transfer_scope value "global" is not in the allowed enum
+schema_version: "1.0.0"
+finding_id: dfind-test-illegal-scope
+title: This finding uses an illegal transfer scope value
+status: candidate
+repo: mcp-tool-shop-org/shipcheck
+product_surface: cli
+journey_stage: first_run
+issue_kind: entrypoint_truth
+root_cause_kind: contract_drift
+remediation_kind: docs_change
+transfer_scope: global
+summary: >
+  This finding intentionally uses transfer_scope global which is not in the
+  allowed enum. The correct value would be org_wide.
+source_record_ids:
+  - some-record-id
+evidence:
+  - evidence_kind: record
+    record_id: some-record-id
+    note: Valid evidence but scope is wrong.

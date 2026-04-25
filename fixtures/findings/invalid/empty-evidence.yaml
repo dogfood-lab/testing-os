@@ -1,0 +1,18 @@
+# INVALID: evidence array is empty (minItems: 1)
+schema_version: "1.0.0"
+finding_id: dfind-test-empty-evidence
+title: This finding has an empty evidence array
+status: candidate
+repo: mcp-tool-shop-org/shipcheck
+product_surface: cli
+journey_stage: first_run
+issue_kind: entrypoint_truth
+root_cause_kind: contract_drift
+remediation_kind: docs_change
+transfer_scope: repo_local
+summary: >
+  This finding intentionally has an empty evidence array to test that the
+  schema rejects findings with no evidence binding.
+source_record_ids:
+  - some-record-id
+evidence: []

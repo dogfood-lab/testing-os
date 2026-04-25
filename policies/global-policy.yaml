@@ -1,0 +1,52 @@
+policy_version: "1.0.0"
+
+defaults:
+  freshness:
+    max_age_days: 30
+    warn_age_days: 14
+  execution_mode_policy:
+    allowed: [bot, human, mixed]
+  ci_requirements:
+    coverage_min: null
+    tests_must_pass: false
+  evidence_requirements:
+    required_kinds: []
+    min_evidence_count: 0
+
+global_rules:
+  - id: schema-valid
+    description: "Record must pass submission JSON Schema validation"
+    severity: reject
+
+  - id: provenance-confirmed
+    description: "Source run must be verifiable via GitHub API"
+    severity: reject
+
+  - id: scenario-minimum
+    description: "At least one scenario_result required"
+    severity: reject
+
+  - id: step-results-present
+    description: "Every required_step in the scenario definition must have a matching step_result"
+    severity: reject
+
+  - id: step-verdict-consistent
+    description: "Scenario cannot be pass if any required step is fail or blocked"
+    severity: reject
+
+  - id: attested-if-human
+    description: "Human or mixed execution_mode requires attested_by field"
+    severity: reject
+
+  - id: blocked-needs-reason
+    description: "Verdict blocked requires blocking_reason"
+    severity: reject
+
+  - id: no-verdict-upgrade
+    description: "Verifier may downgrade proposed verdict, never upgrade"
+    severity: reject
+
+stale_thresholds:
+  critical: 60
+  warning: 30
+  healthy: 14

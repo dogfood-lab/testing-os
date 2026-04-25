@@ -1,0 +1,85 @@
+scenario_id: record-ingest-roundtrip
+scenario_name: "Record ingest roundtrip"
+scenario_version: "1.0.0"
+
+product_surface: cli
+
+execution_mode: bot
+
+description: >
+  Verify that dogfood-labs can ingest its own submission, validate it against
+  schema and policy, produce a persisted record, update indexes, and return
+  the record via CLI query. This is the system's self-dogfood: if this loop
+  feels awkward, the architecture is wrong.
+
+preconditions:
+  - "Verifier is callable as a module or script"
+  - "Submission schema exists and is loadable"
+  - "Global policy and dogfood-labs repo policy exist"
+
+steps:
+  - id: emit-submission
+    action: "Produce a valid dogfood-record-submission JSON payload"
+    verifiable: true
+    expected: "Payload passes submission schema validation"
+
+  - id: ingest-submission
+    action: "Pass submission to verifier entrypoint"
+    verifiable: true
+    expected: "Verifier returns a persisted record object"
+
+  - id: verify-provenance
+    action: "Verifier checks source run provenance"
+    verifiable: true
+    expected: "provenance_confirmed is true (or stubbed true in test mode)"
+
+  - id: verify-schema
+    action: "Verifier validates submission against JSON Schema"
+    verifiable: true
+    expected: "schema_valid is true"
+
+  - id: verify-policy
+    action: "Verifier evaluates submission against applicable policy"
+    verifiable: true
+    expected: "policy_valid is true"
+
+  - id: compute-verdict
+    action: "Verifier sets overall_verdict.verified based on policy evaluation"
+    verifiable: true
+    expected: "overall_verdict.verified matches or downgrades proposed verdict"
+
+  - id: write-record
+    action: "Persisted record is written to the correct sharded path"
+    verifiable: true
+    expected: "File exists at records/<org>/<repo>/YYYY/MM/DD/run-<id>.json"
+
+  - id: update-indexes
+    action: "latest-by-repo.json is regenerated with the new record"
+    verifiable: true
+    expected: "Index entry exists for repo + surface with matching run_id"
+
+  - id: query-record
+    action: "CLI reads back the record from indexes"
+    verifiable: true
+    expected: "CLI output contains matching run_id and verdict"
+
+success_criteria:
+  required_steps:
+    - emit-submission
+    - ingest-submission
+    - verify-schema
+    - verify-policy
+    - compute-verdict
+    - write-record
+  minimum_evidence:
+    - kind: log
+      description: "Verifier output log showing validation steps and verdict"
+
+tags:
+  - self-dogfood
+  - core-loop
+  - pilot-0
+
+automation:
+  script: "dogfood/scripts/pilot-0-roundtrip.sh"
+  timeout_ms: 30000

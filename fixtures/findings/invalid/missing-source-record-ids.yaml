@@ -1,0 +1,19 @@
+# INVALID: missing source_record_ids (required field)
+schema_version: "1.0.0"
+finding_id: dfind-test-missing-records
+title: This finding has no source record IDs
+status: candidate
+repo: mcp-tool-shop-org/shipcheck
+product_surface: cli
+journey_stage: first_run
+issue_kind: entrypoint_truth
+root_cause_kind: contract_drift
+remediation_kind: docs_change
+transfer_scope: repo_local
+summary: >
+  This finding intentionally omits source_record_ids to test that the schema
+  rejects findings with no provenance link to dogfood records.
+evidence:
+  - evidence_kind: record
+    record_id: some-record-id
+    note: Evidence exists but provenance field is missing.

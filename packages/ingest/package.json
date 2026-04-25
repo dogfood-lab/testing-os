@@ -1,0 +1,30 @@
+{
+  "name": "@dogfood-lab/ingest",
+  "version": "0.1.0-pre",
+  "private": true,
+  "type": "module",
+  "description": "Ingestion pipeline for testing-os. Thin glue: dispatch → verifier → persist → indexes.",
+  "main": "run.js",
+  "scripts": {
+    "test": "node --test",
+    "ingest": "node run.js"
+  },
+  "dependencies": {
+    "@dogfood-lab/verify": "*",
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "mcp-tool-shop",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dogfood-lab/testing-os.git",
+    "directory": "packages/ingest"
+  },
+  "homepage": "https://github.com/dogfood-lab/testing-os",
+  "bugs": {
+    "url": "https://github.com/dogfood-lab/testing-os/issues"
+  }
+}
