@@ -181,6 +181,17 @@ Logo (step 1) deferred to its own session — wants Sprite Foundry pipeline + Mi
 
 ## Session F — External-consumer audit
 
+**Completed 2026-04-25.** Workspace-wide grep + GitHub Pages traffic check. Findings:
+
+- **Actionable cutovers — all closed:** 4 residual references in shipcheck (own dogfood dispatcher, 2 handbook docs, 2 live tests). Cut over via [shipcheck#3](https://github.com/mcp-tool-shop-org/shipcheck/pull/3) (squash `3288636`). 43 tests pass post-cutover.
+- **Intentional legacy references (kept on purpose):**
+  - `repo-knowledge/src/sync/dogfood.ts:242` — `tools/findings/cli.js` back-compat fallback for users running `--local /path/to/dogfood-labs` against a stale clone. Comment explicitly documents this. Remove in Session H per HANDOFF.
+  - `dogfood-lab/testing-os/policies/repos/mcp-tool-shop-org/dogfood-labs.yaml` — policy file *for* the legacy repo itself; historical artifact.
+  - `dogfood-lab/testing-os/swarms/manifest-schema.json:3` — `$id: dogfood-labs.local/...` is a local-namespace URL (not a GitHub reference), unchanged.
+  - `dogfood-lab/testing-os/records/mcp-tool-shop-org/**` — historical records with legacy `repo:` fields baked in. Per CLAUDE.md "Working with the legacy": the historical record is the historical record.
+  - `role-os/src/swarm/persist-bridge.mjs` comments referencing legacy — descriptive prose about prior architecture, not load-bearing path strings. No action.
+- **Legacy Pages traffic (14 days):** 1 view, 35 unique cloners. Clones are likely Mike's own automation; the Pages site is effectively unused externally. Safe gate for Session H (delete) once the 30-day window passes.
+
 **Goal.** Confirm no external thing (outside this workspace) is still hitting `mcp-tool-shop-org/dogfood-labs` URLs.
 
 **Why.** This is the actual gate before delete. Everything inside `F:/AI/` is migrated; the unknown is everything *outside*.
@@ -253,7 +264,7 @@ Logo (step 1) deferred to its own session — wants Sprite Foundry pipeline + Mi
 - [x] Session C done — brand + badges + version stamping in place (logo deferred to its own session)
 - [ ] Session D done — 7 translations published
 - [x] Session E done — `$id` URLs flipped, schemas bumped
-- [ ] Session F done — zero unintentional external references
+- [x] Session F done — zero unintentional external references (intentional ones documented in Session F header)
 - [ ] Session G done — v1.0.0 tagged and released
 - [ ] **Issues + PR history archived externally** for the legacy repo:
   ```bash
@@ -319,7 +330,7 @@ For the record (so they don't get lost):
 - **ai-loadout build is broken on `main`** — surfaced during Session A. `tsc` fails with TS2591 / TS2534 on `node:fs`, `node:path`, `process` etc.; `@types/node` not effective. Pre-existing on main since at least the 2026-04-25 cutover commit. Independent of testing-os migration but blocks ai-loadout's own dogfood until fixed.
 - **`HANDOFF.md` Session A step 4 used the wrong subcommand** — it said `npx @mcptoolshop/shipcheck audit --gate F …`, but the actual subcommand is `npx @mcptoolshop/shipcheck dogfood …`. The `audit` subcommand is the SHIP_GATE.md tracker, not the dogfood-freshness check. Fixed.
 - **Pinned action SHAs in `ingest.yml` and `ci.yml` are Node 20** — GitHub deprecation warning fired during the first ingest.yml run. Forced to Node 24 by 2026-06-02; Node 20 removed by 2026-09-16. Bump the SHAs before then.
-- **External-reference audit** — beyond the 4 codebases the recon swarm found, we never checked the prototypes seed vault, the brand repo, or external consumers.
+- ~~**External-reference audit** — beyond the 4 codebases the recon swarm found, we never checked the prototypes seed vault, the brand repo, or external consumers.~~ — Done 2026-04-25 (Session F). All actionable refs cut over via [shipcheck#3](https://github.com/mcp-tool-shop-org/shipcheck/pull/3); intentional legacy refs documented in the Session F header.
 - ~~**`scripts/sync-version.mjs`** — world-forge has it, we don't. Without it, README version line drifts.~~ — Done 2026-04-25 (Session C). Wired as `prebuild`; `npm run sync-version:check` is the CI gate.
 - ~~**`CONTRIBUTING.md`** — none.~~ — Done 2026-04-25 (Session C). Points at CLAUDE.md as the operating manual.
 - **TS conversion** — JS packages, not type-safe yet.
