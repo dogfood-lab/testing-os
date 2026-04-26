@@ -2,6 +2,28 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] — 2026-04-25
+
+Bug fix release. Two Stage D dispatch blockers shipped in v1.1.0 caught at first dispatch (no agents ran yet):
+
+### Fixed
+
+- **`lib/output-schema.js`** — `validateAuditOutput` stage enum was hardcoded `['A', 'B', 'C']`. Stage D outputs (stage = 'D') failed validation, causing `swarm collect` to reject every audit row even though dispatch and prompt generation succeeded. Enum extended to `['A', 'B', 'C', 'D']`. Error message updated. Validator now accepts Stage D outputs.
+- **`lib/templates.js`** — JSON output template extracted stage letter via `opts.phase.split('-').pop().toUpperCase()`. The naming convention isn't symmetric: `health-audit-{a,b,c}` puts the letter last, but `stage-d-{audit,amend}` puts the action last. For phase `stage-d-audit` the extraction returned `'AUDIT'`, not `'D'`. Replaced with explicit `PHASE_TO_STAGE` map keyed on phase name. Documented inline why the symmetry break exists.
+
+Both bugs are the same B.7 blind-spot pattern (`memory/feedback_intra_workspace_downstream_audit.md`) that motivated v1.1.0: Stage D added at protocol-spec layer, downstream code that depends on phase strings didn't follow. The v1.1.0 patch covered the obvious downstream (PHASE_MAP, AUDIT_PHASES, AMEND_PHASES, FINDING_GATED_PHASES, CLI help) but missed the validator's stage enum and the template's stage-letter extraction. Both now have explicit test coverage in `control-plane.test.js`.
+
+### Added
+
+- **Stage D prompt template test** — `buildAuditPrompt({phase: 'stage-d-audit'})` asserted to embed `"stage": "D"` in the JSON output schema.
+- **Stage D validator test** — `validateAuditOutput({stage: 'D', ...})` asserted to accept (parallel to existing A/B/C tests).
+- **PHASE_TO_STAGE map** — explicit phase-name → stage-letter table in `lib/templates.js`. Future phase additions update the map alongside the validator's stage enum (single change, two-side update).
+
+### Notes
+
+- 178 tests pass in `@dogfood-lab/dogfood-swarm` (was 176 in v1.1.0). Net +2 tests for Stage D regression coverage.
+- No behavioral change for existing Stage A/B/C consumers; Stage D consumers were broken pre-v1.1.1 and now work.
+
 ## [1.1.0] — 2026-04-25
 
 Stage D Visual Polish becomes a first-class phase in the swarm protocol. Added at the protocol-spec layer (`memory/dogfood-swarm.md`) on 2026-04-25 after the runforge-vscode v1.1.0 swarm exposed the Stage C gap; this release propagates the spec into the `@dogfood-lab/dogfood-swarm` CLI implementation so consumers can dispatch `stage-d-audit` / `stage-d-amend` as recognized phases. Receipts from the first reference run land at `swarms/mcp-tool-shop-org--runforge-vscode/stage-d/`.

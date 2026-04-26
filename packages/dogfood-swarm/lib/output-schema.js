@@ -88,8 +88,8 @@ export function validateAuditOutput(output) {
     errors.push('Missing or invalid "domain" field');
   }
 
-  if (!output.stage || !['A', 'B', 'C'].includes(output.stage)) {
-    errors.push('Missing or invalid "stage" field (must be A, B, or C)');
+  if (!output.stage || !['A', 'B', 'C', 'D'].includes(output.stage)) {
+    errors.push('Missing or invalid "stage" field (must be A, B, C, or D)');
   }
 
   if (!Array.isArray(output.findings)) {

@@ -5,6 +5,21 @@
  * Templates embed: repo path, domain scope, file list, phase lens, output format.
  */
 
+/**
+ * Maps phase name → audit-output stage letter.
+ *
+ * Naming convention isn't symmetric across health-audit-{a,b,c} (letter
+ * last) and stage-d-{audit,amend} (action last), so an explicit map is
+ * clearer than a brittle split/pop derivation. The validator at
+ * `output-schema.js` accepts these letters; keep them in sync.
+ */
+const PHASE_TO_STAGE = {
+  'health-audit-a': 'A',
+  'health-audit-b': 'B',
+  'health-audit-c': 'C',
+  'stage-d-audit': 'D',
+};
+
 const STAGE_LENS = {
   'health-audit-a': {
     label: 'Bug/Security Fix',
@@ -120,7 +135,7 @@ Respond with ONLY a JSON object (no markdown fences, no commentary):
 \`\`\`json
 {
   "domain": "${opts.domainName}",
-  "stage": "${opts.phase.split('-').pop().toUpperCase()}",
+  "stage": "${PHASE_TO_STAGE[opts.phase] || opts.phase.toUpperCase()}",
   "findings": [
     {
       "id": "F-001",

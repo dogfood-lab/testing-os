@@ -326,6 +326,19 @@ describe('Audit output validation', () => {
     assert.ok(result.errors.some(e => e.includes('domain')));
   });
 
+  it('accepts stage D output (Visual Polish)', () => {
+    const output = {
+      domain: 'frontend',
+      stage: 'D',
+      findings: [
+        { id: 'F-001', severity: 'HIGH', category: 'ux', description: 'no walkthroughs configured', file: 'package.json', line: 130 },
+      ],
+      summary: 'Stage D pass — first-run welcome missing',
+    };
+    const result = validateAuditOutput(output);
+    assert.equal(result.valid, true, `Stage D output should validate; errors: ${result.errors.join('; ')}`);
+  });
+
   it('rejects invalid severity', () => {
     const result = validateAuditOutput({
       domain: 'backend', stage: 'A', summary: 'x',
@@ -425,6 +438,16 @@ describe('Templates', () => {
     assert.ok(prompt.includes('Humanization'));
     assert.ok(prompt.includes('Error messages'));
     assert.ok(prompt.includes('Accessibility'));
+  });
+
+  it('generates Stage D audit prompt with stage letter D in JSON template', () => {
+    const prompt = buildAuditPrompt({ ...baseOpts, phase: 'stage-d-audit' });
+    assert.ok(prompt.includes('Visual Polish'));
+    assert.ok(prompt.includes('Typography'));
+    assert.ok(prompt.includes('Marketplace listing'));
+    // Critical: prompt must instruct agent to output stage="D", not stage="AUDIT"
+    // (the brittle split('-').pop() pattern was wrong for stage-d-* phases)
+    assert.ok(prompt.includes('"stage": "D"'), 'Stage D prompt must instruct output stage="D"');
   });
 
   it('generates feature audit prompt', () => {
