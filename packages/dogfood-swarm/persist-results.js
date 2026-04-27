@@ -8,12 +8,13 @@
  * Exit codes: 0 = success, 1 = dogfood ingest failure, 2 = error
  */
 
-import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 import { buildSubmission } from '@dogfood-lab/report/build-submission.js';
+import { atomicWriteFileSync } from '@dogfood-lab/findings/lib/atomic-write.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '../..');
@@ -215,7 +216,7 @@ const submission = buildSubmission({
 });
 
 const submissionPath = join(absDir, 'submission.json');
-writeFileSync(submissionPath, JSON.stringify(submission, null, 2) + '\n', 'utf-8');
+atomicWriteFileSync(submissionPath, JSON.stringify(submission, null, 2) + '\n', 'utf-8');
 console.error(`Wrote submission to ${submissionPath}`);
 
 // Ingest via CLI — packages/ingest/run.js after the testing-os monorepo migration.
@@ -240,7 +241,7 @@ try {
 // Path B: Build audit DB payload
 const auditPayload = buildAuditPayload(manifest, auditResults, remediateResults);
 const auditPayloadPath = join(absDir, 'audit-payload.json');
-writeFileSync(auditPayloadPath, JSON.stringify(auditPayload, null, 2) + '\n', 'utf-8');
+atomicWriteFileSync(auditPayloadPath, JSON.stringify(auditPayload, null, 2) + '\n', 'utf-8');
 console.error(`Wrote audit payload to ${auditPayloadPath}`);
 
 // Print path for coordinator to call audit_submit

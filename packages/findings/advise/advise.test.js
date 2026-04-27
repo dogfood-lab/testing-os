@@ -190,10 +190,31 @@ function setupFullTestData() {
 // Query tests
 // ============================================================
 
+// ── Query layer behavior pins ──────────────────────────────────
+//
+// F-742442-047 (advise/query.js) — `queryDoctrine` had a `|| true` dead-code
+// short-circuit that made surface filtering a no-op. The Query: doctrine
+// describe block below pins that doctrine results actually return (the
+// regression would be `[]` if the filter logic were re-broken in the
+// opposite direction). The behavior tested here — accepted doctrine returned
+// when surface query is implicit — is the live counterpart of the F-742442-047
+// fix.
+//
+// F-002109-029 (synthesis/pattern-derivation.js → advise/query.js
+// scopeSpecificity) — `widest` initial value of 0 silently misclassified
+// transfer_scope as `repo_local` for unknown scopes. The "ranks more specific
+// scope higher" test below depends on transfer_scope being honestly reported
+// upstream; if the synthesis bug regresses, advise's surface ranking quietly
+// inverts.
+
 describe('Query: findings', () => {
   before(() => setupFullTestData());
   after(() => { if (existsSync(TEST_ROOT)) rmSync(TEST_ROOT, { recursive: true }); });
 
+  // F-742442-042 cousin — invalidation + candidate exclusion is the dedupe-
+  // adjacent contract: a re-derived finding under a different status should
+  // not surface as if accepted. dedupe.js relies on finding_id; this test
+  // pins the status-gate one layer up.
   it('returns only accepted non-invalidated findings', () => {
     const results = queryFindings(TEST_ROOT, {});
     const ids = results.map(f => f.finding_id);
@@ -280,7 +301,9 @@ describe('Query: recommendations', () => {
   });
 });
 
-describe('Query: doctrine', () => {
+// F-742442-047 — direct pin. `queryDoctrine` previously short-circuited via
+// `|| true`; the productized form must still surface accepted doctrine.
+describe('Query: doctrine (F-742442-047)', () => {
   before(() => setupFullTestData());
   after(() => { if (existsSync(TEST_ROOT)) rmSync(TEST_ROOT, { recursive: true }); });
 
@@ -352,6 +375,12 @@ describe('Advice bundle: structure', () => {
 // ============================================================
 // Sync export tests
 // ============================================================
+
+// ── Sync export ────────────────────────────────────────────────
+//
+// F-742442-042 cousin — sync export must obey the same dedupe-and-status
+// contract as the dedupe.js layer: invalidated findings are EXCLUDED, and
+// the (run_id, fingerprint) uniqueness assumption flows through.
 
 describe('Sync export', () => {
   before(() => setupFullTestData());

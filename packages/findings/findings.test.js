@@ -36,6 +36,14 @@ describe('Schema: valid fixtures pass', () => {
   }
 });
 
+// ── Invalid-fixture rejection paths ────────────────────────────
+//
+// F-742442-049 cousin: every invalid fixture must reject for a NAMED reason
+// — the test asserts the error message contains the schema-property anchor,
+// not just `valid: false`. Generic "rejected" coverage is the kind of gap
+// F-742442-049 flagged for verify.test.js (malformed-step path); this file
+// avoids the same gap by anchoring each invalid case to its property error.
+
 describe('Schema: invalid fixtures fail for the right reason', () => {
   it('missing-source-record-ids: rejects missing required field', () => {
     const result = validateFindingFile(resolve(ROOT, 'fixtures/findings/invalid/missing-source-record-ids.yaml'));
@@ -65,6 +73,10 @@ describe('Schema: invalid fixtures fail for the right reason', () => {
     assert.ok(msgs.includes('transfer_scope') || msgs.includes('enum'), `Expected transfer_scope enum error, got: ${msgs}`);
   });
 
+  // F-375053-006 cousin — repo pattern is `^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$`,
+  // a bare repo name without an org prefix must be rejected. The schema is the
+  // contract; persist.js uses the path-segment guard now centralized in
+  // packages/ingest/lib/unsafe-segment.js (F-916867-005).
   it('bad-repo-naming: rejects bare repo name without org prefix', () => {
     const result = validateFindingFile(resolve(ROOT, 'fixtures/findings/invalid/bad-repo-naming.yaml'));
     assert.equal(result.valid, false);
@@ -229,6 +241,10 @@ describe('Schema: evidence minimum enforced', () => {
   });
 });
 
+// F-002109-027 cousin — the schema must close to additionalProperties:false so
+// stray fields surface at validate-time, not at consume-time. Same defensive
+// posture as the verify() null/non-object guard added under F-002109-027.
+
 describe('Schema: additionalProperties rejected', () => {
   it('rejects top-level extra fields', () => {
     const finding = {
@@ -252,6 +268,11 @@ describe('Schema: additionalProperties rejected', () => {
     assert.equal(result.valid, false);
   });
 });
+
+// F-742440-009 cousin — finding_id is the public handle for `swarm approve --ids`.
+// Stable prefix discipline (`dfind-`) is what keeps human-readable IDs collision-
+// resistant across runs; the original F-742440-009 was the swarm-side parallel
+// (Date.now() collision in swarm fingerprints). Same family: the prefix matters.
 
 describe('Schema: finding_id format', () => {
   it('rejects finding_id without dfind- prefix', () => {
@@ -419,6 +440,11 @@ describe('Reader: filterFindings', () => {
     assert.equal(filtered.length, 0);
   });
 });
+
+// F-742442-042 cousin — dedupe contract. The dedupe key in derive/dedupe.js
+// uses finding_id (the slug-derived handle); findDuplicates() here verifies
+// the *human-facing* collision detection. Same dedupe family as the derive
+// engine, one layer up.
 
 describe('Reader: findDuplicates', () => {
   it('returns empty for unique findings', () => {

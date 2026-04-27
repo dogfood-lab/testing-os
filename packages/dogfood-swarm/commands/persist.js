@@ -9,10 +9,11 @@
  * Only persists canonical, review-worthy truth. Not raw agent chatter.
  */
 
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { mkdirSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
+import { atomicWriteFileSync } from '@dogfood-lab/findings/lib/atomic-write.js';
 import { openDb } from '../db/connection.js';
 import { buildRunExport, computeRunVerdict } from '../lib/persist/export.js';
 import { buildDogfoodSubmission } from '../lib/persist/dogfood-bridge.js';
@@ -52,13 +53,13 @@ export function persist(opts) {
 
   // 1. Write canonical export
   const exportPath = join(exportDir, 'run-export.json');
-  writeFileSync(exportPath, JSON.stringify(exportData, null, 2) + '\n', 'utf-8');
+  atomicWriteFileSync(exportPath, JSON.stringify(exportData, null, 2) + '\n', 'utf-8');
   report.artifacts.export = exportPath;
 
   // 2. Build + write dogfood submission
   const submission = buildDogfoodSubmission(exportData, verdict);
   const submissionPath = join(exportDir, 'dogfood-submission.json');
-  writeFileSync(submissionPath, JSON.stringify(submission, null, 2) + '\n', 'utf-8');
+  atomicWriteFileSync(submissionPath, JSON.stringify(submission, null, 2) + '\n', 'utf-8');
   report.artifacts.dogfoodSubmission = submissionPath;
 
   // 3. Build + write repo-knowledge audit payload
@@ -66,9 +67,9 @@ export function persist(opts) {
   const auditDir = join(exportDir, 'audit');
   if (!existsSync(auditDir)) mkdirSync(auditDir, { recursive: true });
 
-  writeFileSync(join(auditDir, 'run.json'), JSON.stringify(auditPayload.run, null, 2) + '\n', 'utf-8');
-  writeFileSync(join(auditDir, 'findings.json'), JSON.stringify(auditPayload.findings, null, 2) + '\n', 'utf-8');
-  writeFileSync(join(auditDir, 'metrics.json'), JSON.stringify(auditPayload.metrics, null, 2) + '\n', 'utf-8');
+  atomicWriteFileSync(join(auditDir, 'run.json'), JSON.stringify(auditPayload.run, null, 2) + '\n', 'utf-8');
+  atomicWriteFileSync(join(auditDir, 'findings.json'), JSON.stringify(auditPayload.findings, null, 2) + '\n', 'utf-8');
+  atomicWriteFileSync(join(auditDir, 'metrics.json'), JSON.stringify(auditPayload.metrics, null, 2) + '\n', 'utf-8');
   report.artifacts.audit = auditDir;
 
   // 4. Ingest to dogfood-labs (if not dry run)

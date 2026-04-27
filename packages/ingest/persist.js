@@ -11,6 +11,7 @@ import { join, dirname } from 'node:path';
 import { randomBytes } from 'node:crypto';
 
 import { validateRecord } from './validate-record.js';
+import { isUnsafeSegment } from './lib/unsafe-segment.js';
 
 /**
  * Error thrown when writeRecord loses a TOCTOU race for the same canonical path.
@@ -48,11 +49,10 @@ export function computeRecordPath(record, repoRoot) {
   // Path-traversal guard: reject `..` substrings and any path separator.
   // Single dots are legal in GitHub org/repo names (e.g. `next.js`,
   // `mcp-tool-shop.github.io`) and the submission schema's repo pattern
-  // `^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$` allows them — so `/[.\/]/` was over-broad
-  // and crashed legitimate submissions inside writeRecord. Mirrors the narrower
-  // check in load-context.js:37 so all path-segment guards in this package agree.
-  const unsafeSegment = /\.\.|[/\\]/;
-  if (unsafeSegment.test(org) || unsafeSegment.test(repo)) {
+  // `^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$` allows them. Centralized in
+  // ./lib/unsafe-segment.js so all three callsites (persist, load-context,
+  // findings/derive/load-records) agree by import — F-916867-005.
+  if (isUnsafeSegment(org) || isUnsafeSegment(repo)) {
     throw new Error(`unsafe repo segment: ${record.repo}`);
   }
 

@@ -104,13 +104,19 @@ function buildSummary(line) {
     parts.push('OK');
   }
 
-  // Identity fields — narrow first, broad last
+  // Identity fields — narrow first, broad last.
+  // FT-PIPELINE-004 + W2-BACK-007: correlation_id is appended last in this
+  // block so the verdict + agent + run identity surface FIRST and the
+  // forensic anchor surfaces at the tail of the banner. Single grep across
+  // dispatch / collect / receipt stderr resolves the same coord-<ts>-<rand>
+  // back to one originating event.
   const idFields = [
     ['domain',         line.domain],
     ['agent',          line.agent_id || line.agentId],
     ['run',            line.run_id || line.runId],
     ['wave',           line.wave_id || line.waveId],
     ['submission',     line.submission_id || line.submissionId],
+    ['correlation_id', line.correlation_id || line.correlationId],
   ];
   for (const [k, v] of idFields) {
     if (v != null && v !== '') parts.push(`${k}=${v}`);

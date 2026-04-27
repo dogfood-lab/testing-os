@@ -99,6 +99,53 @@ test('Verify-output CLI screenshot SVG exists and has accessible title + desc', 
   assert.match(svg, /<desc[^>]*>[^<]+<\/desc>/, 'verify-output.svg missing <desc> — screen readers need the narration of what a healthy output looks like.');
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// W2-CI-004 — Self-reflexive currency: verify-output.svg "N check(s) passed"
+// matches the configured count in scripts/doc-drift-patterns.json.
+//
+// Class #11 (multi-occurrence fix completeness) self-application: the wave-1
+// drift framework family generalised the script from 4 → 13 checks; the SVG
+// caption that visualises a healthy run must move with the config or it
+// becomes the load-bearing stale-doc pattern the framework exists to prevent.
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('verify-output.svg "N check(s) passed" matches scripts/doc-drift-patterns.json checks count', () => {
+  const configPath = join(repoRoot, 'scripts/doc-drift-patterns.json');
+  const config = JSON.parse(readFileSync(configPath, 'utf-8'));
+  assert.ok(Array.isArray(config.checks), 'doc-drift-patterns.json must have a top-level checks[] array.');
+  const configuredCount = config.checks.length;
+
+  const svg = readFileSync(verifyShotPath, 'utf-8');
+  // Two surfaces in the SVG must agree:
+  //   1. The visible terminal-output line: "N check(s) passed" (literal caption).
+  //   2. The accessible <desc>: "N of N checks passed" (screen-reader narration).
+  // Both are part of the public-facing "what a healthy run looks like" visual.
+
+  const captionMatch = svg.match(/(\d+)\s+check\(s\)\s+passed/);
+  assert.ok(
+    captionMatch,
+    'verify-output.svg missing the "N check(s) passed" terminal caption — the visual ground truth for what check-doc-drift looks like on a healthy run.',
+  );
+  const captionCount = Number(captionMatch[1]);
+  assert.equal(
+    captionCount,
+    configuredCount,
+    `verify-output.svg shows "${captionCount} check(s) passed" but scripts/doc-drift-patterns.json declares ${configuredCount} configured checks. The SVG is stale — regenerate it (or hand-edit the caption + <desc>) so operators see the current count. Stage D wave-27 D27-DOCS-001 turned the 4 → 13 generalisation into a regression because this caption was hand-frozen at 5.`,
+  );
+
+  const descMatch = svg.match(/(\d+)\s+of\s+(\d+)\s+checks\s+passed/);
+  assert.ok(
+    descMatch,
+    'verify-output.svg <desc> missing "N of N checks passed" — accessible narration must echo the visible caption so screen-reader users see the same numbers.',
+  );
+  const descCount = Number(descMatch[2]);
+  assert.equal(
+    descCount,
+    configuredCount,
+    `verify-output.svg <desc> says "${descMatch[1]} of ${descCount} checks passed" but config declares ${configuredCount} checks. Caption and <desc> drifted apart — fix both surfaces in one pass.`,
+  );
+});
+
 test('architecture.md references the architecture diagram with a non-trivial alt attribute', () => {
   const md = readFileSync(join(handbookDir, 'architecture.md'), 'utf-8');
   assert.match(md, /\/diagrams\/architecture\.svg/, 'architecture.md does not reference /diagrams/architecture.svg.');

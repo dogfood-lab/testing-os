@@ -12,8 +12,10 @@
  * 6. Mark wave as dispatched
  */
 
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { mkdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { randomBytes } from 'node:crypto';
+import { atomicWriteFileSync } from '@dogfood-lab/findings/lib/atomic-write.js';
 import { openDb } from '../db/connection.js';
 import { getDomains, aredomainsFrozen, freezeDomains, takeDomainSnapshot } from '../lib/domains.js';
 import { buildAuditPrompt, buildAmendPrompt, buildFeatureAuditPrompt } from '../lib/templates.js';
@@ -26,6 +28,17 @@ import { logStage } from '../lib/log-stage.js';
 
 const AUDIT_PHASES = ['health-audit-a', 'health-audit-b', 'health-audit-c', 'stage-d-audit', 'feature-audit'];
 const AMEND_PHASES = ['health-amend-a', 'health-amend-b', 'health-amend-c', 'stage-d-amend', 'feature-execute'];
+
+/**
+ * Mint a synthetic correlation_id for a coordination stage. Mirrors the
+ * `coord-<base36-ts>-<rand4>` pattern used in commands/collect.js — a single
+ * grep across stderr ties the dispatch failure to the resume / receipt path.
+ */
+function mintCorrelationId() {
+  const ts = Date.now().toString(36);
+  const rand = randomBytes(2).toString('hex');
+  return `coord-${ts}-${rand}`;
+}
 
 /**
  * @param {object} opts
@@ -117,7 +130,13 @@ export function dispatch(opts) {
         worktreePath = wt.worktreePath;
         worktreeBranch = wt.branch;
       } catch (e) {
+        // FT-PIPELINE-004 cross-fix-dep: correlation_id pins the dispatch
+        // failure across stderr, the rendered IsolationError, and any
+        // resume-path follow-up. Wave-22 wrapper-strip pattern preserved by
+        // calling logStage directly with the id at the outer envelope.
+        const correlationId = mintCorrelationId();
         logStage('isolate_failed', {
+          correlation_id: correlationId,
           err: e.message,
           runId: opts.runId,
           waveNumber,
@@ -175,7 +194,7 @@ export function dispatch(opts) {
     }
 
     const promptPath = join(promptDir, `${domain.name}.md`);
-    writeFileSync(promptPath, prompt, 'utf-8');
+    atomicWriteFileSync(promptPath, prompt, 'utf-8');
 
     agents.push({
       agentRunId,

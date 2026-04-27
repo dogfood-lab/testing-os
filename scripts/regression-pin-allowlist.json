@@ -1,0 +1,17 @@
+{
+  "$comment": "Allowlist for scripts/check-finding-regression-pins.mjs (W2-CI-001). Each entry is an F-id that appears in source files but has no corresponding test pin, AND has a deliberate justification. The parser is intentionally permissive — it cannot distinguish 'this comment IS a fix pin' from 'this comment MENTIONS the id' (see parse-regression-pins.js JSDoc 'permissive limitation'). Cross-references in source comments are the most common legitimate orphan; this allowlist captures them so the always-on CI gate stays green without forcing test pins for prose mentions. Adding an entry: F-id key, value is an object with at least { reason, file }. Entries should be revisited each release — if the source reference goes away, drop the allowlist entry.",
+  "allow": {
+    "F-693631-010": {
+      "reason": "Cross-reference in scripts/build.mjs comment naming the drift class — not a fix-site pin, the pin lives in packages/dogfood-swarm where the AUDIT_PHASES enum is enforced.",
+      "file": "scripts/build.mjs"
+    },
+    "F-742440-002": {
+      "reason": "Cross-reference in packages/dogfood-swarm/commands/persist.js comment pointing readers at persist-results.js for the canonical pattern. Test coverage lives with the canonical pattern.",
+      "file": "packages/dogfood-swarm/commands/persist.js"
+    },
+    "F-742440-012": {
+      "reason": "Cross-reference in packages/dogfood-swarm/db/schema.js naming a wave-1 sibling. Test coverage lives with the sibling fix in wave-1.",
+      "file": "packages/dogfood-swarm/db/schema.js"
+    }
+  }
+}

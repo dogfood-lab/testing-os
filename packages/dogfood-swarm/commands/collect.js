@@ -17,10 +17,12 @@ import { createHash } from 'node:crypto';
 import { openDb } from '../db/connection.js';
 import { getDomains, checkOwnership } from '../lib/domains.js';
 import { validateAuditOutput, validateFeatureOutput, validateAmendOutput } from '../lib/output-schema.js';
+import { validateAgentOutput, AgentOutputValidationError } from '../lib/validate-agent-output.js';
 import { computeFingerprint, classifyFindings, buildPriorMap, upsertFindings } from '../lib/fingerprint.js';
 import { transitionAgent, canTransition } from '../lib/state-machine.js';
 import { CollectUpsertError } from '../lib/errors.js';
 import { logStage } from '../lib/log-stage.js';
+import { randomBytes } from 'node:crypto';
 
 /**
  * tryTransition — observability-friendly wrapper around transitionAgent.
@@ -80,6 +82,18 @@ function tryTransition(db, agentRunId, to, reason, domainHint) {
 
 const AUDIT_PHASES = ['health-audit-a', 'health-audit-b', 'health-audit-c', 'stage-d-audit', 'feature-audit'];
 const AMEND_PHASES = ['health-amend-a', 'health-amend-b', 'health-amend-c', 'stage-d-amend', 'feature-execute'];
+
+/**
+ * Mint a synthetic correlation_id for a coordination stage (FT-PIPELINE-004
+ * pattern). The ingest pipeline uses `ing-<base36-ts>-<rand4>`; coordination
+ * stages here use `coord-<base36-ts>-<rand4>` so a single grep tells the
+ * operator which side of the contract emitted the event.
+ */
+function mintCorrelationId() {
+  const ts = Date.now().toString(36);
+  const rand = randomBytes(2).toString('hex');
+  return `coord-${ts}-${rand}`;
+}
 
 /**
  * @param {object} opts
@@ -175,6 +189,45 @@ export function collect(opts) {
       report.agents.push(agentReport);
       report.validation_errors.push({ domain: domain.name, error: e.message });
       continue;
+    }
+
+    // F-252713-017 (Phase 7 wave 1 → wave 2 wiring): canonical envelope gate.
+    // Runs BEFORE the legacy shape-specific validators below and BEFORE
+    // fingerprint computation, so a malformed agent JSON is rejected with a
+    // structured AgentOutputValidationError pointing the operator at
+    // scripts/agent-output.schema.json. The legacy validators stay for
+    // shape-specific extras (e.g. 'stage' enum) but the schema is now the
+    // contract gate. Wave-22 logStage wrapper-strip pattern preserved by
+    // calling logStage directly with a fresh correlation_id.
+    try {
+      validateAgentOutput(output, {
+        domain: domain.name,
+        phase: wave.phase,
+        outputPath,
+      });
+    } catch (e) {
+      if (e instanceof AgentOutputValidationError) {
+        const correlationId = mintCorrelationId();
+        logStage('agent_output_invalid', {
+          correlation_id: correlationId,
+          err: e.message,
+          domain: domain.name,
+          runId: opts.runId,
+          waveId: wave.id,
+          waveNumber: wave.wave_number,
+          outputPath,
+          errorCount: e.errors.length,
+        });
+        agentReport.status = 'invalid_output';
+        agentReport.errors = e.errors.map(err => `${err.path || '/'} ${err.message}`);
+        tryTransition(db, ar.id, 'invalid_output', `Schema gate: ${e.message}`, domain.name);
+        db.prepare('UPDATE agent_runs SET error_message = ? WHERE id = ?')
+          .run(e.message, ar.id);
+        report.agents.push(agentReport);
+        report.validation_errors.push({ domain: domain.name, errors: agentReport.errors });
+        continue;
+      }
+      throw e;
     }
 
     // Validate schema
@@ -288,7 +341,14 @@ export function collect(opts) {
     try {
       stats = upsertFindings(db, opts.runId, wave.id, classified);
     } catch (e) {
+      // FT-PIPELINE-004 cross-fix-dep: logStage callsites in coordination
+      // commands carry correlation_id so a single forensic grep ties the
+      // failure to the receipt + the agent prompt + any downstream
+      // resume/dispatch. Wrapper-strip pattern in lib/log-stage.js handles
+      // inner-field collisions; we pin the id at the outer envelope.
+      const correlationId = mintCorrelationId();
       logStage('upsert_findings_failed', {
+        correlation_id: correlationId,
         err: e.message,
         runId: opts.runId,
         waveId: wave.id,

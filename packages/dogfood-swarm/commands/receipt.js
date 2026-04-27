@@ -15,9 +15,10 @@
  *   - recommendation / advance hint
  */
 
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { mkdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
+import { atomicWriteFileSync } from '@dogfood-lab/findings/lib/atomic-write.js';
 import { openDb } from '../db/connection.js';
 
 /**
@@ -205,8 +206,8 @@ export function exportReceipt(receipt, outputDir) {
   const jsonPath = join(outputDir, `${base}.json`);
   const mdPath = join(outputDir, `${base}.md`);
 
-  writeFileSync(jsonPath, JSON.stringify(receipt, null, 2) + '\n', 'utf-8');
-  writeFileSync(mdPath, formatReceiptMarkdown(receipt) + '\n', 'utf-8');
+  atomicWriteFileSync(jsonPath, JSON.stringify(receipt, null, 2) + '\n', 'utf-8');
+  atomicWriteFileSync(mdPath, formatReceiptMarkdown(receipt) + '\n', 'utf-8');
 
   return { jsonPath, mdPath };
 }

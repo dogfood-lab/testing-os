@@ -26,8 +26,9 @@
  *          2 = pipeline broken (every claim unverifiable).
  */
 
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
+import { atomicWriteFileSync } from '@dogfood-lab/findings/lib/atomic-write.js';
 
 import { openDb } from '../db/connection.js';
 import { loadFixedFindings, buildVerifyFixedDelta } from '../lib/verify-fixed.js';
@@ -90,7 +91,7 @@ export function verifyFixed(opts) {
   if (!existsSync(dirname(deltaPath))) {
     mkdirSync(dirname(deltaPath), { recursive: true });
   }
-  writeFileSync(deltaPath, JSON.stringify(delta, null, 2) + '\n', 'utf-8');
+  atomicWriteFileSync(deltaPath, JSON.stringify(delta, null, 2) + '\n', 'utf-8');
 
   const output = renderVerifyFixedDelta(delta, opts.format, opts.stream || process.stdout);
 

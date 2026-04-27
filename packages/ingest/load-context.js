@@ -14,6 +14,8 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import yaml from 'js-yaml';
 
+import { isUnsafeSegment } from './lib/unsafe-segment.js';
+
 /**
  * Load the global policy.
  *
@@ -34,7 +36,7 @@ export function loadGlobalPolicy(repoRoot) {
  */
 export function loadRepoPolicy(repoSlug, repoRoot) {
   const [org, repo] = repoSlug.split('/');
-  if (!org || !repo || /\.\.|[/\\]/.test(org) || /\.\.|[/\\]/.test(repo)) return null;
+  if (!org || !repo || isUnsafeSegment(org) || isUnsafeSegment(repo)) return null;
   const path = join(repoRoot, 'policies', 'repos', org, `${repo}.yaml`);
 
   if (!existsSync(path)) return null;
@@ -75,7 +77,7 @@ export function localScenarioFetcher(repoRoot) {
  */
 export function githubScenarioFetcher(token, repoSlug, commitSha) {
   const [org, repo] = repoSlug.split('/');
-  if (!org || !repo || /\.\.|[/\\]/.test(org) || /\.\.|[/\\]/.test(repo)) {
+  if (!org || !repo || isUnsafeSegment(org) || isUnsafeSegment(repo)) {
     return { async fetch() { return null; } };
   }
   return {

@@ -7,10 +7,29 @@
 
 const SEVERITY_ENUM = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'];
 
+// Wave 28 W2-BACK-002 extension: historical wave-15 + wave-20 agent outputs
+// reused these five categories beyond the original 12. Sweep across
+// swarms/swarm-*/wave-*/*.json confirmed reuse (not one-off typos), so they
+// are absorbed into the canonical enum rather than migrated. Decision
+// rationale per category:
+//   - hygiene             — repo-hygiene / packaging / lint surface; reused
+//                           across style-dataset-lab, world-forge, this repo.
+//   - error_message_quality / cli_help_quality / silent_failure
+//                         — operator-UX vocabulary from wave-15+ audits;
+//                           narrower than 'ux' on purpose.
+//   - tests_coverage      — test-gap surface, distinct from 'tests'
+//                           (which covers test-correctness drift).
+// Underscore_form is preserved as-is — historical record (CLAUDE.md
+// "Working with the legacy" doctrine: don't normalize for aesthetics).
+// scripts/agent-output.schema.json is a sibling cross-fix-dep — ci-tooling
+// owns that file in wave 28; this enum and the schema's `category` $def
+// must stay in lockstep.
 const AUDIT_CATEGORIES = [
   'bug', 'security', 'quality', 'types', 'tests', 'docs',
   'defensive', 'observability', 'degradation', 'future-proofing',
   'ux', 'accessibility',
+  'hygiene', 'error_message_quality', 'cli_help_quality',
+  'silent_failure', 'tests_coverage',
 ];
 
 const FEATURE_CATEGORIES = [

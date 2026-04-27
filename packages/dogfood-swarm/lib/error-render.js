@@ -59,6 +59,8 @@ function deriveHintForCode(e) {
       return `wave ${e.waveId ?? '?'} has artifacts persisted but findings missing — inspect with \`swarm status\`, then re-run \`swarm collect\` once the underlying SQLite issue is resolved (busy_timeout or fingerprint UNIQUE collision)`;
     case 'RECORD_SCHEMA_INVALID':
       return 'inspect the failing record against packages/schemas/src/json/dogfood-record.schema.json and fix the invalid fields before re-ingesting';
+    case 'AGENT_OUTPUT_SCHEMA_INVALID':
+      return `inspect ${e.outputPath || 'the agent output JSON'} against scripts/agent-output.schema.json and fix the invalid fields. Required at top level: domain, summary. Audit outputs add findings[]; feature outputs add features[]; amend outputs add fixes[] + files_changed[]`;
     case 'DUPLICATE_RUN_ID':
       return 'a run with this id already exists — use a fresh run id or `swarm runs` to inspect the existing one';
     default:

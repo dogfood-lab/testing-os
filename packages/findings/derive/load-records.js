@@ -6,6 +6,8 @@
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { resolve, join, extname } from 'node:path';
 
+import { isUnsafeSegment } from '@dogfood-lab/ingest/lib/unsafe-segment.js';
+
 /**
  * Load all records for a specific repo.
  *
@@ -15,6 +17,13 @@ import { resolve, join, extname } from 'node:path';
  */
 export function loadRecordsForRepo(rootDir, repoKey) {
   const [org, repo] = repoKey.split('/');
+  // Path-traversal guard: F-916867-005. Mirrors persist.js + load-context.js
+  // via the central helper at @dogfood-lab/ingest/lib/unsafe-segment.js.
+  // A malformed repoKey (`..` or path-separator) would otherwise resolve
+  // outside the records tree and silently load (or skip) unrelated files.
+  if (!org || !repo || isUnsafeSegment(org) || isUnsafeSegment(repo)) {
+    return [];
+  }
   const results = [];
 
   // Accepted records

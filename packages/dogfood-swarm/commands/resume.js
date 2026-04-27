@@ -25,8 +25,9 @@ import {
   isBlocked, isTerminal, isRedispatchable, isInFlight,
   transitionAgent,
 } from '../lib/state-machine.js';
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { mkdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { atomicWriteFileSync } from '@dogfood-lab/findings/lib/atomic-write.js';
 
 /**
  * @param {object} opts
@@ -161,7 +162,7 @@ export function resume(opts) {
       const promptDir = join(opts.outputDir, `wave-${wave.wave_number}-resume`);
       if (!existsSync(promptDir)) mkdirSync(promptDir, { recursive: true });
       const promptPath = join(promptDir, `${ar.domain_name}.md`);
-      writeFileSync(promptPath, prompt, 'utf-8');
+      atomicWriteFileSync(promptPath, prompt, 'utf-8');
 
       report.redispatch.push({
         domain: ar.domain_name,

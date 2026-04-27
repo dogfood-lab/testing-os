@@ -65,9 +65,11 @@
           "enum": [
             "bug", "security", "quality", "types", "tests", "docs",
             "defensive", "observability", "degradation", "future-proofing",
-            "ux", "accessibility"
+            "ux", "accessibility",
+            "hygiene", "error_message_quality", "cli_help_quality",
+            "silent_failure", "tests_coverage"
           ],
-          "description": "Mirrors AUDIT_CATEGORIES in packages/dogfood-swarm/lib/output-schema.js."
+          "description": "Mirrors AUDIT_CATEGORIES in packages/dogfood-swarm/lib/output-schema.js. Extended in Phase 7 wave 2 W2-BACK-002 to absorb 5 historical wave-15/20 reused categories (hygiene, error_message_quality, cli_help_quality, silent_failure, tests_coverage). Underscore form preserved as historical record."
         },
         "file": { "type": "string" },
         "line": { "type": "number" },

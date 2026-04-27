@@ -7,8 +7,8 @@
  * wired in CI right after `npm ci`).
  *
  * Coverage:
- *   1. Each of the 5 checks in scripts/doc-drift-patterns.json with a clean
- *      fixture and a drift fixture.
+ *   1. Each configured check in scripts/doc-drift-patterns.json (currently 13)
+ *      with a clean fixture and a drift fixture.
  *   2. Live-tree assertion: the actual repo passes all checks. This is the
  *      load-bearing test — it's the contract that the docs agents in wave 19
  *      had to land before the script could be merged.
