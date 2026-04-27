@@ -54,7 +54,7 @@
 | 13 | Cross-repo Class drift (consumed package contract) | Stage C site-theme (BaseLayout skip-link + favicon) | **Now multi-instance**: Phase 10 surfaced `@mcptoolshop/repo-knowledge@1.0.5` missing `schema.sql` in published artifact (broke `rk init` for every consumer). Pattern: swarms find upstream bugs in shared tooling. | Phase 5 #5 candidate |
 | 14 | **Claimed-fixed without verification (fractal — sub-modes 14a + 14b)** | **14a (human claim)**: wave-24 F-916867-002 + F-916867-003 — coordinator/wave marks `[fixed]` without checking current state. **14b (classifier claim)**: wave-29 F-WAVE29-001 — verify-fixed v1 itself has vantage-point limits; narrow file scope misses cross-file fixes (consumer-side recommendations classified `claimed-but-still-present` even after closure). | **14a**: wave-27 productized verify-fixed v1 (FT-BACKEND-002); wave-28 LIVE catch F-742442-041 maturation arc complete (claimed wave 11/13 → caught wave 27 → closed wave 28 → verified wave 29). **14b**: wave-29 surfaced via CLI-vs-agent disagreement on 11 incidental closures (CLI: 0 closures; agents: 11). | **14a**: verify-fixed v1 productized. **14b**: verify-fixed v2 (wave-3 candidate, classifier-base + `cross_ref` field + `verified_via` disclosure). **Methodology axiom: verification has fractal structure — each verification layer becomes a claimed-fixed surface needing its own verify-\* discipline at the next layer.** |
 
-## Positive design patterns (9)
+## Positive design patterns (10)
 
 > Patterns the swarm DEVELOPED in flight, suitable for adoption by future
 > swarms or Stage E productization.
@@ -70,6 +70,7 @@
 | 7 | **Graceful degradation / fallback execution** | Phase 10 — `rk init` failed (broken npm package) → wrote rich evidence catalog as structured markdown in same repo. Same data, more primitive durable form. | `docs/swarm-evidence-2026-04-27.md` (this file) |
 | 8 | **Contract-specified parallel cross-pollination** | Phase 7 wave 1 — outputs's parser (F-id → test_files with `orphan_source_ids`) + backend's verify-fixed delta (F-id → classification with anchor + tolerance) joined cleanly in the same wave. Both agents produced compatible JSON shapes from briefing-specified contract alone. No serialized hand-off, no consumer awareness of producer's prior output. | `packages/portfolio/lib/parse-regression-pins.js` × `packages/dogfood-swarm/lib/verify-fixed.js` |
 | 9 | **Beneficial side-effect cascade** | Phase 7 wave 2 — W2-BACK-001 `validateAgentOutput` discipline cascaded into ingest pipeline (`validateRecord` → `persist.js:131` → `precheckSubmission` delegates to `validatePayload`), incidentally closing 1 CRIT + 7 HIGH + 3 MED beyond the explicit ledger. **First numerically-quantified cascade leverage: 14 items dispatched, 25 effective closures = 1.79× leverage.** Distinct from #7 (graceful degradation, workflow-layer) and #8 (parallel cross-pollination, intentional) — incidental but reproducible. | `packages/dogfood-swarm/lib/validate-agent-output.js` × `packages/ingest/validate-record.js` × `packages/findings/derive/load-records.js` |
+| 10 | **2-step FAILS-then-PASSES proof gate** | Phase 7 wave 3 — `DISABLE_APPEND_LOCK=1` env var preserved in production behind env-gated branch. With disable ON, `event-log-race.test.js` reproduces the original race (3 multi-process iterations fail with rename collisions + dropped events). With disable OFF, 12/12 pass reproducibly across 30 consecutive runs. Proves the safety mechanism (file lock + linkSync atomic publish + rename-to-graveyard CAS) is doing the work, not coincidence. **Distinct from Pattern #2 (doesNotMatch)** — Pattern #2 is message-text contract teeth at unit level; Pattern #10 is safety-mechanism efficacy at integration / concurrency level. | `packages/findings/lib/file-lock.js` × `packages/ingest/event-log-race.test.js` (DISABLE_APPEND_LOCK env-gate) |
 
 > Pattern #7 generalizes: when a tool dependency breaks, capture the same
 > data in a more primitive durable form. The primitive form is the
@@ -100,11 +101,23 @@
 > helper extraction) have measurably higher cascade-closure ratios than
 > localized fixes. Future Phase 7 / Phase 8 triage can prefer structural
 > fixes first when cascade potential is high — they pay forward into
-> incidentally-closed findings. **Wave 30 re-audit should explicitly
-> measure cascade leverage on wave 3** to establish whether Pattern #9
-> has two-instance evidence; ≥1.5× indicates the pattern generalizes,
-> <1.0× indicates it was wave-2-specific. Either result is methodology
-> evidence worth recording.
+> incidentally-closed findings. **The wave-31 re-audit (closure check on
+> wave 30) should explicitly measure cascade leverage** to establish
+> whether Pattern #9 has two-instance evidence; ≥1.5× indicates the
+> pattern generalizes, <1.0× indicates it was wave-2-specific. Either
+> result is methodology evidence worth recording.
+>
+> **Pattern #10 (2-step FAILS-then-PASSES proof gate)** is methodology
+> evidence at the test-rigor layer. A passing concurrency test without
+> this gate is ambiguous — "the bug just didn't manifest this run" is
+> indistinguishable from "the safety mechanism worked." The gate forces
+> the test to prove BOTH halves of the safety contract: the failure mode
+> is real (disable=1, test fails) AND the mitigation works (disable=0,
+> test passes consistently). For any future test of concurrency, file
+> locking, retry/backoff, or environmental safety property, ask: can a
+> reviewer prove the safety mechanism is doing the work? If not, add a
+> 2-step proof gate. The DISABLE_APPEND_LOCK env-gated branch is the
+> reference implementation.
 
 ## Cross-pollination chains (5, with corrected claim shape)
 
@@ -173,13 +186,34 @@ From the testing-os v1.0.0 ship (2026-04-25). Not Stage A-D scope; surface here 
 
 Discipline preserved: work was substantively correct, briefing was under-specified, model gap documented for Phase 5.
 
-## Coordinator cleanups (3 instances)
+## Coordinator cleanups (4 instances + 1 scope-expanded)
 
-Mechanical, no design judgment, same authority class across all three:
+Mechanical, no design judgment, same authority class across the first four:
 
 1. **Wave 22 collect-time normalize** for `pipeline.json` (lowercase severities → uppercase, summary/detail field names → description, fingerprint disambiguation via ID-as-symbol)
 2. **Wave 23 `package.json` test:scripts wire-up** — added 3 new docs-written test files (check-severity-contrast, check-accent-color, check-handbook-imagery); 28 → 52 tests in `test:scripts`
 3. **Phase 9 F-916867-001 fix** (state-machines.md "default 14 days" → "default 30 days" matching `DEFAULT_MAX_AGE` in `portfolio/generate.js:32`)
+4. **Wave 28 schema enum mirror + atomic-write allowlist shrink + portfolio exports field** — three mirror cleanups landed post-collect by coordinator (W2-BACK-002 AUDIT_CATEGORIES enum 12→17 in scripts/agent-output.schema.json; W2-BACK-003 atomic-write allowlist 13→6 in scripts/doc-drift-patterns.json; outputs-domain-surfaced exports field gap in packages/portfolio/package.json per CLAUDE.md rule #4)
+
+### Scope-expanded cleanup — v1.1.6 (NEW from wave 30)
+
+**Distinct authority class.** The first four cleanups above are pure mechanical transcription with no design judgment. v1.1.6 added schema infrastructure (`ALTER TABLE findings` + 3 columns) + a query update (`loadFixedFindings` SELECT + JSON hydration) + a data migration script — ~50 LoC of small dev work, not pure transcription. Authorized by advisor under a **5-factor test** documented in `swarms/migrations/wave-30-incidental-cross-refs.json` (`scope_expansion_audit_log`):
+
+| Factor | Why this case warranted expansion |
+|--------|-----------------------------------|
+| Antecedents in place | Wave-29 attestations supply the cross_ref data; wave-30 design supplies the schema shape; no new design judgment |
+| Bounded scope | ~50 LoC across 5 files, fully listed in v1.1.6 commit body |
+| Authority alternative cost | Mini-wave dispatch overhead exceeds the work effort by ≥10× |
+| Methodology stakes | Pattern #9 second-instance cascade-leverage measurement requires the migration; deferring loses the cleanest measurement opportunity |
+| Coordinator has full context | Wave-29 attestations + wave-30 design + Class #14 framing all live in coordinator scope |
+
+**Discipline conditions honored:**
+- Logged in artifact (`swarms/migrations/wave-30-incidental-cross-refs.json`)
+- Documented in v1.1.6 commit message body (5 factors disclosed)
+- Wave-31 audit briefing targets the scope-expanded work for design-judgment-drift assessment
+- **Precedent-limited.** Future "small dev tasks" default to mini-wave dispatch unless they meet the same 5-factor test.
+
+**Migration outcome (idempotent):** 11/11 finding records updated; v2 `verified_via_distribution` shifted from `{ anchor: 193, cross_ref: 0, allowlist: 0 }` to `{ anchor: 185, cross_ref: 3, allowlist: 5, unverifiable: 6 }`. Verified count moved 141 → 150 (+9); claimed-but-still-present moved 27 → 19 (-8). The 3 cross_ref entries that "didn't reclassify" fell through cleanly because their primary anchor matched at the original location in current state — fall-through path of v2 worked as designed.
 
 ## Stage D wave-by-wave summary
 
@@ -241,17 +275,22 @@ Wave-23 logo verification (read the file, not the comment) determined the logo I
 - Mike-supplied logo: byte-untouched
 - Cross-pollination chain #2: verified complete (sweep + re-sweep + stress test)
 
-## Methodology recursion — three evidence classes (Wave 29)
+## Methodology recursion — four evidence classes (Waves 29-30)
 
-The 28-wave run has produced three distinct evidence classes — each a higher-order output than the last:
+The run has produced four distinct evidence classes — each a higher-order output than the last:
 
 | Class | Wave range | Output |
 |-------|------------|--------|
 | 1 — Substantive evidence | Waves 1-26 | ~100 fixes, 70+ features, 14-class taxonomy |
 | 2 — Methodology evidence | Waves 26-28 | 9 design patterns, 5 cross-pollination chains, Class #14 LIVE catch (F-742442-041 maturation arc) |
 | 3 — Methodology efficacy evidence | Wave 29 | Pattern #9 cascade measurement (1.79× leverage), Class #14b discovery, fractal-structure framing |
+| 4 — Methodology self-application | Wave 30 | Class #14 caught at the wave-30 productization boundary itself: v2 capability shipped at function level but not data layer; coordinator semantic check during ruling-2 execution caught the gap before wave 31 dispatched. |
 
-The progression: *"we're producing fixes" → "we're producing methodology" → "we're measuring methodology efficacy."* Each step is a higher-order output. Wave 30 (re-audit on wave 3) is expected to produce Class 3 evidence about wave 3's verify-\* verb family v2 — including a second Pattern #9 cascade measurement.
+The progression: *"we're producing fixes" → "we're producing methodology" → "we're measuring methodology efficacy" → "the discipline catches its own incomplete productizations."* Each step is a higher-order output.
+
+**Class 4 framing — Class #14 self-application:** the discipline catches its own incomplete productizations. The Class #14 productization (verify-fixed v2) caught its own Class #14 vulnerability before wave 31 dispatched: v2 the *code* shipped in v1.1.5 with mock-tested function-level coverage; v2 the *data infrastructure* (schema columns + finding-record migration) was discovered missing at the migration boundary and shipped in v1.1.6. Class #14 prevention is **recursive** — any productization can itself become a claimed-fixed surface needing its own verify-\* discipline at the next layer.
+
+**Practical implication for future productization waves:** include explicit "wired through to production data path" verification as part of the wave's own closure check, not just function-level test coverage. Mock-based testing is necessary but not sufficient; production data exercise is the real closure signal. Wave 30 backend agent's mock-based tests passed (33 v2 classifier tests + 18 verb-family tests), but the production seam (DB schema → loadFixedFindings query → classifier) wasn't exercised in the same wave. The wave-31 `verified_via_distribution` measurement IS the production exercise.
 
 This is the strongest justification yet for the multi-wave / multi-stage discipline: it produces **self-referential evidence that single-wave or single-stage work cannot**. Future swarms should expect that each wave's output is BOTH substantive AND methodology-validating — record both.
 

@@ -78,25 +78,46 @@ const FINGERPRINT_BUCKET = 10;
  * wave's amend agent issued the bogus claim.
  */
 export function loadFixedFindings(db, runId) {
-  return db.prepare(`
+  const rows = db.prepare(`
     SELECT
-      f.id            AS row_id,
-      f.finding_id    AS finding_id,
-      f.fingerprint   AS fingerprint,
-      f.severity      AS severity,
-      f.category      AS category,
-      f.file_path     AS file_path,
-      f.line_number   AS line_number,
-      f.symbol        AS symbol,
-      f.description   AS description,
-      f.recommendation AS recommendation,
-      f.last_seen_wave AS last_seen_wave,
+      f.id                     AS row_id,
+      f.finding_id             AS finding_id,
+      f.fingerprint            AS fingerprint,
+      f.severity               AS severity,
+      f.category               AS category,
+      f.file_path              AS file_path,
+      f.line_number            AS line_number,
+      f.symbol                 AS symbol,
+      f.description            AS description,
+      f.recommendation         AS recommendation,
+      f.last_seen_wave         AS last_seen_wave,
+      f.cross_ref              AS cross_ref_json,
+      f.coordinator_resolved   AS coordinator_resolved_int,
+      f.verified_via_evidence  AS verified_via_evidence,
       (SELECT MAX(e.wave_id) FROM finding_events e
         WHERE e.finding_id = f.id AND e.event_type = 'fixed') AS fixed_wave_id
     FROM findings f
     WHERE f.run_id = ? AND f.status = 'fixed'
     ORDER BY f.id ASC
   `).all(runId);
+
+  // v4: hydrate the verify-fixed v2 vantage-point fields into the shape
+  // lib/verify-classifier-v2.js expects. cross_ref is stored as JSON text
+  // (SQLite has no native object column); coordinator_resolved is stored
+  // as 0/1 (SQLite has no native boolean). The classifier reads them as
+  // object/boolean. Hydrate at the seam so callers get the v2 shape.
+  for (const row of rows) {
+    if (row.cross_ref_json) {
+      try { row.cross_ref = JSON.parse(row.cross_ref_json); }
+      catch { row.cross_ref = null; }
+    } else {
+      row.cross_ref = null;
+    }
+    delete row.cross_ref_json;
+    row.coordinator_resolved = row.coordinator_resolved_int === 1;
+    delete row.coordinator_resolved_int;
+  }
+  return rows;
 }
 
 /**

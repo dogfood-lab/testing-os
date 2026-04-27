@@ -5,7 +5,7 @@
  * artifacts, findings, finding_events, verification_receipts, kv.
  */
 
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 export const SCHEMA_SQL = `
 -- ───────────────────────────────────────────
@@ -98,20 +98,30 @@ CREATE TABLE IF NOT EXISTS artifacts (
 -- Deduplicated findings across all waves
 -- ───────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS findings (
-  id              INTEGER PRIMARY KEY AUTOINCREMENT,
-  run_id          TEXT    NOT NULL REFERENCES runs(id),
-  finding_id      TEXT    NOT NULL,
-  fingerprint     TEXT    NOT NULL,
-  severity        TEXT    NOT NULL,
-  category        TEXT    NOT NULL,
-  file_path       TEXT,
-  line_number     INTEGER,
-  symbol          TEXT,
-  description     TEXT    NOT NULL,
-  recommendation  TEXT,
-  status          TEXT    NOT NULL DEFAULT 'new',
-  first_seen_wave INTEGER REFERENCES waves(id),
-  last_seen_wave  INTEGER REFERENCES waves(id),
+  id                     INTEGER PRIMARY KEY AUTOINCREMENT,
+  run_id                 TEXT    NOT NULL REFERENCES runs(id),
+  finding_id             TEXT    NOT NULL,
+  fingerprint            TEXT    NOT NULL,
+  severity               TEXT    NOT NULL,
+  category               TEXT    NOT NULL,
+  file_path              TEXT,
+  line_number            INTEGER,
+  symbol                 TEXT,
+  description            TEXT    NOT NULL,
+  recommendation         TEXT,
+  status                 TEXT    NOT NULL DEFAULT 'new',
+  first_seen_wave        INTEGER REFERENCES waves(id),
+  last_seen_wave         INTEGER REFERENCES waves(id),
+  -- v4: Class #14b vantage-point extensions for verify-fixed v2.
+  -- cross_ref points at a consumer-side fix location when the fix
+  -- doesn't live at file_path/line_number. coordinator_resolved is
+  -- the agent-attestation override path. verified_via_evidence is
+  -- the operator-readable note explaining either path. See
+  -- packages/dogfood-swarm/lib/verify-classifier-v2.js for the
+  -- classification semantics. F-WAVE29-001 productization.
+  cross_ref              TEXT,    -- JSON object: { file, symbol, line }
+  coordinator_resolved   INTEGER NOT NULL DEFAULT 0,
+  verified_via_evidence  TEXT,
   UNIQUE(run_id, fingerprint)
 );
 
@@ -241,6 +251,12 @@ export const MIGRATIONS_SQL = [
   // v3: agent_runs: worktree isolation paths
   "ALTER TABLE agent_runs ADD COLUMN worktree_path TEXT",
   "ALTER TABLE agent_runs ADD COLUMN worktree_branch TEXT",
+  // v4: findings: Class #14b vantage-point extensions for verify-fixed v2.
+  // F-WAVE29-001 productization. See lib/verify-classifier-v2.js for
+  // classification semantics; the column shapes mirror the v2 envelope.
+  "ALTER TABLE findings ADD COLUMN cross_ref TEXT",
+  "ALTER TABLE findings ADD COLUMN coordinator_resolved INTEGER NOT NULL DEFAULT 0",
+  "ALTER TABLE findings ADD COLUMN verified_via_evidence TEXT",
 ];
 
 /**

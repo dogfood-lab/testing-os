@@ -1,0 +1,168 @@
+{
+  "$comment": "Wave-30 finding-record migration — wires the 11 wave-29 incidental closures into the verify-fixed v2 cross_ref / coordinator_resolved fields. v2 reads these to classify findings as 'verified_via: cross_ref' or 'verified_via: allowlist' instead of the legacy 'claimed-but-still-present'. Migration is idempotent at the script layer (UPDATE statements); the schema is idempotent at the connection-init layer (PRAGMA-checked ALTER TABLE).",
+  "schema": "finding-migration/v1",
+  "run_id": "swarm-1777234130-30e3",
+  "applied_in_wave": 30,
+  "applied_in_version": "1.1.6",
+  "source_attestations": "swarms/swarm-1777234130-30e3/wave-29/{backend,docs,outputs}.json",
+  "scope_expansion_audit_log": {
+    "type": "coordinator_scope_expansion",
+    "scope": "schema migration (3 nullable columns) + data migration (11 UPDATE statements) for verify-fixed v2 data infrastructure",
+    "rationale_factors": [
+      {
+        "factor": "Antecedents in place",
+        "evidence": "Wave-29 agent attestations supply the cross_ref data (already audited and committed in wave-29/{backend,docs,outputs}.json). Wave-30 backend agent designed lib/verify-classifier-v2.js with the cross_ref/coordinator_resolved contract. Coordinator transcribes pre-existing semantic decisions into structured fields; no new design judgment."
+      },
+      {
+        "factor": "Bounded scope",
+        "evidence": "~50 LoC across schema.js (3 ALTER + 3 columns), verify-fixed.js (1 query update + hydration), 1 migration JSON (this file), 1 migration script (scripts/apply-finding-migration.mjs). All listed in v1.1.6 commit body."
+      },
+      {
+        "factor": "Authority alternative cost",
+        "evidence": "Dispatching a wave-30.5 mini-wave for ~50 LoC mechanical migration is heavier than the work itself; agent dispatch overhead (briefing, output collection, agent runtime) exceeds the LoC cost by ≥10×."
+      },
+      {
+        "factor": "Methodology stakes",
+        "evidence": "Pattern #9 second-instance cascade-leverage measurement in wave 31 requires this data to be in place. Without migration, v2's verified_via_distribution stays { anchor: 193, cross_ref: 0, ... } and Pattern #9 measurement is indirect. With migration, the measurement is direct and produces clean methodology evidence."
+      },
+      {
+        "factor": "Coordinator has full context",
+        "evidence": "Wave-29 attestations (semantic verification of incidental closures), wave-30 backend agent's v2 design notes (lib/verify-classifier-v2.js header), and the methodology framing (Class #14b productization) all live in coordinator scope already. No external context required."
+      }
+    ],
+    "discipline_conditions": {
+      "logged_in_artifact": "this file (swarms/migrations/wave-30-incidental-cross-refs.json scope_expansion_audit_log block)",
+      "documented_in_commit_message": "v1.1.6 commit body contains explicit scope-expansion disclosure with the 5 factors",
+      "wave_31_audit_target": "wave-31 audit briefing explicitly targets this scope-expanded work for design-judgment-drift assessment",
+      "precedent_limited": "NOT blanket coordinator authority for small dev tasks. Future cases default to mini-wave dispatch unless they meet the same 5-factor test."
+    },
+    "advisor_authorization": "advisor in conversation 2026-04-27, 'Ruling 1: Option A with explicit authority framing'"
+  },
+  "self_application_framing": {
+    "$comment": "Wave-30 had its own Class #14 instance (v2 capability shipped at function level but not data layer). Caught at the migration boundary by coordinator semantic check during ruling-2 execution. The Class #14 productization (verify-fixed v2) caught its own Class #14 vulnerability before wave 31 dispatched — methodology recursion at Class 4: discipline catching its own incomplete productization.",
+    "class_4_evidence_layer": "methodology self-application — discipline catches own incomplete productization",
+    "practical_implication": "Future productization waves include 'wired through to production data path' verification as part of the wave's own closure check, not just function-level test coverage. Mock-based testing necessary but not sufficient; production data exercise is the real closure signal."
+  },
+  "cross_ref_migrations": [
+    {
+      "finding_id": "F-178609-001",
+      "domain": "backend",
+      "severity": "HIGH",
+      "category": "observability",
+      "original_file": "packages/dogfood-swarm/lib/findings-digest.js",
+      "cross_ref": {
+        "file": "packages/dogfood-swarm/lib/findings-digest.js",
+        "symbol": "unknownCount",
+        "line": 154
+      },
+      "verified_via_evidence": "Wave-2 work added an unknownCount bucket (line 154) plus a stderr console.warn when unknown/missing severity is encountered (line 169-171). The original finding's observability gap is closed in the same file the original anchor pointed to — same-file consumer-side closure."
+    },
+    {
+      "finding_id": "F-693631-002",
+      "domain": "backend",
+      "severity": "HIGH",
+      "category": "degradation",
+      "original_file": "packages/dogfood-swarm/commands/collect.js",
+      "cross_ref": {
+        "file": "packages/dogfood-swarm/commands/collect.js",
+        "symbol": "CollectUpsertError",
+        "line": 358
+      },
+      "verified_via_evidence": "Wave-2 work wrapped upsertFindings in a try/catch that throws CollectUpsertError on failure (line 358), satisfying the graceful-degradation requirement of the original finding. Closure visible at packages/dogfood-swarm/commands/collect.js:337-359."
+    },
+    {
+      "finding_id": "F-375053-003",
+      "domain": "backend",
+      "severity": "MEDIUM",
+      "category": "bug",
+      "original_file": "packages/dogfood-swarm/commands/resume.js",
+      "cross_ref": {
+        "file": "packages/dogfood-swarm/commands/resume.js",
+        "symbol": "MAX(ar2.id)",
+        "line": 78
+      },
+      "verified_via_evidence": "Wave-2 work introduced the latest-per-domain SQL filter at packages/dogfood-swarm/commands/resume.js:72-81 via a MAX(ar2.id) subquery, picking each domain's latest agent_run row so the bogus row-by-row resume bug is structurally impossible."
+    },
+    {
+      "finding_id": "F-246817-001",
+      "domain": "outputs",
+      "severity": "CRITICAL",
+      "category": "tests",
+      "original_file": "packages/schemas/src/json/dogfood-record.schema.json",
+      "cross_ref": {
+        "file": "packages/ingest/persist.js",
+        "symbol": "validateRecord",
+        "line": 131
+      },
+      "verified_via_evidence": "Wave-2 work added Ajv-compiled validateRecord(record) call inside writeRecord at packages/ingest/persist.js:131, before any filesystem write. The original finding's recommendation option B (Ajv-validate the record before persistence) is implemented in the consumer file (persist.js), not the schema file. Class #14b canonical case."
+    },
+    {
+      "finding_id": "F-246817-002",
+      "domain": "outputs",
+      "severity": "HIGH",
+      "category": "tests",
+      "original_file": "packages/schemas/test/schemas.test.ts",
+      "cross_ref": {
+        "file": "packages/schemas/test/validate.test.ts",
+        "symbol": "validate",
+        "line": 1
+      },
+      "verified_via_evidence": "Wave-2 work added packages/schemas/test/validate.test.ts (33 Ajv positive+negative payload tests across all 8 schemas, including an explicit F-246817-001 partial-remediation regression). The new test harness is the consumer-side closure of the original 'no Ajv coverage' finding."
+    },
+    {
+      "finding_id": "F-246817-006",
+      "domain": "outputs",
+      "severity": "HIGH",
+      "category": "defensive",
+      "original_file": "packages/report/build-submission.js",
+      "cross_ref": {
+        "file": "packages/report/build-submission.js",
+        "symbol": "validatePayload",
+        "line": 174
+      },
+      "verified_via_evidence": "Wave-2 work refactored precheckSubmission (packages/report/build-submission.js:144) to delegate to validatePayload('recordSubmission', ...) at line 174, achieving full central-verifier parity. Same-file consumer-side closure — fix lives at the same path as the original anchor but at a different symbol/line."
+    }
+  ],
+  "coordinator_resolved_migrations": [
+    {
+      "finding_id": "F-COORD-002",
+      "domain": "docs",
+      "severity": "HIGH",
+      "category": "docs",
+      "original_file": "swarms/PROTOCOL.md",
+      "verified_via_evidence": "Wave-2 work updated swarms/PROTOCOL.md with revised stage descriptions during the wave-2 docs domain pass; wave-29 docs agent confirmed contents match wave-29 expectations. Documentation-level closure with no single-symbol anchor — coordinator-resolved is the correct vantage."
+    },
+    {
+      "finding_id": "F-129818-002",
+      "domain": "docs",
+      "severity": "HIGH",
+      "category": "docs",
+      "original_file": "site/src/content/docs/handbook/intelligence-layer.md",
+      "verified_via_evidence": "Wave-2 work updated intelligence-layer.md handbook page; the 'unknown_freshness' portfolio bucket explanation that was missing per the original finding is now present. Wave-29 docs agent attested to closure on file inspection. No single anchor — markdown prose."
+    },
+    {
+      "finding_id": "F-827321-011",
+      "domain": "docs",
+      "severity": "HIGH",
+      "category": "docs",
+      "original_file": "site/src/content/docs/handbook/state-machines.md",
+      "verified_via_evidence": "Wave-2 work updated state-machines.md handbook page during the docs domain pass; wave-29 docs agent confirmed closure. Documentation-level — coordinator-resolved."
+    },
+    {
+      "finding_id": "F-742442-034",
+      "domain": "docs",
+      "severity": "MEDIUM",
+      "category": "docs",
+      "original_file": "site/src/content/docs/handbook/operating-guide.md",
+      "verified_via_evidence": "Wave-2 work updated operating-guide.md handbook page; wave-29 docs agent confirmed closure. Documentation-level — coordinator-resolved."
+    },
+    {
+      "finding_id": "F-002109-021",
+      "domain": "outputs",
+      "severity": "MEDIUM",
+      "category": "quality",
+      "original_file": "packages/report/build-submission.js",
+      "verified_via_evidence": "Wave-2 work added additionalProperties:false to the recordSubmission schema at packages/schemas/src/json/, which Ajv enforces at validation time (closing the original 'silent extra-property accept' concern). Closure is in the JSON schema file — no JS symbol anchor — coordinator-resolved is the correct vantage."
+    }
+  ]
+}
