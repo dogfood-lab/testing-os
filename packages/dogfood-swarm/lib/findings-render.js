@@ -316,3 +316,187 @@ function maxWidth(rows, key, header) {
 function underline(text, char) {
   return `${text}\n${char.repeat(text.length)}`;
 }
+
+// ════════════════════════════════════════════════════════════════════
+// verify-fixed delta renderers (F-252713-002, Phase 7 wave 1)
+// ════════════════════════════════════════════════════════════════════
+//
+// `swarm verify-fixed <run>` re-audits findings the control plane shows
+// as `[fixed]` and emits a delta model from lib/verify-fixed.js. We route
+// rendering through the SAME wrapper-strip choke-point as the digest:
+// no `console.log(rawMarkdown)` survives in the CLI; every output path
+// flows through `renderVerifyFixedDelta()`. If a future command wants to
+// show classification results, it must add a renderer here, not splice
+// markdown directly to stdout.
+//
+// Format auto-detect mirrors `shouldEmitFormat()`:
+//   - default `text` on TTY (interactive operator)
+//   - default `markdown` when piped/redirected (CI, `> delta.md`)
+//   - explicit `--format=text|markdown|json` overrides
+//   - DOGFOOD_FINDINGS_FORMAT env (raw|human|json) overrides everything
+
+const VF_CLASS_LABEL = {
+  'verified':                  'VERIFIED',
+  'regressed':                 'REGRESSED',
+  'claimed-but-still-present': 'CLAIMED-PRESENT',
+  'unverifiable':              'UNVERIFIABLE',
+};
+
+const VF_CLASS_ORDER = [
+  'claimed-but-still-present',  // most actionable first — fix never landed
+  'regressed',                  // second — fix landed and got reverted
+  'unverifiable',               // third — needs human review
+  'verified',                   // last — the boring success case
+];
+
+export function renderVerifyFixedDelta(model, format, stream) {
+  const fmt = shouldEmitFormat(format, stream);
+  if (fmt === 'json') return renderVerifyFixedJson(model);
+  if (fmt === 'text') return renderVerifyFixedText(model);
+  return renderVerifyFixedMarkdown(model);
+}
+
+export function renderVerifyFixedJson(model) {
+  // The delta model IS the JSON contract — outputs agent's
+  // parse-regression-pins.js consumer reads this directly. Stringify
+  // verbatim with stable key order from the producer.
+  return JSON.stringify(model, null, 2);
+}
+
+export function renderVerifyFixedMarkdown(model) {
+  const lines = [];
+  lines.push(`# Verify-Fixed Delta — ${model.runId}${model.waveNumber != null ? ' wave ' + model.waveNumber : ''}`);
+  lines.push('');
+  lines.push(`Checked: ${model.checkedAt}`);
+  lines.push('');
+
+  lines.push(buildVerifyFixedHeadline(model, '**'));
+  lines.push('');
+
+  const s = model.summary;
+  lines.push(`**Summary:** ${s.total} fixed findings | ${s.verified} verified | ${s.regressed} regressed | ${s.claimedButStillPresent} claimed-but-still-present | ${s.unverifiable} unverifiable`);
+  lines.push('');
+
+  if (model.threshold > 0 || model.thresholdExceeded) {
+    const offending = s.regressed + s.claimedButStillPresent;
+    const verdict = model.thresholdExceeded ? 'EXCEEDED' : 'within threshold';
+    lines.push(`**Threshold:** ${model.threshold} | offending (regressed + claimed): ${offending} — ${verdict}`);
+    lines.push('');
+  }
+
+  if (model.findings.length === 0) {
+    lines.push('_No findings with status=`fixed` to verify._');
+    return lines.join('\n');
+  }
+
+  lines.push('| Class | F-id | Sev | File:Line | Symbol | Evidence |');
+  lines.push('|-------|------|-----|-----------|--------|----------|');
+  const sorted = sortVerifyFindings(model.findings);
+  for (const f of sorted) {
+    const cls = VF_CLASS_LABEL[f.classification] || f.classification;
+    const sev = SEV_SHORT[f.severity] || f.severity || '?';
+    const loc = f.file ? `${f.file}${f.line ? ':' + f.line : ''}` : '—';
+    lines.push(
+      `| ${cls} | ${f.finding_id || '—'} | ${sev} | ${loc} | ${f.symbol || '—'} | ${truncate(f.evidence, 140)} |`
+    );
+  }
+
+  return lines.join('\n');
+}
+
+export function renderVerifyFixedText(model) {
+  const lines = [];
+  lines.push(underline(`Verify-Fixed Delta — ${model.runId}${model.waveNumber != null ? ' wave ' + model.waveNumber : ''}`, '='));
+  lines.push('');
+  lines.push(`Checked: ${model.checkedAt}`);
+  lines.push('');
+
+  lines.push(`VERDICT: ${buildVerifyFixedHeadline(model, '')}`);
+  lines.push('');
+
+  const s = model.summary;
+  lines.push(
+    `Total: ${s.total} | VERIFIED ${s.verified} | REGRESSED ${s.regressed} | CLAIMED-PRESENT ${s.claimedButStillPresent} | UNVERIFIABLE ${s.unverifiable}`
+  );
+
+  if (model.threshold > 0 || model.thresholdExceeded) {
+    const offending = s.regressed + s.claimedButStillPresent;
+    const verdict = model.thresholdExceeded ? 'EXCEEDED' : 'within threshold';
+    lines.push(`Threshold: ${model.threshold} | offending (regressed + claimed): ${offending} — ${verdict}`);
+  }
+  lines.push('');
+
+  if (model.findings.length === 0) {
+    lines.push('No findings with status=fixed to verify.');
+    return lines.join('\n');
+  }
+
+  lines.push(underline('Findings', '-'));
+  lines.push('');
+
+  const sorted = sortVerifyFindings(model.findings);
+  const rows = sorted.map((f) => ({
+    cls: VF_CLASS_LABEL[f.classification] || f.classification,
+    id: f.finding_id || '—',
+    sev: SEV_SHORT[f.severity] || f.severity || '?',
+    loc: f.file ? `${f.file}${f.line ? ':' + f.line : ''}` : '—',
+    symbol: f.symbol || '—',
+    evidence: truncate(f.evidence, 140),
+  }));
+  const widths = {
+    cls: maxWidth(rows, 'cls', 'Class'),
+    id: maxWidth(rows, 'id', 'ID'),
+    sev: maxWidth(rows, 'sev', 'Sev'),
+    loc: maxWidth(rows, 'loc', 'File:Line'),
+    symbol: maxWidth(rows, 'symbol', 'Symbol'),
+  };
+  lines.push(
+    `${pad('Class', widths.cls)}  ${pad('ID', widths.id)}  ${pad('Sev', widths.sev)}  ${pad('File:Line', widths.loc)}  ${pad('Symbol', widths.symbol)}  Evidence`
+  );
+  lines.push(
+    `${dash(widths.cls)}  ${dash(widths.id)}  ${dash(widths.sev)}  ${dash(widths.loc)}  ${dash(widths.symbol)}  ${dash(8)}`
+  );
+  for (const r of rows) {
+    lines.push(
+      `${pad(r.cls, widths.cls)}  ${pad(r.id, widths.id)}  ${pad(r.sev, widths.sev)}  ${pad(r.loc, widths.loc)}  ${pad(r.symbol, widths.symbol)}  ${r.evidence}`
+    );
+  }
+
+  // Trim trailing blank for clean terminal paste, mirroring renderText().
+  while (lines.length > 0 && lines[lines.length - 1] === '') lines.pop();
+  return lines.join('\n');
+}
+
+function buildVerifyFixedHeadline(model, emph) {
+  const s = model.summary;
+  if (s.total === 0) {
+    return `${emph}No fixed findings to verify${emph}`;
+  }
+  if (model.exitCode === 2) {
+    return `${emph}Verify pipeline broken${emph} — every fixed finding is unverifiable; human review required`;
+  }
+  if (model.thresholdExceeded) {
+    const offending = s.regressed + s.claimedButStillPresent;
+    return `${emph}${offending} fix claim(s) failed verification${emph} (threshold ${model.threshold})`;
+  }
+  if (s.regressed + s.claimedButStillPresent > 0) {
+    return `${emph}${s.regressed + s.claimedButStillPresent} fix claim(s) failed verification${emph} (within threshold ${model.threshold})`;
+  }
+  return `${emph}All ${s.verified} fix claim(s) verified${emph}`;
+}
+
+function sortVerifyFindings(findings) {
+  const orderIndex = (cls) => {
+    const idx = VF_CLASS_ORDER.indexOf(cls);
+    return idx < 0 ? VF_CLASS_ORDER.length : idx;
+  };
+  return [...findings].sort((a, b) => {
+    const ca = orderIndex(a.classification);
+    const cb = orderIndex(b.classification);
+    if (ca !== cb) return ca - cb;
+    const sa = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 }[a.severity] ?? 9;
+    const sb = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 }[b.severity] ?? 9;
+    if (sa !== sb) return sa - sb;
+    return (a.finding_id || '').localeCompare(b.finding_id || '');
+  });
+}

@@ -172,7 +172,9 @@ describe('@dogfood-lab/schemas validation harness', () => {
       expectError(result, e => /required/i.test(e.message) && /verification/.test(JSON.stringify(e.params)));
     });
 
-    it('rejects a partial provenance_remediation (missing remediated_at)', () => {
+    // F-246817-001 — partial provenance_remediation (status without remediated_at)
+    // was the wave-8 near-miss that motivated the whole Ajv harness.
+    it('rejects a partial provenance_remediation (missing remediated_at, F-246817-001)', () => {
       const bad = {
         ...valid,
         verification: {

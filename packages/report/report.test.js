@@ -1,3 +1,23 @@
+/**
+ * Submission builder + precheck regression suite.
+ *
+ * F-id pin convention (canonical for testing-os):
+ *
+ *   ```js
+ *   // F-NNNNNN-NNN — short reason this comment is here
+ *   describe('thing under test (F-NNNNNN-NNN)', () => { ... });
+ *   it('rejects … (F-NNNNNN-NNN)', () => { ... });
+ *   ```
+ *
+ * Every fix in build-submission.js that closed a finding ID gets a pinned
+ * test here. The `scripts/check-finding-regression-pins.mjs` CI gate
+ * (FT-OUTPUTS-001) enforces "no F-id in source without a matching test pin"
+ * via the parser at `packages/portfolio/lib/parse-regression-pins.js`.
+ *
+ * See packages/portfolio/lib/parse-regression-pins.test.js for the data-layer
+ * tests; see SHIP_GATE.md hard-gate B for why this is non-optional.
+ */
+
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 

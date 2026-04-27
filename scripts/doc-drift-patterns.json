@@ -1,6 +1,6 @@
 {
   "$schema": "./doc-drift-patterns.schema.json",
-  "description": "Config for scripts/check-doc-drift.mjs — codifies the Class #11 (multi-occurrence fix completeness) sweep pattern. Each entry is one drift CHECK. Adding a new check is a config edit, not a code edit: append a new object with { id, kind, title, sources?, targets?, patterns?, allowlist?, hint }. The script registers a small set of 'kind' handlers (source-vs-target-coverage, forbidden-pattern-in-targets, self-consistency) and dispatches each entry to the matching handler. New drift CLASSES (entirely new kinds of comparison) need both a config entry AND a new handler; new INSTANCES of an existing class are config-only.",
+  "description": "Config for scripts/check-doc-drift.mjs — codifies Class #9 (multi-occurrence sibling-fix sweep) and Class #11 (multi-occurrence fix completeness). Each entry is one drift CHECK. Adding a new check is a config edit, not a code edit: append a new object with { id, kind, title, ... } where the remaining fields are the requiredFields declared by the handler module for that kind. The framework registers seven handler modules — source-vs-target-coverage, forbidden-pattern-in-targets, self-consistency, untagged-fence, helper-adoption-sweep, schema-conformance, framework-self-test — and dispatches each entry to the matching handler. New drift CLASSES (entirely new kinds of comparison) need both a config entry AND a new handler module; new INSTANCES of an existing class are config-only.",
   "checks": [
     {
       "id": "error-codes",
@@ -141,6 +141,114 @@
         }
       ],
       "hint": "Update PROTOCOL.md so the title block, the stage list, the per-phase audit lens enumeration, and the coordinator checklist all refer to the same set of stages. Class #11 sweep pattern: fix every occurrence in one pass, never one-by-one."
+    },
+
+    {
+      "id": "helper-adoption--atomic-write",
+      "kind": "helper-adoption-sweep",
+      "title": "atomic-write helper adopted by all writers under packages/",
+      "description": "Every callsite that writes a file via raw fs.writeFileSync should go through atomicWriteFileSync from packages/findings/lib/atomic-write.js to avoid torn writes. Helper history: F-721047-010 sibling-fix gap. The allowlist captures known cross-fix-dependencies — Phase 7 wave 2 backend will retire each of these. Test fixtures (*.test.js) are auto-excluded.",
+      "helper": "packages/findings/lib/atomic-write.js",
+      "exportName": "atomicWriteFileSync",
+      "forbiddenPattern": "fs\\.writeFileSync\\(|(?<![\\w.])writeFileSync\\(",
+      "callers": ["packages/**/*.js"],
+      "allowlist": [
+        "packages/findings/lib/atomic-write.js",
+        "packages/dogfood-swarm/commands/dispatch.js",
+        "packages/dogfood-swarm/commands/persist.js",
+        "packages/dogfood-swarm/commands/receipt.js",
+        "packages/dogfood-swarm/commands/resume.js",
+        "packages/dogfood-swarm/commands/verify-fixed.js",
+        "packages/dogfood-swarm/persist-results.js",
+        "packages/dogfood-swarm/lib/verify/runner.js",
+        "packages/ingest/persist.js",
+        "packages/ingest/rebuild-indexes.js",
+        "packages/findings/review/event-log.js",
+        "packages/portfolio/generate.js",
+        "packages/report/build-submission.js"
+      ],
+      "wrapperHint": "Cross-package: import via @dogfood-lab/findings/lib/atomic-write.js. Same package: relative import. Wrappers that pin a component tag are allowed; the wrapper file must still import the helper."
+    },
+    {
+      "id": "helper-adoption--log-stage",
+      "kind": "helper-adoption-sweep",
+      "title": "log-stage helper is the SOLE definition of logStage()",
+      "description": "Productizes wave22-log-stage-discipline.test.js as a config-driven sweep. The shared helper at packages/dogfood-swarm/lib/log-stage.js is the canonical logStage; sibling files importing it (with optional component-pinning wrappers) are clean. Forbidden pattern catches `function logStage(`, `const logStage =`, etc. anywhere except the helper.",
+      "helper": "packages/dogfood-swarm/lib/log-stage.js",
+      "exportName": "logStage",
+      "forbiddenPattern": "(?:function|const|let|var)\\s+logStage\\b",
+      "callers": ["packages/**/*.js"],
+      "allowlist": [
+        "packages/dogfood-swarm/lib/log-stage.js"
+      ],
+      "wrapperHint": "Use `import { logStage } from '@dogfood-lab/dogfood-swarm/lib/log-stage.js'`. If a wrapper is needed (e.g. ingest's component-pinning), the wrapper file must still import the shared helper."
+    },
+    {
+      "id": "helper-adoption--validate-record",
+      "kind": "helper-adoption-sweep",
+      "title": "RecordValidationError is the only validation-error class for persisted records",
+      "description": "validate-record.js owns the contract. F-252713-017 cross-ref: AgentOutputValidationError (used by schema-conformance handler) mirrors this shape. Callers that throw their own validation error class instead of importing RecordValidationError create a parallel error vocabulary that operators have to learn twice.",
+      "helper": "packages/ingest/validate-record.js",
+      "exportName": "RecordValidationError",
+      "forbiddenPattern": "class\\s+RecordValidationError\\b",
+      "callers": ["packages/**/*.js"],
+      "allowlist": [
+        "packages/ingest/validate-record.js"
+      ],
+      "wrapperHint": "Import { RecordValidationError } from the validate-record helper rather than redefining the class."
+    },
+    {
+      "id": "helper-adoption--unsafe-segment",
+      "kind": "helper-adoption-sweep",
+      "title": "Path-segment safety check is the central helper",
+      "description": "Per F-916867-005, only one of three path-segment validation callsites had adopted the central helper. Until the helper is extracted to a shared module, this entry is allowlist-only and serves as a tracking anchor. When packages/dogfood-swarm/lib/path-safety.js (or equivalent) lands with the canonical unsafeSegment(), this entry's helper / exportName / forbiddenPattern fields update and the allowlist shrinks to just the helper. Today the entry uses atomic-write as the placeholder helper since unsafeSegment hasn't been extracted yet — the allowlist captures every file that defines its own unsafeSegment.",
+      "helper": "packages/findings/lib/atomic-write.js",
+      "exportName": "atomicWriteFileSync",
+      "forbiddenPattern": "(?:function|const)\\s+unsafeSegment\\b",
+      "callers": ["packages/**/*.js"],
+      "allowlist": [
+        "packages/findings/lib/atomic-write.js",
+        "packages/ingest/persist.js"
+      ],
+      "wrapperHint": "F-916867-005 follow-up: extract the canonical unsafeSegment() to a shared module (likely packages/dogfood-swarm/lib/path-safety.js) and update this config entry's helper/exportName fields. Until then, every additional callsite must be added to the allowlist with a cross-ref."
+    },
+    {
+      "id": "helper-adoption--structured-error-envelope",
+      "kind": "helper-adoption-sweep",
+      "title": "Structured error envelope (typed errors with .code) is the single shape",
+      "description": "Errors that cross module boundaries should carry .code so callers can pattern-match without substring grep on .message. The canonical examples are IsolationError / CollectUpsertError / StateMachineRejectionError in packages/dogfood-swarm/lib/errors.js. New typed errors should live there or import from there. This sweep flags any sibling re-defining IsolationError outside the helper.",
+      "helper": "packages/dogfood-swarm/lib/errors.js",
+      "exportName": "IsolationError",
+      "forbiddenPattern": "class\\s+IsolationError\\b",
+      "callers": ["packages/**/*.js"],
+      "allowlist": [
+        "packages/dogfood-swarm/lib/errors.js"
+      ],
+      "wrapperHint": "Import { IsolationError } from the central errors module. New typed errors with .code go into packages/dogfood-swarm/lib/errors.js (or a sibling errors.js if they belong to a different package's lifecycle)."
+    },
+
+    {
+      "id": "agent-output-schema",
+      "kind": "schema-conformance",
+      "title": "Agent JSON outputs (audit / feature / amend) conform to scripts/agent-output.schema.json",
+      "description": "The canonical envelope is { domain, summary, [findings|features|fixes], ... }. Phase-7-wave-1 productization (F-252713-017): replaces silent normalization in collect.js with a structured AgentOutputValidationError pointing the agent at the canonical shape. The schema is permissive at top level (only `domain` + `summary` required) so it can govern audit, feature, AND amend outputs, with phase-specific $defs for the inner shapes. Targets a fixture path today — the live wiring is a cross-wave dependency on backend (Phase 7 wave 2 will (a) extend the categories enum to absorb historical wave-15/wave-20 categories or migrate those files, and (b) wire the validator into collect.js's mergeFindings flow).",
+      "schema": "scripts/agent-output.schema.json",
+      "targets": [
+        "swarms/__schema-fixtures__/*.json"
+      ],
+      "allowlist": [],
+      "errorClass": "AgentOutputValidationError",
+      "allowEmpty": true,
+      "hint": "Match scripts/agent-output.schema.json. Required at top level: domain, summary. Audit outputs add `findings[]` (with severity ∈ CRITICAL/HIGH/MEDIUM/LOW and category ∈ AUDIT_CATEGORIES); feature outputs add `features[]`; amend outputs add `fixes[]` + `files_changed[]`. Once backend wave 2 wires this into collect.js, the target glob expands to `swarms/swarm-*/wave-*/*.json` (after the historical-shape migration lands)."
+    },
+
+    {
+      "id": "framework-self-test",
+      "kind": "framework-self-test",
+      "title": "check-doc-drift framework structure is internally consistent",
+      "description": "Meta-check: every config entry has a registered handler and all required fields. Drift here means someone added a check kind in config but forgot to register the handler module, or removed a required field from an existing check. The choke-point invariant — the framework checks itself.",
+      "configPath": "scripts/doc-drift-patterns.json",
+      "hint": "Either register the missing handler module in scripts/check-doc-drift.mjs (HANDLERS map), or remove the orphaned check from scripts/doc-drift-patterns.json. Required fields are declared on each handler module."
     }
   ]
 }

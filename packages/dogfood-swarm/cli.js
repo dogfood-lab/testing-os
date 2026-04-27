@@ -28,6 +28,7 @@ import { status, formatStatus } from './commands/status.js';
 import { resume, formatResume } from './commands/resume.js';
 import { buildReceipt, exportReceipt, storeReceipt } from './commands/receipt.js';
 import { verify as runVerify, probeRepo, formatVerify, formatProbe } from './commands/verify.js';
+import { verifyFixed as runVerifyFixed } from './commands/verify-fixed.js';
 import { advance as runAdvance, checkGates, getPromotions } from './lib/advance.js';
 import { persist as runPersist, formatPersist } from './commands/persist.js';
 import { openDb } from './db/connection.js';
@@ -332,6 +333,55 @@ function cmdVerify(args) {
   console.log(formatVerify(result));
 }
 
+function cmdVerifyFixed(args) {
+  const runId = args[0];
+  if (!runId) {
+    console.error('Usage: swarm verify-fixed <run-id> [--threshold=N] [--format=text|markdown|json]');
+    process.exit(1);
+  }
+
+  // --threshold=N (default 0). Per wave-22 D-OUT-003 minimum-bar discipline:
+  // any regressed/claimed-but-still-present finding fails by default.
+  let threshold = 0;
+  for (const a of args.slice(1)) {
+    const m = a.match(/^--threshold=(\d+)$/);
+    if (m) { threshold = parseInt(m[1], 10); break; }
+  }
+  const tIdx = args.indexOf('--threshold');
+  if (tIdx >= 0 && args[tIdx + 1]) {
+    threshold = parseInt(args[tIdx + 1], 10);
+  }
+
+  // --format=text|markdown|json (auto-detect if absent). Mirrors the
+  // wave-23 D-BACK-002 surface on `swarm findings`.
+  let format;
+  for (const a of args.slice(1)) {
+    const m = a.match(/^--format=(text|markdown|json)$/);
+    if (m) { format = m[1]; break; }
+  }
+  const fIdx = args.indexOf('--format');
+  if (fIdx >= 0 && args[fIdx + 1]) {
+    format = args[fIdx + 1];
+  }
+
+  const result = runVerifyFixed({
+    runId,
+    dbPath: getDbPath(),
+    outputDir: getOutputDir(runId),
+    threshold,
+    format,
+  });
+
+  console.log(result.output);
+  console.log('');
+  console.log(`Delta written to: ${result.deltaPath}`);
+
+  // Exit with the 3-way state: 0 clean / 1 threshold exceeded /
+  // 2 pipeline broken. The CLI seam preserves this signal so CI gates
+  // can use `swarm verify-fixed` as a check.
+  process.exit(result.exitCode);
+}
+
 function cmdReceipt(args) {
   const runId = args[0];
   if (!runId) {
@@ -569,6 +619,7 @@ const commands = {
   dispatch: cmdDispatch,
   collect: cmdCollect,
   verify: cmdVerify,
+  'verify-fixed': cmdVerifyFixed,
   receipt: cmdReceipt,
   advance: cmdAdvance,
   status: cmdStatus,
@@ -588,6 +639,14 @@ Commands:
   dispatch <run-id> <phase>  Create wave + agent prompts
   collect <run-id> [opts]    Validate, enforce ownership, merge
   verify <run-id> [opts]     Run build verification (auto-detect or --adapter)
+  verify-fixed <run-id> [opts]
+                             Re-audit findings marked [fixed]; classify into
+                             verified / regressed / claimed-but-still-present
+                             / unverifiable. Writes delta JSON to swarms/
+                             <run>/verify-fixed-<wave>.json. Format auto-
+                             detects (text on TTY, markdown when piped).
+                             --threshold=N fails non-zero when regressed +
+                             claimed-but-still-present > N (default 0).
   receipt <run-id> [wave]    Export durable wave receipt (JSON + markdown)
   advance <run-id> [opts]    Check gates and advance to next phase
   persist <run-id> [opts]    Export canonical truth to downstream systems

@@ -19,12 +19,13 @@
 
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { randomBytes } from 'node:crypto';
 
 import { verify } from '@dogfood-lab/verify';
 import { stubProvenance, githubProvenance } from '@dogfood-lab/verify/validators/provenance.js';
 import { logStage as sharedLogStage } from '@dogfood-lab/dogfood-swarm/lib/log-stage.js';
 import { loadGlobalPolicy, loadRepoPolicy, loadScenarios } from './load-context.js';
-import { isDuplicate, writeRecord } from './persist.js';
+import { isDuplicate, writeRecord, computeRecordPath } from './persist.js';
 import { rebuildIndexes } from './rebuild-indexes.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -39,14 +40,20 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
  * NDJSON line that ingest.yml's CI log captures.
  *
  * Stages: dispatch_received | context_loaded | verify_complete |
- * persist_complete | rebuild_indexes_complete | rejected_pre_persist | error.
+ * persist_complete | rebuild_indexes_complete | verify_only_complete |
+ * rejected_pre_persist | error.
+ *
+ * F-252714-061 (FT-PIPELINE-004): callers may include `correlation_id` in
+ * `fields` so a downstream log aggregator can pivot a multi-line NDJSON
+ * stream into a per-submission trace. The wrapper passes it through; the
+ * canonical generation site is `ingest()`/`verifyOnly()` (one ID per run).
  *
  * @param {string} stage
- * @param {object} fields - Stage-specific fields. `submission_id` strongly
- *   recommended. Do NOT pass `stage` as an inner field — it would collide
- *   with the outer stage name and the spread is last-wins. For "this stage
- *   failed inside that stage" use `failed_stage` (e.g.
- *   `logStage('error', { failed_stage: 'rebuild_indexes', ... })`).
+ * @param {object} fields - Stage-specific fields. `submission_id` and
+ *   `correlation_id` strongly recommended. Do NOT pass `stage` as an inner
+ *   field — it would collide with the outer stage name and the spread is
+ *   last-wins. For "this stage failed inside that stage" use `failed_stage`
+ *   (e.g. `logStage('error', { failed_stage: 'rebuild_indexes', ... })`).
  */
 function logStage(stage, fields = {}) {
   // Defensive against F-827321-035: strip any caller-supplied `stage:`
@@ -54,8 +61,38 @@ function logStage(stage, fields = {}) {
   // helper itself spreads fields last; without this strip, an inner
   // `stage:` would silently overwrite the outer name and a grep of
   // `"stage":"error"` across runner logs would miss the failure.
-  const { stage: _ignored, ...safeFields } = fields;
-  sharedLogStage(stage, { component: 'ingest', ...safeFields });
+  // `correlation_id` (FT-PIPELINE-004) is destructured-and-passed: it has
+  // no collision with the outer stage name, but naming it explicitly here
+  // documents the wave-22 wrapper-strip pattern's safe-field contract.
+  const { stage: _ignored, correlation_id, ...rest } = fields;
+  sharedLogStage(stage, { component: 'ingest', correlation_id, ...rest });
+}
+
+/**
+ * Generate a synthetic correlation_id for ingests where the submission has
+ * no usable run_id (null/non-object/malformed). Format: `ing-<base36-ts>-<rand4>`.
+ *
+ * Examples: `ing-1abc234d-x7f9` — readable, sortable, distinct from real
+ * `run_id` values (which never start with the `ing-` prefix in practice).
+ */
+function synthCorrelationId() {
+  const ts = Date.now().toString(36);
+  const rand = randomBytes(2).toString('hex');
+  return `ing-${ts}-${rand}`;
+}
+
+/**
+ * Resolve the correlation_id for a single ingest run.
+ * Prefer `submission.run_id` (operator pivots stay on the user-meaningful
+ * key); fall back to a synthetic id for invalid/malformed submissions.
+ */
+function resolveCorrelationId(submission) {
+  if (submission && typeof submission === 'object' && !Array.isArray(submission)) {
+    if (typeof submission.run_id === 'string' && submission.run_id.length > 0) {
+      return submission.run_id;
+    }
+  }
+  return synthCorrelationId();
 }
 
 /**
@@ -87,8 +124,15 @@ export async function ingest(submission, options) {
   const submissionId = submissionIsObject ? (submission.run_id || null) : null;
   const submissionRepo = submissionIsObject ? (submission.repo || null) : null;
 
+  // F-252714-061 (FT-PIPELINE-004): one correlation_id per ingest run, pinned
+  // across every stage. For valid submissions, prefer submission.run_id so
+  // operator pivots stay on the user-meaningful key; for invalid/malformed
+  // submissions (no run_id) generate a synthetic `ing-<base36-ts>-<rand4>`.
+  const correlation_id = resolveCorrelationId(submission);
+
   logStage('dispatch_received', {
     submission_id: submissionId,
+    correlation_id,
     repo: submissionRepo,
     has_scenario_results: !!(submissionIsObject && submission.scenario_results)
   });
@@ -107,6 +151,7 @@ export async function ingest(submission, options) {
     if (isDuplicate(submission.run_id, probeRecord, repoRoot)) {
       logStage('rejected_pre_persist', {
         submission_id: submissionId,
+        correlation_id,
         reason: 'duplicate'
       });
       return {
@@ -125,6 +170,7 @@ export async function ingest(submission, options) {
 
   logStage('context_loaded', {
     submission_id: submissionId,
+    correlation_id,
     policy_version: policyVersion,
     repo_policy_present: !!repoPolicy
   });
@@ -146,6 +192,7 @@ export async function ingest(submission, options) {
 
   logStage('verify_complete', {
     submission_id: submissionId,
+    correlation_id,
     status: record.verification?.status ?? null,
     rejection_reason_count: record.verification?.rejection_reasons?.length ?? 0,
     verdict: record.overall_verdict?.verified ?? null
@@ -180,6 +227,7 @@ export async function ingest(submission, options) {
     delete record._skipPersist;
     logStage('rejected_pre_persist', {
       submission_id: submissionId,
+      correlation_id,
       reason: 'skip_persist',
       rejection_reasons: record.verification?.rejection_reasons ?? []
     });
@@ -189,6 +237,7 @@ export async function ingest(submission, options) {
   const { path, written } = writeRecord(record, repoRoot);
   logStage('persist_complete', {
     submission_id: submissionId,
+    correlation_id,
     path,
     written,
     duplicate: !written,
@@ -202,6 +251,7 @@ export async function ingest(submission, options) {
       const indexResult = rebuildIndexes(repoRoot);
       logStage('rebuild_indexes_complete', {
         submission_id: submissionId,
+        correlation_id,
         duration_ms: Date.now() - rebuildStart,
         accepted: indexResult.accepted,
         rejected: indexResult.rejected,
@@ -214,6 +264,7 @@ export async function ingest(submission, options) {
       // from any `"stage":"error"` grep across the runner log.
       logStage('error', {
         submission_id: submissionId,
+        correlation_id,
         failed_stage: 'rebuild_indexes',
         message: err.message
       });
@@ -222,6 +273,146 @@ export async function ingest(submission, options) {
   }
 
   return { record, path, written, duplicate: false };
+}
+
+/**
+ * Run the verify-only pipeline: steps 0-4 (load context + verify), assemble
+ * the would-be record, return it WITHOUT touching the filesystem or rebuilding
+ * indexes. Surfaces what `ingest()` WOULD have persisted plus `would_persist_to`
+ * — the path where the record would have landed.
+ *
+ * F-252714-058 (FT-PIPELINE-001): the verify pipeline already has a
+ * `_skipPersist` internal sentinel for null/non-object inputs; this function
+ * generalizes that path into a public entrypoint operators can use to dry-run
+ * any submission without side effects.
+ *
+ * Same logStage events fire as a real ingest EXCEPT `persist_complete` and
+ * `rebuild_indexes_complete` (which would lie about persistence). A
+ * `verify_only_complete` event takes their place so CI logs read coherently.
+ *
+ * @param {object} submission - Source-authored submission payload
+ * @param {object} options
+ * @param {string} options.repoRoot - Absolute path to repo root (still
+ *   needed for policy + scenario lookup)
+ * @param {object} options.provenance - Provenance adapter (REQUIRED)
+ * @param {object} [options.scenarioFetcher] - Scenario fetch adapter
+ * @returns {Promise<{
+ *   record: object,
+ *   would_persist_to: string|null,
+ *   verify_only: true
+ * }>}
+ */
+export async function verifyOnly(submission, options) {
+  const {
+    repoRoot,
+    provenance,
+    scenarioFetcher = null
+  } = options;
+
+  // Provenance adapter is REQUIRED. Same fail-closed contract as ingest().
+  if (!provenance || typeof provenance.confirm !== 'function') {
+    throw new Error(
+      'Provenance adapter is required. Use githubProvenance(token) for production ' +
+      'or stubProvenance for tests. No implicit default — fail closed.'
+    );
+  }
+
+  const submissionIsObject = submission && typeof submission === 'object' && !Array.isArray(submission);
+  const submissionId = submissionIsObject ? (submission.run_id || null) : null;
+  const submissionRepo = submissionIsObject ? (submission.repo || null) : null;
+  const correlation_id = resolveCorrelationId(submission);
+
+  logStage('dispatch_received', {
+    submission_id: submissionId,
+    correlation_id,
+    repo: submissionRepo,
+    has_scenario_results: !!(submissionIsObject && submission.scenario_results),
+    verify_only: true
+  });
+
+  // 2. Load context (verify-only still needs policy to drive the verifier)
+  const globalPolicy = loadGlobalPolicy(repoRoot);
+  const repoPolicy = loadRepoPolicy(submissionIsObject ? (submission.repo || '') : '', repoRoot);
+  const policyVersion = repoPolicy?.policy_version || globalPolicy.policy_version || '1.0.0';
+
+  logStage('context_loaded', {
+    submission_id: submissionId,
+    correlation_id,
+    policy_version: policyVersion,
+    repo_policy_present: !!repoPolicy
+  });
+
+  // 3. Load scenario definitions (non-fatal — becomes rejection reason)
+  let scenarioErrors = [];
+  if (scenarioFetcher && submissionIsObject && submission.scenario_results) {
+    const result = await loadScenarios(submission, scenarioFetcher);
+    scenarioErrors = result.errors;
+  }
+
+  // 4. Call verifier
+  const record = await verify(submission, {
+    globalPolicy,
+    repoPolicy,
+    provenance,
+    policyVersion
+  });
+
+  logStage('verify_complete', {
+    submission_id: submissionId,
+    correlation_id,
+    status: record.verification?.status ?? null,
+    rejection_reason_count: record.verification?.rejection_reasons?.length ?? 0,
+    verdict: record.overall_verdict?.verified ?? null
+  });
+
+  // 4b. Mirror ingest's scenario-error verdict downgrade so verify-only and
+  //     real ingest produce identical records for the same submission.
+  if (scenarioErrors.length > 0) {
+    record.verification.rejection_reasons.push(
+      ...scenarioErrors.map(e => `scenario-load: ${e}`)
+    );
+    if (record.verification.status === 'accepted' && scenarioErrors.length > 0) {
+      record.verification.status = 'rejected';
+      record.verification.policy_valid = false;
+      if (record.overall_verdict.verified === 'pass') {
+        record.overall_verdict.verified = 'fail';
+        record.overall_verdict.downgraded = true;
+        if (!record.overall_verdict.downgrade_reasons) {
+          record.overall_verdict.downgrade_reasons = [];
+        }
+        record.overall_verdict.downgrade_reasons.push('scenario definitions could not be loaded');
+      }
+    }
+  }
+
+  // 5. Compute would_persist_to without writing.
+  //    `_skipPersist` records lack the fields needed by computeRecordPath()
+  //    (repo, run_id, timing.finished_at). Surface null in that case — same
+  //    semantic as the real-ingest `rejected_pre_persist` branch.
+  let would_persist_to = null;
+  if (record._skipPersist) {
+    delete record._skipPersist;
+  } else {
+    try {
+      would_persist_to = computeRecordPath(record, repoRoot);
+    } catch {
+      // Defensive: if a record passes verify() but still trips path
+      // computation (e.g., a future schema with looser constraints), keep
+      // verify-only side-effect-free. Real ingest would surface the throw
+      // via writeRecord; verify-only just returns null and lets the operator
+      // see the rejection in record.verification.rejection_reasons.
+      would_persist_to = null;
+    }
+  }
+
+  logStage('verify_only_complete', {
+    submission_id: submissionId,
+    correlation_id,
+    status: record.verification?.status ?? null,
+    would_persist_to
+  });
+
+  return { record, would_persist_to, verify_only: true };
 }
 
 // --- CLI entrypoint ---
@@ -236,6 +427,7 @@ if (isMain) {
   // Parse CLI flags
   let submissionJson;
   let provenanceMode = null;
+  let verifyOnlyFlag = false;
   const positionalArgs = [];
 
   for (let i = 0; i < args.length; i++) {
@@ -246,6 +438,10 @@ if (isMain) {
       submissionJson = readFileSync(resolve(args[++i]), 'utf-8');
     } else if (args[i] === '--payload' && args[i + 1]) {
       submissionJson = args[++i];
+    } else if (args[i] === '--verify-only') {
+      // F-252714-058: dry-run the pipeline without writing or rebuilding
+      // indexes. CI / operators preview what WOULD have been persisted.
+      verifyOnlyFlag = true;
     } else {
       positionalArgs.push(args[i]);
     }
@@ -302,6 +498,24 @@ if (isMain) {
   }
 
   try {
+    if (verifyOnlyFlag) {
+      const result = await verifyOnly(submission, { repoRoot, provenance });
+
+      console.log(JSON.stringify({
+        status: result.record.verification.status,
+        run_id: result.record.run_id ?? null,
+        verdict: result.record.overall_verdict?.verified ?? null,
+        would_persist_to: result.would_persist_to,
+        verify_only: true,
+        rejection_reasons: result.record.verification.rejection_reasons ?? []
+      }));
+
+      // Same accepted/rejected exit-code contract as a real ingest so CI
+      // wrappers can swap `--verify-only` in/out without changing their
+      // exit-code handling.
+      process.exit(result.record.verification.status === 'accepted' ? 0 : 1);
+    }
+
     const result = await ingest(submission, { repoRoot, provenance });
 
     if (result.duplicate) {

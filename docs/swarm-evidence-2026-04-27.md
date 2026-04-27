@@ -47,14 +47,14 @@
 | 6 | Atomic-write temp+rename | wave 12 (helper extracted) | findings/lib/atomic-write callers | unit test |
 | 7 | NDJSON / human dual-emit | wave 9 (logStage) → wave 17 (verdict-first banner) | wave 22 + 24 sweep | sweep invariant test |
 | 8 | Structured error envelope | wave 12 (typed errors) → wave 17 (error-render.js) | All commands using throw → exit | inline tests |
-| 9 | **Sibling-pattern propagation gap** | wave 22 D-PIPE-001 (logStage) | wave 23 D-CI-001 (untagged-fence) + wave 24 LOW (path-traversal) | **wave-22 sweep invariant; needs check-shared-helper-adoption.mjs (Phase 5 #1)** |
+| 9 | **Sibling-pattern propagation gap** | wave 22 D-PIPE-001 (logStage) | wave 23 D-CI-001 (untagged-fence) + wave 24 LOW (path-traversal) + **Phase 7 wave 1 (verify-* family extension surfaced at execution time)** | **wave-22 sweep invariant + Phase 7 wave 1 helper-adoption-sweep handler (productized) → 4-stage maturation: briefing-only → audit-time sweep → amend-time sweep → execution-time sweep** |
 | 10 | Stage collision in spread-last-wins | wave 22 D-PIPE-002 (run.js:209) | wave 22 wrapper-strip belt-and-braces | regression test |
 | 11 | Data-shape drift between agents and schema | wave 8 (severity case) → wave 22 (normalize) → wave 24 (pipeline.summary type) | every collect | (none — Phase 5 candidate #6) |
 | 12 | Under-triaged observability/silent-failure (wave-1 calibration) | wave 8 promotion pattern | waves 9–14 (Mike's MED→HIGH upgrades) | (briefing-only — no automation) |
 | 13 | Cross-repo Class drift (consumed package contract) | Stage C site-theme (BaseLayout skip-link + favicon) | **Now multi-instance**: Phase 10 surfaced `@mcptoolshop/repo-knowledge@1.0.5` missing `schema.sql` in published artifact (broke `rk init` for every consumer). Pattern: swarms find upstream bugs in shared tooling. | Phase 5 #5 candidate |
 | 14 | **Claimed-fixed without verification** | wave-24 F-916867-002 + F-916867-003 (wave-1 fixes that didn't actually land) | (NEW from Stage D) | Phase 5 #1 first deliverable: re-audit all wave-1 [fixed] findings against current code |
 
-## Positive design patterns (7)
+## Positive design patterns (8)
 
 > Patterns the swarm DEVELOPED in flight, suitable for adoption by future
 > swarms or Stage E productization.
@@ -68,12 +68,22 @@
 | 5 | State-machine-aware drift handler | wave 23 `untagged-fence` check kind in `check-doc-drift.mjs` (opener/closer aware, not regex) | `scripts/check-doc-drift.mjs` |
 | 6 | Cross-wave-dependency formalized skip reason | wave 22 ci-tooling deferred contrast test → wave 23 docs delivered it | wave-22 ci-tooling.json + wave-23 docs.json + `scripts/check-severity-contrast.test.mjs` |
 | 7 | **Graceful degradation / fallback execution** | Phase 10 — `rk init` failed (broken npm package) → wrote rich evidence catalog as structured markdown in same repo. Same data, more primitive durable form. | `docs/swarm-evidence-2026-04-27.md` (this file) |
+| 8 | **Contract-specified parallel cross-pollination** | Phase 7 wave 1 — outputs's parser (F-id → test_files with `orphan_source_ids`) + backend's verify-fixed delta (F-id → classification with anchor + tolerance) joined cleanly in the same wave. Both agents produced compatible JSON shapes from briefing-specified contract alone. No serialized hand-off, no consumer awareness of producer's prior output. | `packages/portfolio/lib/parse-regression-pins.js` × `packages/dogfood-swarm/lib/verify-fixed.js` |
 
 > Pattern #7 generalizes: when a tool dependency breaks, capture the same
 > data in a more primitive durable form. The primitive form is the
 > contract; the tool is the convenience. Same family as wave-22
 > wrapper-strip (defensive choke-point) but applied at the workflow
 > layer rather than the code layer.
+>
+> Pattern #8 is the strongest cross-pollination form yet observed.
+> Sequential chains (chains #1-5) require deliberate consumer awareness
+> of prior infrastructure. Parallel chains (#8) require only contract-
+> specified briefing. Methodology delta: briefing-as-contract-
+> specification scales cross-domain coordination without requiring
+> sequential dependency. Future Phase 7 waves should leverage this when
+> two findings touch joinable surfaces — specify the contract in the
+> briefing rather than serializing the work.
 
 ## Cross-pollination chains (5, with corrected claim shape)
 

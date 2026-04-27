@@ -24,7 +24,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runDriftChecks, expandGlobs } from './check-doc-drift.mjs';
+import { runDriftChecks, expandGlobs, REGISTERED_HANDLERS } from './check-doc-drift.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');
@@ -347,7 +347,7 @@ test('expandGlobs: exact path returns single file, glob expands directory', asyn
 // LIVE TREE assertion — the load-bearing test
 // ─────────────────────────────────────────────────────────────────────────────
 
-test('LIVE TREE: actual repo passes all 6 drift checks (post-wave-18 docs + post-wave-19 PROTOCOL.md sweep + post-wave-23 fence-lang-tag sweep)', async () => {
+test('LIVE TREE: actual repo passes all drift checks (post-wave-26 framework generalization)', async () => {
   const result = await runDriftChecks({ repoRoot });
   assert.equal(
     result.clean,
@@ -357,12 +357,17 @@ test('LIVE TREE: actual repo passes all 6 drift checks (post-wave-18 docs + post
         .map((r) => `  ${r.severity}: ${r.message}\n    hint: ${r.hint ?? '(none)'}`)
         .join('\n')
   );
-  // Sanity: we should be running all six checks, not zero. The sixth check
-  // (handbook-fence-lang-tags) was added in wave 23 / D-CI-001 to make
-  // F-827321-010 (untagged code fences in handbook reference pages) impossible
-  // to recur — every opening ``` in site/src/content/docs/handbook/*.md must
-  // carry a language tag.
-  assert.equal(result.checksRun, 6);
+  // Sanity: every config entry should be running. Wave-26 / Phase 7 wave 1
+  // expanded the framework: 4 original handlers (source-vs-target-coverage,
+  // forbidden-pattern-in-targets, self-consistency, untagged-fence) plus 3
+  // new ones (helper-adoption-sweep, schema-conformance, framework-self-test).
+  // The exact count is a function of seeded check INSTANCES, not handler
+  // KINDS — assert ≥10 to allow new instances to land without churning this
+  // test, but catch regressions where the config got truncated.
+  assert.ok(
+    result.checksRun >= 10,
+    `Expected at least 10 seeded checks; got ${result.checksRun}. The framework was generalized in wave 26 with 5 helper-adoption-sweep entries + 1 schema-conformance entry + 1 framework-self-test entry on top of the 6 original checks.`,
+  );
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -454,4 +459,560 @@ test('untagged-fence: empty target glob reports config-error', async (t) => {
   const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
   assert.equal(result.clean, false);
   assert.equal(result.reports[0].severity, 'config-error');
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// helper-adoption-sweep handler (F-252713-016 / FT-CITOOLING-001, wave 26)
+// Productizes wave22-log-stage-discipline.test.js as a generalized Class #9
+// sweep. Tests cover: clean adoption, raw-primitive drift, wrapper-with-import
+// allowed, allowlist exemption, helper-not-found config error, helper missing
+// the named export, test files auto-excluded, comment-only hits ignored.
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('helper-adoption-sweep: clean fixture (every caller imports the helper) passes', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('packages/findings/lib/atomic-write.js', `
+    import fs from 'node:fs';
+    export function atomicWriteFileSync(p, c) { fs.writeFileSync(p, c); }
+  `);
+  fx.write('packages/findings/derive/write-findings.js', `
+    import { atomicWriteFileSync } from '../lib/atomic-write.js';
+    export function writeFinding(p, c) { atomicWriteFileSync(p, c); }
+  `);
+  fx.write('packages/dogfood-swarm/commands/persist.js', `
+    import { atomicWriteFileSync } from '@dogfood-lab/findings/lib/atomic-write.js';
+    export function persist(p, c) { atomicWriteFileSync(p, c); }
+  `);
+  const cfg = fx.config({
+    checks: [{
+      id: 'sweep',
+      kind: 'helper-adoption-sweep',
+      title: 'atomic-write adoption',
+      helper: 'packages/findings/lib/atomic-write.js',
+      exportName: 'atomicWriteFileSync',
+      forbiddenPattern: 'fs\\.writeFileSync\\(|(?<![\\w.])writeFileSync\\(',
+      callers: ['packages/**/*.js'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, true, JSON.stringify(result.reports));
+});
+
+test('helper-adoption-sweep: raw fs.writeFileSync without helper import triggers drift', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('packages/findings/lib/atomic-write.js', `
+    export function atomicWriteFileSync(p, c) {}
+  `);
+  fx.write('packages/dogfood-swarm/commands/dispatch.js', `
+    import { writeFileSync } from 'node:fs';
+    export function dispatch() {
+      writeFileSync('out', 'data');
+    }
+  `);
+  const cfg = fx.config({
+    checks: [{
+      id: 'sweep',
+      kind: 'helper-adoption-sweep',
+      title: 'atomic-write adoption',
+      helper: 'packages/findings/lib/atomic-write.js',
+      exportName: 'atomicWriteFileSync',
+      forbiddenPattern: 'fs\\.writeFileSync\\(|(?<![\\w.])writeFileSync\\(',
+      callers: ['packages/**/*.js'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, false);
+  assert.equal(result.reports.length, 1);
+  assert.match(result.reports[0].file, /dispatch\.js$/);
+  assert.match(result.reports[0].message, /uses raw .+ but does not import/);
+});
+
+test('helper-adoption-sweep: wrapper that imports the helper is allowed', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('packages/dogfood-swarm/lib/log-stage.js', `
+    export function logStage(stage, fields) { console.error(JSON.stringify({stage, ...fields})); }
+  `);
+  fx.write('packages/ingest/run.js', `
+    import { logStage as sharedLogStage } from '@dogfood-lab/dogfood-swarm/lib/log-stage.js';
+    function logStage(stage, fields) {
+      const { stage: _drop, ...safe } = fields;
+      sharedLogStage(stage, { component: 'ingest', ...safe });
+    }
+    logStage('start', {});
+  `);
+  const cfg = fx.config({
+    checks: [{
+      id: 'sweep',
+      kind: 'helper-adoption-sweep',
+      title: 'log-stage adoption',
+      helper: 'packages/dogfood-swarm/lib/log-stage.js',
+      exportName: 'logStage',
+      forbiddenPattern: '(?:function|const|let|var)\\s+logStage\\b',
+      callers: ['packages/**/*.js'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, true, JSON.stringify(result.reports));
+});
+
+test('helper-adoption-sweep: allowlist exempts a known violator', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('packages/findings/lib/atomic-write.js', `
+    export function atomicWriteFileSync(p, c) {}
+  `);
+  fx.write('packages/legacy/old.js', `
+    import { writeFileSync } from 'node:fs';
+    writeFileSync('x', 'y');
+  `);
+  const cfg = fx.config({
+    checks: [{
+      id: 'sweep',
+      kind: 'helper-adoption-sweep',
+      title: 'atomic-write adoption',
+      helper: 'packages/findings/lib/atomic-write.js',
+      exportName: 'atomicWriteFileSync',
+      forbiddenPattern: 'fs\\.writeFileSync\\(|(?<![\\w.])writeFileSync\\(',
+      callers: ['packages/**/*.js'],
+      allowlist: ['packages/legacy/old.js'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, true, JSON.stringify(result.reports));
+});
+
+test('helper-adoption-sweep: missing helper file reports config-error', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('packages/foo/x.js', 'export const x = 1;');
+  const cfg = fx.config({
+    checks: [{
+      id: 'sweep',
+      kind: 'helper-adoption-sweep',
+      title: 'missing helper',
+      helper: 'packages/nonexistent/helper.js',
+      exportName: 'foo',
+      forbiddenPattern: 'foo',
+      callers: ['packages/**/*.js'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, false);
+  assert.equal(result.reports[0].severity, 'config-error');
+  assert.match(result.reports[0].message, /helper file not found/);
+});
+
+test('helper-adoption-sweep: helper missing named export reports config-error', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('packages/foo/helper.js', 'export const otherName = 1;');
+  fx.write('packages/foo/caller.js', 'import {} from "./helper.js";');
+  const cfg = fx.config({
+    checks: [{
+      id: 'sweep',
+      kind: 'helper-adoption-sweep',
+      title: 'wrong export',
+      helper: 'packages/foo/helper.js',
+      exportName: 'expectedName',
+      forbiddenPattern: 'foo',
+      callers: ['packages/**/*.js'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, false);
+  assert.equal(result.reports[0].severity, 'config-error');
+  assert.match(result.reports[0].message, /does not export expectedName/);
+});
+
+test('helper-adoption-sweep: test files (.test.js) auto-excluded by default', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('packages/findings/lib/atomic-write.js', `
+    export function atomicWriteFileSync(p, c) {}
+  `);
+  fx.write('packages/findings/findings.test.js', `
+    import { writeFileSync } from 'node:fs';
+    writeFileSync('fixture', 'data');
+  `);
+  const cfg = fx.config({
+    checks: [{
+      id: 'sweep',
+      kind: 'helper-adoption-sweep',
+      title: 'sweep',
+      helper: 'packages/findings/lib/atomic-write.js',
+      exportName: 'atomicWriteFileSync',
+      forbiddenPattern: 'fs\\.writeFileSync\\(|(?<![\\w.])writeFileSync\\(',
+      callers: ['packages/**/*.js'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, true, JSON.stringify(result.reports));
+});
+
+test('helper-adoption-sweep: comment-only mention of forbidden pattern does not trigger drift', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('packages/findings/lib/atomic-write.js', `
+    export function atomicWriteFileSync(p, c) {}
+  `);
+  fx.write('packages/foo/no-write.js', `
+    // This module historically used fs.writeFileSync(...) but now relies on
+    // a different path. Seriously — no real call here.
+    /* writeFileSync('also', 'commented') */
+    export const noop = () => {};
+  `);
+  const cfg = fx.config({
+    checks: [{
+      id: 'sweep',
+      kind: 'helper-adoption-sweep',
+      title: 'sweep',
+      helper: 'packages/findings/lib/atomic-write.js',
+      exportName: 'atomicWriteFileSync',
+      forbiddenPattern: 'fs\\.writeFileSync\\(|(?<![\\w.])writeFileSync\\(',
+      callers: ['packages/**/*.js'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, true, JSON.stringify(result.reports));
+});
+
+test('helper-adoption-sweep: multiple violators across files all surface', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('packages/foo/helper.js', `
+    export function safeOp(x) { return x; }
+  `);
+  fx.write('packages/foo/a.js', `
+    function rawCall(x) { return x; }
+    rawCall(1);
+  `);
+  fx.write('packages/foo/b.js', `
+    function rawCall(x) { return x + 1; }
+    rawCall(2);
+  `);
+  fx.write('packages/foo/c-clean.js', `
+    import { safeOp } from './helper.js';
+    function rawCall(x) { return safeOp(x); }
+    rawCall(3);
+  `);
+  const cfg = fx.config({
+    checks: [{
+      id: 'sweep',
+      kind: 'helper-adoption-sweep',
+      title: 'sweep',
+      helper: 'packages/foo/helper.js',
+      exportName: 'safeOp',
+      forbiddenPattern: 'rawCall\\(',
+      callers: ['packages/**/*.js'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, false);
+  assert.equal(result.reports.length, 2, 'a.js + b.js fail; c-clean.js imports the helper');
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// schema-conformance handler (F-252713-017 / FT-CITOOLING-002, wave 26)
+// Validates target JSON files against scripts/agent-output.schema.json (or
+// any JSON Schema declared in the check). Tests cover: valid output, each
+// required field missing, invalid enum value, malformed JSON, allowlist,
+// allowEmpty gate, schema-not-found config error.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const VALID_AMEND_OUTPUT = {
+  domain: 'ci-tooling',
+  fixes: [
+    { finding_id: 'F-001', file: 'a.js', description: 'fixed' },
+  ],
+  files_changed: ['a.js'],
+  skipped: [],
+  summary: 'Fixed one finding.',
+};
+
+const SIMPLE_SCHEMA = {
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  type: 'object',
+  required: ['domain', 'summary'],
+  properties: {
+    domain: { type: 'string', minLength: 1 },
+    summary: { type: 'string', minLength: 1 },
+    fixes: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['finding_id', 'description'],
+        properties: {
+          finding_id: { type: 'string' },
+          description: { type: 'string' },
+        },
+      },
+    },
+  },
+};
+
+test('schema-conformance: valid output passes', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('scripts/agent-output.schema.json', JSON.stringify(SIMPLE_SCHEMA));
+  fx.write('outputs/agent.json', JSON.stringify(VALID_AMEND_OUTPUT));
+  const cfg = fx.config({
+    checks: [{
+      id: 'sc',
+      kind: 'schema-conformance',
+      title: 'sc',
+      schema: 'scripts/agent-output.schema.json',
+      targets: ['outputs/*.json'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, true, JSON.stringify(result.reports));
+});
+
+test('schema-conformance: missing required `domain` triggers drift', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('scripts/agent-output.schema.json', JSON.stringify(SIMPLE_SCHEMA));
+  const broken = { ...VALID_AMEND_OUTPUT };
+  delete broken.domain;
+  fx.write('outputs/agent.json', JSON.stringify(broken));
+  const cfg = fx.config({
+    checks: [{
+      id: 'sc',
+      kind: 'schema-conformance',
+      title: 'sc',
+      schema: 'scripts/agent-output.schema.json',
+      targets: ['outputs/*.json'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, false);
+  assert.match(result.reports[0].message, /schema validation failed/);
+  assert.equal(result.reports[0].error?.name, 'AgentOutputValidationError');
+});
+
+test('schema-conformance: missing required `summary` triggers drift', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('scripts/agent-output.schema.json', JSON.stringify(SIMPLE_SCHEMA));
+  const broken = { ...VALID_AMEND_OUTPUT };
+  delete broken.summary;
+  fx.write('outputs/agent.json', JSON.stringify(broken));
+  const cfg = fx.config({
+    checks: [{
+      id: 'sc',
+      kind: 'schema-conformance',
+      title: 'sc',
+      schema: 'scripts/agent-output.schema.json',
+      targets: ['outputs/*.json'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, false);
+  assert.match(result.reports[0].message, /schema validation failed/);
+});
+
+test('schema-conformance: missing fix `finding_id` field triggers drift', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('scripts/agent-output.schema.json', JSON.stringify(SIMPLE_SCHEMA));
+  fx.write('outputs/agent.json', JSON.stringify({
+    domain: 'x',
+    summary: 'y',
+    fixes: [{ description: 'no finding_id' }],
+  }));
+  const cfg = fx.config({
+    checks: [{
+      id: 'sc',
+      kind: 'schema-conformance',
+      title: 'sc',
+      schema: 'scripts/agent-output.schema.json',
+      targets: ['outputs/*.json'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, false);
+  assert.match(result.reports[0].message, /finding_id|required/);
+});
+
+test('schema-conformance: malformed JSON reports drift with INVALID_JSON code', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('scripts/agent-output.schema.json', JSON.stringify(SIMPLE_SCHEMA));
+  fx.write('outputs/agent.json', '{ not valid json');
+  const cfg = fx.config({
+    checks: [{
+      id: 'sc',
+      kind: 'schema-conformance',
+      title: 'sc',
+      schema: 'scripts/agent-output.schema.json',
+      targets: ['outputs/*.json'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, false);
+  assert.equal(result.reports[0].error?.code, 'INVALID_JSON');
+});
+
+test('schema-conformance: allowlist exempts a target file', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('scripts/agent-output.schema.json', JSON.stringify(SIMPLE_SCHEMA));
+  fx.write('outputs/legacy.json', '{}'); // missing required fields, but allowlisted
+  const cfg = fx.config({
+    checks: [{
+      id: 'sc',
+      kind: 'schema-conformance',
+      title: 'sc',
+      schema: 'scripts/agent-output.schema.json',
+      targets: ['outputs/*.json'],
+      allowlist: ['outputs/legacy.json'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, true, JSON.stringify(result.reports));
+});
+
+test('schema-conformance: allowEmpty gate allows zero-target glob', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('scripts/agent-output.schema.json', JSON.stringify(SIMPLE_SCHEMA));
+  // No matching files written.
+  const cfg = fx.config({
+    checks: [{
+      id: 'sc',
+      kind: 'schema-conformance',
+      title: 'sc',
+      schema: 'scripts/agent-output.schema.json',
+      targets: ['nonexistent/*.json'],
+      allowEmpty: true,
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, true, JSON.stringify(result.reports));
+});
+
+test('schema-conformance: schema file missing reports config-error', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('outputs/agent.json', JSON.stringify(VALID_AMEND_OUTPUT));
+  const cfg = fx.config({
+    checks: [{
+      id: 'sc',
+      kind: 'schema-conformance',
+      title: 'sc',
+      schema: 'scripts/missing-schema.json',
+      targets: ['outputs/*.json'],
+    }],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg });
+  assert.equal(result.clean, false);
+  assert.equal(result.reports[0].severity, 'config-error');
+  assert.match(result.reports[0].message, /schema file not found/);
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// framework-self-test handler — meta-check
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('framework-self-test: every config entry has a registered handler', async (t) => {
+  const fx = makeFixture(t);
+  const cfg = fx.config({
+    checks: [
+      {
+        id: 'good',
+        kind: 'untagged-fence',
+        title: 'good',
+        targets: ['docs/*.md'],
+      },
+      {
+        id: 'self',
+        kind: 'framework-self-test',
+        title: 'self',
+        configPath: 'scripts/doc-drift-patterns.json',
+      },
+    ],
+  });
+  fx.write('docs/x.md', '# x\n');
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg, checkId: 'self' });
+  assert.equal(result.clean, true, JSON.stringify(result.reports));
+});
+
+test('framework-self-test: orphaned check kind without handler triggers drift', async (t) => {
+  const fx = makeFixture(t);
+  const cfg = fx.config({
+    checks: [
+      {
+        id: 'orphan',
+        kind: 'no-such-handler',
+        title: 'orphan',
+      },
+      {
+        id: 'self',
+        kind: 'framework-self-test',
+        title: 'self',
+        configPath: 'scripts/doc-drift-patterns.json',
+      },
+    ],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg, checkId: 'self' });
+  assert.equal(result.clean, false);
+  assert.match(result.reports[0].message, /unknown kind 'no-such-handler'/);
+});
+
+test('framework-self-test: missing required field in config entry triggers drift', async (t) => {
+  const fx = makeFixture(t);
+  const cfg = fx.config({
+    checks: [
+      {
+        id: 'incomplete',
+        kind: 'helper-adoption-sweep',
+        title: 'incomplete',
+        // Missing helper, exportName, forbiddenPattern, callers.
+      },
+      {
+        id: 'self',
+        kind: 'framework-self-test',
+        title: 'self',
+        configPath: 'scripts/doc-drift-patterns.json',
+      },
+    ],
+  });
+  const result = await runDriftChecks({ repoRoot: fx.dir, configPath: cfg, checkId: 'self' });
+  assert.equal(result.clean, false);
+  // Should flag at least one missing required field.
+  const fields = result.reports.map((r) => r.message);
+  assert.ok(
+    fields.some((m) => m.includes('helper')),
+    `Expected a report mentioning missing 'helper' field. Got: ${fields.join('; ')}`,
+  );
+});
+
+test('framework-self-test: REGISTERED_HANDLERS exposes all handler kinds', () => {
+  const kinds = Object.keys(REGISTERED_HANDLERS).sort();
+  // Lock the expected set so accidental handler removal surfaces.
+  assert.deepEqual(kinds, [
+    'forbidden-pattern-in-targets',
+    'framework-self-test',
+    'helper-adoption-sweep',
+    'schema-conformance',
+    'self-consistency',
+    'source-vs-target-coverage',
+    'untagged-fence',
+  ]);
+  for (const [kind, mod] of Object.entries(REGISTERED_HANDLERS)) {
+    assert.equal(mod.kind, kind, `handler at ${kind} must declare matching kind`);
+    assert.equal(typeof mod.run, 'function', `handler at ${kind} must export run()`);
+    assert.equal(typeof mod.description, 'string', `handler at ${kind} must declare description`);
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Multi-segment glob expansion (added in wave 26 to support
+// 'swarms/swarm-*/wave-*/*.json' for schema-conformance targets)
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('expandGlobs: multi-segment glob expands across multiple directory levels', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('swarms/swarm-001/wave-1/backend.json', '{}');
+  fx.write('swarms/swarm-001/wave-2/backend.json', '{}');
+  fx.write('swarms/swarm-002/wave-1/backend.json', '{}');
+  fx.write('swarms/templates/example.json', '{}');  // not a swarm-* dir
+  const matched = expandGlobs(['swarms/swarm-*/wave-*/*.json'], fx.dir);
+  assert.equal(matched.length, 3, JSON.stringify(matched));
+});
+
+test('expandGlobs: doublestar glob (recursive) walks subtrees when opts.recursive=true', async (t) => {
+  const fx = makeFixture(t);
+  fx.write('packages/a/lib/x.js', '');
+  fx.write('packages/a/sub/deep/y.js', '');
+  fx.write('packages/b/z.js', '');
+  fx.write('packages/c/skip.txt', '');
+  const matched = expandGlobs(['packages/**/*.js'], fx.dir, { recursive: true });
+  assert.equal(matched.length, 3, JSON.stringify(matched));
 });
