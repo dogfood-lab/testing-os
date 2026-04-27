@@ -66,7 +66,13 @@ const DEFAULT_SKIP_DIRS = new Set([
  * `node --test` and `vitest` discover tests in this repo.
  */
 export function classifyFile(filePath) {
-  const normalised = filePath.split(sep).join(posix.sep);
+  // Normalize BOTH separators: split() on the local sep handles host paths,
+  // but Windows paths (`C:\repo\...`) seen on Linux still contain backslashes
+  // verbatim. Replace `\\` globally so the regex/includes checks below work
+  // cross-platform. (See feedback_audit_path_sep_blind_spot — Linux runners
+  // were missing windows-classified test paths because sep === '/' on Linux
+  // collapses to a no-op split-join.)
+  const normalised = filePath.split(sep).join(posix.sep).replace(/\\/g, '/');
   if (/\.test\.[mc]?[jt]sx?$/.test(normalised)) return 'test';
   if (/\.spec\.[mc]?[jt]sx?$/.test(normalised)) return 'test';
   if (normalised.includes('/test/') || normalised.includes('/tests/')) return 'test';
