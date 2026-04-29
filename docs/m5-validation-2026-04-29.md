@@ -137,25 +137,13 @@ The error is loud — production code paths that write to a review log on exFAT 
 
 ### Wave-X candidate — Windows-only invocation paths in operator docs
 
-[CLAUDE.md](../CLAUDE.md) and [HANDOFF.md](../HANDOFF.md) contain hardcoded Windows-style paths in operator commands:
+[CLAUDE.md](../CLAUDE.md) and [HANDOFF.md](../HANDOFF.md) contain hardcoded Windows-style absolute paths in operator-command snippets — 1 in CLAUDE.md, 10 in HANDOFF.md, 11 total. Both files are the legitimate home for that historical context (the `[no-legacy-paths]` doc-drift gate explicitly exempts them as "where historical context belongs"), so the strings themselves aren't a violation. The wave-X surface is that those snippets are non-portable from this side of the M5 transition: on macOS, the Windows drive-letter prefix resolves to nothing, so any contributor copy-pasting them from a Mac shell will hit "no such file." Run `grep -nE 'F:/AI' CLAUDE.md HANDOFF.md` for the authoritative inventory; the line numbers are easier to read fresh than to maintain in two places.
 
-| File | Line | Path |
-|---|---|---|
-| [CLAUDE.md](../CLAUDE.md) | 105 | `node F:/AI/shipcheck/bin/shipcheck.mjs audit` |
-| [HANDOFF.md](../HANDOFF.md) | 44 | `node F:/AI/shipcheck/bin/shipcheck.mjs dogfood ...` |
-| [HANDOFF.md](../HANDOFF.md) | 45 | `node F:/AI/repo-knowledge/dist/cli.js sync-dogfood --local F:/AI/dogfood-lab/testing-os` |
-| [HANDOFF.md](../HANDOFF.md) | 73 | `cd F:/AI/repo-knowledge` |
-| [HANDOFF.md](../HANDOFF.md) | 74 | `node dist/cli.js sync-dogfood --local F:/AI/dogfood-lab/testing-os` |
-| [HANDOFF.md](../HANDOFF.md) | 94 | `Copy F:/AI/dogfood-labs/site/ → F:/AI/dogfood-lab/testing-os/site/` |
-| [HANDOFF.md](../HANDOFF.md) | 137 | `F:/AI/world-forge/scripts/sync-version.mjs` |
-| [HANDOFF.md](../HANDOFF.md) | 210 | `Everything inside F:/AI/ is migrated` |
-| [HANDOFF.md](../HANDOFF.md) | 217 | `git -C F:/AI/prototypes grep ...` |
-| [HANDOFF.md](../HANDOFF.md) | 221 | `git -C F:/AI/brand grep ...` |
-| [HANDOFF.md](../HANDOFF.md) | 316 | `Local clones at F:/AI/dogfood-labs/` |
+These are not runtime code — they are operator-shell snippets. None of them block testing-os from running on macOS.
 
-These are not runtime code — they are operator-shell snippets. None of them block testing-os from running on macOS. But they break copy-paste workflows from this side of the M5 transition. On macOS, `F:/AI/` resolves to nothing.
+**Status:** Wave-X candidate (post-shipping doc fix). Lowest-friction fix is parameterizing as `${WORKSPACE_ROOT}/AI/...` or a relative `../../shipcheck/bin/shipcheck.mjs` form that resolves from both Windows and macOS working trees. Not in scope for this session.
 
-**Status:** Wave-X candidate (post-shipping doc fix). Lowest-friction fix is parameterizing as `${WORKSPACE_ROOT}/AI/...` or a relative `../../shipcheck/bin/shipcheck.mjs` form that works from both `F:/AI/dogfood-lab/testing-os/` and `/Volumes/T9-Shared/AI/dogfood-lab/testing-os/`. Not in scope for this session.
+> **Edit-time meta-finding (this doc).** The first version of this section enumerated each path verbatim in a table. CI failed on `[no-legacy-paths]` because `docs/**` is in the doc-drift gate's path filter (wave-19 Class #11 sweep) and the gate matches on the literal strings regardless of whether they're being used as commands or quoted as evidence. Lesson: when adding a new file to `docs/`, audit what gates fire on that surface *before* committing — the `feedback_edit_time_surroundings_audit` discipline applies to gate boundaries, not just stale-path content. Discovered live in CI run [25092187159](https://github.com/dogfood-lab/testing-os/actions/runs/25092187159) within minutes of the original commit.
 
 ### Positive validations
 
