@@ -2,6 +2,164 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.7] — 2026-04-27
+
+Final swarm version. Wave-31 audit findings + Pattern #9/#10 reframes + the closing fence-tag self-incrimination instance. Phase 7 swarm declared complete (Option I — ship-and-stop): ~31 waves, ~115 fixes verified holding, 14 audit-coverage classes, 5 cross-pollination chains, Class #14 5-iteration recursion arc, methodology evidence at 5 layers. Cross-swarm methodology takeaways + 7-session post-swarm roadmap captured in [`docs/swarm-evidence-2026-04-27.md`](docs/swarm-evidence-2026-04-27.md).
+
+### Fixed
+
+- **`scripts/apply-finding-migration.mjs`** entrypoint detection — switched from `file://${process.argv[1]}` to canonical `pathToFileURL` pattern. Previous form silently no-op'd on Windows because `process.argv[1]` uses backslashes while `import.meta.url` is always POSIX/URL form. Caught by wave-31 audit-the-audit. Class #14 5th-iteration instance (productization caught its own incomplete productization).
+- **Untagged code fence** in [`docs/swarm-evidence-2026-04-27.md`](docs/swarm-evidence-2026-04-27.md) line 363 (`verified_via_distribution` display block) — closed by the doc-drift `untagged-fence` handler (Pattern #5, wave-23 origin) firing against the swarm's own closure receipt. Most fitting self-incrimination instance of the entire 31-wave run: the discipline closed on its own closing artifact.
+
+### Changed
+
+- **`cross_ref` data refinements** per wave-31 audit calibration: F-375053-003 symbol `MAX(ar2.id)` (non-identifier SQL) → `agentRuns` (line 72 variable). F-246817-002 symbol `validate` (too generic) → `remediated_at` line 177. F-129818-002 evidence wording tightened. F-091578-041 cross_ref entry added (was missed in v1.1.6). v2 `verified_via_distribution` shifted from `{ anchor:185, cross_ref:3, allowlist:5 }` to **`{ anchor:182, cross_ref:5, allowlist:6, unverifiable:6 }`**. claimed-but-still-present: 19 → 16. verified: 150 → 153.
+- **Pattern #9 reframe** (post-wave-31 two-instance evidence): wave 2 = 1.79× cascade leverage, wave 3 = 1.00×. Reframed from "structural fixes WILL produce 1.5×+ leverage" to "structural fixes CAN produce cascade closures." Cascade is a bonus, not a planning input.
+- **Pattern #10 prior-art reframe** (post-wave-31 ci-tooling audit): 3 organically-emerging instances predate wave-30's pattern naming (`sync-version.mjs --check`, `apply-finding-migration.mjs --check`, doc-drift `framework-self-test` handler). Wave 30 documented an organic practice rather than originating it. Future patterns: audit prior art before claiming origination.
+
+### Notes
+
+- Tests: 965/965 (no test changes; structural-only cleanup).
+- **Coordinator scope expansion** (2nd consecutive). Same 5-factor test as v1.1.6 holds. NOT blanket precedent — a 3rd instance warrants policy revisit.
+- [`docs/swarm-evidence-2026-04-27.md`](docs/swarm-evidence-2026-04-27.md) is the authoritative catalog for the entire Phase 7 swarm and the 7-session post-swarm roadmap (Sessions A–G). Read it before dispatching any future swarm against testing-os.
+
+## [1.1.6] — 2026-04-27
+
+Wave-30 v2 capability data infrastructure. Schema migration + data migration to wire `verify-fixed v2`'s vantage-point fields through the production data path (not just function-level mocks). Class #14 self-application: the v2 capability shipped at function level had a Class #14 vulnerability of its own at the data layer, caught at the migration boundary by coordinator semantic check.
+
+### Added
+
+- **`cross_ref TEXT`**, **`coordinator_resolved INTEGER NOT NULL DEFAULT 0`**, **`verified_via_evidence TEXT`** columns on `findings` table. SCHEMA_VERSION bumped 3 → 4 via existing idempotent `MIGRATIONS_SQL` pattern; mirrored in `db/schema.js` `CREATE TABLE` for fresh DBs.
+- **`scripts/apply-finding-migration.mjs`** — idempotent migration runner with `--check` mode, transaction-wrapped UPDATEs, per-finding skip-if-already-set check.
+- **`swarms/migrations/wave-30-incidental-cross-refs.json`** — manifest with 6 cross_ref + 5 coordinator_resolved entries; full audit trail including the 5-factor scope-expansion log.
+
+### Changed
+
+- **`loadFixedFindings`** (`lib/verify-fixed.js`) extended to SELECT new columns. Hydrates `cross_ref` JSON → object, `coordinator_resolved` 0/1 → boolean. v2 classifier now reads vantage-point fields from production data.
+- **`verified_via_distribution`** shifted from `{ anchor: 193, cross_ref: 0, allowlist: 0 }` to **`{ anchor: 185, cross_ref: 3, allowlist: 5, unverifiable: 6 }`**. claimed-but-still-present: 27 → 19 (-8); verified: 141 → 150 (+9). 3 cross_ref entries fell through to anchor (primary anchor matched in current state) — fall-through path of v2 worked as designed.
+
+### Notes
+
+- **Pattern #10 (NEW)** documented in [`docs/swarm-evidence-2026-04-27.md`](docs/swarm-evidence-2026-04-27.md): 2-step FAILS-then-PASSES proof gate. Distinct from Pattern #2 (`doesNotMatch` unit-level) — Pattern #10 is safety-mechanism efficacy at integration / concurrency level. (Subsequently reframed in v1.1.7 as "documented organic practice, not original.")
+- **Class #14 maturation — 4th evidence class:** methodology self-application. Future productization waves should include "wired through to production data path" verification as part of the wave's own closure check, not just function-level test coverage.
+- **Coordinator scope expansion** (1st instance): schema + data migration applied without agent dispatch under a documented 5-factor test (antecedents in place; bounded scope ~50 LoC across 5 files; authority alternative cost ≥10×; methodology stakes; full coordinator context). NOT blanket coordinator authority for small dev tasks.
+- Tests: 965/965 unchanged from v1.1.5 (schema + query plumbing exercised end-to-end via the production v2 run).
+
+## [1.1.5] — 2026-04-27
+
+Phase 7 wave 3. `verify-fixed v2` verb family + pipeline atomicity. Class #14b productization (classifier vantage-point limit surfaced wave-29) and structural-concurrency closures on event-log + index rebuild. Tests: 899 → 965 (+66; backend +45, ingest +21).
+
+### Added
+
+- **`lib/verify-classifier-v2.js`** — shared base with 5-value `verified_via` vantage-point disclosure (anchor / cross_ref / allowlist / agent_attestation / unverifiable). Decision order: allowlist → agent_attestation → anchor. cross_ref overrides `claimed-but-still-present` (Class #14b core: symbol is the target of consumer-side fix) but NOT `regressed` (anchor movement is real signal). Pattern #8 shared envelope with `verified_via_distribution`.
+- **`swarm verify-recurring`**, **`swarm verify-unverified`**, **`swarm verify-approved`** sibling commands (FT-BACKEND-EXTRA-A/B/C — completes the verb family).
+- **`findings/lib/file-lock.js`** — cross-process advisory lock. `writeFileSync(tmp, pid) + linkSync(tmp, lockPath)` one-syscall publication closes the `open(wx)+writeSync` race. Dead-PID stale recovery via rename-to-graveyard CAS (necessary because unlink+create produces double-owner race on holder-release / stale-detect collision). Closes Windows dirent-cache TOCTOU on `existsSync → readFileSync` via try/catch on ENOENT inside the locked critical section.
+- **`packages/ingest/lib/atomic-write.js`** — sibling helper for ingest, cycle-blocked from importing the findings/lib copy. Two-phase commit + journal `.in-progress.<pid>.<rand>.json` for `rebuildIndexes` 3-file transactional atomicity. Promote in dependency order; idempotent `cleanupCrashedJournals` at every entry.
+- **2-step FAILS-then-PASSES proof gate** for the lock — `DISABLE_APPEND_LOCK=1` reproduces race (3 multi-process iterations fail); without env var 12/12 pass × 30 consecutive runs. Switch preserved as documented proof gate.
+
+### Changed
+
+- **`commands/verify-fixed.js`** refactored to v2 (schema `verify-fixed-delta/v2`). Closes F-WAVE29-001 (verify-fixed v1 vantage-point limit surfaced wave 29).
+- **F-091578-041** message-shape pin in `wave12-observability.test.js` (carryover).
+
+### Notes
+
+- **Class #14 reframed as fractal** with sub-modes 14a (human claim, productized as verify-fixed v1) and 14b (classifier vantage-point limit, productized as v2). Methodology axiom: verification has fractal structure.
+- **New methodology section** in [`docs/swarm-evidence-2026-04-27.md`](docs/swarm-evidence-2026-04-27.md): "Methodology recursion — three evidence classes" capturing progression from substantive → methodology → methodology-efficacy across waves 1-29.
+- **Pattern #9 first numerical leverage measurement:** wave 2 dispatched 14 items → 25 effective closures = **1.79× cascade leverage** (interpretation reframed in v1.1.7).
+- Wave 30 (Phase 7 feature-execute): 2 active domains, 0 ownership violations, 0 NEW CRIT, 0 NEW HIGH. Invariants intact: F-742442-041 LIVE catch unchanged; W2-BACK-001 `validateAgentOutput` still wired; W2-PIPE-EXTRA `unsafe-segment.js` still sole definition.
+
+## [1.1.4] — 2026-04-27
+
+Phase 7 wave 2. Wave-1 follow-through + Class #14 LIVE catch. 12 cross-fix-deps + wave-27 addition + Phase 5 #1 canonical extraction (`unsafeSegment` helper). Tests 806 → 861 (+55). 4 active domains, 3 coordinator cleanups, zero ownership violations.
+
+### Added
+
+- **`lib/validate-agent-output.js`** (Ajv2020 + `AgentOutputValidationError` typed) wired into `collect.js` BEFORE legacy validators — schema-conformance enforced at write time, not just CI. Closes Class #11 end-to-end (W2-BACK-001).
+- **`packages/ingest/lib/unsafe-segment.js`** — Phase 5 #1 canonical extraction. `UNSAFE_SEGMENT` regex + `isUnsafeSegment` predicate. Workspace plumbing: ingest exports `./lib/*`; findings adds `@dogfood-lab/ingest` dep (one-way edge, no cycle). 3 callsites adopted: `persist.js`, `load-context.js` (both `loadRepoPolicy` + `githubScenarioFetcher`), `findings/derive/load-records.js`. Plus `wave28-unsafe-segment-discipline.test.js` mirrors wave-22 log-stage shape.
+- **`scripts/check-finding-regression-pins.mjs`** CI gate consuming wave-1 `parse-regression-pins.js`. Asymmetric: exits 1 only on `orphan_source_ids`. 15-test suite. Allowlist for parser permissive-prose limitation (3 entries).
+- **`AUDIT_CATEGORIES`** extended with 5 historical reused categories (`hygiene`, `error_message_quality`, `cli_help_quality`, `silent_failure`, `tests_coverage`). Coordinator mirrored into `agent-output.schema.json`.
+- **correlation_id** at backend logStage callsites (`collect.js:upsert_findings_failed`, `dispatch.js:isolate_failed`). `coord-<base36-ts>-<rand4>` sibling to FT-PIPELINE-004's `ing-*` pattern. `lib/log-stage.js` `formatHumanBanner()` surfaces correlation_id (handles snake_case + camelCase defensively).
+- **`--write-index`** opt-in flag (default null). Mike-controlled workflow enablement.
+
+### Changed
+
+- **6 dogfood-swarm/ atomic-write callers** migrated to the shared helper. `lib/verify/runner.js` confirmed STALE (no callsites — removed). Raw `writeFileSync` count in dogfood-swarm/ source: 11 → 0.
+- **F-id pin sweep** across `packages/dogfood-swarm/test/` (68 → 69) and `packages/{verify,findings,ingest}/`. `findings.test.js` 0 → 9 pins; `advise.test.js` 0 → 7 pins. Anchor: F-742442-047 (advise/query.js dead-code filter regression target).
+- **verify chain** extended with `check-regression-pins` as hard-gate before `test:scripts`. test:scripts: 75 → 91 (+16).
+- **SVG currency assertion** in `check-handbook-imagery.test.mjs` (W2-CI-004, NEW from wave-27 D27-DOCS-001) — reads `checks.length=13` from `doc-drift-patterns.json` + parses `verify-output.svg` caption + desc; asserts 13/13/13 match. Self-reflexive Class #11 instance.
+- **`verify-output.svg` + `beginners.md` alt text** refreshed (5 → 13 checks).
+- **`packages/portfolio/package.json`** adds `exports` field per CLAUDE.md rule #4 (coordinator cleanup).
+
+### Fixed
+
+- **F-742442-041 path-traversal guard** missing in `loadRecordsForRepo` despite being marked [fixed] in wave-11/13. Canonical wave-1 incomplete-fix CONFIRMED LIVE — one of the 27 claimed-but-still-present findings the wave-27 verify-fixed run predicted. Helper-adoption sweep simultaneously closed Class #9 propagation gap AND re-established the F-742442-041 contract.
+
+### Notes
+
+- **Pattern #8 (parallel cross-pollination)** validated again: backend's W2-BACK-004 `unsafeSegment` surfacing → pipeline's W2-PIPE-EXTRA delivered in parallel without sequential handoff. Two confirmed instances now.
+- **Class #14 maturation:** wave-24 prediction → wave-27 productized verify-fixed (27 claimed-but-still-present) → wave-28 surfaced ONE concrete instance (F-742442-041 missing guard). The discipline is no longer hypothetical.
+- Coordinator cleanups (3, mechanical): `agent-output.schema.json` category enum mirror; `doc-drift-patterns.json` atomic-write allowlist 13 → 6 entries; portfolio `exports` field.
+- Tests at v1.1.4: 861/861 (test:scripts 91; dogfood-swarm 335 (+31 wave28-cross-fix); ingest 64 (+8 net; wave28-unsafe-segment +18, refactors -10)).
+
+## [1.1.3] — 2026-04-27
+
+Phase 7 wave 1. Drift-checker framework + Class #14 productization. 6 features (2 CRIT + 4 HIGH), 4 active domains, 0 ownership violations. 12 of 14 audit-coverage classes now tooling-or-config-enforced. Tests 704 → 844 (+140; 731 workspace JS + 38 schemas vitest + 75 scripts).
+
+### Added
+
+- **`scripts/check-doc-drift.mjs` 7-handler framework** — generalized from single-purpose to `helper-adoption-sweep`, `schema-conformance`, `framework-self-test` + 4 refactored. Closes Class #9 systematically — drift-checker family becomes truly general. 17 → 41 tests in scripts/. (FT-CITOOLING-001)
+- **`scripts/agent-output.schema.json`** — JSON Schema 2020-12 collect-time schema-conformance gate, lockstep with `packages/dogfood-swarm/lib/output-schema.js`. Closes Class #11 as write-time contract. Re-routed from `swarms/` → `scripts/` per Phase 5 #7 edit_path discipline (third instance of audit-surface != edit-surface routing class). (FT-CITOOLING-002)
+- **`swarm verify-fixed`** command + `lib/verify-fixed.js` classifier (`verify-fixed-delta/v1` shape, 4-way classification with +/-2-line tolerance, anchor preference for symbol then identifier, exit codes per wave-18 3-way 0/1/2). 269 → 304 tests. **First live run on `swarm-1777234130-30e3` across 199 fixed findings: 141 verified / 27 claimed-but-still-present / 25 regressed / 6 unverifiable. 52 of 199 (26%) need re-investigation.** Class #14 productization caught at scale what wave-by-wave audits missed. (FT-BACKEND-002)
+- **Regression-on-historical-bugs harness** — F-id pin sweep across `packages/{report,portfolio,schemas}` + `parse-regression-pins.js` library function. Asymmetric design: only `orphan_source_ids` trigger CI failure. Portfolio 21 → 57 tests. (FT-OUTPUTS-001)
+- **`--verify-only` flag** — filesystem side-effect-free verify path; `would_persist_to` via `computeRecordPath`; `verifyOnly()` exported from `@dogfood-lab/ingest`. 90% built before audit (existing internal `_skipPersist` path) — validates the "rich `lib/`, thin CLI veneer" thesis. (FT-PIPELINE-001)
+- **correlation IDs** flow through 12 `logStage` callsites (8 in ingest + 4 in verifyOnly). `run_id` for valid submissions; synthetic `ing-<base36-ts>-<rand4>` for invalid. Wave-22 wrapper-strip pattern preserved. 42 → 56 ingest tests. (FT-PIPELINE-004)
+- **[`docs/swarm-evidence-2026-04-27.md`](docs/swarm-evidence-2026-04-27.md)** — Phase 10 Refinement-4 evidence catalog (24 waves, 4 stages, ~82 fixes, 14 audit-coverage classes, 7 positive design patterns, 5 cross-pollination chains, 10 Phase 5 candidates with 2 confirmed). Markdown fallback after `rk init` failed during Phase 10 with `ENOENT: schema.sql not found` in npm-cached `@mcptoolshop/repo-knowledge@1.0.5` (broken-package, sibling to wave-1 ai-loadout build issue).
+
+### Fixed
+
+- **`classifyFile` cross-platform path normalization** (portfolio) — used `filePath.split(sep).join(posix.sep)` which is a no-op when `sep === '/'` on the GHA Linux runner. Windows-format inputs (`C:\repo\...\test\...`) hit regex/includes checks with backslashes still in place — `'\test\'` does not match `'/test/'`. Fix: replace `\` globally after split/join. Documented `path.sep` blind-spot family (`memory/feedback_audit_path_sep_blind_spot.md`). Test was correctly written from the start; implementation lagged because wave-1 work was authored on Windows.
+- **pa11y `--no-sandbox` shim** for GHA puppeteer — wave-22 pa11y CI gate (D-OUT-003) failed first run because GitHub Actions ubuntu-latest disables the SUID sandbox. Inline `/tmp/pa11y-ci.json` with `chromeLaunchConfig.args [--no-sandbox, --disable-setuid-sandbox]`. Kept inline rather than checked-in `.pa11yrc.json` because the only reason the config exists is the GHA runner kernel constraint. CI run 24977857262 surfaced this.
+- **Light-mode accent ramp** — `--sl-color-accent: #34d399` (logo emerald) gives 1.92:1 contrast against light-mode white, failing WCAG AA 4.5:1. Pa11y reported 6 violations across links / TOC / breadcrumbs. Resolves D-DOCS-004 per audit option (a): `html[data-theme='light']` block with `#008857` (darker emerald, same hue, 4.55:1 = WCAG AA pass). Dark mode unchanged at `#34d399` (logo-matching). `check-accent-color.test.mjs` still asserts dark-mode value matches logo; light-mode is a derived value, intentionally NOT asserted. **Methodology finding**: TEST SURFACE != VISUAL SURFACE. Wave-23 contrast unit test only audited callout body text. Pa11y on real deployed site caught violations the unit test didn't reach. New Phase 5 candidate #10: contrast unit test should sweep ALL text-using-accent surfaces in BOTH modes.
+
+### Notes
+
+- **Positive design pattern #8 (NEW):** contract-specified parallel cross-pollination. Outputs and backend produced compatible JSON shapes from briefing-specified contract alone — no serialized hand-off, no consumer awareness of producer's prior output. The strongest cross-pollination form yet observed.
+- **Class #9 maturation 4-stage progression:** briefing-only → audit-time sweep → amend-time sweep → execution-time sweep. Backend agent surfaced 3 sibling commands (`verify-recurring`, `verify-unverified`, `verify-approved`) DURING execution of FT-BACKEND-002 — Class #9 sweep discipline now agent-internalized at execution time.
+- Phase 5 audit calibration validated: effort estimates exact (4M + 2S delivered as predicted). "Rich `lib/*`, thin CLI veneer" thesis held — many "missing capabilities" were wiring for already-shipped library code.
+- Wave 27 re-audit: 0 NEW CRIT / 0 NEW HIGH / 1 NEW MED / 9 LOW. Remaining un-tooled classes: #5 worktree filesystem behavior (architectural); #12 under-triaged observability calibration (human discipline).
+- Cross-pollination chain #2 (logStage extraction): VERIFIED COMPLETE four ways (wave-22 sweep, wave-24 re-sweep, Phase 9 stress test, Phase 7 wave 1 correlation_id pinning).
+
+## [1.1.2] — 2026-04-27
+
+Comprehensive dogfood swarm execution across 24 waves and 4 stages, applied to testing-os itself (the swarm tooling auditing the swarm tooling). Total: ~82 verified-holding fixes; +231 tests over baseline (473 → 704).
+
+### Added
+
+- **Stage A** (waves 1-6): 22 amends, bug/security pass — 508 tests.
+- **Stage B** (waves 7-15): 28 amends, proactive defensive pass + 12 audit-coverage taxonomy classes documented — 643 tests.
+- **Stage C** (waves 16-20): 21 amends, humanization pass + 5 cross-pollination chains validated + 2 Stage C reference pages (`state-machines.md`, `error-codes.md`) — 688 tests.
+- **Stage D** (waves 21-24): 11 amends, visual-polish pass — 704 tests. Headline deliverables: pa11y CI gate (`.github/workflows/pages.yml`) on deployed handbook; severity-tier visual distinction in `error-codes.md` via Starlight Asides; mobile nav `<details>` disclosure under 768px; accent-color reconciled to logo (`#34d399` emerald, verified against logo file — caught a verifiable lie in the prior comment); architecture SVG diagram + CLI screenshot SVG (real, accessible); 3 ASCII state diagrams matching prose+tables exactly; TTY-aware findings renderer (`lib/findings-render.js`) extending wave-17 `shouldEmitHuman` pattern with `DOGFOOD_FINDINGS_FORMAT` env override.
+- **Cross-pollination chain #2** (logStage extraction) verified COMPLETE end-to-end via wave-22 sweep + wave-24 re-sweep + Phase 9 stress test.
+- **Wave 22 ingest atomicity:** D-PIPE-001 ingest private logStage → shared helper migration + sweep invariant test (regression catches future private logStage definitions); D-PIPE-002 stage-collision spread-last-wins → `failed_stage` rename + defensive wrapper-strip belt-and-braces; D-OUT-003 minimum visual regression CI gate (pa11y + cross-wave-deferred contrast unit test slot).
+
+### Changed
+
+- **Wave 22 collect-time normalize** for pipeline.json (lowercase severities; summary/detail field names; fingerprint disambiguation).
+- **Wave 23 `package.json` test:scripts** wire-up (3 new docs-written test files: `check-severity-contrast`, `check-accent-color`, `check-handbook-imagery`; 28 → 52 tests).
+- **Phase 9 F-916867-001:** `state-machines.md` "default 14 days" → "default 30 days" matching `DEFAULT_MAX_AGE` in `portfolio/generate.js`.
+- **Wave 23 ownership-violation override:** docs agent edited 6 files in `scripts/` (ci-tooling domain) per under-specified coordinator briefing on cross-wave handoff. Override logged in `agent_state_events` with full rationale. Routing model deficit promoted to confirmed Phase 5 #7 deliverable. Wave-24 re-audit confirmed the work belongs in scripts/ stylistically.
+
+### Notes
+
+- **Methodology corrections** (Stage D closure receipt — 8 items): cross-pollination claim shape (validate against new + pre-existing callers + sweep automation in place + invariant test); within-stage vs across-stage convergence are distinct properties; Class #9 sweep-automation now evidence-backed; wrapper-strip / choke-point pattern (fix at choke-point so bug-class is impossible to recur); cross-wave-dependency as first-class skip reason; logo-verification-first (read the file, not the comment); state-machine-aware drift handler; `edit_path` field distinct from `file_path`.
+- **Positive design patterns documented** (cumulative): verdict-first banner, doesNotMatch sanity check, reference-page-as-glossary, choke-point-fix-makes-bug-class-impossible, state-machine-aware drift handler, cross-wave-dependency formalized.
+- **Phase 5 candidates surfaced** (9 total, 2 confirmed at v1.1.2): CONFIRMED — `check-shared-helper-adoption.mjs` / `check-drift.mjs` generalization; `edit_path` field distinct from `file_path`. Candidates: swarm tail real-time human banner; provenance-on-display for resolve-vs-stored values; visual regression CI gate productization (beyond pa11y); cross-repo drift-checker (Class #13 propagation); collect-time normalize step for agent-format-drift; cross-wave-dependency formal skip in briefing template; vitest config narrowing (Phase 9).
+- **Self-incrimination tally** (swarm tooling bugs caught + fixed by the swarm running on it): findings-digest severity arithmetic + file-glob (waves 8-9); fingerprint description-hash + ID-as-symbol disambiguation (wave 8); classifier marking deferrals as fixed without evidence (wave 7); `dispatch.js --isolate` silent fallback (wave 12); `dispatch.js` domain-filter dumping all findings to all agents (wave 2.5); logStage cross-pollination chain incomplete (wave 22).
+- Wave 24 deferred to Phase 5: F-916867-002/003 (wave-1 "marked [fixed]" without actually landing — recurring incomplete fix detection); F-916867-004 (portfolio CLI verdict-first carryover); F-916867-005 (path-traversal helper missing in 1 of 3 callsites); GHA UI screenshot from D-DOCS-008; Mermaid stateDiagram-v2 (build-time SVG, not runtime).
+- Brand canon discipline: `site/public/logo.png` byte-untouched (sha256 30093bd6..., 950504 bytes). Translations: Mike runs polyglot-mcp locally per discipline.
+- Tests at v1.1.2: 704/704 pass, 0 fail. Vitest separately reports 38 schema-package tests passing; 6 file-load "failures" are pre-existing config issue (vitest walking workspace, trying to load node:test format files). Phase 5 candidate #9.
+
 ## [1.1.1] — 2026-04-25
 
 Bug fix release. Two Stage D dispatch blockers shipped in v1.1.0 caught at first dispatch (no agents ran yet):
