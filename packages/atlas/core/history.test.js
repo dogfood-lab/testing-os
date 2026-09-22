@@ -93,22 +93,30 @@ describe('git history', () => {
     assert.ok(history.appliedChangesetLimit <= 2);
   });
 
-  it('omits a twice-touched file and keeps a 60 percent pair only on the fallen floor', () => {
+  it('omits a twice-touched file and drops a pair the larger-count measure would keep', () => {
     const fallen = repo();
     const filler = {};
     for (let i = 0; i < 8; i += 1) filler[`pad${i}.txt`] = 'p\n';
     commit(fallen, filler);
     commit(fallen, { 'once.txt': '1\n' });
     commit(fallen, { 'once.txt': '2\n' });
+    // a and b each have 5 qualifying commits, 3 of them shared.
+    // Dividing by the larger count gives 3/5. The union is 7, so 3/7 is under half.
     for (let i = 0; i < 3; i += 1) commit(fallen, { 'a.txt': `a${i}\n`, 'b.txt': `b${i}\n` });
     commit(fallen, { 'a.txt': 'a-extra\n' });
     commit(fallen, { 'a.txt': 'a-extra-2\n' });
     commit(fallen, { 'b.txt': 'b-extra\n' });
     commit(fallen, { 'b.txt': 'b-extra-2\n' });
+    for (let i = 0; i < 4; i += 1) commit(fallen, { 'c.txt': `c${i}\n`, 'd.txt': `d${i}\n` });
+    commit(fallen, { 'c.txt': 'c-extra\n' });
+    commit(fallen, { 'd.txt': 'd-extra\n' });
     const thin = loadHistory(fallen, params);
     assert.equal(thin.floor, 'fallen');
     assert.equal(thin.sharedFloorUsed, 3);
-    assert.equal(thin.pairs.some((pair) => pair.a === 'a.txt' && pair.b === 'b.txt'), true);
+    assert.equal(thin.pairs.some((pair) => pair.a === 'a.txt' && pair.b === 'b.txt'), false);
+    const kept = thin.pairs.find((pair) => pair.a === 'c.txt' && pair.b === 'd.txt');
+    assert.equal(kept.either, 6);
+    assert.equal(kept.shared, 4);
     assert.equal(thin.pairs.some((pair) => pair.a === 'once.txt' || pair.b === 'once.txt'), false);
 
     const rich = repo();

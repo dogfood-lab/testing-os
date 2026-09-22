@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { loadHistory } from '../core/history.js';
 
 const CHURN_DEFINITION = 'commits is how many commits in the window touch the file, including merges and commits dropped from coupling. lines is added plus deleted in those commits.';
+const STRENGTH_DEFINITION = 'strength is the shared qualifying commits divided by either. either is the number of qualifying commits that touch either file.';
 const DROP = 0.2;
 
 function round(value) {
@@ -169,6 +170,7 @@ export function buildStatistics({ repo, commit, document, artifact, generatedAt 
     },
     confidence: { level: confidence, reason },
     churn: { definition: CHURN_DEFINITION, files: measured.churn },
+    strengthDefinition: STRENGTH_DEFINITION,
     pairs: measured.pairs,
     boundaries: applyMarks(rows, previous, measured.floor === 'fallen').sort((a, b) => (a.name < b.name ? -1 : 1)),
   };

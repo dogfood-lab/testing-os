@@ -3,8 +3,8 @@ import { spawnSync } from 'node:child_process';
 /**
  * Churn counts every commit in the window, including merges and commits
  * that coupling drops. lines is added plus deleted. Coupling strength is
- * the shared commits divided by the larger of the two files' qualifying
- * commit counts, so a pair at 3 shared out of 5 is 60 percent.
+ * the shared qualifying commits divided by the commits that touch either
+ * file, which is the union of the two files' qualifying commits.
  */
 
 function git(repo, args) {
@@ -134,7 +134,7 @@ export function analyzeHistory(commits, options) {
       const [right, rightSet] = eligible[j];
       let shared = 0;
       for (const hash of leftSet) if (rightSet.has(hash)) shared += 1;
-      const denominator = Math.max(leftSet.size, rightSet.size);
+      const denominator = leftSet.size + rightSet.size - shared;
       const strength = denominator === 0 ? 0 : shared / denominator;
       if (shared < floorUsed || strength < strengthFloor) continue;
       const a = left < right ? left : right;
