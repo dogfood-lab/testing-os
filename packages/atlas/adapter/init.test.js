@@ -51,17 +51,21 @@ describe('atlas init', () => {
     writeJson(join(root, 'package.json'), { name: 'basic', workspaces: ['packages/*'] });
     writeJson(join(root, 'packages', 'alpha', 'package.json'), { name: '@dogfood-lab/alpha', main: './index.js' });
     writeJson(join(root, 'packages', 'beta', 'package.json'), { name: '@dogfood-lab/beta', main: './index.js' });
+    writeFileSync(join(root, 'packages', 'beta', 'extra.test.js'), 'export const extra = 1;\n');
+    writeFileSync(join(root, 'packages', 'beta', 'more.test.js'), 'export const more = 1;\n');
     commitTree(root);
     const result = atlas(root, ['init']);
     assert.equal(result.status, 0, result.stdout + result.stderr);
-    assert.match(result.stdout, /proposed 2 boundaries from package manifests/);
-    assert.match(result.stdout, /scripts\/legacy\.mjs/);
-    assert.match(result.stdout, /status: proposed/);
+    assert.match(result.stdout, /proposed 4 boundaries from workspace packages and top-level directories/);
+    assert.match(result.stdout, /README\.md/);
     const doc = readBoundaryFile(root);
     assert.equal(doc.ok, true, doc.details?.join('\n'));
     assert.equal(doc.summary, '');
-    assert.deepEqual(doc.boundaries.map((boundary) => boundary.name), ['alpha', 'beta']);
-    assert.deepEqual(doc.boundaries.map((boundary) => boundary.globs), [['packages/alpha/**'], ['packages/beta/**']]);
+    assert.deepEqual(doc.boundaries.map((boundary) => boundary.name), ['alpha', 'beta', 'scripts', 'shared']);
+    assert.deepEqual(
+      doc.boundaries.map((boundary) => boundary.globs),
+      [['packages/alpha/**'], ['packages/beta/**'], ['scripts/**'], ['shared/**']],
+    );
     assert.ok(doc.boundaries.every((boundary) => boundary.status === 'proposed'));
     assert.ok(doc.boundaries.every((boundary) => boundary.why_from === 'derived' && boundary.will_break_from === 'derived'));
     assert.ok(doc.boundaries.every((boundary) => boundary.start_here == null));
@@ -110,6 +114,29 @@ describe('atlas init', () => {
     const human = atlas(root, ['init', '--force']);
     assert.equal(human.status, 2);
     assert.match(human.stdout, /ATLAS_INIT_WOULD_OVERWRITE/);
+  });
+
+  it('proposes workspace members and leaves a manifest outside those globs in a directory boundary', () => {
+    const root = scratch();
+    writeJson(join(root, 'package.json'), { name: 'host', workspaces: ['packages/*'] });
+    writeJson(join(root, 'packages', 'app', 'package.json'), { name: 'app', main: './index.js' });
+    writeFileSync(join(root, 'packages', 'app', 'index.js'), 'export const app = 1;\n');
+    writeFileSync(join(root, 'packages', 'app', 'a.test.js'), 'export const a = 1;\n');
+    writeFileSync(join(root, 'packages', 'app', 'b.test.js'), 'export const b = 1;\n');
+    writeJson(join(root, 'fixtures', 'demo', 'package.json'), { name: 'demo', main: './index.js' });
+    writeFileSync(join(root, 'fixtures', 'demo', 'index.js'), 'export const demo = 1;\n');
+    mkdirSync(join(root, 'docs'), { recursive: true });
+    writeFileSync(join(root, 'docs', 'guide.md'), '# Guide\n');
+    writeFileSync(join(root, 'README.md'), '# Host\n');
+    commitTree(root);
+    const result = atlas(root, ['init']);
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+    const doc = readBoundaryFile(root);
+    assert.equal(doc.ok, true, doc.details?.join('\n'));
+    assert.deepEqual(doc.boundaries.map((boundary) => boundary.name), ['app', 'docs', 'fixtures']);
+    assert.equal(doc.boundaries.find((boundary) => boundary.name === 'app').role, 'code');
+    assert.equal(doc.boundaries.find((boundary) => boundary.name === 'docs').role, 'docs');
+    assert.match(result.stdout, /README\.md/);
   });
 
   it('does not propose a manifest that contains another manifest', () => {

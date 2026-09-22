@@ -259,9 +259,7 @@ with a reason is exempt and appears in Orientation as unnamed. `start_here` fail
 only when both the pin and the derivation are empty, so a correct derived entry point is never
 retyped.
 
-**The proposal heuristic is one rule, not a clustering algorithm.** One boundary per package
-manifest; in a single-package repository, one per top-level child containing code, a single
-level deep. Nothing clusters. The benchmark finding that every architecture-recovery algorithm
+**The proposal heuristic is two rules that compose, and neither is a clustering algorithm.** First, one boundary per package the repository declares: when the root manifest names workspaces, exactly those members; otherwise every manifest in the tree. Then, for whatever remains, one boundary per top-level directory that contains tracked files, one level deep. Role comes from the non-test files: a boundary is test only when every code-shaped file in it matches the test conventions, so a package with a large colocated suite stays code. Nothing clusters. The benchmark finding that every architecture-recovery algorithm
 leaves significant gaps is therefore a caution on this proposal step, not a requirement for a
 second algorithm. A competing clusterer would fight the human for the pen; the divergence report
 in §5 is how the evidence argues instead.

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
+import picomatch from 'picomatch';
 
 const MANIFEST_BASENAMES = new Set(['pyproject.toml', 'setup.py', 'setup.cfg']);
 
@@ -26,9 +27,26 @@ function readJson(repoPath, rel) {
   }
 }
 
-function hasWorkspaces(pkg) {
-  if (!pkg || pkg.workspaces == null) return false;
-  return Array.isArray(pkg.workspaces) || typeof pkg.workspaces === 'object';
+function workspacePatterns(pkg) {
+  if (!pkg || pkg.workspaces == null) return null;
+  if (Array.isArray(pkg.workspaces)) return pkg.workspaces.filter((pattern) => typeof pattern === 'string');
+  if (Array.isArray(pkg.workspaces.packages)) return pkg.workspaces.packages.filter((pattern) => typeof pattern === 'string');
+  return [];
+}
+
+function memberDirs(patterns, paths) {
+  const matchers = patterns.map((pattern) => picomatch(pattern, { dot: true }));
+  const dirs = [];
+  for (const path of paths) {
+    if (inAtlas(path) || !path.endsWith('/package.json')) continue;
+    const dir = path.slice(0, -'/package.json'.length);
+    if (dir && matchers.some((matches) => matches(dir))) dirs.push(dir);
+  }
+  return [...new Set(dirs)];
+}
+
+function claimed(path, dirs) {
+  return dirs.some((dir) => path === dir || path.startsWith(`${dir}/`));
 }
 
 export function manifestDirs(repoPath, paths) {
@@ -77,19 +95,41 @@ export function nameProposals(dirs) {
     .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 }
 
+/**
+ * The two rules compose. Workspace members, or every leaf manifest when the
+ * root names no workspaces, are claimed first. Each remaining top-level
+ * directory then gets one boundary. A directory that already contains a
+ * package boundary is left alone: its glob would swallow that package, and a
+ * glob list cannot subtract. Root files stay unassigned.
+ */
 export function proposalSet(repoPath, paths) {
   const root = paths.includes('package.json') ? readJson(repoPath, 'package.json') : null;
-  const dirs = manifestDirs(repoPath, paths);
-  const multi = hasWorkspaces(root) || dirs.length > 1;
-  if (multi) return { source: 'package manifests', proposals: nameProposals(leafDirs(dirs)) };
-  const tops = new Set();
+  const patterns = workspacePatterns(root);
+  let packageDirs;
+  let packageSource;
+  if (patterns) {
+    packageDirs = memberDirs(patterns, paths);
+    packageSource = 'workspace packages';
+  } else {
+    const manifests = manifestDirs(repoPath, paths).filter((dir) => dir !== '');
+    packageDirs = manifests.length > 0 ? leafDirs(manifests) : [];
+    packageSource = 'manifests';
+  }
+  const tops = [];
+  const seen = new Set();
   for (const path of paths) {
-    if (inAtlas(path)) continue;
+    if (inAtlas(path) || claimed(path, packageDirs)) continue;
     const slash = path.indexOf('/');
     if (slash === -1) continue;
     const top = path.slice(0, slash);
-    if (top === 'atlas') continue;
-    tops.add(top);
+    if (top === 'atlas' || seen.has(top)) continue;
+    if (packageDirs.some((dir) => dir === top || dir.startsWith(`${top}/`))) continue;
+    seen.add(top);
+    tops.push(top);
   }
-  return { source: 'top-level directories', proposals: nameProposals([...tops]) };
+  const proposals = nameProposals([...packageDirs, ...tops]);
+  let source = 'top-level directories';
+  if (packageDirs.length > 0 && tops.length > 0) source = `${packageSource} and top-level directories`;
+  else if (packageDirs.length > 0) source = packageSource;
+  return { source, proposals };
 }

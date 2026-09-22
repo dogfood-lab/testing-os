@@ -28,10 +28,11 @@ describe('derived templates', () => {
     );
   });
 
-  it('counts a test-shaped file toward test and does not let a tie flip the role', () => {
+  it('keeps a package code when its suite outnumbers its source, and reserves test for a suite', () => {
     assert.equal(isTestPath('packages/beta/beta.test.js'), true);
     assert.equal(fileKind('packages/beta/beta.test.js'), 'test');
-    assert.equal(roleFor(['packages/beta/index.js', 'packages/beta/beta.test.js']), 'code');
+    const suite = ['pkg/index.js', 'pkg/a.test.js', 'pkg/b.test.js', 'pkg/c.test.js'];
+    assert.equal(roleFor(suite), 'code');
     assert.equal(roleFor(['tests/check.js', 'tests/more.js']), 'test');
     assert.equal(roleFor(['docs/guide.md']), 'docs');
     assert.equal(roleFor(['config/a.json', 'config/b.yaml']), 'config');

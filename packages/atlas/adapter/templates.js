@@ -27,14 +27,20 @@ export function fileKind(path) {
   return extensionKind(path);
 }
 
-/** Majority rules. A tie is not a majority, so colocated tests do not flip a code boundary. */
+/**
+ * Colocated tests stay out of the count. A boundary is test only when every
+ * code-shaped file in it matches the test conventions. Otherwise the non-test
+ * files decide: any of them that is code-shaped makes the boundary code, and
+ * docs or config win only by majority when no such file exists.
+ */
 export function roleFor(paths) {
-  const counts = { test: 0, docs: 0, config: 0, code: 0 };
-  for (const path of paths) counts[fileKind(path)] += 1;
-  const total = paths.length;
-  if (total > 0 && counts.test > total / 2) return 'test';
-  if (total > 0 && counts.docs > total / 2) return 'docs';
-  if (total > 0 && counts.config > total / 2 && counts.code === 0) return 'config';
+  const nonTest = paths.filter((path) => !isTestPath(path));
+  if (nonTest.some((path) => extensionKind(path) === 'code')) return 'code';
+  if (nonTest.length === 0) return paths.some((path) => isTestPath(path)) ? 'test' : 'code';
+  const docs = nonTest.filter((path) => extensionKind(path) === 'docs').length;
+  const config = nonTest.filter((path) => extensionKind(path) === 'config').length;
+  if (docs > nonTest.length / 2) return 'docs';
+  if (config > nonTest.length / 2) return 'config';
   return 'code';
 }
 
