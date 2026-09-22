@@ -8,6 +8,7 @@ import { compareArtifacts } from './check.js';
 import { formatFailure } from './errors.js';
 import { initCommand } from './init.js';
 import { acceptanceFailures } from './ladder.js';
+import { renderAll, statedHashProblem } from './render.js';
 import { buildStatistics, serializeStatistics, statisticsProblem } from './statistics.js';
 import { writeArtifactSync } from './write.js';
 
@@ -43,16 +44,29 @@ export function mapCommand(cwd) {
   if (!commit) return usage('atlas: git rev-parse HEAD failed');
   const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
   const artifact = buildArtifact(mapped, commit);
-  const bytes = serializeArtifact(artifact);
-  writeArtifactSync(join(repo, 'atlas', 'structure.json'), bytes);
+  const now = new Date();
   const statistics = buildStatistics({
     repo,
     commit,
     document: boundary,
     artifact,
-    generatedAt: new Date().toISOString(),
+    generatedAt: now.toISOString(),
   });
-  writeArtifactSync(join(repo, 'atlas', 'statistics.json'), serializeStatistics(statistics));
+  const rendered = renderAll({
+    structure: artifact,
+    statistics,
+    document: boundary,
+    now,
+    testCommand: testScript(repo),
+    publicRepository: originIsPublic(repo),
+  });
+  const atlasDir = join(repo, 'atlas');
+  writeArtifactSync(join(atlasDir, 'structure.json'), serializeArtifact(artifact));
+  writeArtifactSync(join(atlasDir, 'statistics.json'), serializeStatistics(statistics));
+  writeArtifactSync(join(atlasDir, 'machine-stats.txt'), rendered.stats);
+  writeArtifactSync(join(atlasDir, 'machine.md'), rendered.machine);
+  writeArtifactSync(join(atlasDir, 'orientation.md'), rendered.orientation);
+  writeArtifactSync(join(atlasDir, 'dev.md'), rendered.dev);
   const unresolved = artifact.boundaries.reduce((sum, item) => sum + item.unresolvedSites, 0);
   process.stdout.write(
     [
@@ -65,6 +79,10 @@ export function mapCommand(cwd) {
       `  confidence:  ${mapped.importConfidence}`,
       'wrote atlas/structure.json',
       'wrote atlas/statistics.json',
+      'wrote atlas/orientation.md',
+      'wrote atlas/dev.md',
+      'wrote atlas/machine.md',
+      'wrote atlas/machine-stats.txt',
       '',
     ].join('\n'),
   );
@@ -118,6 +136,13 @@ export function checkCommand(cwd) {
         return 1;
       }
     }
+    const hashProblem = machineHashProblem(repo);
+    if (hashProblem) {
+      process.stdout.write(formatFailure('ATLAS_MACHINE_HASH_MISMATCH', [hashProblem], {
+        whatToDo: 'run atlas map and commit atlas/machine.md together with atlas/machine-stats.txt',
+      }));
+      return 1;
+    }
     process.stdout.write('atlas check\n  boundaries match the committed map\n');
     return 0;
   }
@@ -134,6 +159,32 @@ function failBoundary(boundary) {
 function usage(line) {
   process.stdout.write(`${line}\nexit 2\n`);
   return 2;
+}
+
+function machineHashProblem(repo) {
+  const mdPath = join(repo, 'atlas', 'machine.md');
+  const statsPath = join(repo, 'atlas', 'machine-stats.txt');
+  const mdExists = existsSync(mdPath);
+  const statsExists = existsSync(statsPath);
+  if (!mdExists && !statsExists) return null;
+  if (!mdExists || !statsExists) return 'atlas/machine.md and atlas/machine-stats.txt must stay together';
+  return statedHashProblem(readFileSync(mdPath, 'utf8'), readFileSync(statsPath));
+}
+
+function testScript(repo) {
+  try {
+    const pkg = JSON.parse(readFileSync(join(repo, 'package.json'), 'utf8'));
+    if (pkg && pkg.scripts && typeof pkg.scripts.test === 'string' && pkg.scripts.test.trim() !== '') return 'npm test';
+  } catch {
+    // A repository with no root manifest has no test script to name.
+  }
+  return "run this repository's tests";
+}
+
+function originIsPublic(repo) {
+  const result = spawnSync('git', ['remote', 'get-url', 'origin'], { cwd: repo, encoding: 'utf8' });
+  if (result.status !== 0) return false;
+  return /github\.com[:/]/i.test(result.stdout);
 }
 
 function repoRoot(cwd) {
