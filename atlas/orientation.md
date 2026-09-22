@@ -2,8 +2,8 @@
 
 ## What this is
 
-unnamed: what this repository is
-22 boundaries. 22 still unnamed.
+testing-os is the operating system for testing AI-assisted software: schemas for evidence, a verifier, an ingest pipeline that turns consumer submissions into records and indexes, a parallel-agent swarm protocol with its control plane, and Atlas, a mapper that shows how a repository works.
+22 boundaries. 0 still unnamed.
 
 If you maintain this repository: this is the map you would draw from memory, checked against the tree. Start where it disagrees with you.
 If you are new here: you have not opened this repository before. Start with the three actions below; each one tells you what to expect.
@@ -19,7 +19,7 @@ n_ingest["⌘ ingest · 80"]
 n_portfolio["⌘ portfolio · 23"]
 n_report["⌘ report · 24"]
 n_schemas["⌘ schemas · 37"]
-n_scripts["⌘ scripts · 63"]
+n_scripts["⌘ scripts · 65"]
 n_verify["⌘ verify · 63"]
 more["+ 1 more"]
 unassigned["· unassigned · 1"]:::unassigned
@@ -83,7 +83,7 @@ classDef unassigned stroke-dasharray: 4 3
 1. OPEN packages/schemas/src/index.ts
 2. RUN npm test
    passes when: exit 0
-3. BREAK Changing this breaks dogfood, dogfood-swarm, findings, ingest, report, scripts, verify; covered by tests in schemas (derived)
+3. BREAK Seven boundaries import it, dogfood, dogfood-swarm, findings, ingest, report, scripts and verify; a schema change is a contract change for every consumer and calls for a lockstep version bump.
    tests that cover it: its own (16 files)
 
 ## What you will break — schemas
@@ -99,5 +99,5 @@ classDef unassigned stroke-dasharray: 4 3
 | co-changes only | none |
 
 ## Still unnamed
-22 still unnamed. 1 unassigned file.
+0 still unnamed. 1 unassigned file.
 atlas/boundaries.yaml

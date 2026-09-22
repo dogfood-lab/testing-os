@@ -1,33 +1,33 @@
-generated: eed100a  2026-09-22T17:09:01.934Z
+generated: 31ee717  2026-09-22T20:32:47.956Z
 structure: 22 boundaries · 1 unassigned · 30 unresolved sites
-statistics: atlas/machine-stats.txt · sha256 9bb34bbfc3942c75fe0aed0ee55b6319a170cc6f4340628d3e0db7d135c98f2b · withdraw-after: 2026-10-20T17:09:01.934Z
+statistics: atlas/machine-stats.txt · sha256 be520575369ac5bbfbfa09657a47423afb8be3538b2247fd9809541f2d440116 · withdraw-after: 2026-10-20T20:32:47.956Z
 rule: if now (UTC) is after withdraw-after, do not load the statistics file;
       withdrawn numbers are not evidence that files are uncoupled
 confidence: low — fewer than 20 source files reach 10 revisions in the window
 
 ## Coarse
-.github  config  proposed  files 7  imports → none  ← imported by none  entry points: none
-assets  config  proposed  files 1  imports → none  ← imported by none  entry points: none
-atlas  code  proposed  files 46  imports → none  ← imported by none  entry points: packages/atlas/cli.js, packages/atlas/index.js
-docs  docs  proposed  files 21  imports → none  ← imported by none  entry points: none
-dogfood  config  proposed  files 15  imports → schemas  ← imported by none  entry points: none
-dogfood-swarm  code  proposed  files 349  imports → findings, report, schemas  ← imported by ingest, schemas, scripts  entry points: packages/dogfood-swarm/cli.js
-examples  config  proposed  files 5  imports → none  ← imported by none  entry points: none
-findings  code  proposed  files 81  imports → ingest, schemas, verify  ← imported by dogfood-swarm, ingest, portfolio, scripts  entry points: packages/findings/cli.js, packages/findings/index.js
-fixtures  code  proposed  files 147  imports → none  ← imported by none  entry points: none
-indexes  config  proposed  files 21  imports → none  ← imported by none  entry points: none
-ingest  code  proposed  files 80  imports → dogfood-swarm, findings, schemas, verify  ← imported by findings, scripts  entry points: packages/ingest/run.js
-policies  config  proposed  files 15  imports → none  ← imported by none  entry points: none
-portfolio  code  proposed  files 23  imports → findings  ← imported by scripts  entry points: packages/portfolio/generate.js
-records  config  proposed  files 95  imports → none  ← imported by none  entry points: none
-report  code  proposed  files 24  imports → schemas  ← imported by dogfood-swarm  entry points: packages/report/build-submission.js, packages/report/cli.js, packages/report/init.js
-reports  config  proposed  files 2  imports → none  ← imported by none  entry points: none
-root  docs  proposed  files 21  imports → none  ← imported by none  entry points: none
-schemas  code  proposed  files 37  imports → dogfood-swarm  ← imported by dogfood, dogfood-swarm, findings, ingest, report, scripts, verify  entry points: packages/schemas/src/index.ts
-scripts  code  proposed  files 63  imports → dogfood-swarm, findings, ingest, portfolio, schemas, verify  ← imported by none  entry points: none
-site  code  proposed  files 31  imports → none  ← imported by none  entry points: none
-swarms  docs  proposed  files 15  imports → none  ← imported by none  entry points: none
-verify  code  proposed  files 63  imports → schemas  ← imported by findings, ingest, scripts  entry points: packages/verify/cli.js, packages/verify/index.js
+.github  config  accepted  files 8  imports → none  ← imported by none  entry points: none
+assets  config  accepted  files 1  imports → none  ← imported by none  entry points: none
+atlas  code  accepted  files 51  imports → none  ← imported by none  entry points: packages/atlas/cli.js, packages/atlas/index.js
+docs  docs  accepted  files 21  imports → none  ← imported by none  entry points: none
+dogfood  config  accepted  files 15  imports → schemas  ← imported by none  entry points: none
+dogfood-swarm  code  accepted  files 349  imports → findings, report, schemas  ← imported by ingest, schemas, scripts  entry points: packages/dogfood-swarm/cli.js
+examples  config  accepted  files 5  imports → none  ← imported by none  entry points: none
+findings  code  accepted  files 81  imports → ingest, schemas, verify  ← imported by dogfood-swarm, ingest, portfolio, scripts  entry points: packages/findings/cli.js, packages/findings/index.js
+fixtures  code  accepted  files 147  imports → none  ← imported by none  entry points: none
+indexes  config  accepted  files 22  imports → none  ← imported by none  entry points: none
+ingest  code  accepted  files 80  imports → dogfood-swarm, findings, schemas, verify  ← imported by findings, scripts  entry points: packages/ingest/run.js
+policies  config  accepted  files 15  imports → none  ← imported by none  entry points: none
+portfolio  code  accepted  files 23  imports → findings  ← imported by scripts  entry points: packages/portfolio/generate.js
+records  config  accepted  files 100  imports → none  ← imported by none  entry points: none
+report  code  accepted  files 24  imports → schemas  ← imported by dogfood-swarm  entry points: packages/report/build-submission.js, packages/report/cli.js, packages/report/init.js
+reports  config  accepted  files 2  imports → none  ← imported by none  entry points: none
+root  docs  accepted  files 21  imports → none  ← imported by none  entry points: none
+schemas  code  accepted  files 37  imports → dogfood-swarm  ← imported by dogfood, dogfood-swarm, findings, ingest, report, scripts, verify  entry points: packages/schemas/src/index.ts
+scripts  code  accepted  files 65  imports → dogfood-swarm, findings, ingest, portfolio, schemas, verify  ← imported by none  entry points: none
+site  code  accepted  files 32  imports → none  ← imported by none  entry points: none
+swarms  docs  accepted  files 15  imports → none  ← imported by none  entry points: none
+verify  code  accepted  files 63  imports → schemas  ← imported by findings, ingest, scripts  entry points: packages/verify/cli.js, packages/verify/index.js
 
 ## Fine
 

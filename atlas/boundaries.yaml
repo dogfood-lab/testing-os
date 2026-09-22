@@ -1,226 +1,214 @@
-summary: ""
+summary: "testing-os is the operating system for testing AI-assisted software: schemas for evidence, a verifier, an ingest pipeline that turns consumer submissions into records and indexes, a parallel-agent swarm protocol with its control plane, and Atlas, a mapper that shows how a repository works."
 boundaries:
   - name: .github
     globs:
-      - .github/**
-    status: proposed
+      - ".github/**"
+    status: accepted
     role: config
-    reason: 7 files, role config; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
+    reason: "The six workflows that run this repository: CI on two Node versions, ingest of consumer submissions, the handbook deploy, the npm release, self-dogfood, and the weekly Atlas render; every action is pinned to a SHA because a floating tag once cost real money."
+    why_from: human
+    will_break: "A change here changes what runs on every push and every release; a broken workflow file stops CI for the whole repository, and a broken release workflow stops publishing."
+    will_break_from: human
+    start_here: ".github/workflows/ci.yml"
   - name: assets
     globs:
-      - assets/**
-    status: proposed
+      - "assets/**"
+    status: accepted
     role: config
-    reason: 1 file, role config; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
+    reason: "The logo the handbook and the social cards use; nothing else lives here."
+    why_from: human
+    will_break: "Replacing the logo changes the handbook header and the link previews and nothing in the code; a missing file fails the site build."
+    will_break_from: human
+    start_here: "assets/logo.png"
   - name: atlas
     globs:
-      - packages/atlas/**
-    status: proposed
+      - "packages/atlas/**"
+    status: accepted
     role: code
-    reason: 40 files, role code; entry points packages/atlas/cli.js,
-      packages/atlas/index.js; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; covered by tests in atlas
-    will_break_from: derived
+    reason: "The repository mapper: a read-only core that walks tracked files, parses four languages, resolves imports and reads git history, with an adapter that proposes boundaries, writes the map, and checks a tree against it."
+    why_from: human
+    will_break: "Nothing in this repository imports it, but the verify gate runs its check on every commit, so a regression here reddens this repository's own CI before it reaches any consumer."
+    will_break_from: human
   - name: docs
     globs:
-      - docs/**
-    status: proposed
+      - "docs/**"
+    status: accepted
     role: docs
-    reason: 21 files, role docs; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
+    reason: "Design records for features before they are built: each dispatch document is the decision of record that a build slice is briefed against, including the two Atlas dispatches."
+    why_from: human
+    will_break: "Nothing executes from here; a stale document misleads the next builder rather than breaking a build, and the doc-drift gate checks the parts of it that are pinned to code."
+    will_break_from: human
+    start_here: "docs/atlas.dispatch.md"
   - name: dogfood
     globs:
-      - dogfood/**
-    status: proposed
+      - "dogfood/**"
+    status: accepted
     role: config
-    reason: 15 files, role config; entry points none; imports schemas; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; covered by tests in dogfood
-    will_break_from: derived
+    reason: "This repository's own dogfood artifacts: the compiled roadmap from its swarm runs and the operator notes that steer them."
+    why_from: human
+    will_break: "The dashboard's trajectory panel reads the roadmap pointer from here; a malformed file blanks that panel and nothing else."
+    will_break_from: human
+    start_here: "dogfood/roadmap/latest.json"
   - name: dogfood-swarm
     globs:
-      - packages/dogfood-swarm/**
-    status: proposed
+      - "packages/dogfood-swarm/**"
+    status: accepted
     role: code
-    reason: 349 files, role code; entry points packages/dogfood-swarm/cli.js;
-      imports findings, report, schemas; imported by ingest, schemas, scripts
-    why_from: derived
-    will_break: Changing this breaks ingest, schemas, scripts; covered by tests in
-      dogfood-swarm
-    will_break_from: derived
+    reason: "The parallel-agent protocol and its SQLite control plane: dispatch, collect, adjudicate, and the swarm command that coordinates a health pass across many agents."
+    why_from: human
+    will_break: "Ingest imports its staged-logging helper and schemas imports its case-file contract, so a change to those two leaf helpers reaches the ingest pipeline and the schema tests; the rest of the package is reached only through the swarm command."
+    will_break_from: human
   - name: examples
     globs:
-      - examples/**
-    status: proposed
+      - "examples/**"
+    status: accepted
     role: config
-    reason: 5 files, role config; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
+    reason: "Worked examples for consumers adopting the dogfood workflow, kept small enough to copy."
+    why_from: human
+    will_break: "Nothing depends on them; an outdated example misleads an adopter, which the handbook's examples test guards against."
+    will_break_from: human
+    start_here: "examples/README.md"
   - name: findings
     globs:
-      - packages/findings/**
-    status: proposed
+      - "packages/findings/**"
+    status: accepted
     role: code
-    reason: 81 files, role code; entry points packages/findings/cli.js,
-      packages/findings/index.js; imports ingest, schemas, verify; imported by
-      dogfood-swarm, ingest, portfolio, scripts
-    why_from: derived
-    will_break: Changing this breaks dogfood-swarm, ingest, portfolio, scripts;
-      covered by tests in findings
-    will_break_from: derived
+    reason: "The finding contract and the pipelines that derive, review, synthesise and advise on findings; also the home of the shared atomic-write helper the accepted package cycle is built on."
+    why_from: human
+    will_break: "Four boundaries import it, dogfood-swarm, ingest, portfolio and scripts, so a change to its reader or to the atomic-write helper is felt across the whole pipeline; its own suite and those packages' suites cover it."
+    will_break_from: human
   - name: fixtures
     globs:
-      - fixtures/**
-    status: proposed
+      - "fixtures/**"
+    status: accepted
     role: code
-    reason: 147 files, role code; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; covered by tests in fixtures
-    will_break_from: derived
+    reason: "Real inputs the tests run against instead of mocks: records, policies, case files, roadmaps, and the small repositories Atlas maps in its own tests."
+    why_from: human
+    will_break: "Changing a fixture changes what a test proves; a fixture that no longer matches its test fails that test, which is the point of keeping them real."
+    will_break_from: human
+    start_here: "fixtures/atlas/host/atlas/boundaries.yaml"
   - name: indexes
     globs:
-      - indexes/**
-    status: proposed
+      - "indexes/**"
+    status: accepted
     role: config
-    reason: 21 files, role config; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
+    reason: "The served read-model: the JSON files the dashboard, the badges and every consumer fetch from the main branch, regenerated by ingest and never edited by hand."
+    why_from: human
+    will_break: "A hand edit here lies to every consumer at once; the files are regenerated by the ingest workflow, and the Atlas render branch keeps its own indexes apart from these."
+    will_break_from: human
+    start_here: "indexes/latest-by-repo.json"
   - name: ingest
     globs:
-      - packages/ingest/**
-    status: proposed
+      - "packages/ingest/**"
+    status: accepted
     role: code
-    reason: 80 files, role code; entry points packages/ingest/run.js; imports
-      dogfood-swarm, findings, schemas, verify; imported by findings, scripts
-    why_from: derived
-    will_break: Changing this breaks findings, scripts; covered by tests in ingest
-    will_break_from: derived
+    reason: "The pipeline that receives a consumer's dogfood submission, verifies it, persists the record and regenerates the indexes, run by the ingest workflow on every dispatch."
+    why_from: human
+    will_break: "Findings and scripts import it; a change here changes what gets persisted for every consumer, and the record integrity chain refuses a record that no longer verifies."
+    will_break_from: human
   - name: policies
     globs:
-      - policies/**
-    status: proposed
+      - "policies/**"
+    status: accepted
     role: config
-    reason: 15 files, role config; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
+    reason: "Per-repository enforcement policy in YAML: which scenarios a repository must exercise, how fresh its evidence must be, and which execution modes are allowed."
+    why_from: human
+    will_break: "The verifier reads these on every submission, so a policy change alters which submissions are accepted; the policy lint in the verify gate catches a malformed file before it lands."
+    will_break_from: human
+    start_here: "policies/global-policy.yaml"
   - name: portfolio
     globs:
-      - packages/portfolio/**
-    status: proposed
+      - "packages/portfolio/**"
+    status: accepted
     role: code
-    reason: 23 files, role code; entry points packages/portfolio/generate.js;
-      imports findings; imported by scripts
-    why_from: derived
-    will_break: Changing this breaks scripts; covered by tests in portfolio
-    will_break_from: derived
+    reason: "The cross-repository portfolio generator: trends, badges and the portfolio report, workspace-internal and never published."
+    why_from: human
+    will_break: "Only scripts import it, but the badges it writes are served to every consumer's README, so a change here shows up on other repositories' front pages."
+    will_break_from: human
   - name: records
     globs:
-      - records/**
-    status: proposed
+      - "records/**"
+    status: accepted
     role: config
-    reason: 92 files, role config; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
+    reason: "The evidence store: one JSON record per dogfood run, written by ingest and hash-chained, with rejected records kept separately for inspection."
+    why_from: human
+    will_break: "Records are historical truth and are never edited; a change to their shape belongs in the schemas package, and the integrity chain fails verification on any altered file."
+    will_break_from: human
+    start_here: "records/.gitkeep"
   - name: report
     globs:
-      - packages/report/**
-    status: proposed
+      - "packages/report/**"
+    status: accepted
     role: code
-    reason: 24 files, role code; entry points packages/report/build-submission.js,
-      packages/report/cli.js, packages/report/init.js; imports schemas; imported
-      by dogfood-swarm
-    why_from: derived
-    will_break: Changing this breaks dogfood-swarm; covered by tests in report
-    will_break_from: derived
+    reason: "The submission builder a consumer runs to describe its own dogfood run in the shape the verifier accepts."
+    why_from: human
+    will_break: "Dogfood-swarm imports it for the self-dogfood path; a change to the built submission's shape is caught by the verifier before anything is persisted."
+    will_break_from: human
   - name: reports
     globs:
-      - reports/**
-    status: proposed
+      - "reports/**"
+    status: accepted
     role: config
-    reason: 2 files, role config; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
+    reason: "Generated summaries, chiefly the portfolio report the portfolio package writes; never hand-edited."
+    why_from: human
+    will_break: "Nothing in the code reads these; they are outputs, and regenerating them is the only correct edit."
+    will_break_from: human
+    start_here: "reports/dogfood-portfolio.json"
   - name: root
     globs:
       - "*"
-    status: proposed
+    status: accepted
     role: docs
-    reason: 21 files, role docs; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
+    reason: "The repository's front door and its honesty surfaces: the README in eight languages, the changelog, the etiquette file every session reads first, the ship gate and the scorecard."
+    why_from: human
+    will_break: "The doc-drift and version-sync gates pin several of these files to the code, so a stale claim here reddens CI rather than misleading a reader for long."
+    will_break_from: human
+    start_here: "README.md"
   - name: schemas
     globs:
-      - packages/schemas/**
-    status: proposed
+      - "packages/schemas/**"
+    status: accepted
     role: code
-    reason: 37 files, role code; entry points packages/schemas/src/index.ts; imports
-      dogfood-swarm; imported by dogfood, dogfood-swarm, findings, ingest,
-      report, scripts, verify
-    why_from: derived
-    will_break: Changing this breaks dogfood, dogfood-swarm, findings, ingest,
-      report, scripts, verify; covered by tests in schemas
-    will_break_from: derived
+    reason: "The contract spine: eight registered JSON schemas plus four internal envelopes, in TypeScript, the single source of truth for every record, finding, policy and Atlas divergence report."
+    why_from: human
+    will_break: "Seven boundaries import it, dogfood, dogfood-swarm, findings, ingest, report, scripts and verify; a schema change is a contract change for every consumer and calls for a lockstep version bump."
+    will_break_from: human
   - name: scripts
     globs:
-      - scripts/**
-    status: proposed
+      - "scripts/**"
+    status: accepted
     role: code
-    reason: 63 files, role code; entry points none; imports dogfood-swarm, findings,
-      ingest, portfolio, schemas, verify; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; covered by tests in scripts
-    will_break_from: derived
+    reason: "The repository's own gates and rituals: doc-drift, regression pins, the test floor, version sync, the build, and the weekly Atlas render job."
+    why_from: human
+    will_break: "Nothing imports scripts, but the verify gate is these scripts; a mistake here can red every CI run or, worse, let a real regression through silently."
+    will_break_from: human
+    start_here: "scripts/build.mjs"
   - name: site
     globs:
-      - site/**
-    status: proposed
+      - "site/**"
+    status: accepted
     role: code
-    reason: 31 files, role code; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; covered by tests in site
-    will_break_from: derived
+    reason: "The public handbook and dashboard: an Astro site deployed to GitHub Pages, with the dashboard as one hand-authored page that reads the live read-model and the Atlas render branch."
+    why_from: human
+    will_break: "Nothing in the packages imports it; a broken build here fails the deploy and the handbook stays at its previous version, and the dashboard's own tests and the imagery test cover its pages."
+    will_break_from: human
+    start_here: "site/astro.config.mjs"
   - name: swarms
     globs:
-      - swarms/**
-    status: proposed
+      - "swarms/**"
+    status: accepted
     role: docs
-    reason: 15 files, role docs; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
+    reason: "The swarm protocol, its kickoff documents and templates, and the local run directories the control plane writes, which git ignores."
+    why_from: human
+    will_break: "The protocol document is what every swarm session reads first; a change here changes how the next run is coordinated, and nothing executes from it."
+    will_break_from: human
+    start_here: "swarms/PROTOCOL.md"
   - name: verify
     globs:
-      - packages/verify/**
-    status: proposed
+      - "packages/verify/**"
+    status: accepted
     role: code
-    reason: 63 files, role code; entry points packages/verify/cli.js,
-      packages/verify/index.js; imports schemas; imported by findings, ingest,
-      scripts
-    why_from: derived
-    will_break: Changing this breaks findings, ingest, scripts; covered by tests in verify
-    will_break_from: derived
+    reason: "The central submission validator with its declarative policy engine and the policy lint, the gate every dogfood record passes through."
+    why_from: human
+    will_break: "Findings, ingest and scripts import it; a change here changes what counts as valid evidence for the whole fleet, and the differential test against the reference matcher pins its behaviour."
+    will_break_from: human
