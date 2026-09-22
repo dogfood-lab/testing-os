@@ -1,0 +1,220 @@
+rule: if now (UTC) is after withdraw-after, do not load the statistics file;
+      withdrawn numbers are not evidence that files are uncoupled
+
+withdraw-after: 2026-10-20T16:22:44.563Z
+
+## Pairs
+
+◷ numbers as of 2026-09-22 · 0 days ago
+
+| a | b | shared | either | strength |
+| --- | --- | --- | --- | --- |
+| README.es.md | README.fr.md | 15 | 15 | 1 |
+| README.es.md | README.hi.md | 15 | 15 | 1 |
+| README.es.md | README.it.md | 15 | 15 | 1 |
+| README.es.md | README.ja.md | 15 | 15 | 1 |
+| README.es.md | README.pt-BR.md | 15 | 15 | 1 |
+| README.es.md | README.zh.md | 15 | 15 | 1 |
+| README.fr.md | README.hi.md | 15 | 15 | 1 |
+| README.fr.md | README.it.md | 15 | 15 | 1 |
+| README.fr.md | README.ja.md | 15 | 15 | 1 |
+| README.fr.md | README.pt-BR.md | 15 | 15 | 1 |
+| README.fr.md | README.zh.md | 15 | 15 | 1 |
+| README.hi.md | README.it.md | 15 | 15 | 1 |
+| README.hi.md | README.ja.md | 15 | 15 | 1 |
+| README.hi.md | README.pt-BR.md | 15 | 15 | 1 |
+| README.hi.md | README.zh.md | 15 | 15 | 1 |
+| README.it.md | README.ja.md | 15 | 15 | 1 |
+| README.it.md | README.pt-BR.md | 15 | 15 | 1 |
+| README.it.md | README.zh.md | 15 | 15 | 1 |
+| README.ja.md | README.pt-BR.md | 15 | 15 | 1 |
+| README.ja.md | README.zh.md | 15 | 15 | 1 |
+| README.pt-BR.md | README.zh.md | 15 | 15 | 1 |
+| indexes/integrity/chain.jsonl | indexes/trends.json | 39 | 39 | 1 |
+| packages/portfolio/package.json | packages/verify/package.json | 26 | 28 | 0.928571 |
+| packages/findings/package.json | packages/verify/package.json | 26 | 29 | 0.896552 |
+| packages/portfolio/package.json | packages/report/package.json | 26 | 29 | 0.896552 |
+
+72 pairs
+
+## Breakage
+
+◷ numbers as of 2026-09-22 · 0 days ago
+
+confidence: full
+
+### .github
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### assets
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### atlas
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### docs
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### dogfood
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### dogfood-swarm
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | ingest · schemas |
+| imports only | scripts |
+| co-changes only | findings · portfolio · report · root · verify |
+
+### examples
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### findings
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | dogfood-swarm · ingest · portfolio |
+| imports only | scripts |
+| co-changes only | report · root · schemas · verify |
+
+### fixtures
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### indexes
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### ingest
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | findings |
+| imports only | scripts |
+| co-changes only | dogfood-swarm · portfolio · report · root · schemas · verify |
+
+### policies
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### portfolio
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | scripts |
+| co-changes only | dogfood-swarm · findings · ingest · report · root · schemas · verify |
+
+### records
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### report
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | dogfood-swarm |
+| imports only | none |
+| co-changes only | findings · ingest · portfolio · root · schemas · verify |
+
+### reports
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### root
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | dogfood-swarm · findings · ingest · portfolio · report · schemas · verify |
+
+### schemas
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | dogfood-swarm · findings · ingest · report · verify |
+| imports only | dogfood · scripts |
+| co-changes only | portfolio · root |
+
+### scripts
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### site
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### swarms
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | none |
+| imports only | none |
+| co-changes only | none |
+
+### verify
+
+| relationship | boundaries |
+| --- | --- |
+| imports & co-changes | findings · ingest |
+| imports only | scripts |
+| co-changes only | dogfood-swarm · portfolio · report · root · schemas |
