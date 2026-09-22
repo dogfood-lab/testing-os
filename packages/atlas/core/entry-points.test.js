@@ -1,7 +1,8 @@
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
 import { mapRepository } from './index.js';
@@ -47,5 +48,24 @@ describe('entry points', () => {
     assert.deepEqual(byName.pkg, ['pkg/cli.js', 'pkg/index.js']);
     assert.deepEqual(byName.other, ['other/index.js']);
     assert.deepEqual(byName.wide, []);
+  });
+
+  it('maps a dist entry point onto the tracked source in the build-output fixture', () => {
+    const root = mkdtempSync(join(tmpdir(), 'atlas-entries-'));
+    roots.push(root);
+    const source = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/build-output/one');
+    cpSync(source, root, { recursive: true });
+    const git = (args) => {
+      const result = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+      if (result.status !== 0) throw new Error(result.stderr);
+    };
+    git(['init']);
+    git(['add', '-A']);
+    git(['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', 'one']);
+    const result = mapRepository({
+      repoPath: root,
+      boundaries: [{ name: 'one', globs: ['**'], status: 'proposed', role: 'code' }],
+    });
+    assert.deepEqual(result.boundaries[0].entryPoints, ['src/index.ts']);
   });
 });

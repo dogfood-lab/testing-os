@@ -400,6 +400,28 @@ function trackedSources(ctx, absPath) {
   return found;
 }
 
+/**
+ * A declared entry that is not itself tracked. A source map naming one
+ * tracked file wins; otherwise the tsconfig outDir is rewritten onto rootDir
+ * and a single tracked stem is accepted. The same two steps resolution uses.
+ */
+export function resolveDeclaredPath(repoPath, rel, tracked) {
+  if (!rel) return null;
+  const ctx = {
+    repo: repoPath,
+    tracked,
+    trackedLower: new Map([...tracked].map((path) => [path.toLowerCase(), path])),
+  };
+  const abs = join(repoPath, rel);
+  if (isBuildOutput(ctx, abs, rel)) {
+    const sources = trackedSources(ctx, abs);
+    if (sources && sources.length === 1) return sources[0];
+    const rewritten = rewriteOutDir(ctx, abs, rel);
+    if (rewritten) return rewritten;
+  }
+  return tracked.has(rel) ? rel : null;
+}
+
 function rewriteOutDir(ctx, absPath, rel) {
   const config = readCompilerPaths(nearestConfig(ctx.repo, dirname(absPath)));
   if (!config?.outDir || !config?.rootDir) return null;

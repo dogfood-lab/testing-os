@@ -11,6 +11,7 @@ import { leafDirs, nameProposals } from './propose.js';
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const BASIC = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/basic');
 const FLAT = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/flat');
+const ROLES = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/roles');
 const roots = [];
 
 afterEach(() => {
@@ -56,15 +57,14 @@ describe('atlas init', () => {
     commitTree(root);
     const result = atlas(root, ['init']);
     assert.equal(result.status, 0, result.stdout + result.stderr);
-    assert.match(result.stdout, /proposed 4 boundaries from workspace packages and top-level directories/);
-    assert.match(result.stdout, /README\.md/);
+    assert.match(result.stdout, /proposed 5 boundaries from workspace packages and top-level directories/);
     const doc = readBoundaryFile(root);
     assert.equal(doc.ok, true, doc.details?.join('\n'));
     assert.equal(doc.summary, '');
-    assert.deepEqual(doc.boundaries.map((boundary) => boundary.name), ['alpha', 'beta', 'scripts', 'shared']);
+    assert.deepEqual(doc.boundaries.map((boundary) => boundary.name), ['alpha', 'beta', 'root', 'scripts', 'shared']);
     assert.deepEqual(
       doc.boundaries.map((boundary) => boundary.globs),
-      [['packages/alpha/**'], ['packages/beta/**'], ['scripts/**'], ['shared/**']],
+      [['packages/alpha/**'], ['packages/beta/**'], ['*'], ['scripts/**'], ['shared/**']],
     );
     assert.ok(doc.boundaries.every((boundary) => boundary.status === 'proposed'));
     assert.ok(doc.boundaries.every((boundary) => boundary.why_from === 'derived' && boundary.will_break_from === 'derived'));
@@ -82,16 +82,32 @@ describe('atlas init', () => {
     const result = atlas(root, ['init']);
     assert.equal(result.status, 0, result.stdout + result.stderr);
     assert.match(result.stdout, /from top-level directories/);
-    assert.match(result.stdout, /README\.md/);
     const doc = readBoundaryFile(root);
     assert.equal(doc.ok, true, doc.details?.join('\n'));
     assert.equal(doc.summary, '');
     const byName = new Map(doc.boundaries.map((boundary) => [boundary.name, boundary]));
-    assert.deepEqual([...byName.keys()].sort(), ['docs', 'src', 'tests']);
+    assert.deepEqual([...byName.keys()].sort(), ['docs', 'root', 'src', 'tests']);
+    assert.deepEqual(byName.get('root').globs, ['*']);
     assert.equal(byName.get('docs').role, 'docs');
     assert.equal(byName.get('tests').role, 'test');
     assert.equal(byName.get('src').role, 'code');
     assert.ok(doc.boundaries.every((boundary) => boundary.start_here == null));
+  });
+
+  it('gives inert directories config and leaves a docs directory as docs', () => {
+    const root = scratch();
+    cpSync(ROLES, root, { recursive: true });
+    commitTree(root);
+    const result = atlas(root, ['init']);
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+    const doc = readBoundaryFile(root);
+    const role = Object.fromEntries(doc.boundaries.map((boundary) => [boundary.name, boundary.role]));
+    assert.equal(role['.github'], 'config');
+    assert.equal(role.assets, 'config');
+    assert.equal(role.indexes, 'config');
+    assert.equal(role.records, 'config');
+    assert.equal(role.reports, 'config');
+    assert.equal(role.swarms, 'docs');
   });
 
   it('refuses to overwrite a file a person has touched, and regenerates one that is still derived', () => {
@@ -133,10 +149,10 @@ describe('atlas init', () => {
     assert.equal(result.status, 0, result.stdout + result.stderr);
     const doc = readBoundaryFile(root);
     assert.equal(doc.ok, true, doc.details?.join('\n'));
-    assert.deepEqual(doc.boundaries.map((boundary) => boundary.name), ['app', 'docs', 'fixtures']);
+    assert.deepEqual(doc.boundaries.map((boundary) => boundary.name), ['app', 'docs', 'fixtures', 'root']);
     assert.equal(doc.boundaries.find((boundary) => boundary.name === 'app').role, 'code');
     assert.equal(doc.boundaries.find((boundary) => boundary.name === 'docs').role, 'docs');
-    assert.match(result.stdout, /README\.md/);
+    assert.equal(doc.boundaries.find((boundary) => boundary.name === 'root').globs[0], '*');
   });
 
   it('does not propose a manifest that contains another manifest', () => {

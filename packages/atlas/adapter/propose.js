@@ -100,7 +100,8 @@ export function nameProposals(dirs) {
  * root names no workspaces, are claimed first. Each remaining top-level
  * directory then gets one boundary. A directory that already contains a
  * package boundary is left alone: its glob would swallow that package, and a
- * glob list cannot subtract. Root files stay unassigned.
+ * glob list cannot subtract. Files that sit in the repository root form one
+ * boundary named root, glob *, which does not cross a separator.
  */
 export function proposalSet(repoPath, paths) {
   const root = paths.includes('package.json') ? readJson(repoPath, 'package.json') : null;
@@ -128,6 +129,13 @@ export function proposalSet(repoPath, paths) {
     tops.push(top);
   }
   const proposals = nameProposals([...packageDirs, ...tops]);
+  if (paths.some((path) => !inAtlas(path) && !path.includes('/'))) {
+    for (const proposal of proposals) {
+      if (proposal.name === 'root') proposal.name = proposal.dir;
+    }
+    proposals.push({ dir: '', name: 'root', glob: '*' });
+    proposals.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+  }
   let source = 'top-level directories';
   if (packageDirs.length > 0 && tops.length > 0) source = `${packageSource} and top-level directories`;
   else if (packageDirs.length > 0) source = packageSource;

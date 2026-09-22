@@ -14,33 +14,61 @@ export function isTestPath(path) {
   return false;
 }
 
-function extensionKind(path) {
+const CODE_EXT = new Set(['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'mts', 'cts', 'py', 'pyi']);
+const DOCS_EXT = new Set(['md', 'mdx', 'rst']);
+const CONFIG_EXT = new Set(['json', 'yaml', 'yml', 'toml', 'jsonl', 'lock']);
+const IMAGE_EXT = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'ico', 'bmp', 'avif']);
+const FONT_EXT = new Set(['woff', 'woff2', 'ttf', 'otf', 'eot']);
+const BINARY_EXT = new Set(['wasm', 'exe', 'dll', 'so', 'dylib', 'bin']);
+
+function baseName(path) {
   const name = String(path).replaceAll('\\', '/');
-  const base = name.slice(name.lastIndexOf('/') + 1);
-  if (/\.(md|mdx|rst)$/i.test(base)) return 'docs';
-  if (/\.(json|yaml|yml|toml)$/i.test(base)) return 'config';
-  return 'code';
+  return name.slice(name.lastIndexOf('/') + 1);
+}
+
+function extensionOf(base) {
+  const dot = base.lastIndexOf('.');
+  if (dot <= 0) return '';
+  return base.slice(dot + 1).toLowerCase();
+}
+
+function isConfigName(base) {
+  if (base === 'CODEOWNERS' || base === '.editorconfig') return true;
+  if (base === '.gitkeep') return false;
+  if (base.startsWith('.git') || /(^|\/)\..*ignore$/.test(base) || base.endsWith('ignore')) {
+    if (base.startsWith('.') && base !== '.gitkeep') return true;
+  }
+  return false;
 }
 
 export function fileKind(path) {
   if (isTestPath(path)) return 'test';
-  return extensionKind(path);
+  const base = baseName(path);
+  const ext = extensionOf(base);
+  if (DOCS_EXT.has(ext)) return 'docs';
+  if (CONFIG_EXT.has(ext) || isConfigName(base)) return 'config';
+  if (CODE_EXT.has(ext)) return 'code';
+  if (base === '.gitkeep' || IMAGE_EXT.has(ext) || FONT_EXT.has(ext) || BINARY_EXT.has(ext)) return 'other';
+  return 'other';
 }
 
 /**
- * Colocated tests stay out of the count. A boundary is test only when every
- * code-shaped file in it matches the test conventions. Otherwise the non-test
- * files decide: any of them that is code-shaped makes the boundary code, and
- * docs or config win only by majority when no such file exists.
+ * Other casts no vote. Test is reserved for a boundary whose code-shaped
+ * files are all tests. A boundary with no voting files is config. Any
+ * voting code file makes the boundary code; otherwise docs or config win
+ * by majority of the voting files.
  */
 export function roleFor(paths) {
-  const nonTest = paths.filter((path) => !isTestPath(path));
-  if (nonTest.some((path) => extensionKind(path) === 'code')) return 'code';
-  if (nonTest.length === 0) return paths.some((path) => isTestPath(path)) ? 'test' : 'code';
-  const docs = nonTest.filter((path) => extensionKind(path) === 'docs').length;
-  const config = nonTest.filter((path) => extensionKind(path) === 'config').length;
-  if (docs > nonTest.length / 2) return 'docs';
-  if (config > nonTest.length / 2) return 'config';
+  const kinds = paths.map((path) => fileKind(path));
+  const codeShaped = kinds.filter((kind) => kind === 'code' || kind === 'test');
+  if (codeShaped.length > 0 && codeShaped.every((kind) => kind === 'test')) return 'test';
+  const voting = kinds.filter((kind) => kind === 'code' || kind === 'docs' || kind === 'config');
+  if (voting.length === 0) return 'config';
+  if (voting.some((kind) => kind === 'code')) return 'code';
+  const docs = voting.filter((kind) => kind === 'docs').length;
+  const config = voting.filter((kind) => kind === 'config').length;
+  if (docs > voting.length / 2) return 'docs';
+  if (config > voting.length / 2) return 'config';
   return 'code';
 }
 
