@@ -23,13 +23,15 @@
 "use strict";
 const CONFIG = {
   base: "https://raw.githubusercontent.com/dogfood-lab/testing-os/main/",
+  atlasBase: "https://raw.githubusercontent.com/dogfood-lab/testing-os/atlas-render/",
   paths: {
     latest:    "indexes/latest-by-repo.json",
     trends:    "indexes/trends.json",
     stale:     "indexes/stale.json",
     failing:   "indexes/failing.json",
     aggregate: "indexes/badges/_aggregate.json",
-    roadmapLatest: "dogfood/roadmap/latest.json"           // v1.1: pointer, names the roadmap artifact (two-hop)
+    roadmapLatest: "dogfood/roadmap/latest.json",          // v1.1: pointer, names the roadmap artifact (two-hop)
+    atlasFleet: "indexes/atlas/fleet.json"
   },
   refreshMs: 5 * 60 * 1000,      // auto-refresh interval
   staleDaysFallback: 30,         // local staleness threshold if stale.json is unavailable
@@ -39,7 +41,8 @@ const CONFIG = {
     readModel:   "https://dogfood-lab.github.io/testing-os/handbook/read-model/",
     integration: "https://dogfood-lab.github.io/testing-os/handbook/integration/",
     dashboard:   "https://dogfood-lab.github.io/testing-os/dashboard/",       // v0.2: markdown deep-link target
-    trajectory:  "https://dogfood-lab.github.io/testing-os/handbook/trajectory/"  // v1.1: trajectory panel handbook
+    trajectory:  "https://dogfood-lab.github.io/testing-os/handbook/trajectory/",  // v1.1: trajectory panel handbook
+    atlasErrors: "https://dogfood-lab.github.io/testing-os/handbook/error-codes/#atlas-codes"
   },
   badgeJsonBase: "indexes/badges/",                        // v0.2: badge JSON dir under base; slug = org--repo--surface.json
   shieldsEndpoint: "https://img.shields.io/endpoint?url=", // v0.2: badge renderer — loaded ONLY inside an opened modal
@@ -317,6 +320,23 @@ dialog::backdrop { background: rgba(5, 9, 14, .62); }
 .tj-none { margin: 12px 16px; font-size: 13px; color: var(--dim); }
 .tj-foot { padding: 10px 16px; border-top: 1px solid var(--border); font-size: 12.5px; }
 
+/* atlas */
+.ico { width: 16px; height: 16px; vertical-align: -3px; display: inline-block; }
+.atlas-low { font-weight: 650; opacity: 1; white-space: nowrap; }
+.age-hist { background: var(--flash); }
+#atlasPanel .atlas-head { margin: 0; padding: 12px 16px; font-size: 13.5px; font-weight: 650; letter-spacing: .01em; border-bottom: 1px solid var(--border); }
+#atlasPanel table { min-width: 0; }
+#atlasPanel .tablewrap { overflow-x: visible; }
+#atlasPanel .atlas-note { color: var(--faint); margin: 12px 16px; font-size: 13px; }
+#atlasPanel .atlas-detail { display: none; }
+#atlasPanel .atlas-detail td { white-space: normal; }
+@media (max-width: 767px) {
+  #atlasPanel .atlas-more { display: none; }
+  #atlasPanel .atlas-detail { display: table-row; }
+  #atlasPanel td, #atlasPanel th { white-space: normal; }
+}
+/* atlas end */
+
 @media (max-width: 820px) {
   .chips { grid-template-columns: 1fr 1fr; }
   .rail { grid-template-columns: 1fr; }
@@ -328,6 +348,19 @@ dialog::backdrop { background: rgba(5, 9, 14, .62); }
 </style>
 </head>
 <body>
+<svg style="display:none">
+  <symbol id="atlas-age" viewBox="0 0 16 16">
+    <title>age</title>
+    <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M8 4.5 V8 L10.5 9.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="atlas-low" viewBox="0 0 16 16">
+    <title>low confidence</title>
+    <path d="M8 2.2 L14.2 13.5 H1.8 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M8 6.2 V9.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="8" cy="11.5" r="0.6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+  </symbol>
+</svg>
 <header>
   <div class="wrap">
     <div class="hd-row">
@@ -398,6 +431,29 @@ dialog::backdrop { background: rgba(5, 9, 14, .62); }
     </div>
     <div id="trajBody"><p class="tj-none" aria-hidden="true"><span class="skel" style="width:min(360px,60%)"></span></p></div>
     <div class="tj-foot"><a id="trajLink" href="#" target="_blank" rel="noopener">trajectory handbook ↗</a></div>
+  </section>
+
+  <section class="panel" id="atlasPanel" aria-labelledby="atlasH">
+    <h2 id="atlasH" class="atlas-head">atlas · <span class="skel" style="width:18px"></span> repositories rendered · weekly · last run <span class="skel" style="width:42px"></span></h2>
+    <div class="tablewrap" id="atlasWrap">
+      <table id="atlasTable">
+        <caption class="sr">Atlas fleet: one row per rendered public repository</caption>
+        <thead>
+          <tr>
+            <th scope="col"><button type="button" class="thb" data-sort="repo">repository<span class="arr" aria-hidden="true"></span></button></th>
+            <th scope="col"><button type="button" class="thb" data-sort="age">map age<span class="arr" aria-hidden="true"></span></button></th>
+            <th scope="col" class="atlas-more"><button type="button" class="thb" data-sort="boundaries">boundaries<span class="arr" aria-hidden="true"></span></button></th>
+            <th scope="col" class="atlas-more"><button type="button" class="thb" data-sort="unnamed">unnamed<span class="arr" aria-hidden="true"></span></button></th>
+            <th scope="col" class="atlas-more"><button type="button" class="thb" data-sort="unresolved">unresolved<span class="arr" aria-hidden="true"></span></button></th>
+            <th scope="col"><button type="button" class="thb" data-sort="open">open ⇄<span class="arr" aria-hidden="true"></span></button></th>
+            <th scope="col"><button type="button" class="thb" data-sort="link">link<span class="arr" aria-hidden="true"></span></button></th>
+          </tr>
+        </thead>
+        <tbody id="atlasBody"></tbody>
+      </table>
+    </div>
+    <p id="atlasNote" class="atlas-note" hidden></p>
+    <div id="atlasErr" hidden></div>
   </section>
 
   <section id="emptyFleet" class="hero" hidden>
@@ -486,7 +542,9 @@ const VERDICT = {
 const state = {
   ep: {}, rows: [], staleFallback: false,
   sort: { key: "worst", dir: 1 }, filter: "", chips: new Set(),
-  auto: false, timer: null, ticker: null, nextAt: null, refreshing: false
+  auto: false, timer: null, ticker: null, nextAt: null, refreshing: false,
+  atlas: { status: "pending", data: null, error: null },
+  atlasSort: { key: "open", dir: -1 }
 };
 Object.keys(EP).forEach(k => { state.ep[k] = { status: "pending", data: null, error: null, okAt: null }; });
 
@@ -532,12 +590,14 @@ async function refreshAll() {
   const btn = $("#refreshBtn");
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); btn.textContent = "refreshing…";
   const prev = state.ep.latest.data ? new Map(state.rows.map(r => [r.key, r.verified])) : null;
-  await Promise.all(Object.keys(EP).map(k => fetchOne(k).then(() => { derive(); renderAll(); })));
+  await Promise.all(Object.keys(EP).map(k => fetchOne(k).then(() => { derive(); renderAll(); })).concat(fetchAtlas().then(renderAtlas)));
   const changed = flashChanged(prev);
   const fails = Object.keys(EP).filter(k => state.ep[k].status === "error");
-  $("#live").textContent = fails.length
+  let live = fails.length
     ? "refresh at " + clock(Date.now()) + " — failed: " + fails.map(k => EP[k].name).join(", ")
     : "refreshed at " + clock(Date.now()) + (prev ? " · " + changed + " verdict change" + (changed === 1 ? "" : "s") : "");
+  if (state.atlas.status === "error") live += " · atlas fleet failed";
+  $("#live").textContent = live;
   btn.disabled = false; btn.removeAttribute("aria-busy"); btn.textContent = "↻ refresh";
   if (pendingRowLink && state.ep.latest.status !== "pending") {   // v0.2: #r= deep-link, silently ignored if row is gone
     const key = pendingRowLink; pendingRowLink = null;
@@ -1005,8 +1065,125 @@ function renderModes() {
   }
 }
 function renderAll() {
-  renderPill(); renderLastEvidence(); renderChips(); renderStrip(); renderTablePanel(); renderRail(); renderTrajectory(); renderFooter(); renderModes(); updateTitle();
+  renderPill(); renderLastEvidence(); renderChips(); renderStrip(); renderTablePanel(); renderRail(); renderTrajectory(); renderAtlas(); renderFooter(); renderModes(); updateTitle();
 }
+
+/* ---------- atlas fleet panel ---------- */
+async function fetchAtlas() {
+  const ep = state.atlas;
+  try {
+    const res = await fetch(CONFIG.atlasBase + CONFIG.paths.atlasFleet, { cache: "no-store" });
+    if (res.status === 404) { ep.status = "absent"; ep.data = null; ep.error = null; return; }
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    if (!data || typeof data !== "object" || Array.isArray(data) || !Array.isArray(data.repositories)) throw new Error("unexpected JSON shape");
+    ep.data = data; ep.status = "ok"; ep.error = null;
+  } catch (err) {
+    ep.status = "error"; ep.error = (err && err.message) || String(err);
+  }
+}
+function atlasHead(n, iso) {
+  const age = iso ? (relAge(parseISO(iso)) || "—") : "—";
+  return "atlas · " + n + " repositories rendered · weekly · last run " + age;
+}
+function atlasHref(repo) {
+  return "https://github.com/dogfood-lab/testing-os/blob/atlas-render/indexes/atlas/" +
+    String(repo).split("/").map(encodeURIComponent).join("/") + "/orientation.md";
+}
+function atlasSkel() {
+  const cell = '<td><span class="skel" style="width:48px"></span></td>';
+  let h = "";
+  for (let i = 0; i < 4; i++) h += '<tr class="skelrow" aria-hidden="true">' + cell.repeat(7) + "</tr>";
+  return h;
+}
+function atlasSorted(rows) {
+  const key = state.atlasSort.key, dir = state.atlasSort.dir;
+  const field = { age: "ageDays", boundaries: "boundaries", unnamed: "unnamed", unresolved: "unresolved", open: "openDivergence" };
+  return rows.slice().sort((a, b) => {
+    let c;
+    if (key === "repo" || key === "link") c = String(a.repo) < String(b.repo) ? -1 : String(a.repo) > String(b.repo) ? 1 : 0;
+    else c = (Number(a[field[key]]) || 0) - (Number(b[field[key]]) || 0);
+    c *= dir;
+    if (c === 0 && key === "open") c = (Number(b.ageDays) || 0) - (Number(a.ageDays) || 0);
+    return c;
+  });
+}
+function atlasRow(r) {
+  const slash = String(r.repo).indexOf("/");
+  const org = slash > 0 ? String(r.repo).slice(0, slash) : "";
+  const name = slash > 0 ? String(r.repo).slice(slash + 1) : String(r.repo);
+  const low = r.confidence === "low"
+    ? ' <span class="atlas-low"><svg class="ico" aria-hidden="true"><use href="#atlas-low"></use></svg> low confidence</span>' : "";
+  const t = parseISO(r.renderedAt);
+  const days = typeof r.ageDays === "number" ? r.ageDays : ageDays(t);
+  const hist = days != null && days >= 28;
+  const title = t != null ? new Date(t).toISOString().slice(0, 10) : "";
+  const age = '<td class="' + (hist ? "age-hist" : "") + '"' + (title ? ' title="' + esc(title) + '"' : "") + '>' +
+    '<svg class="ico" aria-hidden="true"><use href="#atlas-age"></use></svg> ' + esc(relAge(t) || "—") +
+    (hist ? " historical" : "") + "</td>";
+  const num = k => '<td class="atlas-more num">' + esc(r[k]) + "</td>";
+  const link = '<td><a href="' + esc(atlasHref(r.repo)) + '" target="_blank" rel="noopener">orientation</a></td>';
+  const main = "<tr>" +
+    '<td class="c-repo">' + (org ? '<span class="org">' + esc(org) + "/</span>" : "") + esc(name) + low + "</td>" +
+    age + num("boundaries") + num("unnamed") + num("unresolved") +
+    '<td class="num">' + esc(r.openDivergence) + "</td>" + link + "</tr>";
+  const detail = '<tr class="atlas-detail"><td colspan="7"><details><summary>boundaries, unnamed, unresolved</summary>' +
+    "<p>boundaries " + esc(r.boundaries) + " · unnamed " + esc(r.unnamed) + " · unresolved " + esc(r.unresolved) + "</p></details></td></tr>";
+  return main + detail;
+}
+function atlasSyncSort() {
+  const s = state.atlasSort;
+  document.querySelectorAll("#atlasTable th").forEach(th => {
+    const b = $(".thb", th);
+    const col = b && b.getAttribute("data-sort");
+    const arr = b && $(".arr", b);
+    if (col && s.key === col) {
+      th.setAttribute("aria-sort", s.dir === 1 ? "ascending" : "descending");
+      if (arr) arr.textContent = s.dir === 1 ? " ▲" : " ▼";
+    } else {
+      th.removeAttribute("aria-sort");
+      if (arr) arr.textContent = "";
+    }
+  });
+}
+function renderAtlas() {
+  const ep = state.atlas;
+  const head = $("#atlasH"), wrap = $("#atlasWrap"), err = $("#atlasErr"), note = $("#atlasNote"), tb = $("#atlasBody");
+  const codes = ' <a href="' + esc(CONFIG.links.atlasErrors) + '" target="_blank" rel="noopener">Atlas error codes</a>';
+  atlasSyncSort();
+  if (ep.status === "pending") {
+    head.innerHTML = 'atlas · <span class="skel" style="width:18px"></span> repositories rendered · weekly · last run <span class="skel" style="width:42px"></span>';
+    wrap.hidden = false; err.hidden = true; note.hidden = true;
+    tb.innerHTML = atlasSkel();
+    return;
+  }
+  if (ep.status === "absent") {
+    head.textContent = atlasHead(0, null);
+    wrap.hidden = true; err.hidden = true; note.hidden = false;
+    note.innerHTML = "no render yet — the weekly job has not run" + codes;
+    return;
+  }
+  if (ep.status === "error") {
+    head.textContent = atlasHead(0, null);
+    wrap.hidden = true; note.hidden = true; err.hidden = false;
+    err.innerHTML = '<div class="perr"><strong>⚠ couldn\'t fetch ' + esc(CONFIG.paths.atlasFleet) + "</strong> " +
+      '<span class="dim">(' + esc(ep.error || "unknown error") + ")</span></div>";
+    return;
+  }
+  const repos = ep.data.repositories;
+  head.textContent = atlasHead(repos.length, ep.data.generatedAt);
+  err.hidden = true;
+  if (!repos.length) {
+    wrap.hidden = true; note.hidden = false;
+    note.innerHTML = "no public repository has adopted Atlas yet" + codes;
+    return;
+  }
+  wrap.hidden = false; note.hidden = true;
+  const q = state.filter.trim().toLowerCase();
+  const rows = atlasSorted(repos).filter(r => !q || String(r.repo).toLowerCase().indexOf(q) !== -1);
+  tb.innerHTML = rows.map(atlasRow).join("");
+}
+
 
 /* ---------- diff flash ---------- */
 function flashChanged(prev) {
@@ -1418,6 +1595,7 @@ function init() {
     state.filter = $("#q").value;
     store.set("filter", state.filter);
     renderTablePanel();
+    renderAtlas();
     writeHash();
   });
   $("#chipsRow").addEventListener("click", ev => {
@@ -1438,13 +1616,22 @@ function init() {
     renderTablePanel();
     writeHash();
   });
+  $("#atlasTable").querySelector("thead").addEventListener("click", ev => {
+    const b = ev.target.closest(".thb");
+    if (!b) return;
+    const col = b.getAttribute("data-sort");
+    const s = state.atlasSort;
+    const descFirst = col !== "repo" && col !== "link";
+    state.atlasSort = s.key === col ? { key: col, dir: -s.dir } : { key: col, dir: descFirst ? -1 : 1 };
+    renderAtlas();
+  });
   $("#tbody").addEventListener("click", ev => {
     const tb = ev.target.closest(".trendbtn");
     if (tb) { openModal(tb.getAttribute("data-modal"), tb); return; }
     if (ev.target.closest("#clearFilters")) {
       state.filter = ""; $("#q").value = ""; store.set("filter", "");
       state.chips.clear();
-      renderChips(); renderTablePanel();
+      renderChips(); renderTablePanel(); renderAtlas();
       writeHash();
     }
   });
