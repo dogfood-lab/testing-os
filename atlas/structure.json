@@ -73,7 +73,7 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "c968a7c60fcba71e5e111b6ab5b76808af498a75ec26a6fa49efa0df527070ad",
+          "hash": "a56111fee7339e034d62de5bfcd689609955a77c0b37c24a26a1a0105c224b1a",
           "path": "packages/atlas/adapter/artifact.js"
         },
         {
@@ -173,11 +173,11 @@
           "path": "packages/atlas/core/divergence.test.js"
         },
         {
-          "hash": "7c3c34d0ac949fcab4747212841931bc219fb86c347018191a6258c7020ef5f6",
+          "hash": "8575b0d152fec62e16a14dc1c6460661dc9baf1eb29d8fd6b42b0c0d63c2035b",
           "path": "packages/atlas/core/doors.js"
         },
         {
-          "hash": "778067144b75aa5cac44ec930fd3cd6b7a90299986628efa1e636229db8ecd18",
+          "hash": "5dfc7674d515a25e9bd0aa80b92d5e3aabc55562e3728435dccdf2cbd734d5b1",
           "path": "packages/atlas/core/doors.test.js"
         },
         {
@@ -306,7 +306,7 @@
           "path": "docs/atlas-page.spec.md"
         },
         {
-          "hash": "de48c5a11f0228b94c030e96f2467957b1663770246543649b736a89f1d4adc8",
+          "hash": "5db360a7a62d7313a8665dcce4e9cd028e96e05e004d6936d174269008f751b1",
           "path": "docs/atlas.dispatch.md"
         },
         {
@@ -2376,11 +2376,11 @@
           "path": "fixtures/atlas/doors/.github/workflows/checks.yml"
         },
         {
-          "hash": "c07c3a18007db3a5ffaf3763a8963be8723692a14a5f8c7f99504cf57da0465f",
+          "hash": "2eae017010a66616afa43082edb1e9b13a29b0e773756b7ce7270faebbdb1922",
           "path": "fixtures/atlas/doors/.github/workflows/ingest.yml"
         },
         {
-          "hash": "a5924ea5533cb851b2e79faf20ddbfcac67d62c4545d4c5ee1b4b6521cef5104",
+          "hash": "6cd538ce4dc42adaaa60a78f3a116d61637808ca4f26aa0d1f630691ce591b6e",
           "path": "fixtures/atlas/doors/.github/workflows/manual.yaml"
         },
         {
@@ -5111,6 +5111,7 @@
         }
       ],
       "file": ".github/workflows/atlas-render.yml",
+      "mentions": [],
       "name": "Atlas render",
       "permissions": [
         "contents:write",
@@ -5212,17 +5213,18 @@
         }
       ],
       "file": ".github/workflows/ci.yml",
+      "mentions": [
+        {
+          "job": "build-and-test",
+          "path": "package-lock.json"
+        }
+      ],
       "name": "CI",
       "permissions": [
         "contents:read"
       ],
       "pushes": false,
       "reach": [
-        {
-          "boundary": "root",
-          "depth": 0,
-          "files": 1
-        },
         {
           "boundary": "scripts",
           "depth": 0,
@@ -5240,10 +5242,6 @@
         }
       ],
       "runs": [
-        {
-          "job": "build-and-test",
-          "path": "package-lock.json"
-        },
         {
           "job": "build-and-test",
           "path": "scripts/build.mjs"
@@ -5395,17 +5393,18 @@
         }
       ],
       "file": ".github/workflows/ingest.yml",
+      "mentions": [
+        {
+          "job": "ingest",
+          "path": "indexes/trends.json"
+        }
+      ],
       "name": "Ingest dogfood submission",
       "permissions": [
         "contents:write"
       ],
       "pushes": true,
       "reach": [
-        {
-          "boundary": "indexes",
-          "depth": 0,
-          "files": 1
-        },
         {
           "boundary": "ingest",
           "depth": 0,
@@ -5443,10 +5442,6 @@
         }
       ],
       "runs": [
-        {
-          "job": "ingest",
-          "path": "indexes/trends.json"
-        },
         {
           "job": "ingest",
           "path": "packages/ingest/run.js"
@@ -5523,6 +5518,7 @@
         }
       ],
       "file": ".github/workflows/pages.yml",
+      "mentions": [],
       "name": "Deploy site to GitHub Pages",
       "permissions": [
         "contents:read",
@@ -5623,6 +5619,12 @@
         }
       ],
       "file": ".github/workflows/release.yml",
+      "mentions": [
+        {
+          "job": "publish",
+          "path": "CHANGELOG.md"
+        }
+      ],
       "name": "Release",
       "permissions": [
         "contents:write",
@@ -5633,7 +5635,7 @@
         {
           "boundary": "root",
           "depth": 0,
-          "files": 2
+          "files": 1
         },
         {
           "boundary": "scripts",
@@ -5652,10 +5654,6 @@
         }
       ],
       "runs": [
-        {
-          "job": "publish",
-          "path": "CHANGELOG.md"
-        },
         {
           "job": "publish",
           "path": "package.json"
@@ -5733,6 +5731,7 @@
         }
       ],
       "file": ".github/workflows/self-dogfood.yml",
+      "mentions": [],
       "name": "self-dogfood",
       "permissions": [
         "contents:write"
@@ -5908,7 +5907,7 @@
     }
   ],
   "generatedFrom": {
-    "commit": "ad1b9d4c0b4469214068fd5cc0e2af8917f064c9",
+    "commit": "e7c50f0bc64b81cc0dd41de9f1a811c9ca37936a",
     "tracked": 1198
   },
   "overlaps": [],

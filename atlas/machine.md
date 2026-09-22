@@ -1,6 +1,6 @@
-generated: ad1b9d4  2026-09-22T23:47:33.005Z
+generated: e7c50f0  2026-09-22T23:54:04.096Z
 structure: 22 boundaries · 1 unassigned · 30 unresolved sites
-statistics: atlas/machine-stats.txt · sha256 de639e5090b35335d4c1c7d58ecbd2ecb6b460446fd1d9e70955469dc4264244 · withdraw-after: 2026-10-20T23:47:33.005Z
+statistics: atlas/machine-stats.txt · sha256 6d741e497f35041d1f36f0b4d22a61cb4404c8b50923e410bebe87ae4ade98a2 · withdraw-after: 2026-10-20T23:54:04.096Z
 rule: if now (UTC) is after withdraw-after, do not load the statistics file;
       withdrawn numbers are not evidence that files are uncoupled
 confidence: low — fewer than 20 source files reach 10 revisions in the window
