@@ -1,0 +1,70 @@
+{
+  "repo": "mcp-tool-shop-org/shipcheck",
+  "generated_from": {
+    "commit_sha": "4c1f0a9b7e2d63548af90b1c2e7d4a6538bb0f71"
+  },
+  "generated_at": "2026-09-21T08:00:00Z",
+  "shared_commit_floor": 10,
+  "confidence": "full",
+  "rows": [
+    {
+      "id": "mcp-tool-shop-org/shipcheck:leaks:gates",
+      "rule": "leaks",
+      "boundary": "gates",
+      "value": 0.71,
+      "threshold": 0.58,
+      "confidence": "full",
+      "state": "open",
+      "first_seen": "2026-08-24T08:00:00Z",
+      "last_seen": "2026-09-21T08:00:00Z"
+    },
+    {
+      "id": "mcp-tool-shop-org/shipcheck:two-may-be-one:audit+report",
+      "rule": "two-may-be-one",
+      "boundaries": ["audit", "report"],
+      "value": 0.66,
+      "threshold": 0.61,
+      "confidence": "full",
+      "state": "open",
+      "first_seen": "2026-09-14T08:00:00Z",
+      "last_seen": "2026-09-21T08:00:00Z"
+    },
+    {
+      "id": "mcp-tool-shop-org/shipcheck:file-moved:src/report/scorecard.js:report->audit",
+      "rule": "file-moved",
+      "file": "src/report/scorecard.js",
+      "boundary": "report",
+      "partner_boundary": "audit",
+      "value": 0.83,
+      "threshold": 0.5,
+      "confidence": "full",
+      "state": "open",
+      "first_seen": "2026-09-07T08:00:00Z",
+      "last_seen": "2026-09-21T08:00:00Z"
+    },
+    {
+      "id": "mcp-tool-shop-org/shipcheck:cohesion-dropped:cli",
+      "rule": "cohesion-dropped",
+      "boundary": "cli",
+      "value": 0.27,
+      "threshold": 0.2,
+      "high_water_mark": 0.91,
+      "current": 0.64,
+      "confidence": "full",
+      "state": "open",
+      "first_seen": "2026-08-31T08:00:00Z",
+      "last_seen": "2026-09-21T08:00:00Z"
+    },
+    {
+      "id": "mcp-tool-shop-org/shipcheck:leaks:templates",
+      "rule": "leaks",
+      "boundary": "templates",
+      "value": 0.63,
+      "threshold": 0.6,
+      "confidence": "full",
+      "state": "cleared",
+      "first_seen": "2026-07-20T08:00:00Z",
+      "last_seen": "2026-09-14T08:00:00Z"
+    }
+  ]
+}
