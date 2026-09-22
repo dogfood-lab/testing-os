@@ -14,14 +14,14 @@ increasingly much of the code was not written by a human at all.
 
 Scored against the six workflow standards (`.claude/rules/workflow-standards.md`), 0–3.
 
-**DECOMPOSE_BY_SECRETS is a 3. PIN_PER_STEP is a 3. ANDON_AUTHORITY is a 2. UNCERTAINTY_GATED_HUMANS is a 2. Every other score here is a 1.** A 2 means a step already does
+**DECOMPOSE_BY_SECRETS is a 3. PIN_PER_STEP is a 3. ANDON_AUTHORITY is a 3. UNCERTAINTY_GATED_HUMANS is a 2. Every other score here is a 1.** A 2 means a step already does
 the thing; a 3 means that step has tests. Slice 1 landed the read-only core and the two tests
 that enforce the split. Slice 2a landed the grammar-manifest test, which is what moves
 PIN_PER_STEP to 2. Slice 5 landed the byte-identical statistics fixture, which is what moves
 PIN_PER_STEP to 3. Slice 3 landed the host check, which is what moves ANDON_AUTHORITY to 2.
+Slice 9 landed the weekly job's per-repository failure path, which is what moves ANDON_AUTHORITY to 3.
 Slice 4 landed the acceptance ladder, which is what moves UNCERTAINTY_GATED_HUMANS to 2.
-The weekly job's per-repository parse-failure path is still only specified. The other standards
-are still specified in prose and enforced nowhere.
+The other standards are still specified in prose and enforced nowhere.
 The trajectory dispatch in this same folder was previously caught inflating a score by describing
 a gate it had not yet built. **Rescore upward only in the commit that lands the enforcing test**,
 never in a design edit.
@@ -29,13 +29,13 @@ never in a design edit.
 | Standard | Score | What is specified, and what would raise it |
 |---|---|---|
 | PIN_PER_STEP | 3 | The four grammar files are vendored from `@vscode/tree-sitter-wasm` 0.3.1 and `core/grammar-manifest.test.js` re-hashes each file against `grammars/manifest.json`. `adapter/determinism.test.js` proves two maps at one commit write byte-identical `statistics.json` apart from `generatedAt`, and the artifact records the window, thresholds and floor actually used. |
-| ANDON_AUTHORITY | 2 | `atlas check` fails the host on structural drift, and `adapter/lifecycle.test.js` covers that halt. A repository whose grammar throws still only has the failure specified for the weekly job (§9). **→ 3** when that path exists and is tested. **Remediation:** slice 9, owner unassigned (§12). |
+| ANDON_AUTHORITY | 3 | `atlas check` fails the host on structural drift, and `adapter/lifecycle.test.js` covers that halt. A thrown map in the weekly job is recorded against that repository and the loop continues, and `scripts/atlas-render.test.mjs` covers that path. |
 | NAMED_COMPENSATORS | 1 | Specified: four irreversible actions, each with an undo, a post-rollback state and an owner slot. See **Compensators**. Three of the four owners are unfilled seats, which is itself why this cannot read higher. **→ 2** when the undos are documented operator procedure with seats named. **Remediation:** slice 9, owner unassigned (§12). |
 | DECOMPOSE_BY_SECRETS | 3 | The core at `packages/atlas/core/index.js` reads a repo path and parsed boundaries and returns data. `core/no-sibling-imports.test.js` walks the resolved import closure and fails on any `@dogfood-lab/*` edge. `core/writes-nothing.test.js` fails if a run changes the fixture tree or the process working directory. |
 | UNCERTAINTY_GATED_HUMANS | 2 | Acceptance fails while a reason or a will_break is still derived or still the sentence init would write, and `adapter/ladder.test.js` covers that gate. A correct derived entry point is never retyped. Low-confidence labels on the fallen floor are still only specified. **→ 3** when those labels propagate through the ladder. **Remediation:** slice 5, owner unassigned (§12). |
 | EXTERNAL_VERIFIER | **skip** | `skip:` no model generates any Atlas output. The standard requires a verifier from a different model family with the generator's reasoning hidden, and there is no generator to hide. A second independent implementation of boundary membership is a different and weaker requirement, and claiming it as this standard would be a category error. **Revisit this skip if a later slice introduces a model**, for example a generated Orientation draft. |
 
-One skip, with its reason. DECOMPOSE_BY_SECRETS is 3 because its two tests pass. PIN_PER_STEP is 3 because the grammar-manifest test and the statistics determinism test pass. ANDON_AUTHORITY is 2 because the host check is tested. UNCERTAINTY_GATED_HUMANS is 2 because the acceptance ladder is tested. No score is above what exists.
+One skip, with its reason. DECOMPOSE_BY_SECRETS is 3 because its two tests pass. PIN_PER_STEP is 3 because the grammar-manifest test and the statistics determinism test pass. ANDON_AUTHORITY is 3 because the host check is tested and the weekly job's per-repository failure path is tested. UNCERTAINTY_GATED_HUMANS is 2 because the acceptance ladder is tested. No score is above what exists.
 
 ---
 
@@ -852,8 +852,7 @@ truncates the graph itself, which is precisely what 180 days of co-change needs.
 
 **State lives on that branch** at `indexes/atlas/state.json`, and holds only what is genuinely
 the job's own memory: the last rendered commit per repository, and per-repository parse failures.
-**Neither the cohesion high-water mark nor the honoured rebaseline keys are here** — it lives in each repository's committed
-snapshot, per §5, so that a local run can compute a delta without reaching into this branch. It
+Since slice 5 the high-water mark lives in each repository's committed snapshot. State holds the last rendered commit, the failures, and nothing else. It
 is on the branch rather than the default branch precisely because it is job state and cannot wait
 on a merge. Each run reads it, skips any repository whose commit has not moved, and writes it
 back. An idle repository costs a ref check; a repository that has actually changed is the one
