@@ -52,7 +52,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, existsSync
 import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, execFileSync } from 'node:child_process';
 
 import {
   runRegressionPinGate,
@@ -71,15 +71,27 @@ import { scanRepoForDeclaredPins } from './pin-declarations.mjs';
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');
 
+/**
+ * Fixture trees are real git repositories and `write` tracks what it writes,
+ * because the gate enumerates the tracked file set rather than a directory
+ * listing — an unstaged fixture file is invisible to it by design. Staging is
+ * sufficient: `git ls-files` reads the index, so no commit is required.
+ *
+ * `writeAllowlist` / `writeGrandfatherManifest` deliberately do NOT track
+ * what they write: those files are passed to the gate by explicit path, never
+ * discovered by the scan.
+ */
 function makeFixture(t) {
   const dir = mkdtempSync(join(tmpdir(), 'check-regression-pins-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
+  execFileSync('git', ['init', '-q'], { cwd: dir, stdio: 'ignore' });
   return {
     dir,
     write(rel, content) {
       const abs = join(dir, rel);
       mkdirSync(dirname(abs), { recursive: true });
       writeFileSync(abs, content);
+      execFileSync('git', ['add', '-f', '--', rel], { cwd: dir, stdio: 'ignore' });
     },
     writeAllowlist(obj) {
       const abs = join(dir, 'allowlist.json');

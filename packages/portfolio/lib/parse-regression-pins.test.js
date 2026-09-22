@@ -17,6 +17,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -25,10 +26,17 @@ import {
   classifyFile,
   extractPinsFromText,
   walkSourceFiles,
+  posixifyPath,
   toJSON,
   F_ID_PATTERN,
 } from './parse-regression-pins.js';
 
+/**
+ * Fixture trees are real git repositories, because walkSourceFiles enumerates
+ * the tracked file set rather than a directory listing — an unstaged fixture
+ * file is invisible to it by design. Staging is sufficient: `git ls-files`
+ * reads the index, so no commit is required to make a file tracked.
+ */
 function makeFixture(layout) {
   const root = mkdtempSync(join(tmpdir(), 'regression-pins-'));
   for (const [relPath, content] of Object.entries(layout)) {
@@ -36,6 +44,8 @@ function makeFixture(layout) {
     mkdirSync(join(abs, '..'), { recursive: true });
     writeFileSync(abs, content, 'utf-8');
   }
+  execFileSync('git', ['init', '-q'], { cwd: root, stdio: 'ignore' });
+  execFileSync('git', ['add', '-A'], { cwd: root, stdio: 'ignore' });
   return root;
 }
 
@@ -795,6 +805,70 @@ describe('parseRegressionPins — live repo smoke test', () => {
       const inTest = result.test_pins.has(id);
       assert.ok(inSource || inTest,
         `expected ${id} to appear in source or test pins of the live tree`);
+    }
+  });
+});
+
+// ── The candidate set is the tracked file set, not a directory listing ─────
+//
+// A developer's working copy carries files git does not consider part of the
+// repository: gitignored swarm scratch dirs (`swarms/swarm-*/`, ignored by
+// `swarms/.gitignore`) and the app-managed agent worktrees under `.claude/`,
+// which on Windows can survive a failed `git worktree remove`. Reading an
+// F-id out of one of those made the always-on gate report orphan source pins
+// for text that is not in the repository at all — red on a developer machine,
+// green in CI, because a clean checkout has none of that pollution. A gate
+// that reds on scratch is a gate people learn to skip.
+//
+// Behavioural consequence, stated honestly: a brand-new source file that has
+// not been `git add`-ed yet is invisible to this walk. That is already how CI
+// behaves, since CI only ever sees committed content.
+
+describe('walkSourceFiles — tracked files only', () => {
+  it('ignores a gitignored scratch directory and an untracked worktree copy', () => {
+    const root = makeFixture({
+      'swarms/.gitignore': 'swarm-*/\n',
+      'src/real.js': '// F-100000-001 — a real, tracked source pin\n',
+    });
+    try {
+      // Written after makeFixture stages the tracked files, so neither path
+      // reaches the index: the first is gitignored, the second is merely
+      // untracked.
+      mkdirSync(join(root, 'swarms', 'swarm-zzz'), { recursive: true });
+      writeFileSync(join(root, 'swarms', 'swarm-zzz', 'pins.mjs'),
+        '// F-deadbeef — a scratch script the swarm left behind\n', 'utf-8');
+      mkdirSync(join(root, '.claude', 'worktrees', 'x'), { recursive: true });
+      writeFileSync(join(root, '.claude', 'worktrees', 'x', 'some.test.mjs'),
+        '// F-deadbeef\n', 'utf-8');
+
+      const files = walkSourceFiles(root);
+      assert.deepEqual(
+        files.map((f) => posixifyPath(f).slice(posixifyPath(root).length + 1)).sort(),
+        ['src/real.js'],
+        'only the tracked source file belongs to the repository',
+      );
+
+      const { source_pins } = parseRegressionPins(root);
+      assert.equal(source_pins.has('F-deadbeef'), false,
+        'an F-id mentioned only in untracked or ignored files is not a source pin');
+      assert.equal(source_pins.has('F-100000-001'), true,
+        'the tracked pin is still found — the fix narrows the candidate set, nothing else');
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it('scans a tracked file that has uncommitted working-tree modifications', () => {
+    const root = makeFixture({ 'src/real.js': '// no pin yet\n' });
+    try {
+      // git ls-files still lists a modified tracked file, and the scan must
+      // read the working tree rather than the index — otherwise a pin added
+      // in the current edit would be invisible until commit.
+      writeFileSync(join(root, 'src', 'real.js'), '// F-200000-002 — added, not committed\n', 'utf-8');
+      const { source_pins } = parseRegressionPins(root);
+      assert.equal(source_pins.has('F-200000-002'), true);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
     }
   });
 });

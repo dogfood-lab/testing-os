@@ -20,11 +20,12 @@
  *   - JSON-serializable output so the FT-BACKEND-002 `swarm verify-fixed`
  *     command can join its delta against this parser's emit.
  *   - File classification is path-based (`*.test.js|ts|mjs` or any path that
- *     contains `/test/` is "test"; everything else is "source"). Mirrors the
- *     existing portfolio/loadPolicies() walk style — no glob library, plain
- *     readdirSync recursion.
- *   - Skips `node_modules`, `dist`, `.git`, `coverage`, and any directory
- *     whose name starts with `.` (covers `.claude`, `.next`, etc.).
+ *     contains `/test/` is "test"; everything else is "source"). No glob
+ *     library — a plain filter over the tracked file set.
+ *   - The candidate set is what git tracks (see `lib/tracked-files.js`), so
+ *     untracked and ignored files are never scanned.
+ *   - On top of that, skips `node_modules`, `dist`, `coverage`, and any
+ *     directory whose name starts with `.` except `.github`.
  *
  * Companion to FT-BACKEND-002 (`swarm verify-fixed` runtime check) and
  * FT-OUTPUTS-001 (this commit-time check). Together they operationalize
@@ -32,8 +33,10 @@
  * on demand, this parser feeds the always-on CI gate.
  */
 
-import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { readFileSync, statSync, existsSync } from 'node:fs';
 import { join, sep, posix } from 'node:path';
+
+import { listTrackedFiles } from './tracked-files.js';
 
 /**
  * F-id pattern — three formats, unioned, because this repo has minted three
@@ -386,9 +389,26 @@ export function extractPinsFromText(text) {
 }
 
 /**
- * Recursively walk `rootDir`, returning the absolute paths of files whose
- * extension is in `extensions`. Same readdirSync-with-withFileTypes pattern
- * used by `loadPolicies()` — no glob lib needed.
+ * List the source files of the repository rooted at (or containing)
+ * `rootDir`, as absolute forward-slashed paths, filtered to `extensions`.
+ *
+ * The candidate set is the TRACKED file set (`git ls-files`, via
+ * {@link listTrackedFiles}), not a directory listing. A directory listing
+ * also reads what git deliberately does not track — gitignored swarm scratch
+ * dirs, stranded agent worktrees under `.claude/` — which made the
+ * always-on regression-pin gate report orphan source pins for text that is
+ * not in the repository at all: red on a developer machine, green in CI,
+ * because a clean checkout has none of that pollution. See
+ * `lib/tracked-files.js` for the full account and for the one behavioural
+ * consequence (a file not yet `git add`-ed is invisible, exactly as in CI).
+ *
+ * The skip sets below still apply on top of the tracked set. Most of what
+ * they name is gitignored anyway; they stay because `skipDirs` is a public
+ * option and because `.github` needs its named carve-out either way.
+ *
+ * Throws when `rootDir` exists, is a directory, and is NOT inside a git work
+ * tree — a scan with no authority over what belongs to the repository must
+ * fail loudly rather than return a quietly wrong answer.
  *
  * @param {string} rootDir
  * @param {object} [opts]
@@ -399,48 +419,39 @@ export function extractPinsFromText(text) {
 export function walkSourceFiles(rootDir, { extensions = DEFAULT_SOURCE_EXTENSIONS, skipDirs = DEFAULT_SKIP_DIRS } = {}) {
   const out = [];
   if (!existsSync(rootDir)) return out;
+  if (!statSync(rootDir).isDirectory()) return out;
 
-  const stack = [rootDir];
-  while (stack.length > 0) {
-    const dir = stack.pop();
-    let entries;
-    try {
-      entries = readdirSync(dir, { withFileTypes: true });
-    } catch {
-      continue;
-    }
+  for (const rel of listTrackedFiles(rootDir)) {
+    const segments = rel.split('/');
+    const name = segments.pop();
+    // Dot-prefixed dirs (.claude/.vscode/.idea/…) are always skipped; there
+    // is no opt-in via skipDirs — that set only ever adds skips. F-5eafee44:
+    // `.github` is the one named exception (see DOT_DIR_SCAN_ALLOWLIST) — it
+    // carries real, versioned workflow YAML that legitimately pins F-ids,
+    // unlike every other dot-directory here.
+    const skipped = segments.some((d) =>
+      skipDirs.has(d) || (d.startsWith('.') && !DOT_DIR_SCAN_ALLOWLIST.has(d)));
+    if (skipped) continue;
 
-    for (const entry of entries) {
-      const fullPath = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        if (skipDirs.has(entry.name)) continue;
-        // Dot-prefixed dirs (.claude/.vscode/.idea/.git/…) are always skipped;
-        // there is no opt-in via skipDirs — that set only ever adds skips.
-        // F-5eafee44: `.github` is the one named exception (see
-        // DOT_DIR_SCAN_ALLOWLIST) — it carries real, versioned workflow YAML
-        // that legitimately pins F-ids, unlike every other dot-directory here.
-        if (entry.name.startsWith('.') && !DOT_DIR_SCAN_ALLOWLIST.has(entry.name)) continue;
-        stack.push(fullPath);
-        continue;
-      }
-      if (!entry.isFile()) continue;
-      const dotIdx = entry.name.lastIndexOf('.');
-      if (dotIdx === -1) continue;
-      const ext = entry.name.slice(dotIdx);
-      if (!extensions.has(ext)) continue;
-      // SEED-1 (d3-ingest-005) — posixify at the serialization boundary.
-      // These paths become the KEYS/VALUES of parseRegressionPins()'s
-      // source_pins/test_pins Maps and are copied verbatim by toJSON() into
-      // the committed docs/regression-pin-index.json when
-      // check-finding-regression-pins.mjs runs with --write-index. On win32,
-      // `join()` yields backslashes, so without this a Windows regeneration
-      // commits backslash paths that a Linux-run delta-join silently
-      // mismatches. Normalize ONCE here, reusing the exact transform
-      // classifyFile() applies one function above (line ~75). NEVER a
-      // win32-skip. (The `stack` keeps OS-native paths — readdirSync handles
-      // those fine; only the STORED output crosses into serialized state.)
-      out.push(posixifyPath(fullPath));
-    }
+    const dotIdx = name.lastIndexOf('.');
+    if (dotIdx === -1) continue;
+    if (!extensions.has(name.slice(dotIdx))) continue;
+
+    // SEED-1 (d3-ingest-005) — posixify at the serialization boundary.
+    // These paths become the KEYS/VALUES of parseRegressionPins()'s
+    // source_pins/test_pins Maps and are copied verbatim by toJSON() into
+    // the committed docs/regression-pin-index.json when
+    // check-finding-regression-pins.mjs runs with --write-index. On win32,
+    // `join()` yields backslashes, so without this a Windows regeneration
+    // commits backslash paths that a Linux-run delta-join silently
+    // mismatches. Normalize ONCE here, reusing the exact transform
+    // classifyFile() applies above.
+    const absolute = posixifyPath(join(rootDir, rel));
+    // git lists a tracked file that has been deleted in the working tree;
+    // every consumer of this list reads the file, as the pre-git directory
+    // listing implicitly guaranteed it could.
+    if (!existsSync(absolute)) continue;
+    out.push(absolute);
   }
 
   out.sort();

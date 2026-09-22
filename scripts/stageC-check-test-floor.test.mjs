@@ -25,13 +25,26 @@
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { readFileSync, readdirSync, existsSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
-import { dirname, resolve, join, relative } from 'node:path';
+import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { listTrackedFiles } from '../packages/portfolio/lib/tracked-files.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');
 const packagesDir = resolve(repoRoot, 'packages');
+
+/**
+ * The sweep enumerates the tracked file set, so a fixture tree has to be a
+ * real repository or it has no files at all. Staging is enough — `git
+ * ls-files` reads the index, so no commit is required to make a file tracked.
+ */
+function trackFixture(dir) {
+  execFileSync('git', ['init', '-q'], { cwd: dir, stdio: 'ignore' });
+  execFileSync('git', ['add', '-A'], { cwd: dir, stdio: 'ignore' });
+  return dir;
+}
 
 function readPkg(dir) {
   const p = join(dir, 'package.json');
@@ -121,7 +134,7 @@ const TEST_FILE_RE = /\.(?:test|spec)\.(?:js|mjs|cjs|ts|tsx)$/;
 // NOT .ts/.tsx (no transpiler) and NOT .spec. naming — claiming those covered
 // is the F-4d5e0db4 / F-113b0115 over-claim.
 const NODE_BARE_DISCOVERY_RE = /(?:\.test\.(?:js|mjs|cjs)$)|(?:(?:^|\/)test\/.*\.(?:js|mjs|cjs)$)/;
-// Directory names never walked: generated/vendored trees, plus swarm run
+// Directory names never swept: generated/vendored trees, plus swarm run
 // artifacts (agent worktrees are full repo copies whose test files are counted
 // in their own checkouts, not this one).
 //
@@ -138,20 +151,20 @@ const SKIP_DIRS = new Set([
   '__test_root__', '.swarm', 'swarms', '.dogfood-worktrees',
 ]);
 
+// The candidate set is the TRACKED file set, not a directory listing — the
+// skip-list above can only name directories someone remembered, and the one
+// that burned this gate (`.claude/worktrees/<agent-id>/`, an app-managed
+// worktree that Windows can leave on disk after a failed `git worktree
+// remove`) was never in it. git already knows which of those paths belong to
+// the repository; see packages/portfolio/lib/tracked-files.js.
 function collectTestFiles(root) {
   const out = [];
-  (function visit(dir) {
-    let entries;
-    try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return; }
-    for (const e of entries) {
-      if (SKIP_DIRS.has(e.name)) continue;
-      const full = join(dir, e.name);
-      if (e.isDirectory()) visit(full);
-      else if (e.isFile() && TEST_FILE_RE.test(e.name)) {
-        out.push(relative(root, full).replace(/\\/g, '/'));
-      }
-    }
-  })(root);
+  for (const rel of listTrackedFiles(root)) {
+    const segments = rel.split('/');
+    if (segments.some((s) => SKIP_DIRS.has(s))) continue;
+    if (!TEST_FILE_RE.test(segments[segments.length - 1])) continue;
+    out.push(rel);
+  }
   return out.sort();
 }
 
@@ -301,6 +314,7 @@ test('F-8125c01b META: the sweep FIRES on a synthetic orphaned test file (the sw
   writeFileSync(join(dir, 'packages/thing/shallow.test.js'), '');
   writeFileSync(join(dir, 'packages/thing/deep/buried.test.js'), '');
 
+  trackFixture(dir);
   const problems = findUncoveredTests(dir);
   const files = problems.map((p) => p.file).sort();
   assert.deepEqual(
@@ -321,6 +335,7 @@ test('F-8125c01b META: a bare `node --test` package script covers nested test fi
     name: 'bare', version: '1.0.0', scripts: { test: 'node --test' },
   }, null, 2));
   writeFileSync(join(dir, 'packages/bare/lib/deep/nested.test.js'), '');
+  trackFixture(dir);
   assert.deepEqual(findUncoveredTests(dir), [], 'bare `node --test` discovers recursively on Node >= 22 — nested files are covered');
 });
 
@@ -343,6 +358,7 @@ test('F-654a84e6/F-789ca80f META: an UNQUOTED single-file `node --test cli.test.
   }, null, 2));
   writeFileSync(join(dir, 'packages/uq/cli.test.js'), '');
   writeFileSync(join(dir, 'packages/uq/lib/orphan.test.js'), '');
+  trackFixture(dir);
   const files = findUncoveredTests(dir).map((p) => p.file);
   assert.deepEqual(
     files,
@@ -363,6 +379,7 @@ test('F-654a84e6 META: `node --test lib/` covers files under lib/ but flags a te
   }, null, 2));
   writeFileSync(join(dir, 'packages/da/lib/inside.test.js'), '');
   writeFileSync(join(dir, 'packages/da/outside.test.js'), '');
+  trackFixture(dir);
   const files = findUncoveredTests(dir).map((p) => p.file);
   assert.deepEqual(
     files,
@@ -389,6 +406,7 @@ test('F-4d5e0db4 META: a .test.ts file in a bare `node --test` package is flagge
   }, null, 2));
   writeFileSync(join(dir, 'packages/nr/runs.test.js'), '');
   writeFileSync(join(dir, 'packages/nr/stray.test.ts'), '');
+  trackFixture(dir);
   const files = findUncoveredTests(dir).map((p) => p.file);
   assert.deepEqual(
     files,
@@ -408,6 +426,7 @@ test('F-4d5e0db4 META: a vitest script with --passWithNoTests re-added is NOT tr
     name: 'vt', version: '1.0.0', scripts: { test: 'vitest run --passWithNoTests' },
   }, null, 2));
   writeFileSync(join(dir, 'packages/vt/some.test.ts'), '');
+  trackFixture(dir);
   const files = findUncoveredTests(dir).map((p) => p.file);
   assert.deepEqual(
     files,
@@ -428,6 +447,7 @@ test('F-4d5e0db4 META: a vitest package with a committed vitest.config fails clo
   }, null, 2));
   writeFileSync(join(dir, 'packages/vc/vitest.config.ts'), 'export default {};\n');
   writeFileSync(join(dir, 'packages/vc/some.test.ts'), '');
+  trackFixture(dir);
   const files = findUncoveredTests(dir).map((p) => p.file);
   assert.deepEqual(
     files,
@@ -454,6 +474,7 @@ test('F-113b0115 META: a .spec. file in a bare `node --test` package is visible 
   }, null, 2));
   writeFileSync(join(dir, 'packages/sp/runs.test.js'), '');
   writeFileSync(join(dir, 'packages/sp/orphan.spec.js'), '');
+  trackFixture(dir);
   const files = findUncoveredTests(dir).map((p) => p.file);
   assert.deepEqual(
     files,
@@ -512,7 +533,72 @@ test('F-8125c01b META: allowlist entries need a reason and a live path (no allow
   }, null, 2));
   mkdirSync(join(dir, 'tools'), { recursive: true });
   writeFileSync(join(dir, 'tools/here.test.mjs'), '');
+  trackFixture(dir);
   const problems = findUncoveredTests(dir);
   assert.ok(problems.some((p) => /no longer exists/.test(p.why)), `stale allowlist path must be flagged: ${JSON.stringify(problems)}`);
   assert.ok(problems.some((p) => /no reason/.test(p.why)), `empty allowlist reason must be flagged: ${JSON.stringify(problems)}`);
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// The sweep's candidate set is `git ls-files`, not a directory listing. A
+// developer's working copy carries files git does not consider part of the
+// repository: the app-managed agent worktrees under `.claude/worktrees/`
+// (untracked, and on Windows left behind on disk when `git worktree remove`
+// half-fails) and gitignored swarm scratch dirs. Sweeping those reported
+// dozens of "orphaned test files" for paths that are not in the repository at
+// all — red on a developer machine, green in CI, because a clean checkout has
+// none of the pollution. A gate that reds on scratch is a gate people learn
+// to skip.
+//
+// Behavioural consequence, stated honestly: a brand-new test file a developer
+// has written but not yet added is invisible to the sweep until it is tracked.
+// That is already how CI behaves — CI only ever sees committed content.
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('the sweep ignores untracked and ignored files (worktree copies and swarm scratch are not the repository)', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'test-floor-untracked-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  writeFileSync(join(dir, 'package.json'), JSON.stringify({
+    name: 'fx', version: '1.0.0', scripts: { 'test:scripts': 'node --test "scripts/*.test.mjs"' },
+  }, null, 2));
+  mkdirSync(join(dir, 'scripts'), { recursive: true });
+  writeFileSync(join(dir, 'scripts/covered.test.mjs'), '');
+  mkdirSync(join(dir, 'swarms'), { recursive: true });
+  writeFileSync(join(dir, 'swarms/.gitignore'), 'swarm-*/\n');
+  trackFixture(dir);
+
+  // Planted after staging, so neither path reaches the index: the first is
+  // ignored by swarms/.gitignore, the second is a stranded agent worktree
+  // copy that is merely untracked. Both sit outside every root glob, so if
+  // either were swept it would be reported as an orphan.
+  mkdirSync(join(dir, 'swarms/swarm-zzz/tools'), { recursive: true });
+  writeFileSync(join(dir, 'swarms/swarm-zzz/tools/scratch.test.mjs'), '');
+  mkdirSync(join(dir, '.claude/worktrees/x/tools'), { recursive: true });
+  writeFileSync(join(dir, '.claude/worktrees/x/tools/orphan.test.mjs'), '');
+
+  assert.deepEqual(
+    findUncoveredTests(dir),
+    [],
+    'files git does not track are not part of the repository and must not be swept',
+  );
+});
+
+test('the sweep still flags a TRACKED orphan alongside the untracked pollution (the narrowing did not blind it)', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'test-floor-tracked-orphan-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  writeFileSync(join(dir, 'package.json'), JSON.stringify({
+    name: 'fx', version: '1.0.0', scripts: { 'test:scripts': 'node --test "scripts/*.test.mjs"' },
+  }, null, 2));
+  mkdirSync(join(dir, 'tools'), { recursive: true });
+  writeFileSync(join(dir, 'tools/real-orphan.test.mjs'), '');
+  trackFixture(dir);
+
+  mkdirSync(join(dir, '.claude/worktrees/x/tools'), { recursive: true });
+  writeFileSync(join(dir, '.claude/worktrees/x/tools/orphan.test.mjs'), '');
+
+  assert.deepEqual(
+    findUncoveredTests(dir).map((p) => p.file),
+    ['tools/real-orphan.test.mjs'],
+    'restricting the sweep to tracked files must not suppress a genuine committed orphan',
+  );
 });
