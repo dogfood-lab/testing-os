@@ -1,11 +1,13 @@
 rule: if now (UTC) is after withdraw-after, do not load the statistics file;
       withdrawn numbers are not evidence that files are uncoupled
 
-withdraw-after: 2026-10-20T16:37:30.539Z
+withdraw-after: 2026-10-20T17:09:01.934Z
 
 ## Pairs
 
 ◷ numbers as of 2026-09-22 · 0 days ago
+
+⚠ low confidence
 
 | a | b | shared | either | strength |
 | --- | --- | --- | --- | --- |
@@ -30,18 +32,18 @@ withdraw-after: 2026-10-20T16:37:30.539Z
 | README.ja.md | README.pt-BR.md | 15 | 15 | 1 |
 | README.ja.md | README.zh.md | 15 | 15 | 1 |
 | README.pt-BR.md | README.zh.md | 15 | 15 | 1 |
-| indexes/integrity/chain.jsonl | indexes/trends.json | 39 | 39 | 1 |
+| indexes/integrity/chain.jsonl | indexes/trends.json | 40 | 40 | 1 |
+| packages/dogfood-swarm/lib/verify/adapters/python.js | packages/dogfood-swarm/lib/verify/adapters/rust.js | 5 | 5 | 1 |
 | packages/portfolio/package.json | packages/verify/package.json | 26 | 28 | 0.928571 |
 | packages/findings/package.json | packages/verify/package.json | 26 | 29 | 0.896552 |
-| packages/portfolio/package.json | packages/report/package.json | 26 | 29 | 0.896552 |
 
-72 pairs
+96 pairs
 
 ## Breakage
 
 ◷ numbers as of 2026-09-22 · 0 days ago
 
-confidence: full
+⚠ low confidence
 
 ### .github
 
@@ -87,9 +89,9 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | ingest · schemas |
-| imports only | scripts |
-| co-changes only | findings · portfolio · report · root · verify |
+| imports & co-changes | scripts |
+| imports only | ingest · schemas |
+| co-changes only | portfolio |
 
 ### examples
 
@@ -103,9 +105,9 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | dogfood-swarm · ingest · portfolio |
-| imports only | scripts |
-| co-changes only | report · root · schemas · verify |
+| imports & co-changes | none |
+| imports only | dogfood-swarm · ingest · portfolio · scripts |
+| co-changes only | none |
 
 ### fixtures
 
@@ -127,9 +129,9 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | findings |
-| imports only | scripts |
-| co-changes only | dogfood-swarm · portfolio · report · root · schemas · verify |
+| imports & co-changes | none |
+| imports only | findings · scripts |
+| co-changes only | none |
 
 ### policies
 
@@ -143,9 +145,9 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | none |
-| imports only | scripts |
-| co-changes only | dogfood-swarm · findings · ingest · report · root · schemas · verify |
+| imports & co-changes | scripts |
+| imports only | none |
+| co-changes only | dogfood-swarm |
 
 ### records
 
@@ -159,9 +161,9 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | dogfood-swarm |
-| imports only | none |
-| co-changes only | findings · ingest · portfolio · root · schemas · verify |
+| imports & co-changes | none |
+| imports only | dogfood-swarm |
+| co-changes only | none |
 
 ### reports
 
@@ -177,15 +179,15 @@ confidence: full
 | --- | --- |
 | imports & co-changes | none |
 | imports only | none |
-| co-changes only | dogfood-swarm · findings · ingest · portfolio · report · schemas · verify |
+| co-changes only | none |
 
 ### schemas
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | dogfood-swarm · findings · ingest · report · verify |
-| imports only | dogfood · scripts |
-| co-changes only | portfolio · root |
+| imports & co-changes | none |
+| imports only | dogfood · dogfood-swarm · findings · ingest · report · scripts · verify |
+| co-changes only | none |
 
 ### scripts
 
@@ -193,7 +195,7 @@ confidence: full
 | --- | --- |
 | imports & co-changes | none |
 | imports only | none |
-| co-changes only | none |
+| co-changes only | dogfood-swarm · portfolio |
 
 ### site
 
@@ -215,6 +217,6 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | findings · ingest |
-| imports only | scripts |
-| co-changes only | dogfood-swarm · portfolio · report · root · schemas |
+| imports & co-changes | none |
+| imports only | findings · ingest · scripts |
+| co-changes only | none |

@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { loadHistory } from '../core/history.js';
+import { SOURCE_EXTENSIONS, SOURCE_FILE_REACH, isSourcePath, loadHistory } from '../core/history.js';
 
 const CHURN_DEFINITION = 'commits is how many commits in the window touch the file, including merges and commits dropped from coupling. lines is added plus deleted in those commits.';
 const STRENGTH_DEFINITION = 'strength is the shared qualifying commits divided by either. either is the number of qualifying commits that touch either file.';
@@ -19,7 +19,7 @@ export function parametersFrom(document) {
   const window = document?.window;
   return {
     windowDays: typeof window === 'number' ? window : 180,
-    windowStart: typeof window === 'string' && window.trim() ? window.trim() : null,
+    pinnedStart: typeof window === 'string' && window.trim() ? window.trim() : null,
     changeset: numberOr(thresholds.changeset, 50),
     changesetFraction: numberOr(thresholds.changesetFraction, 0.25),
     shared: numberOr(thresholds.shared, 10),
@@ -38,8 +38,25 @@ function boundaryOf(artifact) {
   return map;
 }
 
+function couplingPairs(pairs) {
+  return pairs.filter((pair) => isSourcePath(pair.a) && isSourcePath(pair.b));
+}
+
+function sourceCommitCounts(boundaries, touches) {
+  const counts = new Map();
+  for (const boundary of boundaries) {
+    const owned = new Set(boundary.files.map((file) => file.path).filter((path) => isSourcePath(path)));
+    let count = 0;
+    for (const commit of touches) {
+      if (commit.paths.some((path) => owned.has(path))) count += 1;
+    }
+    counts.set(boundary.name, count);
+  }
+  return counts;
+}
+
 function cohesionOf(name, files, pairs, locate) {
-  const own = new Set(files);
+  const own = new Set(files.filter((path) => isSourcePath(path)));
   let inside = 0;
   let outside = 0;
   const crossed = new Set();
@@ -83,12 +100,10 @@ export function applyMarks(rows, previous, fallen) {
     const old = prior.get(row.name);
     let highWater = old?.highWater ?? null;
     let rebaseline = old?.rebaseline ?? null;
-    if (row.requested && row.requested !== rebaseline) {
-      highWater = row.cohesion;
-      rebaseline = row.requested;
-    } else if (!fallen && row.cohesion != null && (highWater == null || row.cohesion > highWater)) {
-      highWater = row.cohesion;
-    }
+    if (row.requested && row.requested !== rebaseline) rebaseline = row.requested;
+    if (row.cohesion == null) highWater = null;
+    else if (row.requested && row.requested !== (old?.rebaseline ?? null)) highWater = row.cohesion;
+    else if (!fallen && (highWater == null || row.cohesion > highWater)) highWater = row.cohesion;
     const cohesionDropped = !fallen
       && highWater != null
       && row.cohesion != null
@@ -98,6 +113,8 @@ export function applyMarks(rows, previous, fallen) {
       cohesion: row.cohesion,
       highWater,
       cohesionDropped,
+      qualifyingSourceCommits: row.qualifyingSourceCommits ?? 0,
+      confidence: row.confidence ?? 'full',
       rebaseline,
       breakage: row.breakage,
     };
@@ -110,10 +127,14 @@ export function buildStatistics({ repo, commit, document, artifact, generatedAt 
   const empty = {
     qualifyingCommits: 0,
     floor: 'fallen',
+    floorTrigger: 'thin-history',
+    confidenceReason: 'fewer than 30 qualifying commits in the window',
+    sourceFilesReachingStrongFloor: 0,
     sharedFloorUsed: parameters.fallenShared,
     appliedChangesetLimit: 0,
     churn: [],
     pairs: [],
+    qualifyingTouches: [],
   };
   const measured = history ?? empty;
   const locate = boundaryOf(artifact);
@@ -125,14 +146,19 @@ export function buildStatistics({ repo, commit, document, artifact, generatedAt 
   }
   const usable = measured.qualifyingCommits > 0;
   const confidence = measured.floor === 'strong' ? 'full' : 'low';
-  const reason = measured.floor === 'strong'
-    ? 'the window holds at least 30 qualifying commits'
-    : 'fewer than 30 qualifying commits in the window';
+  const reason = measured.confidenceReason ?? (confidence === 'full'
+    ? 'at least 30 qualifying commits, and at least 20 source files reach 10 revisions'
+    : 'fewer than 30 qualifying commits in the window');
+  const population = couplingPairs(measured.pairs);
+  const sourceCommits = sourceCommitCounts(artifact.boundaries, measured.qualifyingTouches ?? []);
   const rows = artifact.boundaries.map((boundary) => {
-    const facts = cohesionOf(boundary.name, boundary.files.map((file) => file.path), measured.pairs, locate);
+    const facts = cohesionOf(boundary.name, boundary.files.map((file) => file.path), population, locate);
+    const qualifyingSourceCommits = sourceCommits.get(boundary.name) ?? 0;
     return {
       name: boundary.name,
       cohesion: facts.cohesion,
+      qualifyingSourceCommits,
+      confidence: qualifyingSourceCommits < parameters.qualifyingMinimum ? 'low' : 'full',
       requested: document.boundaries.find((item) => item.name === boundary.name)?.rebaseline ?? null,
       breakage: breakageFor(fanIn.get(boundary.name) ?? [], facts.crossed, usable, confidence),
     };
@@ -150,8 +176,13 @@ export function buildStatistics({ repo, commit, document, artifact, generatedAt 
     generatedAt,
     generatedFrom: { commit },
     parameters: {
-      windowDays: parameters.windowStart ? null : parameters.windowDays,
-      windowStart: parameters.windowStart,
+      windowDays: parameters.pinnedStart ? null : parameters.windowDays,
+      pinnedStart: parameters.pinnedStart,
+      couplingPopulation: 'source',
+      sourceExtensions: [...SOURCE_EXTENSIONS],
+      sourceFileReach: SOURCE_FILE_REACH,
+      sourceFilesReachingStrongFloor: measured.sourceFilesReachingStrongFloor ?? 0,
+      floorTrigger: measured.floorTrigger ?? null,
       changeset: parameters.changeset,
       changesetFraction: parameters.changesetFraction,
       shared: parameters.shared,

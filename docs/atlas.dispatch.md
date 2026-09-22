@@ -616,7 +616,7 @@ closes.
 |---|---|---|---|
 | Window | question-dependent | 180 days, configurable | The source names roughly six months for an active codebase, years for a maintenance view, and says to start from full history when unsure. Full history is how an old reorganization becomes permanent architecture, so this is a deliberate departure and the boundary file may override it, including a start commit after a restructuring. |
 | Changeset cutoff | 50 files | 50 files, or a quarter of in-scope files, whichever is smaller | The fraction covers small repositories where 50 never fires and one reformat would couple everything to everything. |
-| Shared commits | 10 | 10, falling to 3 **only on thin history** | Compute at 10. Fall to 3 **only when the window holds fewer than 30 qualifying commits**, never because few pairs survived. The upstream documentation sanctions lowering thresholds on an empty result, and a repository that can afford 10 keeps the stronger signal. A **qualifying commit** is one that remains after merge commits are dropped and the changeset cutoff is applied — the same commits that feed coupling, so the 30 is counted one way only. The 30 is a chosen default, not a sourced one: below roughly that, 10 shared commits is arithmetically out of reach. |
+| Shared commits | 10 | 10, falling to 3 on thin history **or when fewer than 20 source files reach 10 revisions** | Compute at 10. Fall to 3 when the window holds fewer than 30 qualifying commits, **or when fewer than 20 source files have 10 revisions in the window**, never because few pairs survived. The upstream documentation sanctions lowering thresholds on an empty result, and a repository that can afford 10 keeps the stronger signal. A **qualifying commit** is one that remains after merge commits are dropped and the changeset cutoff is applied — the same commits that feed coupling, so the 30 is counted one way only. The 30 and the 20 are chosen defaults, not sourced ones. |
 | Coupling strength | 50% | 50% | Unchanged. |
 | Minimum revisions per file | 10 | 5 | Without a floor, two files created together and touched three times each register as permanent architecture on one afternoon's work. Files under the floor are omitted, not drawn as weak edges. A hot repository may raise it to 10. |
 
@@ -627,6 +627,8 @@ co-change is *well decoupled*, and that is a high-confidence finding. Dropping t
 would scrape up noise, brand a healthy repository low confidence, and freeze its high-water mark
 for no reason. The fallback therefore keys on how much history exists, not on how much coupling
 was found. Plenty of commits and few pairs is reported at full confidence, as few couplings.
+
+The population is source files, and the floor has a second trigger. Cohesion and the divergence rules consider only pairs of source files; manifests, lockfiles, changelogs and readmes still appear in the pairs list but are release choreography, not architecture, and the first real artifact showed them to be the whole signal at the strong floor. The floor also falls to 3 when fewer than 20 source files reach 10 revisions in the window: a pair cannot share ten commits when almost no file has ten, so the strong floor is unreachable by construction. That is distinct from few pairs surviving, which stays a high-confidence finding of decoupling.
 
 **On thin history the label means few observations, not probable error.** A repository that is
 practically finished and sees twenty qualifying commits in six months, in which two files change

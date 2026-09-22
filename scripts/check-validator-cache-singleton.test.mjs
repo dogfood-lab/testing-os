@@ -107,6 +107,11 @@ test('D2B-015 STATIC: no `new Ajv` outside @dogfood-lab/schemas (single canonica
     // Same class as the two entries above; added at the wave-43 merge when
     // `swarm init --seed-from-roadmap` (T4) shipped its fail-fast validation.
     'packages/dogfood-swarm/commands/lib/roadmap-seed.js',
+    // atlas-divergence.schema.json is the fourth envelope of this class: the
+    // schema's own description says it is resolved with a local Ajv and is
+    // not one of the payload schemas on compileSchema/validatePayload.
+    // The instantiation lives in the atlas test, not in the published CLI.
+    'packages/atlas/adapter/divergence-envelope.test.js',
   ]);
   const SCHEMA_PACKAGE_PREFIX = 'packages/schemas/';
 

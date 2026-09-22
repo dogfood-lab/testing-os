@@ -1,9 +1,9 @@
-generated: 1b16afc  2026-09-22T16:37:30.539Z
+generated: eed100a  2026-09-22T17:09:01.934Z
 structure: 22 boundaries · 1 unassigned · 30 unresolved sites
-statistics: atlas/machine-stats.txt · sha256 476adf7fe107a722fbca574a9551a40065e8d7a71b9bba646b65350a790d1a05 · withdraw-after: 2026-10-20T16:37:30.539Z
+statistics: atlas/machine-stats.txt · sha256 9bb34bbfc3942c75fe0aed0ee55b6319a170cc6f4340628d3e0db7d135c98f2b · withdraw-after: 2026-10-20T17:09:01.934Z
 rule: if now (UTC) is after withdraw-after, do not load the statistics file;
       withdrawn numbers are not evidence that files are uncoupled
-confidence: full
+confidence: low — fewer than 20 source files reach 10 revisions in the window
 
 ## Coarse
 .github  config  proposed  files 7  imports → none  ← imported by none  entry points: none
@@ -19,7 +19,7 @@ indexes  config  proposed  files 21  imports → none  ← imported by none  ent
 ingest  code  proposed  files 80  imports → dogfood-swarm, findings, schemas, verify  ← imported by findings, scripts  entry points: packages/ingest/run.js
 policies  config  proposed  files 15  imports → none  ← imported by none  entry points: none
 portfolio  code  proposed  files 23  imports → findings  ← imported by scripts  entry points: packages/portfolio/generate.js
-records  config  proposed  files 94  imports → none  ← imported by none  entry points: none
+records  config  proposed  files 95  imports → none  ← imported by none  entry points: none
 report  code  proposed  files 24  imports → schemas  ← imported by dogfood-swarm  entry points: packages/report/build-submission.js, packages/report/cli.js, packages/report/init.js
 reports  config  proposed  files 2  imports → none  ← imported by none  entry points: none
 root  docs  proposed  files 21  imports → none  ← imported by none  entry points: none

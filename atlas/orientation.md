@@ -32,6 +32,7 @@ n_dogfood_swarm -.-> n_report
 n_dogfood_swarm --> n_report
 n_dogfood_swarm -.-> n_schemas
 n_dogfood_swarm --> n_schemas
+n_dogfood_swarm -.-> n_scripts
 n_dogfood_swarm -.-> n_verify
 n_findings -.-> n_ingest
 n_findings --> n_ingest
@@ -52,6 +53,7 @@ n_ingest --> n_verify
 n_portfolio --> n_findings
 n_portfolio -.-> n_report
 n_portfolio -.-> n_schemas
+n_portfolio -.-> n_scripts
 n_portfolio -.-> n_verify
 n_report -.-> n_schemas
 n_report --> n_schemas
@@ -88,13 +90,13 @@ classDef unassigned stroke-dasharray: 4 3
 
 ◷ numbers as of 2026-09-22 · 0 days ago
 
-confidence: full
+⚠ low confidence
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | dogfood-swarm · findings · ingest · report · verify |
-| imports only | dogfood · scripts |
-| co-changes only | portfolio · root |
+| imports & co-changes | none |
+| imports only | dogfood · dogfood-swarm · findings · ingest · report · scripts · verify |
+| co-changes only | none |
 
 ## Still unnamed
 22 still unnamed. 1 unassigned file.
