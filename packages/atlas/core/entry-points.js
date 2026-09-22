@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { resolveDeclaredPath } from './resolve.js';
 
 const FALLBACKS = [
   (name) => name.startsWith('index.'),
@@ -60,7 +61,8 @@ function fromPackage(repoPath, root, manifest, tracked) {
   const found = new Set();
   for (const spec of specs) {
     const rel = joinRelative(root, spec);
-    if (rel && tracked.has(rel)) found.add(rel);
+    const resolved = rel ? resolveDeclaredPath(repoPath, rel, tracked) : null;
+    if (resolved) found.add(resolved);
   }
   return [...found].sort();
 }
