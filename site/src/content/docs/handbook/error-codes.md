@@ -653,9 +653,9 @@ An explicit `swarm dispatch --roadmap-digest=<run-id>` named a run with no compi
 `@dogfood-lab/atlas` (`packages/atlas`) does not go through `renderTopLevelError`. It is a standalone binary that runs inside a consumer's test job, so it carries its own table (`packages/atlas/adapter/errors.js`) and prints one fixed shape to stdout:
 
 ```text
-ATLAS_STRUCTURE_DRIFT  The committed structural map does not match this tree.
-  what changed:   boundary edge findings → report is not in the committed map
-  what to do:     run atlas map and commit atlas/, or revert the change
+ATLAS_OVERLAP  A file belongs to more than one boundary.
+  what changed:   shared/util.js: alpha, shared
+  what to do:     narrow one boundary's globs, then atlas map
 exit 1
 ```
 
