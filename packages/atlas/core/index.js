@@ -5,6 +5,7 @@ import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
+import { deriveEntryPoints } from './entry-points.js';
 import { attachResolution } from './resolve.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
@@ -101,10 +102,12 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   }
 
   const byPath = (a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
+  const trackedSet = new Set(tracked.regular);
   const boundaryList = [...byName.values()];
   for (const boundary of boundaryList) {
     boundary.files.sort(byPath);
     boundary.parseErrors = boundary.files.filter((file) => file.parseError).length;
+    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet });
   }
   unassigned.sort(byPath);
   overlaps.sort(byPath);

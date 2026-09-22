@@ -1,0 +1,19 @@
+summary: a small host fixture
+boundaries:
+  - name: alpha
+    globs:
+      - pkg/alpha/**
+    status: accepted
+    role: code
+    reason: the first package
+    why_from: human
+  - name: beta
+    globs:
+      - pkg/beta/**
+    status: accepted
+    role: code
+  - name: tests
+    globs:
+      - tests/**
+    status: accepted
+    role: test
