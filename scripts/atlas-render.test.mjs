@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { parse } from 'yaml';
-import { BACKOFF_MS, JOB_BUDGET_MS, earlierWindow, readExclusions, rejectForeignPaths, renderFleet, shallowSinceDate } from './atlas-render.mjs';
+import { BACKOFF_MS, JOB_BUDGET_MS, earlierWindow, pushAuthEnv, readExclusions, rejectForeignPaths, renderFleet, shallowSinceDate } from './atlas-render.mjs';
 
 const TEMPLATE = resolve(fileURLToPath(new URL('.', import.meta.url)), '../packages/atlas/templates/atlas-refresh.yml');
 const WORKFLOW = resolve(fileURLToPath(new URL('.', import.meta.url)), '../.github/workflows/atlas-render.yml');
@@ -37,9 +37,11 @@ function harness(t, setup) {
   if (setup.exclude) writeFileSync(join(root, 'indexes', 'atlas', 'exclude.txt'), setup.exclude);
   const sleeps = [];
   const calls = [];
+  const fetches = [];
   const issues = { created: [], commented: [], open: setup.openIssues ?? [] };
   let maps = 0;
   const fetchImpl = async (url) => {
+    fetches.push(url);
     if (url.includes('/orgs/mcp-tool-shop-org/repos')) return json(setup.org ?? []);
     if (url.includes('/orgs/dogfood-lab/repos')) return json(setup.lab ?? []);
     if (url.includes('/indexes/atlas/state.json')) return setup.state ? json(setup.state) : json(null, 404);
@@ -53,7 +55,16 @@ function harness(t, setup) {
     return json(null, 404);
   };
   const run = async (command, args, opts = {}) => {
-    calls.push([command, args]);
+    calls.push([command, args, opts]);
+    if (args[0] === 'ls-remote') {
+      if (setup.headFails) return { status: 128, stdout: '', stderr: 'could not read Username' };
+      if (setup.headEmpty) return { status: 0, stdout: '', stderr: '' };
+      const url = args[2] || '';
+      const name = url.match(/github\.com\/(.+?)(?:\.git)?$/)?.[1] ?? '';
+      const sha = setup.heads?.[name] ?? 'a'.repeat(40);
+      const branch = args[3] || 'main';
+      return { status: 0, stdout: `${sha}\trefs/heads/${branch}\n`, stderr: '' };
+    }
     if (args[0] === 'clone') {
       if (setup.cloneFails) return { status: 128, stdout: '', stderr: 'transport' };
       mkdirSync(join(args.at(-1), 'atlas'), { recursive: true });
@@ -93,6 +104,7 @@ function harness(t, setup) {
     root,
     sleeps,
     calls,
+    fetches,
     issues,
     runFleet: (extra = {}) => renderFleet({
       fetch: fetchImpl,
@@ -163,8 +175,8 @@ describe('atlas weekly render', () => {
     const { runFleet, sleeps } = harness(t, { lab: [PUBLIC], org: [OTHER], cloneFails: true });
     const result = await runFleet();
     assert.deepEqual(sleeps, [...BACKOFF_MS, ...BACKOFF_MS]);
-    assert.equal(result.state.failures['dogfood-lab/testing-os'].reason, 'clone');
-    assert.equal(result.state.failures['mcp-tool-shop-org/widgets'].reason, 'clone');
+    assert.equal(result.state.failures['dogfood-lab/testing-os'].reason, 'clone transport');
+    assert.equal(result.state.failures['mcp-tool-shop-org/widgets'].reason, 'clone transport');
     assert.equal(result.logs.filter((line) => line.startsWith('failure')).length, 2);
   });
 
@@ -219,6 +231,27 @@ describe('atlas weekly render', () => {
       ['indexes/atlas/state.json', 'indexes/atlas/fleet.json', 'indexes/atlas/dogfood-lab/testing-os/dev.md'],
       new Set(['dogfood-lab/testing-os']),
     ));
+  });
+
+  it('resolves the head with unauthenticated ls-remote and records git stderr', async (t) => {
+    const sha = 'd'.repeat(40);
+    const ok = harness(t, { lab: [PUBLIC], heads: { 'dogfood-lab/testing-os': sha } });
+    const rendered = await ok.runFleet();
+    const lookup = ok.calls.find((call) => call[1][0] === 'ls-remote');
+    assert.deepEqual(lookup[1], ['ls-remote', '--heads', 'https://github.com/dogfood-lab/testing-os.git', 'main']);
+    assert.equal(lookup[2].env.GIT_CONFIG_COUNT, '1');
+    assert.equal(lookup[2].env.GIT_CONFIG_KEY_0, 'credential.helper');
+    assert.equal(lookup[2].env.GIT_CONFIG_VALUE_0, '');
+    assert.equal(rendered.state.rendered['dogfood-lab/testing-os'].commit, sha);
+    assert.equal(ok.fetches.some((url) => url.includes('/commits/')), false);
+    const failed = harness(t, { lab: [PUBLIC], headFails: true });
+    const result = await failed.runFleet();
+    assert.equal(failed.calls.some((call) => call[1][0] === 'clone'), false);
+    assert.equal(result.state.failures['dogfood-lab/testing-os'].reason, 'head could not read Username');
+    assert.match(result.logs.join('\n'), /failure dogfood-lab\/testing-os head could not read Username/);
+    const empty = harness(t, { lab: [PUBLIC], headEmpty: true });
+    const blank = await empty.runFleet();
+    assert.equal(blank.state.failures['dogfood-lab/testing-os'].reason, 'head');
   });
 
   it('clones with the default window and deepens when the boundary file pins an earlier start', async (t) => {
@@ -319,6 +352,19 @@ describe('atlas weekly render', () => {
 describe('exclude file', () => {
   it('ignores comments and blank lines', () => {
     assert.deepEqual([...readExclusions('# note\n\nowner/repo\n')], ['owner/repo']);
+  });
+});
+
+describe('push authentication', () => {
+  it('sends basic x-access-token, which is the header git actually accepts', () => {
+    const token = 'ghp_example';
+    const env = pushAuthEnv(token);
+    assert.match(env.GIT_CONFIG_VALUE_1, /^AUTHORIZATION: basic /);
+    const encoded = env.GIT_CONFIG_VALUE_1.slice('AUTHORIZATION: basic '.length);
+    assert.equal(Buffer.from(encoded, 'base64').toString('utf8'), `x-access-token:${token}`);
+    assert.equal(env.GIT_CONFIG_COUNT, '2');
+    assert.equal(env.GIT_CONFIG_KEY_0, 'credential.helper');
+    assert.equal(env.GIT_CONFIG_KEY_1, 'http.extraheader');
   });
 });
 
