@@ -133,10 +133,41 @@ async function readJsonUrl(fetchImpl, url) {
   return response.json;
 }
 
-async function defaultBranchHead(fetchImpl, fullName, branch) {
-  const commit = await github(fetchImpl, `https://api.github.com/repos/${fullName}/commits/${encodeURIComponent(branch)}`);
-  if (!commit.ok) throw new Error(`commit ${fullName} failed: ${commit.status}`);
-  return { branch, sha: commit.json.sha };
+function stderrOf(result) {
+  return (result?.stderr || result?.stdout || '').trim().slice(0, 200);
+}
+
+function commandReason(label, result) {
+  const detail = stderrOf(result);
+  return detail ? `${label} ${detail}` : label;
+}
+
+function gitError(message, result) {
+  const detail = stderrOf(result);
+  return detail ? `${message}: ${detail}` : message;
+}
+
+export function pushAuthEnv(token) {
+  const env = unauthenticatedGitEnv();
+  if (!token) return env;
+  env.GIT_CONFIG_COUNT = '2';
+  env.GIT_CONFIG_KEY_1 = 'http.extraheader';
+  env.GIT_CONFIG_VALUE_1 = `AUTHORIZATION: basic ${Buffer.from(`x-access-token:${token}`).toString('base64')}`;
+  return env;
+}
+
+function headSha(stdout) {
+  const line = String(stdout ?? '').split(/\r?\n/).find((entry) => entry.trim());
+  const sha = line ? line.split(/\s+/)[0] : '';
+  return /^[0-9a-f]{40}$/i.test(sha) ? sha : null;
+}
+
+async function defaultBranchHead(run, fullName, branch) {
+  const url = `https://github.com/${fullName}.git`;
+  const result = await run('git', ['ls-remote', '--heads', url, branch], { env: unauthenticatedGitEnv() });
+  const sha = result?.status === 0 ? headSha(result.stdout) : null;
+  if (!sha) throw new Error(commandReason('head', result));
+  return { branch, sha };
 }
 
 function openIds(envelope) {
@@ -270,7 +301,7 @@ async function renderOne({ run, sleep, fetchImpl, repoRoot, fullName, branch, sh
       run, sleep, fullName, branch, dest, timeoutMs: remaining, since: shallowSinceDate(now),
     });
     if (cloned.budget || cloned.timedOut) return abandon('budget');
-    if (cloned.status !== 0) return abandon('clone');
+    if (cloned.status !== 0) return abandon(commandReason('clone', cloned));
     if (!existsSync(join(dest, 'atlas', 'boundaries.yaml'))) {
       state.rendered[fullName] = { commit: sha, renderedAt: now.toISOString(), notMapped: true };
       delete state.failures[fullName];
@@ -285,7 +316,7 @@ async function renderOne({ run, sleep, fetchImpl, repoRoot, fullName, branch, sh
         env: unauthenticatedGitEnv(),
       });
       if (fetched?.timedOut || fetched?.budget) return abandon('budget');
-      if (!fetched || fetched.status !== 0) return abandon('clone');
+      if (!fetched || fetched.status !== 0) return abandon(commandReason('clone', fetched));
     }
     mkdirSync(out, { recursive: true });
     const previousUrl = `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/${fullName}/divergence.json`;
@@ -396,10 +427,11 @@ export async function renderFleet(options = {}) {
     const repo = work[index];
     let head;
     try {
-      head = await defaultBranchHead(fetchImpl, repo.fullName, repo.defaultBranch);
+      head = await defaultBranchHead(run, repo.fullName, repo.defaultBranch);
     } catch (error) {
-      state.failures[repo.fullName] = { commit: null, at: now.toISOString(), reason: error.message };
-      log(`failure ${repo.fullName} head`);
+      const reason = error.message || 'head';
+      state.failures[repo.fullName] = { commit: null, at: now.toISOString(), reason };
+      log(`failure ${repo.fullName} ${reason}`);
       continue;
     }
     const known = state.rendered[repo.fullName];
@@ -511,14 +543,15 @@ async function commitBranch({ state, fleet, outRoot, date, publicNames }, token)
     const remote = `https://github.com/${HOME}.git`;
     const anon = { env: unauthenticatedGitEnv() };
     const probe = await defaultRun('git', ['ls-remote', '--heads', remote, 'atlas-render'], anon);
+    if (probe.status !== 0) throw new Error(gitError('listing atlas-render failed', probe));
     const exists = probe.stdout.includes('refs/heads/atlas-render');
     const branch = exists ? 'atlas-render' : 'main';
     // This checkout is the branch being published. It is not mapped, so blob contents are never walked.
     const cloned = await defaultRun('git', ['clone', '--filter=blob:none', '--single-branch', '--branch', branch, remote, work], anon);
-    if (cloned.status !== 0) throw new Error('clone of the render branch failed');
+    if (cloned.status !== 0) throw new Error(gitError('clone of the render branch failed', cloned));
     if (!exists) {
       const created = await defaultRun('git', ['checkout', '-B', 'atlas-render'], { cwd: work });
-      if (created.status !== 0) throw new Error('could not create atlas-render');
+      if (created.status !== 0) throw new Error(gitError('could not create atlas-render', created));
     }
     mkdirSync(join(work, 'indexes', 'atlas'), { recursive: true });
     writeFileSync(join(work, 'indexes', 'atlas', 'state.json'), `${JSON.stringify(state, null, 2)}\n`);
@@ -528,19 +561,13 @@ async function commitBranch({ state, fleet, outRoot, date, publicNames }, token)
     rejectForeignPaths(published, publicNames);
     await defaultRun('git', ['add', '--', 'indexes/atlas'], { cwd: work });
     const committed = await defaultRun('git', ['-c', 'user.email=64996768+mcp-tool-shop@users.noreply.github.com', '-c', 'user.name=mcp-tool-shop', 'commit', '-m', `atlas: weekly render ${date}`], { cwd: work });
-    if (committed.status !== 0) throw new Error('commit of atlas-render failed');
-    const env = unauthenticatedGitEnv();
-    if (token) {
-      env.GIT_CONFIG_COUNT = '2';
-      env.GIT_CONFIG_KEY_1 = 'http.extraheader';
-      env.GIT_CONFIG_VALUE_1 = `AUTHORIZATION: bearer ${token}`;
-    }
+    if (committed.status !== 0) throw new Error(gitError('commit of atlas-render failed', committed));
     // A missing remote ref has no lease to compare. Create it with a plain push; later runs use the lease.
     const pushArgs = exists
       ? ['push', '--force-with-lease', 'origin', 'HEAD:atlas-render']
       : ['push', 'origin', 'HEAD:atlas-render'];
-    const pushed = await defaultRun('git', pushArgs, { cwd: work, env });
-    if (pushed.status !== 0) throw new Error('push of atlas-render failed');
+    const pushed = await defaultRun('git', pushArgs, { cwd: work, env: pushAuthEnv(token) });
+    if (pushed.status !== 0) throw new Error(gitError('push of atlas-render failed', pushed));
   } finally {
     rmSync(work, { recursive: true, force: true });
   }
