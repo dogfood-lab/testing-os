@@ -8,13 +8,14 @@ import { compareArtifacts } from './check.js';
 import { formatFailure } from './errors.js';
 import { initCommand } from './init.js';
 import { acceptanceFailures } from './ladder.js';
+import { buildEnvelope, hitsFromStatistics } from './divergence.js';
 import { renderAll, statedHashProblem } from './render.js';
 import { buildStatistics, serializeStatistics, statisticsProblem } from './statistics.js';
 import { writeArtifactSync } from './write.js';
 
 export function main(argv, cwd) {
   if (argv[0] === 'init') return initAt(cwd, argv.slice(1));
-  if (argv[0] === 'map') return mapCommand(cwd);
+  if (argv[0] === 'map') return mapCommand(cwd, argv.slice(1));
   if (argv[0] === 'check') return checkCommand(cwd);
   process.stdout.write('atlas: expected atlas init, atlas map, or atlas check\nexit 2\n');
   return 2;
@@ -35,9 +36,21 @@ function initAt(cwd, argv) {
   return initCommand(repo, argv);
 }
 
-export function mapCommand(cwd) {
+export function mapCommand(cwd, argv = []) {
+  const flags = parseMapArgs(argv);
+  if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
   if (!repo) return usage('atlas: not a git repository');
+  const repoName = flags.divergence ? repositoryName(repo) : null;
+  if (flags.divergence && !repoName) return usage('atlas: --divergence needs an origin URL that names org/repo');
+  let previous = null;
+  if (flags.previous) {
+    try {
+      previous = JSON.parse(readFileSync(flags.previous, 'utf8'));
+    } catch {
+      return usage('atlas: --previous is not valid JSON');
+    }
+  }
   const boundary = readBoundaryFile(repo);
   if (!boundary.ok) return failBoundary(boundary);
   const commit = head(repo);
@@ -67,6 +80,20 @@ export function mapCommand(cwd) {
   writeArtifactSync(join(atlasDir, 'machine.md'), rendered.machine);
   writeArtifactSync(join(atlasDir, 'orientation.md'), rendered.orientation);
   writeArtifactSync(join(atlasDir, 'dev.md'), rendered.dev);
+  let divergenceMs = null;
+  if (flags.divergence) {
+    const started = Date.now();
+    const envelope = buildEnvelope({
+      repo: repoName,
+      commit,
+      generatedAt: statistics.generatedAt,
+      sharedCommitFloor: statistics.parameters.sharedFloorUsed,
+      hits: hitsFromStatistics(statistics, artifact),
+      previous,
+    });
+    writeArtifactSync(flags.divergence, `${JSON.stringify(envelope, null, 2)}\n`);
+    divergenceMs = Date.now() - started;
+  }
   const unresolved = artifact.boundaries.reduce((sum, item) => sum + item.unresolvedSites, 0);
   process.stdout.write(
     [
@@ -83,6 +110,7 @@ export function mapCommand(cwd) {
       'wrote atlas/dev.md',
       'wrote atlas/machine.md',
       'wrote atlas/machine-stats.txt',
+      ...(divergenceMs == null ? [] : [`divergence: ${divergenceMs} ms`, `wrote ${flags.divergence}`]),
       '',
     ].join('\n'),
   );
@@ -159,6 +187,33 @@ function failBoundary(boundary) {
 function usage(line) {
   process.stdout.write(`${line}\nexit 2\n`);
   return 2;
+}
+
+function parseMapArgs(argv) {
+  let divergence = null;
+  let previous = null;
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+    if (arg === '--divergence') {
+      divergence = argv[i + 1];
+      if (!divergence || divergence.startsWith('--')) return { error: 'atlas: --divergence needs a path' };
+      i += 1;
+    } else if (arg === '--previous') {
+      previous = argv[i + 1];
+      if (!previous || previous.startsWith('--')) return { error: 'atlas: --previous needs a path' };
+      i += 1;
+    } else return { error: `atlas: unknown argument ${arg}` };
+  }
+  if (previous && !divergence) return { error: 'atlas: --previous requires --divergence' };
+  return { divergence, previous };
+}
+
+function repositoryName(repo) {
+  const result = spawnSync('git', ['remote', 'get-url', 'origin'], { cwd: repo, encoding: 'utf8' });
+  if (result.status !== 0) return null;
+  const match = /github\.com[:/]([^/\s]+)\/([^/\s]+?)(?:\.git)?\s*$/i.exec(result.stdout.trim());
+  if (!match) return null;
+  return `${match[1]}/${match[2]}`;
 }
 
 function machineHashProblem(repo) {
