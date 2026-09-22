@@ -1,11 +1,12 @@
 import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { mapRepository } from '../core/index.js';
 import { buildArtifact, serializeArtifact } from './artifact.js';
 import { readBoundaryFile } from './boundary-file.js';
 import { compareArtifacts } from './check.js';
 import { formatFailure } from './errors.js';
+import { writeArtifactSync } from './write.js';
 
 export function main(argv, cwd) {
   if (argv[0] === 'map') return mapCommand(cwd);
@@ -24,7 +25,7 @@ export function mapCommand(cwd) {
   const mapped = mapRepository({ repoPath: repo, boundaries: boundary.boundaries });
   const artifact = buildArtifact(mapped, commit);
   const bytes = serializeArtifact(artifact);
-  writeFileSync(join(repo, 'atlas', 'structure.json'), bytes);
+  writeArtifactSync(join(repo, 'atlas', 'structure.json'), bytes);
   const unresolved = artifact.boundaries.reduce((sum, item) => sum + item.unresolvedSites, 0);
   process.stdout.write(
     [
