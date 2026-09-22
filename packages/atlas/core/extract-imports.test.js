@@ -12,48 +12,55 @@ afterEach(() => {
 
 const CODE = { name: 'code', globs: ['**'], role: 'code', status: 'accepted' };
 
-function entry(specifier, kind, line) {
-  return { specifier, kind, line };
+const external = { outcome: 'external' };
+const dynamic = { outcome: 'unresolved', reason: 'dynamic' };
+const wildcard = { outcome: 'unresolved', reason: 'wildcard' };
+const missing = { outcome: 'unresolved', reason: 'python-module-not-found' };
+const file = (path) => ({ outcome: 'file', path });
+
+function entry(specifier, kind, line, resolved) {
+  return { specifier, kind, line, resolved };
 }
 
 const EXPECTED = {
   'js/static.js': [
-    entry('pkg-a', 'static', 1),
-    entry('pkg-b', 'static', 2),
-    entry('star', 'static', 3),
-    entry('side-effect', 'static', 4),
-    entry('dyn-lit', 'static', 5),
-    entry('cjs-lit', 'static', 6),
+    entry('pkg-a', 'static', 1, external),
+    entry('pkg-b', 'static', 2, external),
+    entry('star', 'static', 3, external),
+    entry('side-effect', 'static', 4, external),
+    entry('dyn-lit', 'static', 5, external),
+    entry('cjs-lit', 'static', 6, external),
+    entry('./dynamic.js', 'static', 7, file('js/dynamic.js')),
   ],
-  'js/dynamic.js': [entry('expr', 'dynamic', 1), entry('name', 'dynamic', 2)],
-  'js/view.jsx': [entry('react', 'static', 1)],
-  'js/legacy.cjs': [entry('legacy-cjs', 'static', 1)],
-  'js/extra.mjs': [entry('esm-only', 'static', 1)],
+  'js/dynamic.js': [entry('expr', 'dynamic', 1, dynamic), entry('name', 'dynamic', 2, dynamic)],
+  'js/view.jsx': [entry('react', 'static', 1, external)],
+  'js/legacy.cjs': [entry('legacy-cjs', 'static', 1, external)],
+  'js/extra.mjs': [entry('esm-only', 'static', 1, external), entry('./dynamic.js', 'static', 2, file('js/dynamic.js'))],
   'ts/static.ts': [
-    entry('types', 'static', 1),
-    entry('reexport-type', 'static', 2),
-    entry('mod', 'static', 3),
+    entry('types', 'static', 1, external),
+    entry('reexport-type', 'static', 2, external),
+    entry('mod', 'static', 3, external),
   ],
-  'ts/dynamic.ts': [entry('name', 'dynamic', 1)],
-  'tsx/view.tsx': [entry('react', 'static', 1)],
-  'tsx/load.tsx': [entry('name', 'dynamic', 1)],
+  'ts/dynamic.ts': [entry('name', 'dynamic', 1, dynamic)],
+  'tsx/view.tsx': [entry('react', 'static', 1, external)],
+  'tsx/load.tsx': [entry('name', 'dynamic', 1, dynamic)],
   'py/static.py': [
-    entry('a.b', 'static', 1),
-    entry('a.b', 'static', 2),
-    entry('a', 'static', 3),
-    entry('b', 'static', 3),
-    entry('a.b', 'static', 4),
-    entry('.x', 'static', 5),
-    entry('..x', 'static', 6),
-    entry('.', 'static', 7),
-    entry('..', 'static', 8),
+    entry('a.b', 'static', 1, external),
+    entry('a.b', 'static', 2, external),
+    entry('a', 'static', 3, external),
+    entry('b', 'static', 3, external),
+    entry('a.b', 'static', 4, external),
+    entry('.x', 'static', 5, missing),
+    entry('..x', 'static', 6, missing),
+    entry('.', 'static', 7, missing),
+    entry('..', 'static', 8, missing),
   ],
   'py/wild.py': [
-    entry('x', 'wildcard', 1),
-    entry('.y', 'wildcard', 2),
-    entry('name', 'dynamic', 3),
-    entry('a.b', 'dynamic', 4),
-    entry('z', 'dynamic', 5),
+    entry('x', 'wildcard', 1, wildcard),
+    entry('.y', 'wildcard', 2, wildcard),
+    entry('name', 'dynamic', 3, dynamic),
+    entry('a.b', 'dynamic', 4, dynamic),
+    entry('z', 'dynamic', 5, dynamic),
   ],
 };
 
@@ -109,7 +116,8 @@ describe('import extraction', () => {
     }
 
     assert.equal(boundary.parseErrors, 4);
-    assert.equal(boundary.unresolvedSites, 9);
+    assert.equal(boundary.unresolvedSites, 13);
+    assert.equal(boundary.importConfidence, 'full');
     assert.equal(boundary.files.length, Object.keys(EXPECTED).length + 4 + 2);
   });
 });

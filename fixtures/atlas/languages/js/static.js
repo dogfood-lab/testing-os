@@ -4,4 +4,5 @@ export * from 'star';
 import 'side-effect';
 const lit = import('dyn-lit');
 const req = require('cjs-lit');
+import './dynamic.js';
 // import 'commented-out';

@@ -5,6 +5,7 @@ import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
+import { attachResolution } from './resolve.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
 
@@ -100,24 +101,33 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   }
 
   const byPath = (a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
-  for (const boundary of byName.values()) {
+  const boundaryList = [...byName.values()];
+  for (const boundary of boundaryList) {
     boundary.files.sort(byPath);
-    const counts = tally(boundary.files);
-    boundary.unresolvedSites = counts.unresolvedSites;
-    boundary.parseErrors = counts.parseErrors;
+    boundary.parseErrors = boundary.files.filter((file) => file.parseError).length;
   }
   unassigned.sort(byPath);
   overlaps.sort(byPath);
   tracked.symlinks.sort(byPath);
   tracked.submodules.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
 
+  const resolution = attachResolution({
+    repoPath,
+    boundaries: boundaryList,
+    unassigned,
+    overlaps,
+    tracked: tracked.regular,
+  });
+
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },
-    boundaries: [...byName.values()],
+    boundaries: boundaryList,
     unassigned,
     overlaps,
     symlinks: tracked.symlinks,
     submodules: tracked.submodules,
+    edges: resolution.edges,
+    importConfidence: resolution.importConfidence,
   };
 }
 
@@ -206,19 +216,6 @@ function describeFile(repoPath, path) {
   const extracted = extractImports(language, bytes.toString('utf8'));
   if (extracted.parseError) return { path, hash, language, parseError: true, imports: [] };
   return { path, hash, language, imports: extracted.imports };
-}
-
-function tally(files) {
-  let unresolvedSites = 0;
-  let parseErrors = 0;
-  for (const file of files) {
-    if (file.parseError) parseErrors += 1;
-    if (!Array.isArray(file.imports)) continue;
-    for (const item of file.imports) {
-      if (item.kind === 'dynamic' || item.kind === 'wildcard') unresolvedSites += 1;
-    }
-  }
-  return { unresolvedSites, parseErrors };
 }
 
 function extractImports(language, source) {
