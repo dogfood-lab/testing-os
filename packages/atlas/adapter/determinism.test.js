@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 describe('atlas map determinism', () => {
-  it('writes identical bytes on two runs at one commit', () => {
+  it('writes identical bytes at one commit, and only the commit changes after atlas/ is committed', () => {
     const root = mkdtempSync(join(tmpdir(), 'atlas-bytes-'));
     roots.push(root);
     cpSync(HOST, root, { recursive: true });
@@ -33,5 +33,13 @@ describe('atlas map determinism', () => {
     assert.equal(map().status, 0);
     const second = readFileSync(join(root, 'atlas', 'structure.json'));
     assert.equal(Buffer.compare(first, second), 0);
+    git(['add', '--', 'atlas']);
+    git(['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', 'map']);
+    assert.equal(map().status, 0);
+    const third = JSON.parse(readFileSync(join(root, 'atlas', 'structure.json'), 'utf8'));
+    const committed = JSON.parse(second.toString('utf8'));
+    assert.notEqual(third.generatedFrom.commit, committed.generatedFrom.commit);
+    committed.generatedFrom.commit = third.generatedFrom.commit;
+    assert.deepEqual(third, committed);
   });
 });

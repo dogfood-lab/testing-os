@@ -58,12 +58,11 @@ a public package and collides with the language's own built-in. An atlas is a bo
 of one territory at different scales, which is what this is.
 
 **1.3 Read-only core.** The core takes a repository path and a boundary file and returns data.
-It writes nothing: no files, no logs, no database, no output. The adapter above it writes and
-may import sibling packages. This exists so the core is liftable into its own repository later
+It writes nothing: no files, no logs, no database, no output. The adapter above it writes. Neither layer imports a sibling package. The core is kept sibling-free so it can be lifted out; the adapter is kept sibling-free because the published binary runs inside consumers' test jobs, where no @dogfood-lab/* package is installed. The closure test enforces this for the whole package by rejecting any sibling as a dependency key. This exists so the core is liftable into its own repository later
 as a move rather than a rewrite, and it is shaped rather than merely ruled: a core forbidden to
 import siblings but required to write would have to fork this repository's atomic-write and
 staged-logging helpers, which is the copy-paste-fork that `CLAUDE.md` says the accepted
-package cycle exists to avoid.
+package cycle exists to avoid. That fork did happen, once, deliberately and in the adapter rather than the core: adapter/write.js duplicates the findings atomic-write helper, is allowlisted in the writer sweep with that reason, and is the price of a binary that installs on its own.
 
 Two required tests, both in the core's own suite:
 
@@ -302,7 +301,7 @@ lexical parsing cannot follow becomes a count on the boundary. It is not an edge
 silence. Every view shows the count. A map that says nothing about what it could not see is the
 confidently wrong map this design exists to avoid.
 
-**Both kinds are committed into the repository being mapped**, under `atlas/`. Statistical
+**Both kinds are committed into the repository being mapped**, under `atlas/`. Files under atlas/ are excluded from the artifact and from every count in it. The artifact cannot record a stable hash of itself, and a count that includes it changes on the commit that lands it. Statistical
 sections carry the date they were computed. The drift research is the whole reason for
 committing rather than serving. Architectural drift is well attested: implementations diverge
 from the intended architecture over time, maintaining reliable documentation is one of the
