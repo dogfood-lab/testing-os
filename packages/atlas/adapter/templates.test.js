@@ -45,5 +45,6 @@ describe('derived templates', () => {
     assert.equal(roleFor(['.github/CODEOWNERS', '.github/workflows/ci.yml']), 'config');
     assert.equal(roleFor(['assets/logo.png', 'records/.gitkeep']), 'config');
     assert.equal(roleFor(['swarms/notes.md', 'swarms/plan.md']), 'docs');
+    assert.equal(roleFor(['dogfood/a.yaml', 'dogfood/validate.test.mjs']), 'config');
   });
 });

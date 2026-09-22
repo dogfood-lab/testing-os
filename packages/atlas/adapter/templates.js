@@ -60,11 +60,9 @@ export function fileKind(path) {
  */
 export function roleFor(paths) {
   const kinds = paths.map((path) => fileKind(path));
-  const codeShaped = kinds.filter((kind) => kind === 'code' || kind === 'test');
-  if (codeShaped.length > 0 && codeShaped.every((kind) => kind === 'test')) return 'test';
   const voting = kinds.filter((kind) => kind === 'code' || kind === 'docs' || kind === 'config');
-  if (voting.length === 0) return 'config';
   if (voting.some((kind) => kind === 'code')) return 'code';
+  if (voting.length === 0) return kinds.some((kind) => kind === 'test') ? 'test' : 'config';
   const docs = voting.filter((kind) => kind === 'docs').length;
   const config = voting.filter((kind) => kind === 'config').length;
   if (docs > voting.length / 2) return 'docs';
