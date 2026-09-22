@@ -5,8 +5,8 @@
 unnamed: what this repository is
 22 boundaries. 22 still unnamed.
 
-If you maintain this repository: where to start, why it was built this way, what you will break.
-If you are new here: where to start, why it was built this way, what you will break.
+If you maintain this repository: this is the map you would draw from memory, checked against the tree. Start where it disagrees with you.
+If you are new here: you have not opened this repository before. Start with the three actions below; each one tells you what to expect.
 
 ## Map
 
@@ -75,14 +75,14 @@ classDef unassigned stroke-dasharray: 4 3
 ────────▶   import        one boundary statically imports another
 ────────▣   chunk         same, recovered from a bundle; boundary grain, file unknown
 · · · · ·   co-change     changed together, no import; width = strength
-────────▶   low confidence: same shapes at 40% opacity; ⚠ and the words at full contrast
+⚠           low confidence: the words "low confidence" precede every number that rests on the fallen floor
 
 ## Where to start
 1. OPEN packages/schemas/src/index.ts
 2. RUN npm test
    passes when: exit 0
 3. BREAK Changing this breaks dogfood, dogfood-swarm, findings, ingest, report, scripts, verify; covered by tests in schemas (derived)
-   tests that cover it: not covered by any test boundary
+   tests that cover it: its own (16 files)
 
 ## What you will break — schemas
 

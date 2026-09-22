@@ -1,4 +1,4 @@
-◷ numbers as of 2026-09-22 · 0 days ago · structure @ abcc333
+◷ numbers as of 2026-09-22 · 0 days ago · structure @ 1b16afc
 
 ## Map
 
@@ -98,7 +98,7 @@ churn is the sum of lines, added plus deleted, over the boundary's files.
 | verify | 16626 | 0 | 0 | full |
 | root | 14124 | 0.666615 | 0 | full |
 | schemas | 10250 | 0 | 0 | full |
-| atlas | 10088 | none | 0 | full |
+| atlas | 10157 | none | 0 | full |
 | portfolio | 7961 | 0 | 4 | full |
 | docs | 7598 | none | 0 | full |
 | records | 7343 | none | 0 | full |
@@ -1847,5 +1847,5 @@ pending rebaseline: none
 ────────▶   import        one boundary statically imports another
 ────────▣   chunk         same, recovered from a bundle; boundary grain, file unknown
 · · · · ·   co-change     changed together, no import; width = strength
-────────▶   low confidence: same shapes at 40% opacity; ⚠ and the words at full contrast
+⚠           low confidence: the words "low confidence" precede every number that rests on the fallen floor
 </details>
