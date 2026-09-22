@@ -1,4 +1,4 @@
-◷ numbers as of 2026-09-22 · 0 days ago · structure @ 1b16afc
+◷ numbers as of 2026-09-22 · 0 days ago · structure @ eed100a
 
 ## Map
 
@@ -19,7 +19,7 @@ n_indexes["⚙ indexes · 21"]
 n_ingest["⌘ ingest · 80"]
 n_policies["⚙ policies · 15"]
 n_portfolio["⌘ portfolio · 23"]
-n_records["⚙ records · 94"]
+n_records["⚙ records · 95"]
 n_report["⌘ report · 24"]
 n_reports["⚙ reports · 2"]
 n_root["¶ root · 21"]
@@ -29,6 +29,9 @@ n_site["⌘ site · 31"]
 n_swarms["¶ swarms · 15"]
 n_verify["⌘ verify · 63"]
 unassigned["· unassigned · 1"]:::unassigned
+n_atlas -.-> n_docs
+n_docs -.-> n_dogfood_swarm
+n_docs -.-> n_scripts
 n_dogfood --> n_schemas
 n_dogfood_swarm -.-> n_findings
 n_dogfood_swarm --> n_findings
@@ -39,6 +42,7 @@ n_dogfood_swarm --> n_report
 n_dogfood_swarm -.-> n_root
 n_dogfood_swarm -.-> n_schemas
 n_dogfood_swarm --> n_schemas
+n_dogfood_swarm -.-> n_scripts
 n_dogfood_swarm -.-> n_verify
 n_findings -.-> n_ingest
 n_findings --> n_ingest
@@ -62,6 +66,7 @@ n_portfolio --> n_findings
 n_portfolio -.-> n_report
 n_portfolio -.-> n_root
 n_portfolio -.-> n_schemas
+n_portfolio -.-> n_scripts
 n_portfolio -.-> n_verify
 n_report -.-> n_root
 n_report -.-> n_schemas
@@ -85,28 +90,30 @@ classDef unassigned stroke-dasharray: 4 3
 
 ◷ numbers as of 2026-09-22 · 0 days ago
 
+⚠ low confidence
+
 churn is the sum of lines, added plus deleted, over the boundary's files.
 
 | boundary | churn | cohesion | unresolved sites | import confidence |
 | --- | --- | --- | --- | --- |
-| dogfood-swarm | 176919 | 0 | 5 | full |
-| scripts | 43123 | 1 | 6 | full |
-| ingest | 25628 | 0 | 0 | full |
-| site | 24949 | none | 0 | full |
-| findings | 23368 | 0 | 0 | full |
+| dogfood-swarm | 176919 | 0.417751 | 5 | full |
+| scripts | 43123 | 0.420561 | 6 | full |
+| ingest | 25628 | none | 0 | full |
+| site | 25255 | none | 0 | full |
+| findings | 23368 | none | 0 | full |
 | dogfood | 17440 | none | 0 | full |
-| verify | 16626 | 0 | 0 | full |
-| root | 14124 | 0.666615 | 0 | full |
-| schemas | 10250 | 0 | 0 | full |
-| atlas | 10157 | none | 0 | full |
-| portfolio | 7961 | 0 | 4 | full |
-| docs | 7598 | none | 0 | full |
-| records | 7343 | none | 0 | full |
-| report | 5505 | 0 | 0 | full |
+| verify | 16626 | 1 | 0 | full |
+| root | 14124 | none | 0 | full |
+| atlas | 11415 | none | 0 | full |
+| schemas | 10250 | none | 0 | full |
+| portfolio | 7961 | 0.424242 | 4 | full |
+| docs | 7606 | none | 0 | full |
+| records | 7428 | none | 0 | full |
+| report | 5505 | none | 0 | full |
 | swarms | 3675 | none | 0 | full |
 | .github | 2622 | none | 0 | full |
 | fixtures | 2607 | none | 15 | full |
-| indexes | 2472 | 1 | 0 | full |
+| indexes | 2498 | none | 0 | full |
 | reports | 1067 | none | 0 | full |
 | policies | 374 | none | 0 | full |
 | examples | 340 | none | 0 | full |
@@ -116,7 +123,7 @@ churn is the sum of lines, added plus deleted, over the boundary's files.
 
 ◷ numbers as of 2026-09-22 · 0 days ago
 
-confidence: full
+⚠ low confidence
 
 ### .github
 
@@ -162,9 +169,9 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | ingest · schemas |
-| imports only | scripts |
-| co-changes only | findings · portfolio · report · root · verify |
+| imports & co-changes | scripts |
+| imports only | ingest · schemas |
+| co-changes only | portfolio |
 
 ### examples
 
@@ -178,9 +185,9 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | dogfood-swarm · ingest · portfolio |
-| imports only | scripts |
-| co-changes only | report · root · schemas · verify |
+| imports & co-changes | none |
+| imports only | dogfood-swarm · ingest · portfolio · scripts |
+| co-changes only | none |
 
 ### fixtures
 
@@ -202,9 +209,9 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | findings |
-| imports only | scripts |
-| co-changes only | dogfood-swarm · portfolio · report · root · schemas · verify |
+| imports & co-changes | none |
+| imports only | findings · scripts |
+| co-changes only | none |
 
 ### policies
 
@@ -218,9 +225,9 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | none |
-| imports only | scripts |
-| co-changes only | dogfood-swarm · findings · ingest · report · root · schemas · verify |
+| imports & co-changes | scripts |
+| imports only | none |
+| co-changes only | dogfood-swarm |
 
 ### records
 
@@ -234,9 +241,9 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | dogfood-swarm |
-| imports only | none |
-| co-changes only | findings · ingest · portfolio · root · schemas · verify |
+| imports & co-changes | none |
+| imports only | dogfood-swarm |
+| co-changes only | none |
 
 ### reports
 
@@ -252,15 +259,15 @@ confidence: full
 | --- | --- |
 | imports & co-changes | none |
 | imports only | none |
-| co-changes only | dogfood-swarm · findings · ingest · portfolio · report · schemas · verify |
+| co-changes only | none |
 
 ### schemas
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | dogfood-swarm · findings · ingest · report · verify |
-| imports only | dogfood · scripts |
-| co-changes only | portfolio · root |
+| imports & co-changes | none |
+| imports only | dogfood · dogfood-swarm · findings · ingest · report · scripts · verify |
+| co-changes only | none |
 
 ### scripts
 
@@ -268,7 +275,7 @@ confidence: full
 | --- | --- |
 | imports & co-changes | none |
 | imports only | none |
-| co-changes only | none |
+| co-changes only | dogfood-swarm · portfolio |
 
 ### site
 
@@ -290,13 +297,15 @@ confidence: full
 
 | relationship | boundaries |
 | --- | --- |
-| imports & co-changes | findings · ingest |
-| imports only | scripts |
-| co-changes only | dogfood-swarm · portfolio · report · root · schemas |
+| imports & co-changes | none |
+| imports only | findings · ingest · scripts |
+| co-changes only | none |
 
 ## Pairs
 
 ◷ numbers as of 2026-09-22 · 0 days ago
+
+⚠ low confidence
 
 | a | b | shared | either | strength |
 | --- | --- | --- | --- | --- |
@@ -321,16 +330,18 @@ confidence: full
 | README.ja.md | README.pt-BR.md | 15 | 15 | 1 |
 | README.ja.md | README.zh.md | 15 | 15 | 1 |
 | README.pt-BR.md | README.zh.md | 15 | 15 | 1 |
-| indexes/integrity/chain.jsonl | indexes/trends.json | 39 | 39 | 1 |
+| indexes/integrity/chain.jsonl | indexes/trends.json | 40 | 40 | 1 |
+| packages/dogfood-swarm/lib/verify/adapters/python.js | packages/dogfood-swarm/lib/verify/adapters/rust.js | 5 | 5 | 1 |
 | packages/portfolio/package.json | packages/verify/package.json | 26 | 28 | 0.928571 |
 | packages/findings/package.json | packages/verify/package.json | 26 | 29 | 0.896552 |
-| packages/portfolio/package.json | packages/report/package.json | 26 | 29 | 0.896552 |
 
-72 pairs
+96 pairs
 
 ## Divergence
 
 ◷ numbers as of 2026-09-22 · 0 days ago
+
+⚠ low confidence
 
 0 boundaries with cohesion dropped.
 
@@ -1310,7 +1321,7 @@ pending rebaseline: none
     - stageC-ingest-portfolio-guards.test.js
     - stageC-port-degrade-001.test.js
 
-### records (94)
+### records (95)
 
 - records
   - .gitkeep
@@ -1389,6 +1400,7 @@ pending rebaseline: none
             - run-00mucs2iw5-97erwA61VMomnw.json
             - run-00muctg3qv-OcQ8xaW9coS57g.json
             - run-00mucuut1v-3uLI9sUyO7KS1w.json
+            - run-00mucwuuan-QubnScMqxQl9ag.json
   - mcp-tool-shop-org
     - a11y-demo-site
       - 2026
