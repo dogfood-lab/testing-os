@@ -1,0 +1,1 @@
+const pending = import(name);
