@@ -1,0 +1,199 @@
+summary: ""
+boundaries:
+  - name: alpha
+    globs:
+      - fixtures/atlas/host/pkg/alpha/**
+    status: proposed
+    role: code
+    reason: 5 files, role code; entry points fixtures/atlas/host/pkg/alpha/cli.js,
+      fixtures/atlas/host/pkg/alpha/index.js; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: atlas
+    globs:
+      - packages/atlas/**
+    status: proposed
+    role: code
+    reason: 40 files, role code; entry points packages/atlas/cli.js,
+      packages/atlas/index.js; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; covered by tests in atlas
+    will_break_from: derived
+  - name: build-output
+    globs:
+      - fixtures/atlas/build-output/**
+    status: proposed
+    role: code
+    reason: 2 files, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: bundle
+    globs:
+      - fixtures/atlas/build-output/bundle/**
+    status: proposed
+    role: code
+    reason: 0 files, role code; entry points
+      fixtures/atlas/build-output/bundle/dist/bundle.js; imports none; imported
+      by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: dogfood-swarm
+    globs:
+      - packages/dogfood-swarm/**
+    status: proposed
+    role: test
+    reason: 349 files, role test; entry points packages/dogfood-swarm/cli.js;
+      imports findings, report, schemas; imported by ingest, schemas
+    why_from: derived
+    will_break: Changing this breaks ingest, schemas; covered by tests in
+      dogfood-swarm, ingest
+    will_break_from: derived
+  - name: findings
+    globs:
+      - packages/findings/**
+    status: proposed
+    role: test
+    reason: 81 files, role test; entry points packages/findings/cli.js,
+      packages/findings/index.js; imports ingest, schemas, verify; imported by
+      dogfood-swarm, ingest, portfolio
+    why_from: derived
+    will_break: Changing this breaks dogfood-swarm, ingest, portfolio; covered by
+      tests in dogfood-swarm, findings, ingest, portfolio
+    will_break_from: derived
+  - name: ingest
+    globs:
+      - packages/ingest/**
+    status: proposed
+    role: test
+    reason: 80 files, role test; entry points packages/ingest/run.js; imports
+      dogfood-swarm, findings, schemas, verify; imported by findings
+    why_from: derived
+    will_break: Changing this breaks findings; covered by tests in findings, ingest
+    will_break_from: derived
+  - name: one
+    globs:
+      - fixtures/atlas/build-output/one/**
+    status: proposed
+    role: code
+    reason: 0 files, role code; entry points
+      fixtures/atlas/build-output/one/dist/index.js; imports none; imported by
+      none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: pkg
+    globs:
+      - fixtures/atlas/resolve-js/pkg/**
+    status: proposed
+    role: code
+    reason: 0 files, role code; entry points fixtures/atlas/resolve-js/pkg/index.js;
+      imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: plain
+    globs:
+      - fixtures/atlas/build-output/plain/**
+    status: proposed
+    role: code
+    reason: 0 files, role code; entry points
+      fixtures/atlas/build-output/plain/dist/plain.js; imports none; imported by
+      none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: portfolio
+    globs:
+      - packages/portfolio/**
+    status: proposed
+    role: test
+    reason: 23 files, role test; entry points packages/portfolio/generate.js;
+      imports findings; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; covered by tests in portfolio
+    will_break_from: derived
+  - name: python-src
+    globs:
+      - fixtures/atlas/python-src/**
+    status: proposed
+    role: code
+    reason: 5 files, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: report
+    globs:
+      - packages/report/**
+    status: proposed
+    role: test
+    reason: 24 files, role test; entry points packages/report/build-submission.js,
+      packages/report/cli.js, packages/report/init.js; imports schemas; imported
+      by dogfood-swarm
+    why_from: derived
+    will_break: Changing this breaks dogfood-swarm; covered by tests in
+      dogfood-swarm, report
+    will_break_from: derived
+  - name: resolve-js
+    globs:
+      - fixtures/atlas/resolve-js/**
+    status: proposed
+    role: code
+    reason: 11 files, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: schemas
+    globs:
+      - packages/schemas/**
+    status: proposed
+    role: code
+    reason: 37 files, role code; entry points none; imports dogfood-swarm; imported
+      by dogfood-swarm, findings, ingest, report, verify
+    why_from: derived
+    will_break: Changing this breaks dogfood-swarm, findings, ingest, report,
+      verify; covered by tests in dogfood-swarm, findings, ingest, report,
+      schemas, verify
+    will_break_from: derived
+  - name: site
+    globs:
+      - site/**
+    status: proposed
+    role: code
+    reason: 31 files, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; covered by tests in site
+    will_break_from: derived
+  - name: span
+    globs:
+      - fixtures/atlas/build-output/span/**
+    status: proposed
+    role: code
+    reason: 0 files, role code; entry points
+      fixtures/atlas/build-output/span/dist/chunk.js; imports none; imported by
+      none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: verify
+    globs:
+      - packages/verify/**
+    status: proposed
+    role: test
+    reason: 63 files, role test; entry points packages/verify/cli.js,
+      packages/verify/index.js; imports schemas; imported by findings, ingest
+    why_from: derived
+    will_break: Changing this breaks findings, ingest; covered by tests in findings,
+      ingest, verify
+    will_break_from: derived
