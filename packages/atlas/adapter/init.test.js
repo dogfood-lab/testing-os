@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
 import { readBoundaryFile } from './boundary-file.js';
-import { nameProposals } from './propose.js';
+import { leafDirs, nameProposals } from './propose.js';
 
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const BASIC = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/basic');
@@ -110,6 +110,13 @@ describe('atlas init', () => {
     const human = atlas(root, ['init', '--force']);
     assert.equal(human.status, 2);
     assert.match(human.stdout, /ATLAS_INIT_WOULD_OVERWRITE/);
+  });
+
+  it('does not propose a manifest that contains another manifest', () => {
+    assert.deepEqual(leafDirs(['fixtures/atlas/build-output', 'fixtures/atlas/build-output/bundle', 'packages/atlas', '']), [
+      'fixtures/atlas/build-output/bundle',
+      'packages/atlas',
+    ]);
   });
 
   it('disambiguates two manifests that share a basename with the parent directory', () => {

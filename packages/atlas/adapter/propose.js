@@ -56,6 +56,11 @@ export function manifestDirs(repoPath, paths) {
  * A repository root that sits beside other manifests is not a boundary. Its
  * glob would be everything, and every package file would overlap.
  */
+/** A manifest that contains another manifest is the container, not a second owner. */
+export function leafDirs(dirs) {
+  return dirs.filter((dir) => dir !== '' && !dirs.some((other) => other.startsWith(`${dir}/`)));
+}
+
 export function nameProposals(dirs) {
   const items = [...new Set(dirs)].filter((dir) => dir !== '').map((dir) => ({
     dir,
@@ -76,7 +81,7 @@ export function proposalSet(repoPath, paths) {
   const root = paths.includes('package.json') ? readJson(repoPath, 'package.json') : null;
   const dirs = manifestDirs(repoPath, paths);
   const multi = hasWorkspaces(root) || dirs.length > 1;
-  if (multi) return { source: 'package manifests', proposals: nameProposals(dirs) };
+  if (multi) return { source: 'package manifests', proposals: nameProposals(leafDirs(dirs)) };
   const tops = new Set();
   for (const path of paths) {
     if (inAtlas(path)) continue;

@@ -21,22 +21,12 @@ boundaries:
     why_from: derived
     will_break: Changing this breaks nothing that imports it; covered by tests in atlas
     will_break_from: derived
-  - name: build-output
-    globs:
-      - fixtures/atlas/build-output/**
-    status: proposed
-    role: code
-    reason: 2 files, role code; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
   - name: bundle
     globs:
       - fixtures/atlas/build-output/bundle/**
     status: proposed
     role: code
-    reason: 0 files, role code; entry points
+    reason: 5 files, role code; entry points
       fixtures/atlas/build-output/bundle/dist/bundle.js; imports none; imported
       by none
     why_from: derived
@@ -81,7 +71,7 @@ boundaries:
       - fixtures/atlas/build-output/one/**
     status: proposed
     role: code
-    reason: 0 files, role code; entry points
+    reason: 5 files, role code; entry points
       fixtures/atlas/build-output/one/dist/index.js; imports none; imported by
       none
     why_from: derived
@@ -93,7 +83,7 @@ boundaries:
       - fixtures/atlas/resolve-js/pkg/**
     status: proposed
     role: code
-    reason: 0 files, role code; entry points fixtures/atlas/resolve-js/pkg/index.js;
+    reason: 3 files, role code; entry points fixtures/atlas/resolve-js/pkg/index.js;
       imports none; imported by none
     why_from: derived
     will_break: Changing this breaks nothing that imports it; not covered by any
@@ -104,7 +94,7 @@ boundaries:
       - fixtures/atlas/build-output/plain/**
     status: proposed
     role: code
-    reason: 0 files, role code; entry points
+    reason: 4 files, role code; entry points
       fixtures/atlas/build-output/plain/dist/plain.js; imports none; imported by
       none
     why_from: derived
@@ -143,16 +133,6 @@ boundaries:
     will_break: Changing this breaks dogfood-swarm; covered by tests in
       dogfood-swarm, report
     will_break_from: derived
-  - name: resolve-js
-    globs:
-      - fixtures/atlas/resolve-js/**
-    status: proposed
-    role: code
-    reason: 11 files, role code; entry points none; imports none; imported by none
-    why_from: derived
-    will_break: Changing this breaks nothing that imports it; not covered by any
-      test boundary
-    will_break_from: derived
   - name: schemas
     globs:
       - packages/schemas/**
@@ -179,7 +159,7 @@ boundaries:
       - fixtures/atlas/build-output/span/**
     status: proposed
     role: code
-    reason: 0 files, role code; entry points
+    reason: 5 files, role code; entry points
       fixtures/atlas/build-output/span/dist/chunk.js; imports none; imported by
       none
     why_from: derived
