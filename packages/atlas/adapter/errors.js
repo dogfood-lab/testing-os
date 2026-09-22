@@ -4,6 +4,7 @@ export const ERRORS = {
   ATLAS_BOUNDARY_FILE_INVALID: 'The boundary file is not valid.',
   ATLAS_DEFERRED_WITHOUT_REASON: 'A deferred boundary has no reason.',
   ATLAS_INIT_WOULD_OVERWRITE: 'Init will not overwrite a boundary file.',
+  ATLAS_MACHINE_HASH_MISMATCH: 'The machine hash does not match the statistics file.',
   ATLAS_NO_BOUNDARY_FILE: 'There is no boundary file to map.',
   ATLAS_NOT_MAPPED: 'The structural artifact has not been written.',
   ATLAS_STATISTICS_UNDATED: 'A statistical section has no date.',

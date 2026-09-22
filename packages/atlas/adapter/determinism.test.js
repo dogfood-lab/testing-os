@@ -10,6 +10,14 @@ const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const HOST = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/host');
 const roots = [];
 
+function settle(text) {
+  return text
+    .replace(/^◷.*$/gm, 'AGE')
+    .replace(/withdraw-after: \S+/g, 'withdraw-after: STAMP')
+    .replace(/^(generated: \S+)  \S+$/gm, '$1  STAMP')
+    .replace(/sha256 [0-9a-f]{64}/g, 'sha256 HASH');
+}
+
 afterEach(() => {
   while (roots.length > 0) rmSync(roots.pop(), { recursive: true, force: true });
 });
@@ -34,11 +42,15 @@ describe('atlas map determinism', () => {
     const second = readFileSync(join(root, 'atlas', 'structure.json'));
     assert.equal(Buffer.compare(first, second), 0);
     const left = JSON.parse(readFileSync(join(root, 'atlas', 'statistics.json'), 'utf8'));
+    const renders = () => ['orientation.md', 'dev.md', 'machine.md', 'machine-stats.txt'].map((name) => readFileSync(join(root, 'atlas', name), 'utf8'));
+    const before = renders();
     assert.equal(map().status, 0);
     const right = JSON.parse(readFileSync(join(root, 'atlas', 'statistics.json'), 'utf8'));
     left.generatedAt = '';
     right.generatedAt = '';
     assert.deepEqual(left, right);
+    const after = renders();
+    for (let i = 0; i < before.length; i += 1) assert.equal(settle(before[i]), settle(after[i]));
     git(['add', '--', 'atlas']);
     git(['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', 'map']);
     assert.equal(map().status, 0);

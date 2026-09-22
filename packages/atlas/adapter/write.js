@@ -4,8 +4,8 @@ import { renameSync, unlinkSync, writeFileSync } from 'node:fs';
 // Public @dogfood-lab/atlas cannot depend on @dogfood-lab/findings. The core
 // closure test rejects every @dogfood-lab dependency key, and the published
 // binary has to run where findings is not installed. This file is the one
-// writer, and it writes atlas/structure.json only. A torn artifact would make
-// the next check fail on invalid JSON.
+// writer. It writes the six generated atlas files. A torn write would make
+// the next check fail on a partial file.
 
 function sleepSync(ms) {
   if (!Number.isFinite(ms) || ms <= 0) return;

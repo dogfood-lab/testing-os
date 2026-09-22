@@ -878,11 +878,11 @@ No skip is permitted for an irreversible action.
 | `npm publish @dogfood-lab/atlas` | None for this package alone. Versions are lockstep, so the undo is a **patch bump and republish of every publishable package**, not of Atlas by itself. | The bad version stays installable forever; consumers on a range move to the patch, consumers pinned to it do not. Every other package carries a version bump it did not need. | **open seat (§12)** |
 | `git push origin atlas-render` | `git push --delete origin atlas-render`, then re-run the job | Branch absent. What is lost is the skip list and the parse-failure record, so the next run clones every public repository once instead of only the moved ones. **The high-water marks and honoured rebaseline keys are not lost**: they live in each repository's committed snapshot, and the drop rule fires normally from them on the next render. | **open seat (§12)** |
 | `gh issue create` for a divergence change | Close with a comment naming the run that opened it | Issue closed, not deleted; the record stays | **open seat (§12)** |
-| `atlas map` writing into a host working tree | Restore **the generated files only**, by their enumerated paths | Generated files reverted; uncommitted edits to `boundaries.yaml` untouched | Whoever ran it |
+| `atlas map` writing into a host working tree | Restore **the generated files only**: `atlas/structure.json`, `atlas/statistics.json`, `atlas/orientation.md`, `atlas/dev.md`, `atlas/machine.md`, `atlas/machine-stats.txt` | Generated files reverted; uncommitted edits to `boundaries.yaml` untouched | Whoever ran it |
 
 The last row is narrow on purpose. `git checkout -- atlas/` is **not** the undo: the boundary
 file lives in that directory and is the human's pen, so a directory-wide revert would discard
-their unsaved names and reasons along with the generated output. Enumerate the generated paths.
+their unsaved names and reasons along with the generated output. Enumerate the generated paths: `atlas/structure.json`, `atlas/statistics.json`, `atlas/orientation.md`, `atlas/dev.md`, `atlas/machine.md`, and `atlas/machine-stats.txt`.
 
 `atlas init` needs no compensator row: it never overwrites a boundary file whose status is
 `accepted`, and on a `proposed` file the whole point is that it may be regenerated.
