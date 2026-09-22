@@ -109,13 +109,17 @@ describe('doors', () => {
 
   it('counts a path handed to node --test as run, flags between them allowed', () => {
     assert.deepEqual(door('manual.yaml').runs, [{ path: 'lib/schema.js', job: 'say' }]);
-    assert.deepEqual(door('manual.yaml').mentions, []);
+    assert.deepEqual(door('manual.yaml').mentions, [{ path: 'package.json', job: 'say' }]);
   });
 
   it('records a path a command only names as a mention, never a run', () => {
     assert.deepEqual(door('ingest.yml').mentions, [{ path: 'indexes/latest.json', job: 'ingest' }]);
     assert.equal(door('ingest.yml').runs.some((run) => run.path === 'indexes/latest.json'), false);
     assert.equal(door('ingest.yml').reach.some((entry) => entry.boundary === 'indexes'), false);
+  });
+
+  it('does not split a command at parentheses inside quotes', () => {
+    assert.equal(door('manual.yaml').runs.some((run) => run.path === 'package.json'), false);
   });
 
   it('resolves a named workspace and the whole workspace set, once per job', () => {

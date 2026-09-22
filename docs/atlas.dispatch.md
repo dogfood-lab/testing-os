@@ -322,7 +322,9 @@ in the artifact's `doors` list, sorted by file. A door carries:
   executed when it is the command itself, or follows an executor (`node`, `npx`, `bash`, `sh`,
   `pwsh`, `python`, `python3`, `deno`, `tsx`) with only flags between, so `node --test <path>`
   counts. npm scripts are read by the same rule, followed through nested `npm run`, pre and post
-  hooks, a named workspace and `--workspaces`. A step's working directory is honored.
+  hooks, a named workspace and `--workspaces`. A step's working directory is honored. Commands
+  are split as the shell splits them: quotes hold, `$(...)` is a command of its own, and a
+  here-document body is input, not commands.
 - `mentions`: every other tracked path in that text, such as a path an `echo` prints or a file
   handed to `git diff`. They are where the next slice looks for landing places; they never
   feed `reach`.

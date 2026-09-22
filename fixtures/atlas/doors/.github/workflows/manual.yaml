@@ -10,3 +10,4 @@ jobs:
     steps:
       - run: echo manual
       - run: node --test --test-concurrency=1 lib/schema.js
+      - run: echo "$(node -p "require('./package.json').name")"

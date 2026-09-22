@@ -11,7 +11,7 @@ const LIFECYCLE = new Set(['start', 'stop', 'restart']);
 const VALUE_FLAGS = new Set(['-w', '--workspace', '--prefix']);
 const EXECUTORS = new Set(['node', 'npx', 'bash', 'sh', 'pwsh', 'python', 'python3', 'deno', 'tsx']);
 // Words that can open a shell command line without being the command.
-const PREFIX_WORDS = new Set(['then', 'else', 'do', 'exec', 'time', '!']);
+const PREFIX_WORDS = new Set(['if', 'elif', 'then', 'else', 'while', 'until', 'do', 'exec', 'time', '!']);
 
 /**
  * Read every tracked workflow under .github/workflows and describe it as a
@@ -162,13 +162,15 @@ function cleanDir(dir) {
 function namedPaths(text, dir, tracked, scripts, active) {
   const runs = new Set();
   const mentions = new Set();
-  for (const tokens of segments(text.replace(/\\\r?\n/g, ' '))) {
-    const executed = executedPositions(tokens);
-    tokens.forEach((token, index) => {
-      const path = pathFrom(dir, token);
-      if (path == null || !tracked.has(path)) return;
-      (executed.has(index) ? runs : mentions).add(path);
-    });
+  for (const piece of text.split(/[\s"'`()[\]{}<>|;&,=:]+/)) {
+    const path = pathFrom(dir, piece.replace(/\.+$/, ''));
+    if (path != null && tracked.has(path)) mentions.add(path);
+  }
+  for (const tokens of commandLines(text)) {
+    for (const index of executedPositions(tokens)) {
+      const path = pathFrom(dir, tokens[index]);
+      if (path != null && tracked.has(path)) runs.add(path);
+    }
     for (const target of npmTargets(tokens, dir, scripts)) {
       const key = `${target.dir}\0${target.script}`;
       if (active.has(key)) continue;
@@ -195,21 +197,146 @@ function executedPositions(tokens) {
   while (first < tokens.length && (PREFIX_WORDS.has(tokens[first]) || /^[A-Za-z_][A-Za-z0-9_]*=/.test(tokens[first]))) {
     first += 1;
   }
-  positions.add(first);
+  if (first < tokens.length) positions.add(first);
   for (let i = first; i < tokens.length; i += 1) {
     if (!EXECUTORS.has(tokens[i])) continue;
     let next = i + 1;
     while (next < tokens.length && tokens[next].startsWith('-')) next += 1;
-    positions.add(next);
+    if (next < tokens.length) positions.add(next);
   }
   return positions;
 }
 
-function segments(text) {
-  return text
-    .split(/\r?\n|&&|\|\||[;|&()`]/)
-    .map((segment) => segment.trim().split(/\s+/).filter(Boolean).map(unquote))
-    .filter((tokens) => tokens.length > 0);
+/**
+ * Split shell text into simple commands, each a list of words with their
+ * quotes removed. Operators inside quotes do not split: the parentheses in
+ * node -p "require('./package.json')" are JavaScript, and splitting there
+ * would make ./package.json look like a command. A here-document body is
+ * input to its command, not shell, so it is skipped.
+ */
+function commandLines(text) {
+  const lines = [];
+  let words = [];
+  let word = '';
+  let inWord = false;
+  let quote = null;
+  const endWord = () => {
+    if (inWord) words.push(word);
+    word = '';
+    inWord = false;
+  };
+  const endLine = () => {
+    endWord();
+    if (words.length > 0) lines.push(words);
+    words = [];
+  };
+  const source = withoutHeredocBodies(text);
+  for (let i = 0; i < source.length; i += 1) {
+    const ch = source[i];
+    if (quote === "'") {
+      if (ch === "'") quote = null;
+      else word += ch;
+      continue;
+    }
+    if (ch === '$' && source[i + 1] === '(') {
+      const end = closingParen(source, i + 1);
+      lines.push(...commandLines(source.slice(i + 2, end)));
+      word += '$()';
+      inWord = true;
+      i = end;
+      continue;
+    }
+    if (ch === '$' && source[i + 1] === '{') {
+      const end = closingBrace(source, i + 1);
+      word += source.slice(i, end + 1);
+      inWord = true;
+      i = end;
+      continue;
+    }
+    if (quote === '"') {
+      if (ch === '"') quote = null;
+      else if (ch === '\\' && i + 1 < source.length) word += source[++i];
+      else word += ch;
+      continue;
+    }
+    if (ch === "'" || ch === '"') {
+      quote = ch;
+      inWord = true;
+    } else if (ch === '\\') {
+      if (source[i + 1] === '\n') i += 1;
+      else if (source[i + 1] === '\r' && source[i + 2] === '\n') i += 2;
+      else if (i + 1 < source.length) {
+        word += source[++i];
+        inWord = true;
+      }
+    } else if (ch === '#' && !inWord) {
+      while (i + 1 < source.length && source[i + 1] !== '\n') i += 1;
+    } else if (/\s/.test(ch)) {
+      if (ch === '\n') endLine();
+      else endWord();
+    } else if (';&|()`{}'.includes(ch)) {
+      endLine();
+    } else {
+      word += ch;
+      inWord = true;
+    }
+  }
+  endLine();
+  return lines;
+}
+
+// A parameter expansion is one word, braces and all, and ${{ }} nests.
+function closingBrace(source, open) {
+  let depth = 0;
+  for (let i = open; i < source.length; i += 1) {
+    if (source[i] === '{') depth += 1;
+    else if (source[i] === '}') {
+      depth -= 1;
+      if (depth === 0) return i;
+    }
+  }
+  return source.length - 1;
+}
+
+// A command substitution is a command of its own, and its quotes are its
+// own: the double quotes inside "$(node -p "...")" do not close the outer ones.
+function closingParen(source, open) {
+  let depth = 0;
+  let quote = null;
+  for (let i = open; i < source.length; i += 1) {
+    const ch = source[i];
+    if (quote === "'") {
+      if (ch === "'") quote = null;
+    } else if (ch === '\\') {
+      i += 1;
+    } else if (quote === '"') {
+      if (ch === '"') quote = null;
+      else if (ch === '$' && source[i + 1] === '(') i = closingParen(source, i + 1);
+    } else if (ch === "'" || ch === '"') {
+      quote = ch;
+    } else if (ch === '(') {
+      depth += 1;
+    } else if (ch === ')') {
+      depth -= 1;
+      if (depth === 0) return i;
+    }
+  }
+  return source.length;
+}
+
+function withoutHeredocBodies(text) {
+  const kept = [];
+  let delimiter = null;
+  for (const line of text.split(/\r?\n/)) {
+    if (delimiter != null) {
+      if (line.trim() === delimiter) delimiter = null;
+      continue;
+    }
+    kept.push(line);
+    const heredoc = /<<-?\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\1/.exec(line);
+    if (heredoc) delimiter = heredoc[2];
+  }
+  return kept.join('\n');
 }
 
 // One shell command, already split into tokens. Returns the package
@@ -259,7 +386,7 @@ function npmTargets(tokens, dir, scripts) {
 
 function stagedPaths(text) {
   const staged = [];
-  for (const tokens of segments(text.replace(/\\\r?\n/g, ' '))) {
+  for (const tokens of commandLines(text)) {
     for (let i = 0; i + 1 < tokens.length; i += 1) {
       if (tokens[i] !== 'git' || tokens[i + 1] !== 'add') continue;
       for (const token of tokens.slice(i + 2)) {
@@ -332,11 +459,6 @@ function pathFrom(dir, token) {
   const path = posix.normalize(dir ? `${dir}/${token}` : token);
   if (path === '..' || path.startsWith('../')) return null;
   return path;
-}
-
-function unquote(token) {
-  const match = /^(['"])(.*)\1$/.exec(token);
-  return match ? match[2] : token;
 }
 
 function stringList(value) {
