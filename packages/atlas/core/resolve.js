@@ -247,13 +247,19 @@ function nearestConfig(repo, dir) {
 function resolveJavaScript(ctx, fromAbs, specifier) {
   const parsed = splitBare(specifier);
   if (specifier.startsWith('node:') || isBuiltin(specifier, parsed)) return { outcome: 'external' };
+  // Missing export targets are recorded here. A workspace package whose
+  // export points at a build directory can still name its source from the
+  // tracked tsconfig when that file has not been emitted.
+  const resolveContext = { missingDependencies: new Set() };
   let abs = false;
   try {
-    abs = ctx.resolverFor(dirname(fromAbs))(dirname(fromAbs), specifier);
+    abs = ctx.resolverFor(dirname(fromAbs))(dirname(fromAbs), specifier, resolveContext);
   } catch {
     abs = false;
   }
   if (!abs) {
+    const recovered = recoverAbsentBuildOutput(ctx, resolveContext.missingDependencies);
+    if (recovered) return recovered;
     if (parsed && ctx.workspaces.has(parsed.name)) {
       return { outcome: 'unresolved', reason: 'workspace-export-unresolved' };
     }
@@ -261,6 +267,40 @@ function resolveJavaScript(ctx, fromAbs, specifier) {
     return { outcome: 'external' };
   }
   return classifyAbsolute(ctx, abs);
+}
+
+function recoverAbsentBuildOutput(ctx, missing) {
+  if (!missing || missing.size === 0) return null;
+  const hits = new Set();
+  let sawBuildTarget = false;
+  for (const absPath of missing) {
+    const normalized = normalizeWorkspacePath(ctx, absPath);
+    const located = locate(ctx, normalized);
+    if (located.outside || !located.rel) continue;
+    if (!isBuildOutput(ctx, normalized, located.rel)) continue;
+    sawBuildTarget = true;
+    const rewritten = rewriteOutDir(ctx, normalized, located.rel);
+    if (rewritten) hits.add(rewritten);
+  }
+  if (hits.size === 1) return { outcome: 'file', path: [...hits][0] };
+  if (sawBuildTarget) return { outcome: 'unresolved', reason: 'build-output-without-source' };
+  return null;
+}
+
+// A symlink under node_modules and the workspace directory are the same
+// package. Recovery has to see the package path, or the two routes disagree.
+function normalizeWorkspacePath(ctx, absPath) {
+  const rel = relative(ctx.repo, absPath).replaceAll('\\', '/');
+  const marker = 'node_modules/';
+  const at = rel.indexOf(marker);
+  if (at === -1) return absPath;
+  const rest = rel.slice(at + marker.length);
+  const parsed = splitBare(rest);
+  if (!parsed) return absPath;
+  const dir = ctx.workspaces.get(parsed.name);
+  if (!dir) return absPath;
+  const sub = rest.slice(parsed.name.length).replace(/^\//, '');
+  return sub ? join(dir, sub) : dir;
 }
 
 function isBuiltin(specifier, parsed) {
