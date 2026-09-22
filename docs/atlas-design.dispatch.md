@@ -77,7 +77,7 @@ because a reader who sees green relaxes, and a boundary being named is not a rea
 
 ### 1.3 Edge legend, as it renders
 
-```
+```text
 ────────▶   import        one boundary statically imports another
 ────────▣   chunk         same, recovered from a bundle; boundary grain, file unknown
 · · · · ·   co-change     changed together, no import; width = strength
@@ -163,7 +163,7 @@ page cannot carry a toggle**, because a clone is a static file: the markdown hol
 one line each, and is readable with neither selected. The site collapses them to the one the
 reader picks.
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │ ◷ numbers as of 2026-09-14 · 8 days ago                       │  age line (statistical), first
 │   [ I maintain this ]  [ I'm new here ]                       │  site: toggle · clone: both lines
@@ -250,7 +250,7 @@ the three actions as a list, the breakage table, the unnamed count. A clone cont
 vocabulary. Progressive disclosure runs boundary → file → symbol; symbols exist on this page and
 nowhere else.
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │ ◷ numbers as of 2026-09-14 · 8 days ago     structure @ a4f1c2 │  age + generating commit
 ├───────────────────────────────┬──────────────────────────────┤
@@ -303,7 +303,7 @@ level of the roster are site-only.
 Not a visual profile, but it has a shape, and the shape is the design. The whole point of the
 Machine profile is that a reader with a small budget meets the important lines first.
 
-```
+```text
 atlas/machine.md — first lines, in this order, always:
 
   generated: a4f1c2e  2026-09-14T09:12:00Z
@@ -355,7 +355,7 @@ Where the profiles appear, and what each surface owns.
 
 ### 4.1 The dashboard panel
 
-```
+```text
 ATLAS · 90 repositories rendered · weekly · last run 2 days ago
 ────────────────────────────────────────────────────────────────────────
 repository          map age   boundaries   unnamed   unresolved   open ⇄   
@@ -391,7 +391,7 @@ Three commands, each with a fixed output shape.
 `atlas init` proposes and says what it concluded and from which facts, so the human corrects a
 claim rather than filling a blank:
 
-```
+```text
 proposed 7 boundaries from package manifests (packages/*)
 
   findings      code    41 files   entry: packages/findings/index.js
@@ -407,7 +407,7 @@ next: edit each derived reason into your own words, then set status: accepted
 `atlas check` fails with the repository's error shape: a stable code, one sentence, a non-zero
 exit, and the code listed on the handbook's error page:
 
-```
+```text
 ATLAS_STRUCTURE_DRIFT  boundary edge findings → report is not in the committed map
   what changed:   packages/findings/derive/summary.js now imports @dogfood-lab/report
   what to do:     run `atlas map` and commit atlas/, or remove the import
