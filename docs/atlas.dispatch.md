@@ -310,6 +310,33 @@ documentation more heavily than seniors, who substitute experience. That last po
 Orientation audience precisely. A generated artifact committed alongside the code, and gated on
 structural drift, is how documentation earns the reliability that mitigation depends on.
 
+**Doors are structural too.** Every tracked workflow under `.github/workflows/` is a door, recorded
+in the artifact's `doors` list, sorted by file. A door carries:
+
+- `triggers`: one entry per event, normalized from every shape `on` takes. Path, branch, tag, type
+  and workflow filters are kept, sorted; a schedule gives one entry per cron line.
+- `permissions`: `scope:level`, top level and every job together. `read-all` is `all:read`.
+- `secrets`: every `secrets.NAME` in the file, and `usesWorkflowToken` for the workflow's own token.
+- `commands`: every `run:` step in file order, with its job and its name or index.
+- `runs`: the tracked files those commands name, with the job that names them. A token that is a
+  tracked path counts, and so does every path an npm script names, followed through nested
+  `npm run`, pre and post hooks, a named workspace and `--workspaces`. A step's working directory
+  is honored.
+- `stages` (what follows `git add`, as written), `pushes`, and `sends`: `dispatchesTo`,
+  `publishes`, `releases`, `deploysPages`.
+- `uses`: the actions its steps use, without the ref.
+- `reach`: the boundaries the door reaches through the import closure of `runs`, in the order it
+  reaches them. Depth 0 is the boundaries of the run files themselves; depth n is the first
+  breadth-first step at which a boundary is reached; `files` is how many of its files were reached.
+
+```json
+{ "boundary": "verify", "depth": 1, "files": 10 }
+```
+
+A workflow that does not parse is recorded as `{ file, name, parseError: true }` and the rest of the
+doors are mapped. The host check does not compare doors yet; a later slice decides what their drift
+means.
+
 This repository's own handbook diagram is a
 hand-drawn image whose only tests assert that it exists, is large enough, and has accessible
 title and description elements. Nothing checks that it is true.

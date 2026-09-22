@@ -51,12 +51,40 @@ export function buildArtifact(mapped, commit) {
   const tracked = boundaries.reduce((sum, boundary) => sum + boundary.files.length, 0) + overlaps.length + unassigned.length;
   return {
     boundaries,
+    doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => (a.file < b.file ? -1 : a.file > b.file ? 1 : 0)),
     edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to })),
     generatedFrom: { commit, tracked },
     overlaps,
     submodules: [...mapped.submodules].sort(),
     symlinks: mapped.symlinks.filter((link) => !inAtlas(link.path)).map((link) => ({ path: link.path, target: link.target })).sort(byPath),
     unassigned,
+  };
+}
+
+// Every list a door carries arrives sorted from the core, except commands,
+// whose order is the workflow's own. Copying field by field keeps the
+// artifact's shape the one written here rather than whatever the core adds.
+function carryDoor(door) {
+  if (door.parseError) return { file: door.file, name: door.name, parseError: true };
+  return {
+    commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
+    file: door.file,
+    name: door.name,
+    permissions: [...door.permissions],
+    pushes: door.pushes,
+    reach: door.reach.map((entry) => ({ boundary: entry.boundary, depth: entry.depth, files: entry.files })),
+    runs: door.runs.map((run) => ({ job: run.job, path: run.path })),
+    secrets: [...door.secrets],
+    sends: {
+      deploysPages: door.sends.deploysPages,
+      dispatchesTo: [...door.sends.dispatchesTo],
+      publishes: door.sends.publishes,
+      releases: door.sends.releases,
+    },
+    stages: [...door.stages],
+    triggers: door.triggers.map((trigger) => ({ ...trigger })),
+    uses: [...door.uses],
+    usesWorkflowToken: door.usesWorkflowToken,
   };
 }
 
