@@ -14,10 +14,12 @@ increasingly much of the code was not written by a human at all.
 
 Scored against the six workflow standards (`.claude/rules/workflow-standards.md`), 0–3.
 
-**DECOMPOSE_BY_SECRETS is a 3. PIN_PER_STEP is a 2. Every other score here is a 1.** A 2 means a step already does
+**DECOMPOSE_BY_SECRETS is a 3. PIN_PER_STEP is a 2. ANDON_AUTHORITY is a 2. Every other score here is a 1.** A 2 means a step already does
 the thing; a 3 means that step has tests. Slice 1 landed the read-only core and the two tests
 that enforce the split. Slice 2a landed the grammar-manifest test, which is what moves
-PIN_PER_STEP to 2. The other standards are still specified in prose and enforced nowhere.
+PIN_PER_STEP to 2. Slice 3 landed the host check, which is what moves ANDON_AUTHORITY to 2.
+The weekly job's per-repository parse-failure path is still only specified. The other standards
+are still specified in prose and enforced nowhere.
 The trajectory dispatch in this same folder was previously caught inflating a score by describing
 a gate it had not yet built. **Rescore upward only in the commit that lands the enforcing test**,
 never in a design edit.
@@ -25,13 +27,13 @@ never in a design edit.
 | Standard | Score | What is specified, and what would raise it |
 |---|---|---|
 | PIN_PER_STEP | 2 | The four grammar files are vendored from `@vscode/tree-sitter-wasm` 0.3.1 and `core/grammar-manifest.test.js` re-hashes each file against `grammars/manifest.json`. The extractor reads those files. The window, the five thresholds and the floor actually used are still only specified. **→ 3** with the determinism fixture proving two renders at one commit are byte-identical. **Remediation:** slice 5, owner unassigned (§12). |
-| ANDON_AUTHORITY | 1 | Specified: the host check fails a consumer's build on structural drift; a repository whose grammar throws records a failure and yields no map, while the fleet run continues (§9). **→ 2** when both paths exist. **→ 3** with tests on them. **Remediation:** slices 3 and 9, owner unassigned (§12). |
+| ANDON_AUTHORITY | 2 | `atlas check` fails the host on structural drift, and `adapter/lifecycle.test.js` covers that halt. A repository whose grammar throws still only has the failure specified for the weekly job (§9). **→ 3** when that path exists and is tested. **Remediation:** slice 9, owner unassigned (§12). |
 | NAMED_COMPENSATORS | 1 | Specified: four irreversible actions, each with an undo, a post-rollback state and an owner slot. See **Compensators**. Three of the four owners are unfilled seats, which is itself why this cannot read higher. **→ 2** when the undos are documented operator procedure with seats named. **Remediation:** slice 9, owner unassigned (§12). |
 | DECOMPOSE_BY_SECRETS | 3 | The core at `packages/atlas/core/index.js` reads a repo path and parsed boundaries and returns data. `core/no-sibling-imports.test.js` walks the resolved import closure and fails on any `@dogfood-lab/*` edge. `core/writes-nothing.test.js` fails if a run changes the fixture tree or the process working directory. |
 | UNCERTAINTY_GATED_HUMANS | 1 | Specified: acceptance fails while any authored field is still machine-derived; a correct derived entry point is never retyped; low-confidence labels propagate through every view on the fallen floor; the derived template states what Atlas concluded and from which facts, so the human corrects a claim rather than filling a blank. **→ 2** when the status ladder exists, slice 4. |
 | EXTERNAL_VERIFIER | **skip** | `skip:` no model generates any Atlas output. The standard requires a verifier from a different model family with the generator's reasoning hidden, and there is no generator to hide. A second independent implementation of boundary membership is a different and weaker requirement, and claiming it as this standard would be a category error. **Revisit this skip if a later slice introduces a model**, for example a generated Orientation draft. |
 
-One skip, with its reason. DECOMPOSE_BY_SECRETS is 3 because its two tests pass. PIN_PER_STEP is 2 because the grammar-manifest test passes. No score is above what exists.
+One skip, with its reason. DECOMPOSE_BY_SECRETS is 3 because its two tests pass. PIN_PER_STEP is 2 because the grammar-manifest test passes. ANDON_AUTHORITY is 2 because the host check is tested. No score is above what exists.
 
 ---
 
