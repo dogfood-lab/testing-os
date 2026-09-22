@@ -285,7 +285,6 @@
           "portfolio",
           "report",
           "schemas",
-          "site",
           "verify"
         ],
         "collapsed": false,
@@ -293,9 +292,9 @@
         "importsAndCoChanges": [],
         "importsOnly": []
       },
-      "cohesion": 0.599153,
+      "cohesion": 0.666615,
       "cohesionDropped": false,
-      "highWater": 0.599153,
+      "highWater": 0.666615,
       "name": "root",
       "rebaseline": null
     },
@@ -341,15 +340,13 @@
     },
     {
       "breakage": {
-        "coChangesOnly": [
-          "root"
-        ],
+        "coChangesOnly": [],
         "collapsed": false,
         "confidence": "full",
         "importsAndCoChanges": [],
         "importsOnly": []
       },
-      "cohesion": 0,
+      "cohesion": null,
       "cohesionDropped": false,
       "highWater": 0,
       "name": "site",
@@ -529,8 +526,13 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 5,
-        "lines": 15307,
+        "commits": 1,
+        "lines": 6871,
+        "path": "atlas/statistics.json"
+      },
+      {
+        "commits": 6,
+        "lines": 15337,
         "path": "atlas/structure.json"
       },
       {
@@ -1674,8 +1676,8 @@
         "path": "packages/atlas/adapter/propose.js"
       },
       {
-        "commits": 1,
-        "lines": 203,
+        "commits": 2,
+        "lines": 205,
         "path": "packages/atlas/adapter/statistics.js"
       },
       {
@@ -1734,13 +1736,13 @@
         "path": "packages/atlas/core/grammar-manifest.test.js"
       },
       {
-        "commits": 1,
-        "lines": 167,
+        "commits": 2,
+        "lines": 173,
         "path": "packages/atlas/core/history.js"
       },
       {
-        "commits": 1,
-        "lines": 151,
+        "commits": 2,
+        "lines": 163,
         "path": "packages/atlas/core/history.test.js"
       },
       {
@@ -6269,94 +6271,59 @@
     "level": "full",
     "reason": "the window holds at least 30 qualifying commits"
   },
-  "generatedAt": "2026-09-22T15:29:21.720Z",
+  "generatedAt": "2026-09-22T15:41:58.741Z",
   "generatedFrom": {
-    "commit": "6ec05ddef5bb19e218c9748648a7209c5e0179c2"
+    "commit": "4ccabaa26c9b9e039f83da227e60d3d92883cf6f"
   },
   "pairs": [
     {
       "a": "CHANGELOG.md",
       "b": "README.md",
-      "either": 33,
+      "either": 38,
       "shared": 20,
-      "strength": 0.606061
+      "strength": 0.526316
     },
     {
       "a": "CHANGELOG.md",
-      "b": "package.json",
-      "either": 37,
-      "shared": 19,
-      "strength": 0.513514
+      "b": "packages/findings/package.json",
+      "either": 35,
+      "shared": 18,
+      "strength": 0.514286
     },
     {
       "a": "CHANGELOG.md",
-      "b": "packages/dogfood-swarm/package.json",
+      "b": "packages/ingest/package.json",
       "either": 36,
       "shared": 18,
       "strength": 0.5
     },
     {
       "a": "CHANGELOG.md",
-      "b": "packages/findings/package.json",
-      "either": 28,
-      "shared": 18,
-      "strength": 0.642857
-    },
-    {
-      "a": "CHANGELOG.md",
-      "b": "packages/ingest/package.json",
-      "either": 29,
-      "shared": 18,
-      "strength": 0.62069
-    },
-    {
-      "a": "CHANGELOG.md",
       "b": "packages/portfolio/package.json",
-      "either": 27,
+      "either": 34,
       "shared": 18,
-      "strength": 0.666667
+      "strength": 0.529412
     },
     {
       "a": "CHANGELOG.md",
       "b": "packages/report/package.json",
-      "either": 28,
+      "either": 35,
       "shared": 18,
-      "strength": 0.642857
-    },
-    {
-      "a": "CHANGELOG.md",
-      "b": "packages/schemas/package.json",
-      "either": 31,
-      "shared": 18,
-      "strength": 0.580645
+      "strength": 0.514286
     },
     {
       "a": "CHANGELOG.md",
       "b": "packages/verify/package.json",
-      "either": 27,
+      "either": 34,
       "shared": 18,
-      "strength": 0.666667
+      "strength": 0.529412
     },
     {
       "a": "CLAUDE.md",
       "b": "SCORECARD.md",
-      "either": 21,
-      "shared": 13,
-      "strength": 0.619048
-    },
-    {
-      "a": "CLAUDE.md",
-      "b": "SHIP_GATE.md",
-      "either": 21,
-      "shared": 11,
-      "strength": 0.52381
-    },
-    {
-      "a": "CLAUDE.md",
-      "b": "site/public/screenshots/verify-output.svg",
       "either": 22,
-      "shared": 12,
-      "strength": 0.545455
+      "shared": 13,
+      "strength": 0.590909
     },
     {
       "a": "README.es.md",
@@ -6501,58 +6468,58 @@
     {
       "a": "README.md",
       "b": "package.json",
-      "either": 37,
+      "either": 44,
       "shared": 26,
-      "strength": 0.702703
+      "strength": 0.590909
     },
     {
       "a": "README.md",
       "b": "packages/dogfood-swarm/package.json",
+      "either": 45,
+      "shared": 24,
+      "strength": 0.533333
+    },
+    {
+      "a": "README.md",
+      "b": "packages/findings/package.json",
+      "either": 37,
+      "shared": 24,
+      "strength": 0.648649
+    },
+    {
+      "a": "README.md",
+      "b": "packages/ingest/package.json",
+      "either": 38,
+      "shared": 24,
+      "strength": 0.631579
+    },
+    {
+      "a": "README.md",
+      "b": "packages/portfolio/package.json",
       "either": 36,
       "shared": 24,
       "strength": 0.666667
     },
     {
       "a": "README.md",
-      "b": "packages/findings/package.json",
-      "either": 33,
-      "shared": 24,
-      "strength": 0.727273
-    },
-    {
-      "a": "README.md",
-      "b": "packages/ingest/package.json",
-      "either": 33,
-      "shared": 24,
-      "strength": 0.727273
-    },
-    {
-      "a": "README.md",
-      "b": "packages/portfolio/package.json",
-      "either": 33,
-      "shared": 24,
-      "strength": 0.727273
-    },
-    {
-      "a": "README.md",
       "b": "packages/report/package.json",
-      "either": 33,
+      "either": 37,
       "shared": 24,
-      "strength": 0.727273
+      "strength": 0.648649
     },
     {
       "a": "README.md",
       "b": "packages/schemas/package.json",
-      "either": 33,
+      "either": 40,
       "shared": 24,
-      "strength": 0.727273
+      "strength": 0.6
     },
     {
       "a": "README.md",
       "b": "packages/verify/package.json",
-      "either": 33,
+      "either": 36,
       "shared": 24,
-      "strength": 0.727273
+      "strength": 0.666667
     },
     {
       "a": "README.pt-BR.md",
@@ -6564,9 +6531,9 @@
     {
       "a": "SCORECARD.md",
       "b": "SHIP_GATE.md",
-      "either": 20,
+      "either": 22,
       "shared": 12,
-      "strength": 0.6
+      "strength": 0.545455
     },
     {
       "a": "indexes/integrity/chain.jsonl",
@@ -6574,13 +6541,6 @@
       "either": 44,
       "shared": 37,
       "strength": 0.840909
-    },
-    {
-      "a": "indexes/integrity/chain.jsonl",
-      "b": "indexes/stale.json",
-      "either": 37,
-      "shared": 20,
-      "strength": 0.540541
     },
     {
       "a": "indexes/integrity/chain.jsonl",
@@ -6604,249 +6564,221 @@
       "strength": 0.840909
     },
     {
-      "a": "indexes/stale.json",
-      "b": "indexes/trends.json",
-      "either": 37,
-      "shared": 20,
-      "strength": 0.540541
-    },
-    {
       "a": "package-lock.json",
       "b": "package.json",
-      "either": 47,
+      "either": 54,
       "shared": 30,
-      "strength": 0.638298
-    },
-    {
-      "a": "package-lock.json",
-      "b": "packages/dogfood-swarm/package.json",
-      "either": 47,
-      "shared": 25,
-      "strength": 0.531915
-    },
-    {
-      "a": "package-lock.json",
-      "b": "packages/findings/package.json",
-      "either": 47,
-      "shared": 24,
-      "strength": 0.510638
+      "strength": 0.555556
     },
     {
       "a": "package-lock.json",
       "b": "packages/schemas/package.json",
-      "either": 47,
+      "either": 51,
       "shared": 27,
-      "strength": 0.574468
-    },
-    {
-      "a": "package-lock.json",
-      "b": "packages/verify/package.json",
-      "either": 47,
-      "shared": 24,
-      "strength": 0.510638
+      "strength": 0.529412
     },
     {
       "a": "package.json",
       "b": "packages/dogfood-swarm/package.json",
-      "either": 37,
+      "either": 47,
       "shared": 26,
-      "strength": 0.702703
+      "strength": 0.553191
     },
     {
       "a": "package.json",
       "b": "packages/findings/package.json",
-      "either": 37,
+      "either": 40,
       "shared": 25,
-      "strength": 0.675676
+      "strength": 0.625
     },
     {
       "a": "package.json",
       "b": "packages/ingest/package.json",
-      "either": 37,
+      "either": 41,
       "shared": 25,
-      "strength": 0.675676
+      "strength": 0.609756
     },
     {
       "a": "package.json",
       "b": "packages/portfolio/package.json",
-      "either": 37,
+      "either": 39,
       "shared": 25,
-      "strength": 0.675676
+      "strength": 0.641026
     },
     {
       "a": "package.json",
       "b": "packages/report/package.json",
-      "either": 37,
+      "either": 40,
       "shared": 25,
-      "strength": 0.675676
+      "strength": 0.625
     },
     {
       "a": "package.json",
       "b": "packages/schemas/package.json",
-      "either": 37,
+      "either": 40,
       "shared": 28,
-      "strength": 0.756757
+      "strength": 0.7
     },
     {
       "a": "package.json",
       "b": "packages/verify/package.json",
-      "either": 37,
+      "either": 39,
       "shared": 25,
-      "strength": 0.675676
+      "strength": 0.641026
     },
     {
       "a": "packages/dogfood-swarm/package.json",
       "b": "packages/findings/package.json",
-      "either": 36,
+      "either": 39,
       "shared": 25,
-      "strength": 0.694444
+      "strength": 0.641026
     },
     {
       "a": "packages/dogfood-swarm/package.json",
       "b": "packages/ingest/package.json",
-      "either": 36,
+      "either": 40,
       "shared": 25,
-      "strength": 0.694444
+      "strength": 0.625
     },
     {
       "a": "packages/dogfood-swarm/package.json",
       "b": "packages/portfolio/package.json",
-      "either": 36,
+      "either": 38,
       "shared": 25,
-      "strength": 0.694444
+      "strength": 0.657895
     },
     {
       "a": "packages/dogfood-swarm/package.json",
       "b": "packages/report/package.json",
-      "either": 36,
+      "either": 39,
       "shared": 25,
-      "strength": 0.694444
+      "strength": 0.641026
     },
     {
       "a": "packages/dogfood-swarm/package.json",
       "b": "packages/schemas/package.json",
-      "either": 36,
+      "either": 41,
       "shared": 26,
-      "strength": 0.722222
+      "strength": 0.634146
     },
     {
       "a": "packages/dogfood-swarm/package.json",
       "b": "packages/verify/package.json",
-      "either": 36,
+      "either": 38,
       "shared": 25,
-      "strength": 0.694444
+      "strength": 0.657895
     },
     {
       "a": "packages/findings/package.json",
       "b": "packages/ingest/package.json",
-      "either": 29,
+      "either": 31,
       "shared": 26,
-      "strength": 0.896552
+      "strength": 0.83871
     },
     {
       "a": "packages/findings/package.json",
       "b": "packages/portfolio/package.json",
-      "either": 28,
+      "either": 30,
       "shared": 25,
-      "strength": 0.892857
+      "strength": 0.833333
     },
     {
       "a": "packages/findings/package.json",
       "b": "packages/report/package.json",
-      "either": 28,
-      "shared": 25,
-      "strength": 0.892857
-    },
-    {
-      "a": "packages/findings/package.json",
-      "b": "packages/schemas/package.json",
       "either": 31,
       "shared": 25,
       "strength": 0.806452
     },
     {
       "a": "packages/findings/package.json",
-      "b": "packages/verify/package.json",
-      "either": 28,
-      "shared": 26,
-      "strength": 0.928571
-    },
-    {
-      "a": "packages/ingest/package.json",
-      "b": "packages/portfolio/package.json",
-      "either": 29,
-      "shared": 25,
-      "strength": 0.862069
-    },
-    {
-      "a": "packages/ingest/package.json",
-      "b": "packages/report/package.json",
-      "either": 29,
-      "shared": 25,
-      "strength": 0.862069
-    },
-    {
-      "a": "packages/ingest/package.json",
       "b": "packages/schemas/package.json",
-      "either": 31,
+      "either": 34,
       "shared": 25,
-      "strength": 0.806452
+      "strength": 0.735294
     },
     {
-      "a": "packages/ingest/package.json",
+      "a": "packages/findings/package.json",
       "b": "packages/verify/package.json",
       "either": 29,
       "shared": 26,
       "strength": 0.896552
     },
     {
+      "a": "packages/ingest/package.json",
+      "b": "packages/portfolio/package.json",
+      "either": 31,
+      "shared": 25,
+      "strength": 0.806452
+    },
+    {
+      "a": "packages/ingest/package.json",
+      "b": "packages/report/package.json",
+      "either": 32,
+      "shared": 25,
+      "strength": 0.78125
+    },
+    {
+      "a": "packages/ingest/package.json",
+      "b": "packages/schemas/package.json",
+      "either": 35,
+      "shared": 25,
+      "strength": 0.714286
+    },
+    {
+      "a": "packages/ingest/package.json",
+      "b": "packages/verify/package.json",
+      "either": 30,
+      "shared": 26,
+      "strength": 0.866667
+    },
+    {
       "a": "packages/portfolio/package.json",
       "b": "packages/report/package.json",
-      "either": 28,
+      "either": 29,
       "shared": 26,
-      "strength": 0.928571
+      "strength": 0.896552
     },
     {
       "a": "packages/portfolio/package.json",
       "b": "packages/schemas/package.json",
-      "either": 31,
+      "either": 33,
       "shared": 25,
-      "strength": 0.806452
+      "strength": 0.757576
     },
     {
       "a": "packages/portfolio/package.json",
       "b": "packages/verify/package.json",
-      "either": 27,
+      "either": 28,
       "shared": 26,
-      "strength": 0.962963
+      "strength": 0.928571
     },
     {
       "a": "packages/report/package.json",
       "b": "packages/schemas/package.json",
-      "either": 31,
+      "either": 34,
       "shared": 25,
-      "strength": 0.806452
+      "strength": 0.735294
     },
     {
       "a": "packages/report/package.json",
       "b": "packages/verify/package.json",
-      "either": 28,
+      "either": 29,
       "shared": 26,
-      "strength": 0.928571
+      "strength": 0.896552
     },
     {
       "a": "packages/schemas/package.json",
       "b": "packages/verify/package.json",
-      "either": 31,
+      "either": 33,
       "shared": 25,
-      "strength": 0.806452
+      "strength": 0.757576
     },
     {
       "a": "scripts/check-finding-regression-pins.mjs",
       "b": "scripts/check-finding-regression-pins.test.mjs",
-      "either": 15,
+      "either": 16,
       "shared": 14,
-      "strength": 0.933333
+      "strength": 0.875
     }
   ],
   "parameters": {
@@ -6856,16 +6788,17 @@
     "cohesionDrop": 0.2,
     "fallenShared": 3,
     "floor": "strong",
-    "headDate": "2026-09-22T11:29:10-04:00",
-    "inScopeFiles": 1161,
-    "qualifyingCommits": 381,
+    "headDate": "2026-09-22T11:41:56-04:00",
+    "inScopeFiles": 1162,
+    "qualifyingCommits": 383,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 10,
-    "since": "2026-03-26T15:29:10.000Z",
+    "since": "2026-03-26T15:41:56.000Z",
     "strength": 0.5,
     "windowDays": 180,
     "windowStart": null
-  }
+  },
+  "strengthDefinition": "strength is the shared qualifying commits divided by either. either is the number of qualifying commits that touch either file."
 }
