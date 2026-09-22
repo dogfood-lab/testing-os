@@ -8,6 +8,7 @@ import { compareArtifacts } from './check.js';
 import { formatFailure } from './errors.js';
 import { initCommand } from './init.js';
 import { acceptanceFailures } from './ladder.js';
+import { buildStatistics, serializeStatistics, statisticsProblem } from './statistics.js';
 import { writeArtifactSync } from './write.js';
 
 export function main(argv, cwd) {
@@ -44,6 +45,14 @@ export function mapCommand(cwd) {
   const artifact = buildArtifact(mapped, commit);
   const bytes = serializeArtifact(artifact);
   writeArtifactSync(join(repo, 'atlas', 'structure.json'), bytes);
+  const statistics = buildStatistics({
+    repo,
+    commit,
+    document: boundary,
+    artifact,
+    generatedAt: new Date().toISOString(),
+  });
+  writeArtifactSync(join(repo, 'atlas', 'statistics.json'), serializeStatistics(statistics));
   const unresolved = artifact.boundaries.reduce((sum, item) => sum + item.unresolvedSites, 0);
   process.stdout.write(
     [
@@ -55,6 +64,7 @@ export function mapCommand(cwd) {
       `  unresolved:  ${unresolved}`,
       `  confidence:  ${mapped.importConfidence}`,
       'wrote atlas/structure.json',
+      'wrote atlas/statistics.json',
       '',
     ].join('\n'),
   );
@@ -97,6 +107,16 @@ export function checkCommand(cwd) {
         : 'rewrite the named fields into your own words and mark them human, or set status: proposed';
       process.stdout.write(formatFailure(ladder.code, ladder.details, { whatToDo }));
       return 1;
+    }
+    const statisticsPath = join(repo, 'atlas', 'statistics.json');
+    if (existsSync(statisticsPath)) {
+      const problem = statisticsProblem(readFileSync(statisticsPath, 'utf8'));
+      if (problem) {
+        process.stdout.write(formatFailure('ATLAS_STATISTICS_UNDATED', [problem], {
+          whatToDo: 'run atlas map and commit atlas/',
+        }));
+        return 1;
+      }
     }
     process.stdout.write('atlas check\n  boundaries match the committed map\n');
     return 0;

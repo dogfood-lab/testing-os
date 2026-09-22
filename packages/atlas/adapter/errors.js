@@ -6,6 +6,7 @@ export const ERRORS = {
   ATLAS_INIT_WOULD_OVERWRITE: 'Init will not overwrite a boundary file.',
   ATLAS_NO_BOUNDARY_FILE: 'There is no boundary file to map.',
   ATLAS_NOT_MAPPED: 'The structural artifact has not been written.',
+  ATLAS_STATISTICS_UNDATED: 'A statistical section has no date.',
   ATLAS_STRUCTURE_DRIFT: 'The committed structural map does not match this tree.',
   ATLAS_OVERLAP: 'A file belongs to more than one boundary.',
   ATLAS_BOUNDARY_EMPTY: 'An accepted boundary matches no files.',

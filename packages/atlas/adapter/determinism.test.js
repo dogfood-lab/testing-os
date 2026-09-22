@@ -33,6 +33,12 @@ describe('atlas map determinism', () => {
     assert.equal(map().status, 0);
     const second = readFileSync(join(root, 'atlas', 'structure.json'));
     assert.equal(Buffer.compare(first, second), 0);
+    const left = JSON.parse(readFileSync(join(root, 'atlas', 'statistics.json'), 'utf8'));
+    assert.equal(map().status, 0);
+    const right = JSON.parse(readFileSync(join(root, 'atlas', 'statistics.json'), 'utf8'));
+    left.generatedAt = '';
+    right.generatedAt = '';
+    assert.deepEqual(left, right);
     git(['add', '--', 'atlas']);
     git(['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', 'map']);
     assert.equal(map().status, 0);
