@@ -38,6 +38,16 @@ describe('javascript resolution', () => {
     assert.deepEqual(sites['node:fs'], { outcome: 'external' });
   });
 
+  it('resolves a .js specifier in TypeScript to the .ts source, even when a .js file is also present', () => {
+    const root = makeRepo(RESOLVE_JS);
+    roots.push(root);
+    const result = mapRepository({ repoPath: root, boundaries: [{ name: 'all', globs: ['**'] }] });
+    const onlyTs = resolved(result, 'app/a.ts');
+    const both = resolved(result, 'app/c.ts');
+    assert.deepEqual(onlyTs['./b.js'], { outcome: 'file', path: 'app/b.ts' });
+    assert.deepEqual(both['./d.js'], { outcome: 'file', path: 'app/d.ts' });
+  });
+
   it('resolves every @dogfood-lab import in this repository with node_modules renamed away', () => {
     const hidden = join(REPO, 'node_modules.atlas-2b-hidden');
     const live = join(REPO, 'node_modules');
@@ -59,6 +69,14 @@ describe('javascript resolution', () => {
         }
       }
       assert.deepEqual(bad, []);
+      let notFound = 0;
+      for (const file of files) {
+        if (!Array.isArray(file.imports)) continue;
+        for (const site of file.imports) {
+          if (site.resolved?.reason === 'module-not-found') notFound += 1;
+        }
+      }
+      assert.equal(notFound, 0);
     } finally {
       if (existsSync(hidden)) renameSync(hidden, live);
     }

@@ -5,6 +5,14 @@ import enhancedResolve from 'enhanced-resolve';
 import picomatch from 'picomatch';
 
 const EXTENSIONS = ['.ts', '.tsx', '.mts', '.cts', '.js', '.mjs', '.cjs', '.jsx'];
+// node16/nodenext TypeScript imports the emitted .js name. The source is the
+// .ts file, and it has to win when a checked-in .js sits beside it.
+const EXTENSION_ALIAS = {
+  '.js': ['.ts', '.tsx', '.js'],
+  '.mjs': ['.mts', '.mjs'],
+  '.cjs': ['.cts', '.cjs'],
+  '.jsx': ['.tsx', '.jsx'],
+};
 const BUILD_SEGMENTS = new Set(['dist', 'build', 'out']);
 const BUILTINS = new Set(builtinModules);
 
@@ -142,6 +150,7 @@ function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
       if (!resolver) {
         resolver = enhancedResolve.create.sync({
           extensions: EXTENSIONS,
+          extensionAlias: EXTENSION_ALIAS,
           conditionNames: ['import', 'require', 'default'],
           symlinks: true,
           tsconfig: config ?? false,
