@@ -4,8 +4,8 @@ boundaries:
     globs:
       - .github/**
     status: proposed
-    role: code
-    reason: 7 files, role code; entry points none; imports none; imported by none
+    role: config
+    reason: 7 files, role config; entry points none; imports none; imported by none
     why_from: derived
     will_break: Changing this breaks nothing that imports it; not covered by any
       test boundary
@@ -14,8 +14,8 @@ boundaries:
     globs:
       - assets/**
     status: proposed
-    role: code
-    reason: 1 file, role code; entry points none; imports none; imported by none
+    role: config
+    reason: 1 file, role config; entry points none; imports none; imported by none
     why_from: derived
     will_break: Changing this breaks nothing that imports it; not covered by any
       test boundary
@@ -87,7 +87,7 @@ boundaries:
       - fixtures/**
     status: proposed
     role: code
-    reason: 136 files, role code; entry points none; imports none; imported by none
+    reason: 147 files, role code; entry points none; imports none; imported by none
     why_from: derived
     will_break: Changing this breaks nothing that imports it; covered by tests in fixtures
     will_break_from: derived
@@ -95,8 +95,8 @@ boundaries:
     globs:
       - indexes/**
     status: proposed
-    role: code
-    reason: 21 files, role code; entry points none; imports none; imported by none
+    role: config
+    reason: 21 files, role config; entry points none; imports none; imported by none
     why_from: derived
     will_break: Changing this breaks nothing that imports it; not covered by any
       test boundary
@@ -135,8 +135,8 @@ boundaries:
     globs:
       - records/**
     status: proposed
-    role: code
-    reason: 91 files, role code; entry points none; imports none; imported by none
+    role: config
+    reason: 92 files, role config; entry points none; imports none; imported by none
     why_from: derived
     will_break: Changing this breaks nothing that imports it; not covered by any
       test boundary
@@ -156,8 +156,18 @@ boundaries:
     globs:
       - reports/**
     status: proposed
-    role: code
-    reason: 2 files, role code; entry points none; imports none; imported by none
+    role: config
+    reason: 2 files, role config; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: root
+    globs:
+      - "*"
+    status: proposed
+    role: docs
+    reason: 21 files, role docs; entry points none; imports none; imported by none
     why_from: derived
     will_break: Changing this breaks nothing that imports it; not covered by any
       test boundary
@@ -167,8 +177,9 @@ boundaries:
       - packages/schemas/**
     status: proposed
     role: code
-    reason: 37 files, role code; entry points none; imports dogfood-swarm; imported
-      by dogfood, dogfood-swarm, findings, ingest, report, scripts, verify
+    reason: 37 files, role code; entry points packages/schemas/src/index.ts; imports
+      dogfood-swarm; imported by dogfood, dogfood-swarm, findings, ingest,
+      report, scripts, verify
     why_from: derived
     will_break: Changing this breaks dogfood, dogfood-swarm, findings, ingest,
       report, scripts, verify; covered by tests in schemas
@@ -196,8 +207,8 @@ boundaries:
     globs:
       - swarms/**
     status: proposed
-    role: code
-    reason: 15 files, role code; entry points none; imports none; imported by none
+    role: docs
+    reason: 15 files, role docs; entry points none; imports none; imported by none
     why_from: derived
     will_break: Changing this breaks nothing that imports it; not covered by any
       test boundary
