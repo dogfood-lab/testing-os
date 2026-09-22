@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dogfood-lab/testing-os/packages/schemas/src/json/atlas-divergence.schema.json",
+  "title": "Atlas Divergence Report",
+  "description": "The contract for the divergence report Atlas produces for ONE repository alongside its statistical render (docs/atlas.dispatch.md §5). The report is the reflexion comparison: the evidence saying where a repository's human-declared boundary map disagrees with what the repository's own history shows it doing. It is ADVISORY AND NEVER A GATE — equality on coupling would red the build during ordinary development. This is a swarm-internal envelope like agent-output.schema.json, case-file.schema.json and dogfood-roadmap.schema.json: it ships via this package's existing \"./json/*\": \"./src/json/*\" subpath export and is resolved with a LOCAL Ajv in the consuming package, NOT registered in allSchemas / validatePayload / SUPPORTED_SCHEMA_VERSIONS (that registry gates the eight contract-spine payload schemas), and it carries no schema_version value gate.",
+  "$comment": "WHY THIS IS NOT A DOGFOOD FINDING (docs/atlas.dispatch.md §5, stated as a MUST NOT): dogfood-finding.schema.json requires a lesson identity, a closed issue_kind list, and source record ids produced by a dogfood run. A cohesion drop has none of the three — nobody learned a lesson, the issue kinds do not describe architectural drift, and the evidence is a git history rather than a run's records. Manufacturing those fields to reuse the finding schema would put a false lesson into the evidence store, which is exactly the corruption the evidence store exists to prevent. Hence a separate envelope. Row identity is stable (see rows.items.id) so that a standing disagreement UPDATES across renders and a resolved one CLOSES, rather than a fresh unrelated row appearing every week.",
+  "type": "object",
+  "required": [
+    "repo",
+    "generated_from",
+    "generated_at",
+    "shared_commit_floor",
+    "confidence",
+    "rows"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "repo": {
+      "title": "Repository",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$",
+      "description": "Full org/repo this report covers. One report describes exactly one repository; the central render writes one of these per repository rather than one fleet-wide document. Same pattern as dogfood-finding.schema.json's repo field."
+    },
+    "generated_from": {
+      "title": "Generating git state",
+      "type": "object",
+      "required": ["commit_sha"],
+      "additionalProperties": false,
+      "description": "The git state the render actually measured. Recorded beside the numbers it produced so a reader can re-derive them: a divergence row is only interpretable against the tree it was measured on.",
+      "properties": {
+        "commit_sha": {
+          "title": "Commit SHA",
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "description": "Full 40-hex commit SHA the render was computed at. Same pattern as dogfood-record.schema.json's ref.commit_sha."
+        }
+      }
+    },
+    "generated_at": {
+      "title": "Generated at",
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$",
+      "description": "RFC 3339 timestamp of the render, required to be in UTC (a literal trailing 'Z'; a numeric offset such as +02:00 is rejected by the pattern even though RFC 3339 permits it). UTC is forced because these reports are compared across repositories rendered by different jobs on different hosts, and a local-offset timestamp makes 'which render is newer' unanswerable by string comparison."
+    },
+    "shared_commit_floor": {
+      "title": "Shared-commit floor used",
+      "type": "integer",
+      "enum": [10, 3],
+      "description": "The shared-commit threshold this render actually computed on — the number of commits a pair of files must have changed together in before the pair counts at all. Atlas computes at 10 and falls to 3 ONLY on thin history (fewer than 30 qualifying commits in the window), never merely because few pairs survived: a repository with plenty of commits and little co-change is well decoupled, which is a full-confidence finding (docs/atlas.dispatch.md §6). Recorded here because cohesion measured at 3 is a DIFFERENT INSTRUMENT from cohesion measured at 10, and a reader comparing two reports must be able to see that the instrument changed. Only these two values exist; anything else means the render used a floor Atlas does not define."
+    },
+    "confidence": {
+      "title": "Report confidence",
+      "type": "string",
+      "enum": ["full", "low"],
+      "description": "Report-level confidence. 'low' whenever shared_commit_floor is 3 — enforced by the conditional below, not left to the producer's discipline. On the fallen floor the label warns about the DENOMINATOR, not about the findings: the couplings are real and rest on a small sample (docs/atlas.dispatch.md §6). A floor change is itself enough to emit low confidence."
+    },
+    "rows": {
+      "title": "Divergence rows",
+      "type": "array",
+      "description": "Every disagreement this render found, one row per rule instance. REQUIRED even when empty, on the same reasoning as dogfood-roadmap.schema.json's sections: an absent key could only ever mean 'the render did not run this comparison', while an empty array unambiguously means 'ran it and found nothing'. A reader is never left guessing which. The first render of a repository has no previous snapshot to compare against, so the cohesion-dropped rule cannot fire until the second render; an empty array is the ordinary first-render result.",
+      "items": {
+        "title": "Divergence row",
+        "type": "object",
+        "required": [
+          "id",
+          "rule",
+          "value",
+          "threshold",
+          "confidence",
+          "state",
+          "first_seen",
+          "last_seen"
+        ],
+        "additionalProperties": false,
+        "description": "One instance of one rule firing. The per-rule conditionals in allOf below make each rule's own fields REQUIRED when that rule is named, and forbid the fields belonging to the other three rules — so the shape of a row is determined by its rule rather than being an open bag in which any combination happens to validate.",
+        "properties": {
+          "id": {
+            "title": "Stable row id",
+            "type": "string",
+            "minLength": 1,
+            "description": "The row's identity across renders, derived from the repository, the rule, and the boundaries involved (for file-moved, the file path is part of the derivation too, since one boundary pair can host many moved files). Derived rather than minted so that the SAME disagreement carries the SAME id next week: that is what lets a standing disagreement update in place and a resolved one close, instead of a new unrelated row appearing on every render. Deliberately shaped only as a non-empty string here. The derivation belongs to the producer, and pinning a hash format or a separator in this envelope would freeze an implementation detail into a contract field — this schema cannot verify a derivation anyway, only that an id was supplied."
+          },
+          "rule": {
+            "title": "Rule",
+            "type": "string",
+            "enum": ["leaks", "two-may-be-one", "file-moved", "cohesion-dropped"],
+            "description": "Which of the four divergence rules fired. Closed at exactly four (docs/atlas.dispatch.md §5): 'leaks' — coupling strength pointing outside a boundary exceeds the strength inside it; 'two-may-be-one' — strength between two boundaries exceeds the internal strength of the smaller; 'file-moved' — a file's strongest partner, among pairs passing the strength floor, sits in another boundary; 'cohesion-dropped' — the inside-over-total ratio has fallen 0.20 or more below its high-water mark. A fifth rule is a contract change, not a new value someone may add at a call site."
+          },
+          "boundary": {
+            "title": "Boundary",
+            "type": "string",
+            "minLength": 1,
+            "description": "The boundary this row is about, named as it is named in that repository's atlas/boundaries.yaml. Used by 'leaks' and 'cohesion-dropped' (the boundary that leaks, the boundary whose cohesion dropped) and by 'file-moved' (the boundary the file currently belongs to). Not used by 'two-may-be-one', which names two boundaries in `boundaries` instead."
+          },
+          "boundaries": {
+            "title": "Boundary pair",
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "title": "Boundary name",
+              "type": "string",
+              "minLength": 1,
+              "description": "A boundary name as declared in that repository's atlas/boundaries.yaml."
+            },
+            "description": "The two boundaries that may in fact be one, for the 'two-may-be-one' rule only. Exactly two entries: this rule is a statement about a PAIR, and a one-element array would be a row that cannot mean anything. The pair is unordered as a claim, though a producer should emit it in a stable order so the derived id stays stable across renders."
+          },
+          "file": {
+            "title": "File path",
+            "type": "string",
+            "minLength": 1,
+            "description": "Repository-relative path of the file whose strongest partner lives elsewhere, for the 'file-moved' rule only. Repository-relative rather than absolute so a committed report does not bake the rendering machine's checkout path into a cross-machine artifact."
+          },
+          "partner_boundary": {
+            "title": "Partner's boundary",
+            "type": "string",
+            "minLength": 1,
+            "description": "For the 'file-moved' rule only: the boundary that the file's STRONGEST co-change partner sits in — the boundary the evidence suggests the file has effectively moved to, while `boundary` says where the declared map still puts it. The row is the disagreement between those two answers."
+          },
+          "value": {
+            "title": "Measured value",
+            "type": "number",
+            "minimum": 0,
+            "description": "What this render actually measured, in the units of the rule that fired: for 'leaks' and 'two-may-be-one', the outward or between-boundary coupling strength; for 'file-moved', the strength of the file's strongest cross-boundary pair; for 'cohesion-dropped', the size of the drop below the high-water mark (high_water_mark minus current). Carried beside `threshold` so a reader can see how far over the line the row is, rather than only that it is over."
+          },
+          "threshold": {
+            "title": "Threshold crossed",
+            "type": "number",
+            "minimum": 0,
+            "description": "The number `value` crossed to make this row fire, recorded here rather than left implicit because a repository may override Atlas's defaults in its own boundary file. For 'cohesion-dropped' this is the drop tolerance (0.20 by default); for the coupling rules it is the comparison strength the rule was measured against. Recording it beside the value is what stops 'materially diverged' from quietly becoming noise."
+          },
+          "confidence": {
+            "title": "Row confidence",
+            "type": "string",
+            "enum": ["full", "low"],
+            "description": "Per-row confidence. Every row on a render whose shared_commit_floor is 3 is 'low', enforced by the report-level conditional in allOf below: all four rules carry the label while the repository is on the fallen floor (docs/atlas.dispatch.md §5). As at report level, 'low' means the sample is small, not that the row is probably wrong."
+          },
+          "state": {
+            "title": "Row state",
+            "type": "string",
+            "enum": ["open", "cleared"],
+            "description": "'open' — the disagreement was still present at this render. 'cleared' — a row that was open in an earlier render and is not reproduced by this one, kept in the report so a reader can see that it closed rather than finding it silently gone. Note what does NOT clear a row: closing the GitHub issue a row raised is not an act on the row, and for 'cohesion-dropped' neither is anything short of a deliberate human rebaseline — the row stays open and refiles on the next render until the mark is reset (docs/atlas.dispatch.md §5, §2's `rebaseline` field)."
+          },
+          "first_seen": {
+            "title": "First seen",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$",
+            "description": "RFC 3339 UTC timestamp of the render that first reported this row id. Preserved verbatim across subsequent renders — a standing disagreement keeps the date it started, which is the whole point of deriving a stable id. Same UTC-only rule as the report's generated_at, for the same cross-host-comparability reason."
+          },
+          "last_seen": {
+            "title": "Last seen",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$",
+            "description": "RFC 3339 UTC timestamp of the most recent render in which this row was observed. For an open row this equals the report's generated_at; for a cleared row it is the last render that still saw the disagreement, so the pair of timestamps says how long the row stood."
+          },
+          "high_water_mark": {
+            "title": "Cohesion high-water mark",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "For 'cohesion-dropped' only: the best inside-over-total cohesion ratio this boundary has ever been rendered at. It RATCHETS UP on its own whenever a render measures higher, and comes down only when a human requests a rebaseline in the mapped repository's own atlas/boundaries.yaml. It is frozen — neither raised nor lowered, and the rule does not fire — while the repository is on the fallen floor, because letting a 3-commit reading move a mark set by a 10-commit reading would make the return to the strong floor look like architectural decay."
+          },
+          "current": {
+            "title": "Current cohesion",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "For 'cohesion-dropped' only: the inside-over-total cohesion ratio measured by THIS render, the number that fell below the mark. Carried explicitly rather than left to be recomputed as high_water_mark minus value, so a reader sees both absolute positions and not only the size of the gap."
+          }
+        },
+        "allOf": [
+          {
+            "$comment": "Per-rule shape for 'leaks'. One boundary, no pair, no file. The exclusions use `false` subschemas, which reject the property at any value and therefore mean 'must be absent' — the row's own additionalProperties:false cannot do this job, because these fields ARE declared properties of a row, just not of THIS rule's row.",
+            "if": {
+              "properties": { "rule": { "const": "leaks" } },
+              "required": ["rule"]
+            },
+            "then": {
+              "required": ["boundary"],
+              "properties": {
+                "boundaries": false,
+                "file": false,
+                "partner_boundary": false,
+                "high_water_mark": false,
+                "current": false
+              }
+            }
+          },
+          {
+            "$comment": "Per-rule shape for 'two-may-be-one'. The claim is about a PAIR, so the two names live in `boundaries` and the singular `boundary` is forbidden: a row carrying one name could not say which two boundaries might be one.",
+            "if": {
+              "properties": { "rule": { "const": "two-may-be-one" } },
+              "required": ["rule"]
+            },
+            "then": {
+              "required": ["boundaries"],
+              "properties": {
+                "boundary": false,
+                "file": false,
+                "partner_boundary": false,
+                "high_water_mark": false,
+                "current": false
+              }
+            }
+          },
+          {
+            "$comment": "Per-rule shape for 'file-moved'. Three fields, because the row IS the disagreement between two answers about one file: `file` names it, `boundary` is where the declared map puts it, `partner_boundary` is where its strongest partner actually sits.",
+            "if": {
+              "properties": { "rule": { "const": "file-moved" } },
+              "required": ["rule"]
+            },
+            "then": {
+              "required": ["file", "boundary", "partner_boundary"],
+              "properties": {
+                "boundaries": false,
+                "high_water_mark": false,
+                "current": false
+              }
+            }
+          },
+          {
+            "$comment": "Per-rule shape for 'cohesion-dropped'. The mark and the current reading are REQUIRED, not optional extras: a drop row without the mark it dropped from is unreadable, and — because the mark is a high-water mark that only a human rebaseline lowers — it is also the number a human needs in order to decide whether to rebaseline at all.",
+            "if": {
+              "properties": { "rule": { "const": "cohesion-dropped" } },
+              "required": ["rule"]
+            },
+            "then": {
+              "required": ["boundary", "high_water_mark", "current"],
+              "properties": {
+                "boundaries": false,
+                "file": false,
+                "partner_boundary": false
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "The fallen floor forces the label, at both levels. docs/atlas.dispatch.md §5: 'A floor change emits low confidence' and 'All four are labelled low confidence while the repository is on the fallen floor.' Enforced here rather than trusted to the producer, because the label is the only thing standing between a thin-history reading and a reader who treats it as a ten-commit one. Note the asymmetry: floor 10 does NOT imply full confidence, since a render on the strong floor may still have other reasons to downgrade itself.",
+      "if": {
+        "properties": { "shared_commit_floor": { "const": 3 } },
+        "required": ["shared_commit_floor"]
+      },
+      "then": {
+        "properties": {
+          "confidence": { "const": "low" },
+          "rows": {
+            "items": {
+              "properties": { "confidence": { "const": "low" } }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
