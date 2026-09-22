@@ -52,8 +52,13 @@ function loadJson(path) {
 }
 
 function workspaceEntries(lock) {
+  // A dependency npm could not hoist lands at packages/<name>/node_modules/<dep>
+  // and shares the `packages/` prefix; it is not a workspace entry and carries
+  // its own version. Judging it against the root version reddened the gate the
+  // first time a workspace package pinned a dependency whose hoisted copy had
+  // floated to a different patch.
   return Object.entries(lock.packages ?? {})
-    .filter(([key]) => key.startsWith('packages/'))
+    .filter(([key]) => key.startsWith('packages/') && !key.includes('/node_modules/'))
     .map(([key, value]) => ({ key, version: value.version, engines: value.engines }));
 }
 

@@ -1,4 +1,9 @@
 {
   "description": "Allowlist for the F-8125c01b orphaned-test discovery sweep in scripts/stageC-check-test-floor.test.mjs. Every committed *.test.{js,mjs,cjs,ts} file must be matched by its owning package's test script, by the root test:scripts globs, or by an entry here WITH a reason (the scripts/regression-pin-allowlist.json discipline). Entries whose path no longer exists fail the sweep — no rot.",
-  "entries": []
+  "entries": [
+    {
+      "path": "fixtures/atlas/basic/packages/beta/beta.test.js",
+      "reason": "Atlas fixture, not a test. It is a file whose test-shaped name is the point: it sits inside the fixture repository that packages/atlas/core tests map, and a later slice derives a boundary's test role from exactly this naming convention. It contains no test and is never meant to run; running it would prove nothing about Atlas."
+    }
+  ]
 }
