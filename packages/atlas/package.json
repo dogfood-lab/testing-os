@@ -1,0 +1,44 @@
+{
+  "name": "@dogfood-lab/atlas",
+  "version": "1.12.0",
+  "type": "module",
+  "description": "Read-only map of a git working tree onto named boundaries. Slice 1 derives membership only.",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./core": "./core/index.js"
+  },
+  "files": [
+    "index.js",
+    "core/index.js",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test \"*.test.js\" \"core/*.test.js\""
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "picomatch": "4.0.7"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "author": "mcp-tool-shop",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dogfood-lab/testing-os.git",
+    "directory": "packages/atlas"
+  },
+  "homepage": "https://github.com/dogfood-lab/testing-os",
+  "bugs": {
+    "url": "https://github.com/dogfood-lab/testing-os/issues"
+  },
+  "keywords": [
+    "testing-os",
+    "dogfood-lab",
+    "atlas"
+  ]
+}

@@ -14,22 +14,23 @@ increasingly much of the code was not written by a human at all.
 
 Scored against the six workflow standards (`.claude/rules/workflow-standards.md`), 0–3.
 
-**Every score here is a 1, and that is the honest reading of the rubric.** A 2 means a step
-already does the thing; a 3 means that step has tests. This is Phase 0 and no step exists, so
-every standard below is specified in prose and enforced nowhere. The trajectory dispatch in this
-same folder was previously caught inflating a score by describing a gate it had not yet built.
-**Rescore upward only in the commit that lands the enforcing test**, never in a design edit.
+**DECOMPOSE_BY_SECRETS is a 3. Every other score here is a 1.** A 2 means a step already does
+the thing; a 3 means that step has tests. Slice 1 landed the read-only core and the two tests
+that enforce the split. The other standards are still specified in prose and enforced nowhere.
+The trajectory dispatch in this same folder was previously caught inflating a score by describing
+a gate it had not yet built. **Rescore upward only in the commit that lands the enforcing test**,
+never in a design edit.
 
 | Standard | Score | What is specified, and what would raise it |
 |---|---|---|
 | PIN_PER_STEP | 1 | Specified: four vendored, version-pinned, hash-checked grammar files; the window, the five thresholds and the floor actually used recorded in the statistical artifact beside the numbers they produced. **→ 2** when a render actually reads pinned inputs. **→ 3** with the determinism fixture proving two renders at one commit are byte-identical. **Remediation:** slice 5, owner unassigned (§12). |
 | ANDON_AUTHORITY | 1 | Specified: the host check fails a consumer's build on structural drift; a repository whose grammar throws records a failure and yields no map, while the fleet run continues (§9). **→ 2** when both paths exist. **→ 3** with tests on them. **Remediation:** slices 3 and 9, owner unassigned (§12). |
 | NAMED_COMPENSATORS | 1 | Specified: four irreversible actions, each with an undo, a post-rollback state and an owner slot. See **Compensators**. Three of the four owners are unfilled seats, which is itself why this cannot read higher. **→ 2** when the undos are documented operator procedure with seats named. **Remediation:** slice 9, owner unassigned (§12). |
-| DECOMPOSE_BY_SECRETS | 1 | Specified: the read-only core / writing adapter split, with grammars changing per language, thresholds per repository, rendering per audience, and no reach between them. **→ 2** when the split exists. **→ 3** when the two core tests enforce it, which is slice 1 and therefore the first score likely to move. |
+| DECOMPOSE_BY_SECRETS | 3 | The core at `packages/atlas/core/index.js` reads a repo path and parsed boundaries and returns data. `core/no-sibling-imports.test.js` walks the resolved import closure and fails on any `@dogfood-lab/*` edge. `core/writes-nothing.test.js` fails if a run changes the fixture tree or the process working directory. |
 | UNCERTAINTY_GATED_HUMANS | 1 | Specified: acceptance fails while any authored field is still machine-derived; a correct derived entry point is never retyped; low-confidence labels propagate through every view on the fallen floor; the derived template states what Atlas concluded and from which facts, so the human corrects a claim rather than filling a blank. **→ 2** when the status ladder exists, slice 4. |
 | EXTERNAL_VERIFIER | **skip** | `skip:` no model generates any Atlas output. The standard requires a verifier from a different model family with the generator's reasoning hidden, and there is no generator to hide. A second independent implementation of boundary membership is a different and weaker requirement, and claiming it as this standard would be a category error. **Revisit this skip if a later slice introduces a model**, for example a generated Orientation draft. |
 
-One skip, with its reason. No score is inflated above what exists, which at Phase 0 is nothing.
+One skip, with its reason. DECOMPOSE_BY_SECRETS is 3 because its two tests pass. No other score is above what exists.
 
 ---
 
