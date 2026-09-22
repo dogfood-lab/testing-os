@@ -38,13 +38,25 @@ export function readBoundaryFile(repoPath) {
   if (problem) return { ok: false, code: 'ATLAS_BOUNDARY_FILE_INVALID', details: [problem] };
   return {
     ok: true,
-    boundaries: doc.boundaries.map((boundary) => ({
-      name: boundary.name,
-      globs: boundary.globs,
-      status: boundary.status,
-      role: boundary.role,
-    })),
+    summary: typeof doc.summary === 'string' ? doc.summary : null,
+    window: doc.window ?? null,
+    thresholds: doc.thresholds ?? null,
+    machine_budget: doc.machine_budget ?? null,
+    boundaries: doc.boundaries.map(carryBoundary),
   };
+}
+
+function carryBoundary(boundary) {
+  const carried = {
+    name: boundary.name,
+    globs: boundary.globs,
+    status: boundary.status,
+    role: boundary.role,
+  };
+  for (const field of ['reason', 'why_from', 'will_break', 'will_break_from', 'start_here', 'rebaseline']) {
+    if (boundary[field] != null) carried[field] = boundary[field];
+  }
+  return carried;
 }
 
 function validate(doc) {

@@ -1,0 +1,215 @@
+summary: ""
+boundaries:
+  - name: .github
+    globs:
+      - .github/**
+    status: proposed
+    role: code
+    reason: 7 files, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: assets
+    globs:
+      - assets/**
+    status: proposed
+    role: code
+    reason: 1 file, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: atlas
+    globs:
+      - packages/atlas/**
+    status: proposed
+    role: code
+    reason: 40 files, role code; entry points packages/atlas/cli.js,
+      packages/atlas/index.js; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; covered by tests in atlas
+    will_break_from: derived
+  - name: docs
+    globs:
+      - docs/**
+    status: proposed
+    role: docs
+    reason: 21 files, role docs; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: dogfood
+    globs:
+      - dogfood/**
+    status: proposed
+    role: config
+    reason: 15 files, role config; entry points none; imports schemas; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; covered by tests in dogfood
+    will_break_from: derived
+  - name: dogfood-swarm
+    globs:
+      - packages/dogfood-swarm/**
+    status: proposed
+    role: code
+    reason: 349 files, role code; entry points packages/dogfood-swarm/cli.js;
+      imports findings, report, schemas; imported by ingest, schemas, scripts
+    why_from: derived
+    will_break: Changing this breaks ingest, schemas, scripts; covered by tests in
+      dogfood-swarm
+    will_break_from: derived
+  - name: examples
+    globs:
+      - examples/**
+    status: proposed
+    role: config
+    reason: 5 files, role config; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: findings
+    globs:
+      - packages/findings/**
+    status: proposed
+    role: code
+    reason: 81 files, role code; entry points packages/findings/cli.js,
+      packages/findings/index.js; imports ingest, schemas, verify; imported by
+      dogfood-swarm, ingest, portfolio, scripts
+    why_from: derived
+    will_break: Changing this breaks dogfood-swarm, ingest, portfolio, scripts;
+      covered by tests in findings
+    will_break_from: derived
+  - name: fixtures
+    globs:
+      - fixtures/**
+    status: proposed
+    role: code
+    reason: 136 files, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; covered by tests in fixtures
+    will_break_from: derived
+  - name: indexes
+    globs:
+      - indexes/**
+    status: proposed
+    role: code
+    reason: 21 files, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: ingest
+    globs:
+      - packages/ingest/**
+    status: proposed
+    role: code
+    reason: 80 files, role code; entry points packages/ingest/run.js; imports
+      dogfood-swarm, findings, schemas, verify; imported by findings, scripts
+    why_from: derived
+    will_break: Changing this breaks findings, scripts; covered by tests in ingest
+    will_break_from: derived
+  - name: policies
+    globs:
+      - policies/**
+    status: proposed
+    role: config
+    reason: 15 files, role config; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: portfolio
+    globs:
+      - packages/portfolio/**
+    status: proposed
+    role: code
+    reason: 23 files, role code; entry points packages/portfolio/generate.js;
+      imports findings; imported by scripts
+    why_from: derived
+    will_break: Changing this breaks scripts; covered by tests in portfolio
+    will_break_from: derived
+  - name: records
+    globs:
+      - records/**
+    status: proposed
+    role: code
+    reason: 91 files, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: report
+    globs:
+      - packages/report/**
+    status: proposed
+    role: code
+    reason: 24 files, role code; entry points packages/report/build-submission.js,
+      packages/report/cli.js, packages/report/init.js; imports schemas; imported
+      by dogfood-swarm
+    why_from: derived
+    will_break: Changing this breaks dogfood-swarm; covered by tests in report
+    will_break_from: derived
+  - name: reports
+    globs:
+      - reports/**
+    status: proposed
+    role: code
+    reason: 2 files, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: schemas
+    globs:
+      - packages/schemas/**
+    status: proposed
+    role: code
+    reason: 37 files, role code; entry points none; imports dogfood-swarm; imported
+      by dogfood, dogfood-swarm, findings, ingest, report, scripts, verify
+    why_from: derived
+    will_break: Changing this breaks dogfood, dogfood-swarm, findings, ingest,
+      report, scripts, verify; covered by tests in schemas
+    will_break_from: derived
+  - name: scripts
+    globs:
+      - scripts/**
+    status: proposed
+    role: code
+    reason: 63 files, role code; entry points none; imports dogfood-swarm, findings,
+      ingest, portfolio, schemas, verify; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; covered by tests in scripts
+    will_break_from: derived
+  - name: site
+    globs:
+      - site/**
+    status: proposed
+    role: code
+    reason: 31 files, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; covered by tests in site
+    will_break_from: derived
+  - name: swarms
+    globs:
+      - swarms/**
+    status: proposed
+    role: code
+    reason: 15 files, role code; entry points none; imports none; imported by none
+    why_from: derived
+    will_break: Changing this breaks nothing that imports it; not covered by any
+      test boundary
+    will_break_from: derived
+  - name: verify
+    globs:
+      - packages/verify/**
+    status: proposed
+    role: code
+    reason: 63 files, role code; entry points packages/verify/cli.js,
+      packages/verify/index.js; imports schemas; imported by findings, ingest,
+      scripts
+    why_from: derived
+    will_break: Changing this breaks findings, ingest, scripts; covered by tests in verify
+    will_break_from: derived
