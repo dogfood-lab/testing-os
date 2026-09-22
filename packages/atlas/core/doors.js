@@ -9,6 +9,9 @@ const RUN_ALIASES = new Set(['run', 'run-script', 'rum', 'urn']);
 const TEST_ALIASES = new Set(['test', 't', 'tst']);
 const LIFECYCLE = new Set(['start', 'stop', 'restart']);
 const VALUE_FLAGS = new Set(['-w', '--workspace', '--prefix']);
+const EXECUTORS = new Set(['node', 'npx', 'bash', 'sh', 'pwsh', 'python', 'python3', 'deno', 'tsx']);
+// Words that can open a shell command line without being the command.
+const PREFIX_WORDS = new Set(['then', 'else', 'do', 'exec', 'time', '!']);
 
 /**
  * Read every tracked workflow under .github/workflows and describe it as a
@@ -42,6 +45,7 @@ function readDoor(repoPath, file, tracked, scripts) {
   const commands = [];
   const uses = new Set();
   const runs = new Map();
+  const mentions = new Map();
   const workflowDir = workingDirectory(doc.defaults);
   for (const [job, body] of Object.entries(isMapping(doc.jobs) ? doc.jobs : {})) {
     if (!isMapping(body)) continue;
@@ -58,12 +62,14 @@ function readDoor(repoPath, file, tracked, scripts) {
       // names nothing Atlas can place, so its tokens are left unresolved.
       const dir = step['working-directory'] === undefined ? jobDir : cleanDir(step['working-directory']);
       if (dir == null) return;
-      for (const path of namedPaths(step.run, dir, tracked, scripts, new Set())) {
-        runs.set(`${path}\0${job}`, { path, job });
-      }
+      const named = namedPaths(step.run, dir, tracked, scripts, new Set());
+      for (const path of named.runs) runs.set(`${path}\0${job}`, { path, job });
+      for (const path of named.mentions) mentions.set(`${path}\0${job}`, { path, job });
     });
   }
 
+  for (const key of runs.keys()) mentions.delete(key);
+  const byPathThenJob = (a, b) => compare(a.path, b.path) || compare(a.job, b.job);
   const texts = commands.map((command) => command.text);
   const joined = texts.join('\n');
   return {
@@ -74,7 +80,8 @@ function readDoor(repoPath, file, tracked, scripts) {
     secrets: [...new Set([...text.matchAll(/\bsecrets\.([A-Za-z_][A-Za-z0-9_]*)/g)].map((match) => match[1]))].sort(),
     usesWorkflowToken: /\bgithub\.token\b|\bsecrets\.GITHUB_TOKEN\b/.test(text),
     commands,
-    runs: [...runs.values()].sort((a, b) => compare(a.path, b.path) || compare(a.job, b.job)),
+    runs: [...runs.values()].sort(byPathThenJob),
+    mentions: [...mentions.values()].sort(byPathThenJob),
     stages: [...new Set(texts.flatMap(stagedPaths))].sort(),
     pushes: /\bgit\s+push\b/.test(joined),
     sends: {
@@ -143,19 +150,25 @@ function cleanDir(dir) {
 }
 
 /**
- * Tracked paths a command names: a token that is itself a tracked path, and
- * every tracked path named by an npm script the command starts, followed
- * through nested npm invocations. `active` holds the scripts on the current
- * chain, so a script that starts itself stops instead of looping.
+ * Tracked paths a command executes, and tracked paths it only mentions.
+ *
+ * A path is executed when it is the command itself, or when it follows an
+ * executor with nothing but flags between them. Every other tracked path in
+ * the text is a mention: an echoed message, a file handed to git diff. npm
+ * scripts the command starts are read by the same rule, followed through
+ * nested invocations. `active` holds the scripts on the current chain, so a
+ * script that starts itself stops instead of looping.
  */
 function namedPaths(text, dir, tracked, scripts, active) {
-  const found = new Set();
-  const flat = text.replace(/\\\r?\n/g, ' ');
-  for (const token of flat.split(/\s+/)) {
-    const path = pathFrom(dir, unquote(token));
-    if (path != null && tracked.has(path)) found.add(path);
-  }
-  for (const tokens of segments(flat)) {
+  const runs = new Set();
+  const mentions = new Set();
+  for (const tokens of segments(text.replace(/\\\r?\n/g, ' '))) {
+    const executed = executedPositions(tokens);
+    tokens.forEach((token, index) => {
+      const path = pathFrom(dir, token);
+      if (path == null || !tracked.has(path)) return;
+      (executed.has(index) ? runs : mentions).add(path);
+    });
     for (const target of npmTargets(tokens, dir, scripts)) {
       const key = `${target.dir}\0${target.script}`;
       if (active.has(key)) continue;
@@ -165,12 +178,31 @@ function namedPaths(text, dir, tracked, scripts, active) {
       for (const name of [`pre${target.script}`, target.script, `post${target.script}`]) {
         const body = manifest[name];
         if (typeof body !== 'string') continue;
-        for (const path of namedPaths(body, target.dir, tracked, scripts, active)) found.add(path);
+        const nested = namedPaths(body, target.dir, tracked, scripts, active);
+        for (const path of nested.runs) runs.add(path);
+        for (const path of nested.mentions) mentions.add(path);
       }
       active.delete(key);
     }
   }
-  return found;
+  for (const path of runs) mentions.delete(path);
+  return { runs, mentions };
+}
+
+function executedPositions(tokens) {
+  const positions = new Set();
+  let first = 0;
+  while (first < tokens.length && (PREFIX_WORDS.has(tokens[first]) || /^[A-Za-z_][A-Za-z0-9_]*=/.test(tokens[first]))) {
+    first += 1;
+  }
+  positions.add(first);
+  for (let i = first; i < tokens.length; i += 1) {
+    if (!EXECUTORS.has(tokens[i])) continue;
+    let next = i + 1;
+    while (next < tokens.length && tokens[next].startsWith('-')) next += 1;
+    positions.add(next);
+  }
+  return positions;
 }
 
 function segments(text) {

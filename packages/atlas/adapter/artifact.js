@@ -69,6 +69,7 @@ function carryDoor(door) {
   return {
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
     file: door.file,
+    mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),
     name: door.name,
     permissions: [...door.permissions],
     pushes: door.pushes,

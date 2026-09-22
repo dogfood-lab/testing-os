@@ -318,10 +318,14 @@ in the artifact's `doors` list, sorted by file. A door carries:
 - `permissions`: `scope:level`, top level and every job together. `read-all` is `all:read`.
 - `secrets`: every `secrets.NAME` in the file, and `usesWorkflowToken` for the workflow's own token.
 - `commands`: every `run:` step in file order, with its job and its name or index.
-- `runs`: the tracked files those commands name, with the job that names them. A token that is a
-  tracked path counts, and so does every path an npm script names, followed through nested
-  `npm run`, pre and post hooks, a named workspace and `--workspaces`. A step's working directory
-  is honored.
+- `runs`: the tracked files those commands execute, with the job that executes them. A path is
+  executed when it is the command itself, or follows an executor (`node`, `npx`, `bash`, `sh`,
+  `pwsh`, `python`, `python3`, `deno`, `tsx`) with only flags between, so `node --test <path>`
+  counts. npm scripts are read by the same rule, followed through nested `npm run`, pre and post
+  hooks, a named workspace and `--workspaces`. A step's working directory is honored.
+- `mentions`: every other tracked path in that text, such as a path an `echo` prints or a file
+  handed to `git diff`. They are where the next slice looks for landing places; they never
+  feed `reach`.
 - `stages` (what follows `git add`, as written), `pushes`, and `sends`: `dispatchesTo`,
   `publishes`, `releases`, `deploysPages`.
 - `uses`: the actions its steps use, without the ref.

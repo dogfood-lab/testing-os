@@ -91,7 +91,7 @@ describe('doors', () => {
     assert.deepEqual(door('ingest.yml').commands, [
       { job: 'ingest', step: '1', text: 'npm ci' },
       { job: 'ingest', step: 'Ingest the submission', text: 'npm run ingest' },
-      { job: 'ingest', step: 'Commit', text: 'git add records/ indexes/\ngit push\n' },
+      { job: 'ingest', step: 'Commit', text: 'git add records/ indexes/\ngit push\necho refreshed indexes/latest.json\n' },
     ]);
     assert.deepEqual(
       door('checks.yml').commands.map((command) => [command.job, command.step]),
@@ -105,6 +105,17 @@ describe('doors', () => {
       { path: 'tools/ingest.js', job: 'ingest' },
       { path: 'tools/prepare.js', job: 'ingest' },
     ]);
+  });
+
+  it('counts a path handed to node --test as run, flags between them allowed', () => {
+    assert.deepEqual(door('manual.yaml').runs, [{ path: 'lib/schema.js', job: 'say' }]);
+    assert.deepEqual(door('manual.yaml').mentions, []);
+  });
+
+  it('records a path a command only names as a mention, never a run', () => {
+    assert.deepEqual(door('ingest.yml').mentions, [{ path: 'indexes/latest.json', job: 'ingest' }]);
+    assert.equal(door('ingest.yml').runs.some((run) => run.path === 'indexes/latest.json'), false);
+    assert.equal(door('ingest.yml').reach.some((entry) => entry.boundary === 'indexes'), false);
   });
 
   it('resolves a named workspace and the whole workspace set, once per job', () => {
@@ -146,7 +157,7 @@ describe('doors', () => {
       { boundary: 'tools', depth: 0, files: 1 },
       { boundary: 'lib', depth: 1, files: 1 },
     ]);
-    assert.deepEqual(door('manual.yaml').reach, []);
+    assert.deepEqual(door('manual.yaml').reach, [{ boundary: 'lib', depth: 0, files: 1 }]);
   });
 
   it('describes the same doors byte for byte from a second copy of the fixture', () => {
