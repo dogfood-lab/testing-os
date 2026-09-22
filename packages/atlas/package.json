@@ -2,7 +2,7 @@
   "name": "@dogfood-lab/atlas",
   "version": "1.12.0",
   "type": "module",
-  "description": "Read-only map of a git working tree onto named boundaries. Slice 1 derives membership only.",
+  "description": "Read-only map of a git working tree onto named boundaries, with per-file import specifiers.",
   "main": "index.js",
   "exports": {
     ".": "./index.js",
@@ -11,6 +11,11 @@
   "files": [
     "index.js",
     "core/index.js",
+    "grammars/manifest.json",
+    "grammars/tree-sitter-javascript.wasm",
+    "grammars/tree-sitter-typescript.wasm",
+    "grammars/tree-sitter-tsx.wasm",
+    "grammars/tree-sitter-python.wasm",
     "LICENSE"
   ],
   "scripts": {
@@ -20,7 +25,8 @@
     "access": "public"
   },
   "dependencies": {
-    "picomatch": "4.0.7"
+    "picomatch": "4.0.7",
+    "web-tree-sitter": "0.27.0"
   },
   "engines": {
     "node": ">=22"

@@ -1,0 +1,115 @@
+import { rmSync } from 'node:fs';
+import assert from 'node:assert/strict';
+import { afterEach, describe, it } from 'node:test';
+import { mapRepository } from './index.js';
+import { LANGUAGES, makeRepo } from './fixture-repo.js';
+
+const roots = [];
+
+afterEach(() => {
+  while (roots.length > 0) rmSync(roots.pop(), { recursive: true, force: true });
+});
+
+const CODE = { name: 'code', globs: ['**'], role: 'code', status: 'accepted' };
+
+function entry(specifier, kind, line) {
+  return { specifier, kind, line };
+}
+
+const EXPECTED = {
+  'js/static.js': [
+    entry('pkg-a', 'static', 1),
+    entry('pkg-b', 'static', 2),
+    entry('star', 'static', 3),
+    entry('side-effect', 'static', 4),
+    entry('dyn-lit', 'static', 5),
+    entry('cjs-lit', 'static', 6),
+  ],
+  'js/dynamic.js': [entry('expr', 'dynamic', 1), entry('name', 'dynamic', 2)],
+  'js/view.jsx': [entry('react', 'static', 1)],
+  'js/legacy.cjs': [entry('legacy-cjs', 'static', 1)],
+  'js/extra.mjs': [entry('esm-only', 'static', 1)],
+  'ts/static.ts': [
+    entry('types', 'static', 1),
+    entry('reexport-type', 'static', 2),
+    entry('mod', 'static', 3),
+  ],
+  'ts/dynamic.ts': [entry('name', 'dynamic', 1)],
+  'tsx/view.tsx': [entry('react', 'static', 1)],
+  'tsx/load.tsx': [entry('name', 'dynamic', 1)],
+  'py/static.py': [
+    entry('a.b', 'static', 1),
+    entry('a.b', 'static', 2),
+    entry('a', 'static', 3),
+    entry('b', 'static', 3),
+    entry('a.b', 'static', 4),
+    entry('.x', 'static', 5),
+    entry('..x', 'static', 6),
+    entry('.', 'static', 7),
+    entry('..', 'static', 8),
+  ],
+  'py/wild.py': [
+    entry('x', 'wildcard', 1),
+    entry('.y', 'wildcard', 2),
+    entry('name', 'dynamic', 3),
+    entry('a.b', 'dynamic', 4),
+    entry('z', 'dynamic', 5),
+  ],
+};
+
+const LANGUAGE = {
+  'js/static.js': 'javascript',
+  'js/dynamic.js': 'javascript',
+  'js/view.jsx': 'javascript',
+  'js/legacy.cjs': 'javascript',
+  'js/extra.mjs': 'javascript',
+  'js/broken.js': 'javascript',
+  'ts/static.ts': 'typescript',
+  'ts/dynamic.ts': 'typescript',
+  'ts/broken.ts': 'typescript',
+  'tsx/view.tsx': 'tsx',
+  'tsx/load.tsx': 'tsx',
+  'tsx/broken.tsx': 'tsx',
+  'py/static.py': 'python',
+  'py/wild.py': 'python',
+  'py/broken.py': 'python',
+};
+
+describe('import extraction', () => {
+  it('records specifiers, kinds and lines, and counts dynamic, wildcard and parse failures', () => {
+    const root = makeRepo(LANGUAGES);
+    roots.push(root);
+    const result = mapRepository({ repoPath: root, boundaries: [CODE] });
+    assert.equal(result.boundaries.length, 1);
+    const boundary = result.boundaries[0];
+    assert.deepEqual(result.unassigned.map((file) => file.path), []);
+    assert.deepEqual(result.overlaps, []);
+    const byPath = new Map(boundary.files.map((file) => [file.path, file]));
+
+    for (const [path, imports] of Object.entries(EXPECTED)) {
+      const file = byPath.get(path);
+      assert.ok(file, path);
+      assert.equal(file.language, LANGUAGE[path], path);
+      assert.equal(file.parseError, undefined, path);
+      assert.deepEqual(file.imports, imports, path);
+    }
+
+    for (const path of ['js/broken.js', 'ts/broken.ts', 'tsx/broken.tsx', 'py/broken.py']) {
+      const file = byPath.get(path);
+      assert.equal(file.language, LANGUAGE[path], path);
+      assert.equal(file.parseError, true, path);
+      assert.deepEqual(file.imports, [], path);
+    }
+
+    for (const path of ['notes.md', 'data.json']) {
+      const file = byPath.get(path);
+      assert.equal(file.language, null, path);
+      assert.equal(file.imports, 'unavailable', path);
+      assert.equal(file.parseError, undefined, path);
+    }
+
+    assert.equal(boundary.parseErrors, 4);
+    assert.equal(boundary.unresolvedSites, 9);
+    assert.equal(boundary.files.length, Object.keys(EXPECTED).length + 4 + 2);
+  });
+});
