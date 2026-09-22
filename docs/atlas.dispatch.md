@@ -14,10 +14,11 @@ increasingly much of the code was not written by a human at all.
 
 Scored against the six workflow standards (`.claude/rules/workflow-standards.md`), 0–3.
 
-**DECOMPOSE_BY_SECRETS is a 3. PIN_PER_STEP is a 2. ANDON_AUTHORITY is a 2. Every other score here is a 1.** A 2 means a step already does
+**DECOMPOSE_BY_SECRETS is a 3. PIN_PER_STEP is a 2. ANDON_AUTHORITY is a 2. UNCERTAINTY_GATED_HUMANS is a 2. Every other score here is a 1.** A 2 means a step already does
 the thing; a 3 means that step has tests. Slice 1 landed the read-only core and the two tests
 that enforce the split. Slice 2a landed the grammar-manifest test, which is what moves
 PIN_PER_STEP to 2. Slice 3 landed the host check, which is what moves ANDON_AUTHORITY to 2.
+Slice 4 landed the acceptance ladder, which is what moves UNCERTAINTY_GATED_HUMANS to 2.
 The weekly job's per-repository parse-failure path is still only specified. The other standards
 are still specified in prose and enforced nowhere.
 The trajectory dispatch in this same folder was previously caught inflating a score by describing
@@ -30,10 +31,10 @@ never in a design edit.
 | ANDON_AUTHORITY | 2 | `atlas check` fails the host on structural drift, and `adapter/lifecycle.test.js` covers that halt. A repository whose grammar throws still only has the failure specified for the weekly job (§9). **→ 3** when that path exists and is tested. **Remediation:** slice 9, owner unassigned (§12). |
 | NAMED_COMPENSATORS | 1 | Specified: four irreversible actions, each with an undo, a post-rollback state and an owner slot. See **Compensators**. Three of the four owners are unfilled seats, which is itself why this cannot read higher. **→ 2** when the undos are documented operator procedure with seats named. **Remediation:** slice 9, owner unassigned (§12). |
 | DECOMPOSE_BY_SECRETS | 3 | The core at `packages/atlas/core/index.js` reads a repo path and parsed boundaries and returns data. `core/no-sibling-imports.test.js` walks the resolved import closure and fails on any `@dogfood-lab/*` edge. `core/writes-nothing.test.js` fails if a run changes the fixture tree or the process working directory. |
-| UNCERTAINTY_GATED_HUMANS | 1 | Specified: acceptance fails while any authored field is still machine-derived; a correct derived entry point is never retyped; low-confidence labels propagate through every view on the fallen floor; the derived template states what Atlas concluded and from which facts, so the human corrects a claim rather than filling a blank. **→ 2** when the status ladder exists, slice 4. |
+| UNCERTAINTY_GATED_HUMANS | 2 | Acceptance fails while a reason or a will_break is still derived or still the sentence init would write, and `adapter/ladder.test.js` covers that gate. A correct derived entry point is never retyped. Low-confidence labels on the fallen floor are still only specified. **→ 3** when those labels propagate through the ladder. **Remediation:** slice 5, owner unassigned (§12). |
 | EXTERNAL_VERIFIER | **skip** | `skip:` no model generates any Atlas output. The standard requires a verifier from a different model family with the generator's reasoning hidden, and there is no generator to hide. A second independent implementation of boundary membership is a different and weaker requirement, and claiming it as this standard would be a category error. **Revisit this skip if a later slice introduces a model**, for example a generated Orientation draft. |
 
-One skip, with its reason. DECOMPOSE_BY_SECRETS is 3 because its two tests pass. PIN_PER_STEP is 2 because the grammar-manifest test passes. ANDON_AUTHORITY is 2 because the host check is tested. No score is above what exists.
+One skip, with its reason. DECOMPOSE_BY_SECRETS is 3 because its two tests pass. PIN_PER_STEP is 2 because the grammar-manifest test passes. ANDON_AUTHORITY is 2 because the host check is tested. UNCERTAINTY_GATED_HUMANS is 2 because the acceptance ladder is tested. No score is above what exists.
 
 ---
 

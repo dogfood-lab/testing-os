@@ -6,13 +6,31 @@ import { buildArtifact, serializeArtifact } from './artifact.js';
 import { readBoundaryFile } from './boundary-file.js';
 import { compareArtifacts } from './check.js';
 import { formatFailure } from './errors.js';
+import { initCommand } from './init.js';
+import { acceptanceFailures } from './ladder.js';
 import { writeArtifactSync } from './write.js';
 
 export function main(argv, cwd) {
+  if (argv[0] === 'init') return initAt(cwd, argv.slice(1));
   if (argv[0] === 'map') return mapCommand(cwd);
   if (argv[0] === 'check') return checkCommand(cwd);
-  process.stdout.write('atlas: expected `atlas map` or `atlas check`\nexit 2\n');
+  process.stdout.write('atlas: expected atlas init, atlas map, or atlas check\nexit 2\n');
   return 2;
+}
+
+function forCore(boundaries) {
+  return boundaries.map((boundary) => ({
+    name: boundary.name,
+    globs: boundary.globs,
+    status: boundary.status,
+    role: boundary.role,
+  }));
+}
+
+function initAt(cwd, argv) {
+  const repo = repoRoot(cwd);
+  if (!repo) return usage('atlas: not a git repository');
+  return initCommand(repo, argv);
 }
 
 export function mapCommand(cwd) {
@@ -22,7 +40,7 @@ export function mapCommand(cwd) {
   if (!boundary.ok) return failBoundary(boundary);
   const commit = head(repo);
   if (!commit) return usage('atlas: git rev-parse HEAD failed');
-  const mapped = mapRepository({ repoPath: repo, boundaries: boundary.boundaries });
+  const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
   const artifact = buildArtifact(mapped, commit);
   const bytes = serializeArtifact(artifact);
   writeArtifactSync(join(repo, 'atlas', 'structure.json'), bytes);
@@ -68,10 +86,18 @@ export function checkCommand(cwd) {
     process.stdout.write(formatFailure('ATLAS_STRUCTURE_DRIFT', ['atlas/structure.json is not valid JSON']));
     return 1;
   }
-  const mapped = mapRepository({ repoPath: repo, boundaries: boundary.boundaries });
+  const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
   const current = buildArtifact(mapped, head(repo) ?? '');
   const failure = compareArtifacts(committed, current, repo);
   if (!failure) {
+    const ladder = acceptanceFailures(boundary.boundaries, current);
+    if (ladder) {
+      const whatToDo = ladder.code === 'ATLAS_DEFERRED_WITHOUT_REASON'
+        ? 'write a reason for the deferral, or set status: proposed'
+        : 'rewrite the named fields into your own words and mark them human, or set status: proposed';
+      process.stdout.write(formatFailure(ladder.code, ladder.details, { whatToDo }));
+      return 1;
+    }
     process.stdout.write('atlas check\n  boundaries match the committed map\n');
     return 0;
   }
