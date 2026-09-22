@@ -648,6 +648,156 @@ An explicit `swarm dispatch --roadmap-digest=<run-id>` named a run with no compi
 - **Class:** `DispatchPreconditionError` (`lib/errors.js`), like the other six `DISPATCH_*` codes above.
 - **Operator action:** compile the referenced run's roadmap, or omit the flag (auto-injection only fires for runs initialized with `--seed-from-roadmap`; `--no-roadmap-digest` suppresses it entirely).
 
+## Atlas codes
+
+`@dogfood-lab/atlas` (`packages/atlas`) does not go through `renderTopLevelError`. It is a standalone binary that runs inside a consumer's test job, so it carries its own table (`packages/atlas/adapter/errors.js`) and prints one fixed shape to stdout:
+
+```text
+ATLAS_STRUCTURE_DRIFT  The committed structural map does not match this tree.
+  what changed:   boundary edge findings → report is not in the committed map
+  what to do:     run atlas map and commit atlas/, or revert the change
+exit 1
+```
+
+Every failure names what changed and what to do; the second line is never optional. Exit `2` means the input was unusable and nothing was checked; exit `1` means the check ran and the tree disagrees with what is committed. A repository with no `atlas/` directory is a notice and exit `0`, so adopting Atlas reddens nothing.
+
+| Code | Exit | Severity | Emitted by |
+|------|------|----------|------------|
+| `ATLAS_BOUNDARY_FILE_INVALID` | 2 | LOW | `adapter/boundary-file.js` |
+| `ATLAS_NO_BOUNDARY_FILE` | 2 | LOW | `adapter/boundary-file.js` |
+| `ATLAS_INIT_WOULD_OVERWRITE` | 2 | LOW | `adapter/init.js` |
+| `ATLAS_NOT_MAPPED` | 1 | HIGH | `adapter/commands.js` |
+| `ATLAS_OVERLAP` | 1 | HIGH | `adapter/check.js` |
+| `ATLAS_BOUNDARY_EMPTY` | 1 | HIGH | `adapter/check.js` |
+| `ATLAS_STRUCTURE_DRIFT` | 1 | HIGH | `adapter/check.js` |
+| `ATLAS_UNASSIGNED_NEW` | 1 | HIGH | `adapter/check.js` |
+| `ATLAS_FILE_MOVED` | 1 | HIGH | `adapter/check.js` |
+| `ATLAS_ACCEPTED_UNAUTHORED` | 1 | HIGH | `adapter/ladder.js` |
+| `ATLAS_DEFERRED_WITHOUT_REASON` | 1 | HIGH | `adapter/ladder.js` |
+| `ATLAS_STATISTICS_UNDATED` | 1 | HIGH | `adapter/commands.js` |
+| `ATLAS_MACHINE_HASH_MISMATCH` | 1 | CRITICAL | `adapter/commands.js` |
+
+### `ATLAS_BOUNDARY_FILE_INVALID`
+
+:::tip[Severity: LOW]
+`atlas/boundaries.yaml` exists but does not validate. Nothing was mapped or checked.
+:::
+
+- **Trigger:** unreadable file, invalid YAML, an unknown field at either level, a missing or duplicate `name`, `globs` that is not an array of strings, a `status` outside `proposed | accepted | deferred`, a `role` outside `code | test | docs | config`, or `why_from` / `will_break_from` outside `derived | human`.
+- **Message shape:** `what changed:` names the one field, e.g. `boundaries[3].role must be code, test, docs, or config`.
+- **Operator action:** fix the named field. The validator reports the first problem it meets; run again for the next.
+
+### `ATLAS_NO_BOUNDARY_FILE`
+
+:::tip[Severity: LOW]
+`atlas map` was asked to map a repository that has no `atlas/boundaries.yaml`.
+:::
+
+- **Trigger:** `atlas map` in a repository that has never run `atlas init`.
+- **Operator action:** run `atlas init` to propose a boundary file, edit its derived sentences into your own words, then `atlas map`.
+
+### `ATLAS_INIT_WOULD_OVERWRITE`
+
+:::tip[Severity: LOW]
+`atlas init` found a boundary file a human has touched and refused to regenerate it.
+:::
+
+- **Trigger:** `atlas/boundaries.yaml` exists, and either `--force` was not given, or it was given but some boundary is `accepted` or `deferred`, or some `why_from` / `will_break_from` is `human`. A human's pen is not overwritten by a flag.
+- **Operator action:** edit the file by hand, or delete it and run `init` again if you truly want a fresh proposal. `--force` regenerates only a file every field of which is still machine-derived.
+
+### `ATLAS_NOT_MAPPED`
+
+:::caution[Severity: HIGH]
+A boundary file is committed but `atlas/structure.json` is not, so there is nothing to check against.
+:::
+
+- **Trigger:** `atlas check` with `atlas/boundaries.yaml` present and `atlas/structure.json` absent.
+- **Operator action:** run `atlas map` and commit `atlas/`.
+
+### `ATLAS_OVERLAP`
+
+:::caution[Severity: HIGH]
+One tracked file matches the globs of more than one boundary. Ownership is ambiguous and Atlas will not pick a winner.
+:::
+
+- **Trigger:** two boundaries' `globs` both match a path. A glob list is a union; a `!` pattern does not subtract a child directory from a parent's glob.
+- **Message shape:** `what changed:` lists each file and every boundary that claims it.
+- **Operator action:** narrow one boundary's globs so each file has exactly one owner, then `atlas map` and commit.
+
+### `ATLAS_BOUNDARY_EMPTY`
+
+:::caution[Severity: HIGH]
+An `accepted` boundary matches no tracked file. Its globs are stale, or the boundary is.
+:::
+
+- **Trigger:** typically a directory rename. The files reappear elsewhere as unassigned; the old boundary stays behind with nothing in it.
+- **Operator action:** update the boundary's globs to the new location, or mark it `deferred` with a reason, or remove it. Then `atlas map` and commit.
+
+### `ATLAS_STRUCTURE_DRIFT`
+
+:::caution[Severity: HIGH]
+The boundary-level graph recomputed from this tree differs from the committed `atlas/structure.json`.
+:::
+
+- **Trigger:** one of: a boundary's name, status, role or globs changed; a **new** dependency pair between two boundaries appeared, or one vanished; an entry point changed; a boundary's unresolved-import count changed; the submodule set changed; a committed submodule vanished; or `atlas/structure.json` was edited by hand. Adding a file inside a glob that already claims it, or a second import along a pair that already exists, does **not** trigger this.
+- **Message shape:** `what changed:` names the concrete item — `boundary edge findings → report is not in the committed map`, `entry point for ingest changed`, and so on.
+- **Operator action:** if the change is intended, run `atlas map` and commit `atlas/`; the committed map is meant to move with the code. If it is not, revert the change. A new edge between boundaries is the architectural event this check exists to make you acknowledge.
+
+### `ATLAS_UNASSIGNED_NEW`
+
+:::caution[Severity: HIGH]
+A tracked file belongs to no boundary and was not among the unassigned files the committed map already knew about.
+:::
+
+- **Trigger:** a new file outside every glob. The unassigned set may shrink freely; it may not gain a member. A rename of an unowned file passes when the content hash matches a disappeared entry and the file is at least 100 bytes; below that, or with edits in the same commit, it is a new member.
+- **Operator action:** widen a boundary's globs to claim the file, add a boundary for it, or — if it is genuinely unowned — run `atlas map` to record it as such and commit.
+
+### `ATLAS_FILE_MOVED`
+
+:::caution[Severity: HIGH]
+A file that the committed roster placed in one boundary is now in another.
+:::
+
+- **Trigger:** either the same path now matches a different boundary (a glob edit), or a new path whose content hash matches a disappeared roster entry (≥ 100 bytes) sits in a different boundary (a move). Genuinely new content inside a claiming glob is not a move.
+- **Operator action:** if the move is intended, `atlas map` and commit; the roster follows the code. If not, put the file back.
+
+### `ATLAS_ACCEPTED_UNAUTHORED`
+
+:::caution[Severity: HIGH]
+A boundary was flipped to `accepted` while its authored fields are still empty or still machine-derived.
+:::
+
+- **Trigger:** on an `accepted` boundary, any of: `reason` empty; `why_from` absent or `derived`; `will_break` empty; `will_break_from` absent or `derived`; `reason` or `will_break` byte-for-byte equal to the template `init` would derive right now (flipping the flag over the machine's own sentence is not authoring); or `start_here` empty with no derived entry point for the boundary.
+- **Message shape:** every failing boundary and field in one message.
+- **Operator action:** write the sentence in your own words and set the `_from` field to `human`, or set the boundary back to `proposed`. Proposed boundaries have no authored-field requirement; that is what lets a fleet adopt Atlas without reddening anything.
+
+### `ATLAS_DEFERRED_WITHOUT_REASON`
+
+:::caution[Severity: HIGH]
+A boundary is `deferred` with no `reason`. Deferral is a human decision and needs a sentence.
+:::
+
+- **Operator action:** add the reason, or set the boundary to `proposed`.
+
+### `ATLAS_STATISTICS_UNDATED`
+
+:::caution[Severity: HIGH]
+`atlas/statistics.json` is committed but carries no `generatedAt`.
+:::
+
+- **Trigger:** a statistical artifact without a date. The check never fails because a date is **old** — statistics are dated snapshots, and their age is shown on every page rather than gated — but a statistical section must say when it was computed.
+- **Operator action:** run `atlas map` and commit; the artifact it writes is always dated.
+
+### `ATLAS_MACHINE_HASH_MISMATCH`
+
+:::danger[Severity: CRITICAL]
+The SHA-256 recorded in `atlas/machine.md` does not match the bytes of `atlas/machine-stats.txt`. One of the two committed files was edited apart from the other.
+:::
+
+- **Trigger:** `atlas check` hashes the committed statistics file and compares it to the hash on the third line of the committed Machine profile. `atlas map` always writes the pair together, so a mismatch means a hand edit — or one file committed without the other. Either file absent while the other is present also fails here; both absent passes, so trees from before the renders existed still pass.
+- **Why CRITICAL:** the Machine profile's withdraw rule points an automated reader at numbers by hash. A mismatch means the rule and the numbers no longer describe the same file, which is worse than either being stale.
+- **Operator action:** do not edit generated files. Run `atlas map` and commit all six files it writes.
+
 ## Cross-references
 
 - Hard Gate B (Errors): structured shape (code/message/hint), exit codes for CLI, no raw stacks. See [README threat model](https://github.com/dogfood-lab/testing-os#threat-model).
