@@ -31,6 +31,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -40,6 +41,12 @@ import {
   toJSON,
 } from './parse-regression-pins.js';
 
+/**
+ * Fixture trees are real git repositories, because walkSourceFiles enumerates
+ * the tracked file set rather than a directory listing — an unstaged fixture
+ * file is invisible to it by design. Staging is sufficient: `git ls-files`
+ * reads the index, so no commit is required to make a file tracked.
+ */
 function makeFixture(layout) {
   const root = mkdtempSync(join(tmpdir(), 'seed1-pins-'));
   for (const [relPath, content] of Object.entries(layout)) {
@@ -47,6 +54,8 @@ function makeFixture(layout) {
     mkdirSync(join(abs, '..'), { recursive: true });
     writeFileSync(abs, content, 'utf-8');
   }
+  execFileSync('git', ['init', '-q'], { cwd: root, stdio: 'ignore' });
+  execFileSync('git', ['add', '-A'], { cwd: root, stdio: 'ignore' });
   return root;
 }
 

@@ -989,6 +989,7 @@ describe('generator: pin-syntax space sweep', () => {
 
 test('scanRepoForDeclaredPins: aggregates pins across files and buckets a broken file into parseErrors', async (t) => {
   const { mkdtempSync, writeFileSync, mkdirSync, rmSync } = await import('node:fs');
+  const { execFileSync } = await import('node:child_process');
   const { tmpdir } = await import('node:os');
   const { join } = await import('node:path');
 
@@ -1004,6 +1005,11 @@ test('scanRepoForDeclaredPins: aggregates pins across files and buckets a broken
   // real discovery forms) correctly buckets it as a test. The old name encoded an assumption
   // node itself does not share, and asserted the opposite of what it tested.
   writeFileSync(join(dir, 'pkg', 'plain-source.js'), `/** @pins F-33333333 */\ntest('should be ignored, not a test-classified file', () => {});\n`);
+
+  // The scan enumerates the tracked file set, so the fixture has to be a real
+  // repository. Staging is enough — `git ls-files` reads the index.
+  execFileSync('git', ['init', '-q'], { cwd: dir, stdio: 'ignore' });
+  execFileSync('git', ['add', '-A'], { cwd: dir, stdio: 'ignore' });
 
   const result = scanRepoForDeclaredPins(dir);
   assert.deepEqual([...result.byId.keys()].sort(), ['F-11111111', 'F-22222222']);

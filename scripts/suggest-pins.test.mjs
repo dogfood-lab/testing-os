@@ -14,19 +14,27 @@ import { strict as assert } from 'node:assert';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, execFileSync } from 'node:child_process';
 
 import { hasLegacyStructuralHit, findLegacyStructuralHits, suggestPinsForRepo } from './suggest-pins.mjs';
 
+/**
+ * Fixture trees are real git repositories and `write` tracks what it writes,
+ * because the scan enumerates the tracked file set rather than a directory
+ * listing — an unstaged fixture file is invisible to it by design. Staging is
+ * sufficient: `git ls-files` reads the index, so no commit is required.
+ */
 function makeFixture(t) {
   const dir = mkdtempSync(join(tmpdir(), 'suggest-pins-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
+  execFileSync('git', ['init', '-q'], { cwd: dir, stdio: 'ignore' });
   return {
     dir,
     write(rel, content) {
       const abs = join(dir, rel);
       mkdirSync(dirname(abs), { recursive: true });
       writeFileSync(abs, content);
+      execFileSync('git', ['add', '-f', '--', rel], { cwd: dir, stdio: 'ignore' });
     },
   };
 }
