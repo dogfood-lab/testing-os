@@ -181,8 +181,8 @@ describe('atlas renders', () => {
       '## What this is',
       'a small host fixture',
       '3 boundaries. 0 still unnamed.',
-      'If you maintain this repository: where to start, why it was built this way, what you will break.',
-      'If you are new here: where to start, why it was built this way, what you will break.',
+      'If you maintain this repository: this is the map you would draw from memory, checked against the tree. Start where it disagrees with you.',
+      'If you are new here: you have not opened this repository before. Start with the three actions below; each one tells you what to expect.',
       '```mermaid',
       '## Legend',
       '────────▶   import        one boundary statically imports another',
@@ -190,7 +190,7 @@ describe('atlas renders', () => {
       '2. RUN run this repository\'s tests',
       'passes when: exit 0',
       '3. BREAK the tests boundary fails when this export changes',
-      'tests that cover it: tests (1)',
+      'tests that cover it: tests (1 file)',
       '## What you will break — beta',
       '## Still unnamed',
       'atlas/boundaries.yaml',
@@ -200,6 +200,8 @@ describe('atlas renders', () => {
     assert.equal(condition.trim(), 'passes when: exit 0');
     assert.equal(/\d/.test(command.replace(/^2\. RUN /, '')), false);
     assert.doesNotMatch(orientation, /passing/);
+    assert.doesNotMatch(orientation, /opacity/);
+    assert.match(orientation, /⚠           low confidence: the words "low confidence" precede every number that rests on the fallen floor/);
     assert.doesNotMatch(orientation, /## Roster|## Pairs|## Hotspots|The matrix is on the site/);
     assert.equal(orientation.includes('<details'), false);
     const breakage = orientation.slice(orientation.indexOf('## What you will break'));
@@ -207,6 +209,43 @@ describe('atlas renders', () => {
     assertMermaid(orientation);
     assert.match(mermaidOf(orientation), /classDef unassigned stroke-dasharray: 4 3/);
     assert.match(mermaidOf(orientation), /unassigned\["· unassigned · 2"\]:::unassigned/);
+  });
+
+  it('counts a boundary\'s own tests and a test boundary that imports it', () => {
+    const root = hostRepo();
+    const orientation = readFileSync(join(root, 'atlas', 'orientation.md'), 'utf8');
+    assert.match(orientation, /tests that cover it: tests \(1 file\)/);
+    const alpha = renderHost(root, { structure: (structure) => ({ ...structure, edges: [] }) });
+    assert.match(alpha.orientation, /## What you will break — alpha/);
+    assert.match(alpha.orientation, /tests that cover it: not covered by any test boundary/);
+    const both = snapshot(['schemas', 'checks'], {
+      boundary: {
+        schemas: {
+          role: 'code',
+          files: [
+            { path: 'packages/schemas/src/index.ts', hash: 'a' },
+            { path: 'packages/schemas/test/read.test.ts', hash: 'b' },
+          ],
+        },
+        checks: {
+          role: 'test',
+          files: [
+            { path: 'checks/one.test.js', hash: 'c' },
+            { path: 'checks/two.test.js', hash: 'd' },
+          ],
+        },
+      },
+      edges: [{ from: 'checks', to: 'schemas', kind: 'file' }],
+      willFrom: { schemas: 'derived' },
+      willBreak: { schemas: 'Changing this breaks checks; covered by tests in checks, schemas' },
+    });
+    const text = draw(both).orientation;
+    assert.match(text, /3\. BREAK Changing this breaks checks; covered by tests in checks, schemas \(derived\)/);
+    assert.match(text, /tests that cover it: its own \(1 file\) · checks \(2 files\)/);
+    assert.doesNotMatch(text, /not covered by any test boundary/);
+    const dev = draw(both).dev;
+    assert.match(dev, /⚠           low confidence: the words "low confidence" precede every number that rests on the fallen floor/);
+    assert.doesNotMatch(`${text}\n${dev}`, /opacity/);
   });
 
   it('chooses the accepted boundary with the most fan-in, and the name-first accepted boundary on a tie', () => {

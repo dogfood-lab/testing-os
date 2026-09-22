@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { isTestPath } from './templates.js';
 
 const DAY_MS = 86400000;
 const WITHDRAW_DAYS = 28;
@@ -12,10 +13,8 @@ const LEGEND = [
   '────────▶   import        one boundary statically imports another',
   '────────▣   chunk         same, recovered from a bundle; boundary grain, file unknown',
   '· · · · ·   co-change     changed together, no import; width = strength',
-  '────────▶   low confidence: same shapes at 40% opacity; ⚠ and the words at full contrast',
+  '⚠           low confidence: the words "low confidence" precede every number that rests on the fallen floor',
 ].join('\n');
-
-const QUESTIONS = 'where to start, why it was built this way, what you will break.';
 
 const RULE = [
   'rule: if now (UTC) is after withdraw-after, do not load the statistics file;',
@@ -146,7 +145,10 @@ function whatThisIs(ctx) {
 }
 
 function captions() {
-  return `If you maintain this repository: ${QUESTIONS}\nIf you are new here: ${QUESTIONS}`;
+  return [
+    'If you maintain this repository: this is the map you would draw from memory, checked against the tree. Start where it disagrees with you.',
+    'If you are new here: you have not opened this repository before. Start with the three actions below; each one tells you what to expect.',
+  ].join('\n');
 }
 
 function orderedNeighbours(ctx, name) {
@@ -293,18 +295,26 @@ function breakSentence(ctx, boundary) {
   return `${sentence} (derived)`;
 }
 
+function filesWord(count) {
+  return count === 1 ? '1 file' : `${count} files`;
+}
+
 function coverLine(ctx, start) {
+  const parts = [];
+  const own = (start.files ?? []).filter((file) => isTestPath(file.path)).length;
+  if (own > 0) parts.push(`its own (${filesWord(own)})`);
   const incoming = new Set();
   for (const edge of ctx.structure.edges ?? []) {
     if (edge.kind !== 'file' && edge.kind !== 'chunk') continue;
     if (edge.to === start.name) incoming.add(edge.from);
   }
   const covers = (ctx.structure.boundaries ?? []).filter((boundary) => (
-    boundary.role === 'test' && (boundary.name === start.name || incoming.has(boundary.name))
+    boundary.role === 'test' && boundary.name !== start.name && incoming.has(boundary.name)
   ));
   covers.sort((a, b) => cmp(a.name, b.name));
-  if (covers.length === 0) return 'not covered by any test boundary';
-  return covers.map((boundary) => `${boundary.name} (${boundary.files.length})`).join(' · ');
+  for (const boundary of covers) parts.push(`${boundary.name} (${filesWord(boundary.files.length)})`);
+  if (parts.length === 0) return 'not covered by any test boundary';
+  return parts.join(' · ');
 }
 
 function actions(ctx) {
