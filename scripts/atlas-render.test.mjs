@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { parse } from 'yaml';
-import { BACKOFF_MS, readExclusions, rejectForeignPaths, renderFleet } from './atlas-render.mjs';
+import { BACKOFF_MS, JOB_BUDGET_MS, earlierWindow, readExclusions, rejectForeignPaths, renderFleet, shallowSinceDate } from './atlas-render.mjs';
 
 const TEMPLATE = resolve(fileURLToPath(new URL('.', import.meta.url)), '../packages/atlas/templates/atlas-refresh.yml');
 const WORKFLOW = resolve(fileURLToPath(new URL('.', import.meta.url)), '../.github/workflows/atlas-render.yml');
@@ -57,7 +57,12 @@ function harness(t, setup) {
     if (args[0] === 'clone') {
       if (setup.cloneFails) return { status: 128, stdout: '', stderr: 'transport' };
       mkdirSync(join(args.at(-1), 'atlas'), { recursive: true });
-      if (!setup.notMapped) writeFileSync(join(args.at(-1), 'atlas', 'boundaries.yaml'), 'summary: x\nboundaries: []\n');
+      if (!setup.notMapped) {
+        const windowLine = setup.boundaryWindow == null
+          ? ''
+          : `window: ${typeof setup.boundaryWindow === 'number' ? setup.boundaryWindow : JSON.stringify(setup.boundaryWindow)}\n`;
+        writeFileSync(join(args.at(-1), 'atlas', 'boundaries.yaml'), `${windowLine}summary: x\nboundaries: []\n`);
+      }
       return { status: 0, stdout: '', stderr: '' };
     }
     if (args.includes('map')) {
@@ -166,9 +171,9 @@ describe('atlas weekly render', () => {
   it('records a thrown map and continues to the next repository', async (t) => {
     const { runFleet } = harness(t, { lab: [PUBLIC], org: [OTHER], mapThrows: true });
     const result = await runFleet();
-    assert.equal(result.state.failures['mcp-tool-shop-org/widgets'].reason, 'grammar exploded');
-    assert.equal(result.state.failures['dogfood-lab/testing-os'], undefined);
-    assert.ok(result.fleet.repositories.some((entry) => entry.repo === 'dogfood-lab/testing-os'));
+    assert.equal(result.state.failures['dogfood-lab/testing-os'].reason, 'grammar exploded');
+    assert.equal(result.state.failures['mcp-tool-shop-org/widgets'], undefined);
+    assert.ok(result.fleet.repositories.some((entry) => entry.repo === 'mcp-tool-shop-org/widgets'));
   });
 
   it('records not-mapped as state rather than a failure', async (t) => {
@@ -214,6 +219,39 @@ describe('atlas weekly render', () => {
       ['indexes/atlas/state.json', 'indexes/atlas/fleet.json', 'indexes/atlas/dogfood-lab/testing-os/dev.md'],
       new Set(['dogfood-lab/testing-os']),
     ));
+  });
+
+  it('clones with the default window and deepens when the boundary file pins an earlier start', async (t) => {
+    const now = new Date('2026-09-22T06:00:00.000Z');
+    const { runFleet, calls } = harness(t, { lab: [PUBLIC], boundaryWindow: '2020-01-15' });
+    await runFleet();
+    const clone = calls.find((call) => call[1][0] === 'clone');
+    assert.equal(clone[1][1], '--shallow-since');
+    assert.equal(clone[1][2], shallowSinceDate(now));
+    assert.equal(clone[1].includes('--filter=blob:none'), false);
+    const fetched = calls.find((call) => call[1][0] === 'fetch');
+    assert.deepEqual(fetched[1].slice(0, 3), ['fetch', '--shallow-since', '2020-01-14']);
+    const quiet = harness(t, { lab: [PUBLIC] });
+    await quiet.runFleet();
+    assert.equal(quiet.calls.some((call) => call[1][0] === 'fetch'), false);
+  });
+
+  it('stops starting repositories once the job budget is spent', async (t) => {
+    const start = new Date('2026-09-22T06:00:00.000Z');
+    let ticks = 0;
+    const { runFleet, calls } = harness(t, { lab: [PUBLIC], org: [OTHER] });
+    const result = await runFleet({
+      clock: () => {
+        ticks += 1;
+        return ticks <= 2 ? start : new Date(start.getTime() + JOB_BUDGET_MS);
+      },
+    });
+    assert.equal(calls.filter((call) => call[1][0] === 'clone').length, 1);
+    assert.match(calls.find((call) => call[1][0] === 'clone')[1].at(-2), /dogfood-lab\/testing-os\.git$/);
+    assert.match(result.logs.join('\n'), /job budget reached, 1 repository remains/);
+    assert.equal(result.state.rendered['mcp-tool-shop-org/widgets'], undefined);
+    assert.equal(result.state.failures['mcp-tool-shop-org/widgets'], undefined);
+    assert.equal(result.fleet.repositories[0].repo, 'dogfood-lab/testing-os');
   });
 
   it('keeps an unchanged repository on the fleet and refreshes its age', async (t) => {
@@ -281,5 +319,15 @@ describe('atlas weekly render', () => {
 describe('exclude file', () => {
   it('ignores comments and blank lines', () => {
     assert.deepEqual([...readExclusions('# note\n\nowner/repo\n')], ['owner/repo']);
+  });
+});
+
+describe('window bound', () => {
+  const now = new Date('2026-09-22T06:00:00.000Z');
+
+  it('places the default shallow bound one day before the 180-day window', () => {
+    assert.equal(shallowSinceDate(now), '2026-03-25');
+    assert.equal(earlierWindow('window: 400\nboundaries: []\n', now), shallowSinceDate(now, 400));
+    assert.equal(earlierWindow('window: "2026-06-01"\nboundaries: []\n', now), null);
   });
 });

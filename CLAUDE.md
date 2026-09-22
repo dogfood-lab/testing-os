@@ -97,7 +97,7 @@ This repo mirrors `world-forge` deliberately (npm workspaces, `tsc --build` comp
 `tsconfig.base.json` is the only place to set compiler options. Per-package `tsconfig.json` extends it and adds `outDir`/`rootDir`/`include`. `composite: true` everywhere. Never set `baseUrl` (deprecated; bit repo-knowledge in CI).
 
 ### CI + workflows
-Five workflows, each with a distinct purpose — exceeds the org-wide soft cap of 2 from `.claude/rules/github-actions.md`, but each is genuinely needed and bundling would be worse:
+Six workflows, each with a distinct purpose — exceeds the org-wide soft cap of 2 from `.claude/rules/github-actions.md`, but each is genuinely needed and bundling would be worse:
 
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
@@ -106,6 +106,7 @@ Five workflows, each with a distinct purpose — exceeds the org-wide soft cap o
 | `pages.yml` | `push` to `main` on `site/**` or `.github/workflows/pages.yml` | Builds the Astro Starlight handbook, deploys to `dogfood-lab.github.io/testing-os/`, curls the URL with retry to verify deploy. |
 | `release.yml` | `push` of a `v*.*.*` tag + `workflow_dispatch` (tag input) | Publishes the 6 public `@dogfood-lab/*` packages to npm via OIDC trusted publishing (`--provenance`) and creates the GitHub Release from the matching `CHANGELOG.md` section, in one workflow. Verifies the tag matches `package.json` and runs the full `npm run verify` gate before publishing. |
 | `self-dogfood.yml` | `workflow_run` on CI completion + `workflow_dispatch` | Submits this repo's own CI verdict through the same public dispatch path consumers use (honest `fail` submissions included) — builds the submission with the local CLI, dispatches with `DOGFOOD_TOKEN`, guarded against the ingest-commit loop. |
+| `atlas-render.yml` | `schedule` (`0 6 * * 1`, Monday 06:00 UTC) + `workflow_dispatch` | Renders every public repository that has adopted Atlas onto the `atlas-render` branch, and opens an issue when the divergence set changes. |
 
 All action SHAs pinned (no floating `@v4`). The $130 GitHub Actions incident memory (`memory/github-actions-incident.md`) is why.
 

@@ -8,12 +8,15 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, 
 import { tmpdir } from 'node:os';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { parse } from 'yaml';
 
 export const ORGS = ['mcp-tool-shop-org', 'dogfood-lab'];
 export const HOME = 'dogfood-lab/testing-os';
 // All three waits are used, so a transport failure is four attempts. The 60s wait is not dropped.
 export const BACKOFF_MS = [5_000, 20_000, 60_000];
 export const REPO_BUDGET_MS = 90_000;
+export const JOB_BUDGET_MS = 50 * 60 * 1000;
+export const WINDOW_DAYS = 180;
 const RENDER_FILES = ['structure.json', 'statistics.json', 'orientation.md', 'dev.md', 'machine.md', 'machine-stats.txt'];
 const PUBLIC_HEADERS = {
   accept: 'application/vnd.github+json',
@@ -33,6 +36,39 @@ export function readExclusions(text) {
     names.add(trimmed);
   }
   return names;
+}
+
+export function shallowSinceDate(now, days = WINDOW_DAYS) {
+  const date = new Date(now.getTime());
+  date.setUTCDate(date.getUTCDate() - days - 1);
+  return date.toISOString().slice(0, 10);
+}
+
+export function earlierWindow(text, now, defaultDays = WINDOW_DAYS) {
+  let doc;
+  try {
+    doc = parse(String(text));
+  } catch {
+    return null;
+  }
+  if (!doc || typeof doc !== 'object') return null;
+  const window = doc.window;
+  const fallback = shallowSinceDate(now, defaultDays);
+  let requested = null;
+  if (typeof window === 'number' && Number.isFinite(window) && window > defaultDays) {
+    requested = shallowSinceDate(now, window);
+  } else if (window instanceof Date && !Number.isNaN(window.getTime())) {
+    const pinned = new Date(window.getTime());
+    pinned.setUTCDate(pinned.getUTCDate() - 1);
+    requested = pinned.toISOString().slice(0, 10);
+  } else if (typeof window === 'string' && window.trim()) {
+    const pinned = new Date(window.trim());
+    if (Number.isNaN(pinned.getTime())) return null;
+    pinned.setUTCDate(pinned.getUTCDate() - 1);
+    requested = pinned.toISOString().slice(0, 10);
+  }
+  if (!requested || requested >= fallback) return null;
+  return requested;
 }
 
 export function rejectForeignPaths(paths, publicNames) {
@@ -195,9 +231,9 @@ function filesUnder(dir) {
   return found;
 }
 
-async function cloneWithBackoff({ run, sleep, fullName, branch, dest, timeoutMs }) {
+async function cloneWithBackoff({ run, sleep, fullName, branch, dest, timeoutMs, since }) {
   const url = `https://github.com/${fullName}.git`;
-  const args = ['clone', '--filter=blob:none', '--single-branch', '--branch', branch, url, dest];
+  const args = ['clone', '--shallow-since', since, '--single-branch', '--branch', branch, url, dest];
   const env = unauthenticatedGitEnv();
   const once = async () => {
     const left = budgetLeft(timeoutMs);
@@ -230,7 +266,9 @@ async function renderOne({ run, sleep, fetchImpl, repoRoot, fullName, branch, sh
   };
   try {
     if (remaining() <= 0) return abandon('budget');
-    const cloned = await cloneWithBackoff({ run, sleep, fullName, branch, dest, timeoutMs: remaining });
+    const cloned = await cloneWithBackoff({
+      run, sleep, fullName, branch, dest, timeoutMs: remaining, since: shallowSinceDate(now),
+    });
     if (cloned.budget || cloned.timedOut) return abandon('budget');
     if (cloned.status !== 0) return abandon('clone');
     if (!existsSync(join(dest, 'atlas', 'boundaries.yaml'))) {
@@ -238,6 +276,16 @@ async function renderOne({ run, sleep, fetchImpl, repoRoot, fullName, branch, sh
       delete state.failures[fullName];
       log(`not-mapped ${fullName}`);
       return { kind: 'not-mapped' };
+    }
+    const earlier = earlierWindow(readFileSync(join(dest, 'atlas', 'boundaries.yaml'), 'utf8'), now);
+    if (earlier) {
+      const fetched = await run('git', ['fetch', '--shallow-since', earlier, 'origin'], {
+        cwd: dest,
+        timeoutMs: Math.max(1, remaining()),
+        env: unauthenticatedGitEnv(),
+      });
+      if (fetched?.timedOut || fetched?.budget) return abandon('budget');
+      if (!fetched || fetched.status !== 0) return abandon('clone');
     }
     mkdirSync(out, { recursive: true });
     const previousUrl = `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/${fullName}/divergence.json`;
@@ -322,6 +370,10 @@ export async function renderFleet(options = {}) {
   log(`listed ${listed.length} public repositories`);
   let work = listed.filter((repo) => !excluded.has(repo.fullName));
   if (options.only) work = work.filter((repo) => repo.fullName === options.only);
+  work.sort((a, b) => (a.fullName < b.fullName ? -1 : a.fullName > b.fullName ? 1 : 0));
+  const clock = options.clock ?? (() => new Date());
+  const jobStartedMs = clock().getTime();
+  const jobBudgetMs = options.jobBudgetMs ?? JOB_BUDGET_MS;
   const stateResponse = await readJsonUrl(fetchImpl, `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/state.json`);
   const previousFleet = await readJsonUrl(fetchImpl, `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/fleet.json`);
   const state = {
@@ -334,7 +386,14 @@ export async function renderFleet(options = {}) {
   const changes = [];
   let changed = false;
   try {
-  for (const repo of work) {
+  for (let index = 0; index < work.length; index += 1) {
+    if (clock().getTime() - jobStartedMs >= jobBudgetMs) {
+      const remain = work.length - index;
+      const noun = remain === 1 ? 'repository remains' : 'repositories remain';
+      log(`job budget reached, ${remain} ${noun}`);
+      break;
+    }
+    const repo = work[index];
     let head;
     try {
       head = await defaultBranchHead(fetchImpl, repo.fullName, repo.defaultBranch);
@@ -454,6 +513,7 @@ async function commitBranch({ state, fleet, outRoot, date, publicNames }, token)
     const probe = await defaultRun('git', ['ls-remote', '--heads', remote, 'atlas-render'], anon);
     const exists = probe.stdout.includes('refs/heads/atlas-render');
     const branch = exists ? 'atlas-render' : 'main';
+    // This checkout is the branch being published. It is not mapped, so blob contents are never walked.
     const cloned = await defaultRun('git', ['clone', '--filter=blob:none', '--single-branch', '--branch', branch, remote, work], anon);
     if (cloned.status !== 0) throw new Error('clone of the render branch failed');
     if (!exists) {

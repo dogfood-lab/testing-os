@@ -846,9 +846,11 @@ address-based. The per-repository budget already in this job is therefore where 
 and a credential is a later change, taken only if throttling proves binding in practice and only
 in a form demonstrated to receive nothing private.
 
-Clones are **blobless, not shallow**. A blobless clone fetches every commit and tree and defers
-only file contents, so the full commit graph and its dates survive; a depth-limited clone
-truncates the graph itself, which is precisely what 180 days of co-change needs.
+Clones are bounded by date, not by depth and not by blob filter: `--shallow-since` at the
+window's start keeps every commit the analysis can see, with the blobs that line counts and
+rename detection need, and cuts the graph exactly where the window already does. A blobless
+clone was tried first and faulted in every deferred blob during the history walk, taking
+seventy times longer than the map itself.
 
 **State lives on that branch** at `indexes/atlas/state.json`, and holds only what is genuinely
 the job's own memory: the last rendered commit per repository, and per-repository parse failures.
@@ -905,7 +907,7 @@ Commit per slice. Each slice lands with its tests.
 6. The three-way breakage table.
 7. Renders: matrix, treemap plus table, text diagrams, the three profiles.
 8. Divergence: the schema envelope, the four rules, stable row identity.
-9. The weekly job: public discovery across both organizations, the exclude file read from the default branch, unauthenticated blobless clones with per-repository backoff, state, branch, issue, per-repository parse-failure halt (ANDON remediation). Ships with the opt-in refresh template for private repositories.
+9. The weekly job: public discovery across both organizations, the exclude file read from the default branch, unauthenticated date-bounded clones with per-repository backoff, state, branch, issue, per-repository parse-failure halt (ANDON remediation). Ships with the opt-in refresh template for private repositories.
 
 Slices 1–4 are shippable alone: a repository can carry a checked structural map with no
 statistics at all.
