@@ -73,5 +73,9 @@ describe('statistical snapshot', () => {
     const again = applyMarks([row('pkg', 0.4, 'abc')], { boundaries: reset }, false);
     assert.equal(again[0].rebaseline, 'abc');
     assert.equal(again[0].highWater, 0.4);
+    const cleared = applyMarks([row('pkg', null)], { boundaries: [{ name: 'pkg', highWater: 0, cohesion: 0 }] }, false);
+    assert.equal(cleared[0].cohesion, null);
+    assert.equal(cleared[0].highWater, null);
+    assert.equal(cleared[0].cohesionDropped, false);
   });
 });

@@ -28,6 +28,44 @@ function round(value) {
   return Math.round(value * 1e6) / 1e6;
 }
 
+export const SOURCE_EXTENSIONS = ['.js', '.mjs', '.cjs', '.jsx', '.ts', '.tsx', '.mts', '.cts', '.py'];
+export const SOURCE_FILE_REACH = 20;
+
+export function isSourcePath(path) {
+  const base = String(path).slice(Math.max(String(path).lastIndexOf('/'), String(path).lastIndexOf('\\')) + 1).toLowerCase();
+  return SOURCE_EXTENSIONS.some((ext) => base.endsWith(ext));
+}
+
+export function decideFloor(qualifyingCommits, sourceFilesReachingStrongFloor, options = {}) {
+  const qualifyingMinimum = options.qualifyingMinimum ?? 30;
+  const sourceFileReach = options.sourceFileReach ?? SOURCE_FILE_REACH;
+  const sharedFloor = options.shared ?? 10;
+  const fallenShared = options.fallenShared ?? 3;
+  const thin = qualifyingCommits < qualifyingMinimum;
+  const shallow = sourceFilesReachingStrongFloor < sourceFileReach;
+  const fallen = thin || shallow;
+  let floorTrigger = null;
+  if (thin && shallow) floorTrigger = 'both';
+  else if (thin) floorTrigger = 'thin-history';
+  else if (shallow) floorTrigger = 'revision-depth';
+  let confidenceReason;
+  if (!fallen) {
+    confidenceReason = 'at least 30 qualifying commits, and at least 20 source files reach 10 revisions';
+  } else if (floorTrigger === 'both') {
+    confidenceReason = 'fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions';
+  } else if (floorTrigger === 'thin-history') {
+    confidenceReason = 'fewer than 30 qualifying commits in the window';
+  } else {
+    confidenceReason = 'fewer than 20 source files reach 10 revisions in the window';
+  }
+  return {
+    floor: fallen ? 'fallen' : 'strong',
+    floorTrigger,
+    confidenceReason,
+    sharedFloorUsed: fallen ? fallenShared : sharedFloor,
+  };
+}
+
 function currentName(path, renamed) {
   let name = path;
   const seen = new Set();
@@ -99,8 +137,6 @@ export function analyzeHistory(commits, options) {
   const changeset = options.changeset ?? 50;
   const fraction = options.changesetFraction ?? 0.25;
   const sharedFloor = options.shared ?? 10;
-  const fallenShared = options.fallenShared ?? 3;
-  const qualifyingMinimum = options.qualifyingMinimum ?? 30;
   const strengthFloor = options.strength ?? 0.5;
   const revisionFloor = options.revisions ?? 5;
   const limit = Math.min(changeset, options.inScope * fraction);
@@ -117,8 +153,6 @@ export function analyzeHistory(commits, options) {
     if (commit.files.length > limit) continue;
     qualifying.push(commit);
   }
-  const fallen = qualifying.length < qualifyingMinimum;
-  const floorUsed = fallen ? fallenShared : sharedFloor;
   const touches = new Map();
   for (const commit of qualifying) {
     for (const file of commit.files) {
@@ -126,6 +160,12 @@ export function analyzeHistory(commits, options) {
       touches.get(file.path).add(commit.hash);
     }
   }
+  let sourceFilesReachingStrongFloor = 0;
+  for (const [path, set] of touches) {
+    if (isSourcePath(path) && set.size >= sharedFloor) sourceFilesReachingStrongFloor += 1;
+  }
+  const decision = decideFloor(qualifying.length, sourceFilesReachingStrongFloor, options);
+  const floorUsed = decision.sharedFloorUsed;
   const eligible = [...touches.entries()].filter(([, set]) => set.size >= revisionFloor);
   const pairs = [];
   for (let i = 0; i < eligible.length; i += 1) {
@@ -146,7 +186,11 @@ export function analyzeHistory(commits, options) {
   return {
     qualifyingCommits: qualifying.length,
     qualifyingHashes: qualifying.map((commit) => commit.hash),
-    floor: fallen ? 'fallen' : 'strong',
+    qualifyingTouches: qualifying.map((commit) => ({ hash: commit.hash, paths: commit.files.map((file) => file.path) })),
+    floor: decision.floor,
+    floorTrigger: decision.floorTrigger,
+    confidenceReason: decision.confidenceReason,
+    sourceFilesReachingStrongFloor,
     sharedFloorUsed: floorUsed,
     appliedChangesetLimit: limit,
     churn: [...churn.entries()]
@@ -158,8 +202,8 @@ export function analyzeHistory(commits, options) {
 
 export function loadHistory(repo, parameters) {
   const when = headCommitter(repo);
-  const since = parameters.windowStart ? null : windowStart(when, parameters.windowDays);
-  const commits = readCommits(repo, { since, start: parameters.windowStart });
+  const since = parameters.pinnedStart ? null : windowStart(when, parameters.windowDays);
+  const commits = readCommits(repo, { since, start: parameters.pinnedStart });
   if (!commits || !when) return null;
   const inScope = trackedCount(repo);
   const analyzed = analyzeHistory(commits, { ...parameters, inScope });

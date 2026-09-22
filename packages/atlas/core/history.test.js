@@ -4,12 +4,12 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
-import { loadHistory } from './history.js';
+import { decideFloor, loadHistory } from './history.js';
 
 const roots = [];
 const params = {
   windowDays: 180,
-  windowStart: null,
+  pinnedStart: null,
   changeset: 50,
   changesetFraction: 0.25,
   shared: 10,
@@ -45,6 +45,12 @@ function write(root, path, text) {
   writeFileSync(full, text);
 }
 
+function reachDepth(root) {
+  for (let rev = 0; rev < 10; rev += 1) {
+    for (let file = 0; file < 20; file += 1) commit(root, { [`keep${file}.js`]: `v${rev}\n` });
+  }
+}
+
 function commit(root, paths) {
   for (const [path, text] of Object.entries(paths)) write(root, path, text);
   git(root, ['add', '-A']);
@@ -53,6 +59,16 @@ function commit(root, paths) {
 }
 
 describe('git history', () => {
+  it('names the trigger that drops the floor', () => {
+    assert.equal(decideFloor(29, 20).floorTrigger, 'thin-history');
+    assert.match(decideFloor(29, 20).confidenceReason, /fewer than 30 qualifying commits/);
+    assert.equal(decideFloor(40, 19).floor, 'fallen');
+    assert.equal(decideFloor(40, 19).floorTrigger, 'revision-depth');
+    assert.match(decideFloor(40, 19).confidenceReason, /fewer than 20 source files reach 10 revisions/);
+    assert.equal(decideFloor(40, 20).floor, 'strong');
+    assert.equal(decideFloor(10, 0).floorTrigger, 'both');
+  });
+
   it('counts every commit toward churn and drops a merge from coupling', () => {
     const root = repo();
     commit(root, { 'a.txt': 'a\n' });
@@ -120,10 +136,10 @@ describe('git history', () => {
     assert.equal(thin.pairs.some((pair) => pair.a === 'once.txt' || pair.b === 'once.txt'), false);
 
     const rich = repo();
+    reachDepth(rich);
     const pad = {};
     for (let i = 0; i < 8; i += 1) pad[`pad${i}.txt`] = 'p\n';
     commit(rich, pad);
-    for (let i = 0; i < 30; i += 1) commit(rich, { [`solo${i}.txt`]: 's\n' });
     for (let i = 0; i < 3; i += 1) commit(rich, { 'a.txt': `a${i}\n`, 'b.txt': `b${i}\n` });
     commit(rich, { 'a.txt': 'a-extra\n' });
     commit(rich, { 'a.txt': 'a-extra-2\n' });
@@ -137,7 +153,7 @@ describe('git history', () => {
 
   it('stays on the strong floor when a long history has no repeated pairs', () => {
     const root = repo();
-    for (let i = 0; i < 30; i += 1) commit(root, { [`solo${i}.txt`]: 's\n' });
+    reachDepth(root);
     const history = loadHistory(root, params);
     assert.equal(history.floor, 'strong');
     assert.equal(history.pairs.length, 0);
