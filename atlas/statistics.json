@@ -45,7 +45,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "atlas",
-      "qualifyingSourceCommits": 21,
+      "qualifyingSourceCommits": 22,
       "rebaseline": null
     },
     {
@@ -528,18 +528,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 6,
-        "lines": 4012,
+        "commits": 7,
+        "lines": 4022,
         "path": "atlas/dev.md"
       },
       {
-        "commits": 6,
-        "lines": 564,
+        "commits": 7,
+        "lines": 568,
         "path": "atlas/machine-stats.txt"
       },
       {
-        "commits": 6,
-        "lines": 418,
+        "commits": 7,
+        "lines": 422,
         "path": "atlas/machine.md"
       },
       {
@@ -548,13 +548,13 @@
         "path": "atlas/orientation.md"
       },
       {
-        "commits": 9,
-        "lines": 15841,
+        "commits": 10,
+        "lines": 15908,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 13,
-        "lines": 16650,
+        "commits": 14,
+        "lines": 16709,
         "path": "atlas/structure.json"
       },
       {
@@ -568,8 +568,8 @@
         "path": "docs/atlas-page.spec.md"
       },
       {
-        "commits": 23,
-        "lines": 2261,
+        "commits": 24,
+        "lines": 2265,
         "path": "docs/atlas.dispatch.md"
       },
       {
@@ -928,8 +928,8 @@
         "path": "fixtures/atlas/doors/.github/workflows/ingest.yml"
       },
       {
-        "commits": 2,
-        "lines": 12,
+        "commits": 3,
+        "lines": 13,
         "path": "fixtures/atlas/doors/.github/workflows/manual.yaml"
       },
       {
@@ -1848,13 +1848,13 @@
         "path": "packages/atlas/core/divergence.test.js"
       },
       {
-        "commits": 2,
-        "lines": 399,
+        "commits": 3,
+        "lines": 563,
         "path": "packages/atlas/core/doors.js"
       },
       {
-        "commits": 2,
-        "lines": 170,
+        "commits": 3,
+        "lines": 176,
         "path": "packages/atlas/core/doors.test.js"
       },
       {
@@ -6488,9 +6488,9 @@
     "level": "low",
     "reason": "fewer than 20 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-09-22T23:54:04.096Z",
+  "generatedAt": "2026-09-22T23:56:51.039Z",
   "generatedFrom": {
-    "commit": "e7c50f0bc64b81cc0dd41de9f1a811c9ca37936a"
+    "commit": "f7a432b5e5e6e57d6452a57a54fec23302a73db9"
   },
   "pairs": [
     {
@@ -6753,11 +6753,74 @@
       "strength": 0.545455
     },
     {
-      "a": "atlas/statistics.json",
+      "a": "atlas/dev.md",
+      "b": "atlas/machine-stats.txt",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/dev.md",
+      "b": "atlas/machine.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/dev.md",
+      "b": "atlas/statistics.json",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "atlas/dev.md",
       "b": "atlas/structure.json",
       "either": 10,
       "shared": 5,
       "strength": 0.5
+    },
+    {
+      "a": "atlas/machine-stats.txt",
+      "b": "atlas/machine.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/machine-stats.txt",
+      "b": "atlas/statistics.json",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "atlas/machine-stats.txt",
+      "b": "atlas/structure.json",
+      "either": 10,
+      "shared": 5,
+      "strength": 0.5
+    },
+    {
+      "a": "atlas/machine.md",
+      "b": "atlas/statistics.json",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "atlas/machine.md",
+      "b": "atlas/structure.json",
+      "either": 10,
+      "shared": 5,
+      "strength": 0.5
+    },
+    {
+      "a": "atlas/statistics.json",
+      "b": "atlas/structure.json",
+      "either": 11,
+      "shared": 6,
+      "strength": 0.545455
     },
     {
       "a": "docs/pin-matcher-rewrite.dispatch.md",
@@ -7168,15 +7231,15 @@
     "fallenShared": 3,
     "floor": "fallen",
     "floorTrigger": "revision-depth",
-    "headDate": "2026-09-22T19:54:01-04:00",
+    "headDate": "2026-09-22T19:56:48-04:00",
     "inScopeFiles": 1206,
     "pinnedStart": null,
-    "qualifyingCommits": 411,
+    "qualifyingCommits": 413,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-03-26T23:54:01.000Z",
+    "since": "2026-03-26T23:56:48.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

@@ -1,4 +1,4 @@
-◷ numbers as of 2026-09-22 · 0 days ago · structure @ e7c50f0
+◷ numbers as of 2026-09-22 · 0 days ago · structure @ f7a432b
 
 ## Map
 
@@ -103,14 +103,14 @@ churn is the sum of lines, added plus deleted, over the boundary's files.
 | dogfood | 17440 | none | 0 | full |
 | verify | 16626 | 1 | 0 | full |
 | root | 14130 | none | 0 | full |
-| atlas | 13404 | none | 0 | full |
+| atlas | 13574 | none | 0 | full |
 | schemas | 10250 | none | 0 | full |
 | portfolio | 7961 | 0.424242 | 4 | full |
 | records | 7853 | none | 0 | full |
-| docs | 7799 | none | 0 | full |
+| docs | 7803 | none | 0 | full |
 | report | 5505 | none | 0 | full |
 | swarms | 3675 | none | 0 | full |
-| fixtures | 2744 | none | 15 | full |
+| fixtures | 2745 | none | 15 | full |
 | .github | 2690 | none | 0 | full |
 | indexes | 2636 | none | 0 | full |
 | reports | 1067 | none | 0 | full |
@@ -329,12 +329,12 @@ churn is the sum of lines, added plus deleted, over the boundary's files.
 | README.ja.md | README.pt-BR.md | 15 | 15 | 1 |
 | README.ja.md | README.zh.md | 15 | 15 | 1 |
 | README.pt-BR.md | README.zh.md | 15 | 15 | 1 |
+| atlas/dev.md | atlas/machine-stats.txt | 5 | 5 | 1 |
+| atlas/dev.md | atlas/machine.md | 5 | 5 | 1 |
+| atlas/machine-stats.txt | atlas/machine.md | 5 | 5 | 1 |
 | indexes/integrity/chain.jsonl | indexes/trends.json | 45 | 45 | 1 |
-| packages/dogfood-swarm/lib/verify/adapters/python.js | packages/dogfood-swarm/lib/verify/adapters/rust.js | 5 | 5 | 1 |
-| packages/portfolio/package.json | packages/verify/package.json | 26 | 28 | 0.928571 |
-| packages/findings/package.json | packages/verify/package.json | 26 | 29 | 0.896552 |
 
-95 pairs
+104 pairs
 
 ## Divergence
 
