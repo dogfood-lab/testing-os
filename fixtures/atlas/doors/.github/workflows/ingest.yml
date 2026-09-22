@@ -1,0 +1,24 @@
+name: Ingest
+
+on:
+  repository_dispatch:
+    types: [submission]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - name: Ingest the submission
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run ingest
+      - name: Commit
+        run: |
+          git add records/ indexes/
+          git push

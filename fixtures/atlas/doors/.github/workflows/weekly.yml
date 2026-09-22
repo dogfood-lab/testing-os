@@ -1,0 +1,17 @@
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  push:
+    paths: [tools/**]
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - run: node tools/render.js
+      - name: Tell the hub
+        env:
+          GH_TOKEN: ${{ secrets.HUB_TOKEN }}
+        run: gh api repos/acme/hub/dispatches -f event_type=rendered

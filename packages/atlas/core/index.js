@@ -5,7 +5,9 @@ import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
+import { mapDoors } from './doors.js';
 import { deriveEntryPoints } from './entry-points.js';
+import { reachFrom } from './reach.js';
 import { attachResolution } from './resolve.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
@@ -122,6 +124,12 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     tracked: tracked.regular,
   });
 
+  const doors = mapDoors({ repoPath, tracked: trackedSet });
+  const graph = importGraph(boundaryList, unassigned, overlaps);
+  for (const door of doors) {
+    if (!door.parseError) door.reach = reachFrom(door.runs.map((run) => run.path), graph);
+  }
+
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },
     boundaries: boundaryList,
@@ -131,7 +139,21 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     submodules: tracked.submodules,
     edges: resolution.edges,
     importConfidence: resolution.importConfidence,
+    doors,
   };
+}
+
+function importGraph(boundaries, unassigned, overlaps) {
+  const files = new Map();
+  const boundaryOf = new Map();
+  for (const boundary of boundaries) {
+    for (const file of boundary.files) {
+      files.set(file.path, file);
+      boundaryOf.set(file.path, boundary.name);
+    }
+  }
+  for (const file of [...unassigned, ...overlaps]) files.set(file.path, file);
+  return { files, boundaryOf };
 }
 
 function validateBoundary(boundary) {
