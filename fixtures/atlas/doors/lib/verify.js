@@ -1,7 +1,15 @@
 import { readFileSync } from 'node:fs';
-import { schema } from './schema.js';
+import { checkPolicy } from './policy.js';
+import { checkSchema, schema } from './schema.js';
 
-export function verify(input) {
+function runCheck(check, input) {
+  return check(input);
+}
+
+export function verify(input, provenance) {
   const policy = readFileSync('policies/global.yaml', 'utf8');
-  return typeof input === 'string' && input.startsWith(schema.name) && policy.length > 0;
+  const shaped = runCheck(checkSchema, input);
+  const allowed = checkPolicy(policy);
+  const confirmed = provenance ? provenance.confirm(input) : true;
+  return typeof input === 'string' && input.startsWith(schema.name) && shaped && allowed && confirmed;
 }

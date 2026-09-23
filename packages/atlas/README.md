@@ -20,7 +20,7 @@ npx --yes @dogfood-lab/atlas check
 |------|------------|
 | `README.md` | The page. GitHub renders it when anyone opens the folder. |
 | `page.json` | The same sections as data, for sites and tools. |
-| `structure.json` | Every tracked file in its part, the import edges between parts, the doors, the landing places and their readers. Byte-deterministic. |
+| `structure.json` | Every tracked file in its part, the import edges between parts, the doors, the landing places and their readers, and the order of calls inside the files the doors run. Byte-deterministic. |
 | `statistics.json` | What changes together over the last 180 days, dated. |
 
 `check` compares the committed map with the working tree and fails when a part gains or loses a dependency, a file changes part, a new file belongs to no part, a named part matches nothing, or a file belongs to two parts. Run it in the test job so the map moves with the code. A repository with no `atlas/` directory is a notice and exit 0, so adopting Atlas reddens nothing.

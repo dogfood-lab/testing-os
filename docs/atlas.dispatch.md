@@ -417,6 +417,65 @@ target cannot be read at all. A path join whose root is a parameter is assumed t
 the repository. A scanned file's reads are text matches, not calls, and a literal read means the
 file names the place, not that it opens it. The host check does not compare landings yet.
 
+**The order of work is structural too.** Each file a door runs, and each file those files call
+into, one hop and no further, records `sequences`: every module-level function that makes at
+least one cross-file call, in source order, with its calls in the order they run.
+
+- A call counts when its callee resolves, through the file's resolved imports, to a tracked file
+  or a boundary: a named, default or namespace import, a `require`, or a local name that falls
+  back to one, as `const check = overrides.check || defaultCheck` does. A member call on an
+  import names the member and the import's target. A member call on a parameter, or on a name
+  destructured from one, names the member with no target, unless the member is a built-in or
+  logger method such as `get`, `push` or `warn`. Comments and strings are never calls.
+- A call inside an inline function handed to another call is a call. It is read at the
+  statement that holds it, after the call it is handed to. An eager argument's calls come
+  before the call they feed.
+- A call to a function defined in the same file is not a step. That function's own calls are
+  spliced in its place, depth first, each carrying `via`, the function it came from. A function
+  is spliced at its first call only.
+- A bare name handed to a call, when it is itself such an import, is recorded where it is handed
+  over, with `passed: true`. It is reached; it is not known to run there.
+- Of consecutive calls to one callee, the first is kept. A function stops at 24 calls and says
+  `truncated: true`.
+
+A sequence is `{ name, exported, invokedAtTopLevel, isDefaultExport, calls }`. A call is
+`{ name, target, line }`, with `via` and `passed` when they apply; `target` is `{ file }`,
+`{ boundary }` or null, and `name` is the name the target exports it under.
+
+```json
+{
+  "name": "writeRecord",
+  "target": { "file": "packages/ingest/persist.js" },
+  "line": 502
+}
+```
+
+`entry` names the function a reader starts from, and `entryRule` the rule that chose it. The
+rules apply in order:
+
+1. A module-level function the file's top-level code invokes, a guard such as `if (isMain)` or
+   `if __name__ == "__main__":` included. Of several, the widest.
+2. The default export.
+3. An exported function named `main`, `run`, `cli`, or for the file's basename.
+4. The widest exported function.
+
+The widest is the one with the most calls after splicing, so a function that does its work
+through helpers in its own file is not passed over; source order breaks a tie. On this
+repository `packages/ingest/run.js` enters at `ingest` by rule 1, the widest of the functions
+its `isMain` block calls, and `packages/verify/index.js` at `verify` by rule 4.
+
+In each file a door runs, every call of the entry function whose target records a sequence under
+that name carries `inner`: that function's calls, one level only, at most 12, with
+`innerTruncated` past that.
+
+The limits are the method's. A call through a name the engine cannot follow to an import, a
+dynamic specifier, a method on a class instance, or a callback stored and called later, is not
+a step. Class methods are not recorded as functions. A function re-exported from the file it is
+imported through gets no `inner`, since its body is elsewhere. Splicing at the first call reads
+a helper called at every stage once, where it is first called. A member call on a parameter
+names what is called, not who answers it. Every branch's calls are listed in source order, since
+which branch runs is not known. The host check does not compare sequences.
+
 This repository's own handbook diagram is a
 hand-drawn image whose only tests assert that it exists, is large enough, and has accessible
 title and description elements. Nothing checks that it is true.

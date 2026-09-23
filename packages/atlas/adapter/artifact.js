@@ -53,7 +53,7 @@ export function buildArtifact(mapped, commit) {
       dynamicReads: dynamic.reads,
       dynamicWrites: dynamic.writes,
       entryPoints: [...boundary.entryPoints].filter((path) => !inAtlas(path)).sort(),
-      files: files.map((file) => ({ hash: file.hash, path: file.path })).sort(byPath),
+      files: files.map(carryFile).sort(byPath),
       globs: [...boundary.globs].sort(),
       importConfidence: sites.unresolved > sites.resolved ? 'low' : 'full',
       name: boundary.name,
@@ -63,13 +63,9 @@ export function buildArtifact(mapped, commit) {
     };
   });
   const overlaps = keep(mapped.overlaps)
-    .map((overlap) => ({
-      boundaries: [...overlap.boundaries].sort(),
-      hash: overlap.hash,
-      path: overlap.path,
-    }))
+    .map((overlap) => ({ ...carryFile(overlap), boundaries: [...overlap.boundaries].sort() }))
     .sort(byPath);
-  const unassigned = keep(mapped.unassigned).map((file) => ({ hash: file.hash, path: file.path })).sort(byPath);
+  const unassigned = keep(mapped.unassigned).map(carryFile).sort(byPath);
   const tracked = boundaries.reduce((sum, boundary) => sum + boundary.files.length, 0) + overlaps.length + unassigned.length;
   return {
     boundaries,
@@ -82,6 +78,39 @@ export function buildArtifact(mapped, commit) {
     symlinks: mapped.symlinks.filter((link) => !inAtlas(link.path)).map((link) => ({ path: link.path, target: link.target })).sort(byPath),
     unassigned,
   };
+}
+
+// The order of work is carried only where the core recorded it: the files a
+// door runs and the files they call into.
+function carryFile(file) {
+  const out = { hash: file.hash, path: file.path };
+  if (file.sequences) out.sequences = file.sequences.map(carrySequence);
+  if (file.entry != null) {
+    out.entry = file.entry;
+    out.entryRule = file.entryRule;
+  }
+  return out;
+}
+
+function carrySequence(sequence) {
+  const out = {
+    calls: sequence.calls.map(carryCall),
+    exported: sequence.exported,
+    invokedAtTopLevel: sequence.invokedAtTopLevel,
+    isDefaultExport: sequence.isDefaultExport,
+    name: sequence.name,
+  };
+  if (sequence.truncated) out.truncated = true;
+  return out;
+}
+
+function carryCall(call) {
+  const out = { line: call.line, name: call.name, target: call.target == null ? null : { ...call.target } };
+  if (call.passed) out.passed = true;
+  if (call.via != null) out.via = call.via;
+  if (call.inner) out.inner = call.inner.map(carryCall);
+  if (call.innerTruncated) out.innerTruncated = true;
+  return out;
 }
 
 // A landing on atlas/ is the map describing itself, and a reader or writer in

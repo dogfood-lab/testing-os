@@ -1,6 +1,6 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 4b43624.
+Mapped at 2026-09-23 from commit 99b67ed.
 
 ## What this is
 
@@ -18,6 +18,22 @@ Mapped at 2026-09-23 from commit 4b43624.
 ## What happens through Ingest dogfood submission
 
 1. The workflow runs packages/ingest/run.js in ingest, packages/portfolio/generate.js in portfolio, and scripts/build.mjs and scripts/sync-version.mjs in scripts.
+   1. Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.
+   2. Is duplicate in ingest does, in order: is unsafe segment and parse rejection reason (verify).
+   3. Load repo policy in ingest does, in order: is unsafe segment, log stage (dogfood-swarm) and validate payload (schemas).
+   4. Load scenarios in ingest does, in order: fetch with reason and fetch.
+   5. Verify in verify does, in order:
+      1. parse run url repo
+      2. validate submission schema
+      3. validate schema version
+      4. confirm
+      5. validate step results
+      6. validate required steps
+      7. validate policy
+      8. compute verdict
+   6. Write record in ingest does, in order: is unsafe segment, parse rejection reason (verify), read chain head, submission digest, validate record and append chain entry.
+   7. Rebuild indexes in ingest does, in order: log stage (dogfood-swarm) and atomic write (3 steps).
+   8. Inside packages/portfolio/generate.js, main does, in order: compute trends, atomic write file sync (findings), generate badges and atomic write file sync.
 2. That reaches dogfood-swarm (1 file), findings (2 files) and verify (10 files).
 3. That reaches schemas (5 files).
 4. It writes to indexes/, records/ and reports/.
@@ -71,8 +87,8 @@ Read those in order to follow one dogfood submission end to end.
 
 ## What this map cannot see
 
-- 30 import sites did not resolve.
-- 27 writes and 183 reads use paths built at run time and are not named here.
+- 31 import sites did not resolve.
+- 27 writes and 184 reads use paths built at run time and are not named here.
 - Readers marked (found by text) come from scanning unparsed files.
 - Statistics confidence is low: fewer than 20 source files reach 10 revisions in the window.
 

@@ -1,0 +1,16 @@
+name: Run
+
+on: workflow_dispatch
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node rules/top-level.js
+      - run: node rules/default-export.js
+      - run: node rules/named.js
+      - run: node rules/publish.js
+      - run: node rules/widest.js
+      - run: node rules/calls.js
+      - run: node rules/many.js
+      - run: python rules/guard.py

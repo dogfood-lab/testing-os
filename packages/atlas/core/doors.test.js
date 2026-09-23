@@ -155,7 +155,7 @@ describe('doors', () => {
   it('orders reach by the depth each boundary is first reached, counting its files', () => {
     assert.deepEqual(door('ingest.yml').reach, [
       { boundary: 'tools', depth: 0, files: 2 },
-      { boundary: 'lib', depth: 1, files: 2 },
+      { boundary: 'lib', depth: 1, files: 4 },
     ]);
     assert.deepEqual(door('weekly.yml').reach, [
       { boundary: 'tools', depth: 0, files: 1 },
