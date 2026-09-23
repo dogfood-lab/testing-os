@@ -32,9 +32,9 @@ npx --yes @dogfood-lab/atlas explain <path>
 
 ## What it reads
 
-- **Doors.** Every workflow under `.github/workflows/`: its triggers, the files its steps execute (following `npm run` through root and workspace scripts), what it stages and pushes, what it dispatches, publishes, releases or deploys.
+- **Doors.** Every workflow under `.github/workflows/`: its triggers, the files its steps run (following `npm run` through root and workspace scripts) and the files they only check (linters, type-checkers), what it stages and pushes, here or in a clone of another repository, what it dispatches, publishes, releases or deploys. And every command a manifest installs (`bin` in `package.json`, `[project.scripts]` in `pyproject.toml`), as a door of its own.
 - **Parts and imports.** JavaScript, TypeScript, TSX and Python, parsed with tree-sitter; imports resolved with the same rules the runtime uses, including workspace package exports without `node_modules`.
-- **Landing places and readers.** The tracked paths that code writes to and reads from, found in call expressions and followed through joins and helpers; raw GitHub URLs and quoted paths in files it does not parse, marked as found by text.
+- **Landing places and readers.** The tracked paths that code writes to and reads from, found in call expressions and followed through joins and helpers; a written-out file name lands on that file, not its directory; raw GitHub URLs and quoted paths in files it does not parse, marked as found by text.
 - **History.** Files that change together, with a floor that falls when the history is thin, and the confidence stated on the page.
 
 ## What it cannot see
