@@ -673,6 +673,8 @@ Every failure names what changed and what to do; the second line is never option
 | `ATLAS_UNASSIGNED_NEW` | 1 | HIGH | `adapter/check.js` |
 | `ATLAS_FILE_MOVED` | 1 | HIGH | `adapter/check.js` |
 | `ATLAS_STATISTICS_UNDATED` | 1 | HIGH | `adapter/commands.js` |
+| `ATLAS_EXPLAIN_NO_MAP` | 2 | LOW | `adapter/explain.js` |
+| `ATLAS_EXPLAIN_UNKNOWN_PATH` | 2 | LOW | `adapter/explain.js` |
 
 ### `ATLAS_BOUNDARY_FILE_INVALID`
 
@@ -766,6 +768,24 @@ A file that the committed roster placed in one boundary is now in another.
 
 - **Trigger:** a statistical artifact without a date. The check never fails because a date is **old** — statistics are dated snapshots, and their age is shown on every page rather than gated — but a statistical section must say when it was computed.
 - **Operator action:** run `atlas map` and commit; the artifact it writes is always dated.
+
+### `ATLAS_EXPLAIN_NO_MAP`
+
+:::tip[Severity: LOW]
+`atlas explain` was asked about a repository with no committed map, or whose `atlas/structure.json` does not parse. Nothing was read.
+:::
+
+- **Trigger:** `atlas explain <path>` before `atlas map` has been run and committed, or with a hand-edited artifact.
+- **Operator action:** run `atlas map` and commit `atlas/`; `explain` reads the committed map and never maps on its own, so it answers at once and names the commit it describes.
+
+### `ATLAS_EXPLAIN_UNKNOWN_PATH`
+
+:::tip[Severity: LOW]
+The path given to `atlas explain` is not a file in the committed map, nor a directory that contains one.
+:::
+
+- **Trigger:** a typo, a file added since the last `atlas map`, or a path outside the repository. A leading `./` and either separator are accepted; a directory prefix explains the part it maps to.
+- **Operator action:** check the path, or run `atlas map` and commit if the file is new.
 
 ## Cross-references
 
