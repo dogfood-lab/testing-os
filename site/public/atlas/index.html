@@ -121,7 +121,7 @@ footer { border-top: 1px solid var(--border); padding: 14px 0 30px; font-size: 1
   <div class="wrap">
     <nav aria-label="Site">
       <a href="../">testing-os</a>
-      <a href="../dashboard/">Dashboard</a>
+      <a href="../dashboard/" id="nav-dashboard">Dashboard</a>
       <a href="./">Atlas</a>
     </nav>
   </div>
@@ -135,7 +135,7 @@ footer { border-top: 1px solid var(--border); padding: 14px 0 30px; font-size: 1
   <div class="wrap">Atlas reads each repository and writes this page from what it finds. <a href="https://github.com/dogfood-lab/testing-os/blob/main/docs/atlas-page.spec.md">How the page is specified</a>.</div>
 </footer>
 <script type="module">
-import { isRepo, pageDataUrl, historyDataUrl, renderPage, renderFleet, pageTitle, state } from "./render.js";
+import { isRepo, pageDataUrl, historyDataUrl, renderPage, renderFleet, pageTitle, servedBase, state } from "./render.js";
 
 // A server that holds the renders itself, such as the Atlas container, names
 // its own base in a meta tag named atlas-base; the public site has none and reads
@@ -145,6 +145,9 @@ const CONFIG = {
   atlasBase: (baseTag && baseTag.content) || "https://raw.githubusercontent.com/dogfood-lab/testing-os/atlas-render/",
   paths: { atlasFleet: "indexes/atlas/fleet.json" }
 };
+// Served by its own server, the page has no dashboard beside it.
+const served = servedBase(CONFIG.atlasBase);
+if (served) document.getElementById("nav-dashboard").remove();
 
 const out = document.getElementById("page");
 
@@ -180,7 +183,7 @@ async function main() {
       ]);
       if (got.absent) { show(state("This repository has not been rendered yet."), repo + ": not rendered"); return; }
       if (!Array.isArray(got.data.doors)) throw new Error("the file has an unexpected shape");
-      show(renderPage(got.data, { repo, history }), pageTitle(got.data, { repo }));
+      show(renderPage(got.data, { repo, history, served }), pageTitle(got.data, { repo }));
     } catch (err) {
       show(state("Could not load the map for " + repo + ": " + ((err && err.message) || String(err)) + "."), "Atlas");
     }
@@ -188,9 +191,9 @@ async function main() {
   }
   try {
     const got = await load(CONFIG.atlasBase + CONFIG.paths.atlasFleet);
-    if (got.absent) { show(state("No render yet. The weekly job has not run."), "Atlas"); return; }
+    if (got.absent) { show(state(served ? "No render yet. The first run has not finished." : "No render yet. The weekly job has not run."), "Atlas"); return; }
     if (!Array.isArray(got.data.repositories)) throw new Error("the file has an unexpected shape");
-    show(renderFleet(got.data, Date.now()), "Atlas");
+    show(renderFleet(got.data, Date.now(), { served }), "Atlas");
   } catch (err) {
     show(state("Could not load the fleet: " + ((err && err.message) || String(err)) + "."), "Atlas");
   }

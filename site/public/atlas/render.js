@@ -61,6 +61,23 @@ export function markdownUrl(repo) {
   return `https://github.com/dogfood-lab/testing-os/blob/atlas-render/indexes/atlas/${segments(repo)}/README.md`;
 }
 
+/**
+ * The markdown twin where the page is served beside its render files, as the
+ * Atlas container serves them under <base>atlas/.
+ */
+export function servedMarkdownUrl(base, repo) {
+  return `${base}atlas/${segments(repo)}/README.md`;
+}
+
+/**
+ * The base a page reads from when it is its own server's: a same-origin path
+ * such as "/". Any other base, the render branch included, is the public site.
+ */
+export function servedBase(atlasBase) {
+  const base = str(atlasBase);
+  return base.startsWith('/') && !base.startsWith('//') ? base : null;
+}
+
 export function repoHref(repo) {
   return `?repo=${segments(repo)}`;
 }
@@ -586,10 +603,12 @@ function limitsSection(ctx) {
 
 /**
  * @param {object} page parsed page.json
- * @param {{ repo?: string, history?: object|null }} [options] repo is the
- *   validated owner/name the page was requested for; links are built from it,
- *   never from unchecked JSON. history is the parsed history.json beside it on
- *   the render branch, or null when that render left none.
+ * @param {{ repo?: string, history?: object|null, served?: string|null }} [options]
+ *   repo is the validated owner/name the page was requested for; links are
+ *   built from it, never from unchecked JSON. history is the parsed
+ *   history.json beside it on the render branch, or null when that render left
+ *   none. served is the base when the page's own server holds the renders
+ *   (servedBase), so the markdown link stays on that server.
  * @returns {string} the article's inner HTML
  */
 export function renderPage(page, options = {}) {
@@ -600,8 +619,12 @@ export function renderPage(page, options = {}) {
   const commitHtml = ctx.repo && ctx.commit
     ? `<a href="${esc(`https://github.com/${segments(ctx.repo)}/commit/${ctx.commit}`)}"><code>${esc(commit)}</code></a>`
     : `<code>${esc(commit)}</code>`;
+  const served = servedBase(options.served);
+  const markdown = !ctx.repo ? '' : served
+    ? `<a href="${esc(servedMarkdownUrl(served, ctx.repo))}">The same page as markdown</a>`
+    : `<a href="${esc(markdownUrl(ctx.repo))}">The same page as markdown, on the render branch</a>`;
   const links = ctx.repo
-    ? `<p class="links"><a href="${esc(markdownUrl(ctx.repo))}">The same page as markdown, on the render branch</a> · <a href="./">Every rendered repository</a></p>`
+    ? `<p class="links">${markdown} · <a href="./">Every rendered repository</a></p>`
     : '<p class="links"><a href="./">Every rendered repository</a></p>';
   const parts = [
     `<h1>${esc(title)}</h1>`,
@@ -1106,12 +1129,19 @@ function ageWords(renderedAt, now) {
 /**
  * @param {object} fleet parsed fleet.json
  * @param {number} now milliseconds since the epoch, passed in so this stays pure
+ * @param {{ served?: string|null }} [options] served, as for renderPage: the
+ *   list is a private fleet's, not the public one
  */
-export function renderFleet(fleet, now) {
+export function renderFleet(fleet, now, options = {}) {
   const rows = arr(fleet?.repositories).filter((row) => row && typeof row === 'object');
-  const head = '<h1>Atlas: how each repository works</h1>' +
-    '<p class="mapped">One page per public repository that has adopted Atlas, mapped weekly from the repository alone.</p>';
-  if (rows.length === 0) return `${head}${state('No public repository has adopted Atlas yet.')}`;
+  const served = servedBase(options.served);
+  const lead = served
+    ? 'One page per repository in this fleet, mapped on the schedule in fleet.yml.'
+    : 'One page per public repository that has adopted Atlas, mapped weekly from the repository alone.';
+  const head = `<h1>Atlas: how each repository works</h1><p class="mapped">${esc(lead)}</p>`;
+  if (rows.length === 0) {
+    return `${head}${state(served ? 'No repository in this fleet has been rendered yet.' : 'No public repository has adopted Atlas yet.')}`;
+  }
   const sorted = [...rows].sort((a, b) => cmp(str(a.repo), str(b.repo)));
   const items = sorted.map((row) => {
     const repo = str(row.repo);

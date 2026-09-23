@@ -496,6 +496,27 @@ test('the fleet lists every rendered repository as a link to its page', () => {
   assert.ok(html.includes('not a repo <span class="facts">doors not counted'), 'an invalid name is text, not a link');
   assert.ok(html.indexOf('dogfood-lab/testing-os') < html.indexOf('mcp-tool-shop-org/armature'), 'sorted by name');
   assert.match(render.renderFleet({ repositories: [] }, now), /No public repository has adopted Atlas yet\./);
+  assert.ok(html.includes('One page per public repository that has adopted Atlas, mapped weekly from the repository alone.'), 'the site keeps the public wording');
+});
+
+test('served by the Atlas container, the page names its own fleet, links its own markdown, and draws no dashboard link', () => {
+  const now = Date.parse('2026-09-23T00:00:00Z');
+  assert.equal(render.servedBase('/'), '/');
+  assert.equal(render.servedBase('https://raw.githubusercontent.com/dogfood-lab/testing-os/atlas-render/'), null, 'the render branch is the public site');
+  assert.equal(render.servedBase('//cdn.example/'), null, 'a protocol-relative base is another origin');
+  const fleet = render.renderFleet({ repositories: [{ repo: 'acme/doors', renderedAt: '2026-09-22T06:00:00Z', doors: 5 }] }, now, { served: '/' });
+  assert.ok(fleet.includes('<p class="mapped">One page per repository in this fleet, mapped on the schedule in fleet.yml.</p>'));
+  assert.doesNotMatch(fleet, /public/);
+  assert.match(render.renderFleet({ repositories: [] }, now, { served: '/' }), /No repository in this fleet has been rendered yet\./);
+  const html = render.renderPage(page, { repo: page.repo, served: '/' });
+  assert.ok(html.includes('<a href="/atlas/dogfood-lab/testing-os/README.md">The same page as markdown</a> · <a href="./">Every rendered repository</a>'));
+  assert.doesNotMatch(html, /on the render branch/);
+  assert.ok(!html.includes('blob/atlas-render/'), 'the markdown link stays on the container');
+  // The shell drops the nav's Dashboard link only when its base is served, and passes served to both renderers.
+  assert.ok(shell.includes('<a href="../dashboard/" id="nav-dashboard">Dashboard</a>'), 'the site keeps the link');
+  assert.match(shell, /const served = servedBase\(CONFIG\.atlasBase\);\nif \(served\) document\.getElementById\("nav-dashboard"\)\.remove\(\);/);
+  assert.match(shell, /renderPage\(got\.data, \{ repo, history, served \}\)/);
+  assert.match(shell, /renderFleet\(got\.data, Date\.now\(\), \{ served \}\)/);
 });
 
 test('the shell imports render.js and reads the render branch unless a meta tag names another base', () => {

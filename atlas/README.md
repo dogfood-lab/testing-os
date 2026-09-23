@@ -1,22 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit ed8bddb.
+Mapped at 2026-09-23 from commit 83c7a7f.
 
 ## What this is
 
 23 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).
 
-## What changed since 2026-09-23 (4ba209b)
+## What changed since 2026-09-23 (ed8bddb)
 
-- scripts now imports atlas.
-- CI's pull request trigger now also names `docker/**`.
-- CI's push trigger now also names `docker/**`.
-- CI now also runs packages/atlas/adapter/fleet.test.js.
-- And 3 more changes to doors.
-- README.md is now also read by packages/atlas/adapter/fleet.js.
-- docker/Dockerfile is now read by scripts/sync-version.mjs.
-- docker is a new part, drawn from `docker/**`.
-- 12 files added and 16 changed content, across 8 parts.
+Nothing structural changed since 2026-09-23; 3 files changed content.
 
 ## What comes in
 
@@ -77,7 +69,7 @@ Mapped at 2026-09-23 from commit ed8bddb.
 
 ## What tends to change together
 
-- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 10 of 15 commits, inside the site part.
+- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 10 of 16 commits, inside the site part.
 
 2 files changed together with their own tests, as expected.
 
