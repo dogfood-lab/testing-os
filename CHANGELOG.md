@@ -2,6 +2,26 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+Atlas changes direction. The Director rejected the acceptance ladder (a page gated on a person writing forty-five sentences into a YAML form) and the fleet-before-page build order. The specification of record is now a page written by hand for this repository from its own workflows and code, `docs/atlas-page.spec.md`; Atlas must produce that page from the repository alone. Three slices land it.
+
+### Added
+- **Doors.** Every workflow is read as a door: normalized triggers, permissions, secrets named, each `run:` step, the tracked files it executes (following `npm run` through root and workspace scripts, hooks and `--workspaces`, split as the shell splits), the other paths it merely names, what it stages and pushes, what it dispatches, publishes, releases or deploys. Per door, the parts reached through the import closure of its executed files, in the order reached.
+- **Landing places and readers.** Per file, the tracked places its code writes to and reads from, found by parsing call expressions against closed write and read sets and following literals through joins, same-file helpers and wrappers; raw GitHub URLs and quoted paths in unparsed files count as reads with text confidence; a bare filename that matches a root-level file through a variable root is recorded weak and never makes a place generated. Per door, its landings and their readers. Per part, an origin: generated, authored or mixed.
+- **The page.** `atlas map` writes `atlas/README.md` (what comes in, what happens through the busiest door, who reads the results, the other doors, what breaks what, generated versus hand-authored, where to start, what the map cannot see) and `atlas/page.json`, its data twin.
+
+### Removed
+- The three profile renders (`orientation.md`, `dev.md`, `machine.md`) and `machine-stats.txt`.
+- The acceptance ladder: the `status`, `reason`, `why_from`, `will_break`, `will_break_from` and `start_here` fields of the boundary file, and the codes `ATLAS_ACCEPTED_UNAUTHORED`, `ATLAS_DEFERRED_WITHOUT_REASON` and `ATLAS_MACHINE_HASH_MISMATCH`. An old boundary file still maps; the ignored keys are named once.
+
+### Changed
+- The weekly render copies `README.md` and `page.json`; the dashboard's fleet panel links the page and counts doors where it counted unnamed boundaries.
+
+### Docs
+- `docs/atlas-page.spec.md` is the specification of record for Atlas output; both dispatches carry a note saying so.
+- Handbook error-codes page: the Atlas table matches `packages/atlas/adapter/errors.js`.
+
 ## [1.12.0] — 2026-09-06
 
 The harness fixes earned on the armature run (`swarm-1788481819-3690`: 28 waves on a 7,500-test Python repo, the largest suite the swarm has verified) and the cost bounds that run paid for. Lockstep minor across all seven workspace packages.

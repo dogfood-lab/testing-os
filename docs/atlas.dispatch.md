@@ -1,7 +1,10 @@
 # Atlas — design dispatch
 
-> **Status: Phase 0.** No code exists. This document is the settled design, produced by a
-> three-model consult. It supersedes nothing because nothing preceded it.
+> **Status: engine record; output superseded (2026-09-22).** The engine described here is
+> built. What Atlas *produces* is now specified by [atlas-page.spec.md](atlas-page.spec.md),
+> which wins over §5, §7 and §8 of this document wherever they differ: there are no profiles,
+> no acceptance ladder, and no human-authored boundary sentences. The rest of this document
+> remains the record of how a repository is read.
 
 `@dogfood-lab/atlas` is the eighth workspace package. It reads a git repository and derives a
 map of how that system operates, then renders it for three audiences. Its purpose is to keep

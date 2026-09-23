@@ -1,9 +1,10 @@
 # Atlas — design spec (visual representation, profiles, surfaces, assets)
 
-> **Status: Phase 0.** Companion to [atlas.dispatch.md](atlas.dispatch.md), which fixes the
-> engine: what is derived, what is committed, what is gated. This document fixes what a reader
-> sees. Nothing here changes an engine decision. Standards compliance is scored in the engine
-> dispatch and is not duplicated; this document is a specification of surfaces, not a pipeline.
+> **Status: superseded for the page (2026-09-22).** The three-profile anatomy in §3, the legend
+> in §1.3 and the filtered map in §2 were built and rejected by the Director as a parts list,
+> not a system. [atlas-page.spec.md](atlas-page.spec.md) now specifies the page. The rules in §0
+> (colour is state, never identity; no state by colour alone; static surfaces), the asset
+> library in §6 and the phone rule in §7 still apply to the site surfaces.
 
 Atlas is an instrument for looking at how a system works. Twelve rounds of consult designed the
 instrument's internals and nothing a person looks at. This is the missing half.

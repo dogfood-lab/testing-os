@@ -21,7 +21,7 @@ export function compareArtifacts(committed, current, repoPath) {
   if (overlap) return overlap;
   const identity = boundaryIdentity(committed, current);
   if (identity) return identity;
-  const empty = emptyAccepted(current);
+  const empty = emptyBoundary(current);
   if (empty) return empty;
   const edges = setDrift('edge', edgeKey, committed.edges, current.edges, (edge) => `${edge.from} → ${edge.to} (${edge.kind})`);
   if (edges) return edges;
@@ -58,9 +58,6 @@ function boundaryIdentity(committed, current) {
   for (const boundary of current.boundaries) {
     const old = oldByName.get(boundary.name);
     if (!old) continue;
-    if (old.status !== boundary.status) {
-      details.push(`${boundary.name} status is ${boundary.status}; the committed map says ${old.status}`);
-    }
     if (old.role !== boundary.role) {
       details.push(`${boundary.name} role is ${boundary.role}; the committed map says ${old.role}`);
     }
@@ -73,8 +70,8 @@ function boundaryIdentity(committed, current) {
   return { code: 'ATLAS_STRUCTURE_DRIFT', details };
 }
 
-function emptyAccepted(current) {
-  const names = current.boundaries.filter((boundary) => boundary.status === 'accepted' && boundary.files.length === 0).map((boundary) => boundary.name);
+function emptyBoundary(current) {
+  const names = current.boundaries.filter((boundary) => boundary.files.length === 0).map((boundary) => boundary.name);
   if (names.length === 0) return null;
   return { code: 'ATLAS_BOUNDARY_EMPTY', details: names.map((name) => `${name} matches no files`) };
 }

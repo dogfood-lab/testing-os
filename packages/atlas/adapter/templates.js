@@ -1,6 +1,6 @@
 /**
- * Derived sentences. The acceptance ladder compares an accepted boundary
- * against these strings, so a wording change is a test change.
+ * The role a boundary gets when its file does not name one: init writes it,
+ * and the map derives it for a boundary that leaves it out.
  */
 
 export function isTestPath(path) {
@@ -68,28 +68,4 @@ export function roleFor(paths) {
   if (docs > voting.length / 2) return 'docs';
   if (config > voting.length / 2) return 'config';
   return 'code';
-}
-
-export function coveredBy(name, paths, testImporters) {
-  const names = new Set(testImporters);
-  if (paths.some((path) => isTestPath(path))) names.add(name);
-  return [...names].sort();
-}
-
-function show(items) {
-  if (!items || items.length === 0) return 'none';
-  return [...items].sort().join(', ');
-}
-
-export function reasonTemplate({ count, role, entryPoints, imports, importedBy }) {
-  const noun = count === 1 ? 'file' : 'files';
-  return `${count} ${noun}, role ${role}; entry points ${show(entryPoints)}; imports ${show(imports)}; imported by ${show(importedBy)}`;
-}
-
-export function willBreakTemplate({ fanIn, coveredBy: covered }) {
-  const breaks = !fanIn || fanIn.length === 0 ? 'nothing that imports it' : [...fanIn].sort().join(', ');
-  const tests = !covered || covered.length === 0
-    ? 'not covered by any test boundary'
-    : `covered by tests in ${[...covered].sort().join(', ')}`;
-  return `Changing this breaks ${breaks}; ${tests}`;
 }

@@ -1,15 +1,14 @@
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { mapRepository } from '../core/index.js';
 import { buildArtifact, serializeArtifact } from './artifact.js';
-import { readBoundaryFile } from './boundary-file.js';
+import { ignoredNotice, readBoundaryFile } from './boundary-file.js';
 import { compareArtifacts } from './check.js';
 import { formatFailure } from './errors.js';
 import { initCommand } from './init.js';
-import { acceptanceFailures } from './ladder.js';
 import { buildEnvelope, hitsFromStatistics } from './divergence.js';
-import { renderAll, statedHashProblem } from './render.js';
+import { buildPage } from './page.js';
 import { buildStatistics, serializeStatistics, statisticsProblem } from './statistics.js';
 import { writeArtifactSync } from './write.js';
 
@@ -25,7 +24,6 @@ function forCore(boundaries) {
   return boundaries.map((boundary) => ({
     name: boundary.name,
     globs: boundary.globs,
-    status: boundary.status,
     role: boundary.role,
   }));
 }
@@ -41,8 +39,8 @@ export function mapCommand(cwd, argv = []) {
   if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
   if (!repo) return usage('atlas: not a git repository');
-  const repoName = flags.divergence ? repositoryName(repo) : null;
-  if (flags.divergence && !repoName) return usage('atlas: --divergence needs an origin URL that names org/repo');
+  const origin = repositoryName(repo);
+  if (flags.divergence && !origin) return usage('atlas: --divergence needs an origin URL that names org/repo');
   let previous = null;
   if (flags.previous) {
     try {
@@ -53,38 +51,34 @@ export function mapCommand(cwd, argv = []) {
   }
   const boundary = readBoundaryFile(repo);
   if (!boundary.ok) return failBoundary(boundary);
+  process.stdout.write(ignoredNotice(boundary));
   const commit = head(repo);
   if (!commit) return usage('atlas: git rev-parse HEAD failed');
   const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
   const artifact = buildArtifact(mapped, commit);
-  const now = new Date();
   const statistics = buildStatistics({
     repo,
     commit,
     document: boundary,
     artifact,
-    generatedAt: now.toISOString(),
+    generatedAt: new Date().toISOString(),
   });
-  const rendered = renderAll({
+  const page = buildPage({
     structure: artifact,
     statistics,
     document: boundary,
-    now,
-    testCommand: testScript(repo),
-    publicRepository: originIsPublic(repo),
+    repoName: origin ?? manifestName(repo) ?? basename(repo),
   });
   const atlasDir = join(repo, 'atlas');
   writeArtifactSync(join(atlasDir, 'structure.json'), serializeArtifact(artifact));
   writeArtifactSync(join(atlasDir, 'statistics.json'), serializeStatistics(statistics));
-  writeArtifactSync(join(atlasDir, 'machine-stats.txt'), rendered.stats);
-  writeArtifactSync(join(atlasDir, 'machine.md'), rendered.machine);
-  writeArtifactSync(join(atlasDir, 'orientation.md'), rendered.orientation);
-  writeArtifactSync(join(atlasDir, 'dev.md'), rendered.dev);
+  writeArtifactSync(join(atlasDir, 'README.md'), page.markdown);
+  writeArtifactSync(join(atlasDir, 'page.json'), page.json);
   let divergenceMs = null;
   if (flags.divergence) {
     const started = Date.now();
     const envelope = buildEnvelope({
-      repo: repoName,
+      repo: origin,
       commit,
       generatedAt: statistics.generatedAt,
       sharedCommitFloor: statistics.parameters.sharedFloorUsed,
@@ -102,14 +96,13 @@ export function mapCommand(cwd, argv = []) {
       `  unassigned:  ${artifact.unassigned.length}`,
       `  overlaps:    ${artifact.overlaps.length}`,
       `  edges:       ${artifact.edges.length}`,
+      `  doors:       ${artifact.doors.length}`,
       `  unresolved:  ${unresolved}`,
       `  confidence:  ${mapped.importConfidence}`,
       'wrote atlas/structure.json',
       'wrote atlas/statistics.json',
-      'wrote atlas/orientation.md',
-      'wrote atlas/dev.md',
-      'wrote atlas/machine.md',
-      'wrote atlas/machine-stats.txt',
+      'wrote atlas/README.md',
+      'wrote atlas/page.json',
       ...(divergenceMs == null ? [] : [`divergence: ${divergenceMs} ms`, `wrote ${flags.divergence}`]),
       '',
     ].join('\n'),
@@ -126,6 +119,7 @@ export function checkCommand(cwd) {
   }
   const boundary = readBoundaryFile(repo);
   if (!boundary.ok) return failBoundary(boundary);
+  process.stdout.write(ignoredNotice(boundary));
   const structurePath = join(repo, 'atlas', 'structure.json');
   if (!existsSync(structurePath)) {
     process.stdout.write(
@@ -145,37 +139,22 @@ export function checkCommand(cwd) {
   const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
   const current = buildArtifact(mapped, head(repo) ?? '');
   const failure = compareArtifacts(committed, current, repo);
-  if (!failure) {
-    const ladder = acceptanceFailures(boundary.boundaries, current);
-    if (ladder) {
-      const whatToDo = ladder.code === 'ATLAS_DEFERRED_WITHOUT_REASON'
-        ? 'write a reason for the deferral, or set status: proposed'
-        : 'rewrite the named fields into your own words and mark them human, or set status: proposed';
-      process.stdout.write(formatFailure(ladder.code, ladder.details, { whatToDo }));
-      return 1;
-    }
-    const statisticsPath = join(repo, 'atlas', 'statistics.json');
-    if (existsSync(statisticsPath)) {
-      const problem = statisticsProblem(readFileSync(statisticsPath, 'utf8'));
-      if (problem) {
-        process.stdout.write(formatFailure('ATLAS_STATISTICS_UNDATED', [problem], {
-          whatToDo: 'run atlas map and commit atlas/',
-        }));
-        return 1;
-      }
-    }
-    const hashProblem = machineHashProblem(repo);
-    if (hashProblem) {
-      process.stdout.write(formatFailure('ATLAS_MACHINE_HASH_MISMATCH', [hashProblem], {
-        whatToDo: 'run atlas map and commit atlas/machine.md together with atlas/machine-stats.txt',
+  if (failure) {
+    process.stdout.write(formatFailure(failure.code, failure.details));
+    return 1;
+  }
+  const statisticsPath = join(repo, 'atlas', 'statistics.json');
+  if (existsSync(statisticsPath)) {
+    const problem = statisticsProblem(readFileSync(statisticsPath, 'utf8'));
+    if (problem) {
+      process.stdout.write(formatFailure('ATLAS_STATISTICS_UNDATED', [problem], {
+        whatToDo: 'run atlas map and commit atlas/',
       }));
       return 1;
     }
-    process.stdout.write('atlas check\n  boundaries match the committed map\n');
-    return 0;
   }
-  process.stdout.write(formatFailure(failure.code, failure.details));
-  return 1;
+  process.stdout.write('atlas check\n  boundaries match the committed map\n');
+  return 0;
 }
 
 function failBoundary(boundary) {
@@ -216,30 +195,16 @@ function repositoryName(repo) {
   return `${match[1]}/${match[2]}`;
 }
 
-function machineHashProblem(repo) {
-  const mdPath = join(repo, 'atlas', 'machine.md');
-  const statsPath = join(repo, 'atlas', 'machine-stats.txt');
-  const mdExists = existsSync(mdPath);
-  const statsExists = existsSync(statsPath);
-  if (!mdExists && !statsExists) return null;
-  if (!mdExists || !statsExists) return 'atlas/machine.md and atlas/machine-stats.txt must stay together';
-  return statedHashProblem(readFileSync(mdPath, 'utf8'), readFileSync(statsPath));
-}
-
-function testScript(repo) {
+// A clone with no GitHub origin is named by its root manifest, so the page's
+// title does not depend on the directory it was cloned into.
+function manifestName(repo) {
   try {
     const pkg = JSON.parse(readFileSync(join(repo, 'package.json'), 'utf8'));
-    if (pkg && pkg.scripts && typeof pkg.scripts.test === 'string' && pkg.scripts.test.trim() !== '') return 'npm test';
+    if (pkg && typeof pkg.name === 'string' && pkg.name.trim() !== '') return pkg.name.trim();
   } catch {
-    // A repository with no root manifest has no test script to name.
+    // No readable root manifest; the directory name is the last resort.
   }
-  return "run this repository's tests";
-}
-
-function originIsPublic(repo) {
-  const result = spawnSync('git', ['remote', 'get-url', 'origin'], { cwd: repo, encoding: 'utf8' });
-  if (result.status !== 0) return false;
-  return /github\.com[:/]/i.test(result.stdout);
+  return null;
 }
 
 function repoRoot(cwd) {

@@ -2,22 +2,15 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'yaml';
 
-const TOP_LEVEL = new Set(['summary', 'window', 'thresholds', 'machine_budget', 'boundaries']);
-const BOUNDARY_FIELDS = new Set([
-  'name',
-  'globs',
-  'status',
-  'role',
-  'reason',
-  'why_from',
-  'will_break',
-  'will_break_from',
-  'start_here',
-  'rebaseline',
-]);
-const STATUSES = new Set(['proposed', 'accepted', 'deferred']);
+const TOP_LEVEL = new Set(['summary', 'window', 'thresholds', 'boundaries']);
+const BOUNDARY_FIELDS = new Set(['name', 'globs', 'role', 'rebaseline']);
 const ROLES = new Set(['code', 'test', 'docs', 'config']);
-const SOURCES = new Set(['derived', 'human']);
+
+// Fields an older boundary file carried for the acceptance ladder. The page is
+// written from the recorded facts now, so these are read past, not rejected:
+// a file written before the change still maps.
+const RETIRED_TOP_LEVEL = new Set(['machine_budget']);
+const RETIRED_BOUNDARY = new Set(['status', 'reason', 'why_from', 'will_break', 'will_break_from', 'start_here']);
 
 export function readBoundaryFile(repoPath) {
   const path = join(repoPath, 'atlas', 'boundaries.yaml');
@@ -41,28 +34,47 @@ export function readBoundaryFile(repoPath) {
     summary: typeof doc.summary === 'string' ? doc.summary : null,
     window: doc.window ?? null,
     thresholds: doc.thresholds ?? null,
-    machine_budget: doc.machine_budget ?? null,
     boundaries: doc.boundaries.map(carryBoundary),
+    ignored: ignoredKeys(doc),
+    personMarked: personMarked(doc),
   };
 }
 
+/** The one line a command prints when an older file's retired fields were read past. */
+export function ignoredNotice(boundary) {
+  if (!boundary.ok || boundary.ignored.length === 0) return '';
+  return `atlas: ignored fields no longer read from atlas/boundaries.yaml: ${boundary.ignored.join(', ')}\n`;
+}
+
 function carryBoundary(boundary) {
-  const carried = {
-    name: boundary.name,
-    globs: boundary.globs,
-    status: boundary.status,
-    role: boundary.role,
-  };
-  for (const field of ['reason', 'why_from', 'will_break', 'will_break_from', 'start_here', 'rebaseline']) {
-    if (boundary[field] != null) carried[field] = boundary[field];
-  }
+  const carried = { name: boundary.name, globs: boundary.globs };
+  if (boundary.role != null) carried.role = boundary.role;
+  if (boundary.rebaseline != null) carried.rebaseline = boundary.rebaseline;
   return carried;
+}
+
+function ignoredKeys(doc) {
+  const keys = new Set(Object.keys(doc).filter((key) => RETIRED_TOP_LEVEL.has(key)));
+  for (const boundary of doc.boundaries) {
+    for (const key of Object.keys(boundary)) if (RETIRED_BOUNDARY.has(key)) keys.add(key);
+  }
+  return [...keys].sort();
+}
+
+// An older file records a person's hand as a status past proposed or a field
+// marked human. Init keeps its refusal to overwrite either.
+function personMarked(doc) {
+  return doc.boundaries.some((boundary) => (
+    (boundary.status != null && boundary.status !== 'proposed')
+    || boundary.why_from === 'human'
+    || boundary.will_break_from === 'human'
+  ));
 }
 
 function validate(doc) {
   if (doc == null || typeof doc !== 'object' || Array.isArray(doc)) return 'the boundary file must be a mapping';
   for (const key of Object.keys(doc)) {
-    if (!TOP_LEVEL.has(key)) return `unknown field ${key}`;
+    if (!TOP_LEVEL.has(key) && !RETIRED_TOP_LEVEL.has(key)) return `unknown field ${key}`;
   }
   if (doc.summary != null && typeof doc.summary !== 'string') return 'summary must be a string';
   if (!Array.isArray(doc.boundaries)) return 'boundaries must be an array';
@@ -72,7 +84,7 @@ function validate(doc) {
     const where = `boundaries[${i}]`;
     if (boundary == null || typeof boundary !== 'object' || Array.isArray(boundary)) return `${where} must be a mapping`;
     for (const key of Object.keys(boundary)) {
-      if (!BOUNDARY_FIELDS.has(key)) return `${where}.${key} is not a boundary field`;
+      if (!BOUNDARY_FIELDS.has(key) && !RETIRED_BOUNDARY.has(key)) return `${where}.${key} is not a boundary field`;
     }
     if (typeof boundary.name !== 'string' || boundary.name.trim() === '') return `${where}.name is required`;
     if (names.has(boundary.name)) return `${where}.name duplicates ${boundary.name}`;
@@ -80,15 +92,8 @@ function validate(doc) {
     if (!Array.isArray(boundary.globs) || boundary.globs.some((glob) => typeof glob !== 'string')) {
       return `${where}.globs must be an array of strings`;
     }
-    if (!STATUSES.has(boundary.status)) return `${where}.status must be proposed, accepted, or deferred`;
-    if (!ROLES.has(boundary.role)) return `${where}.role must be code, test, docs, or config`;
-    for (const field of ['reason', 'will_break', 'start_here', 'rebaseline']) {
-      if (boundary[field] != null && typeof boundary[field] !== 'string') return `${where}.${field} must be a string`;
-    }
-    if (boundary.why_from != null && !SOURCES.has(boundary.why_from)) return `${where}.why_from must be derived or human`;
-    if (boundary.will_break_from != null && !SOURCES.has(boundary.will_break_from)) {
-      return `${where}.will_break_from must be derived or human`;
-    }
+    if (boundary.role != null && !ROLES.has(boundary.role)) return `${where}.role must be code, test, docs, or config`;
+    if (boundary.rebaseline != null && typeof boundary.rebaseline !== 'string') return `${where}.rebaseline must be a string`;
   }
   return null;
 }
