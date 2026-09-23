@@ -52,6 +52,10 @@
     {
       "path": "fixtures/atlas/init-roles/tools/index.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the init-roles fixture repository that packages/atlas/adapter/init-roles.test.js runs atlas init on: its name starts with index., the first name init falls back to for a part's entry point, and init must propose tools/cli.js beside it instead. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/authored-caveat/packages/export/src/__tests__/table.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the authored-caveat fixture repository that packages/atlas/adapter/page-authored-caveat.test.js maps, where it must be read as a test, by exactly this name, that rewrites a committed table under docs/ through import.meta.dirname. It holds no test and is never meant to run."
     }
   ]
 }

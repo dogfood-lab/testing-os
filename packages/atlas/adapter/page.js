@@ -1419,10 +1419,16 @@ function authored(ctx) {
     .sort((a, b) => cmp(boundaryPlace(a), boundaryPlace(b)));
 }
 
+// Nothing the map names writes to these parts, but a write whose path is
+// built at run time could land anywhere, so the page says so rather than
+// that nothing writes to them.
 function authoredSection(ctx, boundaries) {
-  const body = boundaries.length > 0
-    ? `People write ${list(boundaries.map((boundary) => shownPlace(ctx, boundary)))}. Nothing in this repository writes to them.`
-    : 'No configuration or documentation part is left to people alone.';
+  const unnamed = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);
+  const people = `People write ${list(boundaries.map((boundary) => shownPlace(ctx, boundary)))}`;
+  const caveat = unnamed > 0
+    ? `${people}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`
+    : `${people}. Nothing in this repository writes to them.`;
+  const body = boundaries.length > 0 ? caveat : 'No configuration or documentation part is left to people alone.';
   return ['## Hand-authored', body].join('\n\n');
 }
 

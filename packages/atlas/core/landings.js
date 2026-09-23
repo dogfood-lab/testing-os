@@ -401,6 +401,8 @@ export function astLandings(language, root, path, places) {
     }
     const list = kind === 'write' ? found.writes : found.reads;
     if (values.some(outside)) found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
+    const before = list.length;
+    let unplaced = false;
     for (const value of values) {
       if (outside(value)) continue;
       if (value.text.includes('://')) {
@@ -410,7 +412,11 @@ export function astLandings(language, root, path, places) {
       }
       const target = landingOf(value, places);
       if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}) });
+      else if (value.open) unplaced = true;
     }
+    // A name built at run time beside nothing tracked (README.${lang}.md at
+    // the root) is a path the map cannot name, as a whole-path variable is.
+    if (unplaced && list.length === before && countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
   };
 
   const calls = [];
@@ -457,6 +463,7 @@ export function astLandings(language, root, path, places) {
 function landingEntry(target, call, value, places) {
   const entry = { target, call, confidence: confidenceOf(value, target, places) };
   if (value.anchor == null && !value.rooted) entry.relative = true;
+  if (value.anchor === 'file') entry.fixed = true;
   return entry;
 }
 
@@ -1326,7 +1333,16 @@ export function attachLandings({ files, doors, boundaries, places }) {
   const mapped = doors.filter((door) => !door.parseError);
   settleRelativePaths(files, mapped);
   const own = files.filter((file) => !isTestMaterial(file.path)).sort((a, b) => compare(a.path, b.path));
-  const byPath = new Map(own.map((file) => [file.path, file]));
+  // A test writes into temporary copies, except where the path is fixed to
+  // the test's own file and lands outside test material: a test rewriting a
+  // committed table under docs/ writes this repository. Only those writes
+  // are kept, and none of a test's reads.
+  const tests = files.filter((file) => isTestMaterial(file.path))
+    .map((file) => ({ path: file.path, reads: file.reads ?? [], writes: (file.writes ?? []).filter((write) => write.fixed && !isTestMaterial(write.target)) }))
+    .filter((file) => file.writes.length > 0)
+    .sort((a, b) => compare(a.path, b.path));
+  const byPath = new Map([...own, ...tests].map((file) => [file.path, file]));
+  for (const file of files) if (isTestMaterial(file.path)) file.writes = (file.writes ?? []).map(({ fixed, ...rest }) => rest);
 
   const writers = new Map();
   const readers = new Map();
@@ -1334,7 +1350,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     if (!map.has(target)) map.set(target, new Map());
     map.get(target).set(canonicalEntry(entry), entry);
   };
-  for (const file of own) {
+  for (const file of [...own, ...tests]) {
     for (const write of file.writes) {
       const entry = { by: file.path, confidence: write.confidence };
       if (stamps(file, write.target, places)) entry.stamps = true;
@@ -1447,9 +1463,9 @@ function settleRelativePaths(files, doors) {
       if (!Array.isArray(file[kind])) continue;
       const kept = [];
       for (const entry of file[kind]) {
-        const { relative, ...rest } = entry;
+        const { relative, fixed, ...rest } = entry;
         if (theirs && relative) file[count] = (file[count] ?? 0) + 1;
-        else kept.push(rest);
+        else kept.push(isTestMaterial(file.path) && fixed ? { ...rest, fixed } : rest);
       }
       file[kind] = sortEntries(kept);
     }

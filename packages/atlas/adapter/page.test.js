@@ -136,7 +136,7 @@ describe('atlas page', () => {
       '## Written but never read': '- **cache/state.json** is written by tools/cache.js and read by nothing else in this repository.',
       '## Helpers that look duplicated': '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.',
       '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
-      '## Hand-authored': 'People write .github/, policies/, the repository root and site/. Nothing in this repository writes to them.',
+      '## Hand-authored': 'People write .github/, policies/, the repository root and site/; 2 writes with paths built at run time may land here.',
       // tools/ingest.js imports lib/policy.js first; lib names no entry point,
       // and the file the door's code opens is named instead of lib/.
       '## Where to start': '.github/workflows/ingest.yml → tools/ingest.js → lib/policy.js → indexes/ → site/index.html',
@@ -347,7 +347,7 @@ describe('atlas page', () => {
     const plain = page(doors);
     assert.equal(
       section(plain.markdown, '## Hand-authored').split('\n')[2],
-      'People write .github/, policies/, the repository root and site/. Nothing in this repository writes to them.',
+      'People write .github/, policies/, the repository root and site/; 2 writes with paths built at run time may land here.',
     );
     assert.deepEqual(JSON.parse(plain.json).authored, ['.github/', 'policies/', 'root', 'site/']);
 
