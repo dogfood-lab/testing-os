@@ -23,22 +23,9 @@ const JS_WRITES = new Map([
 // is a longer camelCase name and not the call itself spelled differently.
 const JS_WRITE_SUFFIX = /[a-z](WriteFileSync|WriteFile|AppendFileSync|AppendFile)$/;
 const JS_READS = new Set(['readFileSync', 'readFile', 'readdirSync', 'readdir', 'existsSync', 'statSync', 'createReadStream']);
-// Calls whose path names a directory, made or listed. Any other call names a
-// file, and a file that is not tracked is still that file (landingOf).
-const DIRECTORY_CALLS = new Set([
-  'mkdirSync',
-  'mkdir',
-  'readdirSync',
-  'readdir',
-  'os.makedirs',
-  'os.mkdir',
-  'os.listdir',
-  'os.scandir',
-  'glob.glob',
-  'iterdir',
-  'glob',
-  'rglob',
-]);
+// Calls that read a file's content, as a writer does before it writes back
+// into the same file: a stamp. existsSync and statSync only look.
+const CONTENT_READS = new Set(['readFileSync', 'readFile', 'createReadStream', 'open', 'openSync', 'read_text', 'read_bytes']);
 const JS_OPEN = new Set(['open', 'openSync']);
 const NETWORK = new Set(['fetch', 'get']);
 const JS_PATH_MODULES = new Set(['path', 'posix', 'win32', 'path.posix', 'path.win32']);
@@ -410,7 +397,7 @@ export function astLandings(language, root, path, places) {
         for (const entry of rawUrls(value.text, places)) list.push({ ...entry, call, confidence: 'ast' });
         continue;
       }
-      const target = landingOf(value, places, { directory: DIRECTORY_CALLS.has(call) });
+      const target = landingOf(value, places);
       if (target != null) list.push(landingEntry(target, call, value, places));
     }
   };
@@ -1096,34 +1083,32 @@ function cap(values) {
 }
 
 /**
- * The place a value lands on. A value that names a tracked file or a tracked
- * directory lands there. A value written out in full that names a file lands
- * on that file even when the file is not tracked, so long as a tracked
- * directory holds it: a receipt a script writes beside itself at run time is
- * that receipt, and the page must not call the whole directory generated. A
- * directory the call makes or lists, a path ending in a slash, and a value
- * whose tail is built at run time name a directory, and land on the deepest
- * tracked directory their spelled-out text lies under. A path through a
- * dependency or build directory is not the repository's own, so it keeps to
- * the directory above as well.
+ * The place a value lands on: the path it spells out, the whole of it when it
+ * is written out in full, or the directory its last whole segment ends when
+ * its tail is built at run time (records/run- is records). That place is
+ * where the write goes whether or not it is tracked, so long as a tracked
+ * directory holds it: a receipt a script writes beside itself is that
+ * receipt, and output under an ignored proofs/output/ is proofs/output, never
+ * the tracked proofs/ above it. attachLandings marks the places that are not
+ * tracked. A path through a dependency or build directory is not the
+ * repository's own, so it keeps to the tracked directory above.
  *
  * @param {{ text: string, open: boolean }} value
  * @param {{ files: Set<string>, dirs: Set<string> }} places
- * @param {{ directory?: boolean }} [options] directory: the call names a directory
  */
-function landingOf(value, places, { directory = false } = {}) {
+function landingOf(value, places) {
   let text = value.text.replaceAll('\\', '/');
   if (text.startsWith('/')) return null;
   while (text.startsWith('./')) text = text.slice(2);
   if (!value.open) {
     text = posix.normalize(text);
     if (text === '..' || text.startsWith('../')) return null;
-    const bare = text.replace(/\/+$/, '');
-    if (places.files.has(bare) || places.dirs.has(bare)) return bare;
-    const named = !directory && bare === text && !text.split('/').some((part) => part === 'node_modules' || part === 'dist');
-    if (named && holdingDirectory(text, places) != null) return text;
   }
-  return holdingDirectory(text, places);
+  const spelled = value.open ? text.slice(0, Math.max(text.lastIndexOf('/'), 0)) : text.replace(/\/+$/, '');
+  if (spelled === '') return null;
+  if (places.files.has(spelled) || places.dirs.has(spelled)) return spelled;
+  if (spelled.split('/').some((part) => part === 'node_modules' || part === 'dist')) return holdingDirectory(text, places);
+  return holdingDirectory(spelled, places) != null ? spelled : null;
 }
 
 function holdingDirectory(text, places) {
@@ -1312,19 +1297,36 @@ export function attachLandings({ files, doors, boundaries, places }) {
     map.get(target).set(canonicalEntry(entry), entry);
   };
   for (const file of own) {
-    for (const write of file.writes) add(writers, write.target, { by: file.path, confidence: write.confidence });
+    for (const write of file.writes) {
+      const entry = { by: file.path, confidence: write.confidence };
+      if (stamps(file, write.target, places)) entry.stamps = true;
+      add(writers, write.target, entry);
+    }
   }
   for (const door of mapped) {
     door.stagedTargets = stagedTargets(door.stages, places);
     for (const target of door.stagedTargets) add(writers, target, { by: door.file });
     for (const mention of door.mentions) add(readers, mention.path, { by: door.file });
   }
+  // A place that is not tracked is output the repository does not keep (an
+  // ignored directory, a file made at run time), unless a door commits it or
+  // it lands in a directory the repository tracks only through a placeholder,
+  // which is kept for exactly that output (reports/.gitkeep).
+  const committed = mapped.flatMap((door) => door.stagedTargets);
+  const untracked = new Set([...writers.keys(), ...readers.keys()].filter((target) => (
+    !places.files.has(target) && !places.dirs.has(target) && !keptForOutput(target, places)
+    && !committed.some((staged) => target === staged || target.startsWith(`${staged}/`))
+  )));
   const spans = partsSpanned(boundaries, [...writers.keys(), ...readers.keys()], places);
   // A text file inside a place something writes is that writer's output: the
   // paths an index or a roadmap names are its data, not places it reads.
   const strong = new Set([...writers]
-    .filter(([target, entries]) => !spans.has(target) && [...entries.values()].some((entry) => entry.confidence !== 'weak'))
+    .filter(([target, entries]) => !spans.has(target) && !untracked.has(target) && [...entries.values()].some((entry) => entry.confidence !== 'weak'))
     .map(([target]) => target));
+  // A tracked file whose every writer reads it first holds a block a script
+  // stamps (a version line); people write the rest, so it never makes its
+  // part generated.
+  const stamped = new Set([...strong].filter((target) => [...writers.get(target).values()].every((entry) => entry.stamps)));
   const output = (path) => [...strong].some((target) => path === target || path.startsWith(`${target}/`));
   for (const file of own) {
     const generated = file.reads.some((read) => read.confidence === 'text') && output(file.path);
@@ -1339,7 +1341,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     for (const path of door.reachFiles ?? []) {
       for (const write of byPath.get(path)?.writes ?? []) if (write.confidence !== 'weak') targets.add(write.target);
     }
-    door.landings = [...targets].filter((target) => !spans.has(target)).sort(compare);
+    door.landings = [...targets].filter((target) => !spans.has(target) && !untracked.has(target)).sort(compare);
     const found = new Map();
     for (const target of door.landings) {
       for (const [place, entries] of readers) {
@@ -1353,11 +1355,12 @@ export function attachLandings({ files, doors, boundaries, places }) {
     delete door.stagedTargets;
   }
 
-  for (const boundary of boundaries) boundary.origin = originOf(boundary, strong, places);
+  for (const boundary of boundaries) boundary.origin = originOf(boundary, strong, stamped, places);
 
   return [...new Set([...writers.keys(), ...readers.keys()])].sort(compare).map((target) => {
     const landing = { target, writers: sortedValues(writers.get(target)), readers: sortedValues(readers.get(target)) };
     if (spans.has(target)) landing.spans = spans.get(target);
+    if (untracked.has(target)) landing.tracked = false;
     return landing;
   });
 }
@@ -1425,7 +1428,7 @@ const PLACEHOLDER = /(^|\/)\.(gitkeep|keep)$/;
 // root or every one of its files is written, a placeholder aside, and none of
 // its own files write: a directory of written files beside a .gitkeep is
 // generated as surely as one whose files are all tracked.
-function originOf(boundary, written, places) {
+function originOf(boundary, written, stamped, places) {
   const paths = boundary.files.map((file) => file.path);
   const root = boundaryRoot(boundary.globs);
   const holds = picomatch(boundary.globs, { dot: true });
@@ -1437,9 +1440,24 @@ function originOf(boundary, written, places) {
   });
   if (inside.length === 0) return 'authored';
   const content = paths.filter((path) => !PLACEHOLDER.test(path));
-  const covered = (root !== '' && written.has(root)) || (paths.length > 0 && content.every((path) => written.has(path)));
+  const made = (path) => written.has(path) && !stamped.has(path);
+  const covered = (root !== '' && made(root)) || (paths.length > 0 && content.every(made));
   const writesItself = boundary.files.some((file) => !isTestMaterial(file.path) && (file.writes?.length ?? 0) > 0);
   return covered && !writesItself ? 'generated' : 'mixed';
+}
+
+function keptForOutput(target, places) {
+  for (let end = target.lastIndexOf('/'); end > 0; end = target.lastIndexOf('/', end - 1)) {
+    const dir = target.slice(0, end);
+    if (places.dirs.has(dir)) return places.files.has(`${dir}/.gitkeep`) || places.files.has(`${dir}/.keep`);
+  }
+  return false;
+}
+
+// The writer reads the tracked file's content before it writes the file.
+function stamps(file, target, places) {
+  if (!places.files.has(target)) return false;
+  return (file.reads ?? []).some((read) => read.target === target && CONTENT_READS.has(read.call));
 }
 
 // What follows git add, normalised as a path: a glob stops the path where the

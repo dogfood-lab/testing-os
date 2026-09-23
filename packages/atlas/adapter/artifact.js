@@ -262,6 +262,7 @@ function carryLandings(landings) {
       readers: landing.readers.filter((entry) => !inAtlas(entry.by)).map(carryReader),
       ...(landing.spans ? { spans: landing.spans } : {}),
       target: landing.target,
+      ...(landing.tracked === false ? { tracked: false } : {}),
       writers: landing.writers.filter((entry) => !inAtlas(entry.by)).map(carryWriter),
     }))
     .filter((landing) => landing.readers.length > 0 || landing.writers.length > 0);
@@ -270,6 +271,7 @@ function carryLandings(landings) {
 function carryWriter(entry) {
   const out = { by: entry.by };
   if (entry.confidence != null) out.confidence = entry.confidence;
+  if (entry.stamps) out.stamps = true;
   return out;
 }
 

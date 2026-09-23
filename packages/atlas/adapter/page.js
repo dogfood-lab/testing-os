@@ -155,12 +155,15 @@ function facts({ structure, statistics }) {
     // A weak landing is a bare file name under a root the engine could not
     // read; it stays in the artifact, and the page states nothing from it. A
     // landing that spans parts (packages/ above every package) is where the
-    // parts live, not a place one of them writes, and is left out the same way.
-    landings: (structure.landings ?? []).filter((landing) => !landing.spans).map((landing) => ({
+    // parts live, not a place one of them writes, and is left out the same way,
+    // and so is a place the repository does not track: output nobody keeps.
+    landings: (structure.landings ?? []).filter((landing) => !landing.spans && landing.tracked !== false).map((landing) => ({
       target: landing.target,
       writers: (landing.writers ?? []).filter(strong),
       readers: (landing.readers ?? []).filter(strong),
     })),
+    untrackedWrites: (structure.landings ?? []).filter((landing) => landing.tracked === false)
+      .reduce((sum, landing) => sum + (landing.writers ?? []).filter(strong).length, 0),
   };
 }
 
@@ -999,7 +1002,10 @@ function writtenPlaces(ctx) {
     const reads = inside.flatMap((landing) => landing.readers)
       .filter((entry) => !quotedOnly(entry) && (entry.call != null || !writers.includes(entry.by)));
     const readers = readerFiles(reads).filter((reader) => !under(reader.path, target));
-    return { target, writers, readers };
+    // Every writer reading the file first is a script stamping a block of a
+    // file people write, not a generator of the file.
+    const stamped = inside.length > 0 && inside.every((landing) => landing.writers.length > 0 && landing.writers.every((entry) => entry.stamps));
+    return { target, writers, readers, ...(stamped ? { stamped: true } : {}) };
   });
 }
 
@@ -1239,7 +1245,7 @@ function untestedSection(found) {
 function unread(ctx) {
   const written = writtenPlaces(ctx);
   const all = written
-    .filter((place) => place.readers.every((reader) => place.writers.includes(reader.path)))
+    .filter((place) => !place.stamped && place.readers.every((reader) => place.writers.includes(reader.path)))
     .map((place) => ({
       place: ctx.place(place.target),
       writers: collapse(ctx, place.writers.map((path) => ({ path, text: path }))),
@@ -1350,7 +1356,7 @@ function generated(ctx) {
   for (const place of written) {
     if (claimed.some((inside) => inside(place.target))) continue;
     const target = ctx.place(place.target);
-    items.push({ place: target, shown: target, writers: place.writers });
+    items.push({ place: target, shown: target, writers: place.writers, ...(place.stamped ? { block: true } : {}) });
   }
   return items
     .sort((a, b) => cmp(a.place, b.place))
@@ -1359,9 +1365,11 @@ function generated(ctx) {
 
 function generatedSection(ctx, items) {
   const body = items.length > 0
-    ? items.map((item) => (item.writers.length > 0
-      ? `- **${item.shown}** is written by ${list(worded(item.writers, ctx.shown))}.`
-      : `- **${item.shown}** is written by code this map cannot name.`)).join('\n')
+    ? items.map((item) => {
+      if (item.writers.length === 0) return `- **${item.shown}** is written by code this map cannot name.`;
+      const by = list(worded(item.writers, ctx.shown));
+      return item.block ? `- **${item.shown}** has a block written by ${by}.` : `- **${item.shown}** is written by ${by}.`;
+    }).join('\n')
     : 'Nothing in this repository writes to a tracked place this map can see.';
   return ['## Generated, never hand-edited', body].join('\n\n');
 }
@@ -1583,6 +1591,9 @@ function limits(ctx, shownText) {
   const dynamicReads = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicReads ?? 0), 0);
   if (dynamicWrites + dynamicReads > 0) {
     lines.push(`${count(dynamicWrites, 'write')} and ${count(dynamicReads, 'read')} use paths built at run time and are not named here.`);
+  }
+  if (ctx.untrackedWrites > 0) {
+    lines.push(`${count(ctx.untrackedWrites, 'write')} ${ctx.untrackedWrites === 1 ? 'goes' : 'go'} to places this repository does not track, so ${ctx.untrackedWrites === 1 ? 'it is' : 'they are'} not listed as generated.`);
   }
   const outsideWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.outsideWrites ?? 0), 0);
   const outsideReads = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.outsideReads ?? 0), 0);
@@ -1818,7 +1829,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesLead: duplicated.lead,
     duplicatesNote: duplicated.note,
     edges: breakEdges(ctx, breakEntries),
-    generated: generatedItems.map((item) => ({ place: item.place, writers: worded(item.writers, id) })),
+    generated: generatedItems.map((item) => ({ ...(item.block ? { block: true } : {}), place: item.place, writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
     mainDoor: main ? doorKey(main) : null,

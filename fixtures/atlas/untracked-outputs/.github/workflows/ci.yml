@@ -1,0 +1,11 @@
+name: CI
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  proofs:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node proofs/run.mjs
+      - run: node scripts/build-metrics.mjs
+      - run: node scripts/sync-version.mjs
