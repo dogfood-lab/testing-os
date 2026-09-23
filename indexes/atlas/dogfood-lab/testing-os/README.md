@@ -1,14 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 86e7a5c.
+Mapped at 2026-09-23 from commit 7763ba2.
 
 ## What this is
 
 22 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts.
 
-## What changed since 2026-09-23 (9179d87)
+## What changed since 2026-09-23 (91b3584)
 
-Nothing structural changed since 2026-09-23; 1 file added and 4 changed content.
+Nothing structural changed since 2026-09-23; no file changed.
 
 ## What comes in
 
@@ -72,7 +72,7 @@ Nothing structural changed since 2026-09-23; 1 file added and 4 changed content.
 
 No two source files, other than a file and its own test, changed together often enough to name.
 
-1 file changed together with its own test, as expected.
+2 files changed together with their own tests, as expected.
 
 Window: 180 days; a pair counts from 10 shared commits.
 
@@ -113,8 +113,9 @@ Read those in order to follow one dogfood submission end to end.
 
 ## What this map cannot see
 
-- 31 import sites did not resolve.
-- 27 writes and 186 reads use paths built at run time and are not named here.
+- 2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.
+- 30 import sites could not be resolved.
+- 27 writes and 187 reads use paths built at run time and are not named here.
 - Readers marked (found by text) come from scanning unparsed files.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

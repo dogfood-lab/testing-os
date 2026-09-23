@@ -104,32 +104,32 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 1,
-      "changed": 4,
+      "added": 0,
+      "changed": 0,
       "moved": 0,
-      "parts": 3,
+      "parts": 0,
       "removed": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-23; 1 file added and 4 changed content.",
+        "sentence": "Nothing structural changed since 2026-09-23; no file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "9179d871a67dcc0e5f3689a45b81a212d4486de6",
-      "generatedAt": "2026-09-23T10:26:21.541Z"
+      "commit": "91b3584e042f90d5a34234f7164fea24f6cbfcc4",
+      "generatedAt": "2026-09-23T11:35:06.368Z"
     },
     "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
-    "1 file changed together with its own test, as expected.",
+    "2 files changed together with their own tests, as expected.",
     "Window: 180 days; a pair counts from 10 shared commits."
   ],
-  "changesTogetherWithTests": 1,
-  "commit": "86e7a5cc67f65bc4ebc70952c48471cf51b61410",
+  "changesTogetherWithTests": 2,
+  "commit": "7763ba2cfba519f57c5f86f828f0196c45d19ccc",
   "doors": [
     {
       "file": ".github/workflows/ingest.yml",
@@ -202,7 +202,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 25
+          "files": 26
         },
         {
           "boundary": "scripts",
@@ -461,10 +461,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T10:39:29.736Z",
+  "generatedAt": "2026-09-23T11:47:58.051Z",
   "limits": [
-    "31 import sites did not resolve.",
-    "27 writes and 186 reads use paths built at run time and are not named here.",
+    "2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
+    "30 import sites could not be resolved.",
+    "27 writes and 187 reads use paths built at run time and are not named here.",
     "Readers marked (found by text) come from scanning unparsed files."
   ],
   "mainDoor": ".github/workflows/ingest.yml",
@@ -715,16 +716,16 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 526,
+  "testFiles": 530,
   "testedBy": {
-    "atlas": 22,
+    "atlas": 25,
     "dogfood-swarm": 280,
-    "findings": 118,
+    "findings": 119,
     "ingest": 59,
     "portfolio": 19,
-    "report": 20,
+    "report": 22,
     "schemas": 79,
-    "scripts": 15,
+    "scripts": 16,
     "site": 1,
     "verify": 71
   },
@@ -738,5 +739,6 @@
   ],
   "unreadNote": [],
   "untested": [],
-  "untestedNote": []
+  "untestedNote": [],
+  "written": 5
 }
