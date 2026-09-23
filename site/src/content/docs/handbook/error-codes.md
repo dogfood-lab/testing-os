@@ -672,10 +672,7 @@ Every failure names what changed and what to do; the second line is never option
 | `ATLAS_STRUCTURE_DRIFT` | 1 | HIGH | `adapter/check.js` |
 | `ATLAS_UNASSIGNED_NEW` | 1 | HIGH | `adapter/check.js` |
 | `ATLAS_FILE_MOVED` | 1 | HIGH | `adapter/check.js` |
-| `ATLAS_ACCEPTED_UNAUTHORED` | 1 | HIGH | `adapter/ladder.js` |
-| `ATLAS_DEFERRED_WITHOUT_REASON` | 1 | HIGH | `adapter/ladder.js` |
 | `ATLAS_STATISTICS_UNDATED` | 1 | HIGH | `adapter/commands.js` |
-| `ATLAS_MACHINE_HASH_MISMATCH` | 1 | CRITICAL | `adapter/commands.js` |
 
 ### `ATLAS_BOUNDARY_FILE_INVALID`
 
@@ -683,7 +680,7 @@ Every failure names what changed and what to do; the second line is never option
 `atlas/boundaries.yaml` exists but does not validate. Nothing was mapped or checked.
 :::
 
-- **Trigger:** unreadable file, invalid YAML, an unknown field at either level, a missing or duplicate `name`, `globs` that is not an array of strings, a `status` outside `proposed | accepted | deferred`, a `role` outside `code | test | docs | config`, or `why_from` / `will_break_from` outside `derived | human`.
+- **Trigger:** unreadable file, invalid YAML, an unknown field at either level, a missing or duplicate `name`, `globs` that is not an array of strings, or a `role` outside `code | test | docs | config`. The fields of the retired acceptance ladder (`status`, `reason`, `why_from`, `will_break`, `will_break_from`, `start_here`, `machine_budget`) are not errors: they are ignored, and `atlas map` prints one notice naming them.
 - **Message shape:** `what changed:` names the one field, e.g. `boundaries[3].role must be code, test, docs, or config`.
 - **Operator action:** fix the named field. The validator reports the first problem it meets; run again for the next.
 
@@ -694,7 +691,7 @@ Every failure names what changed and what to do; the second line is never option
 :::
 
 - **Trigger:** `atlas map` in a repository that has never run `atlas init`.
-- **Operator action:** run `atlas init` to propose a boundary file, edit its derived sentences into your own words, then `atlas map`.
+- **Operator action:** run `atlas init` to propose a boundary file, then `atlas map`. The page is written from the repository itself; `summary` is the one line a person may add or correct.
 
 ### `ATLAS_INIT_WOULD_OVERWRITE`
 
@@ -702,8 +699,8 @@ Every failure names what changed and what to do; the second line is never option
 `atlas init` found a boundary file a human has touched and refused to regenerate it.
 :::
 
-- **Trigger:** `atlas/boundaries.yaml` exists, and either `--force` was not given, or it was given but some boundary is `accepted` or `deferred`, or some `why_from` / `will_break_from` is `human`. A human's pen is not overwritten by a flag.
-- **Operator action:** edit the file by hand, or delete it and run `init` again if you truly want a fresh proposal. `--force` regenerates only a file every field of which is still machine-derived.
+- **Trigger:** `atlas/boundaries.yaml` exists, and either `--force` was not given, or it was given but a person has written the `summary` or marked a boundary in an older file. A human's pen is not overwritten by a flag.
+- **Operator action:** edit the file by hand, or delete it and run `init` again if you truly want a fresh proposal. `--force` regenerates only a file nobody has written in.
 
 ### `ATLAS_NOT_MAPPED`
 
@@ -727,11 +724,11 @@ One tracked file matches the globs of more than one boundary. Ownership is ambig
 ### `ATLAS_BOUNDARY_EMPTY`
 
 :::caution[Severity: HIGH]
-An `accepted` boundary matches no tracked file. Its globs are stale, or the boundary is.
+A named boundary matches no tracked file. Its globs are stale, or the boundary is.
 :::
 
 - **Trigger:** typically a directory rename. The files reappear elsewhere as unassigned; the old boundary stays behind with nothing in it.
-- **Operator action:** update the boundary's globs to the new location, or mark it `deferred` with a reason, or remove it. Then `atlas map` and commit.
+- **Operator action:** update the boundary's globs to the new location, or remove the boundary. Then `atlas map` and commit.
 
 ### `ATLAS_STRUCTURE_DRIFT`
 
@@ -739,7 +736,7 @@ An `accepted` boundary matches no tracked file. Its globs are stale, or the boun
 The boundary-level graph recomputed from this tree differs from the committed `atlas/structure.json`.
 :::
 
-- **Trigger:** one of: a boundary's name, status, role or globs changed; a **new** dependency pair between two boundaries appeared, or one vanished; an entry point changed; a boundary's unresolved-import count changed; the submodule set changed; a committed submodule vanished; or `atlas/structure.json` was edited by hand. Adding a file inside a glob that already claims it, or a second import along a pair that already exists, does **not** trigger this.
+- **Trigger:** one of: a boundary's name, role or globs changed; a **new** dependency pair between two boundaries appeared, or one vanished; an entry point changed; a boundary's unresolved-import count changed; the submodule set changed; a committed submodule vanished; or `atlas/structure.json` was edited by hand. Adding a file inside a glob that already claims it, or a second import along a pair that already exists, does **not** trigger this.
 - **Message shape:** `what changed:` names the concrete item — `boundary edge findings → report is not in the committed map`, `entry point for ingest changed`, and so on.
 - **Operator action:** if the change is intended, run `atlas map` and commit `atlas/`; the committed map is meant to move with the code. If it is not, revert the change. A new edge between boundaries is the architectural event this check exists to make you acknowledge.
 
@@ -761,24 +758,6 @@ A file that the committed roster placed in one boundary is now in another.
 - **Trigger:** either the same path now matches a different boundary (a glob edit), or a new path whose content hash matches a disappeared roster entry (≥ 100 bytes) sits in a different boundary (a move). Genuinely new content inside a claiming glob is not a move.
 - **Operator action:** if the move is intended, `atlas map` and commit; the roster follows the code. If not, put the file back.
 
-### `ATLAS_ACCEPTED_UNAUTHORED`
-
-:::caution[Severity: HIGH]
-A boundary was flipped to `accepted` while its authored fields are still empty or still machine-derived.
-:::
-
-- **Trigger:** on an `accepted` boundary, any of: `reason` empty; `why_from` absent or `derived`; `will_break` empty; `will_break_from` absent or `derived`; `reason` or `will_break` byte-for-byte equal to the template `init` would derive right now (flipping the flag over the machine's own sentence is not authoring); or `start_here` empty with no derived entry point for the boundary.
-- **Message shape:** every failing boundary and field in one message.
-- **Operator action:** write the sentence in your own words and set the `_from` field to `human`, or set the boundary back to `proposed`. Proposed boundaries have no authored-field requirement; that is what lets a fleet adopt Atlas without reddening anything.
-
-### `ATLAS_DEFERRED_WITHOUT_REASON`
-
-:::caution[Severity: HIGH]
-A boundary is `deferred` with no `reason`. Deferral is a human decision and needs a sentence.
-:::
-
-- **Operator action:** add the reason, or set the boundary to `proposed`.
-
 ### `ATLAS_STATISTICS_UNDATED`
 
 :::caution[Severity: HIGH]
@@ -787,16 +766,6 @@ A boundary is `deferred` with no `reason`. Deferral is a human decision and need
 
 - **Trigger:** a statistical artifact without a date. The check never fails because a date is **old** — statistics are dated snapshots, and their age is shown on every page rather than gated — but a statistical section must say when it was computed.
 - **Operator action:** run `atlas map` and commit; the artifact it writes is always dated.
-
-### `ATLAS_MACHINE_HASH_MISMATCH`
-
-:::danger[Severity: CRITICAL]
-The SHA-256 recorded in `atlas/machine.md` does not match the bytes of `atlas/machine-stats.txt`. One of the two committed files was edited apart from the other.
-:::
-
-- **Trigger:** `atlas check` hashes the committed statistics file and compares it to the hash on the third line of the committed Machine profile. `atlas map` always writes the pair together, so a mismatch means a hand edit — or one file committed without the other. Either file absent while the other is present also fails here; both absent passes, so trees from before the renders existed still pass.
-- **Why CRITICAL:** the Machine profile's withdraw rule points an automated reader at numbers by hash. A mismatch means the rule and the numbers no longer describe the same file, which is worse than either being stale.
-- **Operator action:** do not edit generated files. Run `atlas map` and commit all six files it writes.
 
 ## Cross-references
 
