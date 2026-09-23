@@ -1,0 +1,8 @@
+name: Web
+on:
+  workflow_dispatch:
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node web/run.js

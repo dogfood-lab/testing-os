@@ -349,6 +349,30 @@ test('more than twelve steps list twelve and count the rest', () => {
   assert.equal(listed.at(-1), 'step 11, and 2 more');
 });
 
+test('a method is named with the class it is called on, and parts read as "the tests part"', () => {
+  const steps = [
+    { name: 'Trainer', part: 'backpropagate', partLabel: 'backpropagate', phrase: 'trainer' },
+    { name: 'train', part: 'backpropagate', partLabel: 'backpropagate', phrase: 'train', receiver: 'Trainer' },
+  ];
+  const fixture = {
+    ...page,
+    sequences: [{ entry: 'main', file: 'scripts/smoke.py', inner: [], part: 'scripts', phrase: 'main', steps }],
+    changesTogether: [
+      { a: 'backpropagate/cli.py', b: 'tests/test_cli.py', either: 4, partLabels: ['backpropagate', 'tests'], parts: ['backpropagate', 'tests'], relation: 'b-imports-a', shared: 3 },
+      { a: 'README.md', b: 'backpropagate/cli.py', either: 4, partLabels: ['the repository root', 'backpropagate'], parts: ['root', 'backpropagate'], relation: 'a-imports-b', shared: 3 },
+    ],
+  };
+  const html = render.renderPage(fixture, { repo: page.repo });
+  assert.ok(plain(happensSection(html)).includes('main does, in order: trainer (backpropagate) and train (Trainer).'));
+  assert.ok(plain(html).includes('changed together in 3 of 4 commits, and the tests part imports the backpropagate part.'));
+  assert.ok(plain(html).includes('changed together in 3 of 4 commits, and the repository root imports the backpropagate part.'));
+});
+
+test('with nothing written, the never-read section says so rather than that every place is read', () => {
+  const html = render.renderPage({ ...page, unread: [], unreadNote: [], written: 0 }, { repo: page.repo });
+  assert.ok(html.includes('<h2>Written but never read</h2>\n<p>No place this map can see is written, so none goes unread.</p></section>'));
+});
+
 test('a page.json without sequences renders the section as before', () => {
   const { sequences, ...older } = page;
   assert.ok(Array.isArray(sequences) && sequences.length > 0, 'this repository has sequences to leave out');

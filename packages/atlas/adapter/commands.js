@@ -137,6 +137,13 @@ export function checkCommand(cwd) {
   if (!boundary.ok) return failBoundary(boundary);
   process.stdout.write(ignoredNotice(boundary));
   const structurePath = join(repo, 'atlas', 'structure.json');
+  // A map on disk that git has never held is this run's own output, not a
+  // committed map; comparing against it would report a match that means
+  // nothing.
+  if (existsSync(structurePath) && !committedAtHead(repo, 'atlas/structure.json')) {
+    process.stdout.write('atlas check\n  no committed map; nothing to check against\n');
+    return 0;
+  }
   if (!existsSync(structurePath)) {
     process.stdout.write(
       formatFailure('ATLAS_NOT_MAPPED', ['atlas/structure.json is absent'], {
@@ -278,6 +285,10 @@ function committedMap(repo) {
   const structure = committedJson(repo, 'atlas/structure.json');
   if (!structure) return null;
   return { structure, statistics: committedJson(repo, 'atlas/statistics.json') };
+}
+
+function committedAtHead(repo, path) {
+  return spawnSync('git', ['cat-file', '-e', `HEAD:${path}`], { cwd: repo, encoding: 'utf8' }).status === 0;
 }
 
 function committedJson(repo, path) {

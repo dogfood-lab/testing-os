@@ -72,6 +72,10 @@ const PY_SCOPES = new Set(['function_definition', 'lambda']);
 const PY_NESTED = new Set(['function_definition', 'class_definition', 'lambda']);
 
 const TEXT_SCANNED = new Set(['.html', '.htm', '.yml', '.yaml', '.md', '.json', '.sh', '.bash']);
+const SHELL = new Set(['.sh', '.bash']);
+const SHELL_WRITERS = new Set(['tee']);
+const SHELL_MOVERS = new Set(['mv', 'cp']);
+const SHELL_READERS = new Set(['cat', 'source', '.']);
 const RAW_URL = /raw\.githubusercontent\.com\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)\/([^/\s'"`<>]+)\/([^\s'"`<>?#)]*)/g;
 const TEST_FILE = /(\.(test|spec)\.[cm]?[jt]sx?|^test_[^/]*\.py|_test\.py)$/;
 const TEST_DIRS = new Set(['test', 'tests', '__tests__', 'fixtures', '__fixtures__', 'testdata']);
@@ -124,6 +128,53 @@ export function isTestFile(path) {
   return TEST_NAMED.test(parts[parts.length - 1]);
 }
 
+// Where a test lives apart from the file it tests: Python keeps tests/ beside
+// the package, and a JavaScript package may keep test/ or spec/ beside src/.
+const TEST_HOMES = new Set(['test', 'tests', '__tests__', 'spec']);
+const SCRIPT_EXTENSIONS = new Set(['.js', '.mjs', '.cjs', '.jsx', '.ts', '.mts', '.cts', '.tsx']);
+
+function testedName(path) {
+  const slash = path.lastIndexOf('/');
+  const dir = path.slice(0, slash + 1);
+  const base = path.slice(slash + 1);
+  const dot = base.indexOf('.');
+  const stem = dot === -1 ? base : base.slice(0, base.lastIndexOf('.'));
+  const extension = dot === -1 ? '' : base.slice(base.lastIndexOf('.')).toLowerCase();
+  const marked = /^(.+)(?:\.test|\.spec|_test)$/.exec(stem) ?? /^test_(.+)$/.exec(stem);
+  return { dir, stem, extension, tested: marked ? marked[1] : null };
+}
+
+function sameFamily(a, b) {
+  return a === b || (SCRIPT_EXTENSIONS.has(a) && SCRIPT_EXTENSIONS.has(b));
+}
+
+/**
+ * Whether test is file's own test: a name with a test marker (page.test.js,
+ * foo_test.py, test_trainer.py) whose bare name is the file's, in the same
+ * language, beside the file or anywhere under a directory named test, tests,
+ * __tests__ or spec. tests/test_trainer.py is backpropagate/trainer.py's.
+ *
+ * @param {string} test
+ * @param {string} file
+ */
+export function isOwnTest(test, file) {
+  const t = testedName(test);
+  const f = testedName(file);
+  if (t.tested == null || f.tested != null || t.tested !== f.stem || !sameFamily(t.extension, f.extension)) return false;
+  if (t.dir === f.dir) return true;
+  return t.dir.split('/').some((part) => TEST_HOMES.has(part));
+}
+
+/** The bare name a test file is named for (trainer for test_trainer.py), or null. */
+export function testedStem(path) {
+  return testedName(path).tested;
+}
+
+/** Either of two files is the other's own test. */
+export function ownTestPair(a, b) {
+  return isOwnTest(a, b) || isOwnTest(b, a);
+}
+
 export function noLandings() {
   return { writes: [], dynamicWrites: 0, reads: [], dynamicReads: 0 };
 }
@@ -144,7 +195,157 @@ export function textLandings(path, bytes, places) {
     }
   }
   for (const entry of rawUrls(source, places)) reads.push({ ...entry, confidence: 'text' });
-  return { writes: [], dynamicWrites: 0, reads: sortEntries(reads), dynamicReads: 0 };
+  const shell = SHELL.has(extname(path).toLowerCase()) ? shellLandings(source, places) : { writes: [], reads: [] };
+  reads.push(...shell.reads);
+  return { writes: sortEntries(shell.writes), dynamicWrites: 0, reads: sortEntries(reads), dynamicReads: 0 };
+}
+
+/**
+ * What a shell script writes and reads, found by reading its commands as the
+ * shell splits them. A redirection out (> or >>), tee, and the last argument
+ * of mv or cp write; a redirection in (<), cat and source read, and so does
+ * any other argument that names a tracked file, as a quoted path does in any
+ * text file. Paths are taken from the repository root, where scripts that
+ * name repository files run. A word holding a variable or a glob names no
+ * fixed place and is skipped; a here-document's body is another program's
+ * text and is not read as commands. Everything found is text confidence.
+ */
+function shellLandings(source, places) {
+  const writes = [];
+  const reads = [];
+  const write = (word, call) => {
+    if (!word?.fixed) return;
+    const target = landingOf(closed(word.text), places);
+    if (target != null) writes.push({ target, call, confidence: 'text' });
+  };
+  const read = (word, call) => {
+    if (!word?.fixed) return;
+    const target = literalPlace(word.text, places);
+    if (target != null) reads.push({ target, call, confidence: 'text' });
+  };
+  let heredoc = null;
+  for (const line of source.replace(/\\\r?\n/g, ' ').split(/\r?\n/)) {
+    if (heredoc != null) {
+      if (line.trim() === heredoc) heredoc = null;
+      continue;
+    }
+    for (const command of shellCommands(shellTokens(line))) {
+      const words = [];
+      for (let i = 0; i < command.length; i += 1) {
+        const token = command[i];
+        if (token.type === 'word') {
+          words.push(token);
+          continue;
+        }
+        const target = command[i + 1]?.type === 'word' ? command[i + 1] : null;
+        i += 1;
+        if (token.text === '<<' || token.text === '<<-') {
+          if (target) heredoc = target.text;
+          continue;
+        }
+        if (token.text.endsWith('&') || token.text === '<<<') continue;
+        if (token.text.startsWith('>') || token.text.startsWith('&>')) write(target, token.text.replace(/^&/, ''));
+        else if (token.text === '<') read(target, '<');
+      }
+      let start = 0;
+      while (start < words.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(words[start].text)) start += 1;
+      const name = words[start]?.text;
+      const args = words.slice(start + 1).filter((word) => !word.text.startsWith('-'));
+      if (SHELL_WRITERS.has(name)) {
+        for (const arg of args) write(arg, name);
+        continue;
+      }
+      let rest = args;
+      if (SHELL_MOVERS.has(name) && args.length >= 2) {
+        write(args[args.length - 1], name);
+        rest = args.slice(0, -1);
+      }
+      for (const arg of rest) read(arg, SHELL_READERS.has(name) ? name : 'literal');
+    }
+  }
+  return { writes, reads };
+}
+
+// One line as the shell tokenizes it: words (unquoted, with fixed false when
+// a variable, a command substitution or a glob is in them), redirection
+// operators with any file descriptor before them, and the operators that end
+// a command. A # at the start of a word begins a comment.
+function shellTokens(line) {
+  const tokens = [];
+  let word = null;
+  let quote = null;
+  const begin = () => {
+    word ??= { type: 'word', text: '', fixed: true };
+  };
+  const flush = () => {
+    if (word) tokens.push(word);
+    word = null;
+  };
+  for (let i = 0; i < line.length; i += 1) {
+    const char = line[i];
+    if (quote) {
+      if (char === quote) quote = null;
+      else if (quote === '"' && char === '\\' && i + 1 < line.length) word.text += line[++i];
+      else {
+        if (quote === '"' && (char === '$' || char === '`')) word.fixed = false;
+        word.text += char;
+      }
+      continue;
+    }
+    if (char === "'" || char === '"') {
+      begin();
+      quote = char;
+      continue;
+    }
+    if (char === '#' && word == null) break;
+    if (char === '\\' && i + 1 < line.length) {
+      begin();
+      word.text += line[++i];
+      continue;
+    }
+    if (char === ' ' || char === '\t') {
+      flush();
+      continue;
+    }
+    if (char === '&' && line[i + 1] === '>') {
+      flush();
+      const op = line[i + 2] === '>' ? '&>>' : '&>';
+      tokens.push({ type: 'redirect', text: op });
+      i += op.length - 1;
+      continue;
+    }
+    if (char === ';' || char === '|' || char === '&' || char === '(' || char === ')') {
+      flush();
+      if ((char === '|' || char === '&') && line[i + 1] === char) i += 1;
+      tokens.push({ type: 'end' });
+      continue;
+    }
+    if (char === '>' || char === '<') {
+      if (word && word.fixed && /^\d+$/.test(word.text)) word = null;
+      else flush();
+      let op = char;
+      while (line[i + 1] === char && op.length < 3) op += line[++i];
+      if (op === '<<' && line[i + 1] === '-') op += line[++i];
+      if (line[i + 1] === '&') op += line[++i];
+      else if (char === '>' && line[i + 1] === '|') i += 1;
+      tokens.push({ type: 'redirect', text: op });
+      continue;
+    }
+    begin();
+    if ('$`*?[{~'.includes(char)) word.fixed = false;
+    word.text += char;
+  }
+  flush();
+  return tokens;
+}
+
+function shellCommands(tokens) {
+  const commands = [[]];
+  for (const token of tokens) {
+    if (token.type === 'end') commands.push([]);
+    else commands[commands.length - 1].push(token);
+  }
+  return commands.filter((command) => command.length > 0);
 }
 
 /**
@@ -224,6 +425,31 @@ export function astLandings(language, root, path, places) {
     reads: sortEntries(found.reads),
     dynamicReads: found.dynamicReads,
   };
+}
+
+/**
+ * The repository paths a Python expression can name, read the way a landing's
+ * path argument is read: literals, joins, __file__, .parent and same-file
+ * bindings. Only whole paths count; a value with a part the engine cannot
+ * read names no file.
+ *
+ * @param {object} node tree-sitter node
+ * @param {string} path the tracked path of the file the node is in
+ * @returns {string[]}
+ */
+export function pythonPathValues(node, path) {
+  const dir = posix.dirname(path);
+  const ctx = { python: true, file: path, dir: dir === '.' ? '' : dir, seen: new Set(), visiting: new Set(), assignments: new Map() };
+  const out = [];
+  for (const value of evalPy(node, ctx, 0)) {
+    if (value.open) continue;
+    let text = value.text.replaceAll('\\', '/');
+    if (text.startsWith('/')) continue;
+    text = posix.normalize(text);
+    if (text === '..' || text.startsWith('../')) continue;
+    out.push(text.replace(/^(\.\/)+/, ''));
+  }
+  return out;
 }
 
 function scriptSite(node, site) {

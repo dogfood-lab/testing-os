@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
 import { formatFailure } from './errors.js';
-import { collapse, count, cover, entryOrder, list, pageFacts, readerFiles, under, worded } from './page.js';
+import { collapse, count, cover, entryOrder, externalsLine, list, pageFacts, readerFiles, under, worded } from './page.js';
 
 /**
  * atlas explain: what one file, or one directory, is in the system, read from
@@ -228,6 +228,7 @@ function explainFound(ctx, found, map) {
   const facts = {
     changesWith: [],
     doors: { isDoor: null, onPath: [], runBy: [] },
+    externals: 0,
     generatedAt: map.generatedAt,
     importGrain: 'part',
     importedBy: [],
@@ -287,18 +288,23 @@ function explainFound(ctx, found, map) {
     const edges = partEdges(ctx);
     facts.imports = edges.imports(part.part);
     facts.importedBy = edges.importedBy(part.part);
-    facts.unresolved = ctx.boundaries.find((boundary) => boundary.name === part.part)?.unresolvedSites ?? 0;
+    const boundary = ctx.boundaries.find((item) => item.name === part.part);
+    facts.unresolved = boundary?.unresolvedSites ?? 0;
+    facts.externals = boundary?.externals ?? 0;
+    facts.externalNames = boundary?.externalNames ?? [];
   }
   // A configuration or documentation part that no part imports and that
   // imports nothing has no import line to state.
-  if (part && (part.role === 'code' || facts.imports.length + facts.importedBy.length + facts.unresolved > 0)) {
+  if (part && (part.role === 'code' || facts.imports.length + facts.importedBy.length + facts.unresolved + facts.externals > 0)) {
     lines.push(facts.imports.length > 0
       ? `Its part imports ${count(facts.imports.length, 'part')}: ${shownList(facts.imports.map(ctx.shown))}.`
       : 'Its part imports no other part.');
     lines.push(facts.importedBy.length > 0
       ? `Its part is imported by ${count(facts.importedBy.length, 'part')}: ${shownList(facts.importedBy.map(ctx.shown))}.`
       : 'No other part imports its part.');
-    if (facts.unresolved > 0) lines.push(`${count(facts.unresolved, 'import')} in its part did not resolve.`);
+    const declared = externalsLine(facts.externals, facts.externalNames ?? []);
+    if (declared) lines.push(`In its part, ${declared.replace(/^\d+ import sites?/, (text) => text.replace('import site', 'import'))}`);
+    if (facts.unresolved > 0) lines.push(`${count(facts.unresolved, 'import')} in its part could not be resolved.`);
   }
 
   const within = found.kind === 'directory' ? found.path : null;

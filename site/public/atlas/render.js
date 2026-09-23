@@ -265,11 +265,14 @@ function partName(item) {
   return item.partLabel == null ? str(item.part) : str(item.partLabel);
 }
 
-// Another part is named after the first step that goes into it, once.
+// A method called on an object is named with the object's class, "train
+// (Trainer)". Another part is named after the first step that goes into it,
+// once.
 function stepTexts(steps, ownPart) {
   const named = new Set();
   return arr(steps).filter((step) => step && typeof step === 'object').map((step) => {
     const notes = [];
+    if (step.receiver != null) notes.push(str(step.receiver));
     const part = step.part == null ? null : str(step.part);
     if (part != null && part !== ownPart && !named.has(part)) {
       named.add(part);
@@ -386,8 +389,15 @@ function breaksSection(ctx) {
   return section('What breaks what', body);
 }
 
+// "the tests part", as page.js words a part in a sentence about parts; the
+// repository root is already a phrase.
+function partPhrase(label) {
+  const text = esc(label);
+  return str(label) === 'the repository root' ? text : `the ${text} part`;
+}
+
 function relationClause(pair) {
-  const [a, b] = arr(pair.partLabels).map((label) => esc(label));
+  const [a, b] = arr(pair.partLabels).map(partPhrase);
   switch (pair.relation) {
     case 'inside': return `, inside ${a}.`;
     case 'a-imports-b': return `, and ${a} imports ${b}.`;
@@ -435,7 +445,7 @@ function unreadSection(ctx) {
       const comma = writers.length > 1 ? ',' : '';
       return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${list(writers.map((writer) => pathHtml(ctx, writer)))}${comma} and read by nothing else in this repository.`;
     }))
-    : p('Every written place has a reader.');
+    : p(ctx.page.written === 0 ? 'No place this map can see is written, so none goes unread.' : 'Every written place has a reader.');
   const note = arr(ctx.page.unreadNote).map((line) => p(esc(line)));
   return section('Written but never read', [body, ...note].join('\n'));
 }

@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { resolveDeclaredPath } from './resolve.js';
+import picomatch from 'picomatch';
+import { declaredScripts } from './python-manifest.js';
+import { resolveDeclaredPath, resolvePythonModule } from './resolve.js';
 
 const FALLBACKS = [
   (name) => name.startsWith('index.'),
@@ -12,13 +14,42 @@ const FALLBACKS = [
 /**
  * Entry points are structural. The root is the shallowest directory shared by
  * the globs, so a boundary that covers several packages is not given one of
- * them at random.
+ * them at random. A console script a pyproject.toml installs is an entry of
+ * whichever boundary holds its module. An entry is always one of the
+ * boundary's own files: a root package.json whose bin lives in bin/ gives a
+ * boundary of top-level files no entry, since bin/ is not in it.
+ *
+ * @param {{ repoPath: string, globs: string[], tracked: Set<string>, scripts?: Array<{ path: string }> }} input
+ *   scripts is pythonScripts() for the repository, read once per map
  */
-export function deriveEntryPoints({ repoPath, globs, tracked }) {
+export function deriveEntryPoints({ repoPath, globs, tracked, scripts = [] }) {
+  if (!Array.isArray(globs) || globs.length === 0) return [];
+  const inside = picomatch(globs, { dot: true });
   const root = boundaryRoot(globs);
   const manifest = root ? `${root}/package.json` : 'package.json';
-  if (tracked.has(manifest)) return fromPackage(repoPath, root, manifest, tracked);
-  return fromNames(root, tracked);
+  const declared = scripts.map((script) => script.path).filter((path) => inside(path));
+  let found;
+  if (tracked.has(manifest)) found = [...fromPackage(repoPath, root, manifest, tracked), ...declared];
+  else found = declared.length > 0 ? declared : fromNames(root, tracked);
+  return [...new Set(found.filter((path) => inside(path)))].sort();
+}
+
+/**
+ * The files the console and GUI scripts of every tracked pyproject.toml run,
+ * with the function each calls, in the order the manifests declare them. A
+ * module that is not a tracked file is left out.
+ *
+ * @param {string} repoPath
+ * @param {Set<string>} tracked
+ * @returns {Array<{ path: string, fn: string | null }>}
+ */
+export function pythonScripts(repoPath, tracked) {
+  const out = [];
+  for (const script of declaredScripts(repoPath, [...tracked].sort())) {
+    const path = resolvePythonModule(script.module, tracked);
+    if (path) out.push({ path, fn: script.fn });
+  }
+  return out;
 }
 
 export function boundaryRoot(globs) {

@@ -1,4 +1,4 @@
-import { isTestFile, isTestMaterial } from '../core/landings.js';
+import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
 import { roleFor } from './templates.js';
 
 const byPath = (a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
@@ -14,18 +14,27 @@ function keep(items) {
   return items.filter((item) => !inAtlas(item.path));
 }
 
+// A site read as a declared dependency because a local module shares its name
+// resolved, but to nothing this map can open, so it is counted apart: the
+// page says how many imports name dependencies that are not installed here.
 function siteCounts(files) {
   let unresolved = 0;
   let resolved = 0;
+  let externals = 0;
+  const externalNames = new Set();
   for (const file of files) {
     if (!Array.isArray(file.imports)) continue;
     for (const site of file.imports) {
       const outcome = site.resolved?.outcome;
       if (outcome === 'file' || outcome === 'boundary' || outcome === 'external') resolved += 1;
       else unresolved += 1;
+      if (site.resolved?.declared) {
+        externals += 1;
+        externalNames.add(site.specifier.split('.')[0]);
+      }
     }
   }
-  return { unresolved, resolved };
+  return { unresolved, resolved, externals, externalNames: [...externalNames].sort() };
 }
 
 // Reads and writes whose path is built at run time name no place, so the map
@@ -55,10 +64,13 @@ function resolvedFiles(file) {
 
 /**
  * How many test files reach each part: a test file, by name, that imports a
- * file of the part, or imports a file that imports one. Per-file imports are
- * not in the artifact, so this is counted here, where the resolved imports
- * are still in hand. A test file reached is not the part's code under test,
- * so it counts only as the hop, not as the part.
+ * file of the part, or imports a file that imports one, or is the own test of
+ * a file of the part (tests/test_trainer.py for backpropagate/trainer.py),
+ * which is what a test named for a file tests even when its import could not
+ * be resolved. Per-file imports are not in the artifact, so this is counted
+ * here, where the resolved imports are still in hand. A test file reached is
+ * not the part's code under test, so it counts only as the hop, not as the
+ * part.
  */
 function testReach(mapped) {
   const all = [...mapped.boundaries.flatMap((boundary) => boundary.files), ...mapped.unassigned, ...mapped.overlaps]
@@ -67,6 +79,14 @@ function testReach(mapped) {
   const boundaryOf = new Map();
   for (const boundary of mapped.boundaries) for (const file of boundary.files) boundaryOf.set(file.path, boundary.name);
   const tests = all.filter((file) => isTestFile(file.path));
+  const byStem = new Map();
+  for (const file of all) {
+    if (isTestFile(file.path) || !boundaryOf.has(file.path)) continue;
+    const base = file.path.slice(file.path.lastIndexOf('/') + 1);
+    const stem = base.includes('.') ? base.slice(0, base.lastIndexOf('.')) : base;
+    if (!byStem.has(stem)) byStem.set(stem, []);
+    byStem.get(stem).push(file.path);
+  }
   const testedBy = new Map();
   for (const test of tests) {
     const direct = resolvedFiles(test);
@@ -82,6 +102,7 @@ function testReach(mapped) {
     for (const path of reached) {
       if (path !== test.path && !isTestFile(path) && boundaryOf.has(path)) parts.add(boundaryOf.get(path));
     }
+    for (const path of byStem.get(testedStem(test.path)) ?? []) if (isOwnTest(test.path, path)) parts.add(boundaryOf.get(path));
     for (const part of parts) testedBy.set(part, (testedBy.get(part) ?? 0) + 1);
   }
   return { testFiles: tests.length, testedBy };
@@ -95,10 +116,13 @@ export function buildArtifact(mapped, commit) {
     const files = keep(boundary.files);
     const sites = siteCounts(files);
     const dynamic = dynamicCounts(files);
+    const named = sites.externals > 0 ? { externalNames: sites.externalNames } : {};
     return {
+      ...named,
       dynamicReads: dynamic.reads,
       dynamicWrites: dynamic.writes,
       entryPoints: [...boundary.entryPoints].filter((path) => !inAtlas(path)).sort(),
+      externals: sites.externals,
       files: files.map(carryFile).sort(byPath),
       globs: [...boundary.globs].sort(),
       importConfidence: sites.unresolved > sites.resolved ? 'low' : 'full',
@@ -157,6 +181,7 @@ function carrySequence(sequence) {
 function carryCall(call) {
   const out = { line: call.line, name: call.name, target: call.target == null ? null : { ...call.target } };
   if (call.passed) out.passed = true;
+  if (call.receiver != null) out.receiver = call.receiver;
   if (call.via != null) out.via = call.via;
   if (call.inner) out.inner = call.inner.map(carryCall);
   if (call.innerTruncated) out.innerTruncated = true;
@@ -204,7 +229,7 @@ function carryDoor(door) {
     name: door.name,
     permissions: [...door.permissions],
     pushes: door.pushes,
-    reach: door.reach.map((entry) => ({ boundary: entry.boundary, depth: entry.depth, files: entry.files })),
+    reach: door.reach.map(carryReach),
     readers: door.readers.filter((entry) => !inAtlas(entry.target) && !inAtlas(entry.by)).map(carryReader),
     runs: door.runs.map((run) => ({ job: run.job, path: run.path })),
     secrets: [...door.secrets],
@@ -219,6 +244,12 @@ function carryDoor(door) {
     uses: [...door.uses],
     usesWorkflowToken: door.usesWorkflowToken,
   };
+}
+
+function carryReach(entry) {
+  const out = { boundary: entry.boundary, depth: entry.depth, files: entry.files };
+  if (entry.enters) out.enters = { file: entry.enters.file, from: entry.enters.from };
+  return out;
 }
 
 export function serializeArtifact(artifact) {

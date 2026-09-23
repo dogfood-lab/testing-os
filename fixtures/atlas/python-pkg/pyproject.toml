@@ -1,0 +1,15 @@
+[project]
+name = "trainkit"
+version = "0.1.0"
+# datasets is the library; trainkit/datasets.py shares its name.
+dependencies = [
+    "datasets>=2.19",
+    "requests>=2",  # a dependency no local module shadows
+]
+
+[project.optional-dependencies]
+# An extra that pulls in the project itself names no dependency.
+full = ["trainkit[ui]"]
+
+[project.scripts]
+trainkit = "trainkit.console:main"

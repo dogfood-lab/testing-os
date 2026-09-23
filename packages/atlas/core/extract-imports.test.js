@@ -28,13 +28,13 @@ const EXPECTED = {
     entry('pkg-b', 'static', 2, external),
     entry('star', 'static', 3, external),
     entry('side-effect', 'static', 4, external),
-    entry('dyn-lit', 'static', 5, external),
-    entry('cjs-lit', 'static', 6, external),
+    entry('dyn-lit', 'dynamic-literal', 5, external),
+    entry('cjs-lit', 'dynamic-literal', 6, external),
     entry('./dynamic.js', 'static', 7, file('js/dynamic.js')),
   ],
   'js/dynamic.js': [entry('expr', 'dynamic', 1, dynamic), entry('name', 'dynamic', 2, dynamic)],
   'js/view.jsx': [entry('react', 'static', 1, external)],
-  'js/legacy.cjs': [entry('legacy-cjs', 'static', 1, external)],
+  'js/legacy.cjs': [entry('legacy-cjs', 'dynamic-literal', 1, external)],
   'js/extra.mjs': [entry('esm-only', 'static', 1, external), entry('./dynamic.js', 'static', 2, file('js/dynamic.js'))],
   'ts/static.ts': [
     entry('types', 'static', 1, external),
@@ -59,8 +59,8 @@ const EXPECTED = {
     entry('x', 'wildcard', 1, wildcard),
     entry('.y', 'wildcard', 2, wildcard),
     entry('name', 'dynamic', 3, dynamic),
-    entry('a.b', 'dynamic', 4, dynamic),
-    entry('z', 'dynamic', 5, dynamic),
+    entry('a.b', 'dynamic-literal', 4, external),
+    entry('z', 'dynamic-literal', 5, external),
   ],
 };
 
@@ -116,7 +116,7 @@ describe('import extraction', () => {
     }
 
     assert.equal(boundary.parseErrors, 4);
-    assert.equal(boundary.unresolvedSites, 13);
+    assert.equal(boundary.unresolvedSites, 11);
     assert.equal(boundary.importConfidence, 'full');
     assert.equal(boundary.files.length, Object.keys(EXPECTED).length + 4 + 2);
   });

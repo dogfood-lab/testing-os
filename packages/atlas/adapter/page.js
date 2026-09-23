@@ -1,5 +1,5 @@
 import { isSourcePath } from '../core/history.js';
-import { isTestMaterial } from '../core/landings.js';
+import { isTestMaterial, ownTestPair } from '../core/landings.js';
 
 /**
  * The page: how a repository works, written from the recorded facts.
@@ -390,17 +390,22 @@ function stepUnits(ctx, calls) {
       continue;
     }
     const part = partOf(ctx, shown[i].target);
-    units.push({ name: shown[i].name, part, partLabel: label(ctx, part), phrase: words(shown[i].name) });
+    const unit = { name: shown[i].name, part, partLabel: label(ctx, part), phrase: words(shown[i].name) };
+    if (shown[i].receiver != null) unit.receiver = shown[i].receiver;
+    units.push(unit);
     i += 1;
   }
   return { units, calls: shown.length };
 }
 
-// Another part is named after the first step that goes into it, once.
+// A method called on an object is named with the object's class, "train
+// (Trainer)". Another part is named after the first step that goes into it,
+// once.
 function unitTexts(ctx, units, ownPart) {
   const named = new Set();
   return units.map((unit) => {
     const notes = [];
+    if (unit.receiver != null) notes.push(unit.receiver);
     if (unit.part != null && unit.part !== ownPart && !named.has(unit.part)) {
       named.add(unit.part);
       notes.push(ctx.shown(unit.part));
@@ -709,7 +714,7 @@ function together(ctx) {
   const imports = importsBetween(ctx);
   const source = (ctx.statistics.pairs ?? []).filter((pair) => isSourcePath(pair.a) && isSourcePath(pair.b));
   const pairs = source
-    .filter((pair) => !ownTest(pair.a, pair.b))
+    .filter((pair) => !ownTestPair(pair.a, pair.b))
     .sort((x, y) => y.strength - x.strength || y.shared - x.shared || cmp(x.a, y.a) || cmp(x.b, y.b))
     .slice(0, PAIRS_SHOWN)
     .map((pair) => {
@@ -717,28 +722,18 @@ function together(ctx) {
       const partLabels = parts.map((part) => label(ctx, part));
       return { a: pair.a, b: pair.b, either: pair.either, partLabels, parts, relation: relationOf(imports, parts[0], parts[1]), shared: pair.shared };
     });
-  return { pairs, withTests: source.filter((pair) => ownTest(pair.a, pair.b)).length };
+  return { pairs, withTests: source.filter((pair) => ownTestPair(pair.a, pair.b)).length };
 }
 
-// A file named with a test marker (page.test.js, page.spec.ts, foo_test.py,
-// test_foo.py) beside the file it names.
-function testName(path) {
-  const slash = path.lastIndexOf('/');
-  const dir = path.slice(0, slash + 1);
-  const stem = path.slice(slash + 1).replace(/\.[^.]+$/, '');
-  const marked = /^(.+)(?:\.test|\.spec|_test)$/.exec(stem) ?? /^test_(.+)$/.exec(stem);
-  return { dir, stem, tested: marked ? marked[1] : null };
-}
-
-function ownTest(a, b) {
-  const [x, y] = [testName(a), testName(b)];
-  if (x.dir !== y.dir) return false;
-  return (x.tested != null && y.tested == null && x.tested === y.stem)
-    || (y.tested != null && x.tested == null && y.tested === x.stem);
+// A part's name is often a common word ("tests imports backpropagate"), so a
+// sentence about parts says "the tests part". The repository root is already
+// a phrase.
+function partPhrase(partLabel) {
+  return partLabel === ROOT_NAME ? partLabel : `the ${partLabel} part`;
 }
 
 function relationClause(pair) {
-  const [a, b] = pair.partLabels;
+  const [a, b] = pair.partLabels.map(partPhrase);
   switch (pair.relation) {
     case 'inside': return `, inside ${a}.`;
     case 'a-imports-b': return `, and ${a} imports ${b}.`;
@@ -810,22 +805,25 @@ function untestedSection(found) {
 // A place is unread when nothing but its own writers reads it: a writer that
 // reads back what it wrote is making the result, not using it.
 function unread(ctx) {
-  const all = writtenPlaces(ctx)
+  const written = writtenPlaces(ctx);
+  const all = written
     .filter((place) => place.readers.every((reader) => place.writers.includes(reader.path)))
     .map((place) => ({
       place: ctx.place(place.target),
       writers: collapse(ctx, place.writers.map((path) => ({ path, text: path }))),
     }));
-  return { items: all.slice(0, UNREAD_SHOWN), note: more(all.length, UNREAD_SHOWN, 'place') };
+  return { items: all.slice(0, UNREAD_SHOWN), note: more(all.length, UNREAD_SHOWN, 'place'), written: written.length };
 }
 
+// With nothing written, "every written place has a reader" would be true of
+// nothing; the page says there is nothing to read instead.
 function unreadSection(ctx, found) {
   const body = found.items.length > 0
     ? found.items.map((item) => {
       const comma = item.writers.length > 1 ? ',' : '';
       return `- **${item.place}** is written by ${list(worded(item.writers, ctx.shown))}${comma} and read by nothing else in this repository.`;
     }).join('\n')
-    : 'Every written place has a reader.';
+    : (found.written === 0 ? 'No place this map can see is written, so none goes unread.' : 'Every written place has a reader.');
   return ['## Written but never read', body, ...found.note].join('\n\n');
 }
 
@@ -862,7 +860,7 @@ function duplicates(ctx) {
     for (let i = 0; i < owners.length; i += 1) {
       for (let j = i + 1; j < owners.length; j += 1) {
         const [a, b] = [owners[i], owners[j]];
-        if (a.part === b.part) continue;
+        if (a.part === b.part || ownTestPair(a.path, b.path)) continue;
         const alike = a.calls && b.calls ? sameCalls(a.calls, b.calls) : baseName(a.path) === baseName(b.path);
         if (!alike) continue;
         all.push({ files: [a.path, b.path], name, partLabels: [ctx.shown(a.part), ctx.shown(b.part)], parts: [a.part, b.part] });
@@ -934,11 +932,28 @@ function entryFile(boundary) {
   return index ?? points[0] ?? null;
 }
 
-// The structure records reach per part, not per file, so the chain is walked
-// at part grain: the run in the part the door reaches most files of, then at
-// each depth the widest part imported by the part before it, named by its
-// entry point. The reader is the first one outside the door's own reach, so
-// the chain ends at whoever uses the result rather than whoever makes it.
+function isIndex(path) {
+  const base = path.slice(path.lastIndexOf('/') + 1);
+  return base === '__init__.py' || /^index\.[cm]?[jt]sx?$/.test(base);
+}
+
+// The file a file's entry first calls into inside a part, when the map
+// recorded its order of work.
+function firstCallInto(ctx, path, part) {
+  const file = ctx.fileOf.get(path);
+  const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
+  const call = (root?.calls ?? []).find((item) => !item.passed && item.target?.file && ctx.boundaryOf.get(item.target.file) === part);
+  return call?.target.file ?? null;
+}
+
+// The structure records reach per part, so the chain is walked at part grain:
+// the run in the part the door reaches most files of, then at each depth the
+// widest part imported by the part before it, named by the first file the
+// walk imports in it. A package index that only hands a name on is followed
+// to the file the entry's call reaches through it, since that is where the
+// work is. The part's entry point is named only when no import into it was
+// recorded. The reader is the first one outside the door's own reach, so the
+// chain ends at whoever uses the result rather than whoever makes it.
 function startHere(ctx, main, groups) {
   const chain = [main.file];
   const byName = new Map(ctx.boundaries.map((boundary) => [boundary.name, boundary]));
@@ -950,18 +965,29 @@ function startHere(ctx, main, groups) {
   const from = importers(ctx);
   const words = new Map();
   let previous = first ? ctx.boundaryOf.get(first) : null;
+  let previousFile = first ?? null;
   for (const level of deeper(main)) {
     const linked = level.entries.filter((entry) => previous && from.get(entry.boundary)?.has(previous));
     const pool = linked.length > 0 ? linked : level.entries;
     const widest = [...pool].sort((a, b) => b.files - a.files || cmp(a.boundary, b.boundary))[0];
     const boundary = byName.get(widest.boundary);
     const place = boundary ? boundaryPlace(boundary) : null;
-    const file = entryFile(boundary) ?? place;
+    const entered = widest.enters?.file ?? null;
+    const file = entered ?? entryFile(boundary) ?? place;
     if (file && !chain.includes(file)) {
       chain.push(file);
       if (file === place) words.set(file, shownPlace(ctx, boundary));
     }
+    let reached = file === place ? null : file;
+    if (entered && isIndex(entered) && previousFile) {
+      const through = firstCallInto(ctx, previousFile, widest.boundary);
+      if (through && !chain.includes(through)) {
+        chain.push(through);
+        reached = through;
+      }
+    }
     previous = widest.boundary;
+    previousFile = reached;
   }
   const landing = groups.find((group) => group.files.length > 0);
   if (landing) {
@@ -982,10 +1008,28 @@ function startSection(words, main) {
   return ['## Where to start', words.join(' → '), `Read those in order to follow one ${triggerNoun(main)} end to end.`].join('\n\n');
 }
 
+/**
+ * The import sites read as a declared dependency although a local module
+ * shares the name, worded with the names. A dependency is not in the
+ * repository, so the map follows none of them; saying so apart from what could
+ * not be resolved at all keeps the second count the one worth reading.
+ */
+export function externalsLine(sites, names) {
+  if (sites === 0) return null;
+  const shown = names.length > 0 ? ` (${list(names)})` : '';
+  return names.length > 1
+    ? `${count(sites, 'import site')} name declared dependencies that share their names with local modules${shown}; they are read as the dependencies, which are not in this repository.`
+    : `${count(sites, 'import site')} ${sites === 1 ? 'names' : 'name'} a declared dependency that shares its name with a local module${shown}; ${sites === 1 ? 'it is' : 'they are'} read as the dependency, which is not in this repository.`;
+}
+
 function limits(ctx, shownText) {
   const lines = [];
+  const externals = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.externals ?? 0), 0);
+  const names = [...new Set(ctx.boundaries.flatMap((boundary) => boundary.externalNames ?? []))].sort(cmp);
+  const declared = externalsLine(externals, names);
+  if (declared) lines.push(declared);
   const unresolved = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.unresolvedSites ?? 0), 0);
-  if (unresolved > 0) lines.push(`${count(unresolved, 'import site')} did not resolve.`);
+  if (unresolved > 0) lines.push(`${count(unresolved, 'import site')} could not be resolved.`);
   const dynamicWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);
   const dynamicReads = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicReads ?? 0), 0);
   if (dynamicWrites + dynamicReads > 0) {
@@ -1146,6 +1190,7 @@ export function buildPage({ structure, statistics, document, repoName, changes =
     testFiles: untestedParts.testFiles,
     unread: unreadPlaces.items.map((item) => ({ place: item.place, writers: worded(item.writers, id) })),
     unreadNote: unreadPlaces.note,
+    written: unreadPlaces.written,
     untested: untestedParts.items,
     untestedNote: untestedParts.note,
   };
