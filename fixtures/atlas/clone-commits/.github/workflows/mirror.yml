@@ -1,0 +1,13 @@
+name: Mirror
+on:
+  workflow_dispatch:
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          git clone --depth 1 https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/acme/site.git site-mirror
+          cd site-mirror
+          git add docs/
+          git commit -m "mirror"
+          git push

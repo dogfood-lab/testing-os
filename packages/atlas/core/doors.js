@@ -113,6 +113,8 @@ function readDoor(repoPath, file, repo) {
   const runs = new Map();
   const mentions = new Map();
   const stages = new Set();
+  let pushes = false;
+  const elsewhere = new Map();
   const sends = { publishesTo: new Set(), releases: false, deploysPages: false, opensPullRequests: false };
   const issues = [];
   const workflowDir = workingDirectory(doc.defaults);
@@ -123,19 +125,36 @@ function readDoor(repoPath, file, repo) {
     const jobDir = workingDirectory(body.defaults) ?? workflowDir ?? '';
     const jobEnv = envOf(body.env);
     const steps = Array.isArray(body.steps) ? body.steps : [];
+    // The clones a job makes, by the directory they are made in: another
+    // repository's checkout, read from actions/checkout, and what a step
+    // clones. A step that works inside one works on that repository.
+    const clones = new Map();
+    const rawJobDir = rawWorkingDirectory(body.defaults) ?? rawWorkingDirectory(doc.defaults) ?? '';
     steps.forEach((step, index) => {
       if (!isMapping(step)) return;
       if (typeof step.uses === 'string') {
         const action = step.uses.replace(/@.*$/, '');
         uses.add(action);
         for (const [name, apply] of ACTION_SENDS) if (action === name || action.startsWith(`${name}/`)) apply(sends, step);
+        const checkout = otherCheckout(action, step.with);
+        if (checkout) clones.set(checkout.dir, checkout.repository);
       }
       if (typeof step.run !== 'string') return;
       const name = typeof step.name === 'string' && step.name.trim() !== '' ? step.name : String(index);
       commands.push({ job, step: name, text: step.run });
       const stepEnv = envOf(step.env);
       const lookup = (variable) => [stepEnv, jobEnv, workflowEnv].find((env) => env.has(variable))?.get(variable) ?? null;
-      for (const staged of stagedPaths(step.run, lookup)) stages.add(staged);
+      const start = placeOf({ here: true, dir: '' }, step['working-directory'] ?? rawJobDir, clones, repo, lookup);
+      const work = gitWork(step.run, lookup, start, clones, repo);
+      for (const staged of work.stages) stages.add(staged);
+      if (work.pushes) pushes = true;
+      for (const entry of work.elsewhere) {
+        const key = `${entry.dir}\0${entry.clone ?? ''}`;
+        if (!elsewhere.has(key)) elsewhere.set(key, { clone: entry.clone, dir: entry.dir, pushes: false, stages: new Set() });
+        const found = elsewhere.get(key);
+        for (const staged of entry.stages) found.stages.add(staged);
+        if (entry.pushes) found.pushes = true;
+      }
       commandSends(step.run, sends);
       if (/\bgh\s+issue\s+create\b/.test(step.run)) issues.push(onlyOnFailure(step.if) || onlyOnFailure(body.if));
       // A step whose working directory cannot be read as a repository path
@@ -173,7 +192,10 @@ function readDoor(repoPath, file, repo) {
       .filter((mention) => !runKeys.has(`${mention.path}\0${mention.job}`) && !underRun(mention.path, mention.job))
       .sort(byPathThenJob),
     stages: [...stages].sort(),
-    pushes: /\bgit\s+push\b/.test(joined),
+    pushes,
+    elsewhere: [...elsewhere.values()]
+      .map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages].sort() }))
+      .sort((a, b) => compare(a.dir, b.dir) || compare(a.clone ?? '', b.clone ?? '')),
     sends: {
       dispatchesTo: [
         ...new Set([...joined.matchAll(/repos\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)\/dispatches\b/g)].map((m) => `${m[1]}/${m[2]}`)),
@@ -305,35 +327,171 @@ function envOf(value) {
   return env;
 }
 
+// Words that open a shell command line without being the command.
+const SHELL_KEYWORDS = new Set(['if', 'elif', 'then', 'else', 'while', 'until', 'do', 'exec', 'time', '!']);
+const GIT_VALUE_FLAGS = new Set(['-c', '--git-dir', '--work-tree', '--namespace']);
+const CLONE_VALUE_FLAGS = new Set(['-b', '--branch', '--depth', '-o', '--origin', '--reference', '-c', '--config', '--filter', '-j', '--jobs', '--separate-git-dir', '--template', '-u', '--upload-pack', '--shallow-since', '--shallow-exclude']);
+
 /**
- * What a step stages with git add. A variable in a staged path is spelled out
- * from an assignment earlier in the same step, then the step's, the job's and
- * the workflow's env; a path whose variable is set at run time stays as
- * written, and the page says so.
+ * What a step does with git, and where. Each command runs in a place: this
+ * repository (at a tracked directory of it) or somewhere else, a clone of
+ * another repository or a directory this map cannot name. cd, pushd and popd
+ * move the step between places, git -C names one for a single command, and
+ * git clone and gh repo clone record which repository a directory holds. What
+ * git add stages and whether git pushes are kept apart by place: a commit in
+ * another repository's clone is never a stage of this one. A variable in a
+ * path is spelled out from an assignment earlier in the same step, then the
+ * step's, the job's and the workflow's env; a staged path whose variable is
+ * set at run time stays as written, and the page says so.
+ *
+ * @returns {{ stages: string[], pushes: boolean, elsewhere: Array<{ dir: string, clone: string|null, stages: string[], pushes: boolean }> }}
  */
-function stagedPaths(text, lookup) {
-  const staged = [];
+function gitWork(text, lookup, start, clones, repo) {
+  const out = { stages: [], pushes: false, elsewhere: [] };
   const assigned = new Map();
+  const value = (name) => (assigned.has(name) ? assigned.get(name) : lookup(name));
+  let place = start;
+  const stack = [];
+  const away = (at) => {
+    let entry = out.elsewhere.find((item) => item.dir === at.dir && item.clone === at.clone);
+    if (!entry) {
+      entry = { dir: at.dir, clone: at.clone, stages: [], pushes: false };
+      out.elsewhere.push(entry);
+    }
+    return entry;
+  };
   for (const tokens of commandLines(text)) {
     if (tokens.every((token) => /^[A-Za-z_][A-Za-z0-9_]*=/.test(token))) {
       for (const token of tokens) {
         const eq = token.indexOf('=');
-        const value = token.slice(eq + 1);
-        assigned.set(token.slice(0, eq), value.includes('$') ? null : value);
+        const assignedValue = token.slice(eq + 1);
+        assigned.set(token.slice(0, eq), assignedValue.includes('$') ? null : assignedValue);
       }
       continue;
     }
-    const value = (name) => (assigned.has(name) ? assigned.get(name) : lookup(name));
-    for (let i = 0; i + 1 < tokens.length; i += 1) {
-      if (tokens[i] !== 'git' || tokens[i + 1] !== 'add') continue;
-      for (const token of tokens.slice(i + 2)) {
-        if (token.startsWith('-')) continue;
-        staged.push(substitute(token, value));
-      }
-      break;
+    let first = 0;
+    while (first < tokens.length && (SHELL_KEYWORDS.has(tokens[first]) || /^[A-Za-z_][A-Za-z0-9_]*=/.test(tokens[first]))) first += 1;
+    const words = tokens.slice(first);
+    const [command, ...args] = words;
+    if (command === 'cd' || command === 'pushd') {
+      if (command === 'pushd') stack.push(place);
+      const target = args.find((arg) => !arg.startsWith('-'));
+      // A bare cd goes home, which is no directory of this repository.
+      place = target == null ? { here: false, dir: '~', clone: null } : placeOf(place, target, clones, repo, value);
+      continue;
+    }
+    if (command === 'popd') {
+      if (stack.length > 0) place = stack.pop();
+      continue;
+    }
+    const clone = clonedInto(words, value);
+    if (clone) {
+      clones.set(placeOf(place, clone.dir, clones, repo, value).dir, clone.repository);
+      continue;
+    }
+    if (command !== 'git') continue;
+    let at = place;
+    let i = 1;
+    for (; i < words.length && words[i].startsWith('-'); i += 1) {
+      if (words[i] === '-C' && i + 1 < words.length) at = placeOf(at, words[++i], clones, repo, value);
+      else if (GIT_VALUE_FLAGS.has(words[i])) i += 1;
+    }
+    const sub = words[i];
+    if (sub === 'push') {
+      if (at.here) out.pushes = true;
+      else away(at).pushes = true;
+    }
+    if (sub !== 'add') continue;
+    for (const token of words.slice(i + 1)) {
+      if (token.startsWith('-')) continue;
+      const staged = substitute(token, value);
+      if (!at.here) away(at).stages.push(staged);
+      // A path staged from a directory of this repository is that directory's.
+      else out.stages.push(at.dir && !staged.includes('$') ? posix.normalize(`${at.dir}/${staged}`) : staged);
     }
   }
-  return staged;
+  for (const entry of out.elsewhere) entry.stages = [...new Set(entry.stages)];
+  return out;
+}
+
+/**
+ * Where a directory a step moves to is. A tracked directory of this
+ * repository, or its root, is here. A directory that holds a clone, or lies
+ * inside one, is that clone. Anything else (a path outside the workspace, a
+ * directory the repository does not track, a path set at run time) is
+ * somewhere this map cannot name.
+ */
+function placeOf(from, raw, clones, repo, lookup) {
+  if (raw == null || raw === '') return from;
+  const text = substitute(String(raw), lookup).replaceAll('\\', '/');
+  const unresolved = text.includes('$');
+  const absolute = text.startsWith('/') || text.startsWith('~') || /^[A-Za-z]:\//.test(text);
+  let dir;
+  if (unresolved || absolute) dir = unresolved ? text : posix.normalize(text).replace(/\/+$/, '');
+  else if (!from.here) dir = posix.normalize(`${from.dir}/${text}`).replace(/\/+$/, '');
+  else dir = posix.normalize(from.dir ? `${from.dir}/${text}` : text).replace(/\/+$/, '');
+  if (dir === '.') dir = '';
+  for (const [cloneDir, repository] of clones) {
+    if (dir === cloneDir || dir.startsWith(`${cloneDir}/`)) return { here: false, dir: cloneDir, clone: repository };
+  }
+  if (!from.here && !unresolved && !absolute) return { here: false, dir: from.dir, clone: from.clone };
+  if (unresolved || absolute || dir === '..' || dir.startsWith('../')) return { here: false, dir, clone: null };
+  if (dir === '' || repo.dirs.has(dir)) return { here: true, dir };
+  return { here: false, dir, clone: null };
+}
+
+/**
+ * The repository a git clone or gh repo clone command clones and the
+ * directory it clones into, or null for any other command. A GitHub URL is
+ * named owner/name, and credentials in a URL are never kept.
+ */
+function clonedInto(tokens, lookup) {
+  let positional;
+  if (tokens[0] === 'git' && tokens[1] === 'clone') {
+    positional = [];
+    for (let i = 2; i < tokens.length; i += 1) {
+      if (tokens[i] === '--') {
+        positional.push(...tokens.slice(i + 1));
+        break;
+      }
+      if (tokens[i].startsWith('-')) {
+        if (CLONE_VALUE_FLAGS.has(tokens[i])) i += 1;
+        continue;
+      }
+      positional.push(tokens[i]);
+    }
+  } else if (tokens[0] === 'gh' && tokens[1] === 'repo' && tokens[2] === 'clone') {
+    const end = tokens.indexOf('--');
+    positional = tokens.slice(3, end === -1 ? tokens.length : end).filter((token) => !token.startsWith('-'));
+  } else return null;
+  if (positional.length === 0) return null;
+  const repository = repositoryName(substitute(positional[0], lookup));
+  const fallback = repository ? repository.slice(repository.lastIndexOf('/') + 1).replace(/\.git$/, '') : null;
+  const dir = positional[1] ?? fallback;
+  return dir == null ? null : { repository, dir };
+}
+
+function repositoryName(text) {
+  let url = text.replace(/^[a-z+]+:\/\/[^@/]*@/i, (whole) => whole.replace(/\/\/[^@/]*@/, '//')).replace(/^git@github\.com:/, 'https://github.com/');
+  url = url.replace(/\.git$/, '').replace(/\/+$/, '');
+  if (url.includes('${{') || url.includes('$')) return null;
+  const github = /^(?:https?:\/\/)?(?:www\.)?github\.com\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)$/.exec(url);
+  if (github) return `${github[1]}/${github[2]}`;
+  if (/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(url)) return url;
+  return url.includes('://') ? url : null;
+}
+
+// actions/checkout of another repository into a directory of the workspace.
+function otherCheckout(action, input) {
+  if (action !== 'actions/checkout' || !isMapping(input)) return null;
+  if (typeof input.repository !== 'string' || input.repository.includes('${{')) return null;
+  if (typeof input.path !== 'string' || input.path.trim() === '') return null;
+  const dir = cleanDir(input.path);
+  return dir ? { dir, repository: repositoryName(input.repository) } : null;
+}
+
+function rawWorkingDirectory(defaults) {
+  return isMapping(defaults) && isMapping(defaults.run) && typeof defaults.run['working-directory'] === 'string' ? defaults.run['working-directory'] : null;
 }
 
 function substitute(token, value) {

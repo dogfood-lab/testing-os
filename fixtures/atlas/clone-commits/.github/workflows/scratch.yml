@@ -1,0 +1,11 @@
+name: Scratch
+on:
+  workflow_dispatch:
+jobs:
+  scratch:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cd "$RUNNER_TEMP/scratch"
+          git add notes.txt
+          git push

@@ -281,6 +281,7 @@ function carryDoor(door) {
   return {
     ...(door.kind ? { kind: door.kind } : {}),
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
+    elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
     file: door.file,
     landings: door.landings.filter((target) => !inAtlas(target)),
     mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),

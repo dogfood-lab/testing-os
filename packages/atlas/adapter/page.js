@@ -432,9 +432,26 @@ function publishPhrase(sends) {
   return registries.length > 1 ? `${where}, and a container image` : `${where} and a container image`;
 }
 
+/**
+ * What a door sends out of the repository. A commit made in a clone of
+ * another repository leaves this one, so it is said here, by the repository
+ * cloned; a clone whose repository the map cannot name is not said at all,
+ * and neither is ever a stage of this repository.
+ *
+ * @param {object} door
+ * @returns {string[]}
+ */
 export function sendPhrases(door) {
   const sends = door.sends ?? {};
   const phrases = [];
+  const clones = new Map();
+  for (const entry of door.elsewhere ?? []) {
+    if (entry.clone == null || (entry.stages ?? []).length === 0) continue;
+    clones.set(entry.clone, (clones.get(entry.clone) ?? false) || entry.pushes === true);
+  }
+  for (const [clone, pushed] of [...clones.entries()].sort((a, b) => cmp(a[0], b[0]))) {
+    phrases.push(`commits into a clone of ${clone}${pushed ? ' and pushes there' : ''}`);
+  }
   for (const repo of sends.dispatchesTo ?? []) phrases.push(`sends a dispatch to ${repo}`);
   const published = publishPhrase(sends);
   if (published) phrases.push(published);
