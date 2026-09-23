@@ -97,10 +97,13 @@ test('the sentences are the ones the committed markdown carries', () => {
   for (const sentence of [
     // CI reaches further, but the ingest door is the one that commits into the
     // repository, so the page follows it and says why.
-    `${page.parts} parts. Work enters through ${page.doors.length} doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).`,
+    `Work enters through ${page.doors.length} doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).`,
+    'People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.',
     'That reaches dogfood-swarm (1 file), findings (2 files) and verify (10 files).',
     'It commits indexes/ and records/, then pushes.',
-    'self-dogfood runs packages/report/cli.js, scripts/build.mjs, scripts/sync-version.mjs and 1 more, and sends a dispatch to dogfood-lab/testing-os.',
+    // The schemas build is tsc, which checks what it compiles and runs none of it.
+    'self-dogfood runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs, checks packages/schemas/src/, and sends a dispatch to dogfood-lab/testing-os.',
+    'swarm (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, report and schemas, and writes to dogfood/roadmap/.',
     'Read those in order to follow one dogfood submission end to end.',
     'Regenerate with npx --yes @dogfood-lab/atlas map.',
     'Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.',

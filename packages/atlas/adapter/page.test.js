@@ -458,7 +458,7 @@ describe('atlas page', () => {
     // CI reaches further, but the ingest door commits into the repository, so
     // it is the one the page follows, and the page says why.
     assert.ok(section(own.markdown, '## What this is').split('\n').includes(
-      '23 parts, mostly JavaScript (793 files). Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing). It publishes to npm and a container image.',
+      '23 parts, mostly JavaScript (826 files). Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing). It publishes to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.',
     ));
     const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));

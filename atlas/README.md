@@ -1,27 +1,44 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit c94d84e.
+Mapped at 2026-09-23 from commit 10a8171.
 
 ## What this is
 
-23 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).
+23 parts, mostly JavaScript (826 files). Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing). It publishes to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.
 
-## What changed since 2026-09-23 (83c7a7f)
+## What changed since 2026-09-23 (c94d84e)
 
-Nothing structural changed since 2026-09-23; 6 files added and 29 changed content.
+- CI runs 7 more files than before.
+- Release runs 7 more files than before.
+- atlas (packages/atlas/package.json) is a new command. It runs packages/atlas/cli.js.
+- And 8 more changes to doors.
+- indexes/atlas/fleet.json is now written by scripts/atlas-render.mjs.
+- indexes/atlas/state.json is now written by scripts/atlas-render.mjs.
+- .github/workflows/dogfood.yml is now read by packages/report/init.js.
+- And 7 more new writers and readers of places.
+- 95 files added and 32 changed content, across 6 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 23 paths; on a push touching 23 paths; or by hand. Runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 514 more.
-2. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 513 more.
-3. **Ingest dogfood submission.** When a repository sends a `dogfood_submission` event; or by hand. Runs packages/ingest/run.js, packages/portfolio/generate.js, scripts/build.mjs and 2 more.
-4. **self-dogfood.** When the workflow CI completes; or by hand. Runs packages/report/cli.js, scripts/build.mjs, scripts/sync-version.mjs and 1 more.
+1. **CI.** On a pull request touching 23 paths; on a push touching 23 paths; or by hand. Runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 520 more; checks packages/schemas/src/.
+2. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 519 more; checks packages/schemas/src/.
+3. **Ingest dogfood submission.** When a repository sends a `dogfood_submission` event; or by hand. Runs packages/ingest/run.js, packages/portfolio/generate.js, scripts/build.mjs and 1 more; checks packages/schemas/src/.
+4. **self-dogfood.** When the workflow CI completes; or by hand. Runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs; checks packages/schemas/src/.
 5. **Atlas render.** On a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs scripts/atlas-render.mjs.
 6. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs scripts/check-accent-color.test.mjs.
+7. **findings** (a command people run). Runs packages/findings/cli.js.
+8. **swarm** (a command people run). Runs packages/dogfood-swarm/cli.js.
+9. **portfolio** (a command people run). Runs packages/portfolio/generate.js.
+10. **dogfood-init** (a command people run). Runs packages/report/init.js.
+11. **dogfood-report** (a command people run). Runs packages/report/cli.js.
+12. **dogfood-verify** (a command people run). Runs packages/verify/cli.js.
+13. **report** (a command people run). Runs packages/report/cli.js.
+14. **atlas** (a command people run). Runs packages/atlas/cli.js.
+15. **atlas-fleet** (a command people run). Runs packages/atlas/bin/atlas-fleet.js.
 
 ## What happens through Ingest dogfood submission
 
-1. The workflow runs packages/ingest/run.js in ingest, packages/portfolio/generate.js in portfolio, packages/schemas/src/ in schemas, and scripts/build.mjs and scripts/sync-version.mjs in scripts.
+1. The workflow runs packages/ingest/run.js in ingest, packages/portfolio/generate.js in portfolio, and scripts/build.mjs and scripts/sync-version.mjs in scripts; it checks packages/schemas/src/ in schemas.
    1. Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.
    2. **Load repo policy** runs, in order: is unsafe segment, log stage (dogfood-swarm) and validate payload (schemas).
    3. **Verify** (verify) runs, in order:
@@ -46,30 +63,49 @@ Nothing structural changed since 2026-09-23; 6 files added and 29 changed conten
 
 ## The other doors
 
-**CI** runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 514 more, and writes to dogfood/roadmap/, indexes/, policies/repos/, records/ and reports/.
+**CI** runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 520 more, checks packages/schemas/src/, and writes to dogfood/roadmap/, indexes/, policies/repos/, records/ and reports/.
 
-**Release** runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 513 more, writes to dogfood/roadmap/, indexes/, policies/repos/, records/ and reports/, publishes to npm and a container image, and creates a GitHub release.
+**Release** runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 519 more, checks packages/schemas/src/, writes to dogfood/roadmap/, indexes/, policies/repos/, records/ and reports/, publishes to npm and a container image, and creates a GitHub release.
 
-**self-dogfood** runs packages/report/cli.js, scripts/build.mjs, scripts/sync-version.mjs and 1 more, and sends a dispatch to dogfood-lab/testing-os.
+**self-dogfood** runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs, checks packages/schemas/src/, and sends a dispatch to dogfood-lab/testing-os.
 
 **Atlas render** runs scripts/atlas-render.mjs, reaches atlas, and writes to indexes/atlas/.
 
 **Deploy site to GitHub Pages** runs scripts/check-accent-color.test.mjs and deploys the site.
 
+**findings** (a command people run) runs packages/findings/cli.js, reaches ingest, schemas and verify, and writes to policies/repos/.
+
+**swarm** (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, report and schemas, and writes to dogfood/roadmap/.
+
+**portfolio** (a command people run) runs packages/portfolio/generate.js, reaches findings and schemas, and writes to indexes/ and reports/.
+
+**dogfood-init** (a command people run) runs packages/report/init.js and reaches schemas.
+
+**dogfood-report** (a command people run) runs packages/report/cli.js and reaches schemas.
+
+**dogfood-verify** (a command people run) runs packages/verify/cli.js and reaches schemas.
+
+**report** (a command people run) runs packages/report/cli.js and reaches schemas.
+
+**atlas** (a command people run) runs packages/atlas/cli.js.
+
+**atlas-fleet** (a command people run) runs packages/atlas/bin/atlas-fleet.js.
+
 ## What breaks what
 
-- **schemas** is imported by 6 parts (dogfood-swarm, findings, ingest, portfolio, report, verify), and by 2 more only from tests; it sits on the path of 4 doors.
-- **findings** is imported by 3 parts (dogfood-swarm, ingest, portfolio), and by 1 more only from tests; it sits on the path of 3 doors.
-- **dogfood-swarm** is imported by 2 parts (ingest, scripts), and by 1 more only from tests; it sits on the path of 3 doors.
-- **verify** is imported by 2 parts (findings, ingest), and by 1 more only from tests; it sits on the path of 3 doors.
-- **ingest** is imported by 2 parts (findings, scripts) and sits on the path of 3 doors.
-- **atlas** is imported by 1 part (scripts) and sits on the path of 3 doors.
+- **schemas** is imported by 6 parts (dogfood-swarm, findings, ingest, portfolio, report, verify), and by 2 more only from tests; it sits on the path of 11 doors.
+- **findings** is imported by 3 parts (dogfood-swarm, ingest, portfolio), and by 1 more only from tests; it sits on the path of 6 doors.
+- **verify** is imported by 2 parts (findings, ingest), and by 1 more only from tests; it sits on the path of 5 doors.
+- **dogfood-swarm** is imported by 2 parts (ingest, scripts), and by 1 more only from tests; it sits on the path of 4 doors.
+- **ingest** is imported by 2 parts (findings, scripts) and sits on the path of 4 doors.
+- **report** is imported by 1 part (dogfood-swarm) and sits on the path of 7 doors.
 - **indexes/** is written by .github, ingest, portfolio and scripts, and read by ingest, portfolio, report, scripts and site; a hand edit reaches every reader.
 - **records/** is written by .github and ingest, and read by findings, ingest, portfolio and report; a hand edit reaches every reader.
 
 ## What tends to change together
 
-- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 13 of 19 commits, inside the site part.
+- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 16 of 22 commits, inside the site part.
+- **packages/atlas/adapter/artifact.js** and **packages/atlas/core/index.js** changed together in 11 of 22 commits, inside the atlas part.
 
 2 files changed together with their own tests, as expected.
 
@@ -90,7 +126,6 @@ These are candidates from names and call order, not a judgement.
 - **atomicWriteFileSync** is exported by packages/findings/lib/atomic-write.js (findings) and packages/ingest/lib/atomic-write.js (ingest); the two look alike.
 - **formatStatus** is exported by packages/dogfood-swarm/commands/status.js (dogfood-swarm) and packages/report/status.js (report); the two look alike.
 - **renameWithRetry** is exported by packages/findings/lib/rename-with-retry.js (findings) and packages/ingest/lib/rename-with-retry.js (ingest); the two look alike.
-- **run** is exported by packages/report/cli.js (report) and packages/verify/cli.js (verify); the two look alike.
 
 ## Generated, never hand-edited
 
@@ -114,11 +149,11 @@ Read those in order to follow one dogfood submission end to end.
 
 - 2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.
 - 30 import sites could not be resolved.
-- 6 files use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (1) and other syntax (5).
-- 30 writes and 191 reads use paths built at run time and are not named here.
-- 254 commands are built at run time and not followed.
+- 9 files use syntax the parser cannot read, so what they import is not known: 8 in fixtures (a NUL character inside a string in 1 and other syntax in 7), 1 in schemas (a NUL character inside a string).
+- 30 writes and 192 reads use paths built at run time and are not named here.
+- 272 commands are built at run time and not followed, 251 of them in tests.
 - Readers marked (found by text) come from scanning unparsed files.
-- CI runs 517 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
-- Release runs 516 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- CI runs or checks 524 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- Release runs or checks 523 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.
