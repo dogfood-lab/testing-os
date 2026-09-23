@@ -866,6 +866,9 @@ function breaks(ctx) {
     .map((boundary) => ({
       kind: 'part',
       name: boundary.name,
+      // The name the list gives the part, so the site's picture of the list
+      // calls a root-level part "the repository root" as the list does.
+      partLabel: ctx.shown(boundary.name),
       importedBy: [...(from.get(boundary.name) ?? [])].sort(cmp),
       importedByTests: [...(fromTests.get(boundary.name) ?? [])].sort(cmp),
       doors: on.get(boundary.name) ?? 0,

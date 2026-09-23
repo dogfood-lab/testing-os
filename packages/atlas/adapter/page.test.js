@@ -359,6 +359,13 @@ describe('atlas page', () => {
       /^- \*\*lib\*\* is imported by 2 parts \(the repository root, tools\) and sits on the path of 4 doors\.$/m,
     );
     assert.deepEqual(JSON.parse(importing.json).breaks.find((entry) => entry.name === 'lib').importedBy, ['root', 'tools']);
+
+    // A listed part carries the name the list gives it, next to its id.
+    const imported = JSON.parse(page(doors, {
+      structure: (structure) => ({ ...structure, edges: [...structure.edges, { from: 'lib', kind: 'file', to: 'root' }] }),
+    }).json);
+    assert.equal(imported.breaks.find((entry) => entry.name === 'root').partLabel, 'the repository root');
+    assert.equal(imported.breaks.find((entry) => entry.name === 'lib').partLabel, 'lib');
   });
 
   it('names source files that changed together, from statistics built over a commit list', () => {

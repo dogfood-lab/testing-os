@@ -407,6 +407,12 @@ function otherDoors(ctx) {
   return section('The other doors', paragraphs.join('\n'));
 }
 
+// A part row names the part as the list in the markdown does; a page.json
+// written before rows carried their label falls back to the id.
+function breakLabel(entry) {
+  return entry?.partLabel == null ? str(entry?.name) : str(entry.partLabel);
+}
+
 function breakLine(ctx, entry) {
   if (entry?.kind === 'place') {
     const writers = arr(entry.writers).map(esc);
@@ -422,12 +428,12 @@ function breakLine(ctx, entry) {
   const path = doors === 0 ? 'no door' : count(doors, 'door');
   const fromTests = arr(entry?.importedByTests).map(str);
   if (importedBy.length === 0 && fromTests.length > 0) {
-    return `<strong>${esc(entry?.name)}</strong> is imported only from tests, by ${count(fromTests.length, 'part')} (${esc(fromTests.join(', '))}), and sits on the path of ${path}.`;
+    return `<strong>${esc(breakLabel(entry))}</strong> is imported only from tests, by ${count(fromTests.length, 'part')} (${esc(fromTests.join(', '))}), and sits on the path of ${path}.`;
   }
   if (fromTests.length > 0) {
-    return `<strong>${esc(entry?.name)}</strong> ${imported}, and by ${fromTests.length} more only from tests; it sits on the path of ${path}.`;
+    return `<strong>${esc(breakLabel(entry))}</strong> ${imported}, and by ${fromTests.length} more only from tests; it sits on the path of ${path}.`;
   }
-  return `<strong>${esc(entry?.name)}</strong> ${imported} and sits on the path of ${path}.`;
+  return `<strong>${esc(breakLabel(entry))}</strong> ${imported} and sits on the path of ${path}.`;
 }
 
 function breaksSection(ctx) {
@@ -890,7 +896,7 @@ export function breaksRows(page) {
     .filter((entry) => entry && typeof entry === 'object' && entry.kind === 'part')
     .slice(0, BAR_ROWS)
     .map((entry) => ({
-      name: str(entry.name),
+      name: breakLabel(entry),
       production: arr(entry.importedBy).length,
       tests: arr(entry.importedByTests).length,
       doors: Math.max(0, Math.floor(Number(entry.doors) || 0)),

@@ -533,6 +533,11 @@ function breakParts(pageData) {
   return pageData.breaks.filter((entry) => entry.kind === 'part').slice(0, 8);
 }
 
+// The name the list gives a part; a row written before labels were carried has only its id.
+function label(part) {
+  return part.partLabel ?? part.name;
+}
+
 function breaksSectionHtml(html) {
   const start = html.indexOf('<h2>What breaks what</h2>');
   return html.slice(start, html.indexOf('</section>', start));
@@ -544,7 +549,7 @@ test('the what-breaks-what picture draws one row per listed part, its bar length
   const svg = render.renderBreaks(page);
   assert.match(svg, /^<svg [^>]*role="img"[^>]*aria-labelledby="atlasBreaksTitle atlasBreaksDesc"/);
   const rows = render.breaksRows(page);
-  assert.deepEqual(rows.map((row) => row.name), parts.map((part) => part.name));
+  assert.deepEqual(rows.map((row) => row.name), parts.map(label));
   const bars = [...svg.matchAll(/<rect class="bar" x="([\d.]+)" y="[\d.]+" width="([\d.]+)"/g)].map((match) => Number(match[2]));
   const dashed = [...svg.matchAll(/<rect class="bar bar-tests" x="([\d.]+)" y="[\d.]+" width="([\d.]+)"/g)].map((match) => ({ x: Number(match[1]), width: Number(match[2]) }));
   const withProduction = parts.filter((part) => part.importedBy.length > 0);
@@ -562,7 +567,7 @@ test('the what-breaks-what picture draws one row per listed part, its bar length
   for (const part of parts) {
     const end = part.importedByTests.length > 0 ? `${part.importedBy.length} + ${part.importedByTests.length} from tests` : String(part.importedBy.length);
     assert.ok(svg.includes(`>${end}</text>`), `${part.name}: ${end}`);
-    assert.ok(svg.includes(`>${esc(part.name)}</text>`), part.name);
+    assert.ok(svg.includes(`>${esc(label(part))}</text>`), part.name);
   }
   const numerals = [...svg.matchAll(/text-anchor="end">(\d+)<\/text>/g)].map((match) => Number(match[1]));
   assert.deepEqual(numerals, parts.map((part) => part.doors));
@@ -581,10 +586,10 @@ test('the picture says in one sentence what its first three rows say, naming the
     const doors = `${part.doors} door${part.doors === 1 ? '' : 's'}`;
     const by = `${part.importedBy.length} part${part.importedBy.length === 1 ? '' : 's'}`;
     return part.importedByTests.length > 0
-      ? `${part.name} is imported by ${by} and ${part.importedByTests.length} more only from tests, and sits on the path of ${doors}`
-      : `${part.name} is imported by ${by} and sits on the path of ${doors}`;
+      ? `${label(part)} is imported by ${by} and ${part.importedByTests.length} more only from tests, and sits on the path of ${doors}`
+      : `${label(part)} is imported by ${by} and sits on the path of ${doors}`;
   };
-  assert.ok(desc.startsWith(`${first.name} is imported by `), desc);
+  assert.ok(desc.startsWith(`${label(first)} is imported by `), desc);
   assert.ok(plain(desc).startsWith(`${clause(first)}; ${clause(second)}; ${clause(third)}`), desc);
   assert.ok(desc.endsWith('.'));
   // A part imported only from tests reads as the list reads it.
@@ -605,6 +610,20 @@ test('the picture sits after the list, carries no colour, and drops out below 60
   const places = render.renderPage({ ...page, breaks: page.breaks.filter((entry) => entry.kind === 'place') }, { repo: page.repo });
   assert.equal(places.includes('atlasBreaksTitle'), false, 'no part rows, no picture');
   assert.equal(render.renderBreaks({ breaks: [{ kind: 'part', name: '<script>', importedBy: ['<b>'], doors: 1 }] }).includes('<script>'), false);
+});
+
+test('a part is labelled as the list names it, so a root-level part reads "the repository root"', () => {
+  const breaks = [
+    { kind: 'part', name: 'root', partLabel: 'the repository root', importedBy: ['lib', 'tools'], importedByTests: [], doors: 3 },
+    { kind: 'part', name: 'lib', importedBy: ['tools'], importedByTests: [], doors: 2 },
+  ];
+  const svg = render.renderBreaks({ breaks });
+  assert.ok(svg.includes('>the repository root</text>'));
+  assert.equal(svg.includes('>root</text>'), false, 'the id is not the label');
+  assert.ok(svg.includes('>lib</text>'), 'a row without a label falls back to its id');
+  assert.ok(svg.includes('<desc id="atlasBreaksDesc">the repository root is imported by 2 parts and sits on the path of 3 doors; lib is'));
+  const html = render.renderPage({ ...page, breaks }, { repo: page.repo });
+  assert.ok(breaksSectionHtml(html).includes('<li><strong>the repository root</strong> is imported by 2 parts'), 'the list says the same');
 });
 
 test('page.json carries the imports among the listed parts, for a later layer of the picture', () => {
