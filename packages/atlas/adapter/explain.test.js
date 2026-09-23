@@ -82,6 +82,8 @@ describe('atlas explain on the doors fixture', () => {
     assert.deepEqual(lines.slice(0, -1), [
       'tools/ingest.js is in tools (code).',
       'Run by Ingest.',
+      'Imports 4 files: lib/policy.js, lib/store.js, lib/verify.js and tools/prepare.js.',
+      'No file imports it.',
       'Its part imports 1 part: lib.',
       'No other part imports its part.',
       'Writes to indexes/latest.json; read by site/index.html (found by text), tools/render.js and tools/report.py.',
@@ -95,8 +97,24 @@ describe('atlas explain on the doors fixture', () => {
     const lines = explained(doors, 'lib/store.js');
     assert.equal(lines[0], 'lib/store.js is in lib (code).');
     assert.equal(lines[1], 'On the path of Checks, Ingest, weekly and Manual through lib.');
-    assert.equal(lines[3], 'Its part is imported by 1 part: tools.');
-    assert.equal(lines[4], 'Inside it, seal record does, in order: check schema, check policy, load schema, load policy and schema version.');
+    assert.equal(lines[5], 'Its part is imported by 1 part: tools.');
+    assert.equal(lines[6], 'Inside it, seal record does, in order: check schema, check policy, load schema, load policy and schema version.');
+  });
+
+  it('names the files a file imports, the files that import it, and its own test', () => {
+    const lines = explained(doors, 'lib/verify.js');
+    assert.deepEqual(lines.slice(2, 5), [
+      'Imports 2 files: lib/policy.js and lib/schema.js.',
+      // Production importers come before tests, so a cut list keeps the code.
+      'Imported by 2 files, 1 of them a test: tools/ingest.js and lib/verify.test.js.',
+      'Its own test is lib/verify.test.js.',
+    ]);
+    const facts = JSON.parse(explain(doors, 'lib/verify.js', '--json').stdout);
+    assert.deepEqual(facts.importsFiles, ['lib/policy.js', 'lib/schema.js']);
+    assert.deepEqual(facts.importedByFiles, ['tools/ingest.js', 'lib/verify.test.js']);
+    assert.equal(facts.importedByTestFiles, 1);
+    assert.deepEqual(facts.ownTests, ['lib/verify.test.js']);
+    assert.deepEqual(facts.reexportsAll, []);
   });
 
   it('says a file is in no part, and still names the door that runs it', () => {
@@ -104,6 +122,8 @@ describe('atlas explain on the doors fixture', () => {
     assert.deepEqual(lines.slice(0, -1), [
       'packages/cli/check.js is not in any part.',
       'Run by Checks.',
+      'Imports no file in this repository.',
+      'No file imports it.',
       'No order of work is recorded; only files a door runs, and the files they call, carry one.',
     ]);
   });

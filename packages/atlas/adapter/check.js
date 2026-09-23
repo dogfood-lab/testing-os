@@ -23,7 +23,7 @@ export function compareArtifacts(committed, current, repoPath) {
   if (identity) return identity;
   const empty = emptyBoundary(current);
   if (empty) return empty;
-  const edges = setDrift('edge', edgeKey, committed.edges, current.edges, (edge) => `${edge.from} → ${edge.to} (${edge.kind})`);
+  const edges = setDrift('edge', edgeKey, committed.edges, current.edges, (edge) => `${edge.from} → ${edge.to} (${edge.kind}${edge.fromTests ? ', only from tests' : ''})`);
   if (edges) return edges;
   const entries = entryDrift(committed, current);
   if (entries) return entries;
@@ -174,8 +174,10 @@ function setDrift(noun, keyOf, oldList, newList, show) {
   return { code: 'ATLAS_STRUCTURE_DRIFT', details };
 }
 
+// An edge that moves from test files into production code is a new
+// dependency, so whether it is fromTests is part of its identity.
 function edgeKey(edge) {
-  return `${edge.from}\0${edge.to}\0${edge.kind}`;
+  return `${edge.from}\0${edge.to}\0${edge.kind}${edge.fromTests ? '\0tests' : ''}`;
 }
 
 function sorted(list = []) {

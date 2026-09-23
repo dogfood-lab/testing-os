@@ -844,7 +844,33 @@ function closed(text) {
 // directory, and stays at full confidence.
 function confidenceOf(value, target, places) {
   const weak = value.rooted === true && !target.includes('/') && places.files.has(target) && !places.dirs.has(target);
-  return weak ? 'weak' : 'ast';
+  return weak || namesADirectoryBeside(value, target, places) ? 'weak' : 'ast';
+}
+
+// A value that stops partway through a name, packages/starter- with the rest
+// built at run time, lands on the directory it stops in. When the names it
+// could finish as are directories there (packages/starter-colony), it names
+// one of those directories or a new one beside them, not a place inside the
+// directory it stops in, so it lands weakly. A prefix of file names there
+// (records/run-) is a file written inside the directory, and lands in full.
+function namesADirectoryBeside(value, target, places) {
+  if (!value.open) return false;
+  const text = value.text.replaceAll('\\', '/').replace(/^(\.\/)+/, '');
+  if (text.endsWith('/') || !text.startsWith(`${target}/`)) return false;
+  const partial = text.slice(target.length + 1);
+  if (partial === '' || partial.includes('/')) return false;
+  const prefix = `${target}/${partial}`;
+  const directChild = (path) => path.startsWith(prefix) && !path.slice(target.length + 1).includes('/');
+  let directories = false;
+  for (const dir of places.dirs) {
+    if (directChild(dir)) {
+      directories = true;
+      break;
+    }
+  }
+  if (!directories) return false;
+  for (const path of places.files) if (directChild(path)) return false;
+  return true;
 }
 
 // Join path segments. A first segment the engine cannot read is taken as the
@@ -1139,7 +1165,8 @@ function key(node) {
  * keyed by the exact place each writer and reader names. A boundary is
  * generated when something writes its root, or every one of its files, and
  * none of its own files write; authored when nothing writes inside it; mixed
- * otherwise.
+ * otherwise. A directory holding more than one part keeps its writers and
+ * readers in the list, marked with spans, and is no door's landing.
  *
  * @param {{ files: object[], doors: object[], boundaries: object[], places: { files: Set<string>, dirs: Set<string> } }} input
  */
@@ -1162,9 +1189,12 @@ export function attachLandings({ files, doors, boundaries, places }) {
     for (const target of door.stagedTargets) add(writers, target, { by: door.file });
     for (const mention of door.mentions) add(readers, mention.path, { by: door.file });
   }
+  const spans = partsSpanned(boundaries, [...writers.keys(), ...readers.keys()], places);
   // A text file inside a place something writes is that writer's output: the
   // paths an index or a roadmap names are its data, not places it reads.
-  const strong = new Set([...writers].filter(([, entries]) => [...entries.values()].some((entry) => entry.confidence !== 'weak')).map(([target]) => target));
+  const strong = new Set([...writers]
+    .filter(([target, entries]) => !spans.has(target) && [...entries.values()].some((entry) => entry.confidence !== 'weak'))
+    .map(([target]) => target));
   const output = (path) => [...strong].some((target) => path === target || path.startsWith(`${target}/`));
   for (const file of own) {
     const generated = file.reads.some((read) => read.confidence === 'text') && output(file.path);
@@ -1179,7 +1209,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     for (const path of door.reachFiles ?? []) {
       for (const write of byPath.get(path)?.writes ?? []) if (write.confidence !== 'weak') targets.add(write.target);
     }
-    door.landings = [...targets].sort(compare);
+    door.landings = [...targets].filter((target) => !spans.has(target)).sort(compare);
     const found = new Map();
     for (const target of door.landings) {
       for (const [place, entries] of readers) {
@@ -1195,11 +1225,35 @@ export function attachLandings({ files, doors, boundaries, places }) {
 
   for (const boundary of boundaries) boundary.origin = originOf(boundary, strong);
 
-  return [...new Set([...writers.keys(), ...readers.keys()])].sort(compare).map((target) => ({
-    target,
-    writers: sortedValues(writers.get(target)),
-    readers: sortedValues(readers.get(target)),
-  }));
+  return [...new Set([...writers.keys(), ...readers.keys()])].sort(compare).map((target) => {
+    const landing = { target, writers: sortedValues(writers.get(target)), readers: sortedValues(readers.get(target)) };
+    if (spans.has(target)) landing.spans = spans.get(target);
+    return landing;
+  });
+}
+
+/**
+ * The directories among targets that hold files of more than one part, with
+ * how many parts each holds. packages/ above every workspace package is where
+ * the parts live, not a place one of them writes: a write that reaches it
+ * names no part's output, so it is recorded with spans and lands nowhere.
+ */
+function partsSpanned(boundaries, targets, places) {
+  const wanted = new Set(targets.filter((target) => places.dirs.has(target)));
+  const partsUnder = new Map();
+  for (const boundary of boundaries) {
+    for (const file of boundary.files) {
+      for (let at = file.path.indexOf('/'); at !== -1; at = file.path.indexOf('/', at + 1)) {
+        const dir = file.path.slice(0, at);
+        if (!wanted.has(dir)) continue;
+        if (!partsUnder.has(dir)) partsUnder.set(dir, new Set());
+        partsUnder.get(dir).add(boundary.name);
+      }
+    }
+  }
+  const out = new Map();
+  for (const [dir, parts] of partsUnder) if (parts.size > 1) out.set(dir, parts.size);
+  return out;
 }
 
 function originOf(boundary, written) {

@@ -183,7 +183,9 @@ describe('atlas page', () => {
     assert.match(reads, /^- \*\*records\/\*\* has no reader in this repository\.$/m);
     assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → lib\/policy\.js → indexes\/ → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);
     assert.match(section(markdown, '## What this map cannot see'), /^- Readers marked \(found by text\) come from scanning unparsed files\.$/m);
-    assert.match(section(markdown, '## What breaks what'), /^- \*\*indexes\/\*\* is written by tools and workflows, and read by site and tools; a hand edit reaches every reader\.$/m);
+    // site/index.html quotes indexes/latest.json in its text: a reader for a
+    // person, named above, but not one a hand edit breaks.
+    assert.match(section(markdown, '## What breaks what'), /^- \*\*indexes\/\*\* is written by tools and workflows, and read by tools; a hand edit reaches every reader\.$/m);
   });
 
   it('writes the order of work inside the files the main door runs, one level into what they call', () => {
@@ -292,7 +294,8 @@ describe('atlas page', () => {
     for (const heading of ['## What comes in', '## What happens through', '## Who reads the results', '## The other doors']) {
       assert.equal(markdown.includes(heading), false, heading);
     }
-    assert.match(markdown, /^- \*\*beta\*\* is imported by 1 part \(tests\) and sits on the path of no door\.$/m);
+    // Every import of beta sits in a test file: needed to test it, not to run it.
+    assert.match(markdown, /^- \*\*beta\*\* is imported only from tests, by 1 part \(tests\), and sits on the path of no door\.$/m);
     assert.match(markdown, /^No door was found, so there is no path through this repository to follow\.$/m);
   });
 
@@ -633,7 +636,7 @@ describe('atlas page', () => {
       const tools = structure.boundaries.find((boundary) => boundary.name === 'tools');
       const extra = Array.from({ length: 9 }, (_, i) => ({
         ...tools,
-        files: [{ exports: ['same'], hash: 'x', path: `extra${i}/a.js` }],
+        files: [{ exports: [`pair${Math.floor(i / 2)}`, 'same'], hash: 'x', path: `extra${i}/a.js` }],
         globs: [`extra${i}/**`],
         name: `extra${i}`,
       }));
@@ -643,16 +646,18 @@ describe('atlas page', () => {
     const untested = section(markdown, '## What no test touches');
     assert.equal(untested.split('\n').filter((line) => line.startsWith('- ')).length, 8);
     assert.ok(untested.endsWith('\n\nAnd 2 more parts.\n'), untested);
-    // Nine parts each export same() from a file named a.js: 36 pairs by file
-    // name, and normalize first by name, so five shown and 32 counted.
+    // Nine parts export same() from a file named a.js, one candidate read as a
+    // contract; pair0 to pair3 are each alike in two of them, and pair4 in
+    // one. By name: normalize and the four pairs are shown, same is counted.
     const alike = section(markdown, '## Helpers that look duplicated');
     const bullets = alike.split('\n').filter((line) => line.startsWith('- '));
     assert.equal(bullets.length, 5);
     assert.ok(bullets[0].startsWith('- **normalize** is exported by'), bullets[0]);
-    assert.ok(alike.endsWith('\n\nAnd 32 more pairs.\n'), alike);
+    assert.equal(bullets[4], '- **pair3** is exported by extra6/a.js (extra6) and extra7/a.js (extra7); the two look alike.');
+    assert.ok(alike.endsWith('\n\nAnd 1 more candidate.\n'), alike);
     const data = JSON.parse(json);
     assert.deepEqual([data.untested.length, data.untestedNote], [8, ['And 2 more parts.']]);
-    assert.deepEqual(data.duplicatesNote, ['And 32 more pairs.']);
+    assert.deepEqual(data.duplicatesNote, ['And 1 more candidate.']);
   });
 
   it('calls two helpers alike by the same calls in order, or by file name where either has no recorded order', () => {

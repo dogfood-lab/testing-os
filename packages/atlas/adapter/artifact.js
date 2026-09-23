@@ -1,3 +1,4 @@
+import { posix } from 'node:path';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
 import { roleFor } from './templates.js';
 
@@ -62,15 +63,35 @@ function resolvedFiles(file) {
   return { files, boundaries };
 }
 
+// The tracked files a command line names: each word read as a path from the
+// repository root, where a test that runs a script usually sets its cwd, and
+// failing that from the test's own directory and each directory above it.
+function spawnedFiles(commands, testPath, byPath) {
+  const dirs = [];
+  for (let at = testPath.lastIndexOf('/'); at > 0; at = testPath.lastIndexOf('/', at - 1)) dirs.push(testPath.slice(0, at));
+  const found = [];
+  for (const command of commands) {
+    for (const match of command.matchAll(/'([^']*)'|"([^"]*)"|(\S+)/g)) {
+      const word = (match[1] ?? match[2] ?? match[3]).replaceAll('\\', '/').replace(/^(\.\/)+/, '');
+      if (word === '' || word.startsWith('-') || word.startsWith('/')) continue;
+      const hit = [word, ...dirs.map((dir) => posix.normalize(`${dir}/${word}`))].find((path) => byPath.has(path));
+      if (hit) found.push(hit);
+    }
+  }
+  return found;
+}
+
 /**
  * How many test files reach each part: a test file, by name, that imports a
  * file of the part, or imports a file that imports one, or is the own test of
  * a file of the part (tests/test_trainer.py for backpropagate/trainer.py),
  * which is what a test named for a file tests even when its import could not
- * be resolved. Per-file imports are not in the artifact, so this is counted
- * here, where the resolved imports are still in hand. A test file reached is
- * not the part's code under test, so it counts only as the hop, not as the
- * part.
+ * be resolved. A test that runs a file as a child process, with the command
+ * written out in full (spawnSync('node', ['scripts/gate.mjs'])), reaches it as
+ * surely as one that imports it, and the file's imports are followed the same
+ * one hop. This is counted here, where the resolved imports and the commands
+ * are still in hand. A test file reached is not the part's code under test,
+ * so it counts only as the hop, not as the part.
  */
 function testReach(mapped) {
   const all = [...mapped.boundaries.flatMap((boundary) => boundary.files), ...mapped.unassigned, ...mapped.overlaps]
@@ -90,6 +111,7 @@ function testReach(mapped) {
   const testedBy = new Map();
   for (const test of tests) {
     const direct = resolvedFiles(test);
+    direct.files.push(...spawnedFiles(mapped.spawned?.get(test.path) ?? [], test.path, byPath));
     const parts = new Set(direct.boundaries);
     const reached = new Set(direct.files);
     for (const path of direct.files) {
@@ -141,7 +163,7 @@ export function buildArtifact(mapped, commit) {
   return {
     boundaries,
     doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => (a.file < b.file ? -1 : a.file > b.file ? 1 : 0)),
-    edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to })),
+    edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to, ...(edge.fromTests ? { fromTests: true } : {}) })),
     generatedFrom: { commit, tracked },
     landings: carryLandings(mapped.landings ?? []),
     overlaps,
@@ -154,16 +176,42 @@ export function buildArtifact(mapped, commit) {
 
 // The order of work is carried only where the core recorded it: the files a
 // door runs and the files they call into. Exported names are carried for
-// every file that has one.
+// every file that has one, and so are the files a file imports, so a reader
+// of one file can be told what it imports and what imports it.
 function carryFile(file) {
   const out = { hash: file.hash, path: file.path };
   if (file.exports) out.exports = [...file.exports];
+  const imported = importTargets(file);
+  if (imported.files.length > 0) out.importsFiles = imported.files;
+  if (imported.all.length > 0) out.reexportsAll = imported.all;
   if (file.sequences) out.sequences = file.sequences.map(carrySequence);
   if (file.entry != null) {
     out.entry = file.entry;
     out.entryRule = file.entryRule;
   }
   return out;
+}
+
+/**
+ * The places a file's resolved imports land on, deduplicated and sorted: a
+ * tracked file by its path, and a build chunk whose sources share a part as
+ * @part, since no one file is what it imports. The files it re-exports whole
+ * (export * from) are listed apart as well.
+ */
+function importTargets(file) {
+  const files = new Set();
+  const all = new Set();
+  if (!Array.isArray(file.imports)) return { files: [], all: [] };
+  for (const site of file.imports) {
+    const resolved = site.resolved;
+    let target = null;
+    if (resolved?.outcome === 'file') target = resolved.path;
+    else if (resolved?.outcome === 'boundary') target = `@${resolved.boundary}`;
+    if (target == null || target === file.path || inAtlas(target)) continue;
+    files.add(target);
+    if (site.reexportsAll) all.add(target);
+  }
+  return { files: [...files].sort(), all: [...all].sort() };
 }
 
 function carrySequence(sequence) {
@@ -196,6 +244,7 @@ function carryLandings(landings) {
     .filter((landing) => !inAtlas(landing.target))
     .map((landing) => ({
       readers: landing.readers.filter((entry) => !inAtlas(entry.by)).map(carryReader),
+      ...(landing.spans ? { spans: landing.spans } : {}),
       target: landing.target,
       writers: landing.writers.filter((entry) => !inAtlas(entry.by)).map(carryWriter),
     }))

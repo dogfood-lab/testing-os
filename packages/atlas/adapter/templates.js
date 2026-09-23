@@ -15,7 +15,9 @@ export function isTestPath(path) {
 }
 
 const CODE_EXT = new Set(['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'mts', 'cts', 'py', 'pyi']);
-const DOCS_EXT = new Set(['md', 'mdx', 'rst']);
+const DOCS_EXT = new Set(['md', 'mdx', 'rst', 'txt']);
+// A pinned dependency list is a .txt file a tool reads, not prose.
+const DEPENDENCY_LIST = /^(requirements|constraints)([-_.].*)?\.txt$/i;
 const CONFIG_EXT = new Set(['json', 'yaml', 'yml', 'toml', 'jsonl', 'lock']);
 const IMAGE_EXT = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'ico', 'bmp', 'avif']);
 const FONT_EXT = new Set(['woff', 'woff2', 'ttf', 'otf', 'eot']);
@@ -45,6 +47,7 @@ export function fileKind(path) {
   if (isTestPath(path)) return 'test';
   const base = baseName(path);
   const ext = extensionOf(base);
+  if (DEPENDENCY_LIST.test(base)) return 'other';
   if (DOCS_EXT.has(ext)) return 'docs';
   if (CONFIG_EXT.has(ext) || isConfigName(base)) return 'config';
   if (CODE_EXT.has(ext)) return 'code';
@@ -54,16 +57,25 @@ export function fileKind(path) {
 
 /**
  * Other casts no vote. Test is reserved for a boundary whose code-shaped
- * files are all tests. A boundary with no voting files is config. Any
- * voting code file makes the boundary code; otherwise docs or config win
+ * files are all tests. A boundary with no voting files is config. A boundary
+ * with code is code while its code, tests included, is at least a third of
+ * its code and prose together: a docs site with a few scripts beside a
+ * hundred pages is docs, and a package with a README and a changelog beside
+ * one module is code. Configuration is left out of that ratio, since every
+ * package carries a manifest whatever its size. Otherwise docs or config win
  * by majority of the voting files.
  */
 export function roleFor(paths) {
   const kinds = paths.map((path) => fileKind(path));
   const voting = kinds.filter((kind) => kind === 'code' || kind === 'docs' || kind === 'config');
-  if (voting.some((kind) => kind === 'code')) return 'code';
-  if (voting.length === 0) return kinds.some((kind) => kind === 'test') ? 'test' : 'config';
   const docs = voting.filter((kind) => kind === 'docs').length;
+  const code = voting.filter((kind) => kind === 'code').length;
+  if (code > 0) {
+    const tests = paths.filter((path, index) => kinds[index] === 'test' && CODE_EXT.has(extensionOf(baseName(path)))).length;
+    if ((code + tests) * 3 >= code + tests + docs) return 'code';
+    return docs > voting.length / 2 ? 'docs' : 'config';
+  }
+  if (voting.length === 0) return kinds.some((kind) => kind === 'test') ? 'test' : 'config';
   const config = voting.filter((kind) => kind === 'config').length;
   if (docs > voting.length / 2) return 'docs';
   if (config > voting.length / 2) return 'config';

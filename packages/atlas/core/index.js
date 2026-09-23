@@ -1,7 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, readlinkSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
@@ -49,6 +49,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   if (!Array.isArray(boundaries)) {
     throw new Error('boundaries must be an array');
   }
+  // Resolution compares absolute paths against the repository root, so a
+  // relative root ('.') would leave every relative import unresolved.
+  repoPath = resolve(repoPath);
 
   const ordered = boundaries.map(validateBoundary);
   const seen = new Set();
@@ -151,6 +154,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     importConfidence: resolution.importConfidence,
     doors,
     landings,
+    spawned,
   };
 }
 
@@ -315,7 +319,12 @@ function collectScript(root) {
   walkNamed(root, (node) => {
     if (node.type === 'import_statement' || node.type === 'export_statement') {
       const literal = jsString(node.childForFieldName('source'));
-      if (literal != null) imports.push({ specifier: literal, kind: 'static', line: lineOf(node) });
+      if (literal == null) return;
+      const site = { specifier: literal, kind: 'static', line: lineOf(node) };
+      // export * from './x' hands on every name x exports, which is what a
+      // barrel index does; export * as ns names one binding, so it is not.
+      if (node.type === 'export_statement' && node.children.some((child) => child.type === '*')) site.reexportsAll = true;
+      imports.push(site);
       return;
     }
     if (node.type !== 'call_expression') return;

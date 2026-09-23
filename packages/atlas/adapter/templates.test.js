@@ -22,4 +22,18 @@ describe('derived roles', () => {
     assert.equal(roleFor(['swarms/notes.md', 'swarms/plan.md']), 'docs');
     assert.equal(roleFor(['dogfood/a.yaml', 'dogfood/validate.test.mjs']), 'config');
   });
+
+  it('reads a part as docs when its prose outweighs its code more than two to one', () => {
+    const pages = Array.from({ length: 10 }, (_, i) => `docs/page-${i}.md`);
+    assert.equal(roleFor([...pages, 'docs/check-links.ts']), 'docs');
+    assert.equal(roleFor([...pages, 'docs/check-links.ts', 'docs/package.json']), 'docs');
+    // One module beside its README and changelog is still a package of code.
+    assert.equal(roleFor(['pkg/index.ts', 'pkg/README.md', 'pkg/CHANGELOG.md', 'pkg/package.json']), 'code');
+    // Its tests count with its code: three modules under test beside five pages.
+    assert.equal(roleFor(['pkg/a.ts', 'pkg/a.test.ts', 'pkg/b.test.ts', ...pages.slice(0, 5)]), 'code');
+    // Below the ratio with no prose majority, configuration is what is left.
+    assert.equal(roleFor(['cfg/a.json', 'cfg/b.json', 'cfg/c.json', 'cfg/d.md', 'cfg/e.md', 'cfg/f.md', 'cfg/g.md', 'cfg/h.ts']), 'config');
+    assert.equal(fileKind('site/public/robots.txt'), 'docs');
+    assert.equal(fileKind('requirements-dev.txt'), 'other');
+  });
 });

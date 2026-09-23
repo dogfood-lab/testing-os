@@ -31,6 +31,10 @@ const PAIRS_SHOWN = 5;
 const UNTESTED_SHOWN = 8;
 const UNREAD_SHOWN = 8;
 const DUPLICATES_SHOWN = 5;
+// A name exported alike by this many parts reads as a contract, and the line
+// names this many of them.
+const CONTRACT_PARTS = 3;
+const CONTRACT_NAMED = 5;
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const ROOT_NAME = 'the repository root';
 
@@ -138,8 +142,10 @@ function facts({ structure, statistics }) {
     place: (target) => (isDir(target) ? `${target}/` : target),
     doors: orderDoors(structure.doors ?? []),
     // A weak landing is a bare file name under a root the engine could not
-    // read; it stays in the artifact, and the page states nothing from it.
-    landings: (structure.landings ?? []).map((landing) => ({
+    // read; it stays in the artifact, and the page states nothing from it. A
+    // landing that spans parts (packages/ above every package) is where the
+    // parts live, not a place one of them writes, and is left out the same way.
+    landings: (structure.landings ?? []).filter((landing) => !landing.spans).map((landing) => ({
       target: landing.target,
       writers: (landing.writers ?? []).filter(strong),
       readers: (landing.readers ?? []).filter(strong),
@@ -744,15 +750,25 @@ function otherDoors(ctx, main) {
   return ['## The other doors', paragraphs.join('\n\n')].join('\n\n');
 }
 
-function importers(ctx) {
+// The parts that import each part in production code. A part imported only
+// from test files is needed to test the other part, not to run it, so it is
+// counted apart (testImporters) and orders nothing.
+function importers(ctx, { tests = false } = {}) {
   const from = new Map(ctx.boundaries.map((boundary) => [boundary.name, new Set()]));
   for (const edge of ctx.structure.edges ?? []) {
     if (edge.kind !== 'file' && edge.kind !== 'chunk') continue;
-    if (edge.from === edge.to) continue;
+    if (edge.from === edge.to || Boolean(edge.fromTests) !== tests) continue;
     if (!from.has(edge.to)) from.set(edge.to, new Set());
     from.get(edge.to).add(edge.from);
   }
   return from;
+}
+
+function testImporters(ctx) {
+  const production = importers(ctx);
+  const tests = importers(ctx, { tests: true });
+  for (const [part, parts] of tests) for (const name of production.get(part) ?? []) parts.delete(name);
+  return tests;
 }
 
 function doorsThrough(ctx) {
@@ -766,13 +782,37 @@ function doorsThrough(ctx) {
   return on;
 }
 
+/**
+ * The places something writes, each with its writers and the files that read
+ * it. A written place under another is part of it when one writer writes both,
+ * or when a door commits the outer place whole. A file one script writes
+ * inside a directory another script writes into is its own place, so a
+ * receipt kept beside another script's output keeps its own line. Every
+ * landing is counted with the deepest place that holds it.
+ *
+ * A reader found only by scanning text is evidence for a person, not a use
+ * the code depends on: it is left out here, so it never makes a place read or
+ * a hand edit reach it, and the readers section names it as found by text.
+ */
 function writtenPlaces(ctx) {
-  const written = ctx.landings.filter((landing) => landing.writers.length > 0).map((landing) => landing.target);
-  return cover(written).map((target) => {
-    const inside = ctx.landings.filter((landing) => under(landing.target, target));
+  const written = ctx.landings.filter((landing) => landing.writers.length > 0);
+  const writersOf = new Map(written.map((landing) => [landing.target, new Set(landing.writers.map((entry) => entry.by))]));
+  const doorFiles = new Set(ctx.doors.map((door) => door.file));
+  const holds = (outer, inner) => [...writersOf.get(outer)].some((by) => doorFiles.has(by) || writersOf.get(inner).has(by));
+  const targets = written.map((landing) => landing.target).sort(cmp);
+  const kept = targets.filter((target) => !targets.some((other) => other !== target && under(target, other) && holds(other, target)));
+  const holder = (path) => kept.filter((target) => under(path, target)).sort((a, b) => b.length - a.length)[0] ?? null;
+  const held = new Map(kept.map((target) => [target, []]));
+  for (const landing of ctx.landings) {
+    const target = holder(landing.target);
+    if (target != null) held.get(target).push(landing);
+  }
+  return kept.map((target) => {
+    const inside = held.get(target);
     const writers = [...new Set(inside.flatMap((landing) => landing.writers.map((entry) => entry.by)))].sort(cmp);
     // A workflow that names a place it also writes is describing its own output.
-    const reads = inside.flatMap((landing) => landing.readers).filter((entry) => entry.call != null || !writers.includes(entry.by));
+    const reads = inside.flatMap((landing) => landing.readers)
+      .filter((entry) => entry.confidence !== 'text' && (entry.call != null || !writers.includes(entry.by)));
     const readers = readerFiles(reads).filter((reader) => !under(reader.path, target));
     return { target, writers, readers };
   });
@@ -784,6 +824,7 @@ function partsOf(ctx, paths) {
 
 function breaks(ctx) {
   const from = importers(ctx);
+  const fromTests = testImporters(ctx);
   const on = doorsThrough(ctx);
   const places = writtenPlaces(ctx)
     .filter((place) => place.readers.length >= 2)
@@ -800,10 +841,12 @@ function breaks(ctx) {
       kind: 'part',
       name: boundary.name,
       importedBy: [...(from.get(boundary.name) ?? [])].sort(cmp),
+      importedByTests: [...(fromTests.get(boundary.name) ?? [])].sort(cmp),
       doors: on.get(boundary.name) ?? 0,
     }))
-    .filter((part) => part.importedBy.length > 0 || part.doors >= 2)
-    .sort((a, b) => b.importedBy.length - a.importedBy.length || b.doors - a.doors || cmp(a.name, b.name))
+    .filter((part) => part.importedBy.length > 0 || part.importedByTests.length > 0 || part.doors >= 2)
+    .sort((a, b) => b.importedBy.length - a.importedBy.length || b.doors - a.doors
+      || b.importedByTests.length - a.importedByTests.length || cmp(a.name, b.name))
     .slice(0, BREAK_LINES - places.length);
   return [...parts, ...places];
 }
@@ -814,11 +857,29 @@ function breakLine(ctx, entry) {
     const writers = list(entry.writers.map(ctx.shown));
     return `- **${entry.target}** is written by ${writers}${comma} and read by ${list(entry.readers.map(ctx.shown))}; a hand edit reaches every reader.`;
   }
+  const fromTests = entry.importedByTests ?? [];
+  const path = entry.doors === 0 ? 'no door' : count(entry.doors, 'door');
+  if (entry.importedBy.length === 0 && fromTests.length > 0) {
+    return `- **${ctx.shown(entry.name)}** is imported only from tests, by ${count(fromTests.length, 'part')} (${fromTests.map(ctx.shown).join(', ')}), and sits on the path of ${path}.`;
+  }
   const imported = entry.importedBy.length === 0
     ? 'is imported by no other part'
     : `is imported by ${count(entry.importedBy.length, 'part')} (${entry.importedBy.map(ctx.shown).join(', ')})`;
-  const path = entry.doors === 0 ? 'no door' : count(entry.doors, 'door');
+  const tests = testsClause(entry.importedBy.length, fromTests.length);
+  if (tests) return `- **${ctx.shown(entry.name)}** ${imported}, ${tests}; it sits on the path of ${path}.`;
   return `- **${ctx.shown(entry.name)}** ${imported} and sits on the path of ${path}.`;
+}
+
+/**
+ * The parts that import a part only from test files, as a clause after a
+ * production count that is not zero: "and by 3 more only from tests".
+ *
+ * @param {number} production
+ * @param {number} tests
+ * @returns {string|null}
+ */
+export function testsClause(production, tests) {
+  return production === 0 || tests === 0 ? null : `and by ${tests} more only from tests`;
 }
 
 function breaksSection(ctx, entries) {
@@ -982,7 +1043,8 @@ function sameCalls(a, b) {
  * written twice. Where the map recorded the order of work for both, the calls
  * must match name for name in order; where either has none, the files must
  * share a name. Test material is left out: a fixture's helper is not the
- * repository's.
+ * repository's. Pairs are grouped by name; a name alike in three or more
+ * parts is one candidate, read as a contract.
  */
 function duplicates(ctx) {
   const byName = new Map();
@@ -999,27 +1061,47 @@ function duplicates(ctx) {
   const all = [];
   for (const name of [...byName.keys()].sort(cmp)) {
     const owners = byName.get(name).sort((a, b) => cmp(a.path, b.path));
+    const pairs = [];
     for (let i = 0; i < owners.length; i += 1) {
       for (let j = i + 1; j < owners.length; j += 1) {
         const [a, b] = [owners[i], owners[j]];
         if (a.part === b.part || ownTestPair(a.path, b.path)) continue;
         const alike = a.calls && b.calls ? sameCalls(a.calls, b.calls) : baseName(a.path) === baseName(b.path);
         if (!alike) continue;
-        all.push({ files: [a.path, b.path], name, partLabels: [ctx.shown(a.part), ctx.shown(b.part)], parts: [a.part, b.part] });
+        pairs.push({ files: [a.path, b.path], name, partLabels: [ctx.shown(a.part), ctx.shown(b.part)], parts: [a.part, b.part] });
       }
+    }
+    const parts = [...new Set(pairs.flatMap((pair) => pair.parts))].sort(cmp);
+    if (parts.length >= CONTRACT_PARTS) {
+      const files = [...new Set(pairs.flatMap((pair) => pair.files))].sort(cmp);
+      all.push({ contract: true, files, name, partLabels: parts.map(ctx.shown), parts });
+    } else {
+      all.push(...pairs);
     }
   }
   const items = all.slice(0, DUPLICATES_SHOWN);
+  const rest = all.slice(DUPLICATES_SHOWN);
   return {
     items,
     lead: items.length > 0 ? 'These are candidates from names and call order, not a judgement.' : null,
-    note: more(all.length, DUPLICATES_SHOWN, 'pair'),
+    note: more(all.length, DUPLICATES_SHOWN, rest.every((item) => !item.contract) ? 'pair' : 'candidate'),
   };
+}
+
+// One name exported alike by three or more parts is one line: that many
+// copies of one helper is less likely than one contract each part fulfils.
+export function contractLine(name, partLabels) {
+  const shown = partLabels.length > CONTRACT_NAMED
+    ? `${partLabels.slice(0, CONTRACT_NAMED).join(', ')} and ${partLabels.length - CONTRACT_NAMED} more`
+    : list(partLabels);
+  return `**${name}** is exported by ${count(partLabels.length, 'part')} (${shown}); with the same name in this many parts it is most likely a shared contract, not a copy.`;
 }
 
 function duplicatesSection(found) {
   const body = found.items.length > 0
-    ? found.items.map((item) => `- **${item.name}** is exported by ${item.files[0]} (${item.partLabels[0]}) and ${item.files[1]} (${item.partLabels[1]}); the two look alike.`).join('\n')
+    ? found.items.map((item) => (item.contract
+      ? `- ${contractLine(item.name, item.partLabels)}`
+      : `- **${item.name}** is exported by ${item.files[0]} (${item.partLabels[0]}) and ${item.files[1]} (${item.partLabels[1]}); the two look alike.`)).join('\n')
     : 'No two parts export a helper that looks alike.';
   return ['## Helpers that look duplicated', ...(found.lead ? [found.lead] : []), body, ...found.note].join('\n\n');
 }
