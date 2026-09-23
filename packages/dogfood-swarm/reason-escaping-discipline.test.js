@@ -129,6 +129,10 @@ const ALLOWLIST = [
     reason: 'check.reason (canTransition()\'s validity-check text) is system-computed state-machine diagnostic text. It is threaded through logStage(\'transition_skipped\', { ..., detail: check.reason }) under the `detail` KEY — never the `reason` key, which at every one of this file\'s three logStage call sites is always one of three fixed literals (\'agent_run_not_found\' / \'state_machine_rejected\' / \'transition_threw\') — and logStage\'s own optional human-readable companion banner (formatHumanBanner/buildSummary, lib/log-stage.js) only ever reads the `reason` key, never `detail`, so check.reason\'s actual dynamic value never reaches that text surface. (F-6c030425, wave 24: this entry\'s PRIOR text — "fed to logStage (a structured JSON event), never rendered to a text/console surface" — overclaimed about logStage ITSELF, the same overclaim shape F-12947492 flagged before: logStage DOES have a text-rendering path, formatHumanBanner, for whatever field a caller places under its `reason` key. The claim only ever held for THIS call site\'s specific choice of key name, not for logStage as a mechanism — corrected here to say exactly that, no more.) collect.js also threads a `reason` PARAMETER through to transitionAgent/transitionWave at several call sites — a DB column write, not a render.',
   },
   {
+    file: 'commands/init.js',
+    reason: 'the one `reason` occurrence is the `{ reason }` option passed to saveDomainDraft: the `created` domain_events row\'s reason for an Atlas draft, built from the map commit and part count (atlasDraftReason, lib/atlas-domains.js). A DB column write, never rendered by init; `swarm domains --history` renders it later and escapes it there.',
+  },
+  {
     file: 'commands/dispatch.js',
     reason: 'every `reason` occurrence is literal usage-hint text inside help/error strings naming the --reason flag for `swarm redrive` / `swarm defer` / `swarm reject` (e.g. "... --reason \\"<text>\\" --apply`"), not an interpolated/rendered VALUE.',
   },

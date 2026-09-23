@@ -1,0 +1,113 @@
+{
+  "authored": [
+    "config/",
+    "docs/",
+    "root"
+  ],
+  "breaks": [
+    {
+      "doors": 0,
+      "importedBy": [
+        "cli"
+      ],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "api",
+      "partLabel": "api"
+    },
+    {
+      "doors": 0,
+      "importedBy": [
+        "api"
+      ],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "core",
+      "partLabel": "core"
+    },
+    {
+      "doors": 0,
+      "importedBy": [
+        "core"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "util",
+      "partLabel": "util"
+    }
+  ],
+  "changes": {
+    "first": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "2f87ac2d16f75c6bb18541a27236d0cfb33bc504",
+  "defaultBranch": "main",
+  "derived": "8 parts, mostly JavaScript (6 files). No workflows were found, so this page has no doors.",
+  "doors": [],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "api",
+      "fromTests": false,
+      "to": "core"
+    },
+    {
+      "from": "core",
+      "fromTests": false,
+      "to": "util"
+    }
+  ],
+  "generated": [],
+  "generatedAt": "2026-09-23T21:25:44.692Z",
+  "limits": [
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions."
+  ],
+  "mainDoor": null,
+  "partLabels": {
+    "api": "api",
+    "cli": "cli",
+    "config": "config",
+    "core": "core",
+    "docs": "docs",
+    "root": "the repository root",
+    "tests": "tests",
+    "util": "util"
+  },
+  "parts": 8,
+  "readers": [],
+  "repo": "dogfood-lab/mapped-repo",
+  "sequences": [],
+  "startDoor": null,
+  "startHere": [],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 1,
+  "testedBy": {
+    "api": 1,
+    "cli": 0,
+    "core": 1,
+    "util": 1
+  },
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "cli",
+      "partLabel": "cli",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 0
+}

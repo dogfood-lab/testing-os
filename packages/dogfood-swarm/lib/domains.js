@@ -27,11 +27,14 @@
 
 import { readdirSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { minimatch } from 'minimatch';
 import { STATUS } from '../db/schema.js';
 import { DomainsInvalidOwnershipError } from './errors.js';
 import { isSafeDomainName } from './worktree.js';
+import { listTrackedFiles, readAtlasLineage, runAtlas, writeAtlasLineage } from './atlas.js';
+import { coverageMessage, draftMatchesLineage, verifyDomainCoverage } from './atlas-domains.js';
 
 /** Live ownership_class vocabulary for reject messages (F-969074b9). */
 function ownershipClassVocab() {
@@ -219,20 +222,55 @@ export function detectDomains(repoPath) {
 
 // ── CRUD ──
 
-export function saveDomainDraft(db, runId, domains) {
+/**
+ * @param {Database} db
+ * @param {string} runId
+ * @param {Array<{ name: string, globs: string[], ownership_class: string, description?: string }>} domains
+ * @param {{ reason?: string }} [opts] — the `created` event's reason; the
+ *   hand template's is the default
+ */
+export function saveDomainDraft(db, runId, domains, opts = {}) {
+  const reason = opts.reason ?? 'Auto-detected from repo structure';
   const insert = db.prepare(
-    "INSERT INTO domains (run_id, name, globs, ownership_class, description, frozen) VALUES (?, ?, ?, ?, '', 0)"
+    'INSERT INTO domains (run_id, name, globs, ownership_class, description, frozen) VALUES (?, ?, ?, ?, ?, 0)'
   );
   const insertEvent = db.prepare(
     'INSERT INTO domain_events (domain_id, event_type, new_value, reason) VALUES (?, ?, ?, ?)'
   );
   const tx = db.transaction(() => {
     for (const d of domains) {
-      const result = insert.run(runId, d.name, JSON.stringify(d.globs), d.ownership_class);
+      const result = insert.run(runId, d.name, JSON.stringify(d.globs), d.ownership_class, d.description ?? '');
       insertEvent.run(result.lastInsertRowid, 'created',
         JSON.stringify({ name: d.name, globs: d.globs, ownership_class: d.ownership_class }),
-        'Auto-detected from repo structure');
+        reason);
     }
+  });
+  tx();
+}
+
+/**
+ * Replace a run's whole draft, as `swarm domains --from-atlas` does. Refused
+ * once the map is frozen, and once any wave exists: agent_runs point at the
+ * domain rows, so a map a wave was dispatched against is history, not draft.
+ *
+ * @param {Database} db
+ * @param {string} runId
+ * @param {Array<object>} domains
+ * @param {{ reason?: string, afterSave?: () => void }} [opts] — afterSave runs
+ *   inside the same transaction, so a lineage record lands with the draft or
+ *   not at all
+ */
+export function replaceDomainDraft(db, runId, domains, opts = {}) {
+  if (aredomainsFrozen(db, runId)) throw new Error('Domains are frozen. Unfreeze first.');
+  const waves = db.prepare('SELECT COUNT(*) AS cnt FROM waves WHERE run_id = ?').get(runId).cnt;
+  if (waves > 0) {
+    throw new Error(`Cannot redraft: run ${runId} already has ${waves} wave(s) dispatched against its domain map. Edit single domains with --edit instead.`);
+  }
+  const tx = db.transaction(() => {
+    db.prepare('DELETE FROM domain_events WHERE domain_id IN (SELECT id FROM domains WHERE run_id = ?)').run(runId);
+    db.prepare('DELETE FROM domains WHERE run_id = ?').run(runId);
+    saveDomainDraft(db, runId, domains, opts);
+    if (opts.afterSave) opts.afterSave();
   });
   tx();
 }
@@ -665,7 +703,13 @@ export function narrowToExclusivelyOwned(domains, domainName, files) {
 
 // ── Freeze / Unfreeze ──
 
-export function freezeDomains(db, runId) {
+/**
+ * @param {Database} db
+ * @param {string} runId
+ * @param {{ runAtlas?: typeof runAtlas }} [opts] — the Atlas runner for a map
+ *   drafted from Atlas parts; tests pass their own
+ */
+export function freezeDomains(db, runId, opts = {}) {
   const domains = getDomains(db, runId);
   if (domains.length === 0) throw new Error('No domains to freeze');
 
@@ -707,15 +751,57 @@ export function freezeDomains(db, runId) {
     );
   }
 
-  db.prepare('UPDATE domains SET frozen = 1 WHERE run_id = ?').run(runId);
+  const lineage = readAtlasLineage(db, runId);
+  const atlasFreeze = lineage ? checkAtlasDraftBeforeFreeze(domains, lineage, run?.local_path, opts) : null;
 
-  // Log freeze event for each domain
   const insertEvent = db.prepare(
     'INSERT INTO domain_events (domain_id, event_type, reason) VALUES (?, ?, ?)'
   );
-  for (const d of domains) {
-    insertEvent.run(d.id, 'frozen', 'Coordinator froze domain map');
+  const reason = atlasFreeze
+    ? `Coordinator froze domain map (drafted from Atlas parts at ${String(atlasFreeze.mapCommit).slice(0, 12)}` +
+      `${atlasFreeze.editedAfterDraft ? ', edited by hand after the draft' : ''}; atlas check passed at ${atlasFreeze.headCommit.slice(0, 12)})`
+    : 'Coordinator froze domain map';
+  const tx = db.transaction(() => {
+    db.prepare('UPDATE domains SET frozen = 1 WHERE run_id = ?').run(runId);
+    for (const d of domains) insertEvent.run(d.id, 'frozen', reason);
+    if (atlasFreeze) writeAtlasLineage(db, runId, { ...lineage, freeze: atlasFreeze });
+  });
+  tx();
+}
+
+/**
+ * The two receipts an Atlas-drafted map carries into its freeze: the map
+ * still covers every tracked file exactly once (a hand edit after the draft,
+ * or a file added since, can break that), and `atlas check` passes, so the
+ * parts the map came from still describe the repository. Either failing
+ * refuses the freeze and nothing is written.
+ */
+function checkAtlasDraftBeforeFreeze(domains, lineage, localPath, opts) {
+  if (!localPath || !existsSync(localPath)) {
+    throw new Error(`Cannot freeze: this map was drafted from Atlas parts, and the checkout it must be checked against is unreachable (${localPath ?? 'no local_path'}).`);
   }
+  const coverage = verifyDomainCoverage(domains, listTrackedFiles(localPath));
+  if (coverage.unowned.length > 0 || coverage.multiOwned.length > 0) {
+    throw new Error(`Cannot freeze: ${coverageMessage(coverage)}`);
+  }
+  const runner = opts.runAtlas ?? runAtlas;
+  const checked = runner(['check'], { cwd: localPath });
+  if (checked.status !== 0) {
+    const output = `${checked.stdout}${checked.stderr}`.trim();
+    throw new Error(
+      `Cannot freeze: atlas check failed (${checked.command || 'atlas check'}, exit ${checked.status}), so the parts this map was drafted from no longer describe the repository. ` +
+      `Run atlas map, commit atlas/, then redraft with \`swarm domains <run-id> --from-atlas\`.\n${output}`
+    );
+  }
+  const headCommit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: localPath, encoding: 'utf-8' }).trim();
+  return {
+    check: 'passed',
+    checkedWith: checked.command,
+    checkOutput: `${checked.stdout}`.trim().slice(0, 2000),
+    mapCommit: lineage.mapCommit,
+    headCommit,
+    editedAfterDraft: !draftMatchesLineage(domains, lineage),
+  };
 }
 
 /**

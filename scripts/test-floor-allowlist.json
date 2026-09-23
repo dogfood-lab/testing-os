@@ -64,6 +64,14 @@
     {
       "path": "fixtures/atlas/authored-caveat/packages/export/src/__tests__/scratch.test.ts",
       "reason": "Atlas fixture, not a test. It sits inside the authored-caveat fixture repository that packages/atlas/adapter/page-authored-caveat.test.js maps, where it must be read as a test, by exactly this name, that writes a scratch file beside itself under a name built at run time, which is no write to the repository. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/swarm-atlas/mapped-repo/tests/core.test.js",
+      "reason": "Swarm fixture, not a test. It sits inside the mapped fixture repository that packages/dogfood-swarm/atlas-domain-map.test.js, atlas-brief.test.js and atlas-delta.test.js copy into a temporary git repository; its tests part has role test and this file imports core and api, so the map records both edges as imported only from tests and the domain draft must fold the tests part into one of them. It is never meant to run."
+    },
+    {
+      "path": "fixtures/swarm-atlas/unmapped-repo/tests/server.test.js",
+      "reason": "Swarm fixture, not a test. It sits inside the unmapped fixture repository that packages/dogfood-swarm/atlas-domain-map.test.js drafts from the hand template, whose tests bucket must claim it by exactly this name so the template map is the one a real repository without a boundary file gets. It is never meant to run."
     }
   ]
 }

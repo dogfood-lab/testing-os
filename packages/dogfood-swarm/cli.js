@@ -61,8 +61,10 @@ import { readBoundedJson } from './lib/bounded-json-read.js';
 import { openDb } from './db/connection.js';
 import {
   freezeDomains, unfreezeDomains, getDomains, aredomainsFrozen,
-  editDomain, addDomain, removeDomain, getDomainEvents,
+  editDomain, addDomain, removeDomain, getDomainEvents, replaceDomainDraft,
 } from './lib/domains.js';
+import { atlasDraftReason, draftDomainsFromAtlas, DEFAULT_DOMAIN_TARGET } from './lib/atlas-domains.js';
+import { readAtlasLineage, writeAtlasLineage } from './lib/atlas.js';
 import { setTimeoutPolicy, getTimeoutPolicy } from './lib/state-machine.js';
 import { CLOSED_FINDING_STATUSES } from './lib/finding-status.js';
 import { STATUS } from './db/schema.js';
@@ -396,7 +398,7 @@ export function renderProbeDegradedAgents(result) {
 function cmdInit(args) {
   const repoPath = args[0];
   if (!repoPath) {
-    console.error('Usage: swarm init <repo-path> [--repo org/name] [--seed-from-roadmap[=<run-id>|latest]]');
+    console.error('Usage: swarm init <repo-path> [--repo org/name] [--seed-from-roadmap[=<run-id>|latest]] [--no-atlas] [--domains <n>] [--tests-domain]');
     process.exit(1);
   }
 
@@ -421,6 +423,9 @@ function cmdInit(args) {
     repo,
     dbPath: getDbPath(),
     seedFromRoadmap,
+    noAtlas: args.includes('--no-atlas'),
+    domainTarget: parseDomainTarget(args),
+    testsDomain: args.includes('--tests-domain'),
   });
 
   console.log(`\nRun created: ${result.runId}`);
@@ -433,9 +438,19 @@ function cmdInit(args) {
     console.log(`  The first audit-phase wave dispatched for this run will auto-inject its digest (suppress with --no-roadmap-digest).\n`);
   }
 
-  console.log('Domain draft (review before freezing):');
-  for (const d of result.domains) {
-    console.log(formatDomainRow(d, { trailer: pluralize(d.matched_files, 'file') }));
+  if (result.atlas) {
+    console.log(`Domain draft from ${result.atlas.parts} Atlas parts (map at ${String(result.atlas.mapCommit ?? 'an uncommitted map').slice(0, 12)}; review before freezing):`);
+    printAtlasDraft(result.domains, result.atlas.placed);
+    console.log('\n  Freezing this map runs `atlas check` and records the map commit it came from.');
+  } else {
+    if (result.atlasNote) {
+      console.log(`[!] ${result.atlasNote}`);
+      console.log(`    Drafted from the hand template. Fix the map, then: swarm domains ${result.runId} --from-atlas\n`);
+    }
+    console.log('Domain draft (review before freezing):');
+    for (const d of result.domains) {
+      console.log(formatDomainRow(d, { trailer: pluralize(d.matched_files, 'file') }));
+    }
   }
   if (result.unmatched.length > 0) {
     console.log(`\n  ${pluralize(result.unmatched.length, 'unmatched file')} (will go to "shared" or remain unassigned)`);
@@ -443,10 +458,41 @@ function cmdInit(args) {
   console.log(`\nNext: review domains, then run: swarm freeze ${result.runId}`);
 }
 
+/**
+ * `--domains <n>` — how many domains the Atlas parts are merged into. Absent
+ * means the protocol's default wave width.
+ */
+function parseDomainTarget(args) {
+  const raw = parseValueFlag(args, '--domains');
+  if (raw === undefined) {
+    if (args.includes('--domains')) {
+      console.error('--domains requires a number from 1 to 10');
+      process.exit(1);
+    }
+    return undefined;
+  }
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n < 1 || n > 10) {
+    console.error(`--domains requires a number from 1 to 10; got ${JSON.stringify(raw)}`);
+    process.exit(1);
+  }
+  return n;
+}
+
+function printAtlasDraft(domains, placed) {
+  for (const d of domains) {
+    const parts = d.parts && d.parts.length > 0 ? `parts: ${d.parts.join(', ')}` : 'the committed map';
+    console.log(formatDomainRow(d, { trailer: `${pluralize(d.matched_files ?? d.files, 'file')} — ${parts}` }));
+  }
+  for (const p of placed ?? []) {
+    console.log(`  ${escapePathForDisplay(p.file)} is in no Atlas part; placed in ${p.domain} by its directory`);
+  }
+}
+
 function cmdDomains(args) {
   const runId = args[0];
   if (!runId) {
-    console.error('Usage: swarm domains <run-id> [--freeze | --unfreeze --reason "..." [--force] | --edit <name> [opts] | --add <name> [opts] | --remove <name> | --history]');
+    console.error('Usage: swarm domains <run-id> [--freeze | --unfreeze --reason "..." [--force] | --edit <name> [opts] | --add <name> [opts] | --remove <name> | --history | --from-atlas [--domains <n>] [--tests-domain]]');
     process.exit(1);
   }
 
@@ -460,7 +506,39 @@ function cmdDomains(args) {
     for (const d of domains) {
       console.log(formatDomainRow(d, { frozen: true }));
     }
+    const frozenFrom = readAtlasLineage(db, runId)?.freeze;
+    if (frozenFrom) {
+      console.log(`\nDrafted from the Atlas map at ${String(frozenFrom.mapCommit).slice(0, 12)}; atlas check passed at ${frozenFrom.headCommit.slice(0, 12)}${frozenFrom.editedAfterDraft ? ' (the draft was edited by hand before the freeze)' : ''}.`);
+    }
     console.log('\nNext: swarm dispatch ' + runId + ' health-audit-a');
+    return;
+  }
+
+  // --from-atlas: replace the unfrozen draft with one derived from the parts.
+  if (args.includes('--from-atlas')) {
+    const run = db.prepare('SELECT local_path FROM runs WHERE id = ?').get(runId);
+    if (!run) { console.error(`Run not found: ${runId}`); process.exit(1); }
+    let draft;
+    try {
+      draft = draftDomainsFromAtlas(run.local_path, {
+        target: parseDomainTarget(args) ?? DEFAULT_DOMAIN_TARGET,
+        testsDomain: args.includes('--tests-domain'),
+      });
+    } catch (err) {
+      console.error(`Cannot draft from Atlas: ${err.message}`);
+      process.exit(1);
+    }
+    replaceDomainDraft(db, runId, draft.domains, {
+      reason: atlasDraftReason(draft),
+      afterSave: () => writeAtlasLineage(db, runId, draft.lineage),
+    });
+    console.log(`Domain draft for ${runId} replaced from ${draft.lineage.parts} Atlas parts (map at ${String(draft.lineage.mapCommit ?? 'an uncommitted map').slice(0, 12)}):`);
+    printAtlasDraft(getDomains(db, runId).map((d) => ({
+      ...d,
+      files: draft.domains.find((x) => x.name === d.name)?.files,
+      parts: draft.domains.find((x) => x.name === d.name)?.parts,
+    })), draft.placed);
+    console.log(`\nNext: review, then run: swarm domains ${runId} --freeze (runs atlas check)`);
     return;
   }
 
@@ -3788,8 +3866,8 @@ export const commands = {
  * degrading to the generic fallback main() prints below.
  */
 export const USAGE = {
-  init: 'Usage: swarm init <repo-path> [--repo org/name] [--seed-from-roadmap[=<run-id>|latest]]',
-  domains: 'Usage: swarm domains <run-id> [--freeze | --unfreeze --reason "..." [--force] | --edit <name> [opts] | --add <name> [opts] | --remove <name> | --history]',
+  init: 'Usage: swarm init <repo-path> [--repo org/name] [--seed-from-roadmap[=<run-id>|latest]] [--no-atlas] [--domains <n>] [--tests-domain]',
+  domains: 'Usage: swarm domains <run-id> [--freeze | --unfreeze --reason "..." [--force] | --edit <name> [opts] | --add <name> [opts] | --remove <name> | --history | --from-atlas [--domains <n>] [--tests-domain]]',
   // F-80afe435: [--isolate] remains listed (idempotent default-ON); [--no-isolate] is the escape.
   dispatch: 'Usage: swarm dispatch <run-id> <phase> [--auto-freeze] [--isolate] [--no-isolate] [--skip-verify] [--dry-run|--preview] [--seed-roadmap] [--no-roadmap-digest] [--roadmap-digest=<run-id>]',
   collect: 'Usage: swarm collect <run-id> (--all | --domain=name:path [--domain=name:path ...])',
@@ -4202,7 +4280,9 @@ function main() {
     console.log(`swarm — Truthful swarm control plane for repo work
 
 Commands:
-  init <repo-path>           Create run, detect domains
+  init <repo-path>           Create run, draft domains (from the Atlas parts
+                             when atlas/boundaries.yaml exists; --no-atlas,
+                             --domains <n>, --tests-domain)
   domains <run-id> [opts]    Show, edit, freeze, unfreeze domain map
   dispatch <run-id> <phase>  Create wave + agent prompts
                              Flags: --auto-freeze, --isolate, --no-isolate,
@@ -4494,6 +4574,9 @@ Domain commands:
   domains <run-id> --add <name> --globs ... Add new domain
   domains <run-id> --remove <name>          Remove domain
   domains <run-id> --history                Show change events
+  domains <run-id> --from-atlas [--domains <n>] [--tests-domain]
+                                            Redraft an unfrozen map from the
+                                            repository's Atlas parts
 
 Phases:
 ${renderPhaseColumns('  ')}`);
