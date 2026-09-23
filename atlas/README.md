@@ -1,22 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 0e6f549.
+Mapped at 2026-09-23 from commit c6fa258.
 
 ## What this is
 
 23 parts, mostly JavaScript (871 files). Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing). It publishes to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.
 
-## What changed since 2026-09-23 (927e765)
+## What changed since 2026-09-23 (0e6f549)
 
-- CI runs 12 more files than before.
-- Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
-- Release now also runs files in packages/atlas/.
-- And 1 more change to a door.
-- indexes/integrity/anchors is now written by packages/ingest/anchor/compute-root.js.
-- fixtures/atlas/authored-caveat/packages/export/src/__tests__/scratch.test.ts is now read by scripts/test-floor-allowlist.json.
-- fixtures/atlas/authored-caveat/packages/export/src/__tests__/table.test.ts is now read by scripts/test-floor-allowlist.json.
-- And 5 more new writers and readers of places.
-- 169 files added and 31 changed content, across 7 parts.
+Nothing structural changed since 2026-09-23; 5 files changed content.
 
 ## What comes in
 
