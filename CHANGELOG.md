@@ -2,6 +2,11 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- **The site page shows the order of work.** `site/public/atlas/render.js` renders `page.json`'s `sequences` under step 1 of "What happens through …", worded as the markdown words them: up to seven steps as one sentence, eight or more as a nested numbered list (twelve at most, then a count), another part named in parentheses the first time a step goes into it, and each file linked to the mapped commit. A `page.json` written before sequences existed renders the section as before.
+
 ## [1.13.0] — 2026-09-23
 
 Atlas changes direction. The Director rejected the acceptance ladder (a page gated on a person writing forty-five sentences into a YAML form) and the fleet-before-page build order. The specification of record is now a page written by hand for this repository from its own workflows and code, `docs/atlas-page.spec.md`; Atlas must produce that page from the repository alone. Three slices land it.
