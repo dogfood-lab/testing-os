@@ -36,8 +36,8 @@ after(() => {
 });
 
 describe('the files a command is handed', () => {
-  it('reads a tracked file handed to a command it has no rule for as checked, and a console script as its module', () => {
-    assert.deepEqual(runs(door('release.yml')), ['tools/cf_index.py executes', 'tools/record.py checks']);
+  it('reads a tracked file handed to a command it has no rule for as checked, a console script as its module, and a bundled entry as run', () => {
+    assert.deepEqual(runs(door('release.yml')), ['tools/NOTES.txt checks', 'tools/cf_index.py executes', 'tools/record.py executes']);
   });
 
   it('resolves a console script through the package-dir its manifest maps', () => {

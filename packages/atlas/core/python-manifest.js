@@ -129,11 +129,52 @@ function readText(repoPath, path) {
  * the callers read.
  */
 function readToml(repoPath, path) {
+  return parseToml(readText(repoPath, path));
+}
+
+/**
+ * The directories, relative to the pyproject.toml's own, that a wheel built
+ * from it packs: hatch's wheel target packages, setuptools' packages or the
+ * directories its package finder searches, poetry's packages, flit's module,
+ * and with none of those the project's name as a directory at the root or
+ * under src/, which is where every backend looks by default.
+ *
+ * @param {string} text the pyproject.toml
+ * @param {(dir: string) => boolean} isDir whether a directory, relative to the manifest's, is tracked
+ * @returns {string[]}
+ */
+export function wheelPackages(text, isDir) {
+  const tables = parseToml(text);
+  const dirs = [];
+  const add = (dir) => {
+    const clean = String(dir).replace(/^\.\//, '').replace(/\/+$/, '');
+    if (clean && !clean.startsWith('/') && !clean.split('/').includes('..') && isDir(clean) && !dirs.includes(clean)) dirs.push(clean);
+  };
+  for (const dir of strings(tables.get('tool.hatch.build.targets.wheel')?.packages ?? '')) add(dir);
+  const setuptools = tables.get('tool.setuptools') ?? {};
+  const root = rootPackageDir(tables);
+  for (const name of strings(setuptools.packages ?? '')) add(`${root ? `${root}/` : ''}${name.replaceAll('.', '/')}`);
+  for (const dir of strings(tables.get('tool.setuptools.packages.find')?.where ?? '')) add(dir);
+  for (const entry of String(tables.get('tool.poetry')?.packages ?? '').matchAll(/\{([^}]*)\}/g)) {
+    const include = /include\s*=\s*["']([^"']+)["']/.exec(entry[1])?.[1];
+    const from = /from\s*=\s*["']([^"']+)["']/.exec(entry[1])?.[1];
+    if (include) add(from ? `${from}/${include}` : include);
+  }
+  const [flit] = strings(tables.get('tool.flit.module')?.name ?? '');
+  if (flit) add(flit.replaceAll('.', '/'));
+  if (dirs.length === 0) {
+    const [name] = strings(tables.get('project')?.name ?? tables.get('tool.poetry')?.name ?? '');
+    if (name) for (const dir of [importName(name), `src/${importName(name)}`]) add(dir);
+  }
+  return dirs;
+}
+
+function parseToml(text) {
   const tables = new Map();
   let current = '';
   tables.set(current, {});
   let pending = null;
-  for (const raw of readText(repoPath, path).split(/\r?\n/)) {
+  for (const raw of String(text ?? '').split(/\r?\n/)) {
     const line = stripComment(raw);
     if (pending) {
       pending.text += `\n${line}`;

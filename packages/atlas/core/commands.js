@@ -3,6 +3,7 @@ import { join as joinFs, posix } from 'node:path';
 import picomatch from 'picomatch';
 import { parse as parseYaml } from 'yaml';
 import { isCodePath } from './languages.js';
+import { wheelPackages } from './python-manifest.js';
 import {
   eslintTargets,
   jestTargets,
@@ -97,6 +98,9 @@ const VALUES = {
   sudo: ['-u', '--user', '-g', '--group', '-C', '-D', '--chdir', '-h', '--host', '-p', '--prompt'],
   xargs: ['-n', '-I', '-P', '-d', '-L', '-s', '-E', '-a', '--max-args', '--max-procs', '--delimiter', '--arg-file', '--replace'],
   nice: ['-n', '--adjustment'],
+  pyinstaller: ['--name', '-n', '--distpath', '--workpath', '--specpath', '-p', '--paths', '--hidden-import', '--collect-submodules', '--collect-data', '--collect-binaries', '--collect-all', '--copy-metadata', '--add-data', '--add-binary', '--exclude-module', '--runtime-hook', '--additional-hooks-dir', '--icon', '-i', '--upx-dir', '--target-arch', '--version-file', '--splash', '--log-level', '--key', '--runtime-tmpdir', '--contents-directory'],
+  build: ['-o', '--outdir', '-C', '--config-setting', '--installer'],
+  docker: ['-f', '--file', '-t', '--tag', '--target', '--build-arg', '--platform', '--label', '--cache-from', '--cache-to', '--secret', '--ssh', '--output', '-o', '--network', '--progress', '--iidfile', '--metadata-file', '--build-context', '--builder', '--provenance', '--sbom', '--shm-size', '--ulimit', '--add-host', '--cgroup-parent', '--isolation', '--memory', '-m', '--cpu-shares', '--annotation', '--attest', '--allow', '--call', '--format'],
 };
 const VALUE_SETS = Object.fromEntries(Object.entries(VALUES).map(([tool, flags]) => [tool, new Set(flags)]));
 
@@ -318,6 +322,7 @@ function makeReader(repo, runs, mentions) {
       return;
     }
     if (interpret(argv, dir, frame)) return;
+    if (containerBuild(argv, dir, frame)) return;
     if (NON_EXECUTING.has(argv[0])) return;
     // A command the repository installs, typed by its name or by a path to
     // where it was installed (.venv/bin/facet-index), runs its module.
@@ -479,6 +484,11 @@ function makeReader(repo, runs, mentions) {
   }
 
   function pythonModule(name, rest, dir, frame) {
+    if (name === 'build' && !['build.py', 'build/__main__.py', 'build/__init__.py'].some((file) => repo.tracked.has(pathFrom(dir, file) ?? ''))) {
+      const parsed = split(['build', ...rest], 1, VALUE_SETS.build);
+      pythonBuild(parsed.positional[0] ?? '.', dir, frame);
+      return;
+    }
     if (PY_COMPILERS.has(name)) {
       for (const token of rest.filter((arg) => !arg.startsWith('-'))) file(token, dir, { ...frame, runKind: 'checks' }, { directories: true });
       return;
@@ -521,6 +531,76 @@ function makeReader(repo, runs, mentions) {
     }
     if (count && /^\d+(\.\d+)?[smhd]?$/.test(argv[i] ?? '')) i += 1;
     reparse(argv.slice(i), cwd, frame);
+  }
+
+  // A wheel or sdist packs the files of the package the project names; the
+  // build reads them and runs none.
+  function pythonBuild(srcdir, dir, frame) {
+    const root = pathFrom(dir, srcdir);
+    if (root == null) return;
+    const manifest = root ? `${root}/pyproject.toml` : 'pyproject.toml';
+    if (!repo.tracked.has(manifest)) return;
+    const at = (path) => (root ? `${root}/${path}` : path);
+    const chain = via(frame, `build ${manifest}`);
+    for (const found of wheelPackages(repo.text(manifest), (path) => repo.dirs.has(at(path)))) {
+      record(stamp({ path: `${at(found)}/`, directory: true }, { ...frame, runKind: 'checks' }, chain));
+    }
+  }
+
+  /**
+   * docker build, docker buildx build and podman build of a context: the
+   * Dockerfile's COPY and ADD sources the image is built from are checked,
+   * its RUN lines are read as commands from the context, and the program its
+   * ENTRYPOINT (or, without one, its CMD) starts is run, found through the
+   * file a COPY put there, a command the repository installs, or a path in
+   * the context. Returns true when the words are a build.
+   */
+  function containerBuild(argv, dir, frame) {
+    if (argv[0] !== 'docker' && argv[0] !== 'podman') return false;
+    const start = argv[1] === 'buildx' ? 2 : 1;
+    if (argv[start] !== 'build' && argv[start] !== 'image') return false;
+    const from = argv[start] === 'image' ? (argv[start + 1] === 'build' ? start + 2 : -1) : start + 1;
+    if (from === -1) return false;
+    const parsed = split(argv, from, VALUE_SETS.docker);
+    readContainer(parsed.positional[0] ?? '.', valueOf(parsed, '-f', '--file'), dir, frame);
+    return true;
+  }
+
+  function readContainer(contextArg, fileArg, dir, frame) {
+    const context = pathFrom(dir, contextArg);
+    if (context == null || (context !== '' && !repo.dirs.has(context))) return;
+    const dockerfile = fileArg != null ? pathFrom(dir, fileArg) : context ? `${context}/Dockerfile` : 'Dockerfile';
+    if (dockerfile == null || !repo.tracked.has(dockerfile)) return;
+    const chain = via(frame, `docker build ${dockerfile}`);
+    const checks = { ...frame, runKind: 'checks' };
+    const copied = new Map();
+    let entry = null;
+    let cmd = null;
+    for (const { op, args } of dockerInstructions(repo.text(dockerfile) ?? '')) {
+      if (op === 'COPY' || op === 'ADD') {
+        const words = instructionWords(args);
+        if (words.some((word) => word.startsWith('--from'))) continue;
+        const paths = words.filter((word) => !word.startsWith('--'));
+        if (paths.length < 2) continue;
+        const dest = paths[paths.length - 1];
+        for (const source of paths.slice(0, -1)) {
+          const path = pathFrom(context, source);
+          if (path == null || path === '') continue;
+          if (repo.tracked.has(path)) {
+            record(stamp({ path }, checks, chain));
+            copied.set(dest.endsWith('/') ? baseName(path) : baseName(dest), path);
+          } else if (repo.dirs.has(path)) record(stamp({ path: `${path}/`, directory: true }, checks, chain));
+        }
+      } else if (op === 'RUN' && frame.level === 0) {
+        read(args.startsWith('[') ? instructionWords(args).join(' ') : args, context, { level: 1, via: chain, active: frame.active });
+      } else if (op === 'ENTRYPOINT') entry = instructionWords(args)[0] ?? null;
+      else if (op === 'CMD') cmd = instructionWords(args)[0] ?? null;
+    }
+    const program = entry ?? cmd;
+    if (program == null) return;
+    const started = copied.get(baseName(program)) ?? repo.installed.get(baseName(program))
+      ?? (repo.tracked.has(pathFrom(context, program) ?? '') ? pathFrom(context, program) : null);
+    if (started != null) record(stamp({ path: started }, frame, chain));
   }
 
   const handlers = {
@@ -692,19 +772,32 @@ function makeReader(repo, runs, mentions) {
       }
     },
     uv(argv, dir, frame) {
-      if (argv[1] === 'run') wrapped(argv, 2, dir, frame, VALUE_SETS['uv run'], { chdir: ['--directory'] });
+      if (argv[1] === 'build') pythonBuild(split(argv, 2, VALUE_SETS.build).positional[0] ?? '.', dir, frame);
+      else if (argv[1] === 'run') wrapped(argv, 2, dir, frame, VALUE_SETS['uv run'], { chdir: ['--directory'] });
       else if (argv[1] === 'tool' && argv[2] === 'run') wrapped(argv, 3, dir, frame, VALUE_SETS.uvx);
     },
     uvx(argv, dir, frame) {
       wrapped(argv, 1, dir, frame, VALUE_SETS.uvx);
     },
     poetry(argv, dir, frame) {
-      if (argv[1] === 'run') wrapped(argv, 2, dir, frame, VALUE_SETS['poetry run'], { chdir: ['-C', '--directory'] });
+      if (argv[1] === 'build') pythonBuild('.', dir, frame);
+      else if (argv[1] === 'run') wrapped(argv, 2, dir, frame, VALUE_SETS['poetry run'], { chdir: ['-C', '--directory'] });
     },
     pipx(argv, dir, frame) {
       if (argv[1] === 'run') wrapped(argv, 2, dir, frame, VALUE_SETS['pipx run']);
     },
+    pybuild(argv, dir, frame) {
+      if (argv[1] === 'build') pythonBuild('.', dir, frame);
+    },
+    // pyinstaller bundles the script it is handed into a program that runs it.
+    pyinstaller(argv, dir, frame) {
+      for (const token of split(argv, 1, VALUE_SETS.pyinstaller).positional) file(token, dir, frame);
+    },
     hatch(argv, dir, frame) {
+      if (argv[1] === 'build') {
+        pythonBuild('.', dir, frame);
+        return;
+      }
       // hatch run env:script names a script of the project's own, not a command.
       if (argv[1] === 'run' && !(argv[2] ?? '').includes(':')) wrapped(argv, 2, dir, frame, VALUE_SETS['hatch run']);
     },
@@ -863,7 +956,57 @@ function makeReader(repo, runs, mentions) {
     none() {},
   };
 
-  return { read, program: (path, frame) => file(path, '', frame, { script: true }) };
+  return {
+    read,
+    program: (path, frame) => file(path, '', frame, { script: true }),
+    container: (context, dockerfile, dir, frame) => readContainer(context, dockerfile, dir, frame),
+  };
+}
+
+/**
+ * What building a container image from a context runs: the Dockerfile's
+ * copies, commands and entrypoint, as a docker build step reads them
+ * (docker/build-push-action names the context and the file as inputs).
+ */
+export function readContainer(context, dockerfile, dir, repo) {
+  const runs = new Map();
+  const reader = makeReader(repo, runs, new Set());
+  reader.container(context ?? '.', dockerfile ?? null, dir, { level: 0, via: null, active: new Set() });
+  return runs;
+}
+
+// A Dockerfile's instructions with their continuation lines joined, comments
+// and parser directives left out.
+function dockerInstructions(text) {
+  const out = [];
+  let current = '';
+  for (const raw of text.split(/\r?\n/)) {
+    if (/^\s*#/.test(raw)) continue;
+    const line = raw.replace(/\s+$/, '');
+    if (line.endsWith('\\')) {
+      current += `${line.slice(0, -1)} `;
+      continue;
+    }
+    current += line;
+    const match = /^\s*([A-Za-z]+)\s+([\s\S]*)$/.exec(current);
+    if (match) out.push({ op: match[1].toUpperCase(), args: match[2].trim() });
+    current = '';
+  }
+  return out;
+}
+
+// An instruction's words: its JSON array when it is written as one, else its
+// words as the shell splits them.
+function instructionWords(args) {
+  if (args.startsWith('[')) {
+    try {
+      const list = JSON.parse(args);
+      if (Array.isArray(list)) return list.filter((word) => typeof word === 'string');
+    } catch {
+      // Not JSON, so the shell form.
+    }
+  }
+  return commandLines(args)[0] ?? [];
 }
 
 function baseName(word) {
@@ -893,6 +1036,8 @@ function toolOf(word) {
   if (['black', 'flake8', 'pylint', 'bandit'].includes(name)) return 'checker';
   if (['timeout', 'env', 'sudo', 'xargs', 'nice', 'nohup'].includes(name)) return 'wrapper';
   if (name === 'bunx') return 'npx';
+  if (name === 'pyinstaller') return 'pyinstaller';
+  if (name === 'poetry' || name === 'flit' || name === 'pdm') return name === 'poetry' ? 'poetry' : 'pybuild';
   if (name === 'gmake') return 'make';
   if (['tox', 'cargo'].includes(name)) return 'none';
   const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro'];

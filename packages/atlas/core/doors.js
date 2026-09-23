@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join, posix } from 'node:path';
 import { parse } from 'yaml';
-import { better, cleanDir, commandLines, readCommands, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
+import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 
 const WORKFLOW = /^\.github\/workflows\/[^/]+\.ya?ml$/;
 const TRIGGER_LISTS = ['paths', 'branches', 'tags', 'types', 'workflows'];
@@ -150,6 +150,17 @@ function readDoor(repoPath, file, repo) {
         for (const [name, apply] of ACTION_SENDS) if (action === name || action.startsWith(`${name}/`)) apply(scope.sends, step);
         const checkout = otherCheckout(action, step.with);
         if (checkout) clones.set(checkout.dir, checkout.repository);
+        // The action builds the image from the context and file it is handed.
+        if (action === 'docker/build-push-action' || action === 'redhat-actions/buildah-build') {
+          const context = typeof step.with?.context === 'string' && !step.with.context.includes('${{') ? step.with.context : '.';
+          const dockerfile = typeof step.with?.file === 'string' && !step.with.file.includes('${{') ? step.with.file : null;
+          const dir = workingDirectory(body.defaults) ?? workflowDir ?? '';
+          for (const entry of readContainer(context, dockerfile, dir, repo).values()) {
+            const key = `${entry.path}\0${job}`;
+            const run = { ...entry, job };
+            runs.set(key, runs.has(key) ? better(runs.get(key), run) : run);
+          }
+        }
       }
       if (typeof step.run !== 'string') return;
       const name = typeof step.name === 'string' && step.name.trim() !== '' ? step.name : String(index);
@@ -174,7 +185,8 @@ function readDoor(repoPath, file, repo) {
       // names nothing Atlas can place, so its tokens are left unresolved.
       const dir = step['working-directory'] === undefined ? jobDir : cleanDir(step['working-directory']);
       if (dir == null) return;
-      const named = readCommands(step.run, dir, repo);
+      // Actions spells ${{ env.X }} out before the shell sees the step.
+      const named = readCommands(expandEnv(step.run, lookup), dir, repo);
       for (const entry of named.runs.values()) {
         const key = `${entry.path}\0${job}`;
         const run = { ...entry, job };
@@ -430,6 +442,10 @@ function topLevel(text, operator) {
   }
   parts.push(text.slice(start));
   return parts.map((part) => part.trim()).filter((part) => part !== '');
+}
+
+function expandEnv(text, lookup) {
+  return text.replace(/\$\{\{\s*env\.([A-Za-z_][A-Za-z0-9_]*)\s*\}\}/g, (whole, name) => lookup(name) ?? whole);
 }
 
 function envOf(value) {

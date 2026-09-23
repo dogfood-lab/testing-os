@@ -1,0 +1,15 @@
+name: binary
+on:
+  push:
+    tags: ['v*']
+env:
+  ENTRYPOINT: camp/__main__.py
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pyinstaller --onefile --name camp "${{ env.ENTRYPOINT }}"
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/camp

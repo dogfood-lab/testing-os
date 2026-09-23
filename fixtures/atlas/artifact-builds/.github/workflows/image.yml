@@ -1,0 +1,14 @@
+name: image
+on:
+  push:
+    tags: ['v*']
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/acme/artifact-builds:latest
