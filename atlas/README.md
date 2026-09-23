@@ -1,6 +1,6 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 429ee84.
+Mapped at 2026-09-23 from commit c98200f.
 
 ## What this is
 
@@ -25,9 +25,8 @@ Mapped at 2026-09-23 from commit 429ee84.
 
 ## Who reads the results
 
-- **indexes/** is read by root (8 README files), examples/README.md (found by text), packages/ingest/anchor/compute-root.js, packages/ingest/lib/chain-manifest.js, packages/ingest/rebuild-indexes.js, packages/portfolio/README.md (found by text), packages/portfolio/generate.js, packages/report/status.js, scripts/atlas-render.mjs, site/public/dashboard/index.html (found by text) and site/src/content/docs/handbook/read-model.md (found by text).
-- **records/** is read by packages/findings/derive/load-records.js, packages/ingest/persist.js, packages/ingest/rebuild-indexes.js, packages/portfolio/lib/compute-trends.js and packages/report/status.js.
-- **reports/** is read by packages/portfolio/generate.js.
+- **indexes/** is read by root (8 README files), examples/README.md (found by text), packages/portfolio/README.md (found by text), packages/report/status.js, site/public/dashboard/index.html (found by text) and site/src/content/docs/handbook/read-model.md (found by text).
+- **records/** is read by packages/findings/derive/load-records.js, packages/ingest/rebuild-indexes.js, packages/portfolio/lib/compute-trends.js and packages/report/status.js.
 
 ## The other doors
 
@@ -54,7 +53,6 @@ Mapped at 2026-09-23 from commit 429ee84.
 
 ## Generated, never hand-edited
 
-- **.gitignore** is written by packages/dogfood-swarm/lib/worktree.js.
 - **dogfood/roadmap/** is written by packages/dogfood-swarm/lib/roadmap/compiler.js.
 - **indexes/** is written by .github/workflows/ingest.yml, packages/ingest/anchor/compute-root.js, packages/ingest/lib/chain-manifest.js, packages/ingest/rebuild-indexes.js, packages/portfolio/generate.js and scripts/atlas-render.mjs.
 - **policies/repos/** is written by packages/findings/synthesis/apply-recommendation.js.
@@ -63,7 +61,7 @@ Mapped at 2026-09-23 from commit 429ee84.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, examples/ and swarms/. Nothing in this repository writes to them.
+People write .github/, assets/, docs/, examples/, root and swarms/. Nothing in this repository writes to them.
 
 ## Where to start
 

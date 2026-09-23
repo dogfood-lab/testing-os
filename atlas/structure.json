@@ -79,7 +79,7 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "9f7624d84d413f54b89d20172ad238ad948e2223c4a15b5efa7b1b2ceee3495d",
+          "hash": "d8c1dc22e6c211fc5742da9f83e78e7c7782f9f4deb54672c76d1e7374278230",
           "path": "packages/atlas/adapter/artifact.js"
         },
         {
@@ -131,11 +131,11 @@
           "path": "packages/atlas/adapter/lifecycle.test.js"
         },
         {
-          "hash": "3e3dc65d7abc16b4a9559d6e7eef4e831efc1164231ff4a896fc2820d1d1b391",
+          "hash": "d93124dd25a477db604a945e41e5771581ab839fcf3474f0fc8894f8407b7078",
           "path": "packages/atlas/adapter/page.js"
         },
         {
-          "hash": "2825806dc700a73a0394ade5156dfe0964732e51bc6a7efc20a28467ce2f62c0",
+          "hash": "f7922ccc3012935e28c765347b90eade09099293a90f4b5073425982d20f0f36",
           "path": "packages/atlas/adapter/page.test.js"
         },
         {
@@ -219,11 +219,11 @@
           "path": "packages/atlas/core/index.js"
         },
         {
-          "hash": "e35d1e554e1a95f5b33da428b0915a8bcdc0a62abd616470f885a0f2e12675ae",
+          "hash": "e56e1b8a6a458acf1cede8aedfe54b10222a7433bd18d3f0e1020a68542ffe5e",
           "path": "packages/atlas/core/landings.js"
         },
         {
-          "hash": "8dfc6845ed11be443dab597eef175414da2e137f2edf5645fdc576e7ad7cb9d2",
+          "hash": "394007b6bcf2bb57bbf56eda25fdee6f935fd46a3c91f77c4cc54b4a421e3b58",
           "path": "packages/atlas/core/landings.test.js"
         },
         {
@@ -2410,6 +2410,10 @@
           "path": "fixtures/atlas/doors/.github/workflows/weekly.yml"
         },
         {
+          "hash": "1d3ce7b3e00389994c05fff0b618321c41dd140ecfda0472e765de6608cf4e9e",
+          "path": "fixtures/atlas/doors/.gitignore"
+        },
+        {
           "hash": "c410488628f453510efae5b62b072d280b8f7c6ff5101925f552574c04f3ea6e",
           "path": "fixtures/atlas/doors/atlas/boundaries.yaml"
         },
@@ -2454,7 +2458,7 @@
           "path": "fixtures/atlas/doors/site/index.html"
         },
         {
-          "hash": "6fea0b2d588dc0da25c493120b573d47fc26be5e84fa9acf78b492f390c75ce5",
+          "hash": "a2eca7fc07b1a6c7450f53674fe08e0a79c1a50ec8aebb58dfb82de0394f49aa",
           "path": "fixtures/atlas/doors/tools/ingest.js"
         },
         {
@@ -2468,6 +2472,10 @@
         {
           "hash": "a274fb867dd9c45c46be02159224667558ac0b994ee60cf31dabe0d5cdad3e75",
           "path": "fixtures/atlas/doors/tools/report.py"
+        },
+        {
+          "hash": "cfda1147ab0b0dbfdb20921b660d2a557c53c691749ada19230901169e4055de",
+          "path": "fixtures/atlas/doors/tools/scratch.js"
         },
         {
           "hash": "2293205f3d0642be8da5b44809b51ed8b2ad7c78ea1cc39464c87cbe82d4984f",
@@ -4231,7 +4239,7 @@
       ],
       "importConfidence": "full",
       "name": "root",
-      "origin": "mixed",
+      "origin": "authored",
       "role": "docs",
       "unresolvedSites": 0
     },
@@ -6408,8 +6416,8 @@
     }
   ],
   "generatedFrom": {
-    "commit": "429ee84607d842133f57f07adb01683d3b51a58d",
-    "tracked": 1204
+    "commit": "c98200fc8f2717cc713802ede1ebf13219a5c569",
+    "tracked": 1206
   },
   "landings": [
     {
@@ -6488,18 +6496,19 @@
         {
           "by": "packages/dogfood-swarm/lib/worktree.js",
           "call": "existsSync",
-          "confidence": "ast"
+          "confidence": "weak"
         },
         {
           "by": "packages/dogfood-swarm/lib/worktree.js",
           "call": "readFileSync",
-          "confidence": "ast"
+          "confidence": "weak"
         }
       ],
       "target": ".gitignore",
       "writers": [
         {
-          "by": "packages/dogfood-swarm/lib/worktree.js"
+          "by": "packages/dogfood-swarm/lib/worktree.js",
+          "confidence": "weak"
         }
       ]
     },
@@ -6865,6 +6874,11 @@
           "by": "scripts/sync-version.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "scripts/sync-version.mjs",
+          "call": "literal",
+          "confidence": "weak"
         }
       ],
       "target": "README.md",
@@ -7106,7 +7120,8 @@
       "target": "dogfood/roadmap",
       "writers": [
         {
-          "by": "packages/dogfood-swarm/lib/roadmap/compiler.js"
+          "by": "packages/dogfood-swarm/lib/roadmap/compiler.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -7157,7 +7172,8 @@
       "target": "dogfood/roadmap/latest.json",
       "writers": [
         {
-          "by": "packages/dogfood-swarm/lib/roadmap/compiler.js"
+          "by": "packages/dogfood-swarm/lib/roadmap/compiler.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -7382,10 +7398,12 @@
           "by": ".github/workflows/ingest.yml"
         },
         {
-          "by": "packages/ingest/rebuild-indexes.js"
+          "by": "packages/ingest/rebuild-indexes.js",
+          "confidence": "ast"
         },
         {
-          "by": "packages/portfolio/generate.js"
+          "by": "packages/portfolio/generate.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -7400,7 +7418,8 @@
       "target": "indexes/atlas",
       "writers": [
         {
-          "by": "scripts/atlas-render.mjs"
+          "by": "scripts/atlas-render.mjs",
+          "confidence": "ast"
         }
       ]
     },
@@ -7443,7 +7462,8 @@
       "target": "indexes/badges",
       "writers": [
         {
-          "by": "packages/portfolio/generate.js"
+          "by": "packages/portfolio/generate.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -7557,10 +7577,12 @@
       "target": "indexes/integrity",
       "writers": [
         {
-          "by": "packages/ingest/anchor/compute-root.js"
+          "by": "packages/ingest/anchor/compute-root.js",
+          "confidence": "ast"
         },
         {
-          "by": "packages/ingest/lib/chain-manifest.js"
+          "by": "packages/ingest/lib/chain-manifest.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -7585,7 +7607,8 @@
       "target": "indexes/integrity/chain.jsonl",
       "writers": [
         {
-          "by": "packages/ingest/lib/chain-manifest.js"
+          "by": "packages/ingest/lib/chain-manifest.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -7657,7 +7680,8 @@
       "target": "indexes/trends.json",
       "writers": [
         {
-          "by": "packages/portfolio/generate.js"
+          "by": "packages/portfolio/generate.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -7675,6 +7699,11 @@
           "by": "scripts/sync-version.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "scripts/sync-version.mjs",
+          "call": "literal",
+          "confidence": "weak"
         }
       ],
       "target": "package-lock.json",
@@ -7691,7 +7720,7 @@
         {
           "by": "packages/atlas/adapter/commands.js",
           "call": "readFileSync",
-          "confidence": "ast"
+          "confidence": "weak"
         },
         {
           "by": "packages/atlas/adapter/propose.js",
@@ -7701,7 +7730,7 @@
         {
           "by": "packages/atlas/core/doors.js",
           "call": "readFileSync",
-          "confidence": "ast"
+          "confidence": "weak"
         },
         {
           "by": "packages/atlas/core/entry-points.js",
@@ -7711,7 +7740,7 @@
         {
           "by": "packages/atlas/core/resolve.js",
           "call": "readFileSync",
-          "confidence": "ast"
+          "confidence": "weak"
         },
         {
           "by": "packages/dogfood-swarm/lib/domains.js",
@@ -7721,17 +7750,17 @@
         {
           "by": "packages/dogfood-swarm/lib/verify/adapters/node.js",
           "call": "existsSync",
-          "confidence": "ast"
+          "confidence": "weak"
         },
         {
           "by": "packages/dogfood-swarm/lib/workspace-links.js",
           "call": "existsSync",
-          "confidence": "ast"
+          "confidence": "weak"
         },
         {
           "by": "scripts/build.mjs",
           "call": "existsSync",
-          "confidence": "ast"
+          "confidence": "weak"
         },
         {
           "by": "scripts/doc-drift-patterns.json",
@@ -7741,7 +7770,7 @@
         {
           "by": "scripts/sync-version.mjs",
           "call": "readFileSync",
-          "confidence": "ast"
+          "confidence": "weak"
         }
       ],
       "target": "package.json",
@@ -8521,7 +8550,8 @@
       "target": "policies/repos",
       "writers": [
         {
-          "by": "packages/findings/synthesis/apply-recommendation.js"
+          "by": "packages/findings/synthesis/apply-recommendation.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -8554,7 +8584,8 @@
           "by": ".github/workflows/ingest.yml"
         },
         {
-          "by": "packages/ingest/persist.js"
+          "by": "packages/ingest/persist.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -8584,7 +8615,8 @@
       "target": "records/_rejected",
       "writers": [
         {
-          "by": "packages/ingest/persist.js"
+          "by": "packages/ingest/persist.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -8599,7 +8631,8 @@
       "target": "reports",
       "writers": [
         {
-          "by": "packages/portfolio/generate.js"
+          "by": "packages/portfolio/generate.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -8608,7 +8641,8 @@
       "target": "reports/dogfood-portfolio.json",
       "writers": [
         {
-          "by": "packages/portfolio/generate.js"
+          "by": "packages/portfolio/generate.js",
+          "confidence": "ast"
         }
       ]
     },
@@ -8887,22 +8921,22 @@
         {
           "by": "packages/atlas/core/resolve.js",
           "call": "existsSync",
-          "confidence": "ast"
+          "confidence": "weak"
         },
         {
           "by": "packages/atlas/core/resolve.js",
           "call": "get",
-          "confidence": "ast"
+          "confidence": "weak"
         },
         {
           "by": "packages/dogfood-swarm/lib/verify/adapters/node.js",
           "call": "existsSync",
-          "confidence": "ast"
+          "confidence": "weak"
         },
         {
           "by": "scripts/build.mjs",
           "call": "existsSync",
-          "confidence": "ast"
+          "confidence": "weak"
         },
         {
           "by": "scripts/build.mjs",
