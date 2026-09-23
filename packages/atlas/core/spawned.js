@@ -4,8 +4,9 @@
  * spawnSync('node', ['scripts/x.mjs']). A door that runs the file runs those
  * commands too, so the map reads them the way it reads a shell script.
  *
- * A call whose command or arguments are built at run time is left out: the
- * map states what the file spells, not what it might compute.
+ * A call whose command or arguments are built at run time is not followed:
+ * the map states what the file spells, not what it might compute. It is
+ * counted, so the page can say how many commands it did not follow.
  */
 
 // exec is also RegExp.prototype.exec, so only a bare exec() call is one of
@@ -16,32 +17,44 @@ const COMMAND_CALLS = new Set(['exec', 'execSync', 'execFile', 'execFileSync', '
 // shell line.
 const ARGUMENT_LISTS = new Set(['execFile', 'execFileSync', 'spawn', 'spawnSync']);
 
+/**
+ * @returns {{ commands: string[], built: number }} the command lines spelled
+ *   out in full, and how many calls build their command or arguments at run
+ *   time
+ */
 export function spawnedCommands(root) {
   const found = new Set();
+  let built = 0;
   const stack = [root];
   while (stack.length > 0) {
     const node = stack.pop();
     if (node.type === 'call_expression') {
-      const command = commandOf(node);
-      if (command != null) found.add(command);
+      const read = commandOf(node);
+      if (read?.command != null) found.add(read.command);
+      else if (read?.built) built += 1;
     }
     for (const child of node.namedChildren) stack.push(child);
   }
-  return [...found].sort();
+  return { commands: [...found].sort(), built };
 }
 
+// null when the call hands nothing to a child process; an empty literal
+// command names nothing and is not counted as built either.
 function commandOf(node) {
   const name = calledName(node.childForFieldName('function'));
   if (name == null) return null;
   const args = node.childForFieldName('arguments')?.namedChildren ?? [];
+  if (args.length === 0) return null;
   const program = literal(args[0]);
-  if (program == null || program.trim() === '') return null;
-  if (!ARGUMENT_LISTS.has(name)) return program;
+  if (program == null) return { built: true };
+  if (program.trim() === '') return null;
+  if (!ARGUMENT_LISTS.has(name)) return { command: program };
   const list = args[1];
-  if (list == null || list.type !== 'array') return list == null || list.type === 'object' ? program : null;
+  if (list == null || list.type === 'object') return { command: program };
+  if (list.type !== 'array') return { built: true };
   const words = list.namedChildren.map(literal);
-  if (words.some((word) => word == null)) return null;
-  return [program, ...words].map(quoted).join(' ');
+  if (words.some((word) => word == null)) return { built: true };
+  return { command: [program, ...words].map(quoted).join(' ') };
 }
 
 function calledName(fn) {

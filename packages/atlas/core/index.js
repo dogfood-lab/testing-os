@@ -303,8 +303,9 @@ function describeFile(repoPath, path, places, facts, spawned) {
     return { path, hash, language, parseError: true, ...syntax, imports: [], ...noLandings() };
   }
   facts.set(path, extracted.sequence);
-  if (extracted.spawned.length > 0) spawned.set(path, extracted.spawned);
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings };
+  if (extracted.spawned.commands.length > 0) spawned.set(path, extracted.spawned.commands);
+  const built = extracted.spawned.built > 0 ? { dynamicSpawns: extracted.spawned.built } : {};
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -325,7 +326,7 @@ function parseFile(language, path, source, places) {
       imports,
       landings: astLandings(language, tree.rootNode, path, places),
       sequence: sequenceFacts(language, tree.rootNode),
-      spawned: language === 'python' ? [] : spawnedCommands(tree.rootNode),
+      spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode),
     };
   } finally {
     tree.delete();

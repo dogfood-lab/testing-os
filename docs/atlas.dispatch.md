@@ -922,7 +922,10 @@ The limits are the method's. A part every one of whose importers also imports it
 code keeps its whole count: all 26 parts that import ai-rpg-engine's core do so from at least one
 file that is not a test, so its line is unchanged. A type-only import is an import. A test that
 builds its command at run time, `spawnSync(process.execPath, args)` as ai-rpg-engine's gate tests
-do, reaches nothing, so its scripts part is still listed as untested. The contract reading is a
+do, reaches nothing, so its scripts part is still listed as untested. That is by design, and it
+is counted: each call that hands a child process a program or arguments built at run time adds
+to its part's `dynamicSpawns`, tests included, and the limits say "3 commands are built at run
+time and not followed." The contract reading is a
 count of parts, not a check that the parts agree on a signature. The host check compares edges,
 `fromTests` included, and none of the rest.
 

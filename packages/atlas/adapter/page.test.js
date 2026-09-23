@@ -844,3 +844,38 @@ describe('files the parser cannot read', () => {
     assert.ok(readFileSync(join(root, 'atlas', 'README.md'), 'utf8').includes(`\n- ${line}\n`));
   });
 });
+
+describe('commands built at run time', () => {
+  it('counts each spawn whose program or arguments are computed, tests included, and follows the spelled ones', () => {
+    const root = mkdtempSync(join(tmpdir(), 'atlas-spawns-'));
+    roots.push(root);
+    cpSync(join(FIXTURES, 'root-part'), root, { recursive: true });
+    const files = {
+      'tools/gate.test.js': [
+        "import { execSync, spawnSync } from 'node:child_process';",
+        "const args = ['tools/run.js'];",
+        'spawnSync(process.execPath, args);',
+        "spawnSync('node', args);",
+        'execSync(`node ${args[0]}`);',
+        "spawnSync('node', ['tools/run.js']);",
+        "execSync('node tools/run.js');",
+        "/x/.exec('text');",
+        '',
+      ].join('\n'),
+    };
+    for (const [path, text] of Object.entries(files)) writeFileSync(join(root, path), text);
+    git(root, ['init']);
+    git(root, ['add', '-A']);
+    git(root, ['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', 'spawns']);
+    const mapped = spawnSync(process.execPath, [CLI, 'map'], { cwd: root, encoding: 'utf8' });
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+    const structure = JSON.parse(readFileSync(join(root, 'atlas', 'structure.json'), 'utf8'));
+    const tools = structure.boundaries.find((boundary) => boundary.name === 'tools');
+    assert.equal(tools.dynamicSpawns, 3);
+    assert.equal(structure.boundaries.find((boundary) => boundary.name === 'lib').dynamicSpawns, 0);
+    // The spelled-out commands are still followed: the test reaches run.js.
+    assert.equal(tools.testedBy, 1);
+    const limits = JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits;
+    assert.ok(limits.includes('3 commands are built at run time and not followed.'), limits.join('\n'));
+  });
+});
