@@ -144,7 +144,7 @@ function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
     boundaryByFile,
     workspaces,
     resolverFor(dir) {
-      const config = nearestConfig(repo, dir);
+      const config = usableConfig(repo, tracked, nearestConfig(repo, dir));
       const key = config ?? '';
       let resolver = resolvers.get(key);
       if (!resolver) {
@@ -234,6 +234,31 @@ function workspaceGlobs(repo) {
     return workspaces.packages.filter((glob) => typeof glob === 'string');
   }
   return [];
+}
+
+// enhanced-resolve loads a tsconfig's extends chain from disk and throws when
+// a target is not installed, which would make every import under that config
+// unresolved on a machine without node_modules. A config is used only when
+// every file in its extends chain is tracked; otherwise the resolver runs
+// without it, which leaves relative and workspace imports identical either way.
+function usableConfig(repo, tracked, configPath) {
+  if (!configPath) return null;
+  let doc;
+  try {
+    doc = JSON.parse(stripJsonComments(readFileSync(configPath, 'utf8')));
+  } catch {
+    return configPath;
+  }
+  const targets = Array.isArray(doc?.extends) ? doc.extends : typeof doc?.extends === 'string' ? [doc.extends] : [];
+  for (const target of targets) {
+    if (typeof target !== 'string' || !/^\.{0,2}\//.test(target)) return null;
+    let abs = resolve(dirname(configPath), target);
+    if (!abs.endsWith('.json')) abs += '.json';
+    const rel = relative(repo, abs).split(sep).join('/');
+    if (!tracked.has(rel)) return null;
+    if (usableConfig(repo, tracked, abs) === null) return null;
+  }
+  return configPath;
 }
 
 function nearestConfig(repo, dir) {
