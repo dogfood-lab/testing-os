@@ -56,6 +56,8 @@ exit 1
 
 `templates/atlas-refresh.yml` is a workflow that maps a private repository inside its own CI and commits the page there. Nothing leaves the repository.
 
+A whole private fleet runs as a container with persistent memory: `ghcr.io/dogfood-lab/atlas` maps the repositories listed in its `fleet.yml`, keeps every render and its history on the `/data` volume, and serves the fleet list and each page on a port. The same image runs the CLI on a repository mounted at `/repo`. Run commands live in the repository's `docker/README.md`.
+
 ## Part of testing-os
 
 Atlas is one package of [dogfood-lab/testing-os](https://github.com/dogfood-lab/testing-os). The specification of the page, and the reasoning behind it, is `docs/atlas-page.spec.md` there. Licence: MIT.
