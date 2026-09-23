@@ -2,7 +2,7 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.13.0] — 2026-09-23
 
 Atlas changes direction. The Director rejected the acceptance ladder (a page gated on a person writing forty-five sentences into a YAML form) and the fleet-before-page build order. The specification of record is now a page written by hand for this repository from its own workflows and code, `docs/atlas-page.spec.md`; Atlas must produce that page from the repository alone. Three slices land it.
 
@@ -12,6 +12,11 @@ Atlas changes direction. The Director rejected the acceptance ladder (a page gat
 - **The page.** `atlas map` writes `atlas/README.md` (what comes in, what happens through the busiest door, who reads the results, the other doors, what breaks what, generated versus hand-authored, where to start, what the map cannot see) and `atlas/page.json`, its data twin.
 - **The site page.** `site/public/atlas/` renders a repository's `page.json` from the render branch at `atlas/?repo=<owner>/<name>`, with the same sections and sentences as the markdown, source links pinned to the mapped commit, and a flow picture of the main door drawn only from what `page.json` states; without `?repo` it lists every rendered repository. The pa11y job probes it.
 
+### Fixed
+- **Resolution no longer depends on what is installed.** A tsconfig whose `extends` target lives in an uninstalled package made every import under it unresolved on CI while resolving locally; the first CI run with the Atlas check reddened main on it. A config is used only when every file in its extends chain is tracked. Fixture `fixtures/atlas/tsconfig-extends/` fails against the previous resolver.
+- A test that loaded a module through a computed dynamic import was an unresolved site the map could not follow; it imports statically now. Both were caught by `atlas check`, which is the point of running it.
+- Three comments and messages that disagreed with the code: the portfolio help text called trends and badges git-ignored (committed); a swarm database comment said ingest commits the control-plane DB (local, ignored); the release workflow said six packages publish (every package not marked private, seven).
+
 ### Removed
 - The three profile renders (`orientation.md`, `dev.md`, `machine.md`) and `machine-stats.txt`.
 - The acceptance ladder: the `status`, `reason`, `why_from`, `will_break`, `will_break_from` and `start_here` fields of the boundary file, and the codes `ATLAS_ACCEPTED_UNAUTHORED`, `ATLAS_DEFERRED_WITHOUT_REASON` and `ATLAS_MACHINE_HASH_MISMATCH`. An old boundary file still maps; the ignored keys are named once.
@@ -19,6 +24,10 @@ Atlas changes direction. The Director rejected the acceptance ladder (a page gat
 ### Changed
 - The weekly render copies `README.md` and `page.json`; the dashboard's fleet panel links the page and counts doors where it counted unnamed boundaries.
 - The fleet panel's page link opens the site page for the repository instead of the markdown on the render branch; the site page links the markdown.
+- **CI runs `atlas check`.** `atlas/**` joins the CI path filters and the check runs after the build on both Node legs, the same place the local verify gate runs it.
+- The page lists what the map cannot see one fact per line, and names a root-level boundary "the repository root" in prose.
+- **`@dogfood-lab/atlas` publishes** with this release, the seventh published package; it gets its own README.
+- CLAUDE.md: eight packages, seven publish, self-dogfood sends with the workflow's own token, the CI row knows the Atlas check.
 
 ### Docs
 - `docs/atlas-page.spec.md` is the specification of record for Atlas output; both dispatches carry a note saying so.
