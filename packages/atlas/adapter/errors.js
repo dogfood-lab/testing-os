@@ -1,16 +1,13 @@
 /** Stable codes. The handbook is generated from this table; keep each value one sentence. */
 export const ERRORS = {
-  ATLAS_ACCEPTED_UNAUTHORED: 'An accepted boundary still carries derived text.',
   ATLAS_BOUNDARY_FILE_INVALID: 'The boundary file is not valid.',
-  ATLAS_DEFERRED_WITHOUT_REASON: 'A deferred boundary has no reason.',
   ATLAS_INIT_WOULD_OVERWRITE: 'Init will not overwrite a boundary file.',
-  ATLAS_MACHINE_HASH_MISMATCH: 'The machine hash does not match the statistics file.',
   ATLAS_NO_BOUNDARY_FILE: 'There is no boundary file to map.',
   ATLAS_NOT_MAPPED: 'The structural artifact has not been written.',
   ATLAS_STATISTICS_UNDATED: 'A statistical section has no date.',
   ATLAS_STRUCTURE_DRIFT: 'The committed structural map does not match this tree.',
   ATLAS_OVERLAP: 'A file belongs to more than one boundary.',
-  ATLAS_BOUNDARY_EMPTY: 'An accepted boundary matches no files.',
+  ATLAS_BOUNDARY_EMPTY: 'A boundary matches no files.',
   ATLAS_UNASSIGNED_NEW: 'A tracked file is unassigned and was not unassigned before.',
   ATLAS_FILE_MOVED: 'A tracked file changed boundary.',
 };

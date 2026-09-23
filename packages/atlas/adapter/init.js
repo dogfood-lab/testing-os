@@ -5,19 +5,18 @@ import { mapRepository } from '../core/index.js';
 import { readBoundaryFile } from './boundary-file.js';
 import { formatFailure } from './errors.js';
 import { listTracked, proposalSet } from './propose.js';
-import { coveredBy, reasonTemplate, roleFor, willBreakTemplate } from './templates.js';
+import { roleFor } from './templates.js';
 import { writeArtifactSync } from './write.js';
 
 function inAtlas(path) {
   return path === 'atlas' || path.startsWith('atlas/');
 }
 
+// A person's hand in the file is the summary, or in an older file a status or
+// a field marked human. Force regenerates a file with neither.
 function untouched(doc) {
-  return doc.boundaries.every((boundary) => {
-    const why = boundary.why_from == null || boundary.why_from === 'derived';
-    const will = boundary.will_break_from == null || boundary.will_break_from === 'derived';
-    return boundary.status === 'proposed' && why && will;
-  });
+  const summary = typeof doc.summary === 'string' ? doc.summary.trim() : '';
+  return summary === '' && !doc.personMarked;
 }
 
 function refuse(details) {
@@ -40,7 +39,7 @@ export function initCommand(repo, argv) {
       process.stdout.write(formatFailure(existing.code, existing.details, { exitCode: 2, whatToDo: 'fix the boundary file' }));
       return 2;
     }
-    if (!untouched(existing)) return refuse(['a boundary is accepted, deferred, or marked human']);
+    if (!untouched(existing)) return refuse(['a person has written the summary or marked a boundary']);
   }
   const paths = listTracked(repo);
   if (!paths) {
@@ -48,40 +47,12 @@ export function initCommand(repo, argv) {
     return 2;
   }
   const { source, proposals } = proposalSet(repo, paths);
-  const seeded = proposals.map((proposal) => ({
-    name: proposal.name,
-    globs: [proposal.glob],
-    status: 'proposed',
-    role: 'code',
-  }));
+  const seeded = proposals.map((proposal) => ({ name: proposal.name, globs: [proposal.glob], role: 'code' }));
   const mapped = mapRepository({ repoPath: repo, boundaries: seeded });
   const byName = new Map(mapped.boundaries.map((boundary) => [boundary.name, boundary]));
-  const roles = new Map();
-  for (const proposal of proposals) {
-    const boundary = byName.get(proposal.name);
-    const files = (boundary?.files ?? []).map((file) => file.path).filter((path) => !inAtlas(path));
-    roles.set(proposal.name, roleFor(files));
-  }
   const boundaries = proposals.map((proposal) => {
-    const boundary = byName.get(proposal.name);
-    const files = (boundary?.files ?? []).map((file) => file.path).filter((path) => !inAtlas(path));
-    const entryPoints = (boundary?.entryPoints ?? []).filter((path) => !inAtlas(path));
-    const imports = [...new Set(mapped.edges.filter((edge) => edge.from === proposal.name).map((edge) => edge.to))];
-    const fanIn = [...new Set(mapped.edges.filter((edge) => edge.to === proposal.name).map((edge) => edge.from))];
-    const role = roles.get(proposal.name);
-    return {
-      name: proposal.name,
-      globs: [proposal.glob],
-      status: 'proposed',
-      role,
-      reason: reasonTemplate({ count: files.length, role, entryPoints, imports, importedBy: fanIn }),
-      why_from: 'derived',
-      will_break: willBreakTemplate({
-        fanIn,
-        coveredBy: coveredBy(proposal.name, files, fanIn.filter((name) => roles.get(name) === 'test')),
-      }),
-      will_break_from: 'derived',
-    };
+    const files = (byName.get(proposal.name)?.files ?? []).map((file) => file.path).filter((path) => !inAtlas(path));
+    return { name: proposal.name, globs: [proposal.glob], role: roleFor(files) };
   });
   mkdirSync(join(repo, 'atlas'), { recursive: true });
   const text = stringify({ summary: '', boundaries });
@@ -93,7 +64,6 @@ export function initCommand(repo, argv) {
     const entryPoints = (live?.entryPoints ?? []).filter((path) => !inAtlas(path)).sort();
     const count = (live?.files ?? []).filter((file) => !inAtlas(file.path)).length;
     lines.push(`  ${boundary.name}  ${boundary.role}  ${count} files  entry: ${entryPoints.length === 0 ? 'none' : entryPoints.join(', ')}`);
-    lines.push(`    reason (derived): ${boundary.reason}`);
   }
   lines.push('', `unassigned  ${unassigned.length} files`);
   for (const file of unassigned) lines.push(`  ${file.path}`);
@@ -103,8 +73,8 @@ export function initCommand(repo, argv) {
   }
   lines.push(
     '',
-    'wrote atlas/boundaries.yaml with status: proposed',
-    'next: edit each derived reason into your own words, set status: accepted, run atlas map, commit atlas/',
+    'wrote atlas/boundaries.yaml',
+    'next: run atlas map, then commit atlas/',
     '',
   );
   process.stdout.write(lines.join('\n'));

@@ -66,12 +66,12 @@ describe('atlas init', () => {
       doc.boundaries.map((boundary) => boundary.globs),
       [['packages/alpha/**'], ['packages/beta/**'], ['*'], ['scripts/**'], ['shared/**']],
     );
-    assert.ok(doc.boundaries.every((boundary) => boundary.status === 'proposed'));
-    assert.ok(doc.boundaries.every((boundary) => boundary.why_from === 'derived' && boundary.will_break_from === 'derived'));
-    assert.ok(doc.boundaries.every((boundary) => boundary.start_here == null));
-    const beta = doc.boundaries.find((boundary) => boundary.name === 'beta');
-    assert.equal(beta.role, 'code');
-    assert.match(beta.reason, /role code/);
+    assert.deepEqual(doc.ignored, []);
+    for (const boundary of doc.boundaries) assert.deepEqual(Object.keys(boundary).sort(), ['globs', 'name', 'role']);
+    const text = readFileSync(join(root, 'atlas', 'boundaries.yaml'), 'utf8');
+    assert.doesNotMatch(text, /status|reason|why_from|will_break|start_here|machine_budget/);
+    assert.equal(doc.boundaries.find((boundary) => boundary.name === 'beta').role, 'code');
+    assert.doesNotMatch(result.stdout, /reason|status/);
     assert.equal(existsStructure(root), false);
   });
 
@@ -91,7 +91,6 @@ describe('atlas init', () => {
     assert.equal(byName.get('docs').role, 'docs');
     assert.equal(byName.get('tests').role, 'test');
     assert.equal(byName.get('src').role, 'code');
-    assert.ok(doc.boundaries.every((boundary) => boundary.start_here == null));
   });
 
   it('gives inert directories config and leaves a docs directory as docs', () => {
@@ -120,16 +119,20 @@ describe('atlas init', () => {
     assert.match(again.stdout, /ATLAS_INIT_WOULD_OVERWRITE/);
     const forced = atlas(root, ['init', '--force']);
     assert.equal(forced.status, 0, forced.stdout + forced.stderr);
-    const text = readFileSync(join(root, 'atlas', 'boundaries.yaml'), 'utf8');
-    const accepted = text.replace('status: proposed', 'status: accepted');
-    writeFileSync(join(root, 'atlas', 'boundaries.yaml'), accepted);
-    const kept = atlas(root, ['init', '--force']);
-    assert.equal(kept.status, 2);
-    assert.match(kept.stdout, /ATLAS_INIT_WOULD_OVERWRITE/);
-    writeFileSync(join(root, 'atlas', 'boundaries.yaml'), text.replace('why_from: derived', 'why_from: human'));
-    const human = atlas(root, ['init', '--force']);
-    assert.equal(human.status, 2);
-    assert.match(human.stdout, /ATLAS_INIT_WOULD_OVERWRITE/);
+    const path = join(root, 'atlas', 'boundaries.yaml');
+    const text = readFileSync(path, 'utf8');
+    writeFileSync(path, text.replace('summary: ""', 'summary: a flat tree of docs, source and tests'));
+    const summarised = atlas(root, ['init', '--force']);
+    assert.equal(summarised.status, 2);
+    assert.match(summarised.stdout, /ATLAS_INIT_WOULD_OVERWRITE/);
+    writeFileSync(path, text.replace('    role: docs\n', '    role: docs\n    status: accepted\n'));
+    const accepted = atlas(root, ['init', '--force']);
+    assert.equal(accepted.status, 2);
+    assert.match(accepted.stdout, /ATLAS_INIT_WOULD_OVERWRITE/);
+    writeFileSync(path, text.replace('    role: docs\n', '    role: docs\n    status: proposed\n    why_from: derived\n'));
+    const derived = atlas(root, ['init', '--force']);
+    assert.equal(derived.status, 0, derived.stdout);
+    assert.equal(readFileSync(path, 'utf8'), text);
   });
 
   it('proposes workspace members and leaves a manifest outside those globs in a directory boundary', () => {

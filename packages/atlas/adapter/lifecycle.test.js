@@ -144,7 +144,7 @@ describe('atlas check lifecycle', () => {
     assert.equal(result.status, 0, result.stdout);
   });
 
-  it('fails ATLAS_BOUNDARY_EMPTY when an accepted boundary loses every file', () => {
+  it('fails ATLAS_BOUNDARY_EMPTY when a boundary loses every file', () => {
     const dest = cloneOf();
     git(dest, ['rm', '-r', 'pkg/alpha']);
     const result = atlas(dest, ['check']);

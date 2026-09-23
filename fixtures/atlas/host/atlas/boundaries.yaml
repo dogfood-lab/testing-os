@@ -3,28 +3,12 @@ boundaries:
   - name: alpha
     globs:
       - pkg/alpha/**
-    status: accepted
     role: code
-    reason: the first package
-    why_from: human
-    will_break: beta does not import it, so a change stays here
-    will_break_from: human
   - name: beta
     globs:
       - pkg/beta/**
-    status: accepted
     role: code
-    reason: the package the tests import
-    why_from: human
-    will_break: the tests boundary fails when this export changes
-    will_break_from: human
   - name: tests
     globs:
       - tests/**
-    status: accepted
     role: test
-    reason: the checks for beta
-    why_from: human
-    will_break: nothing else imports the checks
-    will_break_from: human
-    start_here: tests/reads-beta.js
