@@ -183,9 +183,9 @@ describe('atlas page', () => {
     assert.match(reads, /^- \*\*records\/\*\* has no reader in this repository\.$/m);
     assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → lib\/policy\.js → indexes\/ → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);
     assert.match(section(markdown, '## What this map cannot see'), /^- Readers marked \(found by text\) come from scanning unparsed files\.$/m);
-    // site/index.html quotes indexes/latest.json in its text: a reader for a
-    // person, named above, but not one a hand edit breaks.
-    assert.match(section(markdown, '## What breaks what'), /^- \*\*indexes\/\*\* is written by tools and workflows, and read by tools; a hand edit reaches every reader\.$/m);
+    // site/index.html is found by text, and a page runs what it names, so it
+    // is a reader a hand edit reaches.
+    assert.match(section(markdown, '## What breaks what'), /^- \*\*indexes\/\*\* is written by tools and workflows, and read by site and tools; a hand edit reaches every reader\.$/m);
   });
 
   it('writes the order of work inside the files the main door runs, one level into what they call', () => {

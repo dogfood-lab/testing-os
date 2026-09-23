@@ -88,6 +88,14 @@ describe('what the TypeScript probe found', () => {
     const receipt = structure.landings.find((landing) => landing.target === 'packages/ledger/scripts/replay-receipt.json');
     assert.deepEqual(receipt.readers, [{ by: 'docs/receipts.md', call: 'literal', confidence: 'text' }]);
     assert.ok(page.unread.some((item) => item.place === 'packages/ledger/scripts/replay-receipt.json'), JSON.stringify(page.unread));
+    // The Replay door writes the receipt. Its readers are grouped under the
+    // ledger's directory, since packages/ holds every part.
+    assert.equal(section('## Who reads the results'), [
+      '## Who reads the results',
+      '',
+      '- **packages/ledger/** is read by docs/receipts.md (found by text).',
+      '',
+    ].join('\n'));
     assert.equal(page.breaks.some((entry) => entry.kind === 'place'), false, JSON.stringify(page.breaks));
   });
 
@@ -96,6 +104,7 @@ describe('what the TypeScript probe found', () => {
       { from: 'cli', kind: 'file', to: 'core' },
       { from: 'cli', fromTests: true, kind: 'file', to: 'starter-a' },
       { from: 'ledger', fromTests: true, kind: 'file', to: 'core' },
+      { from: 'scripts', kind: 'file', to: 'ledger' },
       { from: 'starter-a', kind: 'file', to: 'core' },
       { from: 'starter-b', kind: 'file', to: 'core' },
       { from: 'starter-c', kind: 'file', to: 'core' },
@@ -104,6 +113,7 @@ describe('what the TypeScript probe found', () => {
       '## What breaks what',
       '',
       '- **core** is imported by 4 parts (cli, starter-a, starter-b, starter-c), and by 1 more only from tests; it sits on the path of no door.',
+      '- **ledger** is imported by 1 part (scripts) and sits on the path of 1 door.',
       '- **starter-a** is imported only from tests, by 1 part (cli), and sits on the path of no door.',
       '',
     ].join('\n'));
@@ -112,6 +122,12 @@ describe('what the TypeScript probe found', () => {
     // test imports starter-a, so both count as tested.
     const tested = Object.fromEntries(structure.boundaries.map((boundary) => [boundary.name, boundary.testedBy]));
     assert.equal(tested['starter-a'], 1);
+  });
+
+  it('reads require.resolve of a package path as a dependency on that package', () => {
+    // scripts/check.mjs locates the ledger's manifest through createRequire;
+    // nothing else in scripts names the ledger.
+    assert.deepEqual(file('scripts/check.mjs').importsFiles, ['packages/ledger/package.json']);
   });
 
   it('reads one name exported alike by three parts as one contract, not three copies', () => {
@@ -134,7 +150,7 @@ describe('what the TypeScript probe found', () => {
 
   it('calls a directory of ten pages and one script docs', () => {
     assert.equal(structure.boundaries.find((boundary) => boundary.name === 'docs').role, 'docs');
-    assert.match(section('## Hand-authored'), /^People write docs\/ and the repository root\./m);
+    assert.match(section('## Hand-authored'), /^People write \.github\/, docs\/ and the repository root\./m);
   });
 
   it('reaches the script a test runs by a command written out in full', () => {
@@ -164,6 +180,9 @@ describe('what the TypeScript probe found', () => {
     const facts = JSON.parse(atlas('explain', 'packages/starter-a/src/index.ts', '--json'));
     assert.deepEqual(facts.importedByFiles, ['packages/cli/src/cli.spec.ts']);
     assert.deepEqual(facts.importedByTests, ['cli']);
+    const broken = atlas('explain', 'packages/ledger/src/broken.ts').trimEnd().split('\n');
+    assert.equal(broken[2], 'It could not be parsed, so what it imports is not known.');
+    assert.equal(file('packages/ledger/src/broken.ts').parseError, true);
     const starter = atlas('explain', 'packages/starter-a/src/setup.ts').trimEnd().split('\n');
     assert.ok(starter.includes('Its part is imported only from tests, by 1 part: cli.'), starter.join('\n'));
   });

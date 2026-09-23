@@ -641,8 +641,8 @@ failure points and redundancy.
 "What no test touches" names each code part that no test file imports, directly or through one
 file between. A test file is one by name, the convention test runners discover by: a `.test.` or
 `.spec.` marker, `test_*.py`, `*_test.py`, or a place under a directory named `test`, `tests` or
-`__tests__`. Per-file imports are not in the artifact, so `atlas map` counts where the resolved
-imports are still in hand, and the structure keeps the count per part as `testedBy` and the
+`__tests__`. `atlas map` counts where the resolved imports are still in hand, and the structure
+keeps the count per part as `testedBy` and the
 number of test files as `testFiles`. A test file a test imports is the hop, not the part's code.
 A code part made only of test material, such as a fixtures directory, is not a candidate. When
 no file is a test by name the section says only "No test files were found by name.", since every
@@ -694,8 +694,8 @@ shortened:
 
 The limits are the method's. A test is found by its name, so a test file named otherwise is not
 one, and a test that runs a part as a child process or reads it as a file does not import it and
-does not count, unless the test is named for a file of the part. One hop is the reach: a part a
-test reaches only through two files between is
+does not count, unless it spells the command out in full or the test is named for a file of the
+part. One hop is the reach: a part a test reaches only through two files between is
 listed as untested. Being imported by a test says a part is loaded, not that its behaviour is
 checked. A read through a path built at run time names no place, so a place read only that way
 is listed as never read. The duplicates are candidates: two helpers of one name with no recorded
@@ -791,6 +791,108 @@ script whose module is not a tracked file names no entry. The shell reading take
 repository root, where release scripts that name repository files run, and does not follow `cd`;
 `sed -i` and other commands that edit in place are not writes. The host check compares entry
 points, so a boundary whose entry was outside its globs changes once on the map that drops it.
+
+**A TypeScript workspace reads as one.** Mapping ai-rpg-engine, 31 workspace packages with 4,576
+import sites, and reading its page as a newcomer found the landings, edges, duplicates and roles
+saying less than the repository does, or something untrue about it.
+
+A directory that holds files of more than one part is where the parts live, not a place one of
+them writes. Its landing keeps its writers and readers in the artifact and records `spans`, how
+many parts are under it; it is no door's landing, and the page states nothing from it, as it
+states nothing from a weak entry. A value that stops partway through a name the directories
+beside it share, `packages/starter-` with the rest built at run time, names one of those
+directories or a new one, so it lands weakly; a prefix of file names there, `records/run-`, is a
+file written inside the directory and lands in full. On ai-rpg-engine the page had said
+`packages/` "is written by cli and ledger-adapter, and read by .github, docs, dogfood, the
+repository root and scripts", and Generated had called the whole source tree generated. Both
+rules hold there: the scaffolder's one landing on `packages/` is weak, and `packages/` spans 31
+parts.
+
+```json
+{
+  "target": "packages",
+  "spans": 31,
+  "writers": [
+    { "by": "packages/cli/src/create-starter.ts",
+      "confidence": "weak" }
+  ],
+  "readers": [
+    { "by": "packages/cli/src/create-starter.ts",
+      "call": "existsSync",
+      "confidence": "weak" }
+  ]
+}
+```
+
+A written place under another is part of it when one writer writes both, or when a door commits
+the outer place whole. A file one script writes inside a directory another script writes into
+keeps its own line, which is how the four `packages/ledger-adapter/scripts/*-receipt.json` files
+the replay scripts commit, and nothing reads, now reach "Written but never read". "Who reads the
+results" groups a door's landings under their top-level directory, or, where that directory holds
+more than one part, under the shallowest one below it that holds one: `packages/ledger-adapter/`.
+
+A Markdown or JSON file that quotes a path is a reader for a person, not for the code. It stays in
+the artifact and in "Who reads the results", marked (found by text), but it never makes a place
+read and never counts in "What breaks what". A shell script or an HTML page found by text runs
+what it names, and stays a reader: backpropagate's `scripts/preflight.sh` reads `CITATION.cff`
+with `awk`, and the dashboard page fetches `indexes/`.
+
+An edge whose every import site sits in a test file, by the test-file rule `testedBy` uses, carries
+`fromTests: true`. Test edges stay in the artifact, since they are how a test reaches a part.
+"What breaks what" and `atlas explain` count the parts that import a part to run it and add the
+rest: "**schemas** is imported by 6 parts (…), and by 2 more only from tests"; a part imported
+only from tests "is imported only from tests, by 1 part (tests)". Fan-in ordering uses the
+production edges, and `atlas check` treats an edge moving out of test files as drift. A literal
+`require.resolve` or `import.meta.resolve` is an import site of kind `dynamic-literal`, since
+locating a package's file needs the package: on this repository dogfood-swarm and portfolio read
+the schema JSON through `createRequire`, and now import schemas to run.
+
+Look-alike helpers are grouped by name. A name alike in two parts keeps a line per pair; a name
+alike in three or more is one line, since that many copies of one helper is less likely than one
+contract each part fulfils: "**createGame** is exported by 13 parts (starter,
+starter-bounty-hunter, … and 8 more); with the same name in this many parts it is most likely a
+shared contract, not a copy." On ai-rpg-engine that line replaces 78 pairs. `page.json` marks it `contract: true` and lists its
+parts and files.
+
+A part's derived role is code only while its code files, tests included, are at least a third of
+its code and prose together; configuration is left out of that ratio, since every package carries
+a manifest whatever its size. Below it the part is docs when prose is the majority of its files,
+else config. `.txt` is prose, except a pinned dependency list. ai-rpg-engine's `docs/`, 102 pages
+beside 8 scripts, and `site/` are docs.
+
+A test that runs a file through a command it spells out in full, `spawnSync('node',
+['scripts/check.mjs'])`, reaches that file for `testedBy` as an import does, and the file's
+imports are followed the same one hop. The command is read by the reader doors use, from the
+repository root, then from the test's own directory and each one above it.
+
+Each file carries `importsFiles`, the files its resolved imports land on, deduplicated and sorted,
+with `@part` for a build chunk; `reexportsAll`, the files it hands on whole with `export *`; and
+`parseError` when the parser could not read it, so that a file with no list is not taken to import
+nothing. `atlas explain <file>` names the files it imports and re-exports, the files that import
+it, production first with how many are tests, and its own test, here on the ts-probe fixture,
+lines wrapped:
+
+```text
+packages/core/src/engine.ts is in core (code).
+No door runs it or reaches its part.
+Imports no file in this repository.
+Imported by 2 files, 1 of them a test:
+packages/core/src/index.ts and
+packages/core/src/engine.spec.ts.
+Its own test is packages/core/src/engine.spec.ts.
+```
+
+The fixture's barrel `index.ts` reads "Re-exports everything from packages/core/src/engine.ts."
+On ai-rpg-engine `structure.json` grows from 405 KB to 825 KB. `mapRepository` resolves a
+relative `repoPath` before it resolves an import.
+
+The limits are the method's. A part every one of whose importers also imports it from production
+code keeps its whole count: all 26 parts that import ai-rpg-engine's core do so from at least one
+file that is not a test, so its line is unchanged. A type-only import is an import. A test that
+builds its command at run time, `spawnSync(process.execPath, args)` as ai-rpg-engine's gate tests
+do, reaches nothing, so its scripts part is still listed as untested. The contract reading is a
+count of parts, not a check that the parts agree on a signature. The host check compares edges,
+`fromTests` included, and none of the rest.
 
 This repository's own handbook diagram is a
 hand-drawn image whose only tests assert that it exists, is large enough, and has accessible

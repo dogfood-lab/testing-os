@@ -1,4 +1,3 @@
-import { posix } from 'node:path';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
 import { roleFor } from './templates.js';
 
@@ -63,24 +62,6 @@ function resolvedFiles(file) {
   return { files, boundaries };
 }
 
-// The tracked files a command line names: each word read as a path from the
-// repository root, where a test that runs a script usually sets its cwd, and
-// failing that from the test's own directory and each directory above it.
-function spawnedFiles(commands, testPath, byPath) {
-  const dirs = [];
-  for (let at = testPath.lastIndexOf('/'); at > 0; at = testPath.lastIndexOf('/', at - 1)) dirs.push(testPath.slice(0, at));
-  const found = [];
-  for (const command of commands) {
-    for (const match of command.matchAll(/'([^']*)'|"([^"]*)"|(\S+)/g)) {
-      const word = (match[1] ?? match[2] ?? match[3]).replaceAll('\\', '/').replace(/^(\.\/)+/, '');
-      if (word === '' || word.startsWith('-') || word.startsWith('/')) continue;
-      const hit = [word, ...dirs.map((dir) => posix.normalize(`${dir}/${word}`))].find((path) => byPath.has(path));
-      if (hit) found.push(hit);
-    }
-  }
-  return found;
-}
-
 /**
  * How many test files reach each part: a test file, by name, that imports a
  * file of the part, or imports a file that imports one, or is the own test of
@@ -88,10 +69,10 @@ function spawnedFiles(commands, testPath, byPath) {
  * which is what a test named for a file tests even when its import could not
  * be resolved. A test that runs a file as a child process, with the command
  * written out in full (spawnSync('node', ['scripts/gate.mjs'])), reaches it as
- * surely as one that imports it, and the file's imports are followed the same
- * one hop. This is counted here, where the resolved imports and the commands
- * are still in hand. A test file reached is not the part's code under test,
- * so it counts only as the hop, not as the part.
+ * surely as one that imports it (the core records those as spawns), and the
+ * file's imports are followed the same one hop. This is counted here, where
+ * the resolved imports are still in hand. A test file reached is not the
+ * part's code under test, so it counts only as the hop, not as the part.
  */
 function testReach(mapped) {
   const all = [...mapped.boundaries.flatMap((boundary) => boundary.files), ...mapped.unassigned, ...mapped.overlaps]
@@ -111,7 +92,7 @@ function testReach(mapped) {
   const testedBy = new Map();
   for (const test of tests) {
     const direct = resolvedFiles(test);
-    direct.files.push(...spawnedFiles(mapped.spawned?.get(test.path) ?? [], test.path, byPath));
+    direct.files.push(...(test.spawns ?? []));
     const parts = new Set(direct.boundaries);
     const reached = new Set(direct.files);
     for (const path of direct.files) {
@@ -181,6 +162,9 @@ export function buildArtifact(mapped, commit) {
 function carryFile(file) {
   const out = { hash: file.hash, path: file.path };
   if (file.exports) out.exports = [...file.exports];
+  // A file the parser could not read has no imports to list, which is not
+  // the same as importing nothing; it is marked so a reader is not told so.
+  if (file.parseError) out.parseError = true;
   const imported = importTargets(file);
   if (imported.files.length > 0) out.importsFiles = imported.files;
   if (imported.all.length > 0) out.reexportsAll = imported.all;

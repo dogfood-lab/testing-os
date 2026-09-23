@@ -20,6 +20,22 @@
     {
       "path": "fixtures/atlas/doors-ts/test/unit.spec.js",
       "reason": "Atlas fixture, not a test. It sits inside the doors-ts fixture repository, where a door runs mocha with no path and the fixture's .mocharc.yml spec must select it by exactly this name. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/ts-probe/packages/cli/src/cli.spec.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the ts-probe fixture repository that packages/atlas/adapter/ts-probe.test.js maps, and it is the only file in cli that imports starter-a, so the map records that edge as imported only from tests. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/ts-probe/packages/core/src/engine.spec.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the ts-probe fixture repository, where atlas explain must name it as engine.ts's own test by exactly this name. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/ts-probe/packages/ledger/src/ledger.spec.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the ts-probe fixture repository, and it is the only file in ledger that imports core, so the map records that edge as imported only from tests. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/ts-probe/scripts/gates.spec.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the ts-probe fixture repository, where it runs scripts/check.mjs through a spawnSync command written out in full, so the map counts the scripts part as reached by a test. It holds no test and is never meant to run."
     }
   ]
 }

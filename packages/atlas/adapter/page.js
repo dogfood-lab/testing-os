@@ -73,11 +73,6 @@ function under(path, place) {
   return path === place || path.startsWith(`${place}/`);
 }
 
-function topLevel(path) {
-  const slash = path.indexOf('/');
-  return slash === -1 ? path : path.slice(0, slash);
-}
-
 function id(name) {
   return name;
 }
@@ -132,6 +127,15 @@ function facts({ structure, statistics }) {
     fileOf.set(file.path, file);
   }
   const names = new Map(boundaries.map((boundary) => [boundary.name, displayName(boundary)]));
+  const spans = new Map();
+  const partsUnder = (dir) => {
+    if (!spans.has(dir)) {
+      const parts = new Set();
+      for (const [path, part] of boundaryOf) if (path.startsWith(`${dir}/`)) parts.add(part);
+      spans.set(dir, parts.size);
+    }
+    return spans.get(dir);
+  };
   return {
     structure,
     statistics,
@@ -139,6 +143,7 @@ function facts({ structure, statistics }) {
     boundaryOf,
     fileOf,
     shown: (name) => names.get(name) ?? name,
+    partsUnder,
     place: (target) => (isDir(target) ? `${target}/` : target),
     doors: orderDoors(structure.doors ?? []),
     // A weak landing is a bare file name under a root the engine could not
@@ -681,14 +686,27 @@ function readerFiles(entries) {
   return [...byPath.entries()].sort((a, b) => cmp(a[0], b[0])).map(([path, text]) => ({ path, text }));
 }
 
+// A door's landings are grouped under the directory they share at the top of
+// the tree, records/ or indexes/. Where that directory holds more than one
+// part (packages/ in a workspace) it is where the parts live, not a place, so
+// the group is the shallowest directory below it that holds one part at most.
+function groupKey(ctx, target) {
+  const segments = target.split('/');
+  for (let depth = 1; depth < segments.length; depth += 1) {
+    const dir = segments.slice(0, depth).join('/');
+    if (ctx.partsUnder(dir) <= 1) return dir;
+  }
+  return target;
+}
+
 function readerGroups(ctx, main) {
   const groups = new Map();
   for (const target of main.landings ?? []) {
-    const key = topLevel(target);
+    const key = groupKey(ctx, target);
     if (!groups.has(key)) groups.set(key, { key, entries: [] });
   }
   for (const entry of (main.readers ?? []).filter(strong)) {
-    const group = groups.get(topLevel(entry.target));
+    const group = groups.get(groupKey(ctx, entry.target));
     if (group) group.entries.push(entry);
   }
   const out = [];
@@ -790,9 +808,11 @@ function doorsThrough(ctx) {
  * receipt kept beside another script's output keeps its own line. Every
  * landing is counted with the deepest place that holds it.
  *
- * A reader found only by scanning text is evidence for a person, not a use
- * the code depends on: it is left out here, so it never makes a place read or
- * a hand edit reach it, and the readers section names it as found by text.
+ * A Markdown page or a JSON file that quotes a path is evidence for a person,
+ * not a use anything runs: it is left out here, so it never makes a place
+ * read or a hand edit reach it, and the readers section names it as found by
+ * text. A shell script or an HTML page found by text runs what it names, and
+ * stays a reader.
  */
 function writtenPlaces(ctx) {
   const written = ctx.landings.filter((landing) => landing.writers.length > 0);
@@ -812,10 +832,16 @@ function writtenPlaces(ctx) {
     const writers = [...new Set(inside.flatMap((landing) => landing.writers.map((entry) => entry.by)))].sort(cmp);
     // A workflow that names a place it also writes is describing its own output.
     const reads = inside.flatMap((landing) => landing.readers)
-      .filter((entry) => entry.confidence !== 'text' && (entry.call != null || !writers.includes(entry.by)));
+      .filter((entry) => !quotedOnly(entry) && (entry.call != null || !writers.includes(entry.by)));
     const readers = readerFiles(reads).filter((reader) => !under(reader.path, target));
     return { target, writers, readers };
   });
+}
+
+const QUOTING = /\.(md|mdx|json|jsonl)$/i;
+
+function quotedOnly(entry) {
+  return entry.confidence === 'text' && QUOTING.test(entry.by);
 }
 
 function partsOf(ctx, paths) {

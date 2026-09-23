@@ -129,6 +129,7 @@ function fileImports(ctx, path) {
     importedByTestFiles: tests.length,
     importsFiles,
     ownTests,
+    parseError: file?.parseError === true,
     reexportsAll,
   };
 }
@@ -141,9 +142,10 @@ function targetText(ctx, target) {
 function fileImportLines(ctx, own) {
   const lines = [];
   const shown = (targets) => shownList(targets.map((target) => targetText(ctx, target)));
-  if (own.importsFiles.length > 0) lines.push(`Imports ${count(own.importsFiles.length, 'file')}: ${shown(own.importsFiles)}.`);
+  if (own.parseError) lines.push('It could not be parsed, so what it imports is not known.');
+  else if (own.importsFiles.length > 0) lines.push(`Imports ${count(own.importsFiles.length, 'file')}: ${shown(own.importsFiles)}.`);
   if (own.reexportsAll.length > 0) lines.push(`Re-exports everything from ${shown(own.reexportsAll)}.`);
-  if (own.importsFiles.length + own.reexportsAll.length === 0) lines.push('Imports no file in this repository.');
+  if (!own.parseError && own.importsFiles.length + own.reexportsAll.length === 0) lines.push('Imports no file in this repository.');
   const importers = own.importedByFiles.length;
   if (importers === 0) lines.push('No file imports it.');
   else {
