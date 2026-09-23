@@ -1,4 +1,4 @@
-import { isTestMaterial } from '../core/landings.js';
+import { isTestFile, isTestMaterial } from '../core/landings.js';
 import { roleFor } from './templates.js';
 
 const byPath = (a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
@@ -42,9 +42,55 @@ function dynamicCounts(files) {
   return { reads, writes };
 }
 
+function resolvedFiles(file) {
+  if (!Array.isArray(file.imports)) return { files: [], boundaries: [] };
+  const files = [];
+  const boundaries = [];
+  for (const site of file.imports) {
+    if (site.resolved?.outcome === 'file') files.push(site.resolved.path);
+    else if (site.resolved?.outcome === 'boundary') boundaries.push(site.resolved.boundary);
+  }
+  return { files, boundaries };
+}
+
+/**
+ * How many test files reach each part: a test file, by name, that imports a
+ * file of the part, or imports a file that imports one. Per-file imports are
+ * not in the artifact, so this is counted here, where the resolved imports
+ * are still in hand. A test file reached is not the part's code under test,
+ * so it counts only as the hop, not as the part.
+ */
+function testReach(mapped) {
+  const all = [...mapped.boundaries.flatMap((boundary) => boundary.files), ...mapped.unassigned, ...mapped.overlaps]
+    .filter((file) => !inAtlas(file.path));
+  const byPath = new Map(all.map((file) => [file.path, file]));
+  const boundaryOf = new Map();
+  for (const boundary of mapped.boundaries) for (const file of boundary.files) boundaryOf.set(file.path, boundary.name);
+  const tests = all.filter((file) => isTestFile(file.path));
+  const testedBy = new Map();
+  for (const test of tests) {
+    const direct = resolvedFiles(test);
+    const parts = new Set(direct.boundaries);
+    const reached = new Set(direct.files);
+    for (const path of direct.files) {
+      const hop = byPath.get(path);
+      if (!hop) continue;
+      const next = resolvedFiles(hop);
+      for (const target of next.files) reached.add(target);
+      for (const boundary of next.boundaries) parts.add(boundary);
+    }
+    for (const path of reached) {
+      if (path !== test.path && !isTestFile(path) && boundaryOf.has(path)) parts.add(boundaryOf.get(path));
+    }
+    for (const part of parts) testedBy.set(part, (testedBy.get(part) ?? 0) + 1);
+  }
+  return { testFiles: tests.length, testedBy };
+}
+
 // A boundary file may leave a role out; the role is then derived from the
 // files, the same way init derives the one it writes.
 export function buildArtifact(mapped, commit) {
+  const tested = testReach(mapped);
   const boundaries = mapped.boundaries.map((boundary) => {
     const files = keep(boundary.files);
     const sites = siteCounts(files);
@@ -59,6 +105,7 @@ export function buildArtifact(mapped, commit) {
       name: boundary.name,
       origin: boundary.origin,
       role: boundary.role ?? roleFor(files.map((file) => file.path)),
+      testedBy: tested.testedBy.get(boundary.name) ?? 0,
       unresolvedSites: sites.unresolved,
     };
   });
@@ -76,14 +123,17 @@ export function buildArtifact(mapped, commit) {
     overlaps,
     submodules: [...mapped.submodules].sort(),
     symlinks: mapped.symlinks.filter((link) => !inAtlas(link.path)).map((link) => ({ path: link.path, target: link.target })).sort(byPath),
+    testFiles: tested.testFiles,
     unassigned,
   };
 }
 
 // The order of work is carried only where the core recorded it: the files a
-// door runs and the files they call into.
+// door runs and the files they call into. Exported names are carried for
+// every file that has one.
 function carryFile(file) {
   const out = { hash: file.hash, path: file.path };
+  if (file.exports) out.exports = [...file.exports];
   if (file.sequences) out.sequences = file.sequences.map(carrySequence);
   if (file.entry != null) {
     out.entry = file.entry;
