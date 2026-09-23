@@ -48,6 +48,10 @@
     {
       "path": "fixtures/atlas/limits-split/tests/cli.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the limits-split fixture repository that packages/atlas/adapter/page-limits.test.js maps, where the two commands it builds at run time must be counted as commands built in tests. It is never meant to run here."
+    },
+    {
+      "path": "fixtures/atlas/init-roles/tools/index.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the init-roles fixture repository that packages/atlas/adapter/init-roles.test.js runs atlas init on: its name starts with index., the first name init falls back to for a part's entry point, and init must propose tools/cli.js beside it instead. It holds no test and is never meant to run."
     }
   ]
 }

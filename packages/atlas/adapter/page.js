@@ -39,6 +39,7 @@ const CONTRACT_PARTS = 3;
 const CONTRACT_NAMED = 5;
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const ROOT_NAME = 'the repository root';
+const SITE_NAME = 'the site';
 
 function cmp(a, b) {
   if (a < b) return -1;
@@ -97,7 +98,8 @@ function rootLevel(glob) {
  */
 export function displayName(boundary) {
   const globs = boundary.globs ?? [];
-  return globs.length > 0 && globs.every(rootLevel) ? ROOT_NAME : boundary.name;
+  if (globs.length > 0 && globs.every(rootLevel)) return ROOT_NAME;
+  return boundary.role === 'site' ? SITE_NAME : boundary.name;
 }
 
 function sortKeys(value) {
@@ -1183,7 +1185,7 @@ function together(ctx) {
 // sentence about parts says "the tests part". The repository root is already
 // a phrase.
 function partPhrase(partLabel) {
-  return partLabel === ROOT_NAME ? partLabel : `the ${partLabel} part`;
+  return partLabel === ROOT_NAME || partLabel === SITE_NAME ? partLabel : `the ${partLabel} part`;
 }
 
 function relationClause(pair) {
@@ -1413,7 +1415,7 @@ function generatedSection(ctx, items) {
 
 function authored(ctx) {
   return ctx.boundaries
-    .filter((boundary) => boundary.origin === 'authored' && (boundary.role === 'config' || boundary.role === 'docs'))
+    .filter((boundary) => boundary.origin === 'authored' && (boundary.role === 'config' || boundary.role === 'docs' || boundary.role === 'site'))
     .sort((a, b) => cmp(boundaryPlace(a), boundaryPlace(b)));
 }
 

@@ -55,6 +55,35 @@ export function fileKind(path) {
   return 'other';
 }
 
+const SITE_CONFIG = /(^|\/)astro\.config\.[cm]?[jt]s$/;
+const SITE_CONTENT = /(^|\/)src\/content\/docs\//;
+const WORKFLOW = /(^|\/)\.github\/workflows\/[^/]+\.ya?ml$/;
+
+// The deepest directory every path is under, with a trailing slash, or ''.
+function commonDirectory(paths) {
+  const dirs = paths.map((path) => String(path).replaceAll('\\', '/').split('/').slice(0, -1));
+  if (dirs.length === 0) return '';
+  let length = 0;
+  while (dirs.every((parts) => parts.length > length && parts[length] === dirs[0][length])) length += 1;
+  return length === 0 ? '' : `${dirs[0].slice(0, length).join('/')}/`;
+}
+
+/**
+ * Some parts are what their files are, whatever the counts say. A part
+ * holding an Astro config or Starlight content is the site, a role of its
+ * own: its pages are prose and its components code, and neither count says
+ * what it is. A part holding a workflow is configuration however many
+ * release notes sit beside it. A part whose own src/ or lib/ holds code is
+ * code however many pages document it.
+ */
+function roleByFiles(paths, kinds) {
+  if (paths.some((path) => SITE_CONFIG.test(path) || SITE_CONTENT.test(path))) return 'site';
+  if (paths.some((path) => WORKFLOW.test(path))) return 'config';
+  const root = commonDirectory(paths);
+  const source = paths.some((path, index) => kinds[index] === 'code' && (path.startsWith(`${root}src/`) || path.startsWith(`${root}lib/`)));
+  return source ? 'code' : null;
+}
+
 /**
  * Other casts no vote. Test is reserved for a boundary whose code-shaped
  * files are all tests. A boundary with no voting files is config. A boundary
@@ -76,6 +105,8 @@ export function fileKind(path) {
  */
 export function roleFor(paths, { manifest = false } = {}) {
   const kinds = paths.map((path) => fileKind(path));
+  const byFiles = roleByFiles(paths, kinds);
+  if (byFiles) return byFiles;
   const voting = kinds.filter((kind) => kind === 'code' || kind === 'docs' || kind === 'config');
   const docs = voting.filter((kind) => kind === 'docs').length;
   const code = voting.filter((kind) => kind === 'code').length;
