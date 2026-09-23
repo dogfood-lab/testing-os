@@ -251,10 +251,14 @@ function sendKeys(sends) {
 /**
  * The trigger a job-level if: holds the job to, when it names the event or
  * the ref: github.event_name == 'push', github.ref == 'refs/heads/main',
- * startsWith(github.ref, 'refs/tags/'), joined by &&. Anything else in the
- * condition narrows the job further without changing which trigger it runs
- * on; a condition with || at its top, or one every trigger of the workflow
- * already meets, gates nothing.
+ * startsWith(github.ref, 'refs/tags/'), joined by &&. An event it is held
+ * off, github.event_name != 'pull_request' or !(github.event_name ==
+ * 'pull_request'), leaves every other trigger of the workflow: when those are
+ * one event (a run by hand aside), the gate is that trigger, a push to main,
+ * and otherwise it is the events it excepts. Anything else in the condition
+ * narrows the job further without changing which trigger it runs on; a
+ * condition with || at its top, or one every trigger of the workflow already
+ * meets, gates nothing.
  */
 function jobGate(condition, triggers) {
   if (typeof condition !== 'string') return null;
@@ -265,6 +269,11 @@ function jobGate(condition, triggers) {
     let part = raw;
     while (part.startsWith('(') && part.endsWith(')') && balanced(part.slice(1, -1))) part = part.slice(1, -1).trim();
     const event = /^github\.event_name\s*==\s*'([\w-]+)'$/.exec(part) ?? /^'([\w-]+)'\s*==\s*github\.event_name$/.exec(part);
+    const held = heldOff(part);
+    if (held) {
+      gate.except = [...new Set([...(gate.except ?? []), held])].sort();
+      continue;
+    }
     const branch = /^github\.ref\s*==\s*'refs\/heads\/([^']+)'$/.exec(part) ?? /^'refs\/heads\/([^']+)'\s*==\s*github\.ref$/.exec(part);
     if (event) gate.event = event[1];
     else if (branch) gate.branches = [...new Set([...(gate.branches ?? []), branch[1]])].sort();
@@ -273,11 +282,46 @@ function jobGate(condition, triggers) {
       gate.tags = true;
     }
   }
+  if (gate.except) settleExcept(gate, triggers);
   if (Object.keys(gate).length === 0) return null;
   return triggers.length > 0 && triggers.every((trigger) => meets(trigger, gate)) ? null : gate;
 }
 
+// github.event_name != 'x', 'x' != github.event_name, or !(github.event_name == 'x').
+function heldOff(part) {
+  const direct = /^github\.event_name\s*!=\s*'([\w-]+)'$/.exec(part) ?? /^'([\w-]+)'\s*!=\s*github\.event_name$/.exec(part);
+  if (direct) return direct[1];
+  if (!part.startsWith('!')) return null;
+  let inner = part.slice(1).trim();
+  while (inner.startsWith('(') && inner.endsWith(')') && balanced(inner.slice(1, -1))) inner = inner.slice(1, -1).trim();
+  const negated = /^github\.event_name\s*==\s*'([\w-]+)'$/.exec(inner) ?? /^'([\w-]+)'\s*==\s*github\.event_name$/.exec(inner);
+  return negated ? negated[1] : null;
+}
+
+// What an excepted event leaves is the gate, when it is one trigger's worth.
+function settleExcept(gate, triggers) {
+  if (gate.event) {
+    delete gate.except;
+    return;
+  }
+  const left = triggers.filter((trigger) => !gate.except.includes(trigger.event) && trigger.event !== 'workflow_dispatch');
+  const events = [...new Set(left.map((trigger) => trigger.event))];
+  if (events.length !== 1) return;
+  const [only] = events;
+  delete gate.except;
+  gate.event = only;
+  if (only !== 'push') return;
+  const tagged = left.every((trigger) => (trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0));
+  if (tagged) {
+    gate.tags = true;
+    return;
+  }
+  const branches = left.map((trigger) => trigger.branches ?? []);
+  if (branches.every((list) => list.length > 0)) gate.branches = [...new Set([...(gate.branches ?? []), ...branches.flat()])].sort();
+}
+
 function meets(trigger, gate) {
+  if (gate.except && gate.except.includes(trigger.event)) return false;
   if (gate.event && trigger.event !== gate.event) return false;
   if (gate.tags && !((trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0))) return false;
   if (gate.branches && !((trigger.branches?.length ?? 0) > 0 && trigger.branches.every((branch) => gate.branches.includes(branch)))) return false;

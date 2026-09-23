@@ -485,18 +485,23 @@ export function gatePhrase(when) {
   const branches = when.branches?.length > 0 ? list(when.branches).replace(/ and /g, ' or ') : null;
   if (when.tags) return 'on a tag push';
   if (when.event === 'push') return branches ? `on a push to ${branches}` : 'on a push';
+  const phrase = (event) => GATE_EVENTS[event] ?? `on a \`${event}\` event`;
+  if (!when.event && when.except?.length > 0) {
+    const held = `except ${list(when.except.map(phrase)).replace(/ and /g, ' or ')}`;
+    return branches ? `on ${branches}, ${held}` : held;
+  }
   if (!when.event) return `on ${branches}`;
-  const events = {
-    pull_request: 'on a pull request',
-    pull_request_target: 'on a pull request',
-    schedule: 'on a schedule',
-    workflow_dispatch: 'when run by hand',
-    release: 'on a release event',
-    repository_dispatch: 'when a repository sends a dispatch',
-  };
-  const phrase = events[when.event] ?? `on a \`${when.event}\` event`;
-  return branches ? `${phrase} to ${branches}` : phrase;
+  return branches ? `${phrase(when.event)} to ${branches}` : phrase(when.event);
 }
+
+const GATE_EVENTS = {
+  pull_request: 'on a pull request',
+  pull_request_target: 'on a pull request',
+  schedule: 'on a schedule',
+  workflow_dispatch: 'when run by hand',
+  release: 'on a release event',
+  repository_dispatch: 'when a repository sends a dispatch',
+};
 
 // A gated job's send keys read back into the shape sendPhrases reads.
 function sendsFrom(keys) {
