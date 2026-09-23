@@ -1,6 +1,6 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit e605ac4.
+Mapped at 2026-09-23 from commit 973fee1.
 
 ## What this is
 
@@ -19,10 +19,8 @@ Mapped at 2026-09-23 from commit e605ac4.
 
 1. The workflow runs packages/ingest/run.js in ingest, packages/portfolio/generate.js in portfolio, and scripts/build.mjs and scripts/sync-version.mjs in scripts.
    1. Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.
-   2. Is duplicate in ingest does, in order: is unsafe segment and parse rejection reason (verify).
-   3. Load repo policy in ingest does, in order: is unsafe segment, log stage (dogfood-swarm) and validate payload (schemas).
-   4. Load scenarios in ingest does, in order: fetch with reason and fetch.
-   5. Verify in verify does, in order:
+   2. **Load repo policy** runs, in order: is unsafe segment, log stage (dogfood-swarm) and validate payload (schemas).
+   3. **Verify** (verify) runs, in order:
       1. parse run url repo
       2. validate submission schema
       3. validate schema version
@@ -31,9 +29,8 @@ Mapped at 2026-09-23 from commit e605ac4.
       6. validate required steps
       7. validate policy
       8. compute verdict
-   6. Write record in ingest does, in order: is unsafe segment, parse rejection reason (verify), read chain head, submission digest, validate record and append chain entry.
-   7. Rebuild indexes in ingest does, in order: log stage (dogfood-swarm) and atomic write (3 steps).
-   8. Inside packages/portfolio/generate.js, main does, in order: compute trends, atomic write file sync (findings), generate badges and atomic write file sync.
+   4. **Write record** runs, in order: is unsafe segment, parse rejection reason (verify), read chain head, submission digest, validate record and append chain entry.
+   5. Inside packages/portfolio/generate.js, main does, in order: compute trends, atomic write file sync (findings), generate badges and atomic write file sync.
 2. That reaches dogfood-swarm (1 file), findings (2 files) and verify (10 files).
 3. That reaches schemas (5 files).
 4. It writes to indexes/, records/ and reports/.
@@ -66,6 +63,20 @@ Mapped at 2026-09-23 from commit e605ac4.
 - **portfolio** is imported by 1 part (scripts) and sits on the path of 3 doors.
 - **indexes/** is written by .github, ingest, portfolio and scripts, and read by examples, ingest, portfolio, report, the repository root, scripts and site; a hand edit reaches every reader.
 - **dogfood/roadmap/** is written by dogfood-swarm and read by dogfood-swarm, scripts and site; a hand edit reaches every reader.
+
+## What tends to change together
+
+- **packages/dogfood-swarm/lib/verify/adapters/python.js** and **packages/dogfood-swarm/lib/verify/adapters/rust.js** changed together in 5 of 5 commits, inside dogfood-swarm.
+- **packages/dogfood-swarm/lib/error-render-hint-coverage.test.js** and **scripts/pin-declarations.mjs** changed together in 5 of 7 commits, and scripts imports dogfood-swarm.
+- **packages/atlas/adapter/init.test.js** and **packages/atlas/adapter/templates.js** changed together in 4 of 6 commits, inside atlas.
+- **packages/atlas/adapter/init.test.js** and **packages/atlas/adapter/templates.test.js** changed together in 4 of 6 commits, inside atlas.
+- **packages/dogfood-swarm/lib/persist/dogfood-bridge.js** and **packages/dogfood-swarm/lib/persist/export.js** changed together in 4 of 6 commits, inside dogfood-swarm.
+
+7 files changed together with their own tests, as expected.
+
+Confidence is low: fewer than 20 source files reach 10 revisions in the window.
+
+Window: 180 days; a pair counts from 3 shared commits.
 
 ## Generated, never hand-edited
 
