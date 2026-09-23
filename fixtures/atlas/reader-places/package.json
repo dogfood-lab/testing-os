@@ -1,0 +1,11 @@
+{
+  "name": "reader-places",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "replay": "node packages/ledger/scripts/replay.mjs && node packages/ledger/scripts/nft.mjs"
+  }
+}

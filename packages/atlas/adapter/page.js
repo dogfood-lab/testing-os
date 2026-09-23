@@ -791,27 +791,64 @@ function readerFiles(entries) {
   return [...byPath.entries()].sort((a, b) => cmp(a[0], b[0])).map(([path, text]) => ({ path, text }));
 }
 
-// A door's landings are grouped under the directory they share at the top of
-// the tree, records/ or indexes/. Where that directory holds more than one
-// part (packages/ in a workspace) it is where the parts live, not a place, so
-// the group is the shallowest directory below it that holds one part at most.
-function groupKey(ctx, target) {
-  const segments = target.split('/');
-  for (let depth = 1; depth < segments.length; depth += 1) {
-    const dir = segments.slice(0, depth).join('/');
-    if (ctx.partsUnder(dir) <= 1) return dir;
+// The part a landing is in: a tracked file's own, the one part a directory
+// holds, or for a file made at run time, the one part its directory holds.
+function landingPart(ctx, target) {
+  if (ctx.boundaryOf.has(target)) return ctx.boundaryOf.get(target);
+  const one = (dir) => {
+    const parts = partsUnder(ctx, `${dir}/`);
+    return parts.size === 1 ? [...parts][0] : null;
+  };
+  return one(target) ?? (target.includes('/') ? one(target.slice(0, target.lastIndexOf('/'))) : null);
+}
+
+// The deepest directory every target lies in or is: a directory stands for
+// itself, a file for the directory holding it. Empty at the top of the tree.
+function commonDirectory(ctx, targets) {
+  const dirs = targets.map((target) => {
+    const segments = target.split('/');
+    return ctx.place(target).endsWith('/') ? segments : segments.slice(0, -1);
+  });
+  let length = 0;
+  while (dirs.every((segments) => segments.length > length && segments[length] === dirs[0][length])) length += 1;
+  return dirs[0].slice(0, length).join('/');
+}
+
+/**
+ * A door's landings grouped by the place they share: the landings in one part
+ * under the deepest directory they have in common, so receipts written into
+ * a package's scripts/ are named as scripts/, not the package they sit in. One
+ * landing is its own group, a file named as the file. Landings that share no
+ * directory short of the top of the tree, or belong to no single part, keep a
+ * group each. A directory that holds more than one part (packages/ in a
+ * workspace) is where the parts live, so it is never a group.
+ *
+ * @returns {Map<string, string>} each landing's group
+ */
+function landingGroups(ctx, landings) {
+  const byPart = new Map();
+  for (const target of landings) {
+    const part = landingPart(ctx, target);
+    const key = part ?? `\0${target}`;
+    if (!byPart.has(key)) byPart.set(key, []);
+    byPart.get(key).push(target);
   }
-  return target;
+  const groupOf = new Map();
+  for (const targets of byPart.values()) {
+    const shared = targets.length > 1 ? commonDirectory(ctx, targets) : '';
+    for (const target of targets) groupOf.set(target, shared !== '' && ctx.partsUnder(shared) <= 1 ? shared : target);
+  }
+  return groupOf;
 }
 
 function readerGroups(ctx, main) {
   const groups = new Map();
-  for (const target of main.landings ?? []) {
-    const key = groupKey(ctx, target);
+  const groupOf = landingGroups(ctx, main.landings ?? []);
+  for (const key of groupOf.values()) {
     if (!groups.has(key)) groups.set(key, { key, entries: [] });
   }
   for (const entry of (main.readers ?? []).filter(strong)) {
-    const group = groups.get(groupKey(ctx, entry.target));
+    const group = groups.get(groupOf.get(entry.target));
     if (group) group.entries.push(entry);
   }
   const out = [];
