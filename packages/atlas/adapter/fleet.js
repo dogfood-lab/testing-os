@@ -28,6 +28,9 @@ export const RENDER_FILES = ['structure.json', 'statistics.json', 'README.md', '
 export const DEFAULT_SCHEDULE = '0 6 * * 1';
 export const DEFAULT_PORT = 8080;
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
+// The engine that made a render is written beside it, so a repository whose
+// commit has not moved renders again once the engine has.
+export const ENGINE = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version;
 const REPO_NAME = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/;
 // A clone whose newest commit is older than the window selects nothing; git
 // says so in these words, and one commit is then the honest tree to map.
@@ -221,10 +224,12 @@ export function appendHistory(previous, entry, cap = HISTORY_CAP) {
 /**
  * Why a repository at this head is not rendered again, or null when it is.
  * A render made before the page existed left no README.md, and its fleet row
- * counts no doors, so it renders again for the link to land.
+ * counts no doors, so it renders again for the link to land. A render made by
+ * another engine, or by one that did not yet say which, renders again so the
+ * fleet's pages are all the current engine's.
  */
-export function skipReason(known, sha, previousRow) {
-  if (!known || known.commit !== sha) return null;
+export function skipReason(known, sha, previousRow, engine = ENGINE) {
+  if (!known || known.commit !== sha || known.engine !== engine) return null;
   if (known.notMapped) return 'not-mapped';
   return typeof previousRow?.doors === 'number' ? 'unchanged' : null;
 }
@@ -298,7 +303,7 @@ export async function renderOne({
     let proposed = false;
     if (!existsSync(boundaryPath)) {
       if (!propose) {
-        state.rendered[fullName] = { commit: sha, renderedAt: now.toISOString(), notMapped: true };
+        state.rendered[fullName] = { commit: sha, engine: ENGINE, renderedAt: now.toISOString(), notMapped: true };
         delete state.failures[fullName];
         log(`not-mapped ${fullName}`);
         return { kind: 'not-mapped' };
@@ -349,7 +354,7 @@ export async function renderOne({
     if (remaining() <= 0) return abandon('budget');
     for (const file of RENDER_FILES) cpSync(join(dest, 'atlas', file), join(out, file));
     const renderedAt = now.toISOString();
-    state.rendered[fullName] = { commit: sha, renderedAt, ...(proposed ? { proposed: true } : {}) };
+    state.rendered[fullName] = { commit: sha, engine: ENGINE, renderedAt, ...(proposed ? { proposed: true } : {}) };
     delete state.failures[fullName];
     const structure = JSON.parse(readFileSync(join(out, 'structure.json'), 'utf8'));
     const statistics = JSON.parse(readFileSync(join(out, 'statistics.json'), 'utf8'));

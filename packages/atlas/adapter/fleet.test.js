@@ -14,6 +14,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, describe, it } from 'node:test';
 import {
+  ENGINE,
   HISTORY_CAP,
   createFleetServer,
   defaultRun,
@@ -129,6 +130,7 @@ describe('fleet service: a mounted checkout', () => {
     const head = git(repo, ['rev-parse', 'HEAD']);
     const state = readJson(join(dataDir, 'atlas', 'state.json'));
     assert.equal(state.rendered[name].commit, head);
+    assert.equal(state.rendered[name].engine, ENGINE, 'the state says which engine made the render');
     assert.deepEqual(state.failures, {});
     const fleet = readJson(join(dataDir, 'atlas', 'fleet.json'));
     assert.equal(fleet.repositories.length, 1);
@@ -149,6 +151,18 @@ describe('fleet service: a mounted checkout', () => {
     const { logs } = await once(dataDir, config);
     assert.deepEqual(logs, [`skip ${name} unchanged`]);
     assert.equal(readFileSync(join(repoDir, 'history.json'), 'utf8'), before);
+  });
+
+  it('renders an unmoved checkout again when another engine made the last render', async () => {
+    const statePath = join(dataDir, 'atlas', 'state.json');
+    const state = readJson(statePath);
+    // A state written before the field existed reads the same as another engine.
+    delete state.rendered[name].engine;
+    writeFileSync(statePath, JSON.stringify(state));
+    const { logs } = await once(dataDir, config);
+    assert.deepEqual(logs, [`render ${name}`]);
+    assert.equal(readJson(statePath).rendered[name].engine, ENGINE);
+    assert.deepEqual((await once(dataDir, config)).logs, [`skip ${name} unchanged`], 'and the current engine skips it again');
   });
 
   it('maps a change and appends it to a history that keeps the newest 52', async () => {

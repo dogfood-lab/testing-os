@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { parse } from 'yaml';
+import { ENGINE } from '@dogfood-lab/atlas/fleet';
 import { BACKOFF_MS, HISTORY_CAP, JOB_BUDGET_MS, appendHistory, changeCount, earlierWindow, historyEntry, pushAuthEnv, readExclusions, rejectForeignPaths, renderFleet, shallowSinceDate } from './atlas-render.mjs';
 
 const TEMPLATE = resolve(fileURLToPath(new URL('.', import.meta.url)), '../packages/atlas/templates/atlas-refresh.yml');
@@ -168,7 +169,7 @@ describe('atlas weekly render', () => {
     const { runFleet, calls } = harness(t, {
       lab: [PUBLIC],
       heads: { 'dogfood-lab/testing-os': sha },
-      state: { rendered: { 'dogfood-lab/testing-os': { commit: sha, renderedAt: '2026-09-01T00:00:00.000Z' } }, failures: {} },
+      state: { rendered: { 'dogfood-lab/testing-os': { commit: sha, engine: ENGINE, renderedAt: '2026-09-01T00:00:00.000Z' } }, failures: {} },
       fleet: { repositories: [{ repo: 'dogfood-lab/testing-os', commit: sha, renderedAt: '2026-09-01T00:00:00.000Z', doors: 1 }] },
     });
     const result = await runFleet();
@@ -297,7 +298,8 @@ describe('atlas weekly render', () => {
     const { runFleet, calls } = harness(t, {
       lab: [PUBLIC],
       heads: { 'dogfood-lab/testing-os': sha },
-      state: { rendered: { 'dogfood-lab/testing-os': { commit: sha, renderedAt: '2026-09-01T00:00:00.000Z' } }, failures: {} },
+      // The render on record is this engine's; one another engine made is rendered again.
+      state: { rendered: { 'dogfood-lab/testing-os': { commit: sha, engine: ENGINE, renderedAt: '2026-09-01T00:00:00.000Z' } }, failures: {} },
       fleet: {
         repositories: [{
           repo: 'dogfood-lab/testing-os',
