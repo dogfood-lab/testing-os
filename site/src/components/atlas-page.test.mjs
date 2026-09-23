@@ -27,6 +27,9 @@ const SECTIONS = [
   'The other doors',
   'What breaks what',
   'What tends to change together',
+  'What no test touches',
+  'Written but never read',
+  'Helpers that look duplicated',
   'Generated, never hand-edited',
   'Hand-authored',
   'Where to start',
@@ -244,10 +247,96 @@ test('what tends to change together renders the pairs page.json names and the se
     assert.ok(paragraphs.includes(`${page.changesTogetherWithTests} ${noun} changed together with ${verb} own ${page.changesTogetherWithTests === 1 ? 'test' : 'tests'}, as expected.`), 'the set-aside line renders');
   }
   const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8');
-  const twin = markdown.slice(markdown.indexOf('## What tends to change together\n'), markdown.indexOf('## Generated, never hand-edited\n'));
+  const from = markdown.indexOf('## What tends to change together\n');
+  const twin = markdown.slice(from, markdown.indexOf('\n## ', from + 1));
   assert.deepEqual(bullets, twin.split('\n').filter((line) => line.startsWith('- ')).map((line) => line.slice(2).replace(/\*\*/g, '')));
   const twinParagraphs = twin.split('\n').filter((line) => line.trim() !== '' && !line.startsWith('- ') && !line.startsWith('## '));
   assert.deepEqual(paragraphs, twinParagraphs, 'every paragraph of the section matches the markdown, empty case included');
+});
+
+// A section's sentences as the site shows them and as the markdown twin
+// writes them: every paragraph and bullet, markup and code marks dropped.
+function sectionTexts(pageData, markdown, heading) {
+  const html = render.renderPage(pageData, { repo: pageData.repo });
+  const at = html.indexOf(`<h2>${render.esc(heading)}</h2>`);
+  assert.ok(at !== -1, `the site carries ${heading}`);
+  const body = html.slice(at, html.indexOf('</section>', at));
+  const start = markdown.indexOf(`## ${heading}\n`);
+  assert.ok(start !== -1, `the markdown twin carries ${heading}`);
+  const end = markdown.indexOf('\n## ', start + 1);
+  const twin = markdown.slice(start, end === -1 ? markdown.length : end);
+  return {
+    shown: [...body.matchAll(/<(p|li)>([\s\S]*?)<\/\1>/g)].map((match) => plain(match[2])),
+    written: twin.split('\n').slice(2).filter(Boolean).map((line) => line.replace(/^- /, '').replace(/\*\*|`/g, '')),
+  };
+}
+
+test('the three derived views say what the committed markdown says, in the same place', () => {
+  const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8');
+  for (const heading of ['What no test touches', 'Written but never read', 'Helpers that look duplicated']) {
+    const { shown, written } = sectionTexts(page, markdown, heading);
+    assert.ok(shown.length > 0, heading);
+    assert.deepEqual(shown, written, heading);
+  }
+  const unread = sectionTexts(page, markdown, 'Written but never read').shown;
+  assert.ok(unread.includes('reports/ is written by packages/portfolio/generate.js and read by nothing else in this repository.'));
+  const alike = sectionTexts(page, markdown, 'Helpers that look duplicated').shown;
+  assert.equal(alike[0], 'These are candidates from names and call order, not a judgement.');
+});
+
+test('the derived views render their lists, caps and empty cases from page.json alone', () => {
+  const fixture = {
+    ...page,
+    testFiles: 3,
+    untested: [{ part: 'root', partLabel: 'the repository root', testedBy: 0 }, { part: 'tools', partLabel: 'tools', testedBy: 0 }],
+    untestedNote: ['And 4 more parts.'],
+    unread: [{ place: 'cache/', writers: ['tools/cache.js'] }, { place: 'records/', writers: ['.github/workflows/ingest.yml', 'tools/ingest.js'] }],
+    unreadNote: [],
+    duplicates: [{ files: ['lib/store.js', 'tools/prepare.js'], name: 'normalize', partLabels: ['lib', 'tools'], parts: ['lib', 'tools'] }],
+    duplicatesLead: 'These are candidates from names and call order, not a judgement.',
+    duplicatesNote: ['And 1 more pair.'],
+  };
+  const markdown = [
+    '## What no test touches', '', '- **the repository root** is imported by no test.', '- **tools** is imported by no test.', '', 'And 4 more parts.', '',
+    '## Written but never read', '', '- **cache/** is written by tools/cache.js and read by nothing else in this repository.',
+    '- **records/** is written by .github/workflows/ingest.yml and tools/ingest.js, and read by nothing else in this repository.', '',
+    '## Helpers that look duplicated', '', 'These are candidates from names and call order, not a judgement.', '',
+    '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.', '', 'And 1 more pair.', '',
+  ].join('\n');
+  for (const heading of ['What no test touches', 'Written but never read', 'Helpers that look duplicated']) {
+    const { shown, written } = sectionTexts(fixture, markdown, heading);
+    assert.deepEqual(shown, written, heading);
+  }
+  const html = render.renderPage(fixture, { repo: page.repo });
+  assert.ok(html.indexOf('<h2>What tends to change together</h2>') < html.indexOf('<h2>What no test touches</h2>'));
+  assert.ok(html.indexOf('<h2>Helpers that look duplicated</h2>') < html.indexOf('<h2>Generated, never hand-edited</h2>'));
+
+  const empty = render.renderPage({ ...page, testFiles: 0, untested: [], untestedNote: ['No test files were found by name.'], unread: [], unreadNote: [], duplicates: [], duplicatesLead: null, duplicatesNote: [] }, { repo: page.repo });
+  assert.ok(empty.includes('<h2>What no test touches</h2>\n<p>No test files were found by name.</p></section>'));
+  assert.ok(empty.includes('<h2>Written but never read</h2>\n<p>Every written place has a reader.</p></section>'));
+  assert.ok(empty.includes('<h2>Helpers that look duplicated</h2>\n<p>No two parts export a helper that looks alike.</p></section>'));
+  const reached = render.renderPage({ ...page, testFiles: 5, untested: [], untestedNote: [] }, { repo: page.repo });
+  assert.ok(reached.includes('<h2>What no test touches</h2>\n<p>Every code part is imported by at least one test.</p></section>'));
+
+  const { untested, unread, duplicates, ...older } = page;
+  assert.ok(untested && unread && duplicates, 'this repository has the three lists to leave out');
+  const before = render.renderPage(older, { repo: page.repo });
+  for (const heading of ['What no test touches', 'Written but never read', 'Helpers that look duplicated']) {
+    assert.equal(before.includes(`<h2>${heading}</h2>`), false, heading);
+  }
+
+  const hostile = '<script>alert(1)</script>';
+  const escaped = render.renderPage({
+    ...page,
+    untested: [{ part: hostile, partLabel: hostile }],
+    untestedNote: [hostile],
+    unread: [{ place: hostile, writers: [hostile] }],
+    unreadNote: [hostile],
+    duplicates: [{ files: [hostile, hostile], name: hostile, partLabels: [hostile, hostile] }],
+    duplicatesLead: hostile,
+    duplicatesNote: [hostile],
+  }, {});
+  assert.equal(escaped.includes('<script>'), false);
 });
 
 test('more than twelve steps list twelve and count the rest', () => {

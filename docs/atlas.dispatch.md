@@ -533,6 +533,74 @@ cannot see (a dynamic import, a write through a path built at run time) is not n
 A trigger compared field by field names its values, not their fields. The host check does not
 read `changes`; it compares the committed structure, as before.
 
+**Three views are derived from facts the map already holds.** They sit after "What tends to
+change together" and before "Generated, never hand-edited", and nothing new is read from the tree
+to write them: they are the imports, landings, exported names and orders of work turned to face
+failure points and redundancy.
+
+"What no test touches" names each code part that no test file imports, directly or through one
+file between. A test file is one by name, the convention test runners discover by: a `.test.` or
+`.spec.` marker, `test_*.py`, `*_test.py`, or a place under a directory named `test`, `tests` or
+`__tests__`. Per-file imports are not in the artifact, so `atlas map` counts where the resolved
+imports are still in hand, and the structure keeps the count per part as `testedBy` and the
+number of test files as `testFiles`. A test file a test imports is the hop, not the part's code.
+A code part made only of test material, such as a fixtures directory, is not a candidate. When
+no file is a test by name the section says only "No test files were found by name.", since every
+part would be listed and the list would say nothing.
+
+"Written but never read" names each written place whose readers are empty or only its own
+writers; a writer that reads back what it wrote is making the result, not using it. A weak
+reader or writer is left out, as the rest of the page leaves it out. On this repository that is
+`reports/`: the portfolio generator checks for it and writes into it, and nothing else reads it.
+
+"Helpers that look duplicated" names pairs of exported functions of one name, in two different
+parts, that look like one helper written twice. Where the map recorded an order of work for both,
+their calls must match name for name, in order; where either has none, their files must share a
+name. Each file's exported function names are carried as `exports`. The section opens by saying
+what the pairs are: "These are candidates from names and call order, not a judgement." On this
+repository the rule names `atomicWriteFileSync` in findings and in ingest, the pair the accepted
+workspace cycle grew around. The findings copy is called by a file the ingest door runs, so its
+order is recorded; the ingest copy is called only from files a step further in, so it has none,
+and the rule falls back to the shared file name, `atomic-write.js`.
+
+The first two lists keep eight items and the third five, and the rest are counted ("And 2 more
+parts."). `page.json` carries each list with its closing lines, here from the doors fixture,
+shortened:
+
+```json
+{
+  "testFiles": 1,
+  "testedBy": { "lib": 1, "tools": 0 },
+  "untested": [
+    { "part": "tools", "partLabel": "tools",
+      "testedBy": 0 }
+  ],
+  "untestedNote": [],
+  "unread": [
+    { "place": "cache/",
+      "writers": ["tools/cache.js"] }
+  ],
+  "unreadNote": [],
+  "duplicates": [
+    { "name": "normalize",
+      "files": ["lib/store.js", "tools/prepare.js"],
+      "parts": ["lib", "tools"],
+      "partLabels": ["lib", "tools"] }
+  ],
+  "duplicatesLead": "These are candidates …",
+  "duplicatesNote": []
+}
+```
+
+The limits are the method's. A test is found by its name, so a test file named otherwise is not
+one, and a test that runs a part as a child process or reads it as a file does not import it and
+does not count. One hop is the reach: a part a test reaches only through two files between is
+listed as untested. Being imported by a test says a part is loaded, not that its behaviour is
+checked. A read through a path built at run time names no place, so a place read only that way
+is listed as never read. The duplicates are candidates: two helpers of one name with no recorded
+order and the same file name may do different work, and a helper copied under another name is
+not found. The host check compares none of the three.
+
 This repository's own handbook diagram is a
 hand-drawn image whose only tests assert that it exists, is large enough, and has accessible
 title and description elements. Nothing checks that it is true.

@@ -1,14 +1,15 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 230b8c1.
+Mapped at 2026-09-23 from commit 9179d87.
 
 ## What this is
 
 22 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts.
 
-## What changed since 2026-09-23 (8bb7670)
+## What changed since 2026-09-23 (230b8c1)
 
-Nothing structural changed since 2026-09-23; 4 files added and 10 changed content.
+- fixtures/atlas/doors/lib/verify.test.js is now read by scripts/test-floor-allowlist.json.
+- 3 files added and 14 changed content, across 6 parts.
 
 ## What comes in
 
@@ -75,6 +76,23 @@ No two source files, other than a file and its own test, changed together often 
 1 file changed together with its own test, as expected.
 
 Window: 180 days; a pair counts from 10 shared commits.
+
+## What no test touches
+
+Every code part is imported by at least one test.
+
+## Written but never read
+
+- **reports/** is written by packages/portfolio/generate.js and read by nothing else in this repository.
+
+## Helpers that look duplicated
+
+These are candidates from names and call order, not a judgement.
+
+- **atomicWriteFileSync** is exported by packages/findings/lib/atomic-write.js (findings) and packages/ingest/lib/atomic-write.js (ingest); the two look alike.
+- **formatStatus** is exported by packages/dogfood-swarm/commands/status.js (dogfood-swarm) and packages/report/status.js (report); the two look alike.
+- **renameWithRetry** is exported by packages/findings/lib/rename-with-retry.js (findings) and packages/ingest/lib/rename-with-retry.js (ingest); the two look alike.
+- **run** is exported by packages/report/cli.js (report) and packages/verify/cli.js (verify); the two look alike.
 
 ## Generated, never hand-edited
 

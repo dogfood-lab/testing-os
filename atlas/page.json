@@ -104,24 +104,32 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 4,
-      "changed": 10,
+      "added": 3,
+      "changed": 14,
       "moved": 0,
-      "parts": 5,
+      "parts": 6,
       "removed": 0
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "fixtures/atlas/doors/lib/verify.test.js is now read by scripts/test-floor-allowlist.json.",
+        "subjects": [
+          "fixtures/atlas/doors/lib/verify.test.js",
+          "scripts/test-floor-allowlist.json"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-23; 4 files added and 10 changed content.",
+        "sentence": "3 files added and 14 changed content, across 6 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "8bb76708813ca4ac43a40b9df455fc3c1e42a763",
-      "generatedAt": "2026-09-23T10:03:54.287Z"
+      "commit": "230b8c12b51b8277c9cd61d9331c50cbcc106023",
+      "generatedAt": "2026-09-23T10:10:25.217Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -129,7 +137,7 @@
     "Window: 180 days; a pair counts from 10 shared commits."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "230b8c12b51b8277c9cd61d9331c50cbcc106023",
+  "commit": "9179d871a67dcc0e5f3689a45b81a212d4486de6",
   "doors": [
     {
       "file": ".github/workflows/ingest.yml",
@@ -359,6 +367,70 @@
       ]
     }
   ],
+  "duplicates": [
+    {
+      "files": [
+        "packages/findings/lib/atomic-write.js",
+        "packages/ingest/lib/atomic-write.js"
+      ],
+      "name": "atomicWriteFileSync",
+      "partLabels": [
+        "findings",
+        "ingest"
+      ],
+      "parts": [
+        "findings",
+        "ingest"
+      ]
+    },
+    {
+      "files": [
+        "packages/dogfood-swarm/commands/status.js",
+        "packages/report/status.js"
+      ],
+      "name": "formatStatus",
+      "partLabels": [
+        "dogfood-swarm",
+        "report"
+      ],
+      "parts": [
+        "dogfood-swarm",
+        "report"
+      ]
+    },
+    {
+      "files": [
+        "packages/findings/lib/rename-with-retry.js",
+        "packages/ingest/lib/rename-with-retry.js"
+      ],
+      "name": "renameWithRetry",
+      "partLabels": [
+        "findings",
+        "ingest"
+      ],
+      "parts": [
+        "findings",
+        "ingest"
+      ]
+    },
+    {
+      "files": [
+        "packages/report/cli.js",
+        "packages/verify/cli.js"
+      ],
+      "name": "run",
+      "partLabels": [
+        "report",
+        "verify"
+      ],
+      "parts": [
+        "report",
+        "verify"
+      ]
+    }
+  ],
+  "duplicatesLead": "These are candidates from names and call order, not a judgement.",
+  "duplicatesNote": [],
   "generated": [
     {
       "place": "dogfood/roadmap/",
@@ -397,7 +469,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T10:10:25.217Z",
+  "generatedAt": "2026-09-23T10:26:21.541Z",
   "limits": [
     "31 import sites did not resolve.",
     "27 writes and 186 reads use paths built at run time and are not named here.",
@@ -650,5 +722,29 @@
     "packages/report/status.js"
   ],
   "summary": null,
-  "summaryFrom": null
+  "summaryFrom": null,
+  "testFiles": 526,
+  "testedBy": {
+    "atlas": 22,
+    "dogfood-swarm": 280,
+    "findings": 118,
+    "ingest": 59,
+    "portfolio": 19,
+    "report": 20,
+    "schemas": 79,
+    "scripts": 15,
+    "site": 1,
+    "verify": 71
+  },
+  "unread": [
+    {
+      "place": "reports/",
+      "writers": [
+        "packages/portfolio/generate.js"
+      ]
+    }
+  ],
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": []
 }

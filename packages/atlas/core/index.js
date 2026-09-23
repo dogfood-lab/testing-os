@@ -142,6 +142,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   for (const door of doors) delete door.reachFiles;
   const entryPoints = new Map(boundaryList.map((boundary) => [boundary.name, [...boundary.entryPoints].sort()]));
   attachSequences({ files: graph.files, facts, doors, entryPoints });
+  attachExports(graph.files, facts);
 
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },
@@ -155,6 +156,18 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     doors,
     landings,
   };
+}
+
+// The names a file hands out, from the same reading the order of work comes
+// from. An anonymous default export has no name to compare, so it is not one.
+function attachExports(files, facts) {
+  for (const [path, fact] of facts) {
+    const names = new Set();
+    for (const fn of fact.functions) {
+      if (fn.moduleLevel && fn.exported && fn.name !== 'default' && fn.name !== '') names.add(fn.name);
+    }
+    if (names.size > 0) files.get(path).exports = [...names].sort();
+  }
 }
 
 function importGraph(boundaries, unassigned, overlaps) {
