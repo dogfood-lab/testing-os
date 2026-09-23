@@ -498,6 +498,26 @@ function renderRoadmapDigestSection(roadmapDigest) {
     : '';
 }
 
+/**
+ * Render the lane's blast radius from the repository's Atlas map
+ * (lib/atlas-brief.js): what imports its parts, its entry points explained,
+ * and what the map cannot see. The body is built from committed repository
+ * content, so it takes the same neutralization as the roadmap digest above.
+ * Context, not scope: the domain contract still bounds what the lane reads.
+ *
+ * @param {string} [blastRadius]
+ * @returns {string}
+ */
+function renderBlastRadiusSection(blastRadius) {
+  return blastRadius
+    ? `\n## Blast radius — derived from the Atlas map (context, not scope)\n\n`
+      + `Who depends on the files in your scope, as the repository's committed Atlas\n`
+      + `map records it. Use it to weigh what a defect breaks; your scope is still\n`
+      + `the domain contract above.\n\n`
+      + `${fenceSafeBlock(neutralizeForPrompt(blastRadius))}\n`
+    : '';
+}
+
 // Bound the package scan: `repoPath` is an UNTRUSTED external repo, and this
 // runs once per agent at dispatch. A directory with tens of thousands of
 // entries must not turn prompt rendering into a filesystem walk.
@@ -830,6 +850,8 @@ Prioritize by impact. Estimate effort (small/medium/large).`,
  * @param {boolean} [opts.isolatedWorktree] — repoPath is a provisioned
  *   --isolate worktree; render the worktree setup note (see
  *   renderWorktreeSection, run swarm-1784601601-bd4a).
+ * @param {string} [opts.blastRadius] — the lane's blast radius from the
+ *   repository's Atlas map (lib/atlas-brief.js); absent when it has none
  * @returns {string}
  */
 export function buildAuditPrompt(opts) {
@@ -837,6 +859,7 @@ export function buildAuditPrompt(opts) {
   if (!lens) throw new Error(`Unknown audit phase: ${opts.phase}`);
 
   const roadmapSection = renderRoadmapDigestSection(opts.roadmapDigest);
+  const blastRadiusSection = renderBlastRadiusSection(opts.blastRadius);
   const priorSection = renderPriorSection(opts.priorContext);
   const openPriorSection = renderOpenPriorSection(opts.openPriorContext);
 
@@ -867,7 +890,7 @@ ${opts.globs.join('\n')}
 \`\`\`
 
 **HARD RULE:** Do not edit any files. This is an audit-only pass.
-
+${blastRadiusSection}
 ## Audit Lens
 
 ${lens.instruction}
@@ -1031,12 +1054,15 @@ illustrates shape; the canonical contract above is load-bearing.
  * @param {boolean} [opts.isolatedWorktree] — repoPath is a provisioned
  *   --isolate worktree; render the worktree setup note. Same contract as
  *   buildAuditPrompt's identically-named param.
+ * @param {string} [opts.blastRadius] — same contract as buildAuditPrompt's
+ *   identically-named param.
  * @returns {string}
  */
 export function buildFeatureAuditPrompt(opts) {
   const lens = STAGE_LENS['feature-audit'];
 
   const roadmapSection = renderRoadmapDigestSection(opts.roadmapDigest);
+  const blastRadiusSection = renderBlastRadiusSection(opts.blastRadius);
   const priorSection = renderPriorSection(opts.priorContext);
   const openPriorSection = renderOpenPriorSection(opts.openPriorContext);
 
@@ -1066,7 +1092,7 @@ ${opts.globs.join('\n')}
 \`\`\`
 
 **HARD RULE:** Do not edit any files. This is an audit-only pass.
-
+${blastRadiusSection}
 ## Audit Lens
 
 ${lens.instruction}
