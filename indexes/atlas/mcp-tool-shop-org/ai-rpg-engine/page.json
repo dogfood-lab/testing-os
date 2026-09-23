@@ -2,7 +2,6 @@
   "authored": [
     ".claude/",
     ".github/",
-    "docs/",
     "dogfood/",
     "root",
     "site/"
@@ -268,66 +267,52 @@
       },
       {
         "kind": "door",
-        "sentence": "Release now also runs files in packages/asset-registry/src/, packages/audio-director/src/, packages/campaign-memory/src/ and 33 more.",
+        "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
         "subjects": [
-          ".github/workflows/release.yml",
-          "packages/asset-registry/src/",
-          "packages/audio-director/src/",
-          "packages/campaign-memory/src/",
-          "packages/character-creation/src/",
-          "packages/character-profile/src/",
-          "packages/cli/src/",
-          "packages/content-schema/src/",
-          "packages/core/src/",
-          "packages/equipment/src/",
-          "packages/image-gen/src/",
-          "packages/ledger-adapter/src/engine/",
-          "packages/ledger-adapter/src/security/",
-          "packages/ledger-adapter/src/settle/",
-          "packages/ledger-adapter/src/state/",
-          "packages/ledger-adapter/src/transport/",
-          "packages/modules/src/",
-          "packages/ollama/src/",
-          "packages/pack-registry/src/",
-          "packages/presentation/src/",
-          "packages/rumor-system/src/",
-          "packages/sidecar/src/",
-          "packages/soundpack-core/src/",
-          "packages/starter-bounty-hunter/src/",
-          "packages/starter-colony/src/",
-          "packages/starter-cyberpunk/src/",
-          "packages/starter-detective/src/",
-          "packages/starter-fantasy/src/",
-          "packages/starter-gladiator/src/",
-          "packages/starter-merchant/src/",
-          "packages/starter-pirate/src/",
-          "packages/starter-ronin/src/",
-          "packages/starter-vampire/src/",
-          "packages/starter-weird-west/src/",
-          "packages/starter-zombie/src/",
-          "packages/terminal-ui/src/",
-          "templates/starter/src/"
+          ".github/workflows/pages.yml",
+          "site/astro.config.mjs",
+          "site/src/"
         ]
       },
       {
         "kind": "door",
-        "sentence": "And 3 more changes to doors.",
+        "sentence": "And 4 more changes to doors.",
         "subjects": []
       },
       {
         "kind": "landing",
-        "sentence": "packages/ledger-adapter/scripts/live-replay-receipt.json is now written by packages/ledger-adapter/scripts/live-replay.mjs.",
+        "sentence": "docs/c0-alignment/intake-table.json is now written by packages/cli/src/c0-intake-table.test.ts.",
         "subjects": [
-          "packages/ledger-adapter/scripts/live-replay-receipt.json",
-          "packages/ledger-adapter/scripts/live-replay.mjs"
+          "docs/c0-alignment/intake-table.json",
+          "packages/cli/src/c0-intake-table.test.ts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "packages/cli/src/package.json is now read by packages/cli/src/engine-version.ts.",
+        "sentence": "docs/c0-alignment/reverse-table.json is now written by packages/cli/src/c0-reverse-table.test.ts.",
         "subjects": [
-          "packages/cli/src/package.json",
-          "packages/cli/src/engine-version.ts"
+          "docs/c0-alignment/reverse-table.json",
+          "packages/cli/src/c0-reverse-table.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "docs/c0-alignment/version-skew.json is now written by packages/cli/src/c0-version-skew.test.ts.",
+        "subjects": [
+          "docs/c0-alignment/version-skew.json",
+          "packages/cli/src/c0-version-skew.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 5 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "origin",
+        "sentence": "docs was authored and is now mixed.",
+        "subjects": [
+          "docs"
         ]
       },
       {
@@ -440,7 +425,11 @@
       "checksCount": 6,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "docs/c0-alignment/intake-table.json",
+        "docs/c0-alignment/reverse-table.json",
+        "docs/c0-alignment/version-skew.json"
+      ],
       "name": "CI",
       "pushes": false,
       "reach": [
@@ -837,7 +826,11 @@
       "checksCount": 6,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
-      "landings": [],
+      "landings": [
+        "docs/c0-alignment/intake-table.json",
+        "docs/c0-alignment/reverse-table.json",
+        "docs/c0-alignment/version-skew.json"
+      ],
       "name": "Release",
       "pushes": false,
       "reach": [
@@ -1018,6 +1011,7 @@
         }
       ],
       "runs": [
+        "packages/cli/src/bin.ts",
         "scripts/check-packaging.mjs",
         "scripts/verify-isolated-consumer.mjs",
         "scripts/verify-mixed-game-viability.mjs",
@@ -1188,7 +1182,6 @@
         "packages/starter-ronin/src/intent-profiles.test.ts",
         "packages/starter-ronin/src/perception.test.ts",
         "packages/starter-ronin/src/quests.test.ts",
-        "packages/starter-ronin/src/ruleset.test.ts",
         "packages/starter-vampire/src/ability-integration.test.ts",
         "packages/starter-vampire/src/content-truth.test.ts",
         "packages/starter-vampire/src/content.test.ts",
@@ -1213,13 +1206,43 @@
         "scripts/gates.test.ts",
         "templates/starter/src/starter.test.ts"
       ],
-      "runsCount": 391,
+      "runsCount": 392,
       "sends": [
         "publishes to npm and a container image"
       ],
       "stages": [],
       "triggers": [
         "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site on main"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 2 paths",
+        "on a push to main touching 2 paths",
         "or by hand"
       ]
     },
@@ -1247,27 +1270,6 @@
       "triggers": [
         "on a pull request touching 5 paths",
         "on a push touching 5 paths",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "file": ".github/workflows/pages.yml",
-      "id": ".github/workflows/pages.yml",
-      "landings": [],
-      "name": "Deploy site to GitHub Pages",
-      "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
-      "sends": [
-        "deploys the site"
-      ],
-      "stages": [],
-      "triggers": [
-        "on a pull request touching 2 paths",
-        "on a push to main touching 2 paths",
         "or by hand"
       ]
     },
@@ -1642,15 +1644,33 @@
   ],
   "generated": [
     {
-      "place": "packages/ledger-adapter/scripts/gladiator-nft-live-replay-receipt.json",
+      "place": "docs/c0-alignment/intake-table.json",
       "writers": [
-        "packages/ledger-adapter/scripts/gladiator-nft-live-replay.mjs"
+        "packages/cli/src/c0-intake-table.test.ts"
       ]
     },
     {
-      "place": "packages/ledger-adapter/scripts/live-replay-receipt.json",
+      "place": "docs/c0-alignment/reverse-table.json",
       "writers": [
-        "packages/ledger-adapter/scripts/live-replay.mjs"
+        "packages/cli/src/c0-reverse-table.test.ts"
+      ]
+    },
+    {
+      "place": "docs/c0-alignment/version-skew.json",
+      "writers": [
+        "packages/cli/src/c0-version-skew.test.ts"
+      ]
+    },
+    {
+      "place": "docs/contract-v1/rng-audit.json",
+      "writers": [
+        "packages/cli/src/c1-rng-audit.test.ts"
+      ]
+    },
+    {
+      "place": "packages/ledger-adapter/scripts/gladiator-nft-live-replay-receipt.json",
+      "writers": [
+        "packages/ledger-adapter/scripts/gladiator-nft-live-replay.mjs"
       ]
     },
     {
@@ -1672,14 +1692,16 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T19:00:18.561Z",
+  "generatedAt": "2026-09-23T21:10:58.187Z",
   "limits": [
     "3 import sites could not be resolved.",
     "10 files use syntax the parser cannot read, so what they import is not known: 4 in modules (an import type followed by `[]`), 2 in ledger-adapter (a NUL character inside a string), 1 in cli (`typeof import(…)` as a type argument), 1 in content-schema (a NUL character inside a string), 1 in core (an import type followed by `[]`), 1 in ollama (an import type followed by `[]`).",
-    "42 writes and 61 reads use paths built at run time and are not named here.",
+    "45 writes and 61 reads use paths built at run time and are not named here.",
+    "1 write goes to places this repository does not track, so it is not listed as generated.",
+    "2 writes and 5 reads go to the directory the command is run in or the home directory, not to this repository.",
     "10 commands are built at run time and not followed, 8 of them in tests.",
     "CI runs or checks 398 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Release runs or checks 397 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
+    "Release runs or checks 398 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -1724,9 +1746,15 @@
     "terminal-ui": "terminal-ui"
   },
   "parts": 39,
-  "readers": [],
+  "readers": [
+    {
+      "readers": [],
+      "target": "docs/c0-alignment/"
+    }
+  ],
   "repo": "mcp-tool-shop-org/ai-rpg-engine",
   "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "scripts/check-packaging.mjs"
@@ -1769,17 +1797,36 @@
     "starter-zombie": 42,
     "terminal-ui": 24
   },
+  "unnamedWrites": 45,
   "unread": [
+    {
+      "place": "docs/c0-alignment/intake-table.json",
+      "writers": [
+        "packages/cli/src/c0-intake-table.test.ts"
+      ]
+    },
+    {
+      "place": "docs/c0-alignment/reverse-table.json",
+      "writers": [
+        "packages/cli/src/c0-reverse-table.test.ts"
+      ]
+    },
+    {
+      "place": "docs/c0-alignment/version-skew.json",
+      "writers": [
+        "packages/cli/src/c0-version-skew.test.ts"
+      ]
+    },
+    {
+      "place": "docs/contract-v1/rng-audit.json",
+      "writers": [
+        "packages/cli/src/c1-rng-audit.test.ts"
+      ]
+    },
     {
       "place": "packages/ledger-adapter/scripts/gladiator-nft-live-replay-receipt.json",
       "writers": [
         "packages/ledger-adapter/scripts/gladiator-nft-live-replay.mjs"
-      ]
-    },
-    {
-      "place": "packages/ledger-adapter/scripts/live-replay-receipt.json",
-      "writers": [
-        "packages/ledger-adapter/scripts/live-replay.mjs"
       ]
     },
     {
@@ -1810,5 +1857,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 5
+  "written": 8
 }

@@ -4,44 +4,45 @@ Mapped at 2026-09-23 from commit 333532b.
 
 ## What this is
 
-15 parts, mostly TypeScript (497 files). Work enters through 6 doors; the busiest is CI, which reaches 10 parts. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.
+15 parts, mostly TypeScript (497 files). Work enters through 6 doors; the busiest is CI, which reaches 11 parts. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.
 
 ## What changed since 2026-09-23 (b6fa56a)
 
-- CI now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 56 more.
+- CI now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 58 more.
+- Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - Release now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 56 more.
-- world-forge-export (packages/export-ai-rpg/package.json) is a new command. It runs packages/export-ai-rpg/src/cli.ts.
-- And 2 more changes to doors.
-- dogfood/godot-smoke/world.tscn is now written by dogfood/run-godot-smoke.ts.
-- dogfood/output/ai-rpg/content-pack.json is now written by dogfood/multi-target-export-proof.ts.
-- dogfood/output/build-catalog.json is now written by dogfood/chapel-threshold.ts.
-- And 20 more new writers and readers of places.
+- And 3 more changes to doors.
+- docs/c0-alignment/export-table.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
+- docs/c0-alignment/export-table.md is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
+- docs/c0-alignment/fixture-manifest.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
+- And 36 more new writers and readers of places.
+- docs was authored and is now mixed.
 - 633 files changed content, across 14 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push; or by hand. Runs scripts/check-pack.mjs, scripts/sync-version.mjs, dogfood/__tests__/ and 58 more; checks dogfood/, e2e/, packages/editor/src/ and 5 more.
+1. **CI.** On a pull request; on a push; or by hand. Runs scripts/check-pack.mjs, scripts/sync-version.mjs, dogfood/__tests__/ and 60 more; checks dogfood/, e2e/, packages/editor/src/ and 5 more.
 2. **Release.** When a release is published. Runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 57 more; checks dogfood/, e2e/, packages/editor/src/ and 5 more.
-3. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; when a release is published; or by hand. Runs no file this map can see.
+3. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; when a release is published; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **world-forge-export** (a command people run). Runs packages/export-ai-rpg/src/cli.ts.
 5. **world-forge-export-godot** (a command people run). Runs packages/export-godot/src/cli.ts.
 6. **world-forge-export-unreal** (a command people run). Runs packages/export-unreal/src/cli.ts.
 
 ## What happens through CI
 
-1. The workflow runs scripts/check-pack.mjs and scripts/sync-version.mjs in scripts, dogfood/__tests__/ in dogfood, 112 files in editor, 22 files in export-ai-rpg, packages/export-godot/src/__tests__/ in export-godot, and 47 files in 3 more parts; it checks dogfood/ in dogfood, e2e/ in e2e, packages/editor/src/ in editor, packages/export-ai-rpg/src/ in export-ai-rpg, packages/export-godot/src/ in export-godot, and 108 files in 3 more parts.
-2. That reaches the repository root (1 file).
-3. It writes to README.md.
+1. The workflow runs scripts/check-pack.mjs and scripts/sync-version.mjs in scripts, dogfood/__tests__/ in dogfood, 112 files in editor, 22 files in export-ai-rpg, packages/export-godot/src/__tests__/ in export-godot, and 50 files in 4 more parts; it checks dogfood/ in dogfood, e2e/ in e2e, packages/editor/src/ in editor, packages/export-ai-rpg/src/ in export-ai-rpg, packages/export-godot/src/ in export-godot, and 108 files in 3 more parts.
+2. That reaches the repository root (2 files).
+3. It writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json.
 
 ## Who reads the results
 
-- **README.md** is read by the repository root (7 README files), editor (8 files), export-ai-rpg (8 files), packages/export-godot/package.json (found by text), packages/export-unreal/package.json (found by text), renderer-2d (8 files), schema (8 files) and scripts/check-pack.mjs.
+- **docs/c0-alignment/** has no reader in this repository.
 
 ## The other doors
 
-**Release** runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 57 more, checks dogfood/, e2e/, packages/editor/src/ and 5 more, reaches the repository root, and writes to README.md.
+**Release** runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 57 more, checks dogfood/, e2e/, packages/editor/src/ and 5 more, reaches the repository root, and writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json.
 
-**Deploy site to GitHub Pages** runs no file this map can see and deploys the site.
+**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, reaches the repository root, and deploys the site.
 
 **world-forge-export** (a command people run) runs packages/export-ai-rpg/src/cli.ts and reaches schema.
 
@@ -55,10 +56,10 @@ Mapped at 2026-09-23 from commit 333532b.
 - **export-ai-rpg** is imported by 2 parts (dogfood, editor) and sits on the path of 3 doors.
 - **export-godot** is imported by 2 parts (dogfood, editor) and sits on the path of 3 doors.
 - **export-unreal** is imported by 2 parts (dogfood, editor) and sits on the path of 3 doors.
-- **the repository root** is imported by 1 part (site), and by 1 more only from tests; it sits on the path of 2 doors.
+- **the repository root** is imported by 1 part (site), and by 1 more only from tests; it sits on the path of 3 doors.
 - **dogfood** is imported by no other part and sits on the path of 2 doors.
 - **e2e** is imported by no other part and sits on the path of 2 doors.
-- **README.md** is written by scripts and read by scripts; a hand edit reaches every reader.
+- **editor** is imported by no other part and sits on the path of 2 doors.
 
 ## What tends to change together
 
@@ -80,7 +81,11 @@ Every code part is imported by at least one test.
 
 ## Written but never read
 
-Every written place has a reader.
+- **docs/c0-alignment/export-table.json** is written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts and read by nothing else in this repository.
+- **docs/c0-alignment/export-table.md** is written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts and read by nothing else in this repository.
+- **docs/c0-alignment/fixture-manifest.json** is written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts and read by nothing else in this repository.
+- **docs/c0-alignment/fixture-pack.json** is written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts and read by nothing else in this repository.
+- **dogfood/worlds/multi-target-proof.worldforge.json** is written by dogfood/multi-target-export-proof.ts and read by nothing else in this repository.
 
 ## Helpers that look duplicated
 
@@ -96,16 +101,20 @@ And 16 more candidates.
 
 ## Generated, never hand-edited
 
-- **README.md** is written by scripts/sync-version.mjs.
-- **dogfood/** is written by dogfood (6 files) and e2e/write-chapel-fixture.ts.
+- **README.md** has a block written by scripts/sync-version.mjs when run outside CI.
+- **docs/c0-alignment/export-table.json** is written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
+- **docs/c0-alignment/export-table.md** is written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
+- **docs/c0-alignment/fixture-manifest.json** is written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
+- **docs/c0-alignment/fixture-pack.json** is written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
+- **dogfood/worlds/multi-target-proof.worldforge.json** is written by dogfood/multi-target-export-proof.ts.
 
 ## Hand-authored
 
-People write .claude/, .github/, assets/, docs/ and site/. Nothing in this repository writes to them.
+People write .claude/, .github/, assets/ and site/; 4 writes with paths built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → scripts/check-pack.mjs → playwright.config.ts → README.md → scripts/check-pack.mjs
+.github/workflows/ci.yml → scripts/check-pack.mjs → playwright.config.ts
 
 Read those in order to follow one pull request end to end.
 
@@ -113,8 +122,9 @@ Read those in order to follow one pull request end to end.
 
 - 4 files use syntax the parser cannot read, so what they import is not known: 3 in editor (an import type followed by `[]` in 2 and other syntax in 1), 1 in export-ai-rpg (`typeof import(…)` as a type argument).
 - 4 writes and 18 reads use paths built at run time and are not named here.
+- 37 writes go to places this repository does not track, so they are not listed as generated.
+- 28 writes go to the directory the command is run in or the home directory, not to this repository.
 - 17 commands are built at run time and not followed, 13 of them in tests.
-- Readers marked (found by text) come from scanning unparsed files.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

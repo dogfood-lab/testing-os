@@ -510,7 +510,7 @@
       "dynamicReads": 1,
       "dynamicSpawns": 4,
       "dynamicSpawnsInTests": 2,
-      "dynamicWrites": 1,
+      "dynamicWrites": 2,
       "entryPoints": [
         "src/index.ts"
       ],
@@ -985,10 +985,32 @@
         "pages:write"
       ],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "job": "build",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
+        }
+      ],
+      "runsCount": 2,
       "secrets": [],
       "sends": {
         "deploysPages": true,
@@ -1215,343 +1237,6 @@
     {
       "readers": [
         {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "LICENSE",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.es.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.fr.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.hi.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.it.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.ja.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "scripts/translate-all.mjs",
           "call": "literal",
           "confidence": "ast"
@@ -1564,47 +1249,6 @@
           "confidence": "weak"
         }
       ]
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.zh.md",
-      "writers": []
     },
     {
       "readers": [
@@ -1635,6 +1279,28 @@
         }
       ],
       "target": "scripts/translate-readme.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook",
       "writers": []
     }
   ],

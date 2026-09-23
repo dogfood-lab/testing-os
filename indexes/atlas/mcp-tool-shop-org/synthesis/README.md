@@ -8,15 +8,19 @@ Mapped at 2026-09-23 from commit dd0e1de.
 
 ## What changed since 2026-09-23 (0128f11)
 
+- Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - @mcptoolshop/synthesis (package.json) is a new package. It loads src/index.ts.
 - synthesis (package.json) is a new command. It runs src/index.ts.
+- site/src/content/docs/ is now read by site/astro.config.mjs.
+- site/src/content/docs/handbook/ is now read by site/astro.config.mjs.
+- src/checks/lexicons/concreteness.ts is now read by src/checks/performative.ts.
 - 153 files changed content, across 11 parts.
 
 ## What comes in
 
 1. **CI.** On a pull request; on a push to main touching 13 paths; or by hand. Runs scripts/check-report-schema.mjs, scripts/eval-planted.mjs and tests/; checks src/.
 2. **Release (npm via Trusted Publishing).** When a release is published; or by hand. Runs scripts/check-report-schema.mjs and tests/; checks src/.
-3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs no file this map can see.
+3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/synthesis** (the package people import). Loads src/index.ts.
 5. **synthesis** (a command people run). Runs src/index.ts.
 
@@ -32,7 +36,7 @@ CI writes nothing this map can see.
 
 **Release (npm via Trusted Publishing)** runs scripts/check-report-schema.mjs and tests/, checks src/, and publishes to npm.
 
-**Deploy site to GitHub Pages** runs no file this map can see and deploys the site.
+**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
 **@mcptoolshop/synthesis** (the package people import) loads src/index.ts.
 
@@ -60,7 +64,7 @@ Window: 180 days; a pair counts from 3 shared commits, since 3 source files reac
 
 ## Written but never read
 
-- **src/checks/lexicons/concreteness.ts** is written by scripts/build-concreteness.mjs and read by nothing else in this repository.
+Every written place has a reader.
 
 ## Helpers that look duplicated
 
@@ -72,7 +76,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .claude/, .github/, assets/, data/, docs/, research/, the repository root, schemas/ and site/. Nothing in this repository writes to them.
+People write .claude/, .github/, assets/, data/, docs/, research/, the repository root, schemas/ and site/; 3 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -82,7 +86,8 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 2 import sites could not be resolved.
+- 1 import site could not be resolved.
+- 1 import site names a path outside this repository, so what it loads is not followed.
 - 3 writes and 8 reads use paths built at run time and are not named here.
 - 1 command is built at run time and not followed, it in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.

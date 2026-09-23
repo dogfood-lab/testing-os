@@ -392,9 +392,10 @@
       "importConfidence": "full",
       "name": "research",
       "origin": "authored",
+      "outsideImports": 1,
       "role": "docs",
       "testedBy": 0,
-      "unresolvedSites": 1
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -1246,9 +1247,7 @@
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 1,
       "dynamicWrites": 0,
-      "entryPoints": [
-        "tests/index.test.ts"
-      ],
+      "entryPoints": [],
       "externals": 0,
       "files": [
         {
@@ -1580,10 +1579,32 @@
         "pages:write"
       ],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "job": "build",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
+        }
+      ],
+      "runsCount": 2,
       "secrets": [],
       "sends": {
         "deploysPages": true,
@@ -1858,406 +1879,6 @@
     {
       "readers": [
         {
-          "by": "package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "CHANGELOG.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "LICENSE",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.es.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.fr.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.hi.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.it.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.ja.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.pt-BR.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.zh.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": ".github/workflows/ci.yml"
         },
         {
@@ -2319,11 +1940,6 @@
         },
         {
           "by": "package-lock.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "package.json",
           "call": "literal",
           "confidence": "text"
         }
@@ -2397,7 +2013,35 @@
       "writers": []
     },
     {
-      "readers": [],
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/checks/performative.ts",
+          "call": "import",
+          "confidence": "ast"
+        }
+      ],
       "target": "src/checks/lexicons/concreteness.ts",
       "writers": [
         {
@@ -2405,17 +2049,6 @@
           "confidence": "ast"
         }
       ]
-    },
-    {
-      "readers": [
-        {
-          "by": "src/index.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "src/index.ts",
-      "writers": []
     },
     {
       "readers": [

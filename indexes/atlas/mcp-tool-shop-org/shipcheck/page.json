@@ -39,10 +39,43 @@
     "items": [
       {
         "kind": "door",
+        "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
+        "subjects": [
+          ".github/workflows/pages.yml",
+          "site/astro.config.mjs",
+          "site/src/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "repomesh-broadcast now also checks package.json.",
+        "subjects": [
+          ".github/workflows/repomesh-broadcast.yml",
+          "package.json"
+        ]
+      },
+      {
+        "kind": "door",
         "sentence": "shipcheck (package.json) is a new command. It runs bin/shipcheck.mjs.",
         "subjects": [
           "package.json",
           "bin/shipcheck.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "site/src/content/docs/ is now read by site/astro.config.mjs.",
+        "subjects": [
+          "site/src/content/docs/",
+          "site/astro.config.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "site/src/content/docs/handbook/ is now read by site/astro.config.mjs.",
+        "subjects": [
+          "site/src/content/docs/handbook/",
+          "site/astro.config.mjs"
         ]
       },
       {
@@ -92,7 +125,7 @@
       ],
       "runsCount": 2,
       "sends": [
-        "sends a dispatch to dogfood-lab/testing-os"
+        "sends a dispatch to dogfood-lab/testing-os on main"
       ],
       "stages": [],
       "triggers": [
@@ -143,9 +176,18 @@
       "landings": [],
       "name": "Deploy site to GitHub Pages",
       "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
       "sends": [
         "deploys the site"
       ],
@@ -156,14 +198,22 @@
       ]
     },
     {
-      "checks": [],
-      "checksCount": 0,
+      "checks": [
+        "package.json"
+      ],
+      "checksCount": 1,
       "file": ".github/workflows/repomesh-broadcast.yml",
       "id": ".github/workflows/repomesh-broadcast.yml",
       "landings": [],
       "name": "repomesh-broadcast",
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 1
+        }
+      ],
       "runs": [],
       "runsCount": 0,
       "sends": [
@@ -211,10 +261,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-23T19:05:31.960Z",
+  "generatedAt": "2026-09-23T21:14:38.082Z",
   "limits": [
     "1 import site could not be resolved.",
-    "1 write and 28 reads use paths built at run time and are not named here.",
+    "1 write and 27 reads use paths built at run time and are not named here.",
+    "12 reads go to the directory the command is run in or the home directory, not to this repository.",
     "3 commands are built at run time and not followed, all of them in tests.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
@@ -235,6 +286,7 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/shipcheck",
   "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "bin/shipcheck.mjs"
@@ -246,6 +298,7 @@
     "bin": 2,
     "site": 0
   },
+  "unnamedWrites": 1,
   "unread": [],
   "unreadNote": [],
   "untested": [

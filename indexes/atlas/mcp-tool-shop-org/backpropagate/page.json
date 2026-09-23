@@ -8,7 +8,7 @@
   ],
   "breaks": [
     {
-      "doors": 4,
+      "doors": 5,
       "importedBy": [
         "scripts"
       ],
@@ -51,6 +51,23 @@
     "items": [
       {
         "kind": "door",
+        "sentence": "Pages deploy now also runs site/astro.config.mjs and site/src/.",
+        "subjects": [
+          ".github/workflows/pages-deploy.yml",
+          "site/astro.config.mjs",
+          "site/src/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Post-Publish Smoke now also runs backpropagate/cli.py.",
+        "subjects": [
+          ".github/workflows/post-publish-smoke.yml",
+          "backpropagate/cli.py"
+        ]
+      },
+      {
+        "kind": "door",
         "sentence": "backpropagate (package.json) is a new command. It runs bin/backpropagate.js.",
         "subjects": [
           "package.json",
@@ -59,19 +76,8 @@
       },
       {
         "kind": "door",
-        "sentence": "backprop (pyproject.toml) is a new command. It runs backpropagate/cli.py.",
-        "subjects": [
-          "pyproject.toml",
-          "backpropagate/cli.py"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "backpropagate (pyproject.toml) is a new command. It runs backpropagate/cli.py.",
-        "subjects": [
-          "pyproject.toml",
-          "backpropagate/cli.py"
-        ]
+        "sentence": "And 2 more changes to doors.",
+        "subjects": []
       },
       {
         "kind": "landing",
@@ -80,6 +86,27 @@
           ".github/mutmut-baseline.txt",
           ".github/workflows/mutmut.yml"
         ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "backpropagate/rxconfig.py is now read by backpropagate/cli.py.",
+        "subjects": [
+          "backpropagate/rxconfig.py",
+          "backpropagate/cli.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "backpropagate/ui_app/ is now read by scripts/check_doc_drift.py.",
+        "subjects": [
+          "backpropagate/ui_app/",
+          "scripts/check_doc_drift.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 4 more new writers and readers of places.",
+        "subjects": []
       },
       {
         "kind": "origin",
@@ -234,6 +261,63 @@
     {
       "checks": [],
       "checksCount": 0,
+      "file": ".github/workflows/pages-deploy.yml",
+      "id": ".github/workflows/pages-deploy.yml",
+      "landings": [],
+      "name": "Pages deploy",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/post-publish-smoke.yml",
+      "id": ".github/workflows/post-publish-smoke.yml",
+      "landings": [],
+      "name": "Post-Publish Smoke",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "backpropagate",
+          "depth": 0,
+          "files": 20
+        }
+      ],
+      "runs": [
+        "backpropagate/cli.py"
+      ],
+      "runsCount": 1,
+      "sends": [
+        "opens an issue when it fails"
+      ],
+      "stages": [],
+      "triggers": [
+        "when the workflow Publish completes",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
       "file": ".github/workflows/mutmut.yml",
       "id": ".github/workflows/mutmut.yml",
       "landings": [
@@ -271,46 +355,6 @@
         "on a `branch_protection_rule` event",
         "on a push to main",
         "on a schedule (`0 6 * * 1`), Monday at 06:00 UTC",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "file": ".github/workflows/pages-deploy.yml",
-      "id": ".github/workflows/pages-deploy.yml",
-      "landings": [],
-      "name": "Pages deploy",
-      "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
-      "sends": [
-        "deploys the site"
-      ],
-      "stages": [],
-      "triggers": [
-        "on a push to main touching 2 paths",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "file": ".github/workflows/post-publish-smoke.yml",
-      "id": ".github/workflows/post-publish-smoke.yml",
-      "landings": [],
-      "name": "Post-Publish Smoke",
-      "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
-      "sends": [
-        "opens an issue when it fails"
-      ],
-      "stages": [],
-      "triggers": [
-        "when the workflow Publish completes",
         "or by hand"
       ]
     },
@@ -453,11 +497,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T19:00:45.700Z",
+  "generatedAt": "2026-09-23T21:11:21.491Z",
   "limits": [
     "40 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "6 import sites could not be resolved.",
-    "13 writes and 39 reads use paths built at run time and are not named here."
+    "15 writes and 39 reads use paths built at run time and are not named here.",
+    "1 write and 1 read go to the directory the command is run in or the home directory, not to this repository."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -477,9 +522,10 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/backpropagate",
   "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "tests/",
+    "tests/test_check_doc_drift.py",
     "scripts/check_doc_drift.py"
   ],
   "summary": null,
@@ -490,6 +536,7 @@
     "bin": 0,
     "scripts": 2
   },
+  "unnamedWrites": 15,
   "unread": [
     {
       "place": ".github/mutmut-baseline.txt",

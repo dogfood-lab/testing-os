@@ -35,11 +35,62 @@
     "items": [
       {
         "kind": "door",
-        "sentence": "mcp-stress (pyproject.toml) is a new command. It runs src/mcp_stress_test/cli/__init__.py.",
+        "sentence": "CI now also runs src/mcp_stress_test/cli/__init__.py.",
         "subjects": [
-          "pyproject.toml",
+          ".github/workflows/ci.yml",
           "src/mcp_stress_test/cli/__init__.py"
         ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
+        "subjects": [
+          ".github/workflows/pages.yml",
+          "site/astro.config.mjs",
+          "site/src/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Publish now also runs src/mcp_stress_test/cli/__init__.py.",
+        "subjects": [
+          ".github/workflows/publish.yml",
+          "src/mcp_stress_test/cli/__init__.py"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 1 more change to a door.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": "site/src/content/docs/ is now read by site/astro.config.mjs.",
+        "subjects": [
+          "site/src/content/docs/",
+          "site/astro.config.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "site/src/content/docs/handbook/ is now read by site/astro.config.mjs.",
+        "subjects": [
+          "site/src/content/docs/handbook/",
+          "site/astro.config.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "src/mcp_stress_test/patterns/data/ is now read by src/mcp_stress_test/patterns/library.py.",
+        "subjects": [
+          "src/mcp_stress_test/patterns/data/",
+          "src/mcp_stress_test/patterns/library.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 1 more new writer or reader of a place.",
+        "subjects": []
       },
       {
         "kind": "counts",
@@ -85,9 +136,10 @@
         }
       ],
       "runs": [
+        "src/mcp_stress_test/cli/__init__.py",
         "tests/"
       ],
-      "runsCount": 1,
+      "runsCount": 2,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -106,20 +158,21 @@
       "pushes": false,
       "reach": [
         {
+          "boundary": "src",
+          "depth": 0,
+          "files": 63
+        },
+        {
           "boundary": "tests",
           "depth": 0,
           "files": 11
-        },
-        {
-          "boundary": "src",
-          "depth": 1,
-          "files": 63
         }
       ],
       "runs": [
+        "src/mcp_stress_test/cli/__init__.py",
         "tests/"
       ],
-      "runsCount": 1,
+      "runsCount": 2,
       "sends": [
         "publishes to PyPI and a container image"
       ],
@@ -137,11 +190,20 @@
       "landings": [],
       "name": "Deploy site to GitHub Pages",
       "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
       "sends": [
-        "deploys the site"
+        "deploys the site on a push to main"
       ],
       "stages": [],
       "triggers": [
@@ -186,10 +248,10 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-23T19:04:07.456Z",
+  "generatedAt": "2026-09-23T21:13:25.800Z",
   "limits": [
     "2 import sites could not be resolved.",
-    "13 writes and 13 reads use paths built at run time and are not named here.",
+    "15 writes and 14 reads use paths built at run time and are not named here.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -205,9 +267,10 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/mcp-stress-test",
   "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "tests/"
+    "src/mcp_stress_test/cli/__init__.py"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -216,6 +279,7 @@
     "site": 0,
     "src": 9
   },
+  "unnamedWrites": 15,
   "unread": [],
   "unreadNote": [],
   "untested": [

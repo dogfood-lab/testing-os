@@ -1,5 +1,6 @@
 {
   "authored": [
+    ".claude/",
     ".github/",
     "packages/kernel/",
     "packages/memories/",
@@ -47,17 +48,6 @@
       "kind": "part",
       "name": "cli",
       "partLabel": "cli"
-    },
-    {
-      "kind": "place",
-      "readers": [
-        "cli",
-        "rules"
-      ],
-      "target": ".claude/",
-      "writers": [
-        "rules"
-      ]
     }
   ],
   "changes": {
@@ -69,6 +59,15 @@
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI now also runs site/astro.config.mjs and site/src/.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "site/astro.config.mjs",
+          "site/src/"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "ai-loadout (packages/kernel/package.json) is a new command. It runs packages/kernel/src/cli.ts.",
@@ -87,40 +86,44 @@
       },
       {
         "kind": "door",
-        "sentence": "claude-rules (packages/rules/package.json) is a new command. It runs packages/rules/src/cli.ts.",
-        "subjects": [
-          "packages/rules/package.json",
-          "packages/rules/src/cli.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".claude/projects/F--AI/memory/index.json is now written by packages/cli/src/refresh.ts.",
-        "subjects": [
-          ".claude/projects/F--AI/memory/index.json",
-          "packages/cli/src/refresh.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".claude/signals.json is now written by packages/rules/src/signals.ts.",
-        "subjects": [
-          ".claude/signals.json",
-          "packages/rules/src/signals.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".claude/loadout/index.json is now read by packages/rules/src/stats.ts.",
-        "subjects": [
-          ".claude/loadout/index.json",
-          "packages/rules/src/stats.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 4 more new writers and readers of places.",
+        "sentence": "And 1 more change to a door.",
         "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": "packages/kernel/site/src/content/docs/ is now read by packages/kernel/site/astro.config.mjs.",
+        "subjects": [
+          "packages/kernel/site/src/content/docs/",
+          "packages/kernel/site/astro.config.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "packages/kernel/site/src/content/docs/handbook/ is now read by packages/kernel/site/astro.config.mjs.",
+        "subjects": [
+          "packages/kernel/site/src/content/docs/handbook/",
+          "packages/kernel/site/astro.config.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "packages/memories/site/src/content/docs/ is now read by packages/memories/site/astro.config.mjs.",
+        "subjects": [
+          "packages/memories/site/src/content/docs/",
+          "packages/memories/site/astro.config.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 5 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "origin",
+        "sentence": ".claude was generated and is now authored.",
+        "subjects": [
+          ".claude"
+        ]
       },
       {
         "kind": "counts",
@@ -141,7 +144,7 @@
   "changesTogetherWithTests": 0,
   "commit": "61d98b601565a5b7eccd66a4baf98a4e1b8c3032",
   "defaultBranch": "main",
-  "derived": "9 parts, mostly TypeScript (84 files). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. People run ai-loadout, claude-memories and claude-rules.",
+  "derived": "9 parts, mostly TypeScript (84 files). Work enters through 5 doors; the busiest is CI, which reaches 5 parts. It publishes to npm. People run ai-loadout, claude-memories and claude-rules.",
   "doors": [
     {
       "checks": [
@@ -176,12 +179,20 @@
           "boundary": "rules",
           "depth": 0,
           "files": 17
+        },
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
         }
       ],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
       "sends": [
-        "deploys the site"
+        "deploys the site on a push to main"
       ],
       "stages": [],
       "triggers": [
@@ -273,9 +284,7 @@
       "file": "packages/rules/package.json",
       "id": "packages/rules/package.json#claude-rules",
       "kind": "command",
-      "landings": [
-        ".claude/"
-      ],
+      "landings": [],
       "name": "claude-rules",
       "pushes": false,
       "reach": [
@@ -431,19 +440,12 @@
       "to": "kernel"
     }
   ],
-  "generated": [
-    {
-      "place": ".claude/",
-      "writers": [
-        "packages/cli/src/refresh.ts",
-        "packages/rules/src/signals.ts"
-      ]
-    }
-  ],
-  "generatedAt": "2026-09-23T19:02:29.174Z",
+  "generated": [],
+  "generatedAt": "2026-09-23T21:12:57.855Z",
   "limits": [
     "1 file uses syntax the parser cannot read, so what it imports is not known: an import type followed by `[]` (1).",
-    "7 writes and 59 reads use paths built at run time and are not named here.",
+    "9 writes and 59 reads use paths built at run time and are not named here.",
+    "9 writes and 15 reads go to the directory the command is run in or the home directory, not to this repository.",
     "12 commands are built at run time and not followed, 11 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -463,10 +465,9 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/loadout-os",
   "sequences": [],
-  "startHere": [
-    ".github/workflows/ci.yml",
-    "packages/kernel/src/"
-  ],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [],
+  "startNote": "CI runs no code this map can follow; it only checks code, so there is no path of files to read in order.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 45,
@@ -475,14 +476,8 @@
     "hook": 0,
     "site": 0
   },
-  "unread": [
-    {
-      "place": ".claude/projects/F--AI/memory/index.json",
-      "writers": [
-        "packages/cli/src/refresh.ts"
-      ]
-    }
-  ],
+  "unnamedWrites": 9,
+  "unread": [],
   "unreadNote": [],
   "untested": [
     {
@@ -497,5 +492,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 2
+  "written": 0
 }

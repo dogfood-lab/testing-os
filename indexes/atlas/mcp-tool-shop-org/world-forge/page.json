@@ -3,7 +3,6 @@
     ".claude/",
     ".github/",
     "assets/",
-    "docs/",
     "site/"
   ],
   "breaks": [
@@ -57,7 +56,7 @@
       "partLabel": "export-unreal"
     },
     {
-      "doors": 2,
+      "doors": 3,
       "importedBy": [
         "site"
       ],
@@ -85,14 +84,12 @@
       "partLabel": "e2e"
     },
     {
-      "kind": "place",
-      "readers": [
-        "scripts"
-      ],
-      "target": "README.md",
-      "writers": [
-        "scripts"
-      ]
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "editor",
+      "partLabel": "editor"
     }
   ],
   "changes": {
@@ -106,7 +103,7 @@
     "items": [
       {
         "kind": "door",
-        "sentence": "CI now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 56 more.",
+        "sentence": "CI now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 58 more.",
         "subjects": [
           ".github/workflows/ci.yml",
           "dogfood/__tests__/",
@@ -167,7 +164,18 @@
           "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
           "packages/schema/src/__tests__/wave9-schema-amends.test.ts",
           "packages/schema/src/__tests__/world-array-fields-validation.test.ts",
-          "packages/schema/src/__tests__/zone-exits-validation.test.ts"
+          "packages/schema/src/__tests__/zone-exits-validation.test.ts",
+          "site/astro.config.mjs",
+          "site/src/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
+        "subjects": [
+          ".github/workflows/pages.yml",
+          "site/astro.config.mjs",
+          "site/src/"
         ]
       },
       {
@@ -238,45 +246,44 @@
       },
       {
         "kind": "door",
-        "sentence": "world-forge-export (packages/export-ai-rpg/package.json) is a new command. It runs packages/export-ai-rpg/src/cli.ts.",
-        "subjects": [
-          "packages/export-ai-rpg/package.json",
-          "packages/export-ai-rpg/src/cli.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 2 more changes to doors.",
+        "sentence": "And 3 more changes to doors.",
         "subjects": []
       },
       {
         "kind": "landing",
-        "sentence": "dogfood/godot-smoke/world.tscn is now written by dogfood/run-godot-smoke.ts.",
+        "sentence": "docs/c0-alignment/export-table.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.",
         "subjects": [
-          "dogfood/godot-smoke/world.tscn",
-          "dogfood/run-godot-smoke.ts"
+          "docs/c0-alignment/export-table.json",
+          "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "dogfood/output/ai-rpg/content-pack.json is now written by dogfood/multi-target-export-proof.ts.",
+        "sentence": "docs/c0-alignment/export-table.md is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.",
         "subjects": [
-          "dogfood/output/ai-rpg/content-pack.json",
-          "dogfood/multi-target-export-proof.ts"
+          "docs/c0-alignment/export-table.md",
+          "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "dogfood/output/build-catalog.json is now written by dogfood/chapel-threshold.ts.",
+        "sentence": "docs/c0-alignment/fixture-manifest.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.",
         "subjects": [
-          "dogfood/output/build-catalog.json",
-          "dogfood/chapel-threshold.ts"
+          "docs/c0-alignment/fixture-manifest.json",
+          "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "And 20 more new writers and readers of places.",
+        "sentence": "And 36 more new writers and readers of places.",
         "subjects": []
+      },
+      {
+        "kind": "origin",
+        "sentence": "docs was authored and is now mixed.",
+        "subjects": [
+          "docs"
+        ]
       },
       {
         "kind": "counts",
@@ -375,7 +382,7 @@
   "changesTogetherWithTests": 5,
   "commit": "333532bd00696c0ef2b1f500c404102a05483773",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly TypeScript (497 files). Work enters through 6 doors; the busiest is CI, which reaches 10 parts. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.",
+  "derived": "15 parts, mostly TypeScript (497 files). Work enters through 6 doors; the busiest is CI, which reaches 11 parts. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.",
   "doors": [
     {
       "checks": [
@@ -392,7 +399,10 @@
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [
-        "README.md"
+        "docs/c0-alignment/export-table.json",
+        "docs/c0-alignment/export-table.md",
+        "docs/c0-alignment/fixture-manifest.json",
+        "docs/c0-alignment/fixture-pack.json"
       ],
       "name": "CI",
       "pushes": false,
@@ -443,9 +453,14 @@
           "files": 2
         },
         {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        },
+        {
           "boundary": "root",
           "depth": 1,
-          "files": 1
+          "files": 2
         }
       ],
       "runs": [
@@ -509,9 +524,11 @@
         "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
         "packages/schema/src/__tests__/wave9-schema-amends.test.ts",
         "packages/schema/src/__tests__/world-array-fields-validation.test.ts",
-        "packages/schema/src/__tests__/zone-exits-validation.test.ts"
+        "packages/schema/src/__tests__/zone-exits-validation.test.ts",
+        "site/astro.config.mjs",
+        "site/src/"
       ],
-      "runsCount": 61,
+      "runsCount": 63,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -535,7 +552,10 @@
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [
-        "README.md"
+        "docs/c0-alignment/export-table.json",
+        "docs/c0-alignment/export-table.md",
+        "docs/c0-alignment/fixture-manifest.json",
+        "docs/c0-alignment/fixture-pack.json"
       ],
       "name": "Release",
       "pushes": false,
@@ -668,9 +688,23 @@
       "landings": [],
       "name": "Deploy site to GitHub Pages",
       "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "root",
+          "depth": 1,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
       "sends": [
         "deploys the site"
       ],
@@ -890,6 +924,26 @@
       "to": "schema"
     },
     {
+      "from": "editor",
+      "fromTests": false,
+      "to": "export-ai-rpg"
+    },
+    {
+      "from": "editor",
+      "fromTests": false,
+      "to": "export-godot"
+    },
+    {
+      "from": "editor",
+      "fromTests": false,
+      "to": "export-unreal"
+    },
+    {
+      "from": "editor",
+      "fromTests": false,
+      "to": "schema"
+    },
+    {
       "from": "export-ai-rpg",
       "fromTests": false,
       "to": "schema"
@@ -907,25 +961,50 @@
   ],
   "generated": [
     {
+      "block": true,
       "place": "README.md",
       "writers": [
-        "scripts/sync-version.mjs"
+        "scripts/sync-version.mjs when run outside CI"
       ]
     },
     {
-      "place": "dogfood/",
+      "place": "docs/c0-alignment/export-table.json",
       "writers": [
-        "dogfood (6 files)",
-        "e2e/write-chapel-fixture.ts"
+        "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts"
+      ]
+    },
+    {
+      "place": "docs/c0-alignment/export-table.md",
+      "writers": [
+        "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts"
+      ]
+    },
+    {
+      "place": "docs/c0-alignment/fixture-manifest.json",
+      "writers": [
+        "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts"
+      ]
+    },
+    {
+      "place": "docs/c0-alignment/fixture-pack.json",
+      "writers": [
+        "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts"
+      ]
+    },
+    {
+      "place": "dogfood/worlds/multi-target-proof.worldforge.json",
+      "writers": [
+        "dogfood/multi-target-export-proof.ts"
       ]
     }
   ],
-  "generatedAt": "2026-09-23T19:06:34.144Z",
+  "generatedAt": "2026-09-23T21:15:50.925Z",
   "limits": [
     "4 files use syntax the parser cannot read, so what they import is not known: 3 in editor (an import type followed by `[]` in 2 and other syntax in 1), 1 in export-ai-rpg (`typeof import(…)` as a type argument).",
     "4 writes and 18 reads use paths built at run time and are not named here.",
+    "37 writes go to places this repository does not track, so they are not listed as generated.",
+    "28 writes go to the directory the command is run in or the home directory, not to this repository.",
     "17 commands are built at run time and not followed, 13 of them in tests.",
-    "Readers marked (found by text) come from scanning unparsed files.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -949,27 +1028,17 @@
   "parts": 15,
   "readers": [
     {
-      "readers": [
-        "root (7 README files)",
-        "editor (8 files)",
-        "export-ai-rpg (8 files)",
-        "packages/export-godot/package.json (found by text)",
-        "packages/export-unreal/package.json (found by text)",
-        "renderer-2d (8 files)",
-        "schema (8 files)",
-        "scripts/check-pack.mjs"
-      ],
-      "target": "README.md"
+      "readers": [],
+      "target": "docs/c0-alignment/"
     }
   ],
   "repo": "mcp-tool-shop-org/world-forge",
   "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "scripts/check-pack.mjs",
-    "playwright.config.ts",
-    "README.md",
-    "scripts/check-pack.mjs"
+    "playwright.config.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -985,9 +1054,41 @@
     "schema": 196,
     "scripts": 1
   },
-  "unread": [],
+  "unnamedWrites": 4,
+  "unread": [
+    {
+      "place": "docs/c0-alignment/export-table.json",
+      "writers": [
+        "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts"
+      ]
+    },
+    {
+      "place": "docs/c0-alignment/export-table.md",
+      "writers": [
+        "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts"
+      ]
+    },
+    {
+      "place": "docs/c0-alignment/fixture-manifest.json",
+      "writers": [
+        "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts"
+      ]
+    },
+    {
+      "place": "docs/c0-alignment/fixture-pack.json",
+      "writers": [
+        "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts"
+      ]
+    },
+    {
+      "place": "dogfood/worlds/multi-target-proof.worldforge.json",
+      "writers": [
+        "dogfood/multi-target-export-proof.ts"
+      ]
+    }
+  ],
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],
-  "written": 2
+  "written": 6
 }

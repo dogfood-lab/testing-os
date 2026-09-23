@@ -51,6 +51,15 @@
     "items": [
       {
         "kind": "door",
+        "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
+        "subjects": [
+          ".github/workflows/pages.yml",
+          "site/astro.config.mjs",
+          "site/src/"
+        ]
+      },
+      {
+        "kind": "door",
         "sentence": "@mcptoolshop/synthesis (package.json) is a new package. It loads src/index.ts.",
         "subjects": [
           "package.json",
@@ -63,6 +72,30 @@
         "subjects": [
           "package.json",
           "src/index.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "site/src/content/docs/ is now read by site/astro.config.mjs.",
+        "subjects": [
+          "site/src/content/docs/",
+          "site/astro.config.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "site/src/content/docs/handbook/ is now read by site/astro.config.mjs.",
+        "subjects": [
+          "site/src/content/docs/handbook/",
+          "site/astro.config.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "src/checks/lexicons/concreteness.ts is now read by src/checks/performative.ts.",
+        "subjects": [
+          "src/checks/lexicons/concreteness.ts",
+          "src/checks/performative.ts"
         ]
       },
       {
@@ -223,9 +256,18 @@
       "landings": [],
       "name": "Deploy site to GitHub Pages",
       "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
       "sends": [
         "deploys the site"
       ],
@@ -307,9 +349,10 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T19:06:15.763Z",
+  "generatedAt": "2026-09-23T21:15:35.402Z",
   "limits": [
-    "2 import sites could not be resolved.",
+    "1 import site could not be resolved.",
+    "1 import site names a path outside this repository, so what it loads is not followed.",
     "3 writes and 8 reads use paths built at run time and are not named here.",
     "1 command is built at run time and not followed, it in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -333,6 +376,7 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/synthesis",
   "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "scripts/check-report-schema.mjs"
@@ -344,14 +388,8 @@
     "scripts": 0,
     "src": 14
   },
-  "unread": [
-    {
-      "place": "src/checks/lexicons/concreteness.ts",
-      "writers": [
-        "scripts/build-concreteness.mjs"
-      ]
-    }
-  ],
+  "unnamedWrites": 3,
+  "unread": [],
   "unreadNote": [],
   "untested": [
     {

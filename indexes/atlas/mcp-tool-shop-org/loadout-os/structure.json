@@ -18,7 +18,7 @@
       ],
       "importConfidence": "full",
       "name": ".claude",
-      "origin": "generated",
+      "origin": "authored",
       "role": "docs",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -54,7 +54,7 @@
       "dynamicReads": 21,
       "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 1,
-      "dynamicWrites": 3,
+      "dynamicWrites": 4,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -316,6 +316,8 @@
       "importConfidence": "full",
       "name": "cli",
       "origin": "authored",
+      "outsideReads": 7,
+      "outsideWrites": 5,
       "role": "code",
       "testedBy": 12,
       "unresolvedSites": 0
@@ -356,6 +358,8 @@
       "importConfidence": "full",
       "name": "hook",
       "origin": "authored",
+      "outsideReads": 3,
+      "outsideWrites": 2,
       "role": "code",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -2338,7 +2342,7 @@
       "dynamicReads": 18,
       "dynamicSpawns": 7,
       "dynamicSpawnsInTests": 7,
-      "dynamicWrites": 3,
+      "dynamicWrites": 4,
       "entryPoints": [
         "packages/rules/src/cli.ts",
         "packages/rules/src/index.ts"
@@ -3936,6 +3940,8 @@
       "importConfidence": "full",
       "name": "rules",
       "origin": "authored",
+      "outsideReads": 5,
+      "outsideWrites": 2,
       "role": "docs",
       "testedBy": 15,
       "unresolvedSites": 0
@@ -4066,6 +4072,24 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "gated": [
+        {
+          "jobs": [
+            "deploy-pages"
+          ],
+          "pushes": false,
+          "sends": [
+            "deploysPages"
+          ],
+          "stages": [],
+          "when": {
+            "branches": [
+              "main"
+            ],
+            "event": "push"
+          }
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -4095,6 +4119,11 @@
           "boundary": "rules",
           "depth": 0,
           "files": 17
+        },
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
         }
       ],
       "readers": [],
@@ -4130,12 +4159,27 @@
           "path": "packages/rules/src/",
           "runKind": "checks",
           "via": "tsc packages/rules/tsconfig.json"
+        },
+        {
+          "job": "deploy-pages",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "deploy-pages",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
         }
       ],
-      "runsCount": 4,
+      "runsCount": 6,
       "secrets": [],
       "sends": {
-        "deploysPages": true,
+        "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,
         "opensIssuesOnFailure": false,
@@ -4447,10 +4491,7 @@
       "elsewhere": [],
       "file": "packages/rules/package.json",
       "kind": "command",
-      "landings": [
-        ".claude",
-        ".claude/signals.json"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "claude-rules",
       "permissions": [],
@@ -4471,62 +4512,7 @@
           "files": 11
         }
       ],
-      "readers": [
-        {
-          "by": "packages/cli/src/refresh.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": ".claude"
-        },
-        {
-          "by": "packages/cli/src/refresh.ts",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": ".claude"
-        },
-        {
-          "by": "packages/rules/src/analyze.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": ".claude"
-        },
-        {
-          "by": "packages/rules/src/signals.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": ".claude"
-        },
-        {
-          "by": "packages/rules/src/signals.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": ".claude"
-        },
-        {
-          "by": "packages/rules/src/stats.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": ".claude"
-        },
-        {
-          "by": "packages/rules/src/stats.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": ".claude"
-        },
-        {
-          "by": "packages/rules/src/signals.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": ".claude/signals.json"
-        },
-        {
-          "by": "packages/rules/src/signals.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": ".claude/signals.json"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "path": "packages/rules/src/cli.ts",
@@ -4589,1480 +4575,6 @@
   },
   "landings": [
     {
-      "readers": [],
-      "target": ".claude",
-      "writers": [
-        {
-          "by": "packages/rules/src/signals.ts",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/rules/src/analyze.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".claude/CLAUDE.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/rules/src/stats.ts",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/rules/src/stats.ts",
-          "call": "readFileSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".claude/loadout/index.json",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/cli/src/refresh.ts",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/cli/src/refresh.ts",
-          "call": "statSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".claude/projects/F--AI/memory",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/cli/src/refresh.ts",
-          "call": "existsSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".claude/projects/F--AI/memory/MEMORY.md",
-      "writers": []
-    },
-    {
-      "readers": [],
-      "target": ".claude/projects/F--AI/memory/index.json",
-      "writers": [
-        {
-          "by": "packages/cli/src/refresh.ts",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/rules/src/stats.ts",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/rules/src/stats.ts",
-          "call": "readFileSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".claude/rules/index.json",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/rules/src/signals.ts",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/rules/src/signals.ts",
-          "call": "readFileSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".claude/signals.json",
-      "writers": [
-        {
-          "by": "packages/rules/src/signals.ts",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/cli/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "CHANGELOG.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/cli/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "LICENSE",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.es.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.fr.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.hi.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.it.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.ja.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/cli/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.pt-BR.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/kernel/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.zh.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/memories/package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "SCORECARD.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/kernel/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "SECURITY.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/memories/package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "SHIP_GATE.md",
-      "writers": []
-    },
-    {
       "readers": [
         {
           "by": "apps/hook/esbuild.config.mjs",
@@ -6102,85 +4614,7 @@
     {
       "readers": [
         {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "SHIP_GATE.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/cli/README.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/loadout-os"
-        },
-        {
-          "by": "packages/kernel/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/memories/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/rules/package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "logo.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": ".github/workflows/release.yml"
-        },
-        {
-          "by": "packages/rules/package.json",
-          "call": "literal",
-          "confidence": "text"
         }
       ],
       "target": "package.json",
@@ -6252,6 +4686,28 @@
     {
       "readers": [
         {
+          "by": "packages/kernel/site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/kernel/site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/kernel/site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/kernel/site/src/content/docs/handbook",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
@@ -6274,6 +4730,28 @@
     {
       "readers": [
         {
+          "by": "packages/memories/site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/memories/site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/memories/site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/memories/site/src/content/docs/handbook",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
@@ -6291,6 +4769,50 @@
         }
       ],
       "target": "packages/rules/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/rules/site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/rules/site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/rules/site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/rules/site/src/content/docs/handbook",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook",
       "writers": []
     }
   ],

@@ -28,6 +28,15 @@
     "items": [
       {
         "kind": "door",
+        "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
+        "subjects": [
+          ".github/workflows/pages.yml",
+          "site/astro.config.mjs",
+          "site/src/"
+        ]
+      },
+      {
+        "kind": "door",
         "sentence": "@mcptoolshop/polyglot-mcp (package.json) is a new package. It loads src/index.ts.",
         "subjects": [
           "package.json",
@@ -40,6 +49,22 @@
         "subjects": [
           "package.json",
           "src/index.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "site/src/content/docs/ is now read by site/astro.config.mjs.",
+        "subjects": [
+          "site/src/content/docs/",
+          "site/astro.config.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "site/src/content/docs/handbook/ is now read by site/astro.config.mjs.",
+        "subjects": [
+          "site/src/content/docs/handbook/",
+          "site/astro.config.mjs"
         ]
       },
       {
@@ -115,6 +140,35 @@
       ]
     },
     {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
       "checks": [
         "src/"
       ],
@@ -139,26 +193,6 @@
       "stages": [],
       "triggers": [
         "when a release is published",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "file": ".github/workflows/pages.yml",
-      "id": ".github/workflows/pages.yml",
-      "landings": [],
-      "name": "Deploy site to GitHub Pages",
-      "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
-      "sends": [
-        "deploys the site"
-      ],
-      "stages": [],
-      "triggers": [
-        "on a push to main touching 2 paths",
         "or by hand"
       ]
     },
@@ -192,10 +226,10 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-23T19:04:21.814Z",
+  "generatedAt": "2026-09-23T21:13:36.079Z",
   "limits": [
     "1 file uses syntax the parser cannot read, so what it imports is not known: `typeof import(…)` as a type argument (1).",
-    "4 writes and 6 reads use paths built at run time and are not named here.",
+    "5 writes and 6 reads use paths built at run time and are not named here.",
     "5 commands are built at run time and not followed, 2 of them in tests.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
@@ -213,8 +247,8 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/polyglot-mcp",
   "sequences": [],
+  "startDoor": "package.json#@mcptoolshop/polyglot-mcp",
   "startHere": [
-    "package.json",
     "src/index.ts"
   ],
   "summary": null,
@@ -225,6 +259,7 @@
     "site": 0,
     "src": 17
   },
+  "unnamedWrites": 5,
   "unread": [],
   "unreadNote": [],
   "untested": [

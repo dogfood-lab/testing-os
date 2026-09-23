@@ -1,10 +1,13 @@
 {
   "authored": [
+    ".github/",
     "assets/",
     "docs/",
     "profiles/",
+    "root",
     "schemas/",
     "scripts/",
+    "site/",
     "templates/"
   ],
   "breaks": [
@@ -77,10 +80,9 @@
         "policy",
         "registry",
         "repomesh-cli",
-        "tools",
-        "verifiers"
+        "tools"
       ],
-      "target": "ledger/events/",
+      "target": "ledger/events/events.jsonl",
       "writers": [
         ".github",
         "attestor",
@@ -95,8 +97,7 @@
         "policy",
         "registry",
         "repomesh-cli",
-        "tools",
-        "verifiers"
+        "tools"
       ],
       "target": "ledger/nodes/",
       "writers": [
@@ -115,6 +116,23 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "attestor-ci now also checks LICENSE.",
+        "subjects": [
+          ".github/workflows/attestor-ci.yml",
+          "LICENSE"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "pages-ci now also runs site/astro.config.mjs and site/src/.",
+        "subjects": [
+          ".github/workflows/pages-ci.yml",
+          "site/astro.config.mjs",
+          "site/src/"
+        ]
+      },
+      {
         "kind": "landing",
         "sentence": "anchor/xrpl/anchor-result.json is now written by anchor/xrpl/scripts/post-anchor.mjs.",
         "subjects": [
@@ -132,15 +150,42 @@
       },
       {
         "kind": "landing",
-        "sentence": "pages/out/.nojekyll is now written by pages/build-pages.mjs.",
+        "sentence": "pages/out is now written by pages/build-pages.mjs and pages/build-status.mjs.",
         "subjects": [
-          "pages/out/.nojekyll",
-          "pages/build-pages.mjs"
+          "pages/out",
+          "pages/build-pages.mjs",
+          "pages/build-status.mjs"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "And 12 more new writers and readers of places.",
+        "sentence": "And 23 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "origin",
+        "sentence": ".github was mixed and is now authored.",
+        "subjects": [
+          ".github"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "pages was mixed and is now authored.",
+        "subjects": [
+          "pages"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "the repository root was mixed and is now authored.",
+        "subjects": [
+          "root"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "And 1 more origin change.",
         "subjects": []
       },
       {
@@ -179,7 +224,7 @@
   "changesTogetherWithTests": 0,
   "commit": "609c77de7b90ccd3baaa146c5114134b87f2d304",
   "defaultBranch": "main",
-  "derived": "18 parts, mostly JavaScript (175 files). Work enters through 8 doors; the busiest is registry-ci, which reaches 3 parts and commits into the repository (pages-ci reaches 5 but commits nothing). It publishes to npm and a container image.",
+  "derived": "18 parts, mostly JavaScript (175 files). Work enters through 8 doors; the busiest is attestor-ci, which reaches 4 parts and commits into the repository (pages-ci reaches 6 but commits nothing). It publishes to npm and a container image.",
   "doors": [
     {
       "checks": [],
@@ -187,12 +232,8 @@
       "file": ".github/workflows/pages-ci.yml",
       "id": ".github/workflows/pages-ci.yml",
       "landings": [
-        "pages/",
         "registry/badges/",
-        "registry/metrics.json",
-        "registry/snippets/",
-        "registry/timeline.json",
-        "site/src/"
+        "registry/snippets/"
       ],
       "name": "pages-ci",
       "pushes": false,
@@ -206,6 +247,11 @@
           "boundary": "registry",
           "depth": 0,
           "files": 4
+        },
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
         },
         {
           "boundary": "anchor",
@@ -230,15 +276,71 @@
         "pages/build-timeline.mjs",
         "registry/scripts/build-anchors.mjs",
         "registry/scripts/build-badges.mjs",
-        "registry/scripts/build-snippets.mjs"
+        "registry/scripts/build-snippets.mjs",
+        "site/astro.config.mjs",
+        "site/src/"
       ],
-      "runsCount": 7,
+      "runsCount": 9,
       "sends": [
         "deploys the site"
       ],
       "stages": [],
       "triggers": [
         "on a push to main touching 6 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "LICENSE"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/attestor-ci.yml",
+      "id": ".github/workflows/attestor-ci.yml",
+      "landings": [
+        "ledger/events/events.jsonl"
+      ],
+      "name": "attestor-ci",
+      "pushes": true,
+      "reach": [
+        {
+          "boundary": "attestor",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "policy",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "verifiers",
+          "depth": 0,
+          "files": 10
+        }
+      ],
+      "runs": [
+        "attestor/scripts/attest-release.mjs",
+        "policy/scripts/check-policy.mjs",
+        "verifiers/license/scripts/verify-license.mjs",
+        "verifiers/repro/scripts/verify-repro.mjs",
+        "verifiers/security/scripts/verify-security.mjs"
+      ],
+      "runsCount": 5,
+      "sends": [
+        "opens an issue when it fails",
+        "opens a pull request"
+      ],
+      "stages": [
+        "ledger/events/events.jsonl"
+      ],
+      "triggers": [
+        "on a schedule (`0 */6 * * *`)",
         "or by hand"
       ]
     },
@@ -311,7 +413,6 @@
       "id": ".github/workflows/anchor-xrpl.yml",
       "landings": [
         "anchor/xrpl/manifests/",
-        "anchor/xrpl/partition-root.json",
         "ledger/events/events.jsonl",
         "registry/anchors.json"
       ],
@@ -351,53 +452,6 @@
       ],
       "triggers": [
         "on a schedule (`0 0 * * *`)",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "file": ".github/workflows/attestor-ci.yml",
-      "id": ".github/workflows/attestor-ci.yml",
-      "landings": [
-        "ledger/events/events.jsonl"
-      ],
-      "name": "attestor-ci",
-      "pushes": true,
-      "reach": [
-        {
-          "boundary": "attestor",
-          "depth": 0,
-          "files": 1
-        },
-        {
-          "boundary": "policy",
-          "depth": 0,
-          "files": 1
-        },
-        {
-          "boundary": "verifiers",
-          "depth": 0,
-          "files": 10
-        }
-      ],
-      "runs": [
-        "attestor/scripts/attest-release.mjs",
-        "policy/scripts/check-policy.mjs",
-        "verifiers/license/scripts/verify-license.mjs",
-        "verifiers/repro/scripts/verify-repro.mjs",
-        "verifiers/security/scripts/verify-security.mjs"
-      ],
-      "runsCount": 5,
-      "sends": [
-        "opens an issue when it fails",
-        "opens a pull request"
-      ],
-      "stages": [
-        "ledger/events/events.jsonl"
-      ],
-      "triggers": [
-        "on a schedule (`0 */6 * * *`)",
         "or by hand"
       ]
     },
@@ -634,26 +688,6 @@
   ],
   "generated": [
     {
-      "place": ".github/workflows/",
-      "writers": [
-        "packages/repomesh-cli/src/init.mjs",
-        "tools/init-node.mjs"
-      ]
-    },
-    {
-      "place": ".gitignore",
-      "writers": [
-        "packages/repomesh-cli/src/init.mjs",
-        "tools/init-node.mjs"
-      ]
-    },
-    {
-      "place": "anchor/xrpl/anchor-result.json",
-      "writers": [
-        "anchor/xrpl/scripts/post-anchor.mjs"
-      ]
-    },
-    {
       "place": "anchor/xrpl/manifests/",
       "writers": [
         ".github/workflows/anchor-xrpl.yml",
@@ -661,13 +695,7 @@
       ]
     },
     {
-      "place": "anchor/xrpl/partition-root.json",
-      "writers": [
-        "anchor/xrpl/scripts/compute-root.mjs"
-      ]
-    },
-    {
-      "place": "ledger/events/",
+      "place": "ledger/events/events.jsonl",
       "writers": [
         ".github/workflows/anchor-xrpl.yml",
         ".github/workflows/attestor-ci.yml",
@@ -679,22 +707,7 @@
       "place": "ledger/nodes/",
       "writers": [
         "attestor/scripts/emit-key-event.mjs",
-        "tools/join-node.mjs",
-        "tools/register-node.mjs"
-      ]
-    },
-    {
-      "place": "node.json",
-      "writers": [
-        "packages/repomesh-cli/src/init.mjs",
-        "tools/init-node.mjs"
-      ]
-    },
-    {
-      "place": "pages/",
-      "writers": [
-        "pages/build-pages.mjs",
-        "pages/build-status.mjs"
+        "tools/join-node.mjs"
       ]
     },
     {
@@ -726,12 +739,6 @@
       ]
     },
     {
-      "place": "registry/metrics.json",
-      "writers": [
-        "pages/build-metrics.mjs"
-      ]
-    },
-    {
       "place": "registry/nodes.json",
       "writers": [
         ".github/workflows/registry-ci.yml",
@@ -746,12 +753,6 @@
       ]
     },
     {
-      "place": "registry/timeline.json",
-      "writers": [
-        "pages/build-timeline.mjs"
-      ]
-    },
-    {
       "place": "registry/trust.json",
       "writers": [
         ".github/workflows/registry-ci.yml"
@@ -763,23 +764,18 @@
         ".github/workflows/registry-ci.yml",
         "registry/scripts/build-verifiers.mjs"
       ]
-    },
-    {
-      "place": "site/src/",
-      "writers": [
-        "pages/build-stats.mjs"
-      ]
     }
   ],
-  "generatedAt": "2026-09-23T19:05:06.499Z",
+  "generatedAt": "2026-09-23T21:14:20.435Z",
   "limits": [
     "103 import sites could not be resolved.",
     "13 writes and 74 reads use paths built at run time and are not named here.",
+    "19 writes go to places this repository does not track, so they are not listed as generated.",
+    "29 writes and 38 reads go to the directory the command is run in or the home directory, not to this repository.",
     "65 commands are built at run time and not followed, 50 of them in tests.",
-    "Readers marked (found by text) come from scanning unparsed files.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
-  "mainDoor": ".github/workflows/registry-ci.yml",
+  "mainDoor": ".github/workflows/attestor-ci.yml",
   "partLabels": {
     ".github": ".github",
     "anchor": "anchor",
@@ -804,21 +800,27 @@
   "readers": [
     {
       "readers": [
-        "root (8 README files)",
-        "packages/repomesh-cli/src/verify/verify-all.mjs",
-        "pages/build-pages.mjs",
-        "pages/build-stats.mjs",
+        ".github/workflows/ledger-ci.yml",
+        ".github/workflows/repomesh-broadcast.yml",
+        "anchor/xrpl/scripts/compute-root.mjs",
+        "anchor/xrpl/scripts/verify-anchor.mjs",
+        "attestor/scripts/attest-release.mjs",
+        "ledger/scripts/validate-ledger.mjs",
+        "ledger/scripts/verify-release.mjs",
+        "repomesh-cli (4 files)",
         "pages/build-status.mjs",
-        "scripts/verify.sh (found by text)"
+        "policy/scripts/check-policy.mjs",
+        "registry (4 files)",
+        "tools/verify-release.mjs"
       ],
-      "target": "registry/"
+      "target": "ledger/events/events.jsonl"
     }
   ],
   "repo": "mcp-tool-shop-org/repomesh",
   "sequences": [
     {
-      "entry": "buildTrust",
-      "file": "registry/scripts/build-trust.mjs",
+      "entry": "main",
+      "file": "attestor/scripts/attest-release.mjs",
       "inner": [
         {
           "file": "verifiers/lib/key-window.mjs",
@@ -842,80 +844,147 @@
           ]
         }
       ],
-      "part": "registry",
-      "partLabel": "registry",
-      "phrase": "build trust",
+      "part": "attestor",
+      "partLabel": "attestor",
+      "phrase": "main",
       "steps": [
         {
           "count": 4,
           "name": null,
           "part": "verifiers",
           "partLabel": "verifiers",
-          "phrase": "policy"
-        },
+          "phrase": "key window"
+        }
+      ]
+    },
+    {
+      "entry": "main",
+      "file": "verifiers/license/scripts/verify-license.mjs",
+      "inner": [],
+      "part": "verifiers",
+      "partLabel": "verifiers",
+      "phrase": "main",
+      "steps": [
         {
-          "name": "parseAnchorPartitionMeta",
+          "count": 6,
+          "name": null,
           "part": "verifiers",
           "partLabel": "verifiers",
-          "phrase": "parse anchor partition meta"
+          "phrase": "common"
         },
         {
-          "name": "canonicalizeForHash",
-          "part": "ledger",
-          "partLabel": "ledger",
-          "phrase": "canonicalize for hash"
-        },
-        {
-          "name": "nodeKindsForEvent",
-          "part": null,
-          "partLabel": null,
-          "phrase": "node kinds for event"
-        },
-        {
-          "name": "resolveTrustedSignatureTimeSync",
+          "name": "findSbomAttestation",
           "part": "verifiers",
           "partLabel": "verifiers",
-          "phrase": "resolve trusted signature time sync"
+          "phrase": "find sbom attestation"
         },
         {
-          "name": "deriveConstraintsForRepo",
-          "part": null,
-          "partLabel": null,
-          "phrase": "derive constraints for repo"
-        },
-        {
-          "name": "mergeStricterWindow",
+          "count": 4,
+          "name": null,
           "part": "verifiers",
           "partLabel": "verifiers",
-          "phrase": "merge stricter window"
+          "phrase": "common"
         },
         {
-          "name": "isKeyValidForSignature",
+          "name": "loadValidatedOverrides",
           "part": "verifiers",
           "partLabel": "verifiers",
-          "phrase": "is key valid for signature"
+          "phrase": "load validated overrides"
         },
         {
-          "name": "isRegisteredCheck",
+          "name": "fetchCycloneDxComponentsBound",
           "part": "verifiers",
           "partLabel": "verifiers",
-          "phrase": "is registered check"
+          "phrase": "fetch cyclone dx components bound"
         },
         {
-          "name": "writeJsonAtomic",
+          "count": 4,
+          "name": null,
           "part": "verifiers",
           "partLabel": "verifiers",
-          "phrase": "write json atomic"
+          "phrase": "common"
+        },
+        {
+          "name": "classifySpdxExpression",
+          "part": "verifiers",
+          "partLabel": "verifiers",
+          "phrase": "classify spdx expression"
+        },
+        {
+          "count": 4,
+          "name": null,
+          "part": "verifiers",
+          "partLabel": "verifiers",
+          "phrase": "common"
+        }
+      ]
+    },
+    {
+      "entry": "main",
+      "file": "verifiers/repro/scripts/verify-repro.mjs",
+      "inner": [],
+      "part": "verifiers",
+      "partLabel": "verifiers",
+      "phrase": "main",
+      "steps": [
+        {
+          "count": 22,
+          "name": null,
+          "part": "verifiers",
+          "partLabel": "verifiers",
+          "phrase": "common"
+        }
+      ]
+    },
+    {
+      "entry": "main",
+      "file": "verifiers/security/scripts/verify-security.mjs",
+      "inner": [],
+      "part": "verifiers",
+      "partLabel": "verifiers",
+      "phrase": "main",
+      "steps": [
+        {
+          "count": 6,
+          "name": null,
+          "part": "verifiers",
+          "partLabel": "verifiers",
+          "phrase": "common"
+        },
+        {
+          "name": "findSbomAttestation",
+          "part": "verifiers",
+          "partLabel": "verifiers",
+          "phrase": "find sbom attestation"
+        },
+        {
+          "count": 4,
+          "name": null,
+          "part": "verifiers",
+          "partLabel": "verifiers",
+          "phrase": "common"
+        },
+        {
+          "name": "fetchCycloneDxComponentsBound",
+          "part": "verifiers",
+          "partLabel": "verifiers",
+          "phrase": "fetch cyclone dx components bound"
+        },
+        {
+          "count": 12,
+          "name": null,
+          "part": "verifiers",
+          "partLabel": "verifiers",
+          "phrase": "common"
         }
       ]
     }
   ],
+  "startDoor": ".github/workflows/ledger-ci.yml",
   "startHere": [
-    ".github/workflows/registry-ci.yml",
-    "registry/scripts/build-anchors.mjs",
-    "verifiers/lib/anchor-notes.mjs",
-    "registry/",
-    "packages/repomesh-cli/src/verify/verify-all.mjs"
+    ".github/workflows/ledger-ci.yml",
+    "ledger/scripts/validate-ledger.mjs",
+    "verifiers/lib/key-window.mjs"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -931,6 +1000,7 @@
     "tools": 2,
     "verifiers": 44
   },
+  "unnamedWrites": 13,
   "unread": [
     {
       "place": "registry/capabilities.json",
@@ -947,33 +1017,15 @@
       ]
     },
     {
-      "place": "registry/metrics.json",
-      "writers": [
-        "pages/build-metrics.mjs"
-      ]
-    },
-    {
       "place": "registry/snippets/",
       "writers": [
         ".github/workflows/registry-ci.yml",
         "registry/scripts/build-snippets.mjs"
-      ]
-    },
-    {
-      "place": "registry/timeline.json",
-      "writers": [
-        "pages/build-timeline.mjs"
-      ]
-    },
-    {
-      "place": "site/src/",
-      "writers": [
-        "pages/build-stats.mjs"
       ]
     }
   ],
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],
-  "written": 20
+  "written": 11
 }

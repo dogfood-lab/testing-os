@@ -2276,6 +2276,7 @@
       "importConfidence": "full",
       "name": "docs",
       "origin": "mixed",
+      "outsideWrites": 1,
       "role": "docs",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -4237,11 +4238,14 @@
       "unresolvedSites": 165
     },
     {
-      "dynamicReads": 152,
+      "dynamicReads": 158,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 306,
-      "entryPoints": [],
+      "dynamicWrites": 323,
+      "entryPoints": [
+        "tools/facet_index.py",
+        "tools/record_mcp.py"
+      ],
       "externals": 0,
       "files": [
         {
@@ -5425,6 +5429,8 @@
           "path": "tools/export_asset_source.py"
         },
         {
+          "entry": "main",
+          "entryRule": 0,
           "exports": [
             "db_default",
             "is_record_root",
@@ -5434,7 +5440,8 @@
             "resolve_repo"
           ],
           "hash": "1f099e3394096a8ec2583148dd49c31645e8c83067d14646b9e3e9297392f065",
-          "path": "tools/facet_index.py"
+          "path": "tools/facet_index.py",
+          "sequences": []
         },
         {
           "exports": [
@@ -5606,6 +5613,8 @@
           "path": "tools/reconstruct_mesh.py"
         },
         {
+          "entry": "main",
+          "entryRule": 0,
           "exports": [
             "cert_path",
             "health",
@@ -5623,7 +5632,158 @@
             "write_certificate"
           ],
           "hash": "6c4326f57a7c5dc8fc3988d5aa63475ee3a30e0397921e3aa6792f68e0ad5208",
-          "path": "tools/record_mcp.py"
+          "path": "tools/record_mcp.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 248,
+                  "name": "loud",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_raise"
+            },
+            {
+              "calls": [
+                {
+                  "line": 451,
+                  "name": "splitlines",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "parse_verify"
+            },
+            {
+              "calls": [
+                {
+                  "line": 563,
+                  "name": "splitlines",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "write_certificate"
+            },
+            {
+              "calls": [
+                {
+                  "line": 248,
+                  "name": "loud",
+                  "target": null,
+                  "via": "_raise"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_gate"
+            },
+            {
+              "calls": [
+                {
+                  "line": 248,
+                  "name": "loud",
+                  "target": null,
+                  "via": "_raise"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_need"
+            },
+            {
+              "calls": [
+                {
+                  "line": 248,
+                  "name": "loud",
+                  "target": null,
+                  "via": "_raise"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "record_query"
+            },
+            {
+              "calls": [
+                {
+                  "line": 248,
+                  "name": "loud",
+                  "target": null,
+                  "via": "_raise"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "record_get"
+            },
+            {
+              "calls": [
+                {
+                  "line": 248,
+                  "name": "loud",
+                  "target": null,
+                  "via": "_raise"
+                },
+                {
+                  "line": 451,
+                  "name": "splitlines",
+                  "target": null,
+                  "via": "parse_verify"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "record_build"
+            },
+            {
+              "calls": [
+                {
+                  "line": 248,
+                  "name": "loud",
+                  "target": null,
+                  "via": "_raise"
+                },
+                {
+                  "line": 451,
+                  "name": "splitlines",
+                  "target": null,
+                  "via": "parse_verify"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "record_verify"
+            },
+            {
+              "calls": [
+                {
+                  "line": 248,
+                  "name": "loud",
+                  "target": null,
+                  "via": "_raise"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "record_claims"
+            }
+          ]
         },
         {
           "exports": [
@@ -6041,6 +6201,7 @@
       "importConfidence": "full",
       "name": "tools",
       "origin": "authored",
+      "outsideWrites": 29,
       "role": "code",
       "testedBy": 3,
       "unresolvedSites": 40
@@ -6175,10 +6336,32 @@
         "pages:write"
       ],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "job": "build",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
+        }
+      ],
+      "runsCount": 2,
       "secrets": [],
       "sends": {
         "deploysPages": true,
@@ -6293,14 +6476,6 @@
         {
           "job": "release",
           "path": "pyproject.toml"
-        },
-        {
-          "job": "binaries",
-          "path": "tools/record_mcp.py"
-        },
-        {
-          "job": "release",
-          "path": "tools/record_mcp.py"
         }
       ],
       "name": "Release",
@@ -6309,10 +6484,32 @@
         "id-token:write"
       ],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "tools",
+          "depth": 0,
+          "files": 2
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "job": "release",
+          "path": "tools/facet_index.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "binaries",
+          "path": "tools/record_mcp.py",
+          "runKind": "checks"
+        },
+        {
+          "job": "release",
+          "path": "tools/record_mcp.py",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 2,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -6373,6 +6570,90 @@
       "runs": [
         {
           "path": "bin/facet.js",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "pyproject.toml",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "facet-index",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "tools",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "tools/facet_index.py",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "pyproject.toml",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "facet-mcp",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "tools",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "tools/record_mcp.py",
           "runKind": "executes"
         }
       ],
@@ -6462,52 +6743,7 @@
     {
       "readers": [
         {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "docs/specs/comfy-preflight-spec.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "package.json",
           "call": "literal",
           "confidence": "text"
         }
@@ -6517,251 +6753,6 @@
     },
     {
       "readers": [
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.es.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.fr.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.hi.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.it.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.ja.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
         {
           "by": "docs/index/conventions.json",
           "call": "literal",
@@ -6781,96 +6772,9 @@
           "by": "docs/specs/comfy-preflight-spec.md",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "package.json",
-          "call": "literal",
-          "confidence": "text"
         }
       ],
       "target": "README.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.pt-BR.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.zh.md",
       "writers": []
     },
     {
@@ -6917,11 +6821,6 @@
           "by": "docs/specs/comfy-preflight-spec.md",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "package.json",
-          "call": "literal",
-          "confidence": "text"
         }
       ],
       "target": "bin",
@@ -6931,11 +6830,6 @@
       "readers": [
         {
           "by": ".github/workflows/release.yml"
-        },
-        {
-          "by": "package.json",
-          "call": "literal",
-          "confidence": "text"
         }
       ],
       "target": "bin/facet.js",
@@ -7468,46 +7362,6 @@
     },
     {
       "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
         {
           "by": "docs/experiments/E24-installed-paths-report.md",
           "call": "literal",
@@ -13178,11 +13032,6 @@
     {
       "readers": [
         {
-          "by": "docs/handbook/sync_to_site.py",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "docs/index/conventions.json",
           "call": "literal",
           "confidence": "text"
@@ -13728,13 +13577,24 @@
           "by": "docs/index/conventions.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
         }
       ],
       "target": "site/src/content/docs",
       "writers": []
     },
     {
-      "readers": [],
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
       "target": "site/src/content/docs/handbook",
       "writers": [
         {
@@ -14377,17 +14237,6 @@
     {
       "readers": [
         {
-          "by": "tools/diagnostics/prep_front.py",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "tools/diagnostics/prep_front.py",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": "tools/measure_mcp.py",
           "call": "literal",
           "confidence": "ast"
@@ -14420,9 +14269,6 @@
     },
     {
       "readers": [
-        {
-          "by": ".github/workflows/release.yml"
-        },
         {
           "by": ".mcp.json",
           "call": "literal",

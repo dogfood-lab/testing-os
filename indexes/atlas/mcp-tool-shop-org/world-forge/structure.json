@@ -123,7 +123,7 @@
       ],
       "importConfidence": "full",
       "name": "docs",
-      "origin": "authored",
+      "origin": "mixed",
       "role": "docs",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -5110,6 +5110,7 @@
       "importConfidence": "full",
       "name": "export-ai-rpg",
       "origin": "authored",
+      "outsideWrites": 2,
       "role": "code",
       "testedBy": 61,
       "unresolvedSites": 0
@@ -6141,6 +6142,7 @@
       "importConfidence": "full",
       "name": "export-godot",
       "origin": "authored",
+      "outsideWrites": 9,
       "role": "code",
       "testedBy": 44,
       "unresolvedSites": 0
@@ -7006,6 +7008,7 @@
       "importConfidence": "full",
       "name": "export-unreal",
       "origin": "authored",
+      "outsideWrites": 17,
       "role": "code",
       "testedBy": 35,
       "unresolvedSites": 0
@@ -8211,7 +8214,10 @@
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
       "landings": [
-        "README.md"
+        "docs/c0-alignment/export-table.json",
+        "docs/c0-alignment/export-table.md",
+        "docs/c0-alignment/fixture-manifest.json",
+        "docs/c0-alignment/fixture-pack.json"
       ],
       "mentions": [
         {
@@ -8271,275 +8277,21 @@
           "files": 2
         },
         {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        },
+        {
           "boundary": "root",
           "depth": 1,
           "enters": {
             "file": "playwright.config.ts",
             "from": "dogfood/__tests__/playwright-reporter.test.ts"
           },
-          "files": 1
+          "files": 2
         }
       ],
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.es.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.fr.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.hi.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.it.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.ja.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.zh.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.es.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.fr.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.hi.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.it.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.ja.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.zh.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-godot/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-unreal/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.es.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.fr.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.hi.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.it.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.ja.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.zh.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.es.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.fr.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.hi.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.it.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.ja.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.zh.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "scripts/check-pack.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "README.md"
-        },
-        {
-          "by": "scripts/sync-version.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "README.md"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "directory": true,
@@ -9086,9 +8838,24 @@
           "job": "e2e",
           "path": "scripts/sync-version.mjs",
           "runKind": "executes"
+        },
+        {
+          "job": "site-build",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "site-build",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
         }
       ],
-      "runsCount": 69,
+      "runsCount": 71,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -9154,10 +8921,41 @@
         "pages:write"
       ],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "root",
+          "depth": 1,
+          "enters": {
+            "file": "package.json",
+            "from": "site/src/site-config.ts"
+          },
+          "files": 1
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "job": "build",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
+        }
+      ],
+      "runsCount": 2,
       "secrets": [],
       "sends": {
         "deploysPages": true,
@@ -9272,7 +9070,10 @@
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
       "landings": [
-        "README.md"
+        "docs/c0-alignment/export-table.json",
+        "docs/c0-alignment/export-table.md",
+        "docs/c0-alignment/fixture-manifest.json",
+        "docs/c0-alignment/fixture-pack.json"
       ],
       "mentions": [
         {
@@ -9347,266 +9148,7 @@
           "files": 1
         }
       ],
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.es.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.fr.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.hi.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.it.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.ja.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/README.zh.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/editor/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.es.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.fr.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.hi.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.it.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.ja.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.zh.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-ai-rpg/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-godot/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/export-unreal/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.es.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.fr.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.hi.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.it.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.ja.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/README.zh.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/renderer-2d/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.es.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.fr.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.hi.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.it.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.ja.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/README.zh.md",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "packages/schema/package.json",
-          "call": "literal",
-          "confidence": "text",
-          "target": "README.md"
-        },
-        {
-          "by": "scripts/check-pack.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "README.md"
-        },
-        {
-          "by": "scripts/sync-version.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "README.md"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "directory": true,
@@ -10367,41 +9909,6 @@
     {
       "readers": [
         {
-          "by": "packages/editor/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-godot/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-unreal/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-unreal/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "scripts/check-pack.mjs",
           "call": "literal",
           "confidence": "ast"
@@ -10412,1091 +9919,6 @@
     },
     {
       "readers": [
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.es.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.fr.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.hi.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.it.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.ja.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-godot/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-unreal/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
         {
           "by": "scripts/check-pack.mjs",
           "call": "literal",
@@ -11512,433 +9934,50 @@
       "writers": [
         {
           "by": "scripts/sync-version.mjs",
+          "confidence": "ast",
+          "stamps": true,
+          "unless": [
+            "ci"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "docs/c0-alignment/export-table.json",
+      "writers": [
+        {
+          "by": "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts",
           "confidence": "ast"
         }
       ]
     },
     {
-      "readers": [
+      "readers": [],
+      "target": "docs/c0-alignment/export-table.md",
+      "writers": [
         {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.zh.md",
-          "call": "literal",
-          "confidence": "text"
+          "by": "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts",
+          "confidence": "ast"
         }
-      ],
-      "target": "README.pt-BR.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/editor/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-ai-rpg/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/schema/README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.zh.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "assets/logo.png",
-      "writers": []
+      ]
     },
     {
       "readers": [],
-      "target": "dogfood",
+      "target": "docs/c0-alignment/fixture-manifest.json",
       "writers": [
         {
-          "by": "dogfood/chapel-threshold-unreal.ts",
+          "by": "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts",
           "confidence": "ast"
-        },
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "docs/c0-alignment/fixture-pack.json",
+      "writers": [
         {
-          "by": "dogfood/chapel-threshold.ts",
-          "confidence": "ast"
-        },
-        {
-          "by": "dogfood/multi-target-export-proof.ts",
-          "confidence": "ast"
-        },
-        {
-          "by": "dogfood/run-ai-rpg-smoke.ts",
-          "confidence": "ast"
-        },
-        {
-          "by": "dogfood/run-godot-smoke.ts",
-          "confidence": "ast"
-        },
-        {
-          "by": "dogfood/run-unreal-smoke.ts",
-          "confidence": "ast"
-        },
-        {
-          "by": "e2e/write-chapel-fixture.ts",
+          "by": "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts",
           "confidence": "ast"
         }
       ]
@@ -11946,6 +9985,7 @@
     {
       "readers": [],
       "target": "dogfood/godot-smoke/world.tscn",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/run-godot-smoke.ts",
@@ -11966,7 +10006,49 @@
     },
     {
       "readers": [],
+      "target": "dogfood/output",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/chapel-threshold.ts",
+          "confidence": "ast"
+        },
+        {
+          "by": "dogfood/multi-target-export-proof.ts",
+          "confidence": "ast"
+        },
+        {
+          "by": "e2e/write-chapel-fixture.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "dogfood/output/ai-rpg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/multi-target-export-proof.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "dogfood/output/ai-rpg-smoke",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/run-ai-rpg-smoke.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
       "target": "dogfood/output/ai-rpg/content-pack.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/multi-target-export-proof.ts",
@@ -11977,6 +10059,7 @@
     {
       "readers": [],
       "target": "dogfood/output/build-catalog.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold.ts",
@@ -11987,6 +10070,7 @@
     {
       "readers": [],
       "target": "dogfood/output/chapel-project.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold.ts",
@@ -12001,6 +10085,7 @@
     {
       "readers": [],
       "target": "dogfood/output/dialogues.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold.ts",
@@ -12011,6 +10096,7 @@
     {
       "readers": [],
       "target": "dogfood/output/districts.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold.ts",
@@ -12021,6 +10107,7 @@
     {
       "readers": [],
       "target": "dogfood/output/entities.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold.ts",
@@ -12030,7 +10117,30 @@
     },
     {
       "readers": [],
+      "target": "dogfood/output/godot",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/multi-target-export-proof.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "dogfood/output/godot-smoke",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/run-godot-smoke.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
       "target": "dogfood/output/godot/content-pack.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/multi-target-export-proof.ts",
@@ -12041,6 +10151,7 @@
     {
       "readers": [],
       "target": "dogfood/output/godot/world.tscn",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/multi-target-export-proof.ts",
@@ -12051,6 +10162,7 @@
     {
       "readers": [],
       "target": "dogfood/output/items.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold.ts",
@@ -12061,6 +10173,7 @@
     {
       "readers": [],
       "target": "dogfood/output/manifest.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold.ts",
@@ -12071,6 +10184,7 @@
     {
       "readers": [],
       "target": "dogfood/output/pack-meta.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold.ts",
@@ -12081,6 +10195,7 @@
     {
       "readers": [],
       "target": "dogfood/output/player-template.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold.ts",
@@ -12091,6 +10206,7 @@
     {
       "readers": [],
       "target": "dogfood/output/progression-trees.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold.ts",
@@ -12100,7 +10216,45 @@
     },
     {
       "readers": [],
+      "target": "dogfood/output/unreal",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/chapel-threshold-unreal.ts",
+          "confidence": "ast"
+        },
+        {
+          "by": "dogfood/multi-target-export-proof.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "dogfood/output/unreal-smoke",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/run-unreal-smoke.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "dogfood/output/unreal/actors",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/chapel-threshold-unreal.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
       "target": "dogfood/output/unreal/actors/manifest.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold-unreal.ts",
@@ -12111,6 +10265,7 @@
     {
       "readers": [],
       "target": "dogfood/output/unreal/actors/parallax-manifest.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold-unreal.ts",
@@ -12121,6 +10276,7 @@
     {
       "readers": [],
       "target": "dogfood/output/unreal/actors/transitions.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold-unreal.ts",
@@ -12131,6 +10287,7 @@
     {
       "readers": [],
       "target": "dogfood/output/unreal/connections.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold-unreal.ts",
@@ -12141,6 +10298,7 @@
     {
       "readers": [],
       "target": "dogfood/output/unreal/content-pack.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/multi-target-export-proof.ts",
@@ -12150,7 +10308,19 @@
     },
     {
       "readers": [],
+      "target": "dogfood/output/unreal/districts",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/chapel-threshold-unreal.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
       "target": "dogfood/output/unreal/fidelity.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold-unreal.ts",
@@ -12161,6 +10331,7 @@
     {
       "readers": [],
       "target": "dogfood/output/unreal/pack.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold-unreal.ts",
@@ -12171,6 +10342,18 @@
     {
       "readers": [],
       "target": "dogfood/output/unreal/world-partition.json",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/chapel-threshold-unreal.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "dogfood/output/unreal/zones",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold-unreal.ts",
@@ -12181,6 +10364,7 @@
     {
       "readers": [],
       "target": "dogfood/output/zones.json",
+      "tracked": false,
       "writers": [
         {
           "by": "dogfood/chapel-threshold.ts",
@@ -12223,16 +10407,6 @@
     },
     {
       "readers": [],
-      "target": "dogfood/worlds",
-      "writers": [
-        {
-          "by": "dogfood/multi-target-export-proof.ts",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [],
       "target": "dogfood/worlds/multi-target-proof.worldforge.json",
       "writers": [
         {
@@ -12250,11 +10424,6 @@
         },
         {
           "by": ".github/workflows/release.yml"
-        },
-        {
-          "by": "packages/schema/package.json",
-          "call": "literal",
-          "confidence": "text"
         },
         {
           "by": "scripts/sync-version.mjs",
@@ -12309,11 +10478,6 @@
           "confidence": "text"
         },
         {
-          "by": "packages/editor/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "tsconfig.json",
           "call": "literal",
           "confidence": "text"
@@ -12341,11 +10505,6 @@
           "confidence": "text"
         },
         {
-          "by": "packages/export-ai-rpg/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "tsconfig.json",
           "call": "literal",
           "confidence": "text"
@@ -12357,23 +10516,7 @@
     {
       "readers": [
         {
-          "by": "docs/c0-alignment/export-table.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": "package-lock.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/export-godot/package.json",
           "call": "literal",
           "confidence": "text"
         },
@@ -12394,11 +10537,6 @@
           "confidence": "text"
         },
         {
-          "by": "packages/export-unreal/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "tsconfig.json",
           "call": "literal",
           "confidence": "text"
@@ -12411,11 +10549,6 @@
       "readers": [
         {
           "by": "package-lock.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/renderer-2d/package.json",
           "call": "literal",
           "confidence": "text"
         },
@@ -12436,11 +10569,6 @@
           "confidence": "text"
         },
         {
-          "by": "packages/schema/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "tsconfig.json",
           "call": "literal",
           "confidence": "text"
@@ -12452,42 +10580,23 @@
     {
       "readers": [
         {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
         }
       ],
-      "target": "site/public/screenshots/editor-canvas.jpg",
+      "target": "site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook",
       "writers": []
     },
     {

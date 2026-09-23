@@ -8,21 +8,25 @@ Mapped at 2026-09-23 from commit 838720f.
 
 ## What changed since 2026-09-23 (875a8ae)
 
+- Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
+- repomesh-broadcast now also checks package.json.
 - shipcheck (package.json) is a new command. It runs bin/shipcheck.mjs.
+- site/src/content/docs/ is now read by site/astro.config.mjs.
+- site/src/content/docs/handbook/ is now read by site/astro.config.mjs.
 - 101 files changed content, across 10 parts.
 
 ## What comes in
 
 1. **CI.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs bin/shipcheck.mjs and test/.
 2. **Release.** When a release is published; or by hand. Runs bin/shipcheck.mjs and test/.
-3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs no file this map can see.
-4. **repomesh-broadcast.** When a release is published. Runs no file this map can see.
+3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+4. **repomesh-broadcast.** When a release is published. Checks package.json.
 5. **shipcheck** (a command people run). Runs bin/shipcheck.mjs.
 
 ## What happens through CI
 
 1. The workflow runs bin/shipcheck.mjs in bin and test/ in test.
-2. It sends a dispatch to dogfood-lab/testing-os.
+2. It sends a dispatch to dogfood-lab/testing-os on main.
 
 ## Who reads the results
 
@@ -32,9 +36,9 @@ CI writes nothing this map can see.
 
 **Release** runs bin/shipcheck.mjs and test/, and publishes to npm.
 
-**Deploy site to GitHub Pages** runs no file this map can see and deploys the site.
+**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**repomesh-broadcast** runs no file this map can see, commits into a clone of mcp-tool-shop-org/repomesh and pushes there, and opens a pull request.
+**repomesh-broadcast** checks package.json, commits into a clone of mcp-tool-shop-org/repomesh and pushes there, and opens a pull request.
 
 **shipcheck** (a command people run) runs bin/shipcheck.mjs.
 
@@ -67,7 +71,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .claude/, .github/, contracts/, docs/, dogfood/, the repository root and templates/. Nothing in this repository writes to them.
+People write .claude/, .github/, contracts/, docs/, dogfood/, the repository root and templates/; 1 write with a path built at run time may land here.
 
 ## Where to start
 
@@ -78,7 +82,8 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 1 import site could not be resolved.
-- 1 write and 28 reads use paths built at run time and are not named here.
+- 1 write and 27 reads use paths built at run time and are not named here.
+- 12 reads go to the directory the command is run in or the home directory, not to this repository.
 - 3 commands are built at run time and not followed, all of them in tests.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

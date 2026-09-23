@@ -8,10 +8,14 @@ Mapped at 2026-09-23 from commit fd35beb.
 
 ## What changed since 2026-09-23 (34a7862)
 
+- Pages deploy now also runs site/astro.config.mjs and site/src/.
+- Post-Publish Smoke now also runs backpropagate/cli.py.
 - backpropagate (package.json) is a new command. It runs bin/backpropagate.js.
-- backprop (pyproject.toml) is a new command. It runs backpropagate/cli.py.
-- backpropagate (pyproject.toml) is a new command. It runs backpropagate/cli.py.
+- And 2 more changes to doors.
 - .github/mutmut-baseline.txt is now written by .github/workflows/mutmut.yml.
+- backpropagate/rxconfig.py is now read by backpropagate/cli.py.
+- backpropagate/ui_app/ is now read by scripts/check_doc_drift.py.
+- And 4 more new writers and readers of places.
 - .github was generated and is now mixed.
 - 247 files changed content, across 10 parts.
 
@@ -20,10 +24,10 @@ Mapped at 2026-09-23 from commit fd35beb.
 1. **CI.** On a pull request; on a push to main touching 8 paths; or by hand. Runs tests/ and verify.sh; checks backpropagate/.
 2. **Nightly Train Smoke.** On a schedule (`0 4 * * 1`), Monday at 04:00 UTC; or by hand. Runs scripts/nightly_train_smoke.py.
 3. **Doc Drift Check.** On a pull request; on a push to main touching 7 paths; or by hand. Runs scripts/check_doc_drift.py.
-4. **Mutation testing (mutmut).** By hand. Runs no file this map can see.
-5. **OpenSSF Scorecard.** On a `branch_protection_rule` event; on a push to main; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs no file this map can see.
-6. **Pages deploy.** On a push to main touching 2 paths; or by hand. Runs no file this map can see.
-7. **Post-Publish Smoke.** When the workflow Publish completes; or by hand. Runs no file this map can see.
+4. **Pages deploy.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+5. **Post-Publish Smoke.** When the workflow Publish completes; or by hand. Runs backpropagate/cli.py.
+6. **Mutation testing (mutmut).** By hand. Runs no file this map can see.
+7. **OpenSSF Scorecard.** On a `branch_protection_rule` event; on a push to main; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs no file this map can see.
 8. **Publish.** When a release is published; when the workflow Release completes; or by hand. Runs no file this map can see.
 9. **Release.** When a tag matching `v*` is pushed; or by hand. Runs no file this map can see.
 10. **backprop** (a command people run). Runs backpropagate/cli.py.
@@ -45,13 +49,13 @@ CI writes nothing this map can see.
 
 **Doc Drift Check** runs scripts/check_doc_drift.py.
 
+**Pages deploy** runs site/astro.config.mjs and site/src/, and deploys the site.
+
+**Post-Publish Smoke** runs backpropagate/cli.py and opens an issue when it fails.
+
 **Mutation testing (mutmut)** runs no file this map can see, writes to .github/mutmut-baseline.txt, commits .github/mutmut-baseline.txt and pushes, and opens a pull request.
 
 **OpenSSF Scorecard** runs no file this map can see.
-
-**Pages deploy** runs no file this map can see and deploys the site.
-
-**Post-Publish Smoke** runs no file this map can see and opens an issue when it fails.
 
 **Publish** runs no file this map can see and publishes to PyPI and a container image.
 
@@ -65,7 +69,7 @@ CI writes nothing this map can see.
 
 ## What breaks what
 
-- **backpropagate** is imported by 1 part (scripts), and by 1 more only from tests; it sits on the path of 4 doors.
+- **backpropagate** is imported by 1 part (scripts), and by 1 more only from tests; it sits on the path of 5 doors.
 - **scripts** is imported only from tests, by 1 part (tests), and sits on the path of 3 doors.
 - **CITATION.cff** is written by scripts and read by scripts; a hand edit reaches every reader.
 
@@ -96,11 +100,11 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .claude/, assets/, docs/, examples/ and site/. Nothing in this repository writes to them.
+People write .claude/, assets/, docs/, examples/ and site/; 15 writes with paths built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → tests/ → scripts/check_doc_drift.py
+.github/workflows/ci.yml → tests/test_check_doc_drift.py → scripts/check_doc_drift.py
 
 Read those in order to follow one pull request end to end.
 
@@ -108,6 +112,7 @@ Read those in order to follow one pull request end to end.
 
 - 40 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.
 - 6 import sites could not be resolved.
-- 13 writes and 39 reads use paths built at run time and are not named here.
+- 15 writes and 39 reads use paths built at run time and are not named here.
+- 1 write and 1 read go to the directory the command is run in or the home directory, not to this repository.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

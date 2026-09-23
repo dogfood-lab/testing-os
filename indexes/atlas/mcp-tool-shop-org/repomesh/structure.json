@@ -54,7 +54,7 @@
       ],
       "importConfidence": "full",
       "name": ".github",
-      "origin": "mixed",
+      "origin": "authored",
       "role": "config",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -1012,7 +1012,7 @@
       ],
       "importConfidence": "full",
       "name": "pages",
-      "origin": "mixed",
+      "origin": "authored",
       "role": "code",
       "testedBy": 5,
       "unresolvedSites": 0
@@ -2094,6 +2094,8 @@
       "importConfidence": "full",
       "name": "repomesh-cli",
       "origin": "authored",
+      "outsideReads": 20,
+      "outsideWrites": 13,
       "role": "code",
       "testedBy": 14,
       "unresolvedSites": 98
@@ -2192,7 +2194,7 @@
       ],
       "importConfidence": "full",
       "name": "root",
-      "origin": "mixed",
+      "origin": "authored",
       "role": "docs",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -2337,7 +2339,7 @@
       ],
       "importConfidence": "full",
       "name": "site",
-      "origin": "mixed",
+      "origin": "authored",
       "role": "docs",
       "testedBy": 0,
       "unresolvedSites": 1
@@ -2523,6 +2525,8 @@
       "importConfidence": "full",
       "name": "tools",
       "origin": "authored",
+      "outsideReads": 7,
+      "outsideWrites": 16,
       "role": "code",
       "testedBy": 2,
       "unresolvedSites": 1
@@ -4688,6 +4692,7 @@
       "importConfidence": "full",
       "name": "verifiers",
       "origin": "authored",
+      "outsideReads": 11,
       "role": "code",
       "testedBy": 44,
       "unresolvedSites": 0
@@ -4737,7 +4742,6 @@
       "file": ".github/workflows/anchor-xrpl.yml",
       "landings": [
         "anchor/xrpl/manifests",
-        "anchor/xrpl/partition-root.json",
         "ledger/events/events.jsonl",
         "registry/anchors.json"
       ],
@@ -4891,24 +4895,6 @@
           "call": "readdirSync",
           "confidence": "ast",
           "target": "anchor/xrpl/manifests"
-        },
-        {
-          "by": "anchor/xrpl/scripts/emit-anchor-event.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "anchor/xrpl/partition-root.json"
-        },
-        {
-          "by": "anchor/xrpl/scripts/post-anchor.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "anchor/xrpl/partition-root.json"
-        },
-        {
-          "by": "anchor/xrpl/scripts/post-anchor.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "anchor/xrpl/partition-root.json"
         },
         {
           "by": ".github/workflows/anchor-xrpl.yml",
@@ -5125,18 +5111,6 @@
           "target": "ledger/events/events.jsonl"
         },
         {
-          "by": "verifiers/lib/common.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": "verifiers/lib/common.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
           "by": ".github/workflows/anchor-xrpl.yml",
           "target": "registry/anchors.json"
         },
@@ -5259,7 +5233,7 @@
       "usesWorkflowToken": true
     },
     {
-      "checksCount": 0,
+      "checksCount": 1,
       "commands": [
         {
           "job": "attest-and-check",
@@ -5325,10 +5299,6 @@
       "mentions": [
         {
           "job": "attest-and-check",
-          "path": "LICENSE"
-        },
-        {
-          "job": "attest-and-check",
           "path": "ledger/events/events.jsonl"
         }
       ],
@@ -5347,6 +5317,11 @@
         },
         {
           "boundary": "policy",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "root",
           "depth": 0,
           "files": 1
         },
@@ -5570,21 +5545,14 @@
           "call": "readFileSync",
           "confidence": "ast",
           "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": "verifiers/lib/common.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": "verifiers/lib/common.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
         }
       ],
       "runs": [
+        {
+          "job": "attest-and-check",
+          "path": "LICENSE",
+          "runKind": "checks"
+        },
         {
           "job": "attest-and-check",
           "path": "attestor/scripts/attest-release.mjs",
@@ -5611,7 +5579,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 5,
+      "runsCount": 6,
       "secrets": [
         "REPOMESH_LEDGER_TOKEN",
         "REPOMESH_SIGNING_KEY"
@@ -5806,20 +5774,8 @@
       "elsewhere": [],
       "file": ".github/workflows/pages-ci.yml",
       "landings": [
-        "pages",
-        "pages/out/.nojekyll",
-        "pages/out/anchors/index.html",
-        "pages/out/docs/verification.html",
-        "pages/out/health/index.html",
-        "pages/out/index.html",
-        "pages/out/repos/index.html",
-        "pages/out/status.json",
         "registry/badges",
-        "registry/metrics.json",
-        "registry/snippets",
-        "registry/timeline.json",
-        "site/src",
-        "site/src/stats.json"
+        "registry/snippets"
       ],
       "mentions": [],
       "name": "pages-ci",
@@ -5839,6 +5795,11 @@
           "boundary": "registry",
           "depth": 0,
           "files": 4
+        },
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
         },
         {
           "boundary": "anchor",
@@ -5871,99 +5832,11 @@
       "readers": [
         {
           "by": "pages/build-pages.mjs",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "pages"
-        },
-        {
-          "by": "scripts/verify.sh",
-          "call": "literal",
-          "confidence": "text",
-          "target": "pages"
-        },
-        {
-          "by": "README.es.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.it.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "pages/build-pages.mjs",
           "call": "raw-url",
           "confidence": "ast",
           "ref": "main",
           "repo": "mcp-tool-shop-org/repomesh",
           "target": "registry/badges"
-        },
-        {
-          "by": "pages/build-metrics.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "registry/metrics.json"
-        },
-        {
-          "by": "pages/build-metrics.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "registry/metrics.json"
         }
       ],
       "runs": [
@@ -6001,9 +5874,24 @@
           "job": "build-and-deploy",
           "path": "registry/scripts/build-snippets.mjs",
           "runKind": "executes"
+        },
+        {
+          "job": "build-and-deploy",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "build-and-deploy",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
         }
       ],
-      "runsCount": 7,
+      "runsCount": 9,
       "secrets": [],
       "sends": {
         "deploysPages": true,
@@ -6198,70 +6086,6 @@
           "call": "readFileSync",
           "confidence": "ast",
           "target": "registry/anchors.json"
-        },
-        {
-          "by": "README.es.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.it.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh",
-          "target": "registry/badges"
         },
         {
           "by": "pages/build-pages.mjs",
@@ -6901,33 +6725,9 @@
   },
   "landings": [
     {
-      "readers": [],
-      "target": ".github/workflows",
-      "writers": [
-        {
-          "by": "packages/repomesh-cli/src/init.mjs",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/init-node.mjs",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
       "readers": [
         {
           "by": ".github/workflows/repomesh-broadcast.yml"
-        },
-        {
-          "by": "packages/repomesh-cli/src/doctor.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/doctor.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
         },
         {
           "by": "packages/repomesh-cli/templates/repomesh-broadcast.yml",
@@ -6938,431 +6738,9 @@
           "by": "templates/repomesh-broadcast.yml",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "tools/init-node.mjs",
-          "call": "literal",
-          "confidence": "ast"
         }
       ],
       "target": ".github/workflows/repomesh-broadcast.yml",
-      "writers": [
-        {
-          "by": "packages/repomesh-cli/src/init.mjs",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/init-node.mjs",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/repomesh-cli/src/doctor.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/doctor.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/init.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/init.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/init-node.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/init-node.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".gitignore",
-      "writers": [
-        {
-          "by": "packages/repomesh-cli/src/init.mjs",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/init-node.mjs",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/repomesh-cli/package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "CHANGELOG.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": ".github/workflows/attestor-ci.yml"
-        },
-        {
-          "by": "packages/repomesh-cli/package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "LICENSE",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.es.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.fr.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.hi.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.it.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.ja.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/repomesh-cli/package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.pt-BR.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "README.zh.md",
       "writers": []
     },
     {
@@ -7374,6 +6752,7 @@
         }
       ],
       "target": "anchor/xrpl/anchor-result.json",
+      "tracked": false,
       "writers": [
         {
           "by": "anchor/xrpl/scripts/post-anchor.mjs",
@@ -7400,11 +6779,6 @@
         },
         {
           "by": "anchor/xrpl/scripts/watch.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-anchor.mjs",
           "call": "readFileSync",
           "confidence": "ast"
         },
@@ -7539,6 +6913,7 @@
         }
       ],
       "target": "anchor/xrpl/partition-root.json",
+      "tracked": false,
       "writers": [
         {
           "by": "anchor/xrpl/scripts/compute-root.mjs",
@@ -7593,20 +6968,6 @@
       ],
       "target": "docs/verification.md",
       "writers": []
-    },
-    {
-      "readers": [],
-      "target": "ledger/events",
-      "writers": [
-        {
-          "by": "attestor/scripts/emit-key-event.mjs",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/key/rotate-revoke.mjs",
-          "confidence": "ast"
-        }
-      ]
     },
     {
       "readers": [
@@ -7786,16 +7147,6 @@
           "by": "tools/verify-release.mjs",
           "call": "readFileSync",
           "confidence": "ast"
-        },
-        {
-          "by": "verifiers/lib/common.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "verifiers/lib/common.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
         }
       ],
       "target": "ledger/events/events.jsonl",
@@ -7808,11 +7159,13 @@
         },
         {
           "by": "attestor/scripts/emit-key-event.mjs",
-          "confidence": "ast"
+          "confidence": "ast",
+          "stamps": true
         },
         {
           "by": "packages/repomesh-cli/src/key/rotate-revoke.mjs",
-          "confidence": "ast"
+          "confidence": "ast",
+          "stamps": true
         }
       ]
     },
@@ -7932,26 +7285,6 @@
           "by": "tools/verify-release.mjs",
           "call": "readFileSync",
           "confidence": "ast"
-        },
-        {
-          "by": "verifiers/lib/common.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "verifiers/lib/common.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "verifiers/lib/load-overrides.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "verifiers/lib/load-overrides.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
         }
       ],
       "target": "ledger/nodes",
@@ -7962,10 +7295,6 @@
         },
         {
           "by": "tools/join-node.mjs",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/register-node.mjs",
           "confidence": "ast"
         }
       ]
@@ -7994,82 +7323,17 @@
       "readers": [
         {
           "by": "packages/repomesh-cli/src/doctor.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/doctor.mjs",
           "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/doctor.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/init.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/init.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/init.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/init-node.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/init-node.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/init-node.mjs",
-          "call": "readFileSync",
           "confidence": "ast"
         }
       ],
       "target": "node.json",
-      "writers": [
-        {
-          "by": "packages/repomesh-cli/src/init.mjs",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/init-node.mjs",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": "packages/repomesh-cli/package.json",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "package.json",
       "writers": []
     },
     {
       "readers": [
         {
           "by": "package-lock.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/repomesh-cli/package.json",
           "call": "literal",
           "confidence": "text"
         },
@@ -8158,26 +7422,6 @@
           "confidence": "ast"
         }
       ],
-      "target": "pages",
-      "writers": [
-        {
-          "by": "pages/build-pages.mjs",
-          "confidence": "ast"
-        },
-        {
-          "by": "pages/build-status.mjs",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": "pages/build-pages.mjs",
-          "call": "readdirSync",
-          "confidence": "ast"
-        }
-      ],
       "target": "pages/assets",
       "writers": []
     },
@@ -8215,8 +7459,41 @@
       "writers": []
     },
     {
+      "readers": [
+        {
+          "by": "pages/build-pages.mjs",
+          "call": "readdirSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "pages/out",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "pages/build-pages.mjs",
+          "confidence": "ast"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
       "readers": [],
       "target": "pages/out/.nojekyll",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "pages/build-pages.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "pages/out/anchors",
+      "tracked": false,
       "writers": [
         {
           "by": "pages/build-pages.mjs",
@@ -8227,6 +7504,29 @@
     {
       "readers": [],
       "target": "pages/out/anchors/index.html",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "pages/build-pages.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "pages/out/assets",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "pages/build-pages.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "pages/out/docs",
+      "tracked": false,
       "writers": [
         {
           "by": "pages/build-pages.mjs",
@@ -8237,6 +7537,18 @@
     {
       "readers": [],
       "target": "pages/out/docs/verification.html",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "pages/build-pages.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "pages/out/health",
+      "tracked": false,
       "writers": [
         {
           "by": "pages/build-pages.mjs",
@@ -8247,6 +7559,7 @@
     {
       "readers": [],
       "target": "pages/out/health/index.html",
+      "tracked": false,
       "writers": [
         {
           "by": "pages/build-pages.mjs",
@@ -8257,6 +7570,18 @@
     {
       "readers": [],
       "target": "pages/out/index.html",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "pages/build-pages.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "pages/out/repos",
+      "tracked": false,
       "writers": [
         {
           "by": "pages/build-pages.mjs",
@@ -8267,6 +7592,7 @@
     {
       "readers": [],
       "target": "pages/out/repos/index.html",
+      "tracked": false,
       "writers": [
         {
           "by": "pages/build-pages.mjs",
@@ -8277,6 +7603,7 @@
     {
       "readers": [],
       "target": "pages/out/status.json",
+      "tracked": false,
       "writers": [
         {
           "by": "pages/build-status.mjs",
@@ -8286,11 +7613,6 @@
     },
     {
       "readers": [
-        {
-          "by": "packages/repomesh-cli/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
         {
           "by": "registry/scripts/build-verifiers.mjs",
           "call": "existsSync",
@@ -8435,192 +7757,6 @@
     {
       "readers": [
         {
-          "by": "README.es.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.it.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        }
-      ],
-      "target": "registry/badges/mcp-tool-shop-org/shipcheck/anchored.svg",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.it.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        }
-      ],
-      "target": "registry/badges/mcp-tool-shop-org/shipcheck/assurance.svg",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.es.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.it.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/repomesh"
-        }
-      ],
-      "target": "registry/badges/mcp-tool-shop-org/shipcheck/integrity.svg",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": ".github/workflows/registry-ci.yml"
         }
       ],
@@ -8666,6 +7802,7 @@
         }
       ],
       "target": "registry/metrics.json",
+      "tracked": false,
       "writers": [
         {
           "by": "pages/build-metrics.mjs",
@@ -8719,11 +7856,6 @@
     {
       "readers": [
         {
-          "by": "registry/scripts/build-badges.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "scripts/verify.sh",
           "call": "literal",
           "confidence": "text"
@@ -8735,28 +7867,12 @@
     {
       "readers": [
         {
-          "by": "registry/scripts/build-snippets.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "scripts/verify.sh",
           "call": "literal",
           "confidence": "text"
         }
       ],
       "target": "registry/scripts/build-snippets.mjs",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "registry/scripts/build-trust.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "registry/scripts/build-trust.mjs",
       "writers": []
     },
     {
@@ -8786,6 +7902,7 @@
     {
       "readers": [],
       "target": "registry/timeline.json",
+      "tracked": false,
       "writers": [
         {
           "by": "pages/build-timeline.mjs",
@@ -8906,11 +8023,6 @@
     {
       "readers": [
         {
-          "by": "packages/repomesh-cli/package.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "packages/repomesh-cli/src/mode.mjs",
           "call": "existsSync",
           "confidence": "ast"
@@ -8925,6 +8037,11 @@
           "by": "ledger/scripts/validate-ledger.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "node.json",
+          "call": "literal",
+          "confidence": "text"
         }
       ],
       "target": "schemas/event.schema.json",
@@ -8936,6 +8053,11 @@
           "by": "ledger/scripts/validate-ledger.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "node.json",
+          "call": "literal",
+          "confidence": "text"
         },
         {
           "by": "tools/init-node.mjs",
@@ -8974,35 +8096,37 @@
       "writers": []
     },
     {
-      "readers": [],
-      "target": "site/src",
-      "writers": [
+      "readers": [
         {
-          "by": "pages/build-stats.mjs",
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
           "confidence": "ast"
         }
-      ]
-    },
-    {
-      "readers": [],
-      "target": "site/src/stats.json",
-      "writers": [
-        {
-          "by": "pages/build-stats.mjs",
-          "confidence": "ast"
-        }
-      ]
+      ],
+      "target": "site/src/content/docs",
+      "writers": []
     },
     {
       "readers": [
         {
-          "by": "packages/repomesh-cli/package.json",
-          "call": "literal",
-          "confidence": "text"
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
         }
       ],
-      "target": "templates",
+      "target": "site/src/content/docs/handbook",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": "site/src/stats.json",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "pages/build-stats.mjs",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [
@@ -9023,56 +8147,12 @@
     {
       "readers": [
         {
-          "by": "tools/init-node.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "tools/init-node.mjs",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tools/keygen.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "tools/keygen.mjs",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tools/register-node.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "tools/register-node.mjs",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": "packages/repomesh-cli/src/cli.mjs",
           "call": "literal",
           "confidence": "ast"
         }
       ],
       "target": "tools/repomesh.mjs",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tools/verify-release.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "tools/verify-release.mjs",
       "writers": []
     },
     {
@@ -9124,39 +8204,6 @@
         }
       ],
       "target": "verifier.policy.json",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "verifiers/license/scripts/verify-license.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": "verifiers/license/config.json",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "verifiers/repro/scripts/verify-repro.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": "verifiers/repro/config.json",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "verifiers/security/scripts/verify-security.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": "verifiers/security/config.json",
       "writers": []
     }
   ],
