@@ -1,6 +1,8 @@
 {
   "boundaries": [
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -43,10 +45,11 @@
       "name": ".github",
       "origin": "authored",
       "role": "config",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -61,10 +64,11 @@
       "name": "assets",
       "origin": "authored",
       "role": "config",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 9,
+      "dynamicWrites": 2,
       "entryPoints": [
         "packages/atlas/cli.js",
         "packages/atlas/index.js"
@@ -75,23 +79,27 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "6d3e6e5e5ed3bfe038f31593d71518eb88bc66f666c56f2d42fce407aac75fb3",
+          "hash": "9f7624d84d413f54b89d20172ad238ad948e2223c4a15b5efa7b1b2ceee3495d",
           "path": "packages/atlas/adapter/artifact.js"
         },
         {
-          "hash": "81ef6c66df41ff8894c537ae0c4dd29bc5575a9c0cf7397148012d682514abc1",
+          "hash": "4612b6ca06656cba7d07d99c2bc0d8784a0fc07d880fb06914458d6004435b61",
           "path": "packages/atlas/adapter/boundary-file.js"
         },
         {
-          "hash": "46b55bfd88d58bec7e1ac93037afd817a07e02e1e43aa04bb2d74bc6a10952e7",
+          "hash": "679383b2ac72cfe64c1ba8cd9531e9c08f64f8de0ba8aee18195a17480f9cb68",
+          "path": "packages/atlas/adapter/boundary-file.test.js"
+        },
+        {
+          "hash": "14688f2ce8418ca9245596da38f8eb9a43da699da2ce9fed12031be2bc484f42",
           "path": "packages/atlas/adapter/check.js"
         },
         {
-          "hash": "e266d3fa15627acfd711989237eb764aa9564932e921e2b1786228ca91e2727e",
+          "hash": "eb12bd3f1d1e3eb339fbe31213909e61d70c201c6ac46a58a0d6debf6323c1d6",
           "path": "packages/atlas/adapter/commands.js"
         },
         {
-          "hash": "24ddf7ce9120cdd2830237bd2b2cc347be0e83fb93660b72f1b3426504902db3",
+          "hash": "4c858062ea0420499d9074f11308e3384f4113b4cb41deefa89cfc1966e83bfd",
           "path": "packages/atlas/adapter/determinism.test.js"
         },
         {
@@ -103,44 +111,36 @@
           "path": "packages/atlas/adapter/divergence.js"
         },
         {
-          "hash": "f108557ad69276b816445d28d518aa5b2e869978927606a6fe16f70a12eed264",
+          "hash": "58da82d150cda7b183a4970def3ee13408a53067252a9e7a015bea29e8cf7204",
           "path": "packages/atlas/adapter/errors.js"
         },
         {
-          "hash": "9e97a9a8514d5ddcd274a8c43904b68b64d12e41cdf12558a27f7356db6458d0",
+          "hash": "af4de1eb780146f9a4c4532a99a02991198f30d03b19aeda3d9b54af34237133",
           "path": "packages/atlas/adapter/errors.test.js"
         },
         {
-          "hash": "c5bc6e448464f6b03cf2d28d382aa72eb38988e1dd91f039d5608e3fded7351e",
+          "hash": "7136a382d6483a343d0cfe8c36978d3741a5b0a8cd9b0efea0742df402878efd",
           "path": "packages/atlas/adapter/init.js"
         },
         {
-          "hash": "a8f30454c5816e2fecf4b8116b0e18aba24a6fe368ae8483fb034070894b2228",
+          "hash": "3b20856717e0d9f3b0f9ff9674337f2f51e2754df1083795630ab26b64ddfefc",
           "path": "packages/atlas/adapter/init.test.js"
         },
         {
-          "hash": "2037d8ae7f6b9aac7cd108d73695205d2a3ed98a36c69eb5a222da15c2dacd1a",
-          "path": "packages/atlas/adapter/ladder.js"
-        },
-        {
-          "hash": "b6a00b9b11c26cdaffc8ec8ed27201aee4364528261ff380972196f8f3d0d533",
-          "path": "packages/atlas/adapter/ladder.test.js"
-        },
-        {
-          "hash": "252006d6ee07c0165dbb6683e88345f23e665b15321714aed7611f90a54d40f7",
+          "hash": "522ae8080f584709f8c75020eff8a1a391422c91bbaefd2fa2b7300a4932ddbc",
           "path": "packages/atlas/adapter/lifecycle.test.js"
+        },
+        {
+          "hash": "3e3dc65d7abc16b4a9559d6e7eef4e831efc1164231ff4a896fc2820d1d1b391",
+          "path": "packages/atlas/adapter/page.js"
+        },
+        {
+          "hash": "2825806dc700a73a0394ade5156dfe0964732e51bc6a7efc20a28467ce2f62c0",
+          "path": "packages/atlas/adapter/page.test.js"
         },
         {
           "hash": "e115b5521bbf0b0f333d81c2b2e1795d812012c216306c21e307c7186686144e",
           "path": "packages/atlas/adapter/propose.js"
-        },
-        {
-          "hash": "af9f90c2b679fcc37ce2f3b7f445f102203ae9c8377998065312b58df6b507f9",
-          "path": "packages/atlas/adapter/render.js"
-        },
-        {
-          "hash": "d44da76b3c25222904f512bf5195f1ece0ed1254074937517f6f06306ff4a06c",
-          "path": "packages/atlas/adapter/render.test.js"
         },
         {
           "hash": "8d25e541952eb0724ea839e7fc8ef770b1f9ebe2fda6b21081aeb1c53830d639",
@@ -151,11 +151,11 @@
           "path": "packages/atlas/adapter/statistics.test.js"
         },
         {
-          "hash": "720af0c3e60df90791dd6eaad01c4810608fa9d0214c6b6f1bdf586da136be98",
+          "hash": "1a293154bb6736da939dafb40b16c1002a1fdbdee9909bd59244caaba4241d19",
           "path": "packages/atlas/adapter/templates.js"
         },
         {
-          "hash": "2ab1902f7a8c663064dc85bd8c9d082cb9bb6047360fc8d7dc7e29ced52a4069",
+          "hash": "0052b39fad5baeb3abc3a0c035cfc69e6e3e6acd52808396ee873e06d7138a4f",
           "path": "packages/atlas/adapter/templates.test.js"
         },
         {
@@ -287,7 +287,7 @@
           "path": "packages/atlas/index.js"
         },
         {
-          "hash": "b779f011693748ad1eddfbb5fbe42298e658e6c4767348fabe86d5336eab31f5",
+          "hash": "eb8de99c929c0693eecf8ba9519edbb70f2132c595682c9774987b1791e5785d",
           "path": "packages/atlas/package.json"
         },
         {
@@ -302,10 +302,11 @@
       "name": "atlas",
       "origin": "authored",
       "role": "code",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -404,10 +405,11 @@
       "name": "docs",
       "origin": "authored",
       "role": "docs",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -478,10 +480,11 @@
       "name": "dogfood",
       "origin": "mixed",
       "role": "config",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 52,
+      "dynamicWrites": 5,
       "entryPoints": [
         "packages/dogfood-swarm/cli.js"
       ],
@@ -1890,10 +1893,11 @@
       "name": "dogfood-swarm",
       "origin": "authored",
       "role": "code",
-      "status": "proposed",
       "unresolvedSites": 5
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -1924,10 +1928,11 @@
       "name": "examples",
       "origin": "authored",
       "role": "config",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 26,
+      "dynamicWrites": 8,
       "entryPoints": [
         "packages/findings/cli.js",
         "packages/findings/index.js"
@@ -2265,10 +2270,11 @@
       "name": "findings",
       "origin": "authored",
       "role": "code",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -2404,7 +2410,7 @@
           "path": "fixtures/atlas/doors/.github/workflows/weekly.yml"
         },
         {
-          "hash": "3151a7eb938dd62ec4cc3f24517bd12c3e1ea1457cba620e9601ac9230a9f768",
+          "hash": "c410488628f453510efae5b62b072d280b8f7c6ff5101925f552574c04f3ea6e",
           "path": "fixtures/atlas/doors/atlas/boundaries.yaml"
         },
         {
@@ -2480,7 +2486,7 @@
           "path": "fixtures/atlas/flat/tests/check.js"
         },
         {
-          "hash": "db09f04fc865f02f4371926d6b6d2c418d39e8f2035366f4352b69e845f24901",
+          "hash": "ca0fb8378ed4f060e04ed66761071b06505a90bac3e5726c89945bd4bf9039f7",
           "path": "fixtures/atlas/host/atlas/boundaries.yaml"
         },
         {
@@ -2947,10 +2953,11 @@
       "name": "fixtures",
       "origin": "authored",
       "role": "code",
-      "status": "proposed",
       "unresolvedSites": 15
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -3026,19 +3033,19 @@
           "path": "indexes/failing.json"
         },
         {
-          "hash": "5ac8b781f7d96cd44e77bd961e28721a73652d21c848063edb95d9a4636b5b09",
+          "hash": "12b80ea19ea8583cd460c5970edff3f735d3960e936954da79cf462de87af6e6",
           "path": "indexes/integrity/chain.jsonl"
         },
         {
-          "hash": "72e5c9f1e23ce597bf1997251d4e1f6ea1b7e7331985e70d593b5fa5fec70bfa",
+          "hash": "677db819c3ee9dd603b624d669997d8e8367891261af172f313c9a7cda08fde1",
           "path": "indexes/latest-by-repo.json"
         },
         {
-          "hash": "d98093aa9bab0d1351abbb258de71a65d3583377ffc1d1d2bc96c80e7fcac2ea",
+          "hash": "9ef84135be17db0d663f6646b72788102b78dcae317664097cc2db4bcc7a8126",
           "path": "indexes/stale.json"
         },
         {
-          "hash": "d9460a1e4cf8563a156f72f3c2d18b2dddf753a946b1fc9cd61360a3056742bb",
+          "hash": "a2a63a91b1acb067e372345fb88baf044ef0007f78015f2f87ce59d44ed067c0",
           "path": "indexes/trends.json"
         }
       ],
@@ -3049,10 +3056,11 @@
       "name": "indexes",
       "origin": "generated",
       "role": "config",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 16,
+      "dynamicWrites": 4,
       "entryPoints": [
         "packages/ingest/run.js"
       ],
@@ -3385,10 +3393,11 @@
       "name": "ingest",
       "origin": "authored",
       "role": "code",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -3459,10 +3468,11 @@
       "name": "policies",
       "origin": "mixed",
       "role": "config",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 15,
+      "dynamicWrites": 0,
       "entryPoints": [
         "packages/portfolio/generate.js"
       ],
@@ -3567,10 +3577,11 @@
       "name": "portfolio",
       "origin": "authored",
       "role": "code",
-      "status": "proposed",
       "unresolvedSites": 4
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -3768,6 +3779,10 @@
         {
           "hash": "0b3c0070feda6acda3630fac1f927e0a94f5a14216b63124ec2e067d4c840554",
           "path": "records/dogfood-lab/testing-os/2026/09/22/run-00mud40bgf-rCMBr4KMCCzLug.json"
+        },
+        {
+          "hash": "8451968fba9650399c886f6fdaba3f24357e13c83c9e9a0aa333580d4c458a31",
+          "path": "records/dogfood-lab/testing-os/2026/09/23/run-00mudchflu-45_lcK63Uz7Srw.json"
         },
         {
           "hash": "d80bd628d70f1275786c79da48bfb6da79ef0eb303eceed6fe87960e8c7a308c",
@@ -3981,10 +3996,11 @@
       "name": "records",
       "origin": "generated",
       "role": "config",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 2,
+      "dynamicWrites": 2,
       "entryPoints": [
         "packages/report/build-submission.js",
         "packages/report/cli.js",
@@ -4095,10 +4111,11 @@
       "name": "report",
       "origin": "authored",
       "role": "code",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -4117,10 +4134,11 @@
       "name": "reports",
       "origin": "generated",
       "role": "config",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -4215,10 +4233,11 @@
       "name": "root",
       "origin": "mixed",
       "role": "docs",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [
         "packages/schemas/src/index.ts"
       ],
@@ -4379,10 +4398,11 @@
       "name": "schemas",
       "origin": "authored",
       "role": "code",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 57,
+      "dynamicWrites": 6,
       "entryPoints": [],
       "files": [
         {
@@ -4442,11 +4462,11 @@
           "path": "scripts/apply-finding-migration.test.mjs"
         },
         {
-          "hash": "f3e0bff271ad9f30f635934f6f91534e28f909436370e4558e847221becb47e9",
+          "hash": "fb70401604ff760dad9248512b2d9885b8e3a56e8c82fba4600030ed951c07f5",
           "path": "scripts/atlas-render.mjs"
         },
         {
-          "hash": "51e904cb96fbad35d09bd701523917539da99dd56b750f3f363edb958a65a95b",
+          "hash": "38c331b5e51646d443ce83d91fc173eb946bd6f6b96304fb2cd15a430d83605c",
           "path": "scripts/atlas-render.test.mjs"
         },
         {
@@ -4653,10 +4673,11 @@
       "name": "scripts",
       "origin": "authored",
       "role": "code",
-      "status": "proposed",
       "unresolvedSites": 6
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -4672,7 +4693,7 @@
           "path": "site/package.json"
         },
         {
-          "hash": "c5761080277df900a5a22119e97e4b6566afcd49621bda8716267e902ce910c6",
+          "hash": "5deab1ea4dd9aec4fc38ed64978cda487d40f897f4a68483e9396989a9138d24",
           "path": "site/public/dashboard/index.html"
         },
         {
@@ -4696,7 +4717,7 @@
           "path": "site/src/components/BaseLayout.test.mjs"
         },
         {
-          "hash": "fba705f21da6a4595a92196c3bd07dcd48998048d7829582c49a605e3dc42411",
+          "hash": "9c40603614ae75975eb9cc4fbe69e77352dc777facd3e071cfca2a5cb5e08615",
           "path": "site/src/components/atlas-panel.test.mjs"
         },
         {
@@ -4795,10 +4816,11 @@
       "name": "site",
       "origin": "authored",
       "role": "code",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 0,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "files": [
         {
@@ -4869,10 +4891,11 @@
       "name": "swarms",
       "origin": "authored",
       "role": "docs",
-      "status": "proposed",
       "unresolvedSites": 0
     },
     {
+      "dynamicReads": 6,
+      "dynamicWrites": 0,
       "entryPoints": [
         "packages/verify/cli.js",
         "packages/verify/index.js"
@@ -5138,7 +5161,6 @@
       "name": "verify",
       "origin": "authored",
       "role": "code",
-      "status": "proposed",
       "unresolvedSites": 0
     }
   ],
@@ -6386,7 +6408,7 @@
     }
   ],
   "generatedFrom": {
-    "commit": "e61e73270f64ab726839278be90110cacef8b64c",
+    "commit": "429ee84607d842133f57f07adb01683d3b51a58d",
     "tracked": 1204
   },
   "landings": [
@@ -6828,6 +6850,11 @@
           "by": "packages/verify/package.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "scripts/atlas-render.mjs",
+          "call": "literal",
+          "confidence": "ast"
         },
         {
           "by": "scripts/doc-drift-patterns.json",
