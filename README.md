@@ -21,7 +21,7 @@
 *Protocols, evidence stores, and learning loops for AI-assisted software.*
 
 <!-- version:start -->
-**v1.13.0** — current release. See [CHANGELOG.md](CHANGELOG.md) for what shipped.
+**v1.14.0** — current release. See [CHANGELOG.md](CHANGELOG.md) for what shipped.
 <!-- version:end -->
 
 📖 **[Read the handbook →](https://dogfood-lab.github.io/testing-os/handbook/)**
@@ -40,7 +40,7 @@ What you get:
 - **A policy contract you control.** Declare what counts as "verified" in YAML — a bounded, no-eval predicate DSL (`field`/`op`/`value` + `all`/`any`/`not`/`implies`) — and enforce it across your repos. Lint a policy before you ship it with `dogfood-verify lint`.
 - **A parallel-agent swarm protocol.** Run multi-agent audits against a codebase, then turn raw findings into reusable patterns and doctrine.
 - **A live status surface.** Per-repo records, indexes, and a status badge, all served from one evidence store.
-- **A page that says how a repository works.** Atlas reads a repository's workflows, imports, writes and history and writes `atlas/README.md`: what comes in, what runs, where it lands, who reads it, what breaks what, where to start. No sentence on it is written by a person, and `atlas check` fails CI when the map stops matching the code.
+- **A page that says how a repository works.** Atlas reads a repository's workflows, the tools they run, its imports, writes and history, and writes `atlas/README.md`: what comes in, what runs, where it lands, who reads it, what breaks what, what changed since the last map, where to start. No sentence on it is written by a person; `atlas check` fails CI when the map stops matching the code, `atlas explain <file>` answers what one file is in the system, and every pull request gets the structural delta as a comment.
 
 It's the flagship monorepo of the [Dogfood Lab](https://github.com/dogfood-lab) org — eight `@dogfood-lab/*` packages behind one `swarm` CLI and one `atlas` CLI.
 
@@ -119,7 +119,7 @@ Requires Node ≥ 22. CI matrix runs Node 22 + 24 on `ubuntu-latest`; locally va
 
 ## Versioning
 
-All `@dogfood-lab/*` packages bump together — one number across the monorepo. Seven packages publish to npm under `@dogfood-lab` at v1.13.0 in lockstep (`schemas`, `verify`, `report`, `ingest`, `findings`, `dogfood-swarm`, `atlas`); the eighth, `@dogfood-lab/portfolio`, stays internal. The version line near the top of this README is auto-stamped from `package.json` via [`scripts/sync-version.mjs`](scripts/sync-version.mjs) on every `npm run build`.
+All `@dogfood-lab/*` packages bump together — one number across the monorepo. Seven packages publish to npm under `@dogfood-lab` at v1.14.0 in lockstep (`schemas`, `verify`, `report`, `ingest`, `findings`, `dogfood-swarm`, `atlas`); the eighth, `@dogfood-lab/portfolio`, stays internal. The version line near the top of this README is auto-stamped from `package.json` via [`scripts/sync-version.mjs`](scripts/sync-version.mjs) on every `npm run build`.
 
 ## License
 

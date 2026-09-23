@@ -2,7 +2,7 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.14.0] — 2026-09-23
 
 ### Added
 - **What changed since the last map.** The page's second section compares the structure just derived with the one committed at HEAD (read with `git show`, never the working copy, so two maps at one commit give the same bytes) and states the delta as structural facts in fixed sentences, most significant first: a new import between parts that closes or extends a dependency cycle, stated with the cycle and never cut; other new and removed imports; doors added, removed, or with changed triggers or run files; places gaining a writer or reader; origin flips; steps gained or lost in the main door's order of work; parts added, removed or renamed; new files no part claims; then one counts line. Three items a kind and twelve in all, with the overflow counted. When nothing structural changed it is one line, and a repository with no committed map reads "This is the first map." `page.json` carries it as `changes`, the site page renders it in the same place, and `atlas check` does not read it.
