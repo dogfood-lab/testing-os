@@ -4,6 +4,13 @@ import { join } from 'node:path';
 import picomatch from 'picomatch';
 
 const MANIFEST_BASENAMES = new Set(['pyproject.toml', 'setup.py', 'setup.cfg']);
+// A manifest under one of these is a sample a test works on, not a package of
+// this repository, so it proposes no part; the test directory holding it does.
+const TEST_HOMES = new Set(['test', 'tests', 'fixtures', '__fixtures__', '__tests__', 'spec']);
+
+function inTestMaterial(path) {
+  return path.split('/').slice(0, -1).some((part) => TEST_HOMES.has(part));
+}
 
 function inAtlas(path) {
   return path === 'atlas' || path.startsWith('atlas/');
@@ -38,7 +45,7 @@ function memberDirs(patterns, paths) {
   const matchers = patterns.map((pattern) => picomatch(pattern, { dot: true }));
   const dirs = [];
   for (const path of paths) {
-    if (inAtlas(path) || !path.endsWith('/package.json')) continue;
+    if (inAtlas(path) || inTestMaterial(path) || !path.endsWith('/package.json')) continue;
     const dir = path.slice(0, -'/package.json'.length);
     if (dir && matchers.some((matches) => matches(dir))) dirs.push(dir);
   }
@@ -52,7 +59,7 @@ function claimed(path, dirs) {
 export function manifestDirs(repoPath, paths) {
   const dirs = [];
   for (const path of paths) {
-    if (inAtlas(path)) continue;
+    if (inAtlas(path) || inTestMaterial(path)) continue;
     const slash = path.lastIndexOf('/');
     const base = slash === -1 ? path : path.slice(slash + 1);
     const dir = slash === -1 ? '' : path.slice(0, slash);
