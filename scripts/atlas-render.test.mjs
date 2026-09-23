@@ -321,6 +321,21 @@ describe('atlas weekly render', () => {
     assert.equal(result.fleet.repositories[0].boundaries, 4);
   });
 
+  it('renders an unchanged repository again when another engine made the last render', async (t) => {
+    const sha = 'c'.repeat(40);
+    const { runFleet, calls } = harness(t, {
+      lab: [PUBLIC],
+      heads: { 'dogfood-lab/testing-os': sha },
+      state: { rendered: { 'dogfood-lab/testing-os': { commit: sha, engine: ENGINE, renderedAt: '2026-09-01T00:00:00.000Z' } }, failures: {} },
+      fleet: { repositories: [{ repo: 'dogfood-lab/testing-os', commit: sha, renderedAt: '2026-09-01T00:00:00.000Z', doors: 1 }] },
+    });
+    // The job stamps the tree's commit beside the version, so a new main is a new engine.
+    const stamp = `${ENGINE}+abc123abc123`;
+    const result = await runFleet({ engine: stamp });
+    assert.equal(calls.some((call) => call[1][0] === 'clone'), true, 'the repository is cloned and mapped again');
+    assert.equal(result.state.rendered['dogfood-lab/testing-os'].engine, stamp);
+  });
+
   it('writes the fleet file shape', async (t) => {
     const { runFleet } = harness(t, { lab: [PUBLIC] });
     const result = await runFleet();

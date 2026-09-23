@@ -9,6 +9,7 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
   BACKOFF_MS,
+  ENGINE,
   HISTORY_CAP,
   REPO_BUDGET_MS,
   RENDER_FILES,
@@ -186,8 +187,9 @@ async function previousHistory(fetchImpl, fullName) {
 
 // One public repository, cloned fresh from GitHub into scratch; the last
 // render's divergence and history are read from the render branch.
-function renderPublic({ run, sleep, fetchImpl, repoRoot, fullName, branch, sha, now, state, outRoot, log }) {
+function renderPublic({ run, sleep, fetchImpl, repoRoot, fullName, branch, sha, now, state, outRoot, log, engine }) {
   return renderOne({
+    engine,
     run,
     fullName,
     sha,
@@ -253,6 +255,9 @@ export async function renderFleet(options = {}) {
   const now = options.now ? options.now() : new Date();
   const dryRun = options.dryRun === true;
   const repoRoot = options.repoRoot ?? repoRootDefault();
+  // The job runs the engine in this tree, which changes between releases
+  // without the version moving, so the stamp carries the tree's commit too.
+  const engine = options.engine ?? (process.env.GITHUB_SHA ? `${ENGINE}+${process.env.GITHUB_SHA.slice(0, 12)}` : ENGINE);
   const logs = [];
   const log = (line) => {
     logs.push(line);
@@ -300,7 +305,7 @@ export async function renderFleet(options = {}) {
       continue;
     }
     const before = (previousFleet?.repositories ?? []).find((entry) => entry?.repo === repo.fullName);
-    const skip = skipReason(state.rendered[repo.fullName], head.sha, before);
+    const skip = skipReason(state.rendered[repo.fullName], head.sha, before, engine);
     if (skip) {
       log(`skip ${repo.fullName} ${skip}`);
       continue;
@@ -308,7 +313,7 @@ export async function renderFleet(options = {}) {
     let result;
     try {
       result = await renderPublic({
-        run, sleep, fetchImpl, repoRoot, fullName: repo.fullName, branch: head.branch, sha: head.sha, now, state, outRoot, log,
+        run, sleep, fetchImpl, repoRoot, fullName: repo.fullName, branch: head.branch, sha: head.sha, now, state, outRoot, log, engine,
       });
     } catch (error) {
       state.failures[repo.fullName] = { commit: head.sha, at: now.toISOString(), reason: error.message || 'map' };

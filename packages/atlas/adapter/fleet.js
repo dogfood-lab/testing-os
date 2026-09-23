@@ -29,7 +29,10 @@ export const DEFAULT_SCHEDULE = '0 6 * * 1';
 export const DEFAULT_PORT = 8080;
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 // The engine that made a render is written beside it, so a repository whose
-// commit has not moved renders again once the engine has.
+// commit has not moved renders again once the engine has. The service, which
+// installs the published package, stamps its version; the weekly job passes a
+// stamp that carries the commit of the tree it runs, since the engine on main
+// changes between releases without the version moving.
 export const ENGINE = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version;
 const REPO_NAME = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/;
 // A clone whose newest commit is older than the window selects nothing; git
@@ -280,7 +283,7 @@ function readJsonFile(path) {
  */
 export async function renderOne({
   run, fullName, sha, now, state, outRoot, log, checkout, previous,
-  cli = CLI, propose = false, name = false, baseline = null, budgetMs = REPO_BUDGET_MS,
+  cli = CLI, propose = false, name = false, baseline = null, budgetMs = REPO_BUDGET_MS, engine = ENGINE,
 }) {
   const started = Date.now();
   const remaining = () => budgetMs - (Date.now() - started);
@@ -303,7 +306,7 @@ export async function renderOne({
     let proposed = false;
     if (!existsSync(boundaryPath)) {
       if (!propose) {
-        state.rendered[fullName] = { commit: sha, engine: ENGINE, renderedAt: now.toISOString(), notMapped: true };
+        state.rendered[fullName] = { commit: sha, engine, renderedAt: now.toISOString(), notMapped: true };
         delete state.failures[fullName];
         log(`not-mapped ${fullName}`);
         return { kind: 'not-mapped' };
@@ -354,7 +357,7 @@ export async function renderOne({
     if (remaining() <= 0) return abandon('budget');
     for (const file of RENDER_FILES) cpSync(join(dest, 'atlas', file), join(out, file));
     const renderedAt = now.toISOString();
-    state.rendered[fullName] = { commit: sha, engine: ENGINE, renderedAt, ...(proposed ? { proposed: true } : {}) };
+    state.rendered[fullName] = { commit: sha, engine, renderedAt, ...(proposed ? { proposed: true } : {}) };
     delete state.failures[fullName];
     const structure = JSON.parse(readFileSync(join(out, 'structure.json'), 'utf8'));
     const statistics = JSON.parse(readFileSync(join(out, 'statistics.json'), 'utf8'));
@@ -640,7 +643,7 @@ function previousFrom(repoDir) {
  */
 export async function runFleetOnce({
   dataDir, config, run = defaultRun, sleep = (ms) => new Promise((done) => setTimeout(done, ms)),
-  now = new Date(), log = (line) => process.stdout.write(`${line}\n`), cli = CLI, budgetMs = REPO_BUDGET_MS,
+  now = new Date(), log = (line) => process.stdout.write(`${line}\n`), cli = CLI, budgetMs = REPO_BUDGET_MS, engine = ENGINE,
 }) {
   const atlasDir = atlasDirOf(dataDir);
   mkdirSync(atlasDir, { recursive: true });
@@ -665,7 +668,7 @@ export async function runFleetOnce({
         continue;
       }
       const before = (previousFleet?.repositories ?? []).find((row) => row?.repo === head.name);
-      const skip = skipReason(state.rendered[head.name], head.sha, before);
+      const skip = skipReason(state.rendered[head.name], head.sha, before, engine);
       if (skip) {
         log(`skip ${head.name} ${skip}`);
         continue;
@@ -680,7 +683,7 @@ export async function runFleetOnce({
         result = await renderOne({
           run, fullName: head.name, sha: head.sha, now, state, outRoot, log, checkout,
           previous: previousFrom(repoDir), cli, propose: true, name: true,
-          baseline: existsSync(join(repoDir, 'structure.json')) ? repoDir : null, budgetMs,
+          baseline: existsSync(join(repoDir, 'structure.json')) ? repoDir : null, budgetMs, engine,
         });
       } catch (error) {
         state.failures[head.name] = { commit: head.sha, at: now.toISOString(), reason: redact(error.message || 'map') };
