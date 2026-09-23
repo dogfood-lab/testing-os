@@ -85,12 +85,18 @@ function facts({ structure, statistics }) {
     boundaryOf,
     place: (target) => (isDir(target) ? `${target}/` : target),
     doors: orderDoors(structure.doors ?? []),
+    // A weak landing is a bare file name under a root the engine could not
+    // read; it stays in the artifact, and the page states nothing from it.
     landings: (structure.landings ?? []).map((landing) => ({
       target: landing.target,
-      writers: landing.writers ?? [],
-      readers: landing.readers ?? [],
+      writers: (landing.writers ?? []).filter(strong),
+      readers: (landing.readers ?? []).filter(strong),
     })),
   };
+}
+
+function strong(entry) {
+  return entry.confidence !== 'weak';
 }
 
 function reachSize(door) {
@@ -335,7 +341,7 @@ function readerGroups(ctx, main) {
     const key = topLevel(target);
     if (!groups.has(key)) groups.set(key, { key, entries: [] });
   }
-  for (const entry of main.readers ?? []) {
+  for (const entry of (main.readers ?? []).filter(strong)) {
     const group = groups.get(topLevel(entry.target));
     if (group) group.entries.push(entry);
   }
@@ -346,9 +352,15 @@ function readerGroups(ctx, main) {
       out.push({ target, readers: [], files: [] });
       continue;
     }
-    // The door naming its own output, and files kept inside that output, are
-    // the writer's side of the place, not someone reading it.
-    const files = readerFiles(group.entries).filter((reader) => reader.path !== main.file && !under(reader.path, group.key));
+    // The door naming its own output, a writer reading back what it wrote, and
+    // files kept inside that output are the making of the result, not a use
+    // of it. The page leaves them out; the artifact keeps the reads.
+    const writers = new Set(ctx.landings
+      .filter((landing) => under(landing.target, group.key))
+      .flatMap((landing) => landing.writers.map((entry) => entry.by)));
+    const files = readerFiles(group.entries).filter((reader) => (
+      reader.path !== main.file && !writers.has(reader.path) && !under(reader.path, group.key)
+    ));
     if (files.length === 0) continue;
     const readers = collapse(ctx, files.map((reader) => ({
       path: reader.path,

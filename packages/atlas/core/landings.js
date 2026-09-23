@@ -173,7 +173,7 @@ export function astLandings(language, root, path, places) {
         continue;
       }
       const target = landingOf(value, places);
-      if (target != null) list.push({ target, call, confidence: 'ast' });
+      if (target != null) list.push({ target, call, confidence: confidenceOf(value, target, places) });
     }
   };
 
@@ -201,7 +201,7 @@ export function astLandings(language, root, path, places) {
     for (const value of evaluate(node, ctx, 0)) {
       if (value.open) continue;
       const target = literalPlace(value.text, places);
-      if (target != null) found.reads.push({ target, call: 'literal', confidence: 'ast' });
+      if (target != null) found.reads.push({ target, call: 'literal', confidence: confidenceOf(value, target, places) });
     }
   });
 
@@ -596,6 +596,18 @@ function closed(text) {
   return { text, open: false };
 }
 
+// A value is rooted when its first segment is a root the engine could not
+// read, as in join(someDir, name). A rooted bare file name that equals a
+// tracked file at the repository root matched only because the unread root
+// might be the repository; the same name under any other directory is a
+// different file, so the landing is kept but marked weak. A rooted name that
+// equals a tracked directory (join(root, 'records')) is how code names that
+// directory, and stays at full confidence.
+function confidenceOf(value, target, places) {
+  const weak = value.rooted === true && !target.includes('/') && places.files.has(target) && !places.dirs.has(target);
+  return weak ? 'weak' : 'ast';
+}
+
 // Join path segments. A first segment the engine cannot read is taken as the
 // root the rest is relative to (join(repoRoot, 'records')); any later segment
 // it cannot read ends the value there, open.
@@ -603,16 +615,16 @@ function joinValues(segments, absoluteResets) {
   if (segments.length === 0) return [];
   const anchored = segments[0].length === 0;
   if (anchored && segments.slice(1).every((values) => values.length === 0)) return [];
-  let acc = anchored ? [closed('')] : segments[0];
+  let acc = anchored ? [{ ...closed(''), rooted: true }] : segments[0];
   for (const values of segments.slice(1)) {
     const next = [];
     for (const value of acc) {
       if (value.open) next.push(value);
-      else if (values.length === 0) next.push({ text: value.text === '' ? '' : `${value.text}/`, open: true });
+      else if (values.length === 0) next.push({ text: value.text === '' ? '' : `${value.text}/`, open: true, rooted: value.rooted });
       else {
         for (const segment of values) {
           if (absoluteResets && segment.text.startsWith('/')) continue;
-          next.push({ text: value.text === '' ? segment.text : `${value.text}/${segment.text}`, open: segment.open });
+          next.push({ text: value.text === '' ? segment.text : `${value.text}/${segment.text}`, open: segment.open, rooted: value.rooted });
         }
       }
     }
@@ -626,13 +638,13 @@ function normalizeValue(value, anchored) {
   let text = value.text.replaceAll('\\', '/');
   if (anchored) text = text.replace(/^\/+/, '');
   if (text.startsWith('/')) return null;
-  if (text === '') return value.open ? null : closed('');
+  if (text === '') return value.open ? null : { ...closed(''), rooted: value.rooted };
   text = posix.normalize(text);
   if (text === '.' || text === './') text = '';
   if (text === '..' || text.startsWith('../')) return null;
   if (text.startsWith('./')) text = text.slice(2);
   if (value.open && text === '') return null;
-  return { text, open: value.open };
+  return { text, open: value.open, rooted: value.rooted };
 }
 
 function dirnameValues(values) {
@@ -641,7 +653,7 @@ function dirnameValues(values) {
       if (value.open) return value;
       if (value.text === '' || value.text.includes('://')) return null;
       const dir = posix.dirname(value.text);
-      return closed(dir === '.' ? '' : dir);
+      return { ...closed(dir === '.' ? '' : dir), rooted: value.rooted };
     })
     .filter(Boolean);
 }
@@ -677,7 +689,7 @@ function concat(parts) {
         rooted = true;
         continue;
       }
-      acc = acc.map((value) => (value.open ? value : { text: value.text, open: true }));
+      acc = acc.map((value) => (value.open ? value : { text: value.text, open: true, rooted: value.rooted }));
       continue;
     }
     const joined = [];
@@ -688,7 +700,7 @@ function concat(parts) {
       }
       for (const part of values) {
         const text = value.text === '' && (rooted || i > 0) && part.text.startsWith('/') && !part.text.startsWith('//') ? part.text.slice(1) : part.text;
-        joined.push({ text: value.text + text, open: part.open });
+        joined.push({ text: value.text + text, open: part.open, rooted: rooted || value.rooted });
       }
     }
     acc = cap(joined);
@@ -704,7 +716,7 @@ function cap(values) {
   const seen = new Set();
   const out = [];
   for (const value of values) {
-    const id = `${value.open ? 1 : 0}${value.text}`;
+    const id = `${value.open ? 1 : 0}${value.rooted ? 1 : 0}${value.text}`;
     if (seen.has(id)) continue;
     seen.add(id);
     out.push(value);
@@ -904,7 +916,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     map.get(target).set(canonicalEntry(entry), entry);
   };
   for (const file of own) {
-    for (const write of file.writes) add(writers, write.target, { by: file.path });
+    for (const write of file.writes) add(writers, write.target, { by: file.path, confidence: write.confidence });
   }
   for (const door of mapped) {
     door.stagedTargets = stagedTargets(door.stages, places);
@@ -913,7 +925,8 @@ export function attachLandings({ files, doors, boundaries, places }) {
   }
   // A text file inside a place something writes is that writer's output: the
   // paths an index or a roadmap names are its data, not places it reads.
-  const output = (path) => [...writers.keys()].some((target) => path === target || path.startsWith(`${target}/`));
+  const strong = new Set([...writers].filter(([, entries]) => [...entries.values()].some((entry) => entry.confidence !== 'weak')).map(([target]) => target));
+  const output = (path) => [...strong].some((target) => path === target || path.startsWith(`${target}/`));
   for (const file of own) {
     const generated = file.reads.some((read) => read.confidence === 'text') && output(file.path);
     for (const read of file.reads) {
@@ -925,7 +938,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
   for (const door of mapped) {
     const targets = new Set(door.stagedTargets);
     for (const path of door.reachFiles ?? []) {
-      for (const write of byPath.get(path)?.writes ?? []) targets.add(write.target);
+      for (const write of byPath.get(path)?.writes ?? []) if (write.confidence !== 'weak') targets.add(write.target);
     }
     door.landings = [...targets].sort(compare);
     const found = new Map();
@@ -941,8 +954,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     delete door.stagedTargets;
   }
 
-  const written = new Set(writers.keys());
-  for (const boundary of boundaries) boundary.origin = originOf(boundary, written);
+  for (const boundary of boundaries) boundary.origin = originOf(boundary, strong);
 
   return [...new Set([...writers.keys(), ...readers.keys()])].sort(compare).map((target) => ({
     target,

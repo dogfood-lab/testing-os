@@ -96,7 +96,7 @@ describe('atlas page', () => {
       '## Who reads the results': '- **reports/** has no reader in this repository.',
       '## The other doors': '**weekly** runs tools/render.js, reaches lib, writes to reports/, and sends a dispatch to acme/hub.',
       '## What breaks what': '- **lib** is imported by 1 part (tools) and sits on the path of 4 doors.',
-      '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml and tools/ingest.js.',
+      '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
       '## Hand-authored': 'People write .github/, policies/ and site/. Nothing in this repository writes to them.',
       '## Where to start': '.github/workflows/checks.yml → tools/render.js → lib/',
       '## What this map cannot see': 'Regenerate with `npx --yes @dogfood-lab/atlas map`.',
@@ -104,6 +104,18 @@ describe('atlas page', () => {
     for (const [heading, sentence] of Object.entries(exact)) {
       assert.ok(section(markdown, heading).split('\n').includes(sentence), `${heading}: ${sentence}`);
     }
+  });
+
+  it('states nothing from a weak landing: a bare root file name under a root it could not read', () => {
+    const weak = doors.structure.landings.find((landing) => landing.target === '.gitignore');
+    assert.deepEqual(weak.writers, [{ by: 'tools/scratch.js', confidence: 'weak' }]);
+    const records = doors.structure.landings.find((landing) => landing.target === 'records');
+    assert.ok(records.writers.some((entry) => entry.by === 'tools/scratch.js' && entry.confidence === 'ast'));
+    const { markdown, json } = page(doors);
+    assert.equal(markdown.includes('.gitignore'), false);
+    assert.equal(JSON.parse(json).generated.some((item) => item.place === '.gitignore'), false);
+    const tools = doors.structure.boundaries.find((boundary) => boundary.name === 'tools');
+    assert.equal(tools.origin, 'authored');
   });
 
   it('names each trigger in words and marks a workflow it could not read', () => {
@@ -121,6 +133,11 @@ describe('atlas page', () => {
     assert.match(happens, /^3\. It writes to indexes\/ and records\/\.$/m);
     assert.match(happens, /^4\. It commits indexes\/ and records\/, then pushes\.$/m);
     const reads = section(markdown, '## Who reads the results');
+    // tools/ingest.js reads indexes/latest.json as well as writing it; a
+    // writer reading back its own place is kept in the artifact, not the page.
+    const ingest = doors.structure.doors.find((door) => door.file.endsWith('ingest.yml'));
+    assert.ok(ingest.readers.some((entry) => entry.by === 'tools/ingest.js' && entry.target === 'indexes/latest.json'));
+    assert.equal(reads.includes('tools/ingest.js'), false);
     assert.match(reads, /^- \*\*indexes\/\*\* is read by site\/index\.html \(found by text\), tools\/render\.js and tools\/report\.py\.$/m);
     assert.match(reads, /^- \*\*records\/\*\* has no reader in this repository\.$/m);
     assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → lib\/ → indexes\/ → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);

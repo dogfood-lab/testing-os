@@ -93,9 +93,15 @@ function carryLandings(landings) {
     .map((landing) => ({
       readers: landing.readers.filter((entry) => !inAtlas(entry.by)).map(carryReader),
       target: landing.target,
-      writers: landing.writers.filter((entry) => !inAtlas(entry.by)).map((entry) => ({ by: entry.by })),
+      writers: landing.writers.filter((entry) => !inAtlas(entry.by)).map(carryWriter),
     }))
     .filter((landing) => landing.readers.length > 0 || landing.writers.length > 0);
+}
+
+function carryWriter(entry) {
+  const out = { by: entry.by };
+  if (entry.confidence != null) out.confidence = entry.confidence;
+  return out;
 }
 
 function carryReader(entry) {
