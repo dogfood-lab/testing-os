@@ -77,16 +77,19 @@ const PY_DIRNAME = new Set(['os.path.dirname', 'path.dirname', 'dirname']);
 // Methods of a path that return a path: evalPy follows each.
 const PY_PATH_METHODS = new Set(['resolve', 'absolute', 'expanduser', 'joinpath', 'with_name']);
 const PY_IDENTITY = new Set([
-  'os.path.abspath',
-  'os.path.realpath',
   'os.path.normpath',
-  'abspath',
-  'realpath',
+  'os.path.expanduser',
+  'expanduser',
   'normpath',
   'str',
   'os.fspath',
   'fspath',
 ]);
+// These make a relative path absolute against the directory the process runs in.
+const PY_ABSOLUTE = new Set(['os.path.abspath', 'os.path.realpath', 'abspath', 'realpath']);
+const PY_CWD = new Set(['os.getcwd', 'getcwd', 'Path.cwd', 'pathlib.Path.cwd']);
+const PY_HOME = new Set(['Path.home', 'pathlib.Path.home']);
+const HOME_VARIABLES = new Set(['HOME', 'USERPROFILE']);
 const PY_SCOPES = new Set(['function_definition', 'lambda']);
 const PY_NESTED = new Set(['function_definition', 'class_definition', 'lambda']);
 
@@ -389,7 +392,7 @@ export function astLandings(language, root, path, places) {
     visiting: new Set(),
     assignments: new Map(),
   };
-  const found = { writes: [], dynamicWrites: 0, reads: [], dynamicReads: 0 };
+  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0 };
   const evaluate = ctx.python ? evalPy : evalJs;
   const site = (kind, call, node, countDynamic = true) => {
     if (!node) return;
@@ -399,14 +402,16 @@ export function astLandings(language, root, path, places) {
       return;
     }
     const list = kind === 'write' ? found.writes : found.reads;
+    if (values.some(outside)) found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
     for (const value of values) {
+      if (outside(value)) continue;
       if (value.text.includes('://')) {
         if (kind !== 'read' || value.open) continue;
         for (const entry of rawUrls(value.text, places)) list.push({ ...entry, call, confidence: 'ast' });
         continue;
       }
       const target = landingOf(value, places, { directory: DIRECTORY_CALLS.has(call) });
-      if (target != null) list.push({ target, call, confidence: confidenceOf(value, target, places) });
+      if (target != null) list.push(landingEntry(target, call, value, places));
     }
   };
 
@@ -432,9 +437,9 @@ export function astLandings(language, root, path, places) {
     if (ctx.seen.has(key(node))) return;
     if (!isStringNode(node, ctx.python) && !isPathConstructor(node, ctx.python)) return;
     for (const value of evaluate(node, ctx, 0)) {
-      if (value.open || namesItself(value, ctx)) continue;
+      if (value.open || outside(value) || namesItself(value, ctx)) continue;
       const target = literalPlace(value.text, places);
-      if (target != null) found.reads.push({ target, call: 'literal', confidence: confidenceOf(value, target, places) });
+      if (target != null) found.reads.push(landingEntry(target, 'literal', value, places));
     }
   });
 
@@ -443,7 +448,17 @@ export function astLandings(language, root, path, places) {
     dynamicWrites: found.dynamicWrites,
     reads: sortEntries(found.reads),
     dynamicReads: found.dynamicReads,
+    ...(found.outsideWrites > 0 ? { outsideWrites: found.outsideWrites } : {}),
+    ...(found.outsideReads > 0 ? { outsideReads: found.outsideReads } : {}),
   };
+}
+
+// A bare relative path, with nothing fixing where it starts, is relative to
+// whoever runs the code; attachLandings decides whose directory that is.
+function landingEntry(target, call, value, places) {
+  const entry = { target, call, confidence: confidenceOf(value, target, places) };
+  if (value.anchor == null && !value.rooted) entry.relative = true;
+  return entry;
 }
 
 /**
@@ -539,7 +554,7 @@ function evalJs(node, ctx, depth) {
     case 'non_null_expression':
       return evalJs(node.namedChildren[0], ctx, next);
     case 'string':
-      return [closed(jsStringText(node))];
+      return [literalValue(jsStringText(node))];
     case 'template_string':
       return concat(
         node.namedChildren
@@ -551,7 +566,7 @@ function evalJs(node, ctx, depth) {
       const left = node.childForFieldName('left');
       const right = node.childForFieldName('right');
       if (operator === '+') return concat([evalJs(left, ctx, next), evalJs(right, ctx, next)]);
-      if (operator === '||' || operator === '??') return union([evalJs(left, ctx, next), evalJs(right, ctx, next)]);
+      if (operator === '||' || operator === '??') return fallback(evalJs(left, ctx, next), evalJs(right, ctx, next));
       return [];
     }
     case 'ternary_expression':
@@ -565,6 +580,7 @@ function evalJs(node, ctx, depth) {
       const property = node.childForFieldName('property')?.text;
       // new URL('./x.json', import.meta.url).pathname is the path the URL names.
       if (object?.type === 'new_expression' && (property === 'pathname' || property === 'href')) return evalJs(object, ctx, next);
+      if (object?.text === 'process.env' && HOME_VARIABLES.has(property)) return [atCaller('', 'home')];
       if (object?.type !== 'meta_property') return [];
       if (property === 'url' || property === 'filename') return [anchored(ctx.file)];
       if (property === 'dirname') return [anchored(ctx.dir)];
@@ -580,8 +596,16 @@ function evalJs(node, ctx, depth) {
       const fn = node.childForFieldName('function');
       const name = finalName(fn);
       const args = argumentNodes(node);
-      if (jsPathCall(fn, name) && (name === 'join' || name === 'resolve')) {
-        return joinValues(args.map((arg) => evalJs(arg, ctx, next)), name === 'resolve');
+      if (fn?.type === 'member_expression' && fn.childForFieldName('object')?.text === 'process' && name === 'cwd') return [atCaller('', 'cwd')];
+      if (name === 'homedir' && (fn?.type === 'identifier' || fn?.childForFieldName('object')?.text === 'os')) return [atCaller('', 'home')];
+      if (jsPathCall(fn, name) && name === 'resolve') {
+        // resolve() starts from the directory the process runs in unless a
+        // segment is absolute, so a relative first segment is the caller's.
+        if (args.length === 0) return [atCaller('', 'cwd')];
+        return joinValues([fromCaller(evalJs(args[0], ctx, next)), ...args.slice(1).map((arg) => evalJs(arg, ctx, next))], true);
+      }
+      if (jsPathCall(fn, name) && name === 'join') {
+        return joinValues(args.map((arg) => evalJs(arg, ctx, next)), false);
       }
       if (jsPathCall(fn, name) && name === 'dirname') return dirnameValues(evalJs(args[0], ctx, next));
       if (jsPathCall(fn, name) && name === 'normalize') return evalJs(args[0], ctx, next);
@@ -609,7 +633,7 @@ function evalPy(node, ctx, depth) {
             .map((child) => (child.type === 'interpolation' ? evalPy(child.namedChildren[0], ctx, next) : [closed(child.text)])),
         );
       }
-      return [closed(stringTexts(node, true).join(''))];
+      return [literalValue(stringTexts(node, true).join(''))];
     case 'concatenated_string':
       return concat(node.namedChildren.map((child) => evalPy(child, ctx, next)));
     case 'binary_operator': {
@@ -622,7 +646,9 @@ function evalPy(node, ctx, depth) {
     }
     case 'boolean_operator':
       if (node.childForFieldName('operator')?.text !== 'or') return [];
-      return union([evalPy(node.childForFieldName('left'), ctx, next), evalPy(node.childForFieldName('right'), ctx, next)]);
+      return fallback(evalPy(node.childForFieldName('left'), ctx, next), evalPy(node.childForFieldName('right'), ctx, next));
+    case 'subscript':
+      return pyEnvironment(node.childForFieldName('value'), node.childForFieldName('subscript'));
     case 'conditional_expression':
       return union([evalPy(node.namedChildren[0], ctx, next), evalPy(node.namedChildren[2], ctx, next)]);
     case 'identifier':
@@ -635,6 +661,10 @@ function evalPy(node, ctx, depth) {
       const fn = node.childForFieldName('function');
       const args = argumentNodes(node);
       const name = dottedName(fn);
+      if (PY_CWD.has(name)) return [atCaller('', 'cwd')];
+      if (PY_HOME.has(name)) return [atCaller('', 'home')];
+      if (name === 'os.environ.get' || name === 'os.getenv' || name === 'getenv') return pyEnvironment(null, args[0]);
+      if (PY_ABSOLUTE.has(name)) return fromCaller(evalPy(args[0], ctx, next));
       if (PY_JOIN.has(name) || PY_PATH.has(name)) {
         if (args.length === 0) return PY_PATH.has(name) ? [closed('')] : [];
         return joinValues(args.map((arg) => evalPy(arg, ctx, next)), false);
@@ -644,7 +674,8 @@ function evalPy(node, ctx, depth) {
       if (fn?.type === 'attribute') {
         const attribute = fn.childForFieldName('attribute')?.text;
         const object = fn.childForFieldName('object');
-        if (attribute === 'resolve' || attribute === 'absolute' || attribute === 'expanduser') return evalPy(object, ctx, next);
+        if (attribute === 'resolve' || attribute === 'absolute') return fromCaller(evalPy(object, ctx, next));
+        if (attribute === 'expanduser') return evalPy(object, ctx, next);
         if (attribute === 'joinpath') return joinValues([object, ...args].map((arg) => evalPy(arg, ctx, next)), false);
         if (attribute === 'with_name' && args.length === 1) {
           return joinValues([dirnameValues(evalPy(object, ctx, next)), evalPy(args[0], ctx, next)], false);
@@ -864,6 +895,42 @@ function closed(text) {
 // and from wherever.
 function anchored(text) {
   return { text, open: false, anchor: 'file' };
+}
+
+// A value relative to where the code is run from ('cwd') or to the home
+// directory ('home') is the caller's place, not the repository's: the same
+// line writes somewhere else for every person who runs it.
+function atCaller(text, anchor) {
+  return { text, open: false, anchor };
+}
+
+function outside(value) {
+  return value.anchor === 'cwd' || value.anchor === 'home';
+}
+
+// A literal that starts at ~ is in the home directory.
+function literalValue(text) {
+  if (text === '~' || text.startsWith('~/')) return atCaller(text.slice(2), 'home');
+  return closed(text);
+}
+
+// A relative path with nothing fixing where it starts, handed to something
+// that resolves it against the working directory.
+function fromCaller(values) {
+  return values.map((value) => (value.anchor == null && !value.rooted && !value.text.startsWith('/') ? { ...value, anchor: 'cwd' } : value));
+}
+
+// dir || '.' is a place the caller passes, or the one they are standing in.
+function fallback(left, right) {
+  if (left.length > 0) return union([left, right]);
+  return right.map((value) => (value.anchor == null && !value.open && (value.text === '.' || value.text === './') ? atCaller('', 'cwd') : value));
+}
+
+// os.environ['HOME'] and os.getenv('HOME') are the home directory.
+function pyEnvironment(object, name) {
+  if (object != null && object.text !== 'os.environ') return [];
+  if (name?.type !== 'string') return [];
+  return HOME_VARIABLES.has(stringTexts(name, true).join('')) ? [atCaller('', 'home')] : [];
 }
 
 // A value that is only the file's own path, or a directory holding it, names
@@ -1095,7 +1162,7 @@ function rawUrls(text, places) {
 function sortEntries(entries) {
   const unique = new Map();
   for (const entry of entries) {
-    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}`, entry);
+    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}\0${entry.relative ? 1 : 0}`, entry);
   }
   return [...unique.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
 }
@@ -1233,9 +1300,10 @@ function key(node) {
  * @param {{ files: object[], doors: object[], boundaries: object[], places: { files: Set<string>, dirs: Set<string> } }} input
  */
 export function attachLandings({ files, doors, boundaries, places }) {
+  const mapped = doors.filter((door) => !door.parseError);
+  settleRelativePaths(files, mapped);
   const own = files.filter((file) => !isTestMaterial(file.path)).sort((a, b) => compare(a.path, b.path));
   const byPath = new Map(own.map((file) => [file.path, file]));
-  const mapped = doors.filter((door) => !door.parseError);
 
   const writers = new Map();
   const readers = new Map();
@@ -1292,6 +1360,36 @@ export function attachLandings({ files, doors, boundaries, places }) {
     if (spans.has(target)) landing.spans = spans.get(target);
     return landing;
   });
+}
+
+/**
+ * A bare relative path is relative to the directory the code runs in. A
+ * workflow runs from the repository root, so for a file a workflow reaches
+ * that directory is this repository. A file reached only through a command
+ * or package people install runs wherever they are, so its bare paths are
+ * theirs: counted as outside, never a place here. A file no door reaches
+ * keeps its paths, as nothing says whose directory they are.
+ */
+function settleRelativePaths(files, doors) {
+  const byWorkflow = new Set();
+  const byInstall = new Set();
+  for (const door of doors) {
+    const into = door.kind === 'command' || door.kind === 'package' ? byInstall : byWorkflow;
+    for (const path of door.reachFiles ?? []) into.add(path);
+  }
+  for (const file of files) {
+    const theirs = byInstall.has(file.path) && !byWorkflow.has(file.path);
+    for (const [kind, count] of [['writes', 'outsideWrites'], ['reads', 'outsideReads']]) {
+      if (!Array.isArray(file[kind])) continue;
+      const kept = [];
+      for (const entry of file[kind]) {
+        const { relative, ...rest } = entry;
+        if (theirs && relative) file[count] = (file[count] ?? 0) + 1;
+        else kept.push(rest);
+      }
+      file[kind] = sortEntries(kept);
+    }
+  }
 }
 
 /**

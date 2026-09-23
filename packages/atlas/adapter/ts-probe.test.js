@@ -67,12 +67,10 @@ describe('what the TypeScript probe found', () => {
   it('lands no write on a directory of parts, so the receipt that was hidden under it surfaces', () => {
     const packages = structure.landings.find((landing) => landing.target === 'packages');
     assert.equal(packages.spans, 6);
-    // packages/starter- stops partway through a name the starter directories
-    // share: it names one of them or a new one beside them, weakly.
-    assert.deepEqual(packages.writers, [
-      { by: 'packages/cli/src/create-starter.ts', confidence: 'ast' },
-      { by: 'packages/cli/src/create-starter.ts', confidence: 'weak' },
-    ]);
+    // path.resolve('packages/starter-…') starts from the directory the script
+    // is run in, so it is counted outside; the join beside it names packages/.
+    assert.deepEqual(packages.writers, [{ by: 'packages/cli/src/create-starter.ts', confidence: 'ast' }]);
+    assert.equal(structure.boundaries.find((boundary) => boundary.name === 'cli').outsideWrites, 1);
     assert.equal(markdown.includes('**packages/**'), false, markdown);
     // live.mjs writes a receipt beside itself that is not tracked: it is that
     // file, not the scripts directory.

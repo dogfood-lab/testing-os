@@ -43,7 +43,8 @@ function siteCounts(files) {
 }
 
 // Reads and writes whose path is built at run time name no place, so the map
-// can only count them. Test material is left out for the reason landings leave
+// can only count them, and so do those that go to the directory the code is
+// run in or to the home directory, which are the caller's places. Test material is left out for the reason landings leave
 // it out: what it names is a temporary copy, not the repository.
 //
 // A command handed to a child process whose program or arguments are built at
@@ -56,14 +57,18 @@ function dynamicCounts(files) {
   let writes = 0;
   let spawns = 0;
   let spawnsInTests = 0;
+  let outsideReads = 0;
+  let outsideWrites = 0;
   for (const file of files) {
     spawns += file.dynamicSpawns ?? 0;
     if (isTestFile(file.path)) spawnsInTests += file.dynamicSpawns ?? 0;
     if (isTestMaterial(file.path)) continue;
     reads += file.dynamicReads ?? 0;
     writes += file.dynamicWrites ?? 0;
+    outsideReads += file.outsideReads ?? 0;
+    outsideWrites += file.outsideWrites ?? 0;
   }
-  return { reads, spawns, spawnsInTests, writes };
+  return { outsideReads, outsideWrites, reads, spawns, spawnsInTests, writes };
 }
 
 function resolvedFiles(file) {
@@ -135,7 +140,11 @@ export function buildArtifact(mapped, commit) {
     const sites = siteCounts(files);
     const dynamic = dynamicCounts(files);
     const named = sites.externals > 0 ? { externalNames: sites.externalNames } : {};
-    const outside = sites.outside > 0 ? { outsideImports: sites.outside } : {};
+    const outside = {
+      ...(sites.outside > 0 ? { outsideImports: sites.outside } : {}),
+      ...(dynamic.outsideReads > 0 ? { outsideReads: dynamic.outsideReads } : {}),
+      ...(dynamic.outsideWrites > 0 ? { outsideWrites: dynamic.outsideWrites } : {}),
+    };
     return {
       ...named,
       ...outside,

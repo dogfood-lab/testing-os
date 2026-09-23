@@ -1,0 +1,9 @@
+name: Catalog
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/build-catalog.mjs
+      - run: python tools/stamp.py
