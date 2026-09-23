@@ -261,10 +261,10 @@ function carryReader(entry) {
   return out;
 }
 
-// A run carries directory, matched and via only when they say something, so a
-// file the workflow names reads as it always has.
+// A run always says whether the door runs the file or only checks it; it
+// carries directory, matched and via only when they say something.
 function carryRun(run) {
-  const out = { job: run.job, path: run.path };
+  const out = { job: run.job, path: run.path, runKind: run.runKind ?? 'executes' };
   if (run.directory) out.directory = true;
   if (run.matched) out.matched = true;
   if (run.via) out.via = run.via;
@@ -291,6 +291,7 @@ function carryDoor(door) {
     readers: door.readers.filter((entry) => !inAtlas(entry.target) && !inAtlas(entry.by)).map(carryReader),
     runs: door.runs.map(carryRun),
     runsCount: door.runsCount,
+    checksCount: door.checksCount ?? 0,
     secrets: [...door.secrets],
     sends: {
       deploysPages: door.sends.deploysPages,

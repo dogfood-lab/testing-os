@@ -208,10 +208,21 @@ function runs(ctx, door) {
   return arr(door.runs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
 }
 
-// runsCount is how many paths the door runs when page.json lists fewer, so
-// "and N more" counts every one.
+// The paths a door only checks (a linter or a type-checker reads them and
+// runs none), which page.js lists apart from the ones it runs. A page.json
+// written before the two were told apart lists every path under runs.
+function checks(ctx, door) {
+  return arr(door.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
+}
+
+// runsCount and checksCount are how many paths the door runs and checks when
+// page.json lists fewer, so "and N more" counts every one.
 function runTotal(door, items) {
   return Math.max(Number(door?.runsCount) || 0, items.length);
+}
+
+function checkTotal(door, items) {
+  return Math.max(Number(door?.checksCount) || 0, items.length);
 }
 
 function runsShown(items, total = items.length) {
@@ -354,8 +365,11 @@ function comesIn(ctx) {
     const name = `<strong>${esc(door.name)}.</strong>`;
     if (door.parseError) return `${name} This workflow could not be read.`;
     const paths = runs(ctx, door);
-    const verb = capitalize(startVerb(door));
-    const ran = paths.length > 0 ? `${verb} ${runsShown(paths, runTotal(door, paths))}.` : `${verb} no file this map can see.`;
+    const checked = checks(ctx, door);
+    const clauses = [];
+    if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths))}`);
+    if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked))}`);
+    const ran = capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`);
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
     const when = capitalize(arr(door.triggers).map(str).join('; ')) || 'Nothing this map can read starts it';
     return `${name} ${inline(when)}. ${ran}`;
@@ -370,10 +384,12 @@ function comesIn(ctx) {
 function doorSteps(ctx, door) {
   const steps = [];
   const paths = runs(ctx, door);
+  const checked = checks(ctx, door);
   const subject = installed(door) ? `The ${door.kind} ${startVerb(door)}` : 'The workflow runs';
-  steps.push(paths.length > 0
-    ? `${subject} ${runsShown(paths, runTotal(door, paths))}.`
-    : `${subject} no file this map can see.`);
+  const clauses = [];
+  if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths))}`);
+  if (checked.length > 0) clauses.push(`${paths.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked))}`);
+  steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
   if (arr(door.stages).length > 0) steps.push(`It commits ${commitsClause(ctx, door)}.`);
@@ -468,10 +484,16 @@ function otherDoors(ctx) {
     if (door.parseError) return p(`<strong>${esc(door.name)}.</strong> This workflow could not be read.`);
     const clauses = [];
     const paths = runs(ctx, door);
+    const checked = checks(ctx, door);
     const verb = startVerb(door);
-    clauses.push(paths.length > 0
-      ? { html: `${verb} ${runsShown(paths, runTotal(door, paths))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths))}` }
-      : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
+    if (paths.length > 0 || checked.length === 0) {
+      clauses.push(paths.length > 0
+        ? { html: `${verb} ${runsShown(paths, runTotal(door, paths))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths))}` }
+        : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
+    }
+    if (checked.length > 0) {
+      clauses.push({ html: `checks ${runsShown(checked, checkTotal(door, checked))}`, text: `checks ${runsShownText(checked, checkTotal(door, checked))}` });
+    }
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => str(entry.boundary))))].sort(cmp).map((part) => ctx.name(part));
     if (reached.length > 0) clauses.push({ html: `reaches ${list(reached.map(esc))}`, text: `reaches ${list(reached)}` });
     const landings = arr(door.landings).map(str);

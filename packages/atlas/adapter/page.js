@@ -27,6 +27,8 @@ const SUB_INDENT = '   ';
 // the ones with the most work to put in order.
 const INNER_SHOWN = 5;
 const INNER_STEPS = 3;
+// A step names the runs of at most this many parts, the rest counted.
+const GROUPS_SHOWN = 6;
 const PAIRS_SHOWN = 5;
 const UNTESTED_SHOWN = 8;
 const UNREAD_SHOWN = 8;
@@ -287,19 +289,34 @@ function runPaths(door) {
   return [...new Set((door.runs ?? []).map((run) => run.path))].sort(cmp);
 }
 
+// Whether the door runs each path or only checks it. A path any of its tools
+// runs is run; an artifact written before runs carried a kind ran all it listed.
+function runKinds(door) {
+  const kinds = new Map();
+  for (const run of door.runs ?? []) {
+    if (kinds.get(run.path) !== 'executes') kinds.set(run.path, run.runKind === 'checks' ? 'checks' : 'executes');
+  }
+  return kinds;
+}
+
 // The runs the page names: a path under a directory the door also runs is
 // part of that run, so the directory is named and the path is not, unless the
 // commands name the path and only a tool's patterns reached the directory: a
 // script the workflow runs by name stays named under the directory a linter
-// covers. What the commands name comes before what a tool's patterns
-// matched, so a door that runs a script and a test suite leads with the script.
-function shownRuns(door) {
+// covers. A directory that is only checked never stands for a path that is
+// run. What the commands name comes before what a tool's patterns matched, so
+// a door that runs a script and a test suite leads with the script. Given a
+// kind, only the paths of that kind are named.
+function shownRuns(door, kind = null) {
   const paths = runPaths(door);
+  const kinds = runKinds(door);
   const dirs = paths.filter((path) => path.endsWith('/'));
   const named = new Set((door.runs ?? []).filter((run) => !run.matched).map((run) => run.path));
-  const within = (path, dir) => dir !== path && path.startsWith(dir) && (!named.has(path) || named.has(dir));
+  const within = (path, dir) => dir !== path && path.startsWith(dir) && (!named.has(path) || named.has(dir))
+    && (kinds.get(dir) === 'executes' || kinds.get(path) === 'checks');
   return paths
     .filter((path) => !dirs.some((dir) => within(path, dir)))
+    .filter((path) => kind == null || kinds.get(path) === kind)
     .sort((a, b) => Number(!named.has(a)) - Number(!named.has(b)) || cmp(a, b));
 }
 
@@ -440,20 +457,34 @@ export function runsShown(paths, total = paths.length) {
   return `${shown.join(', ')} and ${all - shown.length} more`;
 }
 
-// How many runs the page would name without the artifact's cap: the ones it
-// names, and the ones the artifact counted but did not record.
-function runTotal(door) {
-  const recorded = runPaths(door).length;
-  return shownRuns(door).length + Math.max(0, (door.runsCount ?? recorded) - recorded);
+// How many runs of a kind the page would name without the artifact's cap:
+// the ones it names, and the ones the artifact counted but did not record.
+function runTotal(door, kind = null) {
+  const kinds = runKinds(door);
+  const recorded = runPaths(door).filter((path) => kind == null || kinds.get(path) === kind).length;
+  const checks = door.checksCount ?? 0;
+  let counted = door.runsCount ?? recorded;
+  if (door.runsCount != null && kind === 'checks') counted = checks;
+  else if (door.runsCount != null && kind === 'executes') counted = door.runsCount - checks;
+  return shownRuns(door, kind).length + Math.max(0, counted - recorded);
+}
+
+// "runs X; checks Y", or null when the door names no file at all.
+function runsAndChecks(door, verb) {
+  const clauses = [];
+  const ran = shownRuns(door, 'executes');
+  const checked = shownRuns(door, 'checks');
+  if (ran.length > 0) clauses.push(`${verb} ${runsShown(ran, runTotal(door, 'executes'))}`);
+  if (checked.length > 0) clauses.push(`checks ${runsShown(checked, runTotal(door, 'checks'))}`);
+  return clauses.length > 0 ? clauses.join('; ') : null;
 }
 
 function comesIn(ctx) {
   const lines = ['## What comes in'];
   const items = ctx.doors.map((door, index) => {
     if (door.parseError) return `${index + 1}. **${door.name}.** This workflow could not be read.`;
-    const paths = shownRuns(door);
-    const verb = capitalize(startVerb(door));
-    const runs = paths.length > 0 ? `${verb} ${runsShown(paths, runTotal(door))}.` : `${verb} no file this map can see.`;
+    const named = runsAndChecks(door, startVerb(door));
+    const runs = capitalize(named ? `${named}.` : `${startVerb(door)} no file this map can see.`);
     if (installed(door)) return `${index + 1}. **${door.name}** (${installedAs(door)}). ${runs}`;
     const when = capitalize(triggerPhrases(door).join('; ')) || 'Nothing this map can read starts it';
     return `${index + 1}. **${door.name}.** ${when}. ${runs}`;
@@ -499,25 +530,40 @@ function filesRun(ctx, paths) {
 }
 
 // More than three runs in one part are named by the files they add up to in
-// that part, so a door that runs a test suite does not list every test.
-function runGroups(ctx, door) {
+// that part, so a door that runs a test suite does not list every test. A
+// suite that spans more than six parts would still list every part, so the
+// parts holding a file the commands name come first, as they do in "What
+// comes in", and past the fifth the rest are counted.
+function runGroups(ctx, door, paths) {
   const groups = new Map();
-  for (const path of shownRuns(door)) {
+  for (const path of paths) {
     const boundary = runPart(ctx, path);
     const key = boundary ?? `\0${path}`;
     if (!groups.has(key)) groups.set(key, { boundary, paths: [] });
     groups.get(key).paths.push(path);
   }
   const order = new Map((door.reach ?? []).map((entry, index) => [entry.boundary, index]));
-  const ordered = [...groups.values()].sort((a, b) => (
+  let ordered = [...groups.values()].sort((a, b) => (
     (order.get(a.boundary) ?? Infinity) - (order.get(b.boundary) ?? Infinity) || cmp(a.paths[0], b.paths[0])
   ));
+  let rest = [];
+  if (ordered.length > GROUPS_SHOWN) {
+    const named = new Set((door.runs ?? []).filter((run) => !run.matched).map((run) => run.path));
+    const holdsNamed = (group) => group.paths.some((path) => named.has(path));
+    ordered = [...ordered.filter(holdsNamed), ...ordered.filter((group) => !holdsNamed(group))];
+    rest = ordered.slice(GROUPS_SHOWN - 1);
+    ordered = ordered.slice(0, GROUPS_SHOWN - 1);
+  }
   const parts = ordered.map((group) => {
     if (!group.boundary) return list(group.paths.map((path) => spanning(ctx, path)));
     const named = group.paths.length > RUNS_SHOWN ? count(filesRun(ctx, group.paths), 'file') : list(group.paths);
     return `${named} in ${ctx.shown(group.boundary)}`;
   });
-  return list(parts, { serial: ordered.some((group) => group.paths.length > 1) });
+  if (rest.length > 0) {
+    const places = rest.every((group) => group.boundary) ? 'part' : 'place';
+    parts.push(`${count(filesRun(ctx, rest.flatMap((group) => group.paths)), 'file')} in ${rest.length} more ${places}s`);
+  }
+  return list(parts, { serial: ordered.some((group) => group.paths.length > 1) || rest.length > 0 });
 }
 
 function deeper(door) {
@@ -539,9 +585,13 @@ function writes(ctx, door) {
 
 function doorSteps(ctx, door) {
   const steps = [];
-  const paths = shownRuns(door);
+  const ran = shownRuns(door, 'executes');
+  const checked = shownRuns(door, 'checks');
   const subject = installed(door) ? `The ${door.kind} ${startVerb(door)}` : 'The workflow runs';
-  steps.push(paths.length > 0 ? `${subject} ${runGroups(ctx, door)}.` : `${subject} no file this map can see.`);
+  const clauses = [];
+  if (ran.length > 0) clauses.push(`${subject} ${runGroups(ctx, door, ran)}`);
+  if (checked.length > 0) clauses.push(`${ran.length > 0 ? 'it' : 'The workflow'} checks ${runGroups(ctx, door, checked)}`);
+  steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   const places = writes(ctx, door);
   if (places.length > 0) steps.push(`It writes to ${list(places)}.`);
@@ -639,7 +689,7 @@ function inOrder(lead, texts, indent) {
  */
 function sequences(ctx, door) {
   const out = [];
-  const named = [...new Set((door.runs ?? []).filter((run) => !run.matched).map((run) => run.path))].sort(cmp);
+  const named = [...new Set((door.runs ?? []).filter((run) => !run.matched && run.runKind !== 'checks').map((run) => run.path))].sort(cmp);
   for (const path of named) {
     const file = ctx.fileOf.get(path);
     const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
@@ -809,9 +859,13 @@ function otherDoors(ctx, main) {
   const paragraphs = rest.map((door) => {
     if (door.parseError) return `**${door.name}.** This workflow could not be read.`;
     const clauses = [];
-    const paths = shownRuns(door);
     const verb = startVerb(door);
-    clauses.push(paths.length > 0 ? `${verb} ${runsShown(paths, runTotal(door))}` : `${verb} no file this map can see`);
+    const ran = shownRuns(door, 'executes');
+    const checked = shownRuns(door, 'checks');
+    if (ran.length > 0 || checked.length === 0) {
+      clauses.push(ran.length > 0 ? `${verb} ${runsShown(ran, runTotal(door, 'executes'))}` : `${verb} no file this map can see`);
+    }
+    if (checked.length > 0) clauses.push(`checks ${runsShown(checked, runTotal(door, 'checks'))}`);
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => entry.boundary)))].sort(cmp);
     if (reached.length > 0) clauses.push(`reaches ${list(reached.map(ctx.shown))}`);
     const places = writes(ctx, door);
@@ -1303,7 +1357,14 @@ function startHere(ctx, main, groups) {
   const chain = [main.file];
   const byName = new Map(ctx.boundaries.map((boundary) => [boundary.name, boundary]));
   const depthZero = (main.reach ?? []).filter((entry) => entry.depth === 0);
-  const paths = shownRuns(main);
+  // The path starts at a file the door runs; a file it only lints is read,
+  // not followed, so it starts there only when nothing is run. Of the files
+  // it runs, one its commands name comes before one a test runner's patterns
+  // matched: a gate script says more about the door than its hundredth test.
+  const named = new Set((main.runs ?? []).filter((run) => !run.matched).map((run) => run.path));
+  const ran = shownRuns(main, 'executes');
+  const spelled = ran.filter((path) => named.has(path));
+  const paths = spelled.length > 0 ? spelled : ran.length > 0 ? ran : shownRuns(main);
   const filesIn = (path) => depthZero.find((entry) => entry.boundary === runPart(ctx, path))?.files ?? 0;
   const first = [...paths].sort((a, b) => filesIn(b) - filesIn(a) || cmp(a, b))[0];
   if (first) chain.push(first);
@@ -1427,7 +1488,8 @@ function limits(ctx, shownText) {
     if (door.parseError) continue;
     const recorded = runPaths(door).length;
     if ((door.runsCount ?? 0) <= recorded) continue;
-    lines.push(`${door.name} runs ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from those.`);
+    const verb = (door.checksCount ?? 0) > 0 ? 'runs or checks' : 'runs';
+    lines.push(`${door.name} ${verb} ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from those.`);
   }
   const confidence = ctx.statistics.confidence;
   if (confidence?.level === 'low') {
@@ -1503,8 +1565,10 @@ function doorData(ctx, door) {
     name: door.name,
     pushes: door.pushes === true,
     reach: (door.reach ?? []).map((entry) => ({ boundary: entry.boundary, depth: entry.depth, files: entry.files })),
-    runs: shownRuns(door),
-    runsCount: runTotal(door),
+    checks: shownRuns(door, 'checks'),
+    checksCount: runTotal(door, 'checks'),
+    runs: shownRuns(door, 'executes'),
+    runsCount: runTotal(door, 'executes'),
     sends: sendPhrases(door),
     stages: stagedShown(door.stages),
     triggers: triggerPhrases(door),

@@ -137,9 +137,11 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned }));
   for (const door of doors) {
     if (door.parseError) continue;
+    // A checker reaches the code it reads, so the reach is walked from every
+    // run; what the door writes is read only from the files it runs.
     const walked = walkReach(door.runs.map((run) => run.path), graph);
     door.reach = walked.reach;
-    door.reachFiles = walked.files;
+    door.reachFiles = walkReach(door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path), graph).files;
   }
   const landings = attachLandings({ files: [...graph.files.values()], doors, boundaries: boundaryList, places });
   for (const door of doors) delete door.reachFiles;

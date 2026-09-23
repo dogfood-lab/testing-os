@@ -173,7 +173,7 @@ describe('atlas explain on the doors fixture', () => {
     }
     assert.equal(facts.part, 'tools');
     assert.equal(facts.role, 'code');
-    assert.deepEqual(facts.doors, { isDoor: null, onPath: ['Checks', 'Ingest', 'weekly'], runBy: ['Ingest'] });
+    assert.deepEqual(facts.doors, { checkedBy: [], isDoor: null, onPath: ['Checks', 'Ingest', 'weekly'], runBy: ['Ingest'] });
     assert.equal(facts.importGrain, 'part');
     assert.deepEqual(facts.imports, ['lib']);
     assert.deepEqual(facts.writes, [

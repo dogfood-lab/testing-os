@@ -316,6 +316,21 @@ describe('compareStructures', () => {
     ]);
   });
 
+  it('says a door now checks a path a linter reads, apart from what it runs', () => {
+    const ci = (runs) => ({ file: '.github/workflows/ci.yml', name: 'CI', reach: [], runs, triggers: [{ event: 'push' }] });
+    const previous = structure({ doors: [ci([{ job: 'j', path: 'scripts/gate.mjs', runKind: 'executes' }])] });
+    const current = structure({ doors: [ci([
+      { job: 'j', path: 'lib/', directory: true, runKind: 'checks' },
+      { job: 'j', path: 'scripts/gate.mjs', runKind: 'executes' },
+      { job: 'j', path: 'test/', directory: true, runKind: 'executes' },
+    ])] });
+    assert.deepEqual(sentences(compareStructures(previous, current)), [
+      'CI now also runs test/.',
+      'CI now also checks lib/.',
+      'No file changed.',
+    ]);
+  });
+
   it('says first when there is no committed structure', () => {
     assert.deepEqual(changesSince(null, structure()), { first: true });
   });

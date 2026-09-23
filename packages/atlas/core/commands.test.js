@@ -27,8 +27,12 @@ function tree(files) {
   return repositoryView({ repoPath: root, tracked: new Set(Object.keys(files)) });
 }
 
+// A run is executed unless it says otherwise, so only a checked run's kind is
+// kept in what the cases compare.
 function runs(repo, text, dir = '') {
-  return [...readCommands(text, dir, repo).runs.values()].sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
+  return [...readCommands(text, dir, repo).runs.values()]
+    .map(({ runKind, ...run }) => (runKind === 'checks' ? { ...run, runKind } : run))
+    .sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
 }
 
 describe('command reader', () => {
@@ -65,8 +69,8 @@ describe('command reader', () => {
 
   it('writes a checker over the whole tree as the directories its Python files fill', () => {
     assert.deepEqual(runs(repo, 'ruff check .'), [
-      { path: 'pkg/', directory: true, matched: true, via: 'ruff' },
-      { path: 'tools/b.py', matched: true, via: 'ruff' },
+      { path: 'pkg/', directory: true, matched: true, via: 'ruff', runKind: 'checks' },
+      { path: 'tools/b.py', matched: true, via: 'ruff', runKind: 'checks' },
     ]);
   });
 });

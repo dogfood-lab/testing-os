@@ -1,0 +1,11 @@
+name: CI
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run lint
+      - run: npm test
+      - run: node scripts/gate.mjs

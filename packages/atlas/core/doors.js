@@ -72,6 +72,7 @@ export function mapCommandDoors({ repoPath, tracked, spawned, commands }) {
       commands: [],
       runs: recorded.kept,
       runsCount: recorded.count,
+      checksCount: recorded.checks,
       mentions: [],
       stages: [],
       pushes: false,
@@ -167,6 +168,7 @@ function readDoor(repoPath, file, repo) {
     commands,
     runs: recorded.kept,
     runsCount: recorded.count,
+    checksCount: recorded.checks,
     mentions: [...mentions.values()]
       .filter((mention) => !runKeys.has(`${mention.path}\0${mention.job}`) && !underRun(mention.path, mention.job))
       .sort(byPathThenJob),
@@ -191,18 +193,22 @@ function readDoor(repoPath, file, repo) {
 /**
  * The runs a door records, sorted by path then job. A file a tool's patterns
  * matched under a directory the same job already runs is not listed again,
- * since the directory stands for it. The list keeps RUNS_RECORDED paths:
+ * since the directory stands for it, unless the directory is only checked
+ * and the file is run: a linter over scripts/ does not stand for the script
+ * a test runner executes. The list keeps RUNS_RECORDED paths:
  * every path the commands name first, then directories a tool's patterns
  * filled, then the files they matched, taken one from each directory in
  * turn so every directory a tool ran keeps a file and the reach walked from
  * the list reaches every part the door runs. `count` is how many distinct
  * paths there are before that cap, so a door that runs a thousand test files
  * says so without carrying them all, and never loses the script it names.
+ * `checks` is how many of those paths are only checked, never run.
  */
 function recordedRuns(entries) {
   const directories = entries.filter((entry) => entry.directory);
   const covered = (entry) => entry.matched && directories.some((dir) => (
     dir.job === entry.job && entry.path !== dir.path && entry.path.startsWith(dir.path)
+    && (dir.runKind !== 'checks' || entry.runKind === 'checks')
   ));
   const all = entries.filter((entry) => !covered(entry)).sort((a, b) => compare(a.path, b.path) || compare(a.job, b.job));
   const rank = new Map();
@@ -218,9 +224,11 @@ function recordedRuns(entries) {
     turn.set(path, taken.get(parent) ?? 0);
     taken.set(parent, (taken.get(parent) ?? 0) + 1);
   }
-  const paths = [...rank.keys()].sort((a, b) => rank.get(a) - rank.get(b) || (turn.get(a) ?? 0) - (turn.get(b) ?? 0) || compare(a, b));
+  const executed = new Set(all.filter((entry) => entry.runKind !== 'checks').map((entry) => entry.path));
+  const paths = [...rank.keys()].sort((a, b) => rank.get(a) - rank.get(b) || (turn.get(a) ?? 0) - (turn.get(b) ?? 0)
+    || Number(!executed.has(a)) - Number(!executed.has(b)) || compare(a, b));
   const shown = new Set(paths.slice(0, RUNS_RECORDED));
-  return { all, kept: all.filter((entry) => shown.has(entry.path)), count: paths.length };
+  return { all, kept: all.filter((entry) => shown.has(entry.path)), count: paths.length, checks: paths.filter((path) => !executed.has(path)).length };
 }
 
 function commandSends(run, sends) {

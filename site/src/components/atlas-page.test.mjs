@@ -444,6 +444,29 @@ test('a command a manifest installs reads as one people run, and is followed by 
   assert.ok(followed.includes('Read those in order to follow one run of tool end to end.'));
 });
 
+test('a door says what it runs apart from what it only checks', () => {
+  const ci = {
+    checks: ['lib/', 'tools/'],
+    checksCount: 2,
+    file: '.github/workflows/ci.yml',
+    id: '.github/workflows/ci.yml',
+    landings: ['reports/gate.json'],
+    name: 'CI',
+    pushes: false,
+    reach: [{ boundary: 'scripts', depth: 0, files: 1 }],
+    runs: ['scripts/gate.mjs'],
+    runsCount: 1,
+    sends: [],
+    stages: [],
+    triggers: ['on a push to main'],
+  };
+  const text = plain(render.renderPage({ ...page, doors: [ci], mainDoor: ci.id, sequences: [] }, { repo: page.repo }));
+  assert.ok(text.includes('CI. On a push to main. Runs scripts/gate.mjs; checks lib/ and tools/.'), 'what comes in');
+  assert.ok(text.includes('The workflow runs scripts/gate.mjs; it checks lib/ and tools/.'), 'what happens');
+  const other = plain(render.renderPage({ ...page, doors: [...page.doors, { ...ci, id: 'x', file: 'x' }] }, { repo: page.repo }));
+  assert.ok(other.includes('CI runs scripts/gate.mjs, checks lib/ and tools/, and writes to reports/gate.json.'), 'the other doors');
+});
+
 test('file paths link to the blob at the mapped commit, places to the tree', () => {
   const html = render.renderPage(page, { repo: page.repo });
   const blob = `https://github.com/dogfood-lab/testing-os/blob/${page.commit}/`;
