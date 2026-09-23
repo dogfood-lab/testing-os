@@ -5,6 +5,8 @@ sidebar:
   order: 1.5
 ---
 
+![An isometric blueprint on a dark drafting sheet: a door on the left where work enters, conveyors and rollers carrying it through a machine, and shelves of boxes on the right where it is kept.](../../atlas/hero.webp)
+
 Atlas reads a repository and writes a page that says how it works: what comes in, what runs, where it lands, who reads it, what breaks what, what changed since the last map, and where to start reading. No sentence on that page is written by a person. It is derived from the workflows, the manifests, the imports, the writes and reads in the code, the tools the workflows run, and the git history, and it is regenerated whenever the repository changes.
 
 The page is for anyone who has to understand a repository they did not write: a new contributor, a reviewer, an operator, or a model.
