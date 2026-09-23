@@ -12,6 +12,7 @@ export const BUILD_OUTPUT = resolve(REPO_ROOT, 'fixtures/atlas/build-output');
 export const PYTHON_SRC = resolve(REPO_ROOT, 'fixtures/atlas/python-src');
 export const PYTHON_FLAT = resolve(REPO_ROOT, 'fixtures/atlas/python-flat');
 export const DOORS = resolve(REPO_ROOT, 'fixtures/atlas/doors');
+export const SEQUENCE = resolve(REPO_ROOT, 'fixtures/atlas/sequence');
 
 export const ALPHA = { name: 'alpha', globs: ['packages/alpha/**'], role: 'code', status: 'accepted' };
 export const BETA = { name: 'beta', globs: ['packages/beta/**'], role: 'code', status: 'accepted' };

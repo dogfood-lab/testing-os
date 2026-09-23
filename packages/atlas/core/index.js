@@ -10,6 +10,7 @@ import { deriveEntryPoints } from './entry-points.js';
 import { astLandings, attachLandings, noLandings, textLandings, trackedPlaces } from './landings.js';
 import { walkReach } from './reach.js';
 import { attachResolution } from './resolve.js';
+import { attachSequences, sequenceFacts } from './sequence.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
 
@@ -94,8 +95,11 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const unassigned = [];
   const overlaps = [];
 
+  // The order of work in a file is read while its tree is alive and finished
+  // once imports resolve, so the first reading waits here, keyed by path.
+  const facts = new Map();
   for (const path of tracked.regular) {
-    const file = describeFile(repoPath, path, places);
+    const file = describeFile(repoPath, path, places, facts);
     const hits = [];
     for (const matcher of matchers) {
       if (matcher.isMatch(path)) hits.push(matcher.name);
@@ -136,6 +140,8 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   }
   const landings = attachLandings({ files: [...graph.files.values()], doors, boundaries: boundaryList, places });
   for (const door of doors) delete door.reachFiles;
+  const entryPoints = new Map(boundaryList.map((boundary) => [boundary.name, [...boundary.entryPoints].sort()]));
+  attachSequences({ files: graph.files, facts, doors, entryPoints });
 
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },
@@ -241,17 +247,19 @@ function symlinkTarget(repoPath, path) {
   }
 }
 
-function describeFile(repoPath, path, places) {
+function describeFile(repoPath, path, places, facts) {
   const bytes = readFileSync(join(repoPath, path));
   const hash = createHash('sha256').update(bytes).digest('hex');
   const language = LANGUAGE_BY_EXT.get(extname(path).toLowerCase()) ?? null;
   if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };
   const extracted = parseFile(language, path, bytes.toString('utf8'), places);
   if (extracted.parseError) return { path, hash, language, parseError: true, imports: [], ...noLandings() };
+  facts.set(path, extracted.sequence);
   return { path, hash, language, imports: extracted.imports, ...extracted.landings };
 }
 
-// One parse serves both readings of a file: its imports and its landings.
+// One parse serves every reading of a file: its imports, its landings and the
+// order of the calls it makes.
 function parseFile(language, path, source, places) {
   let tree;
   try {
@@ -264,7 +272,7 @@ function parseFile(language, path, source, places) {
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [] };
     const imports = language === 'python' ? collectPython(tree.rootNode) : collectScript(tree.rootNode);
-    return { imports, landings: astLandings(language, tree.rootNode, path, places) };
+    return { imports, landings: astLandings(language, tree.rootNode, path, places), sequence: sequenceFacts(language, tree.rootNode) };
   } finally {
     tree.delete();
   }

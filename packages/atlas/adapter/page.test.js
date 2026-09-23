@@ -70,6 +70,25 @@ function section(markdown, heading) {
   return markdown.slice(start, next === -1 ? markdown.length : next);
 }
 
+// Checks and Ingest reach as many parts; without Checks the main door is
+// Ingest, whose files carry sequences.
+function withoutChecks(structure) {
+  return { ...structure, doors: structure.doors.filter((door) => !door.file.endsWith('checks.yml')) };
+}
+
+function withEntryCalls(structure, calls) {
+  const boundaries = structure.boundaries.map((boundary) => ({
+    ...boundary,
+    files: boundary.files.map((file) => (file.path !== 'tools/ingest.js' ? file : {
+      ...file,
+      entry: 'ingest',
+      entryRule: 1,
+      sequences: [{ calls, exported: true, invokedAtTopLevel: true, isDefaultExport: false, name: 'ingest' }],
+    })),
+  }));
+  return { ...structure, boundaries };
+}
+
 before(() => {
   doors = mappedCopy('doors');
   host = mappedCopy('host');
@@ -145,6 +164,60 @@ describe('atlas page', () => {
     assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → lib\/ → indexes\/ → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);
     assert.match(section(markdown, '## What this map cannot see'), /^- Readers marked \(found by text\) come from scanning unparsed files\.$/m);
     assert.match(section(markdown, '## What breaks what'), /^- \*\*indexes\/\*\* is written by tools and workflows, and read by site and tools; a hand edit reaches every reader\.$/m);
+  });
+
+  it('writes the order of work inside the files the main door runs, one level into what they call', () => {
+    const { markdown, json } = page(doors, { structure: withoutChecks });
+    const lines = section(markdown, '## What happens through Ingest').split('\n');
+    const first = lines.indexOf('1. The workflow runs tools/ingest.js and tools/prepare.js in tools.');
+    assert.ok(first >= 0);
+    assert.deepEqual(lines.slice(first + 1, first + 4), [
+      '   1. Inside tools/ingest.js, ingest does, in order: prepare, verify (lib), load policy, write record and rebuild index.',
+      '   2. Verify in lib does, in order: check policy and confirm.',
+      '2. That reaches lib (4 files).',
+    ]);
+    // Another part is named once, after the first step that enters it.
+    assert.equal(lines[first + 1].split('(lib)').length - 1, 1);
+    // lib/verify.js hands checkSchema to runCheck; a function passed is not
+    // known to run there, so the artifact keeps it and the page does not.
+    assert.equal(markdown.includes('check schema'), false);
+    const [ingest] = JSON.parse(json).sequences;
+    assert.equal(ingest.file, 'tools/ingest.js');
+    assert.equal(ingest.entry, 'ingest');
+    assert.deepEqual(ingest.steps.map((step) => [step.name, step.part]), [
+      ['prepare', 'tools'],
+      ['verify', 'lib'],
+      ['loadPolicy', 'lib'],
+      ['writeRecord', 'lib'],
+      ['rebuildIndex', 'lib'],
+    ]);
+    assert.deepEqual(ingest.inner.map((inner) => [inner.name, inner.file, inner.steps.map((step) => step.phrase)]), [
+      ['verify', 'lib/verify.js', ['check policy', 'confirm']],
+    ]);
+    assert.deepEqual(JSON.parse(page(doors).json).sequences, []);
+  });
+
+  it('lists eight or more steps, stops at twelve, and folds three calls into one file into one step', () => {
+    const named = (count) => Array.from({ length: count }, (_, index) => ({
+      name: `stepNumber${index + 1}`,
+      target: { file: index % 2 === 0 ? 'lib/policy.js' : 'tools/prepare.js' },
+      line: index + 1,
+    }));
+    const inside = (calls) => section(page(doors, { structure: (structure) => withEntryCalls(withoutChecks(structure), calls) }).markdown, '## What happens through Ingest');
+    assert.match(inside(named(7)), /^ {3}1\. Inside tools\/ingest\.js, ingest does, in order: step number 1 \(lib\), step number 2, .+ and step number 7\.$/m);
+    const listed = inside(named(8)).split('\n');
+    const lead = listed.indexOf('   1. Inside tools/ingest.js, ingest does, in order:');
+    assert.ok(lead >= 0);
+    assert.deepEqual(listed.slice(lead + 1, lead + 3), ['      1. step number 1 (lib)', '      2. step number 2']);
+    assert.equal(listed[lead + 8], '      8. step number 8');
+    const capped = inside(named(14)).split('\n');
+    assert.equal(capped[capped.indexOf('   1. Inside tools/ingest.js, ingest does, in order:') + 12], '      12. step number 12, and 2 more');
+    assert.equal(capped.some((line) => line.includes('step number 13')), false);
+    const store = (name, line) => ({ name, target: { file: 'lib/store.js' }, line });
+    assert.match(
+      inside([store('openStore', 1), store('writeRecord', 2), store('closeStore', 3), { name: 'rebuildIndex', target: { file: 'tools/prepare.js' }, line: 4 }]),
+      /^ {3}1\. Inside tools\/ingest\.js, ingest does, in order: store \(lib, 3 steps\) and rebuild index\.$/m,
+    );
   });
 
   it('says there are no doors and skips the door sections when no workflow exists', () => {

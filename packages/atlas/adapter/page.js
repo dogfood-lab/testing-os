@@ -12,6 +12,13 @@ const RUNS_SHOWN = 3;
 const COLLAPSE_OVER = 3;
 const BREAK_LINES = 8;
 const PLACE_BREAKS = 2;
+// Up to seven steps read as one sentence; more are a numbered list, since a
+// reader holds about seven items at once. The list stops at twelve.
+const SENTENCE_STEPS = 7;
+const LISTED_STEPS = 12;
+// Three or more calls in a row into one file are one step: the file's work.
+const RUN_COLLAPSE = 3;
+const SUB_INDENT = '   ';
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const ROOT_NAME = 'the repository root';
 
@@ -104,12 +111,17 @@ function facts({ structure, statistics }) {
   }
   for (const file of [...(structure.unassigned ?? []), ...(structure.overlaps ?? [])]) tracked.push(file.path);
   const isDir = (target) => tracked.some((path) => path.startsWith(`${target}/`));
+  const fileOf = new Map();
+  for (const file of [...boundaries.flatMap((boundary) => boundary.files ?? []), ...(structure.unassigned ?? []), ...(structure.overlaps ?? [])]) {
+    fileOf.set(file.path, file);
+  }
   const names = new Map(boundaries.map((boundary) => [boundary.name, displayName(boundary)]));
   return {
     structure,
     statistics,
     boundaries,
     boundaryOf,
+    fileOf,
     shown: (name) => names.get(name) ?? name,
     place: (target) => (isDir(target) ? `${target}/` : target),
     doors: orderDoors(structure.doors ?? []),
@@ -320,8 +332,119 @@ function doorSteps(ctx, door) {
   return steps;
 }
 
-function happens(ctx, main) {
+// An identifier read as words: loadGlobalPolicy is "load global policy".
+function words(identifier) {
+  return String(identifier)
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+    .replace(/([A-Za-z])([0-9])/g, '$1 $2')
+    .replace(/([0-9])([A-Za-z])/g, '$1 $2')
+    .replace(/[_$.\-\s]+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+// A file is named by its stem, or by its directory when the stem is an index.
+function filePhrase(path) {
+  const parts = path.split('/');
+  const stem = parts[parts.length - 1].replace(/\.[^.]+$/, '');
+  const named = (stem === 'index' || stem === '__init__') && parts.length > 1 ? parts[parts.length - 2] : stem;
+  return words(named);
+}
+
+function partOf(ctx, target) {
+  if (target?.file) return ctx.boundaryOf.get(target.file) ?? null;
+  return target?.boundary ?? null;
+}
+
+// The steps a sequence shows. A function only handed to another call is not
+// known to run there, so it is kept in the artifact and left off the page.
+function stepUnits(ctx, calls) {
+  const shown = calls.filter((call) => !call.passed);
+  const units = [];
+  for (let i = 0; i < shown.length;) {
+    const file = shown[i].target?.file ?? null;
+    let end = i + 1;
+    while (file != null && end < shown.length && shown[end].target?.file === file) end += 1;
+    if (end - i >= RUN_COLLAPSE) {
+      units.push({ count: end - i, name: null, part: partOf(ctx, shown[i].target), phrase: filePhrase(file) });
+      i = end;
+      continue;
+    }
+    units.push({ name: shown[i].name, part: partOf(ctx, shown[i].target), phrase: words(shown[i].name) });
+    i += 1;
+  }
+  return { units, calls: shown.length };
+}
+
+// Another part is named after the first step that goes into it, once.
+function unitTexts(ctx, units, ownPart) {
+  const named = new Set();
+  return units.map((unit) => {
+    const notes = [];
+    if (unit.part != null && unit.part !== ownPart && !named.has(unit.part)) {
+      named.add(unit.part);
+      notes.push(ctx.shown(unit.part));
+    }
+    if (unit.count) notes.push(`${unit.count} steps`);
+    return notes.length > 0 ? `${unit.phrase} (${notes.join(', ')})` : unit.phrase;
+  });
+}
+
+function inOrder(lead, texts, indent) {
+  if (texts.length <= SENTENCE_STEPS) return `${lead} ${list(texts)}.`;
+  const items = texts.slice(0, LISTED_STEPS).map((text, index) => `${indent}${SUB_INDENT}${index + 1}. ${text}`);
+  if (texts.length > LISTED_STEPS) items[items.length - 1] += `, and ${texts.length - LISTED_STEPS} more`;
+  return [lead, ...items].join('\n');
+}
+
+/**
+ * The order of work inside the files the main door runs: each file's entry
+ * function, and one level into each file that function calls, when there are
+ * at least two steps to put in order.
+ */
+function sequences(ctx, door) {
+  const out = [];
+  for (const path of runPaths(door)) {
+    const file = ctx.fileOf.get(path);
+    const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
+    if (!root) continue;
+    const steps = stepUnits(ctx, root.calls);
+    if (steps.calls < 2) continue;
+    const inner = [];
+    for (const call of root.calls) {
+      if (call.passed || !call.inner) continue;
+      const innerSteps = stepUnits(ctx, call.inner);
+      if (innerSteps.calls < 2) continue;
+      inner.push({
+        file: call.target?.file ?? null,
+        name: call.name,
+        part: partOf(ctx, call.target),
+        phrase: words(call.name),
+        steps: innerSteps.units,
+      });
+    }
+    out.push({ entry: file.entry, file: path, inner, part: ctx.boundaryOf.get(path) ?? null, phrase: words(file.entry), steps: steps.units });
+  }
+  return out;
+}
+
+function sequenceLines(ctx, found) {
+  const lines = [];
+  for (const sequence of found) {
+    lines.push(inOrder(`Inside ${sequence.file}, ${sequence.phrase} does, in order:`, unitTexts(ctx, sequence.steps, sequence.part), SUB_INDENT));
+    for (const inner of sequence.inner) {
+      const where = inner.part != null ? ctx.shown(inner.part) : inner.file;
+      lines.push(inOrder(`${capitalize(inner.phrase)} in ${where} does, in order:`, unitTexts(ctx, inner.steps, inner.part), SUB_INDENT));
+    }
+  }
+  return lines.map((line, index) => `${SUB_INDENT}${index + 1}. ${line}`);
+}
+
+function happens(ctx, main, found) {
   const steps = doorSteps(ctx, main).map((step, index) => `${index + 1}. ${step}`);
+  const inside = sequenceLines(ctx, found);
+  if (inside.length > 0) steps[0] = [steps[0], ...inside].join('\n');
   return [`## What happens through ${main.name}`, steps.join('\n')].join('\n\n');
 }
 
@@ -695,6 +818,7 @@ export function buildPage({ structure, statistics, document, repoName }) {
   const generatedItems = generated(ctx);
   const authoredBoundaries = authored(ctx);
   const start = main ? startHere(ctx, main, groups) : { chain: [], words: [] };
+  const found = main ? sequences(ctx, main) : [];
   const shownText = groups.some((group) => group.readers.some((reader) => reader.text?.endsWith(' (found by text)')));
   const limitLines = limits(ctx, shownText);
 
@@ -708,7 +832,7 @@ export function buildPage({ structure, statistics, document, repoName }) {
   ];
   if (ctx.doors.length > 0) sections.push(comesIn(ctx));
   if (main) {
-    sections.push(happens(ctx, main), readsSection(ctx, main, groups));
+    sections.push(happens(ctx, main, found), readsSection(ctx, main, groups));
     const others = otherDoors(ctx, main);
     if (others) sections.push(others);
   }
@@ -733,6 +857,7 @@ export function buildPage({ structure, statistics, document, repoName }) {
     parts: ctx.boundaries.length,
     readers: groups.map((group) => ({ readers: worded(group.readers, id), target: group.target })),
     repo: String(repoName ?? ''),
+    sequences: found,
     startHere: start.chain,
     summary,
     summaryFrom: summary ? 'person' : null,
