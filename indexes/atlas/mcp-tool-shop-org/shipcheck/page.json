@@ -1,0 +1,202 @@
+{
+  "authored": [
+    ".claude/",
+    ".github/",
+    "contracts/",
+    "docs/",
+    "dogfood/",
+    "root",
+    "templates/"
+  ],
+  "breaks": [
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [
+        "test"
+      ],
+      "kind": "part",
+      "name": "bin",
+      "partLabel": "bin"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "test",
+      "partLabel": "test"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 101,
+      "moved": 0,
+      "parts": 10,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-23; 101 files changed content.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "875a8ae4a0587a17208636a352759afd751981d8",
+      "generatedAt": "2026-09-23T15:03:18.865Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "838720f99155a0c6e0be6baa92dd87e1504abdb4",
+  "doors": [
+    {
+      "file": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "bin/shipcheck.mjs",
+        "test/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "sends a dispatch to dogfood-lab/testing-os"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 12 paths",
+        "on a push to main touching 12 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "file": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "bin/shipcheck.mjs",
+        "test/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "publishes to npm"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "file": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "file": ".github/workflows/repomesh-broadcast.yml",
+      "landings": [],
+      "name": "repomesh-broadcast",
+      "pushes": true,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [
+        "opens a pull request"
+      ],
+      "stages": [
+        "ledger/events/events.jsonl"
+      ],
+      "triggers": [
+        "when a release is published"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "test",
+      "fromTests": true,
+      "to": "bin"
+    }
+  ],
+  "generated": [],
+  "generatedAt": "2026-09-23T15:12:00.676Z",
+  "limits": [
+    "1 import site could not be resolved.",
+    "1 write and 28 reads use paths built at run time and are not named here.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "parts": 10,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/shipcheck",
+  "sequences": [],
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "test/"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 3,
+  "testedBy": {
+    "bin": 2,
+    "site": 0
+  },
+  "unread": [],
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "site",
+      "partLabel": "site",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 0
+}

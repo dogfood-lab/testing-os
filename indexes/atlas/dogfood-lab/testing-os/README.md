@@ -1,6 +1,6 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit dde4a90.
+Mapped at 2026-09-23 from commit ed8bddb.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-09-23 from commit dde4a90.
 
 ## What changed since 2026-09-23 (4ba209b)
 
-Nothing structural changed since 2026-09-23; 1 file added and 3 changed content.
+Nothing structural changed since 2026-09-23; 2 files added and 3 changed content.
 
 ## What comes in
 
