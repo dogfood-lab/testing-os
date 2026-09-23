@@ -43,7 +43,7 @@ CI writes nothing this map can see.
 
 No two source files changed together often enough to name.
 
-Window: 180 days; a pair counts from 3 shared commits.
+Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
 
 ## What no test touches
 
@@ -75,6 +75,7 @@ Read those in order to follow one pull request end to end.
 
 - 1 import site could not be resolved.
 - 1 write and 28 reads use paths built at run time and are not named here.
-- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions.
+- 3 commands are built at run time and not followed.
+- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

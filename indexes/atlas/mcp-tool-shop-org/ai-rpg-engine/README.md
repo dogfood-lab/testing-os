@@ -55,7 +55,7 @@ Nothing structural changed since 2026-09-23; no file changed.
 
 11 files changed together with their own tests, as expected.
 
-Window: 180 days; a pair counts from 10 shared commits.
+Window: 180 days; a pair counts from 10 shared commits, since 56 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do.
 
 ## What no test touches
 
@@ -97,6 +97,8 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 3 import sites could not be resolved.
+- 10 files use syntax the parser cannot read, so what they import is not known: an import type followed by `[]` (6), a NUL character inside a string (3) and `typeof import(…)` as a type argument (1).
 - 42 writes and 61 reads use paths built at run time and are not named here.
+- 10 commands are built at run time and not followed.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

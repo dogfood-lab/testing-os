@@ -122,16 +122,24 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 1,
-      "changed": 3,
+      "added": 2,
+      "changed": 8,
       "moved": 0,
-      "parts": 2,
+      "parts": 5,
       "removed": 0
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "packages/atlas/package.json is now read by packages/atlas/adapter/fleet.js.",
+        "subjects": [
+          "packages/atlas/package.json",
+          "packages/atlas/adapter/fleet.js"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-23; 1 file added and 3 changed content.",
+        "sentence": "2 files added and 8 changed content, across 5 parts.",
         "subjects": []
       }
     ],
@@ -139,13 +147,13 @@
       "commit": "c94d84e93304960285d8557b710a94a1b07d098f",
       "generatedAt": "2026-09-23T16:06:30.804Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
       "a": "site/public/atlas/render.js",
       "b": "site/src/components/atlas-page.test.mjs",
-      "either": 19,
+      "either": 20,
       "partLabels": [
         "site",
         "site"
@@ -155,7 +163,7 @@
         "site"
       ],
       "relation": "inside",
-      "shared": 13
+      "shared": 14
     }
   ],
   "changesTogetherNote": [
@@ -163,7 +171,7 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 25 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "c8f9f58f1ad017a82d9f86709dbfd086a57b92ed",
+  "commit": "ea9a9aef758b5707364fb550abce218a6a043d6d",
   "defaultBranch": "main",
   "doors": [
     {
@@ -1043,7 +1051,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T16:16:19.287Z",
+  "generatedAt": "2026-09-23T16:45:45.965Z",
   "limits": [
     "2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "30 import sites could not be resolved.",

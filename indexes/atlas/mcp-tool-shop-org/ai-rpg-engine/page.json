@@ -306,10 +306,11 @@
   ],
   "changesTogetherNote": [
     "11 files changed together with their own tests, as expected.",
-    "Window: 180 days; a pair counts from 10 shared commits."
+    "Window: 180 days; a pair counts from 10 shared commits, since 56 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 11,
   "commit": "f7e56e65779e14e3b061a5e581fd13783abe2e98",
+  "defaultBranch": "main",
   "doors": [
     {
       "file": ".github/workflows/ci.yml",
@@ -960,12 +961,55 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T15:11:25.635Z",
+  "generatedAt": "2026-09-23T16:46:16.502Z",
   "limits": [
     "3 import sites could not be resolved.",
-    "42 writes and 61 reads use paths built at run time and are not named here."
+    "10 files use syntax the parser cannot read, so what they import is not known: an import type followed by `[]` (6), a NUL character inside a string (3) and `typeof import(…)` as a type argument (1).",
+    "42 writes and 61 reads use paths built at run time and are not named here.",
+    "10 commands are built at run time and not followed."
   ],
   "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".claude": ".claude",
+    ".github": ".github",
+    "asset-registry": "asset-registry",
+    "audio-director": "audio-director",
+    "campaign-memory": "campaign-memory",
+    "character-creation": "character-creation",
+    "character-profile": "character-profile",
+    "cli": "cli",
+    "content-schema": "content-schema",
+    "core": "core",
+    "docs": "docs",
+    "dogfood": "dogfood",
+    "equipment": "equipment",
+    "image-gen": "image-gen",
+    "ledger-adapter": "ledger-adapter",
+    "modules": "modules",
+    "ollama": "ollama",
+    "pack-registry": "pack-registry",
+    "presentation": "presentation",
+    "root": "the repository root",
+    "rumor-system": "rumor-system",
+    "scripts": "scripts",
+    "sidecar": "sidecar",
+    "site": "site",
+    "soundpack-core": "soundpack-core",
+    "starter": "starter",
+    "starter-bounty-hunter": "starter-bounty-hunter",
+    "starter-colony": "starter-colony",
+    "starter-cyberpunk": "starter-cyberpunk",
+    "starter-detective": "starter-detective",
+    "starter-fantasy": "starter-fantasy",
+    "starter-gladiator": "starter-gladiator",
+    "starter-merchant": "starter-merchant",
+    "starter-pirate": "starter-pirate",
+    "starter-ronin": "starter-ronin",
+    "starter-vampire": "starter-vampire",
+    "starter-weird-west": "starter-weird-west",
+    "starter-zombie": "starter-zombie",
+    "terminal-ui": "terminal-ui"
+  },
   "parts": 39,
   "readers": [
     {

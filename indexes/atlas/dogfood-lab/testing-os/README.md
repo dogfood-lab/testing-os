@@ -1,6 +1,6 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit c8f9f58.
+Mapped at 2026-09-23 from commit ea9a9ae.
 
 ## What this is
 
@@ -8,7 +8,8 @@ Mapped at 2026-09-23 from commit c8f9f58.
 
 ## What changed since 2026-09-23 (c94d84e)
 
-Nothing structural changed since 2026-09-23; 1 file added and 3 changed content.
+- packages/atlas/package.json is now read by packages/atlas/adapter/fleet.js.
+- 2 files added and 8 changed content, across 5 parts.
 
 ## What comes in
 
@@ -69,7 +70,7 @@ Nothing structural changed since 2026-09-23; 1 file added and 3 changed content.
 
 ## What tends to change together
 
-- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 13 of 19 commits, inside the site part.
+- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 14 of 20 commits, inside the site part.
 
 2 files changed together with their own tests, as expected.
 
