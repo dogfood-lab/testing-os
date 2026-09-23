@@ -237,6 +237,9 @@ export function readProgram(path, repo) {
 // Of two ways a path is reached, the one the command spells wins: no via
 // before a via, a named file before a matched one. A path one tool runs and
 // another only checks is run.
+//
+// The flags a run passes are the ones every way of reaching it passes: a file
+// run once with --check and once without is run without it.
 export function better(a, b) {
   const rank = (entry) => [entry.via == null ? 0 : 1, entry.matched ? 1 : 0, entry.via ?? ''];
   const [x, y] = [rank(a), rank(b)];
@@ -249,7 +252,16 @@ export function better(a, b) {
     }
   }
   const runKind = a.runKind === 'checks' && b.runKind === 'checks' ? 'checks' : 'executes';
-  return pick.runKind === runKind ? pick : { ...pick, runKind };
+  const passes = (a.passes ?? []).filter((flag) => (b.passes ?? []).includes(flag));
+  const out = { ...pick, runKind };
+  delete out.passes;
+  if (passes.length > 0) out.passes = passes;
+  return out;
+}
+
+// The flags handed to a script after its path, by name: --check=x is --check.
+function flagsOf(args) {
+  return [...new Set(args.filter((arg) => /^--?[A-Za-z]/.test(arg)).map((arg) => arg.replace(/=.*$/, '')))].sort();
 }
 
 function makeReader(repo, runs, mentions) {
@@ -308,11 +320,12 @@ function makeReader(repo, runs, mentions) {
 
   // A tracked file the command executes; a directory when the tool accepts
   // one. Returns the path when it was a run.
-  function file(token, dir, frame, { directories = false, script = false } = {}) {
+  function file(token, dir, frame, { directories = false, script = false, args = [] } = {}) {
     const path = pathFrom(dir, token);
     if (path == null) return null;
     if (repo.tracked.has(path)) {
-      record(stamp({ path }, frame));
+      const passes = script ? flagsOf(args) : [];
+      record(stamp({ path, ...(passes.length > 0 ? { passes } : {}) }, frame));
       if (script && frame.level === 0) readFile(path, dir, frame);
       return path;
     }
@@ -380,7 +393,7 @@ function makeReader(repo, runs, mentions) {
     const tool = toolOf(argv[0]);
     if (tool == null) {
       const path = pathFrom(dir, argv[0]);
-      if (path != null && repo.tracked.has(path)) file(argv[0], dir, frame, { script: true });
+      if (path != null && repo.tracked.has(path)) file(argv[0], dir, frame, { script: true, args: argv.slice(1) });
       return false;
     }
     handlers[tool](argv, dir, CHECKERS.has(tool) ? { ...frame, runKind: 'checks' } : frame);
@@ -404,7 +417,7 @@ function makeReader(repo, runs, mentions) {
       const value = eq !== -1 ? token.slice(eq + 1) : valueFlags.has(name) ? argv[++i] : null;
       if (value != null && runValues.includes(name)) file(value, dir, frame);
     }
-    if (i < argv.length) file(argv[i], dir, frame, { script: true });
+    if (i < argv.length) file(argv[i], dir, frame, { script: true, args: argv.slice(i + 1) });
   }
 
   function pathArguments(argv, dir, frame, tool, start = 1) {
@@ -479,7 +492,7 @@ function makeReader(repo, runs, mentions) {
         if (value != null && ['--import', '--loader', '--experimental-loader', '--require', '-r'].includes(name)) file(value, dir, frame);
       }
       if (!test) {
-        if (i < argv.length) file(argv[i], dir, frame, { script: true });
+        if (i < argv.length) file(argv[i], dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
       for (; i < argv.length; i += 1) parsed.push(argv[i]);
@@ -511,7 +524,7 @@ function makeReader(repo, runs, mentions) {
           if (VALUE_SETS.python.has(token)) i += 1;
           continue;
         }
-        file(token, dir, frame, { script: true });
+        file(token, dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
     },
@@ -526,7 +539,7 @@ function makeReader(repo, runs, mentions) {
           if (VALUE_SETS.shell.has(token)) i += 1;
           continue;
         }
-        file(token, dir, frame, { script: true });
+        file(token, dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
     },
@@ -600,7 +613,7 @@ function makeReader(repo, runs, mentions) {
       if (bin == null) return;
       const path = pathFrom(dir, bin);
       if (path != null && repo.tracked.has(path)) {
-        file(bin, dir, frame, { script: true });
+        file(bin, dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
       const name = bin.replace(/@[^@/]+$/, '');

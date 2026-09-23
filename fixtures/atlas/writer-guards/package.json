@@ -1,0 +1,11 @@
+{
+  "name": "writer-guards",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "prebuild": "node scripts/sync-version.mjs",
+    "build": "echo built",
+    "check-version": "node scripts/sync-version.mjs --check",
+    "test:scripts": "node scripts/gen-report.mjs --selftest"
+  }
+}

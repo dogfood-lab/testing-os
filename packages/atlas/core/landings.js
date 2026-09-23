@@ -2,6 +2,7 @@ import { extname, posix } from 'node:path';
 import picomatch from 'picomatch';
 import { boundaryRoot } from './entry-points.js';
 import { isWorkflow } from './doors.js';
+import { writeGuards } from './guards.js';
 
 // The destination argument of each write call. A rename or copy lands on its
 // second argument; the first is where the bytes came from.
@@ -384,6 +385,7 @@ export function astLandings(language, root, path, places) {
   const site = (kind, call, node, countDynamic = true) => {
     if (!node) return;
     const values = evaluate(node, ctx, 0);
+    const unless = kind === 'write' ? writeGuards(node, ctx.python) : [];
     if (values.length === 0) {
       if (countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
       return;
@@ -398,7 +400,7 @@ export function astLandings(language, root, path, places) {
         continue;
       }
       const target = landingOf(value, places);
-      if (target != null) list.push(landingEntry(target, call, value, places));
+      if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}) });
     }
   };
 
@@ -1147,7 +1149,7 @@ function rawUrls(text, places) {
 function sortEntries(entries) {
   const unique = new Map();
   for (const entry of entries) {
-    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}\0${entry.relative ? 1 : 0}`, entry);
+    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}\0${entry.relative ? 1 : 0}\0${(entry.unless ?? []).join(',')}`, entry);
   }
   return [...unique.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
 }
@@ -1336,10 +1338,16 @@ export function attachLandings({ files, doors, boundaries, places }) {
     }
   }
 
+  const skipped = new Map();
   for (const door of mapped) {
     const targets = new Set(door.stagedTargets);
     for (const path of door.reachFiles ?? []) {
-      for (const write of byPath.get(path)?.writes ?? []) if (write.confidence !== 'weak') targets.add(write.target);
+      for (const write of byPath.get(path)?.writes ?? []) {
+        if (write.confidence === 'weak') continue;
+        const guards = guardsHit(door, path, write);
+        if (guards.length === 0) targets.add(write.target);
+        else for (const guard of guards) note(skipped, `${write.target}\0${path}`, guard);
+      }
     }
     door.landings = [...targets].filter((target) => !spans.has(target) && !untracked.has(target)).sort(compare);
     const found = new Map();
@@ -1353,6 +1361,15 @@ export function attachLandings({ files, doors, boundaries, places }) {
     }
     door.readers = [...found.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
     delete door.stagedTargets;
+  }
+
+  // A write a door skips for one of the writer's own guards stays on the
+  // file's own row, with the guards that kept a door from it.
+  for (const [target, entries] of writers) {
+    for (const entry of entries.values()) {
+      const hit = skipped.get(`${target}\0${entry.by}`);
+      if (hit) entry.unless = [...hit].sort();
+    }
   }
 
   for (const boundary of boundaries) boundary.origin = originOf(boundary, strong, stamped, places);
@@ -1452,6 +1469,30 @@ function keptForOutput(target, places) {
     if (places.dirs.has(dir)) return places.files.has(`${dir}/.gitkeep`) || places.files.has(`${dir}/.keep`);
   }
   return false;
+}
+
+/**
+ * The writer's own guards that keep this door's run of the file from a write:
+ * a workflow runs with CI set, and a flag every run of the file passes. A
+ * file the door only imports carries no flags of its own run, so a flag guard
+ * holds only for a file the door runs by name.
+ */
+function guardsHit(door, path, write) {
+  const unless = write.unless ?? [];
+  if (unless.length === 0) return [];
+  const hit = [];
+  if (!door.kind && unless.includes('ci')) hit.push('ci');
+  const runs = (door.runs ?? []).filter((run) => run.path === path && run.runKind !== 'checks');
+  const flags = unless.filter((guard) => guard !== 'ci');
+  if (runs.length > 0 && flags.length > 0 && runs.every((run) => (run.passes ?? []).some((flag) => flags.includes(flag)))) {
+    for (const run of runs) for (const flag of run.passes) if (flags.includes(flag)) hit.push(flag);
+  }
+  return [...new Set(hit)];
+}
+
+function note(map, key, value) {
+  if (!map.has(key)) map.set(key, new Set());
+  map.get(key).add(value);
 }
 
 // The writer reads the tracked file's content before it writes the file.

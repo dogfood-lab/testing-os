@@ -272,6 +272,7 @@ function carryWriter(entry) {
   const out = { by: entry.by };
   if (entry.confidence != null) out.confidence = entry.confidence;
   if (entry.stamps) out.stamps = true;
+  if (entry.unless) out.unless = [...entry.unless];
   return out;
 }
 

@@ -1005,8 +1005,40 @@ function writtenPlaces(ctx) {
     // Every writer reading the file first is a script stamping a block of a
     // file people write, not a generator of the file.
     const stamped = inside.length > 0 && inside.every((landing) => landing.writers.length > 0 && landing.writers.every((entry) => entry.stamps));
-    return { target, writers, readers, ...(stamped ? { stamped: true } : {}) };
+    return { target, writers, readers, guards: guardsOf(inside), ...(stamped ? { stamped: true } : {}) };
   });
+}
+
+// The guards that kept a door from each writer's write, by writer: a writer
+// is guarded here only when every write of it inside the place is.
+function guardsOf(landings) {
+  const by = new Map();
+  for (const landing of landings) {
+    for (const entry of landing.writers) {
+      const unless = entry.unless ?? [];
+      by.set(entry.by, by.has(entry.by) ? by.get(entry.by).filter((guard) => unless.includes(guard)) : [...unless]);
+    }
+  }
+  return by;
+}
+
+/**
+ * What a writer's guards make of "written by X": "when run outside CI", "when
+ * run without --selftest", or nothing when no door was kept from the write.
+ *
+ * @param {string[]} guards
+ * @returns {string}
+ */
+export function guardClause(guards) {
+  const flags = (guards ?? []).filter((guard) => guard !== 'ci');
+  const parts = [];
+  if ((guards ?? []).includes('ci')) parts.push('outside CI');
+  if (flags.length > 0) parts.push(`without ${list(flags).replace(/ and /g, ' or ')}`);
+  return parts.length > 0 ? ` when run ${parts.join(' and ')}` : '';
+}
+
+function writerItems(ctx, writers, guards) {
+  return collapse(ctx, writers.map((path) => ({ path, text: `${path}${guardClause(guards.get(path))}` })));
 }
 
 const QUOTING = /\.(md|mdx|json|jsonl)$/i;
@@ -1248,7 +1280,7 @@ function unread(ctx) {
     .filter((place) => !place.stamped && place.readers.every((reader) => place.writers.includes(reader.path)))
     .map((place) => ({
       place: ctx.place(place.target),
-      writers: collapse(ctx, place.writers.map((path) => ({ path, text: path }))),
+      writers: writerItems(ctx, place.writers, place.guards),
     }));
   return { items: all.slice(0, UNREAD_SHOWN), note: more(all.length, UNREAD_SHOWN, 'place'), written: written.length };
 }
@@ -1349,18 +1381,23 @@ function generated(ctx) {
     const root = boundaryRoot(boundary);
     const paths = (boundary.files ?? []).map((file) => file.path);
     const inside = (target) => (root ? under(target, root) : paths.some((path) => under(path, target)));
-    const writers = [...new Set(written.filter((place) => inside(place.target)).flatMap((place) => place.writers))].sort(cmp);
+    const held = written.filter((place) => inside(place.target));
+    const writers = [...new Set(held.flatMap((place) => place.writers))].sort(cmp);
+    const guards = new Map();
+    for (const place of held) {
+      for (const [by, list] of place.guards) guards.set(by, guards.has(by) ? guards.get(by).filter((guard) => list.includes(guard)) : list);
+    }
     claimed.push(inside);
-    items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers });
+    items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers, guards });
   }
   for (const place of written) {
     if (claimed.some((inside) => inside(place.target))) continue;
     const target = ctx.place(place.target);
-    items.push({ place: target, shown: target, writers: place.writers, ...(place.stamped ? { block: true } : {}) });
+    items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}) });
   }
   return items
     .sort((a, b) => cmp(a.place, b.place))
-    .map((item) => ({ ...item, writers: collapse(ctx, item.writers.map((path) => ({ path, text: path }))) }));
+    .map(({ guards, ...item }) => ({ ...item, writers: writerItems(ctx, item.writers, guards) }));
 }
 
 function generatedSection(ctx, items) {
