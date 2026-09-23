@@ -23,7 +23,8 @@
         "scripts"
       ],
       "kind": "part",
-      "name": "schemas"
+      "name": "schemas",
+      "partLabel": "schemas"
     },
     {
       "doors": 3,
@@ -36,7 +37,8 @@
         "scripts"
       ],
       "kind": "part",
-      "name": "findings"
+      "name": "findings",
+      "partLabel": "findings"
     },
     {
       "doors": 3,
@@ -48,7 +50,8 @@
         "schemas"
       ],
       "kind": "part",
-      "name": "dogfood-swarm"
+      "name": "dogfood-swarm",
+      "partLabel": "dogfood-swarm"
     },
     {
       "doors": 3,
@@ -60,7 +63,8 @@
         "scripts"
       ],
       "kind": "part",
-      "name": "verify"
+      "name": "verify",
+      "partLabel": "verify"
     },
     {
       "doors": 3,
@@ -70,7 +74,8 @@
       ],
       "importedByTests": [],
       "kind": "part",
-      "name": "ingest"
+      "name": "ingest",
+      "partLabel": "ingest"
     },
     {
       "doors": 3,
@@ -79,7 +84,8 @@
       ],
       "importedByTests": [],
       "kind": "part",
-      "name": "portfolio"
+      "name": "portfolio",
+      "partLabel": "portfolio"
     },
     {
       "kind": "place",
@@ -116,31 +122,55 @@
   "changes": {
     "fileCounts": {
       "added": 2,
-      "changed": 30,
+      "changed": 11,
       "moved": 0,
-      "parts": 12,
+      "parts": 6,
       "removed": 0
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "assets/atlas-hero.webp is now read by packages/atlas/README.md.",
+        "subjects": [
+          "assets/atlas-hero.webp",
+          "packages/atlas/README.md"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-23; 2 files added and 30 changed content.",
+        "sentence": "2 files added and 11 changed content, across 6 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "e15c8ab5a2b572123e4ff4f6107190751e8142a8",
-      "generatedAt": "2026-09-23T13:25:25.188Z"
+      "commit": "2f09ff6b03ed488905751fd10f68e75a84165677",
+      "generatedAt": "2026-09-23T14:13:58.548Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
-  "changesTogether": [],
+  "changesTogether": [
+    {
+      "a": "site/public/atlas/render.js",
+      "b": "site/src/components/atlas-page.test.mjs",
+      "either": 15,
+      "partLabels": [
+        "site",
+        "site"
+      ],
+      "parts": [
+        "site",
+        "site"
+      ],
+      "relation": "inside",
+      "shared": 10
+    }
+  ],
   "changesTogetherNote": [
     "2 files changed together with their own tests, as expected.",
     "Window: 180 days; a pair counts from 10 shared commits."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "2f09ff6b03ed488905751fd10f68e75a84165677",
+  "commit": "4ba209b7652ba4ca5189e34d6f7dbe86972e9ac5",
   "doors": [
     {
       "file": ".github/workflows/ci.yml",
@@ -1024,11 +1054,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T14:13:58.548Z",
+  "generatedAt": "2026-09-23T14:31:13.110Z",
   "limits": [
     "2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "30 import sites could not be resolved.",
-    "27 writes and 188 reads use paths built at run time and are not named here.",
+    "27 writes and 189 reads use paths built at run time and are not named here.",
     "Readers marked (found by text) come from scanning unparsed files.",
     "CI runs 515 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
     "Release runs 514 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
