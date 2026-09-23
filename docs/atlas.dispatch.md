@@ -564,25 +564,28 @@ order is recorded; the ingest copy is called only from files a step further in, 
 and the rule falls back to the shared file name, `atomic-write.js`.
 
 The first two lists keep eight items and the third five, and the rest are counted ("And 2 more
-parts."). `page.json` carries each list with its closing lines:
+parts."). `page.json` carries each list with its closing lines, here from the doors fixture,
+shortened:
 
 ```json
 {
-  "testFiles": 522,
-  "testedBy": { "atlas": 22, "verify": 71 },
-  "untested": [],
+  "testFiles": 1,
+  "testedBy": { "lib": 1, "tools": 0 },
+  "untested": [
+    { "part": "tools", "partLabel": "tools",
+      "testedBy": 0 }
+  ],
   "untestedNote": [],
   "unread": [
-    { "place": "reports/",
-      "writers": ["packages/portfolio/generate.js"] }
+    { "place": "cache/",
+      "writers": ["tools/cache.js"] }
   ],
   "unreadNote": [],
   "duplicates": [
-    { "name": "atomicWriteFileSync",
-      "files": ["…/findings/lib/atomic-write.js",
-                "…/ingest/lib/atomic-write.js"],
-      "parts": ["findings", "ingest"],
-      "partLabels": ["findings", "ingest"] }
+    { "name": "normalize",
+      "files": ["lib/store.js", "tools/prepare.js"],
+      "parts": ["lib", "tools"],
+      "partLabels": ["lib", "tools"] }
   ],
   "duplicatesLead": "These are candidates …",
   "duplicatesNote": []
