@@ -89,9 +89,10 @@ export function openDb(dbPath) {
     // sm-p-002: the on-disk DB was written by a NEWER build than this one.
     // Neither the create (version < 1) nor the upgrade/bootstrap path below
     // is safe, so without this refusal openDb would proceed against an
-    // unknown-newer shape. The shared swarms/control-plane.db is committed
-    // back to main by ingest.yml; an operator on an older checkout (or a stale
-    // CI cache) can hit a DB a newer main already migrated. A newer schema may
+    // unknown-newer shape. swarms/control-plane.db is local state, git-ignored
+    // by swarms/.gitignore and never committed, so the DB outlives a checkout:
+    // an operator who moves to an older checkout, or runs an older installed
+    // build, opens a DB a newer build already migrated. A newer schema may
     // rename/repurpose a column or add a NOT NULL column this writer won't
     // populate — silent data corruption. Refuse loudly (F4-CP-03: typed,
     // fail-closed), same fail-loud-not-silent discipline as the dead-handle
