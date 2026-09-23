@@ -10,8 +10,9 @@
  * one extra permission it needs.
  */
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { delimiter, dirname, join, resolve } from 'node:path';
+import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
@@ -93,11 +94,16 @@ describe('docker/Dockerfile', () => {
       t.skip('no POSIX sh on this machine');
       return;
     }
-    // atlas and atlas-fleet stand in as shell functions, so what is proved is
-    // the entrypoint's dispatch, not the CLI.
-    const stubs = 'atlas() { echo "atlas $*"; return 3; }; atlas-fleet() { echo "fleet $*"; return 0; };';
-    const body = read('docker/entrypoint.sh').replaceAll('exec atlas-fleet', 'atlas-fleet').replaceAll('exec atlas', 'atlas').replace('exec "$@"', '"$@"');
-    const runEntry = (...args) => spawnSync('sh', ['-c', `${stubs}\n${body}`, 'entrypoint', ...args], { encoding: 'utf8' });
+    // atlas and atlas-fleet stand in as executables ahead on PATH, so what is
+    // proved is the entrypoint's dispatch as written, exec included, not the
+    // CLI. Files rather than shell functions: dash, the sh of the CI image,
+    // rejects a hyphen in a function name.
+    const stubs = mkdtempSync(join(tmpdir(), 'atlas-entrypoint-'));
+    t.after(() => rmSync(stubs, { recursive: true, force: true }));
+    writeFileSync(join(stubs, 'atlas'), '#!/bin/sh\necho "atlas $*"\nexit 3\n', { mode: 0o755 });
+    writeFileSync(join(stubs, 'atlas-fleet'), '#!/bin/sh\necho "fleet $*"\n', { mode: 0o755 });
+    const env = { ...process.env, PATH: `${stubs}${delimiter}${process.env.PATH ?? ''}` };
+    const runEntry = (...args) => spawnSync('sh', [join(root, 'docker/entrypoint.sh'), ...args], { encoding: 'utf8', env });
     const mapped = runEntry('map', '--divergence', 'd.json');
     assert.equal(mapped.stdout, 'atlas map --divergence d.json\n');
     assert.equal(mapped.status, 3, 'the CLI exit code passes through');
