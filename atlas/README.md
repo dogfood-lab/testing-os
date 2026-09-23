@@ -1,23 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit e15c8ab.
+Mapped at 2026-09-23 from commit 2f09ff6.
 
 ## What this is
 
 22 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).
 
-## What changed since 2026-09-23 (b8aea57)
+## What changed since 2026-09-23 (e15c8ab)
 
-- portfolio now imports schemas.
-- CI now also runs packages/atlas/adapter/ts-probe.test.js.
-- CI no longer runs scripts/check-severity-contrast.test.mjs.
-- Release now also runs packages/atlas/adapter/ts-probe.test.js.
-- And 1 more change to a door.
-- fixtures/atlas/ts-probe/packages/cli/src/cli.spec.ts is now read by scripts/test-floor-allowlist.json.
-- fixtures/atlas/ts-probe/packages/core/src/engine.spec.ts is now read by scripts/test-floor-allowlist.json.
-- fixtures/atlas/ts-probe/packages/ledger/src/ledger.spec.ts is now read by scripts/test-floor-allowlist.json.
-- And 1 more new writer or reader of a place.
-- 43 files added and 21 changed content, across 8 parts.
+Nothing structural changed since 2026-09-23; 2 files added and 30 changed content.
 
 ## What comes in
 

@@ -115,90 +115,24 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 43,
-      "changed": 21,
+      "added": 2,
+      "changed": 30,
       "moved": 0,
-      "parts": 8,
+      "parts": 12,
       "removed": 0
     },
     "items": [
       {
-        "kind": "import-added",
-        "sentence": "portfolio now imports schemas.",
-        "subjects": [
-          "portfolio",
-          "schemas"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI now also runs packages/atlas/adapter/ts-probe.test.js.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "packages/atlas/adapter/ts-probe.test.js"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI no longer runs scripts/check-severity-contrast.test.mjs.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "scripts/check-severity-contrast.test.mjs"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Release now also runs packages/atlas/adapter/ts-probe.test.js.",
-        "subjects": [
-          ".github/workflows/release.yml",
-          "packages/atlas/adapter/ts-probe.test.js"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 1 more change to a door.",
-        "subjects": []
-      },
-      {
-        "kind": "landing",
-        "sentence": "fixtures/atlas/ts-probe/packages/cli/src/cli.spec.ts is now read by scripts/test-floor-allowlist.json.",
-        "subjects": [
-          "fixtures/atlas/ts-probe/packages/cli/src/cli.spec.ts",
-          "scripts/test-floor-allowlist.json"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "fixtures/atlas/ts-probe/packages/core/src/engine.spec.ts is now read by scripts/test-floor-allowlist.json.",
-        "subjects": [
-          "fixtures/atlas/ts-probe/packages/core/src/engine.spec.ts",
-          "scripts/test-floor-allowlist.json"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "fixtures/atlas/ts-probe/packages/ledger/src/ledger.spec.ts is now read by scripts/test-floor-allowlist.json.",
-        "subjects": [
-          "fixtures/atlas/ts-probe/packages/ledger/src/ledger.spec.ts",
-          "scripts/test-floor-allowlist.json"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 1 more new writer or reader of a place.",
-        "subjects": []
-      },
-      {
         "kind": "counts",
-        "sentence": "43 files added and 21 changed content, across 8 parts.",
+        "sentence": "Nothing structural changed since 2026-09-23; 2 files added and 30 changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "b8aea57d118c1d3cf907fbf7c59fafdfa71a3754",
-      "generatedAt": "2026-09-23T12:24:46.239Z"
+      "commit": "e15c8ab5a2b572123e4ff4f6107190751e8142a8",
+      "generatedAt": "2026-09-23T13:25:25.188Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -206,7 +140,7 @@
     "Window: 180 days; a pair counts from 10 shared commits."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "e15c8ab5a2b572123e4ff4f6107190751e8142a8",
+  "commit": "2f09ff6b03ed488905751fd10f68e75a84165677",
   "doors": [
     {
       "file": ".github/workflows/ci.yml",
@@ -985,6 +919,73 @@
   ],
   "duplicatesLead": "These are candidates from names and call order, not a judgement.",
   "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "dogfood-swarm",
+      "fromTests": false,
+      "to": "findings"
+    },
+    {
+      "from": "dogfood-swarm",
+      "fromTests": false,
+      "to": "schemas"
+    },
+    {
+      "from": "findings",
+      "fromTests": false,
+      "to": "ingest"
+    },
+    {
+      "from": "findings",
+      "fromTests": false,
+      "to": "schemas"
+    },
+    {
+      "from": "findings",
+      "fromTests": false,
+      "to": "verify"
+    },
+    {
+      "from": "ingest",
+      "fromTests": false,
+      "to": "dogfood-swarm"
+    },
+    {
+      "from": "ingest",
+      "fromTests": false,
+      "to": "findings"
+    },
+    {
+      "from": "ingest",
+      "fromTests": false,
+      "to": "schemas"
+    },
+    {
+      "from": "ingest",
+      "fromTests": false,
+      "to": "verify"
+    },
+    {
+      "from": "portfolio",
+      "fromTests": false,
+      "to": "findings"
+    },
+    {
+      "from": "portfolio",
+      "fromTests": false,
+      "to": "schemas"
+    },
+    {
+      "from": "schemas",
+      "fromTests": true,
+      "to": "dogfood-swarm"
+    },
+    {
+      "from": "verify",
+      "fromTests": false,
+      "to": "schemas"
+    }
+  ],
   "generated": [
     {
       "place": "dogfood/roadmap/",
@@ -1023,7 +1024,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T13:25:25.188Z",
+  "generatedAt": "2026-09-23T14:13:58.548Z",
   "limits": [
     "2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "30 import sites could not be resolved.",
