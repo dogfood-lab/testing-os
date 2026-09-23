@@ -804,3 +804,17 @@ test('with a summary the page shows it as written by a person, with a small link
   assert.equal((html.match(/\(written by a person\)/g) ?? []).length, 1, 'said once, at the top');
   assert.match(shell, /\.summary \.correct \{ font-size: 14px; \}/);
 });
+
+test('the link to write or correct the line opens the boundary file on the branch page.json names', () => {
+  const edit = (branch) => `https://github.com/dogfood-lab/testing-os/edit/${branch}/atlas/boundaries.yaml`;
+  const onTrunk = render.renderPage({ ...page, defaultBranch: 'trunk' }, { repo: page.repo });
+  assert.ok(onTrunk.includes(`<a href="${edit('trunk')}">Write it.</a>`));
+  const corrected = render.renderPage({ ...page, defaultBranch: 'trunk', summary: 'One line.', summaryFrom: 'person' }, { repo: page.repo });
+  assert.ok(corrected.includes(`<a class="correct" href="${edit('trunk')}">Correct it</a>`));
+  assert.equal(render.summaryEditUrl('o/n', 'release/2.x'), 'https://github.com/o/n/edit/release/2.x/atlas/boundaries.yaml');
+  const { defaultBranch, ...older } = page;
+  assert.ok(render.renderPage(older, { repo: page.repo }).includes(`<a href="${edit('main')}">Write it.</a>`), 'a page.json without the field links to main');
+  for (const hostile of ['../../settings', 'a b', '', 'x/', 42]) {
+    assert.equal(render.summaryEditUrl('o/n', hostile), 'https://github.com/o/n/edit/main/atlas/boundaries.yaml', String(hostile));
+  }
+});

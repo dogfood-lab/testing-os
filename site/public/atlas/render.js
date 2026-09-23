@@ -18,6 +18,7 @@ const SENTENCE_STEPS = 7;
 const LISTED_STEPS = 12;
 const REPO = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/;
 const COMMIT = /^[0-9a-f]{7,40}$/i;
+const BRANCH = /^[A-Za-z0-9._@+-]+(?:\/[A-Za-z0-9._@+-]+)*$/;
 const PATH = /^[A-Za-z0-9._@+-]+(?:\/[A-Za-z0-9._@+-]+)*\/?$/;
 const FOUND_BY_TEXT = ' (found by text)';
 const REGENERATE = 'Regenerate with `npx --yes @dogfood-lab/atlas map`.';
@@ -268,10 +269,21 @@ function whatThisIs(ctx, figure) {
 
 /**
  * Where a person edits the one line they may add: GitHub's editor for the
- * boundary file on the default branch. The site never writes it.
+ * boundary file on the repository's default branch, which page.json records
+ * as defaultBranch. A page.json written before it existed, or a value that is
+ * not a branch name, gives main. The site never writes the file.
  */
-export function summaryEditUrl(repo) {
-  return isRepo(repo) ? `https://github.com/${segments(repo)}/edit/main/atlas/boundaries.yaml` : null;
+export function summaryEditUrl(repo, branch) {
+  if (!isRepo(repo)) return null;
+  const name = isBranch(branch) ? branch : 'main';
+  return `https://github.com/${segments(repo)}/edit/${segments(name)}/atlas/boundaries.yaml`;
+}
+
+// A branch name as git allows one in a URL path: no "..", no empty or dotted
+// segment, nothing that could leave the path.
+function isBranch(value) {
+  if (typeof value !== 'string' || !BRANCH.test(value) || value.includes('..')) return false;
+  return value.split('/').every((segment) => segment !== '' && !/^\.+$/.test(segment));
 }
 
 // The one line a person may write, at the top, where a reader looks first.
@@ -279,7 +291,7 @@ export function summaryEditUrl(repo) {
 // absence reads as an invitation rather than as a gap.
 function summaryLine(ctx) {
   const summary = str(ctx.page.summary).replace(/\s+/g, ' ').trim();
-  const href = summaryEditUrl(ctx.repo);
+  const href = summaryEditUrl(ctx.repo, ctx.page.defaultBranch);
   if (summary) {
     const correct = href ? ` <a class="correct" href="${esc(href)}">Correct it</a>` : '';
     return `<p class="summary">${esc(summary)} (written by a person)${correct}</p>`;

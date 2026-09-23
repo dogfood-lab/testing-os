@@ -12,6 +12,7 @@ All notable changes to `testing-os` are documented here. The format follows [Kee
 
 ### Fixed
 - **A part is named the same way everywhere.** `page.json` carries `partLabels`, every part's id with the name the page gives it, once. The site names every part through it (the importer lists and places of "What breaks what", the reach, the readers and writers that stand for many files of one part, and both pictures), and `atlas explain --json` carries the labels of the parts it names, so a part of top-level files reads "the repository root" wherever it is named and never "root". Every other field keeps the id. Fixture `fixtures/atlas/root-part/`, whose root part imports one part and is imported by another, pins it.
+- **The link to write the one line opens the right branch.** `page.json` gains `defaultBranch`, read by `atlas map` from `git symbolic-ref refs/remotes/origin/HEAD`, then the branch checked out, then `main`, and the site's "Write it" and "Correct it" links open `atlas/boundaries.yaml` on it instead of always on `main`. A value that is not a branch name, or a `page.json` written before the field, links to `main`. Pinned with a clone whose default branch is `trunk`, mapped from another branch.
 
 ## [1.14.0] — 2026-09-23
 

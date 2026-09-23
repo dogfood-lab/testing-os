@@ -1403,12 +1403,14 @@ function doorData(ctx, door) {
 }
 
 /**
- * @param {{ structure: object, statistics: object, document: object, repoName: string, changes?: object }} input
+ * @param {{ structure: object, statistics: object, document: object, repoName: string, defaultBranch?: string, changes?: object }} input
  *   changes is the delta from the map committed at HEAD (adapter/changes.js);
- *   without it the page has no "What changed since …" section
+ *   without it the page has no "What changed since …" section. defaultBranch
+ *   is the branch a person edits on, read from git by the caller, since
+ *   nothing here reads the tree
  * @returns {{ markdown: string, json: string }}
  */
-export function buildPage({ structure, statistics, document, repoName, changes = null }) {
+export function buildPage({ structure, statistics, document, repoName, defaultBranch = 'main', changes = null }) {
   const ctx = facts({ structure, statistics: statistics ?? {} });
   const commit = String(statistics?.generatedFrom?.commit ?? structure.generatedFrom?.commit ?? '');
   const generatedAt = String(statistics?.generatedAt ?? '');
@@ -1465,6 +1467,7 @@ export function buildPage({ structure, statistics, document, repoName, changes =
     changesTogetherNote: pairNote,
     changesTogetherWithTests: withTests,
     commit,
+    defaultBranch: String(defaultBranch || 'main'),
     doors: ctx.doors.map((door) => doorData(ctx, door)),
     duplicates: duplicated.items,
     duplicatesLead: duplicated.lead,

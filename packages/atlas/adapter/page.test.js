@@ -771,3 +771,38 @@ describe('atlas page', () => {
     }
   });
 });
+
+describe('the branch page.json names for editing', () => {
+  function mapAt(root) {
+    const mapped = spawnSync(process.execPath, [CLI, 'map'], { cwd: root, encoding: 'utf8' });
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+    return JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).defaultBranch;
+  }
+
+  function committed(branch) {
+    const root = mkdtempSync(join(tmpdir(), 'atlas-branch-'));
+    roots.push(root);
+    cpSync(join(FIXTURES, 'root-part'), root, { recursive: true });
+    git(root, ['init', '-b', branch]);
+    git(root, ['add', '-A']);
+    git(root, ['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', 'root-part']);
+    return root;
+  }
+
+  it('is the remote default a clone records, even on another branch', () => {
+    const upstream = committed('trunk');
+    const clone = mkdtempSync(join(tmpdir(), 'atlas-branch-'));
+    roots.push(clone);
+    git(tmpdir(), ['clone', '--quiet', upstream, clone]);
+    assert.equal(git(clone, ['symbolic-ref', 'refs/remotes/origin/HEAD']).trim(), 'refs/remotes/origin/trunk');
+    git(clone, ['checkout', '--quiet', '-b', 'feature']);
+    assert.equal(mapAt(clone), 'trunk');
+  });
+
+  it('is the branch checked out without a remote, and main on a detached head', () => {
+    const root = committed('develop');
+    assert.equal(mapAt(root), 'develop');
+    git(root, ['checkout', '--quiet', '--detach']);
+    assert.equal(mapAt(root), 'main');
+  });
+});
