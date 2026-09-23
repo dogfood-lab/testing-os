@@ -33,8 +33,10 @@ test('atlas data is read from the render branch', () => {
   assert.match(src, /atlasFleet:\s*"indexes\/atlas\/fleet\.json"/);
 });
 
-test('each row links to the rendered page, not a retired render', () => {
-  assert.match(src, /\/indexes\/atlas\/"[\s\S]{0,120}"\/README\.md"/);
+test('each row links to the site page for its repository, not a retired render', () => {
+  assert.match(src, /"\.\.\/atlas\/\?repo=" \+ String\(repo\)\.split\("\/"\)\.map\(encodeURIComponent\)\.join\("\/"\)/);
+  assert.match(src, /esc\(atlasHref\(r\.repo\)\) \+ '">page<\/a>/);
+  assert.equal(src.includes('/blob/atlas-render/indexes/atlas/'), false, 'the markdown link now lives on the site page');
   for (const retired of ['orientation.md', 'dev.md', 'machine.md', 'machine-stats.txt']) {
     assert.equal(src.includes(retired), false, retired);
   }

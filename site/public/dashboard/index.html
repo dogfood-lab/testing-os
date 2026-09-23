@@ -1087,8 +1087,7 @@ function atlasHead(n, iso) {
   return "atlas · " + n + " repositories rendered · weekly · last run " + age;
 }
 function atlasHref(repo) {
-  return "https://github.com/dogfood-lab/testing-os/blob/atlas-render/indexes/atlas/" +
-    String(repo).split("/").map(encodeURIComponent).join("/") + "/README.md";
+  return "../atlas/?repo=" + String(repo).split("/").map(encodeURIComponent).join("/");
 }
 function atlasSkel() {
   const cell = '<td><span class="skel" style="width:48px"></span></td>';
@@ -1122,7 +1121,7 @@ function atlasRow(r) {
     '<svg class="ico" aria-hidden="true"><use href="#atlas-age"></use></svg> ' + esc(relAge(t) || "—") +
     (hist ? " historical" : "") + "</td>";
   const num = k => '<td class="atlas-more num">' + esc(r[k] == null ? "—" : r[k]) + "</td>";
-  const link = '<td><a href="' + esc(atlasHref(r.repo)) + '" target="_blank" rel="noopener">page</a></td>';
+  const link = '<td><a href="' + esc(atlasHref(r.repo)) + '">page</a></td>';
   const main = "<tr>" +
     '<td class="c-repo">' + (org ? '<span class="org">' + esc(org) + "/</span>" : "") + esc(name) + low + "</td>" +
     age + num("boundaries") + num("doors") + num("unresolved") +

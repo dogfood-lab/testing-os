@@ -10,6 +10,7 @@ Atlas changes direction. The Director rejected the acceptance ladder (a page gat
 - **Doors.** Every workflow is read as a door: normalized triggers, permissions, secrets named, each `run:` step, the tracked files it executes (following `npm run` through root and workspace scripts, hooks and `--workspaces`, split as the shell splits), the other paths it merely names, what it stages and pushes, what it dispatches, publishes, releases or deploys. Per door, the parts reached through the import closure of its executed files, in the order reached.
 - **Landing places and readers.** Per file, the tracked places its code writes to and reads from, found by parsing call expressions against closed write and read sets and following literals through joins, same-file helpers and wrappers; raw GitHub URLs and quoted paths in unparsed files count as reads with text confidence; a bare filename that matches a root-level file through a variable root is recorded weak and never makes a place generated. Per door, its landings and their readers. Per part, an origin: generated, authored or mixed.
 - **The page.** `atlas map` writes `atlas/README.md` (what comes in, what happens through the busiest door, who reads the results, the other doors, what breaks what, generated versus hand-authored, where to start, what the map cannot see) and `atlas/page.json`, its data twin.
+- **The site page.** `site/public/atlas/` renders a repository's `page.json` from the render branch at `atlas/?repo=<owner>/<name>`, with the same sections and sentences as the markdown, source links pinned to the mapped commit, and a flow picture of the main door drawn only from what `page.json` states; without `?repo` it lists every rendered repository. The pa11y job probes it.
 
 ### Removed
 - The three profile renders (`orientation.md`, `dev.md`, `machine.md`) and `machine-stats.txt`.
@@ -17,6 +18,7 @@ Atlas changes direction. The Director rejected the acceptance ladder (a page gat
 
 ### Changed
 - The weekly render copies `README.md` and `page.json`; the dashboard's fleet panel links the page and counts doors where it counted unnamed boundaries.
+- The fleet panel's page link opens the site page for the repository instead of the markdown on the render branch; the site page links the markdown.
 
 ### Docs
 - `docs/atlas-page.spec.md` is the specification of record for Atlas output; both dispatches carry a note saying so.
