@@ -83,6 +83,16 @@ const PY_ABSOLUTE = new Set(['os.path.abspath', 'os.path.realpath', 'abspath', '
 const PY_CWD = new Set(['os.getcwd', 'getcwd', 'Path.cwd', 'pathlib.Path.cwd']);
 const PY_HOME = new Set(['Path.home', 'pathlib.Path.home']);
 const HOME_VARIABLES = new Set(['HOME', 'USERPROFILE']);
+// The checkout a workflow runs in: a path under it is this repository, which
+// the map cannot place from the variable alone, so it names no caller's place.
+const WORKSPACE_VARIABLES = new Set(['GITHUB_WORKSPACE']);
+// The names a command-line parse is conventionally bound to. A path read from
+// one (args.out, opts.logos) is whatever the person running the command
+// passed, so it is theirs, as a path relative to their directory is.
+const CLI_BAGS = new Set(['args', 'argv', 'opts', 'options', 'flags', 'cliArgs', 'parsedArgs', 'cli']);
+// A value returned by a function imported from another file of the
+// repository: whose place it is is settled once imports resolve.
+const HELPER = 'helper:';
 const PY_SCOPES = new Set(['function_definition', 'lambda']);
 const PY_NESTED = new Set(['function_definition', 'class_definition', 'lambda']);
 
@@ -394,18 +404,23 @@ export function astLandings(language, root, path, places) {
     visiting: new Set(),
     assignments: new Map(),
   };
-  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0 };
+  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, pendingWrites: [], pendingReads: [] };
   const evaluate = ctx.python ? evalPy : evalJs;
   const site = (kind, call, node, countDynamic = true) => {
     if (!node) return;
-    const values = evaluate(node, ctx, 0);
+    const all = evaluate(node, ctx, 0);
     const unless = kind === 'write' ? writeGuards(node, ctx.python) : [];
-    if (values.length === 0) {
+    if (all.length === 0) {
       if (countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
       return;
     }
+    const helpers = [...new Set(all.filter(isHelper).map((value) => value.anchor.slice(HELPER.length)))].sort();
+    // Until the imported function is read, its return is a root the engine
+    // cannot read, as join(root, 'records') has.
+    const values = all.map((value) => (isHelper(value) ? asRoot(value) : value));
     const list = kind === 'write' ? found.writes : found.reads;
-    if (values.some(outside)) found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
+    const theirs = values.some(outside);
+    if (theirs) found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
     const before = list.length;
     let unplaced = false;
     for (const value of values) {
@@ -418,6 +433,17 @@ export function astLandings(language, root, path, places) {
       const target = landingOf(value, places);
       if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}) });
       else if (value.open) unplaced = true;
+    }
+    // A root another file's function returns is settled once that file is
+    // known: the caller's place when every such function returns one, and
+    // otherwise the unreadable root it was read as, landings and all. A path
+    // that is nothing but the function's return names no place until then.
+    if (helpers.length > 0 && !theirs) {
+      const entries = list.splice(before);
+      const whole = all.every((value) => isHelper(value) && value.text === '' && !value.open);
+      const dynamic = countDynamic && (whole || (unplaced && entries.length === 0)) ? 1 : 0;
+      found[kind === 'write' ? 'pendingWrites' : 'pendingReads'].push({ helpers, entries, dynamic });
+      return;
     }
     // A name built at run time beside nothing tracked (README.${lang}.md at
     // the root) is a path the map cannot name, as a whole-path variable is.
@@ -446,13 +472,15 @@ export function astLandings(language, root, path, places) {
     }
     if (ctx.seen.has(key(node))) return;
     if (!isStringNode(node, ctx.python) && !isPathConstructor(node, ctx.python)) return;
-    for (const value of evaluate(node, ctx, 0)) {
+    for (const raw of evaluate(node, ctx, 0)) {
+      const value = isHelper(raw) ? asRoot(raw) : raw;
       if (value.open || outside(value) || namesItself(value, ctx)) continue;
       const target = literalPlace(value.text, places);
       if (target != null) found.reads.push(landingEntry(target, 'literal', value, places));
     }
   });
 
+  const rooted = callerRootedFunctions(root, ctx);
   return {
     writes: sortEntries(withoutRedundantDirectories(found.writes, places)),
     dynamicWrites: found.dynamicWrites,
@@ -460,7 +488,91 @@ export function astLandings(language, root, path, places) {
     dynamicReads: found.dynamicReads,
     ...(found.outsideWrites > 0 ? { outsideWrites: found.outsideWrites } : {}),
     ...(found.outsideReads > 0 ? { outsideReads: found.outsideReads } : {}),
+    ...(found.pendingWrites.length > 0 ? { pendingWrites: found.pendingWrites } : {}),
+    ...(found.pendingReads.length > 0 ? { pendingReads: found.pendingReads } : {}),
+    ...(Object.keys(rooted).length > 0 ? { callerRooted: rooted } : {}),
   };
+}
+
+/**
+ * The module-level functions of a file whose every returned path is the
+ * caller's (the home directory, the working directory, an environment
+ * variable or a command-line argument), by name: getGuardianDataPath()
+ * returning join(homedir(), '.claude-guardian'). Read with a scratch context,
+ * so evaluating them marks nothing seen for the file's own literal reads. A
+ * function returning another file's function is two calls away, and is not
+ * followed.
+ */
+function callerRootedFunctions(root, ctx) {
+  const scratch = { ...ctx, seen: new Set(), visiting: new Set() };
+  const out = {};
+  for (const [name, fn] of moduleFunctions(root, ctx.python)) {
+    const body = fn.childForFieldName('body');
+    const values = ctx.python
+      ? union(returnExpressions(body, 'return_statement', PY_NESTED).map((expr) => evalPy(expr, scratch, 0)))
+      : body && body.type !== 'statement_block'
+        ? evalJs(body, scratch, 0)
+        : union(returnExpressions(body, 'return_statement', JS_FUNCTIONS).map((expr) => evalJs(expr, scratch, 0)));
+    if (values.length > 0 && values.every(outside)) out[name] = values.some((value) => value.anchor === 'home') ? 'home' : values[0].anchor;
+  }
+  return out;
+}
+
+function moduleFunctions(root, python) {
+  const out = [];
+  for (const child of root.namedChildren) {
+    if (python) {
+      const fn = child.type === 'decorated_definition' ? child.childForFieldName('definition') : child;
+      if (fn?.type === 'function_definition') out.push([fn.childForFieldName('name')?.text, fn]);
+      continue;
+    }
+    const declaration = child.type === 'export_statement' ? child.childForFieldName('declaration') : child;
+    if (declaration?.type === 'function_declaration') out.push([declaration.childForFieldName('name')?.text, declaration]);
+    if (declaration?.type !== 'lexical_declaration' && declaration?.type !== 'variable_declaration') continue;
+    for (const declarator of declaration.namedChildren) {
+      const value = declarator.type === 'variable_declarator' ? declarator.childForFieldName('value') : null;
+      if (value && JS_FUNCTIONS.has(value.type)) out.push([declarator.childForFieldName('name')?.text, value]);
+    }
+  }
+  return out.filter(([name]) => typeof name === 'string' && name !== '');
+}
+
+/**
+ * The writes and reads whose root another file's function returns, settled
+ * now that imports resolve: outside when every such function, followed one
+ * call into the file its import names, returns the caller's place; otherwise
+ * what the site read with that root unreadable, its landings kept and a path
+ * that was only the return counted as built at run time. The functions'
+ * names are dropped once used.
+ *
+ * @param {Iterable<object>} files every file of the map
+ */
+export function settleHelperPaths(files) {
+  const byPath = new Map();
+  for (const file of files) byPath.set(file.path, file);
+  for (const file of byPath.values()) {
+    for (const [pending, kind, outsideCount, dynamicCount] of [['pendingWrites', 'writes', 'outsideWrites', 'dynamicWrites'], ['pendingReads', 'reads', 'outsideReads', 'dynamicReads']]) {
+      if (!file[pending]) continue;
+      const kept = [];
+      for (const { helpers, entries, dynamic } of file[pending]) {
+        const theirs = helpers.every((key) => {
+          const at = key.lastIndexOf('#');
+          const specifier = key.slice(0, at);
+          const name = key.slice(at + 1);
+          const site = Array.isArray(file.imports) ? file.imports.find((item) => item.specifier === specifier && item.resolved?.outcome === 'file') : null;
+          return site != null && byPath.get(site.resolved.path)?.callerRooted?.[name] != null;
+        });
+        if (theirs) file[outsideCount] = (file[outsideCount] ?? 0) + 1;
+        else {
+          kept.push(...entries);
+          file[dynamicCount] = (file[dynamicCount] ?? 0) + dynamic;
+        }
+      }
+      if (kept.length > 0) file[kind] = sortEntries([...(file[kind] ?? []), ...kept]);
+      delete file[pending];
+    }
+  }
+  for (const file of byPath.values()) delete file.callerRooted;
 }
 
 function withoutRedundantDirectories(writes, places) {
@@ -598,10 +710,18 @@ function evalJs(node, ctx, depth) {
       const property = node.childForFieldName('property')?.text;
       // new URL('./x.json', import.meta.url).pathname is the path the URL names.
       if (object?.type === 'new_expression' && (property === 'pathname' || property === 'href')) return evalJs(object, ctx, next);
-      if (object?.text === 'process.env' && HOME_VARIABLES.has(property)) return [atCaller('', 'home')];
+      if (object?.text === 'process.env') return environment(property);
+      if (object?.type === 'identifier' && CLI_BAGS.has(object.text)) return [atCaller('', 'argument')];
       if (object?.type !== 'meta_property') return [];
       if (property === 'url' || property === 'filename') return [anchored(ctx.file)];
       if (property === 'dirname') return [anchored(ctx.dir)];
+      return [];
+    }
+    case 'subscript_expression': {
+      const object = node.childForFieldName('object');
+      const index = node.childForFieldName('index');
+      if (object?.text === 'process.argv' || (object?.type === 'identifier' && CLI_BAGS.has(object.text))) return [atCaller('', 'argument')];
+      if (object?.text === 'process.env' && index?.type === 'string') return environment(jsStringText(index));
       return [];
     }
     case 'new_expression': {
@@ -628,7 +748,10 @@ function evalJs(node, ctx, depth) {
       if (jsPathCall(fn, name) && name === 'dirname') return dirnameValues(evalJs(args[0], ctx, next));
       if (jsPathCall(fn, name) && name === 'normalize') return evalJs(args[0], ctx, next);
       if (fn?.type === 'identifier' && (name === 'fileURLToPath' || name === 'String')) return evalJs(args[0], ctx, next);
-      if (fn?.type === 'identifier') return returnsJs(fn.text, node, ctx, next);
+      if (fn?.type === 'identifier') {
+        const values = returnsJs(fn.text, node, ctx, next);
+        return values.length > 0 ? values : imported(fn.text, node, ctx);
+      }
       return [];
     }
     default:
@@ -665,16 +788,22 @@ function evalPy(node, ctx, depth) {
     case 'boolean_operator':
       if (node.childForFieldName('operator')?.text !== 'or') return [];
       return fallback(evalPy(node.childForFieldName('left'), ctx, next), evalPy(node.childForFieldName('right'), ctx, next));
-    case 'subscript':
-      return pyEnvironment(node.childForFieldName('value'), node.childForFieldName('subscript'));
+    case 'subscript': {
+      const value = node.childForFieldName('value');
+      if (value?.text === 'sys.argv' || (value?.type === 'identifier' && CLI_BAGS.has(value.text))) return [atCaller('', 'argument')];
+      return pyEnvironment(value, node.childForFieldName('subscript'));
+    }
     case 'conditional_expression':
       return union([evalPy(node.namedChildren[0], ctx, next), evalPy(node.namedChildren[2], ctx, next)]);
     case 'identifier':
       if (node.text === '__file__') return [anchored(ctx.file)];
       return bindingPy(node.text, node, ctx, next);
-    case 'attribute':
+    case 'attribute': {
       if (node.childForFieldName('attribute')?.text === 'parent') return dirnameValues(evalPy(node.childForFieldName('object'), ctx, next));
+      const object = node.childForFieldName('object');
+      if (object?.type === 'identifier' && CLI_BAGS.has(object.text) && !isPythonModule(object.text, node, ctx)) return [atCaller('', 'argument')];
       return [];
+    }
     case 'call': {
       const fn = node.childForFieldName('function');
       const args = argumentNodes(node);
@@ -700,12 +829,82 @@ function evalPy(node, ctx, depth) {
         }
         return [];
       }
-      if (fn?.type === 'identifier') return returnsPy(fn.text, node, ctx, next);
+      if (fn?.type === 'identifier') {
+        const values = returnsPy(fn.text, node, ctx, next);
+        return values.length > 0 ? values : imported(fn.text, node, ctx);
+      }
       return [];
     }
     default:
       return [];
   }
+}
+
+// A call to a function this file imports from a module of its own
+// repository, by the specifier the import names, for settleHelperPaths.
+function imported(name, from, ctx) {
+  ctx.imports ??= ctx.python ? pythonImports(from) : scriptImports(from);
+  const found = ctx.imports.get(name);
+  return found ? [{ text: '', open: false, anchor: `${HELPER}${found.specifier}#${found.name}` }] : [];
+}
+
+function programOf(node) {
+  let root = node;
+  while (root.parent) root = root.parent;
+  return root;
+}
+
+// import { a as b } from './x.js': b is x's a. Only a relative specifier is
+// a file of this repository; a package's function is not followed.
+function scriptImports(node) {
+  const out = new Map();
+  for (const statement of programOf(node).namedChildren) {
+    if (statement.type !== 'import_statement') continue;
+    const source = statement.childForFieldName('source');
+    const specifier = source?.type === 'string' ? jsStringText(source) : null;
+    if (specifier == null || !specifier.startsWith('.')) continue;
+    const clause = statement.namedChildren.find((child) => child.type === 'import_clause');
+    for (const part of clause?.namedChildren ?? []) {
+      if (part.type === 'identifier') out.set(part.text, { specifier, name: 'default' });
+      if (part.type !== 'named_imports') continue;
+      for (const spec of part.namedChildren) {
+        if (spec.type !== 'import_specifier') continue;
+        const name = spec.childForFieldName('name')?.text;
+        const alias = spec.childForFieldName('alias')?.text ?? name;
+        if (name && alias) out.set(alias, { specifier, name });
+      }
+    }
+  }
+  return out;
+}
+
+// from .paths import data_dir as home: home is that module's data_dir. The
+// resolver decides whether the module is this repository's.
+function pythonImports(node) {
+  const out = new Map();
+  for (const statement of programOf(node).namedChildren) {
+    if (statement.type !== 'import_from_statement') continue;
+    const specifier = statement.childForFieldName('module_name')?.text;
+    if (!specifier) continue;
+    for (const child of statement.namedChildren) {
+      if (child === statement.childForFieldName('module_name')) continue;
+      if (child.type === 'dotted_name') out.set(child.text, { specifier, name: child.text });
+      if (child.type === 'aliased_import') {
+        const name = child.childForFieldName('name')?.text;
+        const alias = child.childForFieldName('alias')?.text;
+        if (name && alias) out.set(alias, { specifier, name });
+      }
+    }
+  }
+  return out;
+}
+
+// `import args` would make args a module, whose attributes are not a parse.
+function isPythonModule(name, from, ctx) {
+  ctx.modules ??= new Set(programOf(from).namedChildren
+    .filter((statement) => statement.type === 'import_statement')
+    .flatMap((statement) => statement.namedChildren.map((child) => (child.type === 'aliased_import' ? child.childForFieldName('alias')?.text : child.text))));
+  return ctx.modules.has(name);
 }
 
 // A name resolves to the nearest enclosing declaration of it. Every value
@@ -949,7 +1148,26 @@ function atCaller(text, anchor) {
 }
 
 function outside(value) {
-  return value.anchor === 'cwd' || value.anchor === 'home';
+  return value.anchor === 'cwd' || value.anchor === 'home' || value.anchor === 'argument' || value.anchor === 'env';
+}
+
+function isHelper(value) {
+  return typeof value.anchor === 'string' && value.anchor.startsWith(HELPER);
+}
+
+function asRoot(value) {
+  return { text: value.text, open: value.open, rooted: true };
+}
+
+// What an environment variable names as a path: the home directory, the
+// working directory, the checkout (which names no place of its own), or a
+// place whoever runs the code sets.
+function environment(name) {
+  if (typeof name !== 'string' || name === '') return [];
+  if (HOME_VARIABLES.has(name)) return [atCaller('', 'home')];
+  if (name === 'PWD') return [atCaller('', 'cwd')];
+  if (WORKSPACE_VARIABLES.has(name)) return [];
+  return [atCaller('', 'env')];
 }
 
 // A literal that starts at ~ is in the home directory.
@@ -964,17 +1182,25 @@ function fromCaller(values) {
   return values.map((value) => (value.anchor == null && !value.rooted && !value.text.startsWith('/') ? { ...value, anchor: 'cwd' } : value));
 }
 
-// dir || '.' is a place the caller passes, or the one they are standing in.
+// dir || '.' is a place the caller passes, or the one they are standing in;
+// Path('.') reads as the empty path, and is the same place. A command-line
+// argument's default is resolved where the argument would have been, from
+// the directory the command runs in: args.out ?? 'report.json' is the
+// caller's either way.
 function fallback(left, right) {
+  if (left.length > 0 && left.every((value) => value.anchor === 'argument')) {
+    return union([left, right.map((value) => (value.anchor == null && !value.rooted && !value.text.includes('://') ? { ...value, anchor: 'argument' } : value))]);
+  }
   if (left.length > 0) return union([left, right]);
-  return right.map((value) => (value.anchor == null && !value.open && (value.text === '.' || value.text === './') ? atCaller('', 'cwd') : value));
+  return right.map((value) => (value.anchor == null && !value.open && !value.rooted && (value.text === '.' || value.text === './' || value.text === '') ? atCaller('', 'cwd') : value));
 }
 
-// os.environ['HOME'] and os.getenv('HOME') are the home directory.
+// os.environ['HOME'] and os.getenv('HOME') are the home directory; any other
+// variable is a place whoever runs the code sets.
 function pyEnvironment(object, name) {
   if (object != null && object.text !== 'os.environ') return [];
   if (name?.type !== 'string') return [];
-  return HOME_VARIABLES.has(stringTexts(name, true).join('')) ? [atCaller('', 'home')] : [];
+  return environment(stringTexts(name, true).join(''));
 }
 
 // A value that is only the file's own path, or a directory holding it, names
@@ -1030,7 +1256,9 @@ function joinValues(segments, absoluteResets) {
   const anchored = segments[0].length === 0;
   if (anchored && segments.slice(1).every((values) => values.length === 0)) return [];
   let acc = anchored ? [{ ...closed(''), rooted: true }] : segments[0];
-  for (const values of segments.slice(1)) {
+  // Another file's return is only ever read as a root; past the first segment
+  // it is a part the engine cannot read.
+  for (const values of segments.slice(1).map((list) => list.filter((value) => !isHelper(value)))) {
     const next = [];
     for (const value of acc) {
       if (value.open) next.push(value);
@@ -1052,12 +1280,14 @@ function normalizeValue(value, anchored) {
   let text = value.text.replaceAll('\\', '/');
   if (anchored) text = text.replace(/^\/+/, '');
   if (text.startsWith('/')) return null;
-  if (text === '') return value.open ? null : { ...closed(''), rooted: value.rooted, anchor: value.anchor };
+  // The caller's directory with a name built at run time is still theirs.
+  const kept = outside(value) || isHelper(value);
+  if (text === '') return value.open && !kept ? null : { text: '', open: value.open, rooted: value.rooted, anchor: value.anchor };
   text = posix.normalize(text);
   if (text === '.' || text === './') text = '';
   if (text === '..' || text.startsWith('../')) return null;
   if (text.startsWith('./')) text = text.slice(2);
-  if (value.open && text === '') return null;
+  if (value.open && text === '' && !kept) return null;
   return { text, open: value.open, rooted: value.rooted, anchor: value.anchor };
 }
 
@@ -1096,7 +1326,7 @@ function concat(parts) {
   let rooted = false;
   for (let i = 0; i < parts.length; i += 1) {
     if (acc.every((value) => value.open)) break;
-    const values = parts[i];
+    const values = i === 0 ? parts[i] : parts[i].filter((value) => !isHelper(value));
     if (values.length === 0) {
       const next = parts[i + 1];
       if (i === 0 && next && next.length > 0 && next.every((value) => value.text.startsWith('/'))) {
@@ -1119,7 +1349,7 @@ function concat(parts) {
     }
     acc = cap(joined);
   }
-  return acc.filter((value) => !(value.open && value.text === ''));
+  return acc.filter((value) => !(value.open && value.text === '') || outside(value) || isHelper(value));
 }
 
 function union(lists) {

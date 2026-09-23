@@ -8,7 +8,7 @@ import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors } from './doors.js';
 import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
-import { astLandings, attachLandings, isTestFile, noLandings, pythonPathValues, textLandings, trackedPlaces } from './landings.js';
+import { astLandings, attachLandings, isTestFile, noLandings, pythonPathValues, settleHelperPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
 import { attachResolution, resolveDeclaredPath } from './resolve.js';
@@ -128,6 +128,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     overlaps,
     tracked: tracked.regular,
   });
+  settleHelperPaths([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]);
 
   const builtFrom = (path) => (trackedSet.has(path) ? null : resolveDeclaredPath(repoPath, path, trackedSet));
   const doors = [

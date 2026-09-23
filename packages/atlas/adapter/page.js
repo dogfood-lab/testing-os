@@ -1755,7 +1755,9 @@ function limits(ctx, shownText) {
   const dynamicWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);
   const dynamicReads = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicReads ?? 0), 0);
   if (dynamicWrites + dynamicReads > 0) {
-    lines.push(`${count(dynamicWrites, 'write')} and ${count(dynamicReads, 'read')} use paths built at run time and are not named here.`);
+    // A count of none is left out, as the outside line leaves it out.
+    const what = [dynamicWrites > 0 ? count(dynamicWrites, 'write') : null, dynamicReads > 0 ? count(dynamicReads, 'read') : null].filter(Boolean);
+    lines.push(`${list(what)} ${dynamicWrites + dynamicReads === 1 ? 'uses a path' : 'use paths'} built at run time and ${dynamicWrites + dynamicReads === 1 ? 'is' : 'are'} not named here.`);
   }
   if (ctx.untrackedWrites > 0) {
     lines.push(`${count(ctx.untrackedWrites, 'write')} ${ctx.untrackedWrites === 1 ? 'goes' : 'go'} to places this repository does not track, so ${ctx.untrackedWrites === 1 ? 'it is' : 'they are'} not listed as generated.`);
@@ -1765,7 +1767,7 @@ function limits(ctx, shownText) {
   if (outsideWrites + outsideReads > 0) {
     const what = [outsideWrites > 0 ? count(outsideWrites, 'write') : null, outsideReads > 0 ? count(outsideReads, 'read') : null].filter(Boolean);
     const verb = outsideWrites + outsideReads === 1 ? 'goes' : 'go';
-    lines.push(`${list(what)} ${verb} to the directory the command is run in or the home directory, not to this repository.`);
+    lines.push(`${list(what)} ${verb} to the directory the command is run in, the home directory or a path its caller passes, not to this repository.`);
   }
   // Most such commands are a test spawning the command it tests, which is
   // not a gap in what the repository does; the share in tests is said.

@@ -1,0 +1,9 @@
+name: ci
+on: [push]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node bin/guard.js export --out report.json
+      - run: python tools/camp.py
