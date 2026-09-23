@@ -59,6 +59,8 @@ const PY_TOOLS = new Set(['pytest', 'py.test', 'mypy', 'black', 'flake8', 'pylin
 // door (core/index.js walks landings from executed runs alone). tsc is one
 // whether or not it emits, since a compiler runs none of the code it builds.
 const CHECKERS = new Set(['ruff', 'mypy', 'checker', 'tsc', 'eslint']);
+// Python modules that only compile what they are handed.
+const PY_COMPILERS = new Set(['py_compile', 'compileall']);
 
 // The flags each tool takes a value after, written apart ("-c pyproject.toml").
 // A value is never a path the tool runs, even when it names a tracked file.
@@ -477,6 +479,10 @@ function makeReader(repo, runs, mentions) {
   }
 
   function pythonModule(name, rest, dir, frame) {
+    if (PY_COMPILERS.has(name)) {
+      for (const token of rest.filter((arg) => !arg.startsWith('-'))) file(token, dir, { ...frame, runKind: 'checks' }, { directories: true });
+      return;
+    }
     const parts = name.split('.');
     if (parts.some((part) => !/^[A-Za-z_][A-Za-z0-9_]*$/.test(part))) return;
     const stem = parts.join('/');
@@ -521,6 +527,7 @@ function makeReader(repo, runs, mentions) {
     node(argv, dir, frame) {
       const parsed = [];
       let test = false;
+      let check = false;
       let i = 1;
       for (; i < argv.length; i += 1) {
         const token = argv[i];
@@ -529,11 +536,20 @@ function makeReader(repo, runs, mentions) {
           test = true;
           continue;
         }
+        // node -c parses the script and runs none of it.
+        if (token === '-c' || token === '--check') {
+          check = true;
+          continue;
+        }
         if (!token.startsWith('-')) break;
         const eq = token.indexOf('=');
         const name = eq === -1 ? token : token.slice(0, eq);
         const value = eq !== -1 ? token.slice(eq + 1) : VALUE_SETS.node.has(name) ? argv[++i] : null;
         if (value != null && ['--import', '--loader', '--experimental-loader', '--require', '-r'].includes(name)) file(value, dir, frame);
+      }
+      if (check) {
+        if (i < argv.length) file(argv[i], dir, { ...frame, runKind: 'checks' });
+        return;
       }
       if (!test) {
         if (i < argv.length) file(argv[i], dir, frame, { script: true, args: argv.slice(i + 1) });
@@ -573,17 +589,21 @@ function makeReader(repo, runs, mentions) {
       }
     },
     shell(argv, dir, frame) {
+      let parseOnly = false;
       for (let i = 1; i < argv.length; i += 1) {
         const token = argv[i];
         if (token === '-c') {
-          if (i + 1 < argv.length) read(argv[i + 1], dir, { ...frame });
+          if (i + 1 < argv.length && !parseOnly) read(argv[i + 1], dir, { ...frame });
           return;
         }
         if (token.startsWith('-') || token.startsWith('+')) {
+          // sh -n reads the script's commands and runs none of them.
+          if (/^-[A-Za-z]*n[A-Za-z]*$/.test(token)) parseOnly = true;
           if (VALUE_SETS.shell.has(token)) i += 1;
           continue;
         }
-        file(token, dir, frame, { script: true, args: argv.slice(i + 1) });
+        if (parseOnly) file(token, dir, { ...frame, runKind: 'checks' });
+        else file(token, dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
     },

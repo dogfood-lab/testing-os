@@ -1,0 +1,13 @@
+name: ci
+on: [push]
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node -c bin/tool.js
+      - run: node --check bin/tool.js
+      - run: python -m py_compile tool.py
+      - run: python3 -m compileall -q lib
+      - run: bash -n run.sh
+      - run: sh -n run.sh
