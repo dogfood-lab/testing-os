@@ -104,32 +104,24 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 1,
+      "added": 1,
+      "changed": 9,
       "moved": 0,
-      "parts": 1,
+      "parts": 5,
       "removed": 0
     },
     "items": [
       {
-        "kind": "landing",
-        "sentence": "fixtures/atlas/doors-ts/test/unit.spec.js is now read by scripts/test-floor-allowlist.json.",
-        "subjects": [
-          "fixtures/atlas/doors-ts/test/unit.spec.js",
-          "scripts/test-floor-allowlist.json"
-        ]
-      },
-      {
         "kind": "counts",
-        "sentence": "1 file changed content, across 1 part.",
+        "sentence": "Nothing structural changed since 2026-09-23; 1 file added and 9 changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "b067feb17118f25080acb406124d614d2b68d29d",
-      "generatedAt": "2026-09-23T12:07:48.107Z"
+      "commit": "55304f6e735cc2002fd872ed4925a0bef9554e75",
+      "generatedAt": "2026-09-23T12:08:55.526Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -137,7 +129,7 @@
     "Window: 180 days; a pair counts from 10 shared commits."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "55304f6e735cc2002fd872ed4925a0bef9554e75",
+  "commit": "b8aea57d118c1d3cf907fbf7c59fafdfa71a3754",
   "doors": [
     {
       "file": ".github/workflows/ci.yml",
@@ -954,7 +946,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T12:08:55.526Z",
+  "generatedAt": "2026-09-23T12:24:46.239Z",
   "limits": [
     "2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "30 import sites could not be resolved.",
@@ -963,18 +955,9 @@
     "CI runs 514 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
     "Release runs 513 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
-  "mainDoor": ".github/workflows/ci.yml",
+  "mainDoor": ".github/workflows/ingest.yml",
   "parts": 22,
   "readers": [
-    {
-      "readers": [
-        "packages/dogfood-swarm/commands/dispatch.js",
-        "packages/dogfood-swarm/commands/lib/roadmap-seed.js",
-        "scripts (5 files)",
-        "site/public/dashboard/index.html (found by text)"
-      ],
-      "target": "dogfood/"
-    },
     {
       "readers": [
         "root (8 README files)",
@@ -985,14 +968,6 @@
         "site/src/content/docs/handbook/read-model.md (found by text)"
       ],
       "target": "indexes/"
-    },
-    {
-      "readers": [
-        "packages/ingest/load-context.js",
-        "packages/portfolio/generate.js",
-        "packages/verify/cli.js"
-      ],
-      "target": "policies/"
     },
     {
       "readers": [
@@ -1007,57 +982,223 @@
   "repo": "dogfood-lab/testing-os",
   "sequences": [
     {
+      "entry": "ingest",
+      "file": "packages/ingest/run.js",
+      "inner": [
+        {
+          "file": "packages/ingest/load-context.js",
+          "name": "loadRepoPolicy",
+          "part": "ingest",
+          "partLabel": "ingest",
+          "phrase": "load repo policy",
+          "steps": [
+            {
+              "name": "isUnsafeSegment",
+              "part": "ingest",
+              "partLabel": "ingest",
+              "phrase": "is unsafe segment"
+            },
+            {
+              "name": "logStage",
+              "part": "dogfood-swarm",
+              "partLabel": "dogfood-swarm",
+              "phrase": "log stage"
+            },
+            {
+              "name": "validatePayload",
+              "part": "schemas",
+              "partLabel": "schemas",
+              "phrase": "validate payload"
+            }
+          ]
+        },
+        {
+          "file": "packages/verify/index.js",
+          "name": "verify",
+          "part": "verify",
+          "partLabel": "verify",
+          "phrase": "verify",
+          "steps": [
+            {
+              "name": "parseRunUrlRepo",
+              "part": "verify",
+              "partLabel": "verify",
+              "phrase": "parse run url repo"
+            },
+            {
+              "name": "validateSubmissionSchema",
+              "part": "verify",
+              "partLabel": "verify",
+              "phrase": "validate submission schema"
+            },
+            {
+              "name": "validateSchemaVersion",
+              "part": "verify",
+              "partLabel": "verify",
+              "phrase": "validate schema version"
+            },
+            {
+              "name": "confirm",
+              "part": null,
+              "partLabel": null,
+              "phrase": "confirm"
+            },
+            {
+              "name": "validateStepResults",
+              "part": "verify",
+              "partLabel": "verify",
+              "phrase": "validate step results"
+            },
+            {
+              "name": "validateRequiredSteps",
+              "part": "verify",
+              "partLabel": "verify",
+              "phrase": "validate required steps"
+            },
+            {
+              "name": "validatePolicy",
+              "part": "verify",
+              "partLabel": "verify",
+              "phrase": "validate policy"
+            },
+            {
+              "name": "computeVerdict",
+              "part": "verify",
+              "partLabel": "verify",
+              "phrase": "compute verdict"
+            }
+          ]
+        },
+        {
+          "file": "packages/ingest/persist.js",
+          "name": "writeRecord",
+          "part": "ingest",
+          "partLabel": "ingest",
+          "phrase": "write record",
+          "steps": [
+            {
+              "name": "isUnsafeSegment",
+              "part": "ingest",
+              "partLabel": "ingest",
+              "phrase": "is unsafe segment"
+            },
+            {
+              "name": "parseRejectionReason",
+              "part": "verify",
+              "partLabel": "verify",
+              "phrase": "parse rejection reason"
+            },
+            {
+              "name": "readChainHead",
+              "part": "ingest",
+              "partLabel": "ingest",
+              "phrase": "read chain head"
+            },
+            {
+              "name": "submissionDigest",
+              "part": "ingest",
+              "partLabel": "ingest",
+              "phrase": "submission digest"
+            },
+            {
+              "name": "validateRecord",
+              "part": "ingest",
+              "partLabel": "ingest",
+              "phrase": "validate record"
+            },
+            {
+              "name": "appendChainEntry",
+              "part": "ingest",
+              "partLabel": "ingest",
+              "phrase": "append chain entry"
+            }
+          ]
+        }
+      ],
+      "part": "ingest",
+      "partLabel": "ingest",
+      "phrase": "ingest",
+      "steps": [
+        {
+          "name": "logStage",
+          "part": "dogfood-swarm",
+          "partLabel": "dogfood-swarm",
+          "phrase": "log stage"
+        },
+        {
+          "name": "isDuplicate",
+          "part": "ingest",
+          "partLabel": "ingest",
+          "phrase": "is duplicate"
+        },
+        {
+          "count": 3,
+          "name": null,
+          "part": "ingest",
+          "partLabel": "ingest",
+          "phrase": "load context"
+        },
+        {
+          "name": "verify",
+          "part": "verify",
+          "partLabel": "verify",
+          "phrase": "verify"
+        },
+        {
+          "name": "writeRecord",
+          "part": "ingest",
+          "partLabel": "ingest",
+          "phrase": "write record"
+        },
+        {
+          "name": "rebuildIndexes",
+          "part": "ingest",
+          "partLabel": "ingest",
+          "phrase": "rebuild indexes"
+        }
+      ]
+    },
+    {
       "entry": "main",
-      "file": "scripts/check-finding-regression-pins.mjs",
+      "file": "packages/portfolio/generate.js",
       "inner": [],
-      "part": "scripts",
-      "partLabel": "scripts",
+      "part": "portfolio",
+      "partLabel": "portfolio",
       "phrase": "main",
       "steps": [
         {
-          "name": "parseRegressionPins",
+          "name": "computeTrends",
           "part": "portfolio",
           "partLabel": "portfolio",
-          "phrase": "parse regression pins"
+          "phrase": "compute trends"
         },
         {
-          "name": "toJSON",
+          "name": "atomicWriteFileSync",
+          "part": "findings",
+          "partLabel": "findings",
+          "phrase": "atomic write file sync"
+        },
+        {
+          "name": "generateBadges",
           "part": "portfolio",
           "partLabel": "portfolio",
-          "phrase": "to json"
+          "phrase": "generate badges"
         },
         {
-          "name": "scanRepoForDeclaredPins",
-          "part": "scripts",
-          "partLabel": "scripts",
-          "phrase": "scan repo for declared pins"
-        },
-        {
-          "name": "canonicalize",
-          "part": "ingest",
-          "partLabel": "ingest",
-          "phrase": "canonicalize"
-        },
-        {
-          "name": "defaultToday",
-          "part": "scripts",
-          "partLabel": "scripts",
-          "phrase": "default today"
-        },
-        {
-          "name": "selectDueForRevalidation",
-          "part": "scripts",
-          "partLabel": "scripts",
-          "phrase": "select due for revalidation"
+          "name": "atomicWriteFileSync",
+          "part": "findings",
+          "partLabel": "findings",
+          "phrase": "atomic write file sync"
         }
       ]
     }
   ],
   "startHere": [
-    ".github/workflows/ci.yml",
-    "packages/dogfood-swarm/a3-roadmap-envelope-conformance.test.js",
-    "dogfood/",
-    "packages/dogfood-swarm/commands/dispatch.js"
+    ".github/workflows/ingest.yml",
+    "packages/ingest/run.js",
+    "packages/verify/index.js",
+    "indexes/",
+    "packages/report/status.js"
   ],
   "summary": null,
   "summaryFrom": null,

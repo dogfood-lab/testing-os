@@ -1,15 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 55304f6.
+Mapped at 2026-09-23 from commit b8aea57.
 
 ## What this is
 
-22 parts. Work enters through 6 doors; the busiest is CI, which reaches 11 parts.
+22 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).
 
-## What changed since 2026-09-23 (b067feb)
+## What changed since 2026-09-23 (55304f6)
 
-- fixtures/atlas/doors-ts/test/unit.spec.js is now read by scripts/test-floor-allowlist.json.
-- 1 file changed content, across 1 part.
+Nothing structural changed since 2026-09-23; 1 file added and 9 changed content.
 
 ## What comes in
 
@@ -20,24 +19,36 @@ Mapped at 2026-09-23 from commit 55304f6.
 5. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs scripts/check-accent-color.test.mjs.
 6. **Atlas render.** On a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs scripts/atlas-render.mjs.
 
-## What happens through CI
+## What happens through Ingest dogfood submission
 
-1. The workflow runs 30 files in atlas, dogfood/ in dogfood, 30 files in dogfood-swarm, 47 files in findings, 15 files in ingest, 16 files in portfolio, 14 files in report, packages/schemas/src/ and packages/schemas/test/ in schemas, 20 files in scripts, site/src/components/ in site, and 24 files in verify.
-   1. Inside scripts/check-finding-regression-pins.mjs, main does, in order: parse regression pins (portfolio), to json, scan repo for declared pins, canonicalize (ingest), default today and select due for revalidation.
-2. It writes to dogfood/roadmap/, indexes/, policies/repos/, records/ and reports/.
+1. The workflow runs packages/ingest/run.js in ingest, packages/portfolio/generate.js in portfolio, packages/schemas/src/ in schemas, and scripts/build.mjs and scripts/sync-version.mjs in scripts.
+   1. Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.
+   2. **Load repo policy** runs, in order: is unsafe segment, log stage (dogfood-swarm) and validate payload (schemas).
+   3. **Verify** (verify) runs, in order:
+      1. parse run url repo
+      2. validate submission schema
+      3. validate schema version
+      4. confirm
+      5. validate step results
+      6. validate required steps
+      7. validate policy
+      8. compute verdict
+   4. **Write record** runs, in order: is unsafe segment, parse rejection reason (verify), read chain head, submission digest, validate record and append chain entry.
+   5. Inside packages/portfolio/generate.js, main does, in order: compute trends, atomic write file sync (findings), generate badges and atomic write file sync.
+2. That reaches dogfood-swarm (1 file), findings (2 files) and verify (10 files).
+3. It writes to indexes/, records/ and reports/.
+4. It commits indexes/ and records/, then pushes.
 
 ## Who reads the results
 
-- **dogfood/** is read by packages/dogfood-swarm/commands/dispatch.js, packages/dogfood-swarm/commands/lib/roadmap-seed.js, scripts (5 files) and site/public/dashboard/index.html (found by text).
 - **indexes/** is read by the repository root (8 README files), examples/README.md (found by text), packages/portfolio/README.md (found by text), packages/report/status.js, site/public/dashboard/index.html (found by text) and site/src/content/docs/handbook/read-model.md (found by text).
-- **policies/** is read by packages/ingest/load-context.js, packages/portfolio/generate.js and packages/verify/cli.js.
 - **records/** is read by packages/findings/derive/load-records.js, packages/ingest/rebuild-indexes.js, packages/portfolio/lib/compute-trends.js and packages/report/status.js.
 
 ## The other doors
 
-**Release** runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 510 more, writes to dogfood/roadmap/, indexes/, policies/repos/, records/ and reports/, publishes to npm, and creates a GitHub release.
+**CI** runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 511 more, and writes to dogfood/roadmap/, indexes/, policies/repos/, records/ and reports/.
 
-**Ingest dogfood submission** runs packages/ingest/run.js, packages/portfolio/generate.js, scripts/build.mjs and 2 more, reaches dogfood-swarm, findings and verify, writes to indexes/, records/ and reports/, and commits indexes/ and records/, then pushes.
+**Release** runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 510 more, writes to dogfood/roadmap/, indexes/, policies/repos/, records/ and reports/, publishes to npm, and creates a GitHub release.
 
 **self-dogfood** runs packages/report/cli.js, scripts/build.mjs, scripts/sync-version.mjs and 1 more, and sends a dispatch to dogfood-lab/testing-os.
 
@@ -95,9 +106,9 @@ People write .github/, assets/, docs/, examples/, the repository root and swarms
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/dogfood-swarm/a3-roadmap-envelope-conformance.test.js → dogfood/ → packages/dogfood-swarm/commands/dispatch.js
+.github/workflows/ingest.yml → packages/ingest/run.js → packages/verify/index.js → indexes/ → packages/report/status.js
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one dogfood submission end to end.
 
 ## What this map cannot see
 
