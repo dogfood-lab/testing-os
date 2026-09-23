@@ -44,18 +44,22 @@ function siteCounts(files) {
 //
 // A command handed to a child process whose program or arguments are built at
 // run time is not followed either. Tests are counted here: a test that runs a
-// script it builds the command for is how a part goes untested unseen.
+// script it builds the command for is how a part goes untested unseen. How
+// many of them are in tests is counted apart, since a suite spawning the
+// command it tests is most of them in a repository with a CLI.
 function dynamicCounts(files) {
   let reads = 0;
   let writes = 0;
   let spawns = 0;
+  let spawnsInTests = 0;
   for (const file of files) {
     spawns += file.dynamicSpawns ?? 0;
+    if (isTestFile(file.path)) spawnsInTests += file.dynamicSpawns ?? 0;
     if (isTestMaterial(file.path)) continue;
     reads += file.dynamicReads ?? 0;
     writes += file.dynamicWrites ?? 0;
   }
-  return { reads, spawns, writes };
+  return { reads, spawns, spawnsInTests, writes };
 }
 
 function resolvedFiles(file) {
@@ -131,6 +135,7 @@ export function buildArtifact(mapped, commit) {
       ...named,
       dynamicReads: dynamic.reads,
       dynamicSpawns: dynamic.spawns,
+      dynamicSpawnsInTests: dynamic.spawnsInTests,
       dynamicWrites: dynamic.writes,
       entryPoints: [...boundary.entryPoints].filter((path) => !inAtlas(path)).sort(),
       externals: sites.externals,

@@ -1,0 +1,22 @@
+summary: ""
+boundaries:
+  - name: fixtures
+    globs:
+      - fixtures/**
+    role: test
+  - name: root
+    globs:
+      - "*"
+    role: config
+  - name: schemas
+    globs:
+      - schemas/**
+    role: code
+  - name: tests
+    globs:
+      - tests/**
+    role: test
+  - name: tools
+    globs:
+      - tools/**
+    role: code

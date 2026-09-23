@@ -840,7 +840,8 @@ describe('files the parser cannot read', () => {
       'lib/mocked.test.ts': 'typeof-import-argument',
       'lib/wire.ts': 'nul-character',
     });
-    const line = '5 files use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (2), an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
+    // All five are in lib, so the part is named once.
+    const line = '5 files in lib use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (2), an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
     assert.ok(JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits.includes(line));
     assert.ok(readFileSync(join(root, 'atlas', 'README.md'), 'utf8').includes(`\n- ${line}\n`));
   });
@@ -877,6 +878,6 @@ describe('commands built at run time', () => {
     // The spelled-out commands are still followed: the test reaches run.js.
     assert.equal(tools.testedBy, 1);
     const limits = JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits;
-    assert.ok(limits.includes('3 commands are built at run time and not followed.'), limits.join('\n'));
+    assert.ok(limits.includes('3 commands are built at run time and not followed, all of them in tests.'), limits.join('\n'));
   });
 });

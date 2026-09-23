@@ -1493,29 +1493,73 @@ const UNREAD_SYNTAX = {
   'typeof-import-argument': '`typeof import(…)` as a type argument',
 };
 
-/**
- * The files the parser could not read, with the constructs they stopped on,
- * most files first. What such a file imports is not known, so the count is
- * stated rather than left for a reader to infer from a missing edge.
- *
- * @param {Array<{ unreadSyntax?: string }>} files
- * @returns {string|null}
- */
-export function unreadLine(files) {
-  if (files.length === 0) return null;
+// How many files stopped on each construct, most first, the unnamed last.
+function syntaxCounts(files) {
   const counts = new Map();
   for (const file of files) {
     const key = Object.hasOwn(UNREAD_SYNTAX, file.unreadSyntax ?? '') ? file.unreadSyntax : null;
     counts.set(key, (counts.get(key) ?? 0) + 1);
   }
-  const named = [...counts.entries()].filter(([key]) => key != null)
-    .sort((a, b) => b[1] - a[1] || cmp(a[0], b[0]))
-    .map(([key, n]) => `${UNREAD_SYNTAX[key]} (${n})`);
-  const other = counts.get(null) ?? 0;
-  const lead = `${count(files.length, 'file')} ${files.length === 1 ? 'uses' : 'use'} syntax the parser cannot read, so what ${files.length === 1 ? 'it imports' : 'they import'} is not known`;
-  if (named.length === 0) return `${lead}.`;
-  if (other > 0) named.push(`other syntax (${other})`);
-  return `${lead}: ${list(named)}.`;
+  const named = [...counts.entries()].filter(([key]) => key != null).sort((a, b) => b[1] - a[1] || cmp(a[0], b[0]));
+  return { named, other: counts.get(null) ?? 0 };
+}
+
+// "a NUL character inside a string (2) and other syntax (1)", or null when
+// no file stopped on a construct the page can name.
+function constructList(files) {
+  const { named, other } = syntaxCounts(files);
+  if (named.length === 0) return null;
+  const items = named.map(([key, n]) => `${UNREAD_SYNTAX[key]} (${n})`);
+  if (other > 0) items.push(`other syntax (${other})`);
+  return list(items);
+}
+
+// One part's share: "5 in fixtures", with the construct when the files there
+// all stopped on the same named one, and each named one's count otherwise.
+function unreadGroup(group) {
+  const { named, other } = syntaxCounts(group.files);
+  const lead = `${group.files.length} in ${group.label}`;
+  if (named.length === 0) return lead;
+  if (named.length === 1 && other === 0) return `${lead} (${UNREAD_SYNTAX[named[0][0]]})`;
+  const items = named.map(([key, n]) => `${UNREAD_SYNTAX[key]} in ${n}`);
+  if (other > 0) items.push(`other syntax in ${other}`);
+  return `${lead} (${list(items)})`;
+}
+
+/**
+ * The files the parser could not read, with the constructs they stopped on,
+ * most files first. What such a file imports is not known, so the count is
+ * stated rather than left for a reader to infer from a missing edge. Where a
+ * part holds more than one such file the count is given by part, since five
+ * fixtures broken on purpose and one schema the parser trips on are not the
+ * same finding; with every file in one part, that part is named once.
+ *
+ * @param {Array<{ unreadSyntax?: string, part?: string|null, partLabel?: string|null }>} files
+ * @returns {string|null}
+ */
+export function unreadLine(files) {
+  if (files.length === 0) return null;
+  const groups = new Map();
+  for (const file of files) {
+    const key = file.part ?? null;
+    if (!groups.has(key)) groups.set(key, { files: [], label: key == null ? 'no part' : (file.partLabel ?? key) });
+    groups.get(key).files.push(file);
+  }
+  const verb = files.length === 1 ? 'uses' : 'use';
+  const reason = `syntax the parser cannot read, so what ${files.length === 1 ? 'it imports' : 'they import'} is not known`;
+  const byPart = [...groups.entries()].some(([key, group]) => key != null && group.files.length > 1);
+  if (byPart && groups.size === 1) {
+    const [group] = groups.values();
+    const constructs = constructList(files);
+    return `${count(files.length, 'file')} in ${group.label} ${verb} ${reason}${constructs ? `: ${constructs}` : ''}.`;
+  }
+  const lead = `${count(files.length, 'file')} ${verb} ${reason}`;
+  if (byPart) {
+    const ordered = [...groups.values()].sort((a, b) => b.files.length - a.files.length || cmp(a.label, b.label));
+    return `${lead}: ${ordered.map(unreadGroup).join(', ')}.`;
+  }
+  const constructs = constructList(files);
+  return constructs ? `${lead}: ${constructs}.` : `${lead}.`;
 }
 
 function limits(ctx, shownText) {
@@ -1526,16 +1570,23 @@ function limits(ctx, shownText) {
   if (declared) lines.push(declared);
   const unresolved = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.unresolvedSites ?? 0), 0);
   if (unresolved > 0) lines.push(`${count(unresolved, 'import site')} could not be resolved.`);
-  const unparsed = unreadLine([...ctx.fileOf.values()].filter((file) => file.parseError));
+  const unparsed = unreadLine([...ctx.fileOf.values()].filter((file) => file.parseError).map((file) => {
+    const part = ctx.boundaryOf.get(file.path) ?? null;
+    return { part, partLabel: part == null ? null : ctx.shown(part), unreadSyntax: file.unreadSyntax };
+  }));
   if (unparsed) lines.push(unparsed);
   const dynamicWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);
   const dynamicReads = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicReads ?? 0), 0);
   if (dynamicWrites + dynamicReads > 0) {
     lines.push(`${count(dynamicWrites, 'write')} and ${count(dynamicReads, 'read')} use paths built at run time and are not named here.`);
   }
+  // Most such commands are a test spawning the command it tests, which is
+  // not a gap in what the repository does; the share in tests is said.
   const dynamicSpawns = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicSpawns ?? 0), 0);
+  const inTests = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicSpawnsInTests ?? 0), 0);
   if (dynamicSpawns > 0) {
-    lines.push(`${count(dynamicSpawns, 'command')} ${dynamicSpawns === 1 ? 'is' : 'are'} built at run time and not followed.`);
+    const share = inTests === 0 ? '' : inTests === dynamicSpawns ? `, ${dynamicSpawns === 1 ? 'it' : 'all of them'} in tests` : `, ${inTests} of them in tests`;
+    lines.push(`${count(dynamicSpawns, 'command')} ${dynamicSpawns === 1 ? 'is' : 'are'} built at run time and not followed${share}.`);
   }
   if (shownText) lines.push('Readers marked (found by text) come from scanning unparsed files.');
   for (const door of ctx.doors) {
