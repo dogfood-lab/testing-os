@@ -53,6 +53,18 @@ swarm --help
 
 Want your own repo's test evidence recorded here? The **[`examples/` starter kit](examples/)** gets you dispatching in five minutes (`dogfood-report` builds the submission; `dogfood-init` scaffolds the workflow). The operator's guide, CLI reference, schema reference, and integration recipes live in the **[handbook](https://dogfood-lab.github.io/testing-os/handbook/)**. Per-version detail is in [CHANGELOG.md](CHANGELOG.md).
 
+## Run it for a private fleet
+
+The public site renders every public repository that has adopted Atlas. For repositories that must not leave your machine, the same engine ships as a container with persistent memory:
+
+```bash
+mkdir -p atlas-data repos
+cp docker/fleet.example.yml atlas-data/fleet.yml   # list your repositories, by mounted path or clone URL
+docker compose -f docker/compose.example.yml up -d
+```
+
+`./atlas-data` is the memory: `fleet.yml`, every render, each repository's history and the state. The service maps once at start when the memory is empty, then on the schedule in `fleet.yml`, and serves the fleet list at `http://127.0.0.1:8080/` and each page at `/?repo=owner/name`. Nothing leaves the container except git fetches of the repositories you listed; deleting `./atlas-data` is the only way to forget. The same image runs the CLI on one repository: `docker run --rm -v "$PWD:/repo" ghcr.io/dogfood-lab/atlas map`. Run commands and the file shapes are in [`docker/README.md`](docker/README.md).
+
 ## Threat Model
 
 testing-os processes dogfood submissions dispatched via `repository_dispatch` from trusted GitHub repos under `mcp-tool-shop-org/*` and `dogfood-lab/*`. The verifier requires CI provenance — claimed run IDs are confirmed via the provider's API, and submissions with malformed shapes, missing references, or invalid policy claims are rejected.

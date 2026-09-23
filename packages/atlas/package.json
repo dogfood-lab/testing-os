@@ -6,7 +6,8 @@
   "main": "index.js",
   "exports": {
     ".": "./index.js",
-    "./core": "./core/index.js"
+    "./core": "./core/index.js",
+    "./fleet": "./adapter/fleet.js"
   },
   "files": [
     "index.js",
@@ -40,6 +41,8 @@
     "adapter/explain.js",
     "adapter/diff.js",
     "adapter/divergence.js",
+    "adapter/fleet.js",
+    "bin/atlas-fleet.js",
     "templates/atlas-refresh.yml",
     "grammars/manifest.json",
     "grammars/tree-sitter-javascript.wasm",
@@ -49,7 +52,8 @@
     "LICENSE"
   ],
   "bin": {
-    "atlas": "./cli.js"
+    "atlas": "./cli.js",
+    "atlas-fleet": "./bin/atlas-fleet.js"
   },
   "scripts": {
     "test": "node --test --test-concurrency=1 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\""

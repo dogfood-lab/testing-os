@@ -33,6 +33,11 @@
  *   node scripts/sync-version.mjs           # rewrite if drifted
  *   node scripts/sync-version.mjs --check   # exit non-zero if drifted (CI gate)
  *
+ *   docker/Dockerfile
+ *     - The `ARG ATLAS_VERSION=X.Y.Z` default, so a local image build installs
+ *       the version this tree is at. The release job passes the arg itself.
+ *     - Absent (a fixture root) is tolerated.
+ *
  * Invoked automatically via npm `prebuild` so `npm run build` at the repo root
  * always refreshes README + lockfile before producing artifacts.
  *
@@ -72,8 +77,9 @@ export function syncVersion({ repoRoot, check = false }) {
 
   const readmeStatus = syncReadme({ readmePath, version, check });
   const lockfileStatus = syncLockfile({ lockPath, version, check });
+  const dockerfileStatus = syncDockerfile({ dockerfilePath: resolve(repoRoot, 'docker', 'Dockerfile'), version, check });
 
-  return { version, readme: readmeStatus, lockfile: lockfileStatus };
+  return { version, readme: readmeStatus, lockfile: lockfileStatus, dockerfile: dockerfileStatus };
 }
 
 function syncReadme({ readmePath, version, check }) {
@@ -160,6 +166,31 @@ function syncLockfile({ lockPath, version, check }) {
   return 'updated';
 }
 
+const DOCKER_ARG_REGEX = /^ARG ATLAS_VERSION=(\S*)$/m;
+
+function syncDockerfile({ dockerfilePath, version, check }) {
+  let text;
+  try {
+    text = readFileSync(dockerfilePath, 'utf8');
+  } catch (err) {
+    if (err.code === 'ENOENT') return 'absent';
+    throw err;
+  }
+  const match = DOCKER_ARG_REGEX.exec(text);
+  if (!match) {
+    throw new Error('[sync-version] docker/Dockerfile has no `ARG ATLAS_VERSION=<version>` line to keep current.');
+  }
+  if (match[1] === version) return 'in-sync';
+  if (check) {
+    throw new DriftError(
+      `[sync-version] docker/Dockerfile is stale. Expected ARG ATLAS_VERSION=${version} but found ${match[1] || '<empty>'}.\n` +
+        `Run: node scripts/sync-version.mjs`
+    );
+  }
+  writeFileSync(dockerfilePath, text.replace(DOCKER_ARG_REGEX, `ARG ATLAS_VERSION=${version}`));
+  return 'updated';
+}
+
 /** Sentinel so the CLI can exit 1 on drift but other errors exit 2. */
 export class DriftError extends Error {
   constructor(message) {
@@ -187,12 +218,13 @@ if (isMain) {
     const result = syncVersion({ repoRoot, check });
     if (check) {
       console.log(
-        `[sync-version] OK at v${result.version} (README: ${result.readme}, lockfile: ${result.lockfile}).`
+        `[sync-version] OK at v${result.version} (README: ${result.readme}, lockfile: ${result.lockfile}, Dockerfile: ${result.dockerfile}).`
       );
     } else {
       const changed = [
         result.readme === 'updated' ? 'README.md' : null,
         result.lockfile === 'updated' ? 'package-lock.json' : null,
+        result.dockerfile === 'updated' ? 'docker/Dockerfile' : null,
       ].filter(Boolean);
       if (changed.length === 0) {
         console.log(`[sync-version] Already in sync at v${result.version}.`);

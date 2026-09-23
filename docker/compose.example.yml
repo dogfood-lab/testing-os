@@ -1,0 +1,17 @@
+# docker compose -f compose.example.yml up -d
+#
+# ./atlas-data is the persistent memory: fleet.yml, every render, its history
+# and the state. Deleting it is the only way to forget. ./repos holds the
+# checkouts fleet.yml lists by path, mounted read-only.
+services:
+  atlas:
+    image: ghcr.io/dogfood-lab/atlas:latest
+    restart: unless-stopped
+    # The image runs as uid 1000. When ./atlas-data belongs to another user, name it:
+    # user: "1001:1001"
+    ports:
+      # Published on this machine only. Change the address to expose it wider.
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./atlas-data:/data
+      - ./repos:/repos:ro

@@ -1,0 +1,8 @@
+# The build context is the repository root, and the image takes exactly these
+# files from it. Everything else, the package source above all, stays out: the
+# package comes from npm.
+*
+!site/public/atlas/index.html
+!site/public/atlas/render.js
+!site/public/atlas/hero.webp
+!docker/entrypoint.sh

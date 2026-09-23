@@ -29,7 +29,7 @@
  */
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { mkdtempSync, writeFileSync, readFileSync, rmSync, statSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, writeFileSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -244,4 +244,25 @@ test('F-W1-CI-007: `--check` invokes the main-entry block on a real script invoc
     `expected main() to run and exit 0 (in-sync) or 1 (drift), got ${result.status}.\n  stdout: ${result.stdout}\n  stderr: ${result.stderr}`,
   );
   assert.match(result.stdout, /\[sync-version\]/, '--check must print the [sync-version] status line, proving isMain fired');
+});
+
+test('stamps the Dockerfile ARG default, and --check reds when it drifts', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'sync-version-docker-'));
+  try {
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'x', version: '2.3.4' }));
+    writeFileSync(join(dir, 'README.md'), '<!-- version:start -->v2.3.4<!-- version:end -->\n');
+    assert.equal(syncVersion({ repoRoot: dir, check: true }).dockerfile, 'absent', 'a root with no docker/ is fine');
+    const dockerDir = join(dir, 'docker');
+    mkdirSync(dockerDir);
+    const dockerfile = join(dockerDir, 'Dockerfile');
+    writeFileSync(dockerfile, 'FROM node:22-alpine\nARG ATLAS_VERSION=2.3.3\nRUN echo "$ATLAS_VERSION"\n');
+    assert.throws(() => syncVersion({ repoRoot: dir, check: true }), (err) => err instanceof DriftError && /ATLAS_VERSION=2\.3\.4 but found 2\.3\.3/.test(err.message));
+    assert.equal(syncVersion({ repoRoot: dir }).dockerfile, 'updated');
+    assert.equal(readFileSync(dockerfile, 'utf8'), 'FROM node:22-alpine\nARG ATLAS_VERSION=2.3.4\nRUN echo "$ATLAS_VERSION"\n');
+    assert.equal(syncVersion({ repoRoot: dir, check: true }).dockerfile, 'in-sync');
+    writeFileSync(dockerfile, 'FROM node:22-alpine\n');
+    assert.throws(() => syncVersion({ repoRoot: dir, check: true }), /no `ARG ATLAS_VERSION=<version>` line/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });

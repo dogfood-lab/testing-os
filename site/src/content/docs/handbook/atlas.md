@@ -68,6 +68,18 @@ npx --yes @dogfood-lab/atlas diff --base origin/main
 
 Public repositories under `dogfood-lab` and `mcp-tool-shop-org` that have committed an `atlas/` folder are rendered weekly onto the `atlas-render` branch and appear on the site. A private repository uses the workflow template shipped in the package, `templates/atlas-refresh.yml`, and nothing leaves it.
 
+## Run it for a private fleet
+
+For repositories that must not leave your machine, the same engine ships as a container with persistent memory, `ghcr.io/dogfood-lab/atlas`. It maps the repositories you list in `fleet.yml`, by mounted path or clone URL, once at start and then on a schedule, keeps every render and its history on a volume, and serves the same fleet list and per-repository pages as this site on a port of your choosing. Nothing leaves it except git fetches of the repositories you listed. The same image runs the CLI on a single mounted repository, with the CLI's exit codes passed through, so it can stand in for `npx` in a job that has no Node.
+
+```bash
+mkdir -p atlas-data repos
+cp docker/fleet.example.yml atlas-data/fleet.yml
+docker compose -f docker/compose.example.yml up -d
+```
+
+`atlas-data` is the memory; deleting it is the only way to forget.
+
 ## What it reads
 
 - **Doors.** Every workflow under `.github/workflows/`: triggers, the files its steps execute by the conventions of the tools they name, what it stages and pushes, what it dispatches, publishes (npm, PyPI, crates.io, RubyGems, a container image), releases or deploys, and the issues or pull requests it opens.
