@@ -69,6 +69,8 @@ p, li { font-size: 16px; }
 ol, ul { padding-left: 1.4em; }
 li { margin: 6px 0; }
 .mapped { color: var(--dim); margin: 0 0 4px; }
+.summary { margin: 0 0 6px; }
+.summary .correct { font-size: 14px; }
 .links { margin: 0 0 8px; font-size: 15px; }
 .chain { line-height: 1.9; }
 .facts { color: var(--dim); font-size: 15px; }
@@ -90,6 +92,24 @@ li { margin: 6px 0; }
 .flow .edge { fill: none; stroke: var(--faint); stroke-width: 1.25; }
 .flow .arrow { fill: var(--faint); }
 @media (max-width: 599.98px) { .flow { display: none; } }
+
+/* the two pictures that read page.json's counts and history.json: length and
+   height are their only encoding, so every fill is neutral */
+.picture { margin: 20px 0 8px; }
+.picture svg { display: block; max-width: 100%; height: auto; }
+.picture figcaption { max-width: 76ch; color: var(--dim); font-size: 14px; margin-top: 8px; }
+.bars text { fill: var(--text); font: 14px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.bars text.sub { fill: var(--dim); }
+.bars .bar { fill: var(--border2); }
+.bars .bar-tests { fill: none; stroke: var(--faint); stroke-width: 1.25; stroke-dasharray: 5 4; }
+.strip .col { fill: var(--border2); }
+.strip .base, .strip .tick { fill: none; stroke: var(--faint); stroke-width: 1; }
+.strip use.glyph { fill: none; stroke: var(--text); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.strip use.glyph-strong { stroke-width: 2.4; }
+.strip text { fill: var(--dim); font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+/* below 600px the bars drop out, since the list above says the same; the
+   strip keeps its sentence, which is the only other place its history is read */
+@media (max-width: 599.98px) { .bars { display: none; } .strip svg { display: none; } }
 
 footer { border-top: 1px solid var(--border); padding: 14px 0 30px; font-size: 14px; color: var(--dim); }
 </style>
@@ -114,7 +134,7 @@ footer { border-top: 1px solid var(--border); padding: 14px 0 30px; font-size: 1
   <div class="wrap">Atlas reads each repository and writes this page from what it finds. <a href="https://github.com/dogfood-lab/testing-os/blob/main/docs/atlas-page.spec.md">How the page is specified</a>.</div>
 </footer>
 <script type="module">
-import { isRepo, pageDataUrl, renderPage, renderFleet, pageTitle, state } from "./render.js";
+import { isRepo, pageDataUrl, historyDataUrl, renderPage, renderFleet, pageTitle, state } from "./render.js";
 
 const CONFIG = {
   atlasBase: "https://raw.githubusercontent.com/dogfood-lab/testing-os/atlas-render/",
@@ -147,10 +167,15 @@ async function main() {
       return;
     }
     try {
-      const got = await load(pageDataUrl(CONFIG.atlasBase, repo));
+      // A render made before the history existed has none; the page is the
+      // same without it, so a missing or unreadable history is never an error.
+      const [got, history] = await Promise.all([
+        load(pageDataUrl(CONFIG.atlasBase, repo)),
+        load(historyDataUrl(CONFIG.atlasBase, repo)).then((res) => (res.absent ? null : res.data), () => null)
+      ]);
       if (got.absent) { show(state("This repository has not been rendered yet."), repo + ": not rendered"); return; }
       if (!Array.isArray(got.data.doors)) throw new Error("the file has an unexpected shape");
-      show(renderPage(got.data, { repo }), pageTitle(got.data, { repo }));
+      show(renderPage(got.data, { repo, history }), pageTitle(got.data, { repo }));
     } catch (err) {
       show(state("Could not load the map for " + repo + ": " + ((err && err.message) || String(err)) + "."), "Atlas");
     }

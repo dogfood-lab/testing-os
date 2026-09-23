@@ -53,6 +53,10 @@ export function pageDataUrl(atlasBase, repo) {
   return `${atlasBase}indexes/atlas/${segments(repo)}/page.json`;
 }
 
+export function historyDataUrl(atlasBase, repo) {
+  return `${atlasBase}indexes/atlas/${segments(repo)}/history.json`;
+}
+
 export function markdownUrl(repo) {
   return `https://github.com/dogfood-lab/testing-os/blob/atlas-render/indexes/atlas/${segments(repo)}/README.md`;
 }
@@ -130,7 +134,7 @@ function context(page, options = {}) {
   const commit = COMMIT.test(str(page?.commit)) ? str(page.commit) : null;
   const doors = arr(page?.doors).filter((door) => door && typeof door === 'object');
   const main = doors.find((door) => !door.parseError && door.file === page?.mainDoor) ?? null;
-  return { page: page ?? {}, repo, commit, doors, main };
+  return { page: page ?? {}, repo, commit, doors, main, history: options.history ?? null };
 }
 
 function runs(ctx, door) {
@@ -216,12 +220,31 @@ function derivedLine(ctx) {
 }
 
 function whatThisIs(ctx, figure) {
-  const body = [];
-  const summary = str(ctx.page.summary).replace(/\s+/g, ' ').trim();
-  if (summary) body.push(p(`${esc(summary)} (written by a person)`));
-  body.push(p(esc(derivedLine(ctx))));
+  const body = [p(esc(derivedLine(ctx)))];
   if (figure) body.push(figure);
   return section('What this is', body.join('\n'));
+}
+
+/**
+ * Where a person edits the one line they may add: GitHub's editor for the
+ * boundary file on the default branch. The site never writes it.
+ */
+export function summaryEditUrl(repo) {
+  return isRepo(repo) ? `https://github.com/${segments(repo)}/edit/main/atlas/boundaries.yaml` : null;
+}
+
+// The one line a person may write, at the top, where a reader looks first.
+// When nobody has, the page says so and links to where it is written, so the
+// absence reads as an invitation rather than as a gap.
+function summaryLine(ctx) {
+  const summary = str(ctx.page.summary).replace(/\s+/g, ' ').trim();
+  const href = summaryEditUrl(ctx.repo);
+  if (summary) {
+    const correct = href ? ` <a class="correct" href="${esc(href)}">Correct it</a>` : '';
+    return `<p class="summary">${esc(summary)} (written by a person)${correct}</p>`;
+  }
+  const write = href ? ` <a href="${esc(href)}">Write it.</a>` : '';
+  return `<p class="summary">No one has written the one line a person may add.${write}</p>`;
 }
 
 // The heading page.js writes, from the same fields of page.json's changes.
@@ -240,10 +263,12 @@ function changesSection(ctx) {
   const changes = ctx.page.changes;
   if (!changes || typeof changes !== 'object') return '';
   const heading = changesHeading(changes);
-  if (changes.first) return section(heading, p('This is the first map.'));
+  const strip = renderDeltaFigure(ctx.history);
+  const withStrip = (body) => section(heading, strip ? `${body}\n${strip}` : body);
+  if (changes.first) return withStrip(p('This is the first map.'));
   const sentences = arr(changes.items).filter((item) => item && typeof item === 'object').map((item) => inline(item.sentence));
   if (sentences.length === 0) return '';
-  return section(heading, changes.unchanged ? p(sentences.join(' ')) : ul(sentences));
+  return withStrip(changes.unchanged ? p(sentences.join(' ')) : ul(sentences));
 }
 
 function comesIn(ctx) {
@@ -410,7 +435,8 @@ function breaksSection(ctx) {
   const body = entries.length > 0
     ? ul(entries.map((entry) => breakLine(ctx, entry)))
     : p('No part is imported by another part, and no part sits on the path of two doors.');
-  return section('What breaks what', body);
+  const figure = renderBreaksFigure(ctx.page);
+  return section('What breaks what', figure ? `${body}\n${figure}` : body);
 }
 
 // "the tests part", as page.js words a part in a sentence about parts; the
@@ -554,8 +580,10 @@ function limitsSection(ctx) {
 
 /**
  * @param {object} page parsed page.json
- * @param {{ repo?: string }} [options] repo is the validated owner/name the
- *   page was requested for; links are built from it, never from unchecked JSON.
+ * @param {{ repo?: string, history?: object|null }} [options] repo is the
+ *   validated owner/name the page was requested for; links are built from it,
+ *   never from unchecked JSON. history is the parsed history.json beside it on
+ *   the render branch, or null when that render left none.
  * @returns {string} the article's inner HTML
  */
 export function renderPage(page, options = {}) {
@@ -572,6 +600,7 @@ export function renderPage(page, options = {}) {
   const parts = [
     `<h1>${esc(title)}</h1>`,
     `<p class="mapped">Mapped at ${esc(date)} from commit ${commitHtml}.</p>`,
+    summaryLine(ctx),
     links,
     whatThisIs(ctx, renderFlowFigure(page)),
   ];
@@ -837,6 +866,225 @@ function renderFlowFigure(page) {
   ];
   if (hasText) legend.push('A dashed border marks a reader found by scanning text rather than by parsing code.');
   return `<figure class="flow">${svg}<figcaption>${legend.map(esc).join(' ')}</figcaption></figure>`;
+}
+
+/* ---------- the "what breaks what" picture ---------- */
+
+const BAR_ROWS = 8;
+const BAR_ROW = 30;
+const BAR_HEIGHT = 16;
+const TEST_BAR_HEIGHT = 8;
+const BAR_SPAN = 320;
+const BAR_UNIT_MAX = 32;
+const BAR_HEAD = 28;
+const DESCRIBED_ROWS = 3;
+
+/**
+ * One row per part the "What breaks what" list names, at most eight, in the
+ * list's order: the parts that import it to run it, the parts that import it
+ * only from tests, and the doors whose path it sits on. Places are left out;
+ * they have readers, not importers.
+ */
+export function breaksRows(page) {
+  return arr(page?.breaks)
+    .filter((entry) => entry && typeof entry === 'object' && entry.kind === 'part')
+    .slice(0, BAR_ROWS)
+    .map((entry) => ({
+      name: str(entry.name),
+      production: arr(entry.importedBy).length,
+      tests: arr(entry.importedByTests).length,
+      doors: Math.max(0, Math.floor(Number(entry.doors) || 0)),
+    }));
+}
+
+function breakClause(row) {
+  const path = row.doors === 0 ? 'no door' : count(row.doors, 'door');
+  if (row.production === 0 && row.tests > 0) return `${row.name} is imported only from tests, by ${count(row.tests, 'part')}, and sits on the path of ${path}`;
+  if (row.production === 0) return `${row.name} is imported by no other part and sits on the path of ${path}`;
+  if (row.tests > 0) return `${row.name} is imported by ${count(row.production, 'part')} and ${row.tests} more only from tests, and sits on the path of ${path}`;
+  return `${row.name} is imported by ${count(row.production, 'part')} and sits on the path of ${path}`;
+}
+
+// The picture in one sentence, from the rows it draws: the first three read
+// as the list reads them, and the rest are counted.
+function breaksSentence(rows) {
+  const clauses = rows.slice(0, DESCRIBED_ROWS).map(breakClause);
+  const rest = rows.length > DESCRIBED_ROWS ? `; ${rows.length} parts are drawn in all` : '';
+  return `${clauses.join('; ')}${rest}.`;
+}
+
+// The number at a bar's end says in words what the dashed length says in line.
+function barEnd(row) {
+  if (row.tests === 0) return String(row.production);
+  return row.production === 0 ? `${row.tests} from tests` : `${row.production} + ${row.tests} from tests`;
+}
+
+/**
+ * The fan-in of the parts "What breaks what" names, as an SVG string, or ''
+ * when the list names no part. Length is the only channel: a solid bar per
+ * part that imports it to run it, a thinner dashed bar continuing it per part
+ * that imports it only from tests (dashed is the vocabulary's mark for
+ * evidence short of running code), and the doors as a numeral.
+ */
+export function renderBreaks(page) {
+  const rows = breaksRows(page);
+  if (rows.length === 0) return '';
+  const labelWidth = Math.max(MIN_WIDTH, Math.ceil(Math.max(...rows.map((row) => row.name.length), 'part'.length) * CHAR + 16));
+  const barX = MARGIN + labelWidth;
+  const unit = Math.min(BAR_UNIT_MAX, BAR_SPAN / Math.max(1, ...rows.map((row) => row.production + row.tests)));
+  const reach = Math.max(...rows.map((row) => (row.production + row.tests) * unit + 8 + barEnd(row).length * CHAR), 'imported by'.length * CHAR);
+  const doorsHead = 'doors';
+  const doorsRight = Math.ceil(barX + reach + 32 + doorsHead.length * CHAR);
+  const width = doorsRight + MARGIN;
+  const height = MARGIN * 2 + BAR_HEAD + rows.length * BAR_ROW;
+  const headY = MARGIN + 14;
+  const shapes = [
+    `<text class="sub" x="${MARGIN}" y="${headY}">part</text>`,
+    `<text class="sub" x="${barX}" y="${headY}">imported by</text>`,
+    `<text class="sub" x="${doorsRight}" y="${headY}" text-anchor="end">${doorsHead}</text>`,
+  ];
+  rows.forEach((row, index) => {
+    const cy = MARGIN + BAR_HEAD + index * BAR_ROW + BAR_ROW / 2;
+    const solid = row.production * unit;
+    const dashed = row.tests * unit;
+    shapes.push(`<text x="${MARGIN}" y="${cy + 5}">${esc(row.name)}</text>`);
+    if (solid > 0) shapes.push(`<rect class="bar" x="${barX}" y="${cy - BAR_HEIGHT / 2}" width="${solid}" height="${BAR_HEIGHT}"/>`);
+    if (dashed > 0) shapes.push(`<rect class="bar bar-tests" x="${barX + solid}" y="${cy - TEST_BAR_HEIGHT / 2}" width="${dashed}" height="${TEST_BAR_HEIGHT}"/>`);
+    shapes.push(`<text class="sub" x="${barX + solid + dashed + 8}" y="${cy + 5}">${esc(barEnd(row))}</text>`);
+    shapes.push(`<text x="${doorsRight}" y="${cy + 5}" text-anchor="end">${row.doors}</text>`);
+  });
+  return `<svg class="breaks-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-labelledby="atlasBreaksTitle atlasBreaksDesc">` +
+    '<title id="atlasBreaksTitle">How many parts import each part, and how many doors pass through it</title>' +
+    `<desc id="atlasBreaksDesc">${esc(breaksSentence(rows))}</desc>${shapes.join('')}</svg>`;
+}
+
+function renderBreaksFigure(page) {
+  const svg = renderBreaks(page);
+  if (!svg) return '';
+  const legend = 'Each row is a part from the list above. The solid bar is how many other parts import it to run it; the thinner dashed bar continuing it is how many more import it only from tests; the number on the right is how many doors have it on their path.';
+  return `<figure class="picture bars">${svg}<figcaption>${esc(legend)}</figcaption></figure>`;
+}
+
+/* ---------- the delta strip ---------- */
+
+const STRIP_SHOWN = 52;
+const STRIP_TALL = 96;
+const STRIP_UNIT_MAX = 8;
+const STRIP_BAR = 10;
+const STRIP_PITCH_MIN = 22;
+const STRIP_PITCH_MAX = 88;
+const GLYPH = 12;
+const DATE_CHAR = 7.2;
+const DATE_GAP = 8;
+const DAY = /^\d{4}-\d{2}-\d{2}/;
+
+// A change kind gets a mark only where the glyph set has one that means it:
+// an import is the import edge's arrowhead, and a new import that closes a
+// cycle, the one fact a returning reader must not miss, gets the strongest.
+const KIND_GLYPH = {
+  cycle: 'atlasGlyphCycle',
+  'import-added': 'atlasGlyphImport',
+  'import-removed': 'atlasGlyphImport',
+};
+
+/**
+ * The renders history.json records, oldest first, the newest fifty-two: the
+ * day, how many structural changes that render's page named, and the kind of
+ * its headline. An entry without a date cannot be placed and is left out.
+ */
+export function historyRows(history) {
+  return arr(history?.entries)
+    .filter((entry) => entry && typeof entry === 'object' && DAY.test(str(entry.renderedAt)))
+    .slice(-STRIP_SHOWN)
+    .map((entry) => ({
+      date: str(entry.renderedAt).slice(0, 10),
+      count: Math.max(0, Math.floor(Number(entry.itemCount) || 0)),
+      kind: str(entry.headlineKind),
+    }));
+}
+
+/** The sentence under the strip, and its description. */
+export function deltaCaption(rows) {
+  const lead = `${count(rows.length, 'render')} since ${rows[0].date}`;
+  const changed = rows.filter((row) => row.count > 0);
+  if (changed.length === 0) return `${lead}; none of them changed the structure.`;
+  // On a tie the latest render is named, since it is the one a reader can still find.
+  const largest = changed.reduce((best, row) => (row.count >= best.count ? row : best));
+  return `${lead}; ${changed.length} of them changed the structure; the largest delta was ${count(largest.count, 'item')} on ${largest.date}.`;
+}
+
+// Which columns carry their date: the first, the last and every fourth,
+// except a fourth whose label would run into one already placed. A date
+// starts at its column's left edge, and the last ends at its right edge, so
+// no label runs off the picture.
+function dateLabels(rows, pitch) {
+  const width = 10 * DATE_CHAR;
+  const last = rows.length - 1;
+  const extent = (index) => {
+    const left = MARGIN + pitch * index;
+    if (index === last && index > 0) return { index, anchor: 'end', x: left + pitch, from: left + pitch - width, to: left + pitch };
+    return { index, anchor: 'start', x: left, from: left, to: left + width };
+  };
+  const kept = [extent(0)];
+  if (last > 0) {
+    const end = extent(last);
+    if (end.from >= kept[0].to + DATE_GAP) kept.push(end);
+  }
+  for (let index = 4; index < last; index += 4) {
+    const label = extent(index);
+    if (kept.every((other) => label.to + DATE_GAP <= other.from || label.from >= other.to + DATE_GAP)) kept.push(label);
+  }
+  return kept.sort((a, b) => a.index - b.index);
+}
+
+// A symbol's content is drawn in the <use> element's shadow tree, where the
+// page's class rules do not reach, so a mark takes its stroke from the <use>
+// by inheritance and its one filled piece from an inline style.
+const GLYPH_DEFS = '<defs>' +
+  '<symbol id="atlasGlyphImport" viewBox="0 0 16 16"><title>an import between parts</title>' +
+  '<path d="M4 3 L13 8 L4 13 Z"/></symbol>' +
+  '<symbol id="atlasGlyphCycle" viewBox="0 0 16 16"><title>an import that closes a cycle</title>' +
+  '<path d="M12.6 10.2 A5 5 0 1 1 11.2 4.2"/>' +
+  '<path style="fill: var(--text); stroke: none" d="M9.4 1.6 L14.2 3.6 L10.4 7.4 Z"/></symbol>' +
+  '</defs>';
+
+/**
+ * The delta strip as an SVG string, or '' without history: one column per
+ * render whose height is how many structural changes it named, zero for a
+ * render that changed nothing. Height is the only encoding.
+ */
+export function renderDelta(history) {
+  const rows = historyRows(history);
+  if (rows.length === 0) return '';
+  const pitch = Math.round(Math.min(STRIP_PITCH_MAX, Math.max(STRIP_PITCH_MIN, 600 / rows.length)));
+  const unit = Math.min(STRIP_UNIT_MAX, STRIP_TALL / Math.max(1, ...rows.map((row) => row.count)));
+  const top = MARGIN + GLYPH + 4;
+  const base = top + STRIP_TALL;
+  const width = Math.max(MARGIN * 2 + pitch * rows.length, MARGIN * 2 + 10 * DATE_CHAR);
+  const height = base + 20 + MARGIN;
+  const shapes = [`<path class="base" d="M${MARGIN} ${base} H${MARGIN + pitch * rows.length}"/>`];
+  rows.forEach((row, index) => {
+    const cx = MARGIN + pitch * index + pitch / 2;
+    const h = row.count * unit;
+    shapes.push(`<path class="tick" d="M${cx} ${base} V${base + 4}"/>`);
+    if (h > 0) shapes.push(`<rect class="col" x="${cx - STRIP_BAR / 2}" y="${base - h}" width="${STRIP_BAR}" height="${h}"/>`);
+    const glyph = KIND_GLYPH[row.kind];
+    if (glyph && row.count > 0) {
+      shapes.push(`<use class="${row.kind === 'cycle' ? 'glyph glyph-strong' : 'glyph'}" href="#${glyph}" x="${cx - GLYPH / 2}" y="${base - h - GLYPH - 3}" width="${GLYPH}" height="${GLYPH}"/>`);
+    }
+  });
+  for (const label of dateLabels(rows, pitch)) {
+    shapes.push(`<text class="date" x="${label.x}" y="${base + 18}" text-anchor="${label.anchor}">${esc(rows[label.index].date)}</text>`);
+  }
+  return `<svg class="strip-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-labelledby="atlasStripTitle atlasStripDesc">` +
+    '<title id="atlasStripTitle">How much the structure changed at each render</title>' +
+    `<desc id="atlasStripDesc">${esc(deltaCaption(rows))}</desc>${GLYPH_DEFS}${shapes.join('')}</svg>`;
+}
+
+function renderDeltaFigure(history) {
+  const svg = renderDelta(history);
+  if (!svg) return '';
+  return `<figure class="picture strip">${svg}<figcaption>${esc(deltaCaption(historyRows(history)))}</figcaption></figure>`;
 }
 
 /* ---------- the fleet ---------- */
