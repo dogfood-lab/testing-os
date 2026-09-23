@@ -209,6 +209,28 @@ function whatThisIs(ctx, figure) {
   return section('What this is', body.join('\n'));
 }
 
+// The heading page.js writes, from the same fields of page.json's changes.
+export function changesHeading(changes) {
+  if (!changes || changes.first) return 'What changed since the last map';
+  const date = str(changes.since?.generatedAt).slice(0, 10);
+  const commit = str(changes.since?.commit).slice(0, 7);
+  if (date && commit) return `What changed since ${date} (${commit})`;
+  if (commit) return `What changed since commit ${commit}`;
+  return date ? `What changed since ${date}` : 'What changed since the last map';
+}
+
+// The sentences are page.js's own, headline first. A page.json written before
+// the section existed has no changes and shows no section.
+function changesSection(ctx) {
+  const changes = ctx.page.changes;
+  if (!changes || typeof changes !== 'object') return '';
+  const heading = changesHeading(changes);
+  if (changes.first) return section(heading, p('This is the first map.'));
+  const sentences = arr(changes.items).filter((item) => item && typeof item === 'object').map((item) => inline(item.sentence));
+  if (sentences.length === 0) return '';
+  return section(heading, changes.unchanged ? p(sentences.join(' ')) : ul(sentences));
+}
+
 function comesIn(ctx) {
   const items = ctx.doors.map((door) => {
     const name = `<strong>${esc(door.name)}.</strong>`;
@@ -469,6 +491,8 @@ export function renderPage(page, options = {}) {
     links,
     whatThisIs(ctx, renderFlowFigure(page)),
   ];
+  const changed = changesSection(ctx);
+  if (changed) parts.push(changed);
   if (ctx.doors.length > 0) parts.push(comesIn(ctx));
   if (ctx.main) {
     parts.push(happens(ctx), readsSection(ctx));

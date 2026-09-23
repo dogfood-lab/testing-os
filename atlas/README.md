@@ -1,10 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 043abe5.
+Mapped at 2026-09-23 from commit 6b94344.
 
 ## What this is
 
 22 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts.
+
+## What changed since 2026-09-23 (043abe5)
+
+Nothing structural changed since 2026-09-23; 2 files added and 9 changed content.
 
 ## What comes in
 
