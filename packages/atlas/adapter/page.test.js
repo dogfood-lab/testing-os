@@ -16,6 +16,7 @@ const REGENERATE = 'Regenerate with `npx --yes @dogfood-lab/atlas map`.';
 const roots = [];
 let doors;
 let host;
+let sequence;
 
 const HEADINGS = [
   '# doors: how it works',
@@ -26,6 +27,9 @@ const HEADINGS = [
   '## The other doors',
   '## What breaks what',
   '## What tends to change together',
+  '## What no test touches',
+  '## Written but never read',
+  '## Helpers that look duplicated',
   '## Generated, never hand-edited',
   '## Hand-authored',
   '## Where to start',
@@ -94,6 +98,7 @@ function withEntryCalls(structure, calls) {
 before(() => {
   doors = mappedCopy('doors');
   host = mappedCopy('host');
+  sequence = mappedCopy('sequence');
 });
 
 after(() => {
@@ -120,6 +125,9 @@ describe('atlas page', () => {
       '## The other doors': '**weekly** runs tools/render.js, reaches lib, writes to reports/, and sends a dispatch to acme/hub.',
       '## What breaks what': '- **lib** is imported by 1 part (tools) and sits on the path of 4 doors.',
       '## What tends to change together': 'No two source files changed together often enough to name.',
+      '## What no test touches': '- **tools** is imported by no test.',
+      '## Written but never read': '- **cache/** is written by tools/cache.js and read by nothing else in this repository.',
+      '## Helpers that look duplicated': '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.',
       '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
       '## Hand-authored': 'People write .github/, policies/, the repository root and site/. Nothing in this repository writes to them.',
       '## Where to start': '.github/workflows/checks.yml → tools/render.js → lib/',
@@ -454,6 +462,37 @@ describe('atlas page', () => {
     assert.match(together, /\n\nWindow: \d+ days; a pair counts from \d+ shared commits\.\n$/);
   });
 
+  it('finds reports/ written and never read in this repository, and every code part under a test', () => {
+    const atlas = join(REPO_ROOT, 'atlas');
+    const structure = JSON.parse(readFileSync(join(atlas, 'structure.json'), 'utf8'));
+    const own = buildPage({
+      structure,
+      statistics: JSON.parse(readFileSync(join(atlas, 'statistics.json'), 'utf8')),
+      document: readBoundaryFile(REPO_ROOT),
+      repoName: 'dogfood-lab/testing-os',
+    });
+    // generate.js checks reports/ exists before writing into it; a writer
+    // reading back its own place is not a reader of it.
+    assert.ok(section(own.markdown, '## Written but never read').split('\n')
+      .includes('- **reports/** is written by packages/portfolio/generate.js and read by nothing else in this repository.'));
+    const data = JSON.parse(own.json);
+    assert.ok(data.unread.some((item) => item.place === 'reports/'));
+    // fixtures is a code part made only of test material, so it is not counted.
+    assert.ok(structure.testFiles > 0);
+    const code = structure.boundaries.filter((boundary) => boundary.role === 'code' && boundary.name !== 'fixtures').map((boundary) => boundary.name);
+    assert.deepEqual(Object.keys(data.testedBy), code);
+    for (const [part, n] of Object.entries(data.testedBy)) assert.ok(n > 0, part);
+    assert.deepEqual(data.untested, []);
+    assert.deepEqual(data.untestedNote, []);
+    assert.ok(section(own.markdown, '## What no test touches').includes('\n\nEvery code part is imported by at least one test.\n'));
+    // findings and ingest each keep an atomic-write.js. The findings one is
+    // called by a file the ingest door runs, so its order is recorded; the
+    // ingest one is called only from files a step further in, so it has none,
+    // and the rule falls back to the file name and names the pair.
+    assert.ok(data.duplicates.some((item) => item.name === 'atomicWriteFileSync'
+      && item.files.join() === 'packages/findings/lib/atomic-write.js,packages/ingest/lib/atomic-write.js'));
+  });
+
   it('names this repository\'s root boundary the repository root wherever its page names it', () => {
     const atlas = join(REPO_ROOT, 'atlas');
     const own = buildPage({
@@ -504,6 +543,126 @@ describe('atlas page', () => {
     assert.deepEqual(data.authored, ['.github/', 'policies/', 'root', 'site/']);
     assert.deepEqual(data.readers, [{ readers: [], target: 'reports/' }]);
     assert.equal(data.limits.at(-1), `Statistics confidence is low: ${doors.statistics.confidence.reason.replace(/\.$/, '')}.`);
+  });
+
+  it('names what no test touches, what is written but never read, and helpers that look alike', () => {
+    const { markdown, json } = page(doors);
+    assert.equal(section(markdown, '## What no test touches'), '## What no test touches\n\n- **tools** is imported by no test.\n');
+    // cache/ is read only by the file that writes it; records/ and reports/
+    // are read by nothing at all.
+    assert.equal(section(markdown, '## Written but never read'), [
+      '## Written but never read',
+      '',
+      '- **cache/** is written by tools/cache.js and read by nothing else in this repository.',
+      '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js, and read by nothing else in this repository.',
+      '- **reports/** is written by tools/render.js and tools/report.py, and read by nothing else in this repository.',
+      '',
+    ].join('\n'));
+    assert.equal(section(markdown, '## Helpers that look duplicated'), [
+      '## Helpers that look duplicated',
+      '',
+      'These are candidates from names and call order, not a judgement.',
+      '',
+      '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.',
+      '',
+    ].join('\n'));
+    const data = JSON.parse(json);
+    assert.deepEqual(data.testedBy, { lib: 1, tools: 0 });
+    assert.deepEqual(data.untested, [{ part: 'tools', partLabel: 'tools', testedBy: 0 }]);
+    assert.deepEqual(data.untestedNote, []);
+    assert.deepEqual(data.unread.map((item) => item.place), ['cache/', 'records/', 'reports/']);
+    assert.deepEqual(data.unread[1].writers, ['.github/workflows/ingest.yml', 'tools/ingest.js', 'tools/scratch.js']);
+    assert.deepEqual(data.unreadNote, []);
+    assert.deepEqual(data.duplicates, [{ files: ['lib/store.js', 'tools/prepare.js'], name: 'normalize', partLabels: ['lib', 'tools'], parts: ['lib', 'tools'] }]);
+    assert.equal(data.duplicatesLead, 'These are candidates from names and call order, not a judgement.');
+    assert.deepEqual(data.duplicatesNote, []);
+  });
+
+  it('counts a test file that reaches a part directly or through one import', () => {
+    // lib/verify.test.js imports lib/verify.js, which imports lib/policy.js
+    // and lib/schema.js: one test reaches lib. Nothing a test imports reaches
+    // tools.
+    assert.equal(doors.structure.testFiles, 1);
+    const tested = Object.fromEntries(doors.structure.boundaries.map((boundary) => [boundary.name, boundary.testedBy]));
+    assert.equal(tested.lib, 1);
+    assert.equal(tested.tools, 0);
+    const lib = doors.structure.boundaries.find((boundary) => boundary.name === 'lib');
+    const store = lib.files.find((file) => file.path === 'lib/store.js');
+    assert.deepEqual(store.exports, ['normalize', 'rebuildIndex', 'sealRecord', 'writeRecord']);
+    assert.deepEqual(store.sequences.find((item) => item.name === 'normalize').calls.map((call) => call.name), ['checkSchema', 'checkPolicy']);
+    assert.equal('exports' in lib.files.find((file) => file.path === 'lib/verify.test.js'), false, 'a file that exports nothing carries no list');
+  });
+
+  it('says the empty case of each: no test files by name, every place read, no helper alike', () => {
+    const { markdown, json } = page(sequence, { repoName: 'acme/sequence' });
+    assert.equal(sequence.structure.testFiles, 0);
+    assert.equal(section(markdown, '## What no test touches'), '## What no test touches\n\nNo test files were found by name.\n');
+    assert.equal(section(markdown, '## Written but never read'), '## Written but never read\n\nEvery written place has a reader.\n');
+    assert.equal(section(markdown, '## Helpers that look duplicated'), '## Helpers that look duplicated\n\nNo two parts export a helper that looks alike.\n');
+    const data = JSON.parse(json);
+    assert.deepEqual([data.untested, data.untestedNote], [[], ['No test files were found by name.']]);
+    assert.deepEqual([data.unread, data.unreadNote], [[], []]);
+    assert.deepEqual([data.duplicates, data.duplicatesLead, data.duplicatesNote], [[], null, []]);
+
+    const reached = (structure) => ({
+      ...structure,
+      boundaries: structure.boundaries.map((boundary) => ({ ...boundary, testedBy: 1 })),
+      testFiles: 1,
+    });
+    assert.equal(section(page(sequence, { structure: reached }).markdown, '## What no test touches'),
+      '## What no test touches\n\nEvery code part is imported by at least one test.\n');
+  });
+
+  it('caps each list and counts the rest', () => {
+    const many = (structure) => {
+      const tools = structure.boundaries.find((boundary) => boundary.name === 'tools');
+      const extra = Array.from({ length: 9 }, (_, i) => ({
+        ...tools,
+        files: [{ exports: ['same'], hash: 'x', path: `extra${i}/a.js` }],
+        globs: [`extra${i}/**`],
+        name: `extra${i}`,
+      }));
+      return { ...structure, boundaries: [...structure.boundaries, ...extra] };
+    };
+    const { markdown, json } = page(doors, { structure: many });
+    const untested = section(markdown, '## What no test touches');
+    assert.equal(untested.split('\n').filter((line) => line.startsWith('- ')).length, 8);
+    assert.ok(untested.endsWith('\n\nAnd 2 more parts.\n'), untested);
+    // Nine parts each export same() from a file named a.js: 36 pairs by file
+    // name, and normalize first by name, so five shown and 32 counted.
+    const alike = section(markdown, '## Helpers that look duplicated');
+    const bullets = alike.split('\n').filter((line) => line.startsWith('- '));
+    assert.equal(bullets.length, 5);
+    assert.ok(bullets[0].startsWith('- **normalize** is exported by'), bullets[0]);
+    assert.ok(alike.endsWith('\n\nAnd 32 more pairs.\n'), alike);
+    const data = JSON.parse(json);
+    assert.deepEqual([data.untested.length, data.untestedNote], [8, ['And 2 more parts.']]);
+    assert.deepEqual(data.duplicatesNote, ['And 32 more pairs.']);
+  });
+
+  it('calls two helpers alike by the same calls in order, or by file name where either has no recorded order', () => {
+    const patched = (structure, patches) => ({
+      ...structure,
+      boundaries: structure.boundaries.map((boundary) => {
+        const files = boundary.files.map((file) => (patches[file.path] ? { ...file, ...patches[file.path](file) } : file));
+        return { ...boundary, files: [...files, ...(patches[boundary.name]?.() ?? [])] };
+      }),
+    });
+    const lines = (markdown) => section(markdown, '## Helpers that look duplicated').split('\n').filter((line) => line.startsWith('- '));
+    const reversed = (file) => ({
+      sequences: file.sequences.map((item) => (item.name === 'normalize' ? { ...item, calls: [...item.calls].reverse() } : item)),
+    });
+    assert.deepEqual(lines(page(doors, { structure: (structure) => patched(structure, { 'tools/prepare.js': reversed }) }).markdown), [], 'the same calls in another order');
+    const unordered = (file) => ({ sequences: file.sequences.filter((item) => item.name !== 'normalize') });
+    assert.deepEqual(lines(page(doors, { structure: (structure) => patched(structure, { 'tools/prepare.js': unordered }) }).markdown), [], 'no order on one side, and store.js is not prepare.js');
+    // A second store.js in tools records no order: its names match lib's by
+    // file name. prepare.js and it are in one part, so they are not a pair.
+    const second = () => [{ exports: ['normalize', 'writeRecord'], hash: 'x', path: 'tools/store.js' }];
+    assert.deepEqual(lines(page(doors, { structure: (structure) => patched(structure, { tools: second }) }).markdown), [
+      '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.',
+      '- **normalize** is exported by lib/store.js (lib) and tools/store.js (tools); the two look alike.',
+      '- **writeRecord** is exported by lib/store.js (lib) and tools/store.js (tools); the two look alike.',
+    ]);
   });
 
   it('puts what changed second, a list when something did and one line when nothing structural did', () => {

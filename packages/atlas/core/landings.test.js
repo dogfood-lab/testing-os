@@ -178,7 +178,7 @@ describe('landings across the map', () => {
     const artifact = JSON.parse(first);
     assert.deepEqual(
       artifact.landings.map((item) => item.target),
-      ['.gitignore', 'indexes', 'indexes/latest.json', 'package.json', 'policies/global.yaml', 'records', 'reports'],
+      ['.gitignore', 'cache', 'indexes', 'indexes/latest.json', 'package.json', 'policies/global.yaml', 'records', 'reports'],
     );
     assert.deepEqual(artifact.doors.find((item) => item.file === '.github/workflows/ingest.yml').landings, [
       'indexes',

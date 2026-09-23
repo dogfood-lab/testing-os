@@ -1,4 +1,5 @@
 import { isSourcePath } from '../core/history.js';
+import { isTestMaterial } from '../core/landings.js';
 
 /**
  * The page: how a repository works, written from the recorded facts.
@@ -26,6 +27,9 @@ const SUB_INDENT = '   ';
 const INNER_SHOWN = 5;
 const INNER_STEPS = 3;
 const PAIRS_SHOWN = 5;
+const UNTESTED_SHOWN = 8;
+const UNREAD_SHOWN = 8;
+const DUPLICATES_SHOWN = 5;
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const ROOT_NAME = 'the repository root';
 
@@ -779,6 +783,107 @@ function togetherSection(ctx, pairs, withTests, note) {
   return ['## What tends to change together', body, ...note].join('\n\n');
 }
 
+function more(total, shown, noun) {
+  return total > shown ? [`And ${total - shown} more ${total - shown === 1 ? noun : `${noun}s`}.`] : [];
+}
+
+// A code part with no source of its own outside test material (a fixtures
+// directory, say) has nothing a test would import, so it is not a candidate.
+function untested(ctx) {
+  const testFiles = ctx.structure.testFiles ?? 0;
+  const parts = ctx.boundaries.filter((boundary) => boundary.role === 'code'
+    && (boundary.files ?? []).some((file) => isSourcePath(file.path) && !isTestMaterial(file.path)));
+  const testedBy = Object.fromEntries(parts.map((boundary) => [boundary.name, boundary.testedBy ?? 0]));
+  if (testFiles === 0) return { items: [], note: ['No test files were found by name.'], testedBy, testFiles };
+  const all = parts.filter((boundary) => (boundary.testedBy ?? 0) === 0)
+    .map((boundary) => ({ part: boundary.name, partLabel: ctx.shown(boundary.name), testedBy: 0 }));
+  return { items: all.slice(0, UNTESTED_SHOWN), note: more(all.length, UNTESTED_SHOWN, 'part'), testedBy, testFiles };
+}
+
+function untestedSection(found) {
+  const body = found.items.length > 0
+    ? found.items.map((item) => `- **${item.partLabel}** is imported by no test.`).join('\n')
+    : (found.testFiles === 0 ? null : 'Every code part is imported by at least one test.');
+  return ['## What no test touches', ...(body ? [body] : []), ...found.note].join('\n\n');
+}
+
+// A place is unread when nothing but its own writers reads it: a writer that
+// reads back what it wrote is making the result, not using it.
+function unread(ctx) {
+  const all = writtenPlaces(ctx)
+    .filter((place) => place.readers.every((reader) => place.writers.includes(reader.path)))
+    .map((place) => ({
+      place: ctx.place(place.target),
+      writers: collapse(ctx, place.writers.map((path) => ({ path, text: path }))),
+    }));
+  return { items: all.slice(0, UNREAD_SHOWN), note: more(all.length, UNREAD_SHOWN, 'place') };
+}
+
+function unreadSection(ctx, found) {
+  const body = found.items.length > 0
+    ? found.items.map((item) => {
+      const comma = item.writers.length > 1 ? ',' : '';
+      return `- **${item.place}** is written by ${list(worded(item.writers, ctx.shown))}${comma} and read by nothing else in this repository.`;
+    }).join('\n')
+    : 'Every written place has a reader.';
+  return ['## Written but never read', body, ...found.note].join('\n\n');
+}
+
+function baseName(path) {
+  return path.slice(path.lastIndexOf('/') + 1);
+}
+
+function sameCalls(a, b) {
+  return a.length === b.length && a.every((name, index) => name === b[index]);
+}
+
+/**
+ * Exported functions of one name in two parts that look like one helper
+ * written twice. Where the map recorded the order of work for both, the calls
+ * must match name for name in order; where either has none, the files must
+ * share a name. Test material is left out: a fixture's helper is not the
+ * repository's.
+ */
+function duplicates(ctx) {
+  const byName = new Map();
+  for (const boundary of ctx.boundaries) {
+    for (const file of boundary.files ?? []) {
+      if (isTestMaterial(file.path)) continue;
+      for (const name of file.exports ?? []) {
+        const sequence = (file.sequences ?? []).find((item) => item.name === name);
+        if (!byName.has(name)) byName.set(name, []);
+        byName.get(name).push({ path: file.path, part: boundary.name, calls: sequence ? sequence.calls.map((call) => call.name) : null });
+      }
+    }
+  }
+  const all = [];
+  for (const name of [...byName.keys()].sort(cmp)) {
+    const owners = byName.get(name).sort((a, b) => cmp(a.path, b.path));
+    for (let i = 0; i < owners.length; i += 1) {
+      for (let j = i + 1; j < owners.length; j += 1) {
+        const [a, b] = [owners[i], owners[j]];
+        if (a.part === b.part) continue;
+        const alike = a.calls && b.calls ? sameCalls(a.calls, b.calls) : baseName(a.path) === baseName(b.path);
+        if (!alike) continue;
+        all.push({ files: [a.path, b.path], name, partLabels: [ctx.shown(a.part), ctx.shown(b.part)], parts: [a.part, b.part] });
+      }
+    }
+  }
+  const items = all.slice(0, DUPLICATES_SHOWN);
+  return {
+    items,
+    lead: items.length > 0 ? 'These are candidates from names and call order, not a judgement.' : null,
+    note: more(all.length, DUPLICATES_SHOWN, 'pair'),
+  };
+}
+
+function duplicatesSection(found) {
+  const body = found.items.length > 0
+    ? found.items.map((item) => `- **${item.name}** is exported by ${item.files[0]} (${item.partLabels[0]}) and ${item.files[1]} (${item.partLabels[1]}); the two look alike.`).join('\n')
+    : 'No two parts export a helper that looks alike.';
+  return ['## Helpers that look duplicated', ...(found.lead ? [found.lead] : []), body, ...found.note].join('\n\n');
+}
+
 function generated(ctx) {
   const items = [];
   const claimed = [];
@@ -976,6 +1081,9 @@ export function buildPage({ structure, statistics, document, repoName, changes =
   const breakEntries = breaks(ctx);
   const { pairs, withTests } = together(ctx);
   const pairNote = togetherNote(ctx, pairs, withTests);
+  const untestedParts = untested(ctx);
+  const unreadPlaces = unread(ctx);
+  const duplicated = duplicates(ctx);
   const generatedItems = generated(ctx);
   const authoredBoundaries = authored(ctx);
   const start = main ? startHere(ctx, main, groups) : { chain: [], words: [] };
@@ -1001,6 +1109,9 @@ export function buildPage({ structure, statistics, document, repoName, changes =
   sections.push(
     breaksSection(ctx, breakEntries),
     togetherSection(ctx, pairs, withTests, pairNote),
+    untestedSection(untestedParts),
+    unreadSection(ctx, unreadPlaces),
+    duplicatesSection(duplicated),
     generatedSection(ctx, generatedItems),
     authoredSection(ctx, authoredBoundaries),
     startSection(start.words, main),
@@ -1017,6 +1128,9 @@ export function buildPage({ structure, statistics, document, repoName, changes =
     changesTogetherWithTests: withTests,
     commit,
     doors: ctx.doors.map((door) => doorData(ctx, door)),
+    duplicates: duplicated.items,
+    duplicatesLead: duplicated.lead,
+    duplicatesNote: duplicated.note,
     generated: generatedItems.map((item) => ({ place: item.place, writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
@@ -1028,6 +1142,12 @@ export function buildPage({ structure, statistics, document, repoName, changes =
     startHere: start.chain,
     summary,
     summaryFrom: summary ? 'person' : null,
+    testedBy: untestedParts.testedBy,
+    testFiles: untestedParts.testFiles,
+    unread: unreadPlaces.items.map((item) => ({ place: item.place, writers: worded(item.writers, id) })),
+    unreadNote: unreadPlaces.note,
+    untested: untestedParts.items,
+    untestedNote: untestedParts.note,
   };
   return { markdown, json: `${JSON.stringify(sortKeys(data), null, 2)}\n` };
 }

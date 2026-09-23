@@ -10,3 +10,9 @@ export function prepare(id) {
 
 const target = process.argv[2];
 writeFileSync(target, 'prepared\n');
+
+export function normalize(id) {
+  checkSchema(id);
+  checkPolicy(id);
+  return String(id).trim();
+}

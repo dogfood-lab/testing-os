@@ -23,3 +23,9 @@ export function sealRecord(id) {
   loadPolicy();
   return schemaVersion();
 }
+
+export function normalize(id) {
+  checkSchema(id);
+  checkPolicy(id);
+  return String(id);
+}
