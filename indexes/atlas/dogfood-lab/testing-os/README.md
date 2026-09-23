@@ -1,14 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 8d22778.
+Mapped at 2026-09-23 from commit dde4a90.
 
 ## What this is
 
 22 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).
 
-## What changed since 2026-09-23 (e15c8ab)
+## What changed since 2026-09-23 (4ba209b)
 
-Nothing structural changed since 2026-09-23; no file changed.
+Nothing structural changed since 2026-09-23; 1 file added and 3 changed content.
 
 ## What comes in
 
@@ -69,7 +69,7 @@ Nothing structural changed since 2026-09-23; no file changed.
 
 ## What tends to change together
 
-No two source files, other than a file and its own test, changed together often enough to name.
+- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 10 of 15 commits, inside the site part.
 
 2 files changed together with their own tests, as expected.
 
@@ -114,7 +114,7 @@ Read those in order to follow one dogfood submission end to end.
 
 - 2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.
 - 30 import sites could not be resolved.
-- 27 writes and 188 reads use paths built at run time and are not named here.
+- 27 writes and 189 reads use paths built at run time and are not named here.
 - Readers marked (found by text) come from scanning unparsed files.
 - CI runs 515 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 - Release runs 514 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
