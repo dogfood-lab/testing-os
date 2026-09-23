@@ -8,7 +8,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import * as render from '../../public/atlas/render.js';
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const shellPath = join(repoRoot, 'site', 'public', 'atlas', 'index.html');
@@ -16,7 +17,6 @@ const renderPath = join(repoRoot, 'site', 'public', 'atlas', 'render.js');
 const shell = readFileSync(shellPath, 'utf8');
 const renderSrc = readFileSync(renderPath, 'utf8');
 const page = JSON.parse(readFileSync(join(repoRoot, 'atlas', 'page.json'), 'utf8'));
-const render = await import(pathToFileURL(renderPath).href);
 
 const SECTIONS = [
   'What this is',
