@@ -18,6 +18,7 @@ Atlas changes direction. The Director rejected the acceptance ladder (a page gat
 
 ### Changed
 - The weekly render copies `README.md` and `page.json`; the dashboard's fleet panel links the page and counts doors where it counted unnamed boundaries.
+- The fleet panel's page link opens the site page for the repository instead of the markdown on the render branch; the site page links the markdown.
 
 ### Docs
 - `docs/atlas-page.spec.md` is the specification of record for Atlas output; both dispatches carry a note saying so.
