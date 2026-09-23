@@ -1,6 +1,6 @@
-generated: f7a432b  2026-09-22T23:56:51.039Z
+generated: e61e732  2026-09-23T00:28:29.615Z
 structure: 22 boundaries · 1 unassigned · 30 unresolved sites
-statistics: atlas/machine-stats.txt · sha256 859efea1508d9980e7684f6521c0a246e8deac10616f6c5e53cb1399a42a2cde · withdraw-after: 2026-10-20T23:56:51.039Z
+statistics: atlas/machine-stats.txt · sha256 fb246b9065039f9ec83f5d0e868d1838fe669364c1a99e93f9f424bde0597b7d · withdraw-after: 2026-10-21T00:28:29.615Z
 rule: if now (UTC) is after withdraw-after, do not load the statistics file;
       withdrawn numbers are not evidence that files are uncoupled
 confidence: low — fewer than 20 source files reach 10 revisions in the window
@@ -8,13 +8,13 @@ confidence: low — fewer than 20 source files reach 10 revisions in the window
 ## Coarse
 .github  config  proposed  files 8  imports → none  ← imported by none  entry points: none
 assets  config  proposed  files 1  imports → none  ← imported by none  entry points: none
-atlas  code  proposed  files 54  imports → none  ← imported by none  entry points: packages/atlas/cli.js, packages/atlas/index.js
+atlas  code  proposed  files 56  imports → none  ← imported by none  entry points: packages/atlas/cli.js, packages/atlas/index.js
 docs  docs  proposed  files 22  imports → none  ← imported by none  entry points: none
 dogfood  config  proposed  files 15  imports → schemas  ← imported by none  entry points: none
 dogfood-swarm  code  proposed  files 349  imports → findings, report, schemas  ← imported by ingest, schemas, scripts  entry points: packages/dogfood-swarm/cli.js
 examples  config  proposed  files 5  imports → none  ← imported by none  entry points: none
 findings  code  proposed  files 81  imports → ingest, schemas, verify  ← imported by dogfood-swarm, ingest, portfolio, scripts  entry points: packages/findings/cli.js, packages/findings/index.js
-fixtures  code  proposed  files 163  imports → none  ← imported by none  entry points: none
+fixtures  code  proposed  files 167  imports → none  ← imported by none  entry points: none
 indexes  config  proposed  files 22  imports → none  ← imported by none  entry points: none
 ingest  code  proposed  files 80  imports → dogfood-swarm, findings, schemas, verify  ← imported by findings, scripts  entry points: packages/ingest/run.js
 policies  config  proposed  files 15  imports → none  ← imported by none  entry points: none

@@ -1,4 +1,4 @@
-◷ numbers as of 2026-09-22 · 0 days ago · structure @ f7a432b
+◷ numbers as of 2026-09-23 · 0 days ago · structure @ e61e732
 
 ## Map
 
@@ -8,13 +8,13 @@ The matrix is on the site.
 flowchart LR
 n__github["⚙ .github · 8"]
 n_assets["⚙ assets · 1"]
-n_atlas["⌘ atlas · 54"]
+n_atlas["⌘ atlas · 56"]
 n_docs["¶ docs · 22"]
 n_dogfood["⚙ dogfood · 15"]
 n_dogfood_swarm["⌘ dogfood-swarm · 349"]
 n_examples["⚙ examples · 5"]
 n_findings["⌘ findings · 81"]
-n_fixtures["⌘ fixtures · 163"]
+n_fixtures["⌘ fixtures · 167"]
 n_indexes["⚙ indexes · 22"]
 n_ingest["⌘ ingest · 80"]
 n_policies["⚙ policies · 15"]
@@ -87,7 +87,7 @@ classDef unassigned stroke-dasharray: 4 3
 
 ## Hotspots
 
-◷ numbers as of 2026-09-22 · 0 days ago
+◷ numbers as of 2026-09-23 · 0 days ago
 
 ⚠ low confidence
 
@@ -102,15 +102,15 @@ churn is the sum of lines, added plus deleted, over the boundary's files.
 | findings | 23368 | none | 0 | full |
 | dogfood | 17440 | none | 0 | full |
 | verify | 16626 | 1 | 0 | full |
+| atlas | 15578 | none | 0 | full |
 | root | 14130 | none | 0 | full |
-| atlas | 13574 | none | 0 | full |
 | schemas | 10250 | none | 0 | full |
+| docs | 8011 | none | 0 | full |
 | portfolio | 7961 | 0.424242 | 4 | full |
 | records | 7853 | none | 0 | full |
-| docs | 7803 | none | 0 | full |
 | report | 5505 | none | 0 | full |
 | swarms | 3675 | none | 0 | full |
-| fixtures | 2745 | none | 15 | full |
+| fixtures | 2941 | none | 15 | full |
 | .github | 2690 | none | 0 | full |
 | indexes | 2636 | none | 0 | full |
 | reports | 1067 | none | 0 | full |
@@ -120,7 +120,7 @@ churn is the sum of lines, added plus deleted, over the boundary's files.
 
 ## Breakage
 
-◷ numbers as of 2026-09-22 · 0 days ago
+◷ numbers as of 2026-09-23 · 0 days ago
 
 ⚠ low confidence
 
@@ -302,7 +302,7 @@ churn is the sum of lines, added plus deleted, over the boundary's files.
 
 ## Pairs
 
-◷ numbers as of 2026-09-22 · 0 days ago
+◷ numbers as of 2026-09-23 · 0 days ago
 
 ⚠ low confidence
 
@@ -329,16 +329,16 @@ churn is the sum of lines, added plus deleted, over the boundary's files.
 | README.ja.md | README.pt-BR.md | 15 | 15 | 1 |
 | README.ja.md | README.zh.md | 15 | 15 | 1 |
 | README.pt-BR.md | README.zh.md | 15 | 15 | 1 |
-| atlas/dev.md | atlas/machine-stats.txt | 5 | 5 | 1 |
-| atlas/dev.md | atlas/machine.md | 5 | 5 | 1 |
-| atlas/machine-stats.txt | atlas/machine.md | 5 | 5 | 1 |
+| atlas/dev.md | atlas/machine-stats.txt | 6 | 6 | 1 |
+| atlas/dev.md | atlas/machine.md | 6 | 6 | 1 |
+| atlas/machine-stats.txt | atlas/machine.md | 6 | 6 | 1 |
 | indexes/integrity/chain.jsonl | indexes/trends.json | 45 | 45 | 1 |
 
 104 pairs
 
 ## Divergence
 
-◷ numbers as of 2026-09-22 · 0 days ago
+◷ numbers as of 2026-09-23 · 0 days ago
 
 ⚠ low confidence
 
@@ -366,7 +366,7 @@ pending rebaseline: none
 - assets
   - logo.png
 
-### atlas (54)
+### atlas (56)
 
 - packages
   - atlas
@@ -409,6 +409,8 @@ pending rebaseline: none
       - history.js
       - history.test.js
       - index.js
+      - landings.js
+      - landings.test.js
       - map-repository.test.js
       - no-sibling-imports.test.js
       - reach.js
@@ -941,7 +943,7 @@ pending rebaseline: none
       - write-artifacts.js
     - validate.js
 
-### fixtures (163)
+### fixtures (167)
 
 - fixtures
   - atlas
@@ -1015,12 +1017,19 @@ pending rebaseline: none
         - cli
           - check.js
           - package.json
+      - policies
+        - global.yaml
       - records
         - latest.json
+      - reports
+        - .gitkeep
+      - site
+        - index.html
       - tools
         - ingest.js
         - prepare.js
         - render.js
+        - report.py
     - flat
       - README.md
       - docs

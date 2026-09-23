@@ -24,9 +24,13 @@ const PREFIX_WORDS = new Set(['if', 'elif', 'then', 'else', 'while', 'until', 'd
 export function mapDoors({ repoPath, tracked }) {
   const scripts = scriptIndex(repoPath, tracked);
   return [...tracked]
-    .filter((path) => WORKFLOW.test(path))
+    .filter(isWorkflow)
     .sort()
     .map((file) => readDoor(repoPath, file, tracked, scripts));
+}
+
+export function isWorkflow(path) {
+  return WORKFLOW.test(path);
 }
 
 function readDoor(repoPath, file, tracked, scripts) {

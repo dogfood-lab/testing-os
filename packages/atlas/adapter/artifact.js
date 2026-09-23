@@ -35,6 +35,7 @@ export function buildArtifact(mapped, commit) {
       globs: [...boundary.globs].sort(),
       importConfidence: sites.unresolved > sites.resolved ? 'low' : 'full',
       name: boundary.name,
+      origin: boundary.origin,
       role: boundary.role,
       status: boundary.status,
       unresolvedSites: sites.unresolved,
@@ -54,11 +55,34 @@ export function buildArtifact(mapped, commit) {
     doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => (a.file < b.file ? -1 : a.file > b.file ? 1 : 0)),
     edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to })),
     generatedFrom: { commit, tracked },
+    landings: carryLandings(mapped.landings ?? []),
     overlaps,
     submodules: [...mapped.submodules].sort(),
     symlinks: mapped.symlinks.filter((link) => !inAtlas(link.path)).map((link) => ({ path: link.path, target: link.target })).sort(byPath),
     unassigned,
   };
+}
+
+// A landing on atlas/ is the map describing itself, and a reader or writer in
+// atlas/ is the map's own files; both are left out for the reason the file
+// lists leave atlas/ out.
+function carryLandings(landings) {
+  return landings
+    .filter((landing) => !inAtlas(landing.target))
+    .map((landing) => ({
+      readers: landing.readers.filter((entry) => !inAtlas(entry.by)).map(carryReader),
+      target: landing.target,
+      writers: landing.writers.filter((entry) => !inAtlas(entry.by)).map((entry) => ({ by: entry.by })),
+    }))
+    .filter((landing) => landing.readers.length > 0 || landing.writers.length > 0);
+}
+
+function carryReader(entry) {
+  const out = { by: entry.by };
+  for (const field of ['call', 'confidence', 'ref', 'repo', 'target']) {
+    if (entry[field] != null) out[field] = entry[field];
+  }
+  return out;
 }
 
 // Every list a door carries arrives sorted from the core, except commands,
@@ -69,11 +93,13 @@ function carryDoor(door) {
   return {
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
     file: door.file,
+    landings: door.landings.filter((target) => !inAtlas(target)),
     mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),
     name: door.name,
     permissions: [...door.permissions],
     pushes: door.pushes,
     reach: door.reach.map((entry) => ({ boundary: entry.boundary, depth: entry.depth, files: entry.files })),
+    readers: door.readers.filter((entry) => !inAtlas(entry.target) && !inAtlas(entry.by)).map(carryReader),
     runs: door.runs.map((run) => ({ job: run.job, path: run.path })),
     secrets: [...door.secrets],
     sends: {

@@ -1,3 +1,9 @@
+import { renameSync, writeFileSync } from 'node:fs';
 import { verify } from '../lib/verify.js';
 
-verify(process.argv[2]);
+const id = process.argv[2];
+if (verify(id)) {
+  writeFileSync(`records/${id}.json`, '{}\n');
+  writeFileSync('latest.json.tmp', '{}\n');
+  renameSync('latest.json.tmp', 'indexes/latest.json');
+}

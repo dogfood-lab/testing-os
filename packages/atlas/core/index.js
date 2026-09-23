@@ -7,7 +7,8 @@ import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
 import { mapDoors } from './doors.js';
 import { deriveEntryPoints } from './entry-points.js';
-import { reachFrom } from './reach.js';
+import { astLandings, attachLandings, noLandings, textLandings, trackedPlaces } from './landings.js';
+import { walkReach } from './reach.js';
 import { attachResolution } from './resolve.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
@@ -69,6 +70,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   ordered.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 
   const tracked = listTracked(repoPath);
+  const places = trackedPlaces(tracked.regular);
   const matchers = ordered.map((boundary) => ({
     name: boundary.name,
     isMatch: picomatch(boundary.globs, { dot: true }),
@@ -93,7 +95,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const overlaps = [];
 
   for (const path of tracked.regular) {
-    const file = describeFile(repoPath, path);
+    const file = describeFile(repoPath, path, places);
     const hits = [];
     for (const matcher of matchers) {
       if (matcher.isMatch(path)) hits.push(matcher.name);
@@ -127,8 +129,13 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const doors = mapDoors({ repoPath, tracked: trackedSet });
   const graph = importGraph(boundaryList, unassigned, overlaps);
   for (const door of doors) {
-    if (!door.parseError) door.reach = reachFrom(door.runs.map((run) => run.path), graph);
+    if (door.parseError) continue;
+    const walked = walkReach(door.runs.map((run) => run.path), graph);
+    door.reach = walked.reach;
+    door.reachFiles = walked.files;
   }
+  const landings = attachLandings({ files: [...graph.files.values()], doors, boundaries: boundaryList, places });
+  for (const door of doors) delete door.reachFiles;
 
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },
@@ -140,6 +147,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     edges: resolution.edges,
     importConfidence: resolution.importConfidence,
     doors,
+    landings,
   };
 }
 
@@ -233,17 +241,18 @@ function symlinkTarget(repoPath, path) {
   }
 }
 
-function describeFile(repoPath, path) {
+function describeFile(repoPath, path, places) {
   const bytes = readFileSync(join(repoPath, path));
   const hash = createHash('sha256').update(bytes).digest('hex');
   const language = LANGUAGE_BY_EXT.get(extname(path).toLowerCase()) ?? null;
-  if (language == null) return { path, hash, language: null, imports: 'unavailable' };
-  const extracted = extractImports(language, bytes.toString('utf8'));
-  if (extracted.parseError) return { path, hash, language, parseError: true, imports: [] };
-  return { path, hash, language, imports: extracted.imports };
+  if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };
+  const extracted = parseFile(language, path, bytes.toString('utf8'), places);
+  if (extracted.parseError) return { path, hash, language, parseError: true, imports: [], ...noLandings() };
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings };
 }
 
-function extractImports(language, source) {
+// One parse serves both readings of a file: its imports and its landings.
+function parseFile(language, path, source, places) {
   let tree;
   try {
     parser.setLanguage(languages[language]);
@@ -255,7 +264,7 @@ function extractImports(language, source) {
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [] };
     const imports = language === 'python' ? collectPython(tree.rootNode) : collectScript(tree.rootNode);
-    return { imports };
+    return { imports, landings: astLandings(language, tree.rootNode, path, places) };
   } finally {
     tree.delete();
   }
