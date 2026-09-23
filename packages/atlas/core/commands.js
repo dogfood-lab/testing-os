@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join as joinFs, posix } from 'node:path';
 import picomatch from 'picomatch';
+import { parse as parseYaml } from 'yaml';
 import { isCodePath } from './languages.js';
 import {
   eslintTargets,
@@ -1061,24 +1062,32 @@ function withoutHeredocBodies(text) {
 }
 
 // One shell command, already split into tokens. Returns the package
-// directories and script names npm would run for it, or nothing when the
-// command is not an npm script invocation.
+// directories and script names npm, pnpm or yarn would run for it, or nothing
+// when the command is not a package script invocation. The first manager word
+// on the line is the one that runs, so `cross-env X=1 pnpm test` is pnpm's.
 function npmTargets(tokens, dir, repo) {
-  const start = tokens.indexOf('npm');
+  const start = tokens.findIndex((token) => PACKAGE_RUNNERS.has(token));
   if (start === -1) return [];
+  const manager = tokens[start];
+  if (manager === 'pnpm') return pnpmTargets(tokens.slice(start + 1), dir, repo);
+  if (manager === 'yarn') return yarnTargets(tokens.slice(start + 1), dir, repo);
+  return npmCommandTargets(tokens.slice(start + 1), dir, repo);
+}
+
+function npmCommandTargets(args, dir, repo) {
   let prefix = dir;
   let command = null;
   let script = null;
   let allWorkspaces = false;
   let includeRoot = false;
   const named = [];
-  for (let i = start + 1; i < tokens.length; i += 1) {
-    const token = tokens[i];
+  for (let i = 0; i < args.length; i += 1) {
+    const token = args[i];
     if (token === '--') break;
     const eq = token.indexOf('=');
     const flag = token.startsWith('-') && eq !== -1 ? token.slice(0, eq) : token;
     if (NPM_VALUE_FLAGS.has(flag)) {
-      const value = eq !== -1 && token.startsWith('-') ? token.slice(eq + 1) : tokens[++i];
+      const value = eq !== -1 && token.startsWith('-') ? token.slice(eq + 1) : args[++i];
       if (value == null) break;
       if (flag === '--prefix') {
         const cleaned = cleanDir(posix.join(dir || '.', value));
@@ -1105,23 +1114,162 @@ function npmTargets(tokens, dir, repo) {
   return [...new Set(dirs)].map((target) => ({ dir: target, script }));
 }
 
+// pnpm's own commands. Any other first word is a script of the package, which
+// pnpm runs as it runs `pnpm run` (pnpm audit is pnpm's, even beside a script
+// named audit).
+const PNPM_COMMANDS = new Set([
+  'add', 'approve-builds', 'audit', 'bin', 'cat-file', 'cat-index', 'config', 'create', 'dedupe', 'deploy', 'dlx', 'doctor',
+  'env', 'exec', 'fetch', 'find-hash', 'i', 'import', 'init', 'install', 'install-test', 'it', 'licenses', 'link', 'list', 'ln',
+  'login', 'logout', 'ls', 'outdated', 'pack', 'patch', 'patch-commit', 'patch-remove', 'prune', 'publish', 'rb', 'rebuild',
+  'remove', 'rm', 'root', 'self-update', 'server', 'setup', 'store', 'un', 'uninstall', 'unlink', 'up', 'update', 'upgrade',
+  'why', 'x',
+]);
+const PNPM_VALUE_FLAGS = new Set(['--filter', '-F', '--filter-prod', '-C', '--dir', '--workspace-concurrency', '--reporter', '--changed-files-ignore-pattern', '--test-pattern', '--loglevel']);
+
+/**
+ * pnpm [flags] [run] <script>: -r and --recursive run it in every workspace
+ * member, --filter (and -F) in the members a selector names, -C and --dir
+ * from another directory, and -w at the workspace root. A selector is a
+ * member's name or a glob over names, a ./path or {path} to a member, and a
+ * name with ... around it, whose dependents and dependencies this map does
+ * not follow, so it stands for the member it names.
+ */
+function pnpmTargets(args, dir, repo) {
+  let prefix = dir;
+  let command = null;
+  let script = null;
+  let recursive = false;
+  const filters = [];
+  for (let i = 0; i < args.length && script == null; i += 1) {
+    const token = args[i];
+    if (token === '--') break;
+    const eq = token.indexOf('=');
+    const flag = token.startsWith('-') && eq !== -1 ? token.slice(0, eq) : token;
+    if (PNPM_VALUE_FLAGS.has(flag)) {
+      const value = eq !== -1 && token.startsWith('-') ? token.slice(eq + 1) : args[++i];
+      if (value == null) break;
+      if (flag === '-C' || flag === '--dir') {
+        const cleaned = cleanDir(posix.join(dir || '.', value));
+        if (cleaned == null) return [];
+        prefix = cleaned;
+      } else if (flag === '--filter' || flag === '-F' || flag === '--filter-prod') filters.push(value);
+      continue;
+    }
+    if (token === '-r' || token === '--recursive') recursive = true;
+    else if (token.startsWith('-')) continue;
+    else if (command == null) command = token;
+    else if (RUN_ALIASES.has(command)) script = token;
+  }
+  if (command == null) return [];
+  if (TEST_ALIASES.has(command)) script = 'test';
+  else if (!RUN_ALIASES.has(command)) {
+    if (PNPM_COMMANDS.has(command)) return [];
+    script = command;
+  }
+  if (script == null) return [];
+  let dirs = [prefix];
+  if (filters.length > 0) dirs = filters.flatMap((selector) => pnpmSelected(repo, selector, prefix));
+  else if (recursive) dirs = workspaceDirs(repo);
+  return [...new Set(dirs)].map((target) => ({ dir: target, script }));
+}
+
+function pnpmSelected(repo, selector, prefix) {
+  const bare = selector.replace(/^!/, '').replace(/^\.\.\./, '').replace(/\.\.\.$/, '').replace(/^\^/, '');
+  if (selector.startsWith('!') || bare === '') return [];
+  const path = /^\{(.+)\}$/.exec(bare)?.[1] ?? (bare.startsWith('.') ? bare : null);
+  if (path != null) {
+    const found = cleanDir(posix.join(prefix || '.', path));
+    return found != null && (workspaceMembers(repo).has(found) || found === '') ? [found] : [];
+  }
+  const isMatch = picomatch(bare);
+  return [...workspaceMembers(repo)].filter(([, name]) => name != null && isMatch(name)).map(([found]) => found);
+}
+
+// yarn's own commands, across v1 and berry; any other first word is a script.
+const YARN_COMMANDS = new Set([
+  'add', 'audit', 'autoclean', 'bin', 'cache', 'check', 'config', 'constraints', 'create', 'dedupe', 'dlx', 'exec', 'explain',
+  'generate-lock-entry', 'global', 'import', 'info', 'init', 'install', 'licenses', 'link', 'list', 'login', 'logout', 'node',
+  'npm', 'outdated', 'owner', 'pack', 'patch', 'patch-commit', 'plugin', 'policies', 'publish', 'rebuild', 'remove', 'search',
+  'set', 'stage', 'tag', 'team', 'unlink', 'unplug', 'up', 'upgrade', 'upgrade-interactive', 'version', 'versions', 'why',
+]);
+
+/**
+ * yarn [run] <script>, yarn workspace <name> <script> in the member it
+ * names, and yarn workspaces run <script> (v1) or yarn workspaces foreach
+ * run <script> (berry) in every member. --cwd moves the command.
+ */
+function yarnTargets(args, dir, repo) {
+  let prefix = dir;
+  const words = [];
+  for (let i = 0; i < args.length; i += 1) {
+    const token = args[i];
+    if (token === '--') break;
+    if (token === '--cwd') {
+      const cleaned = cleanDir(posix.join(dir || '.', args[++i] ?? ''));
+      if (cleaned == null) return [];
+      prefix = cleaned;
+      continue;
+    }
+    if (token.startsWith('--cwd=')) {
+      const cleaned = cleanDir(posix.join(dir || '.', token.slice('--cwd='.length)));
+      if (cleaned == null) return [];
+      prefix = cleaned;
+      continue;
+    }
+    if (words.length === 0 && token.startsWith('-')) continue;
+    words.push(token);
+  }
+  const [command, ...rest] = words;
+  if (command == null) return [];
+  if (command === 'workspace') {
+    const member = rest[0] == null ? null : workspaceDir(repo, rest[0], prefix);
+    return member == null ? [] : yarnTargets(rest.slice(1), member, repo);
+  }
+  if (command === 'workspaces') {
+    const at = rest.indexOf('run');
+    const script = at === -1 ? null : rest.slice(at + 1).find((token) => !token.startsWith('-'));
+    return script == null ? [] : workspaceDirs(repo).map((target) => ({ dir: target, script }));
+  }
+  let script = command;
+  if (RUN_ALIASES.has(command)) script = rest.find((token) => !token.startsWith('-')) ?? null;
+  else if (TEST_ALIASES.has(command)) script = 'test';
+  else if (YARN_COMMANDS.has(command)) return [];
+  return script == null ? [] : [{ dir: prefix, script }];
+}
+
 function workspaceMembers(repo) {
   return repo.workspaces();
 }
 
 function readWorkspaces(repo) {
   const members = new Map();
-  const globs = workspaceGlobs(repo.manifest(''));
+  const globs = [...workspaceGlobs(repo.manifest('')), ...pnpmWorkspaceGlobs(repo.text('pnpm-workspace.yaml'))];
   if (globs.length === 0) return members;
-  const isMatch = picomatch(globs, { dot: true });
+  const included = globs.filter((glob) => !glob.startsWith('!'));
+  const excluded = globs.filter((glob) => glob.startsWith('!')).map((glob) => glob.slice(1));
+  const isMatch = picomatch(included, { dot: true });
+  const isExcluded = excluded.length > 0 ? picomatch(excluded, { dot: true }) : () => false;
   for (const path of [...repo.tracked].sort()) {
     if (!path.endsWith('/package.json')) continue;
     const dir = path.slice(0, -'/package.json'.length);
-    if (!isMatch(dir)) continue;
+    if (!isMatch(dir) || isExcluded(dir)) continue;
     const pkg = repo.manifest(dir);
     members.set(dir, pkg && typeof pkg.name === 'string' ? pkg.name : null);
   }
   return members;
+}
+
+// The members pnpm-workspace.yaml lists, with a ! glob excluding.
+function pnpmWorkspaceGlobs(text) {
+  if (typeof text !== 'string') return [];
+  let doc;
+  try {
+    doc = parseYaml(text);
+  } catch {
+    return [];
+  }
+  const list = Array.isArray(doc?.packages) ? doc.packages : [];
+  return list.filter((glob) => typeof glob === 'string').map((glob) => glob.replace(/^(!?)\.\//, '$1').replace(/\/+$/, ''));
 }
 
 function workspaceDirs(repo) {

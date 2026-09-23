@@ -72,6 +72,18 @@
     {
       "path": "fixtures/swarm-atlas/unmapped-repo/tests/server.test.js",
       "reason": "Swarm fixture, not a test. It sits inside the unmapped fixture repository that packages/dogfood-swarm/atlas-domain-map.test.js drafts from the hand template, whose tests bucket must claim it by exactly this name so the template map is the one a real repository without a boundary file gets. It is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/package-managers/packages/a/test/a.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the package-managers fixture repository that packages/atlas/core/package-managers.test.js maps, where `pnpm -r test` must reach packages/a/test/ through the member's own test script. It holds one empty test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/package-managers/packages/b/test/b.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the package-managers fixture repository that packages/atlas/core/package-managers.test.js maps, where `pnpm -r test` must reach packages/b/test/ through the member's own test script. It holds one empty test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/package-managers/test/root.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the package-managers fixture repository that packages/atlas/core/package-managers.test.js maps, where `pnpm verify` must reach test/ through the root test script it calls. It holds one empty test and is never meant to run."
     }
   ]
 }
