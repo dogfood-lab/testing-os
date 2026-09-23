@@ -163,8 +163,10 @@ function carryFile(file) {
   const out = { hash: file.hash, path: file.path };
   if (file.exports) out.exports = [...file.exports];
   // A file the parser could not read has no imports to list, which is not
-  // the same as importing nothing; it is marked so a reader is not told so.
+  // the same as importing nothing; it is marked so a reader is not told so,
+  // with the construct the parser stopped on when it is one of the known ones.
   if (file.parseError) out.parseError = true;
+  if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
   const imported = importTargets(file);
   if (imported.files.length > 0) out.importsFiles = imported.files;
   if (imported.all.length > 0) out.reexportsAll = imported.all;

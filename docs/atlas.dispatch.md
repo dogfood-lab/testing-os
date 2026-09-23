@@ -108,6 +108,27 @@ dispatches on extension across four grammars, not two front-ends. If a fixture s
 the Python grammar too thin to recover imports, Pyright is the escalation to evaluate: it is a
 TypeScript program and needs no CPython. It is not a version-one dependency.
 
+**The TypeScript grammar has gaps, and the page states them.** Ten of ai-rpg-engine's 810
+TypeScript files stop the vendored grammar, and a file with any error node is recorded as
+`parseError` with no imports. The first error in each is one of three constructs:
+
+```text
+getPanels(): import('./types.js').Panel[]
+return `${owner}<NUL>${sequence}`
+importOriginal<typeof import('@x/y')>()
+```
+
+An import type followed by `[]` stops six files, a NUL character written into a template
+string three, and `typeof import(…)` as a type argument one. No other build reads them. The
+newest `tree-sitter-typescript` on npm, 0.23.2, ships `tree-sitter-typescript.wasm` with the
+same SHA-256 as the vendored file (`778025db…`), so it is the same grammar; `tree-sitter-wasms`
+0.1.13 carries an older 0.20 build that `web-tree-sitter` 0.27 refuses to load. The grammar set
+therefore stays as it is, and the gap is stated rather than silent: a file that stops the parser
+carries `unreadSyntax`, the construct its first error line matches, and the limits count the
+files by construct, "10 files use syntax the parser cannot read, so what they import is not
+known: an import type followed by `[]` (6), a NUL character inside a string (3) and `typeof
+import(…)` as a type argument (1)." A file that matches none is counted as other syntax.
+
 **1.7a Specifier resolution is version one, not a later phase.** Tree-sitter reads a file, not a
 project. It never evaluates `tsconfig.json`, so a path-aliased import resolves to nothing by
 default. Deferring this would not yield a mostly-correct map with a warning; for an affected repository

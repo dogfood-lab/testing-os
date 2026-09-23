@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -804,5 +804,43 @@ describe('the branch page.json names for editing', () => {
     assert.equal(mapAt(root), 'develop');
     git(root, ['checkout', '--quiet', '--detach']);
     assert.equal(mapAt(root), 'main');
+  });
+});
+
+describe('files the parser cannot read', () => {
+  it('records the construct each stops on, and the limits count them by construct', () => {
+    const root = mkdtempSync(join(tmpdir(), 'atlas-unread-'));
+    roots.push(root);
+    cpSync(join(FIXTURES, 'root-part'), root, { recursive: true });
+    // The three constructs tree-sitter-typescript 0.23.2 fails on in
+    // ai-rpg-engine, written as that repository writes them, and one error
+    // that is none of them.
+    const files = {
+      'lib/inspect.ts': "export class Engine {\n  getPanels(): import('./core.js').Panel[] {\n    return [];\n  }\n}\n",
+      'lib/key.ts': 'export function key(a: string, b: string): string {\n  return `${a}\0${b}`;\n}\n',
+      'lib/wire.ts': "export function wire(a: string, b: string): string {\n  return `${a}\0${b}`;\n}\n",
+      'lib/mocked.test.ts': "const actual = await importOriginal<typeof import('./core.js')>();\nexport { actual };\n",
+      'lib/broken.ts': 'export const = ;\n',
+    };
+    for (const [path, text] of Object.entries(files)) writeFileSync(join(root, path), text);
+    git(root, ['init']);
+    git(root, ['config', 'core.autocrlf', 'false']);
+    git(root, ['add', '-A']);
+    git(root, ['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', 'unread']);
+    const mapped = spawnSync(process.execPath, [CLI, 'map'], { cwd: root, encoding: 'utf8' });
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+    const structure = JSON.parse(readFileSync(join(root, 'atlas', 'structure.json'), 'utf8'));
+    const unread = Object.fromEntries(structure.boundaries.flatMap((boundary) => boundary.files)
+      .filter((file) => file.parseError).map((file) => [file.path, file.unreadSyntax ?? null]));
+    assert.deepEqual(unread, {
+      'lib/broken.ts': null,
+      'lib/inspect.ts': 'import-type-array',
+      'lib/key.ts': 'nul-character',
+      'lib/mocked.test.ts': 'typeof-import-argument',
+      'lib/wire.ts': 'nul-character',
+    });
+    const line = '5 files use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (2), an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
+    assert.ok(JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits.includes(line));
+    assert.ok(readFileSync(join(root, 'atlas', 'README.md'), 'utf8').includes(`\n- ${line}\n`));
   });
 });

@@ -1318,6 +1318,38 @@ export function externalsLine(sites, names) {
     : `${count(sites, 'import site')} ${sites === 1 ? 'names' : 'name'} a declared dependency that shares its name with a local module${shown}; ${sites === 1 ? 'it is' : 'they are'} read as the dependency, which is not in this repository.`;
 }
 
+// The constructs the core names when a file stops the parser (core/index.js).
+const UNREAD_SYNTAX = {
+  'import-type-array': 'an import type followed by `[]`',
+  'nul-character': 'a NUL character inside a string',
+  'typeof-import-argument': '`typeof import(…)` as a type argument',
+};
+
+/**
+ * The files the parser could not read, with the constructs they stopped on,
+ * most files first. What such a file imports is not known, so the count is
+ * stated rather than left for a reader to infer from a missing edge.
+ *
+ * @param {Array<{ unreadSyntax?: string }>} files
+ * @returns {string|null}
+ */
+export function unreadLine(files) {
+  if (files.length === 0) return null;
+  const counts = new Map();
+  for (const file of files) {
+    const key = Object.hasOwn(UNREAD_SYNTAX, file.unreadSyntax ?? '') ? file.unreadSyntax : null;
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  const named = [...counts.entries()].filter(([key]) => key != null)
+    .sort((a, b) => b[1] - a[1] || cmp(a[0], b[0]))
+    .map(([key, n]) => `${UNREAD_SYNTAX[key]} (${n})`);
+  const other = counts.get(null) ?? 0;
+  const lead = `${count(files.length, 'file')} ${files.length === 1 ? 'uses' : 'use'} syntax the parser cannot read, so what ${files.length === 1 ? 'it imports' : 'they import'} is not known`;
+  if (named.length === 0) return `${lead}.`;
+  if (other > 0) named.push(`other syntax (${other})`);
+  return `${lead}: ${list(named)}.`;
+}
+
 function limits(ctx, shownText) {
   const lines = [];
   const externals = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.externals ?? 0), 0);
@@ -1326,6 +1358,8 @@ function limits(ctx, shownText) {
   if (declared) lines.push(declared);
   const unresolved = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.unresolvedSites ?? 0), 0);
   if (unresolved > 0) lines.push(`${count(unresolved, 'import site')} could not be resolved.`);
+  const unparsed = unreadLine([...ctx.fileOf.values()].filter((file) => file.parseError));
+  if (unparsed) lines.push(unparsed);
   const dynamicWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);
   const dynamicReads = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicReads ?? 0), 0);
   if (dynamicWrites + dynamicReads > 0) {
