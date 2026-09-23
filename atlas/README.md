@@ -1,14 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 8bb7670.
+Mapped at 2026-09-23 from commit 230b8c1.
 
 ## What this is
 
 22 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts.
 
-## What changed since 2026-09-23 (6b94344)
+## What changed since 2026-09-23 (8bb7670)
 
-Nothing structural changed since 2026-09-23; 4 files added and 9 changed content.
+Nothing structural changed since 2026-09-23; 4 files added and 10 changed content.
 
 ## What comes in
 
@@ -70,17 +70,11 @@ Nothing structural changed since 2026-09-23; 4 files added and 9 changed content
 
 ## What tends to change together
 
-- **packages/dogfood-swarm/lib/verify/adapters/python.js** and **packages/dogfood-swarm/lib/verify/adapters/rust.js** changed together in 5 of 5 commits, inside dogfood-swarm.
-- **packages/dogfood-swarm/lib/error-render-hint-coverage.test.js** and **scripts/pin-declarations.mjs** changed together in 5 of 7 commits, and scripts imports dogfood-swarm.
-- **packages/atlas/adapter/init.test.js** and **packages/atlas/adapter/templates.js** changed together in 4 of 6 commits, inside atlas.
-- **packages/atlas/adapter/init.test.js** and **packages/atlas/adapter/templates.test.js** changed together in 4 of 6 commits, inside atlas.
-- **packages/dogfood-swarm/lib/persist/dogfood-bridge.js** and **packages/dogfood-swarm/lib/persist/export.js** changed together in 4 of 6 commits, inside dogfood-swarm.
+No two source files, other than a file and its own test, changed together often enough to name.
 
-7 files changed together with their own tests, as expected.
+1 file changed together with its own test, as expected.
 
-Confidence is low: fewer than 20 source files reach 10 revisions in the window.
-
-Window: 180 days; a pair counts from 3 shared commits.
+Window: 180 days; a pair counts from 10 shared commits.
 
 ## Generated, never hand-edited
 
@@ -103,8 +97,7 @@ Read those in order to follow one dogfood submission end to end.
 ## What this map cannot see
 
 - 31 import sites did not resolve.
-- 27 writes and 184 reads use paths built at run time and are not named here.
+- 27 writes and 186 reads use paths built at run time and are not named here.
 - Readers marked (found by text) come from scanning unparsed files.
-- Statistics confidence is low: fewer than 20 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

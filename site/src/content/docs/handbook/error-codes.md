@@ -675,6 +675,7 @@ Every failure names what changed and what to do; the second line is never option
 | `ATLAS_STATISTICS_UNDATED` | 1 | HIGH | `adapter/commands.js` |
 | `ATLAS_EXPLAIN_NO_MAP` | 2 | LOW | `adapter/explain.js` |
 | `ATLAS_EXPLAIN_UNKNOWN_PATH` | 2 | LOW | `adapter/explain.js` |
+| `ATLAS_DIFF_NO_BASE` | 2 | LOW | `adapter/diff.js` |
 
 ### `ATLAS_BOUNDARY_FILE_INVALID`
 
@@ -786,6 +787,15 @@ The path given to `atlas explain` is not a file in the committed map, nor a dire
 
 - **Trigger:** a typo, a file added since the last `atlas map`, or a path outside the repository. A leading `./` and either separator are accepted; a directory prefix explains the part it maps to.
 - **Operator action:** check the path, or run `atlas map` and commit if the file is new.
+
+### `ATLAS_DIFF_NO_BASE`
+
+:::tip[Severity: LOW]
+`atlas diff --base <ref>` could not read a committed map at the base ref: the ref does not resolve, carries no `atlas/structure.json`, or holds one that does not parse. Nothing was compared.
+:::
+
+- **Trigger:** a base ref that was not fetched (a shallow clone), a branch that predates Atlas, or a hand-edited artifact at the base. The CI step fetches the pull request's base branch before it diffs; the comment step never fails the build on this code, it prints the diff to the log instead.
+- **Operator action:** fetch the base ref, or run `atlas map` on it and commit `atlas/`. The flag has no default: `--base` names the ref explicitly.
 
 ## Cross-references
 
