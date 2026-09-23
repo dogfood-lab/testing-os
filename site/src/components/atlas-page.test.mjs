@@ -97,10 +97,13 @@ test('the sentences are the ones the committed markdown carries', () => {
   for (const sentence of [
     // CI reaches further, but the ingest door is the one that commits into the
     // repository, so the page follows it and says why.
-    `${page.parts} parts. Work enters through ${page.doors.length} doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).`,
+    `Work enters through ${page.doors.length} doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).`,
+    'People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.',
     'That reaches dogfood-swarm (1 file), findings (2 files) and verify (10 files).',
     'It commits indexes/ and records/, then pushes.',
-    'self-dogfood runs packages/report/cli.js, scripts/build.mjs, scripts/sync-version.mjs and 1 more, and sends a dispatch to dogfood-lab/testing-os.',
+    // The schemas build is tsc, which checks what it compiles and runs none of it.
+    'self-dogfood runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs, checks packages/schemas/src/, and sends a dispatch to dogfood-lab/testing-os.',
+    'swarm (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, report and schemas, and writes to dogfood/roadmap/.',
     'Read those in order to follow one dogfood submission end to end.',
     'Regenerate with npx --yes @dogfood-lab/atlas map.',
     'Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.',
@@ -414,6 +417,64 @@ test('a page.json without sequences renders the section as before', () => {
   assert.ok(plain(steps[0]).startsWith(`The workflow runs ${page.doors.find((door) => door.file === page.mainDoor).runs[0]}`));
   assert.equal(section.includes('in order:'), false);
   assert.equal(happensSection(render.renderPage({ ...page, sequences: [] }, { repo: page.repo })), section, 'an empty list is the same as none');
+});
+
+test('a command a manifest installs reads as one people run, and is followed by its id when it is the main door', () => {
+  const tool = {
+    file: 'package.json',
+    id: 'package.json#tool',
+    kind: 'command',
+    landings: [],
+    name: 'tool',
+    pushes: false,
+    reach: [{ boundary: 'atlas', depth: 0, files: 1 }],
+    runs: ['bin/tool.mjs'],
+    runsCount: 1,
+    sends: [],
+    stages: [],
+    triggers: [],
+  };
+  const text = plain(render.renderPage({ ...page, doors: [...page.doors, tool] }, { repo: page.repo }));
+  assert.ok(text.includes('tool (a command people run). Runs bin/tool.mjs.'), 'what comes in');
+  assert.ok(text.includes('tool (a command people run) runs bin/tool.mjs.'), 'the other doors');
+  const twin = { ...tool, file: 'pyproject.toml', id: 'pyproject.toml#tool', runs: ['tool/cli.py'] };
+  const both = plain(render.renderPage({ ...page, doors: [...page.doors, tool, twin] }, { repo: page.repo }));
+  assert.ok(both.includes('tool (a command people run, from package.json). Runs bin/tool.mjs.'), 'one name, two manifests');
+  assert.ok(both.includes('tool (a command people run, from pyproject.toml). Runs tool/cli.py.'), 'one name, two manifests');
+  const followed = plain(render.renderPage({ ...page, doors: [tool], mainDoor: tool.id, sequences: [] }, { repo: page.repo }));
+  assert.ok(followed.includes('What happens through tool'), 'the command is the main door by its id');
+  assert.ok(followed.includes('The command runs bin/tool.mjs.'));
+  assert.ok(followed.includes('Read those in order to follow one run of tool end to end.'));
+});
+
+test('what this is says the line page.js derived, and words an older page.json from its fields', () => {
+  const derived = '3 parts, mostly Python (12 files). Work enters through 2 doors; the busiest is CI, which reaches 2 parts. People run tool.';
+  assert.ok(plain(render.renderPage({ ...page, derived }, { repo: page.repo })).includes(derived));
+  const { derived: _derived, ...older } = page;
+  assert.ok(plain(render.renderPage(older, { repo: page.repo })).includes(`${page.parts} parts`));
+});
+
+test('a door says what it runs apart from what it only checks', () => {
+  const ci = {
+    checks: ['lib/', 'tools/'],
+    checksCount: 2,
+    file: '.github/workflows/ci.yml',
+    id: '.github/workflows/ci.yml',
+    landings: ['reports/gate.json'],
+    name: 'CI',
+    pushes: false,
+    reach: [{ boundary: 'scripts', depth: 0, files: 1 }],
+    runs: ['scripts/gate.mjs'],
+    runsCount: 1,
+    sends: [],
+    stages: [],
+    triggers: ['on a push to main'],
+  };
+  const text = plain(render.renderPage({ ...page, doors: [ci], mainDoor: ci.id, sequences: [] }, { repo: page.repo }));
+  assert.ok(text.includes('CI. On a push to main. Runs scripts/gate.mjs; checks lib/ and tools/.'), 'what comes in');
+  assert.ok(text.includes('The workflow runs scripts/gate.mjs; it checks lib/ and tools/.'), 'what happens');
+  const other = plain(render.renderPage({ ...page, doors: [...page.doors, { ...ci, id: 'x', file: 'x' }] }, { repo: page.repo }));
+  assert.ok(other.includes('CI runs scripts/gate.mjs, checks lib/ and tools/, and writes to reports/gate.json.'), 'the other doors');
 });
 
 test('file paths link to the blob at the mapped commit, places to the tree', () => {

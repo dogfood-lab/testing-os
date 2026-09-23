@@ -114,7 +114,7 @@ describe('what changed since the last map', () => {
     assert.deepEqual(bullets, [
       '- beta now imports tests, which closes the cycle beta → tests → alpha → beta.',
       '- Nightly (.github/workflows/nightly.yml) is a new door. It starts on a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. It runs pkg/alpha/cli.js.',
-      '- notes/ is now written by pkg/alpha/util.js.',
+      '- notes/summary.txt is now written by pkg/alpha/util.js.',
       '- .github/workflows/nightly.yml is new and belongs to no part, so atlas check fails on it against the previous map.',
       '- 1 file added and 2 changed content, across 2 parts.',
     ]);
@@ -300,6 +300,35 @@ describe('compareStructures', () => {
     const previous = structure({ parts: [part('a', ['a/x.js'])] });
     const current = structure({ parts: [{ ...part('b', []), files: [{ hash: 'h-a/x.js', path: 'b/x.js' }] }] });
     assert.deepEqual(fileCounts(previous, current), { added: 0, changed: 0, moved: 1, parts: 2, removed: 0 });
+  });
+
+  it('tells two commands of one manifest apart, and calls a new one a command, not a door that starts on nothing', () => {
+    const command = (name, path) => ({ file: 'package.json', kind: 'command', name, reach: [], runs: [{ path }], triggers: [] });
+    const previous = structure({ doors: [command('tool', 'bin/tool.mjs')] });
+    const current = structure({ doors: [command('tool', 'bin/tool.mjs'), command('tool-admin', 'bin/admin.mjs')] });
+    assert.deepEqual(sentences(compareStructures(previous, current)), [
+      'tool-admin (package.json) is a new command. It runs bin/admin.mjs.',
+      'No file changed.',
+    ]);
+    assert.deepEqual(sentences(compareStructures(current, previous)), [
+      'tool-admin (package.json) is no longer a command.',
+      'No file changed.',
+    ]);
+  });
+
+  it('says a door now checks a path a linter reads, apart from what it runs', () => {
+    const ci = (runs) => ({ file: '.github/workflows/ci.yml', name: 'CI', reach: [], runs, triggers: [{ event: 'push' }] });
+    const previous = structure({ doors: [ci([{ job: 'j', path: 'scripts/gate.mjs', runKind: 'executes' }])] });
+    const current = structure({ doors: [ci([
+      { job: 'j', path: 'lib/', directory: true, runKind: 'checks' },
+      { job: 'j', path: 'scripts/gate.mjs', runKind: 'executes' },
+      { job: 'j', path: 'test/', directory: true, runKind: 'executes' },
+    ])] });
+    assert.deepEqual(sentences(compareStructures(previous, current)), [
+      'CI now also runs test/.',
+      'CI now also checks lib/.',
+      'No file changed.',
+    ]);
   });
 
   it('says first when there is no committed structure', () => {

@@ -100,15 +100,15 @@ describe('doors', () => {
   });
 
   it('resolves the files a door runs by exact token and through npm scripts and their pre hooks', () => {
-    assert.deepEqual(door('weekly.yml').runs, [{ path: 'tools/render.js', job: 'render' }]);
+    assert.deepEqual(door('weekly.yml').runs, [{ path: 'tools/render.js', job: 'render', runKind: 'executes' }]);
     assert.deepEqual(door('ingest.yml').runs, [
-      { path: 'tools/ingest.js', job: 'ingest' },
-      { path: 'tools/prepare.js', job: 'ingest' },
+      { path: 'tools/ingest.js', job: 'ingest', runKind: 'executes' },
+      { path: 'tools/prepare.js', job: 'ingest', runKind: 'executes' },
     ]);
   });
 
   it('counts a path handed to node --test as run, flags between them allowed', () => {
-    assert.deepEqual(door('manual.yaml').runs, [{ path: 'lib/schema.js', job: 'say' }]);
+    assert.deepEqual(door('manual.yaml').runs, [{ path: 'lib/schema.js', job: 'say', runKind: 'executes' }]);
     assert.deepEqual(door('manual.yaml').mentions, [{ path: 'package.json', job: 'say' }]);
   });
 
@@ -124,10 +124,10 @@ describe('doors', () => {
 
   it('resolves a named workspace and the whole workspace set, once per job', () => {
     assert.deepEqual(door('checks.yml').runs, [
-      { path: 'packages/cli/check.js', job: 'all' },
-      { path: 'packages/cli/check.js', job: 'named' },
-      { path: 'site/check.js', job: 'all' },
-      { path: 'tools/render.js', job: 'all' },
+      { path: 'packages/cli/check.js', job: 'all', runKind: 'executes' },
+      { path: 'packages/cli/check.js', job: 'named', runKind: 'executes' },
+      { path: 'site/check.js', job: 'all', runKind: 'executes' },
+      { path: 'tools/render.js', job: 'all', runKind: 'executes' },
     ]);
   });
 

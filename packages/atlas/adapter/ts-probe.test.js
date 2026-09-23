@@ -74,11 +74,13 @@ describe('what the TypeScript probe found', () => {
       { by: 'packages/cli/src/create-starter.ts', confidence: 'weak' },
     ]);
     assert.equal(markdown.includes('**packages/**'), false, markdown);
-    assert.deepEqual(page.generated.map((item) => item.place), ['packages/ledger/scripts/', 'packages/ledger/scripts/replay-receipt.json']);
+    // live.mjs writes a receipt beside itself that is not tracked: it is that
+    // file, not the scripts directory.
+    assert.deepEqual(page.generated.map((item) => item.place), ['packages/ledger/scripts/live-receipt.json', 'packages/ledger/scripts/replay-receipt.json']);
     assert.equal(section('## Written but never read'), [
       '## Written but never read',
       '',
-      '- **packages/ledger/scripts/** is written by packages/ledger/scripts/live.mjs and read by nothing else in this repository.',
+      '- **packages/ledger/scripts/live-receipt.json** is written by packages/ledger/scripts/live.mjs and read by nothing else in this repository.',
       '- **packages/ledger/scripts/replay-receipt.json** is written by packages/ledger/scripts/replay.mjs and read by nothing else in this repository.',
       '',
     ].join('\n'));
@@ -88,12 +90,12 @@ describe('what the TypeScript probe found', () => {
     const receipt = structure.landings.find((landing) => landing.target === 'packages/ledger/scripts/replay-receipt.json');
     assert.deepEqual(receipt.readers, [{ by: 'docs/receipts.md', call: 'literal', confidence: 'text' }]);
     assert.ok(page.unread.some((item) => item.place === 'packages/ledger/scripts/replay-receipt.json'), JSON.stringify(page.unread));
-    // The Replay door writes the receipt. Its readers are grouped under the
-    // ledger's directory, since packages/ holds every part.
+    // The Replay door writes the one receipt, so its readers are the
+    // receipt's, named as the file rather than the package it sits in.
     assert.equal(section('## Who reads the results'), [
       '## Who reads the results',
       '',
-      '- **packages/ledger/** is read by docs/receipts.md (found by text).',
+      '- **packages/ledger/scripts/replay-receipt.json** is read by docs/receipts.md (found by text).',
       '',
     ].join('\n'));
     assert.equal(page.breaks.some((entry) => entry.kind === 'place'), false, JSON.stringify(page.breaks));

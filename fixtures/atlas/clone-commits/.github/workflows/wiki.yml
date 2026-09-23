@@ -1,0 +1,16 @@
+name: Wiki
+on:
+  workflow_dispatch:
+jobs:
+  wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: acme/wiki
+          path: wiki
+      - working-directory: wiki
+        run: |
+          git add pages/
+          git commit -m "wiki"
+          git push

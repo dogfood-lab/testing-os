@@ -125,15 +125,15 @@ describe('atlas page', () => {
     const exact = {
       // Checks reaches one part more, but Ingest is the door that commits into
       // the repository, so the page follows it and says why.
-      '## What this is': '9 parts. Work enters through 5 doors; the busiest is Ingest, which reaches 2 parts and commits into the repository (Checks reaches 3 but commits nothing).',
+      '## What this is': '9 parts, mostly JavaScript (12 files). Work enters through 5 doors; the busiest is Ingest, which reaches 2 parts and commits into the repository (Checks reaches 3 but commits nothing).',
       '## What comes in': '3. **weekly.** On a push touching 1 path; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC. Runs tools/render.js.',
       '## What happens through Ingest': '2. That reaches lib (4 files).',
       '## Who reads the results': '- **records/** has no reader in this repository.',
-      '## The other doors': '**weekly** runs tools/render.js, reaches lib, writes to reports/, and sends a dispatch to acme/hub.',
+      '## The other doors': '**weekly** runs tools/render.js, reaches lib, writes to reports/out.md, and sends a dispatch to acme/hub.',
       '## What breaks what': '- **lib** is imported by 1 part (tools) and sits on the path of 4 doors.',
       '## What tends to change together': 'No two source files changed together often enough to name.',
       '## What no test touches': '- **tools** is imported by no test.',
-      '## Written but never read': '- **cache/** is written by tools/cache.js and read by nothing else in this repository.',
+      '## Written but never read': '- **cache/state.json** is written by tools/cache.js and read by nothing else in this repository.',
       '## Helpers that look duplicated': '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.',
       '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
       '## Hand-authored': 'People write .github/, policies/, the repository root and site/. Nothing in this repository writes to them.',
@@ -290,7 +290,7 @@ describe('atlas page', () => {
 
   it('says there are no doors and skips the door sections when no workflow exists', () => {
     const { markdown } = page(host, { repoName: 'host' });
-    assert.match(markdown, /^3 parts\. No workflows were found, so this page has no doors\.$/m);
+    assert.match(markdown, /^3 parts, mostly JavaScript \(6 files\)\. No workflows were found, so this page has no doors\.$/m);
     for (const heading of ['## What comes in', '## What happens through', '## Who reads the results', '## The other doors']) {
       assert.equal(markdown.includes(heading), false, heading);
     }
@@ -301,10 +301,10 @@ describe('atlas page', () => {
 
   it('marks a summary as written by a person, and writes only the derived line without one', () => {
     const marked = page(host, { repoName: 'host' });
-    assert.match(marked.markdown, /## What this is\n\na small host fixture \(written by a person\)\n\n3 parts\./);
+    assert.match(marked.markdown, /## What this is\n\na small host fixture \(written by a person\)\n\n3 parts, mostly JavaScript \(6 files\)\./);
     assert.equal(JSON.parse(marked.json).summaryFrom, 'person');
     const plain = page(host, { repoName: 'host', document: (document) => ({ ...document, summary: '' }) });
-    assert.match(plain.markdown, /## What this is\n\n3 parts\./);
+    assert.match(plain.markdown, /## What this is\n\n3 parts, mostly JavaScript \(6 files\)\./);
     assert.equal(plain.markdown.includes('written by a person'), false);
     const data = JSON.parse(plain.json);
     assert.equal(data.summary, null);
@@ -458,7 +458,7 @@ describe('atlas page', () => {
     // CI reaches further, but the ingest door commits into the repository, so
     // it is the one the page follows, and the page says why.
     assert.ok(section(own.markdown, '## What this is').split('\n').includes(
-      '23 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).',
+      '23 parts, mostly JavaScript (826 files). Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing). It publishes to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.',
     ));
     const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
@@ -617,14 +617,15 @@ describe('atlas page', () => {
   it('names what no test touches, what is written but never read, and helpers that look alike', () => {
     const { markdown, json } = page(doors);
     assert.equal(section(markdown, '## What no test touches'), '## What no test touches\n\n- **tools** is imported by no test.\n');
-    // cache/ is read only by the file that writes it; records/ and reports/
-    // are read by nothing at all.
+    // cache/state.json is read only by the file that writes it; records/ and
+    // the two reports are read by nothing at all.
     assert.equal(section(markdown, '## Written but never read'), [
       '## Written but never read',
       '',
-      '- **cache/** is written by tools/cache.js and read by nothing else in this repository.',
+      '- **cache/state.json** is written by tools/cache.js and read by nothing else in this repository.',
       '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js, and read by nothing else in this repository.',
-      '- **reports/** is written by tools/render.js and tools/report.py, and read by nothing else in this repository.',
+      '- **reports/out.json** is written by tools/report.py and read by nothing else in this repository.',
+      '- **reports/out.md** is written by tools/render.js and read by nothing else in this repository.',
       '',
     ].join('\n'));
     assert.equal(section(markdown, '## Helpers that look duplicated'), [
@@ -639,7 +640,7 @@ describe('atlas page', () => {
     assert.deepEqual(data.testedBy, { lib: 1, tools: 0 });
     assert.deepEqual(data.untested, [{ part: 'tools', partLabel: 'tools', testedBy: 0 }]);
     assert.deepEqual(data.untestedNote, []);
-    assert.deepEqual(data.unread.map((item) => item.place), ['cache/', 'records/', 'reports/']);
+    assert.deepEqual(data.unread.map((item) => item.place), ['cache/state.json', 'records/', 'reports/out.json', 'reports/out.md']);
     assert.deepEqual(data.unread[1].writers, ['.github/workflows/ingest.yml', 'tools/ingest.js', 'tools/scratch.js']);
     assert.deepEqual(data.unreadNote, []);
     assert.deepEqual(data.duplicates, [{ files: ['lib/store.js', 'tools/prepare.js'], name: 'normalize', partLabels: ['lib', 'tools'], parts: ['lib', 'tools'] }]);
@@ -839,7 +840,8 @@ describe('files the parser cannot read', () => {
       'lib/mocked.test.ts': 'typeof-import-argument',
       'lib/wire.ts': 'nul-character',
     });
-    const line = '5 files use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (2), an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
+    // All five are in lib, so the part is named once.
+    const line = '5 files in lib use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (2), an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
     assert.ok(JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits.includes(line));
     assert.ok(readFileSync(join(root, 'atlas', 'README.md'), 'utf8').includes(`\n- ${line}\n`));
   });
@@ -876,6 +878,6 @@ describe('commands built at run time', () => {
     // The spelled-out commands are still followed: the test reaches run.js.
     assert.equal(tools.testedBy, 1);
     const limits = JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits;
-    assert.ok(limits.includes('3 commands are built at run time and not followed.'), limits.join('\n'));
+    assert.ok(limits.includes('3 commands are built at run time and not followed, all of them in tests.'), limits.join('\n'));
   });
 });

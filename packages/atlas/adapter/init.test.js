@@ -12,6 +12,7 @@ const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const BASIC = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/basic');
 const FLAT = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/flat');
 const ROLES = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/roles');
+const ROOT_MANIFEST = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/root-manifest');
 const roots = [];
 
 afterEach(() => {
@@ -107,6 +108,36 @@ describe('atlas init', () => {
     assert.equal(role.records, 'config');
     assert.equal(role.reports, 'config');
     assert.equal(role.swarms, 'docs');
+  });
+
+  it('calls the part that holds the repository manifest config, though its READMEs outnumber everything else', () => {
+    // The root holds package.json, a Dockerfile, verify.sh and eight READMEs.
+    // site/ holds a package.json too, but it is the site's, not the
+    // repository's, so its pages keep it docs.
+    const root = scratch();
+    cpSync(ROOT_MANIFEST, root, { recursive: true });
+    commitTree(root);
+    const result = atlas(root, ['init']);
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+    const role = Object.fromEntries(readBoundaryFile(root).boundaries.map((boundary) => [boundary.name, boundary.role]));
+    assert.equal(role.root, 'config');
+    assert.equal(role.site, 'docs');
+    assert.equal(role.src, 'code');
+    // A boundary file that leaves the role out gets the same one from map.
+    writeFileSync(join(root, 'atlas', 'boundaries.yaml'), [
+      'boundaries:',
+      '  - name: root',
+      '    globs: ["*"]',
+      '  - name: site',
+      '    globs: ["site/**"]',
+      '  - name: src',
+      '    globs: ["src/**"]',
+      '',
+    ].join('\n'));
+    const mapped = atlas(root, ['map']);
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+    const derived = JSON.parse(readFileSync(join(root, 'atlas', 'structure.json'), 'utf8')).boundaries;
+    assert.deepEqual(derived.map((boundary) => [boundary.name, boundary.role]), [['root', 'config'], ['site', 'docs'], ['src', 'code']]);
   });
 
   it('refuses to overwrite a file a person has touched, and regenerates one that is still derived', () => {

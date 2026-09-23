@@ -1,5 +1,5 @@
 import { unassignedDrift } from './check.js';
-import { capitalize, count, displayName, list, mainDoor, runsShown, triggerPhrases, words } from './page.js';
+import { capitalize, count, displayName, doorKey, installed, list, mainDoor, runsShown, triggerPhrases, words } from './page.js';
 
 /**
  * What changed since the last committed map, as structural facts in fixed
@@ -164,8 +164,33 @@ function runPaths(door) {
   return [...new Set((door.runs ?? []).map((run) => run.path))].sort(cmp);
 }
 
-function runsSentence(paths) {
-  return paths.length > 0 ? `It runs ${runsShown(paths)}.` : 'It runs no file this map can see.';
+// A path any of the door's tools runs is run; one only a linter or a
+// type-checker reads is checked. An artifact written before runs carried a
+// kind ran everything it listed.
+function checkedOnly(door, path) {
+  const runs = (door.runs ?? []).filter((run) => run.path === path);
+  return runs.length > 0 && runs.every((run) => run.runKind === 'checks');
+}
+
+function runsSentence(door) {
+  const paths = runPaths(door);
+  const ran = paths.filter((path) => !checkedOnly(door, path));
+  const checked = paths.filter((path) => checkedOnly(door, path));
+  if (paths.length === 0) return 'It runs no file this map can see.';
+  const clauses = [];
+  if (ran.length > 0) clauses.push(`It runs ${runsShown(ran)}.`);
+  if (checked.length > 0) clauses.push(`It checks ${runsShown(checked)}.`);
+  return clauses.join(' ');
+}
+
+// "now also runs X" and "now also checks Y", each only when it has paths.
+function runChangeItems(name, file, door, paths, lead) {
+  const items = [];
+  const ran = paths.filter((path) => !checkedOnly(door, path));
+  const checked = paths.filter((path) => checkedOnly(door, path));
+  if (ran.length > 0) items.push({ kind: 'door', sentence: `${name} ${lead} runs ${runsShown(ran)}.`, subjects: [file, ...ran] });
+  if (checked.length > 0) items.push({ kind: 'door', sentence: `${name} ${lead} checks ${runsShown(checked)}.`, subjects: [file, ...checked] });
+  return items;
 }
 
 function triggerValues(trigger) {
@@ -228,30 +253,44 @@ function bare(triggers) {
   return triggerPhrases({ triggers }).map((phrase) => phrase.replace(/^or by hand$/, 'by hand')).join('; ');
 }
 
+// What a door is called when it appears or goes: a workflow is a door, and
+// a manifest's entry is the command or the package it installs.
+function doorNoun(door) {
+  if (!installed(door)) return 'door';
+  return door.kind === 'package' ? 'package' : 'command';
+}
+
+function newDoorSentence(door, file) {
+  if (door.parseError) return `${door.name} (${file}) is a new door; its workflow could not be read.`;
+  if (installed(door)) {
+    const paths = runPaths(door);
+    const verb = door.kind === 'package' ? 'loads' : 'runs';
+    return `${door.name} (${file}) is a new ${doorNoun(door)}. ${paths.length > 0 ? `It ${verb} ${runsShown(paths)}.` : `It ${verb} no file this map can see.`}`;
+  }
+  return `${door.name} (${file}) is a new door. It starts ${startsPhrase(door)}. ${runsSentence(door)}`;
+}
+
 function doorItems(previous, current) {
-  const old = new Map((previous.doors ?? []).map((door) => [door.file, door]));
-  const now = new Map((current.doors ?? []).map((door) => [door.file, door]));
-  const files = [...new Set([...old.keys(), ...now.keys()])].sort(cmp);
+  const old = new Map((previous.doors ?? []).map((door) => [doorKey(door), door]));
+  const now = new Map((current.doors ?? []).map((door) => [doorKey(door), door]));
+  const keys = [...new Set([...old.keys(), ...now.keys()])].sort(cmp);
   const items = [];
-  for (const file of files) {
-    const was = old.get(file);
-    const is = now.get(file);
+  for (const key of keys) {
+    const was = old.get(key);
+    const is = now.get(key);
+    const file = (is ?? was).file;
     if (!was) {
-      const subjects = [file, ...(is.parseError ? [] : runPaths(is))];
-      const sentence = is.parseError
-        ? `${is.name} (${file}) is a new door; its workflow could not be read.`
-        : `${is.name} (${file}) is a new door. It starts ${startsPhrase(is)}. ${runsSentence(runPaths(is))}`;
-      items.push({ kind: 'door', sentence, subjects });
+      items.push({ kind: 'door', sentence: newDoorSentence(is, file), subjects: [file, ...(is.parseError ? [] : runPaths(is))] });
       continue;
     }
     if (!is) {
-      items.push({ kind: 'door', sentence: `${was.name} (${file}) is no longer a door.`, subjects: [file] });
+      items.push({ kind: 'door', sentence: `${was.name} (${file}) is no longer a ${doorNoun(was)}.`, subjects: [file] });
       continue;
     }
     if (is.parseError || was.parseError) {
       if (is.parseError && !was.parseError) items.push({ kind: 'door', sentence: `${is.name} (${file}) can no longer be read.`, subjects: [file] });
       if (was.parseError && !is.parseError) {
-        items.push({ kind: 'door', sentence: `${is.name} (${file}) can be read again. It starts ${startsPhrase(is)}. ${runsSentence(runPaths(is))}`, subjects: [file] });
+        items.push({ kind: 'door', sentence: `${is.name} (${file}) can be read again. It starts ${startsPhrase(is)}. ${runsSentence(is)}`, subjects: [file] });
       }
       continue;
     }
@@ -264,8 +303,8 @@ function doorItems(previous, current) {
     const after = runPaths(is);
     const added = after.filter((path) => !before.has(path));
     const removed = [...before].filter((path) => !after.includes(path));
-    if (added.length > 0) items.push({ kind: 'door', sentence: `${is.name} now also runs ${runsShown(added)}.`, subjects: [file, ...added] });
-    if (removed.length > 0) items.push({ kind: 'door', sentence: `${is.name} no longer runs ${runsShown(removed)}.`, subjects: [file, ...removed] });
+    items.push(...runChangeItems(is.name, file, is, added, 'now also'));
+    items.push(...runChangeItems(is.name, file, was, removed, 'no longer'));
   }
   return items;
 }

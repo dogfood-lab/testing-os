@@ -63,9 +63,11 @@ after(() => {
 
 describe('doors on the page, by the conventions of their tools', () => {
   it('names what a Python CI runs and reaches, and follows it as the busiest door', () => {
-    has(py.markdown, '## What this is', '7 parts. Work enters through 5 doors; the busiest is CI, which reaches 5 parts.');
-    has(py.markdown, '## What comes in', '1. **CI.** On a pull request touching 2 paths; on a push to main; when a tag matching `v*` is pushed; or by hand. Runs scripts/, src/, tests/ and 2 more.');
-    has(py.markdown, '## What happens through CI', '1. The workflow runs verify.sh in the repository root, scripts/ in scripts, src/ in src, tests/ in tests and tool/ in tool.');
+    has(py.markdown, '## What this is', '7 parts, mostly Python (10 files). Work enters through 5 doors; the busiest is CI, which reaches 5 parts. It publishes to PyPI and a container image.');
+    has(py.markdown, '## What comes in', '1. **CI.** On a pull request touching 2 paths; on a push to main; when a tag matching `v*` is pushed; or by hand. Runs scripts/check.py, scripts/smoke.py, tests/ and 2 more; checks scripts/, src/ and tool/.');
+    // ruff, bandit and flake8 read src/, scripts/ and tool/; pytest, python
+    // and verify.sh run what they name.
+    has(py.markdown, '## What happens through CI', '1. The workflow runs verify.sh in the repository root, scripts/check.py and scripts/smoke.py in scripts, tests/ in tests, and tool/build.py in tool; it checks scripts/ in scripts, src/ in src and tool/ in tool.');
   });
 
   it('words a release trigger by its types', () => {
@@ -81,31 +83,36 @@ describe('doors on the page, by the conventions of their tools', () => {
   });
 
   it('never prints a staged variable: a path set at run time is said to be one, last', () => {
-    has(py.markdown, '## The other doors', '**Baseline** runs no file this map can see, writes to reports/, commits reports/baseline.txt, reports/run.log, reports/summary.md and a path set at run time, then pushes, and opens a pull request.');
+    has(py.markdown, '## The other doors', '**Baseline** runs no file this map can see, writes to reports/baseline.txt, reports/run.log and reports/summary.md, commits reports/baseline.txt, reports/run.log, reports/summary.md and a path set at run time, then pushes, and opens a pull request.');
     assert.equal(py.markdown.includes('$RUNTIME_PATH'), false);
     const baseline = py.json.doors.find((item) => item.name === 'Baseline');
     assert.deepEqual(baseline.stages, ['reports/baseline.txt', 'reports/run.log', 'reports/summary.md', 'a path set at run time']);
   });
 
   it('names a directory in place of the runs a tool matched under it, and keeps what the commands name', () => {
-    // eslint covers scripts/ and bin/, but the workflow runs bin/tool.js and
-    // the scripts by name, so they lead; vitest's and tsc's matches under
-    // packages/ are part of that directory.
-    has(ts.markdown, '## What comes in', '1. **CI.** On a pull request touching 2 paths; on a push touching 2 paths; or by hand. Runs bin/tool.js, scripts/bun-task.ts, scripts/deno-task.ts and 12 more.');
-    has(ts.markdown, '## What happens through CI', '1. The workflow runs bin/tool.js and bin/ in bin, eslint.config.js and vitest.config.ts in the repository root, 8 files in scripts, test/ in test, tools/ in tools, and packages/ (2 parts).');
+    // eslint and tsc check bin/, scripts/, tools/ and packages/, but the
+    // workflow runs bin/tool.js and the scripts by name, so they lead, and a
+    // directory that is only checked never stands for a file a test runner
+    // runs, so the tests vitest, jest and node --test run stay named.
+    has(ts.markdown, '## What comes in', '1. **CI.** On a pull request touching 2 paths; on a push touching 2 paths; or by hand. Runs bin/tool.js, scripts/bun-task.ts, scripts/deno-task.ts and 9 more; checks bin/, eslint.config.js, packages/ and 3 more.');
+    has(ts.markdown, '## What happens through CI', '1. The workflow runs packages/app/src/app.jest.ts in app, bin/tool.js in bin, packages/core/src/core.test.ts in core, 7 files in scripts, test/ in test, and tools/check.test.js in tools; it checks bin/ in bin, eslint.config.js and vitest.config.ts in the repository root, scripts/ in scripts, tools/ in tools, and packages/ (2 parts).');
     const ci = ts.json.doors.find((item) => item.name === 'CI');
     assert.deepEqual(ci.runs, [
       'bin/tool.js', 'scripts/bun-task.ts', 'scripts/deno-task.ts', 'scripts/gate.mjs', 'scripts/helper.mjs', 'scripts/loaded.ts', 'scripts/register.mjs', 'scripts/task.ts',
-      'bin/', 'eslint.config.js', 'packages/', 'scripts/', 'test/', 'tools/', 'vitest.config.ts',
+      'packages/app/src/app.jest.ts', 'packages/core/src/core.test.ts', 'test/', 'tools/check.test.js',
     ]);
-    assert.equal(ci.runsCount, 15);
+    assert.deepEqual(ci.checks, ['bin/', 'eslint.config.js', 'packages/', 'scripts/', 'tools/', 'vitest.config.ts']);
+    assert.equal(ci.runsCount, 12);
+    assert.equal(ci.checksCount, 6);
   });
 
   it('names a path under a directory the commands also name only once', () => {
-    // pytest runs tests/ and coverage runs tests/test_core.py; bandit runs
-    // scripts/ and verify.sh runs scripts/check.py.
+    // pytest runs tests/ and coverage runs tests/test_core.py, so the file is
+    // part of the directory. bandit only checks scripts/, so the script
+    // verify.sh runs there keeps its own name.
     const ci = py.json.doors.find((item) => item.name === 'CI');
-    assert.deepEqual(ci.runs, ['scripts/', 'src/', 'tests/', 'tool/', 'verify.sh']);
+    assert.deepEqual(ci.runs, ['scripts/check.py', 'scripts/smoke.py', 'tests/', 'tool/build.py', 'verify.sh']);
+    assert.deepEqual(ci.checks, ['scripts/', 'src/', 'tool/']);
   });
 
   it('counts the runs the artifact did not record when it capped the list', () => {
@@ -166,7 +173,7 @@ describe('the busiest door', () => {
   it('says so when no door reaches a part, rather than following one', () => {
     const structure = { ...py.structure, doors: py.structure.doors.map((item) => ({ ...item, runs: [], runsCount: 0, reach: [] })) };
     const { markdown, json } = buildPage({ structure, statistics: py.statistics, document: py.document, repoName: 'acme/doors-py' });
-    has(markdown, '## What this is', '7 parts. Work enters through 5 doors, and none of them runs a file this map can see.');
+    has(markdown, '## What this is', '7 parts, mostly Python (10 files). Work enters through 5 doors, and none of them runs a file this map can see. It publishes to PyPI and a container image.');
     has(markdown, '## Where to start', 'No door runs a file this map can see, so there is no path through this repository to follow.');
     assert.equal(markdown.includes('## What happens through'), false);
     assert.equal(JSON.parse(json).mainDoor, null);

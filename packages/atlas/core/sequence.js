@@ -127,8 +127,9 @@ export function attachSequences({ files, facts, doors, entryPoints, entryFunctio
   for (const door of doors) {
     if (door.parseError) continue;
     // A file a tool's patterns selected is one of many the tool runs, not an
-    // entry the door names, so its order of work is not read from here.
-    for (const run of door.runs) if (!run.matched && facts.has(run.path)) seeds.add(run.path);
+    // entry the door names, and a file a checker is handed is read, not run,
+    // so the order of work of neither is read from here.
+    for (const run of door.runs) if (!run.matched && run.runKind !== 'checks' && facts.has(run.path)) seeds.add(run.path);
   }
   const built = new Map();
   const build = (path) => {

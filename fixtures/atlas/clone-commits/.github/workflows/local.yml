@@ -1,0 +1,14 @@
+name: Local
+on:
+  workflow_dispatch:
+jobs:
+  local:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cd packages/app
+          git add build.json
+          cd ../..
+          git add records/
+          git commit -m "local"
+          git push

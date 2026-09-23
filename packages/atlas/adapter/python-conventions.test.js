@@ -87,7 +87,7 @@ describe('python manifests', () => {
   });
 
   it('reads the console scripts as module and function', () => {
-    assert.deepEqual(declaredScripts(FIXTURE, ['pyproject.toml']), [{ manifest: 'pyproject.toml', module: 'trainkit.console', fn: 'main' }]);
+    assert.deepEqual(declaredScripts(FIXTURE, ['pyproject.toml']), [{ manifest: 'pyproject.toml', name: 'trainkit', module: 'trainkit.console', fn: 'main' }]);
   });
 });
 

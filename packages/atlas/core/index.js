@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
-import { mapDoors } from './doors.js';
-import { deriveEntryPoints, pythonScripts } from './entry-points.js';
+import { mapCommandDoors, mapDoors } from './doors.js';
+import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
 import { astLandings, attachLandings, isTestFile, noLandings, pythonPathValues, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
@@ -108,10 +108,13 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const trackedSet = new Set(tracked.regular);
   const boundaryList = [...byName.values()];
   const scripts = pythonScripts(repoPath, trackedSet);
+  const commands = manifestCommands(repoPath, trackedSet, scripts);
+  const manifests = repositoryManifests(repoPath, trackedSet);
   for (const boundary of boundaryList) {
     boundary.files.sort(byPath);
+    boundary.holdsManifest = boundary.files.some((file) => manifests.includes(file.path));
     boundary.parseErrors = boundary.files.filter((file) => file.parseError).length;
-    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts });
+    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts, commands });
   }
   unassigned.sort(byPath);
   overlaps.sort(byPath);
@@ -126,14 +129,19 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     tracked: tracked.regular,
   });
 
-  const doors = mapDoors({ repoPath, tracked: trackedSet, spawned });
+  const doors = [
+    ...mapDoors({ repoPath, tracked: trackedSet, spawned }),
+    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands }),
+  ];
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned }));
   for (const door of doors) {
     if (door.parseError) continue;
+    // A checker reaches the code it reads, so the reach is walked from every
+    // run; what the door writes is read only from the files it runs.
     const walked = walkReach(door.runs.map((run) => run.path), graph);
     door.reach = walked.reach;
-    door.reachFiles = walked.files;
+    door.reachFiles = walkReach(door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path), graph).files;
   }
   const landings = attachLandings({ files: [...graph.files.values()], doors, boundaries: boundaryList, places });
   for (const door of doors) delete door.reachFiles;
@@ -157,6 +165,26 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     doors,
     landings,
   };
+}
+
+/**
+ * The manifests at the top of the tree that name and configure the project as
+ * a whole: a package.json with a name, pyproject.toml, Cargo.toml or go.mod.
+ * A package.json with no name is a workspace shell or a tool's settings, not a
+ * project's manifest. A manifest further down belongs to one package of the
+ * repository, such as a docs site, and says nothing about the part it is in.
+ */
+function repositoryManifests(repoPath, tracked) {
+  const found = ['pyproject.toml', 'Cargo.toml', 'go.mod'].filter((path) => tracked.has(path));
+  if (tracked.has('package.json')) {
+    try {
+      const pkg = JSON.parse(readFileSync(join(repoPath, 'package.json'), 'utf8'));
+      if (typeof pkg?.name === 'string' && pkg.name.trim() !== '') found.push('package.json');
+    } catch {
+      // An unreadable manifest names nothing.
+    }
+  }
+  return found;
 }
 
 /**

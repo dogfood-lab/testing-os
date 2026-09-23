@@ -30,8 +30,10 @@ function door(doors, name) {
   return found;
 }
 
+// A run is executed unless it says otherwise, so only a checked run's kind is
+// kept in what the cases compare.
 function job(found, name) {
-  return found.runs.filter((run) => run.job === name).map(({ job: _job, ...run }) => run);
+  return found.runs.filter((run) => run.job === name).map(({ job: _job, runKind, ...run }) => (runKind === 'checks' ? { ...run, runKind } : run));
 }
 
 let py;
@@ -65,8 +67,8 @@ describe('doors in a Python repository', () => {
 
   it('runs what a checker is pointed at: ruff over src/, bandit over scripts/ with its config a mention', () => {
     const ci = door(py, 'CI');
-    assert.deepEqual(job(ci, 'lint'), [{ path: 'src/', directory: true }]);
-    assert.deepEqual(job(ci, 'scan'), [{ path: 'scripts/', directory: true }]);
+    assert.deepEqual(job(ci, 'lint'), [{ path: 'src/', directory: true, runKind: 'checks' }]);
+    assert.deepEqual(job(ci, 'scan'), [{ path: 'scripts/', directory: true, runKind: 'checks' }]);
     assert.ok(ci.mentions.some((mention) => mention.path === 'bandit.yaml' && mention.job === 'scan'));
   });
 
@@ -81,19 +83,20 @@ describe('doors in a Python repository', () => {
     // make -j 2 lint: the 2 is the flag's count, not a target, and the
     // unused target's recipe is never read.
     assert.deepEqual(job(door(py, 'CI'), 'make'), [
-      { path: 'scripts/types.py', via: 'Makefile' },
-      { path: 'tool/', directory: true, via: 'Makefile' },
+      { path: 'scripts/types.py', via: 'Makefile', runKind: 'checks' },
+      { path: 'tool/', directory: true, via: 'Makefile', runKind: 'checks' },
     ]);
     assert.equal(door(py, 'CI').runs.some((run) => run.path === 'scripts/unused.py'), false);
   });
 
   it('follows wrappers to the command they run, and runs nothing an installer or an echo names', () => {
+    // ruff, black and mypy read what they are pointed at; python and pytest run it.
     assert.deepEqual(job(door(py, 'CI'), 'wrappers'), [
-      { path: 'scripts/check.py' },
+      { path: 'scripts/check.py', runKind: 'checks' },
       { path: 'scripts/smoke.py' },
       { path: 'tests/test_core.py' },
-      { path: 'tool/', directory: true },
-      { path: 'tool/build.py' },
+      { path: 'tool/', directory: true, runKind: 'checks' },
+      { path: 'tool/build.py', runKind: 'checks' },
     ]);
     // pip install pytest ruff and echo "pytest runs tests/ next" share the
     // test job with the real pytest line, which runs tests/ and nothing else.
@@ -150,14 +153,14 @@ describe('doors in a Python repository', () => {
 describe('doors in a TypeScript repository', () => {
   it('follows tsc --build through project references: an include directory, and files inherited through extends', () => {
     assert.deepEqual(job(door(ts, 'CI'), 'build'), [
-      { path: 'packages/app/src/main.ts', matched: true, via: 'tsc tsconfig.json' },
-      { path: 'packages/core/src/', directory: true, matched: true, via: 'tsc tsconfig.json' },
+      { path: 'packages/app/src/main.ts', matched: true, via: 'tsc tsconfig.json', runKind: 'checks' },
+      { path: 'packages/core/src/', directory: true, matched: true, via: 'tsc tsconfig.json', runKind: 'checks' },
     ]);
   });
 
   it('reads the project tsc -p names, matching its include pattern against the tracked files', () => {
     assert.deepEqual(job(door(ts, 'CI'), 'types'), [
-      { path: 'packages/core/src/core.test.ts', matched: true, via: 'tsc tsconfig.tests.json' },
+      { path: 'packages/core/src/core.test.ts', matched: true, via: 'tsc tsconfig.tests.json', runKind: 'checks' },
     ]);
   });
 
@@ -169,13 +172,13 @@ describe('doors in a TypeScript repository', () => {
 
   it('runs every code file eslint lints, written as the directories they fill, less what the config ignores', () => {
     assert.deepEqual(job(door(ts, 'CI'), 'lint'), [
-      { path: 'bin/', directory: true, matched: true, via: 'eslint eslint.config.js' },
-      { path: 'eslint.config.js', matched: true, via: 'eslint eslint.config.js' },
-      { path: 'packages/', directory: true, matched: true, via: 'eslint eslint.config.js' },
-      { path: 'scripts/', directory: true, matched: true, via: 'eslint eslint.config.js' },
-      { path: 'test/', directory: true, matched: true, via: 'eslint eslint.config.js' },
-      { path: 'tools/', directory: true, matched: true, via: 'eslint eslint.config.js' },
-      { path: 'vitest.config.ts', matched: true, via: 'eslint eslint.config.js' },
+      { path: 'bin/', directory: true, matched: true, via: 'eslint eslint.config.js', runKind: 'checks' },
+      { path: 'eslint.config.js', matched: true, via: 'eslint eslint.config.js', runKind: 'checks' },
+      { path: 'packages/', directory: true, matched: true, via: 'eslint eslint.config.js', runKind: 'checks' },
+      { path: 'scripts/', directory: true, matched: true, via: 'eslint eslint.config.js', runKind: 'checks' },
+      { path: 'test/', directory: true, matched: true, via: 'eslint eslint.config.js', runKind: 'checks' },
+      { path: 'tools/', directory: true, matched: true, via: 'eslint eslint.config.js', runKind: 'checks' },
+      { path: 'vitest.config.ts', matched: true, via: 'eslint eslint.config.js', runKind: 'checks' },
     ]);
   });
 
@@ -185,7 +188,7 @@ describe('doors in a TypeScript repository', () => {
     assert.deepEqual(job(door(ts, 'CI'), 'gate'), [
       { path: 'scripts/gate.mjs' },
       { path: 'scripts/helper.mjs', via: 'scripts/gate.mjs' },
-      { path: 'scripts/proof.ts', matched: true, via: 'scripts/gate.mjs → tsc scripts/proof.tsconfig.json' },
+      { path: 'scripts/proof.ts', matched: true, via: 'scripts/gate.mjs → tsc scripts/proof.tsconfig.json', runKind: 'checks' },
     ]);
   });
 

@@ -17,12 +17,12 @@ This repository's own page is [`atlas/README.md`](https://github.com/dogfood-lab
 
 | Section | Where it comes from |
 |---------|---------------------|
-| What this is | The count of parts and doors, and the busiest door: the one that commits into the repository and reaches the most parts, else the one with the greatest reach; the page states the rule when it applies. |
+| What this is | The count of parts and the language most of them are in, the count of doors and the busiest one: the one that commits into the repository and reaches the most parts, else the one with the greatest reach; the page states the rule when it applies. Then what the repository publishes to, the commands people run and the package they import, read from its manifests. |
 | What changed since the last map | The structure just derived compared with the one committed at HEAD: new imports between parts (a new edge on a dependency cycle first), doors added or changed, places gaining writers or readers, origin flips, steps gained or lost, parts added, removed or renamed, then file counts. |
-| What comes in | Every workflow: what triggers it, and what its steps execute, read by the conventions of the tools they run (`npm run`, `pytest`, `uv run`, `python -m`, `tsc --build`, `vitest`, `eslint`, shell scripts, Makefile targets, spawned commands). |
-| What happens through the busiest door | The parts its executed files are in, the parts reached through imports in order, the order of work inside the entry functions, the places it writes, what it commits, pushes, dispatches, publishes or deploys. |
+| What comes in | Every workflow: what triggers it, what its steps run and what they only check (linters, type-checkers), read by the conventions of the tools they name (`npm run`, `pytest`, `uv run`, `python -m`, `tsc --build`, `vitest`, `eslint`, shell scripts, Makefile targets, spawned commands). Then every command a manifest installs (a `bin` in `package.json`, a `[project.scripts]` entry in `pyproject.toml`) and the entry of a published package, each a door of its own. |
+| What happens through the busiest door | The parts its executed files are in, the parts reached through imports in order, the order of work inside the entry functions, the places it writes (a written-out file name lands on that file, not its directory), what it commits and pushes, here or into a clone of another repository, and what it dispatches, publishes or deploys. What a door only checks reaches parts but writes nothing. |
 | Who reads the results | The files and workflows that read those places; readers found by scanning text are marked and never counted as structure. |
-| The other doors | The same facts for each remaining workflow, in prose. |
+| The other doors | The same facts for each remaining door, workflows and installed commands, in prose. |
 | What breaks what | Parts by production import fan-in, with test-only importers counted separately, and by how many doors pass through them; places whose readers a hand edit would reach. |
 | What tends to change together | The strongest source-file pairs from the history, with the relation between their parts stated; a file and its own test set aside and counted. |
 | What no test touches | Code parts no test file imports, directly or through one hop, including tests that spawn scripts. |
@@ -30,8 +30,8 @@ This repository's own page is [`atlas/README.md`](https://github.com/dogfood-lab
 | Helpers that look duplicated | Candidates from names and call order; the same name across three or more parts reads as a shared contract. |
 | Generated, never hand-edited | Places with a writer in code or in a workflow. |
 | Hand-authored | Parts nothing in the repository writes to. |
-| Where to start | A chain of files from the busiest door's workflow to the first reader of its output, naming the file each step actually imports. |
-| What this map cannot see | Unresolved imports, declared dependencies that share a name with a local module, paths built at run time, text-scanned readers, and the confidence of the history statistics. |
+| Where to start | A chain of files from the busiest door, a workflow or a command, to the first reader of its output, naming the file each step actually imports. |
+| What this map cannot see | Unresolved imports, declared dependencies that share a name with a local module, files the parser cannot read (counted by part, with the construct that stopped it), paths built at run time, commands built at run time (with how many of them are in tests), text-scanned readers, and the confidence of the history statistics. |
 
 ## Adopt it in a repository
 
@@ -82,15 +82,15 @@ docker compose -f docker/compose.example.yml up -d
 
 ## What it reads
 
-- **Doors.** Every workflow under `.github/workflows/`: triggers, the files its steps execute by the conventions of the tools they name, what it stages and pushes, what it dispatches, publishes (npm, PyPI, crates.io, RubyGems, a container image), releases or deploys, and the issues or pull requests it opens.
+- **Doors.** Every workflow under `.github/workflows/`: triggers, the files its steps run and the files they only check (eslint, ruff, mypy, black, flake8, pylint, bandit, tsc) by the conventions of the tools they name, what it stages and pushes, here or in a clone of another repository it made in the step, what it dispatches, publishes (npm, PyPI, crates.io, RubyGems, a container image), releases or deploys, and the issues or pull requests it opens. Every command the root or a workspace manifest installs (`bin` in `package.json`, `[project.scripts]` in `pyproject.toml`) and the entry of a published package, as doors of their own; the file each names is an entry point of its part.
 - **Parts and imports.** JavaScript, TypeScript, TSX and Python, parsed with tree-sitter; imports resolved with the rules the runtime uses, including workspace package exports without `node_modules`, tsconfig chains from tracked files only, Python source roots and declared dependencies, and dynamic imports with literal names. Resolution does not depend on what is installed.
-- **Landing places and readers.** The tracked paths that code writes to and reads from, found in call expressions and followed through joins and helpers; raw GitHub URLs and quoted paths in files it does not parse, marked as found by text; shell scripts' redirections and moves. A bare filename written through a variable root, or an open prefix, is recorded weak and never makes a place look generated.
+- **Landing places and readers.** The tracked paths that code writes to and reads from, found in call expressions and followed through joins and helpers; raw GitHub URLs and quoted paths in files it does not parse, marked as found by text; shell scripts' redirections and moves. A bare filename written through a variable root, or an open prefix, is recorded weak and never makes a place look generated. A written-out path that names a file lands on that file, not its directory, and the places a door writes inside one part are named by the deepest directory they share.
 - **The order of work.** For the files a door runs and the files they call into, the cross-file calls of each entry function in order, with calls inside inline callbacks counted where they sit, same-file calls spliced in place, and constructed objects' method calls named with their class.
 - **History.** Files that change together over the last 180 days, with a floor that falls when the history is thin, and the confidence stated on the page.
 
 ## What it cannot see
 
-Paths built at run time are counted, not named. Imports that do not resolve are counted, and a declared dependency that shares a name with a local module is said to be the dependency. Commands whose arguments are built at run time are not followed. A file the vendored grammar cannot parse is marked. Type-only imports count as imports.
+Paths built at run time are counted, not named. Imports that do not resolve are counted, and a declared dependency that shares a name with a local module is said to be the dependency. Commands whose arguments are built at run time are not followed, and the page says how many of them are in tests. A file the vendored grammar cannot parse is counted by part, with the construct that stopped it. Type-only imports count as imports.
 
 ## The map as a gate
 

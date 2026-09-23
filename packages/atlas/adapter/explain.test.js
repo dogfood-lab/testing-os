@@ -134,7 +134,7 @@ describe('atlas explain on the doors fixture', () => {
     const toolFiles = readdirSync(join(doors, 'tools')).filter((name) => statSync(join(doors, 'tools', name)).isFile()).length;
     assert.equal(lines[0], `tools/ is a directory; its ${toolFiles} files are in tools (code), the part explained here.`);
     assert.equal(lines[1], 'Checks, Ingest and weekly run files in it.');
-    assert.ok(lines.includes('Writes to reports/; nothing in this repository reads it.'), lines.join('\n'));
+    assert.ok(lines.includes('Writes to reports/out.md; nothing in this repository reads it.'), lines.join('\n'));
     assert.ok(lines.includes('An order of work is recorded for tools/ingest.js and tools/prepare.js; explain one for its steps.'), lines.join('\n'));
   });
 
@@ -173,7 +173,7 @@ describe('atlas explain on the doors fixture', () => {
     }
     assert.equal(facts.part, 'tools');
     assert.equal(facts.role, 'code');
-    assert.deepEqual(facts.doors, { isDoor: null, onPath: ['Checks', 'Ingest', 'weekly'], runBy: ['Ingest'] });
+    assert.deepEqual(facts.doors, { checkedBy: [], isDoor: null, onPath: ['Checks', 'Ingest', 'weekly'], runBy: ['Ingest'] });
     assert.equal(facts.importGrain, 'part');
     assert.deepEqual(facts.imports, ['lib']);
     assert.deepEqual(facts.writes, [

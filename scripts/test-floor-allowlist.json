@@ -36,6 +36,18 @@
     {
       "path": "fixtures/atlas/ts-probe/scripts/gates.spec.ts",
       "reason": "Atlas fixture, not a test. It sits inside the ts-probe fixture repository, where it runs scripts/check.mjs through a spawnSync command written out in full, so the map counts the scripts part as reached by a test. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/commands/tests/tool.test.mjs",
+      "reason": "Atlas fixture, not a test. It sits inside the commands fixture repository that packages/atlas/core/command-doors.test.js and packages/atlas/adapter/page-commands.test.js map, where CI runs node --test tests/ and must select it by exactly this name so the workflow door reaches lib beside the commands the manifests install. It is never meant to run here."
+    },
+    {
+      "path": "fixtures/atlas/checked-runs/test/check.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the checked-runs fixture repository that packages/atlas/adapter/page-checked-runs.test.js maps, where CI runs node --test test/ over it while eslint only checks the tree around it, so the map must record test/ as executed. It is never meant to run here."
+    },
+    {
+      "path": "fixtures/atlas/limits-split/tests/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the limits-split fixture repository that packages/atlas/adapter/page-limits.test.js maps, where the two commands it builds at run time must be counted as commands built in tests. It is never meant to run here."
     }
   ]
 }

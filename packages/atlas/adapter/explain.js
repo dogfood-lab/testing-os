@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
 import { isOwnTest, isTestFile } from '../core/landings.js';
 import { formatFailure } from './errors.js';
-import { collapse, count, cover, entryOrder, externalsLine, list, pageFacts, readerFiles, testsClause, under, worded } from './page.js';
+import { collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, testsClause, under, worded } from './page.js';
 
 /**
  * atlas explain: what one file, or one directory, is in the system, read from
@@ -199,12 +199,19 @@ function doorFacts(ctx, found, part) {
   const readable = ctx.doors.filter((door) => !door.parseError);
   // A directory run stands for the files under it.
   const runs = (run) => inside.has(run.path) || (run.path.endsWith('/') && found.members.some((member) => member.startsWith(run.path)));
-  const runBy = readable.filter((door) => (door.runs ?? []).some(runs)).map((door) => door.name);
+  // A door that only lints or type-checks a member reads it and runs nothing.
+  const executes = (run) => run.runKind !== 'checks';
+  const runBy = readable.filter((door) => (door.runs ?? []).some((run) => executes(run) && runs(run))).map((door) => door.name);
+  const checkedBy = readable
+    .filter((door) => !runBy.includes(door.name) && (door.runs ?? []).some((run) => !executes(run) && runs(run)))
+    .map((door) => door.name);
   const onPath = part == null
     ? []
     : readable.filter((door) => (door.reach ?? []).some((entry) => entry.boundary === part)).map((door) => door.name);
-  const self = found.kind === 'file' ? ctx.doors.find((door) => door.file === found.path) ?? null : null;
-  return { onPath, runBy, self };
+  // A manifest that installs a command declares a door rather than being one:
+  // the command runs the file it names, and that file says so.
+  const self = found.kind === 'file' ? ctx.doors.find((door) => !installed(door) && door.file === found.path) ?? null : null;
+  return { checkedBy, onPath, runBy, self };
 }
 
 function doorLine(doors, partLabel, kind) {
@@ -213,9 +220,17 @@ function doorLine(doors, partLabel, kind) {
     return parseError ? `It is the door ${name}, whose workflow could not be read.` : `It is the door ${name}.`;
   }
   const directory = kind === 'directory';
-  if (doors.runBy.length > 0) {
-    if (!directory) return `Run by ${list(doors.runBy)}.`;
-    return `${list(doors.runBy)} ${doors.runBy.length === 1 ? 'runs' : 'run'} files in it.`;
+  if (doors.runBy.length > 0 || doors.checkedBy.length > 0) {
+    const clauses = [];
+    if (!directory) {
+      if (doors.runBy.length > 0) clauses.push(`run by ${list(doors.runBy)}`);
+      if (doors.checkedBy.length > 0) clauses.push(`checked by ${list(doors.checkedBy)}`);
+    } else {
+      if (doors.runBy.length > 0) clauses.push(`${list(doors.runBy)} ${doors.runBy.length === 1 ? 'runs' : 'run'} files in it`);
+      if (doors.checkedBy.length > 0) clauses.push(`${list(doors.checkedBy)} ${doors.checkedBy.length === 1 ? 'checks' : 'check'} files in it`);
+    }
+    const text = clauses.join('; ');
+    return `${text[0].toUpperCase()}${text.slice(1)}.`;
   }
   if (doors.onPath.length > 0) return `On the path of ${list(doors.onPath)} through ${partLabel}.`;
   const runs = directory ? 'No door runs a file in it' : 'No door runs it';
@@ -306,7 +321,7 @@ function explainFound(ctx, found, map) {
   const overlap = found.kind === 'file' ? overlapOf(ctx, found.path) : null;
   const facts = {
     changesWith: [],
-    doors: { isDoor: null, onPath: [], runBy: [] },
+    doors: { checkedBy: [], isDoor: null, onPath: [], runBy: [] },
     externals: 0,
     generatedAt: map.generatedAt,
     importGrain: 'part',
@@ -362,7 +377,7 @@ function explainFound(ctx, found, map) {
   }
 
   const doors = doorFacts(ctx, found, part?.part ?? null);
-  facts.doors = { isDoor: doors.self?.name ?? null, onPath: doors.onPath, runBy: doors.runBy };
+  facts.doors = { checkedBy: doors.checkedBy, isDoor: doors.self?.name ?? null, onPath: doors.onPath, runBy: doors.runBy };
   lines.push(doorLine(doors, part?.partLabel ?? null, found.kind));
 
   if (found.kind === 'file') {

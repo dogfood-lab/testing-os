@@ -23,6 +23,15 @@ describe('derived roles', () => {
     assert.equal(roleFor(['dogfood/a.yaml', 'dogfood/validate.test.mjs']), 'config');
   });
 
+  it('reads the part holding the repository manifest as config unless code is a third of it', () => {
+    const translations = ['', '.ja', '.fr', '.es', '.zh', '.hi', '.it', '.pt-BR'].map((lang) => `README${lang}.md`);
+    const root = ['package.json', 'pyproject.toml', 'Dockerfile', 'verify.sh', 'CHANGELOG.md', ...translations];
+    assert.equal(roleFor(root), 'docs');
+    assert.equal(roleFor(root, { manifest: true }), 'config');
+    // A root that is mostly code keeps the ratio rule.
+    assert.equal(roleFor(['package.json', 'index.js', 'cli.js', 'README.md'], { manifest: true }), 'code');
+  });
+
   it('reads a part as docs when its prose outweighs its code more than two to one', () => {
     const pages = Array.from({ length: 10 }, (_, i) => `docs/page-${i}.md`);
     assert.equal(roleFor([...pages, 'docs/check-links.ts']), 'docs');

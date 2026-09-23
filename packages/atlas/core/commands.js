@@ -52,6 +52,12 @@ const NON_EXECUTING = new Set([
 const PACKAGE_RUNNERS = new Set(['npm', 'pnpm', 'yarn']);
 const SHELLS = new Set(['bash', 'sh', 'zsh', 'dash', 'ksh', 'source', '.']);
 const PY_TOOLS = new Set(['pytest', 'py.test', 'mypy', 'black', 'flake8', 'pylint', 'bandit', 'ruff', 'coverage']);
+// The tools that read the files they are handed, to lint, format, type-check
+// or compile them, and run none of them. A file one of these reaches is
+// checked, not executed: what it would write when run is not written by the
+// door (core/index.js walks landings from executed runs alone). tsc is one
+// whether or not it emits, since a compiler runs none of the code it builds.
+const CHECKERS = new Set(['ruff', 'mypy', 'checker', 'tsc', 'eslint']);
 
 // The flags each tool takes a value after, written apart ("-c pyproject.toml").
 // A value is never a path the tool runs, even when it names a tracked file.
@@ -215,16 +221,35 @@ export function readCommands(text, dir, repo) {
   return { runs, mentions };
 }
 
+/**
+ * What running one tracked program starts: the file itself, and the commands
+ * it spells out for a child process, read as a script a workflow runs by name
+ * is read. A person runs it from wherever they are, so what it names is taken
+ * from the repository root, as the commands a test spawns are.
+ */
+export function readProgram(path, repo) {
+  const runs = new Map();
+  const reader = makeReader(repo, runs, new Set());
+  reader.program(path, { level: 0, via: null, active: new Set() });
+  return runs;
+}
+
 // Of two ways a path is reached, the one the command spells wins: no via
-// before a via, a named file before a matched one.
+// before a via, a named file before a matched one. A path one tool runs and
+// another only checks is run.
 export function better(a, b) {
   const rank = (entry) => [entry.via == null ? 0 : 1, entry.matched ? 1 : 0, entry.via ?? ''];
   const [x, y] = [rank(a), rank(b)];
+  let pick = a;
   for (let i = 0; i < x.length; i += 1) {
-    if (x[i] < y[i]) return a;
-    if (x[i] > y[i]) return b;
+    if (x[i] < y[i]) break;
+    if (x[i] > y[i]) {
+      pick = b;
+      break;
+    }
   }
-  return a;
+  const runKind = a.runKind === 'checks' && b.runKind === 'checks' ? 'checks' : 'executes';
+  return pick.runKind === runKind ? pick : { ...pick, runKind };
 }
 
 function makeReader(repo, runs, mentions) {
@@ -287,12 +312,12 @@ function makeReader(repo, runs, mentions) {
     const path = pathFrom(dir, token);
     if (path == null) return null;
     if (repo.tracked.has(path)) {
-      record(withVia({ path }, frame.via));
+      record(stamp({ path }, frame));
       if (script && frame.level === 0) readFile(path, dir, frame);
       return path;
     }
     if (directories && path !== '' && repo.dirs.has(path)) {
-      record(withVia({ path: `${path}/`, directory: true }, frame.via));
+      record(stamp({ path: `${path}/`, directory: true }, frame));
       return path;
     }
     return null;
@@ -309,14 +334,14 @@ function makeReader(repo, runs, mentions) {
 
   function matched(entries, frame, tool) {
     const chain = via(frame, tool);
-    for (const entry of entries) record(withVia({ ...entry, matched: true }, chain));
+    for (const entry of entries) record(stamp({ ...entry, matched: true }, frame, chain));
   }
 
   function directoryRuns(dirs, frame, tool) {
     const chain = via(frame, tool);
     for (const found of dirs) {
       if (found === '') continue;
-      record(withVia({ path: `${found}/`, directory: true, matched: true }, chain));
+      record(stamp({ path: `${found}/`, directory: true, matched: true }, frame, chain));
     }
   }
 
@@ -358,7 +383,7 @@ function makeReader(repo, runs, mentions) {
       if (path != null && repo.tracked.has(path)) file(argv[0], dir, frame, { script: true });
       return false;
     }
-    handlers[tool](argv, dir, frame);
+    handlers[tool](argv, dir, CHECKERS.has(tool) ? { ...frame, runKind: 'checks' } : frame);
     return true;
   }
 
@@ -402,7 +427,7 @@ function makeReader(repo, runs, mentions) {
       for (const candidate of [`${stem}.py`, `${stem}/__main__.py`, `${stem}/__init__.py`]) {
         const path = pathFrom(base, candidate);
         if (path != null && repo.tracked.has(path)) {
-          record(withVia({ path }, frame.via));
+          record(stamp({ path }, frame));
           return;
         }
       }
@@ -585,7 +610,7 @@ function makeReader(repo, runs, mentions) {
       }
       const target = binTarget(repo, dir, name);
       if (target != null) {
-        record(withVia({ path: target }, frame.via));
+        record(stamp({ path: target }, frame));
         if (frame.level === 0) readFile(target, dir, frame);
       }
     },
@@ -747,15 +772,19 @@ function makeReader(repo, runs, mentions) {
     none() {},
   };
 
-  return { read };
+  return { read, program: (path, frame) => file(path, '', frame, { script: true }) };
 }
 
 function baseName(word) {
   return word.slice(word.lastIndexOf('/') + 1);
 }
 
-function withVia(entry, via) {
-  return via ? { ...entry, via } : entry;
+// A run carries the chain that reached it, and whether the tool that reached
+// it runs the file or only reads it to check it.
+function stamp(entry, frame, via = frame.via) {
+  const out = { ...entry, runKind: frame.runKind ?? 'executes' };
+  if (via) out.via = via;
+  return out;
 }
 
 // The rule a tool's first word selects, or null for a word this reader does
@@ -1035,7 +1064,7 @@ function workspaceDir(repo, value, prefix) {
   return asPath != null && workspaceMembers(repo).has(asPath) ? asPath : null;
 }
 
-function workspaceGlobs(pkg) {
+export function workspaceGlobs(pkg) {
   const workspaces = pkg?.workspaces;
   const list = Array.isArray(workspaces) ? workspaces : Array.isArray(workspaces?.packages) ? workspaces.packages : [];
   return list.filter((glob) => typeof glob === 'string').map((glob) => glob.replace(/^\.\//, '').replace(/\/+$/, ''));

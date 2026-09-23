@@ -1,0 +1,12 @@
+name: Mutation testing
+on:
+  workflow_dispatch:
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 0 > .github/mutmut-baseline.txt
+      - run: |
+          git add .github/mutmut-baseline.txt
+          git commit -m "baseline"
+          git push

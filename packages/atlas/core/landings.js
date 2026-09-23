@@ -1,4 +1,5 @@
 import { extname, posix } from 'node:path';
+import picomatch from 'picomatch';
 import { boundaryRoot } from './entry-points.js';
 import { isWorkflow } from './doors.js';
 
@@ -22,6 +23,22 @@ const JS_WRITES = new Map([
 // is a longer camelCase name and not the call itself spelled differently.
 const JS_WRITE_SUFFIX = /[a-z](WriteFileSync|WriteFile|AppendFileSync|AppendFile)$/;
 const JS_READS = new Set(['readFileSync', 'readFile', 'readdirSync', 'readdir', 'existsSync', 'statSync', 'createReadStream']);
+// Calls whose path names a directory, made or listed. Any other call names a
+// file, and a file that is not tracked is still that file (landingOf).
+const DIRECTORY_CALLS = new Set([
+  'mkdirSync',
+  'mkdir',
+  'readdirSync',
+  'readdir',
+  'os.makedirs',
+  'os.mkdir',
+  'os.listdir',
+  'os.scandir',
+  'glob.glob',
+  'iterdir',
+  'glob',
+  'rglob',
+]);
 const JS_OPEN = new Set(['open', 'openSync']);
 const NETWORK = new Set(['fetch', 'get']);
 const JS_PATH_MODULES = new Set(['path', 'posix', 'win32', 'path.posix', 'path.win32']);
@@ -386,7 +403,7 @@ export function astLandings(language, root, path, places) {
         for (const entry of rawUrls(value.text, places)) list.push({ ...entry, call, confidence: 'ast' });
         continue;
       }
-      const target = landingOf(value, places);
+      const target = landingOf(value, places, { directory: DIRECTORY_CALLS.has(call) });
       if (target != null) list.push({ target, call, confidence: confidenceOf(value, target, places) });
     }
   };
@@ -544,6 +561,8 @@ function evalJs(node, ctx, depth) {
     case 'member_expression': {
       const object = node.childForFieldName('object');
       const property = node.childForFieldName('property')?.text;
+      // new URL('./x.json', import.meta.url).pathname is the path the URL names.
+      if (object?.type === 'new_expression' && (property === 'pathname' || property === 'href')) return evalJs(object, ctx, next);
       if (object?.type !== 'meta_property') return [];
       if (property === 'url' || property === 'filename') return [closed(ctx.file)];
       if (property === 'dirname') return [closed(ctx.dir)];
@@ -991,12 +1010,22 @@ function cap(values) {
 }
 
 /**
- * The tracked place a value lands on: the path itself when it is tracked, a
- * tracked directory when it names one, or else the deepest tracked directory
- * the value lies under. An open value lies under the directories its text
- * already spells out in full.
+ * The place a value lands on. A value that names a tracked file or a tracked
+ * directory lands there. A value written out in full that names a file lands
+ * on that file even when the file is not tracked, so long as a tracked
+ * directory holds it: a receipt a script writes beside itself at run time is
+ * that receipt, and the page must not call the whole directory generated. A
+ * directory the call makes or lists, a path ending in a slash, and a value
+ * whose tail is built at run time name a directory, and land on the deepest
+ * tracked directory their spelled-out text lies under. A path through a
+ * dependency or build directory is not the repository's own, so it keeps to
+ * the directory above as well.
+ *
+ * @param {{ text: string, open: boolean }} value
+ * @param {{ files: Set<string>, dirs: Set<string> }} places
+ * @param {{ directory?: boolean }} [options] directory: the call names a directory
  */
-function landingOf(value, places) {
+function landingOf(value, places, { directory = false } = {}) {
   let text = value.text.replaceAll('\\', '/');
   if (text.startsWith('/')) return null;
   while (text.startsWith('./')) text = text.slice(2);
@@ -1005,7 +1034,13 @@ function landingOf(value, places) {
     if (text === '..' || text.startsWith('../')) return null;
     const bare = text.replace(/\/+$/, '');
     if (places.files.has(bare) || places.dirs.has(bare)) return bare;
+    const named = !directory && bare === text && !text.split('/').some((part) => part === 'node_modules' || part === 'dist');
+    if (named && holdingDirectory(text, places) != null) return text;
   }
+  return holdingDirectory(text, places);
+}
+
+function holdingDirectory(text, places) {
   for (let end = text.lastIndexOf('/'); end > 0; end = text.lastIndexOf('/', end - 1)) {
     const dir = text.slice(0, end);
     if (places.dirs.has(dir)) return dir;
@@ -1223,7 +1258,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     delete door.stagedTargets;
   }
 
-  for (const boundary of boundaries) boundary.origin = originOf(boundary, strong);
+  for (const boundary of boundaries) boundary.origin = originOf(boundary, strong, places);
 
   return [...new Set([...writers.keys(), ...readers.keys()])].sort(compare).map((target) => {
     const landing = { target, writers: sortedValues(writers.get(target)), readers: sortedValues(readers.get(target)) };
@@ -1256,16 +1291,28 @@ function partsSpanned(boundaries, targets, places) {
   return out;
 }
 
-function originOf(boundary, written) {
+// A file kept only so git tracks an empty directory is the directory's, not
+// content anyone writes.
+const PLACEHOLDER = /(^|\/)\.(gitkeep|keep)$/;
+
+// A place written that is not tracked (a receipt made at run time) is inside
+// the boundary whose globs would hold it. A boundary is generated when its
+// root or every one of its files is written, a placeholder aside, and none of
+// its own files write: a directory of written files beside a .gitkeep is
+// generated as surely as one whose files are all tracked.
+function originOf(boundary, written, places) {
   const paths = boundary.files.map((file) => file.path);
   const root = boundaryRoot(boundary.globs);
+  const holds = picomatch(boundary.globs, { dot: true });
   const inside = [...written].filter((target) => {
     if (paths.includes(target)) return true;
+    if (!places.files.has(target) && !places.dirs.has(target)) return holds(target);
     if (root !== '' && target !== root && !target.startsWith(`${root}/`)) return false;
     return paths.some((path) => path.startsWith(`${target}/`));
   });
   if (inside.length === 0) return 'authored';
-  const covered = (root !== '' && written.has(root)) || (paths.length > 0 && paths.every((path) => written.has(path)));
+  const content = paths.filter((path) => !PLACEHOLDER.test(path));
+  const covered = (root !== '' && written.has(root)) || (paths.length > 0 && content.every((path) => written.has(path)));
   const writesItself = boundary.files.some((file) => !isTestMaterial(file.path) && (file.writes?.length ?? 0) > 0);
   return covered && !writesItself ? 'generated' : 'mixed';
 }

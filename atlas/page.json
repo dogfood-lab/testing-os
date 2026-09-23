@@ -10,7 +10,7 @@
   ],
   "breaks": [
     {
-      "doors": 4,
+      "doors": 11,
       "importedBy": [
         "dogfood-swarm",
         "findings",
@@ -28,7 +28,7 @@
       "partLabel": "schemas"
     },
     {
-      "doors": 3,
+      "doors": 6,
       "importedBy": [
         "dogfood-swarm",
         "ingest",
@@ -42,20 +42,7 @@
       "partLabel": "findings"
     },
     {
-      "doors": 3,
-      "importedBy": [
-        "ingest",
-        "scripts"
-      ],
-      "importedByTests": [
-        "schemas"
-      ],
-      "kind": "part",
-      "name": "dogfood-swarm",
-      "partLabel": "dogfood-swarm"
-    },
-    {
-      "doors": 3,
+      "doors": 5,
       "importedBy": [
         "findings",
         "ingest"
@@ -68,7 +55,20 @@
       "partLabel": "verify"
     },
     {
-      "doors": 3,
+      "doors": 4,
+      "importedBy": [
+        "ingest",
+        "scripts"
+      ],
+      "importedByTests": [
+        "schemas"
+      ],
+      "kind": "part",
+      "name": "dogfood-swarm",
+      "partLabel": "dogfood-swarm"
+    },
+    {
+      "doors": 4,
       "importedBy": [
         "findings",
         "scripts"
@@ -79,14 +79,14 @@
       "partLabel": "ingest"
     },
     {
-      "doors": 3,
+      "doors": 7,
       "importedBy": [
-        "scripts"
+        "dogfood-swarm"
       ],
       "importedByTests": [],
       "kind": "part",
-      "name": "atlas",
-      "partLabel": "atlas"
+      "name": "report",
+      "partLabel": "report"
     },
     {
       "kind": "place",
@@ -122,30 +122,38 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 6,
-      "changed": 29,
+      "added": 2,
+      "changed": 12,
       "moved": 0,
       "parts": 6,
       "removed": 0
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "packages/atlas/package.json is now read by packages/atlas/adapter/fleet.js.",
+        "subjects": [
+          "packages/atlas/package.json",
+          "packages/atlas/adapter/fleet.js"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-23; 6 files added and 29 changed content.",
+        "sentence": "2 files added and 12 changed content, across 6 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "83c7a7f6805f877c918b5e4d773b5b6fa4c37a35",
-      "generatedAt": "2026-09-23T15:43:15.261Z"
+      "commit": "10a817174397d10bc76bd20cdfbfdad708b55c5d",
+      "generatedAt": "2026-09-23T17:50:50.307Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
       "a": "site/public/atlas/render.js",
       "b": "site/src/components/atlas-page.test.mjs",
-      "either": 19,
+      "either": 24,
       "partLabels": [
         "site",
         "site"
@@ -155,7 +163,22 @@
         "site"
       ],
       "relation": "inside",
-      "shared": 13
+      "shared": 17
+    },
+    {
+      "a": "packages/atlas/adapter/artifact.js",
+      "b": "packages/atlas/core/index.js",
+      "either": 22,
+      "partLabels": [
+        "atlas",
+        "atlas"
+      ],
+      "parts": [
+        "atlas",
+        "atlas"
+      ],
+      "relation": "inside",
+      "shared": 11
     }
   ],
   "changesTogetherNote": [
@@ -163,11 +186,17 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 25 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "c94d84e93304960285d8557b710a94a1b07d098f",
+  "commit": "927e765f3441bdc1c2e8e97822ea371a64f35a12",
   "defaultBranch": "main",
+  "derived": "23 parts, mostly JavaScript (826 files). Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing). It publishes to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.",
   "doors": [
     {
+      "checks": [
+        "packages/schemas/src/"
+      ],
+      "checksCount": 1,
       "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
       "landings": [
         "dogfood/roadmap/",
         "indexes/",
@@ -252,11 +281,12 @@
         "packages/atlas/adapter/fleet.test.js",
         "packages/atlas/adapter/init.test.js",
         "packages/atlas/adapter/lifecycle.test.js",
+        "packages/atlas/adapter/page-checked-runs.test.js",
+        "packages/atlas/adapter/page-clone-commits.test.js",
+        "packages/atlas/adapter/page-commands.test.js",
         "packages/atlas/adapter/page-doors.test.js",
-        "packages/atlas/adapter/page.test.js",
-        "packages/atlas/adapter/python-conventions.test.js",
-        "packages/atlas/adapter/statistics.test.js",
-        "packages/atlas/adapter/templates.test.js",
+        "packages/atlas/adapter/page-file-writes.test.js",
+        "packages/atlas/core/command-doors.test.js",
         "packages/atlas/core/commands.test.js",
         "packages/atlas/core/divergence.test.js",
         "packages/atlas/core/doors-conventions.test.js",
@@ -271,7 +301,6 @@
         "packages/atlas/core/no-sibling-imports.test.js",
         "packages/atlas/core/resolve-build-output.test.js",
         "packages/atlas/core/resolve-js.test.js",
-        "packages/atlas/core/resolve-python.test.js",
         "packages/dogfood-swarm/a3-roadmap-envelope-conformance.test.js",
         "packages/dogfood-swarm/adjudicate-explicit-wave.test.js",
         "packages/dogfood-swarm/advance.test.js",
@@ -394,7 +423,6 @@
         "packages/report/stageC-scenario-file-read-guard.test.js",
         "packages/report/status.test.js",
         "packages/report/w4-f-9106e1ec-scenario-onboarding.test.js",
-        "packages/schemas/src/",
         "packages/schemas/test/",
         "packages/verify/cli-lint-scenario.test.js",
         "packages/verify/cli-lint.test.js",
@@ -436,7 +464,7 @@
         "scripts/check-package-deps-hygiene.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 517,
+      "runsCount": 523,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -446,7 +474,12 @@
       ]
     },
     {
+      "checks": [
+        "packages/schemas/src/"
+      ],
+      "checksCount": 1,
       "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
       "landings": [
         "dogfood/roadmap/",
         "indexes/",
@@ -529,12 +562,13 @@
         "packages/atlas/adapter/fleet.test.js",
         "packages/atlas/adapter/init.test.js",
         "packages/atlas/adapter/lifecycle.test.js",
+        "packages/atlas/adapter/page-checked-runs.test.js",
+        "packages/atlas/adapter/page-clone-commits.test.js",
+        "packages/atlas/adapter/page-commands.test.js",
         "packages/atlas/adapter/page-doors.test.js",
-        "packages/atlas/adapter/page.test.js",
-        "packages/atlas/adapter/python-conventions.test.js",
-        "packages/atlas/adapter/statistics.test.js",
-        "packages/atlas/adapter/templates.test.js",
-        "packages/atlas/adapter/ts-probe.test.js",
+        "packages/atlas/adapter/page-file-writes.test.js",
+        "packages/atlas/adapter/page-limits.test.js",
+        "packages/atlas/core/command-doors.test.js",
         "packages/atlas/core/commands.test.js",
         "packages/atlas/core/divergence.test.js",
         "packages/atlas/core/doors-conventions.test.js",
@@ -549,7 +583,6 @@
         "packages/atlas/core/no-sibling-imports.test.js",
         "packages/atlas/core/resolve-build-output.test.js",
         "packages/atlas/core/resolve-js.test.js",
-        "packages/atlas/core/resolve-python.test.js",
         "packages/dogfood-swarm/a3-roadmap-envelope-conformance.test.js",
         "packages/dogfood-swarm/adjudicate-explicit-wave.test.js",
         "packages/dogfood-swarm/advance.test.js",
@@ -672,7 +705,6 @@
         "packages/report/stageC-scenario-file-read-guard.test.js",
         "packages/report/status.test.js",
         "packages/report/w4-f-9106e1ec-scenario-onboarding.test.js",
-        "packages/schemas/src/",
         "packages/schemas/test/",
         "packages/verify/cli-lint-scenario.test.js",
         "packages/verify/cli-lint.test.js",
@@ -715,7 +747,7 @@
         "scripts/check-severity-contrast.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 516,
+      "runsCount": 522,
       "sends": [
         "publishes to npm and a container image",
         "creates a GitHub release"
@@ -727,7 +759,12 @@
       ]
     },
     {
+      "checks": [
+        "packages/schemas/src/"
+      ],
+      "checksCount": 1,
       "file": ".github/workflows/ingest.yml",
+      "id": ".github/workflows/ingest.yml",
       "landings": [
         "indexes/",
         "records/",
@@ -776,10 +813,9 @@
         "packages/ingest/run.js",
         "packages/portfolio/generate.js",
         "scripts/build.mjs",
-        "scripts/sync-version.mjs",
-        "packages/schemas/src/"
+        "scripts/sync-version.mjs"
       ],
-      "runsCount": 5,
+      "runsCount": 4,
       "sends": [],
       "stages": [
         "indexes/",
@@ -791,7 +827,12 @@
       ]
     },
     {
+      "checks": [
+        "packages/schemas/src/"
+      ],
+      "checksCount": 1,
       "file": ".github/workflows/self-dogfood.yml",
+      "id": ".github/workflows/self-dogfood.yml",
       "landings": [],
       "name": "self-dogfood",
       "pushes": false,
@@ -815,10 +856,9 @@
       "runs": [
         "packages/report/cli.js",
         "scripts/build.mjs",
-        "scripts/sync-version.mjs",
-        "packages/schemas/src/"
+        "scripts/sync-version.mjs"
       ],
-      "runsCount": 4,
+      "runsCount": 3,
       "sends": [
         "sends a dispatch to dogfood-lab/testing-os"
       ],
@@ -829,7 +869,10 @@
       ]
     },
     {
+      "checks": [],
+      "checksCount": 0,
       "file": ".github/workflows/atlas-render.yml",
+      "id": ".github/workflows/atlas-render.yml",
       "landings": [
         "indexes/atlas/"
       ],
@@ -859,7 +902,10 @@
       ]
     },
     {
+      "checks": [],
+      "checksCount": 0,
       "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
       "landings": [],
       "name": "Deploy site to GitHub Pages",
       "pushes": false,
@@ -882,6 +928,289 @@
         "on a push to main touching 2 paths",
         "or by hand"
       ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/findings/package.json",
+      "id": "packages/findings/package.json#findings",
+      "kind": "command",
+      "landings": [
+        "policies/repos/"
+      ],
+      "name": "findings",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "findings",
+          "depth": 0,
+          "files": 30
+        },
+        {
+          "boundary": "ingest",
+          "depth": 2,
+          "files": 1
+        },
+        {
+          "boundary": "schemas",
+          "depth": 3,
+          "files": 6
+        },
+        {
+          "boundary": "verify",
+          "depth": 3,
+          "files": 10
+        }
+      ],
+      "runs": [
+        "packages/findings/cli.js"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/dogfood-swarm/package.json",
+      "id": "packages/dogfood-swarm/package.json#swarm",
+      "kind": "command",
+      "landings": [
+        "dogfood/roadmap/"
+      ],
+      "name": "swarm",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "dogfood-swarm",
+          "depth": 0,
+          "files": 83
+        },
+        {
+          "boundary": "findings",
+          "depth": 2,
+          "files": 2
+        },
+        {
+          "boundary": "report",
+          "depth": 3,
+          "files": 3
+        },
+        {
+          "boundary": "schemas",
+          "depth": 3,
+          "files": 8
+        }
+      ],
+      "runs": [
+        "packages/dogfood-swarm/cli.js"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/portfolio/package.json",
+      "id": "packages/portfolio/package.json#portfolio",
+      "kind": "command",
+      "landings": [
+        "indexes/",
+        "reports/"
+      ],
+      "name": "portfolio",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "portfolio",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "findings",
+          "depth": 1,
+          "files": 2
+        },
+        {
+          "boundary": "schemas",
+          "depth": 1,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "packages/portfolio/generate.js"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/report/package.json",
+      "id": "packages/report/package.json#dogfood-init",
+      "kind": "command",
+      "landings": [],
+      "name": "dogfood-init",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "report",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "schemas",
+          "depth": 2,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "packages/report/init.js"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/report/package.json",
+      "id": "packages/report/package.json#dogfood-report",
+      "kind": "command",
+      "landings": [],
+      "name": "dogfood-report",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "report",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "schemas",
+          "depth": 2,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "packages/report/cli.js"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/verify/package.json",
+      "id": "packages/verify/package.json#dogfood-verify",
+      "kind": "command",
+      "landings": [],
+      "name": "dogfood-verify",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "verify",
+          "depth": 0,
+          "files": 14
+        },
+        {
+          "boundary": "schemas",
+          "depth": 1,
+          "files": 6
+        }
+      ],
+      "runs": [
+        "packages/verify/cli.js"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/report/package.json",
+      "id": "packages/report/package.json#report",
+      "kind": "command",
+      "landings": [],
+      "name": "report",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "report",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "schemas",
+          "depth": 2,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "packages/report/cli.js"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/atlas/package.json",
+      "id": "packages/atlas/package.json#atlas",
+      "kind": "command",
+      "landings": [],
+      "name": "atlas",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "atlas",
+          "depth": 0,
+          "files": 30
+        }
+      ],
+      "runs": [
+        "packages/atlas/cli.js"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/atlas/package.json",
+      "id": "packages/atlas/package.json#atlas-fleet",
+      "kind": "command",
+      "landings": [],
+      "name": "atlas-fleet",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "atlas",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "packages/atlas/bin/atlas-fleet.js"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
     }
   ],
   "duplicates": [
@@ -929,21 +1258,6 @@
         "findings",
         "ingest"
       ]
-    },
-    {
-      "files": [
-        "packages/report/cli.js",
-        "packages/verify/cli.js"
-      ],
-      "name": "run",
-      "partLabels": [
-        "report",
-        "verify"
-      ],
-      "parts": [
-        "report",
-        "verify"
-      ]
     }
   ],
   "duplicatesLead": "These are candidates from names and call order, not a judgement.",
@@ -953,6 +1267,11 @@
       "from": "dogfood-swarm",
       "fromTests": false,
       "to": "findings"
+    },
+    {
+      "from": "dogfood-swarm",
+      "fromTests": false,
+      "to": "report"
     },
     {
       "from": "dogfood-swarm",
@@ -993,6 +1312,11 @@
       "from": "ingest",
       "fromTests": false,
       "to": "verify"
+    },
+    {
+      "from": "report",
+      "fromTests": false,
+      "to": "schemas"
     },
     {
       "from": "schemas",
@@ -1043,16 +1367,16 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T16:06:30.804Z",
+  "generatedAt": "2026-09-23T18:00:22.730Z",
   "limits": [
     "2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "30 import sites could not be resolved.",
-    "6 files use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (1) and other syntax (5).",
-    "30 writes and 191 reads use paths built at run time and are not named here.",
-    "254 commands are built at run time and not followed.",
+    "9 files use syntax the parser cannot read, so what they import is not known: 8 in fixtures (a NUL character inside a string in 1 and other syntax in 7), 1 in schemas (a NUL character inside a string).",
+    "30 writes and 192 reads use paths built at run time and are not named here.",
+    "272 commands are built at run time and not followed, 251 of them in tests.",
     "Readers marked (found by text) come from scanning unparsed files.",
-    "CI runs 517 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Release runs 516 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
+    "CI runs or checks 524 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs or checks 523 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
   "mainDoor": ".github/workflows/ingest.yml",
   "partLabels": {
@@ -1326,18 +1650,18 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 546,
+  "testFiles": 560,
   "testedBy": {
-    "atlas": 31,
-    "dogfood-swarm": 280,
-    "findings": 119,
-    "ingest": 59,
+    "atlas": 37,
+    "dogfood-swarm": 281,
+    "findings": 120,
+    "ingest": 60,
     "portfolio": 19,
-    "report": 22,
+    "report": 23,
     "schemas": 106,
     "scripts": 16,
     "site": 1,
-    "verify": 71
+    "verify": 72
   },
   "unread": [
     {

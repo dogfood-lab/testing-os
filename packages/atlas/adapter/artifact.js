@@ -1,7 +1,8 @@
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
 import { roleFor } from './templates.js';
 
-const byPath = (a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
+const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+const byPath = (a, b) => cmp(a.path, b.path);
 
 // The artifact describes the tree minus atlas/. Every list below, and every
 // count, is over that set. The directory cannot record a stable hash of
@@ -43,18 +44,22 @@ function siteCounts(files) {
 //
 // A command handed to a child process whose program or arguments are built at
 // run time is not followed either. Tests are counted here: a test that runs a
-// script it builds the command for is how a part goes untested unseen.
+// script it builds the command for is how a part goes untested unseen. How
+// many of them are in tests is counted apart, since a suite spawning the
+// command it tests is most of them in a repository with a CLI.
 function dynamicCounts(files) {
   let reads = 0;
   let writes = 0;
   let spawns = 0;
+  let spawnsInTests = 0;
   for (const file of files) {
     spawns += file.dynamicSpawns ?? 0;
+    if (isTestFile(file.path)) spawnsInTests += file.dynamicSpawns ?? 0;
     if (isTestMaterial(file.path)) continue;
     reads += file.dynamicReads ?? 0;
     writes += file.dynamicWrites ?? 0;
   }
-  return { reads, spawns, writes };
+  return { reads, spawns, spawnsInTests, writes };
 }
 
 function resolvedFiles(file) {
@@ -130,6 +135,7 @@ export function buildArtifact(mapped, commit) {
       ...named,
       dynamicReads: dynamic.reads,
       dynamicSpawns: dynamic.spawns,
+      dynamicSpawnsInTests: dynamic.spawnsInTests,
       dynamicWrites: dynamic.writes,
       entryPoints: [...boundary.entryPoints].filter((path) => !inAtlas(path)).sort(),
       externals: sites.externals,
@@ -138,7 +144,7 @@ export function buildArtifact(mapped, commit) {
       importConfidence: sites.unresolved > sites.resolved ? 'low' : 'full',
       name: boundary.name,
       origin: boundary.origin,
-      role: boundary.role ?? roleFor(files.map((file) => file.path)),
+      role: boundary.role ?? roleFor(files.map((file) => file.path), { manifest: boundary.holdsManifest === true }),
       testedBy: tested.testedBy.get(boundary.name) ?? 0,
       unresolvedSites: sites.unresolved,
     };
@@ -150,7 +156,9 @@ export function buildArtifact(mapped, commit) {
   const tracked = boundaries.reduce((sum, boundary) => sum + boundary.files.length, 0) + overlaps.length + unassigned.length;
   return {
     boundaries,
-    doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => (a.file < b.file ? -1 : a.file > b.file ? 1 : 0)),
+    // One manifest can declare several commands, so a door sorts by its file
+    // and then its name.
+    doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => cmp(a.file, b.file) || cmp(a.name, b.name) || cmp(a.kind ?? '', b.kind ?? '')),
     edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to, ...(edge.fromTests ? { fromTests: true } : {}) })),
     generatedFrom: { commit, tracked },
     landings: carryLandings(mapped.landings ?? []),
@@ -258,10 +266,10 @@ function carryReader(entry) {
   return out;
 }
 
-// A run carries directory, matched and via only when they say something, so a
-// file the workflow names reads as it always has.
+// A run always says whether the door runs the file or only checks it; it
+// carries directory, matched and via only when they say something.
 function carryRun(run) {
-  const out = { job: run.job, path: run.path };
+  const out = { job: run.job, path: run.path, runKind: run.runKind ?? 'executes' };
   if (run.directory) out.directory = true;
   if (run.matched) out.matched = true;
   if (run.via) out.via = run.via;
@@ -271,10 +279,14 @@ function carryRun(run) {
 // Every list a door carries arrives sorted from the core, except commands,
 // whose order is the workflow's own. Copying field by field keeps the
 // artifact's shape the one written here rather than whatever the core adds.
+// A workflow carries no kind, so an artifact written before commands were
+// doors reads the same.
 function carryDoor(door) {
   if (door.parseError) return { file: door.file, name: door.name, parseError: true };
   return {
+    ...(door.kind ? { kind: door.kind } : {}),
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
+    elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
     file: door.file,
     landings: door.landings.filter((target) => !inAtlas(target)),
     mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),
@@ -285,6 +297,7 @@ function carryDoor(door) {
     readers: door.readers.filter((entry) => !inAtlas(entry.target) && !inAtlas(entry.by)).map(carryReader),
     runs: door.runs.map(carryRun),
     runsCount: door.runsCount,
+    checksCount: door.checksCount ?? 0,
     secrets: [...door.secrets],
     sends: {
       deploysPages: door.sends.deploysPages,

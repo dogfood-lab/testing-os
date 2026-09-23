@@ -55,12 +55,13 @@ export function declaredDependencies(repoPath, tracked) {
 
 /**
  * The console and GUI scripts every tracked pyproject.toml installs, as the
- * module each one runs and the function it calls: `backprop =
- * "backpropagate.cli:main"` is { module: 'backpropagate.cli', fn: 'main' }.
+ * command a person types, the module it runs and the function it calls:
+ * `backprop = "backpropagate.cli:main"` is { name: 'backprop', module:
+ * 'backpropagate.cli', fn: 'main' }.
  *
  * @param {string} repoPath
  * @param {Iterable<string>} tracked
- * @returns {Array<{ manifest: string, module: string, fn: string | null }>}
+ * @returns {Array<{ manifest: string, name: string, module: string, fn: string | null }>}
  */
 export function declaredScripts(repoPath, tracked) {
   const out = [];
@@ -68,12 +69,12 @@ export function declaredScripts(repoPath, tracked) {
     if (path !== 'pyproject.toml' && !path.endsWith('/pyproject.toml')) continue;
     const tables = readToml(repoPath, path);
     for (const table of ['project.scripts', 'project.gui-scripts', 'tool.poetry.scripts']) {
-      for (const value of Object.values(tables.get(table) ?? {})) {
+      for (const [name, value] of Object.entries(tables.get(table) ?? {})) {
         const [target] = strings(value);
         if (!target) continue;
         const [module, fn] = target.split(':').map((part) => part.trim());
         if (!/^[A-Za-z_][\w.]*$/.test(module)) continue;
-        out.push({ manifest: path, module, fn: fn && /^[A-Za-z_]\w*$/.test(fn) ? fn : null });
+        out.push({ manifest: path, name, module, fn: fn && /^[A-Za-z_]\w*$/.test(fn) ? fn : null });
       }
     }
   }
