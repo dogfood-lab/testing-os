@@ -8,12 +8,12 @@ import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors } from './doors.js';
 import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
-import { astLandings, attachLandings, isTestFile, noLandings, pythonPathValues, settleHelperPaths, textLandings, trackedPlaces } from './landings.js';
+import { astLandings, attachLandings, isTestFile, noLandings, pythonPathValues, scriptPath, settleHelperPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
 import { attachResolution, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
-import { spawnedCommands } from './spawned.js';
+import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
 
@@ -129,6 +129,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     tracked: tracked.regular,
   });
   settleHelperPaths([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]);
+  settleSpawnHelpers([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], spawned);
 
   const builtFrom = (path) => (trackedSet.has(path) ? null : resolveDeclaredPath(repoPath, path, trackedSet));
   const doors = [
@@ -340,7 +341,10 @@ function describeFile(repoPath, path, places, facts, spawned) {
   facts.set(path, extracted.sequence);
   if (extracted.spawned.commands.length > 0) spawned.set(path, extracted.spawned.commands);
   const built = extracted.spawned.built > 0 ? { dynamicSpawns: extracted.spawned.built } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built };
+  // Read once imports resolve, then dropped (core/spawned.js settleSpawnHelpers).
+  const helpers = Object.keys(extracted.spawned.helpers ?? {}).length > 0 ? { spawnHelpers: extracted.spawned.helpers } : {};
+  const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...helpers, ...pending };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -361,7 +365,7 @@ function parseFile(language, path, source, places) {
       imports,
       landings: astLandings(language, tree.rootNode, path, places),
       sequence: sequenceFacts(language, tree.rootNode),
-      spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode),
+      spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
     };
   } finally {
     tree.delete();

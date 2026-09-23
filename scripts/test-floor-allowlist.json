@@ -88,6 +88,10 @@
     {
       "path": "fixtures/atlas/test-readers/test/golden.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the test-readers fixture repository that packages/atlas/adapter/page-test-readers.test.js maps, where it must be read as a test, by exactly this name, that reads fixtures/golden.json by its path, so the map records it as a reader from tests. It is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/spawn-helpers/test/unit.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the spawn-helpers fixture repository that packages/atlas/core/spawn-helpers.test.js maps, where the release gate's `node --test test/` stage, handed to a helper, must reach test/ as a run. It holds one empty test and is never meant to run."
     }
   ]
 }

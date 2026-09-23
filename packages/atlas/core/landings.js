@@ -706,6 +706,29 @@ export function pythonPathValues(node, path) {
   return out;
 }
 
+/**
+ * The one repository path a JavaScript expression names, read the way a
+ * landing's path is (literals, joins, __dirname, import.meta.url and
+ * same-file bindings), or null when it names none or more than one, or a
+ * place that is the caller's. A path with a root the engine cannot read is
+ * not one.
+ *
+ * @param {object} node tree-sitter node
+ * @param {string} path the tracked path of the file the node is in
+ * @returns {string | null}
+ */
+export function scriptPath(node, path) {
+  const dir = posix.dirname(path);
+  const ctx = { python: false, file: path, dir: dir === '.' ? '' : dir, seen: new Set(), visiting: new Set(), assignments: new Map() };
+  const values = evalJs(node, ctx, 0);
+  if (values.length !== 1) return null;
+  const [value] = values;
+  if (value.open || value.rooted || outside(value) || isHelper(value) || value.text.includes('://')) return null;
+  const text = posix.normalize(value.text.replaceAll('\\', '/') || '.');
+  if (text.startsWith('/') || text === '..' || text.startsWith('../')) return null;
+  return text === '.' ? '' : text.replace(/^\.\//, '');
+}
+
 function scriptSite(node, site) {
   const fn = node.childForFieldName('function');
   const name = finalName(fn);
