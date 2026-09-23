@@ -1,0 +1,310 @@
+{
+  "authored": [
+    ".claude/",
+    ".github/",
+    "canon/",
+    "profiles/",
+    "root"
+  ],
+  "breaks": [
+    {
+      "doors": 1,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "tools",
+      "partLabel": "tools"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 1,
+      "moved": 0,
+      "parts": 1,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "door",
+        "sentence": "facet (package.json) is a new command. It runs bin/facet.js.",
+        "subjects": [
+          "package.json",
+          "bin/facet.js"
+        ]
+      },
+      {
+        "kind": "counts",
+        "sentence": "1 file changed content, across 1 part.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "7c06851b09889baad6cc9fd55c64f8b851c1fefc",
+      "generatedAt": "2026-09-23T17:51:32.077Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [
+    {
+      "a": "tests/test_t41_instrument_census.py",
+      "b": "tools/instrument_census.py",
+      "either": 9,
+      "partLabels": [
+        "tests",
+        "tools"
+      ],
+      "parts": [
+        "tests",
+        "tools"
+      ],
+      "relation": "a-imports-b",
+      "shared": 8
+    },
+    {
+      "a": "bin/facet.js",
+      "b": "tools/record_mcp.py",
+      "either": 15,
+      "partLabels": [
+        "bin",
+        "tools"
+      ],
+      "parts": [
+        "bin",
+        "tools"
+      ],
+      "relation": "none",
+      "shared": 10
+    },
+    {
+      "a": "tests/test_t41_instrument_census.py",
+      "b": "tests/test_t62_recorded_invocation_form.py",
+      "either": 10,
+      "partLabels": [
+        "tests",
+        "tests"
+      ],
+      "parts": [
+        "tests",
+        "tests"
+      ],
+      "relation": "inside",
+      "shared": 6
+    },
+    {
+      "a": "tests/test_t87_canon_gate.py",
+      "b": "tools/canon_gate.py",
+      "either": 13,
+      "partLabels": [
+        "tests",
+        "tools"
+      ],
+      "parts": [
+        "tests",
+        "tools"
+      ],
+      "relation": "a-imports-b",
+      "shared": 7
+    },
+    {
+      "a": "tests/test_t62_recorded_invocation_form.py",
+      "b": "tools/instrument_census.py",
+      "either": 10,
+      "partLabels": [
+        "tests",
+        "tools"
+      ],
+      "parts": [
+        "tests",
+        "tools"
+      ],
+      "relation": "a-imports-b",
+      "shared": 5
+    }
+  ],
+  "changesTogetherNote": [
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 10 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "8d2fa3456e3412198ed38bbb069775efebe65d86",
+  "defaultBranch": "main",
+  "derived": "10 parts, mostly Python (292 files). Work enters through 4 doors; the busiest is ci, which reaches 2 parts. It publishes to npm and PyPI. People run facet.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "ci",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 102
+        },
+        {
+          "boundary": "tools",
+          "depth": 1,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "tests/"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a push touching 10 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [
+        "publishes to npm and PyPI",
+        "creates a GitHub release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*` is pushed",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#facet",
+      "kind": "command",
+      "landings": [],
+      "name": "facet",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "bin/facet.js"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "generated": [
+    {
+      "place": "docs/experiments/E04-brush-prompts.json",
+      "writers": [
+        "tools/diagnostics/e04_make_brush_prompts.py"
+      ]
+    },
+    {
+      "place": "site/src/content/docs/handbook/",
+      "writers": [
+        "docs/handbook/sync_to_site.py"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-23T18:30:48.793Z",
+  "limits": [
+    "205 import sites could not be resolved.",
+    "306 writes and 153 reads use paths built at run time and are not named here.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".claude": ".claude",
+    ".github": ".github",
+    "bin": "bin",
+    "canon": "canon",
+    "docs": "docs",
+    "profiles": "profiles",
+    "root": "the repository root",
+    "site": "site",
+    "tests": "tests",
+    "tools": "tools"
+  },
+  "parts": 10,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/facet",
+  "sequences": [],
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "tests/",
+    "tools/verify/rig_report.py"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 133,
+  "testedBy": {
+    "bin": 0,
+    "tools": 3
+  },
+  "unread": [
+    {
+      "place": "docs/experiments/E04-brush-prompts.json",
+      "writers": [
+        "tools/diagnostics/e04_make_brush_prompts.py"
+      ]
+    },
+    {
+      "place": "site/src/content/docs/handbook/",
+      "writers": [
+        "docs/handbook/sync_to_site.py"
+      ]
+    }
+  ],
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "bin",
+      "partLabel": "bin",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 2
+}

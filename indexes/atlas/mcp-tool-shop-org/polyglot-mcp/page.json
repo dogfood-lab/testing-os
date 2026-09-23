@@ -1,0 +1,244 @@
+{
+  "authored": [
+    ".claude/",
+    ".github/",
+    "assets/",
+    "root"
+  ],
+  "breaks": [
+    {
+      "doors": 4,
+      "importedBy": [
+        "scripts"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 127,
+      "moved": 0,
+      "parts": 6,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "door",
+        "sentence": "@mcptoolshop/polyglot-mcp (package.json) is a new package. It loads src/index.ts.",
+        "subjects": [
+          "package.json",
+          "src/index.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "polyglot-mcp (package.json) is a new command. It runs src/index.ts.",
+        "subjects": [
+          "package.json",
+          "src/index.ts"
+        ]
+      },
+      {
+        "kind": "counts",
+        "sentence": "127 files changed content, across 6 parts.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "a91c112ba6b81824d51b5d7d62cc585b5f9965dc",
+      "generatedAt": "2026-09-23T17:42:44.255Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "c7c22e51d5414e9da6f70ad3312e3c4d719070e5",
+  "defaultBranch": "main",
+  "derived": "7 parts, mostly TypeScript (36 files). Work enters through 5 doors; the busiest is @mcptoolshop/polyglot-mcp, which reaches 1 part. It publishes to npm. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/polyglot-mcp",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/polyglot-mcp",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 15
+        }
+      ],
+      "runs": [
+        "src/index.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 33
+        }
+      ],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 9 paths",
+        "on a push to main touching 9 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/publish.yml",
+      "id": ".github/workflows/publish.yml",
+      "landings": [],
+      "name": "Publish to npm",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 33
+        }
+      ],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [
+        "publishes to npm"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#polyglot-mcp",
+      "kind": "command",
+      "landings": [],
+      "name": "polyglot-mcp",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 15
+        }
+      ],
+      "runs": [
+        "src/index.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "generated": [],
+  "generatedAt": "2026-09-23T18:32:45.401Z",
+  "limits": [
+    "1 file uses syntax the parser cannot read, so what it imports is not known: `typeof import(…)` as a type argument (1).",
+    "4 writes and 6 reads use paths built at run time and are not named here.",
+    "5 commands are built at run time and not followed, 2 of them in tests.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": "package.json#@mcptoolshop/polyglot-mcp",
+  "partLabels": {
+    ".claude": ".claude",
+    ".github": ".github",
+    "assets": "assets",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "site",
+    "src": "src"
+  },
+  "parts": 7,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/polyglot-mcp",
+  "sequences": [],
+  "startHere": [
+    "package.json",
+    "src/index.ts"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 18,
+  "testedBy": {
+    "scripts": 0,
+    "site": 0,
+    "src": 17
+  },
+  "unread": [],
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "scripts",
+      "partLabel": "scripts",
+      "testedBy": 0
+    },
+    {
+      "part": "site",
+      "partLabel": "site",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 0
+}

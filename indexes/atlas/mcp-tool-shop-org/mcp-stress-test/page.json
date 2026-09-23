@@ -1,59 +1,55 @@
 {
   "authored": [
-    ".claude/",
     ".github/",
-    "contracts/",
     "docs/",
-    "dogfood/",
-    "root",
-    "templates/"
+    "root"
   ],
   "breaks": [
     {
       "doors": 3,
       "importedBy": [],
       "importedByTests": [
-        "test"
+        "tests"
       ],
       "kind": "part",
-      "name": "bin",
-      "partLabel": "bin"
+      "name": "src",
+      "partLabel": "src"
     },
     {
       "doors": 2,
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
-      "name": "test",
-      "partLabel": "test"
+      "name": "tests",
+      "partLabel": "tests"
     }
   ],
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 101,
+      "changed": 134,
       "moved": 0,
-      "parts": 10,
+      "parts": 6,
       "removed": 0
     },
     "items": [
       {
         "kind": "door",
-        "sentence": "shipcheck (package.json) is a new command. It runs bin/shipcheck.mjs.",
+        "sentence": "mcp-stress (pyproject.toml) is a new command. It runs src/mcp_stress_test/cli/__init__.py.",
         "subjects": [
-          "package.json",
-          "bin/shipcheck.mjs"
+          "pyproject.toml",
+          "src/mcp_stress_test/cli/__init__.py"
         ]
       },
       {
         "kind": "counts",
-        "sentence": "101 files changed content, across 10 parts.",
+        "sentence": "134 files changed content, across 6 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "875a8ae4a0587a17208636a352759afd751981d8",
-      "generatedAt": "2026-09-23T15:03:18.865Z"
+      "commit": "be7da06fb4542fb3c6503e23280490179bb6bdde",
+      "generatedAt": "2026-09-23T17:48:06.369Z"
     },
     "unchanged": false
   },
@@ -62,13 +58,15 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "838720f99155a0c6e0be6baa92dd87e1504abdb4",
+  "commit": "a8a79e8ac1f94d79173271b443e304d501a8bf24",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly JavaScript (5 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. People run shipcheck.",
+  "derived": "6 parts, mostly Python (76 files). Work enters through 4 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI and a container image. People run mcp-stress.",
   "doors": [
     {
-      "checks": [],
-      "checksCount": 0,
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -76,58 +74,54 @@
       "pushes": false,
       "reach": [
         {
-          "boundary": "bin",
+          "boundary": "src",
           "depth": 0,
-          "files": 1
+          "files": 65
         },
         {
-          "boundary": "test",
+          "boundary": "tests",
           "depth": 0,
-          "files": 3
+          "files": 11
         }
       ],
       "runs": [
-        "bin/shipcheck.mjs",
-        "test/"
+        "tests/"
       ],
-      "runsCount": 2,
-      "sends": [
-        "sends a dispatch to dogfood-lab/testing-os"
-      ],
+      "runsCount": 1,
+      "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request touching 12 paths",
-        "on a push to main touching 12 paths",
+        "on a pull request",
+        "on a push to main touching 8 paths",
         "or by hand"
       ]
     },
     {
       "checks": [],
       "checksCount": 0,
-      "file": ".github/workflows/release.yml",
-      "id": ".github/workflows/release.yml",
+      "file": ".github/workflows/publish.yml",
+      "id": ".github/workflows/publish.yml",
       "landings": [],
-      "name": "Release",
+      "name": "Publish",
       "pushes": false,
       "reach": [
         {
-          "boundary": "bin",
+          "boundary": "tests",
           "depth": 0,
-          "files": 1
+          "files": 11
         },
         {
-          "boundary": "test",
-          "depth": 0,
-          "files": 3
+          "boundary": "src",
+          "depth": 1,
+          "files": 63
         }
       ],
       "runs": [
-        "bin/shipcheck.mjs",
-        "test/"
+        "tests/"
       ],
-      "runsCount": 2,
+      "runsCount": 1,
       "sends": [
-        "publishes to npm"
+        "publishes to PyPI and a container image"
       ],
       "stages": [],
       "triggers": [
@@ -151,6 +145,7 @@
       ],
       "stages": [],
       "triggers": [
+        "on a pull request touching 2 paths",
         "on a push to main touching 2 paths",
         "or by hand"
       ]
@@ -158,41 +153,21 @@
     {
       "checks": [],
       "checksCount": 0,
-      "file": ".github/workflows/repomesh-broadcast.yml",
-      "id": ".github/workflows/repomesh-broadcast.yml",
-      "landings": [],
-      "name": "repomesh-broadcast",
-      "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
-      "sends": [
-        "commits into a clone of mcp-tool-shop-org/repomesh and pushes there",
-        "opens a pull request"
-      ],
-      "stages": [],
-      "triggers": [
-        "when a release is published"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "file": "package.json",
-      "id": "package.json#shipcheck",
+      "file": "pyproject.toml",
+      "id": "pyproject.toml#mcp-stress",
       "kind": "command",
       "landings": [],
-      "name": "shipcheck",
+      "name": "mcp-stress",
       "pushes": false,
       "reach": [
         {
-          "boundary": "bin",
+          "boundary": "src",
           "depth": 0,
-          "files": 1
+          "files": 58
         }
       ],
       "runs": [
-        "bin/shipcheck.mjs"
+        "src/mcp_stress_test/cli/__init__.py"
       ],
       "runsCount": 1,
       "sends": [],
@@ -205,46 +180,41 @@
   "duplicatesNote": [],
   "edges": [
     {
-      "from": "test",
+      "from": "tests",
       "fromTests": true,
-      "to": "bin"
+      "to": "src"
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-23T18:33:31.927Z",
+  "generatedAt": "2026-09-23T18:32:34.608Z",
   "limits": [
-    "1 import site could not be resolved.",
-    "1 write and 28 reads use paths built at run time and are not named here.",
-    "3 commands are built at run time and not followed, all of them in tests.",
+    "2 import sites could not be resolved.",
+    "13 writes and 13 reads use paths built at run time and are not named here.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
-    ".claude": ".claude",
     ".github": ".github",
-    "bin": "bin",
-    "contracts": "contracts",
     "docs": "docs",
-    "dogfood": "dogfood",
     "root": "the repository root",
     "site": "site",
-    "templates": "templates",
-    "test": "test"
+    "src": "src",
+    "tests": "tests"
   },
-  "parts": 10,
+  "parts": 6,
   "readers": [],
-  "repo": "mcp-tool-shop-org/shipcheck",
+  "repo": "mcp-tool-shop-org/mcp-stress-test",
   "sequences": [],
   "startHere": [
     ".github/workflows/ci.yml",
-    "bin/shipcheck.mjs"
+    "tests/"
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 3,
+  "testFiles": 11,
   "testedBy": {
-    "bin": 2,
-    "site": 0
+    "site": 0,
+    "src": 9
   },
   "unread": [],
   "unreadNote": [],

@@ -1,0 +1,73 @@
+{
+  "repo": "mcp-tool-shop-org/repomesh",
+  "generated_from": {
+    "commit_sha": "609c77de7b90ccd3baaa146c5114134b87f2d304"
+  },
+  "generated_at": "2026-09-23T18:33:16.793Z",
+  "shared_commit_floor": 3,
+  "confidence": "low",
+  "rows": [
+    {
+      "id": "mcp-tool-shop-org/repomesh|file-moved|ledger|ledger/scripts/validate-ledger.mjs",
+      "rule": "file-moved",
+      "value": 1,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-23T18:33:16.793Z",
+      "last_seen": "2026-09-23T18:33:16.793Z",
+      "boundary": "ledger",
+      "file": "ledger/scripts/validate-ledger.mjs",
+      "partner_boundary": "registry"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|file-moved|registry|registry/scripts/build-trust.mjs",
+      "rule": "file-moved",
+      "value": 1,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-23T18:33:16.793Z",
+      "last_seen": "2026-09-23T18:33:16.793Z",
+      "boundary": "registry",
+      "file": "registry/scripts/build-trust.mjs",
+      "partner_boundary": "ledger"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|leaks|ledger",
+      "rule": "leaks",
+      "value": 1,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-23T18:33:16.793Z",
+      "last_seen": "2026-09-23T18:33:16.793Z",
+      "boundary": "ledger"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|leaks|registry",
+      "rule": "leaks",
+      "value": 1,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-23T18:33:16.793Z",
+      "last_seen": "2026-09-23T18:33:16.793Z",
+      "boundary": "registry"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|two-may-be-one|ledger|registry",
+      "rule": "two-may-be-one",
+      "value": 1,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-23T18:33:16.793Z",
+      "last_seen": "2026-09-23T18:33:16.793Z",
+      "boundaries": [
+        "ledger",
+        "registry"
+      ]
+    }
+  ]
+}

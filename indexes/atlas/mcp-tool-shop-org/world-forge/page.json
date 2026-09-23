@@ -1,0 +1,993 @@
+{
+  "authored": [
+    ".claude/",
+    ".github/",
+    "assets/",
+    "docs/",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 5,
+      "importedBy": [
+        "dogfood",
+        "e2e",
+        "editor",
+        "export-ai-rpg",
+        "export-godot",
+        "export-unreal",
+        "renderer-2d"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "schema",
+      "partLabel": "schema"
+    },
+    {
+      "doors": 3,
+      "importedBy": [
+        "dogfood",
+        "editor"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "export-ai-rpg",
+      "partLabel": "export-ai-rpg"
+    },
+    {
+      "doors": 3,
+      "importedBy": [
+        "dogfood",
+        "editor"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "export-godot",
+      "partLabel": "export-godot"
+    },
+    {
+      "doors": 3,
+      "importedBy": [
+        "dogfood",
+        "editor"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "export-unreal",
+      "partLabel": "export-unreal"
+    },
+    {
+      "doors": 2,
+      "importedBy": [
+        "site"
+      ],
+      "importedByTests": [
+        "dogfood"
+      ],
+      "kind": "part",
+      "name": "root",
+      "partLabel": "the repository root"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "dogfood",
+      "partLabel": "dogfood"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "e2e",
+      "partLabel": "e2e"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "scripts"
+      ],
+      "target": "README.md",
+      "writers": [
+        "scripts"
+      ]
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 633,
+      "moved": 0,
+      "parts": 14,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "door",
+        "sentence": "CI now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 56 more.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "dogfood/__tests__/",
+          "packages/editor/src/__tests__/",
+          "packages/editor/src/kits/bundle-migrate.test.ts",
+          "packages/editor/src/kits/kit-store-persist.test.ts",
+          "packages/editor/src/modal-guards.test.ts",
+          "packages/editor/src/panels/__tests__/",
+          "packages/editor/src/presets/preset-store-persist.test.ts",
+          "packages/editor/src/speed-panel-actions.test.ts",
+          "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts",
+          "packages/export-ai-rpg/src/__tests__/c0-fixture-coverage.test.ts",
+          "packages/export-ai-rpg/src/__tests__/c1-manifest-truth.test.ts",
+          "packages/export-ai-rpg/src/__tests__/c3-condition-roundtrip.test.ts",
+          "packages/export-ai-rpg/src/__tests__/cli.test.ts",
+          "packages/export-ai-rpg/src/__tests__/engine-deps-3x.test.ts",
+          "packages/export-ai-rpg/src/__tests__/export.test.ts",
+          "packages/export-ai-rpg/src/__tests__/extension-points.test.ts",
+          "packages/export-ai-rpg/src/__tests__/f-1d037344-browser-safe-hash.test.ts",
+          "packages/export-ai-rpg/src/__tests__/fidelity.test.ts",
+          "packages/export-ai-rpg/src/__tests__/humanization.test.ts",
+          "packages/export-ai-rpg/src/__tests__/import.test.ts",
+          "packages/export-ai-rpg/src/__tests__/leftover-pack.test.ts",
+          "packages/export-ai-rpg/src/__tests__/map-drift.test.ts",
+          "packages/export-ai-rpg/src/__tests__/profiles.test.ts",
+          "packages/export-ai-rpg/src/__tests__/stage-c-amends.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-fixes.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-wave18-amends.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-wave2-amends.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-wave32-amends.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-wave4-amends.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-wave9-amends.test.ts",
+          "packages/export-godot/src/__tests__/",
+          "packages/export-unreal/src/__tests__/",
+          "packages/renderer-2d/src/__tests__/",
+          "packages/schema/src/__tests__/advisory.test.ts",
+          "packages/schema/src/__tests__/authoring-mode.test.ts",
+          "packages/schema/src/__tests__/dependencies.test.ts",
+          "packages/schema/src/__tests__/elevation-validation.test.ts",
+          "packages/schema/src/__tests__/entry-gate-validation.test.ts",
+          "packages/schema/src/__tests__/flavor.test.ts",
+          "packages/schema/src/__tests__/hazards-validation.test.ts",
+          "packages/schema/src/__tests__/nested-array-guards.test.ts",
+          "packages/schema/src/__tests__/optional-world-arrays-validation.test.ts",
+          "packages/schema/src/__tests__/presentation.test.ts",
+          "packages/schema/src/__tests__/project-metadata.test.ts",
+          "packages/schema/src/__tests__/project-shape.test.ts",
+          "packages/schema/src/__tests__/review.test.ts",
+          "packages/schema/src/__tests__/spawn-condition-codec.test.ts",
+          "packages/schema/src/__tests__/stage-c-humanization-v44.test.ts",
+          "packages/schema/src/__tests__/stage-c-humanization.test.ts",
+          "packages/schema/src/__tests__/strata-validation.test.ts",
+          "packages/schema/src/__tests__/town-validation.test.ts",
+          "packages/schema/src/__tests__/valid-sets.test.ts",
+          "packages/schema/src/__tests__/validate.test.ts",
+          "packages/schema/src/__tests__/version.test.ts",
+          "packages/schema/src/__tests__/wave1-schema.test.ts",
+          "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
+          "packages/schema/src/__tests__/wave9-schema-amends.test.ts",
+          "packages/schema/src/__tests__/world-array-fields-validation.test.ts",
+          "packages/schema/src/__tests__/zone-exits-validation.test.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 56 more.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "dogfood/__tests__/",
+          "packages/editor/src/__tests__/",
+          "packages/editor/src/kits/bundle-migrate.test.ts",
+          "packages/editor/src/kits/kit-store-persist.test.ts",
+          "packages/editor/src/modal-guards.test.ts",
+          "packages/editor/src/panels/__tests__/",
+          "packages/editor/src/presets/preset-store-persist.test.ts",
+          "packages/editor/src/speed-panel-actions.test.ts",
+          "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts",
+          "packages/export-ai-rpg/src/__tests__/c0-fixture-coverage.test.ts",
+          "packages/export-ai-rpg/src/__tests__/c1-manifest-truth.test.ts",
+          "packages/export-ai-rpg/src/__tests__/c3-condition-roundtrip.test.ts",
+          "packages/export-ai-rpg/src/__tests__/cli.test.ts",
+          "packages/export-ai-rpg/src/__tests__/engine-deps-3x.test.ts",
+          "packages/export-ai-rpg/src/__tests__/export.test.ts",
+          "packages/export-ai-rpg/src/__tests__/extension-points.test.ts",
+          "packages/export-ai-rpg/src/__tests__/f-1d037344-browser-safe-hash.test.ts",
+          "packages/export-ai-rpg/src/__tests__/fidelity.test.ts",
+          "packages/export-ai-rpg/src/__tests__/humanization.test.ts",
+          "packages/export-ai-rpg/src/__tests__/import.test.ts",
+          "packages/export-ai-rpg/src/__tests__/leftover-pack.test.ts",
+          "packages/export-ai-rpg/src/__tests__/map-drift.test.ts",
+          "packages/export-ai-rpg/src/__tests__/profiles.test.ts",
+          "packages/export-ai-rpg/src/__tests__/stage-c-amends.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-fixes.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-wave18-amends.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-wave2-amends.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-wave32-amends.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-wave4-amends.test.ts",
+          "packages/export-ai-rpg/src/__tests__/swarm-wave9-amends.test.ts",
+          "packages/export-godot/src/__tests__/",
+          "packages/export-unreal/src/__tests__/",
+          "packages/renderer-2d/src/__tests__/",
+          "packages/schema/src/__tests__/advisory.test.ts",
+          "packages/schema/src/__tests__/authoring-mode.test.ts",
+          "packages/schema/src/__tests__/dependencies.test.ts",
+          "packages/schema/src/__tests__/elevation-validation.test.ts",
+          "packages/schema/src/__tests__/entry-gate-validation.test.ts",
+          "packages/schema/src/__tests__/flavor.test.ts",
+          "packages/schema/src/__tests__/hazards-validation.test.ts",
+          "packages/schema/src/__tests__/nested-array-guards.test.ts",
+          "packages/schema/src/__tests__/optional-world-arrays-validation.test.ts",
+          "packages/schema/src/__tests__/presentation.test.ts",
+          "packages/schema/src/__tests__/project-metadata.test.ts",
+          "packages/schema/src/__tests__/project-shape.test.ts",
+          "packages/schema/src/__tests__/review.test.ts",
+          "packages/schema/src/__tests__/spawn-condition-codec.test.ts",
+          "packages/schema/src/__tests__/stage-c-humanization-v44.test.ts",
+          "packages/schema/src/__tests__/stage-c-humanization.test.ts",
+          "packages/schema/src/__tests__/strata-validation.test.ts",
+          "packages/schema/src/__tests__/town-validation.test.ts",
+          "packages/schema/src/__tests__/valid-sets.test.ts",
+          "packages/schema/src/__tests__/validate.test.ts",
+          "packages/schema/src/__tests__/version.test.ts",
+          "packages/schema/src/__tests__/wave1-schema.test.ts",
+          "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
+          "packages/schema/src/__tests__/wave9-schema-amends.test.ts",
+          "packages/schema/src/__tests__/world-array-fields-validation.test.ts",
+          "packages/schema/src/__tests__/zone-exits-validation.test.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "world-forge-export (packages/export-ai-rpg/package.json) is a new command. It runs packages/export-ai-rpg/src/cli.ts.",
+        "subjects": [
+          "packages/export-ai-rpg/package.json",
+          "packages/export-ai-rpg/src/cli.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 2 more changes to doors.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": "dogfood/godot-smoke/world.tscn is now written by dogfood/run-godot-smoke.ts.",
+        "subjects": [
+          "dogfood/godot-smoke/world.tscn",
+          "dogfood/run-godot-smoke.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "dogfood/output/ai-rpg/content-pack.json is now written by dogfood/multi-target-export-proof.ts.",
+        "subjects": [
+          "dogfood/output/ai-rpg/content-pack.json",
+          "dogfood/multi-target-export-proof.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "dogfood/output/build-catalog.json is now written by dogfood/chapel-threshold.ts.",
+        "subjects": [
+          "dogfood/output/build-catalog.json",
+          "dogfood/chapel-threshold.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 20 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "counts",
+        "sentence": "633 files changed content, across 14 parts.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "b6fa56adfcc2579a96c038d940d77103304e59fa",
+      "generatedAt": "2026-09-23T17:36:18.043Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [
+    {
+      "a": "packages/export-godot/src/export.ts",
+      "b": "packages/export-godot/src/index.ts",
+      "either": 16,
+      "partLabels": [
+        "export-godot",
+        "export-godot"
+      ],
+      "parts": [
+        "export-godot",
+        "export-godot"
+      ],
+      "relation": "inside",
+      "shared": 12
+    },
+    {
+      "a": "packages/export-unreal/src/export.ts",
+      "b": "packages/export-unreal/src/index.ts",
+      "either": 7,
+      "partLabels": [
+        "export-unreal",
+        "export-unreal"
+      ],
+      "parts": [
+        "export-unreal",
+        "export-unreal"
+      ],
+      "relation": "inside",
+      "shared": 5
+    },
+    {
+      "a": "packages/schema/src/index.ts",
+      "b": "packages/schema/src/project.ts",
+      "either": 10,
+      "partLabels": [
+        "schema",
+        "schema"
+      ],
+      "parts": [
+        "schema",
+        "schema"
+      ],
+      "relation": "inside",
+      "shared": 7
+    },
+    {
+      "a": "packages/export-unreal/src/__tests__/export.test.ts",
+      "b": "packages/export-unreal/src/import.ts",
+      "either": 12,
+      "partLabels": [
+        "export-unreal",
+        "export-unreal"
+      ],
+      "parts": [
+        "export-unreal",
+        "export-unreal"
+      ],
+      "relation": "inside",
+      "shared": 8
+    },
+    {
+      "a": "packages/schema/src/index.ts",
+      "b": "packages/schema/src/spatial.ts",
+      "either": 11,
+      "partLabels": [
+        "schema",
+        "schema"
+      ],
+      "parts": [
+        "schema",
+        "schema"
+      ],
+      "relation": "inside",
+      "shared": 7
+    }
+  ],
+  "changesTogetherNote": [
+    "5 files changed together with their own tests, as expected.",
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 14 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 5,
+  "commit": "333532bd00696c0ef2b1f500c404102a05483773",
+  "defaultBranch": "main",
+  "derived": "15 parts, mostly TypeScript (497 files). Work enters through 6 doors; the busiest is CI, which reaches 10 parts. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.",
+  "doors": [
+    {
+      "checks": [
+        "dogfood/",
+        "e2e/",
+        "packages/editor/src/",
+        "packages/export-ai-rpg/src/",
+        "packages/export-godot/src/",
+        "packages/export-unreal/src/",
+        "packages/renderer-2d/src/",
+        "packages/schema/src/"
+      ],
+      "checksCount": 8,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [
+        "README.md"
+      ],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "dogfood",
+          "depth": 0,
+          "files": 24
+        },
+        {
+          "boundary": "e2e",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "editor",
+          "depth": 0,
+          "files": 242
+        },
+        {
+          "boundary": "export-ai-rpg",
+          "depth": 0,
+          "files": 58
+        },
+        {
+          "boundary": "export-godot",
+          "depth": 0,
+          "files": 56
+        },
+        {
+          "boundary": "export-unreal",
+          "depth": 0,
+          "files": 35
+        },
+        {
+          "boundary": "renderer-2d",
+          "depth": 0,
+          "files": 20
+        },
+        {
+          "boundary": "schema",
+          "depth": 0,
+          "files": 53
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "root",
+          "depth": 1,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "scripts/check-pack.mjs",
+        "scripts/sync-version.mjs",
+        "dogfood/__tests__/",
+        "packages/editor/src/__tests__/",
+        "packages/editor/src/kits/bundle-migrate.test.ts",
+        "packages/editor/src/kits/kit-store-persist.test.ts",
+        "packages/editor/src/modal-guards.test.ts",
+        "packages/editor/src/panels/__tests__/",
+        "packages/editor/src/presets/preset-store-persist.test.ts",
+        "packages/editor/src/speed-panel-actions.test.ts",
+        "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts",
+        "packages/export-ai-rpg/src/__tests__/c0-fixture-coverage.test.ts",
+        "packages/export-ai-rpg/src/__tests__/c1-manifest-truth.test.ts",
+        "packages/export-ai-rpg/src/__tests__/c3-condition-roundtrip.test.ts",
+        "packages/export-ai-rpg/src/__tests__/cli.test.ts",
+        "packages/export-ai-rpg/src/__tests__/engine-deps-3x.test.ts",
+        "packages/export-ai-rpg/src/__tests__/export.test.ts",
+        "packages/export-ai-rpg/src/__tests__/extension-points.test.ts",
+        "packages/export-ai-rpg/src/__tests__/f-1d037344-browser-safe-hash.test.ts",
+        "packages/export-ai-rpg/src/__tests__/fidelity.test.ts",
+        "packages/export-ai-rpg/src/__tests__/humanization.test.ts",
+        "packages/export-ai-rpg/src/__tests__/import.test.ts",
+        "packages/export-ai-rpg/src/__tests__/leftover-pack.test.ts",
+        "packages/export-ai-rpg/src/__tests__/map-drift.test.ts",
+        "packages/export-ai-rpg/src/__tests__/profiles.test.ts",
+        "packages/export-ai-rpg/src/__tests__/stage-c-amends.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-fixes.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-wave18-amends.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-wave2-amends.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-wave32-amends.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-wave4-amends.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-wave9-amends.test.ts",
+        "packages/export-godot/src/__tests__/",
+        "packages/export-unreal/src/__tests__/",
+        "packages/renderer-2d/src/__tests__/",
+        "packages/schema/src/__tests__/advisory.test.ts",
+        "packages/schema/src/__tests__/authoring-mode.test.ts",
+        "packages/schema/src/__tests__/dependencies.test.ts",
+        "packages/schema/src/__tests__/elevation-validation.test.ts",
+        "packages/schema/src/__tests__/entry-gate-validation.test.ts",
+        "packages/schema/src/__tests__/flavor.test.ts",
+        "packages/schema/src/__tests__/hazards-validation.test.ts",
+        "packages/schema/src/__tests__/nested-array-guards.test.ts",
+        "packages/schema/src/__tests__/optional-world-arrays-validation.test.ts",
+        "packages/schema/src/__tests__/presentation.test.ts",
+        "packages/schema/src/__tests__/project-metadata.test.ts",
+        "packages/schema/src/__tests__/project-shape.test.ts",
+        "packages/schema/src/__tests__/review.test.ts",
+        "packages/schema/src/__tests__/spawn-condition-codec.test.ts",
+        "packages/schema/src/__tests__/stage-c-humanization-v44.test.ts",
+        "packages/schema/src/__tests__/stage-c-humanization.test.ts",
+        "packages/schema/src/__tests__/strata-validation.test.ts",
+        "packages/schema/src/__tests__/town-validation.test.ts",
+        "packages/schema/src/__tests__/valid-sets.test.ts",
+        "packages/schema/src/__tests__/validate.test.ts",
+        "packages/schema/src/__tests__/version.test.ts",
+        "packages/schema/src/__tests__/wave1-schema.test.ts",
+        "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
+        "packages/schema/src/__tests__/wave9-schema-amends.test.ts",
+        "packages/schema/src/__tests__/world-array-fields-validation.test.ts",
+        "packages/schema/src/__tests__/zone-exits-validation.test.ts"
+      ],
+      "runsCount": 61,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request",
+        "on a push",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "dogfood/",
+        "e2e/",
+        "packages/editor/src/",
+        "packages/export-ai-rpg/src/",
+        "packages/export-godot/src/",
+        "packages/export-unreal/src/",
+        "packages/renderer-2d/src/",
+        "packages/schema/src/"
+      ],
+      "checksCount": 8,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [
+        "README.md"
+      ],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "dogfood",
+          "depth": 0,
+          "files": 24
+        },
+        {
+          "boundary": "e2e",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "editor",
+          "depth": 0,
+          "files": 242
+        },
+        {
+          "boundary": "export-ai-rpg",
+          "depth": 0,
+          "files": 58
+        },
+        {
+          "boundary": "export-godot",
+          "depth": 0,
+          "files": 56
+        },
+        {
+          "boundary": "export-unreal",
+          "depth": 0,
+          "files": 35
+        },
+        {
+          "boundary": "renderer-2d",
+          "depth": 0,
+          "files": 20
+        },
+        {
+          "boundary": "schema",
+          "depth": 0,
+          "files": 53
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "root",
+          "depth": 1,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "scripts/sync-version.mjs",
+        "dogfood/__tests__/",
+        "packages/editor/src/__tests__/",
+        "packages/editor/src/kits/bundle-migrate.test.ts",
+        "packages/editor/src/kits/kit-store-persist.test.ts",
+        "packages/editor/src/modal-guards.test.ts",
+        "packages/editor/src/panels/__tests__/",
+        "packages/editor/src/presets/preset-store-persist.test.ts",
+        "packages/editor/src/speed-panel-actions.test.ts",
+        "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts",
+        "packages/export-ai-rpg/src/__tests__/c0-fixture-coverage.test.ts",
+        "packages/export-ai-rpg/src/__tests__/c1-manifest-truth.test.ts",
+        "packages/export-ai-rpg/src/__tests__/c3-condition-roundtrip.test.ts",
+        "packages/export-ai-rpg/src/__tests__/cli.test.ts",
+        "packages/export-ai-rpg/src/__tests__/engine-deps-3x.test.ts",
+        "packages/export-ai-rpg/src/__tests__/export.test.ts",
+        "packages/export-ai-rpg/src/__tests__/extension-points.test.ts",
+        "packages/export-ai-rpg/src/__tests__/f-1d037344-browser-safe-hash.test.ts",
+        "packages/export-ai-rpg/src/__tests__/fidelity.test.ts",
+        "packages/export-ai-rpg/src/__tests__/humanization.test.ts",
+        "packages/export-ai-rpg/src/__tests__/import.test.ts",
+        "packages/export-ai-rpg/src/__tests__/leftover-pack.test.ts",
+        "packages/export-ai-rpg/src/__tests__/map-drift.test.ts",
+        "packages/export-ai-rpg/src/__tests__/profiles.test.ts",
+        "packages/export-ai-rpg/src/__tests__/stage-c-amends.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-fixes.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-wave18-amends.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-wave2-amends.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-wave32-amends.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-wave4-amends.test.ts",
+        "packages/export-ai-rpg/src/__tests__/swarm-wave9-amends.test.ts",
+        "packages/export-godot/src/__tests__/",
+        "packages/export-unreal/src/__tests__/",
+        "packages/renderer-2d/src/__tests__/",
+        "packages/schema/src/__tests__/advisory.test.ts",
+        "packages/schema/src/__tests__/authoring-mode.test.ts",
+        "packages/schema/src/__tests__/dependencies.test.ts",
+        "packages/schema/src/__tests__/elevation-validation.test.ts",
+        "packages/schema/src/__tests__/entry-gate-validation.test.ts",
+        "packages/schema/src/__tests__/flavor.test.ts",
+        "packages/schema/src/__tests__/hazards-validation.test.ts",
+        "packages/schema/src/__tests__/nested-array-guards.test.ts",
+        "packages/schema/src/__tests__/optional-world-arrays-validation.test.ts",
+        "packages/schema/src/__tests__/presentation.test.ts",
+        "packages/schema/src/__tests__/project-metadata.test.ts",
+        "packages/schema/src/__tests__/project-shape.test.ts",
+        "packages/schema/src/__tests__/review.test.ts",
+        "packages/schema/src/__tests__/spawn-condition-codec.test.ts",
+        "packages/schema/src/__tests__/stage-c-humanization-v44.test.ts",
+        "packages/schema/src/__tests__/stage-c-humanization.test.ts",
+        "packages/schema/src/__tests__/strata-validation.test.ts",
+        "packages/schema/src/__tests__/town-validation.test.ts",
+        "packages/schema/src/__tests__/valid-sets.test.ts",
+        "packages/schema/src/__tests__/validate.test.ts",
+        "packages/schema/src/__tests__/version.test.ts",
+        "packages/schema/src/__tests__/wave1-schema.test.ts",
+        "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
+        "packages/schema/src/__tests__/wave9-schema-amends.test.ts",
+        "packages/schema/src/__tests__/world-array-fields-validation.test.ts",
+        "packages/schema/src/__tests__/zone-exits-validation.test.ts"
+      ],
+      "runsCount": 60,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "when a release is published"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 3 paths",
+        "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/export-ai-rpg/package.json",
+      "id": "packages/export-ai-rpg/package.json#world-forge-export",
+      "kind": "command",
+      "landings": [],
+      "name": "world-forge-export",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "export-ai-rpg",
+          "depth": 0,
+          "files": 31
+        },
+        {
+          "boundary": "schema",
+          "depth": 1,
+          "files": 24
+        }
+      ],
+      "runs": [
+        "packages/export-ai-rpg/src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/export-godot/package.json",
+      "id": "packages/export-godot/package.json#world-forge-export-godot",
+      "kind": "command",
+      "landings": [],
+      "name": "world-forge-export-godot",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "export-godot",
+          "depth": 0,
+          "files": 27
+        },
+        {
+          "boundary": "schema",
+          "depth": 1,
+          "files": 24
+        }
+      ],
+      "runs": [
+        "packages/export-godot/src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/export-unreal/package.json",
+      "id": "packages/export-unreal/package.json#world-forge-export-unreal",
+      "kind": "command",
+      "landings": [],
+      "name": "world-forge-export-unreal",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "export-unreal",
+          "depth": 0,
+          "files": 20
+        },
+        {
+          "boundary": "schema",
+          "depth": 1,
+          "files": 24
+        }
+      ],
+      "runs": [
+        "packages/export-unreal/src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [
+    {
+      "contract": true,
+      "files": [
+        "packages/export-ai-rpg/src/fidelity.ts",
+        "packages/export-godot/src/fidelity.ts",
+        "packages/export-unreal/src/fidelity.ts"
+      ],
+      "name": "buildFidelityReport",
+      "partLabels": [
+        "export-ai-rpg",
+        "export-godot",
+        "export-unreal"
+      ],
+      "parts": [
+        "export-ai-rpg",
+        "export-godot",
+        "export-unreal"
+      ]
+    },
+    {
+      "files": [
+        "packages/export-godot/src/field-coverage.ts",
+        "packages/export-unreal/src/field-coverage.ts"
+      ],
+      "name": "collectDroppedFieldFidelity",
+      "partLabels": [
+        "export-godot",
+        "export-unreal"
+      ],
+      "parts": [
+        "export-godot",
+        "export-unreal"
+      ]
+    },
+    {
+      "files": [
+        "packages/export-godot/src/migrations.ts",
+        "packages/export-unreal/src/migrations.ts"
+      ],
+      "name": "compareSemVer",
+      "partLabels": [
+        "export-godot",
+        "export-unreal"
+      ],
+      "parts": [
+        "export-godot",
+        "export-unreal"
+      ]
+    },
+    {
+      "contract": true,
+      "files": [
+        "packages/export-ai-rpg/src/convert-connections.ts",
+        "packages/export-godot/src/convert-connections.ts",
+        "packages/export-unreal/src/convert-connections.ts"
+      ],
+      "name": "convertConnections",
+      "partLabels": [
+        "export-ai-rpg",
+        "export-godot",
+        "export-unreal"
+      ],
+      "parts": [
+        "export-ai-rpg",
+        "export-godot",
+        "export-unreal"
+      ]
+    },
+    {
+      "files": [
+        "packages/export-ai-rpg/src/convert-dialogues.ts",
+        "packages/export-godot/src/convert-dialogues.ts"
+      ],
+      "name": "convertDialogues",
+      "partLabels": [
+        "export-ai-rpg",
+        "export-godot"
+      ],
+      "parts": [
+        "export-ai-rpg",
+        "export-godot"
+      ]
+    }
+  ],
+  "duplicatesLead": "These are candidates from names and call order, not a judgement.",
+  "duplicatesNote": [
+    "And 16 more candidates."
+  ],
+  "edges": [
+    {
+      "from": "dogfood",
+      "fromTests": false,
+      "to": "export-ai-rpg"
+    },
+    {
+      "from": "dogfood",
+      "fromTests": false,
+      "to": "export-godot"
+    },
+    {
+      "from": "dogfood",
+      "fromTests": false,
+      "to": "export-unreal"
+    },
+    {
+      "from": "dogfood",
+      "fromTests": true,
+      "to": "root"
+    },
+    {
+      "from": "dogfood",
+      "fromTests": false,
+      "to": "schema"
+    },
+    {
+      "from": "e2e",
+      "fromTests": false,
+      "to": "schema"
+    },
+    {
+      "from": "export-ai-rpg",
+      "fromTests": false,
+      "to": "schema"
+    },
+    {
+      "from": "export-godot",
+      "fromTests": false,
+      "to": "schema"
+    },
+    {
+      "from": "export-unreal",
+      "fromTests": false,
+      "to": "schema"
+    }
+  ],
+  "generated": [
+    {
+      "place": "README.md",
+      "writers": [
+        "scripts/sync-version.mjs"
+      ]
+    },
+    {
+      "place": "dogfood/",
+      "writers": [
+        "dogfood (6 files)",
+        "e2e/write-chapel-fixture.ts"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-23T18:34:25.425Z",
+  "limits": [
+    "4 files use syntax the parser cannot read, so what they import is not known: 3 in editor (an import type followed by `[]` in 2 and other syntax in 1), 1 in export-ai-rpg (`typeof import(…)` as a type argument).",
+    "4 writes and 18 reads use paths built at run time and are not named here.",
+    "17 commands are built at run time and not followed, 13 of them in tests.",
+    "Readers marked (found by text) come from scanning unparsed files.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".claude": ".claude",
+    ".github": ".github",
+    "assets": "assets",
+    "docs": "docs",
+    "dogfood": "dogfood",
+    "e2e": "e2e",
+    "editor": "editor",
+    "export-ai-rpg": "export-ai-rpg",
+    "export-godot": "export-godot",
+    "export-unreal": "export-unreal",
+    "renderer-2d": "renderer-2d",
+    "root": "the repository root",
+    "schema": "schema",
+    "scripts": "scripts",
+    "site": "site"
+  },
+  "parts": 15,
+  "readers": [
+    {
+      "readers": [
+        "root (7 README files)",
+        "editor (8 files)",
+        "export-ai-rpg (8 files)",
+        "packages/export-godot/package.json (found by text)",
+        "packages/export-unreal/package.json (found by text)",
+        "renderer-2d (8 files)",
+        "schema (8 files)",
+        "scripts/check-pack.mjs"
+      ],
+      "target": "README.md"
+    }
+  ],
+  "repo": "mcp-tool-shop-org/world-forge",
+  "sequences": [],
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "scripts/check-pack.mjs",
+    "playwright.config.ts",
+    "README.md",
+    "scripts/check-pack.mjs"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 231,
+  "testedBy": {
+    "dogfood": 4,
+    "e2e": 2,
+    "editor": 110,
+    "export-ai-rpg": 61,
+    "export-godot": 44,
+    "export-unreal": 35,
+    "renderer-2d": 10,
+    "schema": 196,
+    "scripts": 1
+  },
+  "unread": [],
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [],
+  "written": 2
+}

@@ -9,7 +9,7 @@
   ],
   "breaks": [
     {
-      "doors": 2,
+      "doors": 4,
       "importedBy": [
         "campaign-memory",
         "character-creation",
@@ -44,7 +44,7 @@
       "partLabel": "core"
     },
     {
-      "doors": 2,
+      "doors": 4,
       "importedBy": [
         "cli",
         "docs",
@@ -71,7 +71,7 @@
       "partLabel": "content-schema"
     },
     {
-      "doors": 2,
+      "doors": 4,
       "importedBy": [
         "character-profile",
         "cli",
@@ -99,7 +99,7 @@
       "partLabel": "equipment"
     },
     {
-      "doors": 2,
+      "doors": 4,
       "importedBy": [
         "cli",
         "docs",
@@ -129,7 +129,7 @@
       "partLabel": "modules"
     },
     {
-      "doors": 2,
+      "doors": 4,
       "importedBy": [
         "character-profile",
         "cli",
@@ -153,7 +153,7 @@
       "partLabel": "character-creation"
     },
     {
-      "doors": 2,
+      "doors": 3,
       "importedBy": [
         "cli",
         "starter",
@@ -176,7 +176,7 @@
       "partLabel": "pack-registry"
     },
     {
-      "doors": 2,
+      "doors": 3,
       "importedBy": [
         "audio-director",
         "sidecar",
@@ -190,7 +190,7 @@
       "partLabel": "presentation"
     },
     {
-      "doors": 2,
+      "doors": 3,
       "importedBy": [
         "cli",
         "ledger-adapter"
@@ -216,8 +216,123 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI now also runs files in docs/examples/, packages/asset-registry/src/, packages/audio-director/src/ and 34 more.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "docs/examples/",
+          "packages/asset-registry/src/",
+          "packages/audio-director/src/",
+          "packages/campaign-memory/src/",
+          "packages/character-creation/src/",
+          "packages/character-profile/src/",
+          "packages/cli/src/",
+          "packages/content-schema/src/",
+          "packages/core/src/",
+          "packages/equipment/src/",
+          "packages/image-gen/src/",
+          "packages/ledger-adapter/src/engine/",
+          "packages/ledger-adapter/src/security/",
+          "packages/ledger-adapter/src/settle/",
+          "packages/ledger-adapter/src/state/",
+          "packages/ledger-adapter/src/transport/",
+          "packages/modules/src/",
+          "packages/ollama/src/",
+          "packages/pack-registry/src/",
+          "packages/presentation/src/",
+          "packages/rumor-system/src/",
+          "packages/sidecar/src/",
+          "packages/soundpack-core/src/",
+          "packages/starter-bounty-hunter/src/",
+          "packages/starter-colony/src/",
+          "packages/starter-cyberpunk/src/",
+          "packages/starter-detective/src/",
+          "packages/starter-fantasy/src/",
+          "packages/starter-gladiator/src/",
+          "packages/starter-merchant/src/",
+          "packages/starter-pirate/src/",
+          "packages/starter-ronin/src/",
+          "packages/starter-vampire/src/",
+          "packages/starter-weird-west/src/",
+          "packages/starter-zombie/src/",
+          "packages/terminal-ui/src/",
+          "templates/starter/src/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI runs 389 more files than before.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release now also runs files in packages/asset-registry/src/, packages/audio-director/src/, packages/campaign-memory/src/ and 33 more.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "packages/asset-registry/src/",
+          "packages/audio-director/src/",
+          "packages/campaign-memory/src/",
+          "packages/character-creation/src/",
+          "packages/character-profile/src/",
+          "packages/cli/src/",
+          "packages/content-schema/src/",
+          "packages/core/src/",
+          "packages/equipment/src/",
+          "packages/image-gen/src/",
+          "packages/ledger-adapter/src/engine/",
+          "packages/ledger-adapter/src/security/",
+          "packages/ledger-adapter/src/settle/",
+          "packages/ledger-adapter/src/state/",
+          "packages/ledger-adapter/src/transport/",
+          "packages/modules/src/",
+          "packages/ollama/src/",
+          "packages/pack-registry/src/",
+          "packages/presentation/src/",
+          "packages/rumor-system/src/",
+          "packages/sidecar/src/",
+          "packages/soundpack-core/src/",
+          "packages/starter-bounty-hunter/src/",
+          "packages/starter-colony/src/",
+          "packages/starter-cyberpunk/src/",
+          "packages/starter-detective/src/",
+          "packages/starter-fantasy/src/",
+          "packages/starter-gladiator/src/",
+          "packages/starter-merchant/src/",
+          "packages/starter-pirate/src/",
+          "packages/starter-ronin/src/",
+          "packages/starter-vampire/src/",
+          "packages/starter-weird-west/src/",
+          "packages/starter-zombie/src/",
+          "packages/terminal-ui/src/",
+          "templates/starter/src/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 3 more changes to doors.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": "packages/ledger-adapter/scripts/live-replay-receipt.json is now written by packages/ledger-adapter/scripts/live-replay.mjs.",
+        "subjects": [
+          "packages/ledger-adapter/scripts/live-replay-receipt.json",
+          "packages/ledger-adapter/scripts/live-replay.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "packages/cli/src/package.json is now read by packages/cli/src/engine-version.ts.",
+        "subjects": [
+          "packages/cli/src/package.json",
+          "packages/cli/src/engine-version.ts"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-23; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -225,7 +340,7 @@
       "commit": "7ff40cdfd9f2bdfe52e3bb6c95966177355048a9",
       "generatedAt": "2026-09-23T15:01:45.829Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -311,12 +426,21 @@
   "changesTogetherWithTests": 11,
   "commit": "f7e56e65779e14e3b061a5e581fd13783abe2e98",
   "defaultBranch": "main",
+  "derived": "39 parts, mostly TypeScript (797 files). Work enters through 6 doors; the busiest is CI, which reaches 35 parts. It publishes to npm and a container image. People run ai and ai-rpg-engine.",
   "doors": [
     {
-      "file": ".github/workflows/ci.yml",
-      "landings": [
-        "packages/ledger-adapter/scripts/"
+      "checks": [
+        "docs/",
+        "eslint.config.js",
+        "packages/",
+        "scripts/",
+        "templates/",
+        "vitest.config.ts"
       ],
+      "checksCount": 6,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
       "name": "CI",
       "pushes": false,
       "reach": [
@@ -500,14 +624,199 @@
         "scripts/check-packaging.mjs",
         "scripts/verify-isolated-consumer.mjs",
         "scripts/verify-mixed-game-viability.mjs",
-        "docs/",
-        "eslint.config.js",
-        "packages/",
-        "scripts/",
-        "templates/",
-        "vitest.config.ts"
+        "docs/examples/examples.test.ts",
+        "packages/asset-registry/src/file-store.test.ts",
+        "packages/asset-registry/src/hash.test.ts",
+        "packages/asset-registry/src/memory-store.test.ts",
+        "packages/audio-director/src/director.test.ts",
+        "packages/campaign-memory/src/finale.test.ts",
+        "packages/campaign-memory/src/journal.test.ts",
+        "packages/campaign-memory/src/memory-bank.test.ts",
+        "packages/campaign-memory/src/memory-core.test.ts",
+        "packages/character-creation/src/options.test.ts",
+        "packages/character-creation/src/package-json.test.ts",
+        "packages/character-creation/src/readme-usage.test.ts",
+        "packages/character-creation/src/resolve.test.ts",
+        "packages/character-creation/src/serialize.test.ts",
+        "packages/character-creation/src/suggest.test.ts",
+        "packages/character-creation/src/titles.test.ts",
+        "packages/character-profile/src/injuries.test.ts",
+        "packages/character-profile/src/milestones.test.ts",
+        "packages/character-profile/src/profile-core.test.ts",
+        "packages/character-profile/src/profile.test.ts",
+        "packages/character-profile/src/progression.test.ts",
+        "packages/character-profile/src/readme-usage.test.ts",
+        "packages/character-profile/src/serialize.test.ts",
+        "packages/cli/src/audit-content.test.ts",
+        "packages/cli/src/bin.test.ts",
+        "packages/cli/src/c0-intake-table.test.ts",
+        "packages/cli/src/c0-reverse-table.test.ts",
+        "packages/cli/src/c0-version-skew.test.ts",
+        "packages/cli/src/c1-conformance.test.ts",
+        "packages/cli/src/c1-gate.test.ts",
+        "packages/content-schema/src/ability-pack-validate.test.ts",
+        "packages/content-schema/src/build-catalog.test.ts",
+        "packages/content-schema/src/intake.test.ts",
+        "packages/content-schema/src/json-schema.test.ts",
+        "packages/content-schema/src/loader-from-file.test.ts",
+        "packages/content-schema/src/loader.test.ts",
+        "packages/content-schema/src/readme-usage.test.ts",
+        "packages/core/src/actions.test.ts",
+        "packages/core/src/channels.test.ts",
+        "packages/core/src/deserialize-rebind.test.ts",
+        "packages/core/src/determinism.test.ts",
+        "packages/core/src/engine.test.ts",
+        "packages/core/src/formulas.test.ts",
+        "packages/core/src/humanization.test.ts",
+        "packages/equipment/src/chronicle-core.test.ts",
+        "packages/equipment/src/equipment-core.test.ts",
+        "packages/equipment/src/item-chronicle.test.ts",
+        "packages/equipment/src/loadout.test.ts",
+        "packages/equipment/src/provenance.test.ts",
+        "packages/equipment/src/relic-growth.test.ts",
+        "packages/image-gen/src/batch.test.ts",
+        "packages/image-gen/src/comfyui-provider.test.ts",
+        "packages/image-gen/src/pipeline.test.ts",
+        "packages/image-gen/src/placeholder-provider.test.ts",
+        "packages/image-gen/src/prompt-builder.test.ts",
+        "packages/image-gen/src/styles.test.ts",
+        "packages/ledger-adapter/src/engine/equipment-snapshot.test.ts",
+        "packages/ledger-adapter/src/engine/firewall.test.ts",
+        "packages/ledger-adapter/src/engine/gladiator-nft-played-session.test.ts",
+        "packages/ledger-adapter/src/engine/infer-settle-options.test.ts",
+        "packages/ledger-adapter/src/engine/merchant-played-session.test.ts",
+        "packages/ledger-adapter/src/engine/pirate-played-session.test.ts",
+        "packages/ledger-adapter/src/security/guard.test.ts",
+        "packages/ledger-adapter/src/security/secrets.test.ts",
+        "packages/ledger-adapter/src/settle/adapter.test.ts",
+        "packages/ledger-adapter/src/settle/nft.test.ts",
+        "packages/ledger-adapter/src/settle/reconcile-ledger.test.ts",
+        "packages/ledger-adapter/src/settle/reconcile.test.ts",
+        "packages/ledger-adapter/src/settle/resume.test.ts",
+        "packages/ledger-adapter/src/state/state.test.ts",
+        "packages/ledger-adapter/src/transport/dry-run.test.ts",
+        "packages/ledger-adapter/src/transport/testnet.test.ts",
+        "packages/modules/src/ability-builders.test.ts",
+        "packages/modules/src/ability-core.test.ts",
+        "packages/modules/src/ability-effects.test.ts",
+        "packages/modules/src/ability-integration.test.ts",
+        "packages/modules/src/ability-intent-resistance.test.ts",
+        "packages/modules/src/ability-intent.test.ts",
+        "packages/modules/src/ability-phase2-integration.test.ts",
+        "packages/ollama/src/apply-preview.test.ts",
+        "packages/ollama/src/chat-balance-analyzer.test.ts",
+        "packages/ollama/src/chat-build-planner.test.ts",
+        "packages/ollama/src/chat-context-browser.test.ts",
+        "packages/ollama/src/chat-engine.test.ts",
+        "packages/ollama/src/chat-experiments.test.ts",
+        "packages/ollama/src/chat-loadout.test.ts",
+        "packages/pack-registry/src/catalog.test.ts",
+        "packages/pack-registry/src/discover.test.ts",
+        "packages/pack-registry/src/readme-usage.test.ts",
+        "packages/pack-registry/src/registry.test.ts",
+        "packages/pack-registry/src/rubric.test.ts",
+        "packages/pack-registry/src/starter-readme-usage.test.ts",
+        "packages/presentation/src/builder.test.ts",
+        "packages/presentation/src/validate.test.ts",
+        "packages/rumor-system/src/engine.test.ts",
+        "packages/rumor-system/src/format.test.ts",
+        "packages/rumor-system/src/mutations.test.ts",
+        "packages/sidecar/src/client.test.ts",
+        "packages/sidecar/src/felt.test.ts",
+        "packages/sidecar/src/framing.test.ts",
+        "packages/sidecar/src/gdscript-kit.test.ts",
+        "packages/sidecar/src/serializer.test.ts",
+        "packages/sidecar/src/server.test.ts",
+        "packages/sidecar/src/socket.test.ts",
+        "packages/soundpack-core/src/authoring.test.ts",
+        "packages/soundpack-core/src/cue-map.test.ts",
+        "packages/soundpack-core/src/ingest.test.ts",
+        "packages/soundpack-core/src/registry.test.ts",
+        "packages/soundpack-core/src/validate.test.ts",
+        "packages/starter-bounty-hunter/src/anti-inert.test.ts",
+        "packages/starter-bounty-hunter/src/content-truth.test.ts",
+        "packages/starter-bounty-hunter/src/firewall.test.ts",
+        "packages/starter-bounty-hunter/src/schema-conformance.test.ts",
+        "packages/starter-colony/src/ability-integration.test.ts",
+        "packages/starter-colony/src/content-truth.test.ts",
+        "packages/starter-colony/src/content.test.ts",
+        "packages/starter-colony/src/intent-profiles.test.ts",
+        "packages/starter-colony/src/perception.test.ts",
+        "packages/starter-colony/src/quests.test.ts",
+        "packages/starter-colony/src/ruleset.test.ts",
+        "packages/starter-cyberpunk/src/content-truth.test.ts",
+        "packages/starter-cyberpunk/src/content.test.ts",
+        "packages/starter-cyberpunk/src/intent-profiles.test.ts",
+        "packages/starter-cyberpunk/src/phase3-integration.test.ts",
+        "packages/starter-cyberpunk/src/phase4-integration.test.ts",
+        "packages/starter-cyberpunk/src/phase5-integration.test.ts",
+        "packages/starter-cyberpunk/src/portability.test.ts",
+        "packages/starter-detective/src/ability-integration.test.ts",
+        "packages/starter-detective/src/content-truth.test.ts",
+        "packages/starter-detective/src/content.test.ts",
+        "packages/starter-detective/src/intent-profiles.test.ts",
+        "packages/starter-detective/src/perception.test.ts",
+        "packages/starter-detective/src/quests.test.ts",
+        "packages/starter-detective/src/ruleset.test.ts",
+        "packages/starter-fantasy/src/content-truth.test.ts",
+        "packages/starter-fantasy/src/content.test.ts",
+        "packages/starter-fantasy/src/intent-profiles.test.ts",
+        "packages/starter-fantasy/src/json-boot-recipe.test.ts",
+        "packages/starter-fantasy/src/narration.test.ts",
+        "packages/starter-fantasy/src/quests.test.ts",
+        "packages/starter-fantasy/src/ruleset.test.ts",
+        "packages/starter-gladiator/src/ability-integration.test.ts",
+        "packages/starter-gladiator/src/content-truth.test.ts",
+        "packages/starter-gladiator/src/content.test.ts",
+        "packages/starter-gladiator/src/equipment-integration.test.ts",
+        "packages/starter-gladiator/src/intent-profiles.test.ts",
+        "packages/starter-gladiator/src/perception.test.ts",
+        "packages/starter-gladiator/src/quests.test.ts",
+        "packages/starter-merchant/src/anti-inert.test.ts",
+        "packages/starter-merchant/src/content-truth.test.ts",
+        "packages/starter-merchant/src/content.test.ts",
+        "packages/starter-merchant/src/contract-core.test.ts",
+        "packages/starter-merchant/src/equipment-integration.test.ts",
+        "packages/starter-merchant/src/firewall.test.ts",
+        "packages/starter-merchant/src/intent-profiles.test.ts",
+        "packages/starter-pirate/src/ability-integration.test.ts",
+        "packages/starter-pirate/src/content-truth.test.ts",
+        "packages/starter-pirate/src/content.test.ts",
+        "packages/starter-pirate/src/intent-profiles.test.ts",
+        "packages/starter-pirate/src/perception.test.ts",
+        "packages/starter-pirate/src/ruleset.test.ts",
+        "packages/starter-pirate/src/schema-conformance.test.ts",
+        "packages/starter-ronin/src/ability-integration.test.ts",
+        "packages/starter-ronin/src/content-truth.test.ts",
+        "packages/starter-ronin/src/content.test.ts",
+        "packages/starter-ronin/src/intent-profiles.test.ts",
+        "packages/starter-ronin/src/perception.test.ts",
+        "packages/starter-ronin/src/quests.test.ts",
+        "packages/starter-vampire/src/ability-integration.test.ts",
+        "packages/starter-vampire/src/content-truth.test.ts",
+        "packages/starter-vampire/src/content.test.ts",
+        "packages/starter-vampire/src/intent-profiles.test.ts",
+        "packages/starter-vampire/src/perception.test.ts",
+        "packages/starter-vampire/src/quests.test.ts",
+        "packages/starter-weird-west/src/content-truth.test.ts",
+        "packages/starter-weird-west/src/content.test.ts",
+        "packages/starter-weird-west/src/intent-profiles.test.ts",
+        "packages/starter-weird-west/src/perception.test.ts",
+        "packages/starter-weird-west/src/ruleset.test.ts",
+        "packages/starter-weird-west/src/schema-conformance.test.ts",
+        "packages/starter-zombie/src/ability-integration.test.ts",
+        "packages/starter-zombie/src/content-truth.test.ts",
+        "packages/starter-zombie/src/content.test.ts",
+        "packages/starter-zombie/src/encounter-spawn.integration.test.ts",
+        "packages/starter-zombie/src/intent-profiles.test.ts",
+        "packages/starter-zombie/src/perception.test.ts",
+        "packages/terminal-ui/src/presentation.test.ts",
+        "packages/terminal-ui/src/relic-hud.test.ts",
+        "packages/terminal-ui/src/renderer.test.ts",
+        "scripts/gates.test.ts",
+        "templates/starter/src/starter.test.ts"
       ],
-      "runsCount": 9,
+      "runsCount": 392,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -517,10 +826,18 @@
       ]
     },
     {
-      "file": ".github/workflows/release.yml",
-      "landings": [
-        "packages/ledger-adapter/scripts/"
+      "checks": [
+        "docs/",
+        "eslint.config.js",
+        "packages/",
+        "scripts/",
+        "templates/",
+        "vitest.config.ts"
       ],
+      "checksCount": 6,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
       "name": "Release",
       "pushes": false,
       "reach": [
@@ -704,14 +1021,199 @@
         "scripts/check-packaging.mjs",
         "scripts/verify-isolated-consumer.mjs",
         "scripts/verify-mixed-game-viability.mjs",
-        "docs/",
-        "eslint.config.js",
-        "packages/",
-        "scripts/",
-        "templates/",
-        "vitest.config.ts"
+        "packages/asset-registry/src/file-store.test.ts",
+        "packages/asset-registry/src/hash.test.ts",
+        "packages/asset-registry/src/memory-store.test.ts",
+        "packages/audio-director/src/director.test.ts",
+        "packages/campaign-memory/src/finale.test.ts",
+        "packages/campaign-memory/src/journal.test.ts",
+        "packages/campaign-memory/src/memory-bank.test.ts",
+        "packages/campaign-memory/src/memory-core.test.ts",
+        "packages/character-creation/src/options.test.ts",
+        "packages/character-creation/src/package-json.test.ts",
+        "packages/character-creation/src/readme-usage.test.ts",
+        "packages/character-creation/src/resolve.test.ts",
+        "packages/character-creation/src/serialize.test.ts",
+        "packages/character-creation/src/suggest.test.ts",
+        "packages/character-creation/src/titles.test.ts",
+        "packages/character-profile/src/injuries.test.ts",
+        "packages/character-profile/src/milestones.test.ts",
+        "packages/character-profile/src/profile-core.test.ts",
+        "packages/character-profile/src/profile.test.ts",
+        "packages/character-profile/src/progression.test.ts",
+        "packages/character-profile/src/readme-usage.test.ts",
+        "packages/character-profile/src/serialize.test.ts",
+        "packages/cli/src/audit-content.test.ts",
+        "packages/cli/src/bin.test.ts",
+        "packages/cli/src/c0-intake-table.test.ts",
+        "packages/cli/src/c0-reverse-table.test.ts",
+        "packages/cli/src/c0-version-skew.test.ts",
+        "packages/cli/src/c1-conformance.test.ts",
+        "packages/cli/src/c1-gate.test.ts",
+        "packages/content-schema/src/ability-pack-validate.test.ts",
+        "packages/content-schema/src/build-catalog.test.ts",
+        "packages/content-schema/src/intake.test.ts",
+        "packages/content-schema/src/json-schema.test.ts",
+        "packages/content-schema/src/loader-from-file.test.ts",
+        "packages/content-schema/src/loader.test.ts",
+        "packages/content-schema/src/readme-usage.test.ts",
+        "packages/core/src/actions.test.ts",
+        "packages/core/src/channels.test.ts",
+        "packages/core/src/deserialize-rebind.test.ts",
+        "packages/core/src/determinism.test.ts",
+        "packages/core/src/engine.test.ts",
+        "packages/core/src/formulas.test.ts",
+        "packages/core/src/humanization.test.ts",
+        "packages/equipment/src/chronicle-core.test.ts",
+        "packages/equipment/src/equipment-core.test.ts",
+        "packages/equipment/src/item-chronicle.test.ts",
+        "packages/equipment/src/loadout.test.ts",
+        "packages/equipment/src/provenance.test.ts",
+        "packages/equipment/src/relic-growth.test.ts",
+        "packages/image-gen/src/batch.test.ts",
+        "packages/image-gen/src/comfyui-provider.test.ts",
+        "packages/image-gen/src/pipeline.test.ts",
+        "packages/image-gen/src/placeholder-provider.test.ts",
+        "packages/image-gen/src/prompt-builder.test.ts",
+        "packages/image-gen/src/styles.test.ts",
+        "packages/ledger-adapter/src/engine/equipment-snapshot.test.ts",
+        "packages/ledger-adapter/src/engine/firewall.test.ts",
+        "packages/ledger-adapter/src/engine/gladiator-nft-played-session.test.ts",
+        "packages/ledger-adapter/src/engine/infer-settle-options.test.ts",
+        "packages/ledger-adapter/src/engine/merchant-played-session.test.ts",
+        "packages/ledger-adapter/src/engine/pirate-played-session.test.ts",
+        "packages/ledger-adapter/src/security/guard.test.ts",
+        "packages/ledger-adapter/src/security/secrets.test.ts",
+        "packages/ledger-adapter/src/settle/adapter.test.ts",
+        "packages/ledger-adapter/src/settle/nft.test.ts",
+        "packages/ledger-adapter/src/settle/reconcile-ledger.test.ts",
+        "packages/ledger-adapter/src/settle/reconcile.test.ts",
+        "packages/ledger-adapter/src/settle/resume.test.ts",
+        "packages/ledger-adapter/src/state/state.test.ts",
+        "packages/ledger-adapter/src/transport/dry-run.test.ts",
+        "packages/ledger-adapter/src/transport/testnet.test.ts",
+        "packages/modules/src/ability-builders.test.ts",
+        "packages/modules/src/ability-core.test.ts",
+        "packages/modules/src/ability-effects.test.ts",
+        "packages/modules/src/ability-integration.test.ts",
+        "packages/modules/src/ability-intent-resistance.test.ts",
+        "packages/modules/src/ability-intent.test.ts",
+        "packages/modules/src/ability-phase2-integration.test.ts",
+        "packages/ollama/src/apply-preview.test.ts",
+        "packages/ollama/src/chat-balance-analyzer.test.ts",
+        "packages/ollama/src/chat-build-planner.test.ts",
+        "packages/ollama/src/chat-context-browser.test.ts",
+        "packages/ollama/src/chat-engine.test.ts",
+        "packages/ollama/src/chat-experiments.test.ts",
+        "packages/ollama/src/chat-loadout.test.ts",
+        "packages/pack-registry/src/catalog.test.ts",
+        "packages/pack-registry/src/discover.test.ts",
+        "packages/pack-registry/src/readme-usage.test.ts",
+        "packages/pack-registry/src/registry.test.ts",
+        "packages/pack-registry/src/rubric.test.ts",
+        "packages/pack-registry/src/starter-readme-usage.test.ts",
+        "packages/presentation/src/builder.test.ts",
+        "packages/presentation/src/validate.test.ts",
+        "packages/rumor-system/src/engine.test.ts",
+        "packages/rumor-system/src/format.test.ts",
+        "packages/rumor-system/src/mutations.test.ts",
+        "packages/sidecar/src/client.test.ts",
+        "packages/sidecar/src/felt.test.ts",
+        "packages/sidecar/src/framing.test.ts",
+        "packages/sidecar/src/gdscript-kit.test.ts",
+        "packages/sidecar/src/serializer.test.ts",
+        "packages/sidecar/src/server.test.ts",
+        "packages/sidecar/src/socket.test.ts",
+        "packages/soundpack-core/src/authoring.test.ts",
+        "packages/soundpack-core/src/cue-map.test.ts",
+        "packages/soundpack-core/src/ingest.test.ts",
+        "packages/soundpack-core/src/registry.test.ts",
+        "packages/soundpack-core/src/validate.test.ts",
+        "packages/starter-bounty-hunter/src/anti-inert.test.ts",
+        "packages/starter-bounty-hunter/src/content-truth.test.ts",
+        "packages/starter-bounty-hunter/src/firewall.test.ts",
+        "packages/starter-bounty-hunter/src/schema-conformance.test.ts",
+        "packages/starter-colony/src/ability-integration.test.ts",
+        "packages/starter-colony/src/content-truth.test.ts",
+        "packages/starter-colony/src/content.test.ts",
+        "packages/starter-colony/src/intent-profiles.test.ts",
+        "packages/starter-colony/src/perception.test.ts",
+        "packages/starter-colony/src/quests.test.ts",
+        "packages/starter-colony/src/ruleset.test.ts",
+        "packages/starter-cyberpunk/src/content-truth.test.ts",
+        "packages/starter-cyberpunk/src/content.test.ts",
+        "packages/starter-cyberpunk/src/intent-profiles.test.ts",
+        "packages/starter-cyberpunk/src/phase3-integration.test.ts",
+        "packages/starter-cyberpunk/src/phase4-integration.test.ts",
+        "packages/starter-cyberpunk/src/phase5-integration.test.ts",
+        "packages/starter-cyberpunk/src/portability.test.ts",
+        "packages/starter-detective/src/ability-integration.test.ts",
+        "packages/starter-detective/src/content-truth.test.ts",
+        "packages/starter-detective/src/content.test.ts",
+        "packages/starter-detective/src/intent-profiles.test.ts",
+        "packages/starter-detective/src/perception.test.ts",
+        "packages/starter-detective/src/quests.test.ts",
+        "packages/starter-detective/src/ruleset.test.ts",
+        "packages/starter-fantasy/src/content-truth.test.ts",
+        "packages/starter-fantasy/src/content.test.ts",
+        "packages/starter-fantasy/src/intent-profiles.test.ts",
+        "packages/starter-fantasy/src/json-boot-recipe.test.ts",
+        "packages/starter-fantasy/src/narration.test.ts",
+        "packages/starter-fantasy/src/quests.test.ts",
+        "packages/starter-fantasy/src/ruleset.test.ts",
+        "packages/starter-gladiator/src/ability-integration.test.ts",
+        "packages/starter-gladiator/src/content-truth.test.ts",
+        "packages/starter-gladiator/src/content.test.ts",
+        "packages/starter-gladiator/src/equipment-integration.test.ts",
+        "packages/starter-gladiator/src/intent-profiles.test.ts",
+        "packages/starter-gladiator/src/perception.test.ts",
+        "packages/starter-gladiator/src/quests.test.ts",
+        "packages/starter-merchant/src/anti-inert.test.ts",
+        "packages/starter-merchant/src/content-truth.test.ts",
+        "packages/starter-merchant/src/content.test.ts",
+        "packages/starter-merchant/src/contract-core.test.ts",
+        "packages/starter-merchant/src/equipment-integration.test.ts",
+        "packages/starter-merchant/src/firewall.test.ts",
+        "packages/starter-merchant/src/intent-profiles.test.ts",
+        "packages/starter-pirate/src/ability-integration.test.ts",
+        "packages/starter-pirate/src/content-truth.test.ts",
+        "packages/starter-pirate/src/content.test.ts",
+        "packages/starter-pirate/src/intent-profiles.test.ts",
+        "packages/starter-pirate/src/perception.test.ts",
+        "packages/starter-pirate/src/ruleset.test.ts",
+        "packages/starter-pirate/src/schema-conformance.test.ts",
+        "packages/starter-ronin/src/ability-integration.test.ts",
+        "packages/starter-ronin/src/content-truth.test.ts",
+        "packages/starter-ronin/src/content.test.ts",
+        "packages/starter-ronin/src/intent-profiles.test.ts",
+        "packages/starter-ronin/src/perception.test.ts",
+        "packages/starter-ronin/src/quests.test.ts",
+        "packages/starter-ronin/src/ruleset.test.ts",
+        "packages/starter-vampire/src/ability-integration.test.ts",
+        "packages/starter-vampire/src/content-truth.test.ts",
+        "packages/starter-vampire/src/content.test.ts",
+        "packages/starter-vampire/src/intent-profiles.test.ts",
+        "packages/starter-vampire/src/perception.test.ts",
+        "packages/starter-vampire/src/quests.test.ts",
+        "packages/starter-weird-west/src/content-truth.test.ts",
+        "packages/starter-weird-west/src/content.test.ts",
+        "packages/starter-weird-west/src/intent-profiles.test.ts",
+        "packages/starter-weird-west/src/perception.test.ts",
+        "packages/starter-weird-west/src/ruleset.test.ts",
+        "packages/starter-weird-west/src/schema-conformance.test.ts",
+        "packages/starter-zombie/src/ability-integration.test.ts",
+        "packages/starter-zombie/src/content-truth.test.ts",
+        "packages/starter-zombie/src/content.test.ts",
+        "packages/starter-zombie/src/encounter-spawn.integration.test.ts",
+        "packages/starter-zombie/src/intent-profiles.test.ts",
+        "packages/starter-zombie/src/perception.test.ts",
+        "packages/terminal-ui/src/presentation.test.ts",
+        "packages/terminal-ui/src/relic-hud.test.ts",
+        "packages/terminal-ui/src/renderer.test.ts",
+        "scripts/gates.test.ts",
+        "templates/starter/src/starter.test.ts"
       ],
-      "runsCount": 9,
+      "runsCount": 391,
       "sends": [
         "publishes to npm and a container image"
       ],
@@ -722,7 +1224,10 @@
       ]
     },
     {
+      "checks": [],
+      "checksCount": 0,
       "file": ".github/workflows/docs-integrity.yml",
+      "id": ".github/workflows/docs-integrity.yml",
       "landings": [],
       "name": "Docs Integrity",
       "pushes": false,
@@ -746,7 +1251,10 @@
       ]
     },
     {
+      "checks": [],
+      "checksCount": 0,
       "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
       "landings": [],
       "name": "Deploy site to GitHub Pages",
       "pushes": false,
@@ -762,6 +1270,209 @@
         "on a push to main touching 2 paths",
         "or by hand"
       ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/cli/package.json",
+      "id": "packages/cli/package.json#ai-rpg-engine",
+      "kind": "command",
+      "landings": [],
+      "name": "ai-rpg-engine",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "cli",
+          "depth": 0,
+          "files": 21
+        },
+        {
+          "boundary": "character-creation",
+          "depth": 1,
+          "files": 7
+        },
+        {
+          "boundary": "core",
+          "depth": 1,
+          "files": 14
+        },
+        {
+          "boundary": "equipment",
+          "depth": 1,
+          "files": 8
+        },
+        {
+          "boundary": "modules",
+          "depth": 1,
+          "files": 78
+        },
+        {
+          "boundary": "terminal-ui",
+          "depth": 1,
+          "files": 5
+        },
+        {
+          "boundary": "campaign-memory",
+          "depth": 2,
+          "files": 8
+        },
+        {
+          "boundary": "content-schema",
+          "depth": 2,
+          "files": 10
+        },
+        {
+          "boundary": "pack-registry",
+          "depth": 2,
+          "files": 5
+        },
+        {
+          "boundary": "sidecar",
+          "depth": 2,
+          "files": 9
+        },
+        {
+          "boundary": "starter-bounty-hunter",
+          "depth": 2,
+          "files": 5
+        },
+        {
+          "boundary": "starter-colony",
+          "depth": 2,
+          "files": 4
+        },
+        {
+          "boundary": "starter-cyberpunk",
+          "depth": 2,
+          "files": 4
+        },
+        {
+          "boundary": "starter-detective",
+          "depth": 2,
+          "files": 4
+        },
+        {
+          "boundary": "starter-fantasy",
+          "depth": 2,
+          "files": 4
+        },
+        {
+          "boundary": "starter-gladiator",
+          "depth": 2,
+          "files": 4
+        },
+        {
+          "boundary": "starter-merchant",
+          "depth": 2,
+          "files": 5
+        },
+        {
+          "boundary": "starter-pirate",
+          "depth": 2,
+          "files": 4
+        },
+        {
+          "boundary": "starter-ronin",
+          "depth": 2,
+          "files": 4
+        },
+        {
+          "boundary": "starter-vampire",
+          "depth": 2,
+          "files": 4
+        },
+        {
+          "boundary": "starter-weird-west",
+          "depth": 2,
+          "files": 4
+        },
+        {
+          "boundary": "starter-zombie",
+          "depth": 2,
+          "files": 4
+        },
+        {
+          "boundary": "audio-director",
+          "depth": 3,
+          "files": 4
+        },
+        {
+          "boundary": "character-profile",
+          "depth": 3,
+          "files": 8
+        },
+        {
+          "boundary": "presentation",
+          "depth": 3,
+          "files": 4
+        },
+        {
+          "boundary": "soundpack-core",
+          "depth": 3,
+          "files": 8
+        }
+      ],
+      "runs": [
+        "packages/cli/src/bin.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/ollama/package.json",
+      "id": "packages/ollama/package.json#ai",
+      "kind": "command",
+      "landings": [],
+      "name": "ai",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "ollama",
+          "depth": 0,
+          "files": 110
+        },
+        {
+          "boundary": "content-schema",
+          "depth": 3,
+          "files": 10
+        },
+        {
+          "boundary": "modules",
+          "depth": 3,
+          "files": 78
+        },
+        {
+          "boundary": "core",
+          "depth": 4,
+          "files": 14
+        },
+        {
+          "boundary": "character-profile",
+          "depth": 5,
+          "files": 8
+        },
+        {
+          "boundary": "equipment",
+          "depth": 5,
+          "files": 8
+        },
+        {
+          "boundary": "character-creation",
+          "depth": 7,
+          "files": 7
+        }
+      ],
+      "runs": [
+        "packages/ollama/src/bin.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
     }
   ],
   "duplicates": [
@@ -931,15 +1642,15 @@
   ],
   "generated": [
     {
-      "place": "packages/ledger-adapter/scripts/",
-      "writers": [
-        "packages/ledger-adapter/scripts/live-replay.mjs"
-      ]
-    },
-    {
       "place": "packages/ledger-adapter/scripts/gladiator-nft-live-replay-receipt.json",
       "writers": [
         "packages/ledger-adapter/scripts/gladiator-nft-live-replay.mjs"
+      ]
+    },
+    {
+      "place": "packages/ledger-adapter/scripts/live-replay-receipt.json",
+      "writers": [
+        "packages/ledger-adapter/scripts/live-replay.mjs"
       ]
     },
     {
@@ -961,12 +1672,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T16:46:16.502Z",
+  "generatedAt": "2026-09-23T18:29:36.337Z",
   "limits": [
     "3 import sites could not be resolved.",
-    "10 files use syntax the parser cannot read, so what they import is not known: an import type followed by `[]` (6), a NUL character inside a string (3) and `typeof import(…)` as a type argument (1).",
+    "10 files use syntax the parser cannot read, so what they import is not known: 4 in modules (an import type followed by `[]`), 2 in ledger-adapter (a NUL character inside a string), 1 in cli (`typeof import(…)` as a type argument), 1 in content-schema (a NUL character inside a string), 1 in core (an import type followed by `[]`), 1 in ollama (an import type followed by `[]`).",
     "42 writes and 61 reads use paths built at run time and are not named here.",
-    "10 commands are built at run time and not followed."
+    "10 commands are built at run time and not followed, 8 of them in tests.",
+    "CI runs or checks 398 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs or checks 397 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -1011,17 +1724,12 @@
     "terminal-ui": "terminal-ui"
   },
   "parts": 39,
-  "readers": [
-    {
-      "readers": [],
-      "target": "packages/ledger-adapter/"
-    }
-  ],
+  "readers": [],
   "repo": "mcp-tool-shop-org/ai-rpg-engine",
   "sequences": [],
   "startHere": [
     ".github/workflows/ci.yml",
-    "docs/"
+    "scripts/check-packaging.mjs"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -1063,15 +1771,15 @@
   },
   "unread": [
     {
-      "place": "packages/ledger-adapter/scripts/",
-      "writers": [
-        "packages/ledger-adapter/scripts/live-replay.mjs"
-      ]
-    },
-    {
       "place": "packages/ledger-adapter/scripts/gladiator-nft-live-replay-receipt.json",
       "writers": [
         "packages/ledger-adapter/scripts/gladiator-nft-live-replay.mjs"
+      ]
+    },
+    {
+      "place": "packages/ledger-adapter/scripts/live-replay-receipt.json",
+      "writers": [
+        "packages/ledger-adapter/scripts/live-replay.mjs"
       ]
     },
     {

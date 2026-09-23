@@ -3,6 +3,7 @@
     {
       "dynamicReads": 0,
       "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -233,6 +234,7 @@
     {
       "dynamicReads": 0,
       "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -267,8 +269,11 @@
     {
       "dynamicReads": 28,
       "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 1,
-      "entryPoints": [],
+      "entryPoints": [
+        "bin/shipcheck.mjs"
+      ],
       "externals": 0,
       "files": [
         {
@@ -317,6 +322,7 @@
     {
       "dynamicReads": 0,
       "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -339,6 +345,7 @@
     {
       "dynamicReads": 0,
       "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -361,6 +368,7 @@
     {
       "dynamicReads": 0,
       "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -383,6 +391,7 @@
     {
       "dynamicReads": 0,
       "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -469,6 +478,7 @@
     {
       "dynamicReads": 0,
       "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -547,6 +557,7 @@
     {
       "dynamicReads": 0,
       "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -585,6 +596,7 @@
     {
       "dynamicReads": 0,
       "dynamicSpawns": 3,
+      "dynamicSpawnsInTests": 3,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -621,6 +633,7 @@
   ],
   "doors": [
     {
+      "checksCount": 0,
       "commands": [
         {
           "job": "verify",
@@ -683,6 +696,7 @@
           "text": "SUBMISSION=$(cat /tmp/submission.json)\nRUN_ID=$(echo \"$SUBMISSION\" | jq -r '.run_id')\n\nif [ -z \"$GH_TOKEN\" ]; then\n  echo \"::warning::DOGFOOD_TOKEN not set — skipping dispatch\"\n  exit 0\nfi\n\n# Build payload with submission as a proper JSON object (not string).\n# Best-effort: the payload is already validated by the blocking `jq empty`\n# in \"Build submission\" above, so only the outbound call is tolerant here.\n# An expired or unscoped DOGFOOD_TOKEN must not redden a mainline whose\n# product gates all passed -- it surfaces as a run-summary warning instead.\nif jq -n --argjson sub \"$SUBMISSION\" \\\n  '{\"event_type\":\"dogfood_submission\",\"client_payload\":{\"submission\":$sub}}' \\\n  | gh api repos/dogfood-lab/testing-os/dispatches \\\n    --input - --silent\nthen\n  echo \"Dispatched $RUN_ID to testing-os\"\nelse\n  echo \"::warning::Dispatch of $RUN_ID to dogfood-lab/testing-os failed (check DOGFOOD_TOKEN validity and scope) -- not failing the build\"\nfi\n"
         }
       ],
+      "elsewhere": [],
       "file": ".github/workflows/ci.yml",
       "landings": [],
       "mentions": [
@@ -710,17 +724,20 @@
       "runs": [
         {
           "job": "dogfood",
-          "path": "bin/shipcheck.mjs"
+          "path": "bin/shipcheck.mjs",
+          "runKind": "executes"
         },
         {
           "job": "verify",
-          "path": "bin/shipcheck.mjs"
+          "path": "bin/shipcheck.mjs",
+          "runKind": "executes"
         },
         {
           "directory": true,
           "job": "verify",
           "matched": true,
-          "path": "test/"
+          "path": "test/",
+          "runKind": "executes"
         }
       ],
       "runsCount": 2,
@@ -790,6 +807,7 @@
       "usesWorkflowToken": false
     },
     {
+      "checksCount": 0,
       "commands": [
         {
           "job": "build",
@@ -802,6 +820,7 @@
           "text": "npm run build"
         }
       ],
+      "elsewhere": [],
       "file": ".github/workflows/pages.yml",
       "landings": [],
       "mentions": [],
@@ -852,6 +871,7 @@
       "usesWorkflowToken": false
     },
     {
+      "checksCount": 0,
       "commands": [
         {
           "job": "publish",
@@ -889,6 +909,7 @@
           "text": "npm publish --provenance --access public"
         }
       ],
+      "elsewhere": [],
       "file": ".github/workflows/release.yml",
       "landings": [],
       "mentions": [
@@ -919,13 +940,15 @@
       "runs": [
         {
           "job": "publish",
-          "path": "bin/shipcheck.mjs"
+          "path": "bin/shipcheck.mjs",
+          "runKind": "executes"
         },
         {
           "directory": true,
           "job": "publish",
           "matched": true,
-          "path": "test/"
+          "path": "test/",
+          "runKind": "executes"
         }
       ],
       "runsCount": 2,
@@ -961,6 +984,7 @@
       "usesWorkflowToken": false
     },
     {
+      "checksCount": 0,
       "commands": [
         {
           "job": "broadcast",
@@ -1003,6 +1027,16 @@
           "text": "REPO_SLUG=\"${{ github.event.repository.name }}\"\nVERSION=\"${{ github.ref_name }}\"\nBRANCH=\"event/${REPO_SLUG}/${VERSION}\"\n\ngh repo clone \"${{ env.REPOMESH_LEDGER_REPO }}\" /tmp/repomesh-ledger -- --depth 1\ncd /tmp/repomesh-ledger\n\ngit remote set-url origin \"https://x-access-token:${GH_TOKEN}@github.com/${{ env.REPOMESH_LEDGER_REPO }}.git\"\ngit config user.name \"repomesh-bot\"\ngit config user.email \"repomesh-bot@users.noreply.github.com\"\ngit checkout -b \"$BRANCH\"\n\ncat /tmp/repomesh/event.json >> ledger/events/events.jsonl\nprintf '\\n' >> ledger/events/events.jsonl\n\ngit add ledger/events/events.jsonl\ngit commit -m \"event: ${{ github.repository }}@${VERSION}\"\ngit push origin \"$BRANCH\"\n\ngh pr create \\\n  --repo \"${{ env.REPOMESH_LEDGER_REPO }}\" \\\n  --head \"$BRANCH\" \\\n  --title \"event: ${{ github.repository }}@${VERSION}\" \\\n  --body \"$(cat <<'EOF'\n## RepoMesh Broadcast\n\n**Repo:** ${{ github.repository }}\n**Version:** ${{ github.ref_name }}\n**Commit:** ${{ github.sha }}\n**Type:** ReleasePublished\n\nAutomated event from release workflow. Ledger CI will verify schema, signature, and append-only rules.\nEOF\n)\"\n"
         }
       ],
+      "elsewhere": [
+        {
+          "clone": "mcp-tool-shop-org/repomesh",
+          "dir": "/tmp/repomesh-ledger",
+          "pushes": true,
+          "stages": [
+            "ledger/events/events.jsonl"
+          ]
+        }
+      ],
       "file": ".github/workflows/repomesh-broadcast.yml",
       "landings": [],
       "mentions": [
@@ -1019,7 +1053,7 @@
       "permissions": [
         "contents:write"
       ],
-      "pushes": true,
+      "pushes": false,
       "reach": [],
       "readers": [],
       "runs": [],
@@ -1038,9 +1072,7 @@
         "publishesTo": [],
         "releases": false
       },
-      "stages": [
-        "ledger/events/events.jsonl"
-      ],
+      "stages": [],
       "triggers": [
         {
           "event": "release",
@@ -1054,6 +1086,48 @@
         "actions/setup-node"
       ],
       "usesWorkflowToken": true
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "shipcheck",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "bin/shipcheck.mjs",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
     }
   ],
   "edges": [

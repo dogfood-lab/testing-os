@@ -1,0 +1,501 @@
+{
+  "authored": [
+    ".github/",
+    "packages/kernel/",
+    "packages/memories/",
+    "packages/rules/",
+    "root"
+  ],
+  "breaks": [
+    {
+      "doors": 5,
+      "importedBy": [
+        "cli",
+        "hook",
+        "memories",
+        "rules"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "kernel",
+      "partLabel": "kernel"
+    },
+    {
+      "doors": 3,
+      "importedBy": [
+        "cli"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "memories",
+      "partLabel": "memories"
+    },
+    {
+      "doors": 3,
+      "importedBy": [
+        "cli"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "rules",
+      "partLabel": "rules"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "cli",
+      "partLabel": "cli"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "cli",
+        "rules"
+      ],
+      "target": ".claude/",
+      "writers": [
+        "rules"
+      ]
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 376,
+      "moved": 0,
+      "parts": 9,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "door",
+        "sentence": "ai-loadout (packages/kernel/package.json) is a new command. It runs packages/kernel/src/cli.ts.",
+        "subjects": [
+          "packages/kernel/package.json",
+          "packages/kernel/src/cli.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "claude-memories (packages/memories/package.json) is a new command. It runs packages/memories/src/cli.ts.",
+        "subjects": [
+          "packages/memories/package.json",
+          "packages/memories/src/cli.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "claude-rules (packages/rules/package.json) is a new command. It runs packages/rules/src/cli.ts.",
+        "subjects": [
+          "packages/rules/package.json",
+          "packages/rules/src/cli.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": ".claude/projects/F--AI/memory/index.json is now written by packages/cli/src/refresh.ts.",
+        "subjects": [
+          ".claude/projects/F--AI/memory/index.json",
+          "packages/cli/src/refresh.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": ".claude/signals.json is now written by packages/rules/src/signals.ts.",
+        "subjects": [
+          ".claude/signals.json",
+          "packages/rules/src/signals.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": ".claude/loadout/index.json is now read by packages/rules/src/stats.ts.",
+        "subjects": [
+          ".claude/loadout/index.json",
+          "packages/rules/src/stats.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 4 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "counts",
+        "sentence": "376 files changed content, across 9 parts.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "741a0923029b4c5c494f6a2f0089c08f18a6d8e7",
+      "generatedAt": "2026-09-23T17:44:16.191Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "61d98b601565a5b7eccd66a4baf98a4e1b8c3032",
+  "defaultBranch": "main",
+  "derived": "9 parts, mostly TypeScript (84 files). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. People run ai-loadout, claude-memories and claude-rules.",
+  "doors": [
+    {
+      "checks": [
+        "packages/cli/src/",
+        "packages/kernel/src/",
+        "packages/memories/src/",
+        "packages/rules/src/"
+      ],
+      "checksCount": 4,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "cli",
+          "depth": 0,
+          "files": 19
+        },
+        {
+          "boundary": "kernel",
+          "depth": 0,
+          "files": 23
+        },
+        {
+          "boundary": "memories",
+          "depth": 0,
+          "files": 17
+        },
+        {
+          "boundary": "rules",
+          "depth": 0,
+          "files": 17
+        }
+      ],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 8 paths",
+        "on a push to main touching 8 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "packages/cli/src/",
+        "packages/kernel/src/",
+        "packages/memories/src/",
+        "packages/rules/src/"
+      ],
+      "checksCount": 4,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "cli",
+          "depth": 0,
+          "files": 20
+        },
+        {
+          "boundary": "kernel",
+          "depth": 0,
+          "files": 23
+        },
+        {
+          "boundary": "memories",
+          "depth": 0,
+          "files": 17
+        },
+        {
+          "boundary": "rules",
+          "depth": 0,
+          "files": 17
+        }
+      ],
+      "runs": [
+        "packages/cli/esbuild.config.mjs"
+      ],
+      "runsCount": 1,
+      "sends": [
+        "publishes to npm",
+        "creates a GitHub release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*` is pushed"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/memories/package.json",
+      "id": "packages/memories/package.json#claude-memories",
+      "kind": "command",
+      "landings": [],
+      "name": "claude-memories",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "memories",
+          "depth": 0,
+          "files": 8
+        },
+        {
+          "boundary": "kernel",
+          "depth": 2,
+          "files": 11
+        }
+      ],
+      "runs": [
+        "packages/memories/src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/rules/package.json",
+      "id": "packages/rules/package.json#claude-rules",
+      "kind": "command",
+      "landings": [
+        ".claude/"
+      ],
+      "name": "claude-rules",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "rules",
+          "depth": 0,
+          "files": 9
+        },
+        {
+          "boundary": "kernel",
+          "depth": 3,
+          "files": 11
+        }
+      ],
+      "runs": [
+        "packages/rules/src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/kernel/package.json",
+      "id": "packages/kernel/package.json#ai-loadout",
+      "kind": "command",
+      "landings": [],
+      "name": "ai-loadout",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "kernel",
+          "depth": 0,
+          "files": 9
+        }
+      ],
+      "runs": [
+        "packages/kernel/src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [
+    {
+      "files": [
+        "packages/memories/src/analyze.ts",
+        "packages/rules/src/analyze.ts"
+      ],
+      "name": "extractKeywords",
+      "partLabels": [
+        "memories",
+        "rules"
+      ],
+      "parts": [
+        "memories",
+        "rules"
+      ]
+    },
+    {
+      "files": [
+        "packages/cli/src/console.ts",
+        "packages/rules/src/console.ts"
+      ],
+      "name": "fail",
+      "partLabels": [
+        "cli",
+        "rules"
+      ],
+      "parts": [
+        "cli",
+        "rules"
+      ]
+    },
+    {
+      "files": [
+        "packages/cli/src/console.ts",
+        "packages/rules/src/console.ts"
+      ],
+      "name": "flagValue",
+      "partLabels": [
+        "cli",
+        "rules"
+      ],
+      "parts": [
+        "cli",
+        "rules"
+      ]
+    },
+    {
+      "files": [
+        "packages/cli/src/console.ts",
+        "packages/rules/src/console.ts"
+      ],
+      "name": "hasFlag",
+      "partLabels": [
+        "cli",
+        "rules"
+      ],
+      "parts": [
+        "cli",
+        "rules"
+      ]
+    },
+    {
+      "files": [
+        "packages/cli/src/console.ts",
+        "packages/rules/src/console.ts"
+      ],
+      "name": "info",
+      "partLabels": [
+        "cli",
+        "rules"
+      ],
+      "parts": [
+        "cli",
+        "rules"
+      ]
+    }
+  ],
+  "duplicatesLead": "These are candidates from names and call order, not a judgement.",
+  "duplicatesNote": [
+    "And 4 more pairs."
+  ],
+  "edges": [
+    {
+      "from": "cli",
+      "fromTests": false,
+      "to": "kernel"
+    },
+    {
+      "from": "cli",
+      "fromTests": false,
+      "to": "memories"
+    },
+    {
+      "from": "cli",
+      "fromTests": false,
+      "to": "rules"
+    },
+    {
+      "from": "memories",
+      "fromTests": false,
+      "to": "kernel"
+    },
+    {
+      "from": "rules",
+      "fromTests": false,
+      "to": "kernel"
+    }
+  ],
+  "generated": [
+    {
+      "place": ".claude/",
+      "writers": [
+        "packages/cli/src/refresh.ts",
+        "packages/rules/src/signals.ts"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-23T18:30:59.136Z",
+  "limits": [
+    "1 file uses syntax the parser cannot read, so what it imports is not known: an import type followed by `[]` (1).",
+    "7 writes and 59 reads use paths built at run time and are not named here.",
+    "12 commands are built at run time and not followed, 11 of them in tests.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".claude": ".claude",
+    ".github": ".github",
+    "cli": "cli",
+    "hook": "hook",
+    "kernel": "kernel",
+    "memories": "memories",
+    "root": "the repository root",
+    "rules": "rules",
+    "site": "site"
+  },
+  "parts": 9,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/loadout-os",
+  "sequences": [],
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "packages/kernel/src/"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 45,
+  "testedBy": {
+    "cli": 12,
+    "hook": 0,
+    "site": 0
+  },
+  "unread": [
+    {
+      "place": ".claude/projects/F--AI/memory/index.json",
+      "writers": [
+        "packages/cli/src/refresh.ts"
+      ]
+    }
+  ],
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "hook",
+      "partLabel": "hook",
+      "testedBy": 0
+    },
+    {
+      "part": "site",
+      "partLabel": "site",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 2
+}
