@@ -1,0 +1,409 @@
+{
+  "authored": [
+    ".github/",
+    "assets/",
+    "docs/",
+    "examples/",
+    "root",
+    "swarms/"
+  ],
+  "breaks": [
+    {
+      "doors": 2,
+      "importedBy": [
+        "dogfood",
+        "dogfood-swarm",
+        "findings",
+        "ingest",
+        "report",
+        "scripts",
+        "verify"
+      ],
+      "kind": "part",
+      "name": "schemas"
+    },
+    {
+      "doors": 1,
+      "importedBy": [
+        "dogfood-swarm",
+        "ingest",
+        "portfolio",
+        "scripts"
+      ],
+      "kind": "part",
+      "name": "findings"
+    },
+    {
+      "doors": 1,
+      "importedBy": [
+        "ingest",
+        "schemas",
+        "scripts"
+      ],
+      "kind": "part",
+      "name": "dogfood-swarm"
+    },
+    {
+      "doors": 1,
+      "importedBy": [
+        "findings",
+        "ingest",
+        "scripts"
+      ],
+      "kind": "part",
+      "name": "verify"
+    },
+    {
+      "doors": 3,
+      "importedBy": [
+        "findings",
+        "scripts"
+      ],
+      "kind": "part",
+      "name": "ingest"
+    },
+    {
+      "doors": 3,
+      "importedBy": [
+        "scripts"
+      ],
+      "kind": "part",
+      "name": "portfolio"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "examples",
+        "ingest",
+        "portfolio",
+        "report",
+        "root",
+        "scripts",
+        "site"
+      ],
+      "target": "indexes/",
+      "writers": [
+        ".github",
+        "ingest",
+        "portfolio",
+        "scripts"
+      ]
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "dogfood-swarm",
+        "scripts",
+        "site"
+      ],
+      "target": "dogfood/roadmap/",
+      "writers": [
+        "dogfood-swarm"
+      ]
+    }
+  ],
+  "commit": "8a06f84dd140905f1ff1ebe723251da94665bca8",
+  "doors": [
+    {
+      "file": ".github/workflows/ingest.yml",
+      "landings": [
+        "indexes/",
+        "records/",
+        "reports/"
+      ],
+      "name": "Ingest dogfood submission",
+      "pushes": true,
+      "reach": [
+        {
+          "boundary": "ingest",
+          "depth": 0,
+          "files": 18
+        },
+        {
+          "boundary": "portfolio",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "dogfood-swarm",
+          "depth": 1,
+          "files": 1
+        },
+        {
+          "boundary": "findings",
+          "depth": 1,
+          "files": 2
+        },
+        {
+          "boundary": "verify",
+          "depth": 1,
+          "files": 10
+        },
+        {
+          "boundary": "schemas",
+          "depth": 2,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "packages/ingest/run.js",
+        "packages/portfolio/generate.js",
+        "scripts/build.mjs",
+        "scripts/sync-version.mjs"
+      ],
+      "sends": [],
+      "stages": [
+        "indexes/",
+        "records/"
+      ],
+      "triggers": [
+        "when a repository sends a `dogfood_submission` event",
+        "or by hand"
+      ]
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "ingest",
+          "depth": 1,
+          "files": 1
+        },
+        {
+          "boundary": "portfolio",
+          "depth": 1,
+          "files": 2
+        }
+      ],
+      "runs": [
+        "scripts/build.mjs",
+        "scripts/check-doc-drift.mjs",
+        "scripts/check-finding-regression-pins.mjs",
+        "scripts/check-step-fixtures.test.mjs",
+        "scripts/sync-version.mjs"
+      ],
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request",
+        "on a push touching 21 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "file": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "ingest",
+          "depth": 1,
+          "files": 1
+        },
+        {
+          "boundary": "portfolio",
+          "depth": 1,
+          "files": 2
+        }
+      ],
+      "runs": [
+        "scripts/build.mjs",
+        "scripts/check-doc-drift.mjs",
+        "scripts/check-finding-regression-pins.mjs",
+        "scripts/sync-version.mjs"
+      ],
+      "sends": [
+        "publishes to npm",
+        "creates a GitHub release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*.*.*` is pushed",
+        "or by hand"
+      ]
+    },
+    {
+      "file": ".github/workflows/self-dogfood.yml",
+      "landings": [],
+      "name": "self-dogfood",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "report",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "schemas",
+          "depth": 2,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "packages/report/cli.js",
+        "scripts/build.mjs",
+        "scripts/sync-version.mjs"
+      ],
+      "sends": [
+        "sends a dispatch to dogfood-lab/testing-os"
+      ],
+      "stages": [],
+      "triggers": [
+        "when the workflow CI completes",
+        "or by hand"
+      ]
+    },
+    {
+      "file": ".github/workflows/atlas-render.yml",
+      "landings": [
+        "indexes/atlas/"
+      ],
+      "name": "Atlas render",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "scripts/atlas-render.mjs"
+      ],
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a schedule (`0 6 * * 1`), Monday at 06:00 UTC",
+        "or by hand"
+      ]
+    },
+    {
+      "file": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "scripts/check-accent-color.test.mjs"
+      ],
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    }
+  ],
+  "generated": [
+    {
+      "place": "dogfood/roadmap/",
+      "writers": [
+        "packages/dogfood-swarm/lib/roadmap/compiler.js"
+      ]
+    },
+    {
+      "place": "indexes/",
+      "writers": [
+        ".github/workflows/ingest.yml",
+        "packages/ingest/anchor/compute-root.js",
+        "packages/ingest/lib/chain-manifest.js",
+        "packages/ingest/rebuild-indexes.js",
+        "packages/portfolio/generate.js",
+        "scripts/atlas-render.mjs"
+      ]
+    },
+    {
+      "place": "policies/repos/",
+      "writers": [
+        "packages/findings/synthesis/apply-recommendation.js"
+      ]
+    },
+    {
+      "place": "records/",
+      "writers": [
+        ".github/workflows/ingest.yml",
+        "packages/ingest/persist.js"
+      ]
+    },
+    {
+      "place": "reports/",
+      "writers": [
+        "packages/portfolio/generate.js"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-23T01:24:25.485Z",
+  "limits": [
+    "30 import sites did not resolve.",
+    "27 writes and 183 reads use paths built at run time and are not named here.",
+    "Readers marked (found by text) come from scanning unparsed files.",
+    "Statistics confidence is low: fewer than 20 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ingest.yml",
+  "parts": 22,
+  "readers": [
+    {
+      "readers": [
+        "root (8 README files)",
+        "examples/README.md (found by text)",
+        "packages/portfolio/README.md (found by text)",
+        "packages/report/status.js",
+        "site/public/dashboard/index.html (found by text)",
+        "site/src/content/docs/handbook/read-model.md (found by text)"
+      ],
+      "target": "indexes/"
+    },
+    {
+      "readers": [
+        "packages/findings/derive/load-records.js",
+        "packages/ingest/rebuild-indexes.js",
+        "packages/portfolio/lib/compute-trends.js",
+        "packages/report/status.js"
+      ],
+      "target": "records/"
+    }
+  ],
+  "repo": "dogfood-lab/testing-os",
+  "startHere": [
+    ".github/workflows/ingest.yml",
+    "packages/ingest/run.js",
+    "packages/verify/index.js",
+    "packages/schemas/src/index.ts",
+    "indexes/",
+    "packages/report/status.js"
+  ],
+  "summary": null,
+  "summaryFrom": null
+}
