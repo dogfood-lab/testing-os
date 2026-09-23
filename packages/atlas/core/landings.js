@@ -74,6 +74,8 @@ const PY_PATH = new Set([
   'pathlib.PurePosixPath',
 ]);
 const PY_DIRNAME = new Set(['os.path.dirname', 'path.dirname', 'dirname']);
+// Methods of a path that return a path: evalPy follows each.
+const PY_PATH_METHODS = new Set(['resolve', 'absolute', 'expanduser', 'joinpath', 'with_name']);
 const PY_IDENTITY = new Set([
   'os.path.abspath',
   'os.path.realpath',
@@ -430,7 +432,7 @@ export function astLandings(language, root, path, places) {
     if (ctx.seen.has(key(node))) return;
     if (!isStringNode(node, ctx.python) && !isPathConstructor(node, ctx.python)) return;
     for (const value of evaluate(node, ctx, 0)) {
-      if (value.open) continue;
+      if (value.open || namesItself(value, ctx)) continue;
       const target = literalPlace(value.text, places);
       if (target != null) found.reads.push({ target, call: 'literal', confidence: confidenceOf(value, target, places) });
     }
@@ -555,8 +557,8 @@ function evalJs(node, ctx, depth) {
     case 'ternary_expression':
       return union([evalJs(node.childForFieldName('consequence'), ctx, next), evalJs(node.childForFieldName('alternative'), ctx, next)]);
     case 'identifier':
-      if (node.text === '__dirname') return [closed(ctx.dir)];
-      if (node.text === '__filename') return [closed(ctx.file)];
+      if (node.text === '__dirname') return [anchored(ctx.dir)];
+      if (node.text === '__filename') return [anchored(ctx.file)];
       return bindingJs(node.text, node, ctx, next);
     case 'member_expression': {
       const object = node.childForFieldName('object');
@@ -564,8 +566,8 @@ function evalJs(node, ctx, depth) {
       // new URL('./x.json', import.meta.url).pathname is the path the URL names.
       if (object?.type === 'new_expression' && (property === 'pathname' || property === 'href')) return evalJs(object, ctx, next);
       if (object?.type !== 'meta_property') return [];
-      if (property === 'url' || property === 'filename') return [closed(ctx.file)];
-      if (property === 'dirname') return [closed(ctx.dir)];
+      if (property === 'url' || property === 'filename') return [anchored(ctx.file)];
+      if (property === 'dirname') return [anchored(ctx.dir)];
       return [];
     }
     case 'new_expression': {
@@ -624,7 +626,7 @@ function evalPy(node, ctx, depth) {
     case 'conditional_expression':
       return union([evalPy(node.namedChildren[0], ctx, next), evalPy(node.namedChildren[2], ctx, next)]);
     case 'identifier':
-      if (node.text === '__file__') return [closed(ctx.file)];
+      if (node.text === '__file__') return [anchored(ctx.file)];
       return bindingPy(node.text, node, ctx, next);
     case 'attribute':
       if (node.childForFieldName('attribute')?.text === 'parent') return dirnameValues(evalPy(node.childForFieldName('object'), ctx, next));
@@ -644,6 +646,9 @@ function evalPy(node, ctx, depth) {
         const object = fn.childForFieldName('object');
         if (attribute === 'resolve' || attribute === 'absolute' || attribute === 'expanduser') return evalPy(object, ctx, next);
         if (attribute === 'joinpath') return joinValues([object, ...args].map((arg) => evalPy(arg, ctx, next)), false);
+        if (attribute === 'with_name' && args.length === 1) {
+          return joinValues([dirnameValues(evalPy(object, ctx, next)), evalPy(args[0], ctx, next)], false);
+        }
         return [];
       }
       if (fn?.type === 'identifier') return returnsPy(fn.text, node, ctx, next);
@@ -854,6 +859,20 @@ function closed(text) {
   return { text, open: false };
 }
 
+// A value built from the file's own location (__dirname, import.meta.url,
+// __file__) is anchored to the file: it names the same place whoever runs it
+// and from wherever.
+function anchored(text) {
+  return { text, open: false, anchor: 'file' };
+}
+
+// A value that is only the file's own path, or a directory holding it, names
+// where the code lives, not a place it reads: HERE = Path(__file__).parent.
+function namesItself(value, ctx) {
+  if (value.anchor !== 'file') return false;
+  return value.text === ctx.file || value.text === '' || ctx.file.startsWith(`${value.text}/`);
+}
+
 // A value is rooted when its first segment is a root the engine could not
 // read, as in join(someDir, name). A rooted bare file name that equals a
 // tracked file at the repository root matched only because the unread root
@@ -904,11 +923,11 @@ function joinValues(segments, absoluteResets) {
     const next = [];
     for (const value of acc) {
       if (value.open) next.push(value);
-      else if (values.length === 0) next.push({ text: value.text === '' ? '' : `${value.text}/`, open: true, rooted: value.rooted });
+      else if (values.length === 0) next.push({ text: value.text === '' ? '' : `${value.text}/`, open: true, rooted: value.rooted, anchor: value.anchor });
       else {
         for (const segment of values) {
           if (absoluteResets && segment.text.startsWith('/')) continue;
-          next.push({ text: value.text === '' ? segment.text : `${value.text}/${segment.text}`, open: segment.open, rooted: value.rooted });
+          next.push({ text: value.text === '' ? segment.text : `${value.text}/${segment.text}`, open: segment.open, rooted: value.rooted, anchor: value.anchor });
         }
       }
     }
@@ -922,13 +941,13 @@ function normalizeValue(value, anchored) {
   let text = value.text.replaceAll('\\', '/');
   if (anchored) text = text.replace(/^\/+/, '');
   if (text.startsWith('/')) return null;
-  if (text === '') return value.open ? null : { ...closed(''), rooted: value.rooted };
+  if (text === '') return value.open ? null : { ...closed(''), rooted: value.rooted, anchor: value.anchor };
   text = posix.normalize(text);
   if (text === '.' || text === './') text = '';
   if (text === '..' || text.startsWith('../')) return null;
   if (text.startsWith('./')) text = text.slice(2);
   if (value.open && text === '') return null;
-  return { text, open: value.open, rooted: value.rooted };
+  return { text, open: value.open, rooted: value.rooted, anchor: value.anchor };
 }
 
 function dirnameValues(values) {
@@ -937,7 +956,7 @@ function dirnameValues(values) {
       if (value.open) return value;
       if (value.text === '' || value.text.includes('://')) return null;
       const dir = posix.dirname(value.text);
-      return { ...closed(dir === '.' ? '' : dir), rooted: value.rooted };
+      return { ...closed(dir === '.' ? '' : dir), rooted: value.rooted, anchor: value.anchor };
     })
     .filter(Boolean);
 }
@@ -951,7 +970,7 @@ function urlJoin(bases, relatives) {
         out.push({ text: base.text.slice(0, base.text.lastIndexOf('/') + 1) + relative.text, open: relative.open });
       } else {
         const dir = posix.dirname(base.text);
-        out.push(...joinValues([[closed(dir === '.' ? '' : dir)], [relative]], true));
+        out.push(...joinValues([[{ ...closed(dir === '.' ? '' : dir), anchor: base.anchor }], [relative]], true));
       }
     }
   }
@@ -973,7 +992,7 @@ function concat(parts) {
         rooted = true;
         continue;
       }
-      acc = acc.map((value) => (value.open ? value : { text: value.text, open: true, rooted: value.rooted }));
+      acc = acc.map((value) => (value.open ? value : { text: value.text, open: true, rooted: value.rooted, anchor: value.anchor }));
       continue;
     }
     const joined = [];
@@ -984,7 +1003,7 @@ function concat(parts) {
       }
       for (const part of values) {
         const text = value.text === '' && (rooted || i > 0) && part.text.startsWith('/') && !part.text.startsWith('//') ? part.text.slice(1) : part.text;
-        joined.push({ text: value.text + text, open: part.open, rooted: rooted || value.rooted });
+        joined.push({ text: value.text + text, open: part.open, rooted: rooted || value.rooted, anchor: i === 0 ? part.anchor : value.anchor });
       }
     }
     acc = cap(joined);
@@ -1000,7 +1019,7 @@ function cap(values) {
   const seen = new Set();
   const out = [];
   for (const value of values) {
-    const id = `${value.open ? 1 : 0}${value.rooted ? 1 : 0}${value.text}`;
+    const id = `${value.open ? 1 : 0}${value.rooted ? 1 : 0}${value.anchor ?? ''}:${value.text}`;
     if (seen.has(id)) continue;
     seen.add(id);
     out.push(value);
@@ -1086,10 +1105,18 @@ function isStringNode(node, python) {
   return node.type === 'string' || node.type === 'template_string';
 }
 
+// A pathlib expression is a path however it is built: a / join, a .parent,
+// or a method that keeps a path a path. The walk meets the outermost one first
+// and evaluating it marks every node inside as seen, so the Path(__file__) a
+// join starts from is never read as a place of its own.
 function isPathConstructor(node, python) {
   if (python) {
+    if (node.type === 'binary_operator') return node.childForFieldName('operator')?.text === '/';
+    if (node.type === 'attribute') return node.childForFieldName('attribute')?.text === 'parent';
     if (node.type !== 'call') return false;
-    const name = dottedName(node.childForFieldName('function'));
+    const fn = node.childForFieldName('function');
+    if (fn?.type === 'attribute' && PY_PATH_METHODS.has(fn.childForFieldName('attribute')?.text)) return true;
+    const name = dottedName(fn);
     return PY_JOIN.has(name) || PY_PATH.has(name);
   }
   if (node.type !== 'call_expression') return false;
