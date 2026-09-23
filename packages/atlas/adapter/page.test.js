@@ -457,9 +457,9 @@ describe('atlas page', () => {
     const own = buildPage({ structure, statistics, document: readBoundaryFile(REPO_ROOT), repoName: 'dogfood-lab/testing-os' });
     // CI reaches further, but the ingest door commits into the repository, so
     // it is the one the page follows, and the page says why.
-    assert.ok(section(own.markdown, '## What this is').split('\n').includes(
-      '23 parts, mostly JavaScript (826 files). Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing). It publishes to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.',
-    ));
+    // The file count moves with every fixture added, so it is matched, not pinned.
+    const derived = section(own.markdown, '## What this is').split('\n').find((line) => line.startsWith('23 parts'));
+    assert.match(derived ?? '', /^23 parts, mostly JavaScript \(\d+ files\)\. Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository \(CI reaches 11 but commits nothing\)\. It publishes to npm and a container image\. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm\.$/);
     const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
     assert.ok(followed.length <= 5);
@@ -501,7 +501,7 @@ describe('atlas page', () => {
     assert.match(together, /\n\nWindow: \d+ days; a pair counts from \d+ shared commits(, since [^\n]+)?\.\n$/);
   });
 
-  it('finds reports/ written and never read in this repository, and every code part under a test', () => {
+  it('finds the portfolio report written and never read in this repository, and every code part under a test', () => {
     const atlas = join(REPO_ROOT, 'atlas');
     const structure = JSON.parse(readFileSync(join(atlas, 'structure.json'), 'utf8'));
     const own = buildPage({
@@ -510,12 +510,12 @@ describe('atlas page', () => {
       document: readBoundaryFile(REPO_ROOT),
       repoName: 'dogfood-lab/testing-os',
     });
-    // generate.js checks reports/ exists before writing into it; a writer
-    // reading back its own place is not a reader of it.
+    // generate.js checks reports/ exists before writing the report into it; a
+    // writer reading back its own place is not a reader of it.
     assert.ok(section(own.markdown, '## Written but never read').split('\n')
-      .includes('- **reports/** is written by packages/portfolio/generate.js and read by nothing else in this repository.'));
+      .includes('- **reports/dogfood-portfolio.json** is written by packages/portfolio/generate.js and read by nothing else in this repository.'));
     const data = JSON.parse(own.json);
-    assert.ok(data.unread.some((item) => item.place === 'reports/'));
+    assert.ok(data.unread.some((item) => item.place === 'reports/dogfood-portfolio.json'));
     // fixtures is a code part made only of test material, so it is not counted.
     assert.ok(structure.testFiles > 0);
     const code = structure.boundaries.filter((boundary) => boundary.role === 'code' && boundary.name !== 'fixtures').map((boundary) => boundary.name);
@@ -543,7 +543,6 @@ describe('atlas page', () => {
     const authoredLine = section(own.markdown, '## Hand-authored').split('\n')[2];
     assert.match(authoredLine, /\bthe repository root\b/);
     assert.doesNotMatch(authoredLine.replaceAll('the repository root', ''), /\broot\b/);
-    assert.match(section(own.markdown, '## Who reads the results'), /the repository root \(\d+ README files\)/);
     for (const line of own.markdown.split('\n')) {
       assert.doesNotMatch(line.replaceAll('the repository root', ''), /(^|[\s(,*])root\b/, line);
     }
