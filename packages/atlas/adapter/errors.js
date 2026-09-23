@@ -10,6 +10,8 @@ export const ERRORS = {
   ATLAS_BOUNDARY_EMPTY: 'A boundary matches no files.',
   ATLAS_UNASSIGNED_NEW: 'A tracked file is unassigned and was not unassigned before.',
   ATLAS_FILE_MOVED: 'A tracked file changed boundary.',
+  ATLAS_EXPLAIN_NO_MAP: 'There is no committed map to explain from.',
+  ATLAS_EXPLAIN_UNKNOWN_PATH: 'The path is not in the committed map.',
 };
 
 export function formatFailure(code, details, { exitCode = 1, whatToDo } = {}) {

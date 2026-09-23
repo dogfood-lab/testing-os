@@ -1031,3 +1031,34 @@ export function buildPage({ structure, statistics, document, repoName, changes =
   };
   return { markdown, json: `${JSON.stringify(sortKeys(data), null, 2)}\n` };
 }
+
+/**
+ * The order of work inside one file's entry function, worded the way the page
+ * words it, for a caller that explains a single file rather than a door.
+ *
+ * @param {object} ctx  from pageFacts
+ * @param {string} path a tracked path
+ * @param {(phrase: string) => string} lead the words before the steps, given the entry's phrase
+ * @returns {null | { entry: string, file: string, part: string|null, partLabel: string|null, phrase: string, steps: object[], sentence: string }}
+ */
+export function entryOrder(ctx, path, lead) {
+  const file = ctx.fileOf.get(path);
+  const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
+  if (!root) return null;
+  const steps = stepUnits(ctx, root.calls);
+  if (steps.calls === 0) return null;
+  const part = ctx.boundaryOf.get(path) ?? null;
+  return {
+    entry: file.entry,
+    file: path,
+    part,
+    partLabel: label(ctx, part),
+    phrase: words(file.entry),
+    steps: steps.units,
+    sentence: inOrder(lead(words(file.entry)), unitTexts(ctx, steps.units, part), ''),
+  };
+}
+
+// The page's reading of the artifacts and its phrase helpers, shared with
+// atlas explain so a sentence about one file reads as the page would write it.
+export { collapse, count, cover, facts as pageFacts, list, readerFiles, under, worded };
