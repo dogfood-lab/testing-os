@@ -281,7 +281,10 @@ function p(text) {
   return `<p>${text}</p>`;
 }
 
+// page.json carries the line page.js wrote, so the two say the same; a
+// page.json written before it did is worded here from its fields.
 function derivedLine(ctx) {
+  if (typeof ctx.page.derived === 'string' && ctx.page.derived.trim() !== '') return ctx.page.derived;
   const parts = count(Number(ctx.page.parts) || 0, 'part');
   if (ctx.doors.length === 0) return `${parts}. No workflows were found, so this page has no doors.`;
   const doors = count(ctx.doors.length, 'door');

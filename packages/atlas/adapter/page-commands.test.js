@@ -68,6 +68,11 @@ describe('the commands a repository installs, on the page', () => {
     has('## The other doors', '**tool** (a command people run) runs bin/tool.mjs and reaches lib.');
   });
 
+  it('says what the repository is written in, and names the commands people run and the package they import', () => {
+    has('## What this is', '7 parts, mostly JavaScript (6 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. People run acme-py, kit and tool. People import @acme/tool.');
+    assert.equal(json.derived, section('## What this is')[2]);
+  });
+
   it('tells two doors of one manifest apart in page.json', () => {
     const fromRoot = json.doors.filter((door) => door.file === 'package.json').map((door) => [door.id, door.kind]);
     assert.deepEqual(fromRoot.sort(), [['package.json#@acme/tool', 'package'], ['package.json#tool', 'command']]);
@@ -91,6 +96,8 @@ describe('two commands of one name', () => {
     assert.ok(page.includes('1. **tool** (a command people run, from package.json). Runs bin/tool.js.'), page);
     assert.ok(page.includes('2. **tool** (a command people run, from pyproject.toml). Runs tool/cli.py.'), page);
     assert.ok(page.includes('**tool** (a command people run, from pyproject.toml) runs tool/cli.py.'), page);
+    // What this is names a command once, however many manifests install it.
+    assert.ok(page.includes('People run tool.'), page);
   });
 });
 

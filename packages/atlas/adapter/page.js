@@ -1,6 +1,6 @@
 import { isSourcePath } from '../core/history.js';
 import { isTestMaterial, ownTestPair } from '../core/landings.js';
-import { isCodePath } from '../core/languages.js';
+import { isCodePath, languageOf } from '../core/languages.js';
 
 /**
  * The page: how a repository works, written from the recorded facts.
@@ -1593,20 +1593,74 @@ function summaryOf(document) {
   return text || null;
 }
 
-function derivedLine(ctx, main) {
-  const parts = count(ctx.boundaries.length, 'part');
-  if (ctx.doors.length === 0) return `${parts}. No workflows were found, so this page has no doors.`;
-  const doors = count(ctx.doors.length, 'door');
-  if (!main && ctx.doors.some((door) => !door.parseError)) {
-    return `${parts}. Work enters through ${doors}, and none of them runs a file this map can see.`;
+const LANGUAGE_NAMES = { javascript: 'JavaScript', python: 'Python', tsx: 'TypeScript', typescript: 'TypeScript' };
+// A command's name is what a reader types, so up to twelve are all named;
+// past that, ten are and the rest counted.
+const INSTALLED_ALL = 12;
+const INSTALLED_NAMED = 10;
+
+// "mostly TypeScript (412 files)" when one language holds most of the code
+// files, the two largest otherwise, and nothing when there is no code.
+function languageClause(ctx) {
+  const counts = new Map();
+  for (const path of ctx.fileOf.keys()) {
+    const language = LANGUAGE_NAMES[languageOf(path)];
+    if (language) counts.set(language, (counts.get(language) ?? 0) + 1);
   }
-  if (!main) return `${parts}. Work enters through ${doors}, and none of their workflows could be read.`;
+  const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1] || cmp(a[0], b[0]));
+  if (ranked.length === 0) return '';
+  const total = ranked.reduce((sum, [, n]) => sum + n, 0);
+  const [name, n] = ranked[0];
+  if (n * 2 > total) return `, mostly ${name} (${count(n, 'file')})`;
+  return `, in ${list(ranked.slice(0, 2).map(([other, m]) => `${other} (${count(m, 'file')})`))}`;
+}
+
+function doorsSentence(ctx, main) {
+  if (ctx.doors.length === 0) return 'No workflows were found, so this page has no doors.';
+  const doors = count(ctx.doors.length, 'door');
+  if (!main && ctx.doors.some((door) => !door.parseError)) return `Work enters through ${doors}, and none of them runs a file this map can see.`;
+  if (!main) return `Work enters through ${doors}, and none of their workflows could be read.`;
   const reach = count(reachSize(main), 'part');
   const wider = widerDoor(ctx.doors, main);
   if (wider) {
-    return `${parts}. Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach} and commits into the repository (${wider.name} reaches ${reachSize(wider)} but commits nothing).`;
+    return `Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach} and commits into the repository (${wider.name} reaches ${reachSize(wider)} but commits nothing).`;
   }
-  return `${parts}. Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach}.`;
+  return `Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach}.`;
+}
+
+// Every registry any door publishes to, worded the way a door's own sentence
+// words it.
+function publishesSentence(ctx) {
+  const to = new Set();
+  for (const door of ctx.doors) {
+    const sends = door.sends ?? {};
+    for (const name of Array.isArray(sends.publishesTo) ? sends.publishesTo : sends.publishes ? ['npm'] : []) to.add(name);
+  }
+  const phrase = publishPhrase({ publishesTo: [...to].sort(cmp) });
+  return phrase ? `It ${phrase}.` : null;
+}
+
+function installedNames(ctx, kind) {
+  const names = [...new Set(ctx.doors.filter((door) => door.kind === kind).map((door) => door.name))].sort(cmp);
+  if (names.length <= INSTALLED_ALL) return list(names);
+  return `${names.slice(0, INSTALLED_NAMED).join(', ')} and ${names.length - INSTALLED_NAMED} more`;
+}
+
+/**
+ * The line "What this is" derives when no person has written one, and after
+ * the one a person wrote: how many parts and what they are written in, how
+ * work enters, where the repository publishes, and what it installs for
+ * people to run or import.
+ */
+function derivedLine(ctx, main) {
+  const sentences = [`${count(ctx.boundaries.length, 'part')}${languageClause(ctx)}.`, doorsSentence(ctx, main)];
+  const published = publishesSentence(ctx);
+  if (published) sentences.push(published);
+  const commands = installedNames(ctx, 'command');
+  if (commands) sentences.push(`People run ${commands}.`);
+  const packages = installedNames(ctx, 'package');
+  if (packages) sentences.push(`People import ${packages}.`);
+  return sentences.join(' ');
 }
 
 function doorData(ctx, door) {
@@ -1658,9 +1712,10 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   const shownText = groups.some((group) => group.readers.some((reader) => reader.text?.endsWith(' (found by text)')));
   const limitLines = limits(ctx, shownText);
 
+  const derived = derivedLine(ctx, main);
   const whatThisIs = ['## What this is'];
   if (summary) whatThisIs.push(`${summary} (written by a person)`);
-  whatThisIs.push(derivedLine(ctx, main));
+  whatThisIs.push(derived);
 
   const sections = [
     [`# ${name}: how it works`, `Mapped at ${generatedAt.slice(0, 10)} from commit ${commit.slice(0, 7)}.`].join('\n\n'),
@@ -1695,6 +1750,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     changesTogetherWithTests: withTests,
     commit,
     defaultBranch: String(defaultBranch || 'main'),
+    derived,
     doors: ctx.doors.map((door) => doorData(ctx, door)),
     duplicates: duplicated.items,
     duplicatesLead: duplicated.lead,

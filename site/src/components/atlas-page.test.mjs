@@ -444,6 +444,13 @@ test('a command a manifest installs reads as one people run, and is followed by 
   assert.ok(followed.includes('Read those in order to follow one run of tool end to end.'));
 });
 
+test('what this is says the line page.js derived, and words an older page.json from its fields', () => {
+  const derived = '3 parts, mostly Python (12 files). Work enters through 2 doors; the busiest is CI, which reaches 2 parts. People run tool.';
+  assert.ok(plain(render.renderPage({ ...page, derived }, { repo: page.repo })).includes(derived));
+  const { derived: _derived, ...older } = page;
+  assert.ok(plain(render.renderPage(older, { repo: page.repo })).includes(`${page.parts} parts`));
+});
+
 test('a door says what it runs apart from what it only checks', () => {
   const ci = {
     checks: ['lib/', 'tools/'],

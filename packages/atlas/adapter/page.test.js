@@ -125,7 +125,7 @@ describe('atlas page', () => {
     const exact = {
       // Checks reaches one part more, but Ingest is the door that commits into
       // the repository, so the page follows it and says why.
-      '## What this is': '9 parts. Work enters through 5 doors; the busiest is Ingest, which reaches 2 parts and commits into the repository (Checks reaches 3 but commits nothing).',
+      '## What this is': '9 parts, mostly JavaScript (12 files). Work enters through 5 doors; the busiest is Ingest, which reaches 2 parts and commits into the repository (Checks reaches 3 but commits nothing).',
       '## What comes in': '3. **weekly.** On a push touching 1 path; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC. Runs tools/render.js.',
       '## What happens through Ingest': '2. That reaches lib (4 files).',
       '## Who reads the results': '- **records/** has no reader in this repository.',
@@ -290,7 +290,7 @@ describe('atlas page', () => {
 
   it('says there are no doors and skips the door sections when no workflow exists', () => {
     const { markdown } = page(host, { repoName: 'host' });
-    assert.match(markdown, /^3 parts\. No workflows were found, so this page has no doors\.$/m);
+    assert.match(markdown, /^3 parts, mostly JavaScript \(6 files\)\. No workflows were found, so this page has no doors\.$/m);
     for (const heading of ['## What comes in', '## What happens through', '## Who reads the results', '## The other doors']) {
       assert.equal(markdown.includes(heading), false, heading);
     }
@@ -301,10 +301,10 @@ describe('atlas page', () => {
 
   it('marks a summary as written by a person, and writes only the derived line without one', () => {
     const marked = page(host, { repoName: 'host' });
-    assert.match(marked.markdown, /## What this is\n\na small host fixture \(written by a person\)\n\n3 parts\./);
+    assert.match(marked.markdown, /## What this is\n\na small host fixture \(written by a person\)\n\n3 parts, mostly JavaScript \(6 files\)\./);
     assert.equal(JSON.parse(marked.json).summaryFrom, 'person');
     const plain = page(host, { repoName: 'host', document: (document) => ({ ...document, summary: '' }) });
-    assert.match(plain.markdown, /## What this is\n\n3 parts\./);
+    assert.match(plain.markdown, /## What this is\n\n3 parts, mostly JavaScript \(6 files\)\./);
     assert.equal(plain.markdown.includes('written by a person'), false);
     const data = JSON.parse(plain.json);
     assert.equal(data.summary, null);
@@ -458,7 +458,7 @@ describe('atlas page', () => {
     // CI reaches further, but the ingest door commits into the repository, so
     // it is the one the page follows, and the page says why.
     assert.ok(section(own.markdown, '## What this is').split('\n').includes(
-      '23 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).',
+      '23 parts, mostly JavaScript (793 files). Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing). It publishes to npm and a container image.',
     ));
     const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
