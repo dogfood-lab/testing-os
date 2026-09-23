@@ -359,6 +359,12 @@ function filePhrase(path) {
   return words(named);
 }
 
+// The name the page gives a part, carried in page.json so a reader of the
+// twin never has to reproduce displayName.
+function label(ctx, part) {
+  return part == null ? null : ctx.shown(part);
+}
+
 function partOf(ctx, target) {
   if (target?.file) return ctx.boundaryOf.get(target.file) ?? null;
   return target?.boundary ?? null;
@@ -374,11 +380,13 @@ function stepUnits(ctx, calls) {
     let end = i + 1;
     while (file != null && end < shown.length && shown[end].target?.file === file) end += 1;
     if (end - i >= RUN_COLLAPSE) {
-      units.push({ count: end - i, name: null, part: partOf(ctx, shown[i].target), phrase: filePhrase(file) });
+      const part = partOf(ctx, shown[i].target);
+      units.push({ count: end - i, name: null, part, partLabel: label(ctx, part), phrase: filePhrase(file) });
       i = end;
       continue;
     }
-    units.push({ name: shown[i].name, part: partOf(ctx, shown[i].target), phrase: words(shown[i].name) });
+    const part = partOf(ctx, shown[i].target);
+    units.push({ name: shown[i].name, part, partLabel: label(ctx, part), phrase: words(shown[i].name) });
     i += 1;
   }
   return { units, calls: shown.length };
@@ -433,6 +441,7 @@ function sequences(ctx, door) {
         file: call.target?.file ?? null,
         name: call.name,
         part: target,
+        partLabel: label(ctx, target),
         phrase: words(call.name),
         steps: innerSteps.units,
       });
@@ -443,7 +452,7 @@ function sequences(ctx, door) {
       .slice(0, INNER_SHOWN)
       .map(({ item }) => item));
     const inner = candidates.filter((item) => kept.has(item));
-    out.push({ entry: file.entry, file: path, inner, part, phrase: words(file.entry), steps: steps.units });
+    out.push({ entry: file.entry, file: path, inner, part, partLabel: label(ctx, part), phrase: words(file.entry), steps: steps.units });
   }
   return out;
 }
@@ -701,7 +710,8 @@ function together(ctx) {
     .slice(0, PAIRS_SHOWN)
     .map((pair) => {
       const parts = [ctx.boundaryOf.get(pair.a) ?? null, ctx.boundaryOf.get(pair.b) ?? null];
-      return { a: pair.a, b: pair.b, either: pair.either, parts, relation: relationOf(imports, parts[0], parts[1]), shared: pair.shared };
+      const partLabels = parts.map((part) => label(ctx, part));
+      return { a: pair.a, b: pair.b, either: pair.either, partLabels, parts, relation: relationOf(imports, parts[0], parts[1]), shared: pair.shared };
     });
   return { pairs, withTests: source.filter((pair) => ownTest(pair.a, pair.b)).length };
 }
@@ -723,8 +733,8 @@ function ownTest(a, b) {
     || (y.tested != null && x.tested == null && y.tested === x.stem);
 }
 
-function relationClause(ctx, pair) {
-  const [a, b] = pair.parts.map((part) => (part == null ? null : ctx.shown(part)));
+function relationClause(pair) {
+  const [a, b] = pair.partLabels;
   switch (pair.relation) {
     case 'inside': return `, inside ${a}.`;
     case 'a-imports-b': return `, and ${a} imports ${b}.`;
@@ -764,7 +774,7 @@ function togetherSection(ctx, pairs, withTests, note) {
     ? 'No two source files, other than a file and its own test, changed together often enough to name.'
     : 'No two source files changed together often enough to name.';
   const body = pairs.length > 0
-    ? pairs.map((pair) => `- **${pair.a}** and **${pair.b}** changed together in ${pair.shared} of ${count(pair.either, 'commit')}${relationClause(ctx, pair)}`).join('\n')
+    ? pairs.map((pair) => `- **${pair.a}** and **${pair.b}** changed together in ${pair.shared} of ${count(pair.either, 'commit')}${relationClause(pair)}`).join('\n')
     : none;
   return ['## What tends to change together', body, ...note].join('\n\n');
 }
@@ -973,7 +983,7 @@ export function buildPage({ structure, statistics, document, repoName }) {
     authored: authoredBoundaries.map(boundaryPlace),
     breaks: breakEntries,
     changesTogether: pairs,
-    changesTogetherNote: pairNote.join(' '),
+    changesTogetherNote: pairNote,
     changesTogetherWithTests: withTests,
     commit,
     doors: ctx.doors.map((door) => doorData(ctx, door)),

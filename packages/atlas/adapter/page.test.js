@@ -230,6 +230,22 @@ describe('atlas page', () => {
     assert.match(happens, /^ {3}3\. \*\*Verify\*\* \(lib\) runs, in order: step 1 and step 2\.$/m);
   });
 
+  it('carries the name the page gives each part next to its id, so the site words it the same way', () => {
+    const call = (name, file, inner) => ({ name, target: { file }, line: 1, ...(inner ? { inner } : {}) });
+    const { markdown, json } = page(doors, {
+      structure: (structure) => withEntryCalls(withoutChecks(structure), [
+        call('prepare', 'tools/prepare.js'),
+        call('configure', 'package.json', [call('stepOne', 'lib/policy.js'), call('stepTwo', 'lib/schema.js')]),
+      ]),
+    });
+    const [ingest] = JSON.parse(json).sequences;
+    assert.equal(ingest.partLabel, 'tools');
+    assert.deepEqual(ingest.steps.map((step) => [step.part, step.partLabel]), [['tools', 'tools'], ['root', 'the repository root']]);
+    assert.deepEqual([ingest.inner[0].part, ingest.inner[0].partLabel], ['root', 'the repository root']);
+    assert.deepEqual(ingest.inner[0].steps.map((step) => step.partLabel), ['lib', 'lib']);
+    assert.match(section(markdown, '## What happens through Ingest'), /^ {3}2\. \*\*Configure\*\* \(the repository root\) runs, in order: step one \(lib\) and step two\.$/m);
+  });
+
   it('lists eight or more steps, stops at twelve, and folds three calls into one file into one step', () => {
     const named = (count) => Array.from({ length: count }, (_, index) => ({
       name: `stepNumber${index + 1}`,
@@ -356,10 +372,14 @@ describe('atlas page', () => {
     ].join('\n\n') + '\n');
     const data = JSON.parse(built.json);
     assert.deepEqual(data.changesTogether, [
-      { a: 'lib/store.js', b: 'tools/ingest.js', either: 3, parts: ['lib', 'tools'], relation: 'b-imports-a', shared: 3 },
+      { a: 'lib/store.js', b: 'tools/ingest.js', either: 3, partLabels: ['lib', 'tools'], parts: ['lib', 'tools'], relation: 'b-imports-a', shared: 3 },
     ]);
     assert.equal(data.changesTogetherWithTests, 1);
-    assert.equal(data.changesTogetherNote, '1 file changed together with its own test, as expected. Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions. Window: 180 days; a pair counts from 3 shared commits.');
+    assert.deepEqual(data.changesTogetherNote, [
+      '1 file changed together with its own test, as expected.',
+      'Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions.',
+      'Window: 180 days; a pair counts from 3 shared commits.',
+    ]);
 
     const inside = buildPage({
       structure: doors.structure,
@@ -441,7 +461,9 @@ describe('atlas page', () => {
     }
     const data = JSON.parse(own.json);
     assert.ok(data.authored.includes('root'));
-    assert.equal(JSON.stringify(data).includes('the repository root'), false);
+    // Only the label fields carry the page's wording; every id stays an id.
+    const ids = JSON.stringify(data, (key, value) => (key === 'partLabel' || key === 'partLabels' ? undefined : value));
+    assert.equal(ids.includes('the repository root'), false);
   });
 
   it('keeps to plain sentences: the only arrows are the chain, and no glyph legend is drawn', () => {

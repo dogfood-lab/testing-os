@@ -25,6 +25,7 @@ const SECTIONS = [
   'Who reads the results',
   'The other doors',
   'What breaks what',
+  'What tends to change together',
   'Generated, never hand-edited',
   'Hand-authored',
   'Where to start',
@@ -113,7 +114,7 @@ test('the order of work sits under step 1, as the markdown nests it', () => {
   assert.ok(inside[0].includes(`<a href="${blob}packages/ingest/run.js"><code>packages/ingest/run.js</code></a>`), 'the file links to the mapped commit');
   for (const step of steps.slice(1)) assert.equal(step.includes('<ol>'), false, 'only step 1 carries the order of work');
 
-  const verify = inside.find((item) => item.startsWith('Verify in verify does, in order:'));
+  const verify = inside.find((item) => item.startsWith('<strong>Verify</strong> (verify) runs, in order:'));
   assert.ok(verify, 'the verify inner item');
   const verifySteps = listItems(verify, verify.indexOf('<ol>')).map(plain);
   assert.equal(verifySteps.length, 8, 'eight steps read as a list');
@@ -122,13 +123,35 @@ test('the order of work sits under step 1, as the markdown nests it', () => {
   assert.deepEqual(verifySteps, page.sequences[0].inner.find((inner) => inner.name === 'verify').steps.map((step) => step.phrase));
   const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8');
   const lines = markdown.split(/\r?\n/);
-  const lead = lines.indexOf('   5. Verify in verify does, in order:');
+  const lead = lines.indexOf('   3. **Verify** (verify) runs, in order:');
   assert.ok(lead !== -1, 'the markdown nests verify the same way');
   assert.deepEqual(lines.slice(lead + 1, lead + 9).map((line) => line.replace(/^\s+\d+\. /, '')), verifySteps);
 
-  const isDuplicate = inside.find((item) => item.startsWith('Is duplicate in ingest'));
-  assert.equal(isDuplicate.includes('<ol>'), false, 'seven steps or fewer read as one sentence');
-  assert.equal(isDuplicate, 'Is duplicate in ingest does, in order: is unsafe segment and parse rejection reason (verify).');
+  // A called function in the entry file's own part is not given its part,
+  // and one the markdown leaves out is not in page.json to render.
+  const writeRecord = inside.find((item) => item.startsWith('<strong>Write record</strong> runs, in order:'));
+  assert.equal(writeRecord.includes('<ol>'), false, 'seven steps or fewer read as one sentence');
+  assert.equal(plain(writeRecord), 'Write record runs, in order: is unsafe segment, parse rejection reason (verify), read chain head, submission digest, validate record and append chain entry.');
+  assert.ok(lines.includes(`   4. **${plain(writeRecord).replace(' runs,', '** runs,')}`), 'the markdown says it too');
+  assert.equal(inside.some((item) => plain(item).startsWith('Is duplicate')), false);
+});
+
+test('what tends to change together renders the pairs page.json names and the set-aside line', () => {
+  const html = render.renderPage(page, { repo: page.repo });
+  const start = html.indexOf('<h2>What tends to change together</h2>');
+  assert.ok(start !== -1);
+  const body = html.slice(start, html.indexOf('</section>', start));
+  const bullets = [...body.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((match) => plain(match[1]));
+  assert.equal(bullets.length, 5);
+  assert.ok(page.changesTogetherWithTests > 0);
+  const setAside = `${page.changesTogetherWithTests} files changed together with their own tests, as expected.`;
+  const paragraphs = [...body.matchAll(/<p>([\s\S]*?)<\/p>/g)].map((match) => plain(match[1]));
+  assert.deepEqual(paragraphs, page.changesTogetherNote);
+  assert.equal(paragraphs[0], setAside);
+  const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8');
+  const twin = markdown.slice(markdown.indexOf('## What tends to change together\n'), markdown.indexOf('## Generated, never hand-edited\n'));
+  assert.deepEqual(bullets, twin.split('\n').filter((line) => line.startsWith('- ')).map((line) => line.slice(2).replace(/\*\*/g, '')));
+  for (const line of paragraphs) assert.ok(twin.includes(`\n\n${line}\n`), `the markdown says it too: ${line}`);
 });
 
 test('more than twelve steps list twelve and count the rest', () => {
