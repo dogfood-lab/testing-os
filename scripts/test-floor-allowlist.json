@@ -8,6 +8,18 @@
     {
       "path": "fixtures/atlas/doors/lib/verify.test.js",
       "reason": "Atlas fixture, not a test. Its test-shaped name is the point: it sits inside the doors fixture repository that packages/atlas/adapter/page.test.js maps, and it imports lib/verify.js so that the map counts one test file reaching lib and none reaching tools. It contains no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/doors-ts/packages/core/src/core.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the doors-ts fixture repository that packages/atlas/core/doors-conventions.test.js maps, where the fixture's vitest include and its tsconfig.tests.json pattern must select it by exactly this name. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/doors-ts/tools/check.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the doors-ts fixture repository, where a door runs node --test from tools/ with no path and the default patterns must select it by exactly this name. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/doors-ts/test/unit.spec.js",
+      "reason": "Atlas fixture, not a test. It sits inside the doors-ts fixture repository, where a door runs mocha with no path and the fixture's .mocharc.yml spec must select it by exactly this name. It holds no test and is never meant to run."
     }
   ]
 }

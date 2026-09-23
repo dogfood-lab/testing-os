@@ -1,5 +1,5 @@
 import { unassignedDrift } from './check.js';
-import { capitalize, count, displayName, list, orderDoors, runsShown, triggerPhrases, words } from './page.js';
+import { capitalize, count, displayName, list, mainDoor, runsShown, triggerPhrases, words } from './page.js';
 
 /**
  * What changed since the last committed map, as structural facts in fixed
@@ -260,8 +260,8 @@ function doorItems(previous, current) {
     const after = runPaths(is);
     const added = after.filter((path) => !before.has(path));
     const removed = [...before].filter((path) => !after.includes(path));
-    if (added.length > 0) items.push({ kind: 'door', sentence: `${is.name} now also runs ${list(added)}.`, subjects: [file, ...added] });
-    if (removed.length > 0) items.push({ kind: 'door', sentence: `${is.name} no longer runs ${list(removed)}.`, subjects: [file, ...removed] });
+    if (added.length > 0) items.push({ kind: 'door', sentence: `${is.name} now also runs ${runsShown(added)}.`, subjects: [file, ...added] });
+    if (removed.length > 0) items.push({ kind: 'door', sentence: `${is.name} no longer runs ${runsShown(removed)}.`, subjects: [file, ...removed] });
   }
   return items;
 }
@@ -370,7 +370,7 @@ function entrySequence(file) {
 }
 
 function sequenceItems(previous, current) {
-  const main = orderDoors(current.doors ?? []).find((door) => !door.parseError);
+  const main = mainDoor(current.doors ?? []);
   if (!main) return [];
   const oldFiles = new Map(allFiles(previous).map((entry) => [entry.file.path, entry.file]));
   const newFiles = new Map(allFiles(current).map((entry) => [entry.file.path, entry.file]));

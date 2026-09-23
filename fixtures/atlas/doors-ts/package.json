@@ -1,0 +1,17 @@
+{
+  "name": "doors-ts",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "bin": {
+    "doors-tool": "bin/tool.js"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "typecheck": "tsc -p tsconfig.tests.json",
+    "test": "vitest run",
+    "lint": "eslint ."
+  }
+}

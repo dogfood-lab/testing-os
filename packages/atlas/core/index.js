@@ -1,30 +1,20 @@
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, readlinkSync } from 'node:fs';
-import { extname, join } from 'node:path';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
 import { mapDoors } from './doors.js';
 import { deriveEntryPoints, pythonScripts } from './entry-points.js';
 import { astLandings, attachLandings, noLandings, pythonPathValues, textLandings, trackedPlaces } from './landings.js';
+import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
 import { attachResolution } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
+import { spawnedCommands } from './spawned.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
-
-const LANGUAGE_BY_EXT = new Map([
-  ['.js', 'javascript'],
-  ['.mjs', 'javascript'],
-  ['.cjs', 'javascript'],
-  ['.jsx', 'javascript'],
-  ['.ts', 'typescript'],
-  ['.mts', 'typescript'],
-  ['.cts', 'typescript'],
-  ['.tsx', 'tsx'],
-  ['.py', 'python'],
-]);
 
 const GRAMMAR_FILE = {
   javascript: 'tree-sitter-javascript.wasm',
@@ -98,8 +88,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   // The order of work in a file is read while its tree is alive and finished
   // once imports resolve, so the first reading waits here, keyed by path.
   const facts = new Map();
+  const spawned = new Map();
   for (const path of tracked.regular) {
-    const file = describeFile(repoPath, path, places, facts);
+    const file = describeFile(repoPath, path, places, facts, spawned);
     const hits = [];
     for (const matcher of matchers) {
       if (matcher.isMatch(path)) hits.push(matcher.name);
@@ -131,7 +122,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     tracked: tracked.regular,
   });
 
-  const doors = mapDoors({ repoPath, tracked: trackedSet });
+  const doors = mapDoors({ repoPath, tracked: trackedSet, spawned });
   const graph = importGraph(boundaryList, unassigned, overlaps);
   for (const door of doors) {
     if (door.parseError) continue;
@@ -265,19 +256,20 @@ function symlinkTarget(repoPath, path) {
   }
 }
 
-function describeFile(repoPath, path, places, facts) {
+function describeFile(repoPath, path, places, facts, spawned) {
   const bytes = readFileSync(join(repoPath, path));
   const hash = createHash('sha256').update(bytes).digest('hex');
-  const language = LANGUAGE_BY_EXT.get(extname(path).toLowerCase()) ?? null;
+  const language = languageOf(path);
   if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };
   const extracted = parseFile(language, path, bytes.toString('utf8'), places);
   if (extracted.parseError) return { path, hash, language, parseError: true, imports: [], ...noLandings() };
   facts.set(path, extracted.sequence);
+  if (extracted.spawned.length > 0) spawned.set(path, extracted.spawned);
   return { path, hash, language, imports: extracted.imports, ...extracted.landings };
 }
 
-// One parse serves every reading of a file: its imports, its landings and the
-// order of the calls it makes.
+// One parse serves every reading of a file: its imports, its landings, the
+// order of the calls it makes and the commands it hands a child process.
 function parseFile(language, path, source, places) {
   let tree;
   try {
@@ -290,7 +282,12 @@ function parseFile(language, path, source, places) {
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [] };
     const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : collectScript(tree.rootNode);
-    return { imports, landings: astLandings(language, tree.rootNode, path, places), sequence: sequenceFacts(language, tree.rootNode) };
+    return {
+      imports,
+      landings: astLandings(language, tree.rootNode, path, places),
+      sequence: sequenceFacts(language, tree.rootNode),
+      spawned: language === 'python' ? [] : spawnedCommands(tree.rootNode),
+    };
   } finally {
     tree.delete();
   }

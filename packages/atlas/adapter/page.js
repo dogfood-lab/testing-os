@@ -1,5 +1,6 @@
 import { isSourcePath } from '../core/history.js';
 import { isTestMaterial, ownTestPair } from '../core/landings.js';
+import { isCodePath } from '../core/languages.js';
 
 /**
  * The page: how a repository works, written from the recorded facts.
@@ -154,8 +155,47 @@ function reachSize(door) {
   return door.parseError ? 0 : (door.reach ?? []).length;
 }
 
+// A door that only a clock starts (by hand aside) is not the one a change
+// goes through; between two that reach as far, it comes second.
+function scheduleOnly(door) {
+  const events = (door.triggers ?? []).map((trigger) => trigger.event);
+  return events.includes('schedule') && events.every((event) => event === 'schedule' || event === 'workflow_dispatch');
+}
+
 export function orderDoors(doors) {
-  return [...doors].sort((a, b) => reachSize(b) - reachSize(a) || cmp(a.name, b.name) || cmp(a.file, b.file));
+  return [...doors].sort((a, b) => (
+    reachSize(b) - reachSize(a)
+    || Number(scheduleOnly(a)) - Number(scheduleOnly(b))
+    || cmp(a.name, b.name)
+    || cmp(a.file, b.file)
+  ));
+}
+
+function commits(door) {
+  return (door.stages ?? []).length > 0;
+}
+
+function reaching(doors) {
+  return orderDoors(doors).filter((door) => !door.parseError && reachSize(door) > 0);
+}
+
+/**
+ * The busiest door, the one the page follows. A test suite reaches every part,
+ * so the widest door is usually the check, not the path work takes into the
+ * repository: of the doors that reach a part, one that commits into the
+ * repository comes first, the widest of those; with none, the widest door. A
+ * door that reaches none is never the busiest, since there would be nothing
+ * to follow through it.
+ */
+export function mainDoor(doors) {
+  const found = reaching(doors);
+  return found.find(commits) ?? found[0] ?? null;
+}
+
+// The widest door, when the page follows another; the page says why.
+function widerDoor(doors, main) {
+  const widest = reaching(doors)[0] ?? null;
+  return widest && main && widest !== main && reachSize(widest) > reachSize(main) ? widest : null;
 }
 
 function boundaryRoot(boundary) {
@@ -185,6 +225,22 @@ function runPaths(door) {
   return [...new Set((door.runs ?? []).map((run) => run.path))].sort(cmp);
 }
 
+// The runs the page names: a path under a directory the door also runs is
+// part of that run, so the directory is named and the path is not, unless the
+// commands name the path and only a tool's patterns reached the directory: a
+// script the workflow runs by name stays named under the directory a linter
+// covers. What the commands name comes before what a tool's patterns
+// matched, so a door that runs a script and a test suite leads with the script.
+function shownRuns(door) {
+  const paths = runPaths(door);
+  const dirs = paths.filter((path) => path.endsWith('/'));
+  const named = new Set((door.runs ?? []).filter((run) => !run.matched).map((run) => run.path));
+  const within = (path, dir) => dir !== path && path.startsWith(dir) && (!named.has(path) || named.has(dir));
+  return paths
+    .filter((path) => !dirs.some((dir) => within(path, dir)))
+    .sort((a, b) => Number(!named.has(a)) - Number(!named.has(b)) || cmp(a, b));
+}
+
 function cronWhen(cron) {
   const match = /^(\d{1,2}) (\d{1,2}) \* \* (\d)$/.exec(String(cron).trim());
   if (!match) return '';
@@ -196,14 +252,16 @@ function cronWhen(cron) {
   return `, ${WEEKDAYS[day]} at ${pad(hour)}:${pad(minute)} UTC`;
 }
 
-function pushPhrase(trigger) {
-  if (trigger.tags?.length > 0) {
-    return `when a tag matching ${list(trigger.tags.map((tag) => `\`${tag}\``)).replace(/ and /g, ' or ')} is pushed`;
-  }
+// A push filtered by tags and by branches starts on either, so both are named.
+function pushPhrases(trigger) {
+  const tagged = trigger.tags?.length > 0
+    ? `when a tag matching ${list(trigger.tags.map((tag) => `\`${tag}\``)).replace(/ and /g, ' or ')} is pushed`
+    : null;
+  if (tagged && !(trigger.branches?.length > 0)) return [tagged];
   let phrase = 'on a push';
   if (trigger.branches?.length > 0) phrase += ` to ${list(trigger.branches)}`;
   if (trigger.paths?.length > 0) phrase += ` touching ${count(trigger.paths.length, 'path')}`;
-  return phrase;
+  return tagged ? [phrase, tagged] : [phrase];
 }
 
 export function triggerPhrases(door) {
@@ -220,11 +278,16 @@ export function triggerPhrases(door) {
         phrases.push(trigger.cron ? `on a schedule (\`${trigger.cron}\`)${cronWhen(trigger.cron)}` : 'on a schedule');
         break;
       case 'push':
-        phrases.push(pushPhrase(trigger));
+        phrases.push(...pushPhrases(trigger));
         break;
       case 'pull_request':
       case 'pull_request_target':
-        phrases.push('on a pull request');
+        phrases.push(trigger.paths?.length > 0 ? `on a pull request touching ${count(trigger.paths.length, 'path')}` : 'on a pull request');
+        break;
+      case 'release':
+        phrases.push(trigger.types?.length > 0 && trigger.types.every((type) => type === 'published')
+          ? 'when a release is published'
+          : 'on a release event');
         break;
       case 'workflow_run':
         phrases.push(trigger.workflows?.length > 0
@@ -249,32 +312,76 @@ function triggerNoun(door) {
   if (first.event === 'repository_dispatch' && first.types?.length > 0) return first.types[0].replace(/[_-]+/g, ' ');
   if (first.event === 'repository_dispatch') return 'dispatch';
   if (first.event === 'schedule') return 'scheduled run';
-  if (first.event === 'push') return first.tags?.length > 0 ? 'tag push' : 'push';
+  if (first.event === 'push') return first.tags?.length > 0 && !(first.branches?.length > 0) ? 'tag push' : 'push';
   if (first.event === 'pull_request' || first.event === 'pull_request_target') return 'pull request';
+  if (first.event === 'release') return 'release';
   if (first.event === 'workflow_dispatch') return 'run by hand';
   return 'run';
 }
 
+const RUN_TIME_PATH = 'a path set at run time';
+
+// A staged path whose variable is set only when the workflow runs has no
+// name to give; the page says that rather than printing the variable.
+export function stagedShown(stages) {
+  const named = (stages ?? []).filter((stage) => !stage.includes('$'));
+  const later = named.length < (stages ?? []).length ? [RUN_TIME_PATH] : [];
+  return [...new Set(named), ...later];
+}
+
 // Two staged places already hold an "and", so the push is joined with "then".
 function commitsClause(door) {
-  const stages = door.stages ?? [];
+  const stages = stagedShown(door.stages);
   if (!door.pushes) return list(stages);
   return stages.length > 1 ? `${list(stages)}, then pushes` : `${list(stages)} and pushes`;
 }
 
-function sendPhrases(door) {
+const REGISTRIES = { 'crates.io': 'crates.io', npm: 'npm', pypi: 'PyPI', rubygems: 'RubyGems' };
+const IMAGE = 'container image';
+
+// Registries a door publishes to, then the image it pushes: "publishes to
+// PyPI and a container image". An artifact written before publishesTo
+// existed meant npm by publishes.
+function publishPhrase(sends) {
+  const to = Array.isArray(sends.publishesTo) ? sends.publishesTo : sends.publishes ? ['npm'] : [];
+  const registries = to.filter((name) => name !== IMAGE).map((name) => REGISTRIES[name] ?? name);
+  const image = to.includes(IMAGE);
+  if (registries.length === 0) return image ? 'publishes a container image' : null;
+  const where = `publishes to ${list(registries)}`;
+  if (!image) return where;
+  return registries.length > 1 ? `${where}, and a container image` : `${where} and a container image`;
+}
+
+export function sendPhrases(door) {
   const sends = door.sends ?? {};
   const phrases = [];
   for (const repo of sends.dispatchesTo ?? []) phrases.push(`sends a dispatch to ${repo}`);
-  if (sends.publishes) phrases.push('publishes to npm');
+  const published = publishPhrase(sends);
+  if (published) phrases.push(published);
   if (sends.releases) phrases.push('creates a GitHub release');
   if (sends.deploysPages) phrases.push('deploys the site');
+  if (sends.opensIssues) phrases.push(sends.opensIssuesOnFailure ? 'opens an issue when it fails' : 'opens an issue');
+  if (sends.opensPullRequests) phrases.push('opens a pull request');
   return phrases;
 }
 
-export function runsShown(paths) {
-  if (paths.length <= RUNS_SHOWN) return list(paths);
-  return `${paths.slice(0, RUNS_SHOWN).join(', ')} and ${paths.length - RUNS_SHOWN} more`;
+/**
+ * Up to three paths by name, and how many more. `total` is the number of
+ * paths the door runs when its recorded list was capped, so the count is the
+ * true one.
+ */
+export function runsShown(paths, total = paths.length) {
+  const all = Math.max(total, paths.length);
+  if (all <= RUNS_SHOWN) return list(paths);
+  const shown = paths.slice(0, RUNS_SHOWN);
+  return `${shown.join(', ')} and ${all - shown.length} more`;
+}
+
+// How many runs the page would name without the artifact's cap: the ones it
+// names, and the ones the artifact counted but did not record.
+function runTotal(door) {
+  const recorded = runPaths(door).length;
+  return shownRuns(door).length + Math.max(0, (door.runsCount ?? recorded) - recorded);
 }
 
 function comesIn(ctx) {
@@ -282,8 +389,8 @@ function comesIn(ctx) {
   const items = ctx.doors.map((door, index) => {
     if (door.parseError) return `${index + 1}. **${door.name}.** This workflow could not be read.`;
     const when = capitalize(triggerPhrases(door).join('; ')) || 'Nothing this map can read starts it';
-    const paths = runPaths(door);
-    const runs = paths.length > 0 ? `Runs ${runsShown(paths)}.` : 'Runs no file this map can see.';
+    const paths = shownRuns(door);
+    const runs = paths.length > 0 ? `Runs ${runsShown(paths, runTotal(door))}.` : 'Runs no file this map can see.';
     return `${index + 1}. **${door.name}.** ${when}. ${runs}`;
   });
   lines.push(items.join('\n'));
@@ -294,10 +401,44 @@ function fileCount(ctx, entry) {
   return `${ctx.shown(entry.boundary)} (${count(entry.files, 'file')})`;
 }
 
+// The part a run belongs to: a file's own, or the one part every code file
+// under a directory run belongs to. A directory spanning parts has none.
+function runPart(ctx, path) {
+  if (!path.endsWith('/')) return ctx.boundaryOf.get(path) ?? null;
+  const parts = partsUnder(ctx, path);
+  return parts.size === 1 ? [...parts][0] : null;
+}
+
+function partsUnder(ctx, dir) {
+  const parts = new Set();
+  for (const [file, boundary] of ctx.boundaryOf) if (file.startsWith(dir)) parts.add(boundary);
+  return parts;
+}
+
+// A directory run that spans parts says how many, since the parts it runs
+// are not listed anywhere else in the step.
+function spanning(ctx, path) {
+  const parts = path.endsWith('/') ? partsUnder(ctx, path).size : 0;
+  return parts > 1 ? `${path} (${count(parts, 'part')})` : path;
+}
+
+// The files a set of runs stands for: each file, and the code files under
+// each directory, the ones the reach walk starts from.
+function filesRun(ctx, paths) {
+  const files = new Set();
+  for (const path of paths) {
+    if (!path.endsWith('/')) files.add(path);
+    else for (const file of ctx.fileOf.keys()) if (file.startsWith(path) && isCodePath(file)) files.add(file);
+  }
+  return files.size;
+}
+
+// More than three runs in one part are named by the files they add up to in
+// that part, so a door that runs a test suite does not list every test.
 function runGroups(ctx, door) {
   const groups = new Map();
-  for (const path of runPaths(door)) {
-    const boundary = ctx.boundaryOf.get(path) ?? null;
+  for (const path of shownRuns(door)) {
+    const boundary = runPart(ctx, path);
     const key = boundary ?? `\0${path}`;
     if (!groups.has(key)) groups.set(key, { boundary, paths: [] });
     groups.get(key).paths.push(path);
@@ -306,7 +447,11 @@ function runGroups(ctx, door) {
   const ordered = [...groups.values()].sort((a, b) => (
     (order.get(a.boundary) ?? Infinity) - (order.get(b.boundary) ?? Infinity) || cmp(a.paths[0], b.paths[0])
   ));
-  const parts = ordered.map((group) => (group.boundary ? `${list(group.paths)} in ${ctx.shown(group.boundary)}` : list(group.paths)));
+  const parts = ordered.map((group) => {
+    if (!group.boundary) return list(group.paths.map((path) => spanning(ctx, path)));
+    const named = group.paths.length > RUNS_SHOWN ? count(filesRun(ctx, group.paths), 'file') : list(group.paths);
+    return `${named} in ${ctx.shown(group.boundary)}`;
+  });
   return list(parts, { serial: ordered.some((group) => group.paths.length > 1) });
 }
 
@@ -329,17 +474,13 @@ function writes(ctx, door) {
 
 function doorSteps(ctx, door) {
   const steps = [];
-  const paths = runPaths(door);
+  const paths = shownRuns(door);
   steps.push(paths.length > 0 ? `The workflow runs ${runGroups(ctx, door)}.` : 'The workflow runs no file this map can see.');
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   const places = writes(ctx, door);
   if (places.length > 0) steps.push(`It writes to ${list(places)}.`);
   if ((door.stages ?? []).length > 0) steps.push(`It commits ${commitsClause(door)}.`);
-  const sends = door.sends ?? {};
-  for (const repo of sends.dispatchesTo ?? []) steps.push(`It sends a dispatch to ${repo}.`);
-  if (sends.publishes) steps.push('It publishes to npm.');
-  if (sends.releases) steps.push('It creates a GitHub release.');
-  if (sends.deploysPages) steps.push('It deploys the site.');
+  for (const phrase of sendPhrases(door)) steps.push(`It ${phrase}.`);
   return steps;
 }
 
@@ -432,7 +573,8 @@ function inOrder(lead, texts, indent) {
  */
 function sequences(ctx, door) {
   const out = [];
-  for (const path of runPaths(door)) {
+  const named = [...new Set((door.runs ?? []).filter((run) => !run.matched).map((run) => run.path))].sort(cmp);
+  for (const path of named) {
     const file = ctx.fileOf.get(path);
     const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
     if (!root) continue;
@@ -588,8 +730,8 @@ function otherDoors(ctx, main) {
   const paragraphs = rest.map((door) => {
     if (door.parseError) return `**${door.name}.** This workflow could not be read.`;
     const clauses = [];
-    const paths = runPaths(door);
-    clauses.push(paths.length > 0 ? `runs ${runsShown(paths)}` : 'runs no file this map can see');
+    const paths = shownRuns(door);
+    clauses.push(paths.length > 0 ? `runs ${runsShown(paths, runTotal(door))}` : 'runs no file this map can see');
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => entry.boundary)))].sort(cmp);
     if (reached.length > 0) clauses.push(`reaches ${list(reached.map(ctx.shown))}`);
     const places = writes(ctx, door);
@@ -958,14 +1100,15 @@ function startHere(ctx, main, groups) {
   const chain = [main.file];
   const byName = new Map(ctx.boundaries.map((boundary) => [boundary.name, boundary]));
   const depthZero = (main.reach ?? []).filter((entry) => entry.depth === 0);
-  const paths = runPaths(main);
-  const filesIn = (path) => depthZero.find((entry) => entry.boundary === ctx.boundaryOf.get(path))?.files ?? 0;
+  const paths = shownRuns(main);
+  const filesIn = (path) => depthZero.find((entry) => entry.boundary === runPart(ctx, path))?.files ?? 0;
   const first = [...paths].sort((a, b) => filesIn(b) - filesIn(a) || cmp(a, b))[0];
   if (first) chain.push(first);
   const from = importers(ctx);
   const words = new Map();
-  let previous = first ? ctx.boundaryOf.get(first) : null;
-  let previousFile = first ?? null;
+  let previous = first ? runPart(ctx, first) : null;
+  // A directory run has no entry of its own to follow a call from.
+  let previousFile = first && !first.endsWith('/') ? first : null;
   for (const level of deeper(main)) {
     const linked = level.entries.filter((entry) => previous && from.get(entry.boundary)?.has(previous));
     const pool = linked.length > 0 ? linked : level.entries;
@@ -1003,8 +1146,11 @@ function startHere(ctx, main, groups) {
   return { chain, words: chain.map((step) => words.get(step) ?? step) };
 }
 
-function startSection(words, main) {
-  if (!main) return ['## Where to start', 'No door was found, so there is no path through this repository to follow.'].join('\n\n');
+function startSection(words, main, readable) {
+  if (!main) {
+    const why = readable ? 'No door runs a file this map can see' : 'No door was found';
+    return ['## Where to start', `${why}, so there is no path through this repository to follow.`].join('\n\n');
+  }
   return ['## Where to start', words.join(' → '), `Read those in order to follow one ${triggerNoun(main)} end to end.`].join('\n\n');
 }
 
@@ -1036,6 +1182,12 @@ function limits(ctx, shownText) {
     lines.push(`${count(dynamicWrites, 'write')} and ${count(dynamicReads, 'read')} use paths built at run time and are not named here.`);
   }
   if (shownText) lines.push('Readers marked (found by text) come from scanning unparsed files.');
+  for (const door of ctx.doors) {
+    if (door.parseError) continue;
+    const recorded = runPaths(door).length;
+    if ((door.runsCount ?? 0) <= recorded) continue;
+    lines.push(`${door.name} runs ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from those.`);
+  }
   const confidence = ctx.statistics.confidence;
   if (confidence?.level === 'low') {
     const reason = String(confidence.reason ?? '').trim().replace(/\.$/, '');
@@ -1088,8 +1240,15 @@ function derivedLine(ctx, main) {
   const parts = count(ctx.boundaries.length, 'part');
   if (ctx.doors.length === 0) return `${parts}. No workflows were found, so this page has no doors.`;
   const doors = count(ctx.doors.length, 'door');
+  if (!main && ctx.doors.some((door) => !door.parseError)) {
+    return `${parts}. Work enters through ${doors}, and none of them runs a file this map can see.`;
+  }
   if (!main) return `${parts}. Work enters through ${doors}, and none of their workflows could be read.`;
   const reach = count(reachSize(main), 'part');
+  const wider = widerDoor(ctx.doors, main);
+  if (wider) {
+    return `${parts}. Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach} and commits into the repository (${wider.name} reaches ${reachSize(wider)} but commits nothing).`;
+  }
   return `${parts}. Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach}.`;
 }
 
@@ -1101,9 +1260,10 @@ function doorData(ctx, door) {
     name: door.name,
     pushes: door.pushes === true,
     reach: (door.reach ?? []).map((entry) => ({ boundary: entry.boundary, depth: entry.depth, files: entry.files })),
-    runs: runPaths(door),
+    runs: shownRuns(door),
+    runsCount: runTotal(door),
     sends: sendPhrases(door),
-    stages: [...(door.stages ?? [])],
+    stages: stagedShown(door.stages),
     triggers: triggerPhrases(door),
   };
 }
@@ -1120,7 +1280,7 @@ export function buildPage({ structure, statistics, document, repoName, changes =
   const generatedAt = String(statistics?.generatedAt ?? '');
   const name = String(repoName ?? '').split('/').pop() || 'this repository';
   const summary = summaryOf(document);
-  const main = ctx.doors.find((door) => !door.parseError) ?? null;
+  const main = mainDoor(ctx.doors);
   const groups = main ? readerGroups(ctx, main) : [];
   const breakEntries = breaks(ctx);
   const { pairs, withTests } = together(ctx);
@@ -1158,7 +1318,7 @@ export function buildPage({ structure, statistics, document, repoName, changes =
     duplicatesSection(duplicated),
     generatedSection(ctx, generatedItems),
     authoredSection(ctx, authoredBoundaries),
-    startSection(start.words, main),
+    startSection(start.words, main, ctx.doors.some((door) => !door.parseError)),
     limitsSection(limitLines),
   );
   const markdown = `${sections.join('\n\n')}\n`;

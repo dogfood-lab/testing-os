@@ -323,18 +323,23 @@ in the artifact's `doors` list, sorted by file. A door carries:
 - `permissions`: `scope:level`, top level and every job together. `read-all` is `all:read`.
 - `secrets`: every `secrets.NAME` in the file, and `usesWorkflowToken` for the workflow's own token.
 - `commands`: every `run:` step in file order, with its job and its name or index.
-- `runs`: the tracked files those commands execute, with the job that executes them. A path is
-  executed when it is the command itself, or follows an executor (`node`, `npx`, `bash`, `sh`,
-  `pwsh`, `python`, `python3`, `deno`, `tsx`) with only flags between, so `node --test <path>`
-  counts. npm scripts are read by the same rule, followed through nested `npm run`, pre and post
-  hooks, a named workspace and `--workspaces`. A step's working directory is honored. Commands
-  are split as the shell splits them: quotes hold, `$(...)` is a command of its own, and a
-  here-document body is input, not commands.
+- `runs`: the tracked files and directories those commands execute, with the job that executes
+  them, read by the conventions of the tool each command starts (below). A path is executed when
+  it is the command itself or when a tool that executes files is handed it. npm scripts are read
+  by the same rule, followed through nested `npm run`, pre and post hooks, a named workspace and
+  `--workspaces`. A step's working directory is honored. Commands are split as the shell splits
+  them: quotes hold, `$(...)` is a command of its own, and a here-document body is input, not
+  commands. A run carries `directory: true` when it is a directory, `matched: true` when a tool's
+  patterns selected it rather than the command naming it, and `via` when it was found through a
+  file or a configuration. `runsCount` is how many distinct paths the door runs.
 - `mentions`: every other tracked path in that text, such as a path an `echo` prints or a file
   handed to `git diff`. They are where the next slice looks for landing places; they never
   feed `reach`.
-- `stages` (what follows `git add`, as written), `pushes`, and `sends`: `dispatchesTo`,
-  `publishes`, `releases`, `deploysPages`.
+- `stages` (what follows `git add`, a variable spelled out from an assignment earlier in the step,
+  then the step's, the job's and the workflow's `env`; one set at run time stays as written),
+  `pushes`, and `sends`: `dispatchesTo`, `publishesTo` (`npm`, `pypi`, `crates.io`, `rubygems`,
+  `container image`), `publishes` (true when `publishesTo` is not empty), `releases`,
+  `deploysPages`, `opensIssues` with `opensIssuesOnFailure`, and `opensPullRequests`.
 - `uses`: the actions its steps use, without the ref.
 - `reach`: the boundaries the door reaches through the import closure of `runs`, in the order it
   reaches them. Depth 0 is the boundaries of the run files themselves; depth n is the first
@@ -343,6 +348,84 @@ in the artifact's `doors` list, sorted by file. A door carries:
 ```json
 { "boundary": "verify", "depth": 1, "files": 10 }
 ```
+
+**A door is read by the conventions of the tools it runs.** backpropagate's CI read as "runs
+verify.sh" while it ran pytest over `tests/` and ruff, mypy and bandit over the package, and
+ai-rpg-engine's CI reached one part while `eslint .`, `tsc --build` and `vitest run` covered
+thirty-five. Only `node`, `bash` and their kin followed by a file had counted. Each tool is now
+read the way it reads its own command line:
+
+- An interpreter runs the script it is handed, past the flags that take a value: `node`, whose
+  `--import`, `--loader` and `--require` values run too; `python`, and `python -m`, whose dotted
+  module is the tracked `a/b.py`, `a/b/__main__.py` or `a/b/__init__.py`, under `src/` too;
+  `tsx`, `ts-node`, `deno run`, `bun`, `bash`, `sh` and `source`, and the command `bash -c` is
+  given. `python -m` naming a tool, `python -m pytest`, is that tool.
+- A wrapper is read as the command after it: `uv run`, `uvx`, `poetry run`, `pipx run`,
+  `hatch run` (not an `env:script` of the project's), `coverage run`, `npx`, `npm exec`, `env`,
+  `timeout`, `sudo`, `xargs` and `nice`. `npx <bin>` runs the tracked file a manifest's `bin`
+  names.
+- A checker or a test runner runs the files and directories it is handed: `pytest`, `ruff`,
+  `mypy` (whose `-p` is a package directory), `black`, `flake8`, `pylint` and `bandit`. A flag's
+  value never passes for a path, so `bandit -c bandit.yaml` mentions the file and runs nothing.
+- A tool that names no file reads its configuration, and what that selects is `matched`, with
+  `via` naming the tool and the file it read. `tsc --build` follows `references` and `tsc -p`
+  reads one project; an include that names a directory is the directory, a pattern is matched,
+  and `include`, `exclude` and `files` inherit through a relative `extends`, relative to the
+  file that wrote them. `vitest` reads `test.include` and `test.exclude`, never `coverage`'s;
+  `jest` reads `testMatch`, `mocha` its `.mocharc` spec, `eslint` every script it lints less its
+  `ignores`, `pytest` its `testpaths`, and `node --test` its default patterns. Without a
+  configuration the tool's defaults apply.
+- A command that installs, prints or inspects runs nothing it names (`pip install pytest`,
+  `echo`), and neither does a container (`docker run image make`). `tox` and `cargo` run no
+  tracked file. An unknown command that hands a tool its arguments, a shell function such as
+  `run_stage lint ruff check src/`, runs that tool.
+
+A shell script, a make target with its prerequisites and the makefile's variables spelled out,
+and the command lines a JavaScript or TypeScript file hands `execSync`, `spawnSync` and their
+kin when written out in full, are read once more as commands; what they run carries `via` naming
+them. That second level reads no further file, so a chain of scripts stops after one.
+
+A directory run is one entry, and reach stands it for the code files under it. A matched set is
+written as the directories it fills: a directory whose every code file was matched stands for
+them, and a matched file under a directory the same job runs is not listed again. A door records
+at most 200 paths, what its commands name first, then matched directories, then matched files
+one from each directory in turn, so every directory a tool ran keeps a file and the reach walked
+from the list reaches every part the door runs. The limits say when a door was capped. On
+ai-rpg-engine CI's `eslint .` covers what `tsc --build` and `vitest run` select, and the door
+records nine runs:
+
+```json
+{
+  "job": "build-and-test",
+  "path": "packages/",
+  "directory": true,
+  "matched": true,
+  "via": "eslint eslint.config.js"
+}
+```
+
+The page words a door from these fields: "publishes to PyPI and a container image", "opens an
+issue when it fails" when every step that opens one runs only after a failure (a condition that
+can hold on a cancelled or a green run does not count), and "commits reports/baseline.txt and a
+path set at run time" rather than the variable. A pull request trigger counts its paths, a
+release trigger reads "when a release is published" for that type and "on a release event"
+otherwise, and a push filtered by branches and tags names both. A path under a directory the door
+also runs is not named again unless the commands name it and only a tool reached the directory,
+what the commands name comes before what a tool matched, and a directory that spans parts says
+how many.
+
+The busiest door, the one the page follows, is the door a newcomer should read first. With tools
+read properly a test suite reaches every part, so reach alone would name CI everywhere. Of the
+doors that reach a part, one that commits into the repository (non-empty `stages`) comes first,
+the widest of those; with none, the widest door. A door that reaches none is never the busiest,
+and a schedule-only door loses a tie. When the busiest is not the widest the page says why: on
+this repository "the busiest is Ingest dogfood submission, which reaches 7 parts and commits into
+the repository (CI reaches 11 but commits nothing)". The rule counts a commit, not `landings`:
+CI's reach holds the code that writes `indexes/` and `records/`, so it has landings of its own,
+and "writes nothing" would contradict its own paragraph. On backpropagate no door both commits
+and reaches a part (mutmut commits its baseline and runs nothing the map sees), so the busiest
+is CI, which reaches four parts, not the weekly training smoke; on ai-rpg-engine it is CI too.
+When no door reaches a part the page says so and follows none.
 
 A workflow that does not parse is recorded as `{ file, name, parseError: true }` and the rest of the
 doors are mapped. The host check does not compare doors yet; a later slice decides what their drift

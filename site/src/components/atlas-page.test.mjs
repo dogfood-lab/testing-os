@@ -93,10 +93,12 @@ test('the sentences are the ones the committed markdown carries', () => {
   const text = plain(html);
   const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8').replace(/\*\*|`/g, '');
   for (const sentence of [
-    `${page.parts} parts. Work enters through ${page.doors.length} doors; the busiest is Ingest dogfood submission, which reaches 7 parts.`,
+    // CI reaches further, but the ingest door is the one that commits into the
+    // repository, so the page follows it and says why.
+    `${page.parts} parts. Work enters through ${page.doors.length} doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).`,
     'That reaches dogfood-swarm (1 file), findings (2 files) and verify (10 files).',
     'It commits indexes/ and records/, then pushes.',
-    'Release runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 1 more, reaches ingest and portfolio, publishes to npm, and creates a GitHub release.',
+    'self-dogfood runs packages/report/cli.js, scripts/build.mjs, scripts/sync-version.mjs and 1 more, and sends a dispatch to dogfood-lab/testing-os.',
     'Read those in order to follow one dogfood submission end to end.',
     'Regenerate with npx --yes @dogfood-lab/atlas map.',
     'Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.',
@@ -204,31 +206,48 @@ test('the order of work sits under step 1, as the markdown nests it', () => {
   const inside = listItems(steps[0], steps[0].indexOf('<ol>'));
   const expected = page.sequences.reduce((sum, sequence) => sum + 1 + sequence.inner.length, 0);
   assert.equal(inside.length, expected, 'one item per sequence and per inner function');
-  assert.ok(plain(inside[0]).startsWith('Inside packages/ingest/run.js, ingest does, in order:'), plain(inside[0]));
+  const [first] = page.sequences;
+  assert.ok(plain(inside[0]).startsWith(`Inside ${first.file}, ${first.phrase} does, in order:`), plain(inside[0]));
   const blob = `https://github.com/dogfood-lab/testing-os/blob/${page.commit}/`;
-  assert.ok(inside[0].includes(`<a href="${blob}packages/ingest/run.js"><code>packages/ingest/run.js</code></a>`), 'the file links to the mapped commit');
+  assert.ok(inside[0].includes(`<a href="${blob}${first.file}"><code>${first.file}</code></a>`), 'the file links to the mapped commit');
   for (const step of steps.slice(1)) assert.equal(step.includes('<ol>'), false, 'only step 1 carries the order of work');
+  const lines = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8').split(/\r?\n/);
+  assert.ok(lines.includes(`   1. ${plain(inside[0])}`), 'the markdown nests it the same way');
+});
 
+test('a called function reads as a list from eight steps and as a sentence up to seven', () => {
+  // This repository's busiest door calls into no function with that many
+  // steps, so the rule is shown on a sequence written for it.
+  const inner = (name, part, n) => ({
+    file: `packages/${part}/index.js`,
+    name,
+    part,
+    partLabel: part,
+    phrase: name,
+    steps: Array.from({ length: n }, (_, index) => ({ name: `step${index}`, part, partLabel: part, phrase: `step ${index}` })),
+  });
+  const fixture = {
+    ...page,
+    sequences: [{
+      entry: 'ingest',
+      file: 'packages/ingest/run.js',
+      part: 'ingest',
+      partLabel: 'ingest',
+      phrase: 'ingest',
+      steps: [{ name: 'verify', part: 'verify', partLabel: 'verify', phrase: 'verify' }, { name: 'write record', part: 'ingest', partLabel: 'ingest', phrase: 'write record' }],
+      inner: [inner('verify', 'verify', 8), inner('write record', 'ingest', 7)],
+    }],
+  };
+  const section = happensSection(render.renderPage(fixture, { repo: page.repo }));
+  const steps = listItems(section, section.indexOf('<ol>'));
+  const inside = listItems(steps[0], steps[0].indexOf('<ol>'));
   const verify = inside.find((item) => item.startsWith('<strong>Verify</strong> (verify) runs, in order:'));
-  assert.ok(verify, 'the verify inner item');
-  const verifySteps = listItems(verify, verify.indexOf('<ol>')).map(plain);
-  assert.equal(verifySteps.length, 8, 'eight steps read as a list');
-  assert.equal(verifySteps[0], 'parse run url repo');
-  assert.equal(verifySteps.at(-1), 'compute verdict');
-  assert.deepEqual(verifySteps, page.sequences[0].inner.find((inner) => inner.name === 'verify').steps.map((step) => step.phrase));
-  const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8');
-  const lines = markdown.split(/\r?\n/);
-  const lead = lines.indexOf('   3. **Verify** (verify) runs, in order:');
-  assert.ok(lead !== -1, 'the markdown nests verify the same way');
-  assert.deepEqual(lines.slice(lead + 1, lead + 9).map((line) => line.replace(/^\s+\d+\. /, '')), verifySteps);
-
-  // A called function in the entry file's own part is not given its part,
-  // and one the markdown leaves out is not in page.json to render.
+  assert.ok(verify, 'a function in another part names that part');
+  assert.deepEqual(listItems(verify, verify.indexOf('<ol>')).map(plain), Array.from({ length: 8 }, (_, index) => `step ${index}`));
+  // A called function in the entry file's own part is not given its part.
   const writeRecord = inside.find((item) => item.startsWith('<strong>Write record</strong> runs, in order:'));
   assert.equal(writeRecord.includes('<ol>'), false, 'seven steps or fewer read as one sentence');
-  assert.equal(plain(writeRecord), 'Write record runs, in order: is unsafe segment, parse rejection reason (verify), read chain head, submission digest, validate record and append chain entry.');
-  assert.ok(lines.includes(`   4. **${plain(writeRecord).replace(' runs,', '** runs,')}`), 'the markdown says it too');
-  assert.equal(inside.some((item) => plain(item).startsWith('Is duplicate')), false);
+  assert.equal(plain(writeRecord), 'Write record runs, in order: step 0, step 1, step 2, step 3, step 4, step 5 and step 6.');
 });
 
 test('what tends to change together renders the pairs page.json names and the set-aside line', () => {
@@ -379,7 +398,7 @@ test('a page.json without sequences renders the section as before', () => {
   const section = happensSection(render.renderPage(older, { repo: page.repo }));
   const steps = listItems(section, section.indexOf('<ol>'));
   assert.equal((section.match(/<ol>/g) ?? []).length, 1, 'no nested list');
-  assert.ok(plain(steps[0]).startsWith('The workflow runs packages/ingest/run.js'));
+  assert.ok(plain(steps[0]).startsWith(`The workflow runs ${page.doors.find((door) => door.file === page.mainDoor).runs[0]}`));
   assert.equal(section.includes('in order:'), false);
   assert.equal(happensSection(render.renderPage({ ...page, sequences: [] }, { repo: page.repo })), section, 'an empty list is the same as none');
 });
@@ -388,7 +407,8 @@ test('file paths link to the blob at the mapped commit, places to the tree', () 
   const html = render.renderPage(page, { repo: page.repo });
   const blob = `https://github.com/dogfood-lab/testing-os/blob/${page.commit}/`;
   const tree = `https://github.com/dogfood-lab/testing-os/tree/${page.commit}/`;
-  for (const path of page.doors[0].runs) assert.ok(html.includes(`href="${blob}${path}"`), path);
+  // A door names three of its runs and counts the rest; a directory run is a place.
+  for (const path of page.doors[0].runs.slice(0, 3)) assert.ok(html.includes(`href="${path.endsWith('/') ? tree : blob}${path}"`), path);
   for (const path of page.startHere.filter((entry) => !entry.endsWith('/'))) assert.ok(html.includes(`href="${blob}${path}"`), path);
   assert.ok(html.includes(`href="${tree}indexes"`), 'a place opens as a tree');
   assert.ok(html.includes(`href="${blob}examples/README.md"><code>examples/README.md</code></a> (found by text)`), 'a found-by-text reader links its path only');

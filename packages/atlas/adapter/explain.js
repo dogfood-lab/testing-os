@@ -133,7 +133,9 @@ function partsIn(ctx, members) {
 function doorFacts(ctx, found, part) {
   const inside = new Set(found.members);
   const readable = ctx.doors.filter((door) => !door.parseError);
-  const runBy = readable.filter((door) => (door.runs ?? []).some((run) => inside.has(run.path))).map((door) => door.name);
+  // A directory run stands for the files under it.
+  const runs = (run) => inside.has(run.path) || (run.path.endsWith('/') && found.members.some((member) => member.startsWith(run.path)));
+  const runBy = readable.filter((door) => (door.runs ?? []).some(runs)).map((door) => door.name);
   const onPath = part == null
     ? []
     : readable.filter((door) => (door.reach ?? []).some((entry) => entry.boundary === part)).map((door) => door.name);
