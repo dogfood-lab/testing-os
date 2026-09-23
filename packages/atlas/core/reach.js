@@ -7,10 +7,14 @@
  * resolves to a boundary rather than a file (a build chunk whose sources
  * share one) reaches that boundary but has no file to continue from.
  *
+ * The walk also returns the files it visited, sorted: every tracked file the
+ * door runs or imports. Landing places are read from these files, not from
+ * the boundary names they add up to.
+ *
  * @param {string[]} starts tracked paths the door runs
  * @param {{ files: Map<string, { imports?: unknown }>, boundaryOf: Map<string, string> }} graph
  */
-export function reachFrom(starts, graph) {
+export function walkReach(starts, graph) {
   const depthOf = new Map();
   const filesOf = new Map();
   const reached = (boundary, depth) => {
@@ -41,7 +45,8 @@ export function reachFrom(starts, graph) {
     }
     frontier = [...next].sort();
   }
-  return [...depthOf.entries()]
+  const reach = [...depthOf.entries()]
     .map(([boundary, depth]) => ({ boundary, depth, files: filesOf.get(boundary).size }))
     .sort((a, b) => a.depth - b.depth || (a.boundary < b.boundary ? -1 : a.boundary > b.boundary ? 1 : 0));
+  return { reach, files: [...visited].sort() };
 }

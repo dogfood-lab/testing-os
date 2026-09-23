@@ -343,6 +343,77 @@ A workflow that does not parse is recorded as `{ file, name, parseError: true }`
 doors are mapped. The host check does not compare doors yet; a later slice decides what their drift
 means.
 
+**Landing places are structural too.** Every file the engine reads records where it writes and
+what it reads, and the map puts the two together into who writes each tracked place and who reads
+it. A place is a tracked path, or a tracked directory: a directory that is a prefix of at least one
+tracked path. `node_modules` and `dist` are never places.
+
+- `writes`: the places a file's write calls name, each with the call. For JavaScript and
+  TypeScript the calls are `writeFileSync`, `writeFile`, `appendFileSync`, `appendFile`,
+  `mkdirSync`, `mkdir`, `createWriteStream`, `renameSync`, `rename`, `copyFileSync`, `copyFile`,
+  `open` and `openSync` with a `w`, `a` or `x` flag, and a wrapper named for one of them, such as
+  `atomicWriteFileSync`. For Python they are `open` with a `w`, `a` or `x` mode, `write_text`,
+  `write_bytes`, `shutil.copy`, `copy2`, `copyfile` and `move`, and `os.rename`, `os.replace`,
+  `os.makedirs` and `os.mkdir`. A rename or copy lands on its destination.
+- `reads`: the same for `readFileSync`, `readFile`, `readdirSync`, `readdir`, `existsSync`,
+  `statSync`, `createReadStream`, `open` without a write flag, Python `open` in read mode,
+  `read_text`, `read_bytes`, `os.listdir`, `os.scandir`, `glob.glob`, a path's `glob` and
+  `iterdir`, and `fetch` or `get` given a readable argument. A string in the file that names a
+  tracked place outside any of these calls is a read with call `literal`: naming a place is how
+  code hands it to a function the engine does not know. A string holding a whole
+  `raw.githubusercontent.com/<owner>/<repo>/<ref>/<path>` URL, where the path is a place, is a
+  read with call `raw-url`, its ref and its owner and repository.
+- `dynamicWrites` and `dynamicReads`: how many of those calls name nothing the engine could read.
+
+An argument is read within its own file. A string literal is its text; a template or a `+` is
+its pieces up to the first one the engine cannot read, which leaves the value open, a prefix; a
+path join takes its segments the same way, and a first segment it cannot read, such as a
+`repoRoot` parameter, is taken as the root the rest is relative to. `__dirname`,
+`import.meta.dirname`, `__file__` and `Path(__file__).parent` are the file's own directory. A
+name is followed to its nearest declaration and to every assignment of it in that scope, and a
+call to a function declared in the same file is followed to what it returns. A value names the
+place it equals, or else the deepest tracked directory it lies under, so
+`records/${id}.json` names `records`.
+
+A file the engine does not parse, HTML, YAML, Markdown, JSON or shell, is scanned as text: a
+single- or double-quoted string on one line that equals a tracked path, or names a tracked
+directory with a slash, and every whole raw URL. Each entry carries its confidence, `ast` for a
+parsed file and `text` for a scanned one. A workflow is read as a door, not scanned.
+
+- A door's `landings` are the places it stages, read the same way, and every place a file in
+  its reach writes. Its `readers` are, for each landing, the files whose reads name it or a path
+  under it, and the doors whose commands mention it.
+- The artifact's top-level `landings` list every place with at least one writer or reader, with
+  its `writers` (a file, or a door that stages it) and its `readers`.
+- A boundary's `origin` is `generated` when a writer targets its root directory, or every one of
+  its files, and none of its own files writes anything; `authored` when nothing writes inside it;
+  `mixed` otherwise.
+
+```json
+{
+  "target": "records",
+  "writers": [
+    { "by": ".github/workflows/ingest.yml" },
+    { "by": "packages/ingest/persist.js" }
+  ],
+  "readers": [
+    { "by": "packages/report/status.js", "call": "literal" }
+  ]
+}
+```
+
+Test files and anything under a fixture directory write into temporary copies and read fixtures
+of their own. Their entries stay on the file; they are never a place's writer or reader. A text
+file inside a place something writes is that writer's output, so the paths it names are its data
+and not reads.
+
+The limits are the method's. Only paths spelled out in the file are named: a path built in one
+file and written in another, or passed through a wrapper the engine cannot recognise by its
+name, is counted as a dynamic site or missed, and a call site is counted, never named, when its
+target cannot be read at all. A path join whose root is a parameter is assumed to be relative to
+the repository. A scanned file's reads are text matches, not calls, and a literal read means the
+file names the place, not that it opens it. The host check does not compare landings yet.
+
 This repository's own handbook diagram is a
 hand-drawn image whose only tests assert that it exists, is large enough, and has accessible
 title and description elements. Nothing checks that it is true.
