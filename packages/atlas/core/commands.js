@@ -820,12 +820,13 @@ function makeReader(repo, runs, mentions) {
       const sub = argv.slice(1).find((arg) => !arg.startsWith('-')) ?? 'dev';
       if (!['build', 'dev', 'preview', 'check', 'sync'].includes(sub)) return;
       const next = sub === 'check' ? { ...frame, runKind: 'checks' } : frame;
+      const chain = via(frame, `astro ${sub}`);
       for (const name of ['astro.config.mjs', 'astro.config.ts', 'astro.config.js', 'astro.config.mts', 'astro.config.cjs']) {
         const path = pathFrom(dir, name);
-        if (path != null && repo.tracked.has(path)) record(stamp({ path }, next));
+        if (path != null && repo.tracked.has(path)) record(stamp({ path, matched: true }, next, chain));
       }
       const src = pathFrom(dir, 'src');
-      if (src != null && repo.dirs.has(src)) record(stamp({ path: `${src}/`, directory: true }, next));
+      if (src != null && repo.dirs.has(src)) record(stamp({ path: `${src}/`, directory: true, matched: true }, next, chain));
     },
     wrapper(argv, dir, frame) {
       const name = baseName(argv[0]);

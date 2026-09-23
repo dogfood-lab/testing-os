@@ -936,7 +936,7 @@ function readerGroups(ctx, main) {
       path: reader.path,
       text: reader.text ? `${reader.path} (found by text)` : reader.path,
     })));
-    out.push({ target, readers, files });
+    out.push({ target, readers, files, entries: group.entries });
   }
   return out;
 }
@@ -1494,75 +1494,137 @@ function firstCallInto(ctx, path, part) {
   return call?.target.file ?? null;
 }
 
+// A page a reader opens runs as surely as a script does.
+function runsAsCode(path) {
+  return isCodePath(path) || /\.html?$/i.test(path);
+}
+
+function pullRequested(door) {
+  return (door.triggers ?? []).some((trigger) => trigger.event === 'pull_request' || trigger.event === 'pull_request_target');
+}
+
+// A door only a push or the clock starts acts on a change after review.
+function afterReview(door) {
+  const events = (door.triggers ?? []).map((trigger) => trigger.event).filter((event) => event !== 'workflow_dispatch');
+  return events.length > 0 && events.every((event) => event === 'push' || event === 'schedule');
+}
+
+/**
+ * The door "Where to start" follows. A change a person makes enters through
+ * the pull request first, so when the busiest door acts only on a push or a
+ * schedule, the widest door a pull request starts is followed instead. A door
+ * something outside starts (a dispatch, a release) is its own way in and
+ * stays, as does a command people run.
+ */
+function startDoor(ctx, main) {
+  if (!main || installed(main) || !afterReview(main)) return main;
+  return reaching(ctx.doors).find((door) => !installed(door) && pullRequested(door)) ?? main;
+}
+
+// The runs a pull request reaches: a job held to another trigger is left
+// out, unless every run is in one.
+function startRuns(door) {
+  const gated = new Set((door.gated ?? []).flatMap((entry) => entry.jobs ?? []));
+  const runs = (door.runs ?? []).filter((run) => !gated.has(run.job));
+  return runs.length > 0 ? runs : door.runs ?? [];
+}
+
+/**
+ * The file a directory run is followed from: the file in it that imports
+ * into the next part the walk reaches, else the part's entry point inside it,
+ * else its first code file.
+ */
+function fileInRun(ctx, door, dir) {
+  const next = deeper(door)[0]?.entries.map((entry) => entry.enters?.from).filter((path) => path?.startsWith(dir)) ?? [];
+  if (next.length > 0) return [...next].sort(cmp)[0];
+  const entry = entryFile(ctx.boundaries.find((boundary) => boundary.name === runPart(ctx, dir)));
+  if (entry?.startsWith(dir)) return entry;
+  return [...ctx.fileOf.keys()].filter((path) => path.startsWith(dir) && isCodePath(path)).sort(cmp)[0] ?? null;
+}
+
 // The structure records reach per part, so the chain is walked at part grain:
 // the run in the part the door reaches most files of, then at each depth the
 // widest part imported by the part before it, named by the first file the
 // walk imports in it. A package index that only hands a name on is followed
 // to the file the entry's call reaches through it, since that is where the
 // work is. The part's entry point is named only when no import into it was
-// recorded. The reader is the first one outside the door's own reach, so the
-// chain ends at whoever uses the result rather than whoever makes it.
+// recorded. Every step is a file that runs: a directory is named by a file in
+// it, and a manifest or a data file imported on the way is passed over. The
+// chain ends at a place the door writes only when code reads it, at the file
+// that reader names, and the reader is the first one outside the door's own
+// reach, so it ends at whoever uses the result rather than whoever makes it.
 function startHere(ctx, main, groups) {
-  const chain = [main.file];
+  const chain = installed(main) ? [] : [main.file];
+  const add = (path) => {
+    if (path != null && !chain.includes(path)) chain.push(path);
+  };
   const byName = new Map(ctx.boundaries.map((boundary) => [boundary.name, boundary]));
   const depthZero = (main.reach ?? []).filter((entry) => entry.depth === 0);
   // The path starts at a file the door runs; a file it only lints is read,
   // not followed, so it starts there only when nothing is run. Of the files
-  // it runs, one its commands name comes before one a test runner's patterns
+  // it runs, one its commands name comes before one a tool's conventions
   // matched: a gate script says more about the door than its hundredth test.
-  const named = new Set((main.runs ?? []).filter((run) => !run.matched).map((run) => run.path));
-  const ran = shownRuns(main, 'executes');
+  const runs = startRuns(main);
+  const named = new Set(runs.filter((run) => !run.matched).map((run) => run.path));
+  const executed = new Set(runs.filter((run) => run.runKind !== 'checks').map((run) => run.path));
+  const ran = shownRuns(main, 'executes').filter((path) => executed.has(path));
   const spelled = ran.filter((path) => named.has(path));
-  const paths = spelled.length > 0 ? spelled : ran.length > 0 ? ran : shownRuns(main);
+  const paths = (spelled.length > 0 ? spelled : ran).filter((path) => path.endsWith('/') || runsAsCode(path));
   const filesIn = (path) => depthZero.find((entry) => entry.boundary === runPart(ctx, path))?.files ?? 0;
   const first = [...paths].sort((a, b) => filesIn(b) - filesIn(a) || cmp(a, b))[0];
-  if (first) chain.push(first);
+  const firstFile = first?.endsWith('/') ? fileInRun(ctx, main, first) : first;
+  add(firstFile);
   const from = importers(ctx);
-  const words = new Map();
   let previous = first ? runPart(ctx, first) : null;
-  // A directory run has no entry of its own to follow a call from.
-  let previousFile = first && !first.endsWith('/') ? first : null;
+  let previousFile = firstFile ?? null;
   for (const level of deeper(main)) {
     const linked = level.entries.filter((entry) => previous && from.get(entry.boundary)?.has(previous));
     const pool = linked.length > 0 ? linked : level.entries;
     const widest = [...pool].sort((a, b) => b.files - a.files || cmp(a.boundary, b.boundary))[0];
-    const boundary = byName.get(widest.boundary);
-    const place = boundary ? boundaryPlace(boundary) : null;
     const entered = widest.enters?.file ?? null;
-    const file = entered ?? entryFile(boundary) ?? place;
-    if (file && !chain.includes(file)) {
-      chain.push(file);
-      if (file === place) words.set(file, shownPlace(ctx, boundary));
-    }
-    let reached = file === place ? null : file;
+    const file = entered ?? entryFile(byName.get(widest.boundary));
+    if (file == null || !runsAsCode(file)) continue;
+    add(file);
+    let reached = file;
     if (entered && isIndex(entered) && previousFile) {
       const through = firstCallInto(ctx, previousFile, widest.boundary);
-      if (through && !chain.includes(through)) {
-        chain.push(through);
+      if (through) {
+        add(through);
         reached = through;
       }
     }
     previous = widest.boundary;
     previousFile = reached;
   }
-  const landing = groups.find((group) => group.files.length > 0);
-  if (landing) {
-    chain.push(landing.target);
-    const reached = new Set((main.reach ?? []).map((entry) => entry.boundary));
-    const reader = [...landing.files].sort((a, b) => (
+  if (!chain.some(runsAsCode)) return { chain: [], words: [] };
+  const reached = new Set((main.reach ?? []).map((entry) => entry.boundary));
+  for (const group of groups) {
+    const readers = group.files.filter((reader) => runsAsCode(reader.path)).sort((a, b) => (
       Number(reached.has(ctx.boundaryOf.get(a.path))) - Number(reached.has(ctx.boundaryOf.get(b.path)))
       || Number(a.text) - Number(b.text)
       || cmp(a.path, b.path)
-    ))[0];
-    if (reader) chain.push(reader.path);
+    ));
+    const reader = readers[0];
+    if (!reader) continue;
+    const named = (group.entries ?? []).filter((entry) => entry.by === reader.path).map((entry) => ctx.place(entry.target)).sort((a, b) => (
+      Number(a.endsWith('/')) - Number(b.endsWith('/')) || cmp(a, b)
+    ));
+    add(named[0] ?? group.target);
+    add(reader.path);
+    break;
   }
-  return { chain, words: chain.map((step) => words.get(step) ?? step) };
+  return { chain, words: [...chain] };
 }
 
 function startSection(words, main, readable) {
   if (!main) {
     const why = readable ? 'No door runs a file this map can see' : 'No door was found';
     return ['## Where to start', `${why}, so there is no path through this repository to follow.`].join('\n\n');
+  }
+  if (words.length === 0) {
+    const checks = shownRuns(main, 'checks').some((path) => path.endsWith('/') || isCodePath(path));
+    const why = checks ? `${main.name} runs no code this map can follow; it only checks code` : `${main.name} runs no code this map can follow`;
+    return ['## Where to start', `${why}, so there is no path of files to read in order.`].join('\n\n');
   }
   return ['## Where to start', words.join(' → '), `Read those in order to follow one ${triggerNoun(main)} end to end.`].join('\n\n');
 }
@@ -1868,7 +1930,8 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   const duplicated = duplicates(ctx);
   const generatedItems = generated(ctx);
   const authoredBoundaries = authored(ctx);
-  const start = main ? startHere(ctx, main, groups) : { chain: [], words: [] };
+  const starting = startDoor(ctx, main);
+  const start = starting ? startHere(ctx, starting, starting === main ? groups : readerGroups(ctx, starting)) : { chain: [], words: [] };
   const found = main ? sequences(ctx, main) : [];
   const shownText = groups.some((group) => group.readers.some((reader) => reader.text?.endsWith(' (found by text)')));
   const limitLines = limits(ctx, shownText);
@@ -1897,7 +1960,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesSection(duplicated),
     generatedSection(ctx, generatedItems),
     authoredSection(ctx, authoredBoundaries),
-    startSection(start.words, main, ctx.doors.some((door) => !door.parseError)),
+    startSection(start.words, starting, ctx.doors.some((door) => !door.parseError)),
     limitsSection(limitLines),
   );
   const markdown = `${sections.join('\n\n')}\n`;

@@ -126,7 +126,8 @@ function readDoor(repoPath, file, repo) {
   for (const [job, body] of Object.entries(isMapping(doc.jobs) ? doc.jobs : {})) {
     if (!isMapping(body)) continue;
     const gate = jobGate(body.if, triggers);
-    if (gate && !gates.has(canonical(gate))) gates.set(canonical(gate), { when: gate, sends: emptySends(), issues: [], texts: [], stages: new Set(), pushes: false });
+    if (gate && !gates.has(canonical(gate))) gates.set(canonical(gate), { when: gate, jobs: [], sends: emptySends(), issues: [], texts: [], stages: new Set(), pushes: false });
+    if (gate) gates.get(canonical(gate)).jobs.push(job);
     const scope = gate ? gates.get(canonical(gate)) : { sends, issues, texts, stages, pushes: false };
     for (const permission of permissionList(body.permissions)) permissions.add(permission);
     const jobDir = workingDirectory(body.defaults) ?? workflowDir ?? '';
@@ -186,7 +187,7 @@ function readDoor(repoPath, file, repo) {
   const byPathThenJob = (a, b) => compare(a.path, b.path) || compare(a.job, b.job);
   const gated = [...gates.entries()]
     .sort(([a], [b]) => compare(a, b))
-    .map(([, entry]) => ({ when: entry.when, sends: sendKeys(finishSends(entry.sends, entry.issues, entry.texts)), stages: [...entry.stages].sort(), pushes: entry.pushes }))
+    .map(([, entry]) => ({ when: entry.when, jobs: [...entry.jobs].sort(), sends: sendKeys(finishSends(entry.sends, entry.issues, entry.texts)), stages: [...entry.stages].sort(), pushes: entry.pushes }))
     .filter((entry) => entry.sends.length > 0 || entry.stages.length > 0 || entry.pushes);
   return {
     file,

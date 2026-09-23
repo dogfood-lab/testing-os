@@ -46,9 +46,9 @@ describe('a job gated to one trigger', () => {
     assert.equal(ci.sends.releases, false);
     assert.deepEqual(ci.stages, []);
     assert.deepEqual(ci.gated, [
-      { pushes: false, sends: ['deploysPages'], stages: [], when: { branches: ['main'], event: 'push' } },
-      { pushes: true, sends: [], stages: ['CHANGELOG.md'], when: { branches: ['main'] } },
-      { pushes: false, sends: ['releases'], stages: [], when: { event: 'push', tags: true } },
+      { jobs: ['deploy-pages'], pushes: false, sends: ['deploysPages'], stages: [], when: { branches: ['main'], event: 'push' } },
+      { jobs: ['changelog'], pushes: true, sends: [], stages: ['CHANGELOG.md'], when: { branches: ['main'] } },
+      { jobs: ['release'], pushes: false, sends: ['releases'], stages: [], when: { event: 'push', tags: true } },
     ]);
   });
 
