@@ -1,7 +1,7 @@
 name: Release
 
-# Publishes the 6 public @dogfood-lab/* packages to npm using OIDC trusted
-# publishing AND creates the GitHub Release in the same workflow.
+# Publishes every @dogfood-lab/* package not marked private to npm using OIDC
+# trusted publishing AND creates the GitHub Release in the same workflow.
 #
 # OIDC trusted publishing requires npm >= 11.5.x for the new auth path. Node
 # 22 ships with npm 10.9 which can sign Sigstore provenance but cannot
@@ -161,7 +161,7 @@ jobs:
           # the wrong version with a green workflow. ci.yml's sync-version gate
           # would catch this, but ci.yml does not trigger on tag pushes, so the
           # guarantee must be re-asserted here at release time. The check
-          # reads only NON-private packages (the 6 that release.yml ships;
+          # reads only NON-private packages (every one release.yml ships;
           # `private:true` portfolio is workspace-internal and never published).
           TAG_VERSION="${PUBLISH_TAG#v}"
           node -e '
@@ -266,7 +266,7 @@ jobs:
           mapfile -t PKGS < /tmp/publishable-pkgs.tsv
 
           if [ "${#PKGS[@]}" -eq 0 ]; then
-            echo "::error::No publishable packages found under packages/ — nothing to publish. Expected 6 non-private @dogfood-lab/* packages."
+            echo "::error::No publishable packages found under packages/ — nothing to publish. Expected every package under packages/ not marked private."
             exit 1
           fi
 

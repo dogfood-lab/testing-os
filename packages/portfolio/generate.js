@@ -408,7 +408,7 @@ function main() {
     if (args[i] === '--output' && args[i + 1]) outputPath = args[++i];
     // F3-001 / F5-04 — opt out of the side artifacts. The `trends` key is
     // always merged into the report; these flags only gate the separate
-    // indexes/trends.json + indexes/badges/ writes (both git-ignored).
+    // indexes/trends.json + indexes/badges/ writes (both committed, served artifacts).
     else if (args[i] === '--no-trends') emitTrends = false;
     else if (args[i] === '--no-badges') emitBadges = false;
     else if (args[i] === '--help' || args[i] === '-h') {
@@ -417,7 +417,7 @@ function main() {
           'Usage: portfolio [--output <path>] [--no-trends] [--no-badges]',
           '',
           'Generate the cross-repo dogfood portfolio report from indexes/latest-by-repo.json',
-          'and policies/repos/. Also emits two git-ignored runtime artifacts:',
+          'and policies/repos/. Also writes two committed, served artifacts in indexes/:',
           '',
           '  --output <path>   Portfolio report path (default reports/dogfood-portfolio.json)',
           '  --no-trends       Skip writing indexes/trends.json (the per-repo+surface run',
@@ -518,7 +518,7 @@ function main() {
   // F3-001 — compute the trend surface from the FULL dated records/ history
   // (generatePortfolio only sees the collapsed latest-by-repo index, so it
   // cannot express a trend). Merge it into the report under `trends` and,
-  // unless opted out, emit indexes/trends.json (git-ignored runtime artifact).
+  // unless opted out, emit indexes/trends.json (a committed, served artifact).
   //
   // d3-portfolio-B001 — capture computeTrends' degradation tally so the summary
   // below can report how many records the trend scan had to exclude. A partial
