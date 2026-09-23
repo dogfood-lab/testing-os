@@ -53,15 +53,18 @@ export function mapDoors({ repoPath, tracked, spawned, commands = [] }) {
  * stages and sends nothing; it runs the file its manifest declares, and what
  * that file hands a child process, and its reach is walked from those like any
  * door's. `file` is the manifest that declares it; a manifest can declare
- * several, so a door is told apart by its file and its name together.
+ * several, so a door is told apart by its file and its name together. One
+ * whose declared file is a build output no tracked config places runs nothing
+ * the map can follow, and carries that path as `unplaced`.
  *
  * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, commands: Array<{ kind: string, name: string, manifest: string, path: string }> }} input
  */
 export function mapCommandDoors({ repoPath, tracked, spawned, commands }) {
   const repo = repositoryView({ repoPath, tracked, spawned, commands });
   return commands.map((command) => {
-    const recorded = recordedRuns([...readProgram(command.path, repo).values()]);
+    const recorded = recordedRuns(command.path == null ? [] : [...readProgram(command.path, repo).values()]);
     return {
+      ...(command.unplaced ? { unplaced: command.unplaced } : {}),
       kind: command.kind,
       file: command.manifest,
       name: command.name,

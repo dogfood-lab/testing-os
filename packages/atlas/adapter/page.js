@@ -533,8 +533,15 @@ function runTotal(door, kind = null) {
   return shownRuns(door, kind).length + Math.max(0, counted - recorded);
 }
 
+// What an installed door runs when its manifest points at a build's output
+// that no tracked config traces to a source: the path, said as that.
+export function unplacedClause(verb, path) {
+  return `${verb} ${path}, built from a source this map cannot place`;
+}
+
 // "runs X; checks Y", or null when the door names no file at all.
 function runsAndChecks(door, verb) {
+  if (door.unplaced) return unplacedClause(verb, door.unplaced);
   const clauses = [];
   const ran = shownRuns(door, 'executes');
   const checked = shownRuns(door, 'checks');
@@ -963,7 +970,8 @@ function otherDoors(ctx, main) {
     const verb = startVerb(door);
     const ran = shownRuns(door, 'executes');
     const checked = shownRuns(door, 'checks');
-    if (ran.length > 0 || checked.length === 0) {
+    if (door.unplaced) clauses.push(unplacedClause(verb, door.unplaced));
+    else if (ran.length > 0 || checked.length === 0) {
       clauses.push(ran.length > 0 ? `${verb} ${runsShown(ran, runTotal(door, 'executes'))}` : `${verb} no file this map can see`);
     }
     if (checked.length > 0) clauses.push(`checks ${runsShown(checked, runTotal(door, 'checks'))}`);
@@ -1911,6 +1919,7 @@ function doorData(ctx, door) {
     sends: sendPhrases(door),
     stages: stagedShown(door.stages),
     triggers: triggerPhrases(door),
+    ...(door.unplaced ? { unplaced: door.unplaced } : {}),
   };
 }
 

@@ -105,7 +105,7 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
   const dirs = new Set(['']);
   // The commands the repository installs, by the name a step types.
   const installed = new Map();
-  for (const command of commands) if (command.kind === 'command' && !installed.has(command.name)) installed.set(command.name, command.path);
+  for (const command of commands) if (command.kind === 'command' && command.path != null && !installed.has(command.name)) installed.set(command.name, command.path);
   for (const path of tracked) {
     for (let at = path.indexOf('/'); at !== -1; at = path.indexOf('/', at + 1)) dirs.add(path.slice(0, at));
   }

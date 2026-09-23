@@ -1,10 +1,12 @@
 import { builtinModules } from 'node:module';
-import { existsSync, readFileSync, realpathSync } from 'node:fs';
+import { readFileSync, realpathSync } from 'node:fs';
 import { dirname, isAbsolute, join, posix, relative, resolve, sep } from 'node:path';
 import enhancedResolve from 'enhanced-resolve';
 import picomatch from 'picomatch';
-import { isTestFile } from './landings.js';
+import { commandLines, repositoryView } from './commands.js';
+import { isTestFile, isTestMaterial } from './landings.js';
 import { declaredDependencies, importName } from './python-manifest.js';
+import { projectFile, tscOutput } from './tool-configs.js';
 
 const EXTENSIONS = ['.ts', '.tsx', '.mts', '.cts', '.js', '.mjs', '.cjs', '.jsx'];
 // node16/nodenext TypeScript imports the emitted .js name. The source is the
@@ -165,6 +167,7 @@ function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
     trackedLower,
     boundaryByFile,
     workspaces,
+    outputs: () => buildOutputs(repo, tracked),
     // Read once per map, on the first Python site: the roots imports are
     // looked up from and the names the project declares it depends on.
     python() {
@@ -172,7 +175,7 @@ function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
       return python;
     },
     resolverFor(dir) {
-      const config = usableConfig(repo, tracked, nearestConfig(repo, dir));
+      const config = usableConfig(repo, tracked, nearestConfig(repo, dir, tracked));
       const key = config ?? '';
       let resolver = resolvers.get(key);
       if (!resolver) {
@@ -289,15 +292,18 @@ function usableConfig(repo, tracked, configPath) {
   return configPath;
 }
 
-function nearestConfig(repo, dir) {
+// The config a file is compiled under is the nearest tracked one: an
+// untracked tsconfig is on one machine's disk, and reading it would make the
+// map depend on which machine drew it.
+function nearestConfig(repo, dir, tracked) {
   const root = resolve(repo);
   const rootPrefix = root.endsWith(sep) ? root : root + sep;
   let current = resolve(dir);
   while (current === root || current.startsWith(rootPrefix)) {
-    const tsconfig = join(current, 'tsconfig.json');
-    if (existsSync(tsconfig)) return tsconfig;
-    const jsconfig = join(current, 'jsconfig.json');
-    if (existsSync(jsconfig)) return jsconfig;
+    const rel = relative(root, current).split(sep).join('/');
+    for (const name of ['tsconfig.json', 'jsconfig.json']) {
+      if (tracked.has(rel ? `${rel}/${name}` : name)) return join(current, name);
+    }
     if (current === root) break;
     const parent = dirname(current);
     if (parent === current) break;
@@ -412,10 +418,11 @@ function locate(ctx, absPath) {
 
 function isBuildOutput(ctx, absPath, rel) {
   if (rel.split('/').some((segment) => BUILD_SEGMENTS.has(segment))) return true;
-  const config = readCompilerPaths(nearestConfig(ctx.repo, dirname(absPath)));
-  if (!config?.outDir) return false;
-  const outRel = repoRelative(ctx.repo, config.outDir);
-  return outRel != null && (rel === outRel || rel.startsWith(`${outRel}/`));
+  return ctx.outputs().some((output) => covers(output.outDir, rel));
+}
+
+function covers(dir, rel) {
+  return rel === dir || rel.startsWith(`${dir}/`);
 }
 
 // A path under dist/ is the compiler's output. The edge has to name source,
@@ -438,7 +445,12 @@ function mapBuildOutput(ctx, absPath, rel) {
   return { outcome: 'unresolved', reason: 'build-output-without-source' };
 }
 
+// A source map is read only when the repository tracks it. One a build left
+// on disk describes that build, and the map would move with it: a clean clone
+// and a built one must say the same thing.
 function trackedSources(ctx, absPath) {
+  const mapPath = relative(ctx.repo, `${absPath}.map`).replaceAll('\\', '/');
+  if (!ctx.tracked.has(mapPath)) return null;
   let text;
   try {
     text = readFileSync(`${absPath}.map`, 'utf8');
@@ -478,6 +490,7 @@ export function resolveDeclaredPath(repoPath, rel, tracked) {
     repo: repoPath,
     tracked,
     trackedLower: new Map([...tracked].map((path) => [path.toLowerCase(), path])),
+    outputs: () => buildOutputs(repoPath, tracked),
   };
   const abs = join(repoPath, rel);
   if (isBuildOutput(ctx, abs, rel)) {
@@ -489,41 +502,88 @@ export function resolveDeclaredPath(repoPath, rel, tracked) {
   return tracked.has(rel) ? rel : null;
 }
 
+/**
+ * Whether a declared path the repository does not track is a build's output:
+ * it names what a manifest points people at, so the door stays, built from a
+ * source the map cannot place.
+ */
+export function unplacedBuildOutput(repoPath, rel, tracked) {
+  if (!rel || tracked.has(rel)) return false;
+  const ctx = { repo: repoPath, tracked, outputs: () => buildOutputs(repoPath, tracked) };
+  return isBuildOutput(ctx, join(repoPath, rel), rel);
+}
+
+// The source of a path a compile emits, read from the tracked configs alone:
+// the one a build script names first, then any whose outDir holds the path.
 function rewriteOutDir(ctx, absPath, rel) {
-  const config = readCompilerPaths(nearestConfig(ctx.repo, dirname(absPath)));
-  if (!config?.outDir || !config?.rootDir) return null;
-  const outRel = repoRelative(ctx.repo, config.outDir);
-  const rootRel = repoRelative(ctx.repo, config.rootDir);
-  if (outRel == null || rootRel == null) return null;
-  if (rel !== outRel && !rel.startsWith(`${outRel}/`)) return null;
-  const rewritten = `${rootRel}${rel.slice(outRel.length)}`.replace(/^\//, '');
-  if (ctx.tracked.has(rewritten)) return rewritten;
-  const stem = rewritten.replace(/\.[^.]+$/, '');
-  const hits = EXTENSIONS.map((ext) => `${stem}${ext}`).filter((path) => ctx.tracked.has(path));
-  if (hits.length === 1) return hits[0];
+  for (const output of ctx.outputs()) {
+    if (!covers(output.outDir, rel)) continue;
+    const rewritten = `${output.rootDir}${rel.slice(output.outDir.length)}`.replace(/^\//, '');
+    if (ctx.tracked.has(rewritten)) return rewritten;
+    const stem = rewritten.replace(/\.[^.]+$/, '');
+    const hits = EXTENSIONS.map((ext) => `${stem}${ext}`).filter((path) => ctx.tracked.has(path));
+    if (hits.length === 1) return hits[0];
+  }
   return null;
 }
 
-function readCompilerPaths(configPath) {
-  if (!configPath) return null;
-  let text;
-  try {
-    text = readFileSync(configPath, 'utf8');
-  } catch {
-    return null;
+const OUTPUTS = new WeakMap();
+
+/**
+ * Every tracked tsconfig that emits into a directory, with the directory its
+ * sources come from, in the order a build output is looked up in: the
+ * configs the package scripts hand tsc (-p, --project, -b, --build), the
+ * build script's first, then the rest by path. Read once per tracked set.
+ */
+function buildOutputs(repoPath, tracked) {
+  if (OUTPUTS.has(tracked)) return OUTPUTS.get(tracked);
+  const repo = repositoryView({ repoPath, tracked });
+  const named = [];
+  const manifests = [...tracked].filter((path) => (path === 'package.json' || path.endsWith('/package.json')) && !isTestMaterial(path)
+    && !path.split('/').includes('node_modules')).sort();
+  for (const manifest of manifests) {
+    const dir = manifest.includes('/') ? manifest.slice(0, manifest.lastIndexOf('/')) : '';
+    const scripts = repo.manifest(dir)?.scripts;
+    if (scripts == null || typeof scripts !== 'object') continue;
+    const names = Object.keys(scripts).filter((name) => typeof scripts[name] === 'string')
+      .sort((a, b) => Number(a !== 'build') - Number(b !== 'build') || (a < b ? -1 : a > b ? 1 : 0));
+    for (const name of names) {
+      for (const project of scriptProjects(scripts[name])) {
+        const config = projectFile(repo, dir, project);
+        if (config != null && !named.includes(config)) named.push(config);
+      }
+    }
   }
-  let json;
-  try {
-    json = JSON.parse(stripJsonComments(text));
-  } catch {
-    return null;
+  const configs = [...tracked].filter((path) => /^(?:tsconfig|jsconfig)(?:[.-][^/]*)?\.json$/.test(path.slice(path.lastIndexOf('/') + 1))
+    && !isTestMaterial(path) && !path.split('/').includes('node_modules')).sort();
+  const outputs = [...named, ...configs.filter((path) => !named.includes(path))]
+    .map((config) => tscOutput(repo, config))
+    .filter(Boolean);
+  OUTPUTS.set(tracked, outputs);
+  return outputs;
+}
+
+// The projects one script's tsc commands name.
+function scriptProjects(text) {
+  const out = [];
+  for (const tokens of commandLines(text)) {
+    const at = tokens.findIndex((token) => token === 'tsc' || token.endsWith('/tsc'));
+    if (at === -1) continue;
+    const args = tokens.slice(at + 1);
+    if (args[0] === '-b' || args[0] === '--build') {
+      const positional = args.slice(1).filter((arg) => !arg.startsWith('-'));
+      out.push(...(positional.length > 0 ? positional : ['.']));
+      continue;
+    }
+    for (let i = 0; i < args.length; i += 1) {
+      const eq = args[i].indexOf('=');
+      const name = eq === -1 ? args[i] : args[i].slice(0, eq);
+      if (name !== '-p' && name !== '--project') continue;
+      const value = eq === -1 ? args[i + 1] : args[i].slice(eq + 1);
+      if (value != null) out.push(value);
+    }
   }
-  const options = json.compilerOptions ?? {};
-  const base = dirname(configPath);
-  return {
-    outDir: typeof options.outDir === 'string' ? join(base, options.outDir) : null,
-    rootDir: typeof options.rootDir === 'string' ? join(base, options.rootDir) : null,
-  };
+  return out;
 }
 
 function stripJsonComments(text) {

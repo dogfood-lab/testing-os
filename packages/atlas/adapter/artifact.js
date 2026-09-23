@@ -332,6 +332,7 @@ function carryDoor(door) {
     },
     stages: [...door.stages],
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
+    ...(door.unplaced ? { unplaced: door.unplaced } : {}),
     uses: [...door.uses],
     usesWorkflowToken: door.usesWorkflowToken,
   };

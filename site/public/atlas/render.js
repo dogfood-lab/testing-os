@@ -366,6 +366,12 @@ function changesSection(ctx) {
   return withStrip(changes.unchanged ? p(sentences.join(' ')) : ul(sentences));
 }
 
+// A command whose manifest points at a build's output that no tracked config
+// traces to a source names that path, as page.js does.
+function unplacedClause(door) {
+  return `${startVerb(door)} ${esc(door.unplaced)}, built from a source this map cannot place`;
+}
+
 function comesIn(ctx) {
   const items = ctx.doors.map((door) => {
     const name = `<strong>${esc(door.name)}.</strong>`;
@@ -373,7 +379,8 @@ function comesIn(ctx) {
     const paths = runs(ctx, door);
     const checked = checks(ctx, door);
     const clauses = [];
-    if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths))}`);
+    if (door.unplaced) clauses.push(unplacedClause(door));
+    else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths))}`);
     if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked))}`);
     const ran = capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`);
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
@@ -492,7 +499,8 @@ function otherDoors(ctx) {
     const paths = runs(ctx, door);
     const checked = checks(ctx, door);
     const verb = startVerb(door);
-    if (paths.length > 0 || checked.length === 0) {
+    if (door.unplaced) clauses.push({ html: unplacedClause(door), text: `${verb} ${str(door.unplaced)}, built from a source this map cannot place` });
+    else if (paths.length > 0 || checked.length === 0) {
       clauses.push(paths.length > 0
         ? { html: `${verb} ${runsShown(paths, runTotal(door, paths))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths))}` }
         : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
