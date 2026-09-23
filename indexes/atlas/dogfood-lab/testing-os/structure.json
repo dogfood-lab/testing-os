@@ -2,6 +2,7 @@
   "boundaries": [
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -19,7 +20,7 @@
           "path": ".github/workflows/atlas-render.yml"
         },
         {
-          "hash": "9250af1a0ca712171eeca1159239a9bbbf207679b513a993637141d5862980a8",
+          "hash": "b91d7bbf55b12f8c1d7be8937800adabb76db6e8d1766d94d78b24bc405db8b7",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -31,7 +32,7 @@
           "path": ".github/workflows/pages.yml"
         },
         {
-          "hash": "b21c906f37671201745435a565000fdae6898ba4a5ebc57b6f015647c83cd15b",
+          "hash": "acc4581ff1dbcf3d7ef3b8fe6494461d604ba87577abe7bd7420b4a9a450d8f8",
           "path": ".github/workflows/release.yml"
         },
         {
@@ -51,6 +52,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -75,9 +77,11 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 14,
-      "dynamicWrites": 2,
+      "dynamicReads": 16,
+      "dynamicSpawns": 56,
+      "dynamicWrites": 5,
       "entryPoints": [
+        "packages/atlas/bin/atlas-fleet.js",
         "packages/atlas/cli.js",
         "packages/atlas/index.js"
       ],
@@ -88,7 +92,7 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "adede870b2a32f8305fd0241e29b4b6270a848505b62c732c04be8f29e729b6d",
+          "hash": "9e8f1b9dd35f04cc4d6dc114db8da49837ae23f3ca9477f7e9742f731aedda45",
           "path": "packages/atlas/README.md"
         },
         {
@@ -96,7 +100,7 @@
             "buildArtifact",
             "serializeArtifact"
           ],
-          "hash": "8fefbe2599ceab9604c1c8aefaa505391cffe408190187c2a6859ae7794fc163",
+          "hash": "582645363d5d2134ebb0c7b338daaad7dac13fbe3b1e38a5f2bb8ef101f092e5",
           "importsFiles": [
             "packages/atlas/adapter/templates.js",
             "packages/atlas/core/landings.js"
@@ -124,7 +128,7 @@
             "compareStructures",
             "fileCounts"
           ],
-          "hash": "7cf4ce6f34881edd3e300ae7b9ec67805ee278898750d92bba03dfd817d71362",
+          "hash": "babc40c7fc1e01991ed8b77339f16cf3e58164ff6c9070e97cb2686100e69b2e",
           "importsFiles": [
             "packages/atlas/adapter/check.js",
             "packages/atlas/adapter/page.js"
@@ -132,7 +136,7 @@
           "path": "packages/atlas/adapter/changes.js"
         },
         {
-          "hash": "8e9875df8c00273fef5e0a27b38a632cc1cce0762174a7cdbd6e6dec66d70d3d",
+          "hash": "022d619cf0d94aee4c096f2c78e9f7f33ef0ad67561415219b18c5a821c94239",
           "importsFiles": [
             "packages/atlas/adapter/changes.js"
           ],
@@ -153,7 +157,7 @@
             "main",
             "mapCommand"
           ],
-          "hash": "9b849fe865d15b3eaf3fde699f733e8af9692eb461678a9f2e4a94ef9e0c83d4",
+          "hash": "82e18a36a506d7cf64222db89d389e36167a195cf612f0ced02f04323986ea3d",
           "importsFiles": [
             "packages/atlas/adapter/artifact.js",
             "packages/atlas/adapter/boundary-file.js",
@@ -189,7 +193,10 @@
           "path": "packages/atlas/adapter/diff.js"
         },
         {
-          "hash": "9692563a650e7b0a98187cac1221b634c93bb00f8da0460c945d34d6c7d9f881",
+          "hash": "622d7e19384b14b8be272898bfce13d957952bbaf04a98b4496759e731d28ec9",
+          "importsFiles": [
+            "packages/atlas/adapter/diff.js"
+          ],
           "path": "packages/atlas/adapter/diff.test.js"
         },
         {
@@ -227,7 +234,7 @@
           "exports": [
             "explainCommand"
           ],
-          "hash": "c279c34310e79345ecf8aff8ee7a4b44dcaa82f6ef005c8806e31576dc735003",
+          "hash": "a5cfbd7d15db97ac165b975835803a5e015615eb89f8b55a57c801bc3137e992",
           "importsFiles": [
             "packages/atlas/adapter/errors.js",
             "packages/atlas/adapter/page.js",
@@ -236,8 +243,172 @@
           "path": "packages/atlas/adapter/explain.js"
         },
         {
-          "hash": "6573c2383b38350d448df5cfa267d97dd8ef5ae11d3202f9d20047b52364b0f8",
+          "hash": "c6733f7f1b0cc9680f7e199ea236c26bdea00819d3fb9458bd532984ad743ebd",
           "path": "packages/atlas/adapter/explain.test.js"
+        },
+        {
+          "entry": "renderOne",
+          "entryRule": 4,
+          "exports": [
+            "appendHistory",
+            "changeCount",
+            "cloneWithBackoff",
+            "commandReason",
+            "createFleetServer",
+            "defaultRun",
+            "earlierWindow",
+            "fleetEntry",
+            "headSha",
+            "historyEntry",
+            "isFirstStart",
+            "mergeFleet",
+            "nameFromUrl",
+            "nextRun",
+            "parseCron",
+            "readFleetConfig",
+            "redact",
+            "renderOne",
+            "runFleetOnce",
+            "servedShell",
+            "shallowSinceDate",
+            "skipReason",
+            "startFleetService",
+            "stateFrom",
+            "unauthenticatedGitEnv"
+          ],
+          "hash": "d06e03d6e749eb5ac91503a943fbf4248e3fc1bd6ef6ae676f0e52fea9dabb40",
+          "importsFiles": [
+            "packages/atlas/adapter/write.js"
+          ],
+          "path": "packages/atlas/adapter/fleet.js",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 328,
+                  "name": "divergence",
+                  "target": null
+                },
+                {
+                  "line": 335,
+                  "name": "writeArtifactSync",
+                  "target": {
+                    "file": "packages/atlas/adapter/write.js"
+                  }
+                },
+                {
+                  "line": 358,
+                  "name": "history",
+                  "target": null
+                },
+                {
+                  "line": 362,
+                  "name": "writeArtifactSync",
+                  "target": {
+                    "file": "packages/atlas/adapter/write.js"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "renderOne"
+            },
+            {
+              "calls": [
+                {
+                  "line": 541,
+                  "name": "writeArtifactSync",
+                  "target": {
+                    "file": "packages/atlas/adapter/write.js"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "writeJsonAtomic"
+            },
+            {
+              "calls": [
+                {
+                  "line": 328,
+                  "name": "divergence",
+                  "target": null,
+                  "via": "renderOne"
+                },
+                {
+                  "line": 335,
+                  "name": "writeArtifactSync",
+                  "target": {
+                    "file": "packages/atlas/adapter/write.js"
+                  },
+                  "via": "renderOne"
+                },
+                {
+                  "line": 358,
+                  "name": "history",
+                  "target": null,
+                  "via": "renderOne"
+                },
+                {
+                  "line": 362,
+                  "name": "writeArtifactSync",
+                  "target": {
+                    "file": "packages/atlas/adapter/write.js"
+                  },
+                  "via": "renderOne"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runFleetOnce"
+            },
+            {
+              "calls": [
+                {
+                  "line": 328,
+                  "name": "divergence",
+                  "target": null,
+                  "via": "renderOne"
+                },
+                {
+                  "line": 335,
+                  "name": "writeArtifactSync",
+                  "target": {
+                    "file": "packages/atlas/adapter/write.js"
+                  },
+                  "via": "renderOne"
+                },
+                {
+                  "line": 358,
+                  "name": "history",
+                  "target": null,
+                  "via": "renderOne"
+                },
+                {
+                  "line": 362,
+                  "name": "writeArtifactSync",
+                  "target": {
+                    "file": "packages/atlas/adapter/write.js"
+                  },
+                  "via": "renderOne"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "startFleetService"
+            }
+          ]
+        },
+        {
+          "hash": "174cc9d7ae684b028a796fc4507f2900bae5070c1c0f4e1960de09ac80b2969f",
+          "importsFiles": [
+            "packages/atlas/adapter/fleet.js"
+          ],
+          "path": "packages/atlas/adapter/fleet.test.js"
         },
         {
           "exports": [
@@ -297,10 +468,11 @@
             "testsClause",
             "triggerPhrases",
             "under",
+            "unreadLine",
             "worded",
             "words"
           ],
-          "hash": "3d875f8ffeb4b6a2687e3aaf3e55e6223e57ca05b75c64ecc6c2b97f0ca60afd",
+          "hash": "ff5d348aa6341562dbc2714f3deca6826496c3c07bee4569673f82ef266e7203",
           "importsFiles": [
             "packages/atlas/core/history.js",
             "packages/atlas/core/landings.js",
@@ -309,7 +481,7 @@
           "path": "packages/atlas/adapter/page.js"
         },
         {
-          "hash": "e0f3a793025b083b9a19cc33d6a151f844514398fc48b2c91acbee8bfebedd8d",
+          "hash": "42a0efafd6db2de7813639bc527c86aed6f2bfab0db5466f7c63561731311e09",
           "importsFiles": [
             "packages/atlas/adapter/boundary-file.js",
             "packages/atlas/adapter/page.js",
@@ -329,7 +501,7 @@
           "path": "packages/atlas/adapter/propose.js"
         },
         {
-          "hash": "b53c2749d15650772a305a8571a99435b3be54a8712999cb6300928389c955a6",
+          "hash": "00af0688a8031381d11721ef5f685b4c3adf9d7745b044fc2e6c470d5a6fe9d8",
           "importsFiles": [
             "packages/atlas/adapter/boundary-file.js",
             "packages/atlas/adapter/page.js",
@@ -346,14 +518,14 @@
             "serializeStatistics",
             "statisticsProblem"
           ],
-          "hash": "8d25e541952eb0724ea839e7fc8ef770b1f9ebe2fda6b21081aeb1c53830d639",
+          "hash": "063df308f7a93e3b1258027e7e881b905478f2dc7be39fb649988ed0aa299a28",
           "importsFiles": [
             "packages/atlas/core/history.js"
           ],
           "path": "packages/atlas/adapter/statistics.js"
         },
         {
-          "hash": "dd3a8ca41461b19674555c2fa24cf664eca6e2ce75f01b06c9f91c355fa1a8c6",
+          "hash": "b016d713fce3336a0f2bc7f1a0a914b2335da5c84ea2330e66c89e147da783ea",
           "importsFiles": [
             "packages/atlas/adapter/statistics.js"
           ],
@@ -383,8 +555,15 @@
           "exports": [
             "writeArtifactSync"
           ],
-          "hash": "7ea64d87d06a7d9b149f28e38c3d86bb1b00b34cb4d0db3644e9e4008af621c8",
+          "hash": "91dd77b7fcccbb9ba334258293ae48fa7a03ec54e80b5dee00093f134c5c916c",
           "path": "packages/atlas/adapter/write.js"
+        },
+        {
+          "hash": "109f36805ef1a0eab71d92b33a1f3dd0f602117ff7c0cf0cd88ebf1d6b655866",
+          "importsFiles": [
+            "packages/atlas/adapter/fleet.js"
+          ],
+          "path": "packages/atlas/bin/atlas-fleet.js"
         },
         {
           "hash": "65d3b30202dac0bebbac47abe70347b2d11fa2e8daac8ff9c341244058182f50",
@@ -519,11 +698,11 @@
             "trackedCount",
             "windowStart"
           ],
-          "hash": "463b72381ebd3608ef02492993862a53e1685ccf5248af3ab60cd4e04a2e129a",
+          "hash": "74102e493d2fe922790e777fd3041f14aaa0037cbc533215892934595f65d87c",
           "path": "packages/atlas/core/history.js"
         },
         {
-          "hash": "aa936874ef8c95222d24c9a24fee4e7dbe19d5532ddd43bf9b3080e3a80b667a",
+          "hash": "3231741ad9e76150669f3061a5e3cf775e1c17b4cb8555f560eedf49250db001",
           "importsFiles": [
             "packages/atlas/core/history.js"
           ],
@@ -533,7 +712,7 @@
           "exports": [
             "mapRepository"
           ],
-          "hash": "5919699de0813bb4c6fbace6731dfe588589a1771b8626b4fc65d3605b6505c0",
+          "hash": "3c64d53e205cbb984412abbdb43964c9974d4935b071860c96214b2d3dea39e8",
           "importsFiles": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/doors.js",
@@ -586,7 +765,7 @@
           "path": "packages/atlas/core/languages.js"
         },
         {
-          "hash": "6e5d771323e4bb5dfd797c911568b05f656e6e8c2c282a7e3427461d0dacc41d",
+          "hash": "2ed7d306200cd3472709463d166dfbb41e0e292c550cf57c694f7843ff7dc75f",
           "importsFiles": [
             "packages/atlas/core/fixture-repo.js",
             "packages/atlas/core/index.js"
@@ -622,7 +801,7 @@
           "path": "packages/atlas/core/resolve-build-output.test.js"
         },
         {
-          "hash": "85e2a3b862cbcaaf1a1ede6d9aa48b1ac0a563acdee2934fb9a5a5d9f7710987",
+          "hash": "387b9d4f32c644fa110f209601c5e2e16ae925b8984190d4eff7f3bca6743bb7",
           "importsFiles": [
             "packages/atlas/core/fixture-repo.js",
             "packages/atlas/core/index.js"
@@ -679,7 +858,7 @@
           "exports": [
             "spawnedCommands"
           ],
-          "hash": "f6d95d012bc7ab4dc9d6abb75cc1c6087608ae57cee27830d34067c307149345",
+          "hash": "ae94d50aefa5dec00c1c1c934c12be9baad43dfbb478a0129e78c1a0600fc256",
           "path": "packages/atlas/core/spawned.js"
         },
         {
@@ -705,10 +884,9 @@
           "path": "packages/atlas/core/walk-modes.test.js"
         },
         {
-          "hash": "c60ce005250e23608d951631b6e740b359837c162e6d292100c8fc923230a9fd",
+          "hash": "726cd5b8f6033fd454d53e8f5bc872354db357f4346f240691c6693cfc1020ac",
           "importsFiles": [
-            "packages/atlas/core/fixture-repo.js",
-            "packages/atlas/core/index.js"
+            "packages/atlas/core/fixture-repo.js"
           ],
           "path": "packages/atlas/core/writes-nothing.test.js"
         },
@@ -740,7 +918,7 @@
           "path": "packages/atlas/index.js"
         },
         {
-          "hash": "14d733ddfe9e70dc7d62838a622b887c3a5360b0e6525c5388884ec436e7f235",
+          "hash": "bb91fa2f018e757f60911b19a6428dc9e14e7d05f7aa2ee9baaa85cc4ccd4d2f",
           "path": "packages/atlas/package.json"
         },
         {
@@ -755,17 +933,60 @@
       "name": "atlas",
       "origin": "authored",
       "role": "code",
-      "testedBy": 28,
+      "testedBy": 31,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
         {
-          "hash": "75ea35eab9c8c1aed8b2ca2b35e854f7db966ebd2fa6857bbe91088f3589bd26",
+          "hash": "961db6dcfc6eaeee169fda7d83c6d2ba85ba64f49f23c44fdec342da3b7448b0",
+          "path": "docker/Dockerfile"
+        },
+        {
+          "hash": "afcde4326f1d1c4a928469c821a9ec5508d338b46f587d996f6fa9d509385202",
+          "path": "docker/Dockerfile.dockerignore"
+        },
+        {
+          "hash": "a3da67df1277bfa9be6880f3c8e66ebdf2ce8f1906ef1ae8dfea0d4730f3b741",
+          "path": "docker/README.md"
+        },
+        {
+          "hash": "052ef74d698dcecb83e06665fb07a91e833b82b52be54d422d9689e5aa44be24",
+          "path": "docker/compose.example.yml"
+        },
+        {
+          "hash": "946d6856bdcbe1b02f5080f957b59d5aeb65172c893bae61409bb72a9a194e72",
+          "path": "docker/entrypoint.sh"
+        },
+        {
+          "hash": "30ce0f37d6d10bcd9427ce62abb17e847cb1a830b094597b592837a746840259",
+          "path": "docker/fleet.example.yml"
+        }
+      ],
+      "globs": [
+        "docker/**"
+      ],
+      "importConfidence": "full",
+      "name": "docker",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "fbd522fcd887db1edabbe5168ac0e33799878bec14d978d39425eef57365e175",
           "path": "docs/atlas-design.dispatch.md"
         },
         {
@@ -773,7 +994,7 @@
           "path": "docs/atlas-page.spec.md"
         },
         {
-          "hash": "82d14edc6271a5ed4d48f341d5062d1b0344922003084589269ef8bda21f4b12",
+          "hash": "d136c1c0b591830c39ce8522e307d4cfae75c55f07a1a6b84ea8579805262ff4",
           "path": "docs/atlas.dispatch.md"
         },
         {
@@ -865,6 +1086,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -945,6 +1167,7 @@
     },
     {
       "dynamicReads": 52,
+      "dynamicSpawns": 114,
       "dynamicWrites": 5,
       "entryPoints": [
         "packages/dogfood-swarm/cli.js"
@@ -4432,6 +4655,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -4469,6 +4693,7 @@
     },
     {
       "dynamicReads": 26,
+      "dynamicSpawns": 11,
       "dynamicWrites": 8,
       "entryPoints": [
         "packages/findings/cli.js",
@@ -5238,6 +5463,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 1,
       "dynamicWrites": 0,
       "entryPoints": [
         "fixtures/atlas/python-pkg/trainkit/console.py"
@@ -6258,6 +6484,42 @@
           "path": "fixtures/atlas/roles/swarms/plan.md"
         },
         {
+          "hash": "e34727105831f235266147e3d0fb54d4906f280a10b8e83896af688738c22a2d",
+          "path": "fixtures/atlas/root-part/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "579279a3dd80be1650d2bee69c32a2cdd128086ebeba73b199226d82edc79402",
+          "path": "fixtures/atlas/root-part/atlas/boundaries.yaml"
+        },
+        {
+          "exports": [
+            "start"
+          ],
+          "hash": "c50ad269338a5d809e9bf304fbabe5b5268e083d9394c438d515d2b5ac92eceb",
+          "importsFiles": [
+            "fixtures/atlas/root-part/lib/core.js"
+          ],
+          "path": "fixtures/atlas/root-part/index.js"
+        },
+        {
+          "exports": [
+            "core"
+          ],
+          "hash": "96ce0181967913834e9f6cbf96a29e70fdfba316752f395b5055c6e2e823b87b",
+          "path": "fixtures/atlas/root-part/lib/core.js"
+        },
+        {
+          "hash": "fef445b637dc927aaf9abdb7eb1547c5d6db90a68f5cd9d92f1e9dfc6a0b1e87",
+          "path": "fixtures/atlas/root-part/package.json"
+        },
+        {
+          "hash": "a6b6ea4c85440aa5e1f37b058b2df1481a35de814ce7d90351d7708aaf364021",
+          "importsFiles": [
+            "fixtures/atlas/root-part/index.js"
+          ],
+          "path": "fixtures/atlas/root-part/tools/run.js"
+        },
+        {
           "hash": "89f0a66898f8b57c187ede3bb34875182c603367952aabe5e505038c3a48639c",
           "path": "fixtures/atlas/sequence/.github/workflows/run.yml"
         },
@@ -6806,6 +7068,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -6883,11 +7146,11 @@
           "path": "indexes/failing.json"
         },
         {
-          "hash": "f95d652e656b298e5532a322aa788056d87b0f0dca6e7d2d6b5de030c9c59e1e",
+          "hash": "29d4e623095ae7f086530c07d1af0fa1cad9598d0ca031177a6f1119662b2535",
           "path": "indexes/integrity/chain.jsonl"
         },
         {
-          "hash": "7989eba7ca1288887d326e4fcd8dcb97dd39cf258a061f32436c4847c68d9bab",
+          "hash": "aff23ac68a298cdfa38fb452c6061b1f906be92121c10e0844227e98005b8ca0",
           "path": "indexes/latest-by-repo.json"
         },
         {
@@ -6895,7 +7158,7 @@
           "path": "indexes/stale.json"
         },
         {
-          "hash": "57a9f03ccbc7c9abd5b39757939907c9d162fe3ab647e4ff53ae71fae7463c8a",
+          "hash": "f9e8cd5e1c61af79313d66c7cd83d3e15d18a27282b3e52f85474fa2c4bb9686",
           "path": "indexes/trends.json"
         }
       ],
@@ -6911,6 +7174,7 @@
     },
     {
       "dynamicReads": 16,
+      "dynamicSpawns": 18,
       "dynamicWrites": 4,
       "entryPoints": [
         "packages/ingest/run.js"
@@ -8337,6 +8601,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -8414,6 +8679,7 @@
     },
     {
       "dynamicReads": 15,
+      "dynamicSpawns": 9,
       "dynamicWrites": 0,
       "entryPoints": [
         "packages/portfolio/generate.js"
@@ -8690,6 +8956,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -8967,6 +9234,10 @@
           "path": "records/dogfood-lab/testing-os/2026/09/23/run-00mue82d5u-uQ90y--rrG2JEw.json"
         },
         {
+          "hash": "562ddf92f79219b2583280726a1465b94ad846d6ce0b1fc5a387a04553e79e12",
+          "path": "records/dogfood-lab/testing-os/2026/09/23/run-00muearjny-lnVhEllvtByurQ.json"
+        },
+        {
           "hash": "d80bd628d70f1275786c79da48bfb6da79ef0eb303eceed6fe87960e8c7a308c",
           "path": "records/mcp-tool-shop-org/a11y-demo-site/2026/03/20/run-a11y-demo-site-23329256169-1.json"
         },
@@ -9183,6 +9454,7 @@
     },
     {
       "dynamicReads": 2,
+      "dynamicSpawns": 10,
       "dynamicWrites": 2,
       "entryPoints": [
         "packages/report/build-submission.js",
@@ -9458,6 +9730,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -9483,6 +9756,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -9492,7 +9766,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "6529c3a8af91a3e6b98ff6c7ecb67e89c2519aa557cd6cf7e82a63d1c00a7663",
+          "hash": "643f420060ae8d4098b770aee7ce2cb0ff524c95eb1228a9617e32a9a4d652c6",
           "path": "CHANGELOG.md"
         },
         {
@@ -9532,7 +9806,7 @@
           "path": "README.ja.md"
         },
         {
-          "hash": "34ff88997594f359b274703494e00c1012307adb656efab5adc064e8fd100a4a",
+          "hash": "c5a9798bea89b40d7d82b653aa957b0ae532a50fa6554f45bec4407f25746fa8",
           "path": "README.md"
         },
         {
@@ -9556,7 +9830,7 @@
           "path": "SHIP_GATE.md"
         },
         {
-          "hash": "bf1c893eb2d185b9df7301410c272efff2a34252a12b6e3eaa63c43b3b221c86",
+          "hash": "89509e2e1858c8c1e177da790ac3f664414856e62e9cb1a33bb41413ad000438",
           "path": "package-lock.json"
         },
         {
@@ -9584,6 +9858,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [
         "packages/schemas/src/index.ts"
@@ -9776,7 +10051,8 @@
         {
           "hash": "887985ca9777d93e76b6ee2d4db09fb2097abd7bc7a38c943e9fed7362b51405",
           "parseError": true,
-          "path": "packages/schemas/test/stageC-cross-contract-enum-seal.test.ts"
+          "path": "packages/schemas/test/stageC-cross-contract-enum-seal.test.ts",
+          "unreadSyntax": "nul-character"
         },
         {
           "hash": "a124d2400a7b5482c4b33115d0ae7a50b1d26beec634b0c02c790da6dfd2da1b",
@@ -9823,6 +10099,7 @@
     },
     {
       "dynamicReads": 58,
+      "dynamicSpawns": 33,
       "dynamicWrites": 6,
       "entryPoints": [],
       "externals": 0,
@@ -9897,35 +10174,91 @@
           "entry": "main",
           "entryRule": 1,
           "exports": [
-            "appendHistory",
-            "changeCount",
-            "earlierWindow",
-            "fleetEntry",
-            "historyEntry",
             "listPublic",
             "pushAuthEnv",
             "readExclusions",
             "rejectForeignPaths",
-            "renderFleet",
-            "shallowSinceDate"
+            "renderFleet"
           ],
-          "hash": "33114e4a3d37aa090a1ea37e7e18e6809bf752f74f50cb67315cd4dee80e0a3c",
+          "hash": "66224e3477b3336103c2521b791f2d5d69687c4825320ef1eba4add342dd7995",
+          "importsFiles": [
+            "packages/atlas/adapter/fleet.js"
+          ],
           "path": "scripts/atlas-render.mjs",
           "sequences": [
             {
               "calls": [
                 {
-                  "line": 458,
+                  "line": 128,
+                  "name": "unauthenticatedGitEnv",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "pushAuthEnv"
+            },
+            {
+              "calls": [
+                {
+                  "line": 138,
+                  "name": "unauthenticatedGitEnv",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                },
+                {
+                  "line": 139,
+                  "name": "headSha",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                },
+                {
+                  "line": 140,
+                  "name": "commandReason",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "defaultBranchHead"
+            },
+            {
+              "calls": [
+                {
+                  "line": 190,
+                  "name": "renderOne",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "renderPublic"
+            },
+            {
+              "calls": [
+                {
+                  "line": 239,
                   "name": "listOpen",
                   "target": null
                 },
                 {
-                  "line": 461,
+                  "line": 242,
                   "name": "comment",
                   "target": null
                 },
                 {
-                  "line": 464,
+                  "line": 245,
                   "name": "create",
                   "target": null
                 }
@@ -9938,29 +10271,90 @@
             {
               "calls": [
                 {
-                  "line": 472,
+                  "line": 253,
                   "name": "now",
                   "target": null
                 },
                 {
-                  "line": 583,
+                  "line": 277,
+                  "name": "stateFrom",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                },
+                {
+                  "line": 138,
+                  "name": "unauthenticatedGitEnv",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "defaultBranchHead"
+                },
+                {
+                  "line": 139,
+                  "name": "headSha",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "defaultBranchHead"
+                },
+                {
+                  "line": 140,
+                  "name": "commandReason",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "defaultBranchHead"
+                },
+                {
+                  "line": 295,
+                  "name": "defaultRun",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                },
+                {
+                  "line": 303,
+                  "name": "skipReason",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                },
+                {
+                  "line": 190,
+                  "name": "renderOne",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "renderPublic"
+                },
+                {
+                  "line": 334,
+                  "name": "mergeFleet",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                },
+                {
+                  "line": 347,
                   "name": "writeBranch",
                   "target": null
                 },
                 {
-                  "line": 458,
+                  "line": 239,
                   "name": "listOpen",
                   "target": null,
                   "via": "publishIssue"
                 },
                 {
-                  "line": 461,
+                  "line": 242,
                   "name": "comment",
                   "target": null,
                   "via": "publishIssue"
                 },
                 {
-                  "line": 464,
+                  "line": 245,
                   "name": "create",
                   "target": null,
                   "via": "publishIssue"
@@ -9974,31 +10368,122 @@
             {
               "calls": [
                 {
-                  "line": 472,
+                  "line": 253,
                   "name": "now",
                   "target": null,
                   "via": "renderFleet"
                 },
                 {
-                  "line": 583,
+                  "line": 277,
+                  "name": "stateFrom",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "renderFleet"
+                },
+                {
+                  "line": 138,
+                  "name": "unauthenticatedGitEnv",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "defaultBranchHead"
+                },
+                {
+                  "line": 139,
+                  "name": "headSha",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "defaultBranchHead"
+                },
+                {
+                  "line": 140,
+                  "name": "commandReason",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "defaultBranchHead"
+                },
+                {
+                  "line": 295,
+                  "name": "defaultRun",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "renderFleet"
+                },
+                {
+                  "line": 303,
+                  "name": "skipReason",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "renderFleet"
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 328,
+                      "name": "divergence",
+                      "target": null
+                    },
+                    {
+                      "line": 335,
+                      "name": "writeArtifactSync",
+                      "target": {
+                        "file": "packages/atlas/adapter/write.js"
+                      }
+                    },
+                    {
+                      "line": 358,
+                      "name": "history",
+                      "target": null
+                    },
+                    {
+                      "line": 362,
+                      "name": "writeArtifactSync",
+                      "target": {
+                        "file": "packages/atlas/adapter/write.js"
+                      }
+                    }
+                  ],
+                  "line": 190,
+                  "name": "renderOne",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "renderPublic"
+                },
+                {
+                  "line": 334,
+                  "name": "mergeFleet",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "renderFleet"
+                },
+                {
+                  "line": 347,
                   "name": "writeBranch",
                   "target": null,
                   "via": "renderFleet"
                 },
                 {
-                  "line": 458,
+                  "line": 239,
                   "name": "listOpen",
                   "target": null,
                   "via": "publishIssue"
                 },
                 {
-                  "line": 461,
+                  "line": 242,
                   "name": "comment",
                   "target": null,
                   "via": "publishIssue"
                 },
                 {
-                  "line": 464,
+                  "line": 245,
                   "name": "create",
                   "target": null,
                   "via": "publishIssue"
@@ -10008,6 +10493,43 @@
               "invokedAtTopLevel": true,
               "isDefaultExport": false,
               "name": "main"
+            },
+            {
+              "calls": [
+                {
+                  "line": 399,
+                  "name": "unauthenticatedGitEnv",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                },
+                {
+                  "line": 400,
+                  "name": "defaultRun",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                },
+                {
+                  "line": 128,
+                  "name": "unauthenticatedGitEnv",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  },
+                  "via": "pushAuthEnv"
+                },
+                {
+                  "line": 424,
+                  "name": "defaultRun",
+                  "target": {
+                    "file": "packages/atlas/adapter/fleet.js"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "commitBranch"
             }
           ]
         },
@@ -10339,6 +10861,13 @@
           "path": "scripts/doc-drift-patterns.json"
         },
         {
+          "hash": "7e513f39fd150a7cb82eb144a90a0851880fbdfe6ff1d8c85321faae14735fa7",
+          "importsFiles": [
+            "packages/atlas/adapter/fleet.js"
+          ],
+          "path": "scripts/docker-image.test.mjs"
+        },
+        {
           "hash": "befc99eee0c567a28a177ce29a5bcbe3a8bc38efe8a0f4d77af73cb9f5421a76",
           "path": "scripts/grandfathered-pins.json"
         },
@@ -10533,12 +11062,12 @@
           "exports": [
             "syncVersion"
           ],
-          "hash": "862a4a0ade2e437884624e35d73babc7d74a28b8cbb9140490a55742a121b80f",
+          "hash": "b5ea8762b1536c89f82455187e9cfca797fc7a8e1c9add420557e78a726639f3",
           "path": "scripts/sync-version.mjs",
           "sequences": []
         },
         {
-          "hash": "0fa01821d572920581cab9dd307f80a7521681938d0d9b612ec13d503c516753",
+          "hash": "29f1a53fd639edf65995a371de8f6b4215e3b4850b0a07c04e459de4730eded1",
           "importsFiles": [
             "scripts/check-lockfile-drift.test.mjs",
             "scripts/sync-version.mjs"
@@ -10562,6 +11091,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 2,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -10583,7 +11113,7 @@
           "path": "site/public/atlas/hero.webp"
         },
         {
-          "hash": "3e428b75d9af4647233c8e303ef53f81938b5fcef4e33469cb93a10f1c928756",
+          "hash": "db88e341abb33a554c4b89e5d7174e2cf775290ea081502607d620d9d5365300",
           "path": "site/public/atlas/index.html"
         },
         {
@@ -10599,17 +11129,20 @@
             "markdownUrl",
             "pageDataUrl",
             "pageTitle",
+            "partLabel",
             "renderBreaks",
             "renderDelta",
             "renderFleet",
             "renderFlow",
             "renderPage",
             "repoHref",
+            "servedBase",
+            "servedMarkdownUrl",
             "state",
             "summaryEditUrl",
             "triggerNoun"
           ],
-          "hash": "16c5eb5db44db957d5e333e80d8da67a3ffddc64da12edc6a50dacfbd8373029",
+          "hash": "752a61126461f08f576572e4945aea905c4b764843792eac48db35056b5d7e55",
           "path": "site/public/atlas/render.js"
         },
         {
@@ -10637,7 +11170,7 @@
           "path": "site/src/components/BaseLayout.test.mjs"
         },
         {
-          "hash": "2e2f0ee5ad53290012011a982c3815a8a1ac16d9178d6b49c0554c9f0c19d309",
+          "hash": "7af285e92440bdf465716eaf1f167d2f4e99ad591527e66f439838cc0abc8f6d",
           "importsFiles": [
             "site/public/atlas/render.js"
           ],
@@ -10656,7 +11189,7 @@
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "6ce69cef3ab8dcda5abfce473f19267ae54e755078e5a8410957df5cba3bea41",
+          "hash": "a85415d8f8b20f94c073854d55ceeefefaf565abc50dced0c2d60e13ec513ca5",
           "path": "site/src/content/docs/handbook/atlas.md"
         },
         {
@@ -10752,6 +11285,7 @@
     },
     {
       "dynamicReads": 0,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -10829,6 +11363,7 @@
     },
     {
       "dynamicReads": 6,
+      "dynamicSpawns": 0,
       "dynamicWrites": 0,
       "entryPoints": [
         "packages/verify/cli.js",
@@ -11441,6 +11976,15 @@
           "boundary": "scripts",
           "depth": 0,
           "files": 1
+        },
+        {
+          "boundary": "atlas",
+          "depth": 1,
+          "enters": {
+            "file": "packages/atlas/adapter/fleet.js",
+            "from": "scripts/atlas-render.mjs"
+          },
+          "files": 2
         }
       ],
       "readers": [
@@ -11601,7 +12145,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 61
+          "files": 62
         },
         {
           "boundary": "dogfood",
@@ -12241,6 +12785,11 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/adapter/fleet.test.js"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/adapter/init.test.js"
         },
         {
@@ -12272,11 +12821,6 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/atlas/adapter/templates.test.js"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/adapter/ts-probe.test.js"
         },
         {
           "job": "build-and-test",
@@ -13319,7 +13863,7 @@
           "path": "site/src/components/"
         }
       ],
-      "runsCount": 515,
+      "runsCount": 517,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -13343,6 +13887,7 @@
             "SCORECARD.md",
             "SHIP_GATE.md",
             "atlas/**",
+            "docker/**",
             "docs/**",
             "dogfood/**",
             "fixtures/**",
@@ -13370,6 +13915,7 @@
             "SCORECARD.md",
             "SHIP_GATE.md",
             "atlas/**",
+            "docker/**",
             "docs/**",
             "dogfood/**",
             "fixtures/**",
@@ -14113,6 +14659,11 @@
           "job": "publish",
           "step": "Create GitHub Release",
           "text": "# --verify-tag asserts the tag exists. If a release already exists\n# for this tag (e.g. a re-fire after a partial failure), skip\n# creation rather than failing the workflow.\nif gh release view \"${PUBLISH_TAG}\" >/dev/null 2>&1; then\n  echo \"GitHub Release ${PUBLISH_TAG} already exists — skipping creation.\"\n  exit 0\nfi\n# F-60f0c4f5 defense-in-depth: the view-then-create pair above is\n# check-then-act. Two concurrent runs for the same tag (now\n# serialized by the normalized concurrency group, but belt-and-\n# braces) can both pass the view before either creates; the loser's\n# create fails AFTER packages are live. Tolerate a lost create race\n# by re-checking: if the release exists now, another run created it\n# and this is a no-op success, not a red run.\ngh release create \"${PUBLISH_TAG}\" \\\n  --title \"testing-os ${PUBLISH_TAG}\" \\\n  --notes-file /tmp/release-notes.md \\\n  --verify-tag \\\n|| {\n  if gh release view \"${PUBLISH_TAG}\" >/dev/null 2>&1; then\n    echo \"::notice::GitHub Release ${PUBLISH_TAG} was created by a concurrent run — treating as success.\"\n  else\n    echo \"::error::gh release create failed for ${PUBLISH_TAG} and no release exists. Packages published this run are LIVE (irreversible); re-fire the workflow to create the release (publish steps are idempotent no-ops).\"\n    exit 1\n  fi\n}\n"
+        },
+        {
+          "job": "container",
+          "step": "Wait until npm serves the published version",
+          "text": "# The publish job has just put this version on npm, and the registry\n# can take minutes to answer for it everywhere. Poll for up to five\n# minutes; the Dockerfile's install retries as well.\nVERSION=\"${PUBLISH_TAG#v}\"\necho \"version=${VERSION}\" >> \"$GITHUB_OUTPUT\"\nfor attempt in $(seq 1 30); do\n  if [ \"$(npm view \"@dogfood-lab/atlas@${VERSION}\" version 2>/dev/null)\" = \"${VERSION}\" ]; then\n    echo \"@dogfood-lab/atlas@${VERSION} is on npm (check ${attempt}).\"\n    exit 0\n  fi\n  echo \"@dogfood-lab/atlas@${VERSION} not served yet (check ${attempt} of 30); waiting 10s.\"\n  sleep 10\ndone\necho \"::error::@dogfood-lab/atlas@${VERSION} was not served by npm within five minutes. The packages are live; re-fire this workflow for ${PUBLISH_TAG} to build the image (publish is an idempotent no-op on a re-fire).\"\nexit 1\n"
         }
       ],
       "file": ".github/workflows/release.yml",
@@ -14143,15 +14694,17 @@
       ],
       "name": "Release",
       "permissions": [
+        "contents:read",
         "contents:write",
-        "id-token:write"
+        "id-token:write",
+        "packages:write"
       ],
       "pushes": false,
       "reach": [
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 55
+          "files": 58
         },
         {
           "boundary": "dogfood",
@@ -14791,6 +15344,11 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/adapter/fleet.test.js"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/adapter/init.test.js"
         },
         {
@@ -14902,11 +15460,6 @@
           "job": "publish",
           "matched": true,
           "path": "packages/atlas/core/resolve-python.test.js"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/core/resolve-tsconfig-extends.test.js"
         },
         {
           "job": "publish",
@@ -15866,7 +16419,7 @@
           "path": "site/src/components/"
         }
       ],
-      "runsCount": 514,
+      "runsCount": 516,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -15878,6 +16431,7 @@
         "opensPullRequests": false,
         "publishes": true,
         "publishesTo": [
+          "container image",
           "npm"
         ],
         "releases": true
@@ -15896,7 +16450,10 @@
       ],
       "uses": [
         "actions/checkout",
-        "actions/setup-node"
+        "actions/setup-node",
+        "docker/build-push-action",
+        "docker/login-action",
+        "docker/setup-buildx-action"
       ],
       "usesWorkflowToken": true
     },
@@ -16092,6 +16649,11 @@
     {
       "from": "scripts",
       "kind": "file",
+      "to": "atlas"
+    },
+    {
+      "from": "scripts",
+      "kind": "file",
       "to": "dogfood-swarm"
     },
     {
@@ -16129,8 +16691,8 @@
     }
   ],
   "generatedFrom": {
-    "commit": "ed8bddbed125d05913a38bfed01aa187b0c51bea",
-    "tracked": 1394
+    "commit": "c8f9f58f1ad017a82d9f86709dbfd086a57b92ed",
+    "tracked": 1411
   },
   "landings": [
     {
@@ -16539,6 +17101,11 @@
           "confidence": "text"
         },
         {
+          "by": "packages/atlas/adapter/fleet.js",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
           "by": "packages/atlas/core/fixture-repo.js",
           "call": "literal",
           "confidence": "ast"
@@ -16572,11 +17139,6 @@
           "by": "packages/verify/package.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "scripts/atlas-render.mjs",
-          "call": "literal",
-          "confidence": "ast"
         },
         {
           "by": "scripts/doc-drift-patterns.json",
@@ -16807,6 +17369,17 @@
         }
       ],
       "target": "assets/logo.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/sync-version.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "docker/Dockerfile",
       "writers": []
     },
     {
@@ -18828,7 +19401,7 @@
       "target": "README.md"
     }
   ],
-  "testFiles": 544,
+  "testFiles": 546,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",
