@@ -27,6 +27,9 @@ const JS_READS = new Set(['readFileSync', 'readFile', 'readdirSync', 'readdir', 
 // Calls that read a file's content, as a writer does before it writes back
 // into the same file: a stamp. existsSync and statSync only look.
 const CONTENT_READS = new Set(['readFileSync', 'readFile', 'createReadStream', 'open', 'openSync', 'read_text', 'read_bytes']);
+// Calls that make a directory. Making one the repository already tracks
+// writes nothing into it; the files written there land on their own.
+const DIRECTORY_MAKERS = new Set(['mkdirSync', 'mkdir', 'os.makedirs', 'os.mkdir']);
 const JS_OPEN = new Set(['open', 'openSync']);
 const NETWORK = new Set(['fetch', 'get']);
 const JS_PATH_MODULES = new Set(['path', 'posix', 'win32', 'path.posix', 'path.win32']);
@@ -411,6 +414,7 @@ export function astLandings(language, root, path, places) {
         continue;
       }
       const target = landingOf(value, places);
+      if (target != null && kind === 'write' && DIRECTORY_MAKERS.has(call) && places.dirs.has(target)) continue;
       if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}) });
       else if (value.open) unplaced = true;
     }

@@ -65,6 +65,10 @@ describe('a write the repository does not track, and a stamped block', () => {
     assert.equal(landing('registry/metrics.json')?.tracked, false);
   });
 
+  it('lands no write where a script only makes sure a tracked directory exists', () => {
+    assert.equal(landing('registry'), undefined, JSON.stringify(structure.landings));
+  });
+
   it('leaves the parts holding only untracked output hand-authored, and no door writes there', () => {
     assert.equal(part('proofs').origin, 'authored');
     assert.equal(part('registry').origin, 'authored');
