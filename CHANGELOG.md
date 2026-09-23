@@ -2,6 +2,13 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **What breaks what, as a picture.** On the site page the list is followed by one row per part it names, at most eight: a solid bar as long as the number of parts that import it to run it, a thinner dashed bar continuing it for the parts that import it only from tests, the numbers at the bar ends, and the doors on its path as a numeral. Fills are neutral and length is the only channel; the description is the first three rows in words ("schemas is imported by 6 parts and 2 more only from tests, and sits on the path of 4 doors; …"). Below 600px it is not drawn, since the list says the same. `page.json` gains `edges`, the imports among the listed parts as `{ from, to, fromTests }`, one per ordered pair, for a later layer that joins the rows; nothing draws them yet.
+- **A delta strip under "What changed since the last map".** The weekly render job appends one entry per render to `indexes/atlas/<owner>/<repo>/history.json` on the render branch (`renderedAt`, `commit`, `itemCount`, `headlineKind`, `fileCounts`), reading the previous history from the branch as it reads `state.json` and `fleet.json` and keeping the newest 52. `itemCount` counts an "And n more" line as the n it cut; a history that exists but cannot be read is left on the branch rather than restarted. The site draws one column per entry whose height is the count, marks a headline import with the import edge's arrowhead and a cycle with a heavier cycle mark, dates the first, last and every fourth column, and closes with one sentence: "n renders since <date>; m of them changed the structure; the largest delta was k items on <date>." Without a `history.json` the section is unchanged; below 600px the columns drop and the sentence stays.
+- **The one line a person may write.** Under the mapped-at line the site page says "No one has written the one line a person may add. Write it." with a link to GitHub's editor for `atlas/boundaries.yaml` on `main`, or, when the summary is written, shows it followed by "(written by a person)" and a small "Correct it" link to the same place. On the site the line moves there from "What this is", so it is said once; the committed markdown keeps it where it was. The site writes nothing.
+
 ## [1.14.0] — 2026-09-23
 
 ### Added

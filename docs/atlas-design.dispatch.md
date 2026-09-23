@@ -385,6 +385,41 @@ The page names the commit it was rendered against and shows the age of the rende
 age-line form as everything else. If the repository has moved and has not been rendered in
 fourteen days, the age line says so in `--flash`. It never fails anything.
 
+**Added 2026-09-23: two pictures and one line.** Each is read from data the render branch
+already carries, and none carries meaning by colour.
+
+- **What breaks what** is followed by a picture of its own list: one row per part, a solid
+  bar as long as the number of parts that import it to run it, a thinner dashed bar
+  continuing it for the parts that import it only from tests, and the doors on its path as
+  a numeral. Dashed is the vocabulary's mark for evidence short of running code, the same
+  atom the flow picture uses for a reader found by text, and the number at the bar's end
+  says in words what the dashed length says in line. `page.json` also carries `edges`, the
+  imports among the listed parts, for a later layer that joins the rows; nothing draws
+  them yet. Below 600 px the picture is not drawn, because the list above it says the same.
+- **What changed since the last map** is followed by a strip read from `history.json`,
+  which the weekly job appends to beside each page and keeps at fifty-two entries. One
+  column per render; its height is the number of structural changes that render named,
+  and height is the only encoding. A headline that is an import carries the import mark,
+  and one that closes a cycle carries the strongest mark, a heavier cycle arrow. The
+  dashboard's sprite holds only the age and low-confidence marks, and neither means a
+  change, so the strip draws the import edge's ▶ from §6.1 and adds one mark for the
+  cycle rather than borrowing one that means something else. A sentence under
+  the strip counts the renders, how many changed the structure, and the largest. Below
+  600 px the columns drop and the sentence stays. A render made before the history existed
+  shows no strip.
+- **The one line a person may write** sits under the mapped-at line. When the summary is
+  empty, the page says so and links to GitHub's editor for `atlas/boundaries.yaml`; when it
+  is present, the page shows it marked as written by a person, with a small link to
+  correct it. The site writes nothing.
+
+```text
+part           imported by                          doors
+schemas        ━━━━━━━━━━━━━━━━━━┄┄┄┄┄┄ 6 + 2 from tests   4
+findings       ━━━━━━━━━┄┄┄ 3 + 1 from tests               3
+ingest         ━━━━━━ 2                                    3
+portfolio      ━━━ 1                                       3
+```
+
 ### 4.3 The command line
 
 Three commands, each with a fixed output shape.
