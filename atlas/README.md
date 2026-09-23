@@ -1,22 +1,15 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 10a8171.
+Mapped at 2026-09-23 from commit 927e765.
 
 ## What this is
 
 23 parts, mostly JavaScript (826 files). Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing). It publishes to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.
 
-## What changed since 2026-09-23 (c94d84e)
+## What changed since 2026-09-23 (10a8171)
 
-- CI runs 7 more files than before.
-- Release runs 7 more files than before.
-- atlas (packages/atlas/package.json) is a new command. It runs packages/atlas/cli.js.
-- And 8 more changes to doors.
-- indexes/atlas/fleet.json is now written by scripts/atlas-render.mjs.
-- indexes/atlas/state.json is now written by scripts/atlas-render.mjs.
-- .github/workflows/dogfood.yml is now read by packages/report/init.js.
-- And 7 more new writers and readers of places.
-- 95 files added and 32 changed content, across 6 parts.
+- packages/atlas/package.json is now read by packages/atlas/adapter/fleet.js.
+- 2 files added and 12 changed content, across 6 parts.
 
 ## What comes in
 
@@ -104,7 +97,7 @@ Mapped at 2026-09-23 from commit 10a8171.
 
 ## What tends to change together
 
-- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 16 of 22 commits, inside the site part.
+- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 17 of 24 commits, inside the site part.
 - **packages/atlas/adapter/artifact.js** and **packages/atlas/core/index.js** changed together in 11 of 22 commits, inside the atlas part.
 
 2 files changed together with their own tests, as expected.

@@ -122,78 +122,30 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 95,
-      "changed": 32,
+      "added": 2,
+      "changed": 12,
       "moved": 0,
       "parts": 6,
       "removed": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "CI runs 7 more files than before.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Release runs 7 more files than before.",
-        "subjects": [
-          ".github/workflows/release.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "atlas (packages/atlas/package.json) is a new command. It runs packages/atlas/cli.js.",
+        "kind": "landing",
+        "sentence": "packages/atlas/package.json is now read by packages/atlas/adapter/fleet.js.",
         "subjects": [
           "packages/atlas/package.json",
-          "packages/atlas/cli.js"
+          "packages/atlas/adapter/fleet.js"
         ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 8 more changes to doors.",
-        "subjects": []
-      },
-      {
-        "kind": "landing",
-        "sentence": "indexes/atlas/fleet.json is now written by scripts/atlas-render.mjs.",
-        "subjects": [
-          "indexes/atlas/fleet.json",
-          "scripts/atlas-render.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "indexes/atlas/state.json is now written by scripts/atlas-render.mjs.",
-        "subjects": [
-          "indexes/atlas/state.json",
-          "scripts/atlas-render.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".github/workflows/dogfood.yml is now read by packages/report/init.js.",
-        "subjects": [
-          ".github/workflows/dogfood.yml",
-          "packages/report/init.js"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 7 more new writers and readers of places.",
-        "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "95 files added and 32 changed content, across 6 parts.",
+        "sentence": "2 files added and 12 changed content, across 6 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "c94d84e93304960285d8557b710a94a1b07d098f",
-      "generatedAt": "2026-09-23T16:06:30.804Z"
+      "commit": "10a817174397d10bc76bd20cdfbfdad708b55c5d",
+      "generatedAt": "2026-09-23T17:50:50.307Z"
     },
     "unchanged": false
   },
@@ -201,7 +153,7 @@
     {
       "a": "site/public/atlas/render.js",
       "b": "site/src/components/atlas-page.test.mjs",
-      "either": 22,
+      "either": 24,
       "partLabels": [
         "site",
         "site"
@@ -211,7 +163,7 @@
         "site"
       ],
       "relation": "inside",
-      "shared": 16
+      "shared": 17
     },
     {
       "a": "packages/atlas/adapter/artifact.js",
@@ -234,7 +186,7 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 25 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "10a817174397d10bc76bd20cdfbfdad708b55c5d",
+  "commit": "927e765f3441bdc1c2e8e97822ea371a64f35a12",
   "defaultBranch": "main",
   "derived": "23 parts, mostly JavaScript (826 files). Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing). It publishes to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.",
   "doors": [
@@ -1415,7 +1367,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T17:50:50.307Z",
+  "generatedAt": "2026-09-23T18:00:22.730Z",
   "limits": [
     "2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "30 import sites could not be resolved.",
