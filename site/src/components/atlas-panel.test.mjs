@@ -1,7 +1,7 @@
 /**
  * The dashboard panel is static HTML. These pins keep the Atlas slice's
- * contract: the panel, the render-branch data URL, the two glyphs, the
- * palette rule, and the state sentences.
+ * contract: the panel, the render-branch data URL, the page it links to, the
+ * doors column, the two glyphs, the palette rule, and the state sentences.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -31,6 +31,20 @@ test('atlas panel is labelled and its table headers are scoped', () => {
 test('atlas data is read from the render branch', () => {
   assert.match(src, /atlasBase:\s*"https:\/\/raw\.githubusercontent\.com\/dogfood-lab\/testing-os\/atlas-render\/"/);
   assert.match(src, /atlasFleet:\s*"indexes\/atlas\/fleet\.json"/);
+});
+
+test('each row links to the rendered page, not a retired render', () => {
+  assert.match(src, /\/indexes\/atlas\/"[\s\S]{0,120}"\/README\.md"/);
+  for (const retired of ['orientation.md', 'dev.md', 'machine.md', 'machine-stats.txt']) {
+    assert.equal(src.includes(retired), false, retired);
+  }
+});
+
+test('the panel counts doors, and no longer counts unnamed boundaries', () => {
+  const html = panel();
+  assert.match(html, /data-sort="doors">doors</);
+  assert.match(src, /num\("doors"\)/);
+  assert.equal(/unnamed/.test(src), false);
 });
 
 test('the age and low-confidence glyphs are symbols with titles', () => {

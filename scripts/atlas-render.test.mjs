@@ -86,14 +86,15 @@ function harness(t, setup) {
       const atlas = join(opts.cwd, 'atlas');
       mkdirSync(atlas, { recursive: true });
       writeFileSync(join(atlas, 'structure.json'), JSON.stringify({
-        boundaries: [{ name: 'core', status: 'proposed', unresolvedSites: 2 }],
+        boundaries: [{ name: 'core', unresolvedSites: 2 }],
+        doors: [{ file: '.github/workflows/ci.yml', name: 'CI' }, { file: '.github/workflows/release.yml', name: 'Release' }],
         unassigned: [],
       }));
       writeFileSync(join(atlas, 'statistics.json'), JSON.stringify({
         confidence: { level: 'low' },
         generatedAt: '2026-09-22T06:00:00.000Z',
       }));
-      for (const name of ['orientation.md', 'dev.md', 'machine.md', 'machine-stats.txt']) {
+      for (const name of ['README.md', 'page.json']) {
         writeFileSync(join(atlas, name), `${name}\n`);
       }
       return { status: 0, stdout: '', stderr: '' };
@@ -165,6 +166,7 @@ describe('atlas weekly render', () => {
       lab: [PUBLIC],
       heads: { 'dogfood-lab/testing-os': sha },
       state: { rendered: { 'dogfood-lab/testing-os': { commit: sha, renderedAt: '2026-09-01T00:00:00.000Z' } }, failures: {} },
+      fleet: { repositories: [{ repo: 'dogfood-lab/testing-os', commit: sha, renderedAt: '2026-09-01T00:00:00.000Z', doors: 1 }] },
     });
     const result = await runFleet();
     assert.equal(calls.some((call) => call[1][0] === 'clone'), false);
@@ -228,7 +230,7 @@ describe('atlas weekly render', () => {
       /outside the public listing/,
     );
     assert.doesNotThrow(() => rejectForeignPaths(
-      ['indexes/atlas/state.json', 'indexes/atlas/fleet.json', 'indexes/atlas/dogfood-lab/testing-os/dev.md'],
+      ['indexes/atlas/state.json', 'indexes/atlas/fleet.json', 'indexes/atlas/dogfood-lab/testing-os/README.md'],
       new Set(['dogfood-lab/testing-os']),
     ));
   });
@@ -300,7 +302,7 @@ describe('atlas weekly render', () => {
           renderedAt: '2026-09-01T00:00:00.000Z',
           ageDays: 0,
           boundaries: 4,
-          unnamed: 0,
+          doors: 3,
           unresolved: 1,
           openDivergence: 2,
           confidence: 'high',
@@ -320,13 +322,48 @@ describe('atlas weekly render', () => {
     const entry = result.fleet.repositories[0];
     assert.equal(entry.repo, 'dogfood-lab/testing-os');
     assert.equal(entry.boundaries, 1);
-    assert.equal(entry.unnamed, 1);
+    assert.equal(entry.doors, 2);
+    assert.equal('unnamed' in entry, false);
     assert.equal(entry.unresolved, 2);
     assert.equal(entry.openDivergence, 1);
     assert.equal(entry.confidence, 'low');
     assert.equal(typeof entry.ageDays, 'number');
     assert.equal(typeof entry.renderedAt, 'string');
     assert.equal(entry.commit, 'a'.repeat(40));
+  });
+
+  it('renders an unchanged repository again when its last render predates the page', async (t) => {
+    const sha = 'c'.repeat(40);
+    const { runFleet, calls } = harness(t, {
+      lab: [PUBLIC],
+      heads: { 'dogfood-lab/testing-os': sha },
+      state: { rendered: { 'dogfood-lab/testing-os': { commit: sha, renderedAt: '2026-09-01T00:00:00.000Z' } }, failures: {} },
+      fleet: {
+        repositories: [{
+          repo: 'dogfood-lab/testing-os',
+          commit: sha,
+          renderedAt: '2026-09-01T00:00:00.000Z',
+          ageDays: 0,
+          boundaries: 4,
+          unnamed: 0,
+          unresolved: 1,
+          openDivergence: 2,
+          confidence: 'high',
+        }],
+      },
+    });
+    const result = await runFleet();
+    assert.equal(calls.some((call) => call[1][0] === 'clone'), true);
+    assert.equal(result.fleet.repositories[0].doors, 2);
+    assert.equal('unnamed' in result.fleet.repositories[0], false);
+  });
+
+  it('publishes the page and its data beside the map, and none of the retired renders', async (t) => {
+    const { runFleet } = harness(t, { lab: [PUBLIC] });
+    const result = await runFleet();
+    const base = 'indexes/atlas/dogfood-lab/testing-os/';
+    const published = result.paths.filter((path) => path.startsWith(base)).map((path) => path.slice(base.length)).sort();
+    assert.deepEqual(published, ['README.md', 'divergence.json', 'page.json', 'statistics.json', 'structure.json']);
   });
 
   it('parses the private template as workflow YAML with only schedule and workflow_dispatch', () => {

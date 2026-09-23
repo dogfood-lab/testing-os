@@ -443,7 +443,7 @@ dialog::backdrop { background: rgba(5, 9, 14, .62); }
             <th scope="col"><button type="button" class="thb" data-sort="repo">repository<span class="arr" aria-hidden="true"></span></button></th>
             <th scope="col"><button type="button" class="thb" data-sort="age">map age<span class="arr" aria-hidden="true"></span></button></th>
             <th scope="col" class="atlas-more"><button type="button" class="thb" data-sort="boundaries">boundaries<span class="arr" aria-hidden="true"></span></button></th>
-            <th scope="col" class="atlas-more"><button type="button" class="thb" data-sort="unnamed">unnamed<span class="arr" aria-hidden="true"></span></button></th>
+            <th scope="col" class="atlas-more"><button type="button" class="thb" data-sort="doors">doors<span class="arr" aria-hidden="true"></span></button></th>
             <th scope="col" class="atlas-more"><button type="button" class="thb" data-sort="unresolved">unresolved<span class="arr" aria-hidden="true"></span></button></th>
             <th scope="col"><button type="button" class="thb" data-sort="open">open ⇄<span class="arr" aria-hidden="true"></span></button></th>
             <th scope="col"><button type="button" class="thb" data-sort="link">link<span class="arr" aria-hidden="true"></span></button></th>
@@ -1088,7 +1088,7 @@ function atlasHead(n, iso) {
 }
 function atlasHref(repo) {
   return "https://github.com/dogfood-lab/testing-os/blob/atlas-render/indexes/atlas/" +
-    String(repo).split("/").map(encodeURIComponent).join("/") + "/orientation.md";
+    String(repo).split("/").map(encodeURIComponent).join("/") + "/README.md";
 }
 function atlasSkel() {
   const cell = '<td><span class="skel" style="width:48px"></span></td>';
@@ -1098,7 +1098,7 @@ function atlasSkel() {
 }
 function atlasSorted(rows) {
   const key = state.atlasSort.key, dir = state.atlasSort.dir;
-  const field = { age: "ageDays", boundaries: "boundaries", unnamed: "unnamed", unresolved: "unresolved", open: "openDivergence" };
+  const field = { age: "ageDays", boundaries: "boundaries", doors: "doors", unresolved: "unresolved", open: "openDivergence" };
   return rows.slice().sort((a, b) => {
     let c;
     if (key === "repo" || key === "link") c = String(a.repo) < String(b.repo) ? -1 : String(a.repo) > String(b.repo) ? 1 : 0;
@@ -1121,14 +1121,14 @@ function atlasRow(r) {
   const age = '<td class="' + (hist ? "age-hist" : "") + '"' + (title ? ' title="' + esc(title) + '"' : "") + '>' +
     '<svg class="ico" aria-hidden="true"><use href="#atlas-age"></use></svg> ' + esc(relAge(t) || "—") +
     (hist ? " historical" : "") + "</td>";
-  const num = k => '<td class="atlas-more num">' + esc(r[k]) + "</td>";
-  const link = '<td><a href="' + esc(atlasHref(r.repo)) + '" target="_blank" rel="noopener">orientation</a></td>';
+  const num = k => '<td class="atlas-more num">' + esc(r[k] == null ? "—" : r[k]) + "</td>";
+  const link = '<td><a href="' + esc(atlasHref(r.repo)) + '" target="_blank" rel="noopener">page</a></td>';
   const main = "<tr>" +
     '<td class="c-repo">' + (org ? '<span class="org">' + esc(org) + "/</span>" : "") + esc(name) + low + "</td>" +
-    age + num("boundaries") + num("unnamed") + num("unresolved") +
+    age + num("boundaries") + num("doors") + num("unresolved") +
     '<td class="num">' + esc(r.openDivergence) + "</td>" + link + "</tr>";
-  const detail = '<tr class="atlas-detail"><td colspan="7"><details><summary>boundaries, unnamed, unresolved</summary>' +
-    "<p>boundaries " + esc(r.boundaries) + " · unnamed " + esc(r.unnamed) + " · unresolved " + esc(r.unresolved) + "</p></details></td></tr>";
+  const detail = '<tr class="atlas-detail"><td colspan="7"><details><summary>boundaries, doors, unresolved</summary>' +
+    "<p>boundaries " + esc(r.boundaries) + " · doors " + esc(r.doors == null ? "—" : r.doors) + " · unresolved " + esc(r.unresolved) + "</p></details></td></tr>";
   return main + detail;
 }
 function atlasSyncSort() {

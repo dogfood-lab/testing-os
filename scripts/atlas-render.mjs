@@ -17,7 +17,7 @@ export const BACKOFF_MS = [5_000, 20_000, 60_000];
 export const REPO_BUDGET_MS = 90_000;
 export const JOB_BUDGET_MS = 50 * 60 * 1000;
 export const WINDOW_DAYS = 180;
-const RENDER_FILES = ['structure.json', 'statistics.json', 'orientation.md', 'dev.md', 'machine.md', 'machine-stats.txt'];
+const RENDER_FILES = ['structure.json', 'statistics.json', 'README.md', 'page.json'];
 const PUBLIC_HEADERS = {
   accept: 'application/vnd.github+json',
   'user-agent': 'atlas-render',
@@ -196,7 +196,7 @@ function diffRows(beforeEnvelope, afterEnvelope) {
 
 export function fleetEntry(fullName, commit, renderedAt, now, structure, statistics, envelope) {
   const boundaries = structure?.boundaries ?? [];
-  const unnamed = boundaries.filter((boundary) => boundary.status !== 'accepted').length;
+  const doors = (structure?.doors ?? []).length;
   const unresolved = boundaries.reduce((sum, boundary) => sum + (boundary.unresolvedSites ?? 0), 0);
   const openDivergence = (envelope?.rows ?? []).filter((row) => row.state === 'open').length;
   const ageDays = Math.max(0, Math.floor((now.getTime() - Date.parse(renderedAt)) / 86_400_000));
@@ -206,7 +206,7 @@ export function fleetEntry(fullName, commit, renderedAt, now, structure, statist
     renderedAt,
     ageDays,
     boundaries: boundaries.length,
-    unnamed,
+    doors,
     unresolved,
     openDivergence,
     confidence: statistics?.confidence?.level ?? 'low',
@@ -435,7 +435,11 @@ export async function renderFleet(options = {}) {
       continue;
     }
     const known = state.rendered[repo.fullName];
-    if (known && known.commit === head.sha && !known.notMapped) {
+    // A render made before the page existed left no README.md on the branch,
+    // and its fleet row counts no doors. Render it again so the link lands.
+    const before = (previousFleet?.repositories ?? []).find((entry) => entry?.repo === repo.fullName);
+    const hasPage = typeof before?.doors === 'number';
+    if (known && known.commit === head.sha && !known.notMapped && hasPage) {
       log(`skip ${repo.fullName} unchanged`);
       continue;
     }
