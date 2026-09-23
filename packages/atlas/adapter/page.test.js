@@ -6,10 +6,12 @@ import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import { readBoundaryFile } from './boundary-file.js';
-import { buildPage } from './page.js';
+import { buildPage, displayName } from './page.js';
 
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
-const FIXTURES = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas');
+const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
+const FIXTURES = resolve(REPO_ROOT, 'fixtures/atlas');
+const REGENERATE = 'Regenerate with `npx --yes @dogfood-lab/atlas map`.';
 const roots = [];
 let doors;
 let host;
@@ -90,16 +92,16 @@ describe('atlas page', () => {
     const date = doors.statistics.generatedAt.slice(0, 10);
     assert.ok(markdown.startsWith(`# doors: how it works\n\nMapped at ${date} from commit ${commit}.\n`));
     const exact = {
-      '## What this is': '8 parts. Work enters through 5 doors; the busiest is Checks, which reaches 2 parts.',
+      '## What this is': '9 parts. Work enters through 5 doors; the busiest is Checks, which reaches 2 parts.',
       '## What comes in': '3. **weekly.** On a push touching 1 path; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC. Runs tools/render.js.',
       '## What happens through Checks': '2. That reaches lib (1 file).',
       '## Who reads the results': '- **reports/** has no reader in this repository.',
       '## The other doors': '**weekly** runs tools/render.js, reaches lib, writes to reports/, and sends a dispatch to acme/hub.',
       '## What breaks what': '- **lib** is imported by 1 part (tools) and sits on the path of 4 doors.',
       '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
-      '## Hand-authored': 'People write .github/, policies/ and site/. Nothing in this repository writes to them.',
+      '## Hand-authored': 'People write .github/, policies/, the repository root and site/. Nothing in this repository writes to them.',
       '## Where to start': '.github/workflows/checks.yml → tools/render.js → lib/',
-      '## What this map cannot see': 'Regenerate with `npx --yes @dogfood-lab/atlas map`.',
+      '## What this map cannot see': REGENERATE,
     };
     for (const [heading, sentence] of Object.entries(exact)) {
       assert.ok(section(markdown, heading).split('\n').includes(sentence), `${heading}: ${sentence}`);
@@ -141,7 +143,7 @@ describe('atlas page', () => {
     assert.match(reads, /^- \*\*indexes\/\*\* is read by site\/index\.html \(found by text\), tools\/render\.js and tools\/report\.py\.$/m);
     assert.match(reads, /^- \*\*records\/\*\* has no reader in this repository\.$/m);
     assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → lib\/ → indexes\/ → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);
-    assert.match(section(markdown, '## What this map cannot see'), /^Readers marked \(found by text\) come from scanning unparsed files\.$/m);
+    assert.match(section(markdown, '## What this map cannot see'), /^- Readers marked \(found by text\) come from scanning unparsed files\.$/m);
     assert.match(section(markdown, '## What breaks what'), /^- \*\*indexes\/\*\* is written by tools and workflows, and read by site and tools; a hand edit reaches every reader\.$/m);
   });
 
@@ -167,6 +169,76 @@ describe('atlas page', () => {
     assert.equal(data.summaryFrom, null);
   });
 
+  it('lists what the map cannot see one fact per bullet, with the regenerate line as its own paragraph', () => {
+    // GitHub joins bare consecutive lines into one paragraph, so each limit is a bullet.
+    const { markdown, json } = page(doors);
+    const limits = JSON.parse(json).limits;
+    assert.ok(limits.length >= 2);
+    assert.equal(
+      section(markdown, '## What this map cannot see'),
+      `## What this map cannot see\n\n${limits.map((line) => `- ${line}`).join('\n')}\n\n${REGENERATE}\n`,
+    );
+    const clear = buildPage({
+      structure: {
+        ...doors.structure,
+        boundaries: doors.structure.boundaries.map((boundary) => ({ ...boundary, dynamicReads: 0, dynamicWrites: 0, unresolvedSites: 0 })),
+      },
+      statistics: { ...doors.statistics, confidence: { level: 'high' } },
+      document: doors.document,
+      repoName: 'acme/doors',
+    });
+    assert.deepEqual(JSON.parse(clear.json).limits, []);
+    assert.equal(section(clear.markdown, '## What this map cannot see'), `## What this map cannot see\n\n${REGENERATE}\n`);
+  });
+
+  it('calls a boundary of root-level globs the repository root in prose, and keeps its id in page.json', () => {
+    assert.equal(displayName({ name: 'root', globs: ['*'] }), 'the repository root');
+    assert.equal(displayName({ name: 'top', globs: ['*.md', 'LICENSE'] }), 'the repository root');
+    assert.equal(displayName({ name: 'docs', globs: ['*.md', 'docs/**'] }), 'docs');
+    assert.equal(displayName({ name: 'markdown', globs: ['**/*.md'] }), 'markdown');
+    assert.equal(displayName({ name: 'everything', globs: ['**'] }), 'everything');
+    assert.equal(displayName({ name: 'lib', globs: ['lib/**'] }), 'lib');
+    assert.equal(displayName({ name: 'empty', globs: [] }), 'empty');
+
+    const root = doors.structure.boundaries.find((boundary) => boundary.name === 'root');
+    assert.deepEqual(root.globs, ['*']);
+    const plain = page(doors);
+    assert.equal(
+      section(plain.markdown, '## Hand-authored').split('\n')[2],
+      'People write .github/, policies/, the repository root and site/. Nothing in this repository writes to them.',
+    );
+    assert.deepEqual(JSON.parse(plain.json).authored, ['.github/', 'policies/', 'root', 'site/']);
+
+    const importing = page(doors, {
+      structure: (structure) => ({ ...structure, edges: [...structure.edges, { from: 'root', kind: 'file', to: 'lib' }] }),
+    });
+    assert.match(
+      section(importing.markdown, '## What breaks what'),
+      /^- \*\*lib\*\* is imported by 2 parts \(the repository root, tools\) and sits on the path of 4 doors\.$/m,
+    );
+    assert.deepEqual(JSON.parse(importing.json).breaks.find((entry) => entry.name === 'lib').importedBy, ['root', 'tools']);
+  });
+
+  it('names this repository\'s root boundary the repository root wherever its page names it', () => {
+    const atlas = join(REPO_ROOT, 'atlas');
+    const own = buildPage({
+      structure: JSON.parse(readFileSync(join(atlas, 'structure.json'), 'utf8')),
+      statistics: JSON.parse(readFileSync(join(atlas, 'statistics.json'), 'utf8')),
+      document: readBoundaryFile(REPO_ROOT),
+      repoName: 'dogfood-lab/testing-os',
+    });
+    const authoredLine = section(own.markdown, '## Hand-authored').split('\n')[2];
+    assert.match(authoredLine, /\bthe repository root\b/);
+    assert.doesNotMatch(authoredLine.replaceAll('the repository root', ''), /\broot\b/);
+    assert.match(section(own.markdown, '## Who reads the results'), /the repository root \(\d+ README files\)/);
+    for (const line of own.markdown.split('\n')) {
+      assert.doesNotMatch(line.replaceAll('the repository root', ''), /(^|[\s(,*])root\b/, line);
+    }
+    const data = JSON.parse(own.json);
+    assert.ok(data.authored.includes('root'));
+    assert.equal(JSON.stringify(data).includes('the repository root'), false);
+  });
+
   it('keeps to plain sentences: the only arrows are the chain, and no glyph legend is drawn', () => {
     const { markdown } = page(doors);
     const chain = section(markdown, '## Where to start').split('\n')[2];
@@ -186,13 +258,13 @@ describe('atlas page', () => {
     const data = JSON.parse(first.json);
     assert.deepEqual(Object.keys(data), [...Object.keys(data)].sort());
     assert.equal(data.repo, 'acme/doors');
-    assert.equal(data.parts, 8);
+    assert.equal(data.parts, 9);
     assert.equal(data.mainDoor, '.github/workflows/checks.yml');
     assert.deepEqual(data.doors.map((door) => door.name), ['Checks', 'Ingest', 'weekly', 'Manual', 'broken']);
     assert.deepEqual(data.doors[2].triggers, ['on a push touching 1 path', 'on a schedule (`0 6 * * 1`), Monday at 06:00 UTC']);
     assert.deepEqual(data.doors[2].sends, ['sends a dispatch to acme/hub']);
     assert.deepEqual(data.startHere, ['.github/workflows/checks.yml', 'tools/render.js', 'lib/']);
-    assert.deepEqual(data.authored, ['.github/', 'policies/', 'site/']);
+    assert.deepEqual(data.authored, ['.github/', 'policies/', 'root', 'site/']);
     assert.deepEqual(data.readers, [{ readers: [], target: 'reports/' }]);
     assert.equal(data.limits.at(-1), `Statistics confidence is low: ${doors.statistics.confidence.reason.replace(/\.$/, '')}.`);
   });

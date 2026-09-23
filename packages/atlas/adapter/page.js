@@ -13,6 +13,7 @@ const COLLAPSE_OVER = 3;
 const BREAK_LINES = 8;
 const PLACE_BREAKS = 2;
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const ROOT_NAME = 'the repository root';
 
 function cmp(a, b) {
   if (a < b) return -1;
@@ -54,6 +55,31 @@ function topLevel(path) {
   return slash === -1 ? path : path.slice(0, slash);
 }
 
+function id(name) {
+  return name;
+}
+
+// A glob with no slash and no ** matches only files at the top of the tree.
+function rootLevel(glob) {
+  const pattern = String(glob).replaceAll('\\', '/');
+  return !pattern.includes('/') && !pattern.includes('**');
+}
+
+/**
+ * The name the page's prose gives a boundary. One drawn only from files at
+ * the top of the tree has no directory to be called by, and the word a person
+ * chose for it ("root" is typical) reads as an ordinary word in a sentence, so
+ * the page calls it the repository root. page.json keeps the id as the
+ * boundary file writes it.
+ *
+ * @param {{ name: string, globs?: string[] }} boundary
+ * @returns {string}
+ */
+export function displayName(boundary) {
+  const globs = boundary.globs ?? [];
+  return globs.length > 0 && globs.every(rootLevel) ? ROOT_NAME : boundary.name;
+}
+
 function sortKeys(value) {
   if (Array.isArray(value)) return value.map(sortKeys);
   if (value && typeof value === 'object') {
@@ -78,11 +104,13 @@ function facts({ structure, statistics }) {
   }
   for (const file of [...(structure.unassigned ?? []), ...(structure.overlaps ?? [])]) tracked.push(file.path);
   const isDir = (target) => tracked.some((path) => path.startsWith(`${target}/`));
+  const names = new Map(boundaries.map((boundary) => [boundary.name, displayName(boundary)]));
   return {
     structure,
     statistics,
     boundaries,
     boundaryOf,
+    shown: (name) => names.get(name) ?? name,
     place: (target) => (isDir(target) ? `${target}/` : target),
     doors: orderDoors(structure.doors ?? []),
     // A weak landing is a bare file name under a root the engine could not
@@ -117,6 +145,10 @@ function boundaryRoot(boundary) {
 function boundaryPlace(boundary) {
   const root = boundaryRoot(boundary);
   return root ? `${root}/` : boundary.name;
+}
+
+function shownPlace(ctx, boundary) {
+  return boundaryRoot(boundary) ? boundaryPlace(boundary) : ctx.shown(boundary.name);
 }
 
 // The smallest set of places that covers every target: a target under another
@@ -235,8 +267,8 @@ function comesIn(ctx) {
   return lines.join('\n\n');
 }
 
-function fileCount(entry) {
-  return `${entry.boundary} (${count(entry.files, 'file')})`;
+function fileCount(ctx, entry) {
+  return `${ctx.shown(entry.boundary)} (${count(entry.files, 'file')})`;
 }
 
 function runGroups(ctx, door) {
@@ -251,7 +283,7 @@ function runGroups(ctx, door) {
   const ordered = [...groups.values()].sort((a, b) => (
     (order.get(a.boundary) ?? Infinity) - (order.get(b.boundary) ?? Infinity) || cmp(a.paths[0], b.paths[0])
   ));
-  const parts = ordered.map((group) => (group.boundary ? `${list(group.paths)} in ${group.boundary}` : list(group.paths)));
+  const parts = ordered.map((group) => (group.boundary ? `${list(group.paths)} in ${ctx.shown(group.boundary)}` : list(group.paths)));
   return list(parts, { serial: ordered.some((group) => group.paths.length > 1) });
 }
 
@@ -276,7 +308,7 @@ function doorSteps(ctx, door) {
   const steps = [];
   const paths = runPaths(door);
   steps.push(paths.length > 0 ? `The workflow runs ${runGroups(ctx, door)}.` : 'The workflow runs no file this map can see.');
-  for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map(fileCount))}.`);
+  for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   const places = writes(ctx, door);
   if (places.length > 0) steps.push(`It writes to ${list(places)}.`);
   if ((door.stages ?? []).length > 0) steps.push(`It commits ${commitsClause(door)}.`);
@@ -300,7 +332,8 @@ function nounOf(paths) {
 }
 
 // More than three files from one part read or write a place: name the part
-// with the count, since the file list would bury every other name.
+// with the count, since the file list would bury every other name. A named
+// part is kept as its id, so the page and page.json can each word it.
 function collapse(ctx, entries) {
   const byBoundary = new Map();
   const loose = [];
@@ -313,16 +346,20 @@ function collapse(ctx, entries) {
     if (!byBoundary.has(boundary)) byBoundary.set(boundary, []);
     byBoundary.get(boundary).push(entry);
   }
-  const shown = [...loose.map((entry) => ({ key: entry.path, text: entry.text }))];
+  const items = [...loose.map((entry) => ({ key: entry.path, text: entry.text }))];
   for (const [boundary, members] of byBoundary) {
     if (members.length > COLLAPSE_OVER) {
       const paths = members.map((entry) => entry.path).sort(cmp);
-      shown.push({ key: paths[0], text: `${boundary} (${members.length} ${nounOf(paths)})` });
+      items.push({ key: paths[0], boundary, files: `${members.length} ${nounOf(paths)}` });
     } else {
-      for (const entry of members) shown.push({ key: entry.path, text: entry.text });
+      for (const entry of members) items.push({ key: entry.path, text: entry.text });
     }
   }
-  return shown.sort((a, b) => cmp(a.key, b.key)).map((entry) => entry.text);
+  return items.sort((a, b) => cmp(a.key, b.key));
+}
+
+function worded(items, name) {
+  return items.map((item) => item.text ?? `${name(item.boundary)} (${item.files})`);
 }
 
 // A reader is found by text only when every read it makes of the place is.
@@ -379,7 +416,7 @@ function readsSection(ctx, main, groups) {
   }
   const bullets = groups.map((group) => (group.readers.length === 0
     ? `- **${group.target}** has no reader in this repository.`
-    : `- **${group.target}** is read by ${list(group.readers)}.`));
+    : `- **${group.target}** is read by ${list(worded(group.readers, ctx.shown))}.`));
   lines.push(bullets.length > 0 ? bullets.join('\n') : `Only ${main.name} itself reads what it writes.`);
   return lines.join('\n\n');
 }
@@ -393,7 +430,7 @@ function otherDoors(ctx, main) {
     const paths = runPaths(door);
     clauses.push(paths.length > 0 ? `runs ${runsShown(paths)}` : 'runs no file this map can see');
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => entry.boundary)))].sort(cmp);
-    if (reached.length > 0) clauses.push(`reaches ${list(reached)}`);
+    if (reached.length > 0) clauses.push(`reaches ${list(reached.map(ctx.shown))}`);
     const places = writes(ctx, door);
     if (places.length > 0) clauses.push(`writes to ${list(places)}`);
     const stages = door.stages ?? [];
@@ -468,21 +505,22 @@ function breaks(ctx) {
   return [...parts, ...places];
 }
 
-function breakLine(entry) {
+function breakLine(ctx, entry) {
   if (entry.kind === 'place') {
     const comma = entry.writers.length > 1 ? ',' : '';
-    return `- **${entry.target}** is written by ${list(entry.writers)}${comma} and read by ${list(entry.readers)}; a hand edit reaches every reader.`;
+    const writers = list(entry.writers.map(ctx.shown));
+    return `- **${entry.target}** is written by ${writers}${comma} and read by ${list(entry.readers.map(ctx.shown))}; a hand edit reaches every reader.`;
   }
   const imported = entry.importedBy.length === 0
     ? 'is imported by no other part'
-    : `is imported by ${count(entry.importedBy.length, 'part')} (${entry.importedBy.join(', ')})`;
+    : `is imported by ${count(entry.importedBy.length, 'part')} (${entry.importedBy.map(ctx.shown).join(', ')})`;
   const path = entry.doors === 0 ? 'no door' : count(entry.doors, 'door');
-  return `- **${entry.name}** ${imported} and sits on the path of ${path}.`;
+  return `- **${ctx.shown(entry.name)}** ${imported} and sits on the path of ${path}.`;
 }
 
-function breaksSection(entries) {
+function breaksSection(ctx, entries) {
   const body = entries.length > 0
-    ? entries.map(breakLine).join('\n')
+    ? entries.map((entry) => breakLine(ctx, entry)).join('\n')
     : 'No part is imported by another part, and no part sits on the path of two doors.';
   return ['## What breaks what', body].join('\n\n');
 }
@@ -497,22 +535,23 @@ function generated(ctx) {
     const inside = (target) => (root ? under(target, root) : paths.some((path) => under(path, target)));
     const writers = [...new Set(written.filter((place) => inside(place.target)).flatMap((place) => place.writers))].sort(cmp);
     claimed.push(inside);
-    items.push({ place: boundaryPlace(boundary), writers });
+    items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers });
   }
   for (const place of written) {
     if (claimed.some((inside) => inside(place.target))) continue;
-    items.push({ place: ctx.place(place.target), writers: place.writers });
+    const target = ctx.place(place.target);
+    items.push({ place: target, shown: target, writers: place.writers });
   }
   return items
     .sort((a, b) => cmp(a.place, b.place))
-    .map((item) => ({ place: item.place, writers: collapse(ctx, item.writers.map((path) => ({ path, text: path }))) }));
+    .map((item) => ({ ...item, writers: collapse(ctx, item.writers.map((path) => ({ path, text: path }))) }));
 }
 
-function generatedSection(items) {
+function generatedSection(ctx, items) {
   const body = items.length > 0
     ? items.map((item) => (item.writers.length > 0
-      ? `- **${item.place}** is written by ${list(item.writers)}.`
-      : `- **${item.place}** is written by code this map cannot name.`)).join('\n')
+      ? `- **${item.shown}** is written by ${list(worded(item.writers, ctx.shown))}.`
+      : `- **${item.shown}** is written by code this map cannot name.`)).join('\n')
     : 'Nothing in this repository writes to a tracked place this map can see.';
   return ['## Generated, never hand-edited', body].join('\n\n');
 }
@@ -520,13 +559,12 @@ function generatedSection(items) {
 function authored(ctx) {
   return ctx.boundaries
     .filter((boundary) => boundary.origin === 'authored' && (boundary.role === 'config' || boundary.role === 'docs'))
-    .map(boundaryPlace)
-    .sort(cmp);
+    .sort((a, b) => cmp(boundaryPlace(a), boundaryPlace(b)));
 }
 
-function authoredSection(places) {
-  const body = places.length > 0
-    ? `People write ${list(places)}. Nothing in this repository writes to them.`
+function authoredSection(ctx, boundaries) {
+  const body = boundaries.length > 0
+    ? `People write ${list(boundaries.map((boundary) => shownPlace(ctx, boundary)))}. Nothing in this repository writes to them.`
     : 'No configuration or documentation part is left to people alone.';
   return ['## Hand-authored', body].join('\n\n');
 }
@@ -551,14 +589,19 @@ function startHere(ctx, main, groups) {
   const first = [...paths].sort((a, b) => filesIn(b) - filesIn(a) || cmp(a, b))[0];
   if (first) chain.push(first);
   const from = importers(ctx);
+  const words = new Map();
   let previous = first ? ctx.boundaryOf.get(first) : null;
   for (const level of deeper(main)) {
     const linked = level.entries.filter((entry) => previous && from.get(entry.boundary)?.has(previous));
     const pool = linked.length > 0 ? linked : level.entries;
     const widest = [...pool].sort((a, b) => b.files - a.files || cmp(a.boundary, b.boundary))[0];
     const boundary = byName.get(widest.boundary);
-    const file = entryFile(boundary) ?? (boundary ? boundaryPlace(boundary) : null);
-    if (file && !chain.includes(file)) chain.push(file);
+    const place = boundary ? boundaryPlace(boundary) : null;
+    const file = entryFile(boundary) ?? place;
+    if (file && !chain.includes(file)) {
+      chain.push(file);
+      if (file === place) words.set(file, shownPlace(ctx, boundary));
+    }
     previous = widest.boundary;
   }
   const landing = groups.find((group) => group.files.length > 0);
@@ -572,12 +615,12 @@ function startHere(ctx, main, groups) {
     ))[0];
     if (reader) chain.push(reader.path);
   }
-  return chain;
+  return { chain, words: chain.map((step) => words.get(step) ?? step) };
 }
 
-function startSection(chain, main) {
+function startSection(words, main) {
   if (!main) return ['## Where to start', 'No door was found, so there is no path through this repository to follow.'].join('\n\n');
-  return ['## Where to start', chain.join(' → '), `Read those in order to follow one ${triggerNoun(main)} end to end.`].join('\n\n');
+  return ['## Where to start', words.join(' → '), `Read those in order to follow one ${triggerNoun(main)} end to end.`].join('\n\n');
 }
 
 function limits(ctx, shownText) {
@@ -598,8 +641,13 @@ function limits(ctx, shownText) {
   return lines;
 }
 
+// One fact per bullet: GitHub joins bare consecutive lines into one paragraph.
 function limitsSection(lines) {
-  return ['## What this map cannot see', [...lines, 'Regenerate with `npx --yes @dogfood-lab/atlas map`.'].join('\n')].join('\n\n');
+  const regenerate = 'Regenerate with `npx --yes @dogfood-lab/atlas map`.';
+  const sections = ['## What this map cannot see'];
+  if (lines.length > 0) sections.push(lines.map((line) => `- ${line}`).join('\n'));
+  sections.push(regenerate);
+  return sections.join('\n\n');
 }
 
 function summaryOf(document) {
@@ -645,9 +693,9 @@ export function buildPage({ structure, statistics, document, repoName }) {
   const groups = main ? readerGroups(ctx, main) : [];
   const breakEntries = breaks(ctx);
   const generatedItems = generated(ctx);
-  const authoredPlaces = authored(ctx);
-  const chain = main ? startHere(ctx, main, groups) : [];
-  const shownText = groups.some((group) => group.readers.some((reader) => reader.endsWith(' (found by text)')));
+  const authoredBoundaries = authored(ctx);
+  const start = main ? startHere(ctx, main, groups) : { chain: [], words: [] };
+  const shownText = groups.some((group) => group.readers.some((reader) => reader.text?.endsWith(' (found by text)')));
   const limitLines = limits(ctx, shownText);
 
   const whatThisIs = ['## What this is'];
@@ -665,27 +713,27 @@ export function buildPage({ structure, statistics, document, repoName }) {
     if (others) sections.push(others);
   }
   sections.push(
-    breaksSection(breakEntries),
-    generatedSection(generatedItems),
-    authoredSection(authoredPlaces),
-    startSection(chain, main),
+    breaksSection(ctx, breakEntries),
+    generatedSection(ctx, generatedItems),
+    authoredSection(ctx, authoredBoundaries),
+    startSection(start.words, main),
     limitsSection(limitLines),
   );
   const markdown = `${sections.join('\n\n')}\n`;
 
   const data = {
-    authored: authoredPlaces,
+    authored: authoredBoundaries.map(boundaryPlace),
     breaks: breakEntries,
     commit,
     doors: ctx.doors.map((door) => doorData(ctx, door)),
-    generated: generatedItems,
+    generated: generatedItems.map((item) => ({ place: item.place, writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
     mainDoor: main ? main.file : null,
     parts: ctx.boundaries.length,
-    readers: groups.map((group) => ({ readers: group.readers, target: group.target })),
+    readers: groups.map((group) => ({ readers: worded(group.readers, id), target: group.target })),
     repo: String(repoName ?? ''),
-    startHere: chain,
+    startHere: start.chain,
     summary,
     summaryFrom: summary ? 'person' : null,
   };

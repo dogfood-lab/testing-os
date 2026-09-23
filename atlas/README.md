@@ -1,6 +1,6 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit c98200f.
+Mapped at 2026-09-23 from commit 076517d.
 
 ## What this is
 
@@ -25,7 +25,7 @@ Mapped at 2026-09-23 from commit c98200f.
 
 ## Who reads the results
 
-- **indexes/** is read by root (8 README files), examples/README.md (found by text), packages/portfolio/README.md (found by text), packages/report/status.js, site/public/dashboard/index.html (found by text) and site/src/content/docs/handbook/read-model.md (found by text).
+- **indexes/** is read by the repository root (8 README files), examples/README.md (found by text), packages/portfolio/README.md (found by text), packages/report/status.js, site/public/dashboard/index.html (found by text) and site/src/content/docs/handbook/read-model.md (found by text).
 - **records/** is read by packages/findings/derive/load-records.js, packages/ingest/rebuild-indexes.js, packages/portfolio/lib/compute-trends.js and packages/report/status.js.
 
 ## The other doors
@@ -48,7 +48,7 @@ Mapped at 2026-09-23 from commit c98200f.
 - **verify** is imported by 3 parts (findings, ingest, scripts) and sits on the path of 1 door.
 - **ingest** is imported by 2 parts (findings, scripts) and sits on the path of 3 doors.
 - **portfolio** is imported by 1 part (scripts) and sits on the path of 3 doors.
-- **indexes/** is written by .github, ingest, portfolio and scripts, and read by examples, ingest, portfolio, report, root, scripts and site; a hand edit reaches every reader.
+- **indexes/** is written by .github, ingest, portfolio and scripts, and read by examples, ingest, portfolio, report, the repository root, scripts and site; a hand edit reaches every reader.
 - **dogfood/roadmap/** is written by dogfood-swarm and read by dogfood-swarm, scripts and site; a hand edit reaches every reader.
 
 ## Generated, never hand-edited
@@ -61,7 +61,7 @@ Mapped at 2026-09-23 from commit c98200f.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, examples/, root and swarms/. Nothing in this repository writes to them.
+People write .github/, assets/, docs/, examples/, the repository root and swarms/. Nothing in this repository writes to them.
 
 ## Where to start
 
@@ -71,8 +71,9 @@ Read those in order to follow one dogfood submission end to end.
 
 ## What this map cannot see
 
-30 import sites did not resolve.
-27 writes and 183 reads use paths built at run time and are not named here.
-Readers marked (found by text) come from scanning unparsed files.
-Statistics confidence is low: fewer than 20 source files reach 10 revisions in the window.
+- 30 import sites did not resolve.
+- 27 writes and 183 reads use paths built at run time and are not named here.
+- Readers marked (found by text) come from scanning unparsed files.
+- Statistics confidence is low: fewer than 20 source files reach 10 revisions in the window.
+
 Regenerate with `npx --yes @dogfood-lab/atlas map`.
