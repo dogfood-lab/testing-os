@@ -18,6 +18,7 @@ const SENTENCE_STEPS = 7;
 const LISTED_STEPS = 12;
 const REPO = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/;
 const COMMIT = /^[0-9a-f]{7,40}$/i;
+const BRANCH = /^[A-Za-z0-9._@+-]+(?:\/[A-Za-z0-9._@+-]+)*$/;
 const PATH = /^[A-Za-z0-9._@+-]+(?:\/[A-Za-z0-9._@+-]+)*\/?$/;
 const FOUND_BY_TEXT = ' (found by text)';
 const REGENERATE = 'Regenerate with `npx --yes @dogfood-lab/atlas map`.';
@@ -151,7 +152,31 @@ function context(page, options = {}) {
   const commit = COMMIT.test(str(page?.commit)) ? str(page.commit) : null;
   const doors = arr(page?.doors).filter((door) => door && typeof door === 'object');
   const main = doors.find((door) => !door.parseError && door.file === page?.mainDoor) ?? null;
-  return { page: page ?? {}, repo, commit, doors, main, history: options.history ?? null };
+  const labels = page?.partLabels && typeof page.partLabels === 'object' && !Array.isArray(page.partLabels) ? page.partLabels : {};
+  const name = (id, fallback = null) => partLabel(labels, id, fallback);
+  return { page: page ?? {}, repo, commit, doors, main, labels, name, history: options.history ?? null };
+}
+
+/**
+ * The name page.js gives a part, from the one map of ids to names page.json
+ * carries, so a root-level part reads "the repository root" wherever it is
+ * named. A page.json written before the map existed falls back to the label
+ * an entry carried beside its id, then to the id.
+ */
+export function partLabel(labels, id, fallback = null) {
+  const key = str(id);
+  if (Object.hasOwn(labels, key) && typeof labels[key] === 'string') return labels[key];
+  return fallback == null ? key : str(fallback);
+}
+
+// A reader or writer that stands for many files of one part is written by
+// page.js as the part's id and the count, "root (4 README files)"; the id is
+// named as the page names it and the count kept.
+function wordedName(ctx, text) {
+  const value = str(text);
+  const match = /^(.+) \((\d+ (?:\S+ )?files)\)$/.exec(value);
+  if (!match || !Object.hasOwn(ctx.labels, match[1])) return value;
+  return `${ctx.name(match[1])} (${match[2]})`;
 }
 
 function runs(ctx, door) {
@@ -190,8 +215,8 @@ function deeper(door) {
   }));
 }
 
-function fileCount(entry) {
-  return `${esc(entry.boundary)} (${esc(count(Number(entry.files) || 0, 'file'))})`;
+function fileCount(ctx, entry) {
+  return `${esc(ctx.name(entry.boundary))} (${esc(count(Number(entry.files) || 0, 'file'))})`;
 }
 
 function placesHtml(ctx, places) {
@@ -244,10 +269,21 @@ function whatThisIs(ctx, figure) {
 
 /**
  * Where a person edits the one line they may add: GitHub's editor for the
- * boundary file on the default branch. The site never writes it.
+ * boundary file on the repository's default branch, which page.json records
+ * as defaultBranch. A page.json written before it existed, or a value that is
+ * not a branch name, gives main. The site never writes the file.
  */
-export function summaryEditUrl(repo) {
-  return isRepo(repo) ? `https://github.com/${segments(repo)}/edit/main/atlas/boundaries.yaml` : null;
+export function summaryEditUrl(repo, branch) {
+  if (!isRepo(repo)) return null;
+  const name = isBranch(branch) ? branch : 'main';
+  return `https://github.com/${segments(repo)}/edit/${segments(name)}/atlas/boundaries.yaml`;
+}
+
+// A branch name as git allows one in a URL path: no "..", no empty or dotted
+// segment, nothing that could leave the path.
+function isBranch(value) {
+  if (typeof value !== 'string' || !BRANCH.test(value) || value.includes('..')) return false;
+  return value.split('/').every((segment) => segment !== '' && !/^\.+$/.test(segment));
 }
 
 // The one line a person may write, at the top, where a reader looks first.
@@ -255,7 +291,7 @@ export function summaryEditUrl(repo) {
 // absence reads as an invitation rather than as a gap.
 function summaryLine(ctx) {
   const summary = str(ctx.page.summary).replace(/\s+/g, ' ').trim();
-  const href = summaryEditUrl(ctx.repo);
+  const href = summaryEditUrl(ctx.repo, ctx.page.defaultBranch);
   if (summary) {
     const correct = href ? ` <a class="correct" href="${esc(href)}">Correct it</a>` : '';
     return `<p class="summary">${esc(summary)} (written by a person)${correct}</p>`;
@@ -310,24 +346,22 @@ function doorSteps(ctx, door) {
   steps.push(paths.length > 0
     ? `The workflow runs ${runsShown(paths, runTotal(door, paths))}.`
     : 'The workflow runs no file this map can see.');
-  for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map(fileCount))}.`);
+  for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
   if (arr(door.stages).length > 0) steps.push(`It commits ${commitsClause(ctx, door)}.`);
   for (const send of arr(door.sends)) steps.push(`It ${inline(send)}.`);
   return steps;
 }
 
-// The name page.js gives a part, which page.json carries next to its id. A
-// page.json written before the label existed falls back to the id.
-function partName(item) {
+function partName(ctx, item) {
   if (item?.part == null) return null;
-  return item.partLabel == null ? str(item.part) : str(item.partLabel);
+  return ctx.name(item.part, item.partLabel);
 }
 
 // A method called on an object is named with the object's class, "train
 // (Trainer)". Another part is named after the first step that goes into it,
 // once.
-function stepTexts(steps, ownPart) {
+function stepTexts(ctx, steps, ownPart) {
   const named = new Set();
   return arr(steps).filter((step) => step && typeof step === 'object').map((step) => {
     const notes = [];
@@ -335,7 +369,7 @@ function stepTexts(steps, ownPart) {
     const part = step.part == null ? null : str(step.part);
     if (part != null && part !== ownPart && !named.has(part)) {
       named.add(part);
-      notes.push(partName(step));
+      notes.push(partName(ctx, step));
     }
     const collapsed = Number(step.count) || 0;
     if (collapsed > 0) notes.push(`${collapsed} steps`);
@@ -358,7 +392,7 @@ function sequenceItems(ctx) {
   for (const sequence of arr(ctx.page.sequences)) {
     if (!sequence || typeof sequence !== 'object') continue;
     const own = sequence.part == null ? null : str(sequence.part);
-    items.push(inOrder(`Inside ${pathHtml(ctx, sequence.file)}, ${esc(sequence.phrase)} does, in order:`, stepTexts(sequence.steps, own)));
+    items.push(inOrder(`Inside ${pathHtml(ctx, sequence.file)}, ${esc(sequence.phrase)} does, in order:`, stepTexts(ctx, sequence.steps, own)));
     // page.json holds only the called functions the markdown shows, in the
     // order the entry calls them. A part is named only when it is not the
     // entry file's own.
@@ -366,10 +400,10 @@ function sequenceItems(ctx) {
       if (!inner || typeof inner !== 'object') continue;
       const part = inner.part == null ? null : str(inner.part);
       let where = null;
-      if (part != null && part !== own) where = esc(partName(inner));
+      if (part != null && part !== own) where = esc(partName(ctx, inner));
       else if (part == null && inner.file) where = pathHtml(ctx, inner.file);
       const lead = `<strong>${esc(capitalize(str(inner.phrase)))}</strong>${where ? ` (${where})` : ''} runs, in order:`;
-      items.push(inOrder(lead, stepTexts(inner.steps, part)));
+      items.push(inOrder(lead, stepTexts(ctx, inner.steps, part)));
     }
   }
   return items;
@@ -394,7 +428,7 @@ function readsSection(ctx) {
     const readers = arr(group.readers);
     return readers.length === 0
       ? `${target} has no reader in this repository.`
-      : `${target} is read by ${list(readers.map((reader) => readerHtml(ctx, reader)))}.`;
+      : `${target} is read by ${list(readers.map((reader) => readerHtml(ctx, wordedName(ctx, reader))))}.`;
   });
   return section('Who reads the results', ul(bullets));
 }
@@ -409,7 +443,7 @@ function otherDoors(ctx) {
     clauses.push(paths.length > 0
       ? { html: `runs ${runsShown(paths, runTotal(door, paths))}`, text: `runs ${runsShownText(paths, runTotal(door, paths))}` }
       : { html: 'runs no file this map can see', text: 'runs no file this map can see' });
-    const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => str(entry.boundary))))].sort(cmp);
+    const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => str(entry.boundary))))].sort(cmp).map((part) => ctx.name(part));
     if (reached.length > 0) clauses.push({ html: `reaches ${list(reached.map(esc))}`, text: `reaches ${list(reached)}` });
     const landings = arr(door.landings).map(str);
     if (landings.length > 0) clauses.push({ html: `writes to ${placesHtml(ctx, landings)}`, text: `writes to ${list(landings)}` });
@@ -424,33 +458,32 @@ function otherDoors(ctx) {
   return section('The other doors', paragraphs.join('\n'));
 }
 
-// A part row names the part as the list in the markdown does; a page.json
-// written before rows carried their label falls back to the id.
-function breakLabel(entry) {
-  return entry?.partLabel == null ? str(entry?.name) : str(entry.partLabel);
+// A part row names the part as the list in the markdown does.
+function breakLabel(ctx, entry) {
+  return ctx.name(entry?.name, entry?.partLabel);
 }
 
 function breakLine(ctx, entry) {
   if (entry?.kind === 'place') {
-    const writers = arr(entry.writers).map(esc);
-    const readers = arr(entry.readers).map(esc);
+    const writers = arr(entry.writers).map((part) => esc(ctx.name(part)));
+    const readers = arr(entry.readers).map((part) => esc(ctx.name(part)));
     const comma = writers.length > 1 ? ',' : '';
     return `<strong>${pathHtml(ctx, entry.target)}</strong> is written by ${list(writers)}${comma} and read by ${list(readers)}; a hand edit reaches every reader.`;
   }
-  const importedBy = arr(entry?.importedBy).map(str);
+  const importedBy = arr(entry?.importedBy).map((part) => ctx.name(part));
   const imported = importedBy.length === 0
     ? 'is imported by no other part'
     : `is imported by ${count(importedBy.length, 'part')} (${esc(importedBy.join(', '))})`;
   const doors = Number(entry?.doors) || 0;
   const path = doors === 0 ? 'no door' : count(doors, 'door');
-  const fromTests = arr(entry?.importedByTests).map(str);
+  const fromTests = arr(entry?.importedByTests).map((part) => ctx.name(part));
   if (importedBy.length === 0 && fromTests.length > 0) {
-    return `<strong>${esc(breakLabel(entry))}</strong> is imported only from tests, by ${count(fromTests.length, 'part')} (${esc(fromTests.join(', '))}), and sits on the path of ${path}.`;
+    return `<strong>${esc(breakLabel(ctx, entry))}</strong> is imported only from tests, by ${count(fromTests.length, 'part')} (${esc(fromTests.join(', '))}), and sits on the path of ${path}.`;
   }
   if (fromTests.length > 0) {
-    return `<strong>${esc(breakLabel(entry))}</strong> ${imported}, and by ${fromTests.length} more only from tests; it sits on the path of ${path}.`;
+    return `<strong>${esc(breakLabel(ctx, entry))}</strong> ${imported}, and by ${fromTests.length} more only from tests; it sits on the path of ${path}.`;
   }
-  return `<strong>${esc(breakLabel(entry))}</strong> ${imported} and sits on the path of ${path}.`;
+  return `<strong>${esc(breakLabel(ctx, entry))}</strong> ${imported} and sits on the path of ${path}.`;
 }
 
 function breaksSection(ctx) {
@@ -504,7 +537,7 @@ function untestedSection(ctx) {
   const items = ctx.page.untested.filter((item) => item && typeof item === 'object');
   const note = arr(ctx.page.untestedNote).map((line) => p(esc(line)));
   const body = items.length > 0
-    ? [ul(items.map((item) => `<strong>${esc(partName(item) ?? '')}</strong> is imported by no test.`))]
+    ? [ul(items.map((item) => `<strong>${esc(partName(ctx, item) ?? '')}</strong> is imported by no test.`))]
     : (Number(ctx.page.testFiles) === 0 ? [] : [p('Every code part is imported by at least one test.')]);
   return section('What no test touches', [...body, ...note].join('\n'));
 }
@@ -516,7 +549,7 @@ function unreadSection(ctx) {
     ? ul(items.map((item) => {
       const writers = arr(item.writers);
       const comma = writers.length > 1 ? ',' : '';
-      return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${list(writers.map((writer) => pathHtml(ctx, writer)))}${comma} and read by nothing else in this repository.`;
+      return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))))}${comma} and read by nothing else in this repository.`;
     }))
     : p(ctx.page.written === 0 ? 'No place this map can see is written, so none goes unread.' : 'Every written place has a reader.');
   const note = arr(ctx.page.unreadNote).map((line) => p(esc(line)));
@@ -550,7 +583,7 @@ function generatedSection(ctx) {
       const place = `<strong>${pathHtml(ctx, item.place)}</strong>`;
       const writers = arr(item.writers);
       return writers.length > 0
-        ? `${place} is written by ${list(writers.map((writer) => pathHtml(ctx, writer)))}.`
+        ? `${place} is written by ${list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))))}.`
         : `${place} is written by code this map cannot name.`;
     }))
     : p('Nothing in this repository writes to a tracked place this map can see.');
@@ -737,14 +770,14 @@ export function flowColumns(page) {
     columns.push({
       kind: 'parts',
       depth: 0,
-      nodes: depthZero.map((entry) => node(str(entry.boundary), count(Number(entry.files) || 0, 'file'))),
+      nodes: depthZero.map((entry) => node(ctx.name(entry.boundary), count(Number(entry.files) || 0, 'file'))),
     });
   }
   for (const level of deeper(main)) {
     columns.push({
       kind: 'parts',
       depth: level.depth,
-      nodes: level.entries.map((entry) => node(str(entry.boundary), count(Number(entry.files) || 0, 'file'))),
+      nodes: level.entries.map((entry) => node(ctx.name(entry.boundary), count(Number(entry.files) || 0, 'file'))),
     });
   }
   const landings = arr(main.landings).map(str);
@@ -756,7 +789,7 @@ export function flowColumns(page) {
     for (const group of groups) {
       const from = landings.indexOf(str(group?.target));
       if (from === -1) continue;
-      for (const reader of arr(group.readers).map(str)) {
+      for (const reader of arr(group.readers).map((text) => wordedName(ctx, text))) {
         if (!order.includes(reader)) order.push(reader);
         edges.push({ from, reader });
       }
@@ -782,11 +815,12 @@ export function flowColumns(page) {
 }
 
 function flowSentence(page, columns) {
-  const main = context(page).main;
+  const ctx = context(page);
+  const main = ctx.main;
   const clauses = [];
-  const zero = arr(main.reach).filter((entry) => Number(entry?.depth) === 0).map((entry) => str(entry.boundary));
+  const zero = arr(main.reach).filter((entry) => Number(entry?.depth) === 0).map((entry) => ctx.name(entry.boundary));
   clauses.push(zero.length > 0 ? `runs code in ${list(zero)}` : 'runs no part this map can see');
-  const levels = deeper(main).map((level) => list(level.entries.map((entry) => str(entry.boundary))));
+  const levels = deeper(main).map((level) => list(level.entries.map((entry) => ctx.name(entry.boundary))));
   if (levels.length > 0) clauses.push(`that reaches ${levels.join(', then ')}`);
   const landings = arr(main.landings).map(str);
   if (landings.length > 0) clauses.push(`it writes to ${list(landings)}`);
@@ -915,11 +949,12 @@ const DESCRIBED_ROWS = 3;
  * they have readers, not importers.
  */
 export function breaksRows(page) {
+  const ctx = context(page);
   return arr(page?.breaks)
     .filter((entry) => entry && typeof entry === 'object' && entry.kind === 'part')
     .slice(0, BAR_ROWS)
     .map((entry) => ({
-      name: breakLabel(entry),
+      name: breakLabel(ctx, entry),
       production: arr(entry.importedBy).length,
       tests: arr(entry.importedByTests).length,
       doors: Math.max(0, Math.floor(Number(entry.doors) || 0)),

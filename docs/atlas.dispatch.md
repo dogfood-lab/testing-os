@@ -108,6 +108,27 @@ dispatches on extension across four grammars, not two front-ends. If a fixture s
 the Python grammar too thin to recover imports, Pyright is the escalation to evaluate: it is a
 TypeScript program and needs no CPython. It is not a version-one dependency.
 
+**The TypeScript grammar has gaps, and the page states them.** Ten of ai-rpg-engine's 810
+TypeScript files stop the vendored grammar, and a file with any error node is recorded as
+`parseError` with no imports. The first error in each is one of three constructs:
+
+```text
+getPanels(): import('./types.js').Panel[]
+return `${owner}<NUL>${sequence}`
+importOriginal<typeof import('@x/y')>()
+```
+
+An import type followed by `[]` stops six files, a NUL character written into a template
+string three, and `typeof import(…)` as a type argument one. No other build reads them. The
+newest `tree-sitter-typescript` on npm, 0.23.2, ships `tree-sitter-typescript.wasm` with the
+same SHA-256 as the vendored file (`778025db…`), so it is the same grammar; `tree-sitter-wasms`
+0.1.13 carries an older 0.20 build that `web-tree-sitter` 0.27 refuses to load. The grammar set
+therefore stays as it is, and the gap is stated rather than silent: a file that stops the parser
+carries `unreadSyntax`, the construct its first error line matches, and the limits count the
+files by construct, "10 files use syntax the parser cannot read, so what they import is not
+known: an import type followed by `[]` (6), a NUL character inside a string (3) and `typeof
+import(…)` as a type argument (1)." A file that matches none is counted as other syntax.
+
 **1.7a Specifier resolution is version one, not a later phase.** Tree-sitter reads a file, not a
 project. It never evaluates `tsconfig.json`, so a path-aliased import resolves to nothing by
 default. Deferring this would not yield a mostly-correct map with a warning; for an affected repository
@@ -594,7 +615,11 @@ of consequence, not of size:
 2. Other new imports between parts.
 3. Imports between parts that are gone.
 4. Doors added or removed, a trigger gained, lost or changed (named down to the glob a path
-   filter gained), a file a door now runs or no longer runs.
+   filter gained), a file a door now runs or no longer runs. A door that ran more paths than
+   the 200 it records, on either side, is compared by the directories its runs are in and by
+   `runsCount`, never by the files kept: the kept files are a sample, one per directory in
+   turn, and a file added anywhere shifts which are kept. It reads "CI runs 3 more files than
+   before", or "CI now also runs files in tests/c/", and says nothing when neither moved.
 5. Places gaining a writer, then places gaining a reader. A weak entry is left out, as the page
    leaves it out.
 6. A part whose origin flipped.
@@ -847,6 +872,13 @@ production edges, and `atlas check` treats an edge moving out of test files as d
 locating a package's file needs the package: on this repository dogfood-swarm and portfolio read
 the schema JSON through `createRequire`, and now import schemas to run.
 
+A part is named once. `page.json` carries `partLabels`, every part's id with the name the page
+gives it, and the site names each part through it: the importer lists and places of "What breaks
+what", the reach, a reader that stands for many files of one part, and both pictures. `atlas
+explain --json` carries the labels of the parts it names. A part of top-level files therefore
+reads "the repository root" wherever it is named; before, the site's importer lists and reach
+said "root" where the markdown said the repository root. Every other field keeps the id.
+
 Look-alike helpers are grouped by name. A name alike in two parts keeps a line per pair; a name
 alike in three or more is one line, since that many copies of one helper is less likely than one
 contract each part fulfils: "**createGame** is exported by 13 parts (starter,
@@ -890,7 +922,10 @@ The limits are the method's. A part every one of whose importers also imports it
 code keeps its whole count: all 26 parts that import ai-rpg-engine's core do so from at least one
 file that is not a test, so its line is unchanged. A type-only import is an import. A test that
 builds its command at run time, `spawnSync(process.execPath, args)` as ai-rpg-engine's gate tests
-do, reaches nothing, so its scripts part is still listed as untested. The contract reading is a
+do, reaches nothing, so its scripts part is still listed as untested. That is by design, and it
+is counted: each call that hands a child process a program or arguments built at run time adds
+to its part's `dynamicSpawns`, tests included, and the limits say "3 commands are built at run
+time and not followed." The contract reading is a
 count of parts, not a check that the parts agree on a signature. The host check compares edges,
 `fromTests` included, and none of the rest.
 
@@ -1200,7 +1235,7 @@ closes.
 |---|---|---|---|
 | Window | question-dependent | 180 days, configurable | The source names roughly six months for an active codebase, years for a maintenance view, and says to start from full history when unsure. Full history is how an old reorganization becomes permanent architecture, so this is a deliberate departure and the boundary file may override it, including a start commit after a restructuring. |
 | Changeset cutoff | 50 files | 50 files, or a quarter of in-scope files, whichever is smaller | The fraction covers small repositories where 50 never fires and one reformat would couple everything to everything. |
-| Shared commits | 10 | 10, falling to 3 on thin history **or when fewer than 20 source files reach 10 revisions** | Compute at 10. Fall to 3 when the window holds fewer than 30 qualifying commits, **or when fewer than 20 source files have 10 revisions in the window**, never because few pairs survived. The upstream documentation sanctions lowering thresholds on an empty result, and a repository that can afford 10 keeps the stronger signal. A **qualifying commit** is one that remains after merge commits are dropped and the changeset cutoff is applied — the same commits that feed coupling, so the 30 is counted one way only. The 30 and the 20 are chosen defaults, not sourced ones. |
+| Shared commits | 10 | 10, falling to 3 on thin history **or when fewer than 20 source files reach 10 revisions**, and rising again only when 25 do | Compute at 10. Fall to 3 when the window holds fewer than 30 qualifying commits, **or when fewer than 20 source files have 10 revisions in the window**, never because few pairs survived. The upstream documentation sanctions lowering thresholds on an empty result, and a repository that can afford 10 keeps the stronger signal. A **qualifying commit** is one that remains after merge commits are dropped and the changeset cutoff is applied — the same commits that feed coupling, so the 30 is counted one way only. The 30 and the 20 are chosen defaults, not sourced ones. |
 | Coupling strength | 50% | 50% | Unchanged. |
 | Minimum revisions per file | 10 | 5 | Without a floor, two files created together and touched three times each register as permanent architecture on one afternoon's work. Files under the floor are omitted, not drawn as weak edges. A hot repository may raise it to 10. |
 
@@ -1213,6 +1248,20 @@ for no reason. The fallback therefore keys on how much history exists, not on ho
 was found. Plenty of commits and few pairs is reported at full confidence, as few couplings.
 
 The population is source files, and the floor has a second trigger. Cohesion and the divergence rules consider only pairs of source files; manifests, lockfiles, changelogs and readmes still appear in the pairs list but are release choreography, not architecture, and the first real artifact showed them to be the whole signal at the strong floor. The floor also falls to 3 when fewer than 20 source files reach 10 revisions in the window: a pair cannot share ten commits when almost no file has ten, so the strong floor is unreachable by construction. That is distinct from few pairs surviving, which stays a high-confidence finding of decoupling.
+
+**The second trigger has a band, so the floor does not flap.** The count moves a file at a time,
+and a repository near twenty flipped between the floors on successive maps: this repository sat
+at 24, and a week of quiet commits would have taken it under. Each flip turned "What tends to
+change together" from a list into the empty line and back. The floor now falls when fewer than
+20 source files reach 10 revisions and rises again only when 25 do. Which of the two applies is
+decided by the floor the previous map used: the `statistics.json` committed at HEAD, read the
+way the changes are read, or, when HEAD holds none, the `shared_commit_floor` of the divergence
+report the weekly job passes as `--previous`. With neither, the rule is the old one. Thin history
+has no band, since the commit count is not what flipped. `statistics.json` records
+`sourceFileRise`, `priorFloor` and `floorHeld`, and the section's window line states the floor
+and what would move it: "a pair counts from 3 shared commits, since 22 source files reach 10
+revisions and the floor had fallen; it rises back to 10 when 25 do." The 25 is a chosen default,
+as the 20 is.
 
 **On thin history the label means few observations, not probable error.** A repository that is
 practically finished and sees twenty qualifying commits in six months, in which two files change

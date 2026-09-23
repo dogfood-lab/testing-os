@@ -410,7 +410,10 @@ already carries, and none carries meaning by colour.
 - **The one line a person may write** sits under the mapped-at line. When the summary is
   empty, the page says so and links to GitHub's editor for `atlas/boundaries.yaml`; when it
   is present, the page shows it marked as written by a person, with a small link to
-  correct it. The site writes nothing.
+  correct it. The link opens the file on the branch `page.json` records as
+  `defaultBranch`: the remote default a clone records as `origin/HEAD`, then the branch
+  checked out, then `main`. A repository whose default is `master` or `trunk` is not sent
+  to a branch it does not have. The site writes nothing.
 
 ```text
 part           imported by                          doors

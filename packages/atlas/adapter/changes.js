@@ -256,12 +256,56 @@ function doorItems(previous, current) {
       continue;
     }
     items.push(...triggerItems(is.name, file, was.triggers ?? [], is.triggers ?? []));
+    if (sampled(was) || sampled(is)) {
+      items.push(...cappedRunItems(is.name, file, was, is));
+      continue;
+    }
     const before = new Set(runPaths(was));
     const after = runPaths(is);
     const added = after.filter((path) => !before.has(path));
     const removed = [...before].filter((path) => !after.includes(path));
     if (added.length > 0) items.push({ kind: 'door', sentence: `${is.name} now also runs ${runsShown(added)}.`, subjects: [file, ...added] });
     if (removed.length > 0) items.push({ kind: 'door', sentence: `${is.name} no longer runs ${runsShown(removed)}.`, subjects: [file, ...removed] });
+  }
+  return items;
+}
+
+// A door whose runs hit the recorded cap keeps a sample, one file per
+// directory in turn, so the files in the sample shift whenever a file is
+// added anywhere. Comparing samples would report files gained and lost that
+// were never touched.
+function sampled(door) {
+  return (door.runsCount ?? 0) > runPaths(door).length;
+}
+
+function runDirectory(path) {
+  if (path.endsWith('/')) return path;
+  const slash = path.lastIndexOf('/');
+  return slash === -1 ? '' : path.slice(0, slash + 1);
+}
+
+function directoryShown(dir) {
+  return dir === '' ? 'the repository root' : dir;
+}
+
+// Every directory a door runs keeps a file in the sample, so the directories
+// and the true count are what a capped door can be compared on.
+function cappedRunItems(name, file, was, is) {
+  const before = new Set(runPaths(was).map(runDirectory));
+  const after = [...new Set(runPaths(is).map(runDirectory))];
+  const added = after.filter((dir) => !before.has(dir)).sort(cmp);
+  const removed = [...before].filter((dir) => !after.includes(dir)).sort(cmp);
+  const items = [];
+  if (added.length > 0) {
+    items.push({ kind: 'door', sentence: `${name} now also runs files in ${runsShown(added.map(directoryShown))}.`, subjects: [file, ...added.filter(Boolean)] });
+  }
+  if (removed.length > 0) {
+    items.push({ kind: 'door', sentence: `${name} no longer runs files in ${runsShown(removed.map(directoryShown))}.`, subjects: [file, ...removed.filter(Boolean)] });
+  }
+  const change = (is.runsCount ?? runPaths(is).length) - (was.runsCount ?? runPaths(was).length);
+  if (change !== 0) {
+    const n = Math.abs(change);
+    items.push({ kind: 'door', sentence: `${name} runs ${n} ${change > 0 ? 'more' : 'fewer'} ${n === 1 ? 'file' : 'files'} than before.`, subjects: [file] });
   }
   return items;
 }

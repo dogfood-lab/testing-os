@@ -1,14 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 83c7a7f.
+Mapped at 2026-09-23 from commit c94d84e.
 
 ## What this is
 
 23 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).
 
-## What changed since 2026-09-23 (ed8bddb)
+## What changed since 2026-09-23 (83c7a7f)
 
-Nothing structural changed since 2026-09-23; 3 files changed content.
+Nothing structural changed since 2026-09-23; 6 files added and 29 changed content.
 
 ## What comes in
 
@@ -69,11 +69,11 @@ Nothing structural changed since 2026-09-23; 3 files changed content.
 
 ## What tends to change together
 
-- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 10 of 16 commits, inside the site part.
+- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 13 of 19 commits, inside the site part.
 
 2 files changed together with their own tests, as expected.
 
-Window: 180 days; a pair counts from 10 shared commits.
+Window: 180 days; a pair counts from 10 shared commits, since 25 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do.
 
 ## What no test touches
 
@@ -114,7 +114,9 @@ Read those in order to follow one dogfood submission end to end.
 
 - 2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.
 - 30 import sites could not be resolved.
+- 6 files use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (1) and other syntax (5).
 - 30 writes and 191 reads use paths built at run time and are not named here.
+- 254 commands are built at run time and not followed.
 - Readers marked (found by text) come from scanning unparsed files.
 - CI runs 517 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 - Release runs 516 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.

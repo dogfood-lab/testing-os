@@ -298,10 +298,14 @@ function describeFile(repoPath, path, places, facts, spawned) {
   const language = languageOf(path);
   if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };
   const extracted = parseFile(language, path, bytes.toString('utf8'), places);
-  if (extracted.parseError) return { path, hash, language, parseError: true, imports: [], ...noLandings() };
+  if (extracted.parseError) {
+    const syntax = extracted.unreadSyntax ? { unreadSyntax: extracted.unreadSyntax } : {};
+    return { path, hash, language, parseError: true, ...syntax, imports: [], ...noLandings() };
+  }
   facts.set(path, extracted.sequence);
-  if (extracted.spawned.length > 0) spawned.set(path, extracted.spawned);
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings };
+  if (extracted.spawned.commands.length > 0) spawned.set(path, extracted.spawned.commands);
+  const built = extracted.spawned.built > 0 ? { dynamicSpawns: extracted.spawned.built } : {};
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -316,13 +320,13 @@ function parseFile(language, path, source, places) {
   }
   if (tree == null) return { parseError: true, imports: [] };
   try {
-    if (tree.rootNode.hasError) return { parseError: true, imports: [] };
+    if (tree.rootNode.hasError) return { parseError: true, imports: [], unreadSyntax: unreadSyntax(tree.rootNode, source) };
     const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : collectScript(tree.rootNode);
     return {
       imports,
       landings: astLandings(language, tree.rootNode, path, places),
       sequence: sequenceFacts(language, tree.rootNode),
-      spawned: language === 'python' ? [] : spawnedCommands(tree.rootNode),
+      spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode),
     };
   } finally {
     tree.delete();
@@ -341,6 +345,33 @@ function walkNamed(root, visit) {
 
 function lineOf(node) {
   return node.startPosition.row + 1;
+}
+
+// The constructs the vendored grammars are known not to read, found on
+// ai-rpg-engine, where the newest tree-sitter-typescript build (0.23.2, the
+// same bytes as the vendored one) fails on all of them. A file is named by
+// the line its first error starts on; one that matches none is counted
+// without a name.
+const UNREAD = [
+  ['nul-character', (line) => line.includes('\0')],
+  ['import-type-array', (line) => /\bimport\(\s*(['"`])[^'"`]*\1\s*\)(\s*\.\s*[A-Za-z_$][\w$]*)+\s*\[\s*\]/.test(line)],
+  ['typeof-import-argument', (line) => /<\s*typeof\s+import\(/.test(line)],
+];
+
+function unreadSyntax(root, source) {
+  let first = null;
+  const stack = [root];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (node.type === 'ERROR' || node.isMissing) {
+      if (first == null || node.startIndex < first.startIndex) first = node;
+      continue;
+    }
+    for (const child of node.children) stack.push(child);
+  }
+  if (first == null) return null;
+  const line = source.split('\n')[first.startPosition.row] ?? '';
+  return UNREAD.find(([, test]) => test(line))?.[0] ?? null;
 }
 
 // A string literal passed to import() or require() names its module as surely

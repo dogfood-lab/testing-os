@@ -12,7 +12,7 @@ import { explainCommand } from './explain.js';
 import { initCommand } from './init.js';
 import { buildEnvelope, hitsFromStatistics } from './divergence.js';
 import { buildPage } from './page.js';
-import { buildStatistics, serializeStatistics, statisticsProblem } from './statistics.js';
+import { buildStatistics, parametersFrom, serializeStatistics, statisticsProblem } from './statistics.js';
 import { writeArtifactSync } from './write.js';
 
 export function main(argv, cwd) {
@@ -75,19 +75,22 @@ export function mapCommand(cwd, argv = []) {
   if (!commit) return usage('atlas: git rev-parse HEAD failed');
   const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
   const artifact = buildArtifact(mapped, commit);
+  const committed = committedMap(repo);
   const statistics = buildStatistics({
     repo,
     commit,
     document: boundary,
     artifact,
     generatedAt: new Date().toISOString(),
+    priorFloor: priorFloor(committed, previous, boundary),
   });
   const page = buildPage({
     structure: artifact,
     statistics,
     document: boundary,
     repoName: origin ?? manifestName(repo) ?? basename(repo),
-    changes: changesSince(committedMap(repo) ?? baseline, artifact, { repoPath: repo }),
+    defaultBranch: defaultBranch(repo),
+    changes: changesSince(committed ?? baseline, artifact, { repoPath: repo }),
   });
   const atlasDir = join(repo, 'atlas');
   writeArtifactSync(join(atlasDir, 'structure.json'), serializeArtifact(artifact));
@@ -308,6 +311,21 @@ function repositoryName(repo) {
   return `${match[1]}/${match[2]}`;
 }
 
+/**
+ * The branch a person edits the repository on: the remote's default, which a
+ * clone records as origin/HEAD, then the branch checked out, then main. The
+ * site's link to the boundary file points there, so a repository whose
+ * default is not main is not sent to a branch it does not have.
+ */
+function defaultBranch(repo) {
+  const remote = spawnSync('git', ['symbolic-ref', '--quiet', 'refs/remotes/origin/HEAD'], { cwd: repo, encoding: 'utf8' });
+  const named = remote.status === 0 ? /^refs\/remotes\/origin\/(.+)$/.exec(remote.stdout.trim()) : null;
+  if (named) return named[1];
+  const current = spawnSync('git', ['symbolic-ref', '--quiet', '--short', 'HEAD'], { cwd: repo, encoding: 'utf8' });
+  const branch = current.status === 0 ? current.stdout.trim() : '';
+  return branch || 'main';
+}
+
 // A clone with no GitHub origin is named by its root manifest, so the page's
 // title does not depend on the directory it was cloned into.
 function manifestName(repo) {
@@ -327,6 +345,21 @@ function committedMap(repo) {
   const structure = committedJson(repo, 'atlas/structure.json');
   if (!structure) return null;
   return { structure, statistics: committedJson(repo, 'atlas/statistics.json') };
+}
+
+// The floor the previous map used, which the floor's hysteresis starts from:
+// the statistics committed at HEAD, read as the changes are, or else the
+// divergence report the weekly job passes as --previous, whose
+// shared_commit_floor names the floor it was built on.
+function priorFloor(committed, previous, document) {
+  const floor = committed?.statistics?.parameters?.floor;
+  if (floor === 'strong' || floor === 'fallen') return floor;
+  const shared = previous?.shared_commit_floor;
+  if (typeof shared !== 'number') return null;
+  const parameters = parametersFrom(document);
+  if (shared === parameters.shared) return 'strong';
+  if (shared === parameters.fallenShared) return 'fallen';
+  return null;
 }
 
 function committedAtHead(repo, path) {

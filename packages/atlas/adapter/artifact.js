@@ -40,15 +40,21 @@ function siteCounts(files) {
 // Reads and writes whose path is built at run time name no place, so the map
 // can only count them. Test material is left out for the reason landings leave
 // it out: what it names is a temporary copy, not the repository.
+//
+// A command handed to a child process whose program or arguments are built at
+// run time is not followed either. Tests are counted here: a test that runs a
+// script it builds the command for is how a part goes untested unseen.
 function dynamicCounts(files) {
   let reads = 0;
   let writes = 0;
+  let spawns = 0;
   for (const file of files) {
+    spawns += file.dynamicSpawns ?? 0;
     if (isTestMaterial(file.path)) continue;
     reads += file.dynamicReads ?? 0;
     writes += file.dynamicWrites ?? 0;
   }
-  return { reads, writes };
+  return { reads, spawns, writes };
 }
 
 function resolvedFiles(file) {
@@ -123,6 +129,7 @@ export function buildArtifact(mapped, commit) {
     return {
       ...named,
       dynamicReads: dynamic.reads,
+      dynamicSpawns: dynamic.spawns,
       dynamicWrites: dynamic.writes,
       entryPoints: [...boundary.entryPoints].filter((path) => !inAtlas(path)).sort(),
       externals: sites.externals,
@@ -163,8 +170,10 @@ function carryFile(file) {
   const out = { hash: file.hash, path: file.path };
   if (file.exports) out.exports = [...file.exports];
   // A file the parser could not read has no imports to list, which is not
-  // the same as importing nothing; it is marked so a reader is not told so.
+  // the same as importing nothing; it is marked so a reader is not told so,
+  // with the construct the parser stopped on when it is one of the known ones.
   if (file.parseError) out.parseError = true;
+  if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
   const imported = importTargets(file);
   if (imported.files.length > 0) out.importsFiles = imported.files;
   if (imported.all.length > 0) out.reexportsAll = imported.all;

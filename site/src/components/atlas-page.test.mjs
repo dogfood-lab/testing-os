@@ -6,7 +6,9 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { cpSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as render from '../../public/atlas/render.js';
@@ -649,6 +651,55 @@ test('a part is labelled as the list names it, so a root-level part reads "the r
   assert.ok(breaksSectionHtml(html).includes('<li><strong>the repository root</strong> is imported by 2 parts'), 'the list says the same');
 });
 
+// A copy of a fixture repository mapped by the atlas CLI, so the site reads
+// the page.json atlas map writes rather than one written by hand.
+function mappedFixture(name) {
+  const root = mkdtempSync(join(tmpdir(), 'atlas-site-'));
+  try {
+    cpSync(join(repoRoot, 'fixtures', 'atlas', name), root, { recursive: true });
+    const git = (args) => {
+      const result = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+      assert.equal(result.status, 0, result.stderr);
+    };
+    git(['init']);
+    git(['add', '-A']);
+    git(['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', name]);
+    const mapped = spawnSync(process.execPath, [join(repoRoot, 'packages', 'atlas', 'cli.js'), 'map'], { cwd: root, encoding: 'utf8' });
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+    return JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8'));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+}
+
+test('every part is named from the one map page.json carries, so a root part reads "the repository root" in every list', () => {
+  const rooted = mappedFixture('root-part');
+  assert.equal(rooted.partLabels.root, 'the repository root');
+  const html = render.renderPage(rooted, { repo: 'acme/top-level-part' });
+  const text = plain(html);
+  for (const sentence of [
+    'lib is imported by 1 part (the repository root) and sits on the path of 1 door.',
+    'the repository root is imported by 1 part (tools) and sits on the path of 1 door.',
+    'That reaches the repository root (1 file).',
+  ]) assert.ok(text.includes(sentence), sentence);
+  assert.equal(/(^|[\s(,>])root\b/.test(text.replaceAll('the repository root', '')), false, 'the id is never shown');
+  const flow = render.renderFlow(rooted);
+  assert.ok(flow.includes('>the repository root</text>'), 'the flow picture names the part as the list does');
+  assert.equal(flow.includes('>root</text>'), false);
+
+  // A reader or writer standing for many files of one part is written as the
+  // part's id and the count; the site names the part and keeps the count.
+  const collapsed = {
+    ...rooted,
+    doors: rooted.doors.map((door) => ({ ...door, landings: ['out/'] })),
+    readers: [{ readers: ['root (4 README files)', 'tools/run.js'], target: 'out/' }],
+    unread: [{ place: 'cache/', writers: ['root (5 files)'] }],
+  };
+  const worded = plain(render.renderPage(collapsed, { repo: 'acme/top-level-part' }));
+  assert.ok(worded.includes('out/ is read by the repository root (4 README files) and tools/run.js.'), worded);
+  assert.ok(worded.includes('cache/ is written by the repository root (5 files) and read by nothing else'), worded);
+});
+
 test('page.json carries the imports among the listed parts, for a later layer of the picture', () => {
   const listed = new Set(breakParts(page).map((part) => part.name));
   assert.ok(Array.isArray(page.edges) && page.edges.length > 0);
@@ -752,4 +803,18 @@ test('with a summary the page shows it as written by a person, with a small link
   assert.equal(html.includes('No one has written'), false);
   assert.equal((html.match(/\(written by a person\)/g) ?? []).length, 1, 'said once, at the top');
   assert.match(shell, /\.summary \.correct \{ font-size: 14px; \}/);
+});
+
+test('the link to write or correct the line opens the boundary file on the branch page.json names', () => {
+  const edit = (branch) => `https://github.com/dogfood-lab/testing-os/edit/${branch}/atlas/boundaries.yaml`;
+  const onTrunk = render.renderPage({ ...page, defaultBranch: 'trunk' }, { repo: page.repo });
+  assert.ok(onTrunk.includes(`<a href="${edit('trunk')}">Write it.</a>`));
+  const corrected = render.renderPage({ ...page, defaultBranch: 'trunk', summary: 'One line.', summaryFrom: 'person' }, { repo: page.repo });
+  assert.ok(corrected.includes(`<a class="correct" href="${edit('trunk')}">Correct it</a>`));
+  assert.equal(render.summaryEditUrl('o/n', 'release/2.x'), 'https://github.com/o/n/edit/release/2.x/atlas/boundaries.yaml');
+  const { defaultBranch, ...older } = page;
+  assert.ok(render.renderPage(older, { repo: page.repo }).includes(`<a href="${edit('main')}">Write it.</a>`), 'a page.json without the field links to main');
+  for (const hostile of ['../../settings', 'a b', '', 'x/', 42]) {
+    assert.equal(render.summaryEditUrl('o/n', hostile), 'https://github.com/o/n/edit/main/atlas/boundaries.yaml', String(hostile));
+  }
 });

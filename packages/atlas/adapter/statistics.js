@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { SOURCE_EXTENSIONS, SOURCE_FILE_REACH, isSourcePath, loadHistory } from '../core/history.js';
+import { SOURCE_EXTENSIONS, SOURCE_FILE_REACH, SOURCE_FILE_RISE, isSourcePath, loadHistory } from '../core/history.js';
 
 const CHURN_DEFINITION = 'commits is how many commits in the window touch the file, including merges and commits dropped from coupling. lines is added plus deleted in those commits.';
 const STRENGTH_DEFINITION = 'strength is the shared qualifying commits divided by either. either is the number of qualifying commits that touch either file.';
@@ -121,9 +121,15 @@ export function applyMarks(rows, previous, fallen) {
   });
 }
 
-export function buildStatistics({ repo, commit, document, artifact, generatedAt }) {
+/**
+ * @param {object} input
+ * @param {'strong'|'fallen'|null} [input.priorFloor] the floor the previous
+ *   map used, so the floor moves with hysteresis (decideFloor); null when
+ *   there is no previous map
+ */
+export function buildStatistics({ repo, commit, document, artifact, generatedAt, priorFloor = null }) {
   const parameters = parametersFrom(document);
-  const history = loadHistory(repo, parameters);
+  const history = loadHistory(repo, { ...parameters, priorFloor });
   const empty = {
     qualifyingCommits: 0,
     floor: 'fallen',
@@ -181,8 +187,11 @@ export function buildStatistics({ repo, commit, document, artifact, generatedAt 
       couplingPopulation: 'source',
       sourceExtensions: [...SOURCE_EXTENSIONS],
       sourceFileReach: SOURCE_FILE_REACH,
+      sourceFileRise: SOURCE_FILE_RISE,
       sourceFilesReachingStrongFloor: measured.sourceFilesReachingStrongFloor ?? 0,
       floorTrigger: measured.floorTrigger ?? null,
+      floorHeld: measured.floorHeld ?? false,
+      priorFloor: priorFloor === 'strong' || priorFloor === 'fallen' ? priorFloor : null,
       changeset: parameters.changeset,
       changesetFraction: parameters.changesetFraction,
       shared: parameters.shared,

@@ -126,7 +126,10 @@ function facts({ structure, statistics }) {
   for (const file of [...boundaries.flatMap((boundary) => boundary.files ?? []), ...(structure.unassigned ?? []), ...(structure.overlaps ?? [])]) {
     fileOf.set(file.path, file);
   }
-  const names = new Map(boundaries.map((boundary) => [boundary.name, displayName(boundary)]));
+  // Every name the page gives a part, by id. page.json carries this map once,
+  // so explain and the site name a part as the page does without each
+  // reproducing displayName; a field that names a part keeps its id.
+  const partLabels = Object.fromEntries(boundaries.map((boundary) => [boundary.name, displayName(boundary)]));
   const spans = new Map();
   const partsUnder = (dir) => {
     if (!spans.has(dir)) {
@@ -142,7 +145,8 @@ function facts({ structure, statistics }) {
     boundaries,
     boundaryOf,
     fileOf,
-    shown: (name) => names.get(name) ?? name,
+    partLabels,
+    shown: (name) => (Object.hasOwn(partLabels, name) ? partLabels[name] : name),
     partsUnder,
     place: (target) => (isDir(target) ? `${target}/` : target),
     doors: orderDoors(structure.doors ?? []),
@@ -1000,10 +1004,26 @@ function windowLine(parameters) {
     ? `${count(parameters.windowDays, 'day')}`
     : (parameters?.pinnedStart ? `since ${parameters.pinnedStart}` : null);
   const floor = typeof parameters?.sharedFloorUsed === 'number'
-    ? `a pair counts from ${count(parameters.sharedFloorUsed, 'shared commit')}`
+    ? `a pair counts from ${count(parameters.sharedFloorUsed, 'shared commit')}${floorRule(parameters)}`
     : null;
   const parts = [span, floor].filter(Boolean);
   return parts.length > 0 ? `Window: ${parts.join('; ')}.` : null;
+}
+
+// Why the floor is where it is, and what would move it, so a list that
+// appears or empties between two maps says which count crossed which line.
+// Statistics written before the rise threshold existed say only the floor.
+function floorRule(parameters) {
+  const files = parameters.sourceFilesReachingStrongFloor;
+  const { fallenShared, qualifyingMinimum, shared, sourceFileReach, sourceFileRise } = parameters;
+  if (![files, fallenShared, qualifyingMinimum, shared, sourceFileReach, sourceFileRise].every((value) => typeof value === 'number')) return '';
+  if (parameters.floorTrigger === 'thin-history' || parameters.floorTrigger === 'both') {
+    return `, since the window holds fewer than ${count(qualifyingMinimum, 'qualifying commit')}`;
+  }
+  const reached = `${count(files, 'source file')} ${files === 1 ? 'reaches' : 'reach'} ${shared} revisions`;
+  if (parameters.floor === 'strong') return `, since ${reached}; the floor falls to ${fallenShared} when fewer than ${sourceFileReach} do`;
+  if (parameters.floorHeld) return `, since ${reached} and the floor had fallen; it rises back to ${shared} when ${sourceFileRise} do`;
+  return `, since ${reached}; the floor rises to ${shared} when ${sourceFileRise} do`;
 }
 
 function togetherNote(ctx, pairs, withTests) {
@@ -1298,6 +1318,38 @@ export function externalsLine(sites, names) {
     : `${count(sites, 'import site')} ${sites === 1 ? 'names' : 'name'} a declared dependency that shares its name with a local module${shown}; ${sites === 1 ? 'it is' : 'they are'} read as the dependency, which is not in this repository.`;
 }
 
+// The constructs the core names when a file stops the parser (core/index.js).
+const UNREAD_SYNTAX = {
+  'import-type-array': 'an import type followed by `[]`',
+  'nul-character': 'a NUL character inside a string',
+  'typeof-import-argument': '`typeof import(…)` as a type argument',
+};
+
+/**
+ * The files the parser could not read, with the constructs they stopped on,
+ * most files first. What such a file imports is not known, so the count is
+ * stated rather than left for a reader to infer from a missing edge.
+ *
+ * @param {Array<{ unreadSyntax?: string }>} files
+ * @returns {string|null}
+ */
+export function unreadLine(files) {
+  if (files.length === 0) return null;
+  const counts = new Map();
+  for (const file of files) {
+    const key = Object.hasOwn(UNREAD_SYNTAX, file.unreadSyntax ?? '') ? file.unreadSyntax : null;
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  const named = [...counts.entries()].filter(([key]) => key != null)
+    .sort((a, b) => b[1] - a[1] || cmp(a[0], b[0]))
+    .map(([key, n]) => `${UNREAD_SYNTAX[key]} (${n})`);
+  const other = counts.get(null) ?? 0;
+  const lead = `${count(files.length, 'file')} ${files.length === 1 ? 'uses' : 'use'} syntax the parser cannot read, so what ${files.length === 1 ? 'it imports' : 'they import'} is not known`;
+  if (named.length === 0) return `${lead}.`;
+  if (other > 0) named.push(`other syntax (${other})`);
+  return `${lead}: ${list(named)}.`;
+}
+
 function limits(ctx, shownText) {
   const lines = [];
   const externals = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.externals ?? 0), 0);
@@ -1306,10 +1358,16 @@ function limits(ctx, shownText) {
   if (declared) lines.push(declared);
   const unresolved = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.unresolvedSites ?? 0), 0);
   if (unresolved > 0) lines.push(`${count(unresolved, 'import site')} could not be resolved.`);
+  const unparsed = unreadLine([...ctx.fileOf.values()].filter((file) => file.parseError));
+  if (unparsed) lines.push(unparsed);
   const dynamicWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);
   const dynamicReads = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicReads ?? 0), 0);
   if (dynamicWrites + dynamicReads > 0) {
     lines.push(`${count(dynamicWrites, 'write')} and ${count(dynamicReads, 'read')} use paths built at run time and are not named here.`);
+  }
+  const dynamicSpawns = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicSpawns ?? 0), 0);
+  if (dynamicSpawns > 0) {
+    lines.push(`${count(dynamicSpawns, 'command')} ${dynamicSpawns === 1 ? 'is' : 'are'} built at run time and not followed.`);
   }
   if (shownText) lines.push('Readers marked (found by text) come from scanning unparsed files.');
   for (const door of ctx.doors) {
@@ -1399,12 +1457,14 @@ function doorData(ctx, door) {
 }
 
 /**
- * @param {{ structure: object, statistics: object, document: object, repoName: string, changes?: object }} input
+ * @param {{ structure: object, statistics: object, document: object, repoName: string, defaultBranch?: string, changes?: object }} input
  *   changes is the delta from the map committed at HEAD (adapter/changes.js);
- *   without it the page has no "What changed since …" section
+ *   without it the page has no "What changed since …" section. defaultBranch
+ *   is the branch a person edits on, read from git by the caller, since
+ *   nothing here reads the tree
  * @returns {{ markdown: string, json: string }}
  */
-export function buildPage({ structure, statistics, document, repoName, changes = null }) {
+export function buildPage({ structure, statistics, document, repoName, defaultBranch = 'main', changes = null }) {
   const ctx = facts({ structure, statistics: statistics ?? {} });
   const commit = String(statistics?.generatedFrom?.commit ?? structure.generatedFrom?.commit ?? '');
   const generatedAt = String(statistics?.generatedAt ?? '');
@@ -1461,6 +1521,7 @@ export function buildPage({ structure, statistics, document, repoName, changes =
     changesTogetherNote: pairNote,
     changesTogetherWithTests: withTests,
     commit,
+    defaultBranch: String(defaultBranch || 'main'),
     doors: ctx.doors.map((door) => doorData(ctx, door)),
     duplicates: duplicated.items,
     duplicatesLead: duplicated.lead,
@@ -1470,6 +1531,7 @@ export function buildPage({ structure, statistics, document, repoName, changes =
     generatedAt,
     limits: limitLines,
     mainDoor: main ? main.file : null,
+    partLabels: ctx.partLabels,
     parts: ctx.boundaries.length,
     readers: groups.map((group) => ({ readers: worded(group.readers, id), target: group.target })),
     repo: String(repoName ?? ''),

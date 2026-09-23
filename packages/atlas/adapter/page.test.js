@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -368,6 +368,25 @@ describe('atlas page', () => {
     assert.equal(imported.breaks.find((entry) => entry.name === 'lib').partLabel, 'lib');
   });
 
+  it('carries one map of the name of every part, so a root part another imports reads the repository root in every list', () => {
+    const mapped = mappedCopy('root-part');
+    const built = page(mapped, { repoName: 'acme/top-level-part' });
+    const data = JSON.parse(built.json);
+    assert.deepEqual(data.partLabels, { '.github': '.github', lib: 'lib', root: 'the repository root', tools: 'tools' });
+    assert.equal(
+      section(built.markdown, '## What breaks what'),
+      [
+        '## What breaks what',
+        '',
+        '- **lib** is imported by 1 part (the repository root) and sits on the path of 1 door.',
+        '- **the repository root** is imported by 1 part (tools) and sits on the path of 1 door.',
+        '',
+      ].join('\n'),
+    );
+    assert.deepEqual(data.breaks.map((entry) => [entry.name, entry.importedBy]), [['lib', ['root']], ['root', ['tools']]]);
+    assert.ok(section(built.markdown, '## What happens through CI').includes('2. That reaches the repository root (1 file).'));
+  });
+
   it('names source files that changed together, from statistics built over a commit list', () => {
     const commit = (hash, paths) => ({ hash, parents: ['p'], files: paths.map((path) => ({ path, added: 1, deleted: 0 })) });
     // Three commits touch tools/ingest.js and lib/store.js; README.md rides
@@ -395,7 +414,7 @@ describe('atlas page', () => {
       '- **lib/store.js** and **tools/ingest.js** changed together in 3 of 3 commits, and the tools part imports the lib part.',
       '1 file changed together with its own test, as expected.',
       'Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions.',
-      'Window: 180 days; a pair counts from 3 shared commits.',
+      'Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.',
     ].join('\n\n') + '\n');
     const data = JSON.parse(built.json);
     assert.deepEqual(data.changesTogether, [
@@ -405,7 +424,7 @@ describe('atlas page', () => {
     assert.deepEqual(data.changesTogetherNote, [
       '1 file changed together with its own test, as expected.',
       'Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions.',
-      'Window: 180 days; a pair counts from 3 shared commits.',
+      'Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.',
     ]);
 
     const inside = buildPage({
@@ -427,7 +446,7 @@ describe('atlas page', () => {
     assert.equal(section(empty.markdown, '## What tends to change together'), [
       '## What tends to change together',
       'No two source files changed together often enough to name.',
-      'Window: 180 days; a pair counts from 3 shared commits.',
+      'Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.',
     ].join('\n\n') + '\n');
   });
 
@@ -479,7 +498,7 @@ describe('atlas page', () => {
     if (expected.length === 0) {
       assert.ok(together.includes('changed together often enough to name.'), 'the empty case says so in words');
     }
-    assert.match(together, /\n\nWindow: \d+ days; a pair counts from \d+ shared commits\.\n$/);
+    assert.match(together, /\n\nWindow: \d+ days; a pair counts from \d+ shared commits(, since [^\n]+)?\.\n$/);
   });
 
   it('finds reports/ written and never read in this repository, and every code part under a test', () => {
@@ -750,5 +769,113 @@ describe('atlas page', () => {
     for (const name of ['orientation.md', 'dev.md', 'machine.md', 'machine-stats.txt']) {
       assert.equal(existsSync(join(doors.root, 'atlas', name)), false, name);
     }
+  });
+});
+
+describe('the branch page.json names for editing', () => {
+  function mapAt(root) {
+    const mapped = spawnSync(process.execPath, [CLI, 'map'], { cwd: root, encoding: 'utf8' });
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+    return JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).defaultBranch;
+  }
+
+  function committed(branch) {
+    const root = mkdtempSync(join(tmpdir(), 'atlas-branch-'));
+    roots.push(root);
+    cpSync(join(FIXTURES, 'root-part'), root, { recursive: true });
+    git(root, ['init', '-b', branch]);
+    git(root, ['add', '-A']);
+    git(root, ['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', 'root-part']);
+    return root;
+  }
+
+  it('is the remote default a clone records, even on another branch', () => {
+    const upstream = committed('trunk');
+    const clone = mkdtempSync(join(tmpdir(), 'atlas-branch-'));
+    roots.push(clone);
+    git(tmpdir(), ['clone', '--quiet', upstream, clone]);
+    assert.equal(git(clone, ['symbolic-ref', 'refs/remotes/origin/HEAD']).trim(), 'refs/remotes/origin/trunk');
+    git(clone, ['checkout', '--quiet', '-b', 'feature']);
+    assert.equal(mapAt(clone), 'trunk');
+  });
+
+  it('is the branch checked out without a remote, and main on a detached head', () => {
+    const root = committed('develop');
+    assert.equal(mapAt(root), 'develop');
+    git(root, ['checkout', '--quiet', '--detach']);
+    assert.equal(mapAt(root), 'main');
+  });
+});
+
+describe('files the parser cannot read', () => {
+  it('records the construct each stops on, and the limits count them by construct', () => {
+    const root = mkdtempSync(join(tmpdir(), 'atlas-unread-'));
+    roots.push(root);
+    cpSync(join(FIXTURES, 'root-part'), root, { recursive: true });
+    // The three constructs tree-sitter-typescript 0.23.2 fails on in
+    // ai-rpg-engine, written as that repository writes them, and one error
+    // that is none of them.
+    const files = {
+      'lib/inspect.ts': "export class Engine {\n  getPanels(): import('./core.js').Panel[] {\n    return [];\n  }\n}\n",
+      'lib/key.ts': 'export function key(a: string, b: string): string {\n  return `${a}\0${b}`;\n}\n',
+      'lib/wire.ts': "export function wire(a: string, b: string): string {\n  return `${a}\0${b}`;\n}\n",
+      'lib/mocked.test.ts': "const actual = await importOriginal<typeof import('./core.js')>();\nexport { actual };\n",
+      'lib/broken.ts': 'export const = ;\n',
+    };
+    for (const [path, text] of Object.entries(files)) writeFileSync(join(root, path), text);
+    git(root, ['init']);
+    git(root, ['config', 'core.autocrlf', 'false']);
+    git(root, ['add', '-A']);
+    git(root, ['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', 'unread']);
+    const mapped = spawnSync(process.execPath, [CLI, 'map'], { cwd: root, encoding: 'utf8' });
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+    const structure = JSON.parse(readFileSync(join(root, 'atlas', 'structure.json'), 'utf8'));
+    const unread = Object.fromEntries(structure.boundaries.flatMap((boundary) => boundary.files)
+      .filter((file) => file.parseError).map((file) => [file.path, file.unreadSyntax ?? null]));
+    assert.deepEqual(unread, {
+      'lib/broken.ts': null,
+      'lib/inspect.ts': 'import-type-array',
+      'lib/key.ts': 'nul-character',
+      'lib/mocked.test.ts': 'typeof-import-argument',
+      'lib/wire.ts': 'nul-character',
+    });
+    const line = '5 files use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (2), an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
+    assert.ok(JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits.includes(line));
+    assert.ok(readFileSync(join(root, 'atlas', 'README.md'), 'utf8').includes(`\n- ${line}\n`));
+  });
+});
+
+describe('commands built at run time', () => {
+  it('counts each spawn whose program or arguments are computed, tests included, and follows the spelled ones', () => {
+    const root = mkdtempSync(join(tmpdir(), 'atlas-spawns-'));
+    roots.push(root);
+    cpSync(join(FIXTURES, 'root-part'), root, { recursive: true });
+    const files = {
+      'tools/gate.test.js': [
+        "import { execSync, spawnSync } from 'node:child_process';",
+        "const args = ['tools/run.js'];",
+        'spawnSync(process.execPath, args);',
+        "spawnSync('node', args);",
+        'execSync(`node ${args[0]}`);',
+        "spawnSync('node', ['tools/run.js']);",
+        "execSync('node tools/run.js');",
+        "/x/.exec('text');",
+        '',
+      ].join('\n'),
+    };
+    for (const [path, text] of Object.entries(files)) writeFileSync(join(root, path), text);
+    git(root, ['init']);
+    git(root, ['add', '-A']);
+    git(root, ['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', 'spawns']);
+    const mapped = spawnSync(process.execPath, [CLI, 'map'], { cwd: root, encoding: 'utf8' });
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+    const structure = JSON.parse(readFileSync(join(root, 'atlas', 'structure.json'), 'utf8'));
+    const tools = structure.boundaries.find((boundary) => boundary.name === 'tools');
+    assert.equal(tools.dynamicSpawns, 3);
+    assert.equal(structure.boundaries.find((boundary) => boundary.name === 'lib').dynamicSpawns, 0);
+    // The spelled-out commands are still followed: the test reaches run.js.
+    assert.equal(tools.testedBy, 1);
+    const limits = JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits;
+    assert.ok(limits.includes('3 commands are built at run time and not followed.'), limits.join('\n'));
   });
 });

@@ -30,38 +30,56 @@ function round(value) {
 
 export const SOURCE_EXTENSIONS = ['.js', '.mjs', '.cjs', '.jsx', '.ts', '.tsx', '.mts', '.cts', '.py'];
 export const SOURCE_FILE_REACH = 20;
+export const SOURCE_FILE_RISE = 25;
 
 export function isSourcePath(path) {
   const base = String(path).slice(Math.max(String(path).lastIndexOf('/'), String(path).lastIndexOf('\\')) + 1).toLowerCase();
   return SOURCE_EXTENSIONS.some((ext) => base.endsWith(ext));
 }
 
+/**
+ * The shared-commit floor, strong or fallen. The source-file count moves by
+ * one file at a time, so a repository near twenty would flip between the two
+ * floors on successive maps and its co-change section between a list and
+ * nothing. The count therefore has two thresholds: the floor falls below
+ * sourceFileReach and rises again only at sourceFileRise. Which applies is
+ * decided by options.priorFloor, the floor the previous map used; without
+ * one, the floor falls below sourceFileReach as it always did. Thin history
+ * has no band: the qualifying-commit count is not what flips.
+ */
 export function decideFloor(qualifyingCommits, sourceFilesReachingStrongFloor, options = {}) {
   const qualifyingMinimum = options.qualifyingMinimum ?? 30;
   const sourceFileReach = options.sourceFileReach ?? SOURCE_FILE_REACH;
+  const sourceFileRise = Math.max(options.sourceFileRise ?? SOURCE_FILE_RISE, sourceFileReach);
   const sharedFloor = options.shared ?? 10;
   const fallenShared = options.fallenShared ?? 3;
+  const priorFloor = options.priorFloor === 'strong' || options.priorFloor === 'fallen' ? options.priorFloor : null;
+  const depthNeeded = priorFloor === 'fallen' ? sourceFileRise : sourceFileReach;
   const thin = qualifyingCommits < qualifyingMinimum;
-  const shallow = sourceFilesReachingStrongFloor < sourceFileReach;
+  const shallow = sourceFilesReachingStrongFloor < depthNeeded;
   const fallen = thin || shallow;
   let floorTrigger = null;
   if (thin && shallow) floorTrigger = 'both';
   else if (thin) floorTrigger = 'thin-history';
   else if (shallow) floorTrigger = 'revision-depth';
+  const depth = `${depthNeeded} source files reach ${sharedFloor} revisions`;
   let confidenceReason;
   if (!fallen) {
-    confidenceReason = 'at least 30 qualifying commits, and at least 20 source files reach 10 revisions';
+    confidenceReason = `at least ${qualifyingMinimum} qualifying commits, and at least ${depth}`;
   } else if (floorTrigger === 'both') {
-    confidenceReason = 'fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions';
+    confidenceReason = `fewer than ${qualifyingMinimum} qualifying commits in the window, and fewer than ${depth}`;
   } else if (floorTrigger === 'thin-history') {
-    confidenceReason = 'fewer than 30 qualifying commits in the window';
+    confidenceReason = `fewer than ${qualifyingMinimum} qualifying commits in the window`;
   } else {
-    confidenceReason = 'fewer than 20 source files reach 10 revisions in the window';
+    confidenceReason = `fewer than ${depth} in the window`;
   }
   return {
     floor: fallen ? 'fallen' : 'strong',
     floorTrigger,
     confidenceReason,
+    priorFloor,
+    // The band held the floor where the count alone would have moved it.
+    floorHeld: priorFloor === 'fallen' && !thin && shallow && sourceFilesReachingStrongFloor >= sourceFileReach,
     sharedFloorUsed: fallen ? fallenShared : sharedFloor,
   };
 }
@@ -189,6 +207,8 @@ export function analyzeHistory(commits, options) {
     qualifyingTouches: qualifying.map((commit) => ({ hash: commit.hash, paths: commit.files.map((file) => file.path) })),
     floor: decision.floor,
     floorTrigger: decision.floorTrigger,
+    floorHeld: decision.floorHeld,
+    priorFloor: decision.priorFloor,
     confidenceReason: decision.confidenceReason,
     sourceFilesReachingStrongFloor,
     sharedFloorUsed: floorUsed,
