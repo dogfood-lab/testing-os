@@ -567,8 +567,8 @@ function resolvePython(ctx, fromAbs, specifier) {
  * @param {string} module
  * @param {Set<string>} tracked
  */
-export function resolvePythonModule(module, tracked) {
-  return pythonAbsolute(module, sourceRoots(tracked), tracked);
+export function resolvePythonModule(module, tracked, roots = []) {
+  return pythonAbsolute(module, [...roots, ...sourceRoots(tracked)], tracked);
 }
 
 function pythonRelative(fromRel, specifier, tracked) {

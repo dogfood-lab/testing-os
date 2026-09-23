@@ -130,7 +130,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   });
 
   const doors = [
-    ...mapDoors({ repoPath, tracked: trackedSet, spawned }),
+    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands }),
     ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands }),
   ];
   const graph = importGraph(boundaryList, unassigned, overlaps);

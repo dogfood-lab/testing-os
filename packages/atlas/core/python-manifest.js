@@ -68,17 +68,29 @@ export function declaredScripts(repoPath, tracked) {
   for (const path of tracked) {
     if (path !== 'pyproject.toml' && !path.endsWith('/pyproject.toml')) continue;
     const tables = readToml(repoPath, path);
+    const root = rootPackageDir(tables);
     for (const table of ['project.scripts', 'project.gui-scripts', 'tool.poetry.scripts']) {
       for (const [name, value] of Object.entries(tables.get(table) ?? {})) {
         const [target] = strings(value);
         if (!target) continue;
         const [module, fn] = target.split(':').map((part) => part.trim());
         if (!/^[A-Za-z_][\w.]*$/.test(module)) continue;
-        out.push({ manifest: path, name, module, fn: fn && /^[A-Za-z_]\w*$/.test(fn) ? fn : null });
+        const script = { manifest: path, name, module, fn: fn && /^[A-Za-z_]\w*$/.test(fn) ? fn : null };
+        if (root) script.packageDir = root;
+        out.push(script);
       }
     }
   }
   return out;
+}
+
+// [tool.setuptools] package-dir = { "" = "tools" }: the directory, beside the
+// manifest, that top-level modules are installed from.
+function rootPackageDir(tables) {
+  const text = tables.get('tool.setuptools')?.['package-dir'];
+  const match = typeof text === 'string' ? /(["'])\1\s*=\s*["']([^"']+)["']/.exec(text) : null;
+  const dir = match ? match[2].replace(/^\.\/|\/+$/g, '') : '';
+  return dir && !dir.startsWith('/') && !dir.split('/').includes('..') ? dir : null;
 }
 
 function projectNames(tables) {

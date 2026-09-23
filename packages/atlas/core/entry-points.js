@@ -53,7 +53,9 @@ export function deriveEntryPoints({ repoPath, globs, tracked, scripts = [], comm
 export function pythonScripts(repoPath, tracked) {
   const out = [];
   for (const script of declaredScripts(repoPath, [...tracked].sort())) {
-    const path = resolvePythonModule(script.module, tracked);
+    const base = script.manifest.includes('/') ? script.manifest.slice(0, script.manifest.lastIndexOf('/')) : '';
+    const roots = script.packageDir ? [base ? `${base}/${script.packageDir}` : script.packageDir] : [];
+    const path = resolvePythonModule(script.module, tracked, roots);
     if (path) out.push({ path, fn: script.fn, name: script.name, manifest: script.manifest });
   }
   return out;

@@ -1,0 +1,11 @@
+[project]
+name = "command-files"
+version = "1.0.0"
+
+[project.scripts]
+cf-index = "cf_index:main"
+cf-record = "record:main"
+
+[tool.setuptools]
+package-dir = { "" = "tools" }
+py-modules = ["cf_index", "record"]

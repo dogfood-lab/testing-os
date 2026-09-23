@@ -38,8 +38,8 @@ const ACTION_SENDS = [
  *   spawned holds, per JavaScript or TypeScript file, the command lines it
  *   hands to a child process (core/spawned.js)
  */
-export function mapDoors({ repoPath, tracked, spawned }) {
-  const repo = repositoryView({ repoPath, tracked, spawned });
+export function mapDoors({ repoPath, tracked, spawned, commands = [] }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands });
   return [...tracked]
     .filter(isWorkflow)
     .sort()
@@ -58,7 +58,7 @@ export function mapDoors({ repoPath, tracked, spawned }) {
  * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, commands: Array<{ kind: string, name: string, manifest: string, path: string }> }} input
  */
 export function mapCommandDoors({ repoPath, tracked, spawned, commands }) {
-  const repo = repositoryView({ repoPath, tracked, spawned });
+  const repo = repositoryView({ repoPath, tracked, spawned, commands });
   return commands.map((command) => {
     const recorded = recordedRuns([...readProgram(command.path, repo).values()]);
     return {
