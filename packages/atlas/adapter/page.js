@@ -1465,8 +1465,12 @@ function authored(ctx) {
 // Nothing the map names writes to these parts, but a write whose path is
 // built at run time could land anywhere, so the page says so rather than
 // that nothing writes to them.
+function unnamedWrites(ctx) {
+  return ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);
+}
+
 function authoredSection(ctx, boundaries) {
-  const unnamed = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);
+  const unnamed = unnamedWrites(ctx);
   const people = `People write ${list(boundaries.map((boundary) => shownPlace(ctx, boundary)))}`;
   const caveat = unnamed > 0
     ? `${people}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`
@@ -1617,16 +1621,19 @@ function startHere(ctx, main, groups) {
   return { chain, words: [...chain] };
 }
 
+// What "Where to start" says of a door that runs no code the map can follow.
+function noPath(door) {
+  const checks = shownRuns(door, 'checks').some((path) => path.endsWith('/') || isCodePath(path));
+  const why = checks ? `${door.name} runs no code this map can follow; it only checks code` : `${door.name} runs no code this map can follow`;
+  return `${why}, so there is no path of files to read in order.`;
+}
+
 function startSection(words, main, readable) {
   if (!main) {
     const why = readable ? 'No door runs a file this map can see' : 'No door was found';
     return ['## Where to start', `${why}, so there is no path through this repository to follow.`].join('\n\n');
   }
-  if (words.length === 0) {
-    const checks = shownRuns(main, 'checks').some((path) => path.endsWith('/') || isCodePath(path));
-    const why = checks ? `${main.name} runs no code this map can follow; it only checks code` : `${main.name} runs no code this map can follow`;
-    return ['## Where to start', `${why}, so there is no path of files to read in order.`].join('\n\n');
-  }
+  if (words.length === 0) return ['## Where to start', noPath(main)].join('\n\n');
   return ['## Where to start', words.join(' → '), `Read those in order to follow one ${triggerNoun(main)} end to end.`].join('\n\n');
 }
 
@@ -1990,7 +1997,9 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     readers: groups.map((group) => ({ readers: worded(group.readers, id), target: group.target })),
     repo: String(repoName ?? ''),
     sequences: found,
+    startDoor: starting ? doorKey(starting) : null,
     startHere: start.chain,
+    ...(starting && start.chain.length === 0 ? { startNote: noPath(starting) } : {}),
     summary,
     summaryFrom: summary ? 'person' : null,
     testedBy: untestedParts.testedBy,
@@ -2000,6 +2009,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     written: unreadPlaces.written,
     untested: untestedParts.items,
     untestedNote: untestedParts.note,
+    unnamedWrites: unnamedWrites(ctx),
   };
   return { markdown, json: `${JSON.stringify(sortKeys(data), null, 2)}\n` };
 }

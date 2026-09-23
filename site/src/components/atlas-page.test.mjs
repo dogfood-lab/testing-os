@@ -303,7 +303,7 @@ test('the three derived views say what the committed markdown says, in the same 
     assert.deepEqual(shown, written, heading);
   }
   const unread = sectionTexts(page, markdown, 'Written but never read').shown;
-  assert.ok(unread.includes('reports/ is written by packages/portfolio/generate.js and read by nothing else in this repository.'));
+  assert.ok(unread.includes('reports/dogfood-portfolio.json is written by packages/portfolio/generate.js and read by nothing else in this repository.'));
   const alike = sectionTexts(page, markdown, 'Helpers that look duplicated').shown;
   assert.equal(alike[0], 'These are candidates from names and call order, not a judgement.');
 });
@@ -393,14 +393,27 @@ test('a method is named with the class it is called on, and parts read as "the t
 });
 
 test('the hand-authored sentence names a root-level part as the markdown does', () => {
-  const fixture = { ...page, authored: ['docs/', 'root'], partLabels: { ...page.partLabels, root: 'the repository root' } };
+  const fixture = { ...page, authored: ['docs/', 'root'], partLabels: { ...page.partLabels, root: 'the repository root' }, unnamedWrites: 0 };
   const text = plain(render.renderPage(fixture, { repo: page.repo }));
   assert.ok(text.includes('People write docs/ and the repository root. Nothing in this repository writes to them.'), text.slice(text.indexOf('People write'), text.indexOf('People write') + 120));
+  // A write whose path is built at run time could land in them, and the page says so.
+  const caveat = plain(render.renderPage({ ...fixture, unnamedWrites: 1 }, { repo: page.repo }));
+  assert.ok(caveat.includes('People write docs/ and the repository root; 1 write with a path built at run time may land here.'), caveat.slice(caveat.indexOf('People write'), caveat.indexOf('People write') + 120));
   // And the live sentence, whatever it lists today, is the committed one.
   const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8');
   const committed = markdown.split(/\r?\n/).find((line) => line.startsWith('People write '));
   assert.ok(committed, 'the committed page has a hand-authored sentence');
   assert.ok(plain(render.renderPage(page, { repo: page.repo })).includes(committed), committed);
+});
+
+test('a stamped block, the door a reading starts at, and a door with no path read as the markdown does', () => {
+  const stamped = plain(render.renderPage({ ...page, generated: [{ block: true, place: 'README.md', writers: ['scripts/sync-version.mjs when run outside CI'] }] }, { repo: page.repo }));
+  assert.ok(stamped.includes('README.md has a block written by scripts/sync-version.mjs when run outside CI.'), stamped.slice(stamped.indexOf('README.md'), stamped.indexOf('README.md') + 120));
+  const ci = page.doors.find((door) => door.name === 'CI');
+  const started = plain(render.renderPage({ ...page, startDoor: ci.id }, { repo: page.repo }));
+  assert.ok(started.includes('Read those in order to follow one pull request end to end.'), 'the start door names the noun');
+  const none = render.renderPage({ ...page, startDoor: ci.id, startHere: [], startNote: 'CI runs no code this map can follow, so there is no path of files to read in order.' }, { repo: page.repo });
+  assert.ok(none.includes('<h2>Where to start</h2>\n<p>CI runs no code this map can follow, so there is no path of files to read in order.</p></section>'), 'no path');
 });
 
 test('with nothing written, the never-read section says so rather than that every place is read', () => {
@@ -485,7 +498,7 @@ test('file paths link to the blob at the mapped commit, places to the tree', () 
   for (const path of page.doors[0].runs.slice(0, 3)) assert.ok(html.includes(`href="${path.endsWith('/') ? tree : blob}${path}"`), path);
   for (const path of page.startHere.filter((entry) => !entry.endsWith('/'))) assert.ok(html.includes(`href="${blob}${path}"`), path);
   assert.ok(html.includes(`href="${tree}indexes"`), 'a place opens as a tree');
-  assert.ok(html.includes(`href="${blob}examples/README.md"><code>examples/README.md</code></a> (found by text)`), 'a found-by-text reader links its path only');
+  assert.ok(html.includes(`href="${blob}packages/portfolio/README.md"><code>packages/portfolio/README.md</code></a> (found by text)`), 'a found-by-text reader links its path only');
   assert.ok(!html.includes(`${blob}root`), 'a part name is not a path');
   assert.ok(html.includes('href="https://github.com/dogfood-lab/testing-os/blob/atlas-render/indexes/atlas/dogfood-lab/testing-os/README.md"'), 'the markdown twin on the render branch');
   assert.ok(html.includes('href="./"'), 'a link back to the fleet');
