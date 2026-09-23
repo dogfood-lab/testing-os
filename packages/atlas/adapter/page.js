@@ -1570,6 +1570,10 @@ function limits(ctx, shownText) {
   if (declared) lines.push(declared);
   const unresolved = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.unresolvedSites ?? 0), 0);
   if (unresolved > 0) lines.push(`${count(unresolved, 'import site')} could not be resolved.`);
+  const outside = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.outsideImports ?? 0), 0);
+  if (outside > 0) {
+    lines.push(`${count(outside, 'import site')} ${outside === 1 ? 'names' : 'name'} a path outside this repository, so what ${outside === 1 ? 'it loads' : 'they load'} is not followed.`);
+  }
   const unparsed = unreadLine([...ctx.fileOf.values()].filter((file) => file.parseError).map((file) => {
     const part = ctx.boundaryOf.get(file.path) ?? null;
     return { part, partLabel: part == null ? null : ctx.shown(part), unreadSyntax: file.unreadSyntax };

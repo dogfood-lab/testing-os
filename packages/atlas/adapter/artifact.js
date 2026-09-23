@@ -18,10 +18,13 @@ function keep(items) {
 // A site read as a declared dependency because a local module shares its name
 // resolved, but to nothing this map can open, so it is counted apart: the
 // page says how many imports name dependencies that are not installed here.
+// A site that names a path outside the repository is counted apart as well,
+// since what it loads is on one machine's disk and the map never looks.
 function siteCounts(files) {
   let unresolved = 0;
   let resolved = 0;
   let externals = 0;
+  let outside = 0;
   const externalNames = new Set();
   for (const file of files) {
     if (!Array.isArray(file.imports)) continue;
@@ -33,9 +36,10 @@ function siteCounts(files) {
         externals += 1;
         externalNames.add(site.specifier.split('.')[0]);
       }
+      if (site.resolved?.outside) outside += 1;
     }
   }
-  return { unresolved, resolved, externals, externalNames: [...externalNames].sort() };
+  return { unresolved, resolved, externals, externalNames: [...externalNames].sort(), outside };
 }
 
 // Reads and writes whose path is built at run time name no place, so the map
@@ -131,8 +135,10 @@ export function buildArtifact(mapped, commit) {
     const sites = siteCounts(files);
     const dynamic = dynamicCounts(files);
     const named = sites.externals > 0 ? { externalNames: sites.externalNames } : {};
+    const outside = sites.outside > 0 ? { outsideImports: sites.outside } : {};
     return {
       ...named,
+      ...outside,
       dynamicReads: dynamic.reads,
       dynamicSpawns: dynamic.spawns,
       dynamicSpawnsInTests: dynamic.spawnsInTests,

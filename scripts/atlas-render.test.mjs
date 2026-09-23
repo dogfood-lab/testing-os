@@ -118,10 +118,6 @@ function harness(t, setup) {
       now: () => new Date('2026-09-22T06:00:00.000Z'),
       repoRoot: root,
       dryRun: extra.dryRun ?? true,
-      // The job's default stamp carries GITHUB_SHA on Actions; the tests seed
-      // states with the plain version, so they say so rather than depend on
-      // the environment they run in.
-      engine: ENGINE,
       log: () => {},
       issues: {
         listOpen: async () => issues.open,
