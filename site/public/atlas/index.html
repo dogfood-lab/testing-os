@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas</title>
+<!--
+  Atlas page: how one repository works, rendered from its page.json on the
+  atlas-render branch. With ?repo=<owner>/<name> it shows that repository;
+  without it, the list of every rendered repository. The sentences are built
+  by render.js from the same fields the committed atlas/README.md is built
+  from. The only data URL is CONFIG.atlasBase; a 404 is a state, not an error.
+-->
+<script>
+"use strict";
+// Same stored preference as the dashboard, so the two pages agree.
+(function () {
+  var t = null;
+  try { t = JSON.parse(localStorage.getItem("dogfood-dashboard.theme")); } catch (e) {}
+  if (t !== "light" && t !== "dark") {
+    t = (window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  }
+  document.documentElement.setAttribute("data-theme", t);
+})();
+</script>
+<style>
+:root, :root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b0f14; --panel: #111823; --panel2: #0d131c;
+  --border: #1f2b3a; --border2: #2e3f55;
+  --text: #dbe6f1; --dim: #8b9bad; --faint: #7d8fa4;
+  --ok-text: #34d399;
+  --neu-text: #9fb0c1; --neu-tint: rgba(148,163,184,.13);
+  --focus: #34d399;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f3f5f7; --panel: #ffffff; --panel2: #fafbfc;
+  --border: #dbe2ea; --border2: #b9c6d5;
+  --text: #1a2532; --dim: #576878; --faint: #5f6e81;
+  --ok-text: #047857;
+  --neu-text: #576878; --neu-tint: rgba(100,116,139,.12);
+  --focus: #047857;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  overflow-x: clip;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+@media (min-width: 768px) { .wrap { padding: 0 clamp(16px, 3vw, 28px); } }
+a { color: var(--ok-text); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; overflow-wrap: anywhere; }
+.sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 16px; top: -48px; background: var(--panel); border: 1px solid var(--border2); padding: 6px 10px; border-radius: 6px; }
+.skip:focus { top: 8px; }
+
+header { border-bottom: 1px solid var(--border); background: var(--panel2); }
+header nav { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 12px 0; font-size: 15px; }
+
+article { padding: 8px 0 40px; overflow-wrap: break-word; }
+article h1, article h2, article p, article ol, article ul { max-width: 76ch; }
+h1 { font-size: 26px; line-height: 1.25; margin: 24px 0 6px; }
+h2 { font-size: 19px; line-height: 1.3; margin: 32px 0 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+p, li { font-size: 16px; }
+ol, ul { padding-left: 1.4em; }
+li { margin: 6px 0; }
+.mapped { color: var(--dim); margin: 0 0 4px; }
+.links { margin: 0 0 8px; font-size: 15px; }
+.chain { line-height: 1.9; }
+.facts { color: var(--dim); font-size: 15px; }
+.state {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; margin: 24px 0; font-size: 16px;
+}
+
+/* the flow picture: wider than the text, drawn only where it can be read */
+.flow { margin: 20px 0 8px; }
+.flow-svg { display: block; max-width: 100%; height: auto; }
+.flow figcaption { max-width: 76ch; color: var(--dim); font-size: 14px; margin-top: 8px; }
+.flow .node rect { fill: var(--panel); stroke: var(--border2); stroke-width: 1.25; }
+.flow .node-text rect { stroke-dasharray: 5 4; }
+.flow text { fill: var(--text); font: 14px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.flow text.sub { fill: var(--dim); }
+.flow .band rect { fill: var(--neu-tint); stroke: none; }
+.flow .band text { fill: var(--neu-text); font-size: 13px; }
+.flow .edge { fill: none; stroke: var(--faint); stroke-width: 1.25; }
+.flow .arrow { fill: var(--faint); }
+@media (max-width: 599.98px) { .flow { display: none; } }
+
+footer { border-top: 1px solid var(--border); padding: 14px 0 30px; font-size: 14px; color: var(--dim); }
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the page</a>
+<header>
+  <div class="wrap">
+    <nav aria-label="Site">
+      <a href="../">testing-os</a>
+      <a href="../dashboard/">Dashboard</a>
+      <a href="./">Atlas</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap" id="content">
+  <article id="page" aria-live="polite" aria-busy="true">
+    <p class="state" role="status">Loading the map.</p>
+  </article>
+</main>
+<footer>
+  <div class="wrap">Atlas reads each repository and writes this page from what it finds. <a href="https://github.com/dogfood-lab/testing-os/blob/main/docs/atlas-page.spec.md">How the page is specified</a>.</div>
+</footer>
+<script type="module">
+import { isRepo, pageDataUrl, renderPage, renderFleet, pageTitle, state } from "./render.js";
+
+const CONFIG = {
+  atlasBase: "https://raw.githubusercontent.com/dogfood-lab/testing-os/atlas-render/",
+  paths: { atlasFleet: "indexes/atlas/fleet.json" }
+};
+
+const out = document.getElementById("page");
+
+function show(html, title) {
+  out.innerHTML = html;
+  out.setAttribute("aria-busy", "false");
+  if (title) document.title = title;
+}
+
+async function load(url) {
+  const res = await fetch(url, { cache: "no-store" });
+  if (res.status === 404) return { absent: true };
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  const data = await res.json();
+  if (!data || typeof data !== "object" || Array.isArray(data)) throw new Error("the file has an unexpected shape");
+  return { data };
+}
+
+async function main() {
+  const params = new URLSearchParams(location.search);
+  if (params.has("repo")) {
+    const repo = params.get("repo");
+    if (!isRepo(repo)) {
+      show(state("That is not a repository name. Use ?repo=owner/name, with letters, digits, dots, dashes and underscores."), "Atlas");
+      return;
+    }
+    try {
+      const got = await load(pageDataUrl(CONFIG.atlasBase, repo));
+      if (got.absent) { show(state("This repository has not been rendered yet."), repo + ": not rendered"); return; }
+      if (!Array.isArray(got.data.doors)) throw new Error("the file has an unexpected shape");
+      show(renderPage(got.data, { repo }), pageTitle(got.data, { repo }));
+    } catch (err) {
+      show(state("Could not load the map for " + repo + ": " + ((err && err.message) || String(err)) + "."), "Atlas");
+    }
+    return;
+  }
+  try {
+    const got = await load(CONFIG.atlasBase + CONFIG.paths.atlasFleet);
+    if (got.absent) { show(state("No render yet. The weekly job has not run."), "Atlas"); return; }
+    if (!Array.isArray(got.data.repositories)) throw new Error("the file has an unexpected shape");
+    show(renderFleet(got.data, Date.now()), "Atlas");
+  } catch (err) {
+    show(state("Could not load the fleet: " + ((err && err.message) || String(err)) + "."), "Atlas");
+  }
+}
+
+main();
+</script>
+</body>
+</html>
