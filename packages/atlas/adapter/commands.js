@@ -35,6 +35,7 @@ function initAt(cwd, argv) {
 }
 
 export function mapCommand(cwd, argv = []) {
+  const mapStarted = Date.now();
   const flags = parseMapArgs(argv);
   if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
@@ -104,6 +105,7 @@ export function mapCommand(cwd, argv = []) {
       'wrote atlas/README.md',
       'wrote atlas/page.json',
       ...(divergenceMs == null ? [] : [`divergence: ${divergenceMs} ms`, `wrote ${flags.divergence}`]),
+      `map took ${Date.now() - mapStarted} ms`,
       '',
     ].join('\n'),
   );

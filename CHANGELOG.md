@@ -6,6 +6,7 @@ All notable changes to `testing-os` are documented here. The format follows [Kee
 
 ### Added
 - **What tends to change together.** The page gains a section after "What breaks what": the five source-file pairs with the highest coupling strength from `statistics.json`, each with its shared and either counts and whether one file's part imports the other's, then the statistics confidence when it is low and the window and shared-commit floor the pairs were counted from. `page.json` carries it as `changesTogether` and `changesTogetherNote`.
+- `atlas map` prints how long the map took (`map took <n> ms`), a baseline for the cost of each new fact the engine records.
 
 ### Changed
 - **The site page shows the order of work.** `site/public/atlas/render.js` renders `page.json`'s `sequences` under step 1 of "What happens through …", worded as the markdown words them: up to seven steps as one sentence, eight or more as a nested numbered list (twelve at most, then a count), another part named in parentheses the first time a step goes into it, and each file linked to the mapped commit. A `page.json` written before sequences existed renders the section as before.
