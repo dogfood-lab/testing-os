@@ -87,12 +87,25 @@ describe('doors on the page, by the conventions of their tools', () => {
     assert.deepEqual(baseline.stages, ['reports/baseline.txt', 'reports/run.log', 'reports/summary.md', 'a path set at run time']);
   });
 
-  it('names a directory in place of the runs under it, and counts the parts a spanning directory covers', () => {
-    has(ts.markdown, '## What comes in', '1. **CI.** On a pull request touching 2 paths; on a push touching 2 paths; or by hand. Runs bin/, eslint.config.js, packages/ and 4 more.');
-    has(ts.markdown, '## What happens through CI', '1. The workflow runs bin/ in bin, eslint.config.js and vitest.config.ts in the repository root, scripts/ in scripts, test/ in test, tools/ in tools, and packages/ (2 parts).');
+  it('names a directory in place of the runs a tool matched under it, and keeps what the commands name', () => {
+    // eslint covers scripts/ and bin/, but the workflow runs bin/tool.js and
+    // the scripts by name, so they lead; vitest's and tsc's matches under
+    // packages/ are part of that directory.
+    has(ts.markdown, '## What comes in', '1. **CI.** On a pull request touching 2 paths; on a push touching 2 paths; or by hand. Runs bin/tool.js, scripts/bun-task.ts, scripts/deno-task.ts and 12 more.');
+    has(ts.markdown, '## What happens through CI', '1. The workflow runs bin/tool.js and bin/ in bin, eslint.config.js and vitest.config.ts in the repository root, 8 files in scripts, test/ in test, tools/ in tools, and packages/ (2 parts).');
     const ci = ts.json.doors.find((item) => item.name === 'CI');
-    assert.deepEqual(ci.runs, ['bin/', 'eslint.config.js', 'packages/', 'scripts/', 'test/', 'tools/', 'vitest.config.ts']);
-    assert.equal(ci.runsCount, 7);
+    assert.deepEqual(ci.runs, [
+      'bin/tool.js', 'scripts/bun-task.ts', 'scripts/deno-task.ts', 'scripts/gate.mjs', 'scripts/helper.mjs', 'scripts/loaded.ts', 'scripts/register.mjs', 'scripts/task.ts',
+      'bin/', 'eslint.config.js', 'packages/', 'scripts/', 'test/', 'tools/', 'vitest.config.ts',
+    ]);
+    assert.equal(ci.runsCount, 15);
+  });
+
+  it('names a path under a directory the commands also name only once', () => {
+    // pytest runs tests/ and coverage runs tests/test_core.py; bandit runs
+    // scripts/ and verify.sh runs scripts/check.py.
+    const ci = py.json.doors.find((item) => item.name === 'CI');
+    assert.deepEqual(ci.runs, ['scripts/', 'src/', 'tests/', 'tool/', 'verify.sh']);
   });
 
   it('counts the runs the artifact did not record when it capped the list', () => {

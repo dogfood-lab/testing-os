@@ -1,5 +1,6 @@
 import { isSourcePath } from '../core/history.js';
 import { isTestMaterial, ownTestPair } from '../core/landings.js';
+import { isCodePath } from '../core/languages.js';
 
 /**
  * The page: how a repository works, written from the recorded facts.
@@ -207,15 +208,18 @@ function runPaths(door) {
 }
 
 // The runs the page names: a path under a directory the door also runs is
-// part of that run, so the directory is named and the path is not. What the
-// commands name comes before what a tool's patterns matched, so a door that
-// runs a script and a test suite leads with the script.
+// part of that run, so the directory is named and the path is not, unless the
+// commands name the path and only a tool's patterns reached the directory: a
+// script the workflow runs by name stays named under the directory a linter
+// covers. What the commands name comes before what a tool's patterns
+// matched, so a door that runs a script and a test suite leads with the script.
 function shownRuns(door) {
   const paths = runPaths(door);
   const dirs = paths.filter((path) => path.endsWith('/'));
   const named = new Set((door.runs ?? []).filter((run) => !run.matched).map((run) => run.path));
+  const within = (path, dir) => dir !== path && path.startsWith(dir) && (!named.has(path) || named.has(dir));
   return paths
-    .filter((path) => !dirs.some((dir) => dir !== path && path.startsWith(dir)))
+    .filter((path) => !dirs.some((dir) => within(path, dir)))
     .sort((a, b) => Number(!named.has(a)) - Number(!named.has(b)) || cmp(a, b));
 }
 
@@ -406,7 +410,7 @@ function filesRun(ctx, paths) {
   const files = new Set();
   for (const path of paths) {
     if (!path.endsWith('/')) files.add(path);
-    else for (const [file, entry] of ctx.fileOf) if (file.startsWith(path) && entry.language != null) files.add(file);
+    else for (const file of ctx.fileOf.keys()) if (file.startsWith(path) && isCodePath(file)) files.add(file);
   }
   return files.size;
 }

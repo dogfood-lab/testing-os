@@ -253,12 +253,14 @@ function comesIn(ctx) {
 }
 
 // page.json does not record which part each run belongs to, so the first step
-// names the files without the markdown's "in <part>" grouping.
+// names the runs without the markdown's "in <part>" grouping, three and a
+// count as "What comes in" does, since a door that runs a test suite runs
+// hundreds.
 function doorSteps(ctx, door) {
   const steps = [];
   const paths = runs(ctx, door);
   steps.push(paths.length > 0
-    ? `The workflow runs ${list(paths.map((item) => item.html))}.`
+    ? `The workflow runs ${runsShown(paths, runTotal(door, paths))}.`
     : 'The workflow runs no file this map can see.');
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map(fileCount))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
