@@ -5,7 +5,7 @@ All notable changes to `testing-os` are documented here. The format follows [Kee
 ## [Unreleased]
 
 ### Added
-- **What tends to change together.** The page gains a section after "What breaks what": the five source-file pairs with the highest coupling strength from `statistics.json`, each with its shared and either counts and whether one file's part imports the other's, then the statistics confidence when it is low and the window and shared-commit floor the pairs were counted from. `page.json` carries it as `changesTogether` and `changesTogetherNote`.
+- **What tends to change together.** The page gains a section after "What breaks what": the five source-file pairs with the highest coupling strength from `statistics.json`, leaving out a file paired with its own test (counted in one line instead, since that coupling is expected), each with its shared and either counts and whether one file's part imports the other's, then the statistics confidence when it is low and the window and shared-commit floor the pairs were counted from. `page.json` carries it as `changesTogether`, `changesTogetherWithTests` and `changesTogetherNote`.
 - `atlas map` prints how long the map took (`map took <n> ms`), a baseline for the cost of each new fact the engine records.
 
 ### Changed

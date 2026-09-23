@@ -329,13 +329,17 @@ describe('atlas page', () => {
     const commit = (hash, paths) => ({ hash, parents: ['p'], files: paths.map((path) => ({ path, added: 1, deleted: 0 })) });
     // Three commits touch tools/ingest.js and lib/store.js; README.md rides
     // along in each, and a docs file is not a source file, so its pairs are
-    // measured but not named.
+    // measured but not named. Three more touch lib/policy.js and its own
+    // test, which is expected and only counted.
     const analyzed = analyzeHistory([
       commit('c1', ['tools/ingest.js', 'lib/store.js', 'README.md']),
       commit('c2', ['tools/ingest.js', 'lib/store.js', 'README.md']),
       commit('c3', ['tools/ingest.js', 'lib/store.js', 'README.md']),
-    ], { inScope: 20, revisions: 3 });
-    assert.equal(analyzed.pairs.length, 3);
+      commit('c4', ['lib/policy.js', 'lib/policy.test.js']),
+      commit('c5', ['lib/policy.js', 'lib/policy.test.js']),
+      commit('c6', ['lib/policy.js', 'lib/policy.test.js']),
+    ], { inScope: 40, revisions: 3 });
+    assert.equal(analyzed.pairs.length, 4);
     const statistics = {
       ...doors.statistics,
       pairs: analyzed.pairs,
@@ -346,6 +350,7 @@ describe('atlas page', () => {
     assert.equal(section(built.markdown, '## What tends to change together'), [
       '## What tends to change together',
       '- **lib/store.js** and **tools/ingest.js** changed together in 3 of 3 commits, and tools imports lib.',
+      '1 file changed together with its own test, as expected.',
       'Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions.',
       'Window: 180 days; a pair counts from 3 shared commits.',
     ].join('\n\n') + '\n');
@@ -353,7 +358,8 @@ describe('atlas page', () => {
     assert.deepEqual(data.changesTogether, [
       { a: 'lib/store.js', b: 'tools/ingest.js', either: 3, parts: ['lib', 'tools'], relation: 'b-imports-a', shared: 3 },
     ]);
-    assert.equal(data.changesTogetherNote, 'Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions. Window: 180 days; a pair counts from 3 shared commits.');
+    assert.equal(data.changesTogetherWithTests, 1);
+    assert.equal(data.changesTogetherNote, '1 file changed together with its own test, as expected. Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions. Window: 180 days; a pair counts from 3 shared commits.');
 
     const inside = buildPage({
       structure: doors.structure,
@@ -395,8 +401,19 @@ describe('atlas page', () => {
     assert.equal(happens.some((line) => line.includes('Is duplicate')), false);
 
     const source = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|py)$/i;
-    const expected = statistics.pairs
-      .filter((pair) => source.test(pair.a) && source.test(pair.b))
+    // A file and its own test: same directory, same name once the test
+    // marker and extension are gone.
+    const bare = (path) => path.slice(path.lastIndexOf('/') + 1).replace(/\.[^.]+$/, '');
+    const dir = (path) => path.slice(0, path.lastIndexOf('/') + 1);
+    const tested = (path) => /^(.+)(?:\.test|\.spec|_test)$/.exec(bare(path))?.[1] ?? /^test_(.+)$/.exec(bare(path))?.[1] ?? null;
+    const ownTest = (a, b) => dir(a) === dir(b) && ((tested(a) != null && tested(b) == null && tested(a) === bare(b)) || (tested(b) != null && tested(a) == null && tested(b) === bare(a)));
+    const sourcePairs = statistics.pairs.filter((pair) => source.test(pair.a) && source.test(pair.b));
+    const withTests = sourcePairs.filter((pair) => ownTest(pair.a, pair.b)).length;
+    assert.ok(withTests >= 4);
+    assert.equal(JSON.parse(own.json).changesTogetherWithTests, withTests);
+    assert.ok(section(own.markdown, '## What tends to change together').includes(`\n\n${withTests} files changed together with their own tests, as expected.\n\n`));
+    const expected = sourcePairs
+      .filter((pair) => !ownTest(pair.a, pair.b))
       .sort((x, y) => y.strength - x.strength || y.shared - x.shared || (x.a < y.a ? -1 : x.a > y.a ? 1 : x.b < y.b ? -1 : 1))
       .slice(0, 5);
     assert.ok(expected.length > 0);
@@ -404,7 +421,7 @@ describe('atlas page', () => {
     assert.deepEqual(bullets.map((line) => /^- \*\*(.+?)\*\* and \*\*(.+?)\*\* changed together in (\d+) of (\d+) commits[,.]/.exec(line).slice(1)),
       expected.map((pair) => [pair.a, pair.b, String(pair.shared), String(pair.either)]));
     assert.equal(bullets.some((line) => line.includes('.md**')), false);
-    assert.match(section(own.markdown, '## What tends to change together'), /\n\nWindow: \d+ days; a pair counts from \d+ shared commits\.\n$/);
+    assert.ok(bullets.some((line) => line.startsWith('- **packages/dogfood-swarm/lib/verify/adapters/python.js** and **packages/dogfood-swarm/lib/verify/adapters/rust.js**')));    assert.match(section(own.markdown, '## What tends to change together'), /\n\nWindow: \d+ days; a pair counts from \d+ shared commits\.\n$/);
   });
 
   it('names this repository\'s root boundary the repository root wherever its page names it', () => {

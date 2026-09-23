@@ -689,17 +689,38 @@ function relationOf(imports, partA, partB) {
 }
 
 // The coupling population is source files only, the same rule the statistics
-// use for cohesion: two docs edited in one commit say nothing about code.
+// use for cohesion: two docs edited in one commit say nothing about code. A
+// file and its own test changing together is expected and tells a reader
+// nothing, so those pairs are counted and kept out of the ranking.
 function together(ctx) {
   const imports = importsBetween(ctx);
-  return (ctx.statistics.pairs ?? [])
-    .filter((pair) => isSourcePath(pair.a) && isSourcePath(pair.b))
+  const source = (ctx.statistics.pairs ?? []).filter((pair) => isSourcePath(pair.a) && isSourcePath(pair.b));
+  const pairs = source
+    .filter((pair) => !ownTest(pair.a, pair.b))
     .sort((x, y) => y.strength - x.strength || y.shared - x.shared || cmp(x.a, y.a) || cmp(x.b, y.b))
     .slice(0, PAIRS_SHOWN)
     .map((pair) => {
       const parts = [ctx.boundaryOf.get(pair.a) ?? null, ctx.boundaryOf.get(pair.b) ?? null];
       return { a: pair.a, b: pair.b, either: pair.either, parts, relation: relationOf(imports, parts[0], parts[1]), shared: pair.shared };
     });
+  return { pairs, withTests: source.filter((pair) => ownTest(pair.a, pair.b)).length };
+}
+
+// A file named with a test marker (page.test.js, page.spec.ts, foo_test.py,
+// test_foo.py) beside the file it names.
+function testName(path) {
+  const slash = path.lastIndexOf('/');
+  const dir = path.slice(0, slash + 1);
+  const stem = path.slice(slash + 1).replace(/\.[^.]+$/, '');
+  const marked = /^(.+)(?:\.test|\.spec|_test)$/.exec(stem) ?? /^test_(.+)$/.exec(stem);
+  return { dir, stem, tested: marked ? marked[1] : null };
+}
+
+function ownTest(a, b) {
+  const [x, y] = [testName(a), testName(b)];
+  if (x.dir !== y.dir) return false;
+  return (x.tested != null && y.tested == null && x.tested === y.stem)
+    || (y.tested != null && x.tested == null && y.tested === x.stem);
 }
 
 function relationClause(ctx, pair) {
@@ -725,8 +746,9 @@ function windowLine(parameters) {
   return parts.length > 0 ? `Window: ${parts.join('; ')}.` : null;
 }
 
-function togetherNote(ctx, pairs) {
+function togetherNote(ctx, pairs, withTests) {
   const lines = [];
+  if (withTests > 0) lines.push(`${count(withTests, 'file')} changed together with ${withTests === 1 ? 'its' : 'their'} own ${withTests === 1 ? 'test' : 'tests'}, as expected.`);
   const confidence = ctx.statistics.confidence;
   if (pairs.length > 0 && confidence?.level === 'low') {
     const reason = String(confidence.reason ?? '').trim().replace(/\.$/, '');
@@ -737,10 +759,13 @@ function togetherNote(ctx, pairs) {
   return lines;
 }
 
-function togetherSection(ctx, pairs, note) {
+function togetherSection(ctx, pairs, withTests, note) {
+  const none = withTests > 0
+    ? 'No two source files, other than a file and its own test, changed together often enough to name.'
+    : 'No two source files changed together often enough to name.';
   const body = pairs.length > 0
     ? pairs.map((pair) => `- **${pair.a}** and **${pair.b}** changed together in ${pair.shared} of ${count(pair.either, 'commit')}${relationClause(ctx, pair)}`).join('\n')
-    : 'No two source files changed together often enough to name.';
+    : none;
   return ['## What tends to change together', body, ...note].join('\n\n');
 }
 
@@ -911,8 +936,8 @@ export function buildPage({ structure, statistics, document, repoName }) {
   const main = ctx.doors.find((door) => !door.parseError) ?? null;
   const groups = main ? readerGroups(ctx, main) : [];
   const breakEntries = breaks(ctx);
-  const pairs = together(ctx);
-  const pairNote = togetherNote(ctx, pairs);
+  const { pairs, withTests } = together(ctx);
+  const pairNote = togetherNote(ctx, pairs, withTests);
   const generatedItems = generated(ctx);
   const authoredBoundaries = authored(ctx);
   const start = main ? startHere(ctx, main, groups) : { chain: [], words: [] };
@@ -936,7 +961,7 @@ export function buildPage({ structure, statistics, document, repoName }) {
   }
   sections.push(
     breaksSection(ctx, breakEntries),
-    togetherSection(ctx, pairs, pairNote),
+    togetherSection(ctx, pairs, withTests, pairNote),
     generatedSection(ctx, generatedItems),
     authoredSection(ctx, authoredBoundaries),
     startSection(start.words, main),
@@ -949,6 +974,7 @@ export function buildPage({ structure, statistics, document, repoName }) {
     breaks: breakEntries,
     changesTogether: pairs,
     changesTogetherNote: pairNote.join(' '),
+    changesTogetherWithTests: withTests,
     commit,
     doors: ctx.doors.map((door) => doorData(ctx, door)),
     generated: generatedItems.map((item) => ({ place: item.place, writers: worded(item.writers, id) })),
