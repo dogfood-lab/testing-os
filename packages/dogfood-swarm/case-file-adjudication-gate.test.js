@@ -112,7 +112,7 @@ describe('checkAdjudication gate (the sixth advance gate)', () => {
     // the sixth gate exists and passes
     const adjGate = r.gates.find(g => g.name === 'adjudication');
     assert.ok(adjGate && adjGate.passed);
-    assert.equal(r.gates.length, 6);
+    assert.equal(r.gates.length, 7, 'the Atlas delta gate follows the adjudication gate');
     db.close();
   });
 

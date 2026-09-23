@@ -63,6 +63,7 @@
 import { openDb } from '../db/connection.js';
 import { getDomains } from '../lib/domains.js';
 import { buildAuditPrompt, buildAmendPrompt, buildFeatureAuditPrompt } from '../lib/templates.js';
+import { blastRadiusKey } from '../lib/atlas-brief.js';
 import { findingsForDomain } from '../lib/findings-filter.js';
 import { createWorktree, worktreeDisposition } from '../lib/worktree.js';
 import { IsolationError } from '../lib/errors.js';
@@ -469,6 +470,10 @@ export function resume(opts) {
       // path renders — a redispatched isolated agent gets a FRESH provisioned
       // worktree (createWorktree above) and the same do-not-npm-install rule.
       isolatedWorktree: !!worktreePath,
+      // The section dispatch built for this lane, read back rather than
+      // rebuilt, so a resumed lane is briefed on the same map as its wave.
+      blastRadius: db.prepare('SELECT value FROM kv WHERE key = ?')
+        .get(blastRadiusKey(wave.id, ar.domain_name))?.value ?? undefined,
     };
 
     let prompt;

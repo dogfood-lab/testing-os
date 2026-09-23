@@ -21,6 +21,7 @@ import {
   formatFixesSkippedSummary,
 } from './lib/fixes-skipped.js';
 import { runNotFoundError } from './lib/run-lookup-error.js';
+import { readWaveDelta } from '../lib/atlas-delta.js';
 
 /**
  * @param {object} opts
@@ -229,6 +230,9 @@ export function status(opts) {
       currentWaveFindingCount,
       staleAgentCount,
       fixesSkipped,
+      // The advance gate on the wave's structural delta (lib/atlas-delta.js)
+      // blocks while it holds a flagged change, so status must not say ready.
+      atlasAndon: currentWave ? (readWaveDelta(db, currentWave.id)?.flagged ?? []) : [],
     }
   );
 
@@ -462,6 +466,7 @@ const FAILED_CLASS_STATES = new Set([
   'BLOCKED',
   'VERIFY REQUIRED',
   'AMEND NEEDED',
+  'STRUCTURAL CHANGE TO REVIEW',
 ]);
 
 const READY_CLASS_STATES = new Set([
@@ -740,6 +745,16 @@ export function computeAssessment(wave, agents, openBySeverity, blocked, inFligh
         nextAction:
           `${unknownIdCount} fixes[] declaration(s) named unknown finding_id. ` +
           'Reconcile canonical ids (re-collect corrected output, or resolve real open findings by their routed ids) before advancing — see fixes_skipped on status/receipt.',
+      };
+    }
+    if (ctx.atlasAndon?.length > 0) {
+      return {
+        state: 'STRUCTURAL CHANGE TO REVIEW',
+        blockers,
+        nextAction:
+          `The wave's structural delta holds ${pluralize(ctx.atlasAndon.length, 'change')} that widen what an edit can break ` +
+          `(an import between parts, a cycle, or a new writer; \`swarm verify\` prints them). Review the wave before the confirming audit: ` +
+          `if an approved finding asked for it, \`swarm advance ${ctx.runId ?? '<run-id>'} --override --reason "<finding id> asked for it"\`; if not, file it as a finding.`,
       };
     }
     return {

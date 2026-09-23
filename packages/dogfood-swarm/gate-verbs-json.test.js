@@ -98,14 +98,14 @@ describe('advance --check-only --format=json', () => {
     // seam (buildCheckGatesJSON is an identity projection of checkGates()'s
     // return value, per cli.js's own docstring on that function), so it needs
     // the same exact-name pin, not a second independently-invented shape check.
-    // checkGates() always assembles a fixed 6-entry gate set unconditionally
-    // (lib/advance.js:129), so pinning the full, sorted name set is a real,
+    // checkGates() always assembles a fixed 7-entry gate set unconditionally
+    // (lib/advance.js), so pinning the full, sorted name set is a real,
     // always-true invariant -- matching advance.test.js's F-db2ed146 fix.
     const gateNames = parsed.gates.map(g => g.name).sort();
     assert.deepEqual(gateNames, [
-      'adjudication', 'agent_completion', 'finding_severity',
+      'adjudication', 'agent_completion', 'atlas_delta', 'finding_severity',
       'ownership', 'verification', 'wave_status',
-    ], `checkGates() always assembles exactly these 6 gates (F-feb78e7b) -- got: ${gateNames.join(', ')}`);
+    ], `checkGates() always assembles exactly these 7 gates (F-feb78e7b; atlas_delta joined as the seventh) -- got: ${gateNames.join(', ')}`);
     assert.ok(parsed.gates.every(g => 'name' in g && 'passed' in g), 'gates carry name+passed');
   });
 

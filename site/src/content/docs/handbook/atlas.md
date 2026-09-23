@@ -95,3 +95,5 @@ Paths built at run time are counted, not named. Imports that do not resolve are 
 ## The map as a gate
 
 This repository runs `atlas check` in its own CI and in `npm run verify`, and the pull-request comment on every change. The check found two things in its first days, a test that loaded a module through a computed dynamic import and a resolver that depended on whether a site's `node_modules` was installed, and both were fixed at the class, with fixtures that fail against the previous code.
+
+The dogfood swarm reads the map too: `swarm init` drafts a run's domain map from the parts and refuses a draft that leaves a file in no domain or in two, every lane's brief carries its parts' "What breaks what" rows and `explain` for its entry points with the "cannot see" list beside them, `swarm verify` runs `atlas check` and records the structural delta of an amend wave, and `swarm advance` stops on a delta nobody asked for. A repository without a map swarms from the hand template exactly as before.

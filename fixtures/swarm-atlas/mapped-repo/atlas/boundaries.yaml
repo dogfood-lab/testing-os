@@ -1,0 +1,34 @@
+summary: ""
+boundaries:
+  - name: api
+    globs:
+      - src/api/**
+    role: code
+  - name: cli
+    globs:
+      - src/cli/**
+    role: code
+  - name: config
+    globs:
+      - config/**
+    role: config
+  - name: core
+    globs:
+      - src/core/**
+    role: code
+  - name: docs
+    globs:
+      - docs/**
+    role: docs
+  - name: root
+    globs:
+      - "*"
+    role: docs
+  - name: tests
+    globs:
+      - tests/**
+    role: test
+  - name: util
+    globs:
+      - src/util/**
+    role: code

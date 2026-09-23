@@ -8,7 +8,8 @@
  * 1. Validate repo path (git repo, clean working tree)
  * 2. Read HEAD commit + branch
  * 3. Create save point tag
- * 4. Auto-detect domains from repo structure
+ * 4. Draft domains: from the Atlas parts when the repo has adopted Atlas
+ *    (atlas/boundaries.yaml), else auto-detected from repo structure
  * 5. Create run + domain draft in control plane DB
  * 6. Print domain proposal for coordinator review
  *
@@ -23,6 +24,8 @@ import { resolve, basename } from 'node:path';
 import { randomBytes } from 'node:crypto';
 import { openDb } from '../db/connection.js';
 import { detectDomains, saveDomainDraft } from '../lib/domains.js';
+import { atlasDraftReason, draftDomainsFromAtlas } from '../lib/atlas-domains.js';
+import { readAtlasMap, writeAtlasLineage } from '../lib/atlas.js';
 import { resolveRoadmapSeed, stampRoadmapSeedLineage } from './lib/roadmap-seed.js';
 
 /**
@@ -38,7 +41,11 @@ import { resolveRoadmapSeed, stampRoadmapSeedLineage } from './lib/roadmap-seed.
  *   opt-in, never inferred (T4: "seeding a new run from a prior roadmap is
  *   an explicit flag"). Resolved and schema-validated BEFORE any DB write
  *   so a bad/missing seed fails fast without leaving a half-initialized run.
- * @returns {object} — { runId, domains, unmatched, savePointTag, roadmapSeed }
+ * @param {boolean} [opts.noAtlas] — draft from the hand template even when the
+ *   repo has adopted Atlas
+ * @param {number} [opts.domainTarget] — domains to merge the Atlas parts into
+ * @param {boolean} [opts.testsDomain] — keep test-role parts as one domain
+ * @returns {object} — { runId, domains, unmatched, savePointTag, roadmapSeed, atlas, atlasNote }
  */
 export function init(opts) {
   const repoPath = resolve(opts.repoPath);
@@ -88,6 +95,7 @@ export function init(opts) {
   // Salem 1987): undo the tag, THEN re-throw the original failure untouched
   // — the operator must see the real error, not a masked compensator result.
   let domains, unmatched, runId, roadmapSeed = null;
+  let atlasDraft = null, atlasNote = null;
   try {
     // T4/F-d110f547: resolve + validate BEFORE any DB work — the fastest
     // possible fail-fast for a bad/missing seed, and it means a doomed init
@@ -96,7 +104,13 @@ export function init(opts) {
       roadmapSeed = resolveRoadmapSeed(repoPath, opts.seedFromRoadmap);
     }
 
-    ({ domains, unmatched } = detectDomains(repoPath));
+    ({ atlasDraft, atlasNote } = tryAtlasDraft(repoPath, opts));
+    if (atlasDraft) {
+      domains = atlasDraft.domains;
+      unmatched = [];
+    } else {
+      ({ domains, unmatched } = detectDomains(repoPath));
+    }
 
     const hex = randomBytes(2).toString('hex');
     runId = `swarm-${timestamp}-${hex}`;
@@ -107,12 +121,17 @@ export function init(opts) {
       VALUES (?, ?, ?, ?, ?, ?, 'initializing')
     `).run(runId, repo, repoPath, commitSha, branch, savePointTag);
 
-    // Save domain draft (unfrozen)
-    saveDomainDraft(db, runId, domains.map(d => ({
-      name: d.name,
-      globs: d.globs,
-      ownership_class: d.ownership_class,
-    })));
+    // Save domain draft (unfrozen). The Atlas draft and its lineage land in
+    // one transaction, so a run never carries parts it has no record of.
+    db.transaction(() => {
+      saveDomainDraft(db, runId, domains.map(d => ({
+        name: d.name,
+        globs: d.globs,
+        ownership_class: d.ownership_class,
+        description: d.description,
+      })), atlasDraft ? { reason: atlasDraftReason(atlasDraft) } : {});
+      if (atlasDraft) writeAtlasLineage(db, runId, atlasDraft.lineage);
+    })();
 
     // T4/F-d110f547: records this NEW run's lineage durably (the `kv` table
     // — no schema migration; see commands/lib/roadmap-seed.js's header).
@@ -136,14 +155,39 @@ export function init(opts) {
     domains: domains.map(d => ({
       name: d.name,
       ownership_class: d.ownership_class,
-      matched_files: d.matched_files.length,
+      // An Atlas domain carries its file count; a template bucket, its files.
+      matched_files: Array.isArray(d.matched_files) ? d.matched_files.length : d.files,
       globs: d.globs,
+      ...(d.parts ? { parts: d.parts } : {}),
     })),
     unmatched,
+    atlas: atlasDraft
+      ? { mapCommit: atlasDraft.lineage.mapCommit, parts: atlasDraft.lineage.parts, placed: atlasDraft.placed, merges: atlasDraft.merges }
+      : null,
+    atlasNote,
     roadmapSeed: roadmapSeed
       ? { sourceRunId: roadmapSeed.sourceRunId, sequence: roadmapSeed.sequence, path: roadmapSeed.relPath }
       : null,
   };
+}
+
+/**
+ * The Atlas draft when the repo has adopted Atlas and its map is usable, else
+ * a note saying why the hand template was used instead. Atlas is never a
+ * prerequisite: a stale or missing map degrades the draft to the template and
+ * says so, and `swarm domains <run-id> --from-atlas` redrafts once it is fixed.
+ */
+function tryAtlasDraft(repoPath, opts) {
+  if (opts.noAtlas) return { atlasDraft: null, atlasNote: null };
+  if (!readAtlasMap(repoPath).adopted) return { atlasDraft: null, atlasNote: null };
+  try {
+    return {
+      atlasDraft: draftDomainsFromAtlas(repoPath, { target: opts.domainTarget, testsDomain: opts.testsDomain }),
+      atlasNote: null,
+    };
+  } catch (err) {
+    return { atlasDraft: null, atlasNote: `atlas/boundaries.yaml is present but the draft could not come from it: ${err.message}` };
+  }
 }
 
 // F-264bd9d2 (wave 20): argv-array form (execFileSync), never a shell-string

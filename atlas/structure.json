@@ -95,7 +95,7 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "5d15ff5c04b03f8003b4b76814f14b4800d9b33120710d2711a2d5900ffc40b2",
+          "hash": "46f430dcbbc43c7021c1e8a34e7d5e32576158e0686a33e79bb01e173cdcc83f",
           "path": "packages/atlas/README.md"
         },
         {
@@ -1039,7 +1039,7 @@
           "path": "packages/atlas/index.js"
         },
         {
-          "hash": "208f2c8d346e1e6fdad8a53dcba76756b0be4827e35f48503477a685387b16f4",
+          "hash": "ef38684824e24c24297d3a02e5858fb0b08b0c25bd5b1f98c164aad06bd66a40",
           "path": "packages/atlas/package.json"
         },
         {
@@ -1066,7 +1066,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "961db6dcfc6eaeee169fda7d83c6d2ba85ba64f49f23c44fdec342da3b7448b0",
+          "hash": "5e67737506aa84f27c0af5669d8ba59829df3ae72b31e52f02f3523fc17257dc",
           "path": "docker/Dockerfile"
         },
         {
@@ -1290,9 +1290,9 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 62,
-      "dynamicSpawns": 114,
-      "dynamicSpawnsInTests": 102,
+      "dynamicReads": 65,
+      "dynamicSpawns": 124,
+      "dynamicSpawnsInTests": 110,
       "dynamicWrites": 21,
       "entryPoints": [
         "packages/dogfood-swarm/cli.js"
@@ -1304,7 +1304,7 @@
           "path": "packages/dogfood-swarm/LICENSE"
         },
         {
-          "hash": "8a030e1968d6ad8488466f6f3349bd803b3ec9239d7b0f4d3f12b410934683e4",
+          "hash": "5191f4507ff225a78021506d4494ebd9cc4c370ce1b58d237deea54347429d99",
           "path": "packages/dogfood-swarm/README.md"
         },
         {
@@ -1328,7 +1328,7 @@
           "path": "packages/dogfood-swarm/adjudicate-explicit-wave.test.js"
         },
         {
-          "hash": "dca0c22ff24822f16822f8b0b7869778ee09f4db74bf12999d7e1448638d254f",
+          "hash": "80ec9ab4b41e77c07f40599f529eea1282bf58fe1730489af5f46ce619d9fdaa",
           "importsFiles": [
             "packages/dogfood-swarm/db/connection.js",
             "packages/dogfood-swarm/lib/advance.js",
@@ -1440,6 +1440,38 @@
           "path": "packages/dogfood-swarm/amend2-l3-003-collect-tx.test.js"
         },
         {
+          "hash": "9e04acd143b7bf4bdf1e54329406d1e9ea0a780753b9ab4ad95da0bc71d889cc",
+          "importsFiles": [
+            "packages/dogfood-swarm/commands/dispatch.js",
+            "packages/dogfood-swarm/commands/init.js",
+            "packages/dogfood-swarm/commands/resume.js",
+            "packages/dogfood-swarm/db/connection.js",
+            "packages/dogfood-swarm/lib/domains.js"
+          ],
+          "path": "packages/dogfood-swarm/atlas-brief.test.js"
+        },
+        {
+          "hash": "1d974974382f23956ad2b731d5a45a5a4231e0b79cf37b44e3e50c59b298f381",
+          "importsFiles": [
+            "packages/dogfood-swarm/commands/init.js",
+            "packages/dogfood-swarm/commands/status.js",
+            "packages/dogfood-swarm/commands/verify.js",
+            "packages/dogfood-swarm/db/connection.js",
+            "packages/dogfood-swarm/lib/advance.js",
+            "packages/dogfood-swarm/lib/domains.js"
+          ],
+          "path": "packages/dogfood-swarm/atlas-delta.test.js"
+        },
+        {
+          "hash": "c114cfe89a13f10f9d1f99eea66a7e7cb1729671572bafa035e35a3faee65433",
+          "importsFiles": [
+            "packages/dogfood-swarm/commands/init.js",
+            "packages/dogfood-swarm/db/connection.js",
+            "packages/dogfood-swarm/lib/domains.js"
+          ],
+          "path": "packages/dogfood-swarm/atlas-domain-map.test.js"
+        },
+        {
           "hash": "ab2f5d2bd03b46f31d27d0f6915b71492aee38ebdcec802a2e6e878f3d8b8191",
           "importsFiles": [
             "packages/dogfood-swarm/commands/adjudicate.js",
@@ -1459,7 +1491,7 @@
           "path": "packages/dogfood-swarm/case-file-adjudicate.test.js"
         },
         {
-          "hash": "0c5fd05b71bc199fe96723e76e8a7312cb788c327307398024ff1610f6d89f5c",
+          "hash": "b87041dc6426bedaca7f501e5d37865a3913e467c336cac1fe15939256885c80",
           "importsFiles": [
             "packages/dogfood-swarm/db/connection.js",
             "packages/dogfood-swarm/lib/adjudication-store.js",
@@ -1571,7 +1603,7 @@
             "renderProbeDegradedAgents",
             "transitionFindings"
           ],
-          "hash": "7b11666cb95fc62e3bafb3cc5fdf7df01fb3a7fc160c217fbb7f44c2df1fa71c",
+          "hash": "c05040d60afa25be4a2601875179e2bb119e575ca39f70eeb2bbe9e89b386793",
           "importsFiles": [
             "packages/dogfood-swarm/commands/adjudicate.js",
             "packages/dogfood-swarm/commands/clean-claims.js",
@@ -1599,6 +1631,8 @@
             "packages/dogfood-swarm/db/connection.js",
             "packages/dogfood-swarm/db/schema.js",
             "packages/dogfood-swarm/lib/advance.js",
+            "packages/dogfood-swarm/lib/atlas-domains.js",
+            "packages/dogfood-swarm/lib/atlas.js",
             "packages/dogfood-swarm/lib/bounded-json-read.js",
             "packages/dogfood-swarm/lib/case-file/adjudicate.js",
             "packages/dogfood-swarm/lib/case-file/handoff.js",
@@ -1620,28 +1654,52 @@
             {
               "calls": [
                 {
-                  "line": 419,
+                  "line": 421,
                   "name": "init",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/init.js"
                   }
                 },
                 {
-                  "line": 438,
+                  "line": 485,
+                  "name": "pluralize",
+                  "target": {
+                    "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
+                  },
+                  "via": "printAtlasDraft"
+                },
+                {
+                  "line": 485,
+                  "name": "formatDomainRow",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/domain-row.js"
+                  },
+                  "via": "printAtlasDraft"
+                },
+                {
+                  "line": 488,
+                  "name": "escapePathForDisplay",
+                  "target": {
+                    "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
+                  },
+                  "via": "printAtlasDraft"
+                },
+                {
+                  "line": 452,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 },
                 {
-                  "line": 438,
+                  "line": 452,
                   "name": "formatDomainRow",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domain-row.js"
                   }
                 },
                 {
-                  "line": 441,
+                  "line": 456,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -1656,28 +1714,14 @@
             {
               "calls": [
                 {
-                  "line": 453,
-                  "name": "openDb",
+                  "line": 485,
+                  "name": "pluralize",
                   "target": {
-                    "file": "packages/dogfood-swarm/db/connection.js"
+                    "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 },
                 {
-                  "line": 457,
-                  "name": "freezeDomains",
-                  "target": {
-                    "file": "packages/dogfood-swarm/lib/domains.js"
-                  }
-                },
-                {
-                  "line": 458,
-                  "name": "getDomains",
-                  "target": {
-                    "file": "packages/dogfood-swarm/lib/domains.js"
-                  }
-                },
-                {
-                  "line": 461,
+                  "line": 485,
                   "name": "formatDomainRow",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domain-row.js"
@@ -1685,69 +1729,171 @@
                 },
                 {
                   "line": 488,
-                  "name": "unfreezeDomains",
-                  "target": {
-                    "file": "packages/dogfood-swarm/lib/domains.js"
-                  }
-                },
-                {
-                  "line": 492,
-                  "name": "escapeReasonForDisplay",
+                  "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "printAtlasDraft"
+            },
+            {
+              "calls": [
+                {
+                  "line": 499,
+                  "name": "openDb",
+                  "target": {
+                    "file": "packages/dogfood-swarm/db/connection.js"
+                  }
                 },
                 {
-                  "line": 516,
-                  "name": "editDomain",
+                  "line": 503,
+                  "name": "freezeDomains",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domains.js"
                   }
                 },
                 {
-                  "line": 538,
-                  "name": "addDomain",
-                  "target": {
-                    "file": "packages/dogfood-swarm/lib/domains.js"
-                  }
-                },
-                {
-                  "line": 548,
-                  "name": "removeDomain",
-                  "target": {
-                    "file": "packages/dogfood-swarm/lib/domains.js"
-                  }
-                },
-                {
-                  "line": 555,
-                  "name": "getDomainEvents",
-                  "target": {
-                    "file": "packages/dogfood-swarm/lib/domains.js"
-                  }
-                },
-                {
-                  "line": 568,
-                  "name": "escapeReasonForDisplay",
-                  "target": {
-                    "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
-                  }
-                },
-                {
-                  "line": 575,
+                  "line": 504,
                   "name": "getDomains",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domains.js"
                   }
                 },
                 {
-                  "line": 576,
+                  "line": 507,
+                  "name": "formatDomainRow",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/domain-row.js"
+                  }
+                },
+                {
+                  "line": 509,
+                  "name": "readAtlasLineage",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
+                },
+                {
+                  "line": 523,
+                  "name": "draftDomainsFromAtlas",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-domains.js"
+                  }
+                },
+                {
+                  "line": 532,
+                  "name": "atlasDraftReason",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-domains.js"
+                  }
+                },
+                {
+                  "line": 531,
+                  "name": "replaceDomainDraft",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/domains.js"
+                  }
+                },
+                {
+                  "line": 536,
+                  "name": "getDomains",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/domains.js"
+                  }
+                },
+                {
+                  "line": 485,
+                  "name": "pluralize",
+                  "target": {
+                    "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
+                  },
+                  "via": "printAtlasDraft"
+                },
+                {
+                  "line": 485,
+                  "name": "formatDomainRow",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/domain-row.js"
+                  },
+                  "via": "printAtlasDraft"
+                },
+                {
+                  "line": 488,
+                  "name": "escapePathForDisplay",
+                  "target": {
+                    "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
+                  },
+                  "via": "printAtlasDraft"
+                },
+                {
+                  "line": 566,
+                  "name": "unfreezeDomains",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/domains.js"
+                  }
+                },
+                {
+                  "line": 570,
+                  "name": "escapeReasonForDisplay",
+                  "target": {
+                    "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
+                  }
+                },
+                {
+                  "line": 594,
+                  "name": "editDomain",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/domains.js"
+                  }
+                },
+                {
+                  "line": 616,
+                  "name": "addDomain",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/domains.js"
+                  }
+                },
+                {
+                  "line": 626,
+                  "name": "removeDomain",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/domains.js"
+                  }
+                },
+                {
+                  "line": 633,
+                  "name": "getDomainEvents",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/domains.js"
+                  }
+                },
+                {
+                  "line": 646,
+                  "name": "escapeReasonForDisplay",
+                  "target": {
+                    "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
+                  }
+                },
+                {
+                  "line": 653,
+                  "name": "getDomains",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/domains.js"
+                  }
+                },
+                {
+                  "line": 654,
                   "name": "aredomainsFrozen",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domains.js"
                   }
                 },
                 {
-                  "line": 580,
+                  "line": 658,
                   "name": "formatDomainRow",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domain-row.js"
@@ -1762,28 +1908,28 @@
             {
               "calls": [
                 {
-                  "line": 599,
+                  "line": 677,
                   "name": "renderPhaseList",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/phases.js"
                   }
                 },
                 {
-                  "line": 632,
+                  "line": 710,
                   "name": "dispatch",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/dispatch.js"
                   }
                 },
                 {
-                  "line": 669,
+                  "line": 747,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 686,
+                  "line": 764,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -1798,21 +1944,21 @@
             {
               "calls": [
                 {
-                  "line": 730,
+                  "line": 808,
                   "name": "resolveAllDomainOutputs",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/collect.js"
                   }
                 },
                 {
-                  "line": 762,
+                  "line": 840,
                   "name": "collect",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/collect.js"
                   }
                 },
                 {
-                  "line": 800,
+                  "line": 878,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -1827,14 +1973,14 @@
             {
               "calls": [
                 {
-                  "line": 913,
+                  "line": 991,
                   "name": "runDoctor",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/doctor.js"
                   }
                 },
                 {
-                  "line": 917,
+                  "line": 995,
                   "name": "formatDoctor",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/doctor.js"
@@ -1849,14 +1995,14 @@
             {
               "calls": [
                 {
-                  "line": 968,
+                  "line": 1046,
                   "name": "revalidate",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/revalidate.js"
                   }
                 },
                 {
-                  "line": 976,
+                  "line": 1054,
                   "name": "formatRevalidate",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/revalidate.js"
@@ -1871,14 +2017,14 @@
             {
               "calls": [
                 {
-                  "line": 1018,
+                  "line": 1096,
                   "name": "status",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/status.js"
                   }
                 },
                 {
-                  "line": 1023,
+                  "line": 1101,
                   "name": "formatStatus",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/status.js"
@@ -1893,14 +2039,14 @@
             {
               "calls": [
                 {
-                  "line": 1054,
+                  "line": 1132,
                   "name": "resume",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/resume.js"
                   }
                 },
                 {
-                  "line": 1061,
+                  "line": 1139,
                   "name": "formatResume",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/resume.js"
@@ -1915,14 +2061,14 @@
             {
               "calls": [
                 {
-                  "line": 1161,
+                  "line": 1239,
                   "name": "rewind",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/rewind.js"
                   }
                 },
                 {
-                  "line": 1171,
+                  "line": 1249,
                   "name": "formatRewind",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/rewind.js"
@@ -1937,14 +2083,14 @@
             {
               "calls": [
                 {
-                  "line": 1211,
+                  "line": 1289,
                   "name": "redrive",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/redrive.js"
                   }
                 },
                 {
-                  "line": 1225,
+                  "line": 1303,
                   "name": "formatRedrive",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/redrive.js"
@@ -1959,14 +2105,14 @@
             {
               "calls": [
                 {
-                  "line": 1253,
+                  "line": 1331,
                   "name": "clean",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/clean.js"
                   }
                 },
                 {
-                  "line": 1260,
+                  "line": 1338,
                   "name": "formatClean",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/clean.js"
@@ -1981,14 +2127,14 @@
             {
               "calls": [
                 {
-                  "line": 1296,
+                  "line": 1374,
                   "name": "cleanClaims",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/clean-claims.js"
                   }
                 },
                 {
-                  "line": 1303,
+                  "line": 1381,
                   "name": "formatCleanClaims",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/clean-claims.js"
@@ -2003,28 +2149,28 @@
             {
               "calls": [
                 {
-                  "line": 1343,
+                  "line": 1421,
                   "name": "findingHistory",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
                   }
                 },
                 {
-                  "line": 1348,
+                  "line": 1426,
                   "name": "formatFindingHistory",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
                   }
                 },
                 {
-                  "line": 1360,
+                  "line": 1438,
                   "name": "history",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
                   }
                 },
                 {
-                  "line": 1365,
+                  "line": 1443,
                   "name": "formatHistory",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
@@ -2039,28 +2185,28 @@
             {
               "calls": [
                 {
-                  "line": 1390,
+                  "line": 1468,
                   "name": "probeRepo",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/verify.js"
                   }
                 },
                 {
-                  "line": 1400,
+                  "line": 1478,
                   "name": "formatProbe",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/verify.js"
                   }
                 },
                 {
-                  "line": 1411,
+                  "line": 1489,
                   "name": "verify",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/verify.js"
                   }
                 },
                 {
-                  "line": 1430,
+                  "line": 1508,
                   "name": "formatVerify",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/verify.js"
@@ -2075,7 +2221,7 @@
             {
               "calls": [
                 {
-                  "line": 1554,
+                  "line": 1632,
                   "name": "verifyFixed",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/verify-fixed.js"
@@ -2090,7 +2236,7 @@
             {
               "calls": [
                 {
-                  "line": 1595,
+                  "line": 1673,
                   "name": "verifyRecurring",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/verify-recurring.js"
@@ -2105,7 +2251,7 @@
             {
               "calls": [
                 {
-                  "line": 1619,
+                  "line": 1697,
                   "name": "verifyUnverified",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/verify-unverified.js"
@@ -2120,7 +2266,7 @@
             {
               "calls": [
                 {
-                  "line": 1643,
+                  "line": 1721,
                   "name": "verifyApproved",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/verify-approved.js"
@@ -2135,35 +2281,35 @@
             {
               "calls": [
                 {
-                  "line": 1681,
+                  "line": 1759,
                   "name": "buildReceipt",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/receipt.js"
                   }
                 },
                 {
-                  "line": 1688,
+                  "line": 1766,
                   "name": "exportReceipt",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/receipt.js"
                   }
                 },
                 {
-                  "line": 1691,
+                  "line": 1769,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 1692,
+                  "line": 1770,
                   "name": "storeReceipt",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/receipt.js"
                   }
                 },
                 {
-                  "line": 1711,
+                  "line": 1789,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2178,77 +2324,77 @@
             {
               "calls": [
                 {
-                  "line": 1751,
+                  "line": 1829,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 1755,
+                  "line": 1833,
                   "name": "undoAdjudication",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/adjudicate.js"
                   }
                 },
                 {
-                  "line": 1756,
+                  "line": 1834,
                   "name": "formatAdjudicationUndo",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/adjudicate.js"
                   }
                 },
                 {
-                  "line": 1797,
+                  "line": 1875,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 1798,
+                  "line": 1876,
                   "name": "readBoundedJson",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/bounded-json-read.js"
                   }
                 },
                 {
-                  "line": 1816,
+                  "line": 1894,
                   "name": "previewAdjudicate",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/adjudicate.js"
                   }
                 },
                 {
-                  "line": 1828,
+                  "line": 1906,
                   "name": "formatAdjudicationPreview",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/adjudicate.js"
                   }
                 },
                 {
-                  "line": 1837,
+                  "line": 1915,
                   "name": "makePrismJury",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/case-file/prism-jury.js"
                   }
                 },
                 {
-                  "line": 1837,
+                  "line": 1915,
                   "name": "makeOllamaJury",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/case-file/ollama-jury.js"
                   }
                 },
                 {
-                  "line": 1849,
+                  "line": 1927,
                   "name": "runAdjudicate",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/adjudicate.js"
                   }
                 },
                 {
-                  "line": 1884,
+                  "line": 1962,
                   "name": "formatAdjudication",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/adjudicate.js"
@@ -2263,7 +2409,7 @@
             {
               "calls": [
                 {
-                  "line": 1946,
+                  "line": 2024,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2278,28 +2424,28 @@
             {
               "calls": [
                 {
-                  "line": 1976,
+                  "line": 2054,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 1986,
+                  "line": 2064,
                   "name": "checkGates",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/advance.js"
                   }
                 },
                 {
-                  "line": 2009,
+                  "line": 2087,
                   "name": "getPromotions",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/advance.js"
                   }
                 },
                 {
-                  "line": 1946,
+                  "line": 2024,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2307,21 +2453,21 @@
                   "via": "formatOverrideGroups"
                 },
                 {
-                  "line": 2025,
+                  "line": 2103,
                   "name": "pluralizeWord",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 },
                 {
-                  "line": 2045,
+                  "line": 2123,
                   "name": "advance",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/advance.js"
                   }
                 },
                 {
-                  "line": 2077,
+                  "line": 2155,
                   "name": "isDispatchablePhase",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/phases.js"
@@ -2336,20 +2482,20 @@
             {
               "calls": [
                 {
-                  "line": 2124,
+                  "line": 2202,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 2280,
+                  "line": 2358,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2210,
+                  "line": 2288,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -2364,21 +2510,21 @@
             {
               "calls": [
                 {
-                  "line": 2223,
+                  "line": 2301,
                   "name": "persist",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/persist.js"
                   }
                 },
                 {
-                  "line": 2231,
+                  "line": 2309,
                   "name": "formatPersist",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/persist.js"
                   }
                 },
                 {
-                  "line": 2251,
+                  "line": 2329,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2393,7 +2539,7 @@
             {
               "calls": [
                 {
-                  "line": 2280,
+                  "line": 2358,
                   "name": "prepare",
                   "target": null
                 }
@@ -2406,20 +2552,20 @@
             {
               "calls": [
                 {
-                  "line": 2356,
+                  "line": 2434,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 2280,
+                  "line": 2358,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2392,
+                  "line": 2470,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -2434,7 +2580,7 @@
             {
               "calls": [
                 {
-                  "line": 2356,
+                  "line": 2434,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -2442,13 +2588,13 @@
                   "via": "disposeFindings"
                 },
                 {
-                  "line": 2280,
+                  "line": 2358,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2392,
+                  "line": 2470,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -2464,7 +2610,7 @@
             {
               "calls": [
                 {
-                  "line": 2356,
+                  "line": 2434,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -2472,13 +2618,13 @@
                   "via": "disposeFindings"
                 },
                 {
-                  "line": 2280,
+                  "line": 2358,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2392,
+                  "line": 2470,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -2494,14 +2640,14 @@
             {
               "calls": [
                 {
-                  "line": 2524,
+                  "line": 2602,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 2563,
+                  "line": 2641,
                   "name": "buildNotes",
                   "target": null
                 }
@@ -2514,28 +2660,28 @@
             {
               "calls": [
                 {
-                  "line": 2628,
+                  "line": 2706,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 2636,
+                  "line": 2714,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 2645,
+                  "line": 2723,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 2651,
+                  "line": 2729,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -2550,7 +2696,7 @@
             {
               "calls": [
                 {
-                  "line": 2524,
+                  "line": 2602,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -2558,40 +2704,40 @@
                   "via": "transitionFindings"
                 },
                 {
-                  "line": 2563,
+                  "line": 2641,
                   "name": "buildNotes",
                   "target": null,
                   "via": "transitionFindings"
                 },
                 {
-                  "line": 2720,
+                  "line": 2798,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 2280,
+                  "line": 2358,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2733,
+                  "line": 2811,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 },
                 {
-                  "line": 2734,
+                  "line": 2812,
                   "name": "join",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/finding-status.js"
                   }
                 },
                 {
-                  "line": 2628,
+                  "line": 2706,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2599,7 +2745,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2636,
+                  "line": 2714,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2607,7 +2753,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2645,
+                  "line": 2723,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2615,7 +2761,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2651,
+                  "line": 2729,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -2631,7 +2777,7 @@
             {
               "calls": [
                 {
-                  "line": 2524,
+                  "line": 2602,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -2639,26 +2785,26 @@
                   "via": "transitionFindings"
                 },
                 {
-                  "line": 2563,
+                  "line": 2641,
                   "name": "buildNotes",
                   "target": null,
                   "via": "transitionFindings"
                 },
                 {
-                  "line": 2871,
+                  "line": 2949,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 2280,
+                  "line": 2358,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2628,
+                  "line": 2706,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2666,7 +2812,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2636,
+                  "line": 2714,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2674,7 +2820,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2645,
+                  "line": 2723,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2682,7 +2828,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2651,
+                  "line": 2729,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -2698,7 +2844,7 @@
             {
               "calls": [
                 {
-                  "line": 2524,
+                  "line": 2602,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -2706,26 +2852,26 @@
                   "via": "transitionFindings"
                 },
                 {
-                  "line": 2563,
+                  "line": 2641,
                   "name": "buildNotes",
                   "target": null,
                   "via": "transitionFindings"
                 },
                 {
-                  "line": 2974,
+                  "line": 3052,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 2280,
+                  "line": 2358,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2628,
+                  "line": 2706,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2733,7 +2879,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2636,
+                  "line": 2714,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2741,7 +2887,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2645,
+                  "line": 2723,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2749,7 +2895,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2651,
+                  "line": 2729,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -2765,7 +2911,7 @@
             {
               "calls": [
                 {
-                  "line": 3047,
+                  "line": 3125,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -2780,7 +2926,7 @@
             {
               "calls": [
                 {
-                  "line": 3118,
+                  "line": 3196,
                   "name": "join",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -2795,7 +2941,7 @@
             {
               "calls": [
                 {
-                  "line": 3118,
+                  "line": 3196,
                   "name": "join",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -2803,14 +2949,14 @@
                   "via": "statusFilterError"
                 },
                 {
-                  "line": 3155,
+                  "line": 3233,
                   "name": "find",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
                   }
                 },
                 {
-                  "line": 3161,
+                  "line": 3239,
                   "name": "filter",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -2825,7 +2971,7 @@
             {
               "calls": [
                 {
-                  "line": 3181,
+                  "line": 3259,
                   "name": "prepare",
                   "target": null
                 }
@@ -2838,49 +2984,49 @@
             {
               "calls": [
                 {
-                  "line": 3254,
+                  "line": 3332,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
                   }
                 },
                 {
-                  "line": 3259,
+                  "line": 3337,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 3259,
+                  "line": 3337,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
                   }
                 },
                 {
-                  "line": 3261,
+                  "line": 3339,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 3261,
+                  "line": 3339,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
                   }
                 },
                 {
-                  "line": 3262,
+                  "line": 3340,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 3262,
+                  "line": 3340,
                   "name": "truncate",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
@@ -2895,7 +3041,7 @@
             {
               "calls": [
                 {
-                  "line": 3118,
+                  "line": 3196,
                   "name": "join",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -2903,7 +3049,7 @@
                   "via": "statusFilterError"
                 },
                 {
-                  "line": 3155,
+                  "line": 3233,
                   "name": "find",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -2911,7 +3057,7 @@
                   "via": "parseFindingStatusFlag"
                 },
                 {
-                  "line": 3161,
+                  "line": 3239,
                   "name": "filter",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -2919,20 +3065,20 @@
                   "via": "parseFindingStatusFlag"
                 },
                 {
-                  "line": 3322,
+                  "line": 3400,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 3181,
+                  "line": 3259,
                   "name": "prepare",
                   "target": null,
                   "via": "queryFindingsByStatus"
                 },
                 {
-                  "line": 3254,
+                  "line": 3332,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
@@ -2940,7 +3086,7 @@
                   "via": "renderFindingsByStatusText"
                 },
                 {
-                  "line": 3259,
+                  "line": 3337,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2948,7 +3094,7 @@
                   "via": "renderFindingsByStatusText"
                 },
                 {
-                  "line": 3259,
+                  "line": 3337,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
@@ -2956,7 +3102,7 @@
                   "via": "renderFindingsByStatusText"
                 },
                 {
-                  "line": 3261,
+                  "line": 3339,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2964,7 +3110,7 @@
                   "via": "renderFindingsByStatusText"
                 },
                 {
-                  "line": 3261,
+                  "line": 3339,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
@@ -2972,7 +3118,7 @@
                   "via": "renderFindingsByStatusText"
                 },
                 {
-                  "line": 3262,
+                  "line": 3340,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -2980,7 +3126,7 @@
                   "via": "renderFindingsByStatusText"
                 },
                 {
-                  "line": 3262,
+                  "line": 3340,
                   "name": "truncate",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
@@ -2988,28 +3134,28 @@
                   "via": "renderFindingsByStatusText"
                 },
                 {
-                  "line": 3373,
+                  "line": 3451,
                   "name": "findLatestWave",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/findings-digest.js"
                   }
                 },
                 {
-                  "line": 3395,
+                  "line": 3473,
                   "name": "loadDomainOutputs",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/findings-digest.js"
                   }
                 },
                 {
-                  "line": 3396,
+                  "line": 3474,
                   "name": "buildDigestModel",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/findings-digest.js"
                   }
                 },
                 {
-                  "line": 3047,
+                  "line": 3125,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -3017,7 +3163,7 @@
                   "via": "annotateCanonicalFindingIds"
                 },
                 {
-                  "line": 3398,
+                  "line": 3476,
                   "name": "renderDigest",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/findings-render.js"
@@ -3032,7 +3178,7 @@
             {
               "calls": [
                 {
-                  "line": 3426,
+                  "line": 3504,
                   "name": "prepare",
                   "target": null
                 }
@@ -3045,20 +3191,20 @@
             {
               "calls": [
                 {
-                  "line": 3441,
+                  "line": 3519,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 3426,
+                  "line": 3504,
                   "name": "prepare",
                   "target": null,
                   "via": "buildRunsJSON"
                 },
                 {
-                  "line": 3466,
+                  "line": 3544,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -3073,35 +3219,35 @@
             {
               "calls": [
                 {
-                  "line": 3512,
+                  "line": 3590,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 3516,
+                  "line": 3594,
                   "name": "queryRecurringFindings",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/queries/cross-run-analytics.js"
                   }
                 },
                 {
-                  "line": 3519,
+                  "line": 3597,
                   "name": "queryPerRepoRunHistory",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/queries/cross-run-analytics.js"
                   }
                 },
                 {
-                  "line": 3532,
+                  "line": 3610,
                   "name": "queryFindingRecurrenceRate",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/queries/cross-run-analytics.js"
                   }
                 },
                 {
-                  "line": 3557,
+                  "line": 3635,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -3109,7 +3255,7 @@
                   "via": "formatTrends"
                 },
                 {
-                  "line": 3564,
+                  "line": 3642,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -3117,7 +3263,7 @@
                   "via": "formatTrends"
                 },
                 {
-                  "line": 3577,
+                  "line": 3655,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -3133,21 +3279,21 @@
             {
               "calls": [
                 {
-                  "line": 3557,
+                  "line": 3635,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 },
                 {
-                  "line": 3564,
+                  "line": 3642,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 3577,
+                  "line": 3655,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -3162,42 +3308,42 @@
             {
               "calls": [
                 {
-                  "line": 3674,
+                  "line": 3752,
                   "name": "undoRoadmapCompile",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
                   }
                 },
                 {
-                  "line": 3679,
+                  "line": 3757,
                   "name": "formatRoadmapUndo",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
                   }
                 },
                 {
-                  "line": 3683,
+                  "line": 3761,
                   "name": "compileRoadmap",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
                   }
                 },
                 {
-                  "line": 3688,
+                  "line": 3766,
                   "name": "formatRoadmapCompile",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
                   }
                 },
                 {
-                  "line": 3703,
+                  "line": 3781,
                   "name": "showRoadmap",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
                   }
                 },
                 {
-                  "line": 3708,
+                  "line": 3786,
                   "name": "formatRoadmapShow",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
@@ -3212,7 +3358,7 @@
             {
               "calls": [
                 {
-                  "line": 4499,
+                  "line": 4582,
                   "name": "renderPhaseColumns",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/phases.js"
@@ -3253,7 +3399,7 @@
                       "via": "deriveHintForCode"
                     }
                   ],
-                  "line": 4526,
+                  "line": 4609,
                   "name": "renderTopLevelError",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/error-render.js"
@@ -4091,12 +4237,13 @@
           "exports": [
             "dispatch"
           ],
-          "hash": "e30c7819598b2d6090f9ee545c45426b1ecad3a5033b5703e645486429e5a0fb",
+          "hash": "25119355701e54ff0c20ac8f9dd5eb85af4837de9a59ae5425e159ab2b2e9c3a",
           "importsFiles": [
             "packages/dogfood-swarm/commands/lib/agent-bearing.js",
             "packages/dogfood-swarm/commands/lib/escape-reason.js",
             "packages/dogfood-swarm/commands/lib/roadmap-seed.js",
             "packages/dogfood-swarm/db/connection.js",
+            "packages/dogfood-swarm/lib/atlas-brief.js",
             "packages/dogfood-swarm/lib/bounded-json-read.js",
             "packages/dogfood-swarm/lib/correlation-id.js",
             "packages/dogfood-swarm/lib/domains.js",
@@ -4117,14 +4264,14 @@
             {
               "calls": [
                 {
-                  "line": 44,
+                  "line": 45,
                   "name": "mintCorrelationId",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/correlation-id.js"
                   }
                 },
                 {
-                  "line": 45,
+                  "line": 46,
                   "name": "logStage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/log-stage.js"
@@ -4139,7 +4286,7 @@
             {
               "calls": [
                 {
-                  "line": 159,
+                  "line": 160,
                   "name": "runShortOf",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/worktree.js"
@@ -4154,7 +4301,7 @@
             {
               "calls": [
                 {
-                  "line": 221,
+                  "line": 222,
                   "name": "readBoundedJson",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/bounded-json-read.js"
@@ -4169,7 +4316,7 @@
             {
               "calls": [
                 {
-                  "line": 221,
+                  "line": 222,
                   "name": "readBoundedJson",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/bounded-json-read.js"
@@ -4177,7 +4324,7 @@
                   "via": "loadRoadmapDigestSource"
                 },
                 {
-                  "line": 322,
+                  "line": 323,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -4192,28 +4339,28 @@
             {
               "calls": [
                 {
-                  "line": 460,
+                  "line": 464,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 478,
+                  "line": 482,
                   "name": "includes",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/phases.js"
                   }
                 },
                 {
-                  "line": 479,
+                  "line": 483,
                   "name": "renderPhaseList",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/phases.js"
                   }
                 },
                 {
-                  "line": 44,
+                  "line": 45,
                   "name": "mintCorrelationId",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/correlation-id.js"
@@ -4221,7 +4368,7 @@
                   "via": "emitPreconditionFailed"
                 },
                 {
-                  "line": 45,
+                  "line": 46,
                   "name": "logStage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/log-stage.js"
@@ -4229,28 +4376,28 @@
                   "via": "emitPreconditionFailed"
                 },
                 {
-                  "line": 520,
+                  "line": 524,
                   "name": "aredomainsFrozen",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domains.js"
                   }
                 },
                 {
-                  "line": 522,
+                  "line": 526,
                   "name": "freezeDomains",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domains.js"
                   }
                 },
                 {
-                  "line": 544,
+                  "line": 548,
                   "name": "getDomains",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domains.js"
                   }
                 },
                 {
-                  "line": 580,
+                  "line": 584,
                   "name": "isAgentBearingDomain",
                   "passed": true,
                   "target": {
@@ -4258,42 +4405,42 @@
                   }
                 },
                 {
-                  "line": 667,
+                  "line": 671,
                   "name": "mintCorrelationId",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/correlation-id.js"
                   }
                 },
                 {
-                  "line": 665,
+                  "line": 669,
                   "name": "logStage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/log-stage.js"
                   }
                 },
                 {
-                  "line": 680,
+                  "line": 684,
                   "name": "takeDomainSnapshot",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domains.js"
                   }
                 },
                 {
-                  "line": 689,
+                  "line": 693,
                   "name": "includes",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/phases.js"
                   }
                 },
                 {
-                  "line": 700,
+                  "line": 704,
                   "name": "map",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/phases.js"
                   }
                 },
                 {
-                  "line": 221,
+                  "line": 222,
                   "name": "readBoundedJson",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/bounded-json-read.js"
@@ -4301,7 +4448,7 @@
                   "via": "loadRoadmapDigestSource"
                 },
                 {
-                  "line": 322,
+                  "line": 323,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -4309,56 +4456,56 @@
                   "via": "buildRoadmapDigest"
                 },
                 {
-                  "line": 768,
+                  "line": 772,
                   "name": "readRoadmapSeedLineage",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/roadmap-seed.js"
                   }
                 },
                 {
-                  "line": 793,
+                  "line": 797,
                   "name": "isAgentBearingDomain",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/agent-bearing.js"
                   }
                 },
                 {
-                  "line": 794,
+                  "line": 798,
                   "name": "findingsForDomain",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/findings-filter.js"
                   }
                 },
                 {
-                  "line": 802,
+                  "line": 806,
                   "name": "mintCorrelationId",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/correlation-id.js"
                   }
                 },
                 {
-                  "line": 800,
+                  "line": 804,
                   "name": "logStage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/log-stage.js"
                   }
                 },
                 {
-                  "line": 825,
+                  "line": 829,
                   "name": "isAgentBearingDomain",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/agent-bearing.js"
                   }
                 },
                 {
-                  "line": 835,
+                  "line": 839,
                   "name": "findingsForDomain",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/findings-filter.js"
                   }
                 },
                 {
-                  "line": 159,
+                  "line": 160,
                   "name": "runShortOf",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/worktree.js"
@@ -4577,10 +4724,12 @@
           "exports": [
             "init"
           ],
-          "hash": "4d7bee7dbb221bc3d30e5785595ca489564b4007f660751651d0e31d1460c8fa",
+          "hash": "ae90fe6953e5c1c02482e828a201b8a55bd6efc573a810bbe824e630bb301ce6",
           "importsFiles": [
             "packages/dogfood-swarm/commands/lib/roadmap-seed.js",
             "packages/dogfood-swarm/db/connection.js",
+            "packages/dogfood-swarm/lib/atlas-domains.js",
+            "packages/dogfood-swarm/lib/atlas.js",
             "packages/dogfood-swarm/lib/domains.js"
           ],
           "path": "packages/dogfood-swarm/commands/init.js",
@@ -4588,35 +4737,65 @@
             {
               "calls": [
                 {
-                  "line": 96,
+                  "line": 104,
                   "name": "resolveRoadmapSeed",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/roadmap-seed.js"
                   }
                 },
                 {
-                  "line": 99,
+                  "line": 182,
+                  "name": "readAtlasMap",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  },
+                  "via": "tryAtlasDraft"
+                },
+                {
+                  "line": 185,
+                  "name": "draftDomainsFromAtlas",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-domains.js"
+                  },
+                  "via": "tryAtlasDraft"
+                },
+                {
+                  "line": 112,
                   "name": "detectDomains",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domains.js"
                   }
                 },
                 {
-                  "line": 104,
+                  "line": 118,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 111,
+                  "line": 132,
+                  "name": "atlasDraftReason",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-domains.js"
+                  }
+                },
+                {
+                  "line": 127,
                   "name": "saveDomainDraft",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domains.js"
                   }
                 },
                 {
-                  "line": 122,
+                  "line": 133,
+                  "name": "writeAtlasLineage",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
+                },
+                {
+                  "line": 141,
                   "name": "stampRoadmapSeedLineage",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/roadmap-seed.js"
@@ -4627,6 +4806,28 @@
               "invokedAtTopLevel": false,
               "isDefaultExport": false,
               "name": "init"
+            },
+            {
+              "calls": [
+                {
+                  "line": 182,
+                  "name": "readAtlasMap",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
+                },
+                {
+                  "line": 185,
+                  "name": "draftDomainsFromAtlas",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-domains.js"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "tryAtlasDraft"
             }
           ]
         },
@@ -5244,12 +5445,13 @@
             "formatResume",
             "resume"
           ],
-          "hash": "7c75623dc2ce1014332ffaf59a9bfbc21450001c6f0f659446b155d545e10bb1",
+          "hash": "691fcf4136d6a4529c9f95b71d459a01acc10e251e276d5c784e767ac73b0fad",
           "importsFiles": [
             "packages/dogfood-swarm/commands/dispatch.js",
             "packages/dogfood-swarm/commands/lib/escape-reason.js",
             "packages/dogfood-swarm/commands/lib/pluralize.js",
             "packages/dogfood-swarm/db/connection.js",
+            "packages/dogfood-swarm/lib/atlas-brief.js",
             "packages/dogfood-swarm/lib/correlation-id.js",
             "packages/dogfood-swarm/lib/domains.js",
             "packages/dogfood-swarm/lib/errors.js",
@@ -5267,112 +5469,112 @@
             {
               "calls": [
                 {
-                  "line": 105,
+                  "line": 106,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 132,
+                  "line": 133,
                   "name": "getTimeoutPolicy",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 137,
+                  "line": 138,
                   "name": "classifyTimeouts",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 141,
+                  "line": 142,
                   "name": "applyTimeoutPolicy",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 215,
+                  "line": 216,
                   "name": "isTerminal",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 221,
+                  "line": 222,
                   "name": "isBlocked",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 232,
+                  "line": 233,
                   "name": "isInFlight",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 242,
+                  "line": 243,
                   "name": "isRedispatchable",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 264,
+                  "line": 265,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 },
                 {
-                  "line": 333,
+                  "line": 334,
                   "name": "worktreeDisposition",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/worktree.js"
                   }
                 },
                 {
-                  "line": 381,
+                  "line": 382,
                   "name": "createWorktree",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/worktree.js"
                   }
                 },
                 {
-                  "line": 391,
+                  "line": 392,
                   "name": "mintCorrelationId",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/correlation-id.js"
                   }
                 },
                 {
-                  "line": 389,
+                  "line": 390,
                   "name": "logStage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/log-stage.js"
                   }
                 },
                 {
-                  "line": 412,
+                  "line": 413,
                   "name": "transitionAgent",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 431,
+                  "line": 432,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 },
                 {
-                  "line": 427,
+                  "line": 428,
                   "name": "transitionWave",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/wave-state-machine.js"
@@ -5380,58 +5582,58 @@
                 },
                 {
                   "line": 476,
+                  "name": "blastRadiusKey",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-brief.js"
+                  }
+                },
+                {
+                  "line": 481,
                   "name": "buildFeatureAuditPrompt",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/templates.js"
                   }
                 },
                 {
-                  "line": 491,
+                  "line": 496,
                   "name": "findingsForDomain",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/findings-filter.js"
                   }
                 },
                 {
-                  "line": 492,
+                  "line": 497,
                   "name": "buildAmendPrompt",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/templates.js"
                   }
                 },
                 {
-                  "line": 495,
+                  "line": 500,
                   "name": "buildAuditPrompt",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/templates.js"
                   }
                 },
                 {
-                  "line": 514,
+                  "line": 519,
                   "name": "mintCorrelationId",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/correlation-id.js"
                   }
                 },
                 {
-                  "line": 512,
+                  "line": 517,
                   "name": "logStage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/log-stage.js"
                   }
                 },
                 {
-                  "line": 525,
+                  "line": 530,
                   "name": "atomicWriteFileSync",
                   "target": {
                     "file": "packages/findings/lib/atomic-write.js"
-                  }
-                },
-                {
-                  "line": 545,
-                  "name": "pluralize",
-                  "target": {
-                    "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 }
               ],
@@ -5444,7 +5646,7 @@
             {
               "calls": [
                 {
-                  "line": 680,
+                  "line": 685,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -6224,7 +6426,7 @@
             "status",
             "summarizeWaveHistory"
           ],
-          "hash": "06b723d828f6447a52a14baaadbf7e89990a7a2653fd743da195f2d657e35889",
+          "hash": "8280a69712804aeeb252c7ba18c08624b2f875ff0f656303d8d911d21092ebef",
           "importsFiles": [
             "packages/dogfood-swarm/commands/lib/escape-reason.js",
             "packages/dogfood-swarm/commands/lib/fixes-skipped.js",
@@ -6232,6 +6434,7 @@
             "packages/dogfood-swarm/commands/lib/run-lookup-error.js",
             "packages/dogfood-swarm/db/connection.js",
             "packages/dogfood-swarm/lib/advance.js",
+            "packages/dogfood-swarm/lib/atlas-delta.js",
             "packages/dogfood-swarm/lib/domain-row.js",
             "packages/dogfood-swarm/lib/finding-status.js",
             "packages/dogfood-swarm/lib/queries/latest-agent-runs.js",
@@ -6243,35 +6446,35 @@
             {
               "calls": [
                 {
-                  "line": 32,
+                  "line": 33,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 35,
+                  "line": 36,
                   "name": "runNotFoundError",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/run-lookup-error.js"
                   }
                 },
                 {
-                  "line": 74,
+                  "line": 75,
                   "name": "isOpenFinding",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/finding-status.js"
                   }
                 },
                 {
-                  "line": 184,
+                  "line": 185,
                   "name": "getWaveTransitionHistory",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/wave-state-machine.js"
                   }
                 },
                 {
-                  "line": 514,
+                  "line": 519,
                   "name": "has",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/wave-state-machine.js"
@@ -6279,42 +6482,49 @@
                   "via": "summarizeWaveHistory"
                 },
                 {
-                  "line": 188,
+                  "line": 189,
                   "name": "isBlocked",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 189,
+                  "line": 190,
                   "name": "isInFlight",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 193,
+                  "line": 194,
                   "name": "getTimeoutPolicy",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 210,
+                  "line": 211,
                   "name": "classifyTimeouts",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 218,
+                  "line": 219,
                   "name": "readWaveFixesSkipped",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/fixes-skipped.js"
                   }
                 },
                 {
-                  "line": 597,
+                  "line": 235,
+                  "name": "readWaveDelta",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-delta.js"
+                  }
+                },
+                {
+                  "line": 602,
                   "name": "formatFixesSkippedSummary",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/fixes-skipped.js"
@@ -6322,10 +6532,18 @@
                   "via": "computeAssessment"
                 },
                 {
-                  "line": 726,
+                  "line": 731,
                   "name": "has",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/advance.js"
+                  },
+                  "via": "computeAssessment"
+                },
+                {
+                  "line": 755,
+                  "name": "pluralize",
+                  "target": {
+                    "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   },
                   "via": "computeAssessment"
                 }
@@ -6338,35 +6556,35 @@
             {
               "calls": [
                 {
-                  "line": 337,
+                  "line": 341,
                   "name": "formatDomainRow",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/domain-row.js"
                   }
                 },
                 {
-                  "line": 364,
+                  "line": 368,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 414,
+                  "line": 418,
                   "name": "formatFixesSkippedSummary",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/fixes-skipped.js"
                   }
                 },
                 {
-                  "line": 425,
+                  "line": 429,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 },
                 {
-                  "line": 453,
+                  "line": 457,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -6381,7 +6599,7 @@
             {
               "calls": [
                 {
-                  "line": 514,
+                  "line": 519,
                   "name": "has",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/wave-state-machine.js"
@@ -6396,17 +6614,24 @@
             {
               "calls": [
                 {
-                  "line": 597,
+                  "line": 602,
                   "name": "formatFixesSkippedSummary",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/fixes-skipped.js"
                   }
                 },
                 {
-                  "line": 726,
+                  "line": 731,
                   "name": "has",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/advance.js"
+                  }
+                },
+                {
+                  "line": 755,
+                  "name": "pluralize",
+                  "target": {
+                    "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 }
               ],
@@ -6820,12 +7045,15 @@
             "probeRepo",
             "verify"
           ],
-          "hash": "df0ded8a568712ccd4b10b645cfd88c0fa04c624a8baa8f0da31a7e92cf484a0",
+          "hash": "178fb7737fb1447468fbb49391dd130325791f8dc3a2c8157f864481aa2165d8",
           "importsFiles": [
             "packages/dogfood-swarm/commands/lib/escape-reason.js",
             "packages/dogfood-swarm/commands/lib/run-lookup-error.js",
             "packages/dogfood-swarm/db/connection.js",
+            "packages/dogfood-swarm/lib/atlas-delta.js",
+            "packages/dogfood-swarm/lib/atlas.js",
             "packages/dogfood-swarm/lib/log-stage.js",
+            "packages/dogfood-swarm/lib/phases.js",
             "packages/dogfood-swarm/lib/verify/registry.js",
             "packages/dogfood-swarm/lib/wave-state-machine.js"
           ],
@@ -6834,7 +7062,7 @@
             {
               "calls": [
                 {
-                  "line": 33,
+                  "line": 36,
                   "name": "commands",
                   "target": null
                 }
@@ -6847,62 +7075,90 @@
             {
               "calls": [
                 {
-                  "line": 80,
+                  "line": 85,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 83,
+                  "line": 88,
                   "name": "runNotFoundError",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/run-lookup-error.js"
                   }
                 },
                 {
-                  "line": 90,
+                  "line": 95,
                   "name": "noWavesError",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/run-lookup-error.js"
                   }
                 },
                 {
-                  "line": 93,
+                  "line": 98,
                   "name": "logStage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/log-stage.js"
                   }
                 },
                 {
-                  "line": 108,
+                  "line": 113,
                   "name": "selectAdapter",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/verify/registry.js"
                   }
                 },
                 {
-                  "line": 33,
+                  "line": 36,
                   "name": "commands",
                   "target": null,
                   "via": "plannedStepNames"
                 },
                 {
-                  "line": 125,
+                  "line": 130,
                   "name": "runVerification",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/verify/registry.js"
                   }
                 },
                 {
-                  "line": 195,
+                  "line": 141,
+                  "name": "readAtlasMap",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
+                },
+                {
+                  "line": 144,
+                  "name": "runAtlas",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
+                },
+                {
+                  "line": 146,
+                  "name": "includes",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/phases.js"
+                  }
+                },
+                {
+                  "line": 147,
+                  "name": "recordWaveDelta",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-delta.js"
+                  }
+                },
+                {
+                  "line": 216,
                   "name": "transitionWave",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/wave-state-machine.js"
                   }
                 },
                 {
-                  "line": 205,
+                  "line": 226,
                   "name": "logStage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/log-stage.js"
@@ -6917,21 +7173,21 @@
             {
               "calls": [
                 {
-                  "line": 269,
+                  "line": 316,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 271,
+                  "line": 318,
                   "name": "runNotFoundError",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/run-lookup-error.js"
                   }
                 },
                 {
-                  "line": 273,
+                  "line": 320,
                   "name": "probeAll",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/verify/registry.js"
@@ -6946,7 +7202,7 @@
             {
               "calls": [
                 {
-                  "line": 329,
+                  "line": 376,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -6961,7 +7217,7 @@
             {
               "calls": [
                 {
-                  "line": 375,
+                  "line": 442,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -7626,7 +7882,7 @@
           "path": "packages/dogfood-swarm/fingerprint-file-less-discrimination.test.js"
         },
         {
-          "hash": "65d35c05ebb0655aa7cf488a62e529594688607c8af11afd509dad246b7d7d2b",
+          "hash": "e7952f3e04d73fc2100d23af439220748bb6fe7d2279b6a0c737c468f3b89175",
           "importsFiles": [
             "packages/dogfood-swarm/db/connection.js"
           ],
@@ -7653,6 +7909,15 @@
           "path": "packages/dogfood-swarm/lib/adjudication-store.js"
         },
         {
+          "hash": "0239a13826d84315f23040c3f7308073de42f3aaf35f5a81bb1d22a92702e4de",
+          "importsFiles": [
+            "packages/dogfood-swarm/db/connection.js",
+            "packages/dogfood-swarm/lib/advance.js",
+            "packages/dogfood-swarm/lib/domains.js"
+          ],
+          "path": "packages/dogfood-swarm/lib/advance-gates-count.test.js"
+        },
+        {
           "hash": "28309196444f269304f483dad4186f575e41e79c430fb27cc1c5ce57f2e86916",
           "importsFiles": [
             "packages/dogfood-swarm/db/connection.js",
@@ -7661,15 +7926,6 @@
             "packages/dogfood-swarm/lib/domains.js"
           ],
           "path": "packages/dogfood-swarm/lib/advance-override-amend-reroute.test.js"
-        },
-        {
-          "hash": "49aa6ec7039887d79bea13570defd821dfdab4111e066bc55c7abb904f10bbaf",
-          "importsFiles": [
-            "packages/dogfood-swarm/db/connection.js",
-            "packages/dogfood-swarm/lib/advance.js",
-            "packages/dogfood-swarm/lib/domains.js"
-          ],
-          "path": "packages/dogfood-swarm/lib/advance-six-gates-count.test.js"
         },
         {
           "hash": "8eefd705f3c1df822f58f0d84cf8ab851c55d0fd4a26bc605a0b95de06100ffb",
@@ -7689,10 +7945,11 @@
             "getPromotions",
             "recordPromotion"
           ],
-          "hash": "3e94d0caf510fd0ed120c7384167dd49380571f996939abaffb108c7381f1f89",
+          "hash": "02d694dbf5305756e171f389c193f7d274b46691372ac2072e9a446a5274034e",
           "importsFiles": [
             "packages/dogfood-swarm/db/connection.js",
             "packages/dogfood-swarm/lib/adjudication-store.js",
+            "packages/dogfood-swarm/lib/atlas-delta.js",
             "packages/dogfood-swarm/lib/finding-status.js",
             "packages/dogfood-swarm/lib/log-stage.js",
             "packages/dogfood-swarm/lib/queries/latest-agent-runs.js",
@@ -7705,12 +7962,12 @@
             {
               "calls": [
                 {
-                  "line": 78,
+                  "line": 79,
                   "name": "prepare",
                   "target": null
                 },
                 {
-                  "line": 485,
+                  "line": 494,
                   "name": "isBlocked",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
@@ -7718,7 +7975,7 @@
                   "via": "checkAgentCompletion"
                 },
                 {
-                  "line": 486,
+                  "line": 495,
                   "name": "isInFlight",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
@@ -7726,18 +7983,25 @@
                   "via": "checkAgentCompletion"
                 },
                 {
-                  "line": 528,
+                  "line": 537,
                   "name": "prepare",
                   "target": null,
                   "via": "checkViolations"
                 },
                 {
-                  "line": 646,
+                  "line": 655,
                   "name": "getLatestAdjudication",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/adjudication-store.js"
                   },
                   "via": "checkAdjudication"
+                },
+                {
+                  "line": 134,
+                  "name": "checkAtlasDelta",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-delta.js"
+                  }
                 }
               ],
               "exported": true,
@@ -7748,41 +8012,41 @@
             {
               "calls": [
                 {
-                  "line": 194,
+                  "line": 203,
                   "name": "prepare",
                   "target": null
                 },
                 {
-                  "line": 216,
+                  "line": 225,
                   "name": "transaction",
                   "target": null
                 },
                 {
-                  "line": 217,
+                  "line": 226,
                   "name": "prepare",
                   "target": null
                 },
                 {
-                  "line": 236,
+                  "line": 245,
                   "name": "transitionWave",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/wave-state-machine.js"
                   }
                 },
                 {
-                  "line": 245,
+                  "line": 254,
                   "name": "prepare",
                   "target": null
                 },
                 {
-                  "line": 290,
+                  "line": 299,
                   "name": "cleanupRunWorktrees",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/worktree.js"
                   }
                 },
                 {
-                  "line": 292,
+                  "line": 301,
                   "name": "logStage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/log-stage.js"
@@ -7797,13 +8061,13 @@
             {
               "calls": [
                 {
-                  "line": 78,
+                  "line": 79,
                   "name": "prepare",
                   "target": null,
                   "via": "checkGates"
                 },
                 {
-                  "line": 485,
+                  "line": 494,
                   "name": "isBlocked",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
@@ -7811,7 +8075,7 @@
                   "via": "checkAgentCompletion"
                 },
                 {
-                  "line": 486,
+                  "line": 495,
                   "name": "isInFlight",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
@@ -7819,13 +8083,13 @@
                   "via": "checkAgentCompletion"
                 },
                 {
-                  "line": 528,
+                  "line": 537,
                   "name": "prepare",
                   "target": null,
                   "via": "checkViolations"
                 },
                 {
-                  "line": 646,
+                  "line": 655,
                   "name": "getLatestAdjudication",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/adjudication-store.js"
@@ -7833,24 +8097,32 @@
                   "via": "checkAdjudication"
                 },
                 {
-                  "line": 321,
+                  "line": 134,
+                  "name": "checkAtlasDelta",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-delta.js"
+                  },
+                  "via": "checkGates"
+                },
+                {
+                  "line": 330,
                   "name": "prepare",
                   "target": null
                 },
                 {
-                  "line": 216,
+                  "line": 225,
                   "name": "transaction",
                   "target": null,
                   "via": "recordPromotion"
                 },
                 {
-                  "line": 217,
+                  "line": 226,
                   "name": "prepare",
                   "target": null,
                   "via": "recordPromotion"
                 },
                 {
-                  "line": 236,
+                  "line": 245,
                   "name": "transitionWave",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/wave-state-machine.js"
@@ -7858,13 +8130,13 @@
                   "via": "recordPromotion"
                 },
                 {
-                  "line": 245,
+                  "line": 254,
                   "name": "prepare",
                   "target": null,
                   "via": "recordPromotion"
                 },
                 {
-                  "line": 290,
+                  "line": 299,
                   "name": "cleanupRunWorktrees",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/worktree.js"
@@ -7872,7 +8144,7 @@
                   "via": "recordPromotion"
                 },
                 {
-                  "line": 292,
+                  "line": 301,
                   "name": "logStage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/log-stage.js"
@@ -7880,7 +8152,7 @@
                   "via": "recordPromotion"
                 },
                 {
-                  "line": 359,
+                  "line": 368,
                   "name": "prepare",
                   "target": null
                 }
@@ -7893,7 +8165,7 @@
             {
               "calls": [
                 {
-                  "line": 460,
+                  "line": 469,
                   "name": "prepare",
                   "target": null
                 }
@@ -7906,14 +8178,14 @@
             {
               "calls": [
                 {
-                  "line": 485,
+                  "line": 494,
                   "name": "isBlocked",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
                   }
                 },
                 {
-                  "line": 486,
+                  "line": 495,
                   "name": "isInFlight",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/state-machine.js"
@@ -7928,7 +8200,7 @@
             {
               "calls": [
                 {
-                  "line": 528,
+                  "line": 537,
                   "name": "prepare",
                   "target": null
                 }
@@ -7941,7 +8213,7 @@
             {
               "calls": [
                 {
-                  "line": 587,
+                  "line": 596,
                   "name": "prepare",
                   "target": null
                 }
@@ -7954,7 +8226,7 @@
             {
               "calls": [
                 {
-                  "line": 646,
+                  "line": 655,
                   "name": "getLatestAdjudication",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/adjudication-store.js"
@@ -7969,7 +8241,7 @@
             {
               "calls": [
                 {
-                  "line": 678,
+                  "line": 687,
                   "name": "prepare",
                   "target": null
                 }
@@ -7978,6 +8250,196 @@
               "invokedAtTopLevel": false,
               "isDefaultExport": false,
               "name": "checkFindingSeverity"
+            }
+          ]
+        },
+        {
+          "exports": [
+            "blastRadiusKey",
+            "buildBlastRadius"
+          ],
+          "hash": "1ca14cd70494a8c1fde090b80b1e33ef3f8921c662d0d8c8bf491a67f5aa67d9",
+          "importsFiles": [
+            "packages/dogfood-swarm/lib/atlas.js",
+            "packages/dogfood-swarm/lib/domains.js"
+          ],
+          "path": "packages/dogfood-swarm/lib/atlas-brief.js"
+        },
+        {
+          "exports": [
+            "checkAtlasDelta",
+            "flaggedItems",
+            "readWaveDelta",
+            "recordWaveDelta"
+          ],
+          "hash": "03e56efff5b08871136b8f94ef72845dc4f71a84ac77677b62fd160540ec77c4",
+          "importsFiles": [
+            "packages/dogfood-swarm/lib/atlas.js"
+          ],
+          "path": "packages/dogfood-swarm/lib/atlas-delta.js"
+        },
+        {
+          "entry": "draftDomainsFromAtlas",
+          "entryRule": 4,
+          "exports": [
+            "atlasDraftReason",
+            "coverageMessage",
+            "deriveDomainsFromAtlas",
+            "draftDomainsFromAtlas",
+            "draftMatchesLineage",
+            "verifyDomainCoverage"
+          ],
+          "hash": "fe0ac892c94a2f3206da35e80d372f7573d3b40bfe0523aa1407a5027ae11baa",
+          "importsFiles": [
+            "packages/dogfood-swarm/lib/atlas.js",
+            "packages/dogfood-swarm/lib/worktree.js"
+          ],
+          "path": "packages/dogfood-swarm/lib/atlas-domains.js",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 249,
+                  "name": "isSafeDomainName",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/worktree.js"
+                  },
+                  "via": "nameGroups"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "deriveDomainsFromAtlas"
+            },
+            {
+              "calls": [
+                {
+                  "line": 189,
+                  "name": "readAtlasMap",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
+                },
+                {
+                  "line": 196,
+                  "name": "listTrackedFiles",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
+                },
+                {
+                  "line": 249,
+                  "name": "isSafeDomainName",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/worktree.js"
+                  },
+                  "via": "nameGroups"
+                },
+                {
+                  "line": 203,
+                  "name": "mapCommitOf",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "draftDomainsFromAtlas"
+            },
+            {
+              "calls": [
+                {
+                  "line": 249,
+                  "name": "isSafeDomainName",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/worktree.js"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "nameGroups"
+            }
+          ]
+        },
+        {
+          "entry": "readAtlasMap",
+          "entryRule": 4,
+          "exports": [
+            "listTrackedFiles",
+            "mapCommitOf",
+            "readAtlasLineage",
+            "readAtlasMap",
+            "resolvePinnedAtlasCli",
+            "runAtlas",
+            "writeAtlasLineage"
+          ],
+          "hash": "3b747935843dbed3a4686d2866b6d7691ed68a1e7bf062ad66a98bc1f84ad854",
+          "importsFiles": [
+            "packages/dogfood-swarm/lib/bounded-json-read.js"
+          ],
+          "path": "packages/dogfood-swarm/lib/atlas.js",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 73,
+                  "name": "readBoundedJson",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/bounded-json-read.js"
+                  },
+                  "via": "readMapJson"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "readAtlasMap"
+            },
+            {
+              "calls": [
+                {
+                  "line": 73,
+                  "name": "readBoundedJson",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/bounded-json-read.js"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "readMapJson"
+            },
+            {
+              "calls": [
+                {
+                  "line": 167,
+                  "name": "prepare",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "readAtlasLineage"
+            },
+            {
+              "calls": [
+                {
+                  "line": 173,
+                  "name": "prepare",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "writeAtlasLineage"
             }
           ]
         },
@@ -8181,7 +8643,7 @@
           "path": "packages/dogfood-swarm/lib/domain-row.js"
         },
         {
-          "entry": "removeDomain",
+          "entry": "freezeDomains",
           "entryRule": 4,
           "exports": [
             "addDomain",
@@ -8197,14 +8659,17 @@
             "isExclusiveOwnershipClass",
             "narrowToExclusivelyOwned",
             "removeDomain",
+            "replaceDomainDraft",
             "resolveExclusiveOwner",
             "saveDomainDraft",
             "takeDomainSnapshot",
             "unfreezeDomains"
           ],
-          "hash": "38c0f072fa6b77ba11d68bf4945c7c89ec5fc99f1db3744681fc3fdfabd8354d",
+          "hash": "fb8a53a0c69ebd2490b9be59dc99b663fe25a9829554d2c28374b82a09dce74d",
           "importsFiles": [
             "packages/dogfood-swarm/db/schema.js",
+            "packages/dogfood-swarm/lib/atlas-domains.js",
+            "packages/dogfood-swarm/lib/atlas.js",
             "packages/dogfood-swarm/lib/errors.js",
             "packages/dogfood-swarm/lib/worktree.js"
           ],
@@ -8213,12 +8678,12 @@
             {
               "calls": [
                 {
-                  "line": 223,
+                  "line": 234,
                   "name": "prepare",
                   "target": null
                 },
                 {
-                  "line": 229,
+                  "line": 240,
                   "name": "transaction",
                   "target": null
                 }
@@ -8231,7 +8696,42 @@
             {
               "calls": [
                 {
-                  "line": 241,
+                  "line": 888,
+                  "name": "prepare",
+                  "target": null,
+                  "via": "aredomainsFrozen"
+                },
+                {
+                  "line": 269,
+                  "name": "transaction",
+                  "target": null
+                },
+                {
+                  "line": 270,
+                  "name": "prepare",
+                  "target": null
+                },
+                {
+                  "line": 240,
+                  "name": "transaction",
+                  "target": null,
+                  "via": "saveDomainDraft"
+                },
+                {
+                  "line": 273,
+                  "name": "afterSave",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "replaceDomainDraft"
+            },
+            {
+              "calls": [
+                {
+                  "line": 279,
                   "name": "prepare",
                   "target": null
                 }
@@ -8244,7 +8744,7 @@
             {
               "calls": [
                 {
-                  "line": 250,
+                  "line": 288,
                   "name": "prepare",
                   "target": null
                 }
@@ -8257,14 +8757,14 @@
             {
               "calls": [
                 {
-                  "line": 297,
+                  "line": 335,
                   "name": "isSafeDomainName",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/worktree.js"
                   }
                 },
                 {
-                  "line": 802,
+                  "line": 888,
                   "name": "prepare",
                   "target": null,
                   "via": "aredomainsFrozen"
@@ -8278,17 +8778,17 @@
             {
               "calls": [
                 {
-                  "line": 337,
+                  "line": 375,
                   "name": "prepare",
                   "target": null
                 },
                 {
-                  "line": 342,
+                  "line": 380,
                   "name": "transaction",
                   "target": null
                 },
                 {
-                  "line": 343,
+                  "line": 381,
                   "name": "prepare",
                   "target": null
                 }
@@ -8301,10 +8801,79 @@
             {
               "calls": [
                 {
-                  "line": 241,
+                  "line": 279,
                   "name": "prepare",
                   "target": null,
                   "via": "getDomains"
+                },
+                {
+                  "line": 754,
+                  "name": "readAtlasLineage",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
+                },
+                {
+                  "line": 783,
+                  "name": "listTrackedFiles",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  },
+                  "via": "checkAtlasDraftBeforeFreeze"
+                },
+                {
+                  "line": 783,
+                  "name": "verifyDomainCoverage",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-domains.js"
+                  },
+                  "via": "checkAtlasDraftBeforeFreeze"
+                },
+                {
+                  "line": 785,
+                  "name": "coverageMessage",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-domains.js"
+                  },
+                  "via": "checkAtlasDraftBeforeFreeze"
+                },
+                {
+                  "line": 788,
+                  "name": "runAtlas",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  },
+                  "via": "checkAtlasDraftBeforeFreeze"
+                },
+                {
+                  "line": 803,
+                  "name": "draftMatchesLineage",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-domains.js"
+                  },
+                  "via": "checkAtlasDraftBeforeFreeze"
+                },
+                {
+                  "line": 757,
+                  "name": "prepare",
+                  "target": null
+                },
+                {
+                  "line": 764,
+                  "name": "transaction",
+                  "target": null
+                },
+                {
+                  "line": 765,
+                  "name": "prepare",
+                  "target": null
+                },
+                {
+                  "line": 767,
+                  "name": "writeAtlasLineage",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
                 }
               ],
               "exported": true,
@@ -8315,7 +8884,50 @@
             {
               "calls": [
                 {
-                  "line": 753,
+                  "line": 783,
+                  "name": "listTrackedFiles",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
+                },
+                {
+                  "line": 783,
+                  "name": "verifyDomainCoverage",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-domains.js"
+                  }
+                },
+                {
+                  "line": 785,
+                  "name": "coverageMessage",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-domains.js"
+                  }
+                },
+                {
+                  "line": 788,
+                  "name": "runAtlas",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas.js"
+                  }
+                },
+                {
+                  "line": 803,
+                  "name": "draftMatchesLineage",
+                  "target": {
+                    "file": "packages/dogfood-swarm/lib/atlas-domains.js"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkAtlasDraftBeforeFreeze"
+            },
+            {
+              "calls": [
+                {
+                  "line": 839,
                   "name": "prepare",
                   "target": null
                 }
@@ -8328,7 +8940,7 @@
             {
               "calls": [
                 {
-                  "line": 753,
+                  "line": 839,
                   "name": "prepare",
                   "target": null,
                   "via": "hasActiveWave"
@@ -8342,7 +8954,7 @@
             {
               "calls": [
                 {
-                  "line": 802,
+                  "line": 888,
                   "name": "prepare",
                   "target": null
                 }
@@ -8355,7 +8967,7 @@
             {
               "calls": [
                 {
-                  "line": 241,
+                  "line": 279,
                   "name": "prepare",
                   "target": null,
                   "via": "getDomains"
@@ -8369,7 +8981,7 @@
             {
               "calls": [
                 {
-                  "line": 832,
+                  "line": 918,
                   "name": "prepare",
                   "target": null
                 }
@@ -8382,7 +8994,7 @@
             {
               "calls": [
                 {
-                  "line": 241,
+                  "line": 279,
                   "name": "prepare",
                   "target": null,
                   "via": "getDomains"
@@ -9798,7 +10410,7 @@
             "buildAuditPrompt",
             "buildFeatureAuditPrompt"
           ],
-          "hash": "004b882aa0c3097ea565d429d15c0c71245a5491e4ffafa2c620c2e1dfbef954",
+          "hash": "940cd0edbdd5430e47cb64ecbd11d15a3227d1a9bc1a987a2f9c6142839a0bef",
           "importsFiles": [
             "packages/dogfood-swarm/commands/lib/escape-reason.js",
             "packages/schemas/src/json/agent-output.schema.json"
@@ -10146,7 +10758,7 @@
           "path": "packages/dogfood-swarm/output-schema-null-element.test.js"
         },
         {
-          "hash": "fa287a763f09816e67665ba61744dcf59911e2bbef5212681c62b90c347ba614",
+          "hash": "d2f6940e88cb1dff39a771e0753ec730710a3891980dd88bcfa572ee4a3a528a",
           "path": "packages/dogfood-swarm/package.json"
         },
         {
@@ -10218,7 +10830,7 @@
           "path": "packages/dogfood-swarm/ph-ds-03-migration-manifest-version.test.js"
         },
         {
-          "hash": "c3b7c38009a67a15cce818154b315b4dd6fc111de7770a21d740ce2e69cd7ee0",
+          "hash": "f5d9943fd526b829dd3f7dd6e9dfa610d7da56821f4345f13e05bfe062e8fbcb",
           "importsFiles": [
             "packages/dogfood-swarm/test-support/strip-comments.js"
           ],
@@ -10827,7 +11439,7 @@
           "path": "packages/dogfood-swarm/wave4-4091637-5127-swarm-cp-pins.test.js"
         },
         {
-          "hash": "8734ac4bca301d0eb0da310270ad5f6523a523a17440ce6f9b8fe1c3fb8e3473",
+          "hash": "d6643fffb31a6d09cbbb00cbc9b8443a2e22a862f1fc60441867a7ce47e5b1e7",
           "importsFiles": [
             "packages/dogfood-swarm/commands/clean.js",
             "packages/dogfood-swarm/commands/collect.js",
@@ -10941,7 +11553,7 @@
       "name": "dogfood-swarm",
       "origin": "authored",
       "role": "code",
-      "testedBy": 281,
+      "testedBy": 284,
       "unresolvedSites": 5
     },
     {
@@ -11726,7 +12338,7 @@
           "path": "packages/findings/lib/safe-yaml-load.test.js"
         },
         {
-          "hash": "e39e17a64cee51a47630430b5f0dae390662dc4d6dc370ce87a1ab1e90ebf309",
+          "hash": "27a85b3e07cb2e52f49da211b2e143a5b2cce2cbe642046f3caa66077f51cf7f",
           "path": "packages/findings/package.json"
         },
         {
@@ -12160,7 +12772,7 @@
       "name": "findings",
       "origin": "authored",
       "role": "code",
-      "testedBy": 120,
+      "testedBy": 121,
       "unresolvedSites": 0
     },
     {
@@ -14836,6 +15448,113 @@
         {
           "hash": "c0a90268a92e12b1c9da0ba64e218f49914e4c1cc95c612a7ab0dc8b659b0f75",
           "path": "fixtures/roadmaps/valid/well-formed-run.json"
+        },
+        {
+          "hash": "c31c01c9d86f365dea9b2390bead497724aa88562c671fd33fd036821bd2fe63",
+          "path": "fixtures/swarm-atlas/mapped-repo/README.md"
+        },
+        {
+          "hash": "53e0b422c528116cb6441f50459d84c6c85f6f638822dc4746fb68c5f689c6a6",
+          "path": "fixtures/swarm-atlas/mapped-repo/atlas/README.md"
+        },
+        {
+          "hash": "0e306848e5ff150200644c9dbf9a2adfbf7b3bb407f61b8f9bf1133a5b3b1ab2",
+          "path": "fixtures/swarm-atlas/mapped-repo/atlas/boundaries.yaml"
+        },
+        {
+          "hash": "d4120cc433d46f1db0920c6ab29c4ef038cf2e7eab0db0918a4ab496026c476d",
+          "path": "fixtures/swarm-atlas/mapped-repo/atlas/page.json"
+        },
+        {
+          "hash": "6c0aa918220f486c41a4cfd3ff4e4563ed3b4159c89fcc478525733f37eac5de",
+          "path": "fixtures/swarm-atlas/mapped-repo/atlas/statistics.json"
+        },
+        {
+          "hash": "7566b23fc30ed302747591c300b764cc634baf7c35be4807a1870b14f4fbff7a",
+          "path": "fixtures/swarm-atlas/mapped-repo/atlas/structure.json"
+        },
+        {
+          "hash": "713edbf0f70fcf5d4f22cc23c7fd880871aa25801c79666adf4525a6ea77a88f",
+          "path": "fixtures/swarm-atlas/mapped-repo/config/settings.json"
+        },
+        {
+          "hash": "0e092b2d49b173bd1608a90e361c3893f5973d6244679bf3e9ec47c1297b036c",
+          "path": "fixtures/swarm-atlas/mapped-repo/docs/guide.md"
+        },
+        {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "fixtures/swarm-atlas/mapped-repo/src/.gitkeep"
+        },
+        {
+          "exports": [
+            "handle"
+          ],
+          "hash": "730369f27e6c01ab837d910ee773e8301fe7c3697b48c730e998cafd7fa2943a",
+          "importsFiles": [
+            "fixtures/swarm-atlas/mapped-repo/src/core/engine.js"
+          ],
+          "path": "fixtures/swarm-atlas/mapped-repo/src/api/server.js"
+        },
+        {
+          "hash": "28fa734a76306894d9940a53f97e390faf7a6ccc8de1f1a44970a40697c9cc74",
+          "importsFiles": [
+            "fixtures/swarm-atlas/mapped-repo/src/api/server.js"
+          ],
+          "path": "fixtures/swarm-atlas/mapped-repo/src/cli/main.js"
+        },
+        {
+          "exports": [
+            "greet"
+          ],
+          "hash": "a1ecc5f241c62861a4a99058178e1a0a950b4df7b6f36006523f529b48b5019a",
+          "importsFiles": [
+            "fixtures/swarm-atlas/mapped-repo/src/util/strings.js"
+          ],
+          "path": "fixtures/swarm-atlas/mapped-repo/src/core/engine.js"
+        },
+        {
+          "hash": "7e8852036c918bcfdc59095ba21715d3e4bbdaeb4ecaebd832c35d4b1dae65fe",
+          "importsFiles": [
+            "fixtures/swarm-atlas/mapped-repo/src/core/engine.js"
+          ],
+          "path": "fixtures/swarm-atlas/mapped-repo/src/core/index.js"
+        },
+        {
+          "exports": [
+            "shout"
+          ],
+          "hash": "65bad6eb3b64360a73438944a46e195e7b48be9754c87021b67350e0bf0f039c",
+          "path": "fixtures/swarm-atlas/mapped-repo/src/util/strings.js"
+        },
+        {
+          "hash": "0084ab3a98b544a6aea938cff1e8cbd4581d1624bfaa4fe69b2722be75d608cf",
+          "importsFiles": [
+            "fixtures/swarm-atlas/mapped-repo/src/api/server.js",
+            "fixtures/swarm-atlas/mapped-repo/src/core/engine.js"
+          ],
+          "path": "fixtures/swarm-atlas/mapped-repo/tests/core.test.js"
+        },
+        {
+          "hash": "26b8ea49759235986bf4e28935103f4e6eae9c7efd1a713d6bd7a6a4d4a5c42f",
+          "path": "fixtures/swarm-atlas/unmapped-repo/README.md"
+        },
+        {
+          "hash": "bb5a9674f1f2abe223237ad45f9bbbcf83ddefe4357ef9b33efd6d30ab893e5c",
+          "path": "fixtures/swarm-atlas/unmapped-repo/docs/guide.md"
+        },
+        {
+          "exports": [
+            "handle"
+          ],
+          "hash": "ec33bd5b5b91c82c8de87ae31c675383b4a7f73d17e59418f7040ee57522b130",
+          "path": "fixtures/swarm-atlas/unmapped-repo/src/server.js"
+        },
+        {
+          "hash": "7bd09a9c8f841cd0a9d752859c85074004530dbb95266b8b718119325099bbe1",
+          "importsFiles": [
+            "fixtures/swarm-atlas/unmapped-repo/src/server.js"
+          ],
+          "path": "fixtures/swarm-atlas/unmapped-repo/tests/server.test.js"
         }
       ],
       "globs": [
@@ -14846,7 +15565,7 @@
       "origin": "authored",
       "outsideImports": 3,
       "role": "code",
-      "testedBy": 18,
+      "testedBy": 20,
       "unresolvedSites": 16
     },
     {
@@ -14866,11 +15585,11 @@
           "path": "indexes/atlas/exclude.txt"
         },
         {
-          "hash": "37dd621e023a1cf8f9e80fb7421ee44fa503a02a9344a48c4ba57de9d09f782f",
+          "hash": "fcb18a58547a6d5764e7f1fb2268f6b00bfcc5a07eab7aefe8cf6bbd6cfeef97",
           "path": "indexes/badges/_aggregate.json"
         },
         {
-          "hash": "37dd621e023a1cf8f9e80fb7421ee44fa503a02a9344a48c4ba57de9d09f782f",
+          "hash": "0655666f4b2b879cb9f0bed503206d1305a0e6fcce3caae1efd2d1ea2d2ec6a4",
           "path": "indexes/badges/dogfood-lab--testing-os--cli.json"
         },
         {
@@ -14926,15 +15645,15 @@
           "path": "indexes/badges/mcp-tool-shop-org--zip-meta-map--cli.json"
         },
         {
-          "hash": "6ceabddb28043aeba9089ad0bcbb6dc8038e24af5f7168c89e7b238851a96663",
+          "hash": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
           "path": "indexes/failing.json"
         },
         {
-          "hash": "351df1fc88bc8c589266232b763fea61abf85a819708a74360ea5f7db4952da0",
+          "hash": "3e7ff76af4ec63a77ed755b967e84a8ee5da0c23032de0f7fd9e9cb453dceef9",
           "path": "indexes/integrity/chain.jsonl"
         },
         {
-          "hash": "a5dfc90449130a383fc1395fe00cf13b580cda14d4f8d5201a80171f6598a659",
+          "hash": "1ff22d48e27039cfa353b3f23bffb6761ec87ce43ee3ff117b196b35ec472194",
           "path": "indexes/latest-by-repo.json"
         },
         {
@@ -14942,7 +15661,7 @@
           "path": "indexes/stale.json"
         },
         {
-          "hash": "8b6418e8297198d6bd2682cb7a5853f9f4346b909bfdcd80e2c1fb99f10ea78a",
+          "hash": "ec261659d067dd9da5727ddfe6da356abb5bae0779cc13161331110de6e8fdad",
           "path": "indexes/trends.json"
         }
       ],
@@ -15535,7 +16254,7 @@
           ]
         },
         {
-          "hash": "0a5114102245e30ed10a0f54e93129c98be19bdb4013ab0d7f9ec4301c5f551c",
+          "hash": "f1f8c1d6fd6219e9a773c36f919c631d6f63aa6f8b66e2ac9f2cabcdb93870d9",
           "path": "packages/ingest/package.json"
         },
         {
@@ -16697,7 +17416,7 @@
           "path": "packages/portfolio/lib/tracked-files.js"
         },
         {
-          "hash": "da5273ead69289e46db84ef624420171269b98f647412783523f838ff462ad53",
+          "hash": "72500aa113b528433c3d596201da63f402bf4232da66fa0f1d7cc78f21b0afc4",
           "path": "packages/portfolio/package.json"
         },
         {
@@ -17044,6 +17763,14 @@
         {
           "hash": "6e3fc928f4219ee3e74591d721ff8b75fb91fef8d771509bd5cfa99a64d45115",
           "path": "records/dogfood-lab/testing-os/2026/09/23/run-00muegcowt-5-k_N5CcsTYIqg.json"
+        },
+        {
+          "hash": "8db3bae24867e22524208043106c4a2bd2d637966981b18f1c2e4bcaee427739",
+          "path": "records/dogfood-lab/testing-os/2026/09/23/run-00muekubx6-bwfMbfFjS9HYag.json"
+        },
+        {
+          "hash": "870eea97f67ac8f1e16a45bc014990ae324f2fee2809ef3f4a92acb80829cc5d",
+          "path": "records/dogfood-lab/testing-os/2026/09/23/run-00muelhvan-23jL-gcMtVGubw.json"
         },
         {
           "hash": "d80bd628d70f1275786c79da48bfb6da79ef0eb303eceed6fe87960e8c7a308c",
@@ -17555,7 +18282,7 @@
           "path": "packages/report/init.test.js"
         },
         {
-          "hash": "b41b52d2f6f0b4175632590b569df059ecd0cdc3ec027e6d4619a89674aa5950",
+          "hash": "4bcb44453b754410bf2d9e38bcbcbb6d7b852b959c83d8326ed7a478a9af4c80",
           "path": "packages/report/package.json"
         },
         {
@@ -17662,11 +18389,11 @@
           "path": ".gitignore"
         },
         {
-          "hash": "a30dcfff612f9e2abed3cc1f431658efdd005cc84961a8965047e54b663499e9",
+          "hash": "4c9b045e1d922bb91a0f74018f2f1a8b38b891c24b5a4e9902a0597e53ee50f9",
           "path": "CHANGELOG.md"
         },
         {
-          "hash": "774ab92fbcd8fe86831838d3743382cb1b1ab837ba851c093322cf8d8ad26350",
+          "hash": "43fe5c12f5c58e40bbc510605d9156ceaf4c304a2054dca46a2c3029ede721d4",
           "path": "CLAUDE.md"
         },
         {
@@ -17674,7 +18401,7 @@
           "path": "CONTRIBUTING.md"
         },
         {
-          "hash": "38019c27918891198a8548b1f870b15ebb9cfd5d8d0efb27eea746bdaf0cee3d",
+          "hash": "a27d1e7a019912afe888f95f4a1f7dc7432632bc02c1bdb3ebca5c6c1dbdc0e9",
           "path": "HANDOFF.md"
         },
         {
@@ -17682,39 +18409,39 @@
           "path": "LICENSE"
         },
         {
-          "hash": "ce593577690f4fb7c01684acb1db9d2a7624c3d83520a97898a0bd681667d611",
+          "hash": "936148abd441962ae254a2f358bd0a8405b337bc17c8822feefd64bdfb526a31",
           "path": "README.es.md"
         },
         {
-          "hash": "80c49dde6df9d14b5bbb7b89ce4afc90a567a903ae5799e3af34ddbafa6575b9",
+          "hash": "44780499f7ac4b78fe1e583707f474ce877dba6da7ae40ffaf48ff68ebf9ecd6",
           "path": "README.fr.md"
         },
         {
-          "hash": "ef690f495d6ba03c3d5e8a447ece74483753406f192ee6e0d53b16ba0a96205a",
+          "hash": "88801e39765c5174195f8317174e307ec728c29d80d814f7b1211a0d7c73a54e",
           "path": "README.hi.md"
         },
         {
-          "hash": "fdfe00748068d0275fdb052c3ad7482e6cb17ec4fb503ef65a3509f229aa8878",
+          "hash": "0dc0befb1542550b222146d20257024745f2e09eeb7a5a4c5c5ccd95b71293c5",
           "path": "README.it.md"
         },
         {
-          "hash": "134e4c3c3bbb0a6b287cdc934542868cceb5efa8fc6d1c6ff2cdbe93d153c2a8",
+          "hash": "5dfdb50be9ba7c49fd9c73cd96efb79aa4a3ee6998a97fb2db176c91c08a1928",
           "path": "README.ja.md"
         },
         {
-          "hash": "1ac0cc268ace3d59a881438c4cca6e082446b8d3285ef04152f0414329981c3f",
+          "hash": "cb2e8556b4c550c7319e3161d09fbfa40241c6ab510b7cb3dca7d763b30557c8",
           "path": "README.md"
         },
         {
-          "hash": "ade72fd6c51b1dc6d57a461d83fd974d86413025aa3603e67bf06e8a5c4f7e79",
+          "hash": "3bd45431bdcee6d841b5176c4bc632a0dd1a0702073f5ae5ab4933cfce99d0e2",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "002824719ca6ac53ac6fdefc3156da602dbfaaf6b04485a4b3fe498aa1754893",
+          "hash": "405d089670091f2d4043a42e897d54b45651bb9a77b2129b87fe57dd4ef96016",
           "path": "README.zh.md"
         },
         {
-          "hash": "a5d28409e0dbc7a9f3ccfa3ab788bbcff632d1e48d439402d9ac58b0a4cbdb86",
+          "hash": "f987bbc28e3011c19797546eb9956d36f5c9a594447df2e1c52c5febf08abb7f",
           "path": "SCORECARD.md"
         },
         {
@@ -17722,15 +18449,15 @@
           "path": "SECURITY.md"
         },
         {
-          "hash": "a4420e979ba7694de9863712fce0e27ea71492d9767a9ac1f2ef597733f06571",
+          "hash": "1b50c17c8809d271936775faf4518e5d632eb32ad2a4dfe45de0e08753ce940d",
           "path": "SHIP_GATE.md"
         },
         {
-          "hash": "89509e2e1858c8c1e177da790ac3f664414856e62e9cb1a33bb41413ad000438",
+          "hash": "645959dbc8627a34cfbc2cfa547d531f3a5282c7f892ee85d58ae08dc51bcfe9",
           "path": "package-lock.json"
         },
         {
-          "hash": "f6daac85e9e69c08d9a51b030dfa644b6c32977a108a2003362364dc89f7c35c",
+          "hash": "0c699d77d5ff5d9352a61ef827a75c09f35ccde387944b1223de24dce395d6de",
           "path": "package.json"
         },
         {
@@ -17771,7 +18498,7 @@
           "path": "packages/schemas/README.md"
         },
         {
-          "hash": "b6e480715f2c8c48f268b5212491b0ae35ef006c6d5debdf36c74e890dc0c05d",
+          "hash": "b77b8aa8e9220fb7d7e4cd80b28dc001d08058bf13b11e1e1a4a9dde3be8bf35",
           "path": "packages/schemas/package.json"
         },
         {
@@ -18452,7 +19179,7 @@
           ]
         },
         {
-          "hash": "5ff085df733b08caf31ffb022dd1f476ab6d702243b7f3e902711d58e8db68ed",
+          "hash": "6530f719da469c51af5a98ed01254114973e6c093bed862426db4011c22e116f",
           "importsFiles": [
             "packages/atlas/adapter/fleet.js",
             "scripts/atlas-render.mjs"
@@ -18887,6 +19614,10 @@
           "path": "scripts/pin-declarations.test.mjs"
         },
         {
+          "hash": "bdbd778f4c6392751a09993226f6fbce9e1cbe77028510ab7ddad81c6942ed48",
+          "path": "scripts/protocol-atlas.test.mjs"
+        },
+        {
           "hash": "46c9f41fae2d020d60a5eebb6a2dc2e47b4a4c95d7c4b3983124e6ebdd88f648",
           "path": "scripts/regression-pin-allowlist.json"
         },
@@ -18994,7 +19725,7 @@
           "path": "scripts/sync-version.test.mjs"
         },
         {
-          "hash": "b53faba6c2ab6f17c179b3b3eebb5d859816454e6682cb95b086a8b9c58b81c3",
+          "hash": "6e762611e794367cce6f99e627cb588bb9af248b97843378fcfdad99bcf0c3c3",
           "path": "scripts/test-floor-allowlist.json"
         }
       ],
@@ -19078,7 +19809,7 @@
           "path": "site/public/logo.png"
         },
         {
-          "hash": "78fbdc23bafd035c52ae140378b64094259ec1dd26011ddd0afa3fa87c8dca87",
+          "hash": "fffc0716100c68faebb4ed309fa0a5aa0ddba74a62b83d84df57e89a8ce7ea09",
           "path": "site/public/screenshots/verify-output.svg"
         },
         {
@@ -19109,15 +19840,15 @@
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "50f3eaefb61f3f2717e909037f0924dd7d0b94cdc345d789ee698f40ee6ec784",
+          "hash": "f4eaa053b582e3b5435bade0765c6da34e37bccbbb4f6bf72b822867a8733bc1",
           "path": "site/src/content/docs/handbook/atlas.md"
         },
         {
-          "hash": "a492dfc5bc8b7c818417fc6bed3a38ba98a915dba0e93da9d473f2682092d460",
+          "hash": "2b1d1d6d12cbabb8bb872d2258addbac814607439644a01ef6b7b96d4c21c7d5",
           "path": "site/src/content/docs/handbook/beginners.md"
         },
         {
-          "hash": "1f9a9c7b3e1d2d32880eb0733014d89a955d5e39b3f9d164539b91b8fd319133",
+          "hash": "12e10b4269d390ff6a4c499f0d414e8c0efc1d819094458106483edffe092122",
           "path": "site/src/content/docs/handbook/cli-reference.md"
         },
         {
@@ -19224,7 +19955,7 @@
           "path": "swarms/NEXT-CYCLE-KICKOFF.md"
         },
         {
-          "hash": "bff663e06c54761222c198d2faeeaae40bec826b6ce517f35821a64389cccb70",
+          "hash": "996ac104e42b31ff62b10b415bef1f7fb53782e25e32cd118a0cc4e991aacdde",
           "path": "swarms/PROTOCOL.md"
         },
         {
@@ -19858,7 +20589,7 @@
           "path": "packages/verify/lint-scenario.test.js"
         },
         {
-          "hash": "e45891ff485ec7dd17bb14525948d2c3e645f911e8384532d5ff6cebea5243bb",
+          "hash": "d0783885dc4d30de8f6835a43132a0e8b9419c30268d8478ea31337a7bd8613d",
           "path": "packages/verify/package.json"
         },
         {
@@ -20338,7 +21069,7 @@
         {
           "boundary": "dogfood-swarm",
           "depth": 0,
-          "files": 86
+          "files": 90
         },
         {
           "boundary": "findings",
@@ -21031,13 +21762,13 @@
         {
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/dogfood-swarm/lib/advance-override-amend-reroute.test.js",
+          "path": "packages/dogfood-swarm/lib/advance-gates-count.test.js",
           "runKind": "executes"
         },
         {
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/dogfood-swarm/lib/advance-six-gates-count.test.js",
+          "path": "packages/dogfood-swarm/lib/advance-override-amend-reroute.test.js",
           "runKind": "executes"
         },
         {
@@ -22069,7 +22800,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 536,
+      "runsCount": 540,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -22791,7 +23522,7 @@
         {
           "boundary": "dogfood-swarm",
           "depth": 0,
-          "files": 86
+          "files": 90
         },
         {
           "boundary": "findings",
@@ -23484,13 +24215,13 @@
         {
           "job": "publish",
           "matched": true,
-          "path": "packages/dogfood-swarm/lib/advance-override-amend-reroute.test.js",
+          "path": "packages/dogfood-swarm/lib/advance-gates-count.test.js",
           "runKind": "executes"
         },
         {
           "job": "publish",
           "matched": true,
-          "path": "packages/dogfood-swarm/lib/advance-six-gates-count.test.js",
+          "path": "packages/dogfood-swarm/lib/advance-override-amend-reroute.test.js",
           "runKind": "executes"
         },
         {
@@ -24517,7 +25248,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 536,
+      "runsCount": 540,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -24773,7 +25504,7 @@
         {
           "boundary": "dogfood-swarm",
           "depth": 0,
-          "files": 83
+          "files": 87
         },
         {
           "boundary": "findings",
@@ -25455,8 +26186,8 @@
     }
   ],
   "generatedFrom": {
-    "commit": "c6fa258d755de3e2e94ffb4d45a27862fd665676",
-    "tracked": 1676
+    "commit": "3db5de13318a8b6c89c98a563f02c44944b2dcb2",
+    "tracked": 1705
   },
   "landings": [
     {
@@ -26137,6 +26868,28 @@
         }
       ],
       "target": "fixtures/findings",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/swarm-atlas/mapped-repo/tests/core.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/swarm-atlas/unmapped-repo/tests/server.test.js",
       "writers": []
     },
     {
@@ -27675,7 +28428,7 @@
       "target": null
     }
   ],
-  "testFiles": 579,
+  "testFiles": 585,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",

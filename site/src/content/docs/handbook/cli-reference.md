@@ -16,11 +16,12 @@ The verbs below are the **rest of the CLI surface** — the ones you reach for d
 
 ## swarm init
 
-Bootstrap a new run against a repo. Walks the file tree, detects domain candidates from `swarms/domain-map-suggestions.json` (or equivalent), creates an entry in the `runs` table, and writes a save-point tag (`swarm-save-<run-id>`) at the current HEAD so `swarm rewind` has a safe target later.
+Bootstrap a new run against a repo. When the repository carries an Atlas map (`atlas/structure.json`), the domains are drafted from its parts: test parts join the part they import most, the smallest part joins the domain that imports it most until five remain (`--domains <n>` allows up to ten, `--tests-domain` keeps one test-only domain), each domain's globs are the union of its parts' globs, `atlas/` becomes a coordinator-only domain, and the draft is refused unless every tracked file is in exactly one domain. Without a map, or with `--no-atlas`, it walks the file tree and detects domain candidates from `swarms/domain-map-suggestions.json` (or equivalent). Either way it creates an entry in the `runs` table, and writes a save-point tag (`swarm-save-<run-id>`) at the current HEAD so `swarm rewind` has a safe target later.
 
 ```text
 Usage: swarm init <repo-path> [--repo org/name]
                   [--seed-from-roadmap[=<run-id>|latest]]
+                  [--no-atlas] [--domains <n>] [--tests-domain]
 
 Example:
   $ swarm init E:/AI/my-repo
@@ -43,7 +44,10 @@ Usage:
   swarm domains <run-id> --unfreeze --reason "."
                                      # unlock (reason required)
   swarm domains <run-id> --history   # change events
+  swarm domains <run-id> --from-atlas  # redraft from Atlas
 ```
+
+Freezing a map drafted from Atlas re-checks that every tracked file is in exactly one domain and runs the pinned `atlas check`; a failed check refuses the freeze, and the `frozen` event records the map commit, the HEAD it was checked at, and any hand edits.
 
 Every mutation lands in `domain_events` with the operator-supplied reason — same audit discipline as the wave/agent state events.
 
@@ -123,7 +127,7 @@ Example:
 
 ## swarm verify
 
-Run build verification on the run's repo. Auto-detects the toolchain (node / python / rust) by probing for `package.json`, `pyproject.toml`, `Cargo.toml`, etc., or accepts an explicit `--adapter`. Use `--probe-only` to see which adapters would match without running anything.
+Run build verification on the run's repo. In a repository with an Atlas map the verification gains a required `atlas-check` step, so a stale map fails it, and on an amend wave it also runs `atlas diff --base <the wave's dispatch commit> --json` and stores the structural delta on the wave. Auto-detects the toolchain (node / python / rust) by probing for `package.json`, `pyproject.toml`, `Cargo.toml`, etc., or accepts an explicit `--adapter`. Use `--probe-only` to see which adapters would match without running anything.
 
 ```text
 Usage: swarm verify <run-id>
@@ -211,7 +215,7 @@ Example:
 
 ## swarm advance
 
-Check the phase-advancement gates and (if they pass) promote the run to the next phase. Use `--check-only` to see gate results without mutating, `--history` to read the promotion log, or `--override --reason "..."` to force-promote past a soft block. Hard blocks (e.g. blocked agent_runs) cannot be overridden — fix the underlying state first.
+Check the phase-advancement gates and (if they pass) promote the run to the next phase. The seventh gate, `atlas_delta`, blocks when an amend wave's structural delta shows a new import between parts, a cycle, or a new writer to a place; it is overridable with `--override --reason "..."` naming the approved finding that asked for the change. Use `--check-only` to see gate results without mutating, `--history` to read the promotion log, or `--override --reason "..."` to force-promote past a soft block. Hard blocks (e.g. blocked agent_runs) cannot be overridden — fix the underlying state first.
 
 Amend routing is **CRITICAL/HIGH only.** After `health-audit-b`, `swarm advance` promotes to `health-amend-b` only when open CRITICAL or HIGH remain; otherwise it promotes to `health-audit-c` and skips Stage C (humanization) entirely. Stage B findings are usually MED/LOW, so a blind advance after Stage B review **will skip** `health-amend-b`. PROTOCOL still requires that amend. Dispatch it yourself after approve:
 
@@ -259,7 +263,7 @@ Example:
 
 ## swarm status
 
-Render the full control-plane status for a run — phase, waves, agent states, findings counts, recovery breadcrumbs. The scan-first surface: read this when you want to know "what is this run, where is it in the lifecycle, what's blocking it, and what do I run next." The trailing `Next:` line is the canonical pointer to the next action.
+Render the full control-plane status for a run — phase, waves, agent states, findings counts, recovery breadcrumbs, and `STRUCTURAL CHANGE TO REVIEW` while an amend wave's Atlas delta stands undisposed. The scan-first surface: read this when you want to know "what is this run, where is it in the lifecycle, what's blocking it, and what do I run next." The trailing `Next:` line is the canonical pointer to the next action.
 
 `--format=json` emits the full structured status object (`run`, `domains`, `waves`, `agents`, `findings`, `assessment`) instead of the text frame — the same object the text formatter consumes, so a script never sees a divergent shape. The default is text. Exit code is unchanged (status is informational).
 

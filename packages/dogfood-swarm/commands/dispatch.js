@@ -33,6 +33,7 @@ import { AUDIT_PHASES, AMEND_PHASES, renderPhaseList } from '../lib/phases.js';
 import { escapePathForDisplay } from './lib/escape-reason.js';
 import { readRoadmapSeedLineage } from './lib/roadmap-seed.js';
 import { isAgentBearingDomain } from './lib/agent-bearing.js';
+import { buildBlastRadius, blastRadiusKey } from '../lib/atlas-brief.js';
 
 /**
  * D3B-003 (Wave A2 Stage C): emit a structured NDJSON event for a
@@ -403,6 +404,9 @@ function buildRoadmapDigest(repoLocalPath, opts = {}) {
  *   silent degrade to no-digest — the operator named a specific run this
  *   invocation; T4's contract text is explicit that the behavior must never
  *   be silent in either direction.
+ * @param {Function} [opts.runAtlas] — the Atlas runner (lib/atlas.js#runAtlas)
+ *   for the auto-freeze's `atlas check` and the audit briefs' `atlas explain`;
+ *   tests pass their own
  * @returns {object} — { waveId, waveNumber, agents, promptDir, dryRun? }
  *
  * Atomicity contract (D3B-002, Wave A2 Stage C):
@@ -519,7 +523,7 @@ export function dispatch(opts) {
   // throws, which is the same fail-loud signal the apply path gives.
   if (!aredomainsFrozen(db, opts.runId)) {
     if (opts.autoFreeze && !opts.dryRun) {
-      freezeDomains(db, opts.runId);
+      freezeDomains(db, opts.runId, { runAtlas: opts.runAtlas });
     } else if (opts.autoFreeze && opts.dryRun) {
       // dry-run + auto-freeze: skip the mutation, proceed with draft domains.
     } else {
@@ -1017,6 +1021,32 @@ export function dispatch(opts) {
   // for the whole wave, not per-agent — the digest is the same cross-run
   // targeting context regardless of which domain is reading it.
 
+  // The blast radius, when the repo has an Atlas map: built once for the
+  // wave, after its rows committed, because each entry point's `atlas explain`
+  // is a child process and one wave must not pay for it once per lane. Each
+  // lane's section is kept on the wave so `swarm resume` rebuilds the same
+  // brief. Context only: a map that cannot be read leaves briefs without it.
+  let blastRadius = null;
+  if (isAudit) {
+    try {
+      blastRadius = buildBlastRadius({
+        repoPath: run.local_path,
+        domains: getDomains(db, opts.runId),
+        domainNames: agents.map((a) => a.domain.name),
+        runAtlas: opts.runAtlas,
+      });
+    } catch (err) {
+      console.error(`[warn] blast radius left out of the briefs: ${err.message}`);
+      blastRadius = null;
+    }
+    if (blastRadius) {
+      const put = db.prepare('INSERT OR REPLACE INTO kv (key, value) VALUES (?, ?)');
+      db.transaction(() => {
+        for (const [name, text] of blastRadius) put.run(blastRadiusKey(Number(waveId), name), text);
+      })();
+    }
+  }
+
   const builtAgents = [];
   for (const a of agents) {
     const domain = a.domain;
@@ -1035,6 +1065,7 @@ export function dispatch(opts) {
       // workspace links are provisioned + what to do if resolution escapes
       // (report, never `npm install`) — see templates.js#renderWorktreeSection.
       isolatedWorktree: !!a.worktreePath,
+      blastRadius: blastRadius?.get(domain.name),
     };
 
     let prompt;
