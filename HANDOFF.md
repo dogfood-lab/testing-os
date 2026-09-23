@@ -1,5 +1,7 @@
 # HANDOFF.md — testing-os migration completion
 
+> ## v1.13.0 — 2026-09-23: Atlas ships as the eighth package. The Director rejected the human-authored acceptance ladder and the fleet-first order; `docs/atlas-page.spec.md` (a page written by hand from this repository's own workflows and code) is the specification, and `atlas map` now writes that page from the repository alone: doors, reach, landing places, readers, origin, the flow picture on the site. `atlas check` runs in CI. Two class defects the check caught on its first days are fixed with fixtures. Corner cut and written down: the page has no within-file facts yet (verifier check order, hash chain); the hand-written spec has them and the generator does not.
+>
 > ## v1.12.0 — 2026-09-06: the armature run's harness fixes shipped (`adjudicate --wave`, `SWARM_VERIFY_STEP_TIMEOUT_MS`, cost bounds in every parallel amend prompt, jury `num_ctx`, nocase closures, roadmap recurrence scope); executor seat re-ruled Opus-default / Sonnet where suited / Fable for complex work and clerk briefs; SECURITY contact → GitHub advisories; identity scrub at the tag. Run d537 below is unchanged.
 >
 > ## DOGFOOD-SWARM 3 + v1.11.0 — waypoint shipped; run stays OPEN at `test` (2026-08-26) — release `e697247`, tag `v1.11.0`; all 6 packages live on npm at 1.11.0, GitHub Release published

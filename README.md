@@ -21,7 +21,7 @@
 *Protocols, evidence stores, and learning loops for AI-assisted software.*
 
 <!-- version:start -->
-**v1.12.0** — current release. See [CHANGELOG.md](CHANGELOG.md) for what shipped.
+**v1.13.0** — current release. See [CHANGELOG.md](CHANGELOG.md) for what shipped.
 <!-- version:end -->
 
 📖 **[Read the handbook →](https://dogfood-lab.github.io/testing-os/handbook/)**
@@ -40,8 +40,9 @@ What you get:
 - **A policy contract you control.** Declare what counts as "verified" in YAML — a bounded, no-eval predicate DSL (`field`/`op`/`value` + `all`/`any`/`not`/`implies`) — and enforce it across your repos. Lint a policy before you ship it with `dogfood-verify lint`.
 - **A parallel-agent swarm protocol.** Run multi-agent audits against a codebase, then turn raw findings into reusable patterns and doctrine.
 - **A live status surface.** Per-repo records, indexes, and a status badge, all served from one evidence store.
+- **A page that says how a repository works.** Atlas reads a repository's workflows, imports, writes and history and writes `atlas/README.md`: what comes in, what runs, where it lands, who reads it, what breaks what, where to start. No sentence on it is written by a person, and `atlas check` fails CI when the map stops matching the code.
 
-It's the flagship monorepo of the [Dogfood Lab](https://github.com/dogfood-lab) org — seven `@dogfood-lab/*` packages behind one `swarm` CLI.
+It's the flagship monorepo of the [Dogfood Lab](https://github.com/dogfood-lab) org — eight `@dogfood-lab/*` packages behind one `swarm` CLI and one `atlas` CLI.
 
 ## Quick Start
 
@@ -79,6 +80,7 @@ testing-os processes dogfood submissions dispatched via `repository_dispatch` fr
 | `@dogfood-lab/report` | JS | Submission builder for source repos. |
 | `@dogfood-lab/portfolio` | JS | Cross-repo portfolio generator. |
 | `@dogfood-lab/dogfood-swarm` | JS | The 10-phase parallel-agent protocol + SQLite control plane + `swarm` bin. |
+| `@dogfood-lab/atlas` | JS | Reads a repository and writes the page that says how it works (`atlas/README.md`); `atlas check` gates the map in CI. No sibling dependencies; runs in any repository. |
 
 Sibling testing tools that **stay independent** but integrate via published APIs: [`shipcheck`](https://github.com/mcp-tool-shop-org/shipcheck), [`repo-knowledge`](https://github.com/mcp-tool-shop-org/repo-knowledge), [`ai-eyes-mcp`](https://github.com/mcp-tool-shop-org/ai-eyes-mcp), [`taste-engine`](https://github.com/mcp-tool-shop-org/taste-engine), [`style-dataset-lab`](https://github.com/mcp-tool-shop-org/style-dataset-lab).
 
@@ -86,7 +88,8 @@ Sibling testing tools that **stay independent** but integrate via published APIs
 
 ```
 testing-os/
-├── packages/                  # 7 workspace packages (@dogfood-lab/*)
+├── packages/                  # 8 workspace packages (@dogfood-lab/*)
+├── atlas/                     # This repository's own Atlas page and map, written by `atlas map`
 ├── site/                      # Astro Starlight handbook → dogfood-lab.github.io/testing-os/handbook/
 ├── swarms/                    # Swarm-run artifacts + control-plane.db
 ├── indexes/                   # Generated read API: latest-by-repo.json, failing.json, stale.json, trends.json, badges/ (shields.io endpoints)
@@ -96,7 +99,7 @@ testing-os/
 ├── docs/                      # Contract docs + architecture notes
 ├── examples/                  # Copy-paste consumer starter kit (dogfood.yml + scenario + policy)
 ├── scripts/                   # Repo-level utilities (sync-version, build)
-└── .github/workflows/         # ci.yml, ingest.yml, pages.yml, release.yml, self-dogfood.yml
+└── .github/workflows/         # ci.yml, ingest.yml, pages.yml, release.yml, self-dogfood.yml, atlas-render.yml
 ```
 
 ## Local Development
@@ -116,7 +119,7 @@ Requires Node ≥ 22. CI matrix runs Node 22 + 24 on `ubuntu-latest`; locally va
 
 ## Versioning
 
-All `@dogfood-lab/*` packages bump together — one number across the monorepo. Six packages publish to npm under `@dogfood-lab` at v1.12.0 in lockstep (`schemas`, `verify`, `report`, `ingest`, `findings`, `dogfood-swarm`); the seventh, `@dogfood-lab/portfolio`, stays internal. The version line near the top of this README is auto-stamped from `package.json` via [`scripts/sync-version.mjs`](scripts/sync-version.mjs) on every `npm run build`.
+All `@dogfood-lab/*` packages bump together — one number across the monorepo. Seven packages publish to npm under `@dogfood-lab` at v1.13.0 in lockstep (`schemas`, `verify`, `report`, `ingest`, `findings`, `dogfood-swarm`, `atlas`); the eighth, `@dogfood-lab/portfolio`, stays internal. The version line near the top of this README is auto-stamped from `package.json` via [`scripts/sync-version.mjs`](scripts/sync-version.mjs) on every `npm run build`.
 
 ## License
 
