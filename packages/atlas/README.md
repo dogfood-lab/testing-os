@@ -10,6 +10,7 @@ The page is for anyone who has to understand a repository they did not write: a 
 npx --yes @dogfood-lab/atlas init
 npx --yes @dogfood-lab/atlas map
 npx --yes @dogfood-lab/atlas check
+npx --yes @dogfood-lab/atlas explain <path>
 ```
 
 `init` proposes `atlas/boundaries.yaml`: the named parts of the repository and the globs that own them. Edit the names and globs if the proposal is wrong. The one line a person may add is `summary`.
@@ -24,6 +25,8 @@ npx --yes @dogfood-lab/atlas check
 | `statistics.json` | What changes together over the last 180 days, dated. |
 
 `check` compares the committed map with the working tree and fails when a part gains or loses a dependency, a file changes part, a new file belongs to no part, a named part matches nothing, or a file belongs to two parts. Run it in the test job so the map moves with the code. A repository with no `atlas/` directory is a notice and exit 0, so adopting Atlas reddens nothing.
+
+`explain` says what one file is in the system, for a person about to edit it or an agent in a coding session: its part, the door that runs it or passes through its part, what its part imports and who imports it, where it writes and who reads that, the order of work inside it, and what it changes with. It reads the committed map and never maps again, so it answers at once and names the commit it answers from. `--json` prints the same facts for a machine.
 
 ## What it reads
 

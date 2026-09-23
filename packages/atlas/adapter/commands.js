@@ -7,6 +7,7 @@ import { ignoredNotice, readBoundaryFile } from './boundary-file.js';
 import { changesSince } from './changes.js';
 import { compareArtifacts } from './check.js';
 import { formatFailure } from './errors.js';
+import { explainCommand } from './explain.js';
 import { initCommand } from './init.js';
 import { buildEnvelope, hitsFromStatistics } from './divergence.js';
 import { buildPage } from './page.js';
@@ -17,7 +18,8 @@ export function main(argv, cwd) {
   if (argv[0] === 'init') return initAt(cwd, argv.slice(1));
   if (argv[0] === 'map') return mapCommand(cwd, argv.slice(1));
   if (argv[0] === 'check') return checkCommand(cwd);
-  process.stdout.write('atlas: expected atlas init, atlas map, or atlas check\nexit 2\n');
+  if (argv[0] === 'explain') return explainAt(cwd, argv.slice(1));
+  process.stdout.write('atlas: expected atlas init, atlas map, atlas check, or atlas explain\nexit 2\n');
   return 2;
 }
 
@@ -33,6 +35,14 @@ function initAt(cwd, argv) {
   const repo = repoRoot(cwd);
   if (!repo) return usage('atlas: not a git repository');
   return initCommand(repo, argv);
+}
+
+// Explain reads only the committed artifacts, so it needs the root to find
+// them and the caller's place inside the tree to read a path the way they wrote it.
+function explainAt(cwd, argv) {
+  const repo = repoRoot(cwd);
+  if (!repo) return usage('atlas: not a git repository');
+  return explainCommand(repo, showPrefix(cwd), argv);
 }
 
 export function mapCommand(cwd, argv = []) {
@@ -240,6 +250,11 @@ function repoRoot(cwd) {
   const result = spawnSync('git', ['rev-parse', '--show-toplevel'], { cwd, encoding: 'utf8' });
   if (result.status !== 0) return null;
   return result.stdout.trim();
+}
+
+function showPrefix(cwd) {
+  const result = spawnSync('git', ['rev-parse', '--show-prefix'], { cwd, encoding: 'utf8' });
+  return result.status === 0 ? result.stdout.trim() : '';
 }
 
 function head(repo) {
