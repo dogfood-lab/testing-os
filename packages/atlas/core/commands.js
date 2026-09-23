@@ -100,8 +100,12 @@ const VALUE_SETS = Object.fromEntries(Object.entries(VALUES).map(([tool, flags])
 /**
  * The tracked files and directories a repository holds, the files each
  * directory holds, and the package manifests, read once per map.
+ *
+ * builtFrom, when given, is the tracked source a path a build emits is
+ * compiled from (core/resolve.js resolveDeclaredPath), or null: a command
+ * that runs dist/cli.js runs the CLI src/cli.ts is built into.
  */
-export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [] }) {
+export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null }) {
   const dirs = new Set(['']);
   // The commands the repository installs, by the name a step types.
   const installed = new Map();
@@ -119,6 +123,7 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
     dirs,
     spawned,
     installed,
+    builtFrom,
     text(path) {
       if (!tracked.has(path)) return null;
       if (!texts.has(path)) {
@@ -357,8 +362,10 @@ function makeReader(repo, runs, mentions) {
   // A tracked file the command executes; a directory when the tool accepts
   // one. Returns the path when it was a run.
   function file(token, dir, frame, { directories = false, script = false, args = [] } = {}) {
-    const path = pathFrom(dir, token);
-    if (path == null) return null;
+    const named = pathFrom(dir, token);
+    if (named == null) return null;
+    // A build output is not tracked; what runs when it runs is its source.
+    const path = repo.tracked.has(named) ? named : repo.builtFrom(named) ?? named;
     if (repo.tracked.has(path)) {
       const passes = script ? flagsOf(args) : [];
       record(stamp({ path, ...(passes.length > 0 ? { passes } : {}) }, frame));
@@ -429,7 +436,7 @@ function makeReader(repo, runs, mentions) {
     const tool = toolOf(argv[0]);
     if (tool == null) {
       const path = pathFrom(dir, argv[0]);
-      if (path != null && repo.tracked.has(path)) file(argv[0], dir, frame, { script: true, args: argv.slice(1) });
+      if (path != null && (repo.tracked.has(path) || repo.builtFrom(path) != null)) file(argv[0], dir, frame, { script: true, args: argv.slice(1) });
       return false;
     }
     handlers[tool](argv, dir, CHECKERS.has(tool) ? { ...frame, runKind: 'checks' } : frame);

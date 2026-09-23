@@ -34,12 +34,13 @@ const ACTION_SENDS = [
  * A workflow that does not parse is still a door; it is recorded as such and
  * the rest of the map is unaffected.
  *
- * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]> }} input
+ * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, builtFrom?: (path: string) => string|null }} input
  *   spawned holds, per JavaScript or TypeScript file, the command lines it
- *   hands to a child process (core/spawned.js)
+ *   hands to a child process (core/spawned.js); builtFrom is the source a
+ *   build output is compiled from
  */
-export function mapDoors({ repoPath, tracked, spawned, commands = [] }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands });
+export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom });
   return [...tracked]
     .filter(isWorkflow)
     .sort()
@@ -59,8 +60,8 @@ export function mapDoors({ repoPath, tracked, spawned, commands = [] }) {
  *
  * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, commands: Array<{ kind: string, name: string, manifest: string, path: string }> }} input
  */
-export function mapCommandDoors({ repoPath, tracked, spawned, commands }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands });
+export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom });
   return commands.map((command) => {
     const recorded = recordedRuns(command.path == null ? [] : [...readProgram(command.path, repo).values()]);
     return {

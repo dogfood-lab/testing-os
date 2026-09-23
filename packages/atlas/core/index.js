@@ -11,7 +11,7 @@ import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-poin
 import { astLandings, attachLandings, isTestFile, noLandings, pythonPathValues, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
-import { attachResolution } from './resolve.js';
+import { attachResolution, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { spawnedCommands } from './spawned.js';
 
@@ -129,12 +129,13 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     tracked: tracked.regular,
   });
 
+  const builtFrom = (path) => (trackedSet.has(path) ? null : resolveDeclaredPath(repoPath, path, trackedSet));
   const doors = [
-    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands }),
-    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands }),
+    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom }),
+    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom }),
   ];
   const graph = importGraph(boundaryList, unassigned, overlaps);
-  attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned }));
+  attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom }));
   for (const door of doors) {
     if (door.parseError) continue;
     // A checker reaches the code it reads, so the reach is walked from every
