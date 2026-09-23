@@ -389,6 +389,17 @@ test('a method is named with the class it is called on, and parts read as "the t
   assert.ok(plain(html).includes('changed together in 3 of 4 commits, and the repository root imports the backpropagate part.'));
 });
 
+test('the hand-authored sentence names a root-level part as the markdown does', () => {
+  const fixture = { ...page, authored: ['docs/', 'root'], partLabels: { ...page.partLabels, root: 'the repository root' } };
+  const text = plain(render.renderPage(fixture, { repo: page.repo }));
+  assert.ok(text.includes('People write docs/ and the repository root. Nothing in this repository writes to them.'), text.slice(text.indexOf('People write'), text.indexOf('People write') + 120));
+  // And the live sentence, whatever it lists today, is the committed one.
+  const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8');
+  const committed = markdown.split(/\r?\n/).find((line) => line.startsWith('People write '));
+  assert.ok(committed, 'the committed page has a hand-authored sentence');
+  assert.ok(plain(render.renderPage(page, { repo: page.repo })).includes(committed), committed);
+});
+
 test('with nothing written, the never-read section says so rather than that every place is read', () => {
   const html = render.renderPage({ ...page, unread: [], unreadNote: [], written: 0 }, { repo: page.repo });
   assert.ok(html.includes('<h2>Written but never read</h2>\n<p>No place this map can see is written, so none goes unread.</p></section>'));

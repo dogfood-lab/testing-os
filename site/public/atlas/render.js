@@ -592,8 +592,12 @@ function generatedSection(ctx) {
 
 function authoredSection(ctx) {
   const places = arr(ctx.page.authored);
+  // A place is a directory the part owns, or the id of a part that owns no
+  // single directory, such as the root-level files, named as the markdown
+  // names it.
+  const shown = (place) => (looksLikePath(place) ? pathHtml(ctx, place) : esc(ctx.name(place)));
   const body = places.length > 0
-    ? p(`People write ${list(places.map((place) => pathHtml(ctx, place)))}. Nothing in this repository writes to them.`)
+    ? p(`People write ${list(places.map(shown))}. Nothing in this repository writes to them.`)
     : p('No configuration or documentation part is left to people alone.');
   return section('Hand-authored', body);
 }
