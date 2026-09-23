@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
-import { mapDoors } from './doors.js';
-import { deriveEntryPoints, pythonScripts } from './entry-points.js';
+import { mapCommandDoors, mapDoors } from './doors.js';
+import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
 import { astLandings, attachLandings, isTestFile, noLandings, pythonPathValues, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
@@ -108,10 +108,11 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const trackedSet = new Set(tracked.regular);
   const boundaryList = [...byName.values()];
   const scripts = pythonScripts(repoPath, trackedSet);
+  const commands = manifestCommands(repoPath, trackedSet, scripts);
   for (const boundary of boundaryList) {
     boundary.files.sort(byPath);
     boundary.parseErrors = boundary.files.filter((file) => file.parseError).length;
-    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts });
+    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts, commands });
   }
   unassigned.sort(byPath);
   overlaps.sort(byPath);
@@ -126,7 +127,10 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     tracked: tracked.regular,
   });
 
-  const doors = mapDoors({ repoPath, tracked: trackedSet, spawned });
+  const doors = [
+    ...mapDoors({ repoPath, tracked: trackedSet, spawned }),
+    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands }),
+  ];
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned }));
   for (const door of doors) {

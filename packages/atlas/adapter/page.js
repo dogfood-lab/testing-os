@@ -149,7 +149,7 @@ function facts({ structure, statistics }) {
     shown: (name) => (Object.hasOwn(partLabels, name) ? partLabels[name] : name),
     partsUnder,
     place: (target) => (isDir(target) ? `${target}/` : target),
-    doors: orderDoors(structure.doors ?? []),
+    doors: orderDoors(markSharedNames(structure.doors ?? [])),
     // A weak landing is a bare file name under a root the engine could not
     // read; it stays in the artifact, and the page states nothing from it. A
     // landing that spans parts (packages/ above every package) is where the
@@ -177,7 +177,7 @@ function scheduleOnly(door) {
   return events.includes('schedule') && events.every((event) => event === 'schedule' || event === 'workflow_dispatch');
 }
 
-export function orderDoors(doors) {
+function byReach(doors) {
   return [...doors].sort((a, b) => (
     reachSize(b) - reachSize(a)
     || Number(scheduleOnly(a)) - Number(scheduleOnly(b))
@@ -186,12 +186,59 @@ export function orderDoors(doors) {
   ));
 }
 
+/**
+ * A door that a manifest installs (a command people run, or the package they
+ * import) rather than a workflow the repository starts.
+ *
+ * @param {{ kind?: string }} door
+ */
+export function installed(door) {
+  return door.kind === 'command' || door.kind === 'package';
+}
+
+/**
+ * The key a door is told apart by. A workflow is its file; one manifest can
+ * install several commands, so an installed door is its manifest and name.
+ *
+ * @param {{ file: string, name: string, kind?: string }} door
+ */
+export function doorKey(door) {
+  return installed(door) ? `${door.file}#${door.name}` : door.file;
+}
+
+// Workflows first, widest first; the commands a manifest installs after them,
+// since nothing in the repository starts those. The busiest door keeps its
+// place among the workflows whatever its kind, since the page follows it.
+export function orderDoors(doors) {
+  const ranked = byReach(doors);
+  const main = mainDoor(doors);
+  return [...ranked.filter((door) => !installed(door) || door === main), ...ranked.filter((door) => installed(door) && door !== main)];
+}
+
+// What the page calls an installed door, and the verb for what it starts.
+function installedAs(door) {
+  const what = door.kind === 'package' ? 'the package people import' : 'a command people run';
+  return door.sharedName ? `${what}, from ${door.file}` : what;
+}
+
+// backpropagate installs a command of one name from package.json and from
+// pyproject.toml; each is named with its manifest so the two read apart.
+function markSharedNames(doors) {
+  const counts = new Map();
+  for (const door of doors) if (installed(door)) counts.set(door.name, (counts.get(door.name) ?? 0) + 1);
+  return doors.map((door) => (installed(door) && counts.get(door.name) > 1 ? { ...door, sharedName: true } : door));
+}
+
+function startVerb(door) {
+  return door.kind === 'package' ? 'loads' : 'runs';
+}
+
 function commits(door) {
   return (door.stages ?? []).length > 0;
 }
 
 function reaching(doors) {
-  return orderDoors(doors).filter((door) => !door.parseError && reachSize(door) > 0);
+  return byReach(doors).filter((door) => !door.parseError && reachSize(door) > 0);
 }
 
 /**
@@ -322,6 +369,7 @@ export function triggerPhrases(door) {
 
 // What the page calls one pass through the main door, for "follow one ... end to end".
 function triggerNoun(door) {
+  if (installed(door)) return door.kind === 'package' ? `import of ${door.name}` : `run of ${door.name}`;
   const first = (door.triggers ?? []).find((trigger) => trigger.event !== 'workflow_dispatch') ?? door.triggers?.[0];
   if (!first) return 'run';
   if (first.event === 'repository_dispatch' && first.types?.length > 0) return first.types[0].replace(/[_-]+/g, ' ');
@@ -403,9 +451,11 @@ function comesIn(ctx) {
   const lines = ['## What comes in'];
   const items = ctx.doors.map((door, index) => {
     if (door.parseError) return `${index + 1}. **${door.name}.** This workflow could not be read.`;
-    const when = capitalize(triggerPhrases(door).join('; ')) || 'Nothing this map can read starts it';
     const paths = shownRuns(door);
-    const runs = paths.length > 0 ? `Runs ${runsShown(paths, runTotal(door))}.` : 'Runs no file this map can see.';
+    const verb = capitalize(startVerb(door));
+    const runs = paths.length > 0 ? `${verb} ${runsShown(paths, runTotal(door))}.` : `${verb} no file this map can see.`;
+    if (installed(door)) return `${index + 1}. **${door.name}** (${installedAs(door)}). ${runs}`;
+    const when = capitalize(triggerPhrases(door).join('; ')) || 'Nothing this map can read starts it';
     return `${index + 1}. **${door.name}.** ${when}. ${runs}`;
   });
   lines.push(items.join('\n'));
@@ -490,7 +540,8 @@ function writes(ctx, door) {
 function doorSteps(ctx, door) {
   const steps = [];
   const paths = shownRuns(door);
-  steps.push(paths.length > 0 ? `The workflow runs ${runGroups(ctx, door)}.` : 'The workflow runs no file this map can see.');
+  const subject = installed(door) ? `The ${door.kind} ${startVerb(door)}` : 'The workflow runs';
+  steps.push(paths.length > 0 ? `${subject} ${runGroups(ctx, door)}.` : `${subject} no file this map can see.`);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   const places = writes(ctx, door);
   if (places.length > 0) steps.push(`It writes to ${list(places)}.`);
@@ -759,7 +810,8 @@ function otherDoors(ctx, main) {
     if (door.parseError) return `**${door.name}.** This workflow could not be read.`;
     const clauses = [];
     const paths = shownRuns(door);
-    clauses.push(paths.length > 0 ? `runs ${runsShown(paths, runTotal(door))}` : 'runs no file this map can see');
+    const verb = startVerb(door);
+    clauses.push(paths.length > 0 ? `${verb} ${runsShown(paths, runTotal(door))}` : `${verb} no file this map can see`);
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => entry.boundary)))].sort(cmp);
     if (reached.length > 0) clauses.push(`reaches ${list(reached.map(ctx.shown))}`);
     const places = writes(ctx, door);
@@ -767,7 +819,8 @@ function otherDoors(ctx, main) {
     const stages = door.stages ?? [];
     if (stages.length > 0) clauses.push(`commits ${commitsClause(door)}`);
     clauses.push(...sendPhrases(door));
-    return `**${door.name}** ${clauseList(clauses)}.`;
+    const named = installed(door) ? `**${door.name}** (${installedAs(door)})` : `**${door.name}**`;
+    return `${named} ${clauseList(clauses)}.`;
   });
   return ['## The other doors', paragraphs.join('\n\n')].join('\n\n');
 }
@@ -1441,9 +1494,11 @@ function derivedLine(ctx, main) {
 }
 
 function doorData(ctx, door) {
-  if (door.parseError) return { file: door.file, name: door.name, parseError: true };
+  if (door.parseError) return { file: door.file, id: doorKey(door), name: door.name, parseError: true };
   return {
     file: door.file,
+    id: doorKey(door),
+    ...(installed(door) ? { kind: door.kind } : {}),
     landings: writes(ctx, door),
     name: door.name,
     pushes: door.pushes === true,
@@ -1530,7 +1585,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     generated: generatedItems.map((item) => ({ place: item.place, writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
-    mainDoor: main ? main.file : null,
+    mainDoor: main ? doorKey(main) : null,
     partLabels: ctx.partLabels,
     parts: ctx.boundaries.length,
     readers: groups.map((group) => ({ readers: worded(group.readers, id), target: group.target })),

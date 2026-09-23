@@ -1,5 +1,5 @@
 import { unassignedDrift } from './check.js';
-import { capitalize, count, displayName, list, mainDoor, runsShown, triggerPhrases, words } from './page.js';
+import { capitalize, count, displayName, doorKey, installed, list, mainDoor, runsShown, triggerPhrases, words } from './page.js';
 
 /**
  * What changed since the last committed map, as structural facts in fixed
@@ -228,24 +228,38 @@ function bare(triggers) {
   return triggerPhrases({ triggers }).map((phrase) => phrase.replace(/^or by hand$/, 'by hand')).join('; ');
 }
 
+// What a door is called when it appears or goes: a workflow is a door, and
+// a manifest's entry is the command or the package it installs.
+function doorNoun(door) {
+  if (!installed(door)) return 'door';
+  return door.kind === 'package' ? 'package' : 'command';
+}
+
+function newDoorSentence(door, file) {
+  if (door.parseError) return `${door.name} (${file}) is a new door; its workflow could not be read.`;
+  if (installed(door)) {
+    const paths = runPaths(door);
+    const verb = door.kind === 'package' ? 'loads' : 'runs';
+    return `${door.name} (${file}) is a new ${doorNoun(door)}. ${paths.length > 0 ? `It ${verb} ${runsShown(paths)}.` : `It ${verb} no file this map can see.`}`;
+  }
+  return `${door.name} (${file}) is a new door. It starts ${startsPhrase(door)}. ${runsSentence(runPaths(door))}`;
+}
+
 function doorItems(previous, current) {
-  const old = new Map((previous.doors ?? []).map((door) => [door.file, door]));
-  const now = new Map((current.doors ?? []).map((door) => [door.file, door]));
-  const files = [...new Set([...old.keys(), ...now.keys()])].sort(cmp);
+  const old = new Map((previous.doors ?? []).map((door) => [doorKey(door), door]));
+  const now = new Map((current.doors ?? []).map((door) => [doorKey(door), door]));
+  const keys = [...new Set([...old.keys(), ...now.keys()])].sort(cmp);
   const items = [];
-  for (const file of files) {
-    const was = old.get(file);
-    const is = now.get(file);
+  for (const key of keys) {
+    const was = old.get(key);
+    const is = now.get(key);
+    const file = (is ?? was).file;
     if (!was) {
-      const subjects = [file, ...(is.parseError ? [] : runPaths(is))];
-      const sentence = is.parseError
-        ? `${is.name} (${file}) is a new door; its workflow could not be read.`
-        : `${is.name} (${file}) is a new door. It starts ${startsPhrase(is)}. ${runsSentence(runPaths(is))}`;
-      items.push({ kind: 'door', sentence, subjects });
+      items.push({ kind: 'door', sentence: newDoorSentence(is, file), subjects: [file, ...(is.parseError ? [] : runPaths(is))] });
       continue;
     }
     if (!is) {
-      items.push({ kind: 'door', sentence: `${was.name} (${file}) is no longer a door.`, subjects: [file] });
+      items.push({ kind: 'door', sentence: `${was.name} (${file}) is no longer a ${doorNoun(was)}.`, subjects: [file] });
       continue;
     }
     if (is.parseError || was.parseError) {

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join, posix } from 'node:path';
 import { parse } from 'yaml';
-import { better, cleanDir, commandLines, readCommands, repositoryView, RUNS_RECORDED } from './commands.js';
+import { better, cleanDir, commandLines, readCommands, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 
 const WORKFLOW = /^\.github\/workflows\/[^/]+\.ya?ml$/;
 const TRIGGER_LISTS = ['paths', 'branches', 'tags', 'types', 'workflows'];
@@ -44,6 +44,50 @@ export function mapDoors({ repoPath, tracked, spawned }) {
     .filter(isWorkflow)
     .sort()
     .map((file) => readDoor(repoPath, file, repo));
+}
+
+/**
+ * The commands and the package a repository installs for people (core/
+ * entry-points.js manifestCommands), each as a door of kind command or
+ * package. Nothing in the repository starts one, so it has no trigger, and it
+ * stages and sends nothing; it runs the file its manifest declares, and what
+ * that file hands a child process, and its reach is walked from those like any
+ * door's. `file` is the manifest that declares it; a manifest can declare
+ * several, so a door is told apart by its file and its name together.
+ *
+ * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, commands: Array<{ kind: string, name: string, manifest: string, path: string }> }} input
+ */
+export function mapCommandDoors({ repoPath, tracked, spawned, commands }) {
+  const repo = repositoryView({ repoPath, tracked, spawned });
+  return commands.map((command) => {
+    const recorded = recordedRuns([...readProgram(command.path, repo).values()]);
+    return {
+      kind: command.kind,
+      file: command.manifest,
+      name: command.name,
+      triggers: [],
+      permissions: [],
+      secrets: [],
+      usesWorkflowToken: false,
+      commands: [],
+      runs: recorded.kept,
+      runsCount: recorded.count,
+      mentions: [],
+      stages: [],
+      pushes: false,
+      sends: {
+        dispatchesTo: [],
+        publishes: false,
+        publishesTo: [],
+        releases: false,
+        deploysPages: false,
+        opensIssues: false,
+        opensIssuesOnFailure: false,
+        opensPullRequests: false,
+      },
+      uses: [],
+    };
+  });
 }
 
 export function isWorkflow(path) {

@@ -150,8 +150,10 @@ function cmp(a, b) {
 function context(page, options = {}) {
   const repo = isRepo(options.repo) ? options.repo : isRepo(page?.repo) ? page.repo : null;
   const commit = COMMIT.test(str(page?.commit)) ? str(page.commit) : null;
-  const doors = arr(page?.doors).filter((door) => door && typeof door === 'object');
-  const main = doors.find((door) => !door.parseError && door.file === page?.mainDoor) ?? null;
+  const doors = sharedNames(arr(page?.doors).filter((door) => door && typeof door === 'object'));
+  // mainDoor is the door's id, its file for a workflow; a page.json written
+  // before ids existed carries only the file, which is the id of a workflow.
+  const main = doors.find((door) => !door.parseError && str(door.id ?? door.file) === str(page?.mainDoor)) ?? null;
   const labels = page?.partLabels && typeof page.partLabels === 'object' && !Array.isArray(page.partLabels) ? page.partLabels : {};
   const name = (id, fallback = null) => partLabel(labels, id, fallback);
   return { page: page ?? {}, repo, commit, doors, main, labels, name, history: options.history ?? null };
@@ -177,6 +179,29 @@ function wordedName(ctx, text) {
   const match = /^(.+) \((\d+ (?:\S+ )?files)\)$/.exec(value);
   if (!match || !Object.hasOwn(ctx.labels, match[1])) return value;
   return `${ctx.name(match[1])} (${match[2]})`;
+}
+
+// A door a manifest installs, a command people run or the package they
+// import, has no trigger; page.js names what it is instead.
+function installed(door) {
+  return door?.kind === 'command' || door?.kind === 'package';
+}
+
+function installedAs(door) {
+  const what = door.kind === 'package' ? 'the package people import' : 'a command people run';
+  return door.sharedName ? `${what}, from ${esc(door.file)}` : what;
+}
+
+// Two commands of one name from two manifests are each named with the
+// manifest that installs it, as page.js names them.
+function sharedNames(doors) {
+  const counts = new Map();
+  for (const door of doors) if (installed(door)) counts.set(str(door.name), (counts.get(str(door.name)) ?? 0) + 1);
+  return doors.map((door) => (installed(door) && counts.get(str(door.name)) > 1 ? { ...door, sharedName: true } : door));
+}
+
+function startVerb(door) {
+  return door?.kind === 'package' ? 'loads' : 'runs';
 }
 
 function runs(ctx, door) {
@@ -328,9 +353,11 @@ function comesIn(ctx) {
   const items = ctx.doors.map((door) => {
     const name = `<strong>${esc(door.name)}.</strong>`;
     if (door.parseError) return `${name} This workflow could not be read.`;
-    const when = capitalize(arr(door.triggers).map(str).join('; ')) || 'Nothing this map can read starts it';
     const paths = runs(ctx, door);
-    const ran = paths.length > 0 ? `Runs ${runsShown(paths, runTotal(door, paths))}.` : 'Runs no file this map can see.';
+    const verb = capitalize(startVerb(door));
+    const ran = paths.length > 0 ? `${verb} ${runsShown(paths, runTotal(door, paths))}.` : `${verb} no file this map can see.`;
+    if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
+    const when = capitalize(arr(door.triggers).map(str).join('; ')) || 'Nothing this map can read starts it';
     return `${name} ${inline(when)}. ${ran}`;
   });
   return section('What comes in', ol(items));
@@ -343,9 +370,10 @@ function comesIn(ctx) {
 function doorSteps(ctx, door) {
   const steps = [];
   const paths = runs(ctx, door);
+  const subject = installed(door) ? `The ${door.kind} ${startVerb(door)}` : 'The workflow runs';
   steps.push(paths.length > 0
-    ? `The workflow runs ${runsShown(paths, runTotal(door, paths))}.`
-    : 'The workflow runs no file this map can see.');
+    ? `${subject} ${runsShown(paths, runTotal(door, paths))}.`
+    : `${subject} no file this map can see.`);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
   if (arr(door.stages).length > 0) steps.push(`It commits ${commitsClause(ctx, door)}.`);
@@ -440,9 +468,10 @@ function otherDoors(ctx) {
     if (door.parseError) return p(`<strong>${esc(door.name)}.</strong> This workflow could not be read.`);
     const clauses = [];
     const paths = runs(ctx, door);
+    const verb = startVerb(door);
     clauses.push(paths.length > 0
-      ? { html: `runs ${runsShown(paths, runTotal(door, paths))}`, text: `runs ${runsShownText(paths, runTotal(door, paths))}` }
-      : { html: 'runs no file this map can see', text: 'runs no file this map can see' });
+      ? { html: `${verb} ${runsShown(paths, runTotal(door, paths))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths))}` }
+      : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => str(entry.boundary))))].sort(cmp).map((part) => ctx.name(part));
     if (reached.length > 0) clauses.push({ html: `reaches ${list(reached.map(esc))}`, text: `reaches ${list(reached)}` });
     const landings = arr(door.landings).map(str);
@@ -453,7 +482,8 @@ function otherDoors(ctx) {
       clauses.push({ html: `commits ${commitsClause(ctx, door)}`, text: `commits ${text}` });
     }
     for (const send of arr(door.sends)) clauses.push({ html: inline(send), text: str(send) });
-    return p(`<strong>${esc(door.name)}</strong> ${clauseList(clauses)}.`);
+    const named = installed(door) ? `<strong>${esc(door.name)}</strong> (${installedAs(door)})` : `<strong>${esc(door.name)}</strong>`;
+    return p(`${named} ${clauseList(clauses)}.`);
   });
   return section('The other doors', paragraphs.join('\n'));
 }
@@ -605,6 +635,7 @@ function authoredSection(ctx) {
 // page.json keeps the trigger as the sentence page.js wrote, so the noun for
 // "follow one ... end to end" is read back from that sentence's fixed forms.
 export function triggerNoun(door) {
+  if (installed(door)) return door.kind === 'package' ? `import of ${str(door.name)}` : `run of ${str(door.name)}`;
   const phrases = arr(door?.triggers).map(str);
   const first = phrases.find((phrase) => phrase !== 'by hand' && phrase !== 'or by hand') ?? phrases[0];
   if (!first) return 'run';

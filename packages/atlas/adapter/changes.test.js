@@ -302,6 +302,20 @@ describe('compareStructures', () => {
     assert.deepEqual(fileCounts(previous, current), { added: 0, changed: 0, moved: 1, parts: 2, removed: 0 });
   });
 
+  it('tells two commands of one manifest apart, and calls a new one a command, not a door that starts on nothing', () => {
+    const command = (name, path) => ({ file: 'package.json', kind: 'command', name, reach: [], runs: [{ path }], triggers: [] });
+    const previous = structure({ doors: [command('tool', 'bin/tool.mjs')] });
+    const current = structure({ doors: [command('tool', 'bin/tool.mjs'), command('tool-admin', 'bin/admin.mjs')] });
+    assert.deepEqual(sentences(compareStructures(previous, current)), [
+      'tool-admin (package.json) is a new command. It runs bin/admin.mjs.',
+      'No file changed.',
+    ]);
+    assert.deepEqual(sentences(compareStructures(current, previous)), [
+      'tool-admin (package.json) is no longer a command.',
+      'No file changed.',
+    ]);
+  });
+
   it('says first when there is no committed structure', () => {
     assert.deepEqual(changesSince(null, structure()), { first: true });
   });

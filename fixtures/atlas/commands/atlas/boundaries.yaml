@@ -1,0 +1,30 @@
+summary: ""
+boundaries:
+  - name: .github
+    globs:
+      - .github/**
+    role: config
+  - name: acmepy
+    globs:
+      - acmepy/**
+    role: code
+  - name: bin
+    globs:
+      - bin/**
+    role: code
+  - name: kit
+    globs:
+      - packages/kit/**
+    role: code
+  - name: lib
+    globs:
+      - lib/**
+    role: code
+  - name: root
+    globs:
+      - "*"
+    role: config
+  - name: tests
+    globs:
+      - tests/**
+    role: test

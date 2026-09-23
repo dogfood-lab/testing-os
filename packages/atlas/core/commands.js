@@ -215,6 +215,19 @@ export function readCommands(text, dir, repo) {
   return { runs, mentions };
 }
 
+/**
+ * What running one tracked program starts: the file itself, and the commands
+ * it spells out for a child process, read as a script a workflow runs by name
+ * is read. A person runs it from wherever they are, so what it names is taken
+ * from the repository root, as the commands a test spawns are.
+ */
+export function readProgram(path, repo) {
+  const runs = new Map();
+  const reader = makeReader(repo, runs, new Set());
+  reader.program(path, { level: 0, via: null, active: new Set() });
+  return runs;
+}
+
 // Of two ways a path is reached, the one the command spells wins: no via
 // before a via, a named file before a matched one.
 export function better(a, b) {
@@ -747,7 +760,7 @@ function makeReader(repo, runs, mentions) {
     none() {},
   };
 
-  return { read };
+  return { read, program: (path, frame) => file(path, '', frame, { script: true }) };
 }
 
 function baseName(word) {
@@ -1035,7 +1048,7 @@ function workspaceDir(repo, value, prefix) {
   return asPath != null && workspaceMembers(repo).has(asPath) ? asPath : null;
 }
 
-function workspaceGlobs(pkg) {
+export function workspaceGlobs(pkg) {
   const workspaces = pkg?.workspaces;
   const list = Array.isArray(workspaces) ? workspaces : Array.isArray(workspaces?.packages) ? workspaces.packages : [];
   return list.filter((glob) => typeof glob === 'string').map((glob) => glob.replace(/^\.\//, '').replace(/\/+$/, ''));

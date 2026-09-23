@@ -1,7 +1,8 @@
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
 import { roleFor } from './templates.js';
 
-const byPath = (a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
+const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+const byPath = (a, b) => cmp(a.path, b.path);
 
 // The artifact describes the tree minus atlas/. Every list below, and every
 // count, is over that set. The directory cannot record a stable hash of
@@ -150,7 +151,9 @@ export function buildArtifact(mapped, commit) {
   const tracked = boundaries.reduce((sum, boundary) => sum + boundary.files.length, 0) + overlaps.length + unassigned.length;
   return {
     boundaries,
-    doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => (a.file < b.file ? -1 : a.file > b.file ? 1 : 0)),
+    // One manifest can declare several commands, so a door sorts by its file
+    // and then its name.
+    doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => cmp(a.file, b.file) || cmp(a.name, b.name) || cmp(a.kind ?? '', b.kind ?? '')),
     edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to, ...(edge.fromTests ? { fromTests: true } : {}) })),
     generatedFrom: { commit, tracked },
     landings: carryLandings(mapped.landings ?? []),
@@ -271,9 +274,12 @@ function carryRun(run) {
 // Every list a door carries arrives sorted from the core, except commands,
 // whose order is the workflow's own. Copying field by field keeps the
 // artifact's shape the one written here rather than whatever the core adds.
+// A workflow carries no kind, so an artifact written before commands were
+// doors reads the same.
 function carryDoor(door) {
   if (door.parseError) return { file: door.file, name: door.name, parseError: true };
   return {
+    ...(door.kind ? { kind: door.kind } : {}),
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
     file: door.file,
     landings: door.landings.filter((target) => !inAtlas(target)),

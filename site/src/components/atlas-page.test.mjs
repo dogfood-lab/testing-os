@@ -416,6 +416,34 @@ test('a page.json without sequences renders the section as before', () => {
   assert.equal(happensSection(render.renderPage({ ...page, sequences: [] }, { repo: page.repo })), section, 'an empty list is the same as none');
 });
 
+test('a command a manifest installs reads as one people run, and is followed by its id when it is the main door', () => {
+  const tool = {
+    file: 'package.json',
+    id: 'package.json#tool',
+    kind: 'command',
+    landings: [],
+    name: 'tool',
+    pushes: false,
+    reach: [{ boundary: 'atlas', depth: 0, files: 1 }],
+    runs: ['bin/tool.mjs'],
+    runsCount: 1,
+    sends: [],
+    stages: [],
+    triggers: [],
+  };
+  const text = plain(render.renderPage({ ...page, doors: [...page.doors, tool] }, { repo: page.repo }));
+  assert.ok(text.includes('tool (a command people run). Runs bin/tool.mjs.'), 'what comes in');
+  assert.ok(text.includes('tool (a command people run) runs bin/tool.mjs.'), 'the other doors');
+  const twin = { ...tool, file: 'pyproject.toml', id: 'pyproject.toml#tool', runs: ['tool/cli.py'] };
+  const both = plain(render.renderPage({ ...page, doors: [...page.doors, tool, twin] }, { repo: page.repo }));
+  assert.ok(both.includes('tool (a command people run, from package.json). Runs bin/tool.mjs.'), 'one name, two manifests');
+  assert.ok(both.includes('tool (a command people run, from pyproject.toml). Runs tool/cli.py.'), 'one name, two manifests');
+  const followed = plain(render.renderPage({ ...page, doors: [tool], mainDoor: tool.id, sequences: [] }, { repo: page.repo }));
+  assert.ok(followed.includes('What happens through tool'), 'the command is the main door by its id');
+  assert.ok(followed.includes('The command runs bin/tool.mjs.'));
+  assert.ok(followed.includes('Read those in order to follow one run of tool end to end.'));
+});
+
 test('file paths link to the blob at the mapped commit, places to the tree', () => {
   const html = render.renderPage(page, { repo: page.repo });
   const blob = `https://github.com/dogfood-lab/testing-os/blob/${page.commit}/`;

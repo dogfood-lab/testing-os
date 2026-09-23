@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import picomatch from 'picomatch';
+import { workspaceGlobs } from './commands.js';
+import { isTestMaterial } from './landings.js';
 import { declaredScripts } from './python-manifest.js';
 import { resolveDeclaredPath, resolvePythonModule } from './resolve.js';
 
@@ -14,20 +16,24 @@ const FALLBACKS = [
 /**
  * Entry points are structural. The root is the shallowest directory shared by
  * the globs, so a boundary that covers several packages is not given one of
- * them at random. A console script a pyproject.toml installs is an entry of
- * whichever boundary holds its module. An entry is always one of the
- * boundary's own files: a root package.json whose bin lives in bin/ gives a
- * boundary of top-level files no entry, since bin/ is not in it.
+ * them at random. A console script a pyproject.toml installs, and a file a
+ * manifest declares as a command or as its package's main, is an entry of
+ * whichever boundary holds it, so bin/ is the entry part of a root
+ * package.json whose bin lives there although bin/ has no manifest of its
+ * own. An entry is always one of the boundary's own files: the root
+ * boundary of that same repository gets no entry from the bin, since bin/ is
+ * not in it.
  *
- * @param {{ repoPath: string, globs: string[], tracked: Set<string>, scripts?: Array<{ path: string }> }} input
- *   scripts is pythonScripts() for the repository, read once per map
+ * @param {{ repoPath: string, globs: string[], tracked: Set<string>, scripts?: Array<{ path: string }>, commands?: Array<{ path: string }> }} input
+ *   scripts is pythonScripts() and commands is manifestCommands() for the
+ *   repository, each read once per map
  */
-export function deriveEntryPoints({ repoPath, globs, tracked, scripts = [] }) {
+export function deriveEntryPoints({ repoPath, globs, tracked, scripts = [], commands = [] }) {
   if (!Array.isArray(globs) || globs.length === 0) return [];
   const inside = picomatch(globs, { dot: true });
   const root = boundaryRoot(globs);
   const manifest = root ? `${root}/package.json` : 'package.json';
-  const declared = scripts.map((script) => script.path).filter((path) => inside(path));
+  const declared = [...scripts, ...commands].map((entry) => entry.path).filter((path) => inside(path));
   let found;
   if (tracked.has(manifest)) found = [...fromPackage(repoPath, root, manifest, tracked), ...declared];
   else found = declared.length > 0 ? declared : fromNames(root, tracked);
@@ -36,20 +42,114 @@ export function deriveEntryPoints({ repoPath, globs, tracked, scripts = [] }) {
 
 /**
  * The files the console and GUI scripts of every tracked pyproject.toml run,
- * with the function each calls, in the order the manifests declare them. A
- * module that is not a tracked file is left out.
+ * with the command's name, the manifest and the function each calls, in the
+ * order the manifests declare them. A module that is not a tracked file is
+ * left out.
  *
  * @param {string} repoPath
  * @param {Set<string>} tracked
- * @returns {Array<{ path: string, fn: string | null }>}
+ * @returns {Array<{ path: string, fn: string | null, name: string, manifest: string }>}
  */
 export function pythonScripts(repoPath, tracked) {
   const out = [];
   for (const script of declaredScripts(repoPath, [...tracked].sort())) {
     const path = resolvePythonModule(script.module, tracked);
-    if (path) out.push({ path, fn: script.fn });
+    if (path) out.push({ path, fn: script.fn, name: script.name, manifest: script.manifest });
   }
   return out;
+}
+
+/**
+ * What a repository installs for people to use, read from its manifests:
+ * every bin of the root package.json and of each npm workspace member's,
+ * every script a pyproject.toml declares, and, when the root package is
+ * published (it has a name and is not private), the file its exports["."] or
+ * main loads. A manifest inside test material is a copy a test works on, not
+ * one of this repository's, and a declared file that is not tracked names
+ * nothing to follow.
+ *
+ * @param {string} repoPath
+ * @param {Set<string>} tracked
+ * @param {Array<{ path: string, name: string, manifest: string }>} scripts pythonScripts()
+ * @returns {Array<{ kind: 'command'|'package', name: string, manifest: string, path: string }>}
+ *   sorted by manifest, then name
+ */
+export function manifestCommands(repoPath, tracked, scripts = []) {
+  const out = [];
+  const root = readManifest(repoPath, 'package.json', tracked);
+  const dirs = root ? ['', ...workspaceDirs(root, tracked)] : [];
+  for (const dir of dirs) {
+    const manifest = dir ? `${dir}/package.json` : 'package.json';
+    if (isTestMaterial(manifest)) continue;
+    const pkg = dir ? readManifest(repoPath, manifest, tracked) : root;
+    if (!pkg) continue;
+    for (const [name, spec] of binEntries(pkg)) {
+      const path = declaredFile(repoPath, dir, spec, tracked);
+      if (path) out.push({ kind: 'command', name, manifest, path });
+    }
+    if (dir !== '' || typeof pkg.name !== 'string' || pkg.name === '' || pkg.private === true) continue;
+    const loaded = mainSpecs(pkg).map((spec) => declaredFile(repoPath, dir, spec, tracked)).find(Boolean);
+    if (loaded) out.push({ kind: 'package', name: pkg.name, manifest, path: loaded });
+  }
+  for (const script of scripts) {
+    if (!isTestMaterial(script.manifest)) out.push({ kind: 'command', name: script.name, manifest: script.manifest, path: script.path });
+  }
+  const unique = new Map(out.map((entry) => [`${entry.manifest}\0${entry.name}\0${entry.kind}`, entry]));
+  return [...unique.values()].sort((a, b) => compare(a.manifest, b.manifest) || compare(a.name, b.name) || compare(a.kind, b.kind));
+}
+
+function readManifest(repoPath, path, tracked) {
+  if (!tracked.has(path)) return null;
+  try {
+    const pkg = JSON.parse(readFileSync(join(repoPath, path), 'utf8'));
+    return pkg != null && typeof pkg === 'object' && !Array.isArray(pkg) ? pkg : null;
+  } catch {
+    return null;
+  }
+}
+
+function workspaceDirs(root, tracked) {
+  const globs = workspaceGlobs(root);
+  if (globs.length === 0) return [];
+  const isMatch = picomatch(globs, { dot: true });
+  return [...tracked]
+    .filter((path) => path.endsWith('/package.json'))
+    .map((path) => path.slice(0, -'/package.json'.length))
+    .filter((dir) => isMatch(dir))
+    .sort(compare);
+}
+
+// A string bin is the package's one command, named for the package without
+// its scope, the way npm installs it.
+function binEntries(pkg) {
+  if (typeof pkg.bin === 'string') {
+    return typeof pkg.name === 'string' && pkg.name !== '' ? [[pkg.name.replace(/^@[^/]+\//, ''), pkg.bin]] : [];
+  }
+  if (pkg.bin == null || typeof pkg.bin !== 'object' || Array.isArray(pkg.bin)) return [];
+  return Object.entries(pkg.bin).filter(([, spec]) => typeof spec === 'string');
+}
+
+// exports may be the path itself, a map of subpaths, or a map of conditions
+// for the root alone; "." is what an import of the bare name loads.
+function mainSpecs(pkg) {
+  const specs = [];
+  const { exports } = pkg;
+  if (typeof exports === 'string') specs.push(exports);
+  else if (exports && typeof exports === 'object' && !Array.isArray(exports)) {
+    const subpaths = Object.keys(exports).some((key) => key.startsWith('.'));
+    collectStrings(subpaths ? exports['.'] : exports, specs);
+  }
+  if (typeof pkg.main === 'string') specs.push(pkg.main);
+  return specs;
+}
+
+function declaredFile(repoPath, dir, spec, tracked) {
+  const rel = joinRelative(dir, spec);
+  return rel ? resolveDeclaredPath(repoPath, rel, tracked) : null;
+}
+
+function compare(a, b) {
+  return a < b ? -1 : a > b ? 1 : 0;
 }
 
 export function boundaryRoot(globs) {

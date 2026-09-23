@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
 import { isOwnTest, isTestFile } from '../core/landings.js';
 import { formatFailure } from './errors.js';
-import { collapse, count, cover, entryOrder, externalsLine, list, pageFacts, readerFiles, testsClause, under, worded } from './page.js';
+import { collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, testsClause, under, worded } from './page.js';
 
 /**
  * atlas explain: what one file, or one directory, is in the system, read from
@@ -203,7 +203,9 @@ function doorFacts(ctx, found, part) {
   const onPath = part == null
     ? []
     : readable.filter((door) => (door.reach ?? []).some((entry) => entry.boundary === part)).map((door) => door.name);
-  const self = found.kind === 'file' ? ctx.doors.find((door) => door.file === found.path) ?? null : null;
+  // A manifest that installs a command declares a door rather than being one:
+  // the command runs the file it names, and that file says so.
+  const self = found.kind === 'file' ? ctx.doors.find((door) => !installed(door) && door.file === found.path) ?? null : null;
   return { onPath, runBy, self };
 }
 
