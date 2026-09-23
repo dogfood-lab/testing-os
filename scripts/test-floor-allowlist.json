@@ -16,6 +16,10 @@
     {
       "path": "fixtures/atlas/doors-ts/tools/check.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the doors-ts fixture repository, where a door runs node --test from tools/ with no path and the default patterns must select it by exactly this name. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/doors-ts/test/unit.spec.js",
+      "reason": "Atlas fixture, not a test. It sits inside the doors-ts fixture repository, where a door runs mocha with no path and the fixture's .mocharc.yml spec must select it by exactly this name. It holds no test and is never meant to run."
     }
   ]
 }
