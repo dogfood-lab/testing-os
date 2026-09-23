@@ -50,7 +50,7 @@ Downstream consumers like shipcheck (Gate F) and repo-knowledge read the indexes
 
 ## Installation and Setup
 
-testing-os is an npm workspaces monorepo with seven packages under `@dogfood-lab/*`. A single root `npm ci` installs everything.
+testing-os is an npm workspaces monorepo with eight packages under `@dogfood-lab/*`. A single root `npm ci` installs everything.
 
 ```bash
 # Clone the repo
