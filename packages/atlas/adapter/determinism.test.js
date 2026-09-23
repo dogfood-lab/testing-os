@@ -10,12 +10,12 @@ const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const HOST = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/host');
 const roots = [];
 
+// The page's only clock-bound text is the date it was mapped on, and page.json
+// carries the full timestamp; everything else must match byte for byte.
 function settle(text) {
   return text
-    .replace(/^◷.*$/gm, 'AGE')
-    .replace(/withdraw-after: \S+/g, 'withdraw-after: STAMP')
-    .replace(/^(generated: \S+)  \S+$/gm, '$1  STAMP')
-    .replace(/sha256 [0-9a-f]{64}/g, 'sha256 HASH');
+    .replace(/^Mapped at \S+ from/m, 'Mapped at DATE from')
+    .replace(/"generatedAt": "[^"]*"/, '"generatedAt": "STAMP"');
 }
 
 afterEach(() => {
@@ -42,7 +42,7 @@ describe('atlas map determinism', () => {
     const second = readFileSync(join(root, 'atlas', 'structure.json'));
     assert.equal(Buffer.compare(first, second), 0);
     const left = JSON.parse(readFileSync(join(root, 'atlas', 'statistics.json'), 'utf8'));
-    const renders = () => ['orientation.md', 'dev.md', 'machine.md', 'machine-stats.txt'].map((name) => readFileSync(join(root, 'atlas', name), 'utf8'));
+    const renders = () => ['README.md', 'page.json'].map((name) => readFileSync(join(root, 'atlas', name), 'utf8'));
     const before = renders();
     assert.equal(map().status, 0);
     const right = JSON.parse(readFileSync(join(root, 'atlas', 'statistics.json'), 'utf8'));

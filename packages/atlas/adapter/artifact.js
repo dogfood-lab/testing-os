@@ -1,3 +1,6 @@
+import { isTestMaterial } from '../core/landings.js';
+import { roleFor } from './templates.js';
+
 const byPath = (a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
 
 // The artifact describes the tree minus atlas/. Every list below, and every
@@ -25,19 +28,37 @@ function siteCounts(files) {
   return { unresolved, resolved };
 }
 
+// Reads and writes whose path is built at run time name no place, so the map
+// can only count them. Test material is left out for the reason landings leave
+// it out: what it names is a temporary copy, not the repository.
+function dynamicCounts(files) {
+  let reads = 0;
+  let writes = 0;
+  for (const file of files) {
+    if (isTestMaterial(file.path)) continue;
+    reads += file.dynamicReads ?? 0;
+    writes += file.dynamicWrites ?? 0;
+  }
+  return { reads, writes };
+}
+
+// A boundary file may leave a role out; the role is then derived from the
+// files, the same way init derives the one it writes.
 export function buildArtifact(mapped, commit) {
   const boundaries = mapped.boundaries.map((boundary) => {
     const files = keep(boundary.files);
     const sites = siteCounts(files);
+    const dynamic = dynamicCounts(files);
     return {
+      dynamicReads: dynamic.reads,
+      dynamicWrites: dynamic.writes,
       entryPoints: [...boundary.entryPoints].filter((path) => !inAtlas(path)).sort(),
       files: files.map((file) => ({ hash: file.hash, path: file.path })).sort(byPath),
       globs: [...boundary.globs].sort(),
       importConfidence: sites.unresolved > sites.resolved ? 'low' : 'full',
       name: boundary.name,
       origin: boundary.origin,
-      role: boundary.role,
-      status: boundary.status,
+      role: boundary.role ?? roleFor(files.map((file) => file.path)),
       unresolvedSites: sites.unresolved,
     };
   });
