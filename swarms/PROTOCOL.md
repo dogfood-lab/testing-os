@@ -37,7 +37,7 @@ The swarm's verification layer is a **funnel**, and the seats are not interchang
 
 ## Standards compliance
 
-Scored against the six [workflow standards](../.claude/rules/workflow-standards.md), 0–3. **Total: 12 / 18** for a repository with an Atlas map, **11 / 18** without one. Last scored 2026-07-15 (run `swarm-1784091637-5127`, Stage A); DECOMPOSE_BY_SECRETS re-scored 2026-09-23 for the Atlas-drafted domain map.
+Scored against the six [workflow standards](../.claude/rules/workflow-standards.md), 0–3. **Total: 12 / 18** for a repository with an Atlas map, **11 / 18** without an Atlas map. Last scored 2026-07-15 (run `swarm-1784091637-5127`, Stage A); DECOMPOSE_BY_SECRETS re-scored 2026-09-23 for the Atlas-drafted domain map.
 
 | Standard | Score | Evidence | Remediation |
 |---|---|---|---|
@@ -94,6 +94,7 @@ Every world-touching action this protocol performs, its named undo, the post-rol
 | GitHub Pages deploy | No | **Re-run `pages.yml` from the prior commit** | Previous site restored | coordinator |
 | `gh repo edit` (description/homepage/topics) | No | **Re-apply the prior values** (capture them first) | Metadata restored | coordinator |
 | repo-knowledge DB write | No | **Re-run `scan`** | DB regenerated from source | coordinator |
+| Atlas adoption pull request (a repository without a boundary file that the engine cannot read gets none) | Mostly — the pull-request page stays | **`gh pr close <n> --delete-branch`**; after a merge, **`git revert <sha> && git push`** | No `atlas/` and no CI step; the conversation remains on the closed pull request | coordinator |
 | A consumer submission committed to `main` by `ingest.yml` | Mostly | **`git revert <sha>` + `rebuild-indexes`** | Record removed and indexes rebuilt; the commit stays in history | coordinator |
 
 ### Proving a gate
@@ -273,7 +274,7 @@ Launch 5 parallel agents with exclusive file ownership to fix all approved findi
 
 4. If build fails, dispatch targeted fix agents for the failing domain only.
 
-5. In a repository with an Atlas map, the wave's **structural delta** is recorded and reviewed before the confirming audit. See [The structural delta](#the-structural-delta-before-the-confirming-audit).
+5. In a repository with an Atlas map, the wave's **structural delta** is recorded and reviewed before the confirming audit. See [The structural delta](#the-structural-delta-before-the-confirming-audit). A repository without a boundary file goes straight to Phase 4.
 
 ### Phase 4: REPEAT
 
@@ -294,7 +295,7 @@ Return to Phase 1 for a fresh audit against the remediated codebase.
 
 Agents audit for capabilities, not defects.
 
-1. Launch 5 agents (same domain split; in a repository with an Atlas map each brief carries the lane's blast radius, as in Phase 1) to evaluate:
+1. Launch 5 agents (same domain split; in a repository with an Atlas map each brief carries the lane's blast radius, as in Phase 1, and a repository without a boundary file gets the briefs it always did) to evaluate:
    - Missing capabilities and feature gaps
    - Production readiness (error handling, logging, graceful degradation)
    - UX improvements (CLI ergonomics, API surface, user-facing messages)
@@ -336,7 +337,7 @@ Agents build/improve approved features with exclusive file ownership.
 1. Map approved features to domain agents.
 2. HARD RULE: No agent edits a file outside its assignment.
 3. Launch up to 5 agents in parallel.
-4. After all agents complete, verify build passes (lint + typecheck + tests). In a repository with an Atlas map the verify also records the wave's [structural delta](#the-structural-delta-before-the-confirming-audit) before the next feature audit.
+4. After all agents complete, verify build passes (lint + typecheck + tests). In a repository with an Atlas map the verify also records the wave's [structural delta](#the-structural-delta-before-the-confirming-audit) before the next feature audit; without a boundary file the verify is what it always was.
 5. If new tests are needed for new features, the Tests domain agent writes them.
 
 ### Phase 8: REPEAT
@@ -364,7 +365,7 @@ npm run verify
 swarm doctor
 ```
 
-On this repo, `npm run verify` is the comprehensive pass (sync-version, doc-drift, Class #14 pins, build, `atlas check`, script tests, workspace tests). Unpiped. Keep the log. In another repository with an Atlas map, run `npx --yes @dogfood-lab/atlas@1.15.0 check` as part of the pass unless its own verify already does. `swarm doctor` is part of the pass (stranded-worktrees WARN is not a delete; reclaim with `swarm clean`).
+On this repo, `npm run verify` is the comprehensive pass (sync-version, doc-drift, Class #14 pins, build, `atlas check`, script tests, workspace tests). Unpiped. Keep the log. In another repository with an Atlas map, run `npx --yes @dogfood-lab/atlas@1.15.0 check` as part of the pass unless its own verify already does; a repository without a boundary file has nothing to check. `swarm doctor` is part of the pass (stranded-worktrees WARN is not a delete; reclaim with `swarm clean`).
 
 Do **not** advance again. Next promotion is `treatment` → `complete`. Leave the run sitting on `test` until Phase 10 is called. Do not `complete`. `--check-only` showing BLOCK (wave status: advanced) is the waypoint, not a next dispatch.
 
@@ -393,6 +394,15 @@ Follow the 7 phases from `full-treatment.md` in order:
 5. **Phase 4 — Repo metadata + coverage**: GitHub description/homepage/topics, coverage badge if applicable.
 6. **Phase 5 — Repo Knowledge DB**: `node dist/cli.js scan`, add thesis/architecture/relationships.
 7. **Phase 6 — Commit + deploy**: Stage explicitly (never `git add .`), push, verify landing page + handbook render.
+
+**Atlas adoption (its own pull request, merged before Phase 6).**
+
+The treatment leaves the repository mapped, so the next swarm on it drafts its domains from the parts, briefs its lanes with their blast radius, and records each amend wave's structural delta. The engine reads JavaScript, TypeScript, TSX and Python; a repository in another language completes the treatment without a boundary file, and the completion record says so. Atlas is never a prerequisite for the treatment, only its result where the engine can read the code. A repository that already has `atlas/` re-maps and checks, and skips 1.
+
+1. **Map it.** `npx --yes @dogfood-lab/atlas@1.15.0 init` proposes `atlas/boundaries.yaml`; correct the names and globs where the proposal is wrong (the one line a person may add is `summary`). Then `npx --yes @dogfood-lab/atlas@1.15.0 map` and `npx --yes @dogfood-lab/atlas@1.15.0 check`, and commit `atlas/`.
+2. **The CI step.** `npx --yes @dogfood-lab/atlas@1.15.0 check` in the existing test job, right after its Node setup (a job with no Node gets `actions/setup-node` pinned to the SHA the repository already uses, on one matrix cell only), and `atlas/**` added to the push paths filter and to any pull-request paths filter. No new workflow file; the check costs seconds, not a job.
+3. **The pull request, in the fleet shape.** One paragraph saying what Atlas is (a generated map, regenerated with `atlas map`, never written by a person) and what the CI step does; the page's "What this is" and "What comes in" sections as `atlas map` wrote them; one line that the weekly render puts the page on the testing-os site once the pull request merges; then the **Odd:** paragraph.
+4. **Odd:** read the page as a newcomer would, and name every sentence that misleads: a part called generated that people edit, an entry point the page misses, a door counted wrong, a role that does not fit. Those findings go to testing-os as a slice brief for the engine, fixed at the class there with a fixture that fails against the old engine. They are never edited into the page by hand, and the code is never bent to suit the map.
 
 ### Completion
 
@@ -737,7 +747,7 @@ HEALTH PASS — STAGE A (Bug/Security Fix)
  3. [ ] Collect findings, sort by severity
  4. [ ] Present findings to user for approval
  5. [ ] Launch 5 amend agents with exclusive file ownership
- 6. [ ] Verify build passes (lint + typecheck + tests); with an Atlas map: `atlas map`, then `swarm verify` (atlas check + structural delta; an andon is reviewed before the confirming audit)
+ 6. [ ] Verify build passes (lint + typecheck + tests); with an Atlas map: `atlas map`, then `swarm verify` (atlas check + structural delta; an andon is reviewed before the confirming audit). Without a boundary file: as always
  7. [ ] Repeat until 0 CRITICAL + 0 HIGH
  8. [ ] Checkpoint with user every 3 iterations
 
@@ -781,7 +791,8 @@ FULL TREATMENT (Phase 10)
 35. [ ] Build + verify site: npm run build in site/
 36. [ ] GitHub metadata: description, homepage, topics
 37. [ ] Repo-knowledge DB: scan, thesis, architecture, relationships
-38. [ ] Commit + deploy (explicit staging, never git add .)
-39. [ ] Post-deploy verify: landing page, handbook, pagefind, CI green
-40. [ ] Advance the run to complete (swarm advance <run-id> — final promotion)
+38. [ ] Atlas (JS/TS/TSX/Python): atlas init → correct boundaries → atlas map → atlas check, the CI step + atlas/** paths, PR in the fleet shape with the Odd: read (its findings → a testing-os slice brief). Other languages: without a boundary file, noted in the record
+39. [ ] Commit + deploy (explicit staging, never git add .)
+40. [ ] Post-deploy verify: landing page, handbook, pagefind, CI green
+41. [ ] Advance the run to complete (swarm advance <run-id> — final promotion)
 ```
