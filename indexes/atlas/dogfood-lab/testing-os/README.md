@@ -1,6 +1,6 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 8a06f84.
+Mapped at 2026-09-23 from commit e605ac4.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-09-23 from commit 8a06f84.
 ## What comes in
 
 1. **Ingest dogfood submission.** When a repository sends a `dogfood_submission` event; or by hand. Runs packages/ingest/run.js, packages/portfolio/generate.js, scripts/build.mjs and 1 more.
-2. **CI.** On a pull request; on a push touching 21 paths; or by hand. Runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 2 more.
+2. **CI.** On a pull request; on a push touching 22 paths; or by hand. Runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 3 more.
 3. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 1 more.
 4. **self-dogfood.** When the workflow CI completes; or by hand. Runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs.
 5. **Atlas render.** On a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs scripts/atlas-render.mjs.
@@ -18,6 +18,22 @@ Mapped at 2026-09-23 from commit 8a06f84.
 ## What happens through Ingest dogfood submission
 
 1. The workflow runs packages/ingest/run.js in ingest, packages/portfolio/generate.js in portfolio, and scripts/build.mjs and scripts/sync-version.mjs in scripts.
+   1. Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.
+   2. Is duplicate in ingest does, in order: is unsafe segment and parse rejection reason (verify).
+   3. Load repo policy in ingest does, in order: is unsafe segment, log stage (dogfood-swarm) and validate payload (schemas).
+   4. Load scenarios in ingest does, in order: fetch with reason and fetch.
+   5. Verify in verify does, in order:
+      1. parse run url repo
+      2. validate submission schema
+      3. validate schema version
+      4. confirm
+      5. validate step results
+      6. validate required steps
+      7. validate policy
+      8. compute verdict
+   6. Write record in ingest does, in order: is unsafe segment, parse rejection reason (verify), read chain head, submission digest, validate record and append chain entry.
+   7. Rebuild indexes in ingest does, in order: log stage (dogfood-swarm) and atomic write (3 steps).
+   8. Inside packages/portfolio/generate.js, main does, in order: compute trends, atomic write file sync (findings), generate badges and atomic write file sync.
 2. That reaches dogfood-swarm (1 file), findings (2 files) and verify (10 files).
 3. That reaches schemas (5 files).
 4. It writes to indexes/, records/ and reports/.
@@ -25,12 +41,12 @@ Mapped at 2026-09-23 from commit 8a06f84.
 
 ## Who reads the results
 
-- **indexes/** is read by root (8 README files), examples/README.md (found by text), packages/portfolio/README.md (found by text), packages/report/status.js, site/public/dashboard/index.html (found by text) and site/src/content/docs/handbook/read-model.md (found by text).
+- **indexes/** is read by the repository root (8 README files), examples/README.md (found by text), packages/portfolio/README.md (found by text), packages/report/status.js, site/public/dashboard/index.html (found by text) and site/src/content/docs/handbook/read-model.md (found by text).
 - **records/** is read by packages/findings/derive/load-records.js, packages/ingest/rebuild-indexes.js, packages/portfolio/lib/compute-trends.js and packages/report/status.js.
 
 ## The other doors
 
-**CI** runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 2 more, and reaches ingest and portfolio.
+**CI** runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 3 more, and reaches ingest and portfolio.
 
 **Release** runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 1 more, reaches ingest and portfolio, publishes to npm, and creates a GitHub release.
 
@@ -48,7 +64,7 @@ Mapped at 2026-09-23 from commit 8a06f84.
 - **verify** is imported by 3 parts (findings, ingest, scripts) and sits on the path of 1 door.
 - **ingest** is imported by 2 parts (findings, scripts) and sits on the path of 3 doors.
 - **portfolio** is imported by 1 part (scripts) and sits on the path of 3 doors.
-- **indexes/** is written by .github, ingest, portfolio and scripts, and read by examples, ingest, portfolio, report, root, scripts and site; a hand edit reaches every reader.
+- **indexes/** is written by .github, ingest, portfolio and scripts, and read by examples, ingest, portfolio, report, the repository root, scripts and site; a hand edit reaches every reader.
 - **dogfood/roadmap/** is written by dogfood-swarm and read by dogfood-swarm, scripts and site; a hand edit reaches every reader.
 
 ## Generated, never hand-edited
@@ -61,7 +77,7 @@ Mapped at 2026-09-23 from commit 8a06f84.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, examples/, root and swarms/. Nothing in this repository writes to them.
+People write .github/, assets/, docs/, examples/, the repository root and swarms/. Nothing in this repository writes to them.
 
 ## Where to start
 
@@ -71,8 +87,9 @@ Read those in order to follow one dogfood submission end to end.
 
 ## What this map cannot see
 
-30 import sites did not resolve.
-27 writes and 183 reads use paths built at run time and are not named here.
-Readers marked (found by text) come from scanning unparsed files.
-Statistics confidence is low: fewer than 20 source files reach 10 revisions in the window.
+- 31 import sites did not resolve.
+- 27 writes and 184 reads use paths built at run time and are not named here.
+- Readers marked (found by text) come from scanning unparsed files.
+- Statistics confidence is low: fewer than 20 source files reach 10 revisions in the window.
+
 Regenerate with `npx --yes @dogfood-lab/atlas map`.
