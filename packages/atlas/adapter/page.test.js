@@ -538,6 +538,33 @@ describe('atlas page', () => {
     assert.doesNotMatch(markdown, /```|Legend|unnamed|status/);
   });
 
+  it('carries the imports among the parts "What breaks what" lists, one per pair, as page.json edges', () => {
+    const plain = JSON.parse(page(doors).json);
+    assert.deepEqual(plain.breaks.filter((entry) => entry.kind === 'part').map((entry) => entry.name), ['lib', 'tools']);
+    assert.deepEqual(plain.edges, [{ from: 'tools', fromTests: false, to: 'lib' }]);
+    // A second import between the same two parts is one edge, a pair imported
+    // only from tests says so, a production import beside a test one keeps the
+    // pair production, and an import from a part the list does not name is left out.
+    const patched = JSON.parse(page(doors, {
+      structure: (structure) => ({
+        ...structure,
+        edges: [
+          ...structure.edges,
+          { from: 'tools', fromTests: true, kind: 'file', to: 'lib' },
+          { from: 'lib', fromTests: true, kind: 'file', to: 'tools' },
+          { from: 'site', kind: 'file', to: 'lib' },
+          { from: 'lib', kind: 'file', to: 'lib' },
+        ],
+      }),
+    }).json);
+    const listed = new Set(patched.breaks.filter((entry) => entry.kind === 'part').map((entry) => entry.name));
+    for (const edge of patched.edges) assert.ok(listed.has(edge.from) && listed.has(edge.to), JSON.stringify(edge));
+    assert.deepEqual(patched.edges, [
+      { from: 'lib', fromTests: true, to: 'tools' },
+      { from: 'tools', fromTests: false, to: 'lib' },
+    ]);
+  });
+
   it('writes the same bytes twice, and a page.json with sorted keys that carries the same sections', () => {
     const first = page(doors);
     const second = page(doors);
