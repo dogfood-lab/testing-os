@@ -69,6 +69,10 @@ describe('a write the repository does not track, and a stamped block', () => {
     assert.equal(landing('registry'), undefined, JSON.stringify(structure.landings));
   });
 
+  it('keeps a directory a script makes as the place it writes when nothing else it writes there is named', () => {
+    assert.deepEqual(landing('indexes')?.writers.map((entry) => entry.by), ['scripts/rebuild.mjs'], JSON.stringify(structure.landings));
+  });
+
   it('leaves the parts holding only untracked output hand-authored, and no door writes there', () => {
     assert.equal(part('proofs').origin, 'authored');
     assert.equal(part('registry').origin, 'authored');
@@ -90,6 +94,7 @@ describe('a write the repository does not track, and a stamped block', () => {
       '## Generated, never hand-edited',
       '',
       '- **README.md** has a block written by scripts/sync-version.mjs.',
+      '- **indexes/** is written by scripts/rebuild.mjs.',
     ]);
     assert.ok(!section('## Written but never read').some((line) => line.includes('README.md') || line.includes('metrics')), markdown);
     assert.ok(page.limits.includes('2 writes go to places this repository does not track, so they are not listed as generated.'), page.limits.join('\n'));

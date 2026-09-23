@@ -53,6 +53,12 @@ describe('what Hand-authored may claim', () => {
     assert.equal(structure.boundaries.find((boundary) => boundary.name === 'docs').origin, 'mixed');
   });
 
+  it('keeps a scratch file a test names at run time beside itself out of what the repository writes', () => {
+    const src = structure.landings.find((landing) => landing.target === 'packages/export/src');
+    assert.equal(src, undefined, JSON.stringify(structure.landings));
+    assert.equal(structure.boundaries.find((boundary) => boundary.name === 'export').origin, 'authored');
+  });
+
   it('counts a write whose name is built at run time beside the root as unnamed', () => {
     assert.equal(structure.boundaries.find((boundary) => boundary.name === 'scripts').dynamicWrites, 1);
   });

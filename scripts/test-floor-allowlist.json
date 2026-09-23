@@ -60,6 +60,10 @@
     {
       "path": "fixtures/atlas/start-chain/test/app.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the start-chain fixture repository that packages/atlas/adapter/page-start-chain.test.js maps, where the pull-request door runs test/ and \"Where to start\" must name this file, by exactly this name, as the one in the directory that imports into the code. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/authored-caveat/packages/export/src/__tests__/scratch.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the authored-caveat fixture repository that packages/atlas/adapter/page-authored-caveat.test.js maps, where it must be read as a test, by exactly this name, that writes a scratch file beside itself under a name built at run time, which is no write to the repository. It holds no test and is never meant to run."
     }
   ]
 }

@@ -28,7 +28,9 @@ const JS_READS = new Set(['readFileSync', 'readFile', 'readdirSync', 'readdir', 
 // into the same file: a stamp. existsSync and statSync only look.
 const CONTENT_READS = new Set(['readFileSync', 'readFile', 'createReadStream', 'open', 'openSync', 'read_text', 'read_bytes']);
 // Calls that make a directory. Making one the repository already tracks
-// writes nothing into it; the files written there land on their own.
+// writes nothing into it, so it says only that the file writes somewhere
+// there: evidence that stands when nothing else the file writes is placed
+// inside it, and is dropped when something is.
 const DIRECTORY_MAKERS = new Set(['mkdirSync', 'mkdir', 'os.makedirs', 'os.mkdir']);
 const JS_OPEN = new Set(['open', 'openSync']);
 const NETWORK = new Set(['fetch', 'get']);
@@ -414,7 +416,6 @@ export function astLandings(language, root, path, places) {
         continue;
       }
       const target = landingOf(value, places);
-      if (target != null && kind === 'write' && DIRECTORY_MAKERS.has(call) && places.dirs.has(target)) continue;
       if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}) });
       else if (value.open) unplaced = true;
     }
@@ -453,7 +454,7 @@ export function astLandings(language, root, path, places) {
   });
 
   return {
-    writes: sortEntries(found.writes),
+    writes: sortEntries(withoutRedundantDirectories(found.writes, places)),
     dynamicWrites: found.dynamicWrites,
     reads: sortEntries(found.reads),
     dynamicReads: found.dynamicReads,
@@ -462,12 +463,19 @@ export function astLandings(language, root, path, places) {
   };
 }
 
+function withoutRedundantDirectories(writes, places) {
+  return writes.filter((write) => !(
+    DIRECTORY_MAKERS.has(write.call) && places.dirs.has(write.target)
+    && writes.some((other) => other !== write && other.target.startsWith(`${write.target}/`))
+  ));
+}
+
 // A bare relative path, with nothing fixing where it starts, is relative to
 // whoever runs the code; attachLandings decides whose directory that is.
 function landingEntry(target, call, value, places) {
   const entry = { target, call, confidence: confidenceOf(value, target, places) };
   if (value.anchor == null && !value.rooted) entry.relative = true;
-  if (value.anchor === 'file') entry.fixed = true;
+  if (value.anchor === 'file' && !value.open) entry.fixed = true;
   return entry;
 }
 
@@ -1338,11 +1346,12 @@ export function attachLandings({ files, doors, boundaries, places }) {
   settleRelativePaths(files, mapped);
   const own = files.filter((file) => !isTestMaterial(file.path)).sort((a, b) => compare(a.path, b.path));
   // A test writes into temporary copies, except where the path is fixed to
-  // the test's own file and lands outside test material: a test rewriting a
-  // committed table under docs/ writes this repository. Only those writes
-  // are kept, and none of a test's reads.
+  // the test's own file, written out in full, and names a tracked file
+  // outside test material: a test rewriting a committed table under docs/
+  // writes this repository, and one writing a scratch file beside itself
+  // does not. Only those writes are kept, and none of a test's reads.
   const tests = files.filter((file) => isTestMaterial(file.path))
-    .map((file) => ({ path: file.path, reads: file.reads ?? [], writes: (file.writes ?? []).filter((write) => write.fixed && !isTestMaterial(write.target)) }))
+    .map((file) => ({ path: file.path, reads: file.reads ?? [], writes: (file.writes ?? []).filter((write) => write.fixed && places.files.has(write.target) && !isTestMaterial(write.target)) }))
     .filter((file) => file.writes.length > 0)
     .sort((a, b) => compare(a.path, b.path));
   const byPath = new Map([...own, ...tests].map((file) => [file.path, file]));
