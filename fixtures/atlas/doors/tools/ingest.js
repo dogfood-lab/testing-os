@@ -1,6 +1,6 @@
 import { existsSync, renameSync, writeFileSync } from 'node:fs';
-import { loadPolicy } from '../lib/policy.js';
-import { rebuildIndex, writeRecord } from '../lib/store.js';
+import { auditRecord, loadPolicy } from '../lib/policy.js';
+import { rebuildIndex, sealRecord, writeRecord } from '../lib/store.js';
 import { verify } from '../lib/verify.js';
 import { prepare } from './prepare.js';
 
@@ -14,6 +14,8 @@ export async function ingest() {
   if (verify(id) && existsSync('indexes/latest.json')) {
     loadPolicy();
     persist(id);
+    auditRecord(id);
+    sealRecord(id);
     writeFileSync(`records/${id}.json`, '{}\n');
     writeFileSync('latest.json.tmp', '{}\n');
     renameSync('latest.json.tmp', 'indexes/latest.json');

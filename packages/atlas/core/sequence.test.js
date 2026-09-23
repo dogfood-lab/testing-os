@@ -180,6 +180,8 @@ describe('one hop', () => {
       'loadPolicy@15→lib/policy.js',
       'writeRecord@8→lib/store.js via persist',
       'rebuildIndex@9→lib/store.js via persist',
+      'auditRecord@17→lib/policy.js',
+      'sealRecord@18→lib/store.js',
     ]);
   });
 
