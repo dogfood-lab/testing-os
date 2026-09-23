@@ -1,23 +1,15 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit e15c8ab.
+Mapped at 2026-09-23 from commit 4ba209b.
 
 ## What this is
 
 22 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).
 
-## What changed since 2026-09-23 (b8aea57)
+## What changed since 2026-09-23 (2f09ff6)
 
-- portfolio now imports schemas.
-- CI now also runs packages/atlas/adapter/ts-probe.test.js.
-- CI no longer runs scripts/check-severity-contrast.test.mjs.
-- Release now also runs packages/atlas/adapter/ts-probe.test.js.
-- And 1 more change to a door.
-- fixtures/atlas/ts-probe/packages/cli/src/cli.spec.ts is now read by scripts/test-floor-allowlist.json.
-- fixtures/atlas/ts-probe/packages/core/src/engine.spec.ts is now read by scripts/test-floor-allowlist.json.
-- fixtures/atlas/ts-probe/packages/ledger/src/ledger.spec.ts is now read by scripts/test-floor-allowlist.json.
-- And 1 more new writer or reader of a place.
-- 43 files added and 21 changed content, across 8 parts.
+- assets/atlas-hero.webp is now read by packages/atlas/README.md.
+- 2 files added and 11 changed content, across 6 parts.
 
 ## What comes in
 
@@ -78,7 +70,7 @@ Mapped at 2026-09-23 from commit e15c8ab.
 
 ## What tends to change together
 
-No two source files, other than a file and its own test, changed together often enough to name.
+- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 10 of 15 commits, inside the site part.
 
 2 files changed together with their own tests, as expected.
 
@@ -123,7 +115,7 @@ Read those in order to follow one dogfood submission end to end.
 
 - 2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.
 - 30 import sites could not be resolved.
-- 27 writes and 188 reads use paths built at run time and are not named here.
+- 27 writes and 189 reads use paths built at run time and are not named here.
 - Readers marked (found by text) come from scanning unparsed files.
 - CI runs 515 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 - Release runs 514 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.

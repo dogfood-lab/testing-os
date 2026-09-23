@@ -1,11 +1,11 @@
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { parse } from 'yaml';
-import { BACKOFF_MS, JOB_BUDGET_MS, earlierWindow, pushAuthEnv, readExclusions, rejectForeignPaths, renderFleet, shallowSinceDate } from './atlas-render.mjs';
+import { BACKOFF_MS, HISTORY_CAP, JOB_BUDGET_MS, appendHistory, changeCount, earlierWindow, historyEntry, pushAuthEnv, readExclusions, rejectForeignPaths, renderFleet, shallowSinceDate } from './atlas-render.mjs';
 
 const TEMPLATE = resolve(fileURLToPath(new URL('.', import.meta.url)), '../packages/atlas/templates/atlas-refresh.yml');
 const WORKFLOW = resolve(fileURLToPath(new URL('.', import.meta.url)), '../.github/workflows/atlas-render.yml');
@@ -52,6 +52,10 @@ function harness(t, setup) {
     }
     if (url.includes('api.github.com/repos/') && !url.includes('/commits/')) return json({ default_branch: 'main' });
     if (url.includes('/divergence.json')) return setup.previous ? json(setup.previous) : json(null, 404);
+    if (url.includes('/history.json')) {
+      if (setup.historyStatus) return json(null, setup.historyStatus);
+      return setup.history ? json(setup.history) : json(null, 404);
+    }
     return json(null, 404);
   };
   const run = async (command, args, opts = {}) => {
@@ -94,9 +98,8 @@ function harness(t, setup) {
         confidence: { level: 'low' },
         generatedAt: '2026-09-22T06:00:00.000Z',
       }));
-      for (const name of ['README.md', 'page.json']) {
-        writeFileSync(join(atlas, name), `${name}\n`);
-      }
+      writeFileSync(join(atlas, 'README.md'), 'README.md\n');
+      writeFileSync(join(atlas, 'page.json'), `${JSON.stringify(setup.page ?? { changes: { first: true } })}\n`);
       return { status: 0, stdout: '', stderr: '' };
     }
     return { status: 0, stdout: '', stderr: '' };
@@ -363,7 +366,99 @@ describe('atlas weekly render', () => {
     const result = await runFleet();
     const base = 'indexes/atlas/dogfood-lab/testing-os/';
     const published = result.paths.filter((path) => path.startsWith(base)).map((path) => path.slice(base.length)).sort();
-    assert.deepEqual(published, ['README.md', 'divergence.json', 'page.json', 'statistics.json', 'structure.json']);
+    assert.deepEqual(published, ['README.md', 'divergence.json', 'history.json', 'page.json', 'statistics.json', 'structure.json']);
+  });
+
+  it('starts the history on a first render, with one entry read from page.json', async (t) => {
+    const outRoot = mkdtempSync(join(tmpdir(), 'atlas-history-'));
+    t.after(() => rmSync(outRoot, { recursive: true, force: true }));
+    const { runFleet, fetches } = harness(t, { lab: [PUBLIC] });
+    await runFleet({ outRoot });
+    assert.ok(fetches.includes('https://raw.githubusercontent.com/dogfood-lab/testing-os/atlas-render/indexes/atlas/dogfood-lab/testing-os/history.json'));
+    const written = JSON.parse(readFileSync(join(outRoot, 'dogfood-lab', 'testing-os', 'history.json'), 'utf8'));
+    assert.deepEqual(written, {
+      entries: [{ renderedAt: '2026-09-22T06:00:00.000Z', commit: 'a'.repeat(40), itemCount: 0, headlineKind: 'first', fileCounts: null }],
+    });
+  });
+
+  it('appends one entry per render to the history on the branch, counting what "And n more" cut', async (t) => {
+    const outRoot = mkdtempSync(join(tmpdir(), 'atlas-history-'));
+    t.after(() => rmSync(outRoot, { recursive: true, force: true }));
+    const earlier = { renderedAt: '2026-09-15T06:00:00.000Z', commit: 'b'.repeat(40), itemCount: 0, headlineKind: 'unchanged', fileCounts: null };
+    const fileCounts = { added: 2, changed: 1, moved: 0, parts: 1, removed: 0 };
+    const { runFleet } = harness(t, {
+      lab: [PUBLIC],
+      history: { entries: [earlier] },
+      page: {
+        changes: {
+          fileCounts,
+          items: [
+            { kind: 'cycle', sentence: 'ingest now imports dogfood-swarm, which closes the cycle.', subjects: [] },
+            { kind: 'door', sentence: 'CI now also runs a.js.', subjects: [] },
+            { kind: 'door', sentence: 'And 3 more changes to a door.', subjects: [] },
+            { kind: 'counts', sentence: '2 files added and 1 changed content, across 1 part.', subjects: [] },
+          ],
+          since: { commit: 'b'.repeat(40), generatedAt: '2026-09-15T06:00:00.000Z' },
+          unchanged: false,
+        },
+      },
+    });
+    await runFleet({ outRoot });
+    const written = JSON.parse(readFileSync(join(outRoot, 'dogfood-lab', 'testing-os', 'history.json'), 'utf8'));
+    assert.deepEqual(written.entries, [
+      earlier,
+      { renderedAt: '2026-09-22T06:00:00.000Z', commit: 'a'.repeat(40), itemCount: 5, headlineKind: 'cycle', fileCounts },
+    ]);
+  });
+
+  it('keeps at most 52 entries, dropping the oldest', async (t) => {
+    const outRoot = mkdtempSync(join(tmpdir(), 'atlas-history-'));
+    t.after(() => rmSync(outRoot, { recursive: true, force: true }));
+    assert.equal(HISTORY_CAP, 52);
+    const full = Array.from({ length: HISTORY_CAP }, (_, index) => ({
+      renderedAt: new Date(Date.UTC(2025, 8, 1) + index * 7 * 86_400_000).toISOString(),
+      commit: String(index).padStart(40, '0'),
+      itemCount: index,
+      headlineKind: 'door',
+      fileCounts: null,
+    }));
+    const unchanged = { changes: { fileCounts: { added: 0, changed: 1, moved: 0, parts: 1, removed: 0 }, items: [{ kind: 'counts', sentence: 'Nothing structural changed since 2026-09-15; 1 file changed content.', subjects: [] }], unchanged: true } };
+    const { runFleet } = harness(t, { lab: [PUBLIC], history: { entries: full }, page: unchanged });
+    await runFleet({ outRoot });
+    const written = JSON.parse(readFileSync(join(outRoot, 'dogfood-lab', 'testing-os', 'history.json'), 'utf8'));
+    assert.equal(written.entries.length, HISTORY_CAP);
+    assert.deepEqual(written.entries[0], full[1], 'the oldest entry is the one dropped');
+    assert.deepEqual(written.entries.at(-1), {
+      renderedAt: '2026-09-22T06:00:00.000Z',
+      commit: 'a'.repeat(40),
+      itemCount: 0,
+      headlineKind: 'unchanged',
+      fileCounts: unchanged.changes.fileCounts,
+    });
+  });
+
+  it('writes no history when the one on the branch cannot be read, so a year is not restarted from one', async (t) => {
+    const outRoot = mkdtempSync(join(tmpdir(), 'atlas-history-'));
+    t.after(() => rmSync(outRoot, { recursive: true, force: true }));
+    const { runFleet } = harness(t, { lab: [PUBLIC], historyStatus: 500 });
+    const result = await runFleet({ outRoot });
+    assert.equal(existsSync(join(outRoot, 'dogfood-lab', 'testing-os', 'history.json')), false);
+    assert.equal(result.paths.includes('indexes/atlas/dogfood-lab/testing-os/history.json'), false);
+    assert.equal(result.paths.includes('indexes/atlas/dogfood-lab/testing-os/page.json'), true, 'the render itself still lands');
+    assert.match(result.logs.join('\n'), /history dogfood-lab\/testing-os kept: the previous history could not be read/);
+  });
+
+  it('counts structural changes the way the page states them', () => {
+    assert.equal(changeCount(null), 0);
+    assert.equal(changeCount({ first: true }), 0);
+    assert.equal(changeCount({ unchanged: true, items: [{ kind: 'counts', sentence: 'Nothing structural changed.' }] }), 0);
+    assert.equal(changeCount({ unchanged: false, items: [
+      { kind: 'import-added', sentence: 'a now imports b.' },
+      { kind: 'landing', sentence: 'And 12 more new writers or readers of places.' },
+      { kind: 'counts', sentence: '1 file changed content.' },
+    ] }), 13);
+    assert.deepEqual(appendHistory({ entries: [1, null, { a: 1 }] }, { b: 2 }), { entries: [{ a: 1 }, { b: 2 }] }, 'junk rows on the branch are dropped');
+    assert.equal(historyEntry({}, 'c', 'd').headlineKind, 'unchanged');
   });
 
   it('parses the private template as workflow YAML with only schedule and workflow_dispatch', () => {

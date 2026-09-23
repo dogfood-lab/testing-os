@@ -17,6 +17,8 @@ export const BACKOFF_MS = [5_000, 20_000, 60_000];
 export const REPO_BUDGET_MS = 90_000;
 export const JOB_BUDGET_MS = 50 * 60 * 1000;
 export const WINDOW_DAYS = 180;
+// A year of weekly renders, which is what the page's delta strip draws.
+export const HISTORY_CAP = 52;
 const RENDER_FILES = ['structure.json', 'statistics.json', 'README.md', 'page.json'];
 const PUBLIC_HEADERS = {
   accept: 'application/vnd.github+json',
@@ -213,6 +215,75 @@ export function fleetEntry(fullName, commit, renderedAt, now, structure, statist
   };
 }
 
+/**
+ * How many structural changes a page's `changes` names. A line "And 3 more
+ * changes to a door." stands for the three it cut, and the closing line of
+ * file counts is not a change to the structure.
+ */
+export function changeCount(changes) {
+  if (!changes || typeof changes !== 'object' || changes.first || changes.unchanged) return 0;
+  const items = Array.isArray(changes.items) ? changes.items : [];
+  return items.filter((item) => item && typeof item === 'object' && item.kind !== 'counts').reduce((sum, item) => {
+    const more = /^And (\d+) more /.exec(String(item.sentence ?? ''));
+    return sum + (more ? Number(more[1]) : 1);
+  }, 0);
+}
+
+/** One render as the page's delta strip draws it. */
+export function historyEntry(page, commit, renderedAt) {
+  const changes = page?.changes && typeof page.changes === 'object' ? page.changes : null;
+  const headline = (changes?.items ?? []).find((item) => item && typeof item === 'object' && item.kind !== 'counts');
+  let headlineKind = 'unchanged';
+  if (changes?.first) headlineKind = 'first';
+  else if (!changes?.unchanged && headline) headlineKind = String(headline.kind);
+  return {
+    renderedAt,
+    commit,
+    itemCount: changeCount(changes),
+    headlineKind,
+    fileCounts: changes?.fileCounts ?? null,
+  };
+}
+
+/**
+ * The history with one render appended, oldest first, keeping the newest
+ * HISTORY_CAP. history.json is an object rather than a bare list because the
+ * site refuses a top-level array as an unexpected shape.
+ */
+export function appendHistory(previous, entry, cap = HISTORY_CAP) {
+  const entries = Array.isArray(previous?.entries)
+    ? previous.entries.filter((row) => row && typeof row === 'object' && !Array.isArray(row))
+    : [];
+  return { entries: [...entries, entry].slice(-cap) };
+}
+
+// The history already on the render branch. Absent is a first run; any other
+// failure is not, and returns undefined so the render writes no history.json
+// and the branch keeps the one it has, rather than restarting a year of
+// entries from one.
+async function previousHistory(fetchImpl, fullName) {
+  const url = `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/${fullName}/history.json`;
+  let response;
+  try {
+    response = await github(fetchImpl, url);
+  } catch {
+    return undefined;
+  }
+  if (response.status === 404) return null;
+  if (!response.ok) return undefined;
+  const doc = response.json;
+  if (!doc || typeof doc !== 'object' || Array.isArray(doc) || !Array.isArray(doc.entries)) return undefined;
+  return doc;
+}
+
+function readJsonFile(path) {
+  try {
+    return JSON.parse(readFileSync(path, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
 function defaultRun(command, args, opts = {}) {
   return new Promise((resolve) => {
     const child = spawn(command, args, {
@@ -347,8 +418,23 @@ async function renderOne({ run, sleep, fetchImpl, repoRoot, fullName, branch, sh
     const structure = JSON.parse(readFileSync(join(out, 'structure.json'), 'utf8'));
     const statistics = JSON.parse(readFileSync(join(out, 'statistics.json'), 'utf8'));
     const envelope = JSON.parse(readFileSync(divergencePath, 'utf8'));
+    const page = readJsonFile(join(out, 'page.json'));
+    const history = page ? await previousHistory(fetchImpl, fullName) : undefined;
+    const historyWritten = history !== undefined;
+    if (historyWritten) {
+      const next = appendHistory(history, historyEntry(page, sha, renderedAt));
+      writeFileSync(join(out, 'history.json'), `${JSON.stringify(next, null, 2)}\n`);
+    } else {
+      log(`history ${fullName} kept: ${page ? 'the previous history' : 'page.json'} could not be read`);
+    }
     log(`render ${fullName}`);
-    return { kind: 'rendered', entry: fleetEntry(fullName, sha, renderedAt, now, structure, statistics, envelope), envelope, previous: previousJson };
+    return {
+      kind: 'rendered',
+      entry: fleetEntry(fullName, sha, renderedAt, now, structure, statistics, envelope),
+      envelope,
+      previous: previousJson,
+      historyWritten,
+    };
   } finally {
     try { rmSync(dest, { recursive: true, force: true }); } catch { /* a locked clone is scratch, not a render failure */ }
     try { rmSync(scratch, { recursive: true, force: true }); } catch { /* same */ }
@@ -414,6 +500,7 @@ export async function renderFleet(options = {}) {
   const ownOut = !options.outRoot;
   const outRoot = options.outRoot ?? mkdtempSync(join(tmpdir(), 'atlas-out-'));
   const renderedNow = [];
+  const withHistory = new Set();
   const changes = [];
   let changed = false;
   try {
@@ -460,6 +547,7 @@ export async function renderFleet(options = {}) {
     }
     if (result.kind !== 'rendered') continue;
     renderedNow.push(result.entry);
+    if (result.historyWritten) withHistory.add(repo.fullName);
     const delta = diffRows(result.previous, result.envelope);
     if (delta.opened.length > 0 || delta.cleared.length > 0) {
       changed = true;
@@ -483,9 +571,8 @@ export async function renderFleet(options = {}) {
   const date = now.toISOString().slice(0, 10);
   const paths = ['indexes/atlas/state.json', 'indexes/atlas/fleet.json'];
   for (const entry of renderedNow) {
-    for (const name of [...RENDER_FILES, 'divergence.json']) {
-      paths.push(`indexes/atlas/${entry.repo}/${name}`);
-    }
+    const names = [...RENDER_FILES, 'divergence.json', ...(withHistory.has(entry.repo) ? ['history.json'] : [])];
+    for (const name of names) paths.push(`indexes/atlas/${entry.repo}/${name}`);
   }
   rejectForeignPaths(paths, publicNames);
   const fleetDoc = { generatedAt: now.toISOString(), repositories: fleet };

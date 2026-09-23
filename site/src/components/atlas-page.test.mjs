@@ -520,8 +520,213 @@ test('phone width keeps 16px gutters and drops the picture below 600px', () => {
   assert.match(shell, /overflow-x: clip/);
   // SVG text is sized in viewBox units and scales with the picture, so the
   // 14px floor is checked on the page's own text rules.
-  const pageRules = shell.replace(/^\.flow [^{\n]*\btext\b[^\n]*$/gm, '');
+  const pageRules = shell.replace(/^\.(?:flow|bars|strip) [^{\n]*\btext\b[^\n]*$/gm, '');
   for (const size of pageRules.matchAll(/font(?:-size)?:\s*(\d+)px/g)) {
     assert.ok(Number(size[1]) >= 14, `text below 14px: ${size[0]}`);
   }
+});
+
+/* ---------- the "what breaks what" picture ---------- */
+
+// The part rows of the list, in its order, as the picture must draw them.
+function breakParts(pageData) {
+  return pageData.breaks.filter((entry) => entry.kind === 'part').slice(0, 8);
+}
+
+// The name the list gives a part; a row written before labels were carried has only its id.
+function label(part) {
+  return part.partLabel ?? part.name;
+}
+
+function breaksSectionHtml(html) {
+  const start = html.indexOf('<h2>What breaks what</h2>');
+  return html.slice(start, html.indexOf('</section>', start));
+}
+
+test('the what-breaks-what picture draws one row per listed part, its bar lengths from the list', () => {
+  const parts = breakParts(page);
+  assert.ok(parts.length > 1, 'this repository lists parts');
+  const svg = render.renderBreaks(page);
+  assert.match(svg, /^<svg [^>]*role="img"[^>]*aria-labelledby="atlasBreaksTitle atlasBreaksDesc"/);
+  const rows = render.breaksRows(page);
+  assert.deepEqual(rows.map((row) => row.name), parts.map(label));
+  const bars = [...svg.matchAll(/<rect class="bar" x="([\d.]+)" y="[\d.]+" width="([\d.]+)"/g)].map((match) => Number(match[2]));
+  const dashed = [...svg.matchAll(/<rect class="bar bar-tests" x="([\d.]+)" y="[\d.]+" width="([\d.]+)"/g)].map((match) => ({ x: Number(match[1]), width: Number(match[2]) }));
+  const withProduction = parts.filter((part) => part.importedBy.length > 0);
+  const withTests = parts.filter((part) => part.importedByTests.length > 0);
+  assert.equal(bars.length, withProduction.length, 'one solid bar per part imported to run');
+  assert.equal(dashed.length, withTests.length, 'one dashed bar per part also imported from tests');
+  // One unit of length per importing part, the same unit for both bars.
+  const unit = bars[0] / withProduction[0].importedBy.length;
+  withProduction.forEach((part, index) => assert.ok(Math.abs(bars[index] - part.importedBy.length * unit) < 1e-9, part.name));
+  withTests.forEach((part, index) => assert.ok(Math.abs(dashed[index].width - part.importedByTests.length * unit) < 1e-9, part.name));
+  // The dashed bar continues the solid one.
+  const barX = Number(/<rect class="bar" x="([\d.]+)"/.exec(svg)[1]);
+  withTests.forEach((part, index) => assert.ok(Math.abs(dashed[index].x - (barX + part.importedBy.length * unit)) < 1e-9, part.name));
+  // The numbers at the bar ends and the door numerals are the list's own.
+  for (const part of parts) {
+    const end = part.importedByTests.length > 0 ? `${part.importedBy.length} + ${part.importedByTests.length} from tests` : String(part.importedBy.length);
+    assert.ok(svg.includes(`>${end}</text>`), `${part.name}: ${end}`);
+    assert.ok(svg.includes(`>${esc(label(part))}</text>`), part.name);
+  }
+  const numerals = [...svg.matchAll(/text-anchor="end">(\d+)<\/text>/g)].map((match) => Number(match[1]));
+  assert.deepEqual(numerals, parts.map((part) => part.doors));
+});
+
+function esc(text) {
+  return render.esc(text);
+}
+
+test('the picture says in one sentence what its first three rows say, naming the first part', () => {
+  const svg = render.renderBreaks(page);
+  assert.match(svg, /<title id="atlasBreaksTitle">[^<]+<\/title>/);
+  const desc = /<desc id="atlasBreaksDesc">([^<]+)<\/desc>/.exec(svg)[1];
+  const [first, second, third] = breakParts(page);
+  const clause = (part) => {
+    const doors = `${part.doors} door${part.doors === 1 ? '' : 's'}`;
+    const by = `${part.importedBy.length} part${part.importedBy.length === 1 ? '' : 's'}`;
+    return part.importedByTests.length > 0
+      ? `${label(part)} is imported by ${by} and ${part.importedByTests.length} more only from tests, and sits on the path of ${doors}`
+      : `${label(part)} is imported by ${by} and sits on the path of ${doors}`;
+  };
+  assert.ok(desc.startsWith(`${label(first)} is imported by `), desc);
+  assert.ok(plain(desc).startsWith(`${clause(first)}; ${clause(second)}; ${clause(third)}`), desc);
+  assert.ok(desc.endsWith('.'));
+  // A part imported only from tests reads as the list reads it.
+  const onlyTests = render.renderBreaks({ breaks: [{ kind: 'part', name: 'fixtures', importedBy: [], importedByTests: ['scripts'], doors: 0 }] });
+  assert.ok(onlyTests.includes('<desc id="atlasBreaksDesc">fixtures is imported only from tests, by 1 part, and sits on the path of no door.</desc>'));
+  assert.ok(onlyTests.includes('>1 from tests</text>'));
+  assert.equal(onlyTests.includes('<rect class="bar" '), false, 'no solid bar for no production importer');
+});
+
+test('the picture sits after the list, carries no colour, and drops out below 600px', () => {
+  const html = render.renderPage(page, { repo: page.repo });
+  const section = breaksSectionHtml(html);
+  assert.ok(section.indexOf('</ul>') < section.indexOf('<figure class="picture bars">'), 'after the list');
+  assert.match(section, /<figcaption>[^<]*dashed[^<]*<\/figcaption><\/figure>$/);
+  assertNoColourLiterals(render.renderBreaks(page), 'the picture');
+  assert.match(shell, /@media \(max-width: 599\.98px\) \{ \.bars \{ display: none; \}/);
+  assert.match(shell, /\.bars \.bar-tests \{[^}]*stroke-dasharray/, 'the test-only bar is the dashed atom');
+  const places = render.renderPage({ ...page, breaks: page.breaks.filter((entry) => entry.kind === 'place') }, { repo: page.repo });
+  assert.equal(places.includes('atlasBreaksTitle'), false, 'no part rows, no picture');
+  assert.equal(render.renderBreaks({ breaks: [{ kind: 'part', name: '<script>', importedBy: ['<b>'], doors: 1 }] }).includes('<script>'), false);
+});
+
+test('a part is labelled as the list names it, so a root-level part reads "the repository root"', () => {
+  const breaks = [
+    { kind: 'part', name: 'root', partLabel: 'the repository root', importedBy: ['lib', 'tools'], importedByTests: [], doors: 3 },
+    { kind: 'part', name: 'lib', importedBy: ['tools'], importedByTests: [], doors: 2 },
+  ];
+  const svg = render.renderBreaks({ breaks });
+  assert.ok(svg.includes('>the repository root</text>'));
+  assert.equal(svg.includes('>root</text>'), false, 'the id is not the label');
+  assert.ok(svg.includes('>lib</text>'), 'a row without a label falls back to its id');
+  assert.ok(svg.includes('<desc id="atlasBreaksDesc">the repository root is imported by 2 parts and sits on the path of 3 doors; lib is'));
+  const html = render.renderPage({ ...page, breaks }, { repo: page.repo });
+  assert.ok(breaksSectionHtml(html).includes('<li><strong>the repository root</strong> is imported by 2 parts'), 'the list says the same');
+});
+
+test('page.json carries the imports among the listed parts, for a later layer of the picture', () => {
+  const listed = new Set(breakParts(page).map((part) => part.name));
+  assert.ok(Array.isArray(page.edges) && page.edges.length > 0);
+  for (const edge of page.edges) {
+    assert.deepEqual(Object.keys(edge).sort(), ['from', 'fromTests', 'to']);
+    assert.ok(listed.has(edge.from) && listed.has(edge.to), JSON.stringify(edge));
+  }
+  assert.equal(render.renderBreaks(page).includes('<path'), false, 'edges are not drawn yet');
+});
+
+/* ---------- the delta strip ---------- */
+
+const HISTORY = {
+  entries: [
+    { renderedAt: '2026-09-08T06:00:00.000Z', commit: 'a'.repeat(40), itemCount: 0, headlineKind: 'unchanged', fileCounts: null },
+    { renderedAt: '2026-09-15T06:00:00.000Z', commit: 'b'.repeat(40), itemCount: 5, headlineKind: 'cycle', fileCounts: null },
+    { renderedAt: '2026-09-22T06:00:00.000Z', commit: 'c'.repeat(40), itemCount: 2, headlineKind: 'door', fileCounts: null },
+  ],
+};
+
+function changesSectionHtml(html) {
+  const start = html.indexOf('<h2>What changed since');
+  return html.slice(start, html.indexOf('</section>', start));
+}
+
+test('the delta strip draws one column per render, height from its count, with the caption sentence', () => {
+  const caption = '3 renders since 2026-09-08; 2 of them changed the structure; the largest delta was 5 items on 2026-09-15.';
+  const html = render.renderPage(page, { repo: page.repo, history: HISTORY });
+  const section = changesSectionHtml(html);
+  assert.ok(section.indexOf('<figure class="picture strip">') > section.indexOf('</ul>'), 'after the changes');
+  assert.ok(section.endsWith(`<figcaption>${caption}</figcaption></figure>`));
+  const svg = render.renderDelta(HISTORY);
+  assert.ok(svg.includes(`<desc id="atlasStripDesc">${caption}</desc>`));
+  assert.match(svg, /<title id="atlasStripTitle">[^<]+<\/title>/);
+  assert.equal((svg.match(/<path class="tick"/g) ?? []).length, 3, 'one column per render');
+  const heights = [...svg.matchAll(/<rect class="col" x="[\d.]+" y="[\d.]+" width="[\d.]+" height="([\d.]+)"/g)].map((match) => Number(match[1]));
+  assert.equal(heights.length, 2, 'a render that changed nothing has no height');
+  assert.ok(Math.abs(heights[0] / heights[1] - 5 / 2) < 1e-9, 'height is proportional to the count');
+  // Only a cycle and an import carry a mark, each a symbol with a title; a cycle's is the strongest.
+  assert.equal((svg.match(/<use class="glyph glyph-strong" href="#atlasGlyphCycle"/g) ?? []).length, 1);
+  assert.equal(svg.includes('href="#atlasGlyphImport"'), false);
+  assert.match(svg, /<symbol id="atlasGlyphCycle"[^>]*><title>[^<]+<\/title>/);
+  assert.match(svg, /<symbol id="atlasGlyphImport"[^>]*><title>[^<]+<\/title>/);
+  assert.match(shell, /\.strip use\.glyph-strong \{ stroke-width: 2\.4; \}/, 'the strongest mark is the heavier stroke');
+  assert.ok(svg.includes('>2026-09-08</text>') && svg.includes('>2026-09-22</text>'), 'the first and last are dated');
+  assertNoColourLiterals(svg, 'the strip');
+  assert.match(shell, /@media \(max-width: 599\.98px\) \{[^\n]*\.strip svg \{ display: none; \}/, 'the strip keeps its sentence on a phone');
+});
+
+test('the strip dates the first, the last and every fourth render, and caps at fifty-two', () => {
+  const entries = Array.from({ length: 60 }, (_, index) => ({
+    renderedAt: new Date(Date.UTC(2025, 7, 4) + index * 7 * 86_400_000).toISOString(),
+    itemCount: index % 3,
+    headlineKind: index % 3 === 0 ? 'unchanged' : 'import-added',
+  }));
+  const rows = render.historyRows({ entries });
+  assert.equal(rows.length, 52);
+  assert.equal(rows[0].date, entries[8].renderedAt.slice(0, 10), 'the newest fifty-two');
+  const svg = render.renderDelta({ entries });
+  const dated = [...svg.matchAll(/class="date"[^>]*>([^<]+)<\/text>/g)].map((match) => match[1]);
+  const expected = rows.map((row) => row.date).filter((_, index) => index % 4 === 0 || index === rows.length - 1);
+  assert.equal(dated[0], rows[0].date);
+  assert.equal(dated.at(-1), rows.at(-1).date);
+  for (const date of dated) assert.ok(expected.includes(date), date);
+  assert.ok(dated.length >= expected.length - 1, 'at most the fourth next to the last yields to it');
+  assert.ok((svg.match(/<use class="glyph" href="#atlasGlyphImport"/g) ?? []).length > 0, 'an import headline carries the import mark');
+  assert.equal(render.deltaCaption(render.historyRows({ entries: [{ renderedAt: '2026-09-01T06:00:00Z', itemCount: 0 }] })), '1 render since 2026-09-01; none of them changed the structure.');
+});
+
+test('without history the strip is not drawn and the section is as before', () => {
+  const without = render.renderPage(page, { repo: page.repo });
+  assert.equal(without.includes('atlasStripTitle'), false);
+  assert.equal(render.renderPage(page, { repo: page.repo, history: null }), without);
+  assert.equal(render.renderPage(page, { repo: page.repo, history: { entries: [] } }), without);
+  assert.equal(render.renderPage(page, { repo: page.repo, history: { entries: [{ itemCount: 3 }] } }), without, 'an undated entry cannot be placed');
+  const hostile = render.renderDelta({ entries: [{ renderedAt: '2026-09-01<script>', itemCount: 1, headlineKind: '<script>' }] });
+  assert.equal(hostile.includes('<script>'), false);
+  assert.equal(render.historyDataUrl('https://raw.example/', 'o/n'), 'https://raw.example/indexes/atlas/o/n/history.json');
+  assert.match(shell, /load\(historyDataUrl\(CONFIG\.atlasBase, repo\)\)\.then\([^\n]*\(\) => null\)/, 'a missing or unreadable history is never an error');
+});
+
+/* ---------- the one line a person may write ---------- */
+
+test('with no summary the page invites one, linking to the boundary file in GitHub\'s editor', () => {
+  assert.ok(!page.summary, 'this repository has no summary yet');
+  const html = render.renderPage(page, { repo: page.repo });
+  const edit = 'https://github.com/dogfood-lab/testing-os/edit/main/atlas/boundaries.yaml';
+  const line = `<p class="summary">No one has written the one line a person may add. <a href="${edit}">Write it.</a></p>`;
+  assert.ok(html.includes(line));
+  assert.ok(html.indexOf(line) > html.indexOf('<p class="mapped">'), 'after the mapped-at line');
+  assert.ok(html.indexOf(line) < html.indexOf('<h2>What this is</h2>'));
+  assert.equal(render.summaryEditUrl('not a repo'), null);
+  assert.ok(render.renderPage({ ...page, repo: 'x' }, {}).includes('<p class="summary">No one has written the one line a person may add.</p>'), 'no link without a repository to link to');
+});
+
+test('with a summary the page shows it as written by a person, with a small link to correct it', () => {
+  const summary = 'testing-os collects proof that other repositories\' tests ran.';
+  const html = render.renderPage({ ...page, summary, summaryFrom: 'person' }, { repo: page.repo });
+  const edit = 'https://github.com/dogfood-lab/testing-os/edit/main/atlas/boundaries.yaml';
+  assert.ok(html.includes(`<p class="summary">${esc(summary)} (written by a person) <a class="correct" href="${edit}">Correct it</a></p>`));
+  assert.equal(html.includes('No one has written'), false);
+  assert.equal((html.match(/\(written by a person\)/g) ?? []).length, 1, 'said once, at the top');
+  assert.match(shell, /\.summary \.correct \{ font-size: 14px; \}/);
 });

@@ -866,6 +866,9 @@ function breaks(ctx) {
     .map((boundary) => ({
       kind: 'part',
       name: boundary.name,
+      // The name the list gives the part, so the site's picture of the list
+      // calls a root-level part "the repository root" as the list does.
+      partLabel: ctx.shown(boundary.name),
       importedBy: [...(from.get(boundary.name) ?? [])].sort(cmp),
       importedByTests: [...(fromTests.get(boundary.name) ?? [])].sort(cmp),
       doors: on.get(boundary.name) ?? 0,
@@ -875,6 +878,25 @@ function breaks(ctx) {
       || b.importedByTests.length - a.importedByTests.length || cmp(a.name, b.name))
     .slice(0, BREAK_LINES - places.length);
   return [...parts, ...places];
+}
+
+/**
+ * The imports among the parts "What breaks what" lists, one per ordered pair,
+ * so a picture can draw them without reading structure.json. A pair is from
+ * tests only when every import between the two is in a test file, the rule
+ * the list uses for its test-only count.
+ */
+function breakEdges(ctx, entries) {
+  const listed = new Set(entries.filter((entry) => entry.kind === 'part').map((entry) => entry.name));
+  const pairs = new Map();
+  for (const edge of ctx.structure.edges ?? []) {
+    if (edge.kind !== 'file' && edge.kind !== 'chunk') continue;
+    if (edge.from === edge.to || !listed.has(edge.from) || !listed.has(edge.to)) continue;
+    const key = JSON.stringify([edge.from, edge.to]);
+    const fromTests = Boolean(edge.fromTests) && (pairs.get(key)?.fromTests ?? true);
+    pairs.set(key, { from: edge.from, fromTests, to: edge.to });
+  }
+  return [...pairs.values()].sort((a, b) => cmp(a.from, b.from) || cmp(a.to, b.to));
 }
 
 function breakLine(ctx, entry) {
@@ -1443,6 +1465,7 @@ export function buildPage({ structure, statistics, document, repoName, changes =
     duplicates: duplicated.items,
     duplicatesLead: duplicated.lead,
     duplicatesNote: duplicated.note,
+    edges: breakEdges(ctx, breakEntries),
     generated: generatedItems.map((item) => ({ place: item.place, writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
