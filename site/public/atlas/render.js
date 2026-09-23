@@ -137,14 +137,22 @@ function runs(ctx, door) {
   return arr(door.runs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
 }
 
-function runsShown(items) {
-  if (items.length <= RUNS_SHOWN) return list(items.map((item) => item.html));
-  return `${items.slice(0, RUNS_SHOWN).map((item) => item.html).join(', ')} and ${items.length - RUNS_SHOWN} more`;
+// runsCount is how many paths the door runs when page.json lists fewer, so
+// "and N more" counts every one.
+function runTotal(door, items) {
+  return Math.max(Number(door?.runsCount) || 0, items.length);
 }
 
-function runsShownText(items) {
-  if (items.length <= RUNS_SHOWN) return list(items.map((item) => item.text));
-  return `${items.slice(0, RUNS_SHOWN).map((item) => item.text).join(', ')} and ${items.length - RUNS_SHOWN} more`;
+function runsShown(items, total = items.length) {
+  if (total <= RUNS_SHOWN) return list(items.map((item) => item.html));
+  const shown = items.slice(0, RUNS_SHOWN);
+  return `${shown.map((item) => item.html).join(', ')} and ${total - shown.length} more`;
+}
+
+function runsShownText(items, total = items.length) {
+  if (total <= RUNS_SHOWN) return list(items.map((item) => item.text));
+  const shown = items.slice(0, RUNS_SHOWN);
+  return `${shown.map((item) => item.text).join(', ')} and ${total - shown.length} more`;
 }
 
 function deeper(door) {
@@ -195,6 +203,7 @@ function derivedLine(ctx) {
   const parts = count(Number(ctx.page.parts) || 0, 'part');
   if (ctx.doors.length === 0) return `${parts}. No workflows were found, so this page has no doors.`;
   const doors = count(ctx.doors.length, 'door');
+  if (!ctx.main && ctx.doors.some((door) => !door.parseError)) return `${parts}. Work enters through ${doors}, and none of them runs a file this map can see.`;
   if (!ctx.main) return `${parts}. Work enters through ${doors}, and none of their workflows could be read.`;
   const reach = count(arr(ctx.main.reach).length, 'part');
   return `${parts}. Work enters through ${doors}; the busiest is ${ctx.main.name}, which reaches ${reach}.`;
@@ -237,7 +246,7 @@ function comesIn(ctx) {
     if (door.parseError) return `${name} This workflow could not be read.`;
     const when = capitalize(arr(door.triggers).map(str).join('; ')) || 'Nothing this map can read starts it';
     const paths = runs(ctx, door);
-    const ran = paths.length > 0 ? `Runs ${runsShown(paths)}.` : 'Runs no file this map can see.';
+    const ran = paths.length > 0 ? `Runs ${runsShown(paths, runTotal(door, paths))}.` : 'Runs no file this map can see.';
     return `${name} ${inline(when)}. ${ran}`;
   });
   return section('What comes in', ol(items));
@@ -348,7 +357,7 @@ function otherDoors(ctx) {
     const clauses = [];
     const paths = runs(ctx, door);
     clauses.push(paths.length > 0
-      ? { html: `runs ${runsShown(paths)}`, text: `runs ${runsShownText(paths)}` }
+      ? { html: `runs ${runsShown(paths, runTotal(door, paths))}`, text: `runs ${runsShownText(paths, runTotal(door, paths))}` }
       : { html: 'runs no file this map can see', text: 'runs no file this map can see' });
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => str(entry.boundary))))].sort(cmp);
     if (reached.length > 0) clauses.push({ html: `reaches ${list(reached.map(esc))}`, text: `reaches ${list(reached)}` });
@@ -499,13 +508,17 @@ export function triggerNoun(door) {
   if (first.startsWith('on a schedule')) return 'scheduled run';
   if (first.startsWith('when a tag matching')) return 'tag push';
   if (first.startsWith('on a push')) return 'push';
-  if (first === 'on a pull request') return 'pull request';
+  if (first.startsWith('on a pull request')) return 'pull request';
+  if (first === 'when a release is published' || first === 'on a release event') return 'release';
   if (first === 'by hand') return 'run by hand';
   return 'run';
 }
 
 function startSection(ctx) {
-  if (!ctx.main) return section('Where to start', p('No door was found, so there is no path through this repository to follow.'));
+  if (!ctx.main) {
+    const why = ctx.doors.some((door) => !door.parseError) ? 'No door runs a file this map can see' : 'No door was found';
+    return section('Where to start', p(`${why}, so there is no path through this repository to follow.`));
+  }
   const chain = arr(ctx.page.startHere).map((path) => pathHtml(ctx, path));
   const body = [
     `<p class="chain">${chain.join(' <span aria-hidden="true">→</span><span class="sr">, then</span> ')}</p>`,

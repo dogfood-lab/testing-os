@@ -417,13 +417,17 @@ describe('atlas page', () => {
   it('bounds this repository\'s order of work and names its five strongest source pairs', () => {
     const atlas = join(REPO_ROOT, 'atlas');
     const statistics = JSON.parse(readFileSync(join(atlas, 'statistics.json'), 'utf8'));
-    const own = buildPage({
-      structure: JSON.parse(readFileSync(join(atlas, 'structure.json'), 'utf8')),
+    const structure = JSON.parse(readFileSync(join(atlas, 'structure.json'), 'utf8'));
+    const own = buildPage({ structure, statistics, document: readBoundaryFile(REPO_ROOT), repoName: 'dogfood-lab/testing-os' });
+    // CI is this repository's busiest door; the ingest door's files carry the
+    // deepest order of work, so it is followed alone to measure the bound.
+    const ingest = buildPage({
+      structure: { ...structure, doors: structure.doors.filter((door) => door.file === '.github/workflows/ingest.yml') },
       statistics,
       document: readBoundaryFile(REPO_ROOT),
       repoName: 'dogfood-lab/testing-os',
     });
-    const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
+    const happens = section(ingest.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
     assert.ok(followed.length <= 5);
     assert.ok(followed.some((line) => line.includes('**Verify** (verify) runs, in order:')));

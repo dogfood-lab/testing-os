@@ -216,6 +216,16 @@ function carryReader(entry) {
   return out;
 }
 
+// A run carries directory, matched and via only when they say something, so a
+// file the workflow names reads as it always has.
+function carryRun(run) {
+  const out = { job: run.job, path: run.path };
+  if (run.directory) out.directory = true;
+  if (run.matched) out.matched = true;
+  if (run.via) out.via = run.via;
+  return out;
+}
+
 // Every list a door carries arrives sorted from the core, except commands,
 // whose order is the workflow's own. Copying field by field keeps the
 // artifact's shape the one written here rather than whatever the core adds.
@@ -231,12 +241,17 @@ function carryDoor(door) {
     pushes: door.pushes,
     reach: door.reach.map(carryReach),
     readers: door.readers.filter((entry) => !inAtlas(entry.target) && !inAtlas(entry.by)).map(carryReader),
-    runs: door.runs.map((run) => ({ job: run.job, path: run.path })),
+    runs: door.runs.map(carryRun),
+    runsCount: door.runsCount,
     secrets: [...door.secrets],
     sends: {
       deploysPages: door.sends.deploysPages,
       dispatchesTo: [...door.sends.dispatchesTo],
+      opensIssues: door.sends.opensIssues,
+      opensIssuesOnFailure: door.sends.opensIssuesOnFailure,
+      opensPullRequests: door.sends.opensPullRequests,
       publishes: door.sends.publishes,
+      publishesTo: [...door.sends.publishesTo],
       releases: door.sends.releases,
     },
     stages: [...door.stages],
