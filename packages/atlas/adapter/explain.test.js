@@ -211,3 +211,19 @@ describe('atlas explain on this repository', () => {
     assert.ok(records.readers.length >= 2, JSON.stringify(records));
   });
 });
+
+describe('atlas explain on a repository whose top-level files are a part', () => {
+  it('names the root part the repository root, in the lines and beside the ids in JSON', () => {
+    const root = repoFrom(resolve(REPO_ROOT, 'fixtures/atlas/root-part'));
+    const mapped = spawnSync(process.execPath, [CLI, 'map'], { cwd: root, encoding: 'utf8' });
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+    const lines = explained(root, 'lib/core.js');
+    assert.ok(lines.includes('Its part is imported by 1 part: the repository root.'), lines.join('\n'));
+    const facts = JSON.parse(explain(root, 'lib/core.js', '--json').stdout);
+    assert.deepEqual(facts.importedBy, ['root']);
+    assert.deepEqual(facts.partLabels, { lib: 'lib', root: 'the repository root' });
+    const own = JSON.parse(explain(root, 'index.js', '--json').stdout);
+    assert.equal(own.part, 'root');
+    assert.deepEqual(own.partLabels, { lib: 'lib', root: 'the repository root', tools: 'tools' });
+  });
+});

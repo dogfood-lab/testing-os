@@ -368,6 +368,25 @@ describe('atlas page', () => {
     assert.equal(imported.breaks.find((entry) => entry.name === 'lib').partLabel, 'lib');
   });
 
+  it('carries one map of the name of every part, so a root part another imports reads the repository root in every list', () => {
+    const mapped = mappedCopy('root-part');
+    const built = page(mapped, { repoName: 'acme/top-level-part' });
+    const data = JSON.parse(built.json);
+    assert.deepEqual(data.partLabels, { '.github': '.github', lib: 'lib', root: 'the repository root', tools: 'tools' });
+    assert.equal(
+      section(built.markdown, '## What breaks what'),
+      [
+        '## What breaks what',
+        '',
+        '- **lib** is imported by 1 part (the repository root) and sits on the path of 1 door.',
+        '- **the repository root** is imported by 1 part (tools) and sits on the path of 1 door.',
+        '',
+      ].join('\n'),
+    );
+    assert.deepEqual(data.breaks.map((entry) => [entry.name, entry.importedBy]), [['lib', ['root']], ['root', ['tools']]]);
+    assert.ok(section(built.markdown, '## What happens through CI').includes('2. That reaches the repository root (1 file).'));
+  });
+
   it('names source files that changed together, from statistics built over a commit list', () => {
     const commit = (hash, paths) => ({ hash, parents: ['p'], files: paths.map((path) => ({ path, added: 1, deleted: 0 })) });
     // Three commits touch tools/ingest.js and lib/store.js; README.md rides

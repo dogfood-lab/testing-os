@@ -281,6 +281,19 @@ function pairLine(pair) {
   return `${pair.a} and ${pair.b} change together in ${pair.shared} of ${commits}.`;
 }
 
+// The names page.json gives the parts these facts name, so a reader of the
+// JSON words a part as the page does; the fields themselves keep the ids.
+function labelsFor(ctx, facts) {
+  const ids = [
+    facts.part,
+    ...facts.imports,
+    ...facts.importedBy,
+    ...facts.importedByTests,
+    ...(facts.parts ?? []).map((entry) => entry.part),
+  ].filter((part) => part != null);
+  return Object.fromEntries([...new Set(ids)].sort(cmp).map((part) => [part, ctx.shown(part)]));
+}
+
 function mapLine(map) {
   const commit = map.commit.slice(0, 7);
   const date = map.generatedAt.slice(0, 10);
@@ -327,6 +340,7 @@ function explainFound(ctx, found, map) {
       : `${shownPath} is a directory whose files are in ${count(parts.length, 'part')}: ${shownList(named)}${loose > 0 ? `, and ${count(loose, 'file')} in no part` : ''}.`);
     lines.push('Explain a path inside one part for its doors, imports and order of work.');
     lines.push(mapLine(map));
+    facts.partLabels = labelsFor(ctx, facts);
     return { facts, lines };
   }
 
@@ -412,6 +426,7 @@ function explainFound(ctx, found, map) {
   facts.changesWith = pairFacts(ctx, found);
   for (const pair of facts.changesWith) lines.push(pairLine(pair));
   lines.push(mapLine(map));
+  facts.partLabels = labelsFor(ctx, facts);
   return { facts, lines };
 }
 

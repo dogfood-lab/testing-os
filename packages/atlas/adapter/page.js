@@ -126,7 +126,10 @@ function facts({ structure, statistics }) {
   for (const file of [...boundaries.flatMap((boundary) => boundary.files ?? []), ...(structure.unassigned ?? []), ...(structure.overlaps ?? [])]) {
     fileOf.set(file.path, file);
   }
-  const names = new Map(boundaries.map((boundary) => [boundary.name, displayName(boundary)]));
+  // Every name the page gives a part, by id. page.json carries this map once,
+  // so explain and the site name a part as the page does without each
+  // reproducing displayName; a field that names a part keeps its id.
+  const partLabels = Object.fromEntries(boundaries.map((boundary) => [boundary.name, displayName(boundary)]));
   const spans = new Map();
   const partsUnder = (dir) => {
     if (!spans.has(dir)) {
@@ -142,7 +145,8 @@ function facts({ structure, statistics }) {
     boundaries,
     boundaryOf,
     fileOf,
-    shown: (name) => names.get(name) ?? name,
+    partLabels,
+    shown: (name) => (Object.hasOwn(partLabels, name) ? partLabels[name] : name),
     partsUnder,
     place: (target) => (isDir(target) ? `${target}/` : target),
     doors: orderDoors(structure.doors ?? []),
@@ -1470,6 +1474,7 @@ export function buildPage({ structure, statistics, document, repoName, changes =
     generatedAt,
     limits: limitLines,
     mainDoor: main ? main.file : null,
+    partLabels: ctx.partLabels,
     parts: ctx.boundaries.length,
     readers: groups.map((group) => ({ readers: worded(group.readers, id), target: group.target })),
     repo: String(repoName ?? ''),

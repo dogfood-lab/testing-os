@@ -6,7 +6,9 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { cpSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as render from '../../public/atlas/render.js';
@@ -647,6 +649,55 @@ test('a part is labelled as the list names it, so a root-level part reads "the r
   assert.ok(svg.includes('<desc id="atlasBreaksDesc">the repository root is imported by 2 parts and sits on the path of 3 doors; lib is'));
   const html = render.renderPage({ ...page, breaks }, { repo: page.repo });
   assert.ok(breaksSectionHtml(html).includes('<li><strong>the repository root</strong> is imported by 2 parts'), 'the list says the same');
+});
+
+// A copy of a fixture repository mapped by the atlas CLI, so the site reads
+// the page.json atlas map writes rather than one written by hand.
+function mappedFixture(name) {
+  const root = mkdtempSync(join(tmpdir(), 'atlas-site-'));
+  try {
+    cpSync(join(repoRoot, 'fixtures', 'atlas', name), root, { recursive: true });
+    const git = (args) => {
+      const result = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+      assert.equal(result.status, 0, result.stderr);
+    };
+    git(['init']);
+    git(['add', '-A']);
+    git(['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-m', name]);
+    const mapped = spawnSync(process.execPath, [join(repoRoot, 'packages', 'atlas', 'cli.js'), 'map'], { cwd: root, encoding: 'utf8' });
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+    return JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8'));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+}
+
+test('every part is named from the one map page.json carries, so a root part reads "the repository root" in every list', () => {
+  const rooted = mappedFixture('root-part');
+  assert.equal(rooted.partLabels.root, 'the repository root');
+  const html = render.renderPage(rooted, { repo: 'acme/top-level-part' });
+  const text = plain(html);
+  for (const sentence of [
+    'lib is imported by 1 part (the repository root) and sits on the path of 1 door.',
+    'the repository root is imported by 1 part (tools) and sits on the path of 1 door.',
+    'That reaches the repository root (1 file).',
+  ]) assert.ok(text.includes(sentence), sentence);
+  assert.equal(/(^|[\s(,>])root\b/.test(text.replaceAll('the repository root', '')), false, 'the id is never shown');
+  const flow = render.renderFlow(rooted);
+  assert.ok(flow.includes('>the repository root</text>'), 'the flow picture names the part as the list does');
+  assert.equal(flow.includes('>root</text>'), false);
+
+  // A reader or writer standing for many files of one part is written as the
+  // part's id and the count; the site names the part and keeps the count.
+  const collapsed = {
+    ...rooted,
+    doors: rooted.doors.map((door) => ({ ...door, landings: ['out/'] })),
+    readers: [{ readers: ['root (4 README files)', 'tools/run.js'], target: 'out/' }],
+    unread: [{ place: 'cache/', writers: ['root (5 files)'] }],
+  };
+  const worded = plain(render.renderPage(collapsed, { repo: 'acme/top-level-part' }));
+  assert.ok(worded.includes('out/ is read by the repository root (4 README files) and tools/run.js.'), worded);
+  assert.ok(worded.includes('cache/ is written by the repository root (5 files) and read by nothing else'), worded);
 });
 
 test('page.json carries the imports among the listed parts, for a later layer of the picture', () => {

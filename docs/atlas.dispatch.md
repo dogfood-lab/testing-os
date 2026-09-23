@@ -847,6 +847,13 @@ production edges, and `atlas check` treats an edge moving out of test files as d
 locating a package's file needs the package: on this repository dogfood-swarm and portfolio read
 the schema JSON through `createRequire`, and now import schemas to run.
 
+A part is named once. `page.json` carries `partLabels`, every part's id with the name the page
+gives it, and the site names each part through it: the importer lists and places of "What breaks
+what", the reach, a reader that stands for many files of one part, and both pictures. `atlas
+explain --json` carries the labels of the parts it names. A part of top-level files therefore
+reads "the repository root" wherever it is named; before, the site's importer lists and reach
+said "root" where the markdown said the repository root. Every other field keeps the id.
+
 Look-alike helpers are grouped by name. A name alike in two parts keeps a line per pair; a name
 alike in three or more is one line, since that many copies of one helper is less likely than one
 contract each part fulfils: "**createGame** is exported by 13 parts (starter,
