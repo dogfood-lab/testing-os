@@ -125,7 +125,8 @@ concurrency:
 # workflow runs untrusted PR code via `npm ci` + `npm test`, so the
 # GITHUB_TOKEN scope is part of the attack surface. `contents: read` is the
 # floor needed for `actions/checkout` to fetch the ref; no job here writes
-# back to the repo, so no per-job override is needed.
+# back to the repo. build-and-test widens its own token by one scope,
+# `pull-requests: write`, for the Atlas diff comment (see that job).
 permissions:
   contents: read
 
@@ -133,6 +134,14 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # `pull-requests: write` lets the Atlas diff step post its one comment on
+    # the pull request; it grants no write to the repository's contents. A
+    # job-level block replaces the workflow-level one, so `contents: read` is
+    # restated. On a pull request from a fork GitHub hands this job a
+    # read-only token whatever this block says, and the step logs instead.
+    permissions:
+      contents: read
+      pull-requests: write
     strategy:
       # Both Node legs must run to completion so the operator can tell from a
       # single CI run whether a failure is Node-version-specific (e.g. an
@@ -161,6 +170,13 @@ jobs:
         node-version: [22, 24]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v6.0.3 (node24 runtime)
+        # The token this job now carries can write pull request comments.
+        # Left in .git/config it would be readable by every install script
+        # and test the job runs; unpersisted, only the one step that names it
+        # holds it. The repository is public, so the base fetch below needs
+        # no credentials.
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: ${{ matrix.node-version }}
@@ -284,6 +300,57 @@ jobs:
       # tree. CI runs the same check in the same place; without it a push that
       # skipped the local gate could land a stale map.
       - run: node packages/atlas/cli.js check
+      # What this pull request does to the map, as one comment on it: the
+      # structural delta between the map committed on the base branch and a
+      # fresh map of the merged tree, updated in place on every push so the
+      # pull request never carries a second one. The hidden marker is how the
+      # step finds its own comment again. Node 22 only: the delta does not
+      # depend on the runtime, and two legs would race on the one comment.
+      # Nothing here can fail the build. A base that cannot be fetched or
+      # carries no map, and a comment that cannot be posted (a fork's token is
+      # read-only), each end in a warning with the delta in this log and the
+      # job summary; every exit is `exit 0`.
+      - name: Atlas diff on this pull request
+        if: ${{ github.event_name == 'pull_request' && matrix.node-version == 22 }}
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          marker='<!-- atlas-diff -->'
+          delta="$RUNNER_TEMP/atlas-diff.md"
+          body="$RUNNER_TEMP/atlas-diff-comment.md"
+          depth=()
+          if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then depth=(--depth=1); fi
+          if ! git fetch --no-tags "${depth[@]}" origin "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"; then
+            echo "::warning::atlas diff skipped: origin/${BASE_REF} could not be fetched"
+            exit 0
+          fi
+          if ! node packages/atlas/cli.js diff --base "origin/${BASE_REF}" > "$delta"; then
+            cat "$delta"
+            echo "::warning::atlas diff did not run against origin/${BASE_REF}; no comment posted"
+            exit 0
+          fi
+          cat "$delta"
+          cat "$delta" >> "$GITHUB_STEP_SUMMARY"
+          { printf '%s\n' "$marker"; cat "$delta"; } > "$body"
+          if [ "$HEAD_REPO" != "$REPO" ]; then
+            echo "::notice::pull request from a fork: its token cannot comment, so the delta is in this log and the job summary"
+            exit 0
+          fi
+          ids=$(gh api --paginate "repos/${REPO}/issues/${PR_NUMBER}/comments" \
+            --jq ".[] | select(.user.login == \"github-actions[bot]\" and (.body | contains(\"${marker}\"))) | .id") || ids=''
+          id="${ids%%$'\n'*}"
+          if [ -n "$id" ]; then
+            gh api --method PATCH "repos/${REPO}/issues/comments/${id}" -F "body=@${body}" > /dev/null \
+              || echo "::warning::atlas diff comment ${id} could not be updated; the delta is in this log"
+          else
+            gh api --method POST "repos/${REPO}/issues/${PR_NUMBER}/comments" -F "body=@${body}" > /dev/null \
+              || echo "::warning::atlas diff comment could not be posted; the delta is in this log"
+          fi
+          exit 0
       - run: npm run test:scripts
       - run: npm test
 

@@ -234,16 +234,20 @@ test('what tends to change together renders the pairs page.json names and the se
   assert.ok(start !== -1);
   const body = html.slice(start, html.indexOf('</section>', start));
   const bullets = [...body.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((match) => plain(match[1]));
-  assert.equal(bullets.length, 5);
-  assert.ok(page.changesTogetherWithTests > 0);
-  const setAside = `${page.changesTogetherWithTests} files changed together with their own tests, as expected.`;
+  // The count is whatever the committed map says: the coupling floor moves with
+  // the history, so this repository can name five pairs one week and none the next.
+  assert.equal(bullets.length, page.changesTogether.length);
   const paragraphs = [...body.matchAll(/<p>([\s\S]*?)<\/p>/g)].map((match) => plain(match[1]));
-  assert.deepEqual(paragraphs, page.changesTogetherNote);
-  assert.equal(paragraphs[0], setAside);
+  if (page.changesTogetherWithTests > 0) {
+    const noun = page.changesTogetherWithTests === 1 ? 'file' : 'files';
+    const verb = page.changesTogetherWithTests === 1 ? 'its' : 'their';
+    assert.ok(paragraphs.includes(`${page.changesTogetherWithTests} ${noun} changed together with ${verb} own ${page.changesTogetherWithTests === 1 ? 'test' : 'tests'}, as expected.`), 'the set-aside line renders');
+  }
   const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8');
   const twin = markdown.slice(markdown.indexOf('## What tends to change together\n'), markdown.indexOf('## Generated, never hand-edited\n'));
   assert.deepEqual(bullets, twin.split('\n').filter((line) => line.startsWith('- ')).map((line) => line.slice(2).replace(/\*\*/g, '')));
-  for (const line of paragraphs) assert.ok(twin.includes(`\n\n${line}\n`), `the markdown says it too: ${line}`);
+  const twinParagraphs = twin.split('\n').filter((line) => line.trim() !== '' && !line.startsWith('- ') && !line.startsWith('## '));
+  assert.deepEqual(paragraphs, twinParagraphs, 'every paragraph of the section matches the markdown, empty case included');
 });
 
 test('more than twelve steps list twelve and count the rest', () => {

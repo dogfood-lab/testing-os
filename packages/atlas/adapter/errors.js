@@ -12,6 +12,7 @@ export const ERRORS = {
   ATLAS_FILE_MOVED: 'A tracked file changed boundary.',
   ATLAS_EXPLAIN_NO_MAP: 'There is no committed map to explain from.',
   ATLAS_EXPLAIN_UNKNOWN_PATH: 'The path is not in the committed map.',
+  ATLAS_DIFF_NO_BASE: 'The base ref carries no map.',
 };
 
 export function formatFailure(code, details, { exitCode = 1, whatToDo } = {}) {

@@ -428,20 +428,30 @@ describe('atlas page', () => {
     const tested = (path) => /^(.+)(?:\.test|\.spec|_test)$/.exec(bare(path))?.[1] ?? /^test_(.+)$/.exec(bare(path))?.[1] ?? null;
     const ownTest = (a, b) => dir(a) === dir(b) && ((tested(a) != null && tested(b) == null && tested(a) === bare(b)) || (tested(b) != null && tested(a) == null && tested(b) === bare(a)));
     const sourcePairs = statistics.pairs.filter((pair) => source.test(pair.a) && source.test(pair.b));
+    // The coupling floor moves with the history (it falls to the fallen floor
+    // only while fewer than twenty source files reach ten revisions), so the
+    // counts below are derived from the committed statistics, never pinned.
     const withTests = sourcePairs.filter((pair) => ownTest(pair.a, pair.b)).length;
-    assert.ok(withTests >= 4);
+    const together = section(own.markdown, '## What tends to change together');
     assert.equal(JSON.parse(own.json).changesTogetherWithTests, withTests);
-    assert.ok(section(own.markdown, '## What tends to change together').includes(`\n\n${withTests} files changed together with their own tests, as expected.\n\n`));
+    if (withTests > 0) {
+      const line = withTests === 1
+        ? '1 file changed together with its own test, as expected.'
+        : `${withTests} files changed together with their own tests, as expected.`;
+      assert.ok(together.includes(`\n\n${line}\n\n`), `the set-aside line reads: ${line}`);
+    }
     const expected = sourcePairs
       .filter((pair) => !ownTest(pair.a, pair.b))
       .sort((x, y) => y.strength - x.strength || y.shared - x.shared || (x.a < y.a ? -1 : x.a > y.a ? 1 : x.b < y.b ? -1 : 1))
       .slice(0, 5);
-    assert.ok(expected.length > 0);
-    const bullets = section(own.markdown, '## What tends to change together').split('\n').filter((line) => line.startsWith('- '));
+    const bullets = together.split('\n').filter((line) => line.startsWith('- '));
     assert.deepEqual(bullets.map((line) => /^- \*\*(.+?)\*\* and \*\*(.+?)\*\* changed together in (\d+) of (\d+) commits[,.]/.exec(line).slice(1)),
       expected.map((pair) => [pair.a, pair.b, String(pair.shared), String(pair.either)]));
     assert.equal(bullets.some((line) => line.includes('.md**')), false);
-    assert.ok(bullets.some((line) => line.startsWith('- **packages/dogfood-swarm/lib/verify/adapters/python.js** and **packages/dogfood-swarm/lib/verify/adapters/rust.js**')));    assert.match(section(own.markdown, '## What tends to change together'), /\n\nWindow: \d+ days; a pair counts from \d+ shared commits\.\n$/);
+    if (expected.length === 0) {
+      assert.ok(together.includes('changed together often enough to name.'), 'the empty case says so in words');
+    }
+    assert.match(together, /\n\nWindow: \d+ days; a pair counts from \d+ shared commits\.\n$/);
   });
 
   it('names this repository\'s root boundary the repository root wherever its page names it', () => {

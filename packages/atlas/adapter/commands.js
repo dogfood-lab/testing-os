@@ -6,6 +6,7 @@ import { buildArtifact, serializeArtifact } from './artifact.js';
 import { ignoredNotice, readBoundaryFile } from './boundary-file.js';
 import { changesSince } from './changes.js';
 import { compareArtifacts } from './check.js';
+import { diffAgainstBase, diffJson, diffMarkdown, readBaseMap } from './diff.js';
 import { formatFailure } from './errors.js';
 import { explainCommand } from './explain.js';
 import { initCommand } from './init.js';
@@ -19,7 +20,8 @@ export function main(argv, cwd) {
   if (argv[0] === 'map') return mapCommand(cwd, argv.slice(1));
   if (argv[0] === 'check') return checkCommand(cwd);
   if (argv[0] === 'explain') return explainAt(cwd, argv.slice(1));
-  process.stdout.write('atlas: expected atlas init, atlas map, atlas check, or atlas explain\nexit 2\n');
+  if (argv[0] === 'diff') return diffCommand(cwd, argv.slice(1));
+  process.stdout.write('atlas: expected atlas init, atlas map, atlas check, atlas explain, or atlas diff\nexit 2\n');
   return 2;
 }
 
@@ -171,6 +173,36 @@ export function checkCommand(cwd) {
   return 0;
 }
 
+/**
+ * The structural delta between the map committed at --base and a fresh map
+ * of the working tree. Read-only, like the check: the working-side map is
+ * built in memory and nothing under atlas/ is touched.
+ */
+export function diffCommand(cwd, argv = []) {
+  const flags = parseDiffArgs(argv);
+  if (flags.error) return usage(flags.error);
+  const repo = repoRoot(cwd);
+  if (!repo) return usage('atlas: not a git repository');
+  const boundary = readBoundaryFile(repo);
+  if (!boundary.ok) return failBoundary(boundary);
+  // stdout is the markdown or JSON a caller posts or parses as is, so the
+  // notice goes to stderr where it is still seen but cannot corrupt either.
+  process.stderr.write(ignoredNotice(boundary));
+  const base = readBaseMap(repo, flags.base);
+  if (!base.ok) {
+    process.stdout.write(formatFailure('ATLAS_DIFF_NO_BASE', base.details, {
+      exitCode: 2,
+      whatToDo: 'fetch the base ref, or run atlas map on it',
+    }));
+    return 2;
+  }
+  const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
+  const current = buildArtifact(mapped, head(repo) ?? '');
+  const diff = diffAgainstBase({ ...base, ref: flags.base }, current, { repoPath: repo });
+  process.stdout.write(flags.json ? diffJson(diff) : diffMarkdown(diff));
+  return 0;
+}
+
 function failBoundary(boundary) {
   const whatToDo = boundary.code === 'ATLAS_NO_BOUNDARY_FILE' ? 'run atlas init first' : 'fix the boundary file';
   process.stdout.write(formatFailure(boundary.code, boundary.details, { exitCode: 2, whatToDo }));
@@ -199,6 +231,24 @@ function parseMapArgs(argv) {
   }
   if (previous && !divergence) return { error: 'atlas: --previous requires --divergence' };
   return { divergence, previous };
+}
+
+// No default base: origin/main is a guess about someone else's branch
+// layout, and a wrong guess would print a delta against the wrong map.
+function parseDiffArgs(argv) {
+  let base = null;
+  let json = false;
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+    if (arg === '--base') {
+      base = argv[i + 1];
+      if (!base || base.startsWith('-')) return { error: 'atlas: --base needs a ref, such as --base origin/main' };
+      i += 1;
+    } else if (arg === '--json') json = true;
+    else return { error: `atlas: unknown argument ${arg}` };
+  }
+  if (!base) return { error: 'atlas: diff needs --base <ref>, such as --base origin/main' };
+  return { base, json };
 }
 
 function repositoryName(repo) {
