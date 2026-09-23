@@ -23,7 +23,7 @@ Binary: `swarm`. Requires Node ≥ 22.
 ## Quick start
 
 ```bash
-# Initialize a swarm run — detects domains, records a save-point
+# Initialize a swarm run — drafts domains from the Atlas map when there is one, else detects them; records a save-point
 swarm init <repo-path>
 
 # Review the detected domain draft, then freeze it (dispatch refuses
@@ -288,7 +288,7 @@ The verdict is **evidence, not law**:
 | `contested` | The panel split. Genuine disagreement, surfaced rather than averaged away. | Blocks — overridable |
 | `insufficient_context` | The panel could not reach quorum — a gap in the brief to fill, **not** a fail. | Blocks — overridable |
 
-Only the deterministic floor (`swarm verify` — the real tests) is law. A `corroborate` does not advance a wave on its own; a wave that never ran the jury advances on the floor plus findings; and a non-corroborate blocks *overridably*, requiring a Director disposition (`swarm advance --override --reason "..."`) so the verdict is consciously dispositioned rather than silently rolled past.
+Only the deterministic floor (`swarm verify` — the real tests, plus the `atlas-check` step and the structural delta in a repository with an Atlas map) is law. A delta that adds an import between parts, closes a cycle, or adds a writer to a place blocks `swarm advance` on the `atlas_delta` gate until a person disposes of it with `--override --reason`. A `corroborate` does not advance a wave on its own; a wave that never ran the jury advances on the floor plus findings; and a non-corroborate blocks *overridably*, requiring a Director disposition (`swarm advance --override --reason "..."`) so the verdict is consciously dispositioned rather than silently rolled past.
 
 📖 Both tiers side by side, the honest boundary of the prism tier, and the case-file neutrality rules: **[The two jury tiers](https://github.com/dogfood-lab/testing-os/blob/main/docs/case-file-contract.md#the-two-jury-tiers)**
 
@@ -421,7 +421,7 @@ Each wave produces a manifest (`swarms/<run-id>/manifest.json`) and per-wave rec
 
 ## Domain ownership
 
-Agents in a wave have exclusive file ownership scoped to their domain (typical domains: backend, bridge, tests, ci-tooling, frontend, docs). The frozen domain map at dispatch time is the canonical authority; the agent prompt is derived from the frozen state so dispatch + agent + verifier all consume the same shape.
+Agents in a wave have exclusive file ownership scoped to their domain. In a repository with an Atlas map the domains are unions of its parts, named after the largest (`swarm init` drafts them; `--no-atlas`, `--domains <n>`, `--tests-domain` and `swarm domains --from-atlas` adjust the draft), and freezing runs `atlas check` on the map; without a map the typical domains are backend, bridge, tests, ci-tooling, frontend and docs. The frozen domain map at dispatch time is the canonical authority; the agent prompt is derived from the frozen state so dispatch + agent + verifier all consume the same shape.
 
 Cross-domain mutation surfaces at collect time as status `ownership_violation` (BLOCKED). Recovery options:
 
