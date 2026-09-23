@@ -1,0 +1,34 @@
+summary: a Python package with a console script, its tests in tests/, and release scripts
+boundaries:
+  - name: bin
+    globs:
+      - bin/**
+    role: code
+  - name: notes
+    globs:
+      - notes/**
+    role: docs
+  - name: root
+    globs:
+      - "*"
+    role: docs
+  - name: scripts
+    globs:
+      - scripts/**
+    role: code
+  - name: tests
+    globs:
+      - tests/**
+    role: test
+  - name: trainkit
+    globs:
+      - trainkit/**
+    role: code
+  - name: web
+    globs:
+      - web/**
+    role: code
+  - name: workflows
+    globs:
+      - .github/**
+    role: config

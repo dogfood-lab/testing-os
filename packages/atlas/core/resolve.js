@@ -3,6 +3,7 @@ import { existsSync, readFileSync, realpathSync } from 'node:fs';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import enhancedResolve from 'enhanced-resolve';
 import picomatch from 'picomatch';
+import { declaredDependencies, importName } from './python-manifest.js';
 
 const EXTENSIONS = ['.ts', '.tsx', '.mts', '.cts', '.js', '.mjs', '.cjs', '.jsx'];
 // node16/nodenext TypeScript imports the emitted .js name. The source is the
@@ -128,8 +129,18 @@ function resolveSite(ctx, fromAbs, language, site) {
   if (site.kind === 'dynamic' || site.kind === 'wildcard') {
     return { outcome: 'unresolved', reason: site.kind };
   }
+  if (site.location) return resolveLocation(ctx, site.specifier);
   if (language === 'python') return resolvePython(ctx, fromAbs, site.specifier);
   return resolveJavaScript(ctx, fromAbs, site.specifier);
+}
+
+// A module loaded from a file path (spec_from_file_location) names the file
+// itself, relative to the repository root, so the path is the answer.
+function resolveLocation(ctx, path) {
+  if (ctx.tracked.has(path)) return { outcome: 'file', path };
+  const folded = ctx.trackedLower.get(path.toLowerCase());
+  if (folded) return { outcome: 'file', path: folded };
+  return { outcome: 'unresolved', reason: 'module-not-found' };
 }
 
 function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
@@ -137,12 +148,19 @@ function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
   const workspaces = workspaceMap(repo, tracked);
   const plugin = workspacePlugin(workspaces);
   const resolvers = new Map();
+  let python = null;
   return {
     repo,
     tracked,
     trackedLower,
     boundaryByFile,
     workspaces,
+    // Read once per map, on the first Python site: the roots imports are
+    // looked up from and the names the project declares it depends on.
+    python() {
+      python ??= { roots: sourceRoots(tracked), declared: declaredDependencies(repo, tracked) };
+      return python;
+    },
     resolverFor(dir) {
       const config = usableConfig(repo, tracked, nearestConfig(repo, dir));
       const key = config ?? '';
@@ -501,11 +519,32 @@ function resolvePython(ctx, fromAbs, specifier) {
     if (hit) return { outcome: 'file', path: hit };
     return { outcome: 'unresolved', reason: 'python-module-not-found' };
   }
-  const hit = pythonAbsolute(specifier, sourceRoots(ctx.tracked), ctx.tracked);
+  const python = ctx.python();
+  const hit = pythonAbsolute(specifier, python.roots, ctx.tracked);
   if (hit) return { outcome: 'file', path: hit };
   const first = specifier.split('.')[0];
-  if (PYTHON_STDLIB.has(first) || !segmentPresent(ctx.tracked, first)) return { outcome: 'external' };
+  if (PYTHON_STDLIB.has(first)) return { outcome: 'external' };
+  const present = segmentPresent(ctx.tracked, first);
+  // Python looks a bare name up from the source roots, so a local module of
+  // the same name deeper in the tree does not shadow a dependency the project
+  // declares: `from datasets import Dataset` beside backpropagate/datasets.py
+  // is the library. The site is marked so the page can count those apart.
+  if (python.declared.has(importName(first))) return present ? { outcome: 'external', declared: true } : { outcome: 'external' };
+  if (!present) return { outcome: 'external' };
+  // A name found in the tree but not at a source root, and not declared, is
+  // what a sys.path insert makes local; nothing here says which it is.
   return { outcome: 'unresolved', reason: 'python-module-not-found' };
+}
+
+/**
+ * The tracked file a dotted Python module name is, looked up from the same
+ * source roots imports are, or null.
+ *
+ * @param {string} module
+ * @param {Set<string>} tracked
+ */
+export function resolvePythonModule(module, tracked) {
+  return pythonAbsolute(module, sourceRoots(tracked), tracked);
 }
 
 function pythonRelative(fromRel, specifier, tracked) {
@@ -534,21 +573,29 @@ function pythonAbsolute(specifier, roots, tracked) {
   return null;
 }
 
+// Each packaging directory and its src/, then the repository's own src/ and
+// root, which is where a script run from a checkout imports from.
 function sourceRoots(tracked) {
   const packaging = [];
+  const dirs = new Set();
   for (const file of tracked) {
     const base = file.slice(file.lastIndexOf('/') + 1);
+    for (let at = file.indexOf('/'); at !== -1; at = file.indexOf('/', at + 1)) dirs.add(file.slice(0, at));
     if (base !== 'pyproject.toml' && base !== 'setup.py' && base !== 'setup.cfg') continue;
     const dir = file.includes('/') ? file.slice(0, file.lastIndexOf('/')) : '.';
     if (!packaging.includes(dir)) packaging.push(dir);
   }
-  if (packaging.length === 0) return ['.'];
   const roots = [];
+  const add = (dir) => {
+    if (!roots.includes(dir)) roots.push(dir);
+  };
   for (const dir of packaging) {
     const src = dir === '.' ? 'src' : `${dir}/src`;
-    if ([...tracked].some((file) => file === src || file.startsWith(`${src}/`))) roots.push(src);
-    roots.push(dir);
+    if (dirs.has(src)) add(src);
+    add(dir);
   }
+  if (dirs.has('src')) add('src');
+  add('.');
   return roots;
 }
 

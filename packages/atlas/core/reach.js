@@ -11,12 +11,18 @@
  * door runs or imports. Landing places are read from these files, not from
  * the boundary names they add up to.
  *
+ * A boundary reached past depth 0 records `enters`: the first import into it,
+ * as the file imported and the file importing it, in walk order (files by
+ * path, each file's imports in source order). That is the file a reader
+ * following the door opens first in that part, which its entry point may not be.
+ *
  * @param {string[]} starts tracked paths the door runs
  * @param {{ files: Map<string, { imports?: unknown }>, boundaryOf: Map<string, string> }} graph
  */
 export function walkReach(starts, graph) {
   const depthOf = new Map();
   const filesOf = new Map();
+  const enters = new Map();
   const reached = (boundary, depth) => {
     if (!depthOf.has(boundary) || depthOf.get(boundary) > depth) depthOf.set(boundary, depth);
     if (!filesOf.has(boundary)) filesOf.set(boundary, new Set());
@@ -36,8 +42,10 @@ export function walkReach(starts, graph) {
       if (!Array.isArray(imports)) continue;
       for (const site of imports) {
         const resolved = site.resolved;
-        if (resolved?.outcome === 'file' && graph.files.has(resolved.path) && !visited.has(resolved.path)) {
-          next.add(resolved.path);
+        if (resolved?.outcome === 'file' && graph.files.has(resolved.path)) {
+          const into = graph.boundaryOf.get(resolved.path);
+          if (into && into !== boundary && !enters.has(into)) enters.set(into, { file: resolved.path, from: path });
+          if (!visited.has(resolved.path)) next.add(resolved.path);
         } else if (resolved?.outcome === 'boundary') {
           reached(resolved.boundary, depth + 1);
         }
@@ -46,7 +54,11 @@ export function walkReach(starts, graph) {
     frontier = [...next].sort();
   }
   const reach = [...depthOf.entries()]
-    .map(([boundary, depth]) => ({ boundary, depth, files: filesOf.get(boundary).size }))
+    .map(([boundary, depth]) => {
+      const entry = { boundary, depth, files: filesOf.get(boundary).size };
+      if (depth > 0 && enters.has(boundary)) entry.enters = enters.get(boundary);
+      return entry;
+    })
     .sort((a, b) => a.depth - b.depth || (a.boundary < b.boundary ? -1 : a.boundary > b.boundary ? 1 : 0));
   return { reach, files: [...visited].sort() };
 }

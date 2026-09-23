@@ -130,7 +130,9 @@ describe('atlas page', () => {
       '## Helpers that look duplicated': '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.',
       '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
       '## Hand-authored': 'People write .github/, policies/, the repository root and site/. Nothing in this repository writes to them.',
-      '## Where to start': '.github/workflows/checks.yml → tools/render.js → lib/',
+      // tools/render.js imports ../lib/schema.js first; lib names no entry
+      // point, and the file the door's code opens is named instead of lib/.
+      '## Where to start': '.github/workflows/checks.yml → tools/render.js → lib/schema.js',
       '## What this map cannot see': REGENERATE,
     };
     for (const [heading, sentence] of Object.entries(exact)) {
@@ -172,7 +174,7 @@ describe('atlas page', () => {
     assert.equal(reads.includes('tools/ingest.js'), false);
     assert.match(reads, /^- \*\*indexes\/\*\* is read by site\/index\.html \(found by text\), tools\/render\.js and tools\/report\.py\.$/m);
     assert.match(reads, /^- \*\*records\/\*\* has no reader in this repository\.$/m);
-    assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → lib\/ → indexes\/ → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);
+    assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → lib\/policy\.js → indexes\/ → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);
     assert.match(section(markdown, '## What this map cannot see'), /^- Readers marked \(found by text\) come from scanning unparsed files\.$/m);
     assert.match(section(markdown, '## What breaks what'), /^- \*\*indexes\/\*\* is written by tools and workflows, and read by site and tools; a hand edit reaches every reader\.$/m);
   });
@@ -373,7 +375,7 @@ describe('atlas page', () => {
     const built = buildPage({ structure: doors.structure, statistics, document: doors.document, repoName: 'acme/doors' });
     assert.equal(section(built.markdown, '## What tends to change together'), [
       '## What tends to change together',
-      '- **lib/store.js** and **tools/ingest.js** changed together in 3 of 3 commits, and tools imports lib.',
+      '- **lib/store.js** and **tools/ingest.js** changed together in 3 of 3 commits, and the tools part imports the lib part.',
       '1 file changed together with its own test, as expected.',
       'Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions.',
       'Window: 180 days; a pair counts from 3 shared commits.',
@@ -395,7 +397,7 @@ describe('atlas page', () => {
       document: doors.document,
       repoName: 'acme/doors',
     });
-    assert.match(inside.markdown, /^- \*\*lib\/policy\.js\*\* and \*\*lib\/store\.js\*\* changed together in 3 of 4 commits, inside lib\.$/m);
+    assert.match(inside.markdown, /^- \*\*lib\/policy\.js\*\* and \*\*lib\/store\.js\*\* changed together in 3 of 4 commits, inside the lib part\.$/m);
     const apart = buildPage({
       structure: doors.structure,
       statistics: { ...statistics, pairs: [{ a: 'lib/store.js', b: 'site/app.js', either: 4, shared: 3, strength: 0.75 }] },
@@ -539,7 +541,7 @@ describe('atlas page', () => {
     assert.deepEqual(data.doors.map((door) => door.name), ['Checks', 'Ingest', 'weekly', 'Manual', 'broken']);
     assert.deepEqual(data.doors[2].triggers, ['on a push touching 1 path', 'on a schedule (`0 6 * * 1`), Monday at 06:00 UTC']);
     assert.deepEqual(data.doors[2].sends, ['sends a dispatch to acme/hub']);
-    assert.deepEqual(data.startHere, ['.github/workflows/checks.yml', 'tools/render.js', 'lib/']);
+    assert.deepEqual(data.startHere, ['.github/workflows/checks.yml', 'tools/render.js', 'lib/schema.js']);
     assert.deepEqual(data.authored, ['.github/', 'policies/', 'root', 'site/']);
     assert.deepEqual(data.readers, [{ readers: [], target: 'reports/' }]);
     assert.equal(data.limits.at(-1), `Statistics confidence is low: ${doors.statistics.confidence.reason.replace(/\.$/, '')}.`);
@@ -593,11 +595,13 @@ describe('atlas page', () => {
     assert.equal('exports' in lib.files.find((file) => file.path === 'lib/verify.test.js'), false, 'a file that exports nothing carries no list');
   });
 
-  it('says the empty case of each: no test files by name, every place read, no helper alike', () => {
+  it('says the empty case of each: no test files by name, nothing written, no helper alike', () => {
     const { markdown, json } = page(sequence, { repoName: 'acme/sequence' });
     assert.equal(sequence.structure.testFiles, 0);
     assert.equal(section(markdown, '## What no test touches'), '## What no test touches\n\nNo test files were found by name.\n');
-    assert.equal(section(markdown, '## Written but never read'), '## Written but never read\n\nEvery written place has a reader.\n');
+    // Nothing in the fixture writes, so "every written place has a reader"
+    // would be true of nothing.
+    assert.equal(section(markdown, '## Written but never read'), '## Written but never read\n\nNo place this map can see is written, so none goes unread.\n');
     assert.equal(section(markdown, '## Helpers that look duplicated'), '## Helpers that look duplicated\n\nNo two parts export a helper that looks alike.\n');
     const data = JSON.parse(json);
     assert.deepEqual([data.untested, data.untestedNote], [[], ['No test files were found by name.']]);

@@ -155,11 +155,11 @@ describe('doors', () => {
   it('orders reach by the depth each boundary is first reached, counting its files', () => {
     assert.deepEqual(door('ingest.yml').reach, [
       { boundary: 'tools', depth: 0, files: 2 },
-      { boundary: 'lib', depth: 1, files: 4 },
+      { boundary: 'lib', depth: 1, files: 4, enters: { file: 'lib/policy.js', from: 'tools/ingest.js' } },
     ]);
     assert.deepEqual(door('weekly.yml').reach, [
       { boundary: 'tools', depth: 0, files: 1 },
-      { boundary: 'lib', depth: 1, files: 1 },
+      { boundary: 'lib', depth: 1, files: 1, enters: { file: 'lib/schema.js', from: 'tools/render.js' } },
     ]);
     assert.deepEqual(door('manual.yaml').reach, [{ boundary: 'lib', depth: 0, files: 1 }]);
   });

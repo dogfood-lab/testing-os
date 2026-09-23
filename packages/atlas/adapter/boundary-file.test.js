@@ -69,7 +69,8 @@ describe('atlas boundary file', () => {
     assert.equal(mapped.stdout.split('\n').filter((line) => line.startsWith('atlas: ignored')).length, 1);
     const checked = spawnSync(process.execPath, [CLI, 'check'], { cwd: root, encoding: 'utf8' });
     assert.equal(checked.status, 0, checked.stdout);
-    assert.match(checked.stdout, /boundaries match the committed map/);
+    // The map was written but never committed, so there is nothing to compare.
+    assert.match(checked.stdout, /no committed map; nothing to check against/);
   });
 
   it('derives a role the file leaves out, and records no status', () => {

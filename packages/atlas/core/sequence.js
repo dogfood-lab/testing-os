@@ -94,6 +94,7 @@ export function sequenceFacts(language, root) {
     const out = { kind: step.kind, name: step.name, line: step.line };
     if (step.site) out.site = step.site;
     if (step.passed) out.passed = true;
+    if (step.receiver) out.receiver = step.receiver;
     return out;
   };
   return {
@@ -109,6 +110,7 @@ export function sequenceFacts(language, root) {
         steps: record.steps.map(plain),
       })),
     topLevel,
+    reexports: python ? pythonReexports(root) : [],
   };
 }
 
@@ -117,9 +119,10 @@ export function sequenceFacts(language, root) {
  * a door runs and on every file such a file calls into, and attaches `inner`
  * to the entry calls of the files a door runs.
  *
- * @param {{ files: Map<string, object>, facts: Map<string, object>, doors: object[], entryPoints: Map<string, string[]> }} input
+ * @param {{ files: Map<string, object>, facts: Map<string, object>, doors: object[], entryPoints: Map<string, string[]>, entryFunctions?: Map<string, string> }} input
+ *   entryFunctions names, per file, the function a console script calls
  */
-export function attachSequences({ files, facts, doors, entryPoints }) {
+export function attachSequences({ files, facts, doors, entryPoints, entryFunctions = new Map() }) {
   const seeds = new Set();
   for (const door of doors) {
     if (door.parseError) continue;
@@ -127,7 +130,7 @@ export function attachSequences({ files, facts, doors, entryPoints }) {
   }
   const built = new Map();
   const build = (path) => {
-    if (!built.has(path)) built.set(path, fileSequences(path, files.get(path), facts.get(path), files));
+    if (!built.has(path)) built.set(path, fileSequences(path, files, facts, entryFunctions.get(path) ?? null));
     return built.get(path);
   };
   const hops = new Set();
@@ -172,15 +175,39 @@ function targetFiles(target, entryPoints) {
   return [];
 }
 
-function fileSequences(path, file, facts, files) {
+function siteTarget(file, site, files) {
+  const sites = Array.isArray(file?.imports) ? file.imports : [];
+  const hit = sites.find((entry) => entry.specifier === site.specifier && entry.line === site.line);
+  const resolved = hit?.resolved;
+  if (resolved?.outcome === 'file' && files.has(resolved.path)) return { file: resolved.path };
+  if (resolved?.outcome === 'boundary') return { boundary: resolved.boundary };
+  return undefined;
+}
+
+// A Python package hands on what its __init__.py imports: `from .trainer
+// import Trainer` there makes backpropagate.Trainer the class in trainer.py.
+// A call is given the file that defines the name, following such imports.
+function definingTarget(target, name, files, allFacts) {
+  let current = target;
+  let wanted = name;
+  for (let depth = 0; depth < MAX_ALIAS_DEPTH && current?.file; depth += 1) {
+    const hop = allFacts.get(current.file)?.reexports?.find((entry) => entry.name === wanted);
+    if (!hop) break;
+    const next = siteTarget(files.get(current.file), hop.site, files);
+    if (!next?.file) break;
+    current = next;
+    wanted = hop.imported;
+  }
+  return current;
+}
+
+function fileSequences(path, files, allFacts, entryFunction) {
+  const file = files.get(path);
+  const facts = allFacts.get(path);
   const byId = new Map(facts.functions.map((fn) => [fn.id, fn]));
-  const sites = Array.isArray(file.imports) ? file.imports : [];
-  const targetOf = (site) => {
-    const hit = sites.find((entry) => entry.specifier === site.specifier && entry.line === site.line);
-    const resolved = hit?.resolved;
-    if (resolved?.outcome === 'file' && files.has(resolved.path)) return { file: resolved.path };
-    if (resolved?.outcome === 'boundary') return { boundary: resolved.boundary };
-    return undefined;
+  const targetOf = (step) => {
+    const target = siteTarget(file, step.site, files);
+    return target?.file ? definingTarget(target, step.receiver ?? step.name, files, allFacts) : target;
   };
 
   const spliced = (fn) => {
@@ -198,13 +225,15 @@ function fileSequences(path, file, facts, files) {
           expand(callee, callee.name);
           continue;
         }
-        const target = step.kind === 'unknown' ? null : targetOf(step.site);
+        const target = step.kind === 'unknown' ? null : targetOf(step);
         if (target === undefined) continue;
         const call = { name: step.name, target, line: step.line };
         if (step.passed) call.passed = true;
+        if (step.receiver) call.receiver = step.receiver;
         if (via != null) call.via = via;
         const last = calls[calls.length - 1];
-        if (last && last.name === call.name && sameTarget(last.target, call.target) && last.passed === call.passed) continue;
+        if (last && last.name === call.name && sameTarget(last.target, call.target) && last.passed === call.passed
+          && last.receiver === call.receiver) continue;
         calls.push(call);
       }
     };
@@ -229,7 +258,7 @@ function fileSequences(path, file, facts, files) {
     if (calls.length > MAX_CALLS) sequence.truncated = true;
     sequences.push(sequence);
   }
-  const chosen = entryOf(path, facts, size);
+  const chosen = entryOf(path, facts, size, entryFunction);
   return { sequences, entry: chosen?.name ?? null, entryRule: chosen?.rule ?? null };
 }
 
@@ -246,8 +275,11 @@ function widest(candidates, size) {
   return best;
 }
 
-function entryOf(path, facts, size) {
+// Rule 0 is the function a console script names: the manifest says what runs.
+function entryOf(path, facts, size, entryFunction) {
   const moduleLevel = facts.functions.filter((fn) => fn.moduleLevel);
+  const declared = entryFunction == null ? null : moduleLevel.find((fn) => fn.name === entryFunction);
+  if (declared) return { name: declared.name, rule: 0 };
   const invoked = moduleLevel.filter((fn) => facts.topLevel.includes(fn.id));
   if (invoked.length > 0) return { name: widest(invoked, size).name, rule: 1 };
   const byDefault = moduleLevel.find((fn) => fn.isDefaultExport);
@@ -412,6 +444,7 @@ function classifyJs(call, fn, ctx) {
   if (object?.type !== 'identifier' || property?.type !== 'property_identifier') return null;
   const binding = resolveJs(object.text, object, ctx, 0);
   if (binding?.kind === 'import') return { kind: 'import', name: property.text, site: binding.site, line };
+  if (binding?.kind === 'instance') return { kind: 'import', name: property.text, site: binding.site, receiver: binding.receiver, line };
   if (binding?.kind === 'param' && !BUILTIN_METHODS.has(property.text)) return { kind: 'unknown', name: property.text, line };
   return null;
 }
@@ -516,6 +549,17 @@ function valueOf(value, name, ctx, depth) {
       return { kind: 'import', site: base.site, imported: property.text };
     }
     return base?.kind === 'param' ? { kind: 'param' } : null;
+  }
+  // An object made from an imported class does its work in that class's
+  // file: store.save() on const store = new Store() is a call into Store. A
+  // factory function's result is not followed, since what it returns may be
+  // defined anywhere, a database handle from a package, say.
+  if (node.type === 'new_expression') {
+    const constructor = unwrap(node.childForFieldName('constructor'));
+    if (constructor?.type !== 'identifier') return null;
+    const base = resolveJs(constructor.text, constructor, ctx, depth + 1);
+    if (base?.kind !== 'import') return null;
+    return { kind: 'instance', site: base.site, receiver: base.imported ?? constructor.text };
   }
   if (node.type === 'call_expression') {
     const fn = node.childForFieldName('function');
@@ -665,6 +709,7 @@ function classifyPy(call, fn, ctx) {
   if (dotted == null) return null;
   const binding = object.type === 'identifier' ? resolvePy(dotted, object, ctx) : moduleImport(ctx.root, dotted);
   if (binding?.kind === 'import') return { kind: 'import', name: attribute, site: binding.site, line };
+  if (binding?.kind === 'instance') return { kind: 'import', name: attribute, site: binding.site, receiver: binding.receiver, line };
   if (binding?.kind === 'param' && !BUILTIN_METHODS.has(attribute)) return { kind: 'unknown', name: attribute, line };
   return null;
 }
@@ -678,15 +723,28 @@ function resolvePy(name, from, ctx) {
     if (scope.type === 'function_definition') {
       if (declaresPythonParameter(scope, name)) return { kind: 'param' };
       const found = pythonBinding(scope.childForFieldName('body'), name);
-      if (found) return found.kind === 'other' ? null : found;
+      if (found) return settled(found, ctx);
       continue;
     }
     if (scope.type === 'module') {
       const found = pythonBinding(scope, name);
-      return found && found.kind !== 'other' ? found : null;
+      return found ? settled(found, ctx) : null;
     }
   }
   return null;
+}
+
+// trainer = Trainer(...) with Trainer imported makes trainer an object of
+// that class, so trainer.train() is work in the class's file. A class is told
+// from a function by its CapWords name, the convention PEP 8 sets; a
+// function's result is not followed, since what it returns may be defined
+// anywhere.
+function settled(found, ctx) {
+  if (found.kind === 'other') return null;
+  if (found.kind !== 'constructed') return found;
+  const base = resolvePy(found.callee.text, found.callee, ctx);
+  if (base?.kind !== 'import') return null;
+  return { kind: 'instance', site: base.site, receiver: base.imported ?? found.callee.text };
 }
 
 // Python binds a name anywhere in the function that assigns it, so the whole
@@ -710,12 +768,44 @@ function pythonBinding(body, name) {
       continue;
     }
     if (node.type === 'assignment' && node.childForFieldName('left')?.type === 'identifier' && node.childForFieldName('left').text === name) {
+      const right = node.childForFieldName('right');
+      const callee = right?.type === 'call' ? right.childForFieldName('function') : null;
+      if (callee?.type === 'identifier' && callee.text !== name && /^[A-Z]/.test(callee.text)) return { kind: 'constructed', callee };
       return { kind: 'other' };
     }
     if (PY_FUNCTIONS.has(node.type)) continue;
     for (let i = node.namedChildren.length - 1; i >= 0; i -= 1) stack.push(node.namedChildren[i]);
   }
   return null;
+}
+
+// The names a module's top level imports from another module, which is what
+// a package's __init__.py hands on. An import inside a function or a class is
+// that body's own, not the module's.
+function pythonReexports(root) {
+  const out = [];
+  const stack = [...root.namedChildren].reverse();
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (PY_FUNCTIONS.has(node.type) || node.type === 'class_definition' || node.type === 'decorated_definition') continue;
+    if (node.type === 'import_from_statement') {
+      const module = node.childForFieldName('module_name');
+      if (!module) continue;
+      const site = { specifier: module.text, line: lineOf(node) };
+      for (const child of node.namedChildren) {
+        if (child === module) continue;
+        if (child.type === 'dotted_name') out.push({ name: child.text, imported: child.text, site });
+        else if (child.type === 'aliased_import') {
+          const alias = child.childForFieldName('alias')?.text;
+          const imported = child.childForFieldName('name')?.text;
+          if (alias && imported) out.push({ name: alias, imported, site });
+        }
+      }
+      continue;
+    }
+    for (let i = node.namedChildren.length - 1; i >= 0; i -= 1) stack.push(node.namedChildren[i]);
+  }
+  return out;
 }
 
 function moduleImport(root, dotted) {

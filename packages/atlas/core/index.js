@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
 import { mapDoors } from './doors.js';
-import { deriveEntryPoints } from './entry-points.js';
-import { astLandings, attachLandings, noLandings, textLandings, trackedPlaces } from './landings.js';
+import { deriveEntryPoints, pythonScripts } from './entry-points.js';
+import { astLandings, attachLandings, noLandings, pythonPathValues, textLandings, trackedPlaces } from './landings.js';
 import { walkReach } from './reach.js';
 import { attachResolution } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
@@ -112,10 +112,11 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const byPath = (a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
   const trackedSet = new Set(tracked.regular);
   const boundaryList = [...byName.values()];
+  const scripts = pythonScripts(repoPath, trackedSet);
   for (const boundary of boundaryList) {
     boundary.files.sort(byPath);
     boundary.parseErrors = boundary.files.filter((file) => file.parseError).length;
-    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet });
+    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts });
   }
   unassigned.sort(byPath);
   overlaps.sort(byPath);
@@ -141,7 +142,11 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const landings = attachLandings({ files: [...graph.files.values()], doors, boundaries: boundaryList, places });
   for (const door of doors) delete door.reachFiles;
   const entryPoints = new Map(boundaryList.map((boundary) => [boundary.name, [...boundary.entryPoints].sort()]));
-  attachSequences({ files: graph.files, facts, doors, entryPoints });
+  // A console script names the function it calls, which is that file's entry
+  // before any rule read from the file itself.
+  const entryFunctions = new Map();
+  for (const script of scripts) if (script.fn && !entryFunctions.has(script.path)) entryFunctions.set(script.path, script.fn);
+  attachSequences({ files: graph.files, facts, doors, entryPoints, entryFunctions });
   attachExports(graph.files, facts);
 
   return {
@@ -284,7 +289,7 @@ function parseFile(language, path, source, places) {
   if (tree == null) return { parseError: true, imports: [] };
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [] };
-    const imports = language === 'python' ? collectPython(tree.rootNode) : collectScript(tree.rootNode);
+    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : collectScript(tree.rootNode);
     return { imports, landings: astLandings(language, tree.rootNode, path, places), sequence: sequenceFacts(language, tree.rootNode) };
   } finally {
     tree.delete();
@@ -305,9 +310,9 @@ function lineOf(node) {
   return node.startPosition.row + 1;
 }
 
-// A string literal passed to import() or require() is static: the specifier is
-// known. importlib.import_module and __import__ stay dynamic even with a
-// string, because those calls are unresolved sites by design.
+// A string literal passed to import() or require() names its module as surely
+// as an import statement does, so it resolves as one, kind dynamic-literal.
+// Anything else passed is a dynamic site, left unresolved.
 function collectScript(root) {
   const imports = [];
   walkNamed(root, (node) => {
@@ -325,7 +330,7 @@ function collectScript(root) {
     const args = node.childForFieldName('arguments');
     const first = args?.namedChildren[0] ?? null;
     const literal = jsString(first);
-    if (literal != null) imports.push({ specifier: literal, kind: 'static', line: lineOf(node) });
+    if (literal != null) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node) });
     else imports.push({ specifier: first ? first.text : '', kind: 'dynamic', line: lineOf(node) });
   });
   return imports;
@@ -338,7 +343,14 @@ function jsString(node) {
   return parts.map((part) => part.text).join('');
 }
 
-function collectPython(root) {
+const PYTHON_IMPORT_CALLS = new Set(['importlib.import_module', 'import_module', '__import__']);
+const PYTHON_LOCATION_CALLS = new Set(['importlib.util.spec_from_file_location', 'util.spec_from_file_location', 'spec_from_file_location']);
+
+// importlib.import_module and __import__ with a string literal name their
+// module; spec_from_file_location names its file, read the way a landing's
+// path is read (joins, __file__, .parent), and counts when that is exactly
+// one tracked file. Either is kind dynamic-literal and resolves as an import.
+function collectPython(root, path, places) {
   const imports = [];
   walkNamed(root, (node) => {
     if (node.type === 'import_statement') {
@@ -362,12 +374,37 @@ function collectPython(root) {
     }
     if (node.type !== 'call') return;
     const name = pythonCallee(node.childForFieldName('function'));
-    if (name !== 'importlib.import_module' && name !== '__import__') return;
     const args = node.childForFieldName('arguments');
-    const first = args?.namedChildren[0] ?? null;
-    imports.push({ specifier: pythonDynamicSpecifier(first), kind: 'dynamic', line: lineOf(node) });
+    if (PYTHON_IMPORT_CALLS.has(name)) {
+      const first = args?.namedChildren[0] ?? null;
+      const literal = pythonLiteral(first);
+      if (literal) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node) });
+      else imports.push({ specifier: pythonDynamicSpecifier(first), kind: 'dynamic', line: lineOf(node) });
+      return;
+    }
+    if (!PYTHON_LOCATION_CALLS.has(name)) return;
+    const location = pythonArgument(args, 1, 'location');
+    const named = location ? [...new Set(pythonPathValues(location, path))].filter((value) => places.files.has(value)) : [];
+    if (named.length === 1) imports.push({ specifier: named[0], kind: 'dynamic-literal', line: lineOf(node), location: true });
+    else imports.push({ specifier: location ? location.text : '', kind: 'dynamic', line: lineOf(node) });
   });
   return imports;
+}
+
+function pythonLiteral(node) {
+  if (node?.type !== 'string') return null;
+  if (node.namedChildren.some((child) => child.type === 'interpolation' || child.type === 'escape_sequence')) return null;
+  const text = node.namedChildren.filter((child) => child.type === 'string_content').map((child) => child.text).join('');
+  return text === '' ? null : text;
+}
+
+function pythonArgument(args, index, keyword) {
+  if (!args) return null;
+  const children = args.namedChildren.filter((child) => child.type !== 'comment');
+  const named = children.find((child) => child.type === 'keyword_argument' && child.childForFieldName('name')?.text === keyword);
+  if (named) return named.childForFieldName('value');
+  const positional = children.filter((child) => child.type !== 'keyword_argument');
+  return positional[index] ?? null;
 }
 
 function pythonImported(node) {
@@ -380,10 +417,9 @@ function pythonCallee(fn) {
   if (!fn) return null;
   if (fn.type === 'identifier') return fn.text;
   if (fn.type !== 'attribute') return null;
-  const object = fn.childForFieldName('object');
+  const object = pythonCallee(fn.childForFieldName('object'));
   const attribute = fn.childForFieldName('attribute');
-  if (object?.type === 'identifier' && attribute) return `${object.text}.${attribute.text}`;
-  return null;
+  return object && attribute ? `${object}.${attribute.text}` : null;
 }
 
 function pythonDynamicSpecifier(node) {

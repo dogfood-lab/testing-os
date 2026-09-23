@@ -215,7 +215,9 @@ Four rules, none of them the TypeScript compiler, none requiring a native build:
   unpackaged tree that is nothing but `lib/foo.py`. The TypeScript-shaped rules above do not
   cover Python at all; these two are its entire rule set.
 
-Dynamic imports and Python wildcard imports remain counts, because nothing static resolves them.
+Dynamic imports whose name is computed, and Python wildcard imports, remain counts, because
+nothing static resolves them. A dynamic import that spells its module out resolves like any other
+(§3).
 **When unresolved sites outnumber resolved edges, the import matrix is labelled low confidence.**
 An empty matrix must never read as a repository with no dependencies.
 
@@ -427,6 +429,16 @@ least one cross-file call, in source order, with its calls in the order they run
   import names the member and the import's target. A member call on a parameter, or on a name
   destructured from one, names the member with no target, unless the member is a built-in or
   logger method such as `get`, `push` or `warn`. Comments and strings are never calls.
+- A method called on an object of an imported class is a call into that class's file:
+  `trainer = Trainer(...)` then `trainer.train()`, or `const store = new Store()` then
+  `store.save()`, names the method, the class's file, and `receiver`, the class. A Python class
+  is told from a function by its CapWords name. A name bound to what a function returns is not
+  followed, since the methods of what it returns may be defined anywhere, a database handle from
+  a package, say; a name bound to what a same-file function returns is not followed either, and
+  the order continues after that function's spliced calls.
+- In Python, a call through a package that hands a name on, as `backpropagate/__init__.py` does
+  with `from .trainer import Trainer`, targets the file that defines the name, following such
+  imports up to eight deep.
 - A call inside an inline function handed to another call is a call. It is read at the
   statement that holds it, after the call it is handed to. An eager argument's calls come
   before the call they feed.
@@ -439,7 +451,7 @@ least one cross-file call, in source order, with its calls in the order they run
   `truncated: true`.
 
 A sequence is `{ name, exported, invokedAtTopLevel, isDefaultExport, calls }`. A call is
-`{ name, target, line }`, with `via` and `passed` when they apply; `target` is `{ file }`,
+`{ name, target, line }`, with `via`, `passed` and `receiver` when they apply; `target` is `{ file }`,
 `{ boundary }` or null, and `name` is the name the target exports it under.
 
 ```json
@@ -453,6 +465,9 @@ A sequence is `{ name, exported, invokedAtTopLevel, isDefaultExport, calls }`. A
 `entry` names the function a reader starts from, and `entryRule` the rule that chose it. The
 rules apply in order:
 
+0. The function a console script names for the file: `[project.scripts]` or
+   `[project.gui-scripts]` in a `pyproject.toml`, `backprop = "backpropagate.cli:main"`. The
+   manifest says what runs, so nothing read from the file overrides it.
 1. A module-level function the file's top-level code invokes, a guard such as `if (isMain)` or
    `if __name__ == "__main__":` included. Of several, the widest.
 2. The default export.
@@ -469,9 +484,11 @@ that name carries `inner`: that function's calls, one level only, at most 12, wi
 `innerTruncated` past that.
 
 The limits are the method's. A call through a name the engine cannot follow to an import, a
-dynamic specifier, a method on a class instance, or a callback stored and called later, is not
-a step. Class methods are not recorded as functions. A function re-exported from the file it is
-imported through gets no `inner`, since its body is elsewhere. Splicing at the first call reads
+dynamic specifier, a method on an object whose class the engine cannot name, or a callback
+stored and called later, is not a step. Class methods are not recorded as functions, so a method
+call carries no `inner`, and a method a class inherits is attributed to the class's own file. A
+JavaScript function re-exported from the file it is imported through gets no `inner`, since its
+body is elsewhere; a Python one is followed to its file. Splicing at the first call reads
 a helper called at every stage once, where it is first called. A member call on a parameter
 names what is called, not who answers it. Every branch's calls are listed in source order, since
 which branch runs is not known. The host check does not compare sequences.
@@ -594,12 +611,103 @@ shortened:
 
 The limits are the method's. A test is found by its name, so a test file named otherwise is not
 one, and a test that runs a part as a child process or reads it as a file does not import it and
-does not count. One hop is the reach: a part a test reaches only through two files between is
+does not count, unless the test is named for a file of the part. One hop is the reach: a part a
+test reaches only through two files between is
 listed as untested. Being imported by a test says a part is loaded, not that its behaviour is
 checked. A read through a path built at run time names no place, so a place read only that way
 is listed as never read. The duplicates are candidates: two helpers of one name with no recorded
 order and the same file name may do different work, and a helper copied under another name is
 not found. The host check compares none of the three.
+
+**Python reads as Python.** The rules above were first measured on JavaScript. Mapping
+backpropagate, a Python training library, and reading its page as a newcomer found seven places
+where a JavaScript-shaped reading said something untrue about a Python repository, and each is
+now read the way Python itself reads it.
+
+A bare import is looked up from the source roots: each packaging directory and its `src/`, then
+the repository's `src/` and root. A local module deeper in the tree does not shadow a dependency
+the project declares. `from datasets import Dataset` beside `backpropagate/datasets.py` is the
+HuggingFace library, and was 40 of the 51 sites the map had called unresolved. The declared names
+come from every `pyproject.toml` (`[project] dependencies`, `[project.optional-dependencies]`,
+`[tool.poetry.dependencies]` and its groups) and every `requirements*.txt`, folded the way
+distributions are imported, and without the project's own name, which an extra such as
+`backpropagate[ui]` repeats. A site read as a declared dependency where a local module shares the
+name is counted on the boundary as `externals`, with the names as `externalNames`, and the page
+says how many there are apart from what could not be resolved at all. A name that is in the tree
+but neither at a source root nor declared stays unresolved: a `sys.path` insert is what makes such
+an import local, and nothing in the tree says whether one runs.
+
+```json
+{
+  "name": "backpropagate",
+  "externals": 9,
+  "externalNames": ["datasets"],
+  "unresolvedSites": 2
+}
+```
+
+`importlib.import_module("a.b")` and `__import__("a")` with a string literal, and `import("./x")`
+or `require("./x")` in JavaScript, are sites of kind `dynamic-literal` and resolve as imports.
+`importlib.util.spec_from_file_location(name, path)` is one too when its path reduces to exactly
+one tracked file, read the way a landing's path is read, joins and `__file__` included; that is
+how backpropagate's tests load `scripts/check_doc_drift.py`, and why the scripts part is no
+longer listed as untested. A computed name stays a `dynamic` site.
+
+A console script in `[project.scripts]` or `[project.gui-scripts]` makes its module's file an
+entry point of the boundary that holds it, and names that file's entry function (rule 0 above).
+An entry is always inside its own boundary's globs: backpropagate's root `package.json` names
+`bin/backpropagate.js`, which the top-level-files part does not contain, so that part has no
+entry.
+
+Python keeps tests in `tests/`, so a file's own test is found across directories:
+`tests/test_trainer.py` is the own test of `backpropagate/trainer.py` when the name after the
+test marker matches, the language matches, and the test sits beside the file or anywhere under a
+directory named `test`, `tests`, `__tests__` or `spec`. The same pairing sets a file and its own
+test aside from "What tends to change together", keeps the two out of the duplicates, and counts
+a test for the part of the file it is named for in `testedBy`, even when its import could not be
+resolved.
+
+A tracked `.sh` or `.bash` file is read as commands, as the shell splits them. A redirection out
+(`>`, `>>`), `tee`, and the last argument of `mv` or `cp` write; a redirection in (`<`), `cat`,
+`source`, and any other argument that names a tracked file read, as a quoted path does in any
+text file. A word holding a variable or a glob names no fixed place, and a here-document's body
+is another program's text. Everything found is text confidence. backpropagate's
+`scripts/prep_release.sh` rewrites `CITATION.cff` with `mv`, so the page no longer says nothing
+writes to the repository root.
+
+Each door's reach entry past depth 0 carries `enters`, the first import into that part in walk
+order (files by path, each file's imports in source order), as the file imported and the file
+importing it:
+
+```json
+{
+  "boundary": "backpropagate",
+  "depth": 1,
+  "files": 18,
+  "enters": {
+    "file": "backpropagate/__init__.py",
+    "from": "scripts/nightly_train_smoke.py"
+  }
+}
+```
+
+"Where to start" names that file at each depth, not the part's entry point, which it falls back
+to only when no import into the part was recorded; a package index is followed to the file the
+previous file's entry first calls into through it. Four sentences changed with these facts. A
+pair of parts reads "the tests part imports the backpropagate part", since a part's name is often
+a common word. "Written but never read" says "No place this map can see is written, so none goes
+unread." when nothing strong is written, rather than claiming every written place has a reader.
+The limits say how many sites name declared dependencies before how many "could not be
+resolved". `atlas check` with a map on disk that HEAD does not hold says "no committed map;
+nothing to check against" and exits 0, since comparing a map against itself proves nothing.
+
+The limits are the method's. A distribution imported under a different name (PyJWT is `jwt`) is
+not matched by its declared name, and falls to the ordinary lookup. A class is a CapWords name,
+so a CapWords factory function is read as a class and a lowercase class is missed. A console
+script whose module is not a tracked file names no entry. The shell reading takes paths from the
+repository root, where release scripts that name repository files run, and does not follow `cd`;
+`sed -i` and other commands that edit in place are not writes. The host check compares entry
+points, so a boundary whose entry was outside its globs changes once on the map that drops it.
 
 This repository's own handbook diagram is a
 hand-drawn image whose only tests assert that it exists, is large enough, and has accessible
