@@ -1,4 +1,6 @@
-import { existsSync, renameSync, rmSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
@@ -48,37 +50,48 @@ describe('javascript resolution', () => {
     assert.deepEqual(both['./d.js'], { outcome: 'file', path: 'app/d.ts' });
   });
 
-  it('resolves every @dogfood-lab import in this repository with node_modules renamed away', () => {
-    const hidden = join(REPO, 'node_modules.atlas-2b-hidden');
-    const live = join(REPO, 'node_modules');
-    assert.equal(existsSync(hidden), false);
-    renameSync(live, hidden);
-    try {
-      const result = mapRepository({
-        repoPath: REPO,
-        boundaries: [{ name: 'packages', globs: ['packages/**'] }],
-      });
-      const files = result.boundaries[0].files.filter((file) => file.path.startsWith('packages/'));
-      const bad = [];
-      for (const file of files) {
-        if (!Array.isArray(file.imports)) continue;
-        for (const site of file.imports) {
-          if (!site.specifier.startsWith('@dogfood-lab/')) continue;
-          const ok = site.resolved?.outcome === 'file' && site.resolved.path?.startsWith('packages/');
-          if (!ok) bad.push(`${file.path} ${site.specifier} ${JSON.stringify(site.resolved)}`);
-        }
-      }
-      assert.deepEqual(bad, []);
-      let notFound = 0;
-      for (const file of files) {
-        if (!Array.isArray(file.imports)) continue;
-        for (const site of file.imports) {
-          if (site.resolved?.reason === 'module-not-found') notFound += 1;
-        }
-      }
-      assert.equal(notFound, 0);
-    } finally {
-      if (existsSync(hidden)) renameSync(hidden, live);
+  // The tracked workspace is copied to a temporary repository, where there is
+  // no node_modules to resolve through. Renaming this repository's own
+  // node_modules away would break every test running beside this one.
+  it('resolves every @dogfood-lab import in this repository without node_modules', () => {
+    const copy = mkdtempSync(join(tmpdir(), 'atlas-resolve-'));
+    roots.push(copy);
+    const listed = spawnSync('git', ['ls-files', '-z', '--', 'packages', 'package.json', 'tsconfig.base.json', 'tsconfig.json'], { cwd: REPO, encoding: 'utf8' });
+    assert.equal(listed.status, 0, listed.stderr);
+    for (const path of listed.stdout.split('\0').filter(Boolean)) {
+      if (!existsSync(join(REPO, path))) continue;
+      mkdirSync(dirname(join(copy, path)), { recursive: true });
+      cpSync(join(REPO, path), join(copy, path));
     }
+    assert.equal(existsSync(join(copy, 'node_modules')), false);
+    const git = (args) => assert.equal(spawnSync('git', args, { cwd: copy, encoding: 'utf8' }).status, 0, args.join(' '));
+    git(['init', '--quiet']);
+    git(['add', '-A']);
+    const result = mapRepository({
+      repoPath: copy,
+      boundaries: [{ name: 'packages', globs: ['packages/**'] }],
+    });
+    const files = result.boundaries[0].files.filter((file) => file.path.startsWith('packages/'));
+    const bad = [];
+    let workspace = 0;
+    for (const file of files) {
+      if (!Array.isArray(file.imports)) continue;
+      for (const site of file.imports) {
+        if (!site.specifier.startsWith('@dogfood-lab/')) continue;
+        workspace += 1;
+        const ok = site.resolved?.outcome === 'file' && site.resolved.path?.startsWith('packages/');
+        if (!ok) bad.push(`${file.path} ${site.specifier} ${JSON.stringify(site.resolved)}`);
+      }
+    }
+    assert.ok(workspace > 0, 'the copy has workspace imports to resolve');
+    assert.deepEqual(bad, []);
+    let notFound = 0;
+    for (const file of files) {
+      if (!Array.isArray(file.imports)) continue;
+      for (const site of file.imports) {
+        if (site.resolved?.reason === 'module-not-found') notFound += 1;
+      }
+    }
+    assert.equal(notFound, 0);
   });
 });

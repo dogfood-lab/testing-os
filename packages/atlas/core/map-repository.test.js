@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -95,14 +96,15 @@ describe('mapRepository', () => {
     roots.push(root);
     const parts = [{ name: 'app', globs: ['app/**'] }, { name: 'pkg', globs: ['pkg/**'] }];
     const absolute = mapRepository({ repoPath: root, boundaries: parts });
-    const cwd = process.cwd();
-    let relative;
-    try {
-      process.chdir(root);
-      relative = mapRepository({ repoPath: '.', boundaries: parts });
-    } finally {
-      process.chdir(cwd);
-    }
+    // A child started in the fixture reads '.' from there; changing this
+    // process's directory would move it under every test running beside it.
+    const script = [
+      `const { mapRepository } = await import(${JSON.stringify(new URL('./index.js', import.meta.url).href)});`,
+      `process.stdout.write(JSON.stringify(mapRepository({ repoPath: '.', boundaries: ${JSON.stringify(parts)} })));`,
+    ].join('\n');
+    const child = spawnSync(process.execPath, ['--input-type=module', '-e', script], { cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+    assert.equal(child.status, 0, child.stderr);
+    const relative = JSON.parse(child.stdout);
     const outcomes = (result) => result.boundaries.flatMap((b) => b.files).flatMap((f) => (Array.isArray(f.imports) ? f.imports : []))
       .map((site) => site.resolved);
     assert.ok(outcomes(absolute).some((resolved) => resolved.outcome === 'file'), 'the fixture has a relative import to resolve');
