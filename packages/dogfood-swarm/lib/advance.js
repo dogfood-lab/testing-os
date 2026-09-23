@@ -35,6 +35,7 @@ import { cleanupRunWorktrees } from './worktree.js';
 import { logStage } from './log-stage.js';
 import { CLOSED_FINDING_STATUSES_SQL } from './finding-status.js';
 import { getLatestAdjudication } from './adjudication-store.js';
+import { checkAtlasDelta } from './atlas-delta.js';
 
 /**
  * Phase progression map.
@@ -103,7 +104,7 @@ export function checkGates(db, runId) {
       ${LATEST_AGENT_RUN_PER_DOMAIN}
   `).all(wave.id);
 
-  // F-feb78e7b (DESIGN RULING): evaluate ALL six gates unconditionally and
+  // F-feb78e7b (DESIGN RULING): evaluate ALL seven gates unconditionally and
   // return the full array. The pre-fix code returned at the FIRST failing
   // gate, so gateResult.gates never contained the gates after it — and the
   // override branch in advance() then promoted past EVERY unevaluated gate,
@@ -126,7 +127,12 @@ export function checkGates(db, runId) {
   // present NON-corroborate verdict blocks only until Director disposition
   // (--override --reason). Only the deterministic verify floor is non-overridable.
   const adjudicationGate = { ...checkAdjudication(db, wave), overridable: true };
-  const gates = [waveGate, agentGate, violationGate, verifyGate, findingGate, adjudicationGate];
+  // The wave's structural delta from the Atlas map (lib/atlas-delta.js): an
+  // andon, not law. A new import between parts, a cycle, or a new writer to a
+  // place blocks until the Director disposes of it; whether a finding asked
+  // for the change is that person's call, so the block is overridable.
+  const atlasDeltaGate = { ...checkAtlasDelta(db, wave), overridable: true };
+  const gates = [waveGate, agentGate, violationGate, verifyGate, findingGate, adjudicationGate, atlasDeltaGate];
 
   // Verdict precedence (F-feb78e7b): the first NON-overridable failure
   // dominates — BLOCK for gates 1-2, VERIFY for the serial-verify
@@ -163,6 +169,9 @@ export function checkGates(db, runId) {
   // disposition; an --override --reason on advance consents to it.
   if (!adjudicationGate.passed) {
     return { verdict: 'BLOCK', nextPhase: null, gates, overridable: true, reason: adjudicationGate.reason };
+  }
+  if (!atlasDeltaGate.passed) {
+    return { verdict: 'BLOCK', nextPhase: null, gates, overridable: true, reason: atlasDeltaGate.reason };
   }
 
   // All gates passed — advance to next phase
@@ -335,7 +344,7 @@ export function advance(db, runId, opts = {}) {
 
   // F-feb78e7b (DESIGN RULING): an override is consent to the NAMED,
   // individually-overridable gate failures — never a master key. checkGates
-  // now evaluates all six gates, so the failure set here is complete; the
+  // now evaluates all seven gates, so the failure set here is complete; the
   // pre-fix branches keyed on the verdict of a TRUNCATED gate array and
   // promoted past every gate that was never evaluated (including the
   // non-overridable serial-verify gate). Any non-overridable failure refuses

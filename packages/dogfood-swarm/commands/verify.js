@@ -14,6 +14,9 @@ import { transitionWave } from '../lib/wave-state-machine.js';
 import { logStage } from '../lib/log-stage.js';
 import { escapeReasonForDisplay } from './lib/escape-reason.js';
 import { runNotFoundError, noWavesError } from './lib/run-lookup-error.js';
+import { readAtlasMap, runAtlas as defaultRunAtlas } from '../lib/atlas.js';
+import { recordWaveDelta } from '../lib/atlas-delta.js';
+import { AMEND_PHASES } from '../lib/phases.js';
 
 /**
  * CLI-authored TTY liveness for the serial-verify gate (F-6be3a42b).
@@ -74,6 +77,8 @@ const NO_FAILING_STEP_EXIT_CODE = -1;
  * @param {string} opts.dbPath
  * @param {string} [opts.override] — force a specific adapter
  * @param {object} [opts.commandOverrides] — override specific steps
+ * @param {Function} [opts.runAtlas] — the Atlas runner (lib/atlas.js#runAtlas)
+ *   for a repository with an Atlas map; tests pass their own
  * @returns {object} — verification result + receipt id
  */
 export function verify(opts) {
@@ -126,6 +131,22 @@ export function verify(opts) {
     override: opts.override,
     commandOverrides: opts.commandOverrides,
   });
+
+  // A repository with an Atlas map is verified against it too: the serial
+  // verify is where the merged tree meets the committed map, so `atlas check`
+  // is a required step here, and an amend wave's structural delta is recorded
+  // for the advance gate before the confirming audit runs.
+  const runAtlas = opts.runAtlas ?? defaultRunAtlas;
+  let atlasDelta = null;
+  if (readAtlasMap(run.local_path).adopted) {
+    emitVerifyProgress('atlas check (the repository has an Atlas map)');
+    const started = Date.now();
+    const checked = runAtlas(['check'], { cwd: run.local_path });
+    applyAtlasCheck(result, checked, Date.now() - started);
+    if (AMEND_PHASES.includes(wave.phase)) {
+      atlasDelta = recordWaveDelta({ db, run, wave, runAtlas });
+    }
+  }
 
   for (const step of result.steps || []) {
     const status = step.passed ? 'pass' : 'FAIL';
@@ -238,6 +259,7 @@ export function verify(opts) {
     // `reason`.
     output_exceeded: result.output_exceeded,
     timed_out: result.timed_out,
+    atlasDelta,
     duration_ms: result.duration_ms,
     test_count: result.test_count,
     steps: result.steps.map(s => ({
@@ -255,6 +277,31 @@ export function verify(opts) {
       output_exceeded: s.output_exceeded,
     })),
   };
+}
+
+/**
+ * Fold the `atlas check` result into the adapter's verdict as one more
+ * required step. A stale map fails the verify whatever the tests said; a
+ * passing check leaves the adapter's verdict, including a no-tests one, as it
+ * was, since the check proves the map, not the code.
+ */
+function applyAtlasCheck(result, checked, durationMs) {
+  const passed = checked.status === 0;
+  result.steps = result.steps || [];
+  result.steps.push({
+    name: 'atlas-check',
+    command: checked.command,
+    passed,
+    exit_code: checked.status ?? -127,
+    duration_ms: durationMs,
+    optional: false,
+    stdout: checked.stdout || '',
+    stderr: checked.stderr || '',
+  });
+  if (passed) return;
+  const why = `atlas check failed: the committed map no longer matches the tree; run atlas map and commit atlas/ with the change`;
+  result.reason = result.verdict === 'fail' && result.reason ? `${result.reason}; ${why}` : why;
+  result.verdict = 'fail';
 }
 
 /**
@@ -339,6 +386,26 @@ export function formatVerify(result) {
     const icon = s.passed ? 'PASS' : (s.optional ? 'SKIP' : 'FAIL');
     const opt = s.optional ? ' (optional)' : '';
     lines.push(`  [${icon.padEnd(4)}] ${s.name}${opt} — ${s.command} (${s.duration_ms}ms, exit ${s.exit_code})`);
+  }
+
+  // The delta's sentences are written by Atlas from repository paths, so they
+  // take the same escaping as the probe's reason above.
+  const delta = result.atlasDelta;
+  if (delta) {
+    lines.push('');
+    if (delta.unavailable) {
+      lines.push(`Structural delta: not recorded — ${escapeReasonForDisplay(delta.unavailable)}`);
+    } else {
+      lines.push(`Structural delta against ${String(delta.base).slice(0, 12)} (atlas diff):`);
+      const flagged = new Set(delta.flagged.map((i) => i.sentence));
+      for (const item of delta.items) {
+        lines.push(`  ${flagged.has(item.sentence) ? '[ANDON]' : '       '} ${escapeReasonForDisplay(item.sentence)}`);
+      }
+      if (delta.flagged.length > 0) {
+        lines.push('  An andon blocks `swarm advance` until the wave is reviewed; if an approved finding');
+        lines.push('  asked for the change, advance with --override --reason naming that finding.');
+      }
+    }
   }
 
   return lines.join('\n');

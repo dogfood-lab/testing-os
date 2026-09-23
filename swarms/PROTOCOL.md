@@ -42,7 +42,7 @@ Scored against the six [workflow standards](../.claude/rules/workflow-standards.
 | Standard | Score | Evidence | Remediation |
 |---|---|---|---|
 | PIN_PER_STEP | **2** | Each wave writes its agent prompts to `swarms/<run-id>/wave-N/<domain>.md` (the byte-exact brief is on disk), captures a `domain_snapshot_id` at dispatch that `collect` validates against, and records output artifacts with a SHA-256. So the *prompt* and the *domain contract* are pinned and enforced. | **The resolved model id is not recorded anywhere**, so a wave is reproducible in brief but not byte-for-byte replayable. P1: persist `model` + prompt SHA-256 per `agent_run`. |
-| ANDON_AUTHORITY | **2** | Real and firing: `collect` moves a bad output to `invalid_output` / `ownership_violation` — BLOCKED statuses with no outbound transition that require an explicit coordinator override carrying a reason; the wave flips to `failed` on any validation error; `doctor` exits non-zero on hard FAIL. Trial C of the 2026-04-11 dogfood proved a malformed output is blocked, not silently retried. | **Not a 3, because this run proved four gates certified success in exactly the state they exist to catch** (`redrive` receipt-integrity, `fingerprint` deferred-protection, `check-finding-regression-pins`, `PROVENANCE_ADAPTERS`) — all four have since been fixed with mutation-proof pins (waves 2 and 4), but the class outlives its instances. An andon that cannot fire is not authority. P0: every gate ships a meta-test that mutates the protected thing and asserts RED — see [Proving a gate](#proving-a-gate). |
+| ANDON_AUTHORITY | **2** | Real and firing: `collect` moves a bad output to `invalid_output` / `ownership_violation` — BLOCKED statuses with no outbound transition that require an explicit coordinator override carrying a reason; the wave flips to `failed` on any validation error; `doctor` exits non-zero on hard FAIL. Trial C of the 2026-04-11 dogfood proved a malformed output is blocked, not silently retried. In a repository with an Atlas map, an amend wave that adds an import between parts, a cycle or a writer to a place stops at the `atlas_delta` advance gate until the Director disposes of it ([The structural delta](#the-structural-delta-before-the-confirming-audit); `packages/dogfood-swarm/atlas-delta.test.js` proves each kind blocks and plain content passes). | **Not a 3, because this run proved four gates certified success in exactly the state they exist to catch** (`redrive` receipt-integrity, `fingerprint` deferred-protection, `check-finding-regression-pins`, `PROVENANCE_ADAPTERS`) — all four have since been fixed with mutation-proof pins (waves 2 and 4), but the class outlives its instances. An andon that cannot fire is not authority. P0: every gate ships a meta-test that mutates the protected thing and asserts RED — see [Proving a gate](#proving-a-gate). |
 | NAMED_COMPENSATORS | **2** | The compensators table below is now complete and every swarm-state action has a named, dry-run-by-default, reason-required undo (`rewind` / `redrive` / `revalidate` / `clean`), each writing its own audit row. | **Not a 3: no rollback meta-test exists.** A compensator that has never been proven to restore is prose. P1: a drill that mutates state, runs the compensator, and asserts the pre-state is restored. (`redrive`'s integrity assert, previously listed here as running after its transaction commits, now runs inside the transaction and rolls back on mismatch — F-ad3004f4, wave 2.) |
 | DECOMPOSE_BY_SECRETS | **3** with an Atlas map, **2** without | The frozen domain map is exactly this standard: draft → edit → freeze, exclusive file ownership, glob-specificity arbitration via `resolveExclusiveOwner`, enforced at collect time against the snapshot captured at dispatch. Every change is logged to `domain_events`. **With an Atlas map the decomposition is derived and checked, not asserted:** the domains are unions of the repository's own parts, the draft is proven to cover every tracked file exactly once, and the freeze records a passing `atlas check` and the map commit (see [When the repository has an Atlas map](#when-the-repository-has-an-atlas-map); `packages/dogfood-swarm/atlas-domain-map.test.js` proves it on a fixture, twice: by minimatch over `git ls-files`, and by the Atlas engine reading the derived domains as a boundary file). Without a map it stays a hand draft, so a 2. | **`--isolate` is the CLI default** (F-80afe435). Omitted flag creates per-agent git worktrees so collect can independently attribute edits. `--no-isolate` is the explicit shared-worktree escape (unsound for multi-domain amends: an agent that silently edits out-of-domain *and* omits the file from `files_changed` is not independently caught). Ji et al. 2026 (arXiv:2607.02294) measured **55.8–67.8% of coding-agent runs violating at least one boundary**. See §Ownership attribution in non-isolated parallel amend waves. |
 | UNCERTAINTY_GATED_HUMANS | **1** | The `[!] OWNERSHIP PROBE DEGRADED [!]` banner is a genuine uncertainty surface: it tells the operator the guarantee weakened and names the remedy. In a repository with an Atlas map, every audit brief carries the map's "What this map cannot see" list, which names the unknowns (unresolved imports, run-time paths, unparsed files) a lane must not read as absences. | **The review gates fire on phase boundary, not uncertainty** — Phase 2 and Phase 6 checkpoint every time regardless of how certain the wave is, which trains the operator to rubber-stamp. No checkpoint uses contrastive framing ("you probably expected X; I did Y because…"). P1: gate the review on disagreement/uncertainty, and frame contrastively (Buçinca et al. 2024, arXiv:2410.04253). |
@@ -273,6 +273,8 @@ Launch 5 parallel agents with exclusive file ownership to fix all approved findi
 
 4. If build fails, dispatch targeted fix agents for the failing domain only.
 
+5. In a repository with an Atlas map, the wave's **structural delta** is recorded and reviewed before the confirming audit. See [The structural delta](#the-structural-delta-before-the-confirming-audit).
+
 ### Phase 4: REPEAT
 
 Return to Phase 1 for a fresh audit against the remediated codebase.
@@ -334,7 +336,7 @@ Agents build/improve approved features with exclusive file ownership.
 1. Map approved features to domain agents.
 2. HARD RULE: No agent edits a file outside its assignment.
 3. Launch up to 5 agents in parallel.
-4. After all agents complete, verify build passes (lint + typecheck + tests).
+4. After all agents complete, verify build passes (lint + typecheck + tests). In a repository with an Atlas map the verify also records the wave's [structural delta](#the-structural-delta-before-the-confirming-audit) before the next feature audit.
 5. If new tests are needed for new features, the Tests domain agent writes them.
 
 ### Phase 8: REPEAT
@@ -362,7 +364,7 @@ npm run verify
 swarm doctor
 ```
 
-On this repo, `npm run verify` is the comprehensive pass (sync-version, doc-drift, Class #14 pins, build, script tests, workspace tests). Unpiped. Keep the log. `swarm doctor` is part of the pass (stranded-worktrees WARN is not a delete; reclaim with `swarm clean`).
+On this repo, `npm run verify` is the comprehensive pass (sync-version, doc-drift, Class #14 pins, build, `atlas check`, script tests, workspace tests). Unpiped. Keep the log. In another repository with an Atlas map, run `npx --yes @dogfood-lab/atlas@1.15.0 check` as part of the pass unless its own verify already does. `swarm doctor` is part of the pass (stranded-worktrees WARN is not a delete; reclaim with `swarm clean`).
 
 Do **not** advance again. Next promotion is `treatment` → `complete`. Leave the run sitting on `test` until Phase 10 is called. Do not `complete`. `--check-only` showing BLOCK (wave status: advanced) is the waypoint, not a next dispatch.
 
@@ -419,6 +421,18 @@ The serial-final-verify discipline closes the gap:
 4. **Coordinator runs ONE `npm run verify` against the cumulative tree** before promoting the wave. This is the only authoritative verification for the wave.
 
 Skip the directive when dispatching a single-agent wave or when agents are not running in parallel — the per-agent verify is then a legitimate independent check, not a vantage-point artifact.
+
+## The structural delta, before the confirming audit
+
+An amend lane is sent to fix findings. When its fix also rearranges the system (a part that now imports another, a cycle, a second writer to a place), the tests can pass and the confirming audit can still miss it, because each lane audits its own domain and the change lives between two. A repository that has adopted Atlas records its structure, so the serial verify compares it. **Atlas is never a prerequisite:** in a repository without `atlas/boundaries.yaml` none of this runs, and `swarm verify` is what it always was.
+
+1. **After the amend wave's collect and the merge of its worktrees, regenerate the map**: `npx --yes @dogfood-lab/atlas@1.15.0 map`. The page belongs to the `atlas-map` coordinator domain; no lane edits it.
+2. **`swarm verify <run-id>` runs `atlas check` as a required step.** A map that no longer matches the tree fails the verify, whatever the tests said. The verify is LAW; a stale map is a failing floor.
+3. **On an amend wave, the same verify records the structural delta**: `atlas diff --base <the commit the wave was dispatched at> --json`, kept on the wave and printed with the verify. The base is the wave's dispatch commit, not the run's save point, so each wave is compared with the tree it started from and an earlier wave's disposed change does not fire again.
+4. **A delta that adds an import between parts, closes or extends a cycle, or gives a place a new writer is an andon.** `swarm advance` blocks on the `atlas_delta` gate (the seventh gate, overridable) until the wave is reviewed. Whether an approved finding asked for the change is the Director's call, not the verb's: if one did, `swarm advance <run-id> --override --reason "<finding id> asked for <the change>"` records that in the promotion; if none did, the change goes back as a finding. Every other delta (content, readers, file counts, "nothing structural changed") is information, and passes.
+5. **Then the confirming audit runs** against the tree the delta describes.
+
+Standards compliance for this step: ANDON_AUTHORITY gains the delta gate, a halt that fires on a structural surprise rather than on every wave; UNCERTAINTY_GATED_HUMANS gains a human checkpoint that fires only when the delta holds one, framed with the sentence Atlas wrote for it.
 
 ## Cost bounds for parallel amend waves (earned armature, 2026-09-06)
 
@@ -723,7 +737,7 @@ HEALTH PASS — STAGE A (Bug/Security Fix)
  3. [ ] Collect findings, sort by severity
  4. [ ] Present findings to user for approval
  5. [ ] Launch 5 amend agents with exclusive file ownership
- 6. [ ] Verify build passes (lint + typecheck + tests)
+ 6. [ ] Verify build passes (lint + typecheck + tests); with an Atlas map: `atlas map`, then `swarm verify` (atlas check + structural delta; an andon is reviewed before the confirming audit)
  7. [ ] Repeat until 0 CRITICAL + 0 HIGH
  8. [ ] Checkpoint with user every 3 iterations
 
@@ -734,21 +748,21 @@ HEALTH PASS — STAGE B (Proactive Health)
 HEALTH PASS — STAGE C (Humanization)
 11. [ ] After approve, `swarm dispatch <run-id> health-amend-b --isolate --skip-verify` — NOT `swarm advance` (advance skips this amend when only MED/LOW are open)
 12. [ ] Focus: error messages, reconnection feedback, loading states, state persistence, accessibility
-13. [ ] Verify build passes
+13. [ ] Verify build passes (with an Atlas map, as in 6)
 14. [ ] Stage C complete — proceed to Stage D
 
 HEALTH PASS — STAGE D (Visual Polish)
 15. [ ] Launch 5 visual-polish audit agents (typography/spacing, iconography, color/theming, motion, command palette, status bar, first-run, settings UI, marketplace visuals)
 16. [ ] Present visual findings to user for approval
 17. [ ] Launch 5 stage-d-amend agents with exclusive file ownership
-18. [ ] Verify build passes
+18. [ ] Verify build passes (with an Atlas map, as in 6)
 19. [ ] Clean bill of health confirmed — proceed to Feature Pass
 
 FEATURE PASS
 20. [ ] Launch 5 feature audit agents
 21. [ ] Present feature findings to user for approval
 22. [ ] Launch 5 execution agents for approved features
-23. [ ] Verify build passes
+23. [ ] Verify build passes (with an Atlas map, as in 6)
 24. [ ] Repeat until production-ready
 25. [ ] Checkpoint with user every 3 iterations
 
