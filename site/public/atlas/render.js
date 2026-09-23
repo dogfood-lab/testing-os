@@ -236,9 +236,14 @@ function doorSteps(ctx, door) {
   return steps;
 }
 
-// Another part is named after the first step that goes into it, once. The
-// name is the part's id as page.json keeps it, as every other part name on
-// this page is; the markdown words a root-level part as the repository root.
+// The name page.js gives a part, which page.json carries next to its id. A
+// page.json written before the label existed falls back to the id.
+function partName(item) {
+  if (item?.part == null) return null;
+  return item.partLabel == null ? str(item.part) : str(item.partLabel);
+}
+
+// Another part is named after the first step that goes into it, once.
 function stepTexts(steps, ownPart) {
   const named = new Set();
   return arr(steps).filter((step) => step && typeof step === 'object').map((step) => {
@@ -246,7 +251,7 @@ function stepTexts(steps, ownPart) {
     const part = step.part == null ? null : str(step.part);
     if (part != null && part !== ownPart && !named.has(part)) {
       named.add(part);
-      notes.push(part);
+      notes.push(partName(step));
     }
     const collapsed = Number(step.count) || 0;
     if (collapsed > 0) notes.push(`${collapsed} steps`);
@@ -270,11 +275,17 @@ function sequenceItems(ctx) {
     if (!sequence || typeof sequence !== 'object') continue;
     const own = sequence.part == null ? null : str(sequence.part);
     items.push(inOrder(`Inside ${pathHtml(ctx, sequence.file)}, ${esc(sequence.phrase)} does, in order:`, stepTexts(sequence.steps, own)));
+    // page.json holds only the called functions the markdown shows, in the
+    // order the entry calls them. A part is named only when it is not the
+    // entry file's own.
     for (const inner of arr(sequence.inner)) {
       if (!inner || typeof inner !== 'object') continue;
       const part = inner.part == null ? null : str(inner.part);
-      const where = part != null ? esc(part) : pathHtml(ctx, inner.file);
-      items.push(inOrder(`${esc(capitalize(str(inner.phrase)))} in ${where} does, in order:`, stepTexts(inner.steps, part)));
+      let where = null;
+      if (part != null && part !== own) where = esc(partName(inner));
+      else if (part == null && inner.file) where = pathHtml(ctx, inner.file);
+      const lead = `<strong>${esc(capitalize(str(inner.phrase)))}</strong>${where ? ` (${where})` : ''} runs, in order:`;
+      items.push(inOrder(lead, stepTexts(inner.steps, part)));
     }
   }
   return items;
@@ -351,6 +362,34 @@ function breaksSection(ctx) {
     ? ul(entries.map((entry) => breakLine(ctx, entry)))
     : p('No part is imported by another part, and no part sits on the path of two doors.');
   return section('What breaks what', body);
+}
+
+function relationClause(pair) {
+  const [a, b] = arr(pair.partLabels).map((label) => esc(label));
+  switch (pair.relation) {
+    case 'inside': return `, inside ${a}.`;
+    case 'a-imports-b': return `, and ${a} imports ${b}.`;
+    case 'b-imports-a': return `, and ${b} imports ${a}.`;
+    case 'both': return `, and ${a} and ${b} import each other.`;
+    case 'none': return ', though neither part imports the other.';
+    default: return '.';
+  }
+}
+
+// The pairs, the count of files set aside with their own tests, and the
+// closing lines are all as page.js wrote them; a page.json written before the
+// section existed has none of them and shows no section.
+function togetherSection(ctx) {
+  if (!Array.isArray(ctx.page.changesTogether)) return '';
+  const pairs = ctx.page.changesTogether.filter((pair) => pair && typeof pair === 'object');
+  const withTests = Number(ctx.page.changesTogetherWithTests) || 0;
+  const body = pairs.length > 0
+    ? ul(pairs.map((pair) => `<strong>${pathHtml(ctx, pair.a)}</strong> and <strong>${pathHtml(ctx, pair.b)}</strong> changed together in ${Number(pair.shared) || 0} of ${count(Number(pair.either) || 0, 'commit')}${relationClause(pair)}`))
+    : p(withTests > 0
+      ? 'No two source files, other than a file and its own test, changed together often enough to name.'
+      : 'No two source files changed together often enough to name.');
+  const note = arr(ctx.page.changesTogetherNote).map((line) => p(esc(line)));
+  return section('What tends to change together', [body, ...note].join('\n'));
 }
 
 function generatedSection(ctx) {
@@ -436,7 +475,10 @@ export function renderPage(page, options = {}) {
     const others = otherDoors(ctx);
     if (others) parts.push(others);
   }
-  parts.push(breaksSection(ctx), generatedSection(ctx), authoredSection(ctx), startSection(ctx), limitsSection(ctx));
+  parts.push(breaksSection(ctx));
+  const together = togetherSection(ctx);
+  if (together) parts.push(together);
+  parts.push(generatedSection(ctx), authoredSection(ctx), startSection(ctx), limitsSection(ctx));
   return parts.join('\n');
 }
 

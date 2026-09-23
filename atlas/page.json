@@ -102,7 +102,90 @@
       ]
     }
   ],
-  "commit": "99b67ed3fbcba3eb6a031d4babd2304b0a115906",
+  "changesTogether": [
+    {
+      "a": "packages/dogfood-swarm/lib/verify/adapters/python.js",
+      "b": "packages/dogfood-swarm/lib/verify/adapters/rust.js",
+      "either": 5,
+      "partLabels": [
+        "dogfood-swarm",
+        "dogfood-swarm"
+      ],
+      "parts": [
+        "dogfood-swarm",
+        "dogfood-swarm"
+      ],
+      "relation": "inside",
+      "shared": 5
+    },
+    {
+      "a": "packages/dogfood-swarm/lib/error-render-hint-coverage.test.js",
+      "b": "scripts/pin-declarations.mjs",
+      "either": 7,
+      "partLabels": [
+        "dogfood-swarm",
+        "scripts"
+      ],
+      "parts": [
+        "dogfood-swarm",
+        "scripts"
+      ],
+      "relation": "b-imports-a",
+      "shared": 5
+    },
+    {
+      "a": "packages/atlas/adapter/init.test.js",
+      "b": "packages/atlas/adapter/templates.js",
+      "either": 6,
+      "partLabels": [
+        "atlas",
+        "atlas"
+      ],
+      "parts": [
+        "atlas",
+        "atlas"
+      ],
+      "relation": "inside",
+      "shared": 4
+    },
+    {
+      "a": "packages/atlas/adapter/init.test.js",
+      "b": "packages/atlas/adapter/templates.test.js",
+      "either": 6,
+      "partLabels": [
+        "atlas",
+        "atlas"
+      ],
+      "parts": [
+        "atlas",
+        "atlas"
+      ],
+      "relation": "inside",
+      "shared": 4
+    },
+    {
+      "a": "packages/dogfood-swarm/lib/persist/dogfood-bridge.js",
+      "b": "packages/dogfood-swarm/lib/persist/export.js",
+      "either": 6,
+      "partLabels": [
+        "dogfood-swarm",
+        "dogfood-swarm"
+      ],
+      "parts": [
+        "dogfood-swarm",
+        "dogfood-swarm"
+      ],
+      "relation": "inside",
+      "shared": 4
+    }
+  ],
+  "changesTogetherNote": [
+    "7 files changed together with their own tests, as expected.",
+    "Confidence is low: fewer than 20 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits."
+  ],
+  "changesTogetherWithTests": 7,
+  "commit": "043abe5095e2cc6b74d30e867de67a9265061e81",
   "doors": [
     {
       "file": ".github/workflows/ingest.yml",
@@ -370,7 +453,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T08:23:32.801Z",
+  "generatedAt": "2026-09-23T09:05:05.638Z",
   "limits": [
     "31 import sites did not resolve.",
     "27 writes and 184 reads use paths built at run time and are not named here.",
@@ -408,61 +491,29 @@
       "file": "packages/ingest/run.js",
       "inner": [
         {
-          "file": "packages/ingest/persist.js",
-          "name": "isDuplicate",
-          "part": "ingest",
-          "phrase": "is duplicate",
-          "steps": [
-            {
-              "name": "isUnsafeSegment",
-              "part": "ingest",
-              "phrase": "is unsafe segment"
-            },
-            {
-              "name": "parseRejectionReason",
-              "part": "verify",
-              "phrase": "parse rejection reason"
-            }
-          ]
-        },
-        {
           "file": "packages/ingest/load-context.js",
           "name": "loadRepoPolicy",
           "part": "ingest",
+          "partLabel": "ingest",
           "phrase": "load repo policy",
           "steps": [
             {
               "name": "isUnsafeSegment",
               "part": "ingest",
+              "partLabel": "ingest",
               "phrase": "is unsafe segment"
             },
             {
               "name": "logStage",
               "part": "dogfood-swarm",
+              "partLabel": "dogfood-swarm",
               "phrase": "log stage"
             },
             {
               "name": "validatePayload",
               "part": "schemas",
+              "partLabel": "schemas",
               "phrase": "validate payload"
-            }
-          ]
-        },
-        {
-          "file": "packages/ingest/load-context.js",
-          "name": "loadScenarios",
-          "part": "ingest",
-          "phrase": "load scenarios",
-          "steps": [
-            {
-              "name": "fetchWithReason",
-              "part": null,
-              "phrase": "fetch with reason"
-            },
-            {
-              "name": "fetch",
-              "part": null,
-              "phrase": "fetch"
             }
           ]
         },
@@ -470,46 +521,55 @@
           "file": "packages/verify/index.js",
           "name": "verify",
           "part": "verify",
+          "partLabel": "verify",
           "phrase": "verify",
           "steps": [
             {
               "name": "parseRunUrlRepo",
               "part": "verify",
+              "partLabel": "verify",
               "phrase": "parse run url repo"
             },
             {
               "name": "validateSubmissionSchema",
               "part": "verify",
+              "partLabel": "verify",
               "phrase": "validate submission schema"
             },
             {
               "name": "validateSchemaVersion",
               "part": "verify",
+              "partLabel": "verify",
               "phrase": "validate schema version"
             },
             {
               "name": "confirm",
               "part": null,
+              "partLabel": null,
               "phrase": "confirm"
             },
             {
               "name": "validateStepResults",
               "part": "verify",
+              "partLabel": "verify",
               "phrase": "validate step results"
             },
             {
               "name": "validateRequiredSteps",
               "part": "verify",
+              "partLabel": "verify",
               "phrase": "validate required steps"
             },
             {
               "name": "validatePolicy",
               "part": "verify",
+              "partLabel": "verify",
               "phrase": "validate policy"
             },
             {
               "name": "computeVerdict",
               "part": "verify",
+              "partLabel": "verify",
               "phrase": "compute verdict"
             }
           ]
@@ -518,92 +578,87 @@
           "file": "packages/ingest/persist.js",
           "name": "writeRecord",
           "part": "ingest",
+          "partLabel": "ingest",
           "phrase": "write record",
           "steps": [
             {
               "name": "isUnsafeSegment",
               "part": "ingest",
+              "partLabel": "ingest",
               "phrase": "is unsafe segment"
             },
             {
               "name": "parseRejectionReason",
               "part": "verify",
+              "partLabel": "verify",
               "phrase": "parse rejection reason"
             },
             {
               "name": "readChainHead",
               "part": "ingest",
+              "partLabel": "ingest",
               "phrase": "read chain head"
             },
             {
               "name": "submissionDigest",
               "part": "ingest",
+              "partLabel": "ingest",
               "phrase": "submission digest"
             },
             {
               "name": "validateRecord",
               "part": "ingest",
+              "partLabel": "ingest",
               "phrase": "validate record"
             },
             {
               "name": "appendChainEntry",
               "part": "ingest",
+              "partLabel": "ingest",
               "phrase": "append chain entry"
-            }
-          ]
-        },
-        {
-          "file": "packages/ingest/rebuild-indexes.js",
-          "name": "rebuildIndexes",
-          "part": "ingest",
-          "phrase": "rebuild indexes",
-          "steps": [
-            {
-              "name": "logStage",
-              "part": "dogfood-swarm",
-              "phrase": "log stage"
-            },
-            {
-              "count": 3,
-              "name": null,
-              "part": "ingest",
-              "phrase": "atomic write"
             }
           ]
         }
       ],
       "part": "ingest",
+      "partLabel": "ingest",
       "phrase": "ingest",
       "steps": [
         {
           "name": "logStage",
           "part": "dogfood-swarm",
+          "partLabel": "dogfood-swarm",
           "phrase": "log stage"
         },
         {
           "name": "isDuplicate",
           "part": "ingest",
+          "partLabel": "ingest",
           "phrase": "is duplicate"
         },
         {
           "count": 3,
           "name": null,
           "part": "ingest",
+          "partLabel": "ingest",
           "phrase": "load context"
         },
         {
           "name": "verify",
           "part": "verify",
+          "partLabel": "verify",
           "phrase": "verify"
         },
         {
           "name": "writeRecord",
           "part": "ingest",
+          "partLabel": "ingest",
           "phrase": "write record"
         },
         {
           "name": "rebuildIndexes",
           "part": "ingest",
+          "partLabel": "ingest",
           "phrase": "rebuild indexes"
         }
       ]
@@ -613,26 +668,31 @@
       "file": "packages/portfolio/generate.js",
       "inner": [],
       "part": "portfolio",
+      "partLabel": "portfolio",
       "phrase": "main",
       "steps": [
         {
           "name": "computeTrends",
           "part": "portfolio",
+          "partLabel": "portfolio",
           "phrase": "compute trends"
         },
         {
           "name": "atomicWriteFileSync",
           "part": "findings",
+          "partLabel": "findings",
           "phrase": "atomic write file sync"
         },
         {
           "name": "generateBadges",
           "part": "portfolio",
+          "partLabel": "portfolio",
           "phrase": "generate badges"
         },
         {
           "name": "atomicWriteFileSync",
           "part": "findings",
+          "partLabel": "findings",
           "phrase": "atomic write file sync"
         }
       ]

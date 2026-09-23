@@ -1,3 +1,5 @@
+import { isSourcePath } from '../core/history.js';
+
 /**
  * The page: how a repository works, written from the recorded facts.
  *
@@ -19,6 +21,11 @@ const LISTED_STEPS = 12;
 // Three or more calls in a row into one file are one step: the file's work.
 const RUN_COLLAPSE = 3;
 const SUB_INDENT = '   ';
+// One file's entry is followed into at most five of the functions it calls,
+// the ones with the most work to put in order.
+const INNER_SHOWN = 5;
+const INNER_STEPS = 3;
+const PAIRS_SHOWN = 5;
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const ROOT_NAME = 'the repository root';
 
@@ -352,6 +359,12 @@ function filePhrase(path) {
   return words(named);
 }
 
+// The name the page gives a part, carried in page.json so a reader of the
+// twin never has to reproduce displayName.
+function label(ctx, part) {
+  return part == null ? null : ctx.shown(part);
+}
+
 function partOf(ctx, target) {
   if (target?.file) return ctx.boundaryOf.get(target.file) ?? null;
   return target?.boundary ?? null;
@@ -367,11 +380,13 @@ function stepUnits(ctx, calls) {
     let end = i + 1;
     while (file != null && end < shown.length && shown[end].target?.file === file) end += 1;
     if (end - i >= RUN_COLLAPSE) {
-      units.push({ count: end - i, name: null, part: partOf(ctx, shown[i].target), phrase: filePhrase(file) });
+      const part = partOf(ctx, shown[i].target);
+      units.push({ count: end - i, name: null, part, partLabel: label(ctx, part), phrase: filePhrase(file) });
       i = end;
       continue;
     }
-    units.push({ name: shown[i].name, part: partOf(ctx, shown[i].target), phrase: words(shown[i].name) });
+    const part = partOf(ctx, shown[i].target);
+    units.push({ name: shown[i].name, part, partLabel: label(ctx, part), phrase: words(shown[i].name) });
     i += 1;
   }
   return { units, calls: shown.length };
@@ -401,7 +416,10 @@ function inOrder(lead, texts, indent) {
 /**
  * The order of work inside the files the main door runs: each file's entry
  * function, and one level into each file that function calls, when there are
- * at least two steps to put in order.
+ * at least two steps to put in order. A called function is followed when it
+ * has three steps to show or lives in another part than the entry's file,
+ * since two steps inside the same part add little to the entry's own line.
+ * The five with the most steps are kept, in the order the entry calls them.
  */
 function sequences(ctx, door) {
   const out = [];
@@ -411,20 +429,30 @@ function sequences(ctx, door) {
     if (!root) continue;
     const steps = stepUnits(ctx, root.calls);
     if (steps.calls < 2) continue;
-    const inner = [];
+    const part = ctx.boundaryOf.get(path) ?? null;
+    const candidates = [];
     for (const call of root.calls) {
       if (call.passed || !call.inner) continue;
       const innerSteps = stepUnits(ctx, call.inner);
       if (innerSteps.calls < 2) continue;
-      inner.push({
+      const target = partOf(ctx, call.target);
+      if (innerSteps.units.length < INNER_STEPS && target === part) continue;
+      candidates.push({
         file: call.target?.file ?? null,
         name: call.name,
-        part: partOf(ctx, call.target),
+        part: target,
+        partLabel: label(ctx, target),
         phrase: words(call.name),
         steps: innerSteps.units,
       });
     }
-    out.push({ entry: file.entry, file: path, inner, part: ctx.boundaryOf.get(path) ?? null, phrase: words(file.entry), steps: steps.units });
+    const kept = new Set(candidates
+      .map((item, index) => ({ item, index }))
+      .sort((a, b) => b.item.steps.length - a.item.steps.length || a.index - b.index)
+      .slice(0, INNER_SHOWN)
+      .map(({ item }) => item));
+    const inner = candidates.filter((item) => kept.has(item));
+    out.push({ entry: file.entry, file: path, inner, part, partLabel: label(ctx, part), phrase: words(file.entry), steps: steps.units });
   }
   return out;
 }
@@ -434,8 +462,9 @@ function sequenceLines(ctx, found) {
   for (const sequence of found) {
     lines.push(inOrder(`Inside ${sequence.file}, ${sequence.phrase} does, in order:`, unitTexts(ctx, sequence.steps, sequence.part), SUB_INDENT));
     for (const inner of sequence.inner) {
-      const where = inner.part != null ? ctx.shown(inner.part) : inner.file;
-      lines.push(inOrder(`${capitalize(inner.phrase)} in ${where} does, in order:`, unitTexts(ctx, inner.steps, inner.part), SUB_INDENT));
+      const where = inner.part != null ? (inner.part === sequence.part ? null : ctx.shown(inner.part)) : inner.file;
+      const lead = `**${capitalize(inner.phrase)}**${where ? ` (${where})` : ''} runs, in order:`;
+      lines.push(inOrder(lead, unitTexts(ctx, inner.steps, inner.part), SUB_INDENT));
     }
   }
   return lines.map((line, index) => `${SUB_INDENT}${index + 1}. ${line}`);
@@ -648,6 +677,108 @@ function breaksSection(ctx, entries) {
   return ['## What breaks what', body].join('\n\n');
 }
 
+function importsBetween(ctx) {
+  const edges = new Set();
+  for (const edge of ctx.structure.edges ?? []) {
+    if (edge.kind !== 'file' && edge.kind !== 'chunk') continue;
+    if (edge.from !== edge.to) edges.add(`${edge.from}\0${edge.to}`);
+  }
+  return (from, to) => edges.has(`${from}\0${to}`);
+}
+
+function relationOf(imports, partA, partB) {
+  if (partA == null || partB == null) return 'unassigned';
+  if (partA === partB) return 'inside';
+  const ab = imports(partA, partB);
+  const ba = imports(partB, partA);
+  if (ab && ba) return 'both';
+  if (ab) return 'a-imports-b';
+  if (ba) return 'b-imports-a';
+  return 'none';
+}
+
+// The coupling population is source files only, the same rule the statistics
+// use for cohesion: two docs edited in one commit say nothing about code. A
+// file and its own test changing together is expected and tells a reader
+// nothing, so those pairs are counted and kept out of the ranking.
+function together(ctx) {
+  const imports = importsBetween(ctx);
+  const source = (ctx.statistics.pairs ?? []).filter((pair) => isSourcePath(pair.a) && isSourcePath(pair.b));
+  const pairs = source
+    .filter((pair) => !ownTest(pair.a, pair.b))
+    .sort((x, y) => y.strength - x.strength || y.shared - x.shared || cmp(x.a, y.a) || cmp(x.b, y.b))
+    .slice(0, PAIRS_SHOWN)
+    .map((pair) => {
+      const parts = [ctx.boundaryOf.get(pair.a) ?? null, ctx.boundaryOf.get(pair.b) ?? null];
+      const partLabels = parts.map((part) => label(ctx, part));
+      return { a: pair.a, b: pair.b, either: pair.either, partLabels, parts, relation: relationOf(imports, parts[0], parts[1]), shared: pair.shared };
+    });
+  return { pairs, withTests: source.filter((pair) => ownTest(pair.a, pair.b)).length };
+}
+
+// A file named with a test marker (page.test.js, page.spec.ts, foo_test.py,
+// test_foo.py) beside the file it names.
+function testName(path) {
+  const slash = path.lastIndexOf('/');
+  const dir = path.slice(0, slash + 1);
+  const stem = path.slice(slash + 1).replace(/\.[^.]+$/, '');
+  const marked = /^(.+)(?:\.test|\.spec|_test)$/.exec(stem) ?? /^test_(.+)$/.exec(stem);
+  return { dir, stem, tested: marked ? marked[1] : null };
+}
+
+function ownTest(a, b) {
+  const [x, y] = [testName(a), testName(b)];
+  if (x.dir !== y.dir) return false;
+  return (x.tested != null && y.tested == null && x.tested === y.stem)
+    || (y.tested != null && x.tested == null && y.tested === x.stem);
+}
+
+function relationClause(pair) {
+  const [a, b] = pair.partLabels;
+  switch (pair.relation) {
+    case 'inside': return `, inside ${a}.`;
+    case 'a-imports-b': return `, and ${a} imports ${b}.`;
+    case 'b-imports-a': return `, and ${b} imports ${a}.`;
+    case 'both': return `, and ${a} and ${b} import each other.`;
+    case 'none': return ', though neither part imports the other.';
+    default: return '.';
+  }
+}
+
+function windowLine(parameters) {
+  const span = typeof parameters?.windowDays === 'number'
+    ? `${count(parameters.windowDays, 'day')}`
+    : (parameters?.pinnedStart ? `since ${parameters.pinnedStart}` : null);
+  const floor = typeof parameters?.sharedFloorUsed === 'number'
+    ? `a pair counts from ${count(parameters.sharedFloorUsed, 'shared commit')}`
+    : null;
+  const parts = [span, floor].filter(Boolean);
+  return parts.length > 0 ? `Window: ${parts.join('; ')}.` : null;
+}
+
+function togetherNote(ctx, pairs, withTests) {
+  const lines = [];
+  if (withTests > 0) lines.push(`${count(withTests, 'file')} changed together with ${withTests === 1 ? 'its' : 'their'} own ${withTests === 1 ? 'test' : 'tests'}, as expected.`);
+  const confidence = ctx.statistics.confidence;
+  if (pairs.length > 0 && confidence?.level === 'low') {
+    const reason = String(confidence.reason ?? '').trim().replace(/\.$/, '');
+    lines.push(reason ? `Confidence is low: ${reason}.` : 'Confidence is low.');
+  }
+  const window = windowLine(ctx.statistics.parameters);
+  if (window) lines.push(window);
+  return lines;
+}
+
+function togetherSection(ctx, pairs, withTests, note) {
+  const none = withTests > 0
+    ? 'No two source files, other than a file and its own test, changed together often enough to name.'
+    : 'No two source files changed together often enough to name.';
+  const body = pairs.length > 0
+    ? pairs.map((pair) => `- **${pair.a}** and **${pair.b}** changed together in ${pair.shared} of ${count(pair.either, 'commit')}${relationClause(pair)}`).join('\n')
+    : none;
+  return ['## What tends to change together', body, ...note].join('\n\n');
+}
+
 function generated(ctx) {
   const items = [];
   const claimed = [];
@@ -815,6 +946,8 @@ export function buildPage({ structure, statistics, document, repoName }) {
   const main = ctx.doors.find((door) => !door.parseError) ?? null;
   const groups = main ? readerGroups(ctx, main) : [];
   const breakEntries = breaks(ctx);
+  const { pairs, withTests } = together(ctx);
+  const pairNote = togetherNote(ctx, pairs, withTests);
   const generatedItems = generated(ctx);
   const authoredBoundaries = authored(ctx);
   const start = main ? startHere(ctx, main, groups) : { chain: [], words: [] };
@@ -838,6 +971,7 @@ export function buildPage({ structure, statistics, document, repoName }) {
   }
   sections.push(
     breaksSection(ctx, breakEntries),
+    togetherSection(ctx, pairs, withTests, pairNote),
     generatedSection(ctx, generatedItems),
     authoredSection(ctx, authoredBoundaries),
     startSection(start.words, main),
@@ -848,6 +982,9 @@ export function buildPage({ structure, statistics, document, repoName }) {
   const data = {
     authored: authoredBoundaries.map(boundaryPlace),
     breaks: breakEntries,
+    changesTogether: pairs,
+    changesTogetherNote: pairNote,
+    changesTogetherWithTests: withTests,
     commit,
     doors: ctx.doors.map((door) => doorData(ctx, door)),
     generated: generatedItems.map((item) => ({ place: item.place, writers: worded(item.writers, id) })),

@@ -5,6 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
+import { analyzeHistory } from '../core/history.js';
 import { readBoundaryFile } from './boundary-file.js';
 import { buildPage, displayName } from './page.js';
 
@@ -24,6 +25,7 @@ const HEADINGS = [
   '## Who reads the results',
   '## The other doors',
   '## What breaks what',
+  '## What tends to change together',
   '## Generated, never hand-edited',
   '## Hand-authored',
   '## Where to start',
@@ -117,6 +119,7 @@ describe('atlas page', () => {
       '## Who reads the results': '- **reports/** has no reader in this repository.',
       '## The other doors': '**weekly** runs tools/render.js, reaches lib, writes to reports/, and sends a dispatch to acme/hub.',
       '## What breaks what': '- **lib** is imported by 1 part (tools) and sits on the path of 4 doors.',
+      '## What tends to change together': 'No two source files changed together often enough to name.',
       '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
       '## Hand-authored': 'People write .github/, policies/, the repository root and site/. Nothing in this repository writes to them.',
       '## Where to start': '.github/workflows/checks.yml → tools/render.js → lib/',
@@ -171,16 +174,26 @@ describe('atlas page', () => {
     const lines = section(markdown, '## What happens through Ingest').split('\n');
     const first = lines.indexOf('1. The workflow runs tools/ingest.js and tools/prepare.js in tools.');
     assert.ok(first >= 0);
-    assert.deepEqual(lines.slice(first + 1, first + 4), [
-      '   1. Inside tools/ingest.js, ingest does, in order: prepare, verify (lib), load policy, write record and rebuild index.',
-      '   2. Verify in lib does, in order: check policy and confirm.',
+    // Seven called functions have two or more steps. prepare has two, in the
+    // entry's own part, so it is not followed; of the six left, the five with
+    // the most steps are kept, and verify beats load policy on source order at
+    // two steps each. The kept ones are shown in the order ingest calls them.
+    assert.deepEqual(lines.slice(first + 1, first + 9), [
+      '   1. Inside tools/ingest.js, ingest does, in order: prepare, verify (lib), load policy, write record, rebuild index, audit record and seal record.',
+      '   2. **Verify** (lib) runs, in order: check policy and confirm.',
+      '   3. **Write record** (lib) runs, in order: check schema, check policy, schema version and load policy.',
+      '   4. **Rebuild index** (lib) runs, in order: load schema, check policy and schema version.',
+      '   5. **Audit record** (lib) runs, in order: check schema, write record and schema version.',
+      '   6. **Seal record** (lib) runs, in order: check schema, check policy, load schema, load policy and schema version.',
+      '   7. Inside tools/prepare.js, prepare does, in order: check schema (lib) and check policy.',
       '2. That reaches lib (4 files).',
     ]);
+    assert.equal(lines.some((line) => /\*\*(Prepare|Load policy)\*\*/.test(line)), false);
     // Another part is named once, after the first step that enters it.
     assert.equal(lines[first + 1].split('(lib)').length - 1, 1);
     // lib/verify.js hands checkSchema to runCheck; a function passed is not
     // known to run there, so the artifact keeps it and the page does not.
-    assert.equal(markdown.includes('check schema'), false);
+    assert.equal(lines[first + 2].includes('check schema'), false);
     const [ingest] = JSON.parse(json).sequences;
     assert.equal(ingest.file, 'tools/ingest.js');
     assert.equal(ingest.entry, 'ingest');
@@ -190,11 +203,47 @@ describe('atlas page', () => {
       ['loadPolicy', 'lib'],
       ['writeRecord', 'lib'],
       ['rebuildIndex', 'lib'],
+      ['auditRecord', 'lib'],
+      ['sealRecord', 'lib'],
     ]);
-    assert.deepEqual(ingest.inner.map((inner) => [inner.name, inner.file, inner.steps.map((step) => step.phrase)]), [
-      ['verify', 'lib/verify.js', ['check policy', 'confirm']],
+    assert.deepEqual(ingest.inner.map((inner) => [inner.name, inner.file, inner.steps.length]), [
+      ['verify', 'lib/verify.js', 2],
+      ['writeRecord', 'lib/store.js', 4],
+      ['rebuildIndex', 'lib/store.js', 3],
+      ['auditRecord', 'lib/policy.js', 3],
+      ['sealRecord', 'lib/store.js', 5],
     ]);
     assert.deepEqual(JSON.parse(page(doors).json).sequences, []);
+  });
+
+  it('follows a called function in the entry\'s own part once it has three steps, and names no part for it', () => {
+    const call = (name, file, inner) => ({ name, target: { file }, line: 1, ...(inner ? { inner } : {}) });
+    const steps = (n) => Array.from({ length: n }, (_, index) => call(`step${index + 1}`, index % 2 === 0 ? 'lib/policy.js' : 'lib/schema.js'));
+    const { markdown } = page(doors, {
+      structure: (structure) => withEntryCalls(withoutChecks(structure), [
+        call('prepare', 'tools/prepare.js', steps(3)),
+        call('verify', 'lib/verify.js', steps(2)),
+      ]),
+    });
+    const happens = section(markdown, '## What happens through Ingest');
+    assert.match(happens, /^ {3}2\. \*\*Prepare\*\* runs, in order: step 1 \(lib\), step 2 and step 3\.$/m);
+    assert.match(happens, /^ {3}3\. \*\*Verify\*\* \(lib\) runs, in order: step 1 and step 2\.$/m);
+  });
+
+  it('carries the name the page gives each part next to its id, so the site words it the same way', () => {
+    const call = (name, file, inner) => ({ name, target: { file }, line: 1, ...(inner ? { inner } : {}) });
+    const { markdown, json } = page(doors, {
+      structure: (structure) => withEntryCalls(withoutChecks(structure), [
+        call('prepare', 'tools/prepare.js'),
+        call('configure', 'package.json', [call('stepOne', 'lib/policy.js'), call('stepTwo', 'lib/schema.js')]),
+      ]),
+    });
+    const [ingest] = JSON.parse(json).sequences;
+    assert.equal(ingest.partLabel, 'tools');
+    assert.deepEqual(ingest.steps.map((step) => [step.part, step.partLabel]), [['tools', 'tools'], ['root', 'the repository root']]);
+    assert.deepEqual([ingest.inner[0].part, ingest.inner[0].partLabel], ['root', 'the repository root']);
+    assert.deepEqual(ingest.inner[0].steps.map((step) => step.partLabel), ['lib', 'lib']);
+    assert.match(section(markdown, '## What happens through Ingest'), /^ {3}2\. \*\*Configure\*\* \(the repository root\) runs, in order: step one \(lib\) and step two\.$/m);
   });
 
   it('lists eight or more steps, stops at twelve, and folds three calls into one file into one step', () => {
@@ -292,6 +341,109 @@ describe('atlas page', () => {
     assert.deepEqual(JSON.parse(importing.json).breaks.find((entry) => entry.name === 'lib').importedBy, ['root', 'tools']);
   });
 
+  it('names source files that changed together, from statistics built over a commit list', () => {
+    const commit = (hash, paths) => ({ hash, parents: ['p'], files: paths.map((path) => ({ path, added: 1, deleted: 0 })) });
+    // Three commits touch tools/ingest.js and lib/store.js; README.md rides
+    // along in each, and a docs file is not a source file, so its pairs are
+    // measured but not named. Three more touch lib/policy.js and its own
+    // test, which is expected and only counted.
+    const analyzed = analyzeHistory([
+      commit('c1', ['tools/ingest.js', 'lib/store.js', 'README.md']),
+      commit('c2', ['tools/ingest.js', 'lib/store.js', 'README.md']),
+      commit('c3', ['tools/ingest.js', 'lib/store.js', 'README.md']),
+      commit('c4', ['lib/policy.js', 'lib/policy.test.js']),
+      commit('c5', ['lib/policy.js', 'lib/policy.test.js']),
+      commit('c6', ['lib/policy.js', 'lib/policy.test.js']),
+    ], { inScope: 40, revisions: 3 });
+    assert.equal(analyzed.pairs.length, 4);
+    const statistics = {
+      ...doors.statistics,
+      pairs: analyzed.pairs,
+      confidence: { level: 'low', reason: analyzed.confidenceReason },
+      parameters: { ...doors.statistics.parameters, sharedFloorUsed: analyzed.sharedFloorUsed },
+    };
+    const built = buildPage({ structure: doors.structure, statistics, document: doors.document, repoName: 'acme/doors' });
+    assert.equal(section(built.markdown, '## What tends to change together'), [
+      '## What tends to change together',
+      '- **lib/store.js** and **tools/ingest.js** changed together in 3 of 3 commits, and tools imports lib.',
+      '1 file changed together with its own test, as expected.',
+      'Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions.',
+      'Window: 180 days; a pair counts from 3 shared commits.',
+    ].join('\n\n') + '\n');
+    const data = JSON.parse(built.json);
+    assert.deepEqual(data.changesTogether, [
+      { a: 'lib/store.js', b: 'tools/ingest.js', either: 3, partLabels: ['lib', 'tools'], parts: ['lib', 'tools'], relation: 'b-imports-a', shared: 3 },
+    ]);
+    assert.equal(data.changesTogetherWithTests, 1);
+    assert.deepEqual(data.changesTogetherNote, [
+      '1 file changed together with its own test, as expected.',
+      'Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions.',
+      'Window: 180 days; a pair counts from 3 shared commits.',
+    ]);
+
+    const inside = buildPage({
+      structure: doors.structure,
+      statistics: { ...statistics, pairs: [{ a: 'lib/policy.js', b: 'lib/store.js', either: 4, shared: 3, strength: 0.75 }] },
+      document: doors.document,
+      repoName: 'acme/doors',
+    });
+    assert.match(inside.markdown, /^- \*\*lib\/policy\.js\*\* and \*\*lib\/store\.js\*\* changed together in 3 of 4 commits, inside lib\.$/m);
+    const apart = buildPage({
+      structure: doors.structure,
+      statistics: { ...statistics, pairs: [{ a: 'lib/store.js', b: 'site/app.js', either: 4, shared: 3, strength: 0.75 }] },
+      document: doors.document,
+      repoName: 'acme/doors',
+    });
+    assert.match(apart.markdown, /^- \*\*lib\/store\.js\*\* and \*\*site\/app\.js\*\* changed together in 3 of 4 commits\.$/m);
+    const empty = page(doors);
+    assert.deepEqual(JSON.parse(empty.json).changesTogether, []);
+    assert.equal(section(empty.markdown, '## What tends to change together'), [
+      '## What tends to change together',
+      'No two source files changed together often enough to name.',
+      'Window: 180 days; a pair counts from 3 shared commits.',
+    ].join('\n\n') + '\n');
+  });
+
+  it('bounds this repository\'s order of work and names its five strongest source pairs', () => {
+    const atlas = join(REPO_ROOT, 'atlas');
+    const statistics = JSON.parse(readFileSync(join(atlas, 'statistics.json'), 'utf8'));
+    const own = buildPage({
+      structure: JSON.parse(readFileSync(join(atlas, 'structure.json'), 'utf8')),
+      statistics,
+      document: readBoundaryFile(REPO_ROOT),
+      repoName: 'dogfood-lab/testing-os',
+    });
+    const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
+    const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
+    assert.ok(followed.length <= 5);
+    assert.ok(followed.some((line) => line.includes('**Verify** (verify) runs, in order:')));
+    assert.ok(followed.some((line) => line.includes('**Write record** runs, in order:')));
+    assert.equal(happens.some((line) => line.includes('Is duplicate')), false);
+
+    const source = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|py)$/i;
+    // A file and its own test: same directory, same name once the test
+    // marker and extension are gone.
+    const bare = (path) => path.slice(path.lastIndexOf('/') + 1).replace(/\.[^.]+$/, '');
+    const dir = (path) => path.slice(0, path.lastIndexOf('/') + 1);
+    const tested = (path) => /^(.+)(?:\.test|\.spec|_test)$/.exec(bare(path))?.[1] ?? /^test_(.+)$/.exec(bare(path))?.[1] ?? null;
+    const ownTest = (a, b) => dir(a) === dir(b) && ((tested(a) != null && tested(b) == null && tested(a) === bare(b)) || (tested(b) != null && tested(a) == null && tested(b) === bare(a)));
+    const sourcePairs = statistics.pairs.filter((pair) => source.test(pair.a) && source.test(pair.b));
+    const withTests = sourcePairs.filter((pair) => ownTest(pair.a, pair.b)).length;
+    assert.ok(withTests >= 4);
+    assert.equal(JSON.parse(own.json).changesTogetherWithTests, withTests);
+    assert.ok(section(own.markdown, '## What tends to change together').includes(`\n\n${withTests} files changed together with their own tests, as expected.\n\n`));
+    const expected = sourcePairs
+      .filter((pair) => !ownTest(pair.a, pair.b))
+      .sort((x, y) => y.strength - x.strength || y.shared - x.shared || (x.a < y.a ? -1 : x.a > y.a ? 1 : x.b < y.b ? -1 : 1))
+      .slice(0, 5);
+    assert.ok(expected.length > 0);
+    const bullets = section(own.markdown, '## What tends to change together').split('\n').filter((line) => line.startsWith('- '));
+    assert.deepEqual(bullets.map((line) => /^- \*\*(.+?)\*\* and \*\*(.+?)\*\* changed together in (\d+) of (\d+) commits[,.]/.exec(line).slice(1)),
+      expected.map((pair) => [pair.a, pair.b, String(pair.shared), String(pair.either)]));
+    assert.equal(bullets.some((line) => line.includes('.md**')), false);
+    assert.ok(bullets.some((line) => line.startsWith('- **packages/dogfood-swarm/lib/verify/adapters/python.js** and **packages/dogfood-swarm/lib/verify/adapters/rust.js**')));    assert.match(section(own.markdown, '## What tends to change together'), /\n\nWindow: \d+ days; a pair counts from \d+ shared commits\.\n$/);
+  });
+
   it('names this repository\'s root boundary the repository root wherever its page names it', () => {
     const atlas = join(REPO_ROOT, 'atlas');
     const own = buildPage({
@@ -309,7 +461,9 @@ describe('atlas page', () => {
     }
     const data = JSON.parse(own.json);
     assert.ok(data.authored.includes('root'));
-    assert.equal(JSON.stringify(data).includes('the repository root'), false);
+    // Only the label fields carry the page's wording; every id stays an id.
+    const ids = JSON.stringify(data, (key, value) => (key === 'partLabel' || key === 'partLabels' ? undefined : value));
+    assert.equal(ids.includes('the repository root'), false);
   });
 
   it('keeps to plain sentences: the only arrows are the chain, and no glyph legend is drawn', () => {
