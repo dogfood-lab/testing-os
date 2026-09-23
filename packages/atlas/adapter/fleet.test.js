@@ -90,6 +90,23 @@ function snapshot(root) {
   return rows.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
 }
 
+// The rows that differ between two snapshots, each named by its path and by
+// what moved, so a breach of "a mounted checkout is never written" says which
+// file and whether its content or only its mtime changed.
+function changedRows(before, after) {
+  const was = new Map(before.map((row) => [row.path, row]));
+  const now = new Map(after.map((row) => [row.path, row]));
+  const changes = [];
+  for (const [path, row] of now) {
+    const old = was.get(path);
+    if (!old) changes.push(`${path}: added`);
+    else if (old.hash !== row.hash) changes.push(`${path}: content changed`);
+    else if (old.mtimeMs !== row.mtimeMs) changes.push(`${path}: mtime ${old.mtimeMs} -> ${row.mtimeMs}`);
+  }
+  for (const path of was.keys()) if (!now.has(path)) changes.push(`${path}: removed`);
+  return changes;
+}
+
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
 }
@@ -143,7 +160,7 @@ describe('fleet service: a mounted checkout', () => {
     assert.deepEqual(readJson(join(repoDir, 'history.json')).entries.map((entry) => entry.headlineKind), ['first']);
     assert.equal(isFirstStart(dataDir), false);
     assert.equal(existsSync(join(dataDir, 'work')), false, 'scratch is removed after the run');
-    assert.deepEqual(snapshot(repo), untouched, 'the checkout, .git included, is as it was');
+    assert.deepEqual(changedRows(untouched, snapshot(repo)), [], 'the checkout, .git included, is as it was');
   });
 
   it('skips a second run when the checkout has not moved', async () => {

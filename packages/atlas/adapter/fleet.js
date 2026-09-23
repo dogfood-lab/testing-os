@@ -459,8 +459,10 @@ export function nameFromUrl(url) {
 
 function serviceGitEnv() {
   // The operator's own git credentials, if the container was given any, are
-  // what a private fleet clones with. Nothing may stop for a prompt.
-  return { ...process.env, GIT_TERMINAL_PROMPT: '0' };
+  // what a private fleet clones with. Nothing may stop for a prompt, and git
+  // takes no optional lock in a checkout the operator mounted: a mounted
+  // checkout is read and cloned from, never written, index refresh included.
+  return { ...process.env, GIT_TERMINAL_PROMPT: '0', GIT_OPTIONAL_LOCKS: '0' };
 }
 
 const CRON_FIELDS = [
