@@ -74,11 +74,13 @@ describe('what the TypeScript probe found', () => {
       { by: 'packages/cli/src/create-starter.ts', confidence: 'weak' },
     ]);
     assert.equal(markdown.includes('**packages/**'), false, markdown);
-    assert.deepEqual(page.generated.map((item) => item.place), ['packages/ledger/scripts/', 'packages/ledger/scripts/replay-receipt.json']);
+    // live.mjs writes a receipt beside itself that is not tracked: it is that
+    // file, not the scripts directory.
+    assert.deepEqual(page.generated.map((item) => item.place), ['packages/ledger/scripts/live-receipt.json', 'packages/ledger/scripts/replay-receipt.json']);
     assert.equal(section('## Written but never read'), [
       '## Written but never read',
       '',
-      '- **packages/ledger/scripts/** is written by packages/ledger/scripts/live.mjs and read by nothing else in this repository.',
+      '- **packages/ledger/scripts/live-receipt.json** is written by packages/ledger/scripts/live.mjs and read by nothing else in this repository.',
       '- **packages/ledger/scripts/replay-receipt.json** is written by packages/ledger/scripts/replay.mjs and read by nothing else in this repository.',
       '',
     ].join('\n'));

@@ -129,11 +129,11 @@ describe('atlas page', () => {
       '## What comes in': '3. **weekly.** On a push touching 1 path; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC. Runs tools/render.js.',
       '## What happens through Ingest': '2. That reaches lib (4 files).',
       '## Who reads the results': '- **records/** has no reader in this repository.',
-      '## The other doors': '**weekly** runs tools/render.js, reaches lib, writes to reports/, and sends a dispatch to acme/hub.',
+      '## The other doors': '**weekly** runs tools/render.js, reaches lib, writes to reports/out.md, and sends a dispatch to acme/hub.',
       '## What breaks what': '- **lib** is imported by 1 part (tools) and sits on the path of 4 doors.',
       '## What tends to change together': 'No two source files changed together often enough to name.',
       '## What no test touches': '- **tools** is imported by no test.',
-      '## Written but never read': '- **cache/** is written by tools/cache.js and read by nothing else in this repository.',
+      '## Written but never read': '- **cache/state.json** is written by tools/cache.js and read by nothing else in this repository.',
       '## Helpers that look duplicated': '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.',
       '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
       '## Hand-authored': 'People write .github/, policies/, the repository root and site/. Nothing in this repository writes to them.',
@@ -617,14 +617,15 @@ describe('atlas page', () => {
   it('names what no test touches, what is written but never read, and helpers that look alike', () => {
     const { markdown, json } = page(doors);
     assert.equal(section(markdown, '## What no test touches'), '## What no test touches\n\n- **tools** is imported by no test.\n');
-    // cache/ is read only by the file that writes it; records/ and reports/
-    // are read by nothing at all.
+    // cache/state.json is read only by the file that writes it; records/ and
+    // the two reports are read by nothing at all.
     assert.equal(section(markdown, '## Written but never read'), [
       '## Written but never read',
       '',
-      '- **cache/** is written by tools/cache.js and read by nothing else in this repository.',
+      '- **cache/state.json** is written by tools/cache.js and read by nothing else in this repository.',
       '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js, and read by nothing else in this repository.',
-      '- **reports/** is written by tools/render.js and tools/report.py, and read by nothing else in this repository.',
+      '- **reports/out.json** is written by tools/report.py and read by nothing else in this repository.',
+      '- **reports/out.md** is written by tools/render.js and read by nothing else in this repository.',
       '',
     ].join('\n'));
     assert.equal(section(markdown, '## Helpers that look duplicated'), [
@@ -639,7 +640,7 @@ describe('atlas page', () => {
     assert.deepEqual(data.testedBy, { lib: 1, tools: 0 });
     assert.deepEqual(data.untested, [{ part: 'tools', partLabel: 'tools', testedBy: 0 }]);
     assert.deepEqual(data.untestedNote, []);
-    assert.deepEqual(data.unread.map((item) => item.place), ['cache/', 'records/', 'reports/']);
+    assert.deepEqual(data.unread.map((item) => item.place), ['cache/state.json', 'records/', 'reports/out.json', 'reports/out.md']);
     assert.deepEqual(data.unread[1].writers, ['.github/workflows/ingest.yml', 'tools/ingest.js', 'tools/scratch.js']);
     assert.deepEqual(data.unreadNote, []);
     assert.deepEqual(data.duplicates, [{ files: ['lib/store.js', 'tools/prepare.js'], name: 'normalize', partLabels: ['lib', 'tools'], parts: ['lib', 'tools'] }]);

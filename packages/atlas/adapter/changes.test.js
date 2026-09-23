@@ -114,7 +114,7 @@ describe('what changed since the last map', () => {
     assert.deepEqual(bullets, [
       '- beta now imports tests, which closes the cycle beta → tests → alpha → beta.',
       '- Nightly (.github/workflows/nightly.yml) is a new door. It starts on a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. It runs pkg/alpha/cli.js.',
-      '- notes/ is now written by pkg/alpha/util.js.',
+      '- notes/summary.txt is now written by pkg/alpha/util.js.',
       '- .github/workflows/nightly.yml is new and belongs to no part, so atlas check fails on it against the previous map.',
       '- 1 file added and 2 changed content, across 2 parts.',
     ]);
