@@ -11,7 +11,7 @@ Atlas reads a repository and writes a page that says how it works: what comes in
 
 The page is for anyone who has to understand a repository they did not write: a new contributor, a reviewer, an operator, or a model.
 
-This repository's own page is [`atlas/README.md`](https://github.com/dogfood-lab/testing-os/blob/main/atlas/README.md). The site renders every mapped public repository at [`/atlas/`](../../atlas/), with a flow picture of its busiest door. The specification the page is measured against is `docs/atlas-page.spec.md`, a page written by hand for this repository and approved before the generator existed. The engine was then run on a Python repository and a TypeScript repository it had never seen, and every sentence that misled a newcomer there was fixed at the class, with a test that fails against the previous engine.
+This repository's own page is [`atlas/README.md`](https://github.com/dogfood-lab/testing-os/blob/main/atlas/README.md). The site renders every mapped public repository at [`/atlas/`](../../atlas/): the page, a flow picture of its busiest door, a bar picture of what breaks what (production importers as a solid bar, test-only importers continuing it dashed, the doors on the path as a numeral), a strip of the weekly renders since the first, and the one line a person may write, with a link that opens the boundary file on the repository's default branch. The specification the page is measured against is `docs/atlas-page.spec.md`, a page written by hand for this repository and approved before the generator existed. The engine was then run on a Python repository and a TypeScript repository it had never seen, and every sentence that misled a newcomer there was fixed at the class, with a test that fails against the previous engine.
 
 ## What a page says
 
@@ -40,7 +40,7 @@ npx --yes @dogfood-lab/atlas init
 npx --yes @dogfood-lab/atlas map
 ```
 
-`init` proposes `atlas/boundaries.yaml`: the named parts of the repository and the globs that own them. Correct the names and globs if the proposal is wrong; the one line a person may add is `summary`. `map` writes `atlas/README.md`, `atlas/page.json`, `atlas/structure.json` and `atlas/statistics.json`. Commit the folder.
+`init` proposes `atlas/boundaries.yaml`: the named parts of the repository and the globs that own them. Correct the names and globs if the proposal is wrong; the one line a person may add is `summary`. `map` writes `atlas/README.md`, `atlas/page.json`, `atlas/structure.json` and `atlas/statistics.json`. Commit the folder. `map --divergence <file>` also writes the divergence report; a caller mapping a copy it made itself passes `--name owner/repo` when the clone carries no origin and `--baseline <dir>` holding the last committed map when the copy has none; `init --force` rewrites a boundary file from a fresh proposal.
 
 Then run the check in the test job:
 
@@ -48,7 +48,7 @@ Then run the check in the test job:
 npx --yes @dogfood-lab/atlas check
 ```
 
-It fails when a part gains or loses a dependency, a file changes part, a new file belongs to no part, a named part matches nothing, or a file belongs to two parts. A repository with no `atlas/` folder is a notice and exit 0, so adopting Atlas reddens nothing. The codes it prints are listed on the [error codes](../error-codes/#atlas-codes) page.
+It fails when a part gains or loses a dependency, a file changes part, a new file belongs to no part, a named part matches nothing, or a file belongs to two parts. When it fails after a change you meant to make, run `atlas map` and commit the regenerated `atlas/` files with the change; never edit the page by hand, and never change the code to satisfy the map. A repository with no `atlas/` folder is a notice and exit 0, so adopting Atlas reddens nothing. The codes it prints are listed on the [error codes](../error-codes/#atlas-codes) page.
 
 ## Ask about one file
 
@@ -70,7 +70,7 @@ Public repositories under `dogfood-lab` and `mcp-tool-shop-org` that have commit
 
 ## Run it for a private fleet
 
-For repositories that must not leave your machine, the same engine ships as a container with persistent memory, `ghcr.io/dogfood-lab/atlas`. It maps the repositories you list in `fleet.yml`, by mounted path or clone URL, once at start and then on a schedule, keeps every render and its history on a volume, and serves the same fleet list and per-repository pages as this site on a port of your choosing. Nothing leaves it except git fetches of the repositories you listed. The same image runs the CLI on a single mounted repository, with the CLI's exit codes passed through, so it can stand in for `npx` in a job that has no Node.
+For repositories that must not leave your machine, the same engine ships as a container with persistent memory, `ghcr.io/dogfood-lab/atlas`, whose default command is `atlas-fleet`. It maps the repositories you list in `fleet.yml`, by mounted path or clone URL, once at start and then on a schedule, keeps every render and its history on a volume, and serves the same fleet list and per-repository pages as this site on a port of your choosing. Nothing leaves it except git fetches of the repositories you listed. The same image runs the CLI on a single mounted repository, with the CLI's exit codes passed through, so it can stand in for `npx` in a job that has no Node.
 
 ```bash
 mkdir -p atlas-data repos
@@ -86,7 +86,7 @@ docker compose -f docker/compose.example.yml up -d
 - **Parts and imports.** JavaScript, TypeScript, TSX and Python, parsed with tree-sitter; imports resolved with the rules the runtime uses, including workspace package exports without `node_modules`, tsconfig chains from tracked files only, Python source roots and declared dependencies, and dynamic imports with literal names. Resolution does not depend on what is installed. A drive-letter, absolute or `~` path is external on every host and never read from disk, so the same commit maps the same everywhere.
 - **Landing places and readers.** The tracked paths that code writes to and reads from, found in call expressions and followed through joins and helpers; raw GitHub URLs and quoted paths in files it does not parse, marked as found by text; shell scripts' redirections and moves. A bare filename written through a variable root, or an open prefix, is recorded weak and never makes a place look generated. A written-out path that names a file lands on that file, not its directory, and the places a door writes inside one part are named by the deepest directory they share. A path built from the directory the command is run in (`process.cwd()`, a relative path resolved at run time, `dir || "."`) or from the home directory is counted outside; a write into a file the repository does not track is counted, never placed; a tracked file whose writers read it first has a block written by them; a write guarded against CI, or behind a flag every run of a door passes, is not credited to that door; Python `Path` joins are followed. Markdown links and packaging lists are not readers; an import of a written module and an Astro site's content directories are.
 - **The order of work.** For the files a door runs and the files they call into, the cross-file calls of each entry function in order, with calls inside inline callbacks counted where they sit, same-file calls spliced in place, and constructed objects' method calls named with their class.
-- **History.** Files that change together over the last 180 days, with a floor that falls when the history is thin, and the confidence stated on the page.
+- **History.** Files that change together over the last 180 days. The shared-commit floor falls to 3 when fewer than 20 source files reach 10 revisions and rises back to 10 only at 25, starting from the floor the previous map used, so a repository near the line does not flip between maps; the window line states the rule and the confidence is stated on the page.
 
 ## What it cannot see
 

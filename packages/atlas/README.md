@@ -17,6 +17,8 @@ npx --yes @dogfood-lab/atlas explain <path>
 
 `init` proposes `atlas/boundaries.yaml`: the named parts of the repository and the globs that own them. Edit the names and globs if the proposal is wrong. The one line a person may add is `summary`.
 
+`check` fails when the committed map no longer matches the tree. When that happens after a change you meant to make, run `map` and commit the regenerated `atlas/` files with the change; never edit the page by hand, and never change the code to satisfy the map.
+
 `map` writes four files under `atlas/`:
 
 | File | What it is |

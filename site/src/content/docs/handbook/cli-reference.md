@@ -477,6 +477,21 @@ Example:
 
 A missing or out-of-enum `--query` exits `1` with a Usage error (fail-loud, never a silent no-op); an out-of-enum `--format` is rejected by the shared `CLI_INVALID_FORMAT` guard.
 
+## atlas
+
+The repository mapper, `@dogfood-lab/atlas`: a standalone binary with no sibling dependencies that runs from any directory inside a git repository. The [Atlas page](../atlas/) says what the map is; this is the verb surface.
+
+| Verb | What it does | Flags |
+|------|--------------|-------|
+| `atlas init` | Proposes `atlas/boundaries.yaml` from the tree and refuses to overwrite one that exists | `--force` rewrites it from a fresh proposal |
+| `atlas map` | Writes `atlas/README.md`, `page.json`, `structure.json` and `statistics.json` | `--divergence <file>` also writes the divergence report; `--name owner/repo` names a clone that carries no origin; `--baseline <dir>` holds the last committed map for a copy that has none; `--previous <file>` supplies the previous statistics report, as the weekly job does |
+| `atlas check` | Compares the committed map with the tree: exit 1 on drift with what to do, exit 0 with a notice when there is no `atlas/` folder | |
+| `atlas explain <path>` | What one file is in the system, read from the committed map | `--json` |
+| `atlas diff` | The "what changed" section between the committed map at a ref and a fresh map of the tree, writing nothing | `--base <ref>` (required), `--json` |
+| `atlas-fleet` | The container's service: maps the repositories listed in `fleet.yml` on its schedule and serves the fleet list and the pages | `ATLAS_DATA` (default `/data`), `ATLAS_ASSETS` (default `/srv/atlas`) |
+
+Every failure prints one shape: the code, one sentence, what changed, what to do, and the exit code. Exit 2 means the input was unusable and nothing was checked. The codes are listed on the [error codes](../error-codes/#atlas-codes) page.
+
 ## See also
 
 - [Operating guide](../operating-guide/) — day-to-day workflows for record ingestion + portfolio review.

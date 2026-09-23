@@ -2,7 +2,7 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.15.0] — 2026-09-23
 
 ### Added
 - **Atlas as a container with persistent memory.** `ghcr.io/dogfood-lab/atlas` (`docker/Dockerfile`, node:22-alpine by digest, the package installed from npm at the release version) runs `atlas <verb>` on a repository mounted at `/repo`, or by default `atlas-fleet`: it maps the repositories listed in `/data/fleet.yml` on a cron schedule, at once when `/data` holds no state, and serves the fleet list, each page and the render files from `/data`. The render of one repository, its history and the state and fleet shapes move from `scripts/atlas-render.mjs` into `@dogfood-lab/atlas/fleet`, shared with the weekly job; `atlas map` gains `--name` and `--baseline`; the site page reads its data base from a meta tag named `atlas-base` when one is present; the release workflow gains a `container` job that pushes the image after the npm publish.
