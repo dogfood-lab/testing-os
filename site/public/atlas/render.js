@@ -414,6 +414,47 @@ function togetherSection(ctx) {
   return section('What tends to change together', [body, ...note].join('\n'));
 }
 
+// The three derived views. A page.json written before they existed carries
+// none of their lists and shows none of them.
+function untestedSection(ctx) {
+  if (!Array.isArray(ctx.page.untested)) return '';
+  const items = ctx.page.untested.filter((item) => item && typeof item === 'object');
+  const note = arr(ctx.page.untestedNote).map((line) => p(esc(line)));
+  const body = items.length > 0
+    ? [ul(items.map((item) => `<strong>${esc(partName(item) ?? '')}</strong> is imported by no test.`))]
+    : (Number(ctx.page.testFiles) === 0 ? [] : [p('Every code part is imported by at least one test.')]);
+  return section('What no test touches', [...body, ...note].join('\n'));
+}
+
+function unreadSection(ctx) {
+  if (!Array.isArray(ctx.page.unread)) return '';
+  const items = ctx.page.unread.filter((item) => item && typeof item === 'object');
+  const body = items.length > 0
+    ? ul(items.map((item) => {
+      const writers = arr(item.writers);
+      const comma = writers.length > 1 ? ',' : '';
+      return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${list(writers.map((writer) => pathHtml(ctx, writer)))}${comma} and read by nothing else in this repository.`;
+    }))
+    : p('Every written place has a reader.');
+  const note = arr(ctx.page.unreadNote).map((line) => p(esc(line)));
+  return section('Written but never read', [body, ...note].join('\n'));
+}
+
+function duplicatesSection(ctx) {
+  if (!Array.isArray(ctx.page.duplicates)) return '';
+  const items = ctx.page.duplicates.filter((item) => item && typeof item === 'object');
+  const lead = items.length > 0 && ctx.page.duplicatesLead ? [p(esc(ctx.page.duplicatesLead))] : [];
+  const body = items.length > 0
+    ? ul(items.map((item) => {
+      const [fileA, fileB] = arr(item.files);
+      const [partA, partB] = arr(item.partLabels).map((label) => esc(label));
+      return `<strong>${esc(item.name)}</strong> is exported by ${pathHtml(ctx, fileA)} (${partA}) and ${pathHtml(ctx, fileB)} (${partB}); the two look alike.`;
+    }))
+    : p('No two parts export a helper that looks alike.');
+  const note = arr(ctx.page.duplicatesNote).map((line) => p(esc(line)));
+  return section('Helpers that look duplicated', [...lead, body, ...note].join('\n'));
+}
+
 function generatedSection(ctx) {
   const items = arr(ctx.page.generated);
   const body = items.length > 0
@@ -502,6 +543,7 @@ export function renderPage(page, options = {}) {
   parts.push(breaksSection(ctx));
   const together = togetherSection(ctx);
   if (together) parts.push(together);
+  for (const derived of [untestedSection(ctx), unreadSection(ctx), duplicatesSection(ctx)]) if (derived) parts.push(derived);
   parts.push(generatedSection(ctx), authoredSection(ctx), startSection(ctx), limitsSection(ctx));
   return parts.join('\n');
 }
