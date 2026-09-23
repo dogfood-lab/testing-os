@@ -62,8 +62,11 @@ describe('a file write lands on the file, not its directory', () => {
     assert.deepEqual(writers('scripts/notes/dump.txt'), ['scripts/dump.sh']);
   });
 
-  it('keeps a directory a script makes as the directory it is made in, and names no directory for the files', () => {
-    assert.deepEqual(writers('scripts'), ['scripts/cache.mjs']);
+  it('lands a directory a script makes on that directory, untracked, and names no tracked directory for it', () => {
+    const made = structure.landings.find((landing) => landing.target === 'scripts/cache/run');
+    assert.deepEqual(made.writers.map((entry) => entry.by), ['scripts/cache.mjs']);
+    assert.equal(made.tracked, false);
+    assert.deepEqual(writers('scripts'), []);
     assert.deepEqual(writers('scripts/notes'), []);
   });
 

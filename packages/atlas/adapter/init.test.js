@@ -113,7 +113,7 @@ describe('atlas init', () => {
   it('calls the part that holds the repository manifest config, though its READMEs outnumber everything else', () => {
     // The root holds package.json, a Dockerfile, verify.sh and eight READMEs.
     // site/ holds a package.json too, but it is the site's, not the
-    // repository's, so its pages keep it docs.
+    // repository's; its Astro config makes it the site.
     const root = scratch();
     cpSync(ROOT_MANIFEST, root, { recursive: true });
     commitTree(root);
@@ -121,7 +121,7 @@ describe('atlas init', () => {
     assert.equal(result.status, 0, result.stdout + result.stderr);
     const role = Object.fromEntries(readBoundaryFile(root).boundaries.map((boundary) => [boundary.name, boundary.role]));
     assert.equal(role.root, 'config');
-    assert.equal(role.site, 'docs');
+    assert.equal(role.site, 'site');
     assert.equal(role.src, 'code');
     // A boundary file that leaves the role out gets the same one from map.
     writeFileSync(join(root, 'atlas', 'boundaries.yaml'), [
@@ -137,7 +137,7 @@ describe('atlas init', () => {
     const mapped = atlas(root, ['map']);
     assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
     const derived = JSON.parse(readFileSync(join(root, 'atlas', 'structure.json'), 'utf8')).boundaries;
-    assert.deepEqual(derived.map((boundary) => [boundary.name, boundary.role]), [['root', 'config'], ['site', 'docs'], ['src', 'code']]);
+    assert.deepEqual(derived.map((boundary) => [boundary.name, boundary.role]), [['root', 'config'], ['site', 'site'], ['src', 'code']]);
   });
 
   it('refuses to overwrite a file a person has touched, and regenerates one that is still derived', () => {

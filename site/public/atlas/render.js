@@ -154,9 +154,12 @@ function context(page, options = {}) {
   // mainDoor is the door's id, its file for a workflow; a page.json written
   // before ids existed carries only the file, which is the id of a workflow.
   const main = doors.find((door) => !door.parseError && str(door.id ?? door.file) === str(page?.mainDoor)) ?? null;
+  // The door "Where to start" follows, which a page.json written before it
+  // was carried leaves as the main door.
+  const start = page?.startDoor == null ? main : doors.find((door) => !door.parseError && str(door.id ?? door.file) === str(page.startDoor)) ?? main;
   const labels = page?.partLabels && typeof page.partLabels === 'object' && !Array.isArray(page.partLabels) ? page.partLabels : {};
   const name = (id, fallback = null) => partLabel(labels, id, fallback);
-  return { page: page ?? {}, repo, commit, doors, main, labels, name, history: options.history ?? null };
+  return { page: page ?? {}, repo, commit, doors, main, start, labels, name, history: options.history ?? null };
 }
 
 /**
@@ -554,7 +557,7 @@ function breaksSection(ctx) {
 // repository root is already a phrase.
 function partPhrase(label) {
   const text = esc(label);
-  return str(label) === 'the repository root' ? text : `the ${text} part`;
+  return str(label) === 'the repository root' || str(label) === 'the site' ? text : `the ${text} part`;
 }
 
 function relationClause(pair) {
@@ -637,9 +640,10 @@ function generatedSection(ctx) {
     ? ul(items.map((item) => {
       const place = `<strong>${pathHtml(ctx, item.place)}</strong>`;
       const writers = arr(item.writers);
-      return writers.length > 0
-        ? `${place} is written by ${list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))))}.`
-        : `${place} is written by code this map cannot name.`;
+      if (writers.length === 0) return `${place} is written by code this map cannot name.`;
+      const by = list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
+      // A stamped file is written by people, with one block a script keeps.
+      return item.block ? `${place} has a block written by ${by}.` : `${place} is written by ${by}.`;
     }))
     : p('Nothing in this repository writes to a tracked place this map can see.');
   return section('Generated, never hand-edited', body);
@@ -651,9 +655,13 @@ function authoredSection(ctx) {
   // single directory, such as the root-level files, named as the markdown
   // names it.
   const shown = (place) => (looksLikePath(place) ? pathHtml(ctx, place) : esc(ctx.name(place)));
-  const body = places.length > 0
-    ? p(`People write ${list(places.map(shown))}. Nothing in this repository writes to them.`)
-    : p('No configuration or documentation part is left to people alone.');
+  // A write whose path is built at run time could land in any of them.
+  const unnamed = Number(ctx.page.unnamedWrites) || 0;
+  const people = `People write ${list(places.map(shown))}`;
+  const caveat = unnamed > 0
+    ? `${people}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`
+    : `${people}. Nothing in this repository writes to them.`;
+  const body = places.length > 0 ? p(caveat) : p('No configuration or documentation part is left to people alone.');
   return section('Hand-authored', body);
 }
 
@@ -677,14 +685,15 @@ export function triggerNoun(door) {
 }
 
 function startSection(ctx) {
-  if (!ctx.main) {
+  if (!ctx.start) {
     const why = ctx.doors.some((door) => !door.parseError) ? 'No door runs a file this map can see' : 'No door was found';
     return section('Where to start', p(`${why}, so there is no path through this repository to follow.`));
   }
   const chain = arr(ctx.page.startHere).map((path) => pathHtml(ctx, path));
+  if (chain.length === 0 && ctx.page.startNote) return section('Where to start', p(esc(ctx.page.startNote)));
   const body = [
     `<p class="chain">${chain.join(' <span aria-hidden="true">→</span><span class="sr">, then</span> ')}</p>`,
-    p(`Read those in order to follow one ${esc(triggerNoun(ctx.main))} end to end.`),
+    p(`Read those in order to follow one ${esc(triggerNoun(ctx.start))} end to end.`),
   ];
   return section('Where to start', body.join('\n'));
 }

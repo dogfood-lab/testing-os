@@ -18,10 +18,13 @@ function keep(items) {
 // A site read as a declared dependency because a local module shares its name
 // resolved, but to nothing this map can open, so it is counted apart: the
 // page says how many imports name dependencies that are not installed here.
+// A site that names a path outside the repository is counted apart as well,
+// since what it loads is on one machine's disk and the map never looks.
 function siteCounts(files) {
   let unresolved = 0;
   let resolved = 0;
   let externals = 0;
+  let outside = 0;
   const externalNames = new Set();
   for (const file of files) {
     if (!Array.isArray(file.imports)) continue;
@@ -33,13 +36,15 @@ function siteCounts(files) {
         externals += 1;
         externalNames.add(site.specifier.split('.')[0]);
       }
+      if (site.resolved?.outside) outside += 1;
     }
   }
-  return { unresolved, resolved, externals, externalNames: [...externalNames].sort() };
+  return { unresolved, resolved, externals, externalNames: [...externalNames].sort(), outside };
 }
 
 // Reads and writes whose path is built at run time name no place, so the map
-// can only count them. Test material is left out for the reason landings leave
+// can only count them, and so do those that go to the directory the code is
+// run in or to the home directory, which are the caller's places. Test material is left out for the reason landings leave
 // it out: what it names is a temporary copy, not the repository.
 //
 // A command handed to a child process whose program or arguments are built at
@@ -52,14 +57,18 @@ function dynamicCounts(files) {
   let writes = 0;
   let spawns = 0;
   let spawnsInTests = 0;
+  let outsideReads = 0;
+  let outsideWrites = 0;
   for (const file of files) {
     spawns += file.dynamicSpawns ?? 0;
     if (isTestFile(file.path)) spawnsInTests += file.dynamicSpawns ?? 0;
     if (isTestMaterial(file.path)) continue;
     reads += file.dynamicReads ?? 0;
     writes += file.dynamicWrites ?? 0;
+    outsideReads += file.outsideReads ?? 0;
+    outsideWrites += file.outsideWrites ?? 0;
   }
-  return { reads, spawns, spawnsInTests, writes };
+  return { outsideReads, outsideWrites, reads, spawns, spawnsInTests, writes };
 }
 
 function resolvedFiles(file) {
@@ -131,8 +140,14 @@ export function buildArtifact(mapped, commit) {
     const sites = siteCounts(files);
     const dynamic = dynamicCounts(files);
     const named = sites.externals > 0 ? { externalNames: sites.externalNames } : {};
+    const outside = {
+      ...(sites.outside > 0 ? { outsideImports: sites.outside } : {}),
+      ...(dynamic.outsideReads > 0 ? { outsideReads: dynamic.outsideReads } : {}),
+      ...(dynamic.outsideWrites > 0 ? { outsideWrites: dynamic.outsideWrites } : {}),
+    };
     return {
       ...named,
+      ...outside,
       dynamicReads: dynamic.reads,
       dynamicSpawns: dynamic.spawns,
       dynamicSpawnsInTests: dynamic.spawnsInTests,
@@ -247,6 +262,7 @@ function carryLandings(landings) {
       readers: landing.readers.filter((entry) => !inAtlas(entry.by)).map(carryReader),
       ...(landing.spans ? { spans: landing.spans } : {}),
       target: landing.target,
+      ...(landing.tracked === false ? { tracked: false } : {}),
       writers: landing.writers.filter((entry) => !inAtlas(entry.by)).map(carryWriter),
     }))
     .filter((landing) => landing.readers.length > 0 || landing.writers.length > 0);
@@ -255,6 +271,8 @@ function carryLandings(landings) {
 function carryWriter(entry) {
   const out = { by: entry.by };
   if (entry.confidence != null) out.confidence = entry.confidence;
+  if (entry.stamps) out.stamps = true;
+  if (entry.unless) out.unless = [...entry.unless];
   return out;
 }
 
@@ -288,6 +306,9 @@ function carryDoor(door) {
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
     elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
     file: door.file,
+    ...(door.gated?.length > 0
+      ? { gated: door.gated.map((entry) => ({ jobs: [...entry.jobs], pushes: entry.pushes, sends: [...entry.sends], stages: [...entry.stages], when: { ...entry.when } })) }
+      : {}),
     landings: door.landings.filter((target) => !inAtlas(target)),
     mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),
     name: door.name,

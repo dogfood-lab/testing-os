@@ -130,7 +130,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   });
 
   const doors = [
-    ...mapDoors({ repoPath, tracked: trackedSet, spawned }),
+    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands }),
     ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands }),
   ];
   const graph = importGraph(boundaryList, unassigned, overlaps);
@@ -144,7 +144,12 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     door.reachFiles = walkReach(door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path), graph).files;
   }
   const landings = attachLandings({ files: [...graph.files.values()], doors, boundaries: boundaryList, places });
-  for (const door of doors) delete door.reachFiles;
+  // The flags a run passes matter only to which of a writer's guarded writes
+  // the door is credited with, which attachLandings has now decided.
+  for (const door of doors) {
+    delete door.reachFiles;
+    for (const run of door.runs ?? []) delete run.passes;
+  }
   const entryPoints = new Map(boundaryList.map((boundary) => [boundary.name, [...boundary.entryPoints].sort()]));
   // A console script names the function it calls, which is that file's entry
   // before any rule read from the file itself.

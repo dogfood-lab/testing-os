@@ -1,0 +1,14 @@
+name: Publish data
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/build.mjs
+      - run: |
+          git add data/out.json
+          git commit -m "data"
+          git push

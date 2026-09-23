@@ -2,6 +2,7 @@ import { extname, posix } from 'node:path';
 import picomatch from 'picomatch';
 import { boundaryRoot } from './entry-points.js';
 import { isWorkflow } from './doors.js';
+import { writeGuards } from './guards.js';
 
 // The destination argument of each write call. A rename or copy lands on its
 // second argument; the first is where the bytes came from.
@@ -23,22 +24,14 @@ const JS_WRITES = new Map([
 // is a longer camelCase name and not the call itself spelled differently.
 const JS_WRITE_SUFFIX = /[a-z](WriteFileSync|WriteFile|AppendFileSync|AppendFile)$/;
 const JS_READS = new Set(['readFileSync', 'readFile', 'readdirSync', 'readdir', 'existsSync', 'statSync', 'createReadStream']);
-// Calls whose path names a directory, made or listed. Any other call names a
-// file, and a file that is not tracked is still that file (landingOf).
-const DIRECTORY_CALLS = new Set([
-  'mkdirSync',
-  'mkdir',
-  'readdirSync',
-  'readdir',
-  'os.makedirs',
-  'os.mkdir',
-  'os.listdir',
-  'os.scandir',
-  'glob.glob',
-  'iterdir',
-  'glob',
-  'rglob',
-]);
+// Calls that read a file's content, as a writer does before it writes back
+// into the same file: a stamp. existsSync and statSync only look.
+const CONTENT_READS = new Set(['readFileSync', 'readFile', 'createReadStream', 'open', 'openSync', 'read_text', 'read_bytes']);
+// Calls that make a directory. Making one the repository already tracks
+// writes nothing into it, so it says only that the file writes somewhere
+// there: evidence that stands when nothing else the file writes is placed
+// inside it, and is dropped when something is.
+const DIRECTORY_MAKERS = new Set(['mkdirSync', 'mkdir', 'os.makedirs', 'os.mkdir']);
 const JS_OPEN = new Set(['open', 'openSync']);
 const NETWORK = new Set(['fetch', 'get']);
 const JS_PATH_MODULES = new Set(['path', 'posix', 'win32', 'path.posix', 'path.win32']);
@@ -74,21 +67,31 @@ const PY_PATH = new Set([
   'pathlib.PurePosixPath',
 ]);
 const PY_DIRNAME = new Set(['os.path.dirname', 'path.dirname', 'dirname']);
+// Methods of a path that return a path: evalPy follows each.
+const PY_PATH_METHODS = new Set(['resolve', 'absolute', 'expanduser', 'joinpath', 'with_name']);
 const PY_IDENTITY = new Set([
-  'os.path.abspath',
-  'os.path.realpath',
   'os.path.normpath',
-  'abspath',
-  'realpath',
+  'os.path.expanduser',
+  'expanduser',
   'normpath',
   'str',
   'os.fspath',
   'fspath',
 ]);
+// These make a relative path absolute against the directory the process runs in.
+const PY_ABSOLUTE = new Set(['os.path.abspath', 'os.path.realpath', 'abspath', 'realpath']);
+const PY_CWD = new Set(['os.getcwd', 'getcwd', 'Path.cwd', 'pathlib.Path.cwd']);
+const PY_HOME = new Set(['Path.home', 'pathlib.Path.home']);
+const HOME_VARIABLES = new Set(['HOME', 'USERPROFILE']);
 const PY_SCOPES = new Set(['function_definition', 'lambda']);
 const PY_NESTED = new Set(['function_definition', 'class_definition', 'lambda']);
 
 const TEXT_SCANNED = new Set(['.html', '.htm', '.yml', '.yaml', '.md', '.json', '.sh', '.bash']);
+const MARKDOWN = new Set(['.md']);
+// A link or an embed in a page points a person at a place; the page reads
+// nothing. [text](path), ![alt](url) and an href or src attribute.
+const PAGE_LINKS = [/\]\([^)]*\)/g, /\b(?:href|src)\s*=\s*(?:"[^"]*"|'[^']*')/gi];
+const ASTRO_CONFIG = /(^|\/)astro\.config\.[cm]?[jt]s$/;
 const SHELL = new Set(['.sh', '.bash']);
 const SHELL_WRITERS = new Set(['tee']);
 const SHELL_MOVERS = new Set(['mv', 'cp']);
@@ -203,7 +206,11 @@ export function noLandings() {
  */
 export function textLandings(path, bytes, places) {
   if (isWorkflow(path) || !TEXT_SCANNED.has(extname(path).toLowerCase())) return noLandings();
-  const source = bytes.toString('utf8');
+  // A package manifest lists what it ships (files, main, exports) and names
+  // the commands it runs, which doors read as commands; it reads nothing.
+  if (posix.basename(path) === 'package.json') return noLandings();
+  let source = bytes.toString('utf8');
+  if (MARKDOWN.has(extname(path).toLowerCase())) for (const link of PAGE_LINKS) source = source.replace(link, ' ');
   const reads = [];
   for (const pattern of [/"([^"\r\n]*)"/g, /'([^'\r\n]*)'/g]) {
     for (const match of source.matchAll(pattern)) {
@@ -387,25 +394,34 @@ export function astLandings(language, root, path, places) {
     visiting: new Set(),
     assignments: new Map(),
   };
-  const found = { writes: [], dynamicWrites: 0, reads: [], dynamicReads: 0 };
+  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0 };
   const evaluate = ctx.python ? evalPy : evalJs;
   const site = (kind, call, node, countDynamic = true) => {
     if (!node) return;
     const values = evaluate(node, ctx, 0);
+    const unless = kind === 'write' ? writeGuards(node, ctx.python) : [];
     if (values.length === 0) {
       if (countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
       return;
     }
     const list = kind === 'write' ? found.writes : found.reads;
+    if (values.some(outside)) found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
+    const before = list.length;
+    let unplaced = false;
     for (const value of values) {
+      if (outside(value)) continue;
       if (value.text.includes('://')) {
         if (kind !== 'read' || value.open) continue;
         for (const entry of rawUrls(value.text, places)) list.push({ ...entry, call, confidence: 'ast' });
         continue;
       }
-      const target = landingOf(value, places, { directory: DIRECTORY_CALLS.has(call) });
-      if (target != null) list.push({ target, call, confidence: confidenceOf(value, target, places) });
+      const target = landingOf(value, places);
+      if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}) });
+      else if (value.open) unplaced = true;
     }
+    // A name built at run time beside nothing tracked (README.${lang}.md at
+    // the root) is a path the map cannot name, as a whole-path variable is.
+    if (unplaced && list.length === before && countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
   };
 
   const calls = [];
@@ -420,6 +436,7 @@ export function astLandings(language, root, path, places) {
     if (ctx.python) pythonSite(node, site);
     else scriptSite(node, site);
   }
+  if (!ctx.python && ASTRO_CONFIG.test(path)) found.reads.push(...starlightReads(root, ctx, places));
 
   walk(root, (node) => {
     if (isStringNode(node, ctx.python)) {
@@ -430,18 +447,36 @@ export function astLandings(language, root, path, places) {
     if (ctx.seen.has(key(node))) return;
     if (!isStringNode(node, ctx.python) && !isPathConstructor(node, ctx.python)) return;
     for (const value of evaluate(node, ctx, 0)) {
-      if (value.open) continue;
+      if (value.open || outside(value) || namesItself(value, ctx)) continue;
       const target = literalPlace(value.text, places);
-      if (target != null) found.reads.push({ target, call: 'literal', confidence: confidenceOf(value, target, places) });
+      if (target != null) found.reads.push(landingEntry(target, 'literal', value, places));
     }
   });
 
   return {
-    writes: sortEntries(found.writes),
+    writes: sortEntries(withoutRedundantDirectories(found.writes, places)),
     dynamicWrites: found.dynamicWrites,
     reads: sortEntries(found.reads),
     dynamicReads: found.dynamicReads,
+    ...(found.outsideWrites > 0 ? { outsideWrites: found.outsideWrites } : {}),
+    ...(found.outsideReads > 0 ? { outsideReads: found.outsideReads } : {}),
   };
+}
+
+function withoutRedundantDirectories(writes, places) {
+  return writes.filter((write) => !(
+    DIRECTORY_MAKERS.has(write.call) && places.dirs.has(write.target)
+    && writes.some((other) => other !== write && other.target.startsWith(`${write.target}/`))
+  ));
+}
+
+// A bare relative path, with nothing fixing where it starts, is relative to
+// whoever runs the code; attachLandings decides whose directory that is.
+function landingEntry(target, call, value, places) {
+  const entry = { target, call, confidence: confidenceOf(value, target, places) };
+  if (value.anchor == null && !value.rooted) entry.relative = true;
+  if (value.anchor === 'file' && !value.open) entry.fixed = true;
+  return entry;
 }
 
 /**
@@ -537,7 +572,7 @@ function evalJs(node, ctx, depth) {
     case 'non_null_expression':
       return evalJs(node.namedChildren[0], ctx, next);
     case 'string':
-      return [closed(jsStringText(node))];
+      return [literalValue(jsStringText(node))];
     case 'template_string':
       return concat(
         node.namedChildren
@@ -549,23 +584,24 @@ function evalJs(node, ctx, depth) {
       const left = node.childForFieldName('left');
       const right = node.childForFieldName('right');
       if (operator === '+') return concat([evalJs(left, ctx, next), evalJs(right, ctx, next)]);
-      if (operator === '||' || operator === '??') return union([evalJs(left, ctx, next), evalJs(right, ctx, next)]);
+      if (operator === '||' || operator === '??') return fallback(evalJs(left, ctx, next), evalJs(right, ctx, next));
       return [];
     }
     case 'ternary_expression':
       return union([evalJs(node.childForFieldName('consequence'), ctx, next), evalJs(node.childForFieldName('alternative'), ctx, next)]);
     case 'identifier':
-      if (node.text === '__dirname') return [closed(ctx.dir)];
-      if (node.text === '__filename') return [closed(ctx.file)];
+      if (node.text === '__dirname') return [anchored(ctx.dir)];
+      if (node.text === '__filename') return [anchored(ctx.file)];
       return bindingJs(node.text, node, ctx, next);
     case 'member_expression': {
       const object = node.childForFieldName('object');
       const property = node.childForFieldName('property')?.text;
       // new URL('./x.json', import.meta.url).pathname is the path the URL names.
       if (object?.type === 'new_expression' && (property === 'pathname' || property === 'href')) return evalJs(object, ctx, next);
+      if (object?.text === 'process.env' && HOME_VARIABLES.has(property)) return [atCaller('', 'home')];
       if (object?.type !== 'meta_property') return [];
-      if (property === 'url' || property === 'filename') return [closed(ctx.file)];
-      if (property === 'dirname') return [closed(ctx.dir)];
+      if (property === 'url' || property === 'filename') return [anchored(ctx.file)];
+      if (property === 'dirname') return [anchored(ctx.dir)];
       return [];
     }
     case 'new_expression': {
@@ -578,8 +614,16 @@ function evalJs(node, ctx, depth) {
       const fn = node.childForFieldName('function');
       const name = finalName(fn);
       const args = argumentNodes(node);
-      if (jsPathCall(fn, name) && (name === 'join' || name === 'resolve')) {
-        return joinValues(args.map((arg) => evalJs(arg, ctx, next)), name === 'resolve');
+      if (fn?.type === 'member_expression' && fn.childForFieldName('object')?.text === 'process' && name === 'cwd') return [atCaller('', 'cwd')];
+      if (name === 'homedir' && (fn?.type === 'identifier' || fn?.childForFieldName('object')?.text === 'os')) return [atCaller('', 'home')];
+      if (jsPathCall(fn, name) && name === 'resolve') {
+        // resolve() starts from the directory the process runs in unless a
+        // segment is absolute, so a relative first segment is the caller's.
+        if (args.length === 0) return [atCaller('', 'cwd')];
+        return joinValues([fromCaller(evalJs(args[0], ctx, next)), ...args.slice(1).map((arg) => evalJs(arg, ctx, next))], true);
+      }
+      if (jsPathCall(fn, name) && name === 'join') {
+        return joinValues(args.map((arg) => evalJs(arg, ctx, next)), false);
       }
       if (jsPathCall(fn, name) && name === 'dirname') return dirnameValues(evalJs(args[0], ctx, next));
       if (jsPathCall(fn, name) && name === 'normalize') return evalJs(args[0], ctx, next);
@@ -607,7 +651,7 @@ function evalPy(node, ctx, depth) {
             .map((child) => (child.type === 'interpolation' ? evalPy(child.namedChildren[0], ctx, next) : [closed(child.text)])),
         );
       }
-      return [closed(stringTexts(node, true).join(''))];
+      return [literalValue(stringTexts(node, true).join(''))];
     case 'concatenated_string':
       return concat(node.namedChildren.map((child) => evalPy(child, ctx, next)));
     case 'binary_operator': {
@@ -620,11 +664,13 @@ function evalPy(node, ctx, depth) {
     }
     case 'boolean_operator':
       if (node.childForFieldName('operator')?.text !== 'or') return [];
-      return union([evalPy(node.childForFieldName('left'), ctx, next), evalPy(node.childForFieldName('right'), ctx, next)]);
+      return fallback(evalPy(node.childForFieldName('left'), ctx, next), evalPy(node.childForFieldName('right'), ctx, next));
+    case 'subscript':
+      return pyEnvironment(node.childForFieldName('value'), node.childForFieldName('subscript'));
     case 'conditional_expression':
       return union([evalPy(node.namedChildren[0], ctx, next), evalPy(node.namedChildren[2], ctx, next)]);
     case 'identifier':
-      if (node.text === '__file__') return [closed(ctx.file)];
+      if (node.text === '__file__') return [anchored(ctx.file)];
       return bindingPy(node.text, node, ctx, next);
     case 'attribute':
       if (node.childForFieldName('attribute')?.text === 'parent') return dirnameValues(evalPy(node.childForFieldName('object'), ctx, next));
@@ -633,6 +679,10 @@ function evalPy(node, ctx, depth) {
       const fn = node.childForFieldName('function');
       const args = argumentNodes(node);
       const name = dottedName(fn);
+      if (PY_CWD.has(name)) return [atCaller('', 'cwd')];
+      if (PY_HOME.has(name)) return [atCaller('', 'home')];
+      if (name === 'os.environ.get' || name === 'os.getenv' || name === 'getenv') return pyEnvironment(null, args[0]);
+      if (PY_ABSOLUTE.has(name)) return fromCaller(evalPy(args[0], ctx, next));
       if (PY_JOIN.has(name) || PY_PATH.has(name)) {
         if (args.length === 0) return PY_PATH.has(name) ? [closed('')] : [];
         return joinValues(args.map((arg) => evalPy(arg, ctx, next)), false);
@@ -642,8 +692,12 @@ function evalPy(node, ctx, depth) {
       if (fn?.type === 'attribute') {
         const attribute = fn.childForFieldName('attribute')?.text;
         const object = fn.childForFieldName('object');
-        if (attribute === 'resolve' || attribute === 'absolute' || attribute === 'expanduser') return evalPy(object, ctx, next);
+        if (attribute === 'resolve' || attribute === 'absolute') return fromCaller(evalPy(object, ctx, next));
+        if (attribute === 'expanduser') return evalPy(object, ctx, next);
         if (attribute === 'joinpath') return joinValues([object, ...args].map((arg) => evalPy(arg, ctx, next)), false);
+        if (attribute === 'with_name' && args.length === 1) {
+          return joinValues([dirnameValues(evalPy(object, ctx, next)), evalPy(args[0], ctx, next)], false);
+        }
         return [];
       }
       if (fn?.type === 'identifier') return returnsPy(fn.text, node, ctx, next);
@@ -854,6 +908,82 @@ function closed(text) {
   return { text, open: false };
 }
 
+// A value built from the file's own location (__dirname, import.meta.url,
+// __file__) is anchored to the file: it names the same place whoever runs it
+// and from wherever.
+function anchored(text) {
+  return { text, open: false, anchor: 'file' };
+}
+
+/**
+ * What an Astro config with Starlight builds its pages from: the docs content
+ * collection under the site's src/content/docs, and each directory a sidebar
+ * group autogenerates from (autogenerate: { directory: 'handbook' }).
+ */
+function starlightReads(root, ctx, places) {
+  const docs = ctx.dir ? `${ctx.dir}/src/content/docs` : 'src/content/docs';
+  const reads = [];
+  let starlight = false;
+  walk(root, (node) => {
+    const source = node.type === 'import_statement' ? node.childForFieldName('source') : null;
+    if (source?.type === 'string' && jsStringText(source) === '@astrojs/starlight') starlight = true;
+    if (node.type !== 'pair' || node.childForFieldName('key')?.text !== 'autogenerate') return;
+    const value = node.childForFieldName('value');
+    for (const pair of value?.type === 'object' ? value.namedChildren : []) {
+      if (pair.type !== 'pair' || pair.childForFieldName('key')?.text !== 'directory') continue;
+      const directory = pair.childForFieldName('value');
+      if (directory?.type !== 'string') continue;
+      const target = `${docs}/${jsStringText(directory).replace(/^\.?\/+|\/+$/g, '')}`;
+      if (places.dirs.has(target)) reads.push({ target, call: 'autogenerate', confidence: 'ast' });
+    }
+  });
+  if (starlight && places.dirs.has(docs)) reads.push({ target: docs, call: 'content-collection', confidence: 'ast' });
+  return reads;
+}
+
+// A value relative to where the code is run from ('cwd') or to the home
+// directory ('home') is the caller's place, not the repository's: the same
+// line writes somewhere else for every person who runs it.
+function atCaller(text, anchor) {
+  return { text, open: false, anchor };
+}
+
+function outside(value) {
+  return value.anchor === 'cwd' || value.anchor === 'home';
+}
+
+// A literal that starts at ~ is in the home directory.
+function literalValue(text) {
+  if (text === '~' || text.startsWith('~/')) return atCaller(text.slice(2), 'home');
+  return closed(text);
+}
+
+// A relative path with nothing fixing where it starts, handed to something
+// that resolves it against the working directory.
+function fromCaller(values) {
+  return values.map((value) => (value.anchor == null && !value.rooted && !value.text.startsWith('/') ? { ...value, anchor: 'cwd' } : value));
+}
+
+// dir || '.' is a place the caller passes, or the one they are standing in.
+function fallback(left, right) {
+  if (left.length > 0) return union([left, right]);
+  return right.map((value) => (value.anchor == null && !value.open && (value.text === '.' || value.text === './') ? atCaller('', 'cwd') : value));
+}
+
+// os.environ['HOME'] and os.getenv('HOME') are the home directory.
+function pyEnvironment(object, name) {
+  if (object != null && object.text !== 'os.environ') return [];
+  if (name?.type !== 'string') return [];
+  return HOME_VARIABLES.has(stringTexts(name, true).join('')) ? [atCaller('', 'home')] : [];
+}
+
+// A value that is only the file's own path, or a directory holding it, names
+// where the code lives, not a place it reads: HERE = Path(__file__).parent.
+function namesItself(value, ctx) {
+  if (value.anchor !== 'file') return false;
+  return value.text === ctx.file || value.text === '' || ctx.file.startsWith(`${value.text}/`);
+}
+
 // A value is rooted when its first segment is a root the engine could not
 // read, as in join(someDir, name). A rooted bare file name that equals a
 // tracked file at the repository root matched only because the unread root
@@ -904,11 +1034,11 @@ function joinValues(segments, absoluteResets) {
     const next = [];
     for (const value of acc) {
       if (value.open) next.push(value);
-      else if (values.length === 0) next.push({ text: value.text === '' ? '' : `${value.text}/`, open: true, rooted: value.rooted });
+      else if (values.length === 0) next.push({ text: value.text === '' ? '' : `${value.text}/`, open: true, rooted: value.rooted, anchor: value.anchor });
       else {
         for (const segment of values) {
           if (absoluteResets && segment.text.startsWith('/')) continue;
-          next.push({ text: value.text === '' ? segment.text : `${value.text}/${segment.text}`, open: segment.open, rooted: value.rooted });
+          next.push({ text: value.text === '' ? segment.text : `${value.text}/${segment.text}`, open: segment.open, rooted: value.rooted, anchor: value.anchor });
         }
       }
     }
@@ -922,13 +1052,13 @@ function normalizeValue(value, anchored) {
   let text = value.text.replaceAll('\\', '/');
   if (anchored) text = text.replace(/^\/+/, '');
   if (text.startsWith('/')) return null;
-  if (text === '') return value.open ? null : { ...closed(''), rooted: value.rooted };
+  if (text === '') return value.open ? null : { ...closed(''), rooted: value.rooted, anchor: value.anchor };
   text = posix.normalize(text);
   if (text === '.' || text === './') text = '';
   if (text === '..' || text.startsWith('../')) return null;
   if (text.startsWith('./')) text = text.slice(2);
   if (value.open && text === '') return null;
-  return { text, open: value.open, rooted: value.rooted };
+  return { text, open: value.open, rooted: value.rooted, anchor: value.anchor };
 }
 
 function dirnameValues(values) {
@@ -937,7 +1067,7 @@ function dirnameValues(values) {
       if (value.open) return value;
       if (value.text === '' || value.text.includes('://')) return null;
       const dir = posix.dirname(value.text);
-      return { ...closed(dir === '.' ? '' : dir), rooted: value.rooted };
+      return { ...closed(dir === '.' ? '' : dir), rooted: value.rooted, anchor: value.anchor };
     })
     .filter(Boolean);
 }
@@ -951,7 +1081,7 @@ function urlJoin(bases, relatives) {
         out.push({ text: base.text.slice(0, base.text.lastIndexOf('/') + 1) + relative.text, open: relative.open });
       } else {
         const dir = posix.dirname(base.text);
-        out.push(...joinValues([[closed(dir === '.' ? '' : dir)], [relative]], true));
+        out.push(...joinValues([[{ ...closed(dir === '.' ? '' : dir), anchor: base.anchor }], [relative]], true));
       }
     }
   }
@@ -973,7 +1103,7 @@ function concat(parts) {
         rooted = true;
         continue;
       }
-      acc = acc.map((value) => (value.open ? value : { text: value.text, open: true, rooted: value.rooted }));
+      acc = acc.map((value) => (value.open ? value : { text: value.text, open: true, rooted: value.rooted, anchor: value.anchor }));
       continue;
     }
     const joined = [];
@@ -984,7 +1114,7 @@ function concat(parts) {
       }
       for (const part of values) {
         const text = value.text === '' && (rooted || i > 0) && part.text.startsWith('/') && !part.text.startsWith('//') ? part.text.slice(1) : part.text;
-        joined.push({ text: value.text + text, open: part.open, rooted: rooted || value.rooted });
+        joined.push({ text: value.text + text, open: part.open, rooted: rooted || value.rooted, anchor: i === 0 ? part.anchor : value.anchor });
       }
     }
     acc = cap(joined);
@@ -1000,7 +1130,7 @@ function cap(values) {
   const seen = new Set();
   const out = [];
   for (const value of values) {
-    const id = `${value.open ? 1 : 0}${value.rooted ? 1 : 0}${value.text}`;
+    const id = `${value.open ? 1 : 0}${value.rooted ? 1 : 0}${value.anchor ?? ''}:${value.text}`;
     if (seen.has(id)) continue;
     seen.add(id);
     out.push(value);
@@ -1010,34 +1140,32 @@ function cap(values) {
 }
 
 /**
- * The place a value lands on. A value that names a tracked file or a tracked
- * directory lands there. A value written out in full that names a file lands
- * on that file even when the file is not tracked, so long as a tracked
- * directory holds it: a receipt a script writes beside itself at run time is
- * that receipt, and the page must not call the whole directory generated. A
- * directory the call makes or lists, a path ending in a slash, and a value
- * whose tail is built at run time name a directory, and land on the deepest
- * tracked directory their spelled-out text lies under. A path through a
- * dependency or build directory is not the repository's own, so it keeps to
- * the directory above as well.
+ * The place a value lands on: the path it spells out, the whole of it when it
+ * is written out in full, or the directory its last whole segment ends when
+ * its tail is built at run time (records/run- is records). That place is
+ * where the write goes whether or not it is tracked, so long as a tracked
+ * directory holds it: a receipt a script writes beside itself is that
+ * receipt, and output under an ignored proofs/output/ is proofs/output, never
+ * the tracked proofs/ above it. attachLandings marks the places that are not
+ * tracked. A path through a dependency or build directory is not the
+ * repository's own, so it keeps to the tracked directory above.
  *
  * @param {{ text: string, open: boolean }} value
  * @param {{ files: Set<string>, dirs: Set<string> }} places
- * @param {{ directory?: boolean }} [options] directory: the call names a directory
  */
-function landingOf(value, places, { directory = false } = {}) {
+function landingOf(value, places) {
   let text = value.text.replaceAll('\\', '/');
   if (text.startsWith('/')) return null;
   while (text.startsWith('./')) text = text.slice(2);
   if (!value.open) {
     text = posix.normalize(text);
     if (text === '..' || text.startsWith('../')) return null;
-    const bare = text.replace(/\/+$/, '');
-    if (places.files.has(bare) || places.dirs.has(bare)) return bare;
-    const named = !directory && bare === text && !text.split('/').some((part) => part === 'node_modules' || part === 'dist');
-    if (named && holdingDirectory(text, places) != null) return text;
   }
-  return holdingDirectory(text, places);
+  const spelled = value.open ? text.slice(0, Math.max(text.lastIndexOf('/'), 0)) : text.replace(/\/+$/, '');
+  if (spelled === '') return null;
+  if (places.files.has(spelled) || places.dirs.has(spelled)) return spelled;
+  if (spelled.split('/').some((part) => part === 'node_modules' || part === 'dist')) return holdingDirectory(text, places);
+  return holdingDirectory(spelled, places) != null ? spelled : null;
 }
 
 function holdingDirectory(text, places) {
@@ -1076,7 +1204,7 @@ function rawUrls(text, places) {
 function sortEntries(entries) {
   const unique = new Map();
   for (const entry of entries) {
-    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}`, entry);
+    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}\0${entry.relative ? 1 : 0}\0${(entry.unless ?? []).join(',')}`, entry);
   }
   return [...unique.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
 }
@@ -1086,10 +1214,18 @@ function isStringNode(node, python) {
   return node.type === 'string' || node.type === 'template_string';
 }
 
+// A pathlib expression is a path however it is built: a / join, a .parent,
+// or a method that keeps a path a path. The walk meets the outermost one first
+// and evaluating it marks every node inside as seen, so the Path(__file__) a
+// join starts from is never read as a place of its own.
 function isPathConstructor(node, python) {
   if (python) {
+    if (node.type === 'binary_operator') return node.childForFieldName('operator')?.text === '/';
+    if (node.type === 'attribute') return node.childForFieldName('attribute')?.text === 'parent';
     if (node.type !== 'call') return false;
-    const name = dottedName(node.childForFieldName('function'));
+    const fn = node.childForFieldName('function');
+    if (fn?.type === 'attribute' && PY_PATH_METHODS.has(fn.childForFieldName('attribute')?.text)) return true;
+    const name = dottedName(fn);
     return PY_JOIN.has(name) || PY_PATH.has(name);
   }
   if (node.type !== 'call_expression') return false;
@@ -1206,9 +1342,20 @@ function key(node) {
  * @param {{ files: object[], doors: object[], boundaries: object[], places: { files: Set<string>, dirs: Set<string> } }} input
  */
 export function attachLandings({ files, doors, boundaries, places }) {
-  const own = files.filter((file) => !isTestMaterial(file.path)).sort((a, b) => compare(a.path, b.path));
-  const byPath = new Map(own.map((file) => [file.path, file]));
   const mapped = doors.filter((door) => !door.parseError);
+  settleRelativePaths(files, mapped);
+  const own = files.filter((file) => !isTestMaterial(file.path)).sort((a, b) => compare(a.path, b.path));
+  // A test writes into temporary copies, except where the path is fixed to
+  // the test's own file, written out in full, and names a tracked file
+  // outside test material: a test rewriting a committed table under docs/
+  // writes this repository, and one writing a scratch file beside itself
+  // does not. Only those writes are kept, and none of a test's reads.
+  const tests = files.filter((file) => isTestMaterial(file.path))
+    .map((file) => ({ path: file.path, reads: file.reads ?? [], writes: (file.writes ?? []).filter((write) => write.fixed && places.files.has(write.target) && !isTestMaterial(write.target)) }))
+    .filter((file) => file.writes.length > 0)
+    .sort((a, b) => compare(a.path, b.path));
+  const byPath = new Map([...own, ...tests].map((file) => [file.path, file]));
+  for (const file of files) if (isTestMaterial(file.path)) file.writes = (file.writes ?? []).map(({ fixed, ...rest }) => rest);
 
   const writers = new Map();
   const readers = new Map();
@@ -1216,20 +1363,38 @@ export function attachLandings({ files, doors, boundaries, places }) {
     if (!map.has(target)) map.set(target, new Map());
     map.get(target).set(canonicalEntry(entry), entry);
   };
-  for (const file of own) {
-    for (const write of file.writes) add(writers, write.target, { by: file.path, confidence: write.confidence });
+  for (const file of [...own, ...tests]) {
+    for (const write of file.writes) {
+      const entry = { by: file.path, confidence: write.confidence };
+      if (stamps(file, write.target, places)) entry.stamps = true;
+      add(writers, write.target, entry);
+    }
   }
   for (const door of mapped) {
-    door.stagedTargets = stagedTargets(door.stages, places);
+    // A job that commits only on one trigger still commits what it stages.
+    door.stagedTargets = stagedTargets([...door.stages, ...(door.gated ?? []).flatMap((entry) => entry.stages)], places);
     for (const target of door.stagedTargets) add(writers, target, { by: door.file });
     for (const mention of door.mentions) add(readers, mention.path, { by: door.file });
   }
+  // A place that is not tracked is output the repository does not keep (an
+  // ignored directory, a file made at run time), unless a door commits it or
+  // it lands in a directory the repository tracks only through a placeholder,
+  // which is kept for exactly that output (reports/.gitkeep).
+  const committed = mapped.flatMap((door) => door.stagedTargets);
+  const untracked = new Set([...writers.keys(), ...readers.keys()].filter((target) => (
+    !places.files.has(target) && !places.dirs.has(target) && !keptForOutput(target, places)
+    && !committed.some((staged) => target === staged || target.startsWith(`${staged}/`))
+  )));
   const spans = partsSpanned(boundaries, [...writers.keys(), ...readers.keys()], places);
   // A text file inside a place something writes is that writer's output: the
   // paths an index or a roadmap names are its data, not places it reads.
   const strong = new Set([...writers]
-    .filter(([target, entries]) => !spans.has(target) && [...entries.values()].some((entry) => entry.confidence !== 'weak'))
+    .filter(([target, entries]) => !spans.has(target) && !untracked.has(target) && [...entries.values()].some((entry) => entry.confidence !== 'weak'))
     .map(([target]) => target));
+  // A tracked file whose every writer reads it first holds a block a script
+  // stamps (a version line); people write the rest, so it never makes its
+  // part generated.
+  const stamped = new Set([...strong].filter((target) => [...writers.get(target).values()].every((entry) => entry.stamps)));
   const output = (path) => [...strong].some((target) => path === target || path.startsWith(`${target}/`));
   for (const file of own) {
     const generated = file.reads.some((read) => read.confidence === 'text') && output(file.path);
@@ -1238,13 +1403,27 @@ export function attachLandings({ files, doors, boundaries, places }) {
       add(readers, read.target, readerEntry(file.path, read));
     }
   }
+  // Code that imports a module something writes reads that module.
+  for (const file of own) {
+    for (const site of Array.isArray(file.imports) ? file.imports : []) {
+      const path = site.resolved?.outcome === 'file' ? site.resolved.path : null;
+      if (path == null || path === file.path || !output(path)) continue;
+      add(readers, path, { by: file.path, call: 'import', confidence: 'ast' });
+    }
+  }
 
+  const skipped = new Map();
   for (const door of mapped) {
     const targets = new Set(door.stagedTargets);
     for (const path of door.reachFiles ?? []) {
-      for (const write of byPath.get(path)?.writes ?? []) if (write.confidence !== 'weak') targets.add(write.target);
+      for (const write of byPath.get(path)?.writes ?? []) {
+        if (write.confidence === 'weak') continue;
+        const guards = guardsHit(door, path, write);
+        if (guards.length === 0) targets.add(write.target);
+        else for (const guard of guards) note(skipped, `${write.target}\0${path}`, guard);
+      }
     }
-    door.landings = [...targets].filter((target) => !spans.has(target)).sort(compare);
+    door.landings = [...targets].filter((target) => !spans.has(target) && !untracked.has(target)).sort(compare);
     const found = new Map();
     for (const target of door.landings) {
       for (const [place, entries] of readers) {
@@ -1258,13 +1437,53 @@ export function attachLandings({ files, doors, boundaries, places }) {
     delete door.stagedTargets;
   }
 
-  for (const boundary of boundaries) boundary.origin = originOf(boundary, strong, places);
+  // A write a door skips for one of the writer's own guards stays on the
+  // file's own row, with the guards that kept a door from it.
+  for (const [target, entries] of writers) {
+    for (const entry of entries.values()) {
+      const hit = skipped.get(`${target}\0${entry.by}`);
+      if (hit) entry.unless = [...hit].sort();
+    }
+  }
+
+  for (const boundary of boundaries) boundary.origin = originOf(boundary, strong, stamped, places);
 
   return [...new Set([...writers.keys(), ...readers.keys()])].sort(compare).map((target) => {
     const landing = { target, writers: sortedValues(writers.get(target)), readers: sortedValues(readers.get(target)) };
     if (spans.has(target)) landing.spans = spans.get(target);
+    if (untracked.has(target)) landing.tracked = false;
     return landing;
   });
+}
+
+/**
+ * A bare relative path is relative to the directory the code runs in. A
+ * workflow runs from the repository root, so for a file a workflow reaches
+ * that directory is this repository. A file reached only through a command
+ * or package people install runs wherever they are, so its bare paths are
+ * theirs: counted as outside, never a place here. A file no door reaches
+ * keeps its paths, as nothing says whose directory they are.
+ */
+function settleRelativePaths(files, doors) {
+  const byWorkflow = new Set();
+  const byInstall = new Set();
+  for (const door of doors) {
+    const into = door.kind === 'command' || door.kind === 'package' ? byInstall : byWorkflow;
+    for (const path of door.reachFiles ?? []) into.add(path);
+  }
+  for (const file of files) {
+    const theirs = byInstall.has(file.path) && !byWorkflow.has(file.path);
+    for (const [kind, count] of [['writes', 'outsideWrites'], ['reads', 'outsideReads']]) {
+      if (!Array.isArray(file[kind])) continue;
+      const kept = [];
+      for (const entry of file[kind]) {
+        const { relative, fixed, ...rest } = entry;
+        if (theirs && relative) file[count] = (file[count] ?? 0) + 1;
+        else kept.push(isTestMaterial(file.path) && fixed ? { ...rest, fixed } : rest);
+      }
+      file[kind] = sortEntries(kept);
+    }
+  }
 }
 
 /**
@@ -1300,7 +1519,7 @@ const PLACEHOLDER = /(^|\/)\.(gitkeep|keep)$/;
 // root or every one of its files is written, a placeholder aside, and none of
 // its own files write: a directory of written files beside a .gitkeep is
 // generated as surely as one whose files are all tracked.
-function originOf(boundary, written, places) {
+function originOf(boundary, written, stamped, places) {
   const paths = boundary.files.map((file) => file.path);
   const root = boundaryRoot(boundary.globs);
   const holds = picomatch(boundary.globs, { dot: true });
@@ -1312,9 +1531,48 @@ function originOf(boundary, written, places) {
   });
   if (inside.length === 0) return 'authored';
   const content = paths.filter((path) => !PLACEHOLDER.test(path));
-  const covered = (root !== '' && written.has(root)) || (paths.length > 0 && content.every((path) => written.has(path)));
+  const made = (path) => written.has(path) && !stamped.has(path);
+  const covered = (root !== '' && made(root)) || (paths.length > 0 && content.every(made));
   const writesItself = boundary.files.some((file) => !isTestMaterial(file.path) && (file.writes?.length ?? 0) > 0);
   return covered && !writesItself ? 'generated' : 'mixed';
+}
+
+function keptForOutput(target, places) {
+  for (let end = target.lastIndexOf('/'); end > 0; end = target.lastIndexOf('/', end - 1)) {
+    const dir = target.slice(0, end);
+    if (places.dirs.has(dir)) return places.files.has(`${dir}/.gitkeep`) || places.files.has(`${dir}/.keep`);
+  }
+  return false;
+}
+
+/**
+ * The writer's own guards that keep this door's run of the file from a write:
+ * a workflow runs with CI set, and a flag every run of the file passes. A
+ * file the door only imports carries no flags of its own run, so a flag guard
+ * holds only for a file the door runs by name.
+ */
+function guardsHit(door, path, write) {
+  const unless = write.unless ?? [];
+  if (unless.length === 0) return [];
+  const hit = [];
+  if (!door.kind && unless.includes('ci')) hit.push('ci');
+  const runs = (door.runs ?? []).filter((run) => run.path === path && run.runKind !== 'checks');
+  const flags = unless.filter((guard) => guard !== 'ci');
+  if (runs.length > 0 && flags.length > 0 && runs.every((run) => (run.passes ?? []).some((flag) => flags.includes(flag)))) {
+    for (const run of runs) for (const flag of run.passes) if (flags.includes(flag)) hit.push(flag);
+  }
+  return [...new Set(hit)];
+}
+
+function note(map, key, value) {
+  if (!map.has(key)) map.set(key, new Set());
+  map.get(key).add(value);
+}
+
+// The writer reads the tracked file's content before it writes the file.
+function stamps(file, target, places) {
+  if (!places.files.has(target)) return false;
+  return (file.reads ?? []).some((read) => read.target === target && CONTENT_READS.has(read.call));
 }
 
 // What follows git add, normalised as a path: a glob stops the path where the

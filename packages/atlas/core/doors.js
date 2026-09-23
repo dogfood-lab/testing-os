@@ -38,8 +38,8 @@ const ACTION_SENDS = [
  *   spawned holds, per JavaScript or TypeScript file, the command lines it
  *   hands to a child process (core/spawned.js)
  */
-export function mapDoors({ repoPath, tracked, spawned }) {
-  const repo = repositoryView({ repoPath, tracked, spawned });
+export function mapDoors({ repoPath, tracked, spawned, commands = [] }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands });
   return [...tracked]
     .filter(isWorkflow)
     .sort()
@@ -58,7 +58,7 @@ export function mapDoors({ repoPath, tracked, spawned }) {
  * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, commands: Array<{ kind: string, name: string, manifest: string, path: string }> }} input
  */
 export function mapCommandDoors({ repoPath, tracked, spawned, commands }) {
-  const repo = repositoryView({ repoPath, tracked, spawned });
+  const repo = repositoryView({ repoPath, tracked, spawned, commands });
   return commands.map((command) => {
     const recorded = recordedRuns([...readProgram(command.path, repo).values()]);
     return {
@@ -115,12 +115,20 @@ function readDoor(repoPath, file, repo) {
   const stages = new Set();
   let pushes = false;
   const elsewhere = new Map();
-  const sends = { publishesTo: new Set(), releases: false, deploysPages: false, opensPullRequests: false };
+  const sends = emptySends();
   const issues = [];
+  const texts = [];
+  // What a job gated to one trigger does is kept apart, by its gate.
+  const gates = new Map();
+  const triggers = triggerList(doc.on);
   const workflowDir = workingDirectory(doc.defaults);
   const workflowEnv = envOf(doc.env);
   for (const [job, body] of Object.entries(isMapping(doc.jobs) ? doc.jobs : {})) {
     if (!isMapping(body)) continue;
+    const gate = jobGate(body.if, triggers);
+    if (gate && !gates.has(canonical(gate))) gates.set(canonical(gate), { when: gate, jobs: [], sends: emptySends(), issues: [], texts: [], stages: new Set(), pushes: false });
+    if (gate) gates.get(canonical(gate)).jobs.push(job);
+    const scope = gate ? gates.get(canonical(gate)) : { sends, issues, texts, stages, pushes: false };
     for (const permission of permissionList(body.permissions)) permissions.add(permission);
     const jobDir = workingDirectory(body.defaults) ?? workflowDir ?? '';
     const jobEnv = envOf(body.env);
@@ -135,19 +143,20 @@ function readDoor(repoPath, file, repo) {
       if (typeof step.uses === 'string') {
         const action = step.uses.replace(/@.*$/, '');
         uses.add(action);
-        for (const [name, apply] of ACTION_SENDS) if (action === name || action.startsWith(`${name}/`)) apply(sends, step);
+        for (const [name, apply] of ACTION_SENDS) if (action === name || action.startsWith(`${name}/`)) apply(scope.sends, step);
         const checkout = otherCheckout(action, step.with);
         if (checkout) clones.set(checkout.dir, checkout.repository);
       }
       if (typeof step.run !== 'string') return;
       const name = typeof step.name === 'string' && step.name.trim() !== '' ? step.name : String(index);
       commands.push({ job, step: name, text: step.run });
+      scope.texts.push(step.run);
       const stepEnv = envOf(step.env);
       const lookup = (variable) => [stepEnv, jobEnv, workflowEnv].find((env) => env.has(variable))?.get(variable) ?? null;
       const start = placeOf({ here: true, dir: '' }, step['working-directory'] ?? rawJobDir, clones, repo, lookup);
       const work = gitWork(step.run, lookup, start, clones, repo);
-      for (const staged of work.stages) stages.add(staged);
-      if (work.pushes) pushes = true;
+      for (const staged of work.stages) scope.stages.add(staged);
+      if (work.pushes) scope.pushes = true;
       for (const entry of work.elsewhere) {
         const key = `${entry.dir}\0${entry.clone ?? ''}`;
         if (!elsewhere.has(key)) elsewhere.set(key, { clone: entry.clone, dir: entry.dir, pushes: false, stages: new Set() });
@@ -155,8 +164,8 @@ function readDoor(repoPath, file, repo) {
         for (const staged of entry.stages) found.stages.add(staged);
         if (entry.pushes) found.pushes = true;
       }
-      commandSends(step.run, sends);
-      if (/\bgh\s+issue\s+create\b/.test(step.run)) issues.push(onlyOnFailure(step.if) || onlyOnFailure(body.if));
+      commandSends(step.run, scope.sends);
+      if (/\bgh\s+issue\s+create\b/.test(step.run)) scope.issues.push(onlyOnFailure(step.if) || onlyOnFailure(body.if));
       // A step whose working directory cannot be read as a repository path
       // names nothing Atlas can place, so its tokens are left unresolved.
       const dir = step['working-directory'] === undefined ? jobDir : cleanDir(step['working-directory']);
@@ -169,14 +178,17 @@ function readDoor(repoPath, file, repo) {
       }
       for (const path of named.mentions) mentions.set(`${path}\0${job}`, { path, job });
     });
+    if (!gate && scope.pushes) pushes = true;
   }
 
   const recorded = recordedRuns([...runs.values()]);
   const runKeys = new Set(recorded.all.map((run) => `${run.path}\0${run.job}`));
   const underRun = (path, job) => recorded.all.some((run) => run.job === job && run.directory && path.startsWith(run.path));
   const byPathThenJob = (a, b) => compare(a.path, b.path) || compare(a.job, b.job);
-  const joined = commands.map((command) => command.text).join('\n');
-  const publishesTo = [...sends.publishesTo].sort();
+  const gated = [...gates.entries()]
+    .sort(([a], [b]) => compare(a, b))
+    .map(([, entry]) => ({ when: entry.when, jobs: [...entry.jobs].sort(), sends: sendKeys(finishSends(entry.sends, entry.issues, entry.texts)), stages: [...entry.stages].sort(), pushes: entry.pushes }))
+    .filter((entry) => entry.sends.length > 0 || entry.stages.length > 0 || entry.pushes);
   return {
     file,
     name: typeof doc.name === 'string' && doc.name.trim() !== '' ? doc.name : fallback,
@@ -196,20 +208,76 @@ function readDoor(repoPath, file, repo) {
     elsewhere: [...elsewhere.values()]
       .map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages].sort() }))
       .sort((a, b) => compare(a.dir, b.dir) || compare(a.clone ?? '', b.clone ?? '')),
-    sends: {
-      dispatchesTo: [
-        ...new Set([...joined.matchAll(/repos\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)\/dispatches\b/g)].map((m) => `${m[1]}/${m[2]}`)),
-      ].sort(),
-      publishes: publishesTo.length > 0,
-      publishesTo,
-      releases: sends.releases,
-      deploysPages: sends.deploysPages,
-      opensIssues: issues.length > 0,
-      opensIssuesOnFailure: issues.length > 0 && issues.every(Boolean),
-      opensPullRequests: sends.opensPullRequests,
-    },
+    sends: finishSends(sends, issues, texts),
+    ...(gated.length > 0 ? { gated } : {}),
     uses: [...uses].sort(),
   };
+}
+
+function emptySends() {
+  return { publishesTo: new Set(), releases: false, deploysPages: false, opensPullRequests: false };
+}
+
+function finishSends(sends, issues, texts) {
+  const joined = texts.join('\n');
+  const publishesTo = [...sends.publishesTo].sort();
+  return {
+    dispatchesTo: [
+      ...new Set([...joined.matchAll(/repos\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)\/dispatches\b/g)].map((m) => `${m[1]}/${m[2]}`)),
+    ].sort(),
+    publishes: publishesTo.length > 0,
+    publishesTo,
+    releases: sends.releases,
+    deploysPages: sends.deploysPages,
+    opensIssues: issues.length > 0,
+    opensIssuesOnFailure: issues.length > 0 && issues.every(Boolean),
+    opensPullRequests: sends.opensPullRequests,
+  };
+}
+
+// A gated job's sends as a list, the shape the page reads them back from.
+function sendKeys(sends) {
+  const keys = [];
+  for (const repo of sends.dispatchesTo) keys.push(`dispatchesTo:${repo}`);
+  for (const registry of sends.publishesTo) keys.push(`publishesTo:${registry}`);
+  for (const flag of ['releases', 'deploysPages', 'opensIssues', 'opensIssuesOnFailure', 'opensPullRequests']) if (sends[flag]) keys.push(flag);
+  return keys;
+}
+
+/**
+ * The trigger a job-level if: holds the job to, when it names the event or
+ * the ref: github.event_name == 'push', github.ref == 'refs/heads/main',
+ * startsWith(github.ref, 'refs/tags/'), joined by &&. Anything else in the
+ * condition narrows the job further without changing which trigger it runs
+ * on; a condition with || at its top, or one every trigger of the workflow
+ * already meets, gates nothing.
+ */
+function jobGate(condition, triggers) {
+  if (typeof condition !== 'string') return null;
+  const expression = condition.trim().replace(/^\$\{\{([\s\S]*)\}\}$/, '$1').trim();
+  if (topLevel(expression, '||').length > 1) return null;
+  const gate = {};
+  for (const raw of topLevel(expression, '&&')) {
+    let part = raw;
+    while (part.startsWith('(') && part.endsWith(')') && balanced(part.slice(1, -1))) part = part.slice(1, -1).trim();
+    const event = /^github\.event_name\s*==\s*'([\w-]+)'$/.exec(part) ?? /^'([\w-]+)'\s*==\s*github\.event_name$/.exec(part);
+    const branch = /^github\.ref\s*==\s*'refs\/heads\/([^']+)'$/.exec(part) ?? /^'refs\/heads\/([^']+)'\s*==\s*github\.ref$/.exec(part);
+    if (event) gate.event = event[1];
+    else if (branch) gate.branches = [...new Set([...(gate.branches ?? []), branch[1]])].sort();
+    else if (/^startsWith\(\s*github\.ref\s*,\s*'refs\/tags\/[^']*'\s*\)$/.test(part) || /^github\.ref_type\s*==\s*'tag'$/.test(part)) {
+      gate.event = 'push';
+      gate.tags = true;
+    }
+  }
+  if (Object.keys(gate).length === 0) return null;
+  return triggers.length > 0 && triggers.every((trigger) => meets(trigger, gate)) ? null : gate;
+}
+
+function meets(trigger, gate) {
+  if (gate.event && trigger.event !== gate.event) return false;
+  if (gate.tags && !((trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0))) return false;
+  if (gate.branches && !((trigger.branches?.length ?? 0) > 0 && trigger.branches.every((branch) => gate.branches.includes(branch)))) return false;
+  return true;
 }
 
 /**

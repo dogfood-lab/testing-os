@@ -1,0 +1,8 @@
+name: Render
+on:
+  pull_request:
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pandoc notes/notes.txt -o notes.html

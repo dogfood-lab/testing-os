@@ -101,8 +101,11 @@ const VALUE_SETS = Object.fromEntries(Object.entries(VALUES).map(([tool, flags])
  * The tracked files and directories a repository holds, the files each
  * directory holds, and the package manifests, read once per map.
  */
-export function repositoryView({ repoPath, tracked, spawned = new Map() }) {
+export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [] }) {
   const dirs = new Set(['']);
+  // The commands the repository installs, by the name a step types.
+  const installed = new Map();
+  for (const command of commands) if (command.kind === 'command' && !installed.has(command.name)) installed.set(command.name, command.path);
   for (const path of tracked) {
     for (let at = path.indexOf('/'); at !== -1; at = path.indexOf('/', at + 1)) dirs.add(path.slice(0, at));
   }
@@ -115,6 +118,7 @@ export function repositoryView({ repoPath, tracked, spawned = new Map() }) {
     tracked,
     dirs,
     spawned,
+    installed,
     text(path) {
       if (!tracked.has(path)) return null;
       if (!texts.has(path)) {
@@ -237,6 +241,9 @@ export function readProgram(path, repo) {
 // Of two ways a path is reached, the one the command spells wins: no via
 // before a via, a named file before a matched one. A path one tool runs and
 // another only checks is run.
+//
+// The flags a run passes are the ones every way of reaching it passes: a file
+// run once with --check and once without is run without it.
 export function better(a, b) {
   const rank = (entry) => [entry.via == null ? 0 : 1, entry.matched ? 1 : 0, entry.via ?? ''];
   const [x, y] = [rank(a), rank(b)];
@@ -249,7 +256,16 @@ export function better(a, b) {
     }
   }
   const runKind = a.runKind === 'checks' && b.runKind === 'checks' ? 'checks' : 'executes';
-  return pick.runKind === runKind ? pick : { ...pick, runKind };
+  const passes = (a.passes ?? []).filter((flag) => (b.passes ?? []).includes(flag));
+  const out = { ...pick, runKind };
+  delete out.passes;
+  if (passes.length > 0) out.passes = passes;
+  return out;
+}
+
+// The flags handed to a script after its path, by name: --check=x is --check.
+function flagsOf(args) {
+  return [...new Set(args.filter((arg) => /^--?[A-Za-z]/.test(arg)).map((arg) => arg.replace(/=.*$/, '')))].sort();
 }
 
 function makeReader(repo, runs, mentions) {
@@ -265,7 +281,21 @@ function makeReader(repo, runs, mentions) {
         if (path != null && repo.tracked.has(path)) mentions.add(path);
       }
     }
-    for (const tokens of commandLines(text)) line(tokens, dir, frame);
+    // cd moves the rest of the text; a directory this repository does not
+    // track, or one set at run time, names nowhere its files can be read from.
+    let here = dir;
+    for (const tokens of commandLines(text)) {
+      if (tokens[0] === 'cd' || tokens[0] === 'pushd') here = movedTo(here, tokens.slice(1));
+      else if (tokens[0] === 'popd') here = dir;
+      else if (here != null) line(tokens, here, frame);
+    }
+  }
+
+  function movedTo(from, args) {
+    const target = args.find((arg) => !arg.startsWith('-'));
+    if (from == null || target == null || target.includes('$') || target.startsWith('~')) return null;
+    const moved = cleanDir(posix.join(from || '.', target));
+    return moved != null && repo.dirs.has(moved) ? moved : null;
   }
 
   function line(tokens, dir, frame) {
@@ -281,6 +311,15 @@ function makeReader(repo, runs, mentions) {
     }
     if (interpret(argv, dir, frame)) return;
     if (NON_EXECUTING.has(argv[0])) return;
+    // A command the repository installs, typed by its name or by a path to
+    // where it was installed (.venv/bin/facet-index), runs its module.
+    const command = repo.installed.get(baseName(argv[0]));
+    if (command != null && !repo.tracked.has(pathFrom(dir, argv[0]) ?? '')) {
+      const passes = flagsOf(argv.slice(1));
+      record(stamp({ path: command, ...(passes.length > 0 ? { passes } : {}) }, frame));
+      if (frame.level === 0) readFile(command, dir, frame);
+      return;
+    }
     // An unknown command that hands a tool its arguments, a shell function
     // such as run_stage lint ruff check src/, runs that tool.
     for (let i = 1; i < argv.length; i += 1) {
@@ -288,6 +327,15 @@ function makeReader(repo, runs, mentions) {
         interpret(argv.slice(i), dir, frame);
         return;
       }
+    }
+    // Any other command handed a tracked file reads it (a packager, a
+    // bundler, a linter this reader has no rule for). Whether it also runs
+    // the file is not known, so it is checked: its reach is walked, and what
+    // it would write is not the door's.
+    const checked = { ...frame, runKind: 'checks' };
+    for (const arg of argv.slice(1)) {
+      const path = pathFrom(dir, arg);
+      if (path != null && repo.tracked.has(path)) record(stamp({ path }, checked));
     }
   }
 
@@ -308,11 +356,12 @@ function makeReader(repo, runs, mentions) {
 
   // A tracked file the command executes; a directory when the tool accepts
   // one. Returns the path when it was a run.
-  function file(token, dir, frame, { directories = false, script = false } = {}) {
+  function file(token, dir, frame, { directories = false, script = false, args = [] } = {}) {
     const path = pathFrom(dir, token);
     if (path == null) return null;
     if (repo.tracked.has(path)) {
-      record(stamp({ path }, frame));
+      const passes = script ? flagsOf(args) : [];
+      record(stamp({ path, ...(passes.length > 0 ? { passes } : {}) }, frame));
       if (script && frame.level === 0) readFile(path, dir, frame);
       return path;
     }
@@ -380,7 +429,7 @@ function makeReader(repo, runs, mentions) {
     const tool = toolOf(argv[0]);
     if (tool == null) {
       const path = pathFrom(dir, argv[0]);
-      if (path != null && repo.tracked.has(path)) file(argv[0], dir, frame, { script: true });
+      if (path != null && repo.tracked.has(path)) file(argv[0], dir, frame, { script: true, args: argv.slice(1) });
       return false;
     }
     handlers[tool](argv, dir, CHECKERS.has(tool) ? { ...frame, runKind: 'checks' } : frame);
@@ -404,7 +453,7 @@ function makeReader(repo, runs, mentions) {
       const value = eq !== -1 ? token.slice(eq + 1) : valueFlags.has(name) ? argv[++i] : null;
       if (value != null && runValues.includes(name)) file(value, dir, frame);
     }
-    if (i < argv.length) file(argv[i], dir, frame, { script: true });
+    if (i < argv.length) file(argv[i], dir, frame, { script: true, args: argv.slice(i + 1) });
   }
 
   function pathArguments(argv, dir, frame, tool, start = 1) {
@@ -479,7 +528,7 @@ function makeReader(repo, runs, mentions) {
         if (value != null && ['--import', '--loader', '--experimental-loader', '--require', '-r'].includes(name)) file(value, dir, frame);
       }
       if (!test) {
-        if (i < argv.length) file(argv[i], dir, frame, { script: true });
+        if (i < argv.length) file(argv[i], dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
       for (; i < argv.length; i += 1) parsed.push(argv[i]);
@@ -511,7 +560,7 @@ function makeReader(repo, runs, mentions) {
           if (VALUE_SETS.python.has(token)) i += 1;
           continue;
         }
-        file(token, dir, frame, { script: true });
+        file(token, dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
     },
@@ -526,7 +575,7 @@ function makeReader(repo, runs, mentions) {
           if (VALUE_SETS.shell.has(token)) i += 1;
           continue;
         }
-        file(token, dir, frame, { script: true });
+        file(token, dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
     },
@@ -600,7 +649,7 @@ function makeReader(repo, runs, mentions) {
       if (bin == null) return;
       const path = pathFrom(dir, bin);
       if (path != null && repo.tracked.has(path)) {
-        file(bin, dir, frame, { script: true });
+        file(bin, dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
       const name = bin.replace(/@[^@/]+$/, '');
@@ -765,6 +814,20 @@ function makeReader(repo, runs, mentions) {
       const targets = parsed.positional.filter((token) => !/^[A-Za-z_][A-Za-z0-9_]*=/.test(token) && !/^\d+$/.test(token));
       read(makeRecipes(repo.text(makefile) ?? '', targets), cwd, { level: 1, via: via(frame, makefile), active: frame.active });
     },
+    // astro build and its kin run the site's config and the code under its
+    // src/, from the site's own directory; astro check only reads them.
+    astro(argv, dir, frame) {
+      const sub = argv.slice(1).find((arg) => !arg.startsWith('-')) ?? 'dev';
+      if (!['build', 'dev', 'preview', 'check', 'sync'].includes(sub)) return;
+      const next = sub === 'check' ? { ...frame, runKind: 'checks' } : frame;
+      const chain = via(frame, `astro ${sub}`);
+      for (const name of ['astro.config.mjs', 'astro.config.ts', 'astro.config.js', 'astro.config.mts', 'astro.config.cjs']) {
+        const path = pathFrom(dir, name);
+        if (path != null && repo.tracked.has(path)) record(stamp({ path, matched: true }, next, chain));
+      }
+      const src = pathFrom(dir, 'src');
+      if (src != null && repo.dirs.has(src)) record(stamp({ path: `${src}/`, directory: true, matched: true }, next, chain));
+    },
     wrapper(argv, dir, frame) {
       const name = baseName(argv[0]);
       wrapped(argv, 1, dir, frame, VALUE_SETS[name] ?? new Set(), { assignments: name === 'env', count: name === 'timeout', chdir: name === 'env' ? ['-C', '--chdir'] : [] });
@@ -804,7 +867,7 @@ function toolOf(word) {
   if (name === 'bunx') return 'npx';
   if (name === 'gmake') return 'make';
   if (['tox', 'cargo'].includes(name)) return 'none';
-  const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'vitest', 'jest', 'mocha', 'eslint', 'make'];
+  const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro'];
   return known.includes(name) ? name : null;
 }
 

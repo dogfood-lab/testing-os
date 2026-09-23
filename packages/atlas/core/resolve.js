@@ -1,6 +1,6 @@
 import { builtinModules } from 'node:module';
 import { existsSync, readFileSync, realpathSync } from 'node:fs';
-import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { dirname, isAbsolute, join, posix, relative, resolve, sep } from 'node:path';
 import enhancedResolve from 'enhanced-resolve';
 import picomatch from 'picomatch';
 import { isTestFile } from './landings.js';
@@ -306,7 +306,21 @@ function nearestConfig(repo, dir) {
   return null;
 }
 
+// A specifier rooted at a drive, the filesystem root or a home directory, or
+// a relative one that climbs out of the repository, names a file on one
+// machine's disk. Looking it up would make the map depend on which machine
+// drew it (E:/AI/synthesis/dist/index.js resolves on the rig and not on a
+// runner), so it is never read from disk: it is outside, on every host.
+function outsideRepository(ctx, fromAbs, specifier) {
+  if (/^[A-Za-z]:[\\/]/.test(specifier) || /^[\\/~]/.test(specifier) || specifier.startsWith('file:')) return true;
+  if (!specifier.startsWith('.')) return false;
+  const from = relative(ctx.repo, dirname(fromAbs)).replaceAll('\\', '/');
+  const target = posix.normalize(from ? `${from}/${specifier}` : specifier);
+  return target === '..' || target.startsWith('../');
+}
+
 function resolveJavaScript(ctx, fromAbs, specifier) {
+  if (outsideRepository(ctx, fromAbs, specifier)) return { outcome: 'external', outside: true };
   const parsed = splitBare(specifier);
   if (specifier.startsWith('node:') || isBuiltin(specifier, parsed)) return { outcome: 'external' };
   // Missing export targets are recorded here. A workspace package whose
@@ -553,8 +567,8 @@ function resolvePython(ctx, fromAbs, specifier) {
  * @param {string} module
  * @param {Set<string>} tracked
  */
-export function resolvePythonModule(module, tracked) {
-  return pythonAbsolute(module, sourceRoots(tracked), tracked);
+export function resolvePythonModule(module, tracked, roots = []) {
+  return pythonAbsolute(module, [...roots, ...sourceRoots(tracked)], tracked);
 }
 
 function pythonRelative(fromRel, specifier, tracked) {

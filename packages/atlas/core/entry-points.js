@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import picomatch from 'picomatch';
 import { workspaceGlobs } from './commands.js';
-import { isTestMaterial } from './landings.js';
+import { isTestFile, isTestMaterial } from './landings.js';
 import { declaredScripts } from './python-manifest.js';
 import { resolveDeclaredPath, resolvePythonModule } from './resolve.js';
 
@@ -37,7 +37,8 @@ export function deriveEntryPoints({ repoPath, globs, tracked, scripts = [], comm
   let found;
   if (tracked.has(manifest)) found = [...fromPackage(repoPath, root, manifest, tracked), ...declared];
   else found = declared.length > 0 ? declared : fromNames(root, tracked);
-  return [...new Set(found.filter((path) => inside(path)))].sort();
+  // A test is run by its runner, never by a person as the part's way in.
+  return [...new Set(found.filter((path) => inside(path) && !isTestFile(path)))].sort();
 }
 
 /**
@@ -53,7 +54,9 @@ export function deriveEntryPoints({ repoPath, globs, tracked, scripts = [], comm
 export function pythonScripts(repoPath, tracked) {
   const out = [];
   for (const script of declaredScripts(repoPath, [...tracked].sort())) {
-    const path = resolvePythonModule(script.module, tracked);
+    const base = script.manifest.includes('/') ? script.manifest.slice(0, script.manifest.lastIndexOf('/')) : '';
+    const roots = script.packageDir ? [base ? `${base}/${script.packageDir}` : script.packageDir] : [];
+    const path = resolvePythonModule(script.module, tracked, roots);
     if (path) out.push({ path, fn: script.fn, name: script.name, manifest: script.manifest });
   }
   return out;
@@ -220,7 +223,7 @@ function fromNames(root, tracked) {
   for (const path of tracked) {
     const slash = path.lastIndexOf('/');
     const dir = slash === -1 ? '' : path.slice(0, slash);
-    if (dir !== root) continue;
+    if (dir !== root || isTestFile(path)) continue;
     children.push(path);
   }
   for (const match of FALLBACKS) {

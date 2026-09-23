@@ -1,0 +1,13 @@
+name: CI
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run build
+      - run: npm run check-version
+      - run: npm run test:scripts
+      - run: node scripts/publish-notes.mjs
+      - run: python tools/stamp.py
