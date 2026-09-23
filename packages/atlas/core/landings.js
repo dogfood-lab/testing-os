@@ -82,6 +82,11 @@ const PY_SCOPES = new Set(['function_definition', 'lambda']);
 const PY_NESTED = new Set(['function_definition', 'class_definition', 'lambda']);
 
 const TEXT_SCANNED = new Set(['.html', '.htm', '.yml', '.yaml', '.md', '.json', '.sh', '.bash']);
+const MARKDOWN = new Set(['.md']);
+// A link or an embed in a page points a person at a place; the page reads
+// nothing. [text](path), ![alt](url) and an href or src attribute.
+const PAGE_LINKS = [/\]\([^)]*\)/g, /\b(?:href|src)\s*=\s*(?:"[^"]*"|'[^']*')/gi];
+const ASTRO_CONFIG = /(^|\/)astro\.config\.[cm]?[jt]s$/;
 const SHELL = new Set(['.sh', '.bash']);
 const SHELL_WRITERS = new Set(['tee']);
 const SHELL_MOVERS = new Set(['mv', 'cp']);
@@ -196,7 +201,11 @@ export function noLandings() {
  */
 export function textLandings(path, bytes, places) {
   if (isWorkflow(path) || !TEXT_SCANNED.has(extname(path).toLowerCase())) return noLandings();
-  const source = bytes.toString('utf8');
+  // A package manifest lists what it ships (files, main, exports) and names
+  // the commands it runs, which doors read as commands; it reads nothing.
+  if (posix.basename(path) === 'package.json') return noLandings();
+  let source = bytes.toString('utf8');
+  if (MARKDOWN.has(extname(path).toLowerCase())) for (const link of PAGE_LINKS) source = source.replace(link, ' ');
   const reads = [];
   for (const pattern of [/"([^"\r\n]*)"/g, /'([^'\r\n]*)'/g]) {
     for (const match of source.matchAll(pattern)) {
@@ -416,6 +425,7 @@ export function astLandings(language, root, path, places) {
     if (ctx.python) pythonSite(node, site);
     else scriptSite(node, site);
   }
+  if (!ctx.python && ASTRO_CONFIG.test(path)) found.reads.push(...starlightReads(root, ctx, places));
 
   walk(root, (node) => {
     if (isStringNode(node, ctx.python)) {
@@ -886,6 +896,32 @@ function anchored(text) {
   return { text, open: false, anchor: 'file' };
 }
 
+/**
+ * What an Astro config with Starlight builds its pages from: the docs content
+ * collection under the site's src/content/docs, and each directory a sidebar
+ * group autogenerates from (autogenerate: { directory: 'handbook' }).
+ */
+function starlightReads(root, ctx, places) {
+  const docs = ctx.dir ? `${ctx.dir}/src/content/docs` : 'src/content/docs';
+  const reads = [];
+  let starlight = false;
+  walk(root, (node) => {
+    const source = node.type === 'import_statement' ? node.childForFieldName('source') : null;
+    if (source?.type === 'string' && jsStringText(source) === '@astrojs/starlight') starlight = true;
+    if (node.type !== 'pair' || node.childForFieldName('key')?.text !== 'autogenerate') return;
+    const value = node.childForFieldName('value');
+    for (const pair of value?.type === 'object' ? value.namedChildren : []) {
+      if (pair.type !== 'pair' || pair.childForFieldName('key')?.text !== 'directory') continue;
+      const directory = pair.childForFieldName('value');
+      if (directory?.type !== 'string') continue;
+      const target = `${docs}/${jsStringText(directory).replace(/^\.?\/+|\/+$/g, '')}`;
+      if (places.dirs.has(target)) reads.push({ target, call: 'autogenerate', confidence: 'ast' });
+    }
+  });
+  if (starlight && places.dirs.has(docs)) reads.push({ target: docs, call: 'content-collection', confidence: 'ast' });
+  return reads;
+}
+
 // A value relative to where the code is run from ('cwd') or to the home
 // directory ('home') is the caller's place, not the repository's: the same
 // line writes somewhere else for every person who runs it.
@@ -1335,6 +1371,14 @@ export function attachLandings({ files, doors, boundaries, places }) {
     for (const read of file.reads) {
       if (generated && read.confidence === 'text') continue;
       add(readers, read.target, readerEntry(file.path, read));
+    }
+  }
+  // Code that imports a module something writes reads that module.
+  for (const file of own) {
+    for (const site of Array.isArray(file.imports) ? file.imports : []) {
+      const path = site.resolved?.outcome === 'file' ? site.resolved.path : null;
+      if (path == null || path === file.path || !output(path)) continue;
+      add(readers, path, { by: file.path, call: 'import', confidence: 'ast' });
     }
   }
 
