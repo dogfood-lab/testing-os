@@ -1,13 +1,14 @@
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, readlinkSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
+import { readCommands, repositoryView } from './commands.js';
 import { mapDoors } from './doors.js';
 import { deriveEntryPoints, pythonScripts } from './entry-points.js';
-import { astLandings, attachLandings, noLandings, pythonPathValues, textLandings, trackedPlaces } from './landings.js';
+import { astLandings, attachLandings, isTestFile, noLandings, pythonPathValues, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
 import { attachResolution } from './resolve.js';
@@ -49,6 +50,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   if (!Array.isArray(boundaries)) {
     throw new Error('boundaries must be an array');
   }
+  // Resolution compares absolute paths against the repository root, so a
+  // relative root ('.') would leave every relative import unresolved.
+  repoPath = resolve(repoPath);
 
   const ordered = boundaries.map(validateBoundary);
   const seen = new Set();
@@ -124,6 +128,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
 
   const doors = mapDoors({ repoPath, tracked: trackedSet, spawned });
   const graph = importGraph(boundaryList, unassigned, overlaps);
+  attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned }));
   for (const door of doors) {
     if (door.parseError) continue;
     const walked = walkReach(door.runs.map((run) => run.path), graph);
@@ -152,6 +157,37 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     doors,
     landings,
   };
+}
+
+/**
+ * The files a test runs as a child process, read from the commands it spells
+ * out in full the way a door's commands are read. A test is taken to run them
+ * from the repository root, where a suite that spawns scripts usually sets its
+ * cwd; when nothing it names runs from there, from its own directory and each
+ * one above it. Recorded as spawns on the test file, so a test that runs a
+ * script reaches it as one that imports it does.
+ */
+function attachTestSpawns(files, spawned, repo) {
+  for (const [path, commands] of spawned) {
+    const file = files.get(path);
+    if (!file || !isTestFile(path)) continue;
+    const dirs = [''];
+    for (let at = path.lastIndexOf('/'); at > 0; at = path.lastIndexOf('/', at - 1)) dirs.push(path.slice(0, at));
+    for (const dir of dirs) {
+      const runs = new Set();
+      for (const command of commands) {
+        for (const run of readCommands(command, dir, repo).runs.values()) {
+          if (run.path.endsWith('/')) {
+            for (const [other, entry] of files) if (entry.language != null && other.startsWith(run.path)) runs.add(other);
+          } else if (run.path !== path) runs.add(run.path);
+        }
+      }
+      if (runs.size > 0) {
+        file.spawns = [...runs].sort();
+        break;
+      }
+    }
+  }
 }
 
 // The names a file hands out, from the same reading the order of work comes
@@ -315,12 +351,22 @@ function collectScript(root) {
   walkNamed(root, (node) => {
     if (node.type === 'import_statement' || node.type === 'export_statement') {
       const literal = jsString(node.childForFieldName('source'));
-      if (literal != null) imports.push({ specifier: literal, kind: 'static', line: lineOf(node) });
+      if (literal == null) return;
+      const site = { specifier: literal, kind: 'static', line: lineOf(node) };
+      // export * from './x' hands on every name x exports, which is what a
+      // barrel index does; export * as ns names one binding, so it is not.
+      if (node.type === 'export_statement' && node.children.some((child) => child.type === '*')) site.reexportsAll = true;
+      imports.push(site);
       return;
     }
     if (node.type !== 'call_expression') return;
     const fn = node.childForFieldName('function');
     if (!fn) return;
+    if (isResolveCall(fn)) {
+      const literal = jsString(node.childForFieldName('arguments')?.namedChildren[0] ?? null);
+      if (literal != null) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node) });
+      return;
+    }
     const isImport = fn.type === 'import';
     const isRequire = fn.type === 'identifier' && fn.text === 'require';
     if (!isImport && !isRequire) return;
@@ -331,6 +377,16 @@ function collectScript(root) {
     else imports.push({ specifier: first ? first.text : '', kind: 'dynamic', line: lineOf(node) });
   });
   return imports;
+}
+
+// require.resolve('@scope/pkg/json/x.json') and import.meta.resolve(...) load
+// nothing, but the file they locate has to be there at run time, which is a
+// dependency on its package as surely as an import is. One built at run time
+// names no module, and unlike a dynamic import runs no code, so it is not a site.
+function isResolveCall(fn) {
+  if (fn.type !== 'member_expression' || fn.childForFieldName('property')?.text !== 'resolve') return false;
+  const object = fn.childForFieldName('object');
+  return (object?.type === 'identifier' && object.text === 'require') || object?.type === 'meta_property';
 }
 
 function jsString(node) {

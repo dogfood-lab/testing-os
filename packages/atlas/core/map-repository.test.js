@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
 import { mapRepository } from './index.js';
-import { ALPHA, BETA, FIXTURE, SHARED, makeFixtureRepo } from './fixture-repo.js';
+import { ALPHA, BETA, FIXTURE, RESOLVE_JS, SHARED, makeFixtureRepo, makeRepo } from './fixture-repo.js';
 
 const roots = [];
 
@@ -88,6 +88,26 @@ describe('mapRepository', () => {
       ...result.overlaps.map((f) => f.path),
     ];
     assert.ok(!paths.includes('scratch.txt'));
+  });
+
+  it('resolves a relative repository path before it resolves an import', () => {
+    const root = makeRepo(RESOLVE_JS);
+    roots.push(root);
+    const parts = [{ name: 'app', globs: ['app/**'] }, { name: 'pkg', globs: ['pkg/**'] }];
+    const absolute = mapRepository({ repoPath: root, boundaries: parts });
+    const cwd = process.cwd();
+    let relative;
+    try {
+      process.chdir(root);
+      relative = mapRepository({ repoPath: '.', boundaries: parts });
+    } finally {
+      process.chdir(cwd);
+    }
+    const outcomes = (result) => result.boundaries.flatMap((b) => b.files).flatMap((f) => (Array.isArray(f.imports) ? f.imports : []))
+      .map((site) => site.resolved);
+    assert.ok(outcomes(absolute).some((resolved) => resolved.outcome === 'file'), 'the fixture has a relative import to resolve');
+    assert.deepEqual(outcomes(relative), outcomes(absolute));
+    assert.deepEqual(relative.edges, absolute.edges);
   });
 
   it('throws on unusable input', () => {

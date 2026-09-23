@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
+import { isOwnTest, isTestFile } from '../core/landings.js';
 import { formatFailure } from './errors.js';
-import { collapse, count, cover, entryOrder, externalsLine, list, pageFacts, readerFiles, under, worded } from './page.js';
+import { collapse, count, cover, entryOrder, externalsLine, list, pageFacts, readerFiles, testsClause, under, worded } from './page.js';
 
 /**
  * atlas explain: what one file, or one directory, is in the system, read from
@@ -78,21 +79,84 @@ function mapCommit(page, statistics, structure) {
   return { commit, generatedAt };
 }
 
+// As on the page, an edge whose every import sits in a test file is counted
+// apart from the production edges.
 function partEdges(ctx) {
   const imports = new Map();
   const importedBy = new Map();
+  const importedByTests = new Map();
+  const add = (map, key, value) => {
+    if (!map.has(key)) map.set(key, new Set());
+    map.get(key).add(value);
+  };
   for (const edge of ctx.structure.edges ?? []) {
     if (edge.kind !== 'file' && edge.kind !== 'chunk') continue;
     if (edge.from === edge.to) continue;
-    if (!imports.has(edge.from)) imports.set(edge.from, new Set());
-    if (!importedBy.has(edge.to)) importedBy.set(edge.to, new Set());
-    imports.get(edge.from).add(edge.to);
-    importedBy.get(edge.to).add(edge.from);
+    if (edge.fromTests) {
+      add(importedByTests, edge.to, edge.from);
+      continue;
+    }
+    add(imports, edge.from, edge.to);
+    add(importedBy, edge.to, edge.from);
   }
+  const sorted = (map, part) => [...(map.get(part) ?? [])].sort(cmp);
   return {
-    imports: (part) => [...(imports.get(part) ?? [])].sort(cmp),
-    importedBy: (part) => [...(importedBy.get(part) ?? [])].sort(cmp),
+    imports: (part) => sorted(imports, part),
+    importedBy: (part) => sorted(importedBy, part),
+    importedByTests: (part) => sorted(importedByTests, part).filter((name) => !importedBy.get(part)?.has(name)),
   };
+}
+
+/**
+ * One file's imports at file grain, from the per-file lists the artifact
+ * carries: what it imports, what it re-exports whole, which files import it,
+ * and its own tests by name.
+ */
+function fileImports(ctx, path) {
+  const file = ctx.fileOf.get(path);
+  const reexportsAll = [...(file?.reexportsAll ?? [])];
+  const whole = new Set(reexportsAll);
+  const importsFiles = (file?.importsFiles ?? []).filter((target) => !whole.has(target));
+  const tests = [];
+  const code = [];
+  for (const [other, entry] of ctx.fileOf) {
+    if (other === path || !(entry.importsFiles ?? []).includes(path)) continue;
+    (isTestFile(other) ? tests : code).push(other);
+  }
+  const ownTests = [...ctx.fileOf.keys()].filter((other) => isOwnTest(other, path)).sort(cmp);
+  return {
+    importedByFiles: [...code.sort(cmp), ...tests.sort(cmp)],
+    importedByTestFiles: tests.length,
+    importsFiles,
+    ownTests,
+    parseError: file?.parseError === true,
+    reexportsAll,
+  };
+}
+
+// A build chunk has no one file to name, so it is named by its part.
+function targetText(ctx, target) {
+  return target.startsWith('@') ? `a built chunk of ${ctx.shown(target.slice(1))}` : target;
+}
+
+function fileImportLines(ctx, own) {
+  const lines = [];
+  const shown = (targets) => shownList(targets.map((target) => targetText(ctx, target)));
+  if (own.parseError) lines.push('It could not be parsed, so what it imports is not known.');
+  else if (own.importsFiles.length > 0) lines.push(`Imports ${count(own.importsFiles.length, 'file')}: ${shown(own.importsFiles)}.`);
+  if (own.reexportsAll.length > 0) lines.push(`Re-exports everything from ${shown(own.reexportsAll)}.`);
+  if (!own.parseError && own.importsFiles.length + own.reexportsAll.length === 0) lines.push('Imports no file in this repository.');
+  const importers = own.importedByFiles.length;
+  if (importers === 0) lines.push('No file imports it.');
+  else {
+    const tests = own.importedByTestFiles;
+    const which = tests === 0 ? '' : tests === importers ? `, ${importers === 1 ? 'a test' : 'all of them tests'}` : `, ${tests} of them ${tests === 1 ? 'a test' : 'tests'}`;
+    lines.push(`Imported by ${count(importers, 'file')}${which}: ${shownList(own.importedByFiles)}.`);
+  }
+  if (own.ownTests.length > 0) {
+    lines.push(own.ownTests.length === 1 ? `Its own test is ${own.ownTests[0]}.` : `Its own tests are ${list(own.ownTests)}.`);
+  }
+  return lines;
 }
 
 function overlapOf(ctx, path) {
@@ -234,6 +298,7 @@ function explainFound(ctx, found, map) {
     generatedAt: map.generatedAt,
     importGrain: 'part',
     importedBy: [],
+    importedByTests: [],
     imports: [],
     kind: found.kind,
     mapCommit: map.commit,
@@ -286,10 +351,17 @@ function explainFound(ctx, found, map) {
   facts.doors = { isDoor: doors.self?.name ?? null, onPath: doors.onPath, runBy: doors.runBy };
   lines.push(doorLine(doors, part?.partLabel ?? null, found.kind));
 
+  if (found.kind === 'file') {
+    const own = fileImports(ctx, found.path);
+    Object.assign(facts, own);
+    lines.push(...fileImportLines(ctx, own));
+  }
+
   if (part) {
     const edges = partEdges(ctx);
     facts.imports = edges.imports(part.part);
     facts.importedBy = edges.importedBy(part.part);
+    facts.importedByTests = edges.importedByTests(part.part);
     const boundary = ctx.boundaries.find((item) => item.name === part.part);
     facts.unresolved = boundary?.unresolvedSites ?? 0;
     facts.externals = boundary?.externals ?? 0;
@@ -297,13 +369,18 @@ function explainFound(ctx, found, map) {
   }
   // A configuration or documentation part that no part imports and that
   // imports nothing has no import line to state.
-  if (part && (part.role === 'code' || facts.imports.length + facts.importedBy.length + facts.unresolved + facts.externals > 0)) {
+  if (part && (part.role === 'code' || facts.imports.length + facts.importedBy.length + facts.importedByTests.length + facts.unresolved + facts.externals > 0)) {
     lines.push(facts.imports.length > 0
       ? `Its part imports ${count(facts.imports.length, 'part')}: ${shownList(facts.imports.map(ctx.shown))}.`
       : 'Its part imports no other part.');
-    lines.push(facts.importedBy.length > 0
-      ? `Its part is imported by ${count(facts.importedBy.length, 'part')}: ${shownList(facts.importedBy.map(ctx.shown))}.`
-      : 'No other part imports its part.');
+    const tests = testsClause(facts.importedBy.length, facts.importedByTests.length);
+    if (facts.importedBy.length > 0) {
+      lines.push(`Its part is imported by ${count(facts.importedBy.length, 'part')}: ${shownList(facts.importedBy.map(ctx.shown))}${tests ? `, ${tests}` : ''}.`);
+    } else {
+      lines.push(facts.importedByTests.length > 0
+        ? `Its part is imported only from tests, by ${count(facts.importedByTests.length, 'part')}: ${shownList(facts.importedByTests.map(ctx.shown))}.`
+        : 'No other part imports its part.');
+    }
     const declared = externalsLine(facts.externals, facts.externalNames ?? []);
     if (declared) lines.push(`In its part, ${declared.replace(/^\d+ import sites?/, (text) => text.replace('import site', 'import'))}`);
     if (facts.unresolved > 0) lines.push(`${count(facts.unresolved, 'import')} in its part could not be resolved.`);

@@ -395,6 +395,13 @@ function breakLine(ctx, entry) {
     : `is imported by ${count(importedBy.length, 'part')} (${esc(importedBy.join(', '))})`;
   const doors = Number(entry?.doors) || 0;
   const path = doors === 0 ? 'no door' : count(doors, 'door');
+  const fromTests = arr(entry?.importedByTests).map(str);
+  if (importedBy.length === 0 && fromTests.length > 0) {
+    return `<strong>${esc(entry?.name)}</strong> is imported only from tests, by ${count(fromTests.length, 'part')} (${esc(fromTests.join(', '))}), and sits on the path of ${path}.`;
+  }
+  if (fromTests.length > 0) {
+    return `<strong>${esc(entry?.name)}</strong> ${imported}, and by ${fromTests.length} more only from tests; it sits on the path of ${path}.`;
+  }
   return `<strong>${esc(entry?.name)}</strong> ${imported} and sits on the path of ${path}.`;
 }
 
@@ -473,6 +480,11 @@ function duplicatesSection(ctx) {
   const lead = items.length > 0 && ctx.page.duplicatesLead ? [p(esc(ctx.page.duplicatesLead))] : [];
   const body = items.length > 0
     ? ul(items.map((item) => {
+      if (item.contract) {
+        const labels = arr(item.partLabels).map((label) => esc(label));
+        const shown = labels.length > 5 ? `${labels.slice(0, 5).join(', ')} and ${labels.length - 5} more` : list(labels);
+        return `<strong>${esc(item.name)}</strong> is exported by ${count(labels.length, 'part')} (${shown}); with the same name in this many parts it is most likely a shared contract, not a copy.`;
+      }
       const [fileA, fileB] = arr(item.files);
       const [partA, partB] = arr(item.partLabels).map((label) => esc(label));
       return `<strong>${esc(item.name)}</strong> is exported by ${pathHtml(ctx, fileA)} (${partA}) and ${pathHtml(ctx, fileB)} (${partB}); the two look alike.`;

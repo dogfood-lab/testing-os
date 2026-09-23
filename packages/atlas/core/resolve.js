@@ -3,6 +3,7 @@ import { existsSync, readFileSync, realpathSync } from 'node:fs';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import enhancedResolve from 'enhanced-resolve';
 import picomatch from 'picomatch';
+import { isTestFile } from './landings.js';
 import { declaredDependencies, importName } from './python-manifest.js';
 
 const EXTENSIONS = ['.ts', '.tsx', '.mts', '.cts', '.js', '.mjs', '.cjs', '.jsx'];
@@ -95,12 +96,16 @@ function countSites(files) {
   return { unresolved, resolved };
 }
 
+// An edge every one of whose import sites sits in a test file is marked
+// fromTests: the part is needed to test the other, not to run it. Test edges
+// stay in the set, since they are how a test reaches the part it tests.
 function collectEdges(boundaries, boundaryByFile) {
-  const seen = new Set();
+  const byKey = new Map();
   const edges = [];
   for (const boundary of boundaries) {
     for (const file of boundary.files) {
       if (!Array.isArray(file.imports)) continue;
+      const fromTest = isTestFile(file.path);
       for (const site of file.imports) {
         const resolved = site.resolved;
         if (!resolved) continue;
@@ -115,9 +120,14 @@ function collectEdges(boundaries, boundaryByFile) {
         }
         if (!to || to === boundary.name || !kind) continue;
         const key = `${boundary.name}\0${to}\0${kind}`;
-        if (seen.has(key)) continue;
-        seen.add(key);
-        edges.push({ from: boundary.name, to, kind });
+        const known = byKey.get(key);
+        if (known) {
+          if (!fromTest) delete known.fromTests;
+          continue;
+        }
+        const edge = fromTest ? { from: boundary.name, to, kind, fromTests: true } : { from: boundary.name, to, kind };
+        byKey.set(key, edge);
+        edges.push(edge);
       }
     }
   }

@@ -1,0 +1,41 @@
+summary: a small workspace shaped like the TypeScript probe
+boundaries:
+  - name: cli
+    globs:
+      - packages/cli/**
+    role: code
+  - name: core
+    globs:
+      - packages/core/**
+    role: code
+  - name: docs
+    globs:
+      - docs/**
+  - name: ledger
+    globs:
+      - packages/ledger/**
+    role: code
+  - name: root
+    globs:
+      - "*"
+    role: config
+  - name: scripts
+    globs:
+      - scripts/**
+    role: code
+  - name: starter-a
+    globs:
+      - packages/starter-a/**
+    role: code
+  - name: starter-b
+    globs:
+      - packages/starter-b/**
+    role: code
+  - name: starter-c
+    globs:
+      - packages/starter-c/**
+    role: code
+  - name: workflows
+    globs:
+      - .github/**
+    role: config

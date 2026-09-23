@@ -26,7 +26,8 @@ const EXPECTED = {
   'js/static.js': [
     entry('pkg-a', 'static', 1, external),
     entry('pkg-b', 'static', 2, external),
-    entry('star', 'static', 3, external),
+    // export * from hands on every name: the barrel shape explain names.
+    { ...entry('star', 'static', 3, external), reexportsAll: true },
     entry('side-effect', 'static', 4, external),
     entry('dyn-lit', 'dynamic-literal', 5, external),
     entry('cjs-lit', 'dynamic-literal', 6, external),

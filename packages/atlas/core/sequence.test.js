@@ -211,6 +211,8 @@ describe('determinism', () => {
     assert.equal(ingest.entryRule, 1);
     assert.deepEqual(ingest.sequences.map((item) => item.name), ['persist', 'ingest']);
     const render = tools.files.find((item) => item.path === 'tools/render.js');
-    assert.deepEqual(Object.keys(render), ['hash', 'path']);
+    // render.js imports one file and no door runs it: its imports are
+    // carried, and no order of work is.
+    assert.deepEqual(Object.keys(render), ['hash', 'importsFiles', 'path']);
   });
 });
