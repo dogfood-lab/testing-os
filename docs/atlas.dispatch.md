@@ -594,7 +594,11 @@ of consequence, not of size:
 2. Other new imports between parts.
 3. Imports between parts that are gone.
 4. Doors added or removed, a trigger gained, lost or changed (named down to the glob a path
-   filter gained), a file a door now runs or no longer runs.
+   filter gained), a file a door now runs or no longer runs. A door that ran more paths than
+   the 200 it records, on either side, is compared by the directories its runs are in and by
+   `runsCount`, never by the files kept: the kept files are a sample, one per directory in
+   turn, and a file added anywhere shifts which are kept. It reads "CI runs 3 more files than
+   before", or "CI now also runs files in tests/c/", and says nothing when neither moved.
 5. Places gaining a writer, then places gaining a reader. A weak entry is left out, as the page
    leaves it out.
 6. A part whose origin flipped.

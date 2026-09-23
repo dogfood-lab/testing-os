@@ -243,6 +243,38 @@ describe('compareStructures', () => {
     ]);
   });
 
+  it('compares a capped door by its directories and its count, never by the sample it kept', () => {
+    // Two recorded samples from one capped door: the cap keeps a file from
+    // each directory in turn, so a file added elsewhere shifts which files
+    // are kept although no directory was gained or lost.
+    const parts = [part('tests', ['tests/a/1.test.js'])];
+    const capped = (paths, runsCount) => ({ ...door('ci.yml', { name: 'CI', runs: paths }), runsCount });
+    const before = capped(['tests/a/1.test.js', 'tests/b/1.test.js', 'scripts/check.mjs'], 250);
+    const shifted = capped(['tests/a/2.test.js', 'tests/b/7.test.js', 'scripts/check.mjs'], 250);
+    assert.deepEqual(sentences(compareStructures(structure({ parts, doors: [before] }), structure({ parts, doors: [shifted] }))), [
+      'Nothing structural changed since the last map; no file changed.',
+    ]);
+    const grown = capped(['tests/a/2.test.js', 'tests/b/7.test.js', 'scripts/check.mjs'], 253);
+    assert.deepEqual(sentences(compareStructures(structure({ parts, doors: [before] }), structure({ parts, doors: [grown] }))), [
+      'CI runs 3 more files than before.',
+      'No file changed.',
+    ]);
+    const moved = capped(['tests/a/2.test.js', 'tests/c/1.test.js', 'scripts/check.mjs', 'run.sh'], 249);
+    assert.deepEqual(sentences(compareStructures(structure({ parts, doors: [before] }), structure({ parts, doors: [moved] }))), [
+      'CI now also runs files in the repository root and tests/c/.',
+      'CI no longer runs files in tests/b/.',
+      'CI runs 1 fewer file than before.',
+      'No file changed.',
+    ]);
+    // Uncapped on both sides, the files themselves are compared as before.
+    const small = door('ci.yml', { name: 'CI', runs: ['tests/a/1.test.js'] });
+    const smallAfter = door('ci.yml', { name: 'CI', runs: ['tests/a/2.test.js'] });
+    assert.deepEqual(sentences(compareStructures(structure({ parts, doors: [small] }), structure({ parts, doors: [smallAfter] }))).slice(0, 2), [
+      'CI now also runs tests/a/2.test.js.',
+      'CI no longer runs tests/a/1.test.js.',
+    ]);
+  });
+
   it('states a step gained in the order of work, with the step it comes before', () => {
     const call = (name, file = 'lib/x.js') => ({ line: 1, name, target: { file } });
     const sequenceFile = (calls) => ({

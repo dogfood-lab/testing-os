@@ -6,6 +6,7 @@ import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
+import { diffAgainstBase, diffMarkdown } from './diff.js';
 
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const HOST = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/host');
@@ -196,5 +197,17 @@ describe('atlas diff output stays parseable', () => {
     assert.equal(result.status, 0, result.stdout + result.stderr);
     assert.match(result.stderr, /ignored fields no longer read from atlas\/boundaries\.yaml: machine_budget/);
     assert.equal(JSON.parse(result.stdout).unchanged, true);
+  });
+});
+
+describe('atlas diff on a capped door', () => {
+  it('reports nothing when only the kept sample of a capped door shifted', () => {
+    const door = (paths, runsCount) => ({ file: 'ci.yml', name: 'CI', reach: [], runs: paths.map((path) => ({ job: 'j', path })), runsCount, triggers: [{ event: 'push' }] });
+    const map = (doors) => ({ boundaries: [], doors, edges: [], landings: [], overlaps: [], submodules: [], symlinks: [], unassigned: [] });
+    const base = { commit: 'b'.repeat(40), ref: 'main', structure: map([door(['tests/a/1.test.js', 'tests/b/1.test.js'], 400)]) };
+    const shifted = diffAgainstBase(base, map([door(['tests/a/9.test.js', 'tests/b/4.test.js'], 400)]));
+    assert.equal(shifted.unchanged, true, diffMarkdown(shifted));
+    const grown = diffAgainstBase(base, map([door(['tests/a/9.test.js', 'tests/b/4.test.js'], 402)]));
+    assert.equal(diffMarkdown(grown).split('\n')[2], '- CI runs 2 more files than before.');
   });
 });
