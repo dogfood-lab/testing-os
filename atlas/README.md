@@ -1,6 +1,6 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 076517d.
+Mapped at 2026-09-23 from commit 1445b5c.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-09-23 from commit 076517d.
 ## What comes in
 
 1. **Ingest dogfood submission.** When a repository sends a `dogfood_submission` event; or by hand. Runs packages/ingest/run.js, packages/portfolio/generate.js, scripts/build.mjs and 1 more.
-2. **CI.** On a pull request; on a push touching 21 paths; or by hand. Runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 2 more.
+2. **CI.** On a pull request; on a push touching 22 paths; or by hand. Runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 3 more.
 3. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 1 more.
 4. **self-dogfood.** When the workflow CI completes; or by hand. Runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs.
 5. **Atlas render.** On a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs scripts/atlas-render.mjs.
@@ -30,7 +30,7 @@ Mapped at 2026-09-23 from commit 076517d.
 
 ## The other doors
 
-**CI** runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 2 more, and reaches ingest and portfolio.
+**CI** runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 3 more, and reaches ingest and portfolio.
 
 **Release** runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 1 more, reaches ingest and portfolio, publishes to npm, and creates a GitHub release.
 

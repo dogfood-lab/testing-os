@@ -78,6 +78,10 @@ const REQUIRED_PATHS = [
   // F-CI-001 entry.
   'swarms/manifest-schema.json',
   'swarms/templates/**',
+  // The committed Atlas map. ci.yml runs `atlas check` against it, so an edit
+  // to atlas/ alone (a new boundary in atlas/boundaries.yaml, a hand-edited
+  // structure.json) must trigger CI or the check it runs is bypassed.
+  'atlas/**',
 ];
 
 /**

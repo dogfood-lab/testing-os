@@ -18,7 +18,7 @@
           "path": ".github/workflows/atlas-render.yml"
         },
         {
-          "hash": "1b293c5a6f78c0296a9dd912e0003f5adc6647d440a2506bd6dea7d05ae75752",
+          "hash": "ad6baacf94db7a6628f3ebeca49f6b0dc49cee1b9a9fcb05b4ab405b1251eee0",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -4622,7 +4622,7 @@
           "path": "scripts/self-dogfood-workflow.test.mjs"
         },
         {
-          "hash": "3a405b864f52568f917586a8f1d40380e7a48f6e76409b107690916c8100069d",
+          "hash": "fc9d71fe953202ec52eb7bdb30af31025a35572fecbfa01b1525a811b52b301e",
           "path": "scripts/stageA-check-ci-honesty-paths.test.mjs"
         },
         {
@@ -5301,11 +5301,16 @@
         {
           "job": "build-and-test",
           "step": "9",
-          "text": "npm run test:scripts"
+          "text": "node packages/atlas/cli.js check"
         },
         {
           "job": "build-and-test",
           "step": "10",
+          "text": "npm run test:scripts"
+        },
+        {
+          "job": "build-and-test",
+          "step": "11",
           "text": "npm test"
         },
         {
@@ -5338,6 +5343,11 @@
       "pushes": false,
       "reach": [
         {
+          "boundary": "atlas",
+          "depth": 0,
+          "files": 21
+        },
+        {
           "boundary": "scripts",
           "depth": 0,
           "files": 7
@@ -5355,6 +5365,10 @@
       ],
       "readers": [],
       "runs": [
+        {
+          "job": "build-and-test",
+          "path": "packages/atlas/cli.js"
+        },
         {
           "job": "build-and-test",
           "path": "scripts/build.mjs"
@@ -5394,6 +5408,7 @@
             "README.md",
             "SCORECARD.md",
             "SHIP_GATE.md",
+            "atlas/**",
             "docs/**",
             "dogfood/**",
             "fixtures/**",
@@ -5420,6 +5435,7 @@
             "README.md",
             "SCORECARD.md",
             "SHIP_GATE.md",
+            "atlas/**",
             "docs/**",
             "dogfood/**",
             "fixtures/**",
@@ -6424,7 +6440,7 @@
     }
   ],
   "generatedFrom": {
-    "commit": "076517d526cedfeb9c7c627beb01cdeddf40eea4",
+    "commit": "1445b5c09b605c7100f0081af4058092bd942b72",
     "tracked": 1208
   },
   "landings": [
