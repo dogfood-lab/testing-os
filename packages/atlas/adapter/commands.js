@@ -12,7 +12,7 @@ import { explainCommand } from './explain.js';
 import { initCommand } from './init.js';
 import { buildEnvelope, hitsFromStatistics } from './divergence.js';
 import { buildPage } from './page.js';
-import { buildStatistics, serializeStatistics, statisticsProblem } from './statistics.js';
+import { buildStatistics, parametersFrom, serializeStatistics, statisticsProblem } from './statistics.js';
 import { writeArtifactSync } from './write.js';
 
 export function main(argv, cwd) {
@@ -75,12 +75,14 @@ export function mapCommand(cwd, argv = []) {
   if (!commit) return usage('atlas: git rev-parse HEAD failed');
   const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
   const artifact = buildArtifact(mapped, commit);
+  const committed = committedMap(repo);
   const statistics = buildStatistics({
     repo,
     commit,
     document: boundary,
     artifact,
     generatedAt: new Date().toISOString(),
+    priorFloor: priorFloor(committed, previous, boundary),
   });
   const page = buildPage({
     structure: artifact,
@@ -88,7 +90,7 @@ export function mapCommand(cwd, argv = []) {
     document: boundary,
     repoName: origin ?? manifestName(repo) ?? basename(repo),
     defaultBranch: defaultBranch(repo),
-    changes: changesSince(committedMap(repo) ?? baseline, artifact, { repoPath: repo }),
+    changes: changesSince(committed ?? baseline, artifact, { repoPath: repo }),
   });
   const atlasDir = join(repo, 'atlas');
   writeArtifactSync(join(atlasDir, 'structure.json'), serializeArtifact(artifact));
@@ -343,6 +345,21 @@ function committedMap(repo) {
   const structure = committedJson(repo, 'atlas/structure.json');
   if (!structure) return null;
   return { structure, statistics: committedJson(repo, 'atlas/statistics.json') };
+}
+
+// The floor the previous map used, which the floor's hysteresis starts from:
+// the statistics committed at HEAD, read as the changes are, or else the
+// divergence report the weekly job passes as --previous, whose
+// shared_commit_floor names the floor it was built on.
+function priorFloor(committed, previous, document) {
+  const floor = committed?.statistics?.parameters?.floor;
+  if (floor === 'strong' || floor === 'fallen') return floor;
+  const shared = previous?.shared_commit_floor;
+  if (typeof shared !== 'number') return null;
+  const parameters = parametersFrom(document);
+  if (shared === parameters.shared) return 'strong';
+  if (shared === parameters.fallenShared) return 'fallen';
+  return null;
 }
 
 function committedAtHead(repo, path) {

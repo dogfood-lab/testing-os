@@ -414,7 +414,7 @@ describe('atlas page', () => {
       '- **lib/store.js** and **tools/ingest.js** changed together in 3 of 3 commits, and the tools part imports the lib part.',
       '1 file changed together with its own test, as expected.',
       'Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions.',
-      'Window: 180 days; a pair counts from 3 shared commits.',
+      'Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.',
     ].join('\n\n') + '\n');
     const data = JSON.parse(built.json);
     assert.deepEqual(data.changesTogether, [
@@ -424,7 +424,7 @@ describe('atlas page', () => {
     assert.deepEqual(data.changesTogetherNote, [
       '1 file changed together with its own test, as expected.',
       'Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 20 source files reach 10 revisions.',
-      'Window: 180 days; a pair counts from 3 shared commits.',
+      'Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.',
     ]);
 
     const inside = buildPage({
@@ -446,7 +446,7 @@ describe('atlas page', () => {
     assert.equal(section(empty.markdown, '## What tends to change together'), [
       '## What tends to change together',
       'No two source files changed together often enough to name.',
-      'Window: 180 days; a pair counts from 3 shared commits.',
+      'Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.',
     ].join('\n\n') + '\n');
   });
 
@@ -498,7 +498,7 @@ describe('atlas page', () => {
     if (expected.length === 0) {
       assert.ok(together.includes('changed together often enough to name.'), 'the empty case says so in words');
     }
-    assert.match(together, /\n\nWindow: \d+ days; a pair counts from \d+ shared commits\.\n$/);
+    assert.match(together, /\n\nWindow: \d+ days; a pair counts from \d+ shared commits(, since [^\n]+)?\.\n$/);
   });
 
   it('finds reports/ written and never read in this repository, and every code part under a test', () => {

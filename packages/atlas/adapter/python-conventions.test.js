@@ -186,7 +186,7 @@ describe('own tests across directories', () => {
       '## What tends to change together',
       '- **tests/test_smoke.py** and **trainkit/console.py** changed together in 3 of 4 commits, and the tests part imports the trainkit part.',
       '1 file changed together with its own test, as expected.',
-      'Window: 180 days; a pair counts from 3 shared commits.',
+      'Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.',
     ].join('\n\n') + '\n');
   });
 });

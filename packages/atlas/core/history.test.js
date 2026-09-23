@@ -69,6 +69,28 @@ describe('git history', () => {
     assert.equal(decideFloor(10, 0).floorTrigger, 'both');
   });
 
+  it('moves the floor with hysteresis on the source-file count, from the floor the previous map used', () => {
+    // No previous map: the floor falls below twenty, as it always has.
+    assert.equal(decideFloor(40, 22).floor, 'strong');
+    assert.equal(decideFloor(40, 19).floor, 'fallen');
+    // From the strong floor it falls only below twenty.
+    assert.equal(decideFloor(40, 20, { priorFloor: 'strong' }).floor, 'strong');
+    assert.equal(decideFloor(40, 19, { priorFloor: 'strong' }).floor, 'fallen');
+    // From the fallen floor it rises only at twenty-five, and says the band held it.
+    const held = decideFloor(40, 22, { priorFloor: 'fallen' });
+    assert.deepEqual([held.floor, held.floorTrigger, held.floorHeld, held.sharedFloorUsed], ['fallen', 'revision-depth', true, 3]);
+    assert.match(held.confidenceReason, /^fewer than 25 source files reach 10 revisions in the window$/);
+    assert.equal(decideFloor(40, 24, { priorFloor: 'fallen' }).floor, 'fallen');
+    const risen = decideFloor(40, 25, { priorFloor: 'fallen' });
+    assert.deepEqual([risen.floor, risen.floorHeld, risen.sharedFloorUsed], ['strong', false, 10]);
+    assert.equal(risen.confidenceReason, 'at least 30 qualifying commits, and at least 25 source files reach 10 revisions');
+    // Below twenty the count moved the floor by itself, so the band held nothing.
+    assert.equal(decideFloor(40, 12, { priorFloor: 'fallen' }).floorHeld, false);
+    // Thin history has no band.
+    assert.equal(decideFloor(29, 40, { priorFloor: 'strong' }).floor, 'fallen');
+    assert.equal(decideFloor(30, 40, { priorFloor: 'fallen' }).floor, 'strong');
+  });
+
   it('counts every commit toward churn and drops a merge from coupling', () => {
     const root = repo();
     commit(root, { 'a.txt': 'a\n' });

@@ -1004,10 +1004,26 @@ function windowLine(parameters) {
     ? `${count(parameters.windowDays, 'day')}`
     : (parameters?.pinnedStart ? `since ${parameters.pinnedStart}` : null);
   const floor = typeof parameters?.sharedFloorUsed === 'number'
-    ? `a pair counts from ${count(parameters.sharedFloorUsed, 'shared commit')}`
+    ? `a pair counts from ${count(parameters.sharedFloorUsed, 'shared commit')}${floorRule(parameters)}`
     : null;
   const parts = [span, floor].filter(Boolean);
   return parts.length > 0 ? `Window: ${parts.join('; ')}.` : null;
+}
+
+// Why the floor is where it is, and what would move it, so a list that
+// appears or empties between two maps says which count crossed which line.
+// Statistics written before the rise threshold existed say only the floor.
+function floorRule(parameters) {
+  const files = parameters.sourceFilesReachingStrongFloor;
+  const { fallenShared, qualifyingMinimum, shared, sourceFileReach, sourceFileRise } = parameters;
+  if (![files, fallenShared, qualifyingMinimum, shared, sourceFileReach, sourceFileRise].every((value) => typeof value === 'number')) return '';
+  if (parameters.floorTrigger === 'thin-history' || parameters.floorTrigger === 'both') {
+    return `, since the window holds fewer than ${count(qualifyingMinimum, 'qualifying commit')}`;
+  }
+  const reached = `${count(files, 'source file')} ${files === 1 ? 'reaches' : 'reach'} ${shared} revisions`;
+  if (parameters.floor === 'strong') return `, since ${reached}; the floor falls to ${fallenShared} when fewer than ${sourceFileReach} do`;
+  if (parameters.floorHeld) return `, since ${reached} and the floor had fallen; it rises back to ${shared} when ${sourceFileRise} do`;
+  return `, since ${reached}; the floor rises to ${shared} when ${sourceFileRise} do`;
 }
 
 function togetherNote(ctx, pairs, withTests) {
