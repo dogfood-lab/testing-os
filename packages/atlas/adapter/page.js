@@ -1099,8 +1099,9 @@ function breaks(ctx) {
   const from = importers(ctx);
   const fromTests = testImporters(ctx);
   const on = doorsThrough(ctx);
+  // A stamped file is written by people; a hand edit is how it changes.
   const places = writtenPlaces(ctx)
-    .filter((place) => place.readers.length >= 2)
+    .filter((place) => !place.stamped && place.readers.length >= 2)
     .sort((a, b) => b.readers.length - a.readers.length || cmp(a.target, b.target))
     .slice(0, PLACE_BREAKS)
     .map((place) => ({

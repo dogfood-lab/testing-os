@@ -81,6 +81,10 @@ describe('a write the repository does not track, and a stamped block', () => {
     assert.equal(part('root').origin, 'mixed');
   });
 
+  it('never warns that a hand edit of a stamped file reaches its readers, since people write it', () => {
+    assert.deepEqual(page.breaks.filter((entry) => entry.kind === 'place'), [], JSON.stringify(page.breaks));
+  });
+
   it('says the README has a block written by the stamper, and lists nothing untracked as generated', () => {
     assert.deepEqual(section('## Generated, never hand-edited'), [
       '## Generated, never hand-edited',
