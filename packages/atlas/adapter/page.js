@@ -240,8 +240,9 @@ function startVerb(door) {
   return door.kind === 'package' ? 'loads' : 'runs';
 }
 
+// A job that commits only on one trigger still commits into the repository.
 function commits(door) {
-  return (door.stages ?? []).length > 0;
+  return (door.stages ?? []).length > 0 || (door.gated ?? []).some((entry) => entry.stages.length > 0);
 }
 
 function reaching(doors) {
@@ -464,7 +465,48 @@ export function sendPhrases(door) {
   if (sends.deploysPages) phrases.push('deploys the site');
   if (sends.opensIssues) phrases.push(sends.opensIssuesOnFailure ? 'opens an issue when it fails' : 'opens an issue');
   if (sends.opensPullRequests) phrases.push('opens a pull request');
+  // A job held to one trigger says which: "deploys the site on a push to main".
+  for (const entry of door.gated ?? []) {
+    const when = gatePhrase(entry.when);
+    const stages = stagedShown(entry.stages);
+    if (stages.length > 0) phrases.push(`commits ${commitsClause({ stages: entry.stages, pushes: entry.pushes })} ${when}`);
+    for (const phrase of sendPhrases({ sends: sendsFrom(entry.sends) })) phrases.push(`${phrase} ${when}`);
+  }
   return phrases;
+}
+
+/**
+ * The trigger a gated job runs on, worded as the page words triggers.
+ *
+ * @param {{ event?: string, branches?: string[], tags?: boolean }} when
+ * @returns {string}
+ */
+export function gatePhrase(when) {
+  const branches = when.branches?.length > 0 ? list(when.branches).replace(/ and /g, ' or ') : null;
+  if (when.tags) return 'on a tag push';
+  if (when.event === 'push') return branches ? `on a push to ${branches}` : 'on a push';
+  if (!when.event) return `on ${branches}`;
+  const events = {
+    pull_request: 'on a pull request',
+    pull_request_target: 'on a pull request',
+    schedule: 'on a schedule',
+    workflow_dispatch: 'when run by hand',
+    release: 'on a release event',
+    repository_dispatch: 'when a repository sends a dispatch',
+  };
+  const phrase = events[when.event] ?? `on a \`${when.event}\` event`;
+  return branches ? `${phrase} to ${branches}` : phrase;
+}
+
+// A gated job's send keys read back into the shape sendPhrases reads.
+function sendsFrom(keys) {
+  const sends = { dispatchesTo: [], publishesTo: [] };
+  for (const key of keys ?? []) {
+    const at = key.indexOf(':');
+    if (at === -1) sends[key] = true;
+    else sends[key.slice(0, at)].push(key.slice(at + 1));
+  }
+  return sends;
 }
 
 /**
@@ -1753,6 +1795,7 @@ function publishesSentence(ctx) {
   for (const door of ctx.doors) {
     const sends = door.sends ?? {};
     for (const name of Array.isArray(sends.publishesTo) ? sends.publishesTo : sends.publishes ? ['npm'] : []) to.add(name);
+    for (const entry of door.gated ?? []) for (const name of sendsFrom(entry.sends).publishesTo) to.add(name);
   }
   const phrase = publishPhrase({ publishesTo: [...to].sort(cmp) });
   return phrase ? `It ${phrase}.` : null;

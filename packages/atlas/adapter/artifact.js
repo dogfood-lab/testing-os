@@ -306,6 +306,9 @@ function carryDoor(door) {
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
     elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
     file: door.file,
+    ...(door.gated?.length > 0
+      ? { gated: door.gated.map((entry) => ({ pushes: entry.pushes, sends: [...entry.sends], stages: [...entry.stages], when: { ...entry.when } })) }
+      : {}),
     landings: door.landings.filter((target) => !inAtlas(target)),
     mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),
     name: door.name,

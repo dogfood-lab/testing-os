@@ -1358,7 +1358,8 @@ export function attachLandings({ files, doors, boundaries, places }) {
     }
   }
   for (const door of mapped) {
-    door.stagedTargets = stagedTargets(door.stages, places);
+    // A job that commits only on one trigger still commits what it stages.
+    door.stagedTargets = stagedTargets([...door.stages, ...(door.gated ?? []).flatMap((entry) => entry.stages)], places);
     for (const target of door.stagedTargets) add(writers, target, { by: door.file });
     for (const mention of door.mentions) add(readers, mention.path, { by: door.file });
   }
