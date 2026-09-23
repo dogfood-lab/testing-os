@@ -141,8 +141,12 @@ describe('doors', () => {
     assert.deepEqual(door('weekly.yml').sends, {
       dispatchesTo: ['acme/hub'],
       publishes: false,
+      publishesTo: [],
       releases: false,
       deploysPages: false,
+      opensIssues: false,
+      opensIssuesOnFailure: false,
+      opensPullRequests: false,
     });
     assert.deepEqual(door('ingest.yml').sends.dispatchesTo, []);
   });

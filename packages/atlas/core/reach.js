@@ -7,6 +7,9 @@
  * resolves to a boundary rather than a file (a build chunk whose sources
  * share one) reaches that boundary but has no file to continue from.
  *
+ * A start ending in a slash is a directory the door runs, and stands for the
+ * code files under it: the files a directory run was recorded in place of.
+ *
  * The walk also returns the files it visited, sorted: every tracked file the
  * door runs or imports. Landing places are read from these files, not from
  * the boundary names they add up to.
@@ -16,8 +19,8 @@
  * path, each file's imports in source order). That is the file a reader
  * following the door opens first in that part, which its entry point may not be.
  *
- * @param {string[]} starts tracked paths the door runs
- * @param {{ files: Map<string, { imports?: unknown }>, boundaryOf: Map<string, string> }} graph
+ * @param {string[]} starts tracked paths the door runs, and directories it runs
+ * @param {{ files: Map<string, { imports?: unknown, language?: string|null }>, boundaryOf: Map<string, string> }} graph
  */
 export function walkReach(starts, graph) {
   const depthOf = new Map();
@@ -28,7 +31,15 @@ export function walkReach(starts, graph) {
     if (!filesOf.has(boundary)) filesOf.set(boundary, new Set());
   };
   const visited = new Set();
-  let frontier = [...new Set(starts)].filter((path) => graph.files.has(path)).sort();
+  const expanded = new Set();
+  const directories = starts.filter((path) => path.endsWith('/'));
+  for (const path of starts) if (!path.endsWith('/')) expanded.add(path);
+  if (directories.length > 0) {
+    for (const [path, file] of graph.files) {
+      if (file.language != null && directories.some((dir) => path.startsWith(dir))) expanded.add(path);
+    }
+  }
+  let frontier = [...expanded].filter((path) => graph.files.has(path)).sort();
   for (let depth = 0; frontier.length > 0; depth += 1) {
     const next = new Set();
     for (const path of frontier) visited.add(path);

@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    paths: ['packages/**', 'scripts/**']
+  pull_request:
+    paths: ['packages/**', 'scripts/**']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run build
+  types:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run typecheck
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm test
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run lint
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/gate.mjs
+  node-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools
+    steps:
+      - run: node --test
+  mocha:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npx mocha
+  jest:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npx jest packages/app
+  runners:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npx doors-tool --check
+      - run: npx tsx scripts/task.ts
+      - run: node --import ./scripts/register.mjs scripts/loaded.ts
+      - run: deno run --allow-read scripts/deno-task.ts
+      - run: bun scripts/bun-task.ts

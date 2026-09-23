@@ -1,0 +1,22 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm publish -w @doors/core --provenance
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          docker buildx build . \
+            --tag ghcr.io/acme/doors:1 \
+            --push
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: softprops/action-gh-release@v2

@@ -116,8 +116,8 @@ export function sequenceFacts(language, root) {
 
 /**
  * The second pass. Records `sequences`, `entry` and `entryRule` on every file
- * a door runs and on every file such a file calls into, and attaches `inner`
- * to the entry calls of the files a door runs.
+ * a door runs by name and on every file such a file calls into, and attaches
+ * `inner` to the entry calls of the files a door runs by name.
  *
  * @param {{ files: Map<string, object>, facts: Map<string, object>, doors: object[], entryPoints: Map<string, string[]>, entryFunctions?: Map<string, string> }} input
  *   entryFunctions names, per file, the function a console script calls
@@ -126,7 +126,9 @@ export function attachSequences({ files, facts, doors, entryPoints, entryFunctio
   const seeds = new Set();
   for (const door of doors) {
     if (door.parseError) continue;
-    for (const run of door.runs) if (facts.has(run.path)) seeds.add(run.path);
+    // A file a tool's patterns selected is one of many the tool runs, not an
+    // entry the door names, so its order of work is not read from here.
+    for (const run of door.runs) if (!run.matched && facts.has(run.path)) seeds.add(run.path);
   }
   const built = new Map();
   const build = (path) => {

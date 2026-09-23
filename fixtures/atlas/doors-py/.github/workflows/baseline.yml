@@ -1,0 +1,22 @@
+name: Baseline
+
+on: workflow_dispatch
+
+env:
+  SUMMARY: reports/summary.md
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    env:
+      OUT: reports/baseline.txt
+    steps:
+      - name: Stage
+        env:
+          RUNTIME_PATH: ${{ github.event.inputs.path }}
+        run: |
+          LOG=reports/run.log
+          git add "$OUT" "${{ env.SUMMARY }}" $LOG
+          git add "$RUNTIME_PATH"
+          git push origin HEAD:refs/heads/baseline
+          gh pr create --title "baseline" --body "refresh"

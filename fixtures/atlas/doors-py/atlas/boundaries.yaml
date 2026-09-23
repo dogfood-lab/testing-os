@@ -1,0 +1,30 @@
+summary: a Python repository whose workflows follow its own conventions
+boundaries:
+  - name: reports
+    globs:
+      - reports/**
+    role: config
+  - name: root
+    globs:
+      - "*"
+    role: config
+  - name: scripts
+    globs:
+      - scripts/**
+    role: code
+  - name: src
+    globs:
+      - src/**
+    role: code
+  - name: tests
+    globs:
+      - tests/**
+    role: test
+  - name: tool
+    globs:
+      - tool/**
+    role: code
+  - name: workflows
+    globs:
+      - .github/**
+    role: config

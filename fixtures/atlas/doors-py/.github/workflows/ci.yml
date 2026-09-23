@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    paths: ['src/**', 'tests/**']
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: |
+          pip install pytest ruff
+          echo "pytest runs tests/ next"
+      - name: Tests
+        run: pytest tests/ -v -c pyproject.toml -m "not slow"
+  uv:
+    runs-on: ubuntu-latest
+    steps:
+      - run: uv run --frozen pytest
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: python -m tool.build
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - run: ruff check src/ --config pyproject.toml
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - run: bandit -r scripts/ -c bandit.yaml
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - run: ./verify.sh --format=json
+  make:
+    runs-on: ubuntu-latest
+    steps:
+      - run: make -j 2 lint
+  wrappers:
+    runs-on: ubuntu-latest
+    steps:
+      - run: poetry run python scripts/smoke.py
+      - run: coverage run -m pytest tests/test_core.py
+      - run: uvx ruff check tool/build.py
+      - run: pipx run black --check scripts/check.py
+      - run: python3 -m mypy -p tool
+      - run: hatch run test:all

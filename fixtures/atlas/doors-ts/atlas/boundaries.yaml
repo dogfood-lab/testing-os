@@ -1,0 +1,39 @@
+summary: a TypeScript repository whose tools read their own configuration
+boundaries:
+  - name: app
+    globs:
+      - packages/app/**
+    role: code
+  - name: bin
+    globs:
+      - bin/**
+    role: code
+  - name: core
+    globs:
+      - packages/core/**
+    role: code
+  - name: root
+    globs:
+      - "*"
+      - ".mocharc.yml"
+    role: config
+  - name: scripts
+    globs:
+      - scripts/**
+    role: code
+  - name: site
+    globs:
+      - site/**
+    role: docs
+  - name: test
+    globs:
+      - test/**
+    role: test
+  - name: tools
+    globs:
+      - tools/**
+    role: code
+  - name: workflows
+    globs:
+      - .github/**
+    role: config

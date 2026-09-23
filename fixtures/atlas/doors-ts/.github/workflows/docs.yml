@@ -1,0 +1,13 @@
+name: Docs
+
+on:
+  push:
+    branches: [main]
+    paths: ['site/**']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run build --prefix site
+      - uses: peaceiris/actions-gh-pages@v4

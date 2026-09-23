@@ -1,0 +1,16 @@
+name: Nightly
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - id: smoke
+        run: python scripts/smoke.py
+      - name: Open an issue
+        if: failure() && steps.smoke.conclusion == 'failure'
+        run: gh issue create --title "nightly smoke red" --label nightly
