@@ -85,16 +85,16 @@ describe('what the TypeScript probe found', () => {
     ].join('\n'));
   });
 
-  it('keeps a reader found by text as evidence, and never lets it make a place read', () => {
+  it('reads nothing from a page that names a place in prose, so the place stays unread', () => {
     const receipt = structure.landings.find((landing) => landing.target === 'packages/ledger/scripts/replay-receipt.json');
-    assert.deepEqual(receipt.readers, [{ by: 'docs/receipts.md', call: 'literal', confidence: 'text' }]);
+    assert.deepEqual(receipt.readers, []);
     assert.ok(page.unread.some((item) => item.place === 'packages/ledger/scripts/replay-receipt.json'), JSON.stringify(page.unread));
-    // The Replay door writes the one receipt, so its readers are the
-    // receipt's, named as the file rather than the package it sits in.
+    // The Replay door writes the one receipt, named as the file rather than
+    // the package it sits in; docs/receipts.md quotes its path in a sentence.
     assert.equal(section('## Who reads the results'), [
       '## Who reads the results',
       '',
-      '- **packages/ledger/scripts/replay-receipt.json** is read by docs/receipts.md (found by text).',
+      '- **packages/ledger/scripts/replay-receipt.json** has no reader in this repository.',
       '',
     ].join('\n'));
     assert.equal(page.breaks.some((entry) => entry.kind === 'place'), false, JSON.stringify(page.breaks));

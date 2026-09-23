@@ -7,8 +7,9 @@ import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 
 // fixtures/atlas/reader-places: the Replay door runs two scripts under
-// packages/ledger/scripts/, each writing a receipt beside itself. A page and
-// a tool read the receipts. packages/ holds two parts, so it is no place.
+// packages/ledger/scripts/, each writing a receipt beside itself. A tool
+// reads the receipts and a page names them in prose. packages/ holds two
+// parts, so it is no place.
 
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const FIXTURE = resolve(import.meta.dirname, '../../../fixtures/atlas/reader-places');
@@ -49,7 +50,8 @@ after(() => {
 describe('who reads the results names the place written', () => {
   it('groups the writes of a door in one part under the deepest directory they share', () => {
     const readers = section('## Who reads the results');
-    assert.ok(readers.includes('- **packages/ledger/scripts/** is read by docs/receipts.md (found by text) and tools/audit.js.'), readers.join('\n'));
+    // docs/receipts.md names the receipts in prose, which reads nothing.
+    assert.ok(readers.includes('- **packages/ledger/scripts/** is read by tools/audit.js.'), readers.join('\n'));
     assert.ok(!readers.some((line) => line.startsWith('- **packages/ledger/**')), readers.join('\n'));
     assert.deepEqual(json.readers.map((group) => group.target), ['packages/ledger/scripts/']);
   });

@@ -106,6 +106,9 @@ const SHELL = new Set(['.sh', '.bash']);
 const SHELL_WRITERS = new Set(['tee']);
 const SHELL_MOVERS = new Set(['mv', 'cp']);
 const SHELL_READERS = new Set(['cat', 'source', '.']);
+// The commands a page's code shows that read the paths they are handed. cp
+// reads all but its last argument; a fetch reads the URL it is handed.
+const PAGE_READERS = new Set(['cat', 'cp', 'head', 'tail', 'less', 'more', 'diff', 'source', '.', 'curl', 'wget']);
 const RAW_URL = /raw\.githubusercontent\.com\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)\/([^/\s'"`<>]+)\/([^\s'"`<>?#)]*)/g;
 const TEST_FILE = /(\.(test|spec)\.[cm]?[jt]sx?|^test_[^/]*\.py|_test\.py)$/;
 const TEST_DIRS = new Set(['test', 'tests', '__tests__', 'fixtures', '__fixtures__', 'testdata']);
@@ -220,7 +223,10 @@ export function textLandings(path, bytes, places) {
   // the commands it runs, which doors read as commands; it reads nothing.
   if (posix.basename(path) === 'package.json') return noLandings();
   let source = bytes.toString('utf8');
-  if (MARKDOWN.has(extname(path).toLowerCase())) for (const link of PAGE_LINKS) source = source.replace(link, ' ');
+  if (MARKDOWN.has(extname(path).toLowerCase())) {
+    for (const link of PAGE_LINKS) source = source.replace(link, ' ');
+    return { writes: [], dynamicWrites: 0, reads: sortEntries(markdownReads(source, places)), dynamicReads: 0 };
+  }
   const reads = [];
   for (const pattern of [/"([^"\r\n]*)"/g, /'([^'\r\n]*)'/g]) {
     for (const match of source.matchAll(pattern)) {
@@ -232,6 +238,90 @@ export function textLandings(path, bytes, places) {
   const shell = SHELL.has(extname(path).toLowerCase()) ? shellLandings(source, places) : { writes: [], reads: [] };
   reads.push(...shell.reads);
   return { writes: sortEntries(shell.writes), dynamicWrites: 0, reads: sortEntries(reads), dynamicReads: 0 };
+}
+
+/**
+ * What a Markdown page reads. Prose that names a place points a person at it
+ * and reads nothing, so only the page's code counts: a code span or a fenced
+ * block, read as the shell reads it, and in it only a command that reads what
+ * it is handed (cat, cp's sources, a fetch of a raw URL), a path handed to a
+ * --flag, or a < redirection. A $ or > prompt before the command is the page's.
+ */
+function markdownReads(source, places) {
+  const reads = [];
+  const add = (word, call) => {
+    if (!word?.fixed) return;
+    for (const entry of rawUrls(word.text, places)) reads.push({ ...entry, confidence: 'text' });
+    const target = argumentPlace(word.text, places);
+    if (target != null) reads.push({ target, call, confidence: 'text' });
+  };
+  for (const line of codeLines(source)) {
+    for (const command of shellCommands(shellTokens(line))) {
+      const words = [];
+      for (let i = 0; i < command.length; i += 1) {
+        if (command[i].type === 'word') words.push(command[i]);
+        else if (command[i].text === '<' && command[i + 1]?.type === 'word') add(command[++i], '<');
+        else i += 1;
+      }
+      let start = 0;
+      while (start < words.length && (words[start].text === '$' || words[start].text === '>' || /^[A-Za-z_][A-Za-z0-9_]*=/.test(words[start].text))) start += 1;
+      const name = words[start]?.text;
+      const args = words.slice(start + 1);
+      for (let i = 0; i < args.length; i += 1) {
+        const text = args[i].text;
+        if (!text.startsWith('--')) continue;
+        const eq = text.indexOf('=');
+        if (eq !== -1) add({ text: text.slice(eq + 1), fixed: args[i].fixed }, text.slice(0, eq));
+        else if (args[i + 1] && !args[i + 1].text.startsWith('-')) add(args[i + 1], text);
+      }
+      if (!PAGE_READERS.has(name)) continue;
+      const positional = args.filter((word) => !word.text.startsWith('-'));
+      for (const word of name === 'cp' ? positional.slice(0, -1) : positional) add(word, name);
+    }
+  }
+  return reads;
+}
+
+// Every line of the page's code: each line of a fenced block, of a block
+// indented four spaces after a blank line, and the text of each code span
+// outside them.
+function codeLines(source) {
+  const lines = [];
+  let fence = null;
+  let indented = false;
+  let blank = true;
+  for (const line of source.split(/\r?\n/)) {
+    const marker = /^\s*(`{3,}|~{3,})/.exec(line);
+    if (fence != null) {
+      if (marker && marker[1][0] === fence[0] && marker[1].length >= fence.length) fence = null;
+      else lines.push(line);
+      continue;
+    }
+    if (marker) {
+      fence = marker[1];
+      continue;
+    }
+    const code = /^(?: {4}|\t)/.test(line) && line.trim() !== '';
+    indented = code && (indented || blank);
+    blank = line.trim() === '';
+    if (indented) {
+      lines.push(line);
+      continue;
+    }
+    for (const match of line.matchAll(/(`+)([^`]+?)\1(?!`)/g)) lines.push(match[2]);
+  }
+  return lines;
+}
+
+// A path a command is handed names a tracked file, or a tracked directory
+// with or without its slash: the command is what makes the word a path.
+function argumentPlace(raw, places) {
+  if (raw.includes('://')) return null;
+  let text = raw.replaceAll('\\', '/');
+  while (text.startsWith('./')) text = text.slice(2);
+  if (places.files.has(text)) return text;
+  const bare = text.replace(/\/+$/, '');
+  return bare !== '' && places.dirs.has(bare) ? bare : null;
 }
 
 /**
