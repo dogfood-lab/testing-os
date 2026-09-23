@@ -45,7 +45,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "atlas",
-      "qualifyingSourceCommits": 32,
+      "qualifyingSourceCommits": 33,
       "rebaseline": null
     },
     {
@@ -438,8 +438,8 @@
         "path": ".gitignore"
       },
       {
-        "commits": 46,
-        "lines": 845,
+        "commits": 47,
+        "lines": 846,
         "path": "CHANGELOG.md"
       },
       {
@@ -523,8 +523,8 @@
         "path": "assets/logo.png"
       },
       {
-        "commits": 11,
-        "lines": 295,
+        "commits": 12,
+        "lines": 297,
         "path": "atlas/README.md"
       },
       {
@@ -553,18 +553,18 @@
         "path": "atlas/orientation.md"
       },
       {
-        "commits": 11,
-        "lines": 1562,
+        "commits": 12,
+        "lines": 1624,
         "path": "atlas/page.json"
       },
       {
-        "commits": 25,
-        "lines": 20569,
+        "commits": 26,
+        "lines": 20654,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 29,
-        "lines": 27424,
+        "commits": 30,
+        "lines": 27436,
         "path": "atlas/structure.json"
       },
       {
@@ -578,8 +578,8 @@
         "path": "docs/atlas-page.spec.md"
       },
       {
-        "commits": 31,
-        "lines": 2572,
+        "commits": 32,
+        "lines": 2629,
         "path": "docs/atlas.dispatch.md"
       },
       {
@@ -1873,13 +1873,23 @@
         "path": "packages/atlas/adapter/boundary-file.test.js"
       },
       {
-        "commits": 4,
-        "lines": 424,
+        "commits": 1,
+        "lines": 602,
+        "path": "packages/atlas/adapter/changes.js"
+      },
+      {
+        "commits": 1,
+        "lines": 276,
+        "path": "packages/atlas/adapter/changes.test.js"
+      },
+      {
+        "commits": 5,
+        "lines": 426,
         "path": "packages/atlas/adapter/check.js"
       },
       {
-        "commits": 14,
-        "lines": 758,
+        "commits": 15,
+        "lines": 785,
         "path": "packages/atlas/adapter/commands.js"
       },
       {
@@ -1933,13 +1943,13 @@
         "path": "packages/atlas/adapter/lifecycle.test.js"
       },
       {
-        "commits": 10,
-        "lines": 2117,
+        "commits": 11,
+        "lines": 2165,
         "path": "packages/atlas/adapter/page.js"
       },
       {
-        "commits": 10,
-        "lines": 926,
+        "commits": 11,
+        "lines": 952,
         "path": "packages/atlas/adapter/page.test.js"
       },
       {
@@ -2153,8 +2163,8 @@
         "path": "packages/atlas/index.js"
       },
       {
-        "commits": 29,
-        "lines": 190,
+        "commits": 30,
+        "lines": 191,
         "path": "packages/atlas/package.json"
       },
       {
@@ -6723,9 +6733,9 @@
     "level": "low",
     "reason": "fewer than 20 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-09-23T09:05:05.638Z",
+  "generatedAt": "2026-09-23T09:35:56.376Z",
   "generatedFrom": {
-    "commit": "043abe5095e2cc6b74d30e867de67a9265061e81"
+    "commit": "6b94344a771364f1f23b1441ac2618714a9c1291"
   },
   "pairs": [
     {
@@ -6948,9 +6958,16 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 8,
-      "shared": 8,
+      "either": 9,
+      "shared": 9,
       "strength": 1
+    },
+    {
+      "a": "atlas/README.md",
+      "b": "atlas/statistics.json",
+      "either": 18,
+      "shared": 9,
+      "strength": 0.5
     },
     {
       "a": "atlas/dev.md",
@@ -6995,11 +7012,18 @@
       "strength": 0.75
     },
     {
+      "a": "atlas/page.json",
+      "b": "atlas/statistics.json",
+      "either": 18,
+      "shared": 9,
+      "strength": 0.5
+    },
+    {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 21,
-      "shared": 16,
-      "strength": 0.761905
+      "either": 22,
+      "shared": 17,
+      "strength": 0.772727
     },
     {
       "a": "docs/pin-matcher-rewrite.dispatch.md",
@@ -7142,6 +7166,13 @@
       "strength": 0.65
     },
     {
+      "a": "packages/atlas/adapter/commands.js",
+      "b": "packages/atlas/package.json",
+      "either": 16,
+      "shared": 8,
+      "strength": 0.5
+    },
+    {
       "a": "packages/atlas/adapter/init.test.js",
       "b": "packages/atlas/adapter/templates.js",
       "either": 6,
@@ -7158,8 +7189,8 @@
     {
       "a": "packages/atlas/adapter/page.js",
       "b": "packages/atlas/adapter/page.test.js",
-      "either": 7,
-      "shared": 7,
+      "either": 8,
+      "shared": 8,
       "strength": 1
     },
     {
@@ -7459,15 +7490,15 @@
     "fallenShared": 3,
     "floor": "fallen",
     "floorTrigger": "revision-depth",
-    "headDate": "2026-09-23T05:04:57-04:00",
-    "inScopeFiles": 1245,
+    "headDate": "2026-09-23T05:35:39-04:00",
+    "inScopeFiles": 1247,
     "pinnedStart": null,
-    "qualifyingCommits": 449,
+    "qualifyingCommits": 451,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-03-27T09:04:57.000Z",
+    "since": "2026-03-27T09:35:39.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

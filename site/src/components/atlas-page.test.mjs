@@ -20,6 +20,7 @@ const page = JSON.parse(readFileSync(join(repoRoot, 'atlas', 'page.json'), 'utf8
 
 const SECTIONS = [
   'What this is',
+  render.changesHeading(page.changes),
   'What comes in',
   `What happens through ${page.doors.find((door) => door.file === page.mainDoor).name}`,
   'Who reads the results',
@@ -31,6 +32,37 @@ const SECTIONS = [
   'Where to start',
   'What this map cannot see',
 ];
+
+// The renderer's escaper writes these five entities and no others, and the
+// markdown twin carries the raw characters, so every site-vs-markdown
+// comparison reads the markup through this: tags dropped, entities decoded
+// in one pass so a literal "&amp;lt;" stays "&lt;".
+const ENTITIES = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'" };
+
+function plain(html) {
+  return html.replace(/<[^>]+>/g, '').replace(/&(?:amp|lt|gt|quot|#39);/g, (entity) => ENTITIES[entity]);
+}
+
+// The "What changed since …" section as the site shows it and as the markdown
+// twin writes it, each as its list of sentences with code marks dropped.
+function changesTexts(pageData, markdown) {
+  const html = render.renderPage(pageData, { repo: pageData.repo });
+  const heading = render.changesHeading(pageData.changes);
+  const at = html.indexOf(`<h2>${render.esc(heading)}</h2>`);
+  assert.ok(at !== -1, 'the site carries the heading');
+  const body = html.slice(at, html.indexOf('</section>', at));
+  const start = markdown.indexOf(`## ${heading}\n`);
+  assert.ok(start !== -1, 'the markdown twin carries the same heading');
+  const end = markdown.indexOf('\n## ', start + 1);
+  const twin = markdown.slice(start, end === -1 ? markdown.length : end);
+  const tag = pageData.changes.unchanged ? 'p' : 'li';
+  return {
+    html,
+    heading,
+    shown: [...body.matchAll(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`, 'g'))].map((match) => plain(match[1])),
+    written: twin.split('\n').slice(2).filter(Boolean).map((line) => line.replace(/^- /, '').replace(/`/g, '')),
+  };
+}
 
 function headings(html) {
   return [...html.matchAll(/<h2>([^<]*)<\/h2>/g)].map((match) => match[1]);
@@ -55,7 +87,7 @@ test('the page carries the title and every section, in the order the spec gives'
 
 test('the sentences are the ones the committed markdown carries', () => {
   const html = render.renderPage(page, { repo: page.repo });
-  const text = html.replace(/<[^>]+>/g, '');
+  const text = plain(html);
   const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8').replace(/\*\*|`/g, '');
   for (const sentence of [
     `${page.parts} parts. Work enters through ${page.doors.length} doors; the busiest is Ingest dogfood submission, which reaches 7 parts.`,
@@ -69,6 +101,70 @@ test('the sentences are the ones the committed markdown carries', () => {
     assert.ok(text.includes(sentence), sentence);
     assert.ok(markdown.includes(sentence), `the markdown twin says it too: ${sentence}`);
   }
+});
+
+test('what changed since the last map sits second and says what the committed markdown says', () => {
+  assert.ok(page.changes && typeof page.changes === 'object', 'this repository was mapped against a committed map');
+  const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8');
+  const { html, heading, shown, written } = changesTexts(page, markdown);
+  const at = html.indexOf(`<h2>${heading}</h2>`);
+  assert.ok(at > html.indexOf('<h2>What this is</h2>'));
+  assert.ok(at < html.indexOf('<h2>What comes in</h2>'));
+  assert.deepEqual(shown, written);
+  assert.deepEqual(shown, page.changes.items.map((item) => item.sentence.replace(/`/g, '')));
+});
+
+test('the comparison decodes what the escaper writes, so an apostrophe or an ampersand still matches the markdown', () => {
+  const printable = Array.from({ length: 95 }, (_, index) => String.fromCharCode(32 + index)).join('');
+  assert.equal(plain(render.esc(printable)), printable, 'every entity the escaper emits is decoded');
+  assert.equal(plain('&amp;lt;'), '&lt;', 'decoded once, not twice');
+  const since = { commit: '0123456789abcdef', generatedAt: '2026-09-20T06:00:00.000Z' };
+  const items = [
+    { kind: 'door', sentence: "Build & test's push trigger now also names `atlas/**`.", subjects: [] },
+    { kind: 'landing', sentence: 'reports/ is now written by tools/"render" & <lib>.', subjects: [] },
+    { kind: 'counts', sentence: '1 file changed content, across 1 part.', subjects: [] },
+  ];
+  const fixture = { ...page, changes: { since, items, unchanged: false } };
+  const markdown = [
+    '## What changed since 2026-09-20 (0123456)',
+    '',
+    "- Build & test's push trigger now also names `atlas/**`.",
+    '- reports/ is now written by tools/"render" & <lib>.',
+    '- 1 file changed content, across 1 part.',
+    '',
+  ].join('\n');
+  const { html, shown, written } = changesTexts(fixture, markdown);
+  assert.ok(html.includes('Build &amp; test&#39;s push trigger'), 'the markup is escaped');
+  assert.deepEqual(shown, written);
+  assert.deepEqual(shown, items.map((item) => item.sentence.replace(/`/g, '')));
+});
+
+test('the changes section lists the headline first, is one line when nothing structural changed, and is absent without changes', () => {
+  const since = { commit: '0123456789abcdef', generatedAt: '2026-09-20T06:00:00.000Z' };
+  const items = [
+    { kind: 'cycle', sentence: 'ingest now imports dogfood-swarm, which closes the cycle ingest → dogfood-swarm → findings → ingest.', subjects: [] },
+    { kind: 'door', sentence: "CI's push trigger now also names `atlas/**`.", subjects: [] },
+    { kind: 'counts', sentence: '2 files changed content, across 1 part.', subjects: [] },
+  ];
+  const html = render.renderPage({ ...page, changes: { since, items, unchanged: false } }, { repo: page.repo });
+  assert.ok(html.includes('<h2>What changed since 2026-09-20 (0123456)</h2>\n<ul><li>ingest now imports dogfood-swarm, which closes the cycle'), 'the headline is the first item');
+  assert.ok(html.includes('<li>CI&#39;s push trigger now also names <code>atlas/**</code>.</li>'), 'backticks mark code');
+  const quiet = render.renderPage({
+    ...page,
+    changes: { since, items: [{ kind: 'counts', sentence: 'Nothing structural changed since 2026-09-20; no file changed.', subjects: [] }], unchanged: true },
+  }, { repo: page.repo });
+  assert.ok(quiet.includes('<h2>What changed since 2026-09-20 (0123456)</h2>\n<p>Nothing structural changed since 2026-09-20; no file changed.</p></section>'));
+  const first = render.renderPage({ ...page, changes: { first: true } }, { repo: page.repo });
+  assert.ok(first.includes('<h2>What changed since the last map</h2>\n<p>This is the first map.</p></section>'));
+  const { changes, ...older } = page;
+  assert.ok(changes, 'this repository has changes to leave out');
+  assert.equal(render.renderPage(older, { repo: page.repo }).includes('<h2>What changed'), false);
+  const hostile = '<script>alert(1)</script>';
+  const escaped = render.renderPage({
+    ...page,
+    changes: { since: { commit: hostile, generatedAt: hostile }, items: [{ kind: 'door', sentence: hostile, subjects: [] }], unchanged: false },
+  }, {});
+  assert.equal(escaped.includes('<script>'), false);
 });
 
 // The section's own markup, so a nested list is read where it sits.
@@ -97,10 +193,6 @@ function listItems(html, from) {
     }
   }
   return items;
-}
-
-function plain(html) {
-  return html.replace(/<[^>]+>/g, '');
 }
 
 test('the order of work sits under step 1, as the markdown nests it', () => {

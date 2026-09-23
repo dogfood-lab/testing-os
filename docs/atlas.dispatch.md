@@ -476,6 +476,63 @@ a helper called at every stage once, where it is first called. A member call on 
 names what is called, not who answers it. Every branch's calls are listed in source order, since
 which branch runs is not known. The host check does not compare sequences.
 
+**What changed since the last map is derived at map time.** `atlas map` reads the previous map
+from the commit it runs at, `git show HEAD:atlas/structure.json` and `HEAD:atlas/statistics.json`,
+never from the working copy. The working copy is what the run overwrites, so reading it would make
+a second map at one commit compare against the first and say something else; HEAD does not move.
+The structure at HEAD is compared with the one just derived, and the delta is the page's second
+section, after "What this is", headed with the previous map's date and the commit it was made
+from. A repository whose HEAD carries no map gets one line: "This is the first map."
+
+Every item is a structural fact in a fixed sentence, never diff text, and the kinds run in order
+of consequence, not of size:
+
+1. A new import between parts that lies on a cycle in the new import graph, stated with the
+   cycle from the importing part: "beta now imports tests, which closes the cycle beta → tests →
+   alpha → beta." It "extends" the cycle instead when the two parts were already in one strongly
+   connected group. Parts on a cycle are the defect-prone ones, so this kind is never cut.
+2. Other new imports between parts.
+3. Imports between parts that are gone.
+4. Doors added or removed, a trigger gained, lost or changed (named down to the glob a path
+   filter gained), a file a door now runs or no longer runs.
+5. Places gaining a writer, then places gaining a reader. A weak entry is left out, as the page
+   leaves it out.
+6. A part whose origin flipped.
+7. Steps gained or lost in the order of work: the entry functions of the main door's files, and
+   the functions those entries call. The lists are matched by longest common subsequence, so a
+   step inserted in the middle is one fact: "In packages/verify/index.js, verify gained a step,
+   validate required steps, before validate policy."
+8. Parts added, removed, or renamed (the same globs or the same files under a new name).
+9. New files that belong to no part, found by the check's own rule and said to fail it.
+
+The counts line closes the section: files added, removed, moved (into another part, or the same
+bytes at a new path) and changed in content, and how many parts they touch. Each kind keeps three
+items and the section twelve, cut after ordering so the top kinds survive; what is cut is counted
+("And 3 more new imports between parts."). When no kind has an item, the section is one line:
+"Nothing structural changed since 2026-09-23; 2 files changed content."
+
+`page.json` carries the same facts as `changes`, or `{ "first": true }`:
+
+```json
+{
+  "since": { "commit": "043abe5…", "generatedAt": "2026-…" },
+  "items": [
+    { "kind": "cycle", "sentence": "…", "subjects": ["beta"] },
+    { "kind": "counts", "sentence": "…", "subjects": [] }
+  ],
+  "unchanged": false,
+  "fileCounts": {
+    "added": 1, "changed": 2, "moved": 0,
+    "parts": 2, "removed": 0
+  }
+}
+```
+
+The limits are the method's. Only what the structure records is compared, so a change the engine
+cannot see (a dynamic import, a write through a path built at run time) is not news here either.
+A trigger compared field by field names its values, not their fields. The host check does not
+read `changes`; it compares the committed structure, as before.
+
 This repository's own handbook diagram is a
 hand-drawn image whose only tests assert that it exists, is large enough, and has accessible
 title and description elements. Nothing checks that it is true.

@@ -35,7 +35,7 @@ function cmp(a, b) {
   return 0;
 }
 
-function list(items, { serial = false } = {}) {
+export function list(items, { serial = false } = {}) {
   if (items.length === 0) return '';
   if (items.length === 1) return items[0];
   const last = items[items.length - 1];
@@ -52,11 +52,11 @@ function clauseList(clauses) {
   return `${clauses.slice(0, -1).join(', ')}, and ${clauses[clauses.length - 1]}`;
 }
 
-function count(n, singular, plural = `${singular}s`) {
+export function count(n, singular, plural = `${singular}s`) {
   return `${n} ${n === 1 ? singular : plural}`;
 }
 
-function capitalize(text) {
+export function capitalize(text) {
   return text.length === 0 ? text : `${text[0].toUpperCase()}${text.slice(1)}`;
 }
 
@@ -150,7 +150,7 @@ function reachSize(door) {
   return door.parseError ? 0 : (door.reach ?? []).length;
 }
 
-function orderDoors(doors) {
+export function orderDoors(doors) {
   return [...doors].sort((a, b) => reachSize(b) - reachSize(a) || cmp(a.name, b.name) || cmp(a.file, b.file));
 }
 
@@ -202,7 +202,7 @@ function pushPhrase(trigger) {
   return phrase;
 }
 
-function triggerPhrases(door) {
+export function triggerPhrases(door) {
   const phrases = [];
   let byHand = false;
   for (const trigger of door.triggers ?? []) {
@@ -268,7 +268,7 @@ function sendPhrases(door) {
   return phrases;
 }
 
-function runsShown(paths) {
+export function runsShown(paths) {
   if (paths.length <= RUNS_SHOWN) return list(paths);
   return `${paths.slice(0, RUNS_SHOWN).join(', ')} and ${paths.length - RUNS_SHOWN} more`;
 }
@@ -340,7 +340,7 @@ function doorSteps(ctx, door) {
 }
 
 // An identifier read as words: loadGlobalPolicy is "load global policy".
-function words(identifier) {
+export function words(identifier) {
   return String(identifier)
     .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
     .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
@@ -904,6 +904,32 @@ function limitsSection(lines) {
   return sections.join('\n\n');
 }
 
+/**
+ * The heading of "What changed since …", from the changes object alone, so
+ * the markdown and the site word it the same way.
+ *
+ * @param {object} changes
+ * @returns {string}
+ */
+export function changesHeading(changes) {
+  if (!changes || changes.first) return 'What changed since the last map';
+  const date = String(changes.since?.generatedAt ?? '').slice(0, 10);
+  const commit = String(changes.since?.commit ?? '').slice(0, 7);
+  if (date && commit) return `What changed since ${date} (${commit})`;
+  if (commit) return `What changed since commit ${commit}`;
+  return date ? `What changed since ${date}` : 'What changed since the last map';
+}
+
+// Nothing structural changed is one line, not a list of one; the first map
+// has nothing to compare and says so.
+function changesSection(changes) {
+  const heading = `## ${changesHeading(changes)}`;
+  if (changes.first) return [heading, 'This is the first map.'].join('\n\n');
+  const items = changes.items ?? [];
+  if (changes.unchanged) return [heading, items.map((item) => item.sentence).join(' ')].join('\n\n');
+  return [heading, items.map((item) => `- ${item.sentence}`).join('\n')].join('\n\n');
+}
+
 function summaryOf(document) {
   const text = typeof document?.summary === 'string' ? document.summary.replace(/\s+/g, ' ').trim() : '';
   return text || null;
@@ -934,10 +960,12 @@ function doorData(ctx, door) {
 }
 
 /**
- * @param {{ structure: object, statistics: object, document: object, repoName: string }} input
+ * @param {{ structure: object, statistics: object, document: object, repoName: string, changes?: object }} input
+ *   changes is the delta from the map committed at HEAD (adapter/changes.js);
+ *   without it the page has no "What changed since …" section
  * @returns {{ markdown: string, json: string }}
  */
-export function buildPage({ structure, statistics, document, repoName }) {
+export function buildPage({ structure, statistics, document, repoName, changes = null }) {
   const ctx = facts({ structure, statistics: statistics ?? {} });
   const commit = String(statistics?.generatedFrom?.commit ?? structure.generatedFrom?.commit ?? '');
   const generatedAt = String(statistics?.generatedAt ?? '');
@@ -963,6 +991,7 @@ export function buildPage({ structure, statistics, document, repoName }) {
     [`# ${name}: how it works`, `Mapped at ${generatedAt.slice(0, 10)} from commit ${commit.slice(0, 7)}.`].join('\n\n'),
     whatThisIs.join('\n\n'),
   ];
+  if (changes) sections.push(changesSection(changes));
   if (ctx.doors.length > 0) sections.push(comesIn(ctx));
   if (main) {
     sections.push(happens(ctx, main, found), readsSection(ctx, main, groups));
@@ -982,6 +1011,7 @@ export function buildPage({ structure, statistics, document, repoName }) {
   const data = {
     authored: authoredBoundaries.map(boundaryPlace),
     breaks: breakEntries,
+    ...(changes ? { changes } : {}),
     changesTogether: pairs,
     changesTogetherNote: pairNote,
     changesTogetherWithTests: withTests,

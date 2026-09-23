@@ -104,7 +104,7 @@ function unresolvedDrift(committed, current) {
   return { code: 'ATLAS_STRUCTURE_DRIFT', details };
 }
 
-function unassignedDrift(committed, current, repoPath) {
+export function unassignedDrift(committed, current, repoPath) {
   const old = new Map(committed.unassigned.map((file) => [file.path, file.hash]));
   const pardons = new Map();
   for (const [path, hash] of old) {
