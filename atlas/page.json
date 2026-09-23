@@ -2,6 +2,7 @@
   "authored": [
     ".github/",
     "assets/",
+    "docker/",
     "docs/",
     "examples/",
     "root",
@@ -84,8 +85,8 @@
       ],
       "importedByTests": [],
       "kind": "part",
-      "name": "portfolio",
-      "partLabel": "portfolio"
+      "name": "atlas",
+      "partLabel": "atlas"
     },
     {
       "kind": "place",
@@ -121,30 +122,80 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 2,
-      "changed": 11,
+      "added": 12,
+      "changed": 16,
       "moved": 0,
-      "parts": 6,
+      "parts": 8,
       "removed": 0
     },
     "items": [
       {
-        "kind": "landing",
-        "sentence": "assets/atlas-hero.webp is now read by packages/atlas/README.md.",
+        "kind": "import-added",
+        "sentence": "scripts now imports atlas.",
         "subjects": [
-          "assets/atlas-hero.webp",
-          "packages/atlas/README.md"
+          "scripts",
+          "atlas"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `docker/**`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `docker/**`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI now also runs packages/atlas/adapter/fleet.test.js.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "packages/atlas/adapter/fleet.test.js"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 3 more changes to doors.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": "README.md is now also read by packages/atlas/adapter/fleet.js.",
+        "subjects": [
+          "README.md",
+          "packages/atlas/adapter/fleet.js"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "docker/Dockerfile is now read by scripts/sync-version.mjs.",
+        "subjects": [
+          "docker/Dockerfile",
+          "scripts/sync-version.mjs"
+        ]
+      },
+      {
+        "kind": "part",
+        "sentence": "docker is a new part, drawn from `docker/**`.",
+        "subjects": [
+          "docker"
         ]
       },
       {
         "kind": "counts",
-        "sentence": "2 files added and 11 changed content, across 6 parts.",
+        "sentence": "12 files added and 16 changed content, across 8 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "2f09ff6b03ed488905751fd10f68e75a84165677",
-      "generatedAt": "2026-09-23T14:13:58.548Z"
+      "commit": "4ba209b7652ba4ca5189e34d6f7dbe86972e9ac5",
+      "generatedAt": "2026-09-23T14:31:13.110Z"
     },
     "unchanged": false
   },
@@ -170,7 +221,7 @@
     "Window: 180 days; a pair counts from 10 shared commits."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "4ba209b7652ba4ca5189e34d6f7dbe86972e9ac5",
+  "commit": "ed8bddbed125d05913a38bfed01aa187b0c51bea",
   "doors": [
     {
       "file": ".github/workflows/ci.yml",
@@ -187,7 +238,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 61
+          "files": 62
         },
         {
           "boundary": "dogfood",
@@ -255,6 +306,7 @@
         "packages/atlas/adapter/divergence-envelope.test.js",
         "packages/atlas/adapter/errors.test.js",
         "packages/atlas/adapter/explain.test.js",
+        "packages/atlas/adapter/fleet.test.js",
         "packages/atlas/adapter/init.test.js",
         "packages/atlas/adapter/lifecycle.test.js",
         "packages/atlas/adapter/page-doors.test.js",
@@ -262,7 +314,6 @@
         "packages/atlas/adapter/python-conventions.test.js",
         "packages/atlas/adapter/statistics.test.js",
         "packages/atlas/adapter/templates.test.js",
-        "packages/atlas/adapter/ts-probe.test.js",
         "packages/atlas/core/commands.test.js",
         "packages/atlas/core/divergence.test.js",
         "packages/atlas/core/doors-conventions.test.js",
@@ -442,12 +493,12 @@
         "scripts/check-package-deps-hygiene.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 515,
+      "runsCount": 517,
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request touching 22 paths",
-        "on a push touching 22 paths",
+        "on a pull request touching 23 paths",
+        "on a push touching 23 paths",
         "or by hand"
       ]
     },
@@ -466,7 +517,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 55
+          "files": 57
         },
         {
           "boundary": "dogfood",
@@ -532,6 +583,7 @@
         "packages/atlas/adapter/divergence-envelope.test.js",
         "packages/atlas/adapter/errors.test.js",
         "packages/atlas/adapter/explain.test.js",
+        "packages/atlas/adapter/fleet.test.js",
         "packages/atlas/adapter/init.test.js",
         "packages/atlas/adapter/lifecycle.test.js",
         "packages/atlas/adapter/page-doors.test.js",
@@ -555,7 +607,6 @@
         "packages/atlas/core/resolve-build-output.test.js",
         "packages/atlas/core/resolve-js.test.js",
         "packages/atlas/core/resolve-python.test.js",
-        "packages/atlas/core/resolve-tsconfig-extends.test.js",
         "packages/dogfood-swarm/a3-roadmap-envelope-conformance.test.js",
         "packages/dogfood-swarm/adjudicate-explicit-wave.test.js",
         "packages/dogfood-swarm/advance.test.js",
@@ -721,9 +772,9 @@
         "scripts/check-severity-contrast.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 514,
+      "runsCount": 516,
       "sends": [
-        "publishes to npm",
+        "publishes to npm and a container image",
         "creates a GitHub release"
       ],
       "stages": [],
@@ -835,6 +886,36 @@
       ]
     },
     {
+      "file": ".github/workflows/atlas-render.yml",
+      "landings": [
+        "indexes/atlas/"
+      ],
+      "name": "Atlas render",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "atlas",
+          "depth": 1,
+          "files": 2
+        }
+      ],
+      "runs": [
+        "scripts/atlas-render.mjs"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a schedule (`0 6 * * 1`), Monday at 06:00 UTC",
+        "or by hand"
+      ]
+    },
+    {
       "file": ".github/workflows/pages.yml",
       "landings": [],
       "name": "Deploy site to GitHub Pages",
@@ -856,31 +937,6 @@
       "stages": [],
       "triggers": [
         "on a push to main touching 2 paths",
-        "or by hand"
-      ]
-    },
-    {
-      "file": ".github/workflows/atlas-render.yml",
-      "landings": [
-        "indexes/atlas/"
-      ],
-      "name": "Atlas render",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "scripts",
-          "depth": 0,
-          "files": 1
-        }
-      ],
-      "runs": [
-        "scripts/atlas-render.mjs"
-      ],
-      "runsCount": 1,
-      "sends": [],
-      "stages": [],
-      "triggers": [
-        "on a schedule (`0 6 * * 1`), Monday at 06:00 UTC",
         "or by hand"
       ]
     }
@@ -996,16 +1052,6 @@
       "to": "verify"
     },
     {
-      "from": "portfolio",
-      "fromTests": false,
-      "to": "findings"
-    },
-    {
-      "from": "portfolio",
-      "fromTests": false,
-      "to": "schemas"
-    },
-    {
       "from": "schemas",
       "fromTests": true,
       "to": "dogfood-swarm"
@@ -1054,17 +1100,17 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T14:31:13.110Z",
+  "generatedAt": "2026-09-23T15:35:32.274Z",
   "limits": [
     "2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "30 import sites could not be resolved.",
-    "27 writes and 189 reads use paths built at run time and are not named here.",
+    "30 writes and 191 reads use paths built at run time and are not named here.",
     "Readers marked (found by text) come from scanning unparsed files.",
-    "CI runs 515 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Release runs 514 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
+    "CI runs 517 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs 516 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
   "mainDoor": ".github/workflows/ingest.yml",
-  "parts": 22,
+  "parts": 23,
   "readers": [
     {
       "readers": [
@@ -1310,9 +1356,9 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 544,
+  "testFiles": 546,
   "testedBy": {
-    "atlas": 28,
+    "atlas": 31,
     "dogfood-swarm": 280,
     "findings": 119,
     "ingest": 59,

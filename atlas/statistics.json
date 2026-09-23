@@ -38,7 +38,9 @@
         "collapsed": false,
         "confidence": "full",
         "importsAndCoChanges": [],
-        "importsOnly": []
+        "importsOnly": [
+          "scripts"
+        ]
       },
       "cohesion": 1,
       "cohesionDropped": false,
@@ -46,6 +48,22 @@
       "highWater": 1,
       "name": "atlas",
       "qualifyingSourceCommits": 47,
+      "rebaseline": null
+    },
+    {
+      "breakage": {
+        "coChangesOnly": [],
+        "collapsed": false,
+        "confidence": "full",
+        "importsAndCoChanges": [],
+        "importsOnly": []
+      },
+      "cohesion": null,
+      "cohesionDropped": false,
+      "confidence": "low",
+      "highWater": null,
+      "name": "docker",
+      "qualifyingSourceCommits": 0,
       "rebaseline": null
     },
     {
@@ -431,8 +449,8 @@
         "path": ".gitignore"
       },
       {
-        "commits": 66,
-        "lines": 939,
+        "commits": 67,
+        "lines": 946,
         "path": "CHANGELOG.md"
       },
       {
@@ -521,8 +539,8 @@
         "path": "assets/logo.png"
       },
       {
-        "commits": 29,
-        "lines": 749,
+        "commits": 31,
+        "lines": 780,
         "path": "atlas/README.md"
       },
       {
@@ -551,23 +569,23 @@
         "path": "atlas/orientation.md"
       },
       {
-        "commits": 29,
-        "lines": 5653,
+        "commits": 31,
+        "lines": 5900,
         "path": "atlas/page.json"
       },
       {
-        "commits": 43,
-        "lines": 27249,
+        "commits": 45,
+        "lines": 28210,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 47,
-        "lines": 46530,
+        "commits": 49,
+        "lines": 46760,
         "path": "atlas/structure.json"
       },
       {
-        "commits": 6,
-        "lines": 1231,
+        "commits": 7,
+        "lines": 1266,
         "path": "docs/atlas-design.dispatch.md"
       },
       {
@@ -2436,13 +2454,13 @@
         "path": "indexes/failing.json"
       },
       {
-        "commits": 62,
-        "lines": 62,
+        "commits": 64,
+        "lines": 64,
         "path": "indexes/integrity/chain.jsonl"
       },
       {
-        "commits": 70,
-        "lines": 548,
+        "commits": 72,
+        "lines": 560,
         "path": "indexes/latest-by-repo.json"
       },
       {
@@ -2451,8 +2469,8 @@
         "path": "indexes/stale.json"
       },
       {
-        "commits": 63,
-        "lines": 1745,
+        "commits": 65,
+        "lines": 1783,
         "path": "indexes/trends.json"
       },
       {
@@ -2591,13 +2609,13 @@
         "path": "packages/atlas/adapter/page-doors.test.js"
       },
       {
-        "commits": 29,
-        "lines": 3719,
+        "commits": 30,
+        "lines": 3742,
         "path": "packages/atlas/adapter/page.js"
       },
       {
-        "commits": 27,
-        "lines": 1730,
+        "commits": 28,
+        "lines": 1764,
         "path": "packages/atlas/adapter/page.test.js"
       },
       {
@@ -6577,6 +6595,16 @@
       },
       {
         "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/09/23/run-00mue7969k-WtW0EFUN6IPN-g.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/09/23/run-00mue82d5u-uQ90y--rrG2JEw.json"
+      },
+      {
+        "commits": 1,
         "lines": 72,
         "path": "records/mcp-tool-shop-org/a11y-demo-site/2026/03/20/run-a11y-demo-site-23329256169-1.json"
       },
@@ -6916,13 +6944,13 @@
         "path": "scripts/apply-finding-migration.test.mjs"
       },
       {
-        "commits": 8,
-        "lines": 1371,
+        "commits": 9,
+        "lines": 1466,
         "path": "scripts/atlas-render.mjs"
       },
       {
-        "commits": 8,
-        "lines": 985,
+        "commits": 9,
+        "lines": 1092,
         "path": "scripts/atlas-render.test.mjs"
       },
       {
@@ -7221,13 +7249,13 @@
         "path": "site/public/atlas/hero.webp"
       },
       {
-        "commits": 3,
-        "lines": 375,
+        "commits": 4,
+        "lines": 406,
         "path": "site/public/atlas/index.html"
       },
       {
-        "commits": 20,
-        "lines": 2122,
+        "commits": 21,
+        "lines": 2402,
         "path": "site/public/atlas/render.js"
       },
       {
@@ -7261,8 +7289,8 @@
         "path": "site/src/components/BaseLayout.test.mjs"
       },
       {
-        "commits": 22,
-        "lines": 1483,
+        "commits": 23,
+        "lines": 1690,
         "path": "site/src/components/atlas-page.test.mjs"
       },
       {
@@ -7481,9 +7509,9 @@
     "level": "full",
     "reason": "at least 30 qualifying commits, and at least 20 source files reach 10 revisions"
   },
-  "generatedAt": "2026-09-23T14:31:13.110Z",
+  "generatedAt": "2026-09-23T15:35:32.274Z",
   "generatedFrom": {
-    "commit": "4ba209b7652ba4ca5189e34d6f7dbe86972e9ac5"
+    "commit": "ed8bddbed125d05913a38bfed01aa187b0c51bea"
   },
   "pairs": [
     {
@@ -7706,65 +7734,65 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 28,
-      "shared": 19,
-      "strength": 0.678571
+      "either": 29,
+      "shared": 20,
+      "strength": 0.689655
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 31,
-      "shared": 19,
-      "strength": 0.612903
+      "either": 32,
+      "shared": 20,
+      "strength": 0.625
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 28,
-      "shared": 19,
-      "strength": 0.678571
+      "either": 29,
+      "shared": 20,
+      "strength": 0.689655
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 31,
-      "shared": 19,
-      "strength": 0.612903
+      "either": 32,
+      "shared": 20,
+      "strength": 0.625
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 32,
-      "shared": 27,
-      "strength": 0.84375
+      "either": 33,
+      "shared": 28,
+      "strength": 0.848485
     },
     {
       "a": "indexes/integrity/chain.jsonl",
       "b": "indexes/latest-by-repo.json",
-      "either": 69,
-      "shared": 62,
-      "strength": 0.898551
+      "either": 71,
+      "shared": 64,
+      "strength": 0.901408
     },
     {
       "a": "indexes/integrity/chain.jsonl",
       "b": "indexes/trends.json",
-      "either": 62,
-      "shared": 62,
+      "either": 64,
+      "shared": 64,
       "strength": 1
     },
     {
       "a": "indexes/latest-by-repo.json",
       "b": "indexes/trends.json",
-      "either": 69,
-      "shared": 62,
-      "strength": 0.898551
+      "either": 71,
+      "shared": 64,
+      "strength": 0.901408
     },
     {
       "a": "package-lock.json",
@@ -8021,15 +8049,15 @@
     "fallenShared": 3,
     "floor": "strong",
     "floorTrigger": null,
-    "headDate": "2026-09-23T10:31:02-04:00",
-    "inScopeFiles": 1398,
+    "headDate": "2026-09-23T14:52:54Z",
+    "inScopeFiles": 1410,
     "pinnedStart": null,
-    "qualifyingCommits": 499,
+    "qualifyingCommits": 502,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 10,
-    "since": "2026-03-27T14:31:02.000Z",
+    "since": "2026-03-27T14:52:54.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
