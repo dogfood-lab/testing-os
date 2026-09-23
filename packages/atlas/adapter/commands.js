@@ -4,6 +4,7 @@ import { basename, join } from 'node:path';
 import { mapRepository } from '../core/index.js';
 import { buildArtifact, serializeArtifact } from './artifact.js';
 import { ignoredNotice, readBoundaryFile } from './boundary-file.js';
+import { changesSince } from './changes.js';
 import { compareArtifacts } from './check.js';
 import { formatFailure } from './errors.js';
 import { initCommand } from './init.js';
@@ -69,6 +70,7 @@ export function mapCommand(cwd, argv = []) {
     statistics,
     document: boundary,
     repoName: origin ?? manifestName(repo) ?? basename(repo),
+    changes: changesSince(committedMap(repo), artifact, { repoPath: repo }),
   });
   const atlasDir = join(repo, 'atlas');
   writeArtifactSync(join(atlasDir, 'structure.json'), serializeArtifact(artifact));
@@ -207,6 +209,31 @@ function manifestName(repo) {
     // No readable root manifest; the directory name is the last resort.
   }
   return null;
+}
+
+// The previous map is the one committed at HEAD, never the working copy: the
+// working copy is what this run overwrites, so reading it would make a second
+// map at the same commit compare against the first and say something else.
+function committedMap(repo) {
+  const structure = committedJson(repo, 'atlas/structure.json');
+  if (!structure) return null;
+  return { structure, statistics: committedJson(repo, 'atlas/statistics.json') };
+}
+
+function committedJson(repo, path) {
+  const result = spawnSync('git', ['show', `HEAD:${path}`], {
+    cwd: repo,
+    encoding: 'utf8',
+    maxBuffer: 64 * 1024 * 1024,
+  });
+  if (result.status !== 0) return null;
+  try {
+    return JSON.parse(result.stdout);
+  } catch {
+    // A committed file that is not JSON is not a map to compare against; the
+    // check reports it as ATLAS_STRUCTURE_DRIFT.
+    return null;
+  }
 }
 
 function repoRoot(cwd) {

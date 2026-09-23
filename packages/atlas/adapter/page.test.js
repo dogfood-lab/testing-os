@@ -496,9 +496,33 @@ describe('atlas page', () => {
     assert.equal(data.limits.at(-1), `Statistics confidence is low: ${doors.statistics.confidence.reason.replace(/\.$/, '')}.`);
   });
 
+  it('puts what changed second, a list when something did and one line when nothing structural did', () => {
+    const since = { commit: 'abcdef0123456789', generatedAt: '2026-09-20T06:00:00.000Z' };
+    const changed = {
+      fileCounts: { added: 1, changed: 0, moved: 0, parts: 1, removed: 0 },
+      items: [
+        { kind: 'cycle', sentence: 'lib now imports tools, which closes the cycle lib → tools → lib.', subjects: ['lib', 'tools'] },
+        { kind: 'counts', sentence: '1 file added, across 1 part.', subjects: [] },
+      ],
+      since,
+      unchanged: false,
+    };
+    const { markdown, json } = buildPage({ ...doors, repoName: 'acme/doors', changes: changed });
+    const heading = '## What changed since 2026-09-20 (abcdef0)';
+    assert.ok(markdown.indexOf(`${heading}\n`) > markdown.indexOf('## What this is\n'));
+    assert.ok(markdown.indexOf(`${heading}\n`) < markdown.indexOf('## What comes in\n'));
+    assert.equal(section(markdown, heading), `${heading}\n\n- lib now imports tools, which closes the cycle lib → tools → lib.\n- 1 file added, across 1 part.\n`);
+    assert.deepEqual(JSON.parse(json).changes, changed);
+    const quiet = { ...changed, items: [{ kind: 'counts', sentence: 'Nothing structural changed since 2026-09-20; 2 files changed content.', subjects: [] }], unchanged: true };
+    assert.equal(section(buildPage({ ...doors, repoName: 'acme/doors', changes: quiet }).markdown, heading), `${heading}\n\nNothing structural changed since 2026-09-20; 2 files changed content.\n`);
+    assert.equal(buildPage({ ...doors, repoName: 'acme/doors' }).markdown.includes('## What changed'), false, 'no changes object, no section');
+    assert.equal('changes' in JSON.parse(buildPage({ ...doors, repoName: 'acme/doors' }).json), false);
+  });
+
   it('is what atlas map writes, and atlas map writes none of the retired renders', () => {
     const written = readFileSync(join(doors.root, 'atlas', 'README.md'), 'utf8');
-    assert.equal(written, buildPage({ ...doors, repoName: 'doors-fixture' }).markdown);
+    // A fresh repository has no map committed at HEAD, so the page says so.
+    assert.equal(written, buildPage({ ...doors, repoName: 'doors-fixture', changes: { first: true } }).markdown);
     assert.ok(existsSync(join(doors.root, 'atlas', 'page.json')));
     for (const name of ['orientation.md', 'dev.md', 'machine.md', 'machine-stats.txt']) {
       assert.equal(existsSync(join(doors.root, 'atlas', name)), false, name);
