@@ -1,6 +1,6 @@
 # testing-os: how it works
 
-Mapped at 2026-09-23 from commit 5f90a9f.
+Mapped at 2026-09-23 from commit f3eb84f.
 
 ## What this is
 
@@ -66,11 +66,13 @@ Mapped at 2026-09-23 from commit 5f90a9f.
 
 ## What tends to change together
 
-- **packages/atlas/adapter/page.js** and **packages/atlas/adapter/page.test.js** changed together in 5 of 5 commits, inside atlas.
-- **packages/atlas/adapter/templates.js** and **packages/atlas/adapter/templates.test.js** changed together in 5 of 5 commits, inside atlas.
 - **packages/dogfood-swarm/lib/verify/adapters/python.js** and **packages/dogfood-swarm/lib/verify/adapters/rust.js** changed together in 5 of 5 commits, inside dogfood-swarm.
-- **scripts/check-finding-regression-pins.mjs** and **scripts/check-finding-regression-pins.test.mjs** changed together in 14 of 16 commits, inside scripts.
-- **scripts/pin-declarations.mjs** and **scripts/pin-declarations.test.mjs** changed together in 6 of 7 commits, inside scripts.
+- **packages/dogfood-swarm/lib/error-render-hint-coverage.test.js** and **scripts/pin-declarations.mjs** changed together in 5 of 7 commits, and scripts imports dogfood-swarm.
+- **packages/atlas/adapter/init.test.js** and **packages/atlas/adapter/templates.js** changed together in 4 of 6 commits, inside atlas.
+- **packages/atlas/adapter/init.test.js** and **packages/atlas/adapter/templates.test.js** changed together in 4 of 6 commits, inside atlas.
+- **packages/dogfood-swarm/lib/persist/dogfood-bridge.js** and **packages/dogfood-swarm/lib/persist/export.js** changed together in 4 of 6 commits, inside dogfood-swarm.
+
+7 files changed together with their own tests, as expected.
 
 Confidence is low: fewer than 20 source files reach 10 revisions in the window.
 

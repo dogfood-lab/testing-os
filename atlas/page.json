@@ -104,28 +104,6 @@
   ],
   "changesTogether": [
     {
-      "a": "packages/atlas/adapter/page.js",
-      "b": "packages/atlas/adapter/page.test.js",
-      "either": 5,
-      "parts": [
-        "atlas",
-        "atlas"
-      ],
-      "relation": "inside",
-      "shared": 5
-    },
-    {
-      "a": "packages/atlas/adapter/templates.js",
-      "b": "packages/atlas/adapter/templates.test.js",
-      "either": 5,
-      "parts": [
-        "atlas",
-        "atlas"
-      ],
-      "relation": "inside",
-      "shared": 5
-    },
-    {
       "a": "packages/dogfood-swarm/lib/verify/adapters/python.js",
       "b": "packages/dogfood-swarm/lib/verify/adapters/rust.js",
       "either": 5,
@@ -137,30 +115,53 @@
       "shared": 5
     },
     {
-      "a": "scripts/check-finding-regression-pins.mjs",
-      "b": "scripts/check-finding-regression-pins.test.mjs",
-      "either": 16,
-      "parts": [
-        "scripts",
-        "scripts"
-      ],
-      "relation": "inside",
-      "shared": 14
-    },
-    {
-      "a": "scripts/pin-declarations.mjs",
-      "b": "scripts/pin-declarations.test.mjs",
+      "a": "packages/dogfood-swarm/lib/error-render-hint-coverage.test.js",
+      "b": "scripts/pin-declarations.mjs",
       "either": 7,
       "parts": [
-        "scripts",
+        "dogfood-swarm",
         "scripts"
       ],
+      "relation": "b-imports-a",
+      "shared": 5
+    },
+    {
+      "a": "packages/atlas/adapter/init.test.js",
+      "b": "packages/atlas/adapter/templates.js",
+      "either": 6,
+      "parts": [
+        "atlas",
+        "atlas"
+      ],
       "relation": "inside",
-      "shared": 6
+      "shared": 4
+    },
+    {
+      "a": "packages/atlas/adapter/init.test.js",
+      "b": "packages/atlas/adapter/templates.test.js",
+      "either": 6,
+      "parts": [
+        "atlas",
+        "atlas"
+      ],
+      "relation": "inside",
+      "shared": 4
+    },
+    {
+      "a": "packages/dogfood-swarm/lib/persist/dogfood-bridge.js",
+      "b": "packages/dogfood-swarm/lib/persist/export.js",
+      "either": 6,
+      "parts": [
+        "dogfood-swarm",
+        "dogfood-swarm"
+      ],
+      "relation": "inside",
+      "shared": 4
     }
   ],
-  "changesTogetherNote": "Confidence is low: fewer than 20 source files reach 10 revisions in the window. Window: 180 days; a pair counts from 3 shared commits.",
-  "commit": "5f90a9f6a744efcc94f8140b09817d8970fc06f1",
+  "changesTogetherNote": "7 files changed together with their own tests, as expected. Confidence is low: fewer than 20 source files reach 10 revisions in the window. Window: 180 days; a pair counts from 3 shared commits.",
+  "changesTogetherWithTests": 7,
+  "commit": "f3eb84fd6e5f685be60346b3e998997396e75c7d",
   "doors": [
     {
       "file": ".github/workflows/ingest.yml",
@@ -428,7 +429,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T08:53:38.397Z",
+  "generatedAt": "2026-09-23T09:00:16.499Z",
   "limits": [
     "31 import sites did not resolve.",
     "27 writes and 184 reads use paths built at run time and are not named here.",
