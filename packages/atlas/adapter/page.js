@@ -1061,4 +1061,4 @@ export function entryOrder(ctx, path, lead) {
 
 // The page's reading of the artifacts and its phrase helpers, shared with
 // atlas explain so a sentence about one file reads as the page would write it.
-export { collapse, count, cover, facts as pageFacts, list, readerFiles, under, worded };
+export { collapse, cover, facts as pageFacts, readerFiles, under, worded };
