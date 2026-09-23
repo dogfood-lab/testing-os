@@ -139,7 +139,7 @@ export function buildArtifact(mapped, commit) {
       importConfidence: sites.unresolved > sites.resolved ? 'low' : 'full',
       name: boundary.name,
       origin: boundary.origin,
-      role: boundary.role ?? roleFor(files.map((file) => file.path)),
+      role: boundary.role ?? roleFor(files.map((file) => file.path), { manifest: boundary.holdsManifest === true }),
       testedBy: tested.testedBy.get(boundary.name) ?? 0,
       unresolvedSites: sites.unresolved,
     };

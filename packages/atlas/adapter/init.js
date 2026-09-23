@@ -51,8 +51,9 @@ export function initCommand(repo, argv) {
   const mapped = mapRepository({ repoPath: repo, boundaries: seeded });
   const byName = new Map(mapped.boundaries.map((boundary) => [boundary.name, boundary]));
   const boundaries = proposals.map((proposal) => {
-    const files = (byName.get(proposal.name)?.files ?? []).map((file) => file.path).filter((path) => !inAtlas(path));
-    return { name: proposal.name, globs: [proposal.glob], role: roleFor(files) };
+    const live = byName.get(proposal.name);
+    const files = (live?.files ?? []).map((file) => file.path).filter((path) => !inAtlas(path));
+    return { name: proposal.name, globs: [proposal.glob], role: roleFor(files, { manifest: live?.holdsManifest === true }) };
   });
   mkdirSync(join(repo, 'atlas'), { recursive: true });
   const text = stringify({ summary: '', boundaries });

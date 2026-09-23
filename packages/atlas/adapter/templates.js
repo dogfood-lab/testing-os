@@ -64,14 +64,24 @@ export function fileKind(path) {
  * one module is code. Configuration is left out of that ratio, since every
  * package carries a manifest whatever its size. Otherwise docs or config win
  * by majority of the voting files.
+ *
+ * The part that holds the repository's own manifest is the exception: its
+ * READMEs, translated into eight languages, are the front door to a project
+ * whose package.json, pyproject.toml and Dockerfile configure the whole of it,
+ * so it is config unless code, tests included, is a third of its voting files.
+ *
+ * @param {string[]} paths
+ * @param {{ manifest?: boolean }} [options] manifest: the part holds the
+ *   repository's manifest (core/index.js repositoryManifest)
  */
-export function roleFor(paths) {
+export function roleFor(paths, { manifest = false } = {}) {
   const kinds = paths.map((path) => fileKind(path));
   const voting = kinds.filter((kind) => kind === 'code' || kind === 'docs' || kind === 'config');
   const docs = voting.filter((kind) => kind === 'docs').length;
   const code = voting.filter((kind) => kind === 'code').length;
+  const tests = paths.filter((path, index) => kinds[index] === 'test' && CODE_EXT.has(extensionOf(baseName(path)))).length;
+  if (manifest && (code + tests) * 3 < voting.length + tests) return 'config';
   if (code > 0) {
-    const tests = paths.filter((path, index) => kinds[index] === 'test' && CODE_EXT.has(extensionOf(baseName(path)))).length;
     if ((code + tests) * 3 >= code + tests + docs) return 'code';
     return docs > voting.length / 2 ? 'docs' : 'config';
   }

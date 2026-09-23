@@ -109,8 +109,10 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const boundaryList = [...byName.values()];
   const scripts = pythonScripts(repoPath, trackedSet);
   const commands = manifestCommands(repoPath, trackedSet, scripts);
+  const manifests = repositoryManifests(repoPath, trackedSet);
   for (const boundary of boundaryList) {
     boundary.files.sort(byPath);
+    boundary.holdsManifest = boundary.files.some((file) => manifests.includes(file.path));
     boundary.parseErrors = boundary.files.filter((file) => file.parseError).length;
     boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts, commands });
   }
@@ -161,6 +163,26 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     doors,
     landings,
   };
+}
+
+/**
+ * The manifests at the top of the tree that name and configure the project as
+ * a whole: a package.json with a name, pyproject.toml, Cargo.toml or go.mod.
+ * A package.json with no name is a workspace shell or a tool's settings, not a
+ * project's manifest. A manifest further down belongs to one package of the
+ * repository, such as a docs site, and says nothing about the part it is in.
+ */
+function repositoryManifests(repoPath, tracked) {
+  const found = ['pyproject.toml', 'Cargo.toml', 'go.mod'].filter((path) => tracked.has(path));
+  if (tracked.has('package.json')) {
+    try {
+      const pkg = JSON.parse(readFileSync(join(repoPath, 'package.json'), 'utf8'));
+      if (typeof pkg?.name === 'string' && pkg.name.trim() !== '') found.push('package.json');
+    } catch {
+      // An unreadable manifest names nothing.
+    }
+  }
+  return found;
 }
 
 /**
