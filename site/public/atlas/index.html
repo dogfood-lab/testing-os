@@ -9,7 +9,8 @@
   atlas-render branch. With ?repo=<owner>/<name> it shows that repository;
   without it, the list of every rendered repository. The sentences are built
   by render.js from the same fields the committed atlas/README.md is built
-  from. The only data URL is CONFIG.atlasBase; a 404 is a state, not an error.
+  from. The only data URL is CONFIG.atlasBase, which a meta tag named
+  atlas-base overrides; a 404 is a state, not an error.
 -->
 <script>
 "use strict";
@@ -136,8 +137,12 @@ footer { border-top: 1px solid var(--border); padding: 14px 0 30px; font-size: 1
 <script type="module">
 import { isRepo, pageDataUrl, historyDataUrl, renderPage, renderFleet, pageTitle, state } from "./render.js";
 
+// A server that holds the renders itself, such as the Atlas container, names
+// its own base in a meta tag named atlas-base; the public site has none and reads
+// the render branch.
+const baseTag = document.querySelector('meta[name="atlas-base"]');
 const CONFIG = {
-  atlasBase: "https://raw.githubusercontent.com/dogfood-lab/testing-os/atlas-render/",
+  atlasBase: (baseTag && baseTag.content) || "https://raw.githubusercontent.com/dogfood-lab/testing-os/atlas-render/",
   paths: { atlasFleet: "indexes/atlas/fleet.json" }
 };
 

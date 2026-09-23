@@ -347,3 +347,69 @@ jobs:
               exit 1
             fi
           }
+
+  # The container image, built only after every package is live, because the
+  # image installs @dogfood-lab/atlas from npm like any other consumer rather
+  # than copying this tree. It is the only job that can write packages; the
+  # publish job above never can.
+  #
+  # COMPENSATOR (workflow-standards NAMED_COMPENSATORS): pushing a tag to GHCR
+  # is reversible by hand. A wrong image is removed by deleting that version
+  # (gh api -X DELETE /orgs/dogfood-lab/packages/container/atlas/versions/<id>,
+  # the id from gh api /orgs/dogfood-lab/packages/container/atlas/versions),
+  # and :latest is put back by re-firing this workflow for the previous tag.
+  # The push itself is idempotent: a re-fire rebuilds and re-points the same
+  # two tags. Owner: release captain (Mike / mcp-tool-shop).
+  container:
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    env:
+      PUBLISH_TAG: ${{ github.event.inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v6.0.3 (node24 runtime)
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref_name }}
+
+      - name: Wait until npm serves the published version
+        id: version
+        run: |
+          # The publish job has just put this version on npm, and the registry
+          # can take minutes to answer for it everywhere. Poll for up to five
+          # minutes; the Dockerfile's install retries as well.
+          VERSION="${PUBLISH_TAG#v}"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          for attempt in $(seq 1 30); do
+            if [ "$(npm view "@dogfood-lab/atlas@${VERSION}" version 2>/dev/null)" = "${VERSION}" ]; then
+              echo "@dogfood-lab/atlas@${VERSION} is on npm (check ${attempt})."
+              exit 0
+            fi
+            echo "@dogfood-lab/atlas@${VERSION} not served yet (check ${attempt} of 30); waiting 10s."
+            sleep 10
+          done
+          echo "::error::@dogfood-lab/atlas@${VERSION} was not served by npm within five minutes. The packages are live; re-fire this workflow for ${PUBLISH_TAG} to build the image (publish is an idempotent no-op on a re-fire)."
+          exit 1
+
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          file: docker/Dockerfile
+          build-args: |
+            ATLAS_VERSION=${{ steps.version.outputs.version }}
+          push: true
+          provenance: mode=max
+          tags: |
+            ghcr.io/dogfood-lab/atlas:${{ steps.version.outputs.version }}
+            ghcr.io/dogfood-lab/atlas:latest

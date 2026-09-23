@@ -53,8 +53,13 @@ export function mapCommand(cwd, argv = []) {
   if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
   if (!repo) return usage('atlas: not a git repository');
-  const origin = repositoryName(repo);
-  if (flags.divergence && !origin) return usage('atlas: --divergence needs an origin URL that names org/repo');
+  const origin = flags.name ?? repositoryName(repo);
+  if (flags.divergence && !origin) return usage('atlas: --divergence needs an origin URL that names org/repo, or --name');
+  let baseline = null;
+  if (flags.baseline) {
+    baseline = readBaseline(flags.baseline);
+    if (!baseline) return usage('atlas: --baseline needs a directory holding a structure.json that is valid JSON');
+  }
   let previous = null;
   if (flags.previous) {
     try {
@@ -82,7 +87,7 @@ export function mapCommand(cwd, argv = []) {
     statistics,
     document: boundary,
     repoName: origin ?? manifestName(repo) ?? basename(repo),
-    changes: changesSince(committedMap(repo), artifact, { repoPath: repo }),
+    changes: changesSince(committedMap(repo) ?? baseline, artifact, { repoPath: repo }),
   });
   const atlasDir = join(repo, 'atlas');
   writeArtifactSync(join(atlasDir, 'structure.json'), serializeArtifact(artifact));
@@ -221,12 +226,28 @@ function usage(line) {
   return 2;
 }
 
+// --name and --baseline serve a caller that maps a copy it made itself, such
+// as the fleet service: the copy's origin is a local path, so it cannot name
+// the repository, and a repository with no committed map has no HEAD map for
+// the page to say what changed since.
 function parseMapArgs(argv) {
   let divergence = null;
   let previous = null;
+  let name = null;
+  let baseline = null;
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
-    if (arg === '--divergence') {
+    if (arg === '--name') {
+      name = argv[i + 1];
+      if (!name || !REPOSITORY_NAME.test(name) || name.split('/').some((part) => /^\.+$/.test(part))) {
+        return { error: 'atlas: --name needs owner/repo' };
+      }
+      i += 1;
+    } else if (arg === '--baseline') {
+      baseline = argv[i + 1];
+      if (!baseline || baseline.startsWith('--')) return { error: 'atlas: --baseline needs a directory' };
+      i += 1;
+    } else if (arg === '--divergence') {
       divergence = argv[i + 1];
       if (!divergence || divergence.startsWith('--')) return { error: 'atlas: --divergence needs a path' };
       i += 1;
@@ -237,7 +258,28 @@ function parseMapArgs(argv) {
     } else return { error: `atlas: unknown argument ${arg}` };
   }
   if (previous && !divergence) return { error: 'atlas: --previous requires --divergence' };
-  return { divergence, previous };
+  return { divergence, previous, name, baseline };
+}
+
+const REPOSITORY_NAME = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/;
+
+// A map written elsewhere, read the way committedMap reads HEAD's: the
+// structure is required, the statistics only date it.
+function readBaseline(dir) {
+  let structure;
+  try {
+    structure = JSON.parse(readFileSync(join(dir, 'structure.json'), 'utf8'));
+  } catch {
+    return null;
+  }
+  if (!structure || typeof structure !== 'object' || Array.isArray(structure)) return null;
+  let statistics = null;
+  try {
+    statistics = JSON.parse(readFileSync(join(dir, 'statistics.json'), 'utf8'));
+  } catch {
+    // Undated is still a baseline; the page names the commit instead of a date.
+  }
+  return { structure, statistics };
 }
 
 // No default base: origin/main is a guess about someone else's branch

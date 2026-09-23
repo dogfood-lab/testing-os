@@ -498,9 +498,11 @@ test('the fleet lists every rendered repository as a link to its page', () => {
   assert.match(render.renderFleet({ repositories: [] }, now), /No public repository has adopted Atlas yet\./);
 });
 
-test('the shell imports render.js and reads only the render branch', () => {
+test('the shell imports render.js and reads the render branch unless a meta tag names another base', () => {
   assert.match(shell, /<script type="module">[\s\S]*from "\.\/render\.js"/);
-  assert.match(shell, /atlasBase:\s*"https:\/\/raw\.githubusercontent\.com\/dogfood-lab\/testing-os\/atlas-render\/"/);
+  assert.match(shell, /atlasBase:\s*\(baseTag && baseTag\.content\) \|\| "https:\/\/raw\.githubusercontent\.com\/dogfood-lab\/testing-os\/atlas-render\/"/);
+  assert.match(shell, /const baseTag = document\.querySelector\('meta\[name="atlas-base"\]'\);/, 'the one override is the atlas-base meta tag, which the container writes');
+  assert.doesNotMatch(shell, /<meta name="atlas-base"/, 'the public shell carries no override, so it reads the branch');
   assert.match(shell, /atlasFleet:\s*"indexes\/atlas\/fleet\.json"/);
   assert.ok(shell.includes('This repository has not been rendered yet.'), 'a 404 is a state');
   assert.match(shell, /if \(!isRepo\(repo\)\) \{[\s\S]*?return;/, 'an invalid repo never reaches fetch');

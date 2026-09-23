@@ -3,23 +3,40 @@
  * Listing and clones are unauthenticated. A token is used only to push
  * atlas-render and to open or comment on an issue.
  */
-import { spawn } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { parse } from 'yaml';
+import {
+  BACKOFF_MS,
+  HISTORY_CAP,
+  REPO_BUDGET_MS,
+  RENDER_FILES,
+  WINDOW_DAYS,
+  appendHistory,
+  changeCount,
+  cloneWithBackoff,
+  commandReason,
+  defaultRun,
+  earlierWindow,
+  headSha,
+  historyEntry,
+  mergeFleet,
+  renderOne,
+  shallowSinceDate,
+  skipReason,
+  stateFrom,
+  unauthenticatedGitEnv,
+} from '@dogfood-lab/atlas/fleet';
+
+// The render of one repository, its history and the state and fleet shapes
+// live in the package, shared with the container service; this script keeps
+// what is GitHub's: the listing, the render branch and the issue.
+export { BACKOFF_MS, HISTORY_CAP, REPO_BUDGET_MS, WINDOW_DAYS, appendHistory, changeCount, earlierWindow, historyEntry, shallowSinceDate };
 
 export const ORGS = ['mcp-tool-shop-org', 'dogfood-lab'];
 export const HOME = 'dogfood-lab/testing-os';
-// All three waits are used, so a transport failure is four attempts. The 60s wait is not dropped.
-export const BACKOFF_MS = [5_000, 20_000, 60_000];
-export const REPO_BUDGET_MS = 90_000;
 export const JOB_BUDGET_MS = 50 * 60 * 1000;
-export const WINDOW_DAYS = 180;
-// A year of weekly renders, which is what the page's delta strip draws.
-export const HISTORY_CAP = 52;
-const RENDER_FILES = ['structure.json', 'statistics.json', 'README.md', 'page.json'];
 const PUBLIC_HEADERS = {
   accept: 'application/vnd.github+json',
   'user-agent': 'atlas-render',
@@ -38,39 +55,6 @@ export function readExclusions(text) {
     names.add(trimmed);
   }
   return names;
-}
-
-export function shallowSinceDate(now, days = WINDOW_DAYS) {
-  const date = new Date(now.getTime());
-  date.setUTCDate(date.getUTCDate() - days - 1);
-  return date.toISOString().slice(0, 10);
-}
-
-export function earlierWindow(text, now, defaultDays = WINDOW_DAYS) {
-  let doc;
-  try {
-    doc = parse(String(text));
-  } catch {
-    return null;
-  }
-  if (!doc || typeof doc !== 'object') return null;
-  const window = doc.window;
-  const fallback = shallowSinceDate(now, defaultDays);
-  let requested = null;
-  if (typeof window === 'number' && Number.isFinite(window) && window > defaultDays) {
-    requested = shallowSinceDate(now, window);
-  } else if (window instanceof Date && !Number.isNaN(window.getTime())) {
-    const pinned = new Date(window.getTime());
-    pinned.setUTCDate(pinned.getUTCDate() - 1);
-    requested = pinned.toISOString().slice(0, 10);
-  } else if (typeof window === 'string' && window.trim()) {
-    const pinned = new Date(window.trim());
-    if (Number.isNaN(pinned.getTime())) return null;
-    pinned.setUTCDate(pinned.getUTCDate() - 1);
-    requested = pinned.toISOString().slice(0, 10);
-  }
-  if (!requested || requested >= fallback) return null;
-  return requested;
 }
 
 export function rejectForeignPaths(paths, publicNames) {
@@ -135,17 +119,8 @@ async function readJsonUrl(fetchImpl, url) {
   return response.json;
 }
 
-function stderrOf(result) {
-  return (result?.stderr || result?.stdout || '').trim().slice(0, 200);
-}
-
-function commandReason(label, result) {
-  const detail = stderrOf(result);
-  return detail ? `${label} ${detail}` : label;
-}
-
 function gitError(message, result) {
-  const detail = stderrOf(result);
+  const detail = (result?.stderr || result?.stdout || '').trim().slice(0, 200);
   return detail ? `${message}: ${detail}` : message;
 }
 
@@ -156,12 +131,6 @@ export function pushAuthEnv(token) {
   env.GIT_CONFIG_KEY_1 = 'http.extraheader';
   env.GIT_CONFIG_VALUE_1 = `AUTHORIZATION: basic ${Buffer.from(`x-access-token:${token}`).toString('base64')}`;
   return env;
-}
-
-function headSha(stdout) {
-  const line = String(stdout ?? '').split(/\r?\n/).find((entry) => entry.trim());
-  const sha = line ? line.split(/\s+/)[0] : '';
-  return /^[0-9a-f]{40}$/i.test(sha) ? sha : null;
 }
 
 async function defaultBranchHead(run, fullName, branch) {
@@ -196,67 +165,6 @@ function diffRows(beforeEnvelope, afterEnvelope) {
   return { opened, cleared };
 }
 
-export function fleetEntry(fullName, commit, renderedAt, now, structure, statistics, envelope) {
-  const boundaries = structure?.boundaries ?? [];
-  const doors = (structure?.doors ?? []).length;
-  const unresolved = boundaries.reduce((sum, boundary) => sum + (boundary.unresolvedSites ?? 0), 0);
-  const openDivergence = (envelope?.rows ?? []).filter((row) => row.state === 'open').length;
-  const ageDays = Math.max(0, Math.floor((now.getTime() - Date.parse(renderedAt)) / 86_400_000));
-  return {
-    repo: fullName,
-    commit,
-    renderedAt,
-    ageDays,
-    boundaries: boundaries.length,
-    doors,
-    unresolved,
-    openDivergence,
-    confidence: statistics?.confidence?.level ?? 'low',
-  };
-}
-
-/**
- * How many structural changes a page's `changes` names. A line "And 3 more
- * changes to a door." stands for the three it cut, and the closing line of
- * file counts is not a change to the structure.
- */
-export function changeCount(changes) {
-  if (!changes || typeof changes !== 'object' || changes.first || changes.unchanged) return 0;
-  const items = Array.isArray(changes.items) ? changes.items : [];
-  return items.filter((item) => item && typeof item === 'object' && item.kind !== 'counts').reduce((sum, item) => {
-    const more = /^And (\d+) more /.exec(String(item.sentence ?? ''));
-    return sum + (more ? Number(more[1]) : 1);
-  }, 0);
-}
-
-/** One render as the page's delta strip draws it. */
-export function historyEntry(page, commit, renderedAt) {
-  const changes = page?.changes && typeof page.changes === 'object' ? page.changes : null;
-  const headline = (changes?.items ?? []).find((item) => item && typeof item === 'object' && item.kind !== 'counts');
-  let headlineKind = 'unchanged';
-  if (changes?.first) headlineKind = 'first';
-  else if (!changes?.unchanged && headline) headlineKind = String(headline.kind);
-  return {
-    renderedAt,
-    commit,
-    itemCount: changeCount(changes),
-    headlineKind,
-    fileCounts: changes?.fileCounts ?? null,
-  };
-}
-
-/**
- * The history with one render appended, oldest first, keeping the newest
- * HISTORY_CAP. history.json is an object rather than a bare list because the
- * site refuses a top-level array as an unexpected shape.
- */
-export function appendHistory(previous, entry, cap = HISTORY_CAP) {
-  const entries = Array.isArray(previous?.entries)
-    ? previous.entries.filter((row) => row && typeof row === 'object' && !Array.isArray(row))
-    : [];
-  return { entries: [...entries, entry].slice(-cap) };
-}
-
 // The history already on the render branch. Absent is a first run; any other
 // failure is not, and returns undefined so the render writes no history.json
 // and the branch keeps the one it has, rather than restarting a year of
@@ -276,50 +184,31 @@ async function previousHistory(fetchImpl, fullName) {
   return doc;
 }
 
-function readJsonFile(path) {
-  try {
-    return JSON.parse(readFileSync(path, 'utf8'));
-  } catch {
-    return null;
-  }
-}
-
-function defaultRun(command, args, opts = {}) {
-  return new Promise((resolve) => {
-    const child = spawn(command, args, {
-      cwd: opts.cwd,
-      env: opts.env ?? process.env,
-      stdio: ['ignore', 'pipe', 'pipe'],
-    });
-    let stdout = '';
-    let stderr = '';
-    let timedOut = false;
-    child.stdout.on('data', (chunk) => { stdout += chunk; });
-    child.stderr.on('data', (chunk) => { stderr += chunk; });
-    const timer = opts.timeoutMs ? setTimeout(() => { timedOut = true; child.kill(); }, opts.timeoutMs) : null;
-    child.on('close', (status) => {
-      if (timer) clearTimeout(timer);
-      resolve({ status: timedOut ? 124 : (status ?? 1), stdout, stderr, timedOut });
-    });
-    child.on('error', (error) => {
-      if (timer) clearTimeout(timer);
-      resolve({ status: 1, stdout, stderr: error.message });
-    });
+// One public repository, cloned fresh from GitHub into scratch; the last
+// render's divergence and history are read from the render branch.
+function renderPublic({ run, sleep, fetchImpl, repoRoot, fullName, branch, sha, now, state, outRoot, log }) {
+  return renderOne({
+    run,
+    fullName,
+    sha,
+    now,
+    state,
+    outRoot,
+    log,
+    cli: join(repoRoot, 'packages', 'atlas', 'cli.js'),
+    checkout: async ({ remaining, since }) => {
+      const dir = mkdtempSync(join(tmpdir(), 'atlas-clone-'));
+      const env = unauthenticatedGitEnv();
+      const cloned = await cloneWithBackoff({
+        run, sleep, url: `https://github.com/${fullName}.git`, branch, dest: dir, timeoutMs: remaining, since, env,
+      });
+      return { ...cloned, dir, env, dispose: () => rmSync(dir, { recursive: true, force: true }) };
+    },
+    previous: {
+      divergence: () => readJsonUrl(fetchImpl, `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/${fullName}/divergence.json`),
+      history: () => previousHistory(fetchImpl, fullName),
+    },
   });
-}
-
-function budgetLeft(timeoutMs) {
-  return typeof timeoutMs === 'function' ? timeoutMs() : timeoutMs;
-}
-
-function unauthenticatedGitEnv() {
-  return {
-    ...process.env,
-    GIT_TERMINAL_PROMPT: '0',
-    GIT_CONFIG_COUNT: '1',
-    GIT_CONFIG_KEY_0: 'credential.helper',
-    GIT_CONFIG_VALUE_0: '',
-  };
 }
 
 function filesUnder(dir) {
@@ -331,114 +220,6 @@ function filesUnder(dir) {
     else found.push(abs);
   }
   return found;
-}
-
-async function cloneWithBackoff({ run, sleep, fullName, branch, dest, timeoutMs, since }) {
-  const url = `https://github.com/${fullName}.git`;
-  const args = ['clone', '--shallow-since', since, '--single-branch', '--branch', branch, url, dest];
-  const env = unauthenticatedGitEnv();
-  const once = async () => {
-    const left = budgetLeft(timeoutMs);
-    if (left <= 0) return { status: 1, stdout: '', stderr: 'budget', budget: true };
-    return run('git', args, { timeoutMs: left, env });
-  };
-  let result = await once();
-  if (result.status === 0 || result.budget || result.timedOut) return result;
-  for (const wait of BACKOFF_MS) {
-    const left = budgetLeft(timeoutMs);
-    if (left <= 0) return { status: 1, stdout: '', stderr: 'budget', budget: true };
-    await sleep(Math.min(wait, left));
-    result = await once();
-    if (result.status === 0 || result.budget || result.timedOut) return result;
-  }
-  return result;
-}
-
-async function renderOne({ run, sleep, fetchImpl, repoRoot, fullName, branch, sha, now, state, outRoot, log }) {
-  const started = Date.now();
-  const remaining = () => REPO_BUDGET_MS - (Date.now() - started);
-  const dest = mkdtempSync(join(tmpdir(), 'atlas-clone-'));
-  const scratch = mkdtempSync(join(tmpdir(), 'atlas-prev-'));
-  const out = join(outRoot, ...fullName.split('/'));
-  const abandon = (reason) => {
-    state.failures[fullName] = { commit: sha, at: now.toISOString(), reason };
-    rmSync(out, { recursive: true, force: true });
-    log(`failure ${fullName} ${reason}`);
-    return { kind: 'failure' };
-  };
-  try {
-    if (remaining() <= 0) return abandon('budget');
-    const cloned = await cloneWithBackoff({
-      run, sleep, fullName, branch, dest, timeoutMs: remaining, since: shallowSinceDate(now),
-    });
-    if (cloned.budget || cloned.timedOut) return abandon('budget');
-    if (cloned.status !== 0) return abandon(commandReason('clone', cloned));
-    if (!existsSync(join(dest, 'atlas', 'boundaries.yaml'))) {
-      state.rendered[fullName] = { commit: sha, renderedAt: now.toISOString(), notMapped: true };
-      delete state.failures[fullName];
-      log(`not-mapped ${fullName}`);
-      return { kind: 'not-mapped' };
-    }
-    const earlier = earlierWindow(readFileSync(join(dest, 'atlas', 'boundaries.yaml'), 'utf8'), now);
-    if (earlier) {
-      const fetched = await run('git', ['fetch', '--shallow-since', earlier, 'origin'], {
-        cwd: dest,
-        timeoutMs: Math.max(1, remaining()),
-        env: unauthenticatedGitEnv(),
-      });
-      if (fetched?.timedOut || fetched?.budget) return abandon('budget');
-      if (!fetched || fetched.status !== 0) return abandon(commandReason('clone', fetched));
-    }
-    mkdirSync(out, { recursive: true });
-    const previousUrl = `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/${fullName}/divergence.json`;
-    const previousJson = await readJsonUrl(fetchImpl, previousUrl);
-    const previousPath = join(scratch, 'previous.json');
-    const divergencePath = join(out, 'divergence.json');
-    const args = [join(repoRoot, 'packages', 'atlas', 'cli.js'), 'map', '--divergence', divergencePath];
-    if (previousJson) {
-      writeFileSync(previousPath, JSON.stringify(previousJson));
-      args.push('--previous', previousPath);
-    }
-    let mapped;
-    try {
-      mapped = await run(process.execPath, args, { cwd: dest, timeoutMs: Math.max(1, remaining()) });
-    } catch (error) {
-      return abandon(error.message || 'map');
-    }
-    if (mapped?.timedOut) return abandon('budget');
-    if (!mapped || mapped.status !== 0) {
-      const reason = (mapped?.stderr || mapped?.stdout || 'map').trim().slice(0, 200) || 'map';
-      return abandon(reason);
-    }
-    if (remaining() <= 0) return abandon('budget');
-    for (const name of RENDER_FILES) cpSync(join(dest, 'atlas', name), join(out, name));
-    const renderedAt = now.toISOString();
-    state.rendered[fullName] = { commit: sha, renderedAt };
-    delete state.failures[fullName];
-    const structure = JSON.parse(readFileSync(join(out, 'structure.json'), 'utf8'));
-    const statistics = JSON.parse(readFileSync(join(out, 'statistics.json'), 'utf8'));
-    const envelope = JSON.parse(readFileSync(divergencePath, 'utf8'));
-    const page = readJsonFile(join(out, 'page.json'));
-    const history = page ? await previousHistory(fetchImpl, fullName) : undefined;
-    const historyWritten = history !== undefined;
-    if (historyWritten) {
-      const next = appendHistory(history, historyEntry(page, sha, renderedAt));
-      writeFileSync(join(out, 'history.json'), `${JSON.stringify(next, null, 2)}\n`);
-    } else {
-      log(`history ${fullName} kept: ${page ? 'the previous history' : 'page.json'} could not be read`);
-    }
-    log(`render ${fullName}`);
-    return {
-      kind: 'rendered',
-      entry: fleetEntry(fullName, sha, renderedAt, now, structure, statistics, envelope),
-      envelope,
-      previous: previousJson,
-      historyWritten,
-    };
-  } finally {
-    try { rmSync(dest, { recursive: true, force: true }); } catch { /* a locked clone is scratch, not a render failure */ }
-    try { rmSync(scratch, { recursive: true, force: true }); } catch { /* same */ }
-  }
 }
 
 function issueBody(date, changes) {
@@ -493,10 +274,7 @@ export async function renderFleet(options = {}) {
   const jobBudgetMs = options.jobBudgetMs ?? JOB_BUDGET_MS;
   const stateResponse = await readJsonUrl(fetchImpl, `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/state.json`);
   const previousFleet = await readJsonUrl(fetchImpl, `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/fleet.json`);
-  const state = {
-    rendered: { ...(stateResponse?.rendered ?? {}) },
-    failures: { ...(stateResponse?.failures ?? {}) },
-  };
+  const state = stateFrom(stateResponse);
   const ownOut = !options.outRoot;
   const outRoot = options.outRoot ?? mkdtempSync(join(tmpdir(), 'atlas-out-'));
   const renderedNow = [];
@@ -521,22 +299,15 @@ export async function renderFleet(options = {}) {
       log(`failure ${repo.fullName} ${reason}`);
       continue;
     }
-    const known = state.rendered[repo.fullName];
-    // A render made before the page existed left no README.md on the branch,
-    // and its fleet row counts no doors. Render it again so the link lands.
     const before = (previousFleet?.repositories ?? []).find((entry) => entry?.repo === repo.fullName);
-    const hasPage = typeof before?.doors === 'number';
-    if (known && known.commit === head.sha && !known.notMapped && hasPage) {
-      log(`skip ${repo.fullName} unchanged`);
-      continue;
-    }
-    if (known && known.commit === head.sha && known.notMapped) {
-      log(`skip ${repo.fullName} not-mapped`);
+    const skip = skipReason(state.rendered[repo.fullName], head.sha, before);
+    if (skip) {
+      log(`skip ${repo.fullName} ${skip}`);
       continue;
     }
     let result;
     try {
-      result = await renderOne({
+      result = await renderPublic({
         run, sleep, fetchImpl, repoRoot, fullName: repo.fullName, branch: head.branch, sha: head.sha, now, state, outRoot, log,
       });
     } catch (error) {
@@ -559,15 +330,8 @@ export async function renderFleet(options = {}) {
       if (!publicNames.has(name)) delete bucket[name];
     }
   }
-  const ageDays = (renderedAt) => Math.max(0, Math.floor((now.getTime() - Date.parse(renderedAt)) / 86_400_000));
-  const byRepo = new Map();
-  for (const entry of previousFleet?.repositories ?? []) {
-    if (!entry || typeof entry.repo !== 'string' || !publicNames.has(entry.repo) || excluded.has(entry.repo)) continue;
-    if (state.rendered[entry.repo]?.notMapped) continue;
-    byRepo.set(entry.repo, { ...entry, ageDays: ageDays(entry.renderedAt) });
-  }
-  for (const entry of renderedNow) byRepo.set(entry.repo, entry);
-  const fleet = [...byRepo.values()].sort((a, b) => a.repo.localeCompare(b.repo));
+  const keep = (name) => publicNames.has(name) && !excluded.has(name) && !state.rendered[name]?.notMapped;
+  const fleet = mergeFleet(previousFleet?.repositories, renderedNow, keep, now);
   const date = now.toISOString().slice(0, 10);
   const paths = ['indexes/atlas/state.json', 'indexes/atlas/fleet.json'];
   for (const entry of renderedNow) {

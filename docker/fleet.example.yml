@@ -1,0 +1,26 @@
+# /data/fleet.yml: the repositories the service maps. It is read again before
+# every run, so a change to the list needs no restart; a new port or schedule does.
+
+# When to map, as five cron fields in UTC. The service also maps once at start
+# when /data holds no state yet.
+schedule: "0 6 * * 1"
+
+# The port the pages are served on inside the container.
+port: 8080
+
+repositories:
+  # A checkout mounted into the container. It is cloned from and never
+  # written, so a read-only mount is enough. The name comes from its origin
+  # remote; give one when the origin does not say it.
+  - path: /repos/testing-os
+
+  - path: /repos/internal-tool
+    name: acme/internal-tool
+
+  # A clone URL. It is cloned into /data/clones/<owner>/<repo> and fetched on
+  # each run. Credentials are git's own: an ssh key or credential helper
+  # given to the container.
+  - url: https://github.com/dogfood-lab/testing-os.git
+
+  - url: git@git.example.com:acme/billing.git
+    branch: main
