@@ -1,0 +1,14 @@
+name: Checks
+
+on: [push, pull_request]
+
+jobs:
+  named:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run check --workspace packages/cli
+  all:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run check --workspaces --if-present
+      - run: npm run render

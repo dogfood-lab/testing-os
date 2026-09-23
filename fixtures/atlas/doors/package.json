@@ -1,0 +1,13 @@
+{
+  "name": "doors-fixture",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "preingest": "node tools/prepare.js",
+    "ingest": "node tools/ingest.js",
+    "render": "node tools/render.js"
+  }
+}

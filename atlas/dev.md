@@ -1,4 +1,4 @@
-◷ numbers as of 2026-09-22 · 0 days ago · structure @ eed100a
+◷ numbers as of 2026-09-22 · 0 days ago · structure @ f7a432b
 
 ## Map
 
@@ -6,30 +6,29 @@ The matrix is on the site.
 
 ```mermaid
 flowchart LR
-n__github["⚙ .github · 7"]
+n__github["⚙ .github · 8"]
 n_assets["⚙ assets · 1"]
-n_atlas["⌘ atlas · 46"]
-n_docs["¶ docs · 21"]
+n_atlas["⌘ atlas · 54"]
+n_docs["¶ docs · 22"]
 n_dogfood["⚙ dogfood · 15"]
 n_dogfood_swarm["⌘ dogfood-swarm · 349"]
 n_examples["⚙ examples · 5"]
 n_findings["⌘ findings · 81"]
-n_fixtures["⌘ fixtures · 147"]
-n_indexes["⚙ indexes · 21"]
+n_fixtures["⌘ fixtures · 163"]
+n_indexes["⚙ indexes · 22"]
 n_ingest["⌘ ingest · 80"]
 n_policies["⚙ policies · 15"]
 n_portfolio["⌘ portfolio · 23"]
-n_records["⚙ records · 95"]
+n_records["⚙ records · 100"]
 n_report["⌘ report · 24"]
 n_reports["⚙ reports · 2"]
 n_root["¶ root · 21"]
 n_schemas["⌘ schemas · 37"]
-n_scripts["⌘ scripts · 63"]
-n_site["⌘ site · 31"]
+n_scripts["⌘ scripts · 65"]
+n_site["⌘ site · 32"]
 n_swarms["¶ swarms · 15"]
 n_verify["⌘ verify · 63"]
 unassigned["· unassigned · 1"]:::unassigned
-n_atlas -.-> n_docs
 n_docs -.-> n_dogfood_swarm
 n_docs -.-> n_scripts
 n_dogfood --> n_schemas
@@ -97,23 +96,23 @@ churn is the sum of lines, added plus deleted, over the boundary's files.
 | boundary | churn | cohesion | unresolved sites | import confidence |
 | --- | --- | --- | --- | --- |
 | dogfood-swarm | 176919 | 0.417751 | 5 | full |
-| scripts | 43123 | 0.420561 | 6 | full |
+| scripts | 45169 | 0.420561 | 6 | full |
+| site | 25783 | none | 0 | full |
 | ingest | 25628 | none | 0 | full |
-| site | 25255 | none | 0 | full |
 | findings | 23368 | none | 0 | full |
 | dogfood | 17440 | none | 0 | full |
 | verify | 16626 | 1 | 0 | full |
-| root | 14124 | none | 0 | full |
-| atlas | 11415 | none | 0 | full |
+| root | 14130 | none | 0 | full |
+| atlas | 13574 | none | 0 | full |
 | schemas | 10250 | none | 0 | full |
 | portfolio | 7961 | 0.424242 | 4 | full |
-| docs | 7606 | none | 0 | full |
-| records | 7428 | none | 0 | full |
+| records | 7853 | none | 0 | full |
+| docs | 7803 | none | 0 | full |
 | report | 5505 | none | 0 | full |
 | swarms | 3675 | none | 0 | full |
-| .github | 2622 | none | 0 | full |
-| fixtures | 2607 | none | 15 | full |
-| indexes | 2498 | none | 0 | full |
+| fixtures | 2745 | none | 15 | full |
+| .github | 2690 | none | 0 | full |
+| indexes | 2636 | none | 0 | full |
 | reports | 1067 | none | 0 | full |
 | policies | 374 | none | 0 | full |
 | examples | 340 | none | 0 | full |
@@ -330,12 +329,12 @@ churn is the sum of lines, added plus deleted, over the boundary's files.
 | README.ja.md | README.pt-BR.md | 15 | 15 | 1 |
 | README.ja.md | README.zh.md | 15 | 15 | 1 |
 | README.pt-BR.md | README.zh.md | 15 | 15 | 1 |
-| indexes/integrity/chain.jsonl | indexes/trends.json | 40 | 40 | 1 |
-| packages/dogfood-swarm/lib/verify/adapters/python.js | packages/dogfood-swarm/lib/verify/adapters/rust.js | 5 | 5 | 1 |
-| packages/portfolio/package.json | packages/verify/package.json | 26 | 28 | 0.928571 |
-| packages/findings/package.json | packages/verify/package.json | 26 | 29 | 0.896552 |
+| atlas/dev.md | atlas/machine-stats.txt | 5 | 5 | 1 |
+| atlas/dev.md | atlas/machine.md | 5 | 5 | 1 |
+| atlas/machine-stats.txt | atlas/machine.md | 5 | 5 | 1 |
+| indexes/integrity/chain.jsonl | indexes/trends.json | 45 | 45 | 1 |
 
-96 pairs
+104 pairs
 
 ## Divergence
 
@@ -349,12 +348,13 @@ pending rebaseline: none
 
 ## Roster
 
-### .github (7)
+### .github (8)
 
 - .github
   - CODEOWNERS
   - dependabot.yml
   - workflows
+    - atlas-render.yml
     - ci.yml
     - ingest.yml
     - pages.yml
@@ -366,7 +366,7 @@ pending rebaseline: none
 - assets
   - logo.png
 
-### atlas (46)
+### atlas (54)
 
 - packages
   - atlas
@@ -377,6 +377,8 @@ pending rebaseline: none
       - check.js
       - commands.js
       - determinism.test.js
+      - divergence-envelope.test.js
+      - divergence.js
       - errors.js
       - errors.test.js
       - init.js
@@ -394,6 +396,10 @@ pending rebaseline: none
       - write.js
     - cli.js
     - core
+      - divergence.js
+      - divergence.test.js
+      - doors.js
+      - doors.test.js
       - edges.test.js
       - entry-points.js
       - entry-points.test.js
@@ -405,6 +411,7 @@ pending rebaseline: none
       - index.js
       - map-repository.test.js
       - no-sibling-imports.test.js
+      - reach.js
       - resolve-build-output.test.js
       - resolve-js.test.js
       - resolve-python.test.js
@@ -419,11 +426,14 @@ pending rebaseline: none
       - tree-sitter-typescript.wasm
     - index.js
     - package.json
+    - templates
+      - atlas-refresh.yml
 
-### docs (21)
+### docs (22)
 
 - docs
   - atlas-design.dispatch.md
+  - atlas-page.spec.md
   - atlas.dispatch.md
   - case-file-contract.md
   - dogfood-swarm-3.executor-brief.md
@@ -931,7 +941,7 @@ pending rebaseline: none
       - write-artifacts.js
     - validate.js
 
-### fixtures (147)
+### fixtures (163)
 
 - fixtures
   - atlas
@@ -985,6 +995,32 @@ pending rebaseline: none
         - package.json
         - right
           - b.ts
+    - doors
+      - .github
+        - workflows
+          - broken.yml
+          - checks.yml
+          - ingest.yml
+          - manual.yaml
+          - weekly.yml
+      - atlas
+        - boundaries.yaml
+      - indexes
+        - latest.json
+      - lib
+        - schema.js
+        - verify.js
+      - package.json
+      - packages
+        - cli
+          - check.js
+          - package.json
+      - records
+        - latest.json
+      - tools
+        - ingest.js
+        - prepare.js
+        - render.js
     - flat
       - README.md
       - docs
@@ -1157,10 +1193,12 @@ pending rebaseline: none
       - minimal-empty-sections.json
       - well-formed-run.json
 
-### indexes (21)
+### indexes (22)
 
 - indexes
   - .gitkeep
+  - atlas
+    - exclude.txt
   - badges
     - _aggregate.json
     - dogfood-lab--testing-os--cli.json
@@ -1321,7 +1359,7 @@ pending rebaseline: none
     - stageC-ingest-portfolio-guards.test.js
     - stageC-port-degrade-001.test.js
 
-### records (95)
+### records (100)
 
 - records
   - .gitkeep
@@ -1401,6 +1439,11 @@ pending rebaseline: none
             - run-00muctg3qv-OcQ8xaW9coS57g.json
             - run-00mucuut1v-3uLI9sUyO7KS1w.json
             - run-00mucwuuan-QubnScMqxQl9ag.json
+            - run-00mucx6p2r-kex_BI70-4DkVw.json
+            - run-00mucz69d0-olTDVWR8UEJaRg.json
+            - run-00mud1fg3w-F8fcV75xiSmXSA.json
+            - run-00mud240in-MGe5Q9WCUCnNJw.json
+            - run-00mud40bgf-rCMBr4KMCCzLug.json
   - mcp-tool-shop-org
     - a11y-demo-site
       - 2026
@@ -1637,7 +1680,7 @@ pending rebaseline: none
       - verify-f2-f4-tags-warnings.test.ts
     - tsconfig.json
 
-### scripts (63)
+### scripts (65)
 
 - scripts
   - __roadmap-document-fixtures__
@@ -1656,6 +1699,8 @@ pending rebaseline: none
     - valid-recompiled-sequence.json
   - apply-finding-migration.mjs
   - apply-finding-migration.test.mjs
+  - atlas-render.mjs
+  - atlas-render.test.mjs
   - build.mjs
   - build.test.mjs
   - case-file-adjudicate-smoke.mjs
@@ -1707,7 +1752,7 @@ pending rebaseline: none
   - sync-version.test.mjs
   - test-floor-allowlist.json
 
-### site (31)
+### site (32)
 
 - site
   - astro.config.mjs
@@ -1725,6 +1770,7 @@ pending rebaseline: none
     - components
       - BaseLayout.astro
       - BaseLayout.test.mjs
+      - atlas-panel.test.mjs
     - content
       - docs
         - handbook

@@ -19,7 +19,7 @@ n_ingest["⌘ ingest · 80"]
 n_portfolio["⌘ portfolio · 23"]
 n_report["⌘ report · 24"]
 n_schemas["⌘ schemas · 37"]
-n_scripts["⌘ scripts · 63"]
+n_scripts["⌘ scripts · 65"]
 n_verify["⌘ verify · 63"]
 more["+ 1 more"]
 unassigned["· unassigned · 1"]:::unassigned

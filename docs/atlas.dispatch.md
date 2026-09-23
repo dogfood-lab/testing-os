@@ -310,6 +310,39 @@ documentation more heavily than seniors, who substitute experience. That last po
 Orientation audience precisely. A generated artifact committed alongside the code, and gated on
 structural drift, is how documentation earns the reliability that mitigation depends on.
 
+**Doors are structural too.** Every tracked workflow under `.github/workflows/` is a door, recorded
+in the artifact's `doors` list, sorted by file. A door carries:
+
+- `triggers`: one entry per event, normalized from every shape `on` takes. Path, branch, tag, type
+  and workflow filters are kept, sorted; a schedule gives one entry per cron line.
+- `permissions`: `scope:level`, top level and every job together. `read-all` is `all:read`.
+- `secrets`: every `secrets.NAME` in the file, and `usesWorkflowToken` for the workflow's own token.
+- `commands`: every `run:` step in file order, with its job and its name or index.
+- `runs`: the tracked files those commands execute, with the job that executes them. A path is
+  executed when it is the command itself, or follows an executor (`node`, `npx`, `bash`, `sh`,
+  `pwsh`, `python`, `python3`, `deno`, `tsx`) with only flags between, so `node --test <path>`
+  counts. npm scripts are read by the same rule, followed through nested `npm run`, pre and post
+  hooks, a named workspace and `--workspaces`. A step's working directory is honored. Commands
+  are split as the shell splits them: quotes hold, `$(...)` is a command of its own, and a
+  here-document body is input, not commands.
+- `mentions`: every other tracked path in that text, such as a path an `echo` prints or a file
+  handed to `git diff`. They are where the next slice looks for landing places; they never
+  feed `reach`.
+- `stages` (what follows `git add`, as written), `pushes`, and `sends`: `dispatchesTo`,
+  `publishes`, `releases`, `deploysPages`.
+- `uses`: the actions its steps use, without the ref.
+- `reach`: the boundaries the door reaches through the import closure of `runs`, in the order it
+  reaches them. Depth 0 is the boundaries of the run files themselves; depth n is the first
+  breadth-first step at which a boundary is reached; `files` is how many of its files were reached.
+
+```json
+{ "boundary": "verify", "depth": 1, "files": 10 }
+```
+
+A workflow that does not parse is recorded as `{ file, name, parseError: true }` and the rest of the
+doors are mapped. The host check does not compare doors yet; a later slice decides what their drift
+means.
+
 This repository's own handbook diagram is a
 hand-drawn image whose only tests assert that it exists, is large enough, and has accessible
 title and description elements. Nothing checks that it is true.
