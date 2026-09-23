@@ -21,6 +21,7 @@ const COMMIT = /^[0-9a-f]{7,40}$/i;
 const BRANCH = /^[A-Za-z0-9._@+-]+(?:\/[A-Za-z0-9._@+-]+)*$/;
 const PATH = /^[A-Za-z0-9._@+-]+(?:\/[A-Za-z0-9._@+-]+)*\/?$/;
 const FOUND_BY_TEXT = ' (found by text)';
+const FROM_TESTS = ' (from tests)';
 const REGENERATE = 'Regenerate with `npx --yes @dogfood-lab/atlas map`.';
 
 const ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
@@ -103,11 +104,13 @@ function pathHtml(ctx, text) {
   return href ? `<a href="${esc(href)}">${code}</a>` : esc(value);
 }
 
-// A reader string is a path, a path marked found by text, or a part with a
-// file count; only the path part becomes a link.
+// A reader string is a path, a path marked found by text or from tests, or
+// a part with a file count; only the path part becomes a link.
 function readerHtml(ctx, text) {
   const value = str(text);
-  if (value.endsWith(FOUND_BY_TEXT)) return `${pathHtml(ctx, value.slice(0, -FOUND_BY_TEXT.length))}${esc(FOUND_BY_TEXT)}`;
+  for (const mark of [FOUND_BY_TEXT, FROM_TESTS]) {
+    if (value.endsWith(mark)) return `${pathHtml(ctx, value.slice(0, -mark.length))}${esc(mark)}`;
+  }
   return pathHtml(ctx, value);
 }
 
@@ -179,7 +182,7 @@ export function partLabel(labels, id, fallback = null) {
 // named as the page names it and the count kept.
 function wordedName(ctx, text) {
   const value = str(text);
-  const match = /^(.+) \((\d+ (?:\S+ )?files)\)$/.exec(value);
+  const match = /^(.+) \((\d+ (?:\S+ )?files(?:, from tests)?)\)$/.exec(value);
   if (!match || !Object.hasOwn(ctx.labels, match[1])) return value;
   return `${ctx.name(match[1])} (${match[2]})`;
 }

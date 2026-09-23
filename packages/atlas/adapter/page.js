@@ -828,7 +828,8 @@ function nounOf(paths) {
 
 // More than three files from one part read or write a place: name the part
 // with the count, since the file list would bury every other name. A named
-// part is kept as its id, so the page and page.json can each word it.
+// part is kept as its id, so the page and page.json can each word it. Tests
+// that read a place are counted apart from the code that does, and say so.
 function collapse(ctx, entries) {
   const byBoundary = new Map();
   const loose = [];
@@ -838,14 +839,15 @@ function collapse(ctx, entries) {
       loose.push(entry);
       continue;
     }
-    if (!byBoundary.has(boundary)) byBoundary.set(boundary, []);
-    byBoundary.get(boundary).push(entry);
+    const key = `${boundary}\0${entry.fromTests ? 1 : 0}`;
+    if (!byBoundary.has(key)) byBoundary.set(key, { boundary, fromTests: entry.fromTests === true, members: [] });
+    byBoundary.get(key).members.push(entry);
   }
   const items = [...loose.map((entry) => ({ key: entry.path, text: entry.text }))];
-  for (const [boundary, members] of byBoundary) {
+  for (const { boundary, fromTests, members } of byBoundary.values()) {
     if (members.length > COLLAPSE_OVER) {
       const paths = members.map((entry) => entry.path).sort(cmp);
-      items.push({ key: paths[0], boundary, files: `${members.length} ${nounOf(paths)}` });
+      items.push({ key: paths[0], boundary, files: `${members.length} ${nounOf(paths)}${fromTests ? ', from tests' : ''}` });
     } else {
       for (const entry of members) items.push({ key: entry.path, text: entry.text });
     }
@@ -857,14 +859,28 @@ function worded(items, name) {
   return items.map((item) => item.text ?? `${name(item.boundary)} (${item.files})`);
 }
 
-// A reader is found by text only when every read it makes of the place is.
+// A reader is found by text only when every read it makes of the place is. A
+// test is a reader from tests.
 function readerFiles(entries) {
   const byPath = new Map();
+  const tests = new Set();
   for (const entry of entries) {
     const text = entry.confidence === 'text';
     byPath.set(entry.by, byPath.has(entry.by) ? byPath.get(entry.by) && text : text);
+    if (entry.fromTests) tests.add(entry.by);
   }
-  return [...byPath.entries()].sort((a, b) => cmp(a[0], b[0])).map(([path, text]) => ({ path, text }));
+  return [...byPath.entries()].sort((a, b) => cmp(a[0], b[0])).map(([path, text]) => ({ path, text, ...(tests.has(path) ? { fromTests: true } : {}) }));
+}
+
+/**
+ * A reader as the page names it: "(found by text)" when every read is, and
+ * "(from tests)" for a test.
+ *
+ * @param {{ path: string, text: boolean, fromTests?: boolean }} reader
+ */
+export function readerItem(reader) {
+  const mark = reader.text ? ' (found by text)' : reader.fromTests ? ' (from tests)' : '';
+  return { path: reader.path, text: `${reader.path}${mark}`, ...(reader.fromTests ? { fromTests: true } : {}) };
 }
 
 // The part a landing is in: a tracked file's own, the one part a directory
@@ -944,10 +960,7 @@ function readerGroups(ctx, main) {
       reader.path !== main.file && !writers.has(reader.path) && !under(reader.path, group.key)
     ));
     if (files.length === 0) continue;
-    const readers = collapse(ctx, files.map((reader) => ({
-      path: reader.path,
-      text: reader.text ? `${reader.path} (found by text)` : reader.path,
-    })));
+    const readers = collapse(ctx, files.map(readerItem));
     out.push({ target, readers, files, entries: group.entries });
   }
   return out;
@@ -1113,7 +1126,9 @@ function breaks(ctx) {
   const fromTests = testImporters(ctx);
   const on = doorsThrough(ctx);
   // A stamped file is written by people; a hand edit is how it changes.
+  // A test reading a place is how it is checked, not what it breaks.
   const places = writtenPlaces(ctx)
+    .map((place) => ({ ...place, readers: place.readers.filter((reader) => !reader.fromTests) }))
     .filter((place) => !place.stamped && place.readers.length >= 2)
     .sort((a, b) => b.readers.length - a.readers.length || cmp(a.target, b.target))
     .slice(0, PLACE_BREAKS)
@@ -1617,7 +1632,7 @@ function startHere(ctx, main, groups) {
   if (!chain.some(runsAsCode)) return { chain: [], words: [] };
   const reached = new Set((main.reach ?? []).map((entry) => entry.boundary));
   for (const group of groups) {
-    const readers = group.files.filter((reader) => runsAsCode(reader.path)).sort((a, b) => (
+    const readers = group.files.filter((reader) => runsAsCode(reader.path) && !reader.fromTests).sort((a, b) => (
       Number(reached.has(ctx.boundaryOf.get(a.path))) - Number(reached.has(ctx.boundaryOf.get(b.path)))
       || Number(a.text) - Number(b.text)
       || cmp(a.path, b.path)

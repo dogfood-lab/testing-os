@@ -1675,7 +1675,18 @@ export function attachLandings({ files, doors, boundaries, places }) {
     .filter((file) => file.writes.length > 0)
     .sort((a, b) => compare(a.path, b.path));
   const byPath = new Map([...own, ...tests].map((file) => [file.path, file]));
-  for (const file of files) if (isTestMaterial(file.path)) file.writes = (file.writes ?? []).map(({ fixed, ...rest }) => rest);
+  // A test reads a place when it names it from the repository root, from its
+  // own file, or by raw URL; one built on a root it was handed is its
+  // temporary copy's.
+  const testReads = files.filter((file) => isTestFile(file.path))
+    .map((file) => ({ path: file.path, reads: (file.reads ?? []).filter((read) => read.fixed || read.relative || read.call === 'raw-url') }))
+    .filter((file) => file.reads.length > 0)
+    .sort((a, b) => compare(a.path, b.path));
+  for (const file of files) {
+    if (!isTestMaterial(file.path)) continue;
+    file.writes = (file.writes ?? []).map(({ fixed, relative, ...rest }) => rest);
+    file.reads = (file.reads ?? []).map(({ fixed, relative, ...rest }) => rest);
+  }
 
   const writers = new Map();
   const readers = new Map();
@@ -1722,6 +1733,12 @@ export function attachLandings({ files, doors, boundaries, places }) {
       if (generated && read.confidence === 'text') continue;
       add(readers, read.target, readerEntry(file.path, read));
     }
+  }
+  // A test that reads a place depends on what is there, as one that imports a
+  // module does: it is a reader, marked fromTests, the way a part imported
+  // only from tests is counted apart.
+  for (const file of testReads) {
+    for (const read of file.reads) add(readers, read.target, { ...readerEntry(file.path, read), fromTests: true });
   }
   // Code that imports a module something writes reads that module.
   for (const file of own) {
@@ -1799,7 +1816,8 @@ function settleRelativePaths(files, doors) {
       for (const entry of file[kind]) {
         const { relative, fixed, ...rest } = entry;
         if (theirs && relative) file[count] = (file[count] ?? 0) + 1;
-        else kept.push(isTestMaterial(file.path) && fixed ? { ...rest, fixed } : rest);
+        else if (isTestMaterial(file.path)) kept.push({ ...rest, ...(fixed ? { fixed } : {}), ...(relative ? { relative } : {}) });
+        else kept.push(rest);
       }
       file[kind] = sortEntries(kept);
     }

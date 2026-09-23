@@ -84,6 +84,10 @@
     {
       "path": "fixtures/atlas/package-managers/test/root.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the package-managers fixture repository that packages/atlas/core/package-managers.test.js maps, where `pnpm verify` must reach test/ through the root test script it calls. It holds one empty test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/test-readers/test/golden.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the test-readers fixture repository that packages/atlas/adapter/page-test-readers.test.js maps, where it must be read as a test, by exactly this name, that reads fixtures/golden.json by its path, so the map records it as a reader from tests. It is never meant to run."
     }
   ]
 }

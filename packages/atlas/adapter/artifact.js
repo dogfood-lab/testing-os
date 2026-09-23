@@ -281,6 +281,7 @@ function carryReader(entry) {
   for (const field of ['call', 'confidence', 'ref', 'repo', 'target']) {
     if (entry[field] != null) out[field] = entry[field];
   }
+  if (entry.fromTests) out.fromTests = true;
   return out;
 }
 
