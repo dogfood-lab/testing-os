@@ -4,6 +4,10 @@
     {
       "path": "fixtures/atlas/basic/packages/beta/beta.test.js",
       "reason": "Atlas fixture, not a test. It is a file whose test-shaped name is the point: it sits inside the fixture repository that packages/atlas/core tests map, and a later slice derives a boundary's test role from exactly this naming convention. It contains no test and is never meant to run; running it would prove nothing about Atlas."
+    },
+    {
+      "path": "fixtures/atlas/doors/lib/verify.test.js",
+      "reason": "Atlas fixture, not a test. Its test-shaped name is the point: it sits inside the doors fixture repository that packages/atlas/adapter/page.test.js maps, and it imports lib/verify.js so that the map counts one test file reaching lib and none reaching tools. It contains no test and is never meant to run."
     }
   ]
 }

@@ -247,7 +247,8 @@ test('what tends to change together renders the pairs page.json names and the se
     assert.ok(paragraphs.includes(`${page.changesTogetherWithTests} ${noun} changed together with ${verb} own ${page.changesTogetherWithTests === 1 ? 'test' : 'tests'}, as expected.`), 'the set-aside line renders');
   }
   const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8');
-  const twin = markdown.slice(markdown.indexOf('## What tends to change together\n'), markdown.indexOf('## Generated, never hand-edited\n'));
+  const from = markdown.indexOf('## What tends to change together\n');
+  const twin = markdown.slice(from, markdown.indexOf('\n## ', from + 1));
   assert.deepEqual(bullets, twin.split('\n').filter((line) => line.startsWith('- ')).map((line) => line.slice(2).replace(/\*\*/g, '')));
   const twinParagraphs = twin.split('\n').filter((line) => line.trim() !== '' && !line.startsWith('- ') && !line.startsWith('## '));
   assert.deepEqual(paragraphs, twinParagraphs, 'every paragraph of the section matches the markdown, empty case included');
