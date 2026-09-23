@@ -18,7 +18,7 @@
           "path": ".github/workflows/atlas-render.yml"
         },
         {
-          "hash": "ad6baacf94db7a6628f3ebeca49f6b0dc49cee1b9a9fcb05b4ab405b1251eee0",
+          "hash": "9250af1a0ca712171eeca1159239a9bbbf207679b513a993637141d5862980a8",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -45,6 +45,7 @@
       "name": ".github",
       "origin": "authored",
       "role": "config",
+      "testedBy": 0,
       "unresolvedSites": 0
     },
     {
@@ -64,10 +65,11 @@
       "name": "assets",
       "origin": "authored",
       "role": "config",
+      "testedBy": 0,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 10,
+      "dynamicReads": 12,
       "dynamicWrites": 2,
       "entryPoints": [
         "packages/atlas/cli.js",
@@ -79,14 +81,22 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "96dce3ec4447b436d6e6100fef7d1db934b57f990c24d923465cffc325011686",
+          "hash": "fb2b5e5eb45cfe53585473a28cee00f8ce2c6f7b37b4e617b0b631f70b7ec387",
           "path": "packages/atlas/README.md"
         },
         {
-          "hash": "220abcfe1b669cc5c9632ef816421f5404ef274ad7802976063de2ddba77826d",
+          "exports": [
+            "buildArtifact",
+            "serializeArtifact"
+          ],
+          "hash": "c90b4a8e82fb2b3cea802ef51a44f0120bec9b3254bf5baf054bff591da20e14",
           "path": "packages/atlas/adapter/artifact.js"
         },
         {
+          "exports": [
+            "ignoredNotice",
+            "readBoundaryFile"
+          ],
           "hash": "4612b6ca06656cba7d07d99c2bc0d8784a0fc07d880fb06914458d6004435b61",
           "path": "packages/atlas/adapter/boundary-file.js"
         },
@@ -95,6 +105,11 @@
           "path": "packages/atlas/adapter/boundary-file.test.js"
         },
         {
+          "exports": [
+            "changesSince",
+            "compareStructures",
+            "fileCounts"
+          ],
           "hash": "a8d58431ae9b448bd49ee70c81873b886cda491cfc988f6ee2177e39fbbe5751",
           "path": "packages/atlas/adapter/changes.js"
         },
@@ -103,11 +118,21 @@
           "path": "packages/atlas/adapter/changes.test.js"
         },
         {
+          "exports": [
+            "compareArtifacts",
+            "unassignedDrift"
+          ],
           "hash": "bec9ada61a2836ac911f5ef9f79482c84b87c5b4bd25322e9afbbe7192d0bf4d",
           "path": "packages/atlas/adapter/check.js"
         },
         {
-          "hash": "e25a24629d01c9183f3cfcf4763bd87d9632a31cf7c5baf22192a73cb7f50c20",
+          "exports": [
+            "checkCommand",
+            "diffCommand",
+            "main",
+            "mapCommand"
+          ],
+          "hash": "bd1618d9972dffe267af15284221dcb0ce561cd7059718fba5dbabc493f4a3c4",
           "path": "packages/atlas/adapter/commands.js"
         },
         {
@@ -115,15 +140,37 @@
           "path": "packages/atlas/adapter/determinism.test.js"
         },
         {
+          "exports": [
+            "diffAgainstBase",
+            "diffJson",
+            "diffMarkdown",
+            "readBaseMap"
+          ],
+          "hash": "104bd3bde979eae7eb333e1310c064393637e05ffac6a0a16ff3f4acfe1bd14b",
+          "path": "packages/atlas/adapter/diff.js"
+        },
+        {
+          "hash": "9692563a650e7b0a98187cac1221b634c93bb00f8da0460c945d34d6c7d9f881",
+          "path": "packages/atlas/adapter/diff.test.js"
+        },
+        {
           "hash": "1a426470b8af581bfb03beb9ec14870ed6b8f626d54bc119d9973b5833b9efa1",
           "path": "packages/atlas/adapter/divergence-envelope.test.js"
         },
         {
+          "exports": [
+            "buildEnvelope",
+            "hitsFromStatistics",
+            "rowId"
+          ],
           "hash": "3fb7cc0211048e6a462db22567e5da630c91eed1c4af2226acdf22faa3da3d9f",
           "path": "packages/atlas/adapter/divergence.js"
         },
         {
-          "hash": "58da82d150cda7b183a4970def3ee13408a53067252a9e7a015bea29e8cf7204",
+          "exports": [
+            "formatFailure"
+          ],
+          "hash": "411f88f211a4381822070ebb12f1ad0580c5ed422408f9923b0d3e88d157e266",
           "path": "packages/atlas/adapter/errors.js"
         },
         {
@@ -131,6 +178,20 @@
           "path": "packages/atlas/adapter/errors.test.js"
         },
         {
+          "exports": [
+            "explainCommand"
+          ],
+          "hash": "ea2c59af8553af0fe43b27c3e9d8ba8301a35da24552f406881b3af568fc6622",
+          "path": "packages/atlas/adapter/explain.js"
+        },
+        {
+          "hash": "14129b0d0a7d90df98e58de0612c062bd277140959e8f2bc921eb2ec3b07ee42",
+          "path": "packages/atlas/adapter/explain.test.js"
+        },
+        {
+          "exports": [
+            "initCommand"
+          ],
           "hash": "7136a382d6483a343d0cfe8c36978d3741a5b0a8cd9b0efea0742df402878efd",
           "path": "packages/atlas/adapter/init.js"
         },
@@ -143,18 +204,51 @@
           "path": "packages/atlas/adapter/lifecycle.test.js"
         },
         {
-          "hash": "ee8e20b4392db1569865f175c16c70e74728cb115c4ab087e99d0db8608593d1",
+          "exports": [
+            "buildPage",
+            "capitalize",
+            "changesHeading",
+            "collapse",
+            "count",
+            "cover",
+            "displayName",
+            "entryOrder",
+            "facts",
+            "list",
+            "orderDoors",
+            "readerFiles",
+            "runsShown",
+            "triggerPhrases",
+            "under",
+            "worded",
+            "words"
+          ],
+          "hash": "1a5f0a1fe84bb0fe71cdb0fdf905956626e42fcd0e4105d2061422f74d0f2754",
           "path": "packages/atlas/adapter/page.js"
         },
         {
-          "hash": "6db9ac4d7364ff379a7a289d6cabf9aa1df1a13b643557152af29682bdfa5821",
+          "hash": "4e90c5936b7bea040f00879a80e12684154807c79ba88bb9e77dd65ff5e7329a",
           "path": "packages/atlas/adapter/page.test.js"
         },
         {
+          "exports": [
+            "leafDirs",
+            "listTracked",
+            "manifestDirs",
+            "nameProposals",
+            "proposalSet"
+          ],
           "hash": "e115b5521bbf0b0f333d81c2b2e1795d812012c216306c21e307c7186686144e",
           "path": "packages/atlas/adapter/propose.js"
         },
         {
+          "exports": [
+            "applyMarks",
+            "buildStatistics",
+            "parametersFrom",
+            "serializeStatistics",
+            "statisticsProblem"
+          ],
           "hash": "8d25e541952eb0724ea839e7fc8ef770b1f9ebe2fda6b21081aeb1c53830d639",
           "path": "packages/atlas/adapter/statistics.js"
         },
@@ -163,6 +257,11 @@
           "path": "packages/atlas/adapter/statistics.test.js"
         },
         {
+          "exports": [
+            "fileKind",
+            "isTestPath",
+            "roleFor"
+          ],
           "hash": "1a293154bb6736da939dafb40b16c1002a1fdbdee9909bd59244caaba4241d19",
           "path": "packages/atlas/adapter/templates.js"
         },
@@ -171,6 +270,9 @@
           "path": "packages/atlas/adapter/templates.test.js"
         },
         {
+          "exports": [
+            "writeArtifactSync"
+          ],
           "hash": "7ea64d87d06a7d9b149f28e38c3d86bb1b00b34cb4d0db3644e9e4008af621c8",
           "path": "packages/atlas/adapter/write.js"
         },
@@ -179,6 +281,9 @@
           "path": "packages/atlas/cli.js"
         },
         {
+          "exports": [
+            "divergenceHits"
+          ],
           "hash": "8838fae76ad780e58fc35201bb4ed8c0250d108b885450721ac7ef0938dc0476",
           "path": "packages/atlas/core/divergence.js"
         },
@@ -187,6 +292,10 @@
           "path": "packages/atlas/core/divergence.test.js"
         },
         {
+          "exports": [
+            "isWorkflow",
+            "mapDoors"
+          ],
           "hash": "72c6ac8f703ec99a416e20ef68f03324d431f5b4fd121f1cae3079272de50a6c",
           "path": "packages/atlas/core/doors.js"
         },
@@ -199,6 +308,10 @@
           "path": "packages/atlas/core/edges.test.js"
         },
         {
+          "exports": [
+            "boundaryRoot",
+            "deriveEntryPoints"
+          ],
           "hash": "27dd4184e42b621879ecc4f2b797608a8757a281dc18c0d59b97ee340f4900d4",
           "path": "packages/atlas/core/entry-points.js"
         },
@@ -211,6 +324,10 @@
           "path": "packages/atlas/core/extract-imports.test.js"
         },
         {
+          "exports": [
+            "makeFixtureRepo",
+            "makeRepo"
+          ],
           "hash": "3ab5bc5f5cefee577eb099ba09c27ae4410930eba8b07c0e00577ad76a4e2719",
           "path": "packages/atlas/core/fixture-repo.js"
         },
@@ -219,6 +336,16 @@
           "path": "packages/atlas/core/grammar-manifest.test.js"
         },
         {
+          "exports": [
+            "analyzeHistory",
+            "decideFloor",
+            "headCommitter",
+            "isSourcePath",
+            "loadHistory",
+            "readCommits",
+            "trackedCount",
+            "windowStart"
+          ],
           "hash": "463b72381ebd3608ef02492993862a53e1685ccf5248af3ab60cd4e04a2e129a",
           "path": "packages/atlas/core/history.js"
         },
@@ -227,15 +354,27 @@
           "path": "packages/atlas/core/history.test.js"
         },
         {
-          "hash": "a16df898837ef65c726948ba7412e9c83d59ce21ef1cb1969e356e258a69a5c4",
+          "exports": [
+            "mapRepository"
+          ],
+          "hash": "46dc7d9a4adebbdc9f869e4e7c2a286426a4b051dd1ff48faf671e798284a3d0",
           "path": "packages/atlas/core/index.js"
         },
         {
-          "hash": "e56e1b8a6a458acf1cede8aedfe54b10222a7433bd18d3f0e1020a68542ffe5e",
+          "exports": [
+            "astLandings",
+            "attachLandings",
+            "isTestFile",
+            "isTestMaterial",
+            "noLandings",
+            "textLandings",
+            "trackedPlaces"
+          ],
+          "hash": "31c07bd4eb8fd22e6b58a69a424267bc1b053b6788aa959e3154ce97fa2f8a67",
           "path": "packages/atlas/core/landings.js"
         },
         {
-          "hash": "394007b6bcf2bb57bbf56eda25fdee6f935fd46a3c91f77c4cc54b4a421e3b58",
+          "hash": "e9d65ec951b2c5a793717413afbcf1c92444b24790199af06cd4d68a3bd1cc24",
           "path": "packages/atlas/core/landings.test.js"
         },
         {
@@ -247,6 +386,9 @@
           "path": "packages/atlas/core/no-sibling-imports.test.js"
         },
         {
+          "exports": [
+            "walkReach"
+          ],
           "hash": "1b200d9cd454dcd92ded14cc30eb1070e551f0d5b17962d3e9d31503c41874cc",
           "path": "packages/atlas/core/reach.js"
         },
@@ -267,10 +409,18 @@
           "path": "packages/atlas/core/resolve-tsconfig-extends.test.js"
         },
         {
+          "exports": [
+            "attachResolution",
+            "resolveDeclaredPath"
+          ],
           "hash": "5cf3b908d42cd3c7f0b2b8bba9fcfceeac8289cb9971eefe01e2ea1bf5a348e0",
           "path": "packages/atlas/core/resolve.js"
         },
         {
+          "exports": [
+            "attachSequences",
+            "sequenceFacts"
+          ],
           "hash": "cb8f8ad27f0bf13b024759f9b2534f19bf34de1bfde7a3852450ee6158452d77",
           "path": "packages/atlas/core/sequence.js"
         },
@@ -311,7 +461,7 @@
           "path": "packages/atlas/index.js"
         },
         {
-          "hash": "43bbe6f3aea93f48a2672c3dc2261f6311f9700fdff7cdb31c221e587f8c4241",
+          "hash": "6e62f2cba4073c23d6e8a2492858bc3b97ea305af274b48cc592483a19f61735",
           "path": "packages/atlas/package.json"
         },
         {
@@ -326,6 +476,7 @@
       "name": "atlas",
       "origin": "authored",
       "role": "code",
+      "testedBy": 22,
       "unresolvedSites": 0
     },
     {
@@ -342,7 +493,7 @@
           "path": "docs/atlas-page.spec.md"
         },
         {
-          "hash": "b24b5066d438d97eef1551f3669274bb8f136d8393bc0fbe8dc6ff9f73a4f2d3",
+          "hash": "6b00c41c022008bf134305771d24f8709e7c05922a5eca820f2b4ea4e420c0a8",
           "path": "docs/atlas.dispatch.md"
         },
         {
@@ -429,6 +580,7 @@
       "name": "docs",
       "origin": "authored",
       "role": "docs",
+      "testedBy": 0,
       "unresolvedSites": 0
     },
     {
@@ -504,6 +656,7 @@
       "name": "dogfood",
       "origin": "mixed",
       "role": "config",
+      "testedBy": 0,
       "unresolvedSites": 0
     },
     {
@@ -638,118 +791,272 @@
           "path": "packages/dogfood-swarm/cli-smoke.test.js"
         },
         {
+          "exports": [
+            "formatTransitionReport",
+            "parseFindingStatusFlag",
+            "parseFormatFlag",
+            "parseJuryFlag",
+            "parseValueFlag",
+            "parseVerifyFlags",
+            "queryFindingsByStatus",
+            "renderFindingsByStatusText",
+            "renderProbeDegradedAgents",
+            "transitionFindings"
+          ],
           "hash": "7b11666cb95fc62e3bafb3cc5fdf7df01fb3a7fc160c217fbb7f44c2df1fa71c",
           "path": "packages/dogfood-swarm/cli.js"
         },
         {
+          "exports": [
+            "formatAdjudication",
+            "formatAdjudicationPreview",
+            "formatAdjudicationUndo",
+            "previewAdjudicate",
+            "resolveAdjudicationWave",
+            "runAdjudicate",
+            "undoAdjudication"
+          ],
           "hash": "bdaa2b674b41f3002eeeaf4a893a9953544e7f636ae9f80a36ec575072f0a773",
           "path": "packages/dogfood-swarm/commands/adjudicate.js"
         },
         {
+          "exports": [
+            "cleanClaims",
+            "formatCleanClaims"
+          ],
           "hash": "141626b80b643842fc91e595b3afc870f25d7f0478c8ad5b9c973dc225d50845",
           "path": "packages/dogfood-swarm/commands/clean-claims.js"
         },
         {
+          "exports": [
+            "clean",
+            "formatClean"
+          ],
           "hash": "a290bf365ad6aaa62eb461dff84e316a3161ac76e80b2f595d2d6fff7e2a1202",
           "path": "packages/dogfood-swarm/commands/clean.js"
         },
         {
+          "exports": [
+            "buildSummary",
+            "collect",
+            "reconcileFileClaims",
+            "resolveAllDomainOutputs",
+            "scopeConfirmedToOwningDomain"
+          ],
           "hash": "bd44b362e8719dcf277a35744fac61a1759eaa8726b2dad2196a70fd897137e0",
           "path": "packages/dogfood-swarm/commands/collect.js"
         },
         {
+          "exports": [
+            "dispatch"
+          ],
           "hash": "e30c7819598b2d6090f9ee545c45426b1ecad3a5033b5703e645486429e5a0fb",
           "path": "packages/dogfood-swarm/commands/dispatch.js"
         },
         {
+          "exports": [
+            "formatDoctor",
+            "runDoctor"
+          ],
           "hash": "ccff640dd9c206f29bc5a9376f6555f8dad78f8e5d0f57b93481ac4b12b41435",
           "path": "packages/dogfood-swarm/commands/doctor.js"
         },
         {
+          "exports": [
+            "findingHistory",
+            "formatFindingHistory",
+            "formatHistory",
+            "history",
+            "pad",
+            "truncate"
+          ],
           "hash": "ad0fd3be27320ed8f7ae775716de58e25d7dd67313a779ca230260a4e6eba796",
           "path": "packages/dogfood-swarm/commands/history.js"
         },
         {
+          "exports": [
+            "init"
+          ],
           "hash": "4d7bee7dbb221bc3d30e5785595ca489564b4007f660751651d0e31d1460c8fa",
           "path": "packages/dogfood-swarm/commands/init.js"
         },
         {
+          "exports": [
+            "isAgentBearingDomain"
+          ],
           "hash": "297a8f7c363a8563b4ca739857e18745ebbfaa46f8cef363246d825b014c5d42",
           "path": "packages/dogfood-swarm/commands/lib/agent-bearing.js"
         },
         {
+          "exports": [
+            "escapeMarkdownTableCell",
+            "escapePathForDisplay",
+            "escapeReasonForDisplay",
+            "neutralizeInvisibleControls"
+          ],
           "hash": "1fa8b15126ad8db6afb8d17dea3cc7632ad249d3d1f7967c9e4463721b1ce542",
           "path": "packages/dogfood-swarm/commands/lib/escape-reason.js"
         },
         {
+          "exports": [
+            "formatFixesSkippedSummary",
+            "persistWaveFixesSkipped",
+            "readWaveFixesSkipped",
+            "rollupFixesSkipped"
+          ],
           "hash": "4af01e225c3a296b9f1ef1f0cdbadd578fb817c2992a6f34cfb4ce7ec05ab8ed",
           "path": "packages/dogfood-swarm/commands/lib/fixes-skipped.js"
         },
         {
+          "exports": [
+            "pluralize",
+            "pluralizeWord"
+          ],
           "hash": "bbb98751caa76048eeb77ba0af23d4717f75ded3d687b33fccf6fd7f68641f48",
           "path": "packages/dogfood-swarm/commands/lib/pluralize.js"
         },
         {
+          "exports": [
+            "readOperatorNotes",
+            "roadmapError",
+            "splitExpiredNotes"
+          ],
           "hash": "78931e212240ca5d8c84c0a0fb92baec1b04c75d51606918fb80d6dca35f3ff8",
           "path": "packages/dogfood-swarm/commands/lib/roadmap-notes.js"
         },
         {
+          "exports": [
+            "readRoadmapSeedLineage",
+            "resolveRoadmapSeed",
+            "stampRoadmapSeedLineage"
+          ],
           "hash": "8175cdc42754e5919ffb61878ba6ee74c63217b533cf0f4e1a1b5be320351235",
           "path": "packages/dogfood-swarm/commands/lib/roadmap-seed.js"
         },
         {
+          "exports": [
+            "noWavesError",
+            "runNotFoundError",
+            "waveNotFoundError"
+          ],
           "hash": "a7e0988062c1b5e78315a1e7a236343f94b7beb34e16c1f8e024e5d62fed5392",
           "path": "packages/dogfood-swarm/commands/lib/run-lookup-error.js"
         },
         {
+          "exports": [
+            "formatPersist",
+            "persist"
+          ],
           "hash": "259029775163716db1a3b064ae59046659a8cea0a3d4828cb0fa12bed045c611",
           "path": "packages/dogfood-swarm/commands/persist.js"
         },
         {
+          "exports": [
+            "buildReceipt",
+            "computeRecommendation",
+            "exportReceipt",
+            "formatReceiptMarkdown",
+            "storeReceipt"
+          ],
           "hash": "171f02148d48cfcaf1caedfe44808343843e78e772c1163fff5bea5ec6f966bc",
           "path": "packages/dogfood-swarm/commands/receipt.js"
         },
         {
+          "exports": [
+            "formatRedrive",
+            "redrive"
+          ],
           "hash": "06d86303f2a11fa09676bb97be85dee56bcd2acab1573bf608fbe6dc63fc6c8f",
           "path": "packages/dogfood-swarm/commands/redrive.js"
         },
         {
+          "exports": [
+            "formatResume",
+            "resume"
+          ],
           "hash": "7c75623dc2ce1014332ffaf59a9bfbc21450001c6f0f659446b155d545e10bb1",
           "path": "packages/dogfood-swarm/commands/resume.js"
         },
         {
+          "exports": [
+            "formatRevalidate",
+            "revalidate"
+          ],
           "hash": "aecb53a69b672b316a9aa8dd0dbed3c1ed2dec13894cb239a8e1d58931096808",
           "path": "packages/dogfood-swarm/commands/revalidate.js"
         },
         {
+          "exports": [
+            "formatRewind",
+            "normalizePathForMatch",
+            "rewind"
+          ],
           "hash": "92793971d39653f019c5a576fa07063942062aba6da6eea08bd5eded339030a7",
           "path": "packages/dogfood-swarm/commands/rewind.js"
         },
         {
+          "exports": [
+            "buildRoadmapArtifact",
+            "compileRoadmap",
+            "deterministicNow",
+            "formatRoadmapCompile",
+            "formatRoadmapShow",
+            "formatRoadmapUndo",
+            "showRoadmap",
+            "undoRoadmapCompile"
+          ],
           "hash": "695395c2b4e53c8b353b31ca95fd27caf9bebfeb9abd41c65182f094b3dad8c7",
           "path": "packages/dogfood-swarm/commands/roadmap.js"
         },
         {
+          "exports": [
+            "blockerHintForStatus",
+            "computeAssessment",
+            "formatStatus",
+            "status",
+            "summarizeWaveHistory"
+          ],
           "hash": "06b723d828f6447a52a14baaadbf7e89990a7a2653fd743da195f2d657e35889",
           "path": "packages/dogfood-swarm/commands/status.js"
         },
         {
+          "exports": [
+            "loadApprovedFindings",
+            "verifyApproved"
+          ],
           "hash": "c704aa7f8c186e6c881a12139ee4ba251b0698a2e5ac048cba2ef377898db16c",
           "path": "packages/dogfood-swarm/commands/verify-approved.js"
         },
         {
+          "exports": [
+            "verifyFixed"
+          ],
           "hash": "2a13afca9ba3b48cae4ea46238ed24013f19d2dbe0f7996a6ff3f6d4f2141ae1",
           "path": "packages/dogfood-swarm/commands/verify-fixed.js"
         },
         {
+          "exports": [
+            "loadRecurringFindings",
+            "verifyRecurring"
+          ],
           "hash": "11840fc6b3bf08c8d24a91be3282013ff8e4c5b3e048a9c97842dd8248ebec26",
           "path": "packages/dogfood-swarm/commands/verify-recurring.js"
         },
         {
+          "exports": [
+            "loadUnverifiedFindings",
+            "verifyUnverified"
+          ],
           "hash": "4284416ea74f98f72c07f8ba6c3f975c3d757cc0cfe988473de2d8e6eb93b39f",
           "path": "packages/dogfood-swarm/commands/verify-unverified.js"
         },
         {
+          "exports": [
+            "formatProbe",
+            "formatVerify",
+            "probeRepo",
+            "verify"
+          ],
           "hash": "df0ded8a568712ccd4b10b645cfd88c0fa04c624a8baa8f0da31a7e92cf484a0",
           "path": "packages/dogfood-swarm/commands/verify.js"
         },
@@ -762,10 +1069,21 @@
           "path": "packages/dogfood-swarm/d3b-006-finding-id-collision.test.js"
         },
         {
+          "exports": [
+            "closeDb",
+            "openDb",
+            "openMemoryDb"
+          ],
           "hash": "e2550c7d48f029a36b131565b23ce1737d5ab0ed997e7440ff8fad86677dc91b",
           "path": "packages/dogfood-swarm/db/connection.js"
         },
         {
+          "exports": [
+            "artifactExists",
+            "assertManifestShapesRecognized",
+            "assertManifestVersionInvariant",
+            "migrateDb"
+          ],
           "hash": "501597c552cc77cf5e0c2b84db1f67a8235b1826e6bae1f8d7185981c0255967",
           "path": "packages/dogfood-swarm/db/migrate.js"
         },
@@ -1018,6 +1336,11 @@
           "path": "packages/dogfood-swarm/hardening.test.js"
         },
         {
+          "exports": [
+            "deleteAdjudication",
+            "getLatestAdjudication",
+            "persistAdjudication"
+          ],
           "hash": "3133c7db5eee7cec88faee5dfd52269ba2ac7cab28d75b43e4718648976479b1",
           "path": "packages/dogfood-swarm/lib/adjudication-store.js"
         },
@@ -1034,6 +1357,12 @@
           "path": "packages/dogfood-swarm/lib/advance-violation-gate-run-wide.test.js"
         },
         {
+          "exports": [
+            "advance",
+            "checkGates",
+            "getPromotions",
+            "recordPromotion"
+          ],
           "hash": "3e94d0caf510fd0ed120c7384167dd49380571f996939abaffb108c7381f1f89",
           "path": "packages/dogfood-swarm/lib/advance.js"
         },
@@ -1042,6 +1371,12 @@
           "path": "packages/dogfood-swarm/lib/bounded-json-read-toctou-close.test.js"
         },
         {
+          "exports": [
+            "readBoundedBuffer",
+            "readBoundedFromFd",
+            "readBoundedJson",
+            "readBoundedText"
+          ],
           "hash": "d97ae633c96d56d5693a7ff73d1026443d9e3701df72816efbfc209d3df07442",
           "path": "packages/dogfood-swarm/lib/bounded-json-read.js"
         },
@@ -1054,34 +1389,73 @@
           "path": "packages/dogfood-swarm/lib/case-file-jury-seats-parity.test.js"
         },
         {
+          "exports": [
+            "adjudicate",
+            "aggregateCriterion",
+            "buildJurySpec",
+            "normalizeAdjudication"
+          ],
           "hash": "f658accd6e9c1d5ead7f2bd6dfc997fd420a60cd0ee78959766d06a2f51a5320",
           "path": "packages/dogfood-swarm/lib/case-file/adjudicate.js"
         },
         {
+          "exports": [
+            "assertCaseFileClean",
+            "toJuryRequest"
+          ],
           "hash": "40d0c749d5203b12414a7c97c3fcfdb6cfea36978f300ce9d17550b68c694fd4",
           "path": "packages/dogfood-swarm/lib/case-file/handoff.js"
         },
         {
+          "exports": [
+            "lintCaseFile"
+          ],
           "hash": "6997ece8a4e7d14a64c8d21d7fdab190bccfffeb9267198b0e040ff1fa4f8ca9",
           "path": "packages/dogfood-swarm/lib/case-file/lint.js"
         },
         {
+          "exports": [
+            "assessSeatFit",
+            "buildJurorPrompt",
+            "estimateTokensFromChars",
+            "makeOllamaJury",
+            "measureRenderedPrompt",
+            "parseJurorResponse",
+            "resolveSeatContextsViaOllama"
+          ],
           "hash": "741e563aef7284a5964f266b7693a3161301eec45a332eb248ee37b2fa13e439",
           "path": "packages/dogfood-swarm/lib/case-file/ollama-jury.js"
         },
         {
+          "exports": [
+            "buildCriterionIntent",
+            "buildPrismRequest",
+            "buildSeatEnv",
+            "makePrismJury",
+            "mapVerdictToAnswer",
+            "parsePrismVerdict"
+          ],
           "hash": "2f65ef575e7b197a1425ab773c09d4249251e19861d76a4be799ffc2a4d33a9b",
           "path": "packages/dogfood-swarm/lib/case-file/prism-jury.js"
         },
         {
+          "exports": [
+            "main"
+          ],
           "hash": "f6b7f7504225fc872efb5379c5359fa84474c6dfd1ed2ac40a480d75136bdefd",
           "path": "packages/dogfood-swarm/lib/case-file/prism_seat.py"
         },
         {
+          "exports": [
+            "validateCaseFileSchema"
+          ],
           "hash": "abb4d667b379db9f7524941ec7af0c553b73a5d32ed2de07a351936c2ecef52f",
           "path": "packages/dogfood-swarm/lib/case-file/schema.js"
         },
         {
+          "exports": [
+            "mintCorrelationId"
+          ],
           "hash": "f12a2eac79d2f80aeda02c820b66d2d8428c16ed1d75f9cd7a1cfdca3a5a5975",
           "path": "packages/dogfood-swarm/lib/correlation-id.js"
         },
@@ -1094,10 +1468,17 @@
           "path": "packages/dogfood-swarm/lib/cross-run-analytics-window-days-validation.test.js"
         },
         {
+          "exports": [
+            "applyDeclaredFixes"
+          ],
           "hash": "8ed2a139918c24bf7b9ee9b383adbd5b961b7ec8a0080e4021326da614c59962",
           "path": "packages/dogfood-swarm/lib/declared-closures.js"
         },
         {
+          "exports": [
+            "displayWidth",
+            "sliceToDisplayWidth"
+          ],
           "hash": "1bf08ed8db9034f25ec6f1520d40a076993634d37cff81776d20a296cf2f3bdb",
           "path": "packages/dogfood-swarm/lib/display-width.js"
         },
@@ -1110,10 +1491,32 @@
           "path": "packages/dogfood-swarm/lib/dogfood-bridge-wave-verdict-empty-agents.test.js"
         },
         {
+          "exports": [
+            "formatDomainRow"
+          ],
           "hash": "08202d23be71c431796d791f668539f8789bdf11f03abb939bb768f84a661746",
           "path": "packages/dogfood-swarm/lib/domain-row.js"
         },
         {
+          "exports": [
+            "addDomain",
+            "aredomainsFrozen",
+            "checkOwnership",
+            "detectDomains",
+            "editDomain",
+            "freezeDomains",
+            "getDomainEvents",
+            "getDomains",
+            "hasActiveWave",
+            "isAgentBearingOwnershipClass",
+            "isExclusiveOwnershipClass",
+            "narrowToExclusivelyOwned",
+            "removeDomain",
+            "resolveExclusiveOwner",
+            "saveDomainDraft",
+            "takeDomainSnapshot",
+            "unfreezeDomains"
+          ],
           "hash": "38c0f072fa6b77ba11d68bf4945c7c89ec5fc99f1db3744681fc3fdfabd8354d",
           "path": "packages/dogfood-swarm/lib/domains.js"
         },
@@ -1122,6 +1525,10 @@
           "path": "packages/dogfood-swarm/lib/error-render-hint-coverage.test.js"
         },
         {
+          "exports": [
+            "foldErrorLine",
+            "renderTopLevelError"
+          ],
           "hash": "2ae8fadedf8a1aad30f1507b70d2d159ecec2ec4cf157f58c61c47edc64900ab",
           "path": "packages/dogfood-swarm/lib/error-render.js"
         },
@@ -1210,6 +1617,9 @@
           "path": "packages/dogfood-swarm/lib/f-e0eebfec-bounded-json-error-envelope.test.js"
         },
         {
+          "exports": [
+            "backfillFiledByDomain"
+          ],
           "hash": "1ebe44af76c2201e63b52f0d0d9fd1811308ab417e329851a53f161627ecfb9b",
           "path": "packages/dogfood-swarm/lib/filed-by-domain-backfill.js"
         },
@@ -1218,10 +1628,22 @@
           "path": "packages/dogfood-swarm/lib/filed-by-domain-backfill.test.js"
         },
         {
+          "exports": [
+            "isOpenFinding"
+          ],
           "hash": "89c9a4732222b0cebabcd6e8e22f3bb8d2e575458bb4d32087d210e5adb8d175",
           "path": "packages/dogfood-swarm/lib/finding-status.js"
         },
         {
+          "exports": [
+            "buildDigest",
+            "buildDigestModel",
+            "findLatestWave",
+            "isMainEntry",
+            "loadDomainOutputs",
+            "render",
+            "renderWithStatus"
+          ],
           "hash": "f10355505709b7dafcc8cabda3b4ee9879a4355ee8b8af199a63db31b2bdb891",
           "path": "packages/dogfood-swarm/lib/findings-digest.js"
         },
@@ -1230,10 +1652,25 @@
           "path": "packages/dogfood-swarm/lib/findings-filter-filed-by-domain-fallback.test.js"
         },
         {
+          "exports": [
+            "findingsForDomain",
+            "matchesAnyGlob"
+          ],
           "hash": "76d1932183fa489d27c9aeb13b0504044f8baf371c66e81bdd9266836b743735",
           "path": "packages/dogfood-swarm/lib/findings-filter.js"
         },
         {
+          "exports": [
+            "renderDigest",
+            "renderJson",
+            "renderMarkdown",
+            "renderText",
+            "renderVerifyFixedDelta",
+            "renderVerifyFixedJson",
+            "renderVerifyFixedMarkdown",
+            "renderVerifyFixedText",
+            "shouldEmitFormat"
+          ],
           "hash": "c1fbd7e9fc2bd23ee939b8b2d42affa1bfec69fcb4507f8e588db84011640bc9",
           "path": "packages/dogfood-swarm/lib/findings-render.js"
         },
@@ -1266,6 +1703,15 @@
           "path": "packages/dogfood-swarm/lib/fingerprint-recurred-while-closed-last-seen.test.js"
         },
         {
+          "exports": [
+            "buildPriorMap",
+            "classifyFindings",
+            "computeFingerprint",
+            "disambiguateFingerprints",
+            "extractContextSnippet",
+            "honorReusedFindingIds",
+            "upsertFindings"
+          ],
           "hash": "705ab968acc794a326d331118113f5b4e1e50b360b7d07b99ca0e1296f9211b9",
           "path": "packages/dogfood-swarm/lib/fingerprint.js"
         },
@@ -1274,6 +1720,12 @@
           "path": "packages/dogfood-swarm/lib/git-touched-files-churn-stats.test.js"
         },
         {
+          "exports": [
+            "diffReportedVsActual",
+            "getActualTouchedFiles",
+            "getChurnStats",
+            "resolveWorktreeBaseRef"
+          ],
           "hash": "af7a032fe16f3b6e72a7f372a49b45846ef114f25170fb385e9e4e28e5c3b73f",
           "path": "packages/dogfood-swarm/lib/git-touched-files.js"
         },
@@ -1286,6 +1738,11 @@
           "path": "packages/dogfood-swarm/lib/honor-reused-finding-ids.test.js"
         },
         {
+          "exports": [
+            "formatHumanBanner",
+            "logStage",
+            "shouldEmitHuman"
+          ],
           "hash": "7f30156f853a2a0f7f42317d9c2246559137dd9e90194f4463131bc3a23e1db7",
           "path": "packages/dogfood-swarm/lib/log-stage.js"
         },
@@ -1298,6 +1755,9 @@
           "path": "packages/dogfood-swarm/lib/migrate-unrecognized-shape-fails-loud.test.js"
         },
         {
+          "exports": [
+            "normalizeFilePathForGlobMatch"
+          ],
           "hash": "373f531be8c8c52f3eab10fa1982b4f2ee6de8120df76f414612383467662d36",
           "path": "packages/dogfood-swarm/lib/normalize-path.js"
         },
@@ -1306,6 +1766,11 @@
           "path": "packages/dogfood-swarm/lib/normalize-path.test.js"
         },
         {
+          "exports": [
+            "validateAmendOutput",
+            "validateAuditOutput",
+            "validateFeatureOutput"
+          ],
           "hash": "4c0a038a4e139700c032a8664407e229fd5ceb72f59433f43e3f1d2dbb763622",
           "path": "packages/dogfood-swarm/lib/output-schema.js"
         },
@@ -1314,18 +1779,32 @@
           "path": "packages/dogfood-swarm/lib/persist-results-no-shell-exec.test.js"
         },
         {
+          "exports": [
+            "buildDogfoodSubmission"
+          ],
           "hash": "e04080697822f5f9e7d9aa2e160a005b3c1f75da5a9a00eb6a8c39aadc470b18",
           "path": "packages/dogfood-swarm/lib/persist/dogfood-bridge.js"
         },
         {
+          "exports": [
+            "buildRunExport",
+            "computeRunVerdict"
+          ],
           "hash": "f4773848bd5b58a89751b1cbc88d864e20f0a7036baad63acb1568bfeafeedb3",
           "path": "packages/dogfood-swarm/lib/persist/export.js"
         },
         {
+          "exports": [
+            "buildAuditPayload",
+            "formatAuditStatusLine"
+          ],
           "hash": "d80dffe7e4dc4b641d9380fc3bbe308f6842b019ddc203287f45bbe88bf35c2f",
           "path": "packages/dogfood-swarm/lib/persist/repoknowledge-bridge.js"
         },
         {
+          "exports": [
+            "toRfc3339Utc"
+          ],
           "hash": "8c1d89110f1964c09f38ac60827d72a3288f37bf3a8c2c8f790c8bd40b349d44",
           "path": "packages/dogfood-swarm/lib/persist/sqlite-datetime.js"
         },
@@ -1334,6 +1813,11 @@
           "path": "packages/dogfood-swarm/lib/ph-ds-02-correlation-id.test.js"
         },
         {
+          "exports": [
+            "isDispatchablePhase",
+            "renderPhaseColumns",
+            "renderPhaseList"
+          ],
           "hash": "a823933a85abe98b61b1ece691290e110a1d3a0c594120415362151a30ce37de",
           "path": "packages/dogfood-swarm/lib/phases.js"
         },
@@ -1342,10 +1826,20 @@
           "path": "packages/dogfood-swarm/lib/phases.test.js"
         },
         {
+          "exports": [
+            "queryFindingRecencyByFile",
+            "queryFindingRecurrenceRate",
+            "queryLaneFragmentation",
+            "queryPerRepoRunHistory",
+            "queryRecurringFindings"
+          ],
           "hash": "74dc132eea9982d3ca1f7c2e097962fcd9abe91f46e2334cd6bc0c845fc6afe4",
           "path": "packages/dogfood-swarm/lib/queries/cross-run-analytics.js"
         },
         {
+          "exports": [
+            "latestAgentRunsForWave"
+          ],
           "hash": "763a6e63e0eaa5faf5cae6880260fffb2986e9ad2e6e161f9b18409237a4b04c",
           "path": "packages/dogfood-swarm/lib/queries/latest-agent-runs.js"
         },
@@ -1378,22 +1872,46 @@
           "path": "packages/dogfood-swarm/lib/roadmap-drain.test.js"
         },
         {
+          "exports": [
+            "latestRoadmapArtifact",
+            "nextSequenceNumber",
+            "recordRoadmapArtifact"
+          ],
           "hash": "dd60e2d20724789622ffcd9aafcc1a599b0c1bcf3fb089f9accb9e9156fc8722",
           "path": "packages/dogfood-swarm/lib/roadmap/artifacts.js"
         },
         {
+          "exports": [
+            "computeAttentionScores"
+          ],
           "hash": "357a3d4a919005a24b86d8ceecc57802e6cb2db730df6d9e3b3bbf85e161db99",
           "path": "packages/dogfood-swarm/lib/roadmap/attention.js"
         },
         {
+          "exports": [
+            "compileRoadmap"
+          ],
           "hash": "edadd1b3dd73e3b905e4fbe3c852454e627dc8a85c451deec106e872b7bea7e9",
           "path": "packages/dogfood-swarm/lib/roadmap/compile.js"
         },
         {
+          "exports": [
+            "compileRoadmapSections",
+            "loadRoadmapArtifact",
+            "writeRoadmapArtifact"
+          ],
           "hash": "504c08ae0fb9b95e84dfc632530c78c79b6a803cd73acf3f2c8f1d32cfa9b4a0",
           "path": "packages/dogfood-swarm/lib/roadmap/compiler.js"
         },
         {
+          "exports": [
+            "compileAuthoredDrainState",
+            "compileDeferredFindingsDrain",
+            "compileDrainQueue",
+            "compileGrandfatherManifestDrainState",
+            "compileGrandfatheredManifestDrain",
+            "compileUnroutableApprovedDrain"
+          ],
           "hash": "ec2a700f4885f06f2e8344fcf9dfe5ab22cf566f70adc51531f05f5a316b1831",
           "path": "packages/dogfood-swarm/lib/roadmap/drain.js"
         },
@@ -1410,6 +1928,19 @@
           "path": "packages/dogfood-swarm/lib/stageA-findings-digest-severity-case.test.js"
         },
         {
+          "exports": [
+            "applyTimeoutPolicy",
+            "canTransition",
+            "classifyTimeouts",
+            "getTimeoutPolicy",
+            "getTransitionHistory",
+            "isBlocked",
+            "isInFlight",
+            "isRedispatchable",
+            "isTerminal",
+            "setTimeoutPolicy",
+            "transitionAgent"
+          ],
           "hash": "cd679d3b3e84d31fdd7ce091a1120a3beb1ba6ce24987d09818f5507da857d2c",
           "path": "packages/dogfood-swarm/lib/state-machine.js"
         },
@@ -1438,14 +1969,26 @@
           "path": "packages/dogfood-swarm/lib/templates-worked-examples.test.js"
         },
         {
+          "exports": [
+            "buildAmendPrompt",
+            "buildAuditPrompt",
+            "buildFeatureAuditPrompt"
+          ],
           "hash": "004b882aa0c3097ea565d429d15c0c71245a5491e4ffafa2c620c2e1dfbef954",
           "path": "packages/dogfood-swarm/lib/templates.js"
         },
         {
+          "exports": [
+            "validateAgentOutput"
+          ],
           "hash": "f8c77debf4babb8395f98e019b089b21472795b39aa481b03979a955614bd503",
           "path": "packages/dogfood-swarm/lib/validate-agent-output.js"
         },
         {
+          "exports": [
+            "buildV2Delta",
+            "classifyFindingV2"
+          ],
           "hash": "20bce8a7e5030fde99c2f7b36b0114ed4d1a1f4e947501246e9751e2fcf8e3fc",
           "path": "packages/dogfood-swarm/lib/verify-classifier-v2.js"
         },
@@ -1454,6 +1997,11 @@
           "path": "packages/dogfood-swarm/lib/verify-classifier-v2.test.js"
         },
         {
+          "exports": [
+            "buildVerifyFixedDelta",
+            "classifyFixedFinding",
+            "loadFixedFindings"
+          ],
           "hash": "47c7f436a0454f696908cec08f22d05ae879027dd120b892ecb23a344311900f",
           "path": "packages/dogfood-swarm/lib/verify-fixed.js"
         },
@@ -1490,6 +2038,10 @@
           "path": "packages/dogfood-swarm/lib/verify-runner-step-timeout-env-override.test.js"
         },
         {
+          "exports": [
+            "bucketForLine",
+            "findAnchorInBucket"
+          ],
           "hash": "8d4aef52b68c557a211eb9e640ed3e7704f601658aa2828b2cdd4a98c8a2ce80",
           "path": "packages/dogfood-swarm/lib/verify-window.js"
         },
@@ -1506,10 +2058,20 @@
           "path": "packages/dogfood-swarm/lib/verify/adapters/rust.js"
         },
         {
+          "exports": [
+            "listAdapters",
+            "probeAll",
+            "runVerification",
+            "selectAdapter"
+          ],
           "hash": "60b16e0466bac6680b9e7cd2bca5d0e27972942f35a1996bede1cbac62d3f45a",
           "path": "packages/dogfood-swarm/lib/verify/registry.js"
         },
         {
+          "exports": [
+            "runStep",
+            "runSteps"
+          ],
           "hash": "7fc228d0ecc2693d261d6d90ec74b4592b70030e43ced7a318f88b51af701a9f",
           "path": "packages/dogfood-swarm/lib/verify/runner.js"
         },
@@ -1522,14 +2084,39 @@
           "path": "packages/dogfood-swarm/lib/wave-state-machine-header-drift.test.js"
         },
         {
+          "exports": [
+            "canTransition",
+            "getWaveTransitionHistory",
+            "isBlocked",
+            "isTerminal",
+            "transitionWave"
+          ],
           "hash": "5a73d0bab3c810b517ac2f633c78ce834a727b105b97912a1cb1985575730aa2",
           "path": "packages/dogfood-swarm/lib/wave-state-machine.js"
         },
         {
+          "exports": [
+            "checkWorkspaceRealpathContainment",
+            "enumerateWorkspacePackages",
+            "provisionWorkspaceLinks"
+          ],
           "hash": "e39c2d516f20cee763df989f97a6fd2bf3ddbfcc8462696d838d0a2f27517f59",
           "path": "packages/dogfood-swarm/lib/workspace-links.js"
         },
         {
+          "exports": [
+            "cleanupAllWorktrees",
+            "cleanupRunWorktrees",
+            "createWorktree",
+            "ensureGitignore",
+            "forceRemoveDir",
+            "isSafeDomainName",
+            "listWorktrees",
+            "mergeWorktree",
+            "removeWorktree",
+            "runShortOf",
+            "worktreeDisposition"
+          ],
           "hash": "f483fab206797737ac91a068a1b3f81dc9d3cf6d91dcc9d22ef5e8f74f872c24",
           "path": "packages/dogfood-swarm/lib/worktree.js"
         },
@@ -1598,6 +2185,13 @@
           "path": "packages/dogfood-swarm/persist-results-schema-conformance.test.js"
         },
         {
+          "exports": [
+            "buildAuditPayload",
+            "buildScenarioResults",
+            "computeOverallVerdict",
+            "deriveVerdict",
+            "surfaceFromType"
+          ],
           "hash": "ceb05d5cc346f02b32a07e9cc2d6dd41a39f4097aed66934483cf1b513ce1afd",
           "path": "packages/dogfood-swarm/persist-results.js"
         },
@@ -1734,6 +2328,9 @@
           "path": "packages/dogfood-swarm/test-support-strip-comments.test.js"
         },
         {
+          "exports": [
+            "stripComments"
+          ],
           "hash": "1df095a82835066989448453aaa0328a1d3a3ee58ae7dc30d4705452c98536ef",
           "path": "packages/dogfood-swarm/test-support/strip-comments.js"
         },
@@ -1917,6 +2514,7 @@
       "name": "dogfood-swarm",
       "origin": "authored",
       "role": "code",
+      "testedBy": 280,
       "unresolvedSites": 5
     },
     {
@@ -1952,6 +2550,7 @@
       "name": "examples",
       "origin": "authored",
       "role": "config",
+      "testedBy": 0,
       "unresolvedSites": 0
     },
     {
@@ -1971,6 +2570,10 @@
           "path": "packages/findings/README.md"
         },
         {
+          "exports": [
+            "generateAdviceBundle",
+            "generateSyncExport"
+          ],
           "hash": "924395bf661e905012d10ce1c434b17a28daaf1bb367779676eaf6a72a3dfc9e",
           "path": "packages/findings/advise/advice-bundle.js"
         },
@@ -1991,6 +2594,13 @@
           "path": "packages/findings/advise/index.js"
         },
         {
+          "exports": [
+            "queryDoctrine",
+            "queryFailureClasses",
+            "queryFindings",
+            "queryPatterns",
+            "queryRecommendations"
+          ],
           "hash": "29fad531211762e82bc7a5536c2bddf3cfbb1b465a0bf441ed16881c85da69e4",
           "path": "packages/findings/advise/query.js"
         },
@@ -2007,10 +2617,20 @@
           "path": "packages/findings/derive/d2b-008-collision-guard.test.js"
         },
         {
+          "exports": [
+            "dedupeAgainstExisting",
+            "dedupeWithinBatch"
+          ],
           "hash": "42e211db8e187ce4750911c52596d981884ee37f428840f8e3b7a52b46344728",
           "path": "packages/findings/derive/dedupe.js"
         },
         {
+          "exports": [
+            "deriveFromRecord",
+            "deriveFromRecordWithErrors",
+            "deriveFromRecords",
+            "getRuleInventory"
+          ],
           "hash": "39912400da66672696aea29b1d33bd260a54632beecdccba3f3653a3cd6ec715",
           "path": "packages/findings/derive/derive-findings.js"
         },
@@ -2035,6 +2655,11 @@
           "path": "packages/findings/derive/fvr-001-step-failure-scenario-collision.test.js"
         },
         {
+          "exports": [
+            "boundaryHash",
+            "computeDedupeKey",
+            "generateFindingId"
+          ],
           "hash": "5b1b249432b9f3b0b96a11581ac9d9f24209006ec96c1ad67b8f79671d00dea6",
           "path": "packages/findings/derive/ids.js"
         },
@@ -2047,6 +2672,13 @@
           "path": "packages/findings/derive/load-records-skip.test.js"
         },
         {
+          "exports": [
+            "loadAllRecords",
+            "loadAllRecordsWithSkips",
+            "loadRecordById",
+            "loadRecordsForRepo",
+            "loadRecordsForRepoWithSkips"
+          ],
           "hash": "4f0c7ee3b72b5525e1ce54d2011d6f21bc2f579dbda97caf0f067446d9d8e77e",
           "path": "packages/findings/derive/load-records.js"
         },
@@ -2055,10 +2687,18 @@
           "path": "packages/findings/derive/proac-002-derive-skip-signal.test.js"
         },
         {
+          "exports": [
+            "getRuleById"
+          ],
           "hash": "61057d1a61f6c4701545fbc0bdb544477965f4b12b3272caa1ad97dce43463a8",
           "path": "packages/findings/derive/rules.js"
         },
         {
+          "exports": [
+            "resetSeenWrites",
+            "writeFinding",
+            "writeFindings"
+          ],
           "hash": "58020cae87224c99b2cd985c7781a43ebcba559cd4354221052d504d422f8806",
           "path": "packages/findings/derive/write-findings.js"
         },
@@ -2089,6 +2729,9 @@
         {
           "entry": "atomicWriteFileSync",
           "entryRule": 4,
+          "exports": [
+            "atomicWriteFileSync"
+          ],
           "hash": "aa511bd41b5d9389b97662e4a41f87dcb2cedca3595bcddd8ed06ef141acd57d",
           "path": "packages/findings/lib/atomic-write.js",
           "sequences": [
@@ -2126,6 +2769,11 @@
           "path": "packages/findings/lib/f-998fb547-core-schema-merge-key.test.js"
         },
         {
+          "exports": [
+            "isLocked",
+            "lockDirFor",
+            "withFileLock"
+          ],
           "hash": "0bcf1605d413404517f7fe211644d3462378ca24f5b52d975d9a47919e0e3a2c",
           "path": "packages/findings/lib/file-lock.js"
         },
@@ -2134,10 +2782,20 @@
           "path": "packages/findings/lib/proac-003-yaml-size-cap.test.js"
         },
         {
+          "exports": [
+            "__testSleepSync",
+            "renameWithRetry"
+          ],
           "hash": "d7de9df2646560cf9038afaac27b3d63cbdb2e5d1f6c1ed3c20eecf5b87590d9",
           "path": "packages/findings/lib/rename-with-retry.js"
         },
         {
+          "exports": [
+            "loadJsonDir",
+            "loadJsonFile",
+            "loadYamlDir",
+            "loadYamlFile"
+          ],
           "hash": "6ba416e9095c52bcfe04ae0bb6680568668ce7491dc31505a5071698cfc1085f",
           "path": "packages/findings/lib/safe-yaml-load.js"
         },
@@ -2150,6 +2808,16 @@
           "path": "packages/findings/package.json"
         },
         {
+          "exports": [
+            "discoverFindings",
+            "discoverFixtures",
+            "filterFindings",
+            "findById",
+            "findDuplicates",
+            "listLeafFiles",
+            "loadFindings",
+            "matchesText"
+          ],
           "hash": "f1f507dfd9dba63a376ff848747a313f82063eb583058eb79a469f5605b97daa",
           "path": "packages/findings/reader.js"
         },
@@ -2158,6 +2826,16 @@
           "path": "packages/findings/review/event-log-loader.test.js"
         },
         {
+          "exports": [
+            "appendEvent",
+            "createEvent",
+            "generateEventId",
+            "getAllEvents",
+            "getAllEventsWithSkips",
+            "getEventDir",
+            "getEventsForFinding",
+            "getLogPath"
+          ],
           "hash": "88aa73b7f9acc31d9ed18ef3cb4292b95f8675ee49f1606e5810d4c1fef2ddc7",
           "path": "packages/findings/review/event-log.js"
         },
@@ -2194,10 +2872,20 @@
           "path": "packages/findings/review/proac-001-merge-source-validation.test.js"
         },
         {
+          "exports": [
+            "findArtifactById",
+            "getArtifactReviewQueue",
+            "reviewArtifact"
+          ],
           "hash": "c4b6d142262d6d4988242298a8245eff4a1619803f9a41d265d09824f83df95f",
           "path": "packages/findings/review/review-artifacts.js"
         },
         {
+          "exports": [
+            "getReviewQueue",
+            "performAction",
+            "performMerge"
+          ],
           "hash": "af69f0b03a05d3d612bcea7d9eb2d7f7e613421b481e233029bbcbae506a0e55",
           "path": "packages/findings/review/review-engine.js"
         },
@@ -2214,6 +2902,10 @@
           "path": "packages/findings/review/stageC-b003-scoped-reset.test.js"
         },
         {
+          "exports": [
+            "isLawfulTransition",
+            "validateTransition"
+          ],
           "hash": "89b4beba9f409058784bd961210441fc474c7af6c9a0c2964b5d739aadbd4fb3",
           "path": "packages/findings/review/transitions.js"
         },
@@ -2234,6 +2926,9 @@
           "path": "packages/findings/stageD-out-001-validate-verdict-first.test.js"
         },
         {
+          "exports": [
+            "applyRecommendation"
+          ],
           "hash": "b62999e4d4ad109bec08799775910c512485f16e04755aefce38db1d92450f60",
           "path": "packages/findings/synthesis/apply-recommendation.js"
         },
@@ -2242,10 +2937,16 @@
           "path": "packages/findings/synthesis/d2b-001-derive-skipped-signal.test.js"
         },
         {
+          "exports": [
+            "dedupeArtifactsAgainstExisting"
+          ],
           "hash": "a392616ffb58fb4600867035f1f1ca5e8e7d3d1ed4076cb7afec8eff36af29f7",
           "path": "packages/findings/synthesis/dedupe-artifacts.js"
         },
         {
+          "exports": [
+            "deriveDoctrine"
+          ],
           "hash": "70278122242227ad8fc931f7d788fc2cdaa40fcf23cd5a1ad8337d4f4e35b700",
           "path": "packages/findings/synthesis/doctrine-derivation.js"
         },
@@ -2278,10 +2979,19 @@
           "path": "packages/findings/synthesis/loaders-skip.test.js"
         },
         {
+          "exports": [
+            "buildPatternCandidate",
+            "derivePatterns"
+          ],
           "hash": "99c40727d5bcc74b1ad4ea2422b4ec4c80b783a07f5a9290d19b0ef4d85daa22",
           "path": "packages/findings/synthesis/pattern-derivation.js"
         },
         {
+          "exports": [
+            "deriveRecommendations",
+            "loadAcceptedPatterns",
+            "loadAcceptedPatternsWithSkips"
+          ],
           "hash": "ed7c23c82609cf39a99dac46d4bdca271b279c5e8df4d52146b8190cfb0c7094",
           "path": "packages/findings/synthesis/recommendation-derivation.js"
         },
@@ -2294,14 +3004,40 @@
           "path": "packages/findings/synthesis/synthesis.test.js"
         },
         {
+          "exports": [
+            "validateDoctrine",
+            "validatePattern",
+            "validateRecommendation"
+          ],
           "hash": "a9b3b71aefa2cf0c82695d2508602bc943c03278b785187b229e04a45393d9c9",
           "path": "packages/findings/synthesis/validate-artifacts.js"
         },
         {
+          "exports": [
+            "loadDoctrines",
+            "loadDoctrinesWithSkips",
+            "loadPatterns",
+            "loadPatternsWithSkips",
+            "loadRecommendations",
+            "loadRecommendationsWithSkips",
+            "resetSeenArtifactWrite",
+            "resetSeenArtifactWrites",
+            "writeDoctrine",
+            "writeDoctrines",
+            "writePattern",
+            "writePatterns",
+            "writeRecommendation",
+            "writeRecommendations"
+          ],
           "hash": "86c3bf0a55e72e1a462af05e811681b9fb5c191ccd5faafa785cc8e2f144581b",
           "path": "packages/findings/synthesis/write-artifacts.js"
         },
         {
+          "exports": [
+            "parseFinding",
+            "validateFinding",
+            "validateFindingFile"
+          ],
           "hash": "109294bf1d92108c07baf64110c875ea18dd9305f4af96d6549121a2b568f5d0",
           "path": "packages/findings/validate.js"
         }
@@ -2313,6 +3049,7 @@
       "name": "findings",
       "origin": "authored",
       "role": "code",
+      "testedBy": 118,
       "unresolvedSites": 0
     },
     {
@@ -2461,24 +3198,51 @@
           "path": "fixtures/atlas/doors/atlas/boundaries.yaml"
         },
         {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "fixtures/atlas/doors/cache/.gitkeep"
+        },
+        {
           "hash": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
           "path": "fixtures/atlas/doors/indexes/latest.json"
         },
         {
+          "exports": [
+            "auditRecord",
+            "checkPolicy",
+            "loadPolicy"
+          ],
           "hash": "e0e941f10f10dfebe33614f96bbfcfd01ba3f87401940160f95eaf59add8b05b",
           "path": "fixtures/atlas/doors/lib/policy.js"
         },
         {
+          "exports": [
+            "checkSchema",
+            "loadSchema",
+            "schemaVersion"
+          ],
           "hash": "307cc153d9d6f97a921d6e9c2479ac80bf089ee48f833c9f51ab9895d1667bc2",
           "path": "fixtures/atlas/doors/lib/schema.js"
         },
         {
-          "hash": "d943cc48a213b1076048afb4fffba6d3287cfbb68d051176713991ca75247e22",
+          "exports": [
+            "normalize",
+            "rebuildIndex",
+            "sealRecord",
+            "writeRecord"
+          ],
+          "hash": "9d101103a02d4026ba296eb34cc1deed957af46b5794648e01a94d54ed27ebfd",
           "path": "fixtures/atlas/doors/lib/store.js"
         },
         {
+          "exports": [
+            "verify"
+          ],
           "hash": "a860fccd35a6ec30ea05dab524f665bb8cbcfabd545b0af26fa32b597570d382",
           "path": "fixtures/atlas/doors/lib/verify.js"
+        },
+        {
+          "hash": "5c3a19ffd30dcae62b07e47b3ffdcba9fff4a615a629b1ae0a3d2c23c9a5e0ba",
+          "path": "fixtures/atlas/doors/lib/verify.test.js"
         },
         {
           "hash": "212213c39a133a38ce2d0f35ed0d77cbcfc9f06c5530de0c73a79c28d205f29c",
@@ -2509,11 +3273,25 @@
           "path": "fixtures/atlas/doors/site/index.html"
         },
         {
+          "exports": [
+            "remember"
+          ],
+          "hash": "bf9c58bdb694f38cca0f9e20d9c2371d815bfd5a2cc3a5177ced40dc2d94902c",
+          "path": "fixtures/atlas/doors/tools/cache.js"
+        },
+        {
+          "exports": [
+            "ingest"
+          ],
           "hash": "8e2635ea7494f65d98a7368c8079240993dca5d4e131319cf74d94c2cb853235",
           "path": "fixtures/atlas/doors/tools/ingest.js"
         },
         {
-          "hash": "7da5a7e819f95bf1737cade5df65766eed32d49f28ce86ff96b4f88143a6aa01",
+          "exports": [
+            "normalize",
+            "prepare"
+          ],
+          "hash": "b09bd8b0829578d28183ec7ee34c6e7e9131bd71ab1a5d6fbfd688dc670d83b3",
           "path": "fixtures/atlas/doors/tools/prepare.js"
         },
         {
@@ -2525,6 +3303,9 @@
           "path": "fixtures/atlas/doors/tools/report.py"
         },
         {
+          "exports": [
+            "scratch"
+          ],
           "hash": "cfda1147ab0b0dbfdb20921b660d2a557c53c691749ada19230901169e4055de",
           "path": "fixtures/atlas/doors/tools/scratch.js"
         },
@@ -2629,6 +3410,9 @@
           "path": "fixtures/atlas/languages/js/static.js"
         },
         {
+          "exports": [
+            "A"
+          ],
           "hash": "5dde8a07f0d6362d7c6300a50fed6dfae0d3bf85ac901d029ac8c065beee37f2",
           "path": "fixtures/atlas/languages/js/view.jsx"
         },
@@ -2669,6 +3453,9 @@
           "path": "fixtures/atlas/languages/tsx/load.tsx"
         },
         {
+          "exports": [
+            "A"
+          ],
           "hash": "3bb2db44d177b56ba089db19959edac62a087b1b65c16e5d190d6e03fc2acfed",
           "path": "fixtures/atlas/languages/tsx/view.tsx"
         },
@@ -2821,46 +3608,89 @@
           "path": "fixtures/atlas/sequence/atlas/boundaries.yaml"
         },
         {
+          "exports": [
+            "check",
+            "load",
+            "save",
+            "wrap"
+          ],
           "hash": "16fd1cb6e86405d17e26a69e36f7ec860286ff1efdbb0dde175818ad7cb0312e",
           "path": "fixtures/atlas/sequence/lib/steps.js"
         },
         {
+          "exports": [
+            "publish",
+            "summarize"
+          ],
           "hash": "d73b69e8bbf92fe8a44ff53ca75baedfa4334111c14f2b7cd43d46c8d1a5fe15",
           "path": "fixtures/atlas/sequence/lib/util.py"
         },
         {
+          "exports": [
+            "eager",
+            "main"
+          ],
           "hash": "9ac100d358e6f746d60484c9f7e508f74e2cfe07b81abe6ab6f19bc92f9e08d4",
           "path": "fixtures/atlas/sequence/rules/calls.js"
         },
         {
+          "exports": [
+            "build",
+            "main"
+          ],
           "hash": "0b1a14286d0f3dfa3850f73c3fec19c216f1c4581a63f7421f26b9226897507c",
           "path": "fixtures/atlas/sequence/rules/default-export.js"
         },
         {
+          "exports": [
+            "helper",
+            "main"
+          ],
           "hash": "f72d4a5e13b562647beaded7dd39c106281a51e2b8b417492d9d791efdbc1396",
           "path": "fixtures/atlas/sequence/rules/guard.py"
         },
         {
+          "exports": [
+            "main"
+          ],
           "hash": "b9db65c7b22544781af67ff62b46503fbf84e51b7f453bcf03bfb065601753d7",
           "path": "fixtures/atlas/sequence/rules/many.js"
         },
         {
+          "exports": [
+            "run",
+            "wide"
+          ],
           "hash": "72ebaddd3bce322f3f4fdd360dc343700152161cda799c9bc72274b2630e97c8",
           "path": "fixtures/atlas/sequence/rules/named.js"
         },
         {
+          "exports": [
+            "other",
+            "publish"
+          ],
           "hash": "5ad17d8eb4e934d9d7bb8143b019811969d50774556e8a0ad21cac221ca30aa6",
           "path": "fixtures/atlas/sequence/rules/publish.js"
         },
         {
+          "exports": [
+            "wider"
+          ],
           "hash": "1cb31eece715e44b1f9a397eafad306a162e47e97b0b240829d31db52c7309be",
           "path": "fixtures/atlas/sequence/rules/top-level.js"
         },
         {
+          "exports": [
+            "main"
+          ],
           "hash": "5fdb3dafb1bee97228ae8790a2216bb7a1f23a2dad9ecba5dca59dff1be69ee3",
           "path": "fixtures/atlas/sequence/rules/unrun.js"
         },
         {
+          "exports": [
+            "direct",
+            "spliced"
+          ],
           "hash": "40227e203727c0061276ff0f9964e1fba78554fbf2e52ee70cff60da12a184b5",
           "path": "fixtures/atlas/sequence/rules/widest.js"
         },
@@ -3076,6 +3906,7 @@
       "name": "fixtures",
       "origin": "authored",
       "role": "code",
+      "testedBy": 2,
       "unresolvedSites": 16
     },
     {
@@ -3156,11 +3987,11 @@
           "path": "indexes/failing.json"
         },
         {
-          "hash": "97bd22e9a5bfa39cf90702952ef0e1ef9fbe4f7053c13809e90e165b0dac5803",
+          "hash": "de3fa0f2947952b56340c455df042a1561bf6688f2480be1416a52f0e16758fa",
           "path": "indexes/integrity/chain.jsonl"
         },
         {
-          "hash": "f85582211f6fc4280450a2b598a23e3622d6cfebe00518423c8cf9c884bb5ad3",
+          "hash": "cd14f27482867cd90778c23999cddd98923546722c033123f1b5d26ce6e5b59f",
           "path": "indexes/latest-by-repo.json"
         },
         {
@@ -3168,7 +3999,7 @@
           "path": "indexes/stale.json"
         },
         {
-          "hash": "fa693d4d71c4c979c17f8d1be40699466a9e2dbea773fc74a13899c69b1de662",
+          "hash": "c71313b76f5d92ef6a7c4b4f831fb8c80beef51dd89cb20a17f6bf06c5e94a0f",
           "path": "indexes/trends.json"
         }
       ],
@@ -3179,6 +4010,7 @@
       "name": "indexes",
       "origin": "generated",
       "role": "config",
+      "testedBy": 0,
       "unresolvedSites": 0
     },
     {
@@ -3213,26 +4045,65 @@
           "path": "packages/ingest/anchor-verify-anchor.test.js"
         },
         {
+          "exports": [
+            "handleAnchorCompute",
+            "handleAnchorPost",
+            "handleAnchorVerify"
+          ],
           "hash": "a5821b1e0101319270e825edbed7910b634d7b48132277b309f23580a6457990",
           "path": "packages/ingest/anchor/cli.js"
         },
         {
+          "exports": [
+            "anchorManifestPath",
+            "anchorsDir",
+            "buildAnchorManifest",
+            "computeAnchor",
+            "readAnchorManifests",
+            "readLastAnchor",
+            "recordAnchorPost",
+            "selectPartition"
+          ],
           "hash": "a8df8e19c3a82f890883b5d8fd658dca17c77708d18d12762d5745bc29fa1aa6",
           "path": "packages/ingest/anchor/compute-root.js"
         },
         {
+          "exports": [
+            "resolveTrustedAccounts"
+          ],
           "hash": "52aab73fe146f7e835d3eea20722c292d82d3283d1925a45206a35cff2dec3b2",
           "path": "packages/ingest/anchor/config.js"
         },
         {
+          "exports": [
+            "merkleManifest",
+            "merkleRootForAlgo",
+            "merkleRootHex",
+            "merkleRootHexV2"
+          ],
           "hash": "b86f8688519d0e7bb72bc9bea967fdc92254abacf43c928ebbddf13a635f5c5c",
           "path": "packages/ingest/anchor/merkle.js"
         },
         {
+          "exports": [
+            "buildAnchorMemo",
+            "extractCloseTime",
+            "extractLedgerIndex",
+            "loadXrpl",
+            "postAnchor",
+            "validateSeedShape"
+          ],
           "hash": "d8a8a52b8a565e1948ec134f345a289bd299a57961a194411cdb26c0c267428d",
           "path": "packages/ingest/anchor/post-anchor.js"
         },
         {
+          "exports": [
+            "decodeAnchorMemo",
+            "recomputeLocalForAnchor",
+            "verifyAnchorState",
+            "verifyAnchorTx",
+            "verifyChainAgainstAnchors"
+          ],
           "hash": "dc36b30061d4e135d077dfffdc680a03c4ee3471dba58182690659b8af192166",
           "path": "packages/ingest/anchor/verify-anchor.js"
         },
@@ -3381,32 +4252,64 @@
           "path": "packages/ingest/integrity.test.js"
         },
         {
+          "exports": [
+            "atomicWriteFileSync",
+            "discardStaged",
+            "promoteStaged",
+            "stageWriteFileSync"
+          ],
           "hash": "b44892ec485d260cb4bb9dd4e469eebf578859995e868f3ac6ce498fa030e10b",
           "path": "packages/ingest/lib/atomic-write.js"
         },
         {
+          "exports": [
+            "appendChainEntry",
+            "chainManifestPath",
+            "readChainHead",
+            "readChainManifest"
+          ],
           "hash": "9e9129a18629953f0f923e659fb3ad29b5659670c355076186d3efe51dc8acb6",
           "path": "packages/ingest/lib/chain-manifest.js"
         },
         {
+          "exports": [
+            "canonicalize",
+            "submissionDigest"
+          ],
           "hash": "c1ac079b24bfe2260aea8b00420fb0dd4628c1499826d7891b2b3b2c2214ed39",
           "path": "packages/ingest/lib/integrity.js"
         },
         {
+          "exports": [
+            "renameWithRetry"
+          ],
           "hash": "c20aef969c4925a67d54cacc2fd74a9487b40c4842d77812f42af6e819d0d9eb",
           "path": "packages/ingest/lib/rename-with-retry.js"
         },
         {
+          "exports": [
+            "sleepSync"
+          ],
           "hash": "112a13f593603401fbd82aedfb4dea86bcaa996ff71d28c1a8b25f8180a5719d",
           "path": "packages/ingest/lib/sleep-sync.js"
         },
         {
+          "exports": [
+            "isUnsafeSegment"
+          ],
           "hash": "73947b7bbbec235bd76a21af98d31cd79775fdaf3bd0a3a7919c37a5d503d9dc",
           "path": "packages/ingest/lib/unsafe-segment.js"
         },
         {
           "entry": "loadRepoPolicy",
           "entryRule": 4,
+          "exports": [
+            "githubScenarioFetcher",
+            "loadGlobalPolicy",
+            "loadRepoPolicy",
+            "loadScenarios",
+            "parseUntrustedScenarioYaml"
+          ],
           "hash": "b19692879c8bb3ca2035d0d265e761c6da0a85f26ede742099f27f19d38cbf4d",
           "path": "packages/ingest/load-context.js",
           "sequences": [
@@ -3512,6 +4415,11 @@
         {
           "entry": "writeRecord",
           "entryRule": 4,
+          "exports": [
+            "computeRecordPath",
+            "isDuplicate",
+            "writeRecord"
+          ],
           "hash": "1c6c50a63efa3cd3772c132eef1e9f0371467fde3c4f04a0553ec03b33dfb969",
           "path": "packages/ingest/persist.js",
           "sequences": [
@@ -3630,6 +4538,10 @@
         {
           "entry": "rebuildIndexes",
           "entryRule": 4,
+          "exports": [
+            "findJsonFiles",
+            "rebuildIndexes"
+          ],
           "hash": "dba00081db2367bf582bac78782e7ed5175387187811c45357b1e3517688636d",
           "path": "packages/ingest/rebuild-indexes.js",
           "sequences": [
@@ -3746,6 +4658,12 @@
         {
           "entry": "ingest",
           "entryRule": 1,
+          "exports": [
+            "ingest",
+            "resolveScenarioFetcher",
+            "resolveScenarioFetcherDecision",
+            "verifyOnly"
+          ],
           "hash": "e3ce7843283cf912548291cfa007d80c205ce970e8fad88653500a5466b42587",
           "path": "packages/ingest/run.js",
           "sequences": [
@@ -4180,6 +5098,9 @@
           "path": "packages/ingest/v2-invarian-004-resolve-scenario-fetcher.test.js"
         },
         {
+          "exports": [
+            "validateRecord"
+          ],
           "hash": "c3067372d110412bb209adc1d0e02587f85d84644e0e338da16bed7be4484f6d",
           "path": "packages/ingest/validate-record.js"
         },
@@ -4188,6 +5109,10 @@
           "path": "packages/ingest/verify-chain-cli.test.js"
         },
         {
+          "exports": [
+            "formatChainResult",
+            "verifyChain"
+          ],
           "hash": "8835fb33ebde5eeff21082a5afda5ae3a2b848de44efd3bf153c8a377110df41",
           "path": "packages/ingest/verify-chain.js"
         },
@@ -4231,6 +5156,7 @@
       "name": "ingest",
       "origin": "authored",
       "role": "code",
+      "testedBy": 59,
       "unresolvedSites": 0
     },
     {
@@ -4306,6 +5232,7 @@
       "name": "policies",
       "origin": "mixed",
       "role": "config",
+      "testedBy": 0,
       "unresolvedSites": 0
     },
     {
@@ -4338,6 +5265,12 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "exports": [
+            "computeFreshnessDays",
+            "generatePortfolio",
+            "loadPolicies",
+            "parsePolicy"
+          ],
           "hash": "94bc1169fdb33e6d8eb36413cfa92918071ea4d69d6d095ee34b22eb69aba6ce",
           "path": "packages/portfolio/generate.js",
           "sequences": [
@@ -4402,6 +5335,9 @@
           "path": "packages/portfolio/generate.test.js"
         },
         {
+          "exports": [
+            "computeTrends"
+          ],
           "hash": "9439a4ed60fde30019072ed709bf7eedb15344d9fcd900bc052d64a0e85d3cc0",
           "path": "packages/portfolio/lib/compute-trends.js"
         },
@@ -4418,6 +5354,9 @@
           "path": "packages/portfolio/lib/f-a853fcaa-compute-trends-proto-pollution.test.js"
         },
         {
+          "exports": [
+            "generateBadges"
+          ],
           "hash": "229b3998fc98d179988fde4e2001943948d4d02b6fb97a0ce032f57cb2f2bf0d",
           "path": "packages/portfolio/lib/generate-badges.js"
         },
@@ -4428,6 +5367,14 @@
         {
           "entry": "walkSourceFiles",
           "entryRule": 4,
+          "exports": [
+            "classifyFile",
+            "extractPinsFromText",
+            "parseRegressionPins",
+            "posixifyPath",
+            "toJSON",
+            "walkSourceFiles"
+          ],
           "hash": "8e42ac7675d8f4c48fe15a9369a444c1acf6d7d3049ecd9c476a4adbb14e47ab",
           "path": "packages/portfolio/lib/parse-regression-pins.js",
           "sequences": [
@@ -4473,6 +5420,9 @@
           "path": "packages/portfolio/lib/stageA-seed1-pin-path-posix.test.js"
         },
         {
+          "exports": [
+            "listTrackedFiles"
+          ],
           "hash": "5a6ce87e1324d61ae9815969be785363c9fa13cc9c12a19d79fac7b4a823ff14",
           "path": "packages/portfolio/lib/tracked-files.js"
         },
@@ -4508,6 +5458,7 @@
       "name": "portfolio",
       "origin": "authored",
       "role": "code",
+      "testedBy": 19,
       "unresolvedSites": 4
     },
     {
@@ -4748,6 +5699,18 @@
           "path": "records/dogfood-lab/testing-os/2026/09/23/run-00mudw4p0v--uQTivQoTYEsNA.json"
         },
         {
+          "hash": "8620da10bb8a73e9dc31a430704470abe7410e46898ec0b92a489c93cb82dbc9",
+          "path": "records/dogfood-lab/testing-os/2026/09/23/run-00mudxgy3s-Alqx3p38JDctxQ.json"
+        },
+        {
+          "hash": "32c57aae03cbabc642bc11a28c6cf08dbed0e2a0b28f994acca413ecfe26ea35",
+          "path": "records/dogfood-lab/testing-os/2026/09/23/run-00mudxt6ly-ULKaSwtOaHqGmw.json"
+        },
+        {
+          "hash": "1d0c55581b02b32007aad42f3e662e59b9800434eed3da4377b7afd6760164c8",
+          "path": "records/dogfood-lab/testing-os/2026/09/23/run-00mudymzb6-CQYTrJQGYktX9A.json"
+        },
+        {
           "hash": "d80bd628d70f1275786c79da48bfb6da79ef0eb303eceed6fe87960e8c7a308c",
           "path": "records/mcp-tool-shop-org/a11y-demo-site/2026/03/20/run-a11y-demo-site-23329256169-1.json"
         },
@@ -4959,6 +5922,7 @@
       "name": "records",
       "origin": "generated",
       "role": "config",
+      "testedBy": 0,
       "unresolvedSites": 0
     },
     {
@@ -4981,6 +5945,10 @@
         {
           "entry": "precheckSubmission",
           "entryRule": 4,
+          "exports": [
+            "buildSubmission",
+            "precheckSubmission"
+          ],
           "hash": "c361bb8977db80a6476e2aaf86c8d0681567824500fac33a8cdeed31f5f86ff7",
           "path": "packages/report/build-submission.js",
           "sequences": [
@@ -5004,6 +5972,9 @@
         {
           "entry": "run",
           "entryRule": 1,
+          "exports": [
+            "run"
+          ],
           "hash": "098c50bd203edab8afcab57a5fa2bec040fbdcc7394c7e95a1afa4a127c23e56",
           "path": "packages/report/cli.js",
           "sequences": [
@@ -5126,6 +6097,11 @@
           "path": "packages/report/f-d433f8a4-status-path-traversal.test.js"
         },
         {
+          "exports": [
+            "formatOnboardingDoctor",
+            "run",
+            "runOnboardingDoctor"
+          ],
           "hash": "963ed6c92dd28348fed9ee4b999007452e196decf09490179ec34525940564b0",
           "path": "packages/report/init.js"
         },
@@ -5150,6 +6126,12 @@
           "path": "packages/report/stageC-scenario-file-read-guard.test.js"
         },
         {
+          "exports": [
+            "assertSafeRecordPath",
+            "buildStatusJSON",
+            "formatStatus",
+            "runStatus"
+          ],
           "hash": "8b069007f5bb4589247705e1dc2f87289e3aed7d8e67c96a808bee65952a4650",
           "path": "packages/report/status.js"
         },
@@ -5181,6 +6163,7 @@
       "name": "report",
       "origin": "authored",
       "role": "code",
+      "testedBy": 20,
       "unresolvedSites": 0
     },
     {
@@ -5204,6 +6187,7 @@
       "name": "reports",
       "origin": "generated",
       "role": "config",
+      "testedBy": 0,
       "unresolvedSites": 0
     },
     {
@@ -5216,7 +6200,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "a993d904277b18c55da4dd893aa8d996b4e6e3369a112a1968a6f00a64311b33",
+          "hash": "e13a90c8b1b1fc587831b12a0b90735d10cd3c40c55049d013ca161917864db4",
           "path": "CHANGELOG.md"
         },
         {
@@ -5303,6 +6287,7 @@
       "name": "root",
       "origin": "authored",
       "role": "docs",
+      "testedBy": 0,
       "unresolvedSites": 0
     },
     {
@@ -5329,6 +6314,9 @@
           "path": "packages/schemas/src/enums.ts"
         },
         {
+          "exports": [
+            "_loadSchemaForTests"
+          ],
           "hash": "a07762e4062549fead3425b627956b868a0f009b2c17c51b37c1dcf2e30edb66",
           "path": "packages/schemas/src/index.ts"
         },
@@ -5389,6 +6377,13 @@
           "path": "packages/schemas/src/schema-versions.ts"
         },
         {
+          "exports": [
+            "_resetValidatorCacheForTests",
+            "_schemasModuleInstanceCount",
+            "compileSchema",
+            "createAjv",
+            "validatePayload"
+          ],
           "hash": "84ef45fd39f857a6df41bc1d025254be1c8d245e75074dab3c68a6087b5d7735",
           "path": "packages/schemas/src/validate.ts"
         },
@@ -5468,6 +6463,7 @@
       "name": "schemas",
       "origin": "authored",
       "role": "code",
+      "testedBy": 79,
       "unresolvedSites": 0
     },
     {
@@ -5524,6 +6520,10 @@
           "path": "scripts/__roadmap-fixtures__/valid-recompiled-sequence.json"
         },
         {
+          "exports": [
+            "applyMigration",
+            "loadManifest"
+          ],
           "hash": "c0481c140ae431c0be9c8bd82e1c54c34af065e79b1be220b28356dfeec42539",
           "path": "scripts/apply-finding-migration.mjs"
         },
@@ -5534,6 +6534,16 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "exports": [
+            "earlierWindow",
+            "fleetEntry",
+            "listPublic",
+            "pushAuthEnv",
+            "readExclusions",
+            "rejectForeignPaths",
+            "renderFleet",
+            "shallowSinceDate"
+          ],
           "hash": "fb70401604ff760dad9248512b2d9885b8e3a56e8c82fba4600030ed951c07f5",
           "path": "scripts/atlas-render.mjs",
           "sequences": [
@@ -5643,6 +6653,10 @@
         {
           "entry": "hasRealPackage",
           "entryRule": 1,
+          "exports": [
+            "findTsconfigReferenceDrift",
+            "hasRealPackage"
+          ],
           "hash": "30006ad7361c997001788605088be45ddab0f9353564098f506852927472257b",
           "path": "scripts/build.mjs",
           "sequences": []
@@ -5682,6 +6696,15 @@
         {
           "entry": "runDriftChecks",
           "entryRule": 1,
+          "exports": [
+            "countCommandMapEntries",
+            "expandGlobs",
+            "parseCheckId",
+            "parseCliArgs",
+            "parseConfigPath",
+            "printHelp",
+            "runDriftChecks"
+          ],
           "hash": "395c934a20951abc3b586fc0a6d8cfa2431429a41de4a29bc47d0bc12691ae78",
           "path": "scripts/check-doc-drift.mjs",
           "sequences": []
@@ -5693,6 +6716,17 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "exports": [
+            "applyAllowlist",
+            "applyGrandfatherManifest",
+            "classifyCoverage",
+            "formatHuman",
+            "grandfatherManifestFingerprint",
+            "loadAllowlist",
+            "loadGrandfatherManifest",
+            "runRegressionPinGate",
+            "verifyGrandfatherManifestIntegrity"
+          ],
           "hash": "b3d8bbf2b1f1b1defc153bc28231e2e9edde0b3c9c792eaa8e0df9588349a915",
           "path": "scripts/check-finding-regression-pins.mjs",
           "sequences": [
@@ -5882,6 +6916,10 @@
           "path": "scripts/check-validator-cache-singleton.test.mjs"
         },
         {
+          "hash": "c7629f145db92efab56fc0305c60741e3bfa9d2bcb3cb91616cbb2c4f85a47b5",
+          "path": "scripts/ci-atlas-diff.test.mjs"
+        },
+        {
           "hash": "641bb593651ccac448f293b31432be81fe120534327fa7c4146adb5fc8544249",
           "path": "scripts/doc-drift-patterns.json"
         },
@@ -5890,6 +6928,11 @@
           "path": "scripts/grandfathered-pins.json"
         },
         {
+          "exports": [
+            "defaultToday",
+            "isDueForRevalidation",
+            "selectDueForRevalidation"
+          ],
           "hash": "9bdf99f5c71d5f07b978bb3cb87efb417043de356212866284b3a06d5219ebd5",
           "path": "scripts/lib/revalidation-cadence.mjs"
         },
@@ -5910,12 +6953,23 @@
           "path": "scripts/pin-declarations-mutation.test.mjs"
         },
         {
+          "exports": [
+            "scanFileForDeclaredPinsReference"
+          ],
           "hash": "60053e8d2ec17a80908c570323c6639ac609cb78d2bc3d3554b3bb100623a7d3",
           "path": "scripts/pin-declarations-reference.mjs"
         },
         {
           "entry": "defaultWalkTestFiles",
           "entryRule": 4,
+          "exports": [
+            "defaultWalkTestFiles",
+            "extractDeclaredIds",
+            "forEachNode",
+            "isQualifyingTestCall",
+            "scanFileForDeclaredPins",
+            "scanRepoForDeclaredPins"
+          ],
           "hash": "f5d63d987fb7769a5c729527634ca715247f587cd9271a14936b4c7d64274d14",
           "path": "scripts/pin-declarations.mjs",
           "sequences": [
@@ -6004,6 +7058,11 @@
           "path": "scripts/stageC-ingest-rejected-exit.test.mjs"
         },
         {
+          "exports": [
+            "findLegacyStructuralHits",
+            "hasLegacyStructuralHit",
+            "suggestPinsForRepo"
+          ],
           "hash": "b232cbbe97a96476dee65062bc9683fc7f630a3a732fa32b20128bbf19f89a7d",
           "path": "scripts/suggest-pins.mjs"
         },
@@ -6014,6 +7073,9 @@
         {
           "entry": "syncVersion",
           "entryRule": 1,
+          "exports": [
+            "syncVersion"
+          ],
           "hash": "862a4a0ade2e437884624e35d73babc7d74a28b8cbb9140490a55742a121b80f",
           "path": "scripts/sync-version.mjs",
           "sequences": []
@@ -6023,7 +7085,7 @@
           "path": "scripts/sync-version.test.mjs"
         },
         {
-          "hash": "e4c52ff1ec97fb5886e2dc68897e9ff66ba4f53d85245ca53687a18db12bebdd",
+          "hash": "e663f223bf9cb4e3c75c13e6ec1d7fe9b057b8b13d3e0ca6f0161c83a3e9c1aa",
           "path": "scripts/test-floor-allowlist.json"
         }
       ],
@@ -6034,6 +7096,7 @@
       "name": "scripts",
       "origin": "authored",
       "role": "code",
+      "testedBy": 15,
       "unresolvedSites": 6
     },
     {
@@ -6058,7 +7121,22 @@
           "path": "site/public/atlas/index.html"
         },
         {
-          "hash": "57dc4ac564fdfa172cd06b3c80254fa55993f2ed42abe64a27cece3b9cf0d0f5",
+          "exports": [
+            "changesHeading",
+            "esc",
+            "flowColumns",
+            "isRepo",
+            "markdownUrl",
+            "pageDataUrl",
+            "pageTitle",
+            "renderFleet",
+            "renderFlow",
+            "renderPage",
+            "repoHref",
+            "state",
+            "triggerNoun"
+          ],
+          "hash": "3bf1a160bc5fa2c3dda8545bd03e7e873aa8122b117bf78ac174897c949d345b",
           "path": "site/public/atlas/render.js"
         },
         {
@@ -6086,7 +7164,7 @@
           "path": "site/src/components/BaseLayout.test.mjs"
         },
         {
-          "hash": "4cdeadba740d717bcfe1a9c4f3cc0ecc73948189af463684ade6c00ffb6cad34",
+          "hash": "51fc51aea8295e91b3a6dfb2cd7a12e5c8b811ed3317371a08f8aef18145003b",
           "path": "site/src/components/atlas-page.test.mjs"
         },
         {
@@ -6118,7 +7196,7 @@
           "path": "site/src/content/docs/handbook/contracts.md"
         },
         {
-          "hash": "22d1e9420794a149a6a35a5d087b9e88f34842f1b7661b44f8ad68628110dba4",
+          "hash": "15dac18a80d9499b47c0f2c3243abc956ed149ef5640c45d609d759426557f1c",
           "path": "site/src/content/docs/handbook/error-codes.md"
         },
         {
@@ -6193,6 +7271,7 @@
       "name": "site",
       "origin": "authored",
       "role": "code",
+      "testedBy": 1,
       "unresolvedSites": 0
     },
     {
@@ -6268,6 +7347,7 @@
       "name": "swarms",
       "origin": "authored",
       "role": "docs",
+      "testedBy": 0,
       "unresolvedSites": 0
     },
     {
@@ -6295,6 +7375,16 @@
           "path": "packages/verify/cli-lint-scenario.test.js"
         },
         {
+          "exports": [
+            "buildBatchLintJson",
+            "buildLintJson",
+            "originForPath",
+            "parseLintArgs",
+            "renderBatchSummary",
+            "renderLintText",
+            "runLint",
+            "walkYamlFiles"
+          ],
           "hash": "f8ff9d156ab5560d0ef5d5d2f162f794b1f4f181f0db6d1a14301dd9db835bcd",
           "path": "packages/verify/cli-lint.js"
         },
@@ -6303,6 +7393,13 @@
           "path": "packages/verify/cli-lint.test.js"
         },
         {
+          "exports": [
+            "buildJsonResult",
+            "main",
+            "parseArgs",
+            "renderExplain",
+            "run"
+          ],
           "hash": "6bedc1ecff871895f76eb127c0a4b4e1f603ffb2991c1ef35e83144e2972c51d",
           "path": "packages/verify/cli.js"
         },
@@ -6385,6 +7482,9 @@
         {
           "entry": "verify",
           "entryRule": 4,
+          "exports": [
+            "verify"
+          ],
           "hash": "aa7299fa179f2c2894bfb93b8c67b9537ba7c797237e090a38fdc5fa2d4b2159",
           "path": "packages/verify/index.js",
           "sequences": [
@@ -6465,6 +7565,9 @@
           "path": "packages/verify/package.json"
         },
         {
+          "exports": [
+            "parseRejectionReason"
+          ],
           "hash": "39ad6e98d5286abeb626f5fed4430461116990eb786ae684be5b9f0678944a7a",
           "path": "packages/verify/parse-rejection.js"
         },
@@ -6517,18 +7620,33 @@
           "path": "packages/verify/validators/f-f50e779b-retry-warn-fallback-guard.test.js"
         },
         {
+          "exports": [
+            "lintPolicy"
+          ],
           "hash": "3c17b525537d82d2bb65b5b8206e400790a808fd1aa6e4e188ca41b7dc0f2fbf",
           "path": "packages/verify/validators/lint-policy.js"
         },
         {
+          "exports": [
+            "lintScenario"
+          ],
           "hash": "ae6d7394cf3f517f20340bea69452e8a025f109b3e96f04dc1c0a4fe2d44aa21",
           "path": "packages/verify/validators/lint-scenario.js"
         },
         {
+          "exports": [
+            "validatePolicy"
+          ],
           "hash": "73ec5f4cfd16e7e0f37bb56e852e8fa737484ecfa1dc61f6a34cff8dfafdf4ee",
           "path": "packages/verify/validators/policy.js"
         },
         {
+          "exports": [
+            "buildReason",
+            "evaluatePredicate",
+            "findEmptyArrayFootguns",
+            "lintPredicate"
+          ],
           "hash": "8eb3a4bea14a8f75107559f6ffed1c8c8239d0487ace8ff7eaf5004bf83d3b71",
           "path": "packages/verify/validators/predicate.js"
         },
@@ -6541,10 +7659,18 @@
           "path": "packages/verify/validators/provenance-registry.test.js"
         },
         {
+          "exports": [
+            "githubProvenance",
+            "gitlabProvenance",
+            "provenanceForProvider"
+          ],
           "hash": "12c41f8a4522dcf0ebdc1d40deab20b0378e5c299fe8cda34d9f7102161614ee",
           "path": "packages/verify/validators/provenance.js"
         },
         {
+          "exports": [
+            "parseRunUrlRepo"
+          ],
           "hash": "bce72059f8851787e2408b00c2f43a24483190a488259f206ef1b4114b674b3c",
           "path": "packages/verify/validators/repo-binding.js"
         },
@@ -6553,18 +7679,31 @@
           "path": "packages/verify/validators/repo-binding.test.js"
         },
         {
+          "exports": [
+            "validateSchemaVersion"
+          ],
           "hash": "89880aba2d93c18208de9a2caf1c9924c0ed8e4cdee94caaff9032033e8cfc63",
           "path": "packages/verify/validators/schema-version.js"
         },
         {
+          "exports": [
+            "validateSubmissionSchema"
+          ],
           "hash": "77da6025dc8815aa6a3a5e23ac16ca251afd7cbc7416e6c76de2f58f36d5392b",
           "path": "packages/verify/validators/schema.js"
         },
         {
+          "exports": [
+            "validateRequiredSteps",
+            "validateStepResults"
+          ],
           "hash": "39ed69deefc95e5126bef59ae84231e2dffa6b221519f8d722fa6092b41f2d91",
           "path": "packages/verify/validators/steps.js"
         },
         {
+          "exports": [
+            "computeVerdict"
+          ],
           "hash": "7da5144f8f65cff1f07a19a12844678a7a7778bef774d20d0e60c4cf8547daf3",
           "path": "packages/verify/validators/verdict.js"
         },
@@ -6604,6 +7743,7 @@
       "name": "verify",
       "origin": "authored",
       "role": "code",
+      "testedBy": 71,
       "unresolvedSites": 0
     }
   ],
@@ -6732,12 +7872,17 @@
         },
         {
           "job": "build-and-test",
-          "step": "10",
-          "text": "npm run test:scripts"
+          "step": "Atlas diff on this pull request",
+          "text": "marker='<!-- atlas-diff -->'\ndelta=\"$RUNNER_TEMP/atlas-diff.md\"\nbody=\"$RUNNER_TEMP/atlas-diff-comment.md\"\ndepth=()\nif [ \"$(git rev-parse --is-shallow-repository)\" = \"true\" ]; then depth=(--depth=1); fi\nif ! git fetch --no-tags \"${depth[@]}\" origin \"+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}\"; then\n  echo \"::warning::atlas diff skipped: origin/${BASE_REF} could not be fetched\"\n  exit 0\nfi\nif ! node packages/atlas/cli.js diff --base \"origin/${BASE_REF}\" > \"$delta\"; then\n  cat \"$delta\"\n  echo \"::warning::atlas diff did not run against origin/${BASE_REF}; no comment posted\"\n  exit 0\nfi\ncat \"$delta\"\ncat \"$delta\" >> \"$GITHUB_STEP_SUMMARY\"\n{ printf '%s\\n' \"$marker\"; cat \"$delta\"; } > \"$body\"\nif [ \"$HEAD_REPO\" != \"$REPO\" ]; then\n  echo \"::notice::pull request from a fork: its token cannot comment, so the delta is in this log and the job summary\"\n  exit 0\nfi\nids=$(gh api --paginate \"repos/${REPO}/issues/${PR_NUMBER}/comments\" \\\n  --jq \".[] | select(.user.login == \\\"github-actions[bot]\\\" and (.body | contains(\\\"${marker}\\\"))) | .id\") || ids=''\nid=\"${ids%%$'\\n'*}\"\nif [ -n \"$id\" ]; then\n  gh api --method PATCH \"repos/${REPO}/issues/comments/${id}\" -F \"body=@${body}\" > /dev/null \\\n    || echo \"::warning::atlas diff comment ${id} could not be updated; the delta is in this log\"\nelse\n  gh api --method POST \"repos/${REPO}/issues/${PR_NUMBER}/comments\" -F \"body=@${body}\" > /dev/null \\\n    || echo \"::warning::atlas diff comment could not be posted; the delta is in this log\"\nfi\nexit 0\n"
         },
         {
           "job": "build-and-test",
           "step": "11",
+          "text": "npm run test:scripts"
+        },
+        {
+          "job": "build-and-test",
+          "step": "12",
           "text": "npm test"
         },
         {
@@ -6765,14 +7910,15 @@
       ],
       "name": "CI",
       "permissions": [
-        "contents:read"
+        "contents:read",
+        "pull-requests:write"
       ],
       "pushes": false,
       "reach": [
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 23
+          "files": 25
         },
         {
           "boundary": "scripts",
@@ -6888,7 +8034,7 @@
         "actions/checkout",
         "actions/setup-node"
       ],
-      "usesWorkflowToken": false
+      "usesWorkflowToken": true
     },
     {
       "commands": [
@@ -7867,8 +9013,8 @@
     }
   ],
   "generatedFrom": {
-    "commit": "8ae30a3cb4b060b9d40ab2571bac17c02e97a7dc",
-    "tracked": 1242
+    "commit": "86e7a5cc67f65bc4ebc70952c48471cf51b61410",
+    "tracked": 1253
   },
   "landings": [
     {
@@ -8750,6 +9896,17 @@
         }
       ],
       "target": "fixtures/atlas/doors",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/doors/lib/verify.test.js",
       "writers": []
     },
     {
@@ -10413,6 +11570,7 @@
       "target": "README.md"
     }
   ],
+  "testFiles": 526,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",
