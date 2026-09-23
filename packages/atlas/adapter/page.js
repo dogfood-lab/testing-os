@@ -171,13 +171,31 @@ export function orderDoors(doors) {
   ));
 }
 
+function commits(door) {
+  return (door.stages ?? []).length > 0;
+}
+
+function reaching(doors) {
+  return orderDoors(doors).filter((door) => !door.parseError && reachSize(door) > 0);
+}
+
 /**
- * The busiest door, the one the page follows: the readable door that reaches
- * the most parts. A door that reaches none is never the busiest, since there
- * would be nothing to follow through it.
+ * The busiest door, the one the page follows. A test suite reaches every part,
+ * so the widest door is usually the check, not the path work takes into the
+ * repository: of the doors that reach a part, one that commits into the
+ * repository comes first, the widest of those; with none, the widest door. A
+ * door that reaches none is never the busiest, since there would be nothing
+ * to follow through it.
  */
 export function mainDoor(doors) {
-  return orderDoors(doors).find((door) => !door.parseError && reachSize(door) > 0) ?? null;
+  const found = reaching(doors);
+  return found.find(commits) ?? found[0] ?? null;
+}
+
+// The widest door, when the page follows another; the page says why.
+function widerDoor(doors, main) {
+  const widest = reaching(doors)[0] ?? null;
+  return widest && main && widest !== main && reachSize(widest) > reachSize(main) ? widest : null;
 }
 
 function boundaryRoot(boundary) {
@@ -1227,6 +1245,10 @@ function derivedLine(ctx, main) {
   }
   if (!main) return `${parts}. Work enters through ${doors}, and none of their workflows could be read.`;
   const reach = count(reachSize(main), 'part');
+  const wider = widerDoor(ctx.doors, main);
+  if (wider) {
+    return `${parts}. Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach} and commits into the repository (${wider.name} reaches ${reachSize(wider)} but commits nothing).`;
+  }
   return `${parts}. Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach}.`;
 }
 

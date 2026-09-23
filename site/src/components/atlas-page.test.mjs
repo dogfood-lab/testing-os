@@ -93,13 +93,15 @@ test('the sentences are the ones the committed markdown carries', () => {
   const text = plain(html);
   const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8').replace(/\*\*|`/g, '');
   for (const sentence of [
-    `${page.parts} parts. Work enters through ${page.doors.length} doors; the busiest is CI, which reaches 11 parts.`,
-    'It writes to dogfood/roadmap/, indexes/, policies/repos/, records/ and reports/.',
-    'Ingest dogfood submission runs packages/ingest/run.js, packages/portfolio/generate.js, scripts/build.mjs and 2 more, reaches dogfood-swarm, findings and verify, writes to indexes/, records/ and reports/, and commits indexes/ and records/, then pushes.',
+    // CI reaches further, but the ingest door is the one that commits into the
+    // repository, so the page follows it and says why.
+    `${page.parts} parts. Work enters through ${page.doors.length} doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).`,
+    'That reaches dogfood-swarm (1 file), findings (2 files) and verify (10 files).',
+    'It commits indexes/ and records/, then pushes.',
     'self-dogfood runs packages/report/cli.js, scripts/build.mjs, scripts/sync-version.mjs and 1 more, and sends a dispatch to dogfood-lab/testing-os.',
-    'Read those in order to follow one pull request end to end.',
+    'Read those in order to follow one dogfood submission end to end.',
     'Regenerate with npx --yes @dogfood-lab/atlas map.',
-    'Inside scripts/check-finding-regression-pins.mjs, main does, in order: parse regression pins (portfolio), to json, scan repo for declared pins, canonicalize (ingest), default today and select due for revalidation.',
+    'Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.',
   ]) {
     assert.ok(text.includes(sentence), sentence);
     assert.ok(markdown.includes(sentence), `the markdown twin says it too: ${sentence}`);
@@ -452,10 +454,10 @@ test('only owner/name values are fetched', () => {
 test('the flow picture is described in words and names the main door', () => {
   const svg = render.renderFlow(page);
   assert.match(svg, /^<svg [^>]*role="img"[^>]*aria-labelledby="atlasFlowTitle atlasFlowDesc"/);
-  assert.match(svg, /<title id="atlasFlowTitle">How work flows through CI<\/title>/);
+  assert.match(svg, /<title id="atlasFlowTitle">How work flows through Ingest dogfood submission<\/title>/);
   const desc = /<desc id="atlasFlowDesc">([^<]+)<\/desc>/.exec(svg);
   assert.ok(desc, 'desc');
-  assert.ok(desc[1].includes('CI (.github/workflows/ci.yml)'), desc[1]);
+  assert.ok(desc[1].includes('Ingest dogfood submission (.github/workflows/ingest.yml)'), desc[1]);
   const html = render.renderPage(page, { repo: page.repo });
   assert.ok(html.indexOf('<svg') > html.indexOf('<h2>What this is</h2>'));
   assert.ok(html.indexOf('<svg') < html.indexOf('<h2>What comes in</h2>'));

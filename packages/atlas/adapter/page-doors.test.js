@@ -140,6 +140,15 @@ describe('the busiest door', () => {
     assert.equal(mainDoor([ci, nightly]), nightly);
   });
 
+  it('is a door that commits into the repository before a wider one that does not', () => {
+    const ci = at('ci', [{ event: 'push' }], 11);
+    const ingest = { ...at('ingest', [{ event: 'repository_dispatch' }], 7), stages: ['records/'] };
+    assert.equal(mainDoor([ci, ingest]), ingest);
+    // A door that commits but reaches nothing is not followed; the widest is.
+    const baseline = { ...at('baseline', [{ event: 'workflow_dispatch' }], 0), stages: ['reports/x.txt'] };
+    assert.equal(mainDoor([ci, baseline]), ci);
+  });
+
   it('is a push or pull request door when a scheduled one reaches as far', () => {
     const nightly = at('a-nightly', [{ event: 'schedule', cron: '0 4 * * 1' }, { event: 'workflow_dispatch' }], 2);
     const ci = at('ci', [{ event: 'pull_request' }], 2);

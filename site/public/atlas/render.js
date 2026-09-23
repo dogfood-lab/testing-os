@@ -206,6 +206,12 @@ function derivedLine(ctx) {
   if (!ctx.main && ctx.doors.some((door) => !door.parseError)) return `${parts}. Work enters through ${doors}, and none of them runs a file this map can see.`;
   if (!ctx.main) return `${parts}. Work enters through ${doors}, and none of their workflows could be read.`;
   const reach = count(arr(ctx.main.reach).length, 'part');
+  // page.js follows a door that commits over a wider one that does not, and
+  // says so; page.json lists the doors widest first, so the first is the widest.
+  const widest = ctx.doors.find((door) => !door.parseError && arr(door.reach).length > 0);
+  if (widest && widest !== ctx.main && arr(widest.reach).length > arr(ctx.main.reach).length) {
+    return `${parts}. Work enters through ${doors}; the busiest is ${ctx.main.name}, which reaches ${reach} and commits into the repository (${widest.name} reaches ${arr(widest.reach).length} but commits nothing).`;
+  }
   return `${parts}. Work enters through ${doors}; the busiest is ${ctx.main.name}, which reaches ${reach}.`;
 }
 

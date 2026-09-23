@@ -95,7 +95,7 @@ describe('doors', () => {
     ]);
     assert.deepEqual(
       door('checks.yml').commands.map((command) => [command.job, command.step]),
-      [['named', '0'], ['all', '0'], ['all', '1']],
+      [['named', '0'], ['all', '0'], ['all', '1'], ['all', '2']],
     );
   });
 
@@ -126,6 +126,7 @@ describe('doors', () => {
     assert.deepEqual(door('checks.yml').runs, [
       { path: 'packages/cli/check.js', job: 'all' },
       { path: 'packages/cli/check.js', job: 'named' },
+      { path: 'site/check.js', job: 'all' },
       { path: 'tools/render.js', job: 'all' },
     ]);
   });

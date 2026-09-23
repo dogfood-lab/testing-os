@@ -412,10 +412,20 @@ release trigger reads "when a release is published" for that type and "on a rele
 otherwise, and a push filtered by branches and tags names both. A path under a directory the door
 also runs is not named again unless the commands name it and only a tool reached the directory,
 what the commands name comes before what a tool matched, and a directory that spans parts says
-how many. The busiest door is the one that reaches most parts; a
-door that reaches none is never the busiest, and a schedule-only door loses a tie. When no door
-reaches a part the page says so and follows none. On backpropagate the busiest door is CI, which
-reaches four parts, not the weekly training smoke.
+how many.
+
+The busiest door, the one the page follows, is the door a newcomer should read first. With tools
+read properly a test suite reaches every part, so reach alone would name CI everywhere. Of the
+doors that reach a part, one that commits into the repository (non-empty `stages`) comes first,
+the widest of those; with none, the widest door. A door that reaches none is never the busiest,
+and a schedule-only door loses a tie. When the busiest is not the widest the page says why: on
+this repository "the busiest is Ingest dogfood submission, which reaches 7 parts and commits into
+the repository (CI reaches 11 but commits nothing)". The rule counts a commit, not `landings`:
+CI's reach holds the code that writes `indexes/` and `records/`, so it has landings of its own,
+and "writes nothing" would contradict its own paragraph. On backpropagate no door both commits
+and reaches a part (mutmut commits its baseline and runs nothing the map sees), so the busiest
+is CI, which reaches four parts, not the weekly training smoke; on ai-rpg-engine it is CI too.
+When no door reaches a part the page says so and follows none.
 
 A workflow that does not parse is recorded as `{ file, name, parseError: true }` and the rest of the
 doors are mapped. The host check does not compare doors yet; a later slice decides what their drift

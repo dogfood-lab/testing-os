@@ -22,7 +22,7 @@ const HEADINGS = [
   '# doors: how it works',
   '## What this is',
   '## What comes in',
-  '## What happens through Checks',
+  '## What happens through Ingest',
   '## Who reads the results',
   '## The other doors',
   '## What breaks what',
@@ -76,8 +76,13 @@ function section(markdown, heading) {
   return markdown.slice(start, next === -1 ? markdown.length : next);
 }
 
-// Checks and Ingest reach as many parts; without Checks the main door is
-// Ingest, whose files carry sequences.
+// Ingest commits into the repository, so it is the main door although Checks
+// reaches further; without Ingest the main door is Checks, whose files carry
+// no sequences and whose readers are all found by parsing.
+function withoutIngest(structure) {
+  return { ...structure, doors: structure.doors.filter((door) => !door.file.endsWith('ingest.yml')) };
+}
+
 function withoutChecks(structure) {
   return { ...structure, doors: structure.doors.filter((door) => !door.file.endsWith('checks.yml')) };
 }
@@ -118,10 +123,12 @@ describe('atlas page', () => {
     const date = doors.statistics.generatedAt.slice(0, 10);
     assert.ok(markdown.startsWith(`# doors: how it works\n\nMapped at ${date} from commit ${commit}.\n`));
     const exact = {
-      '## What this is': '9 parts. Work enters through 5 doors; the busiest is Checks, which reaches 2 parts.',
+      // Checks reaches one part more, but Ingest is the door that commits into
+      // the repository, so the page follows it and says why.
+      '## What this is': '9 parts. Work enters through 5 doors; the busiest is Ingest, which reaches 2 parts and commits into the repository (Checks reaches 3 but commits nothing).',
       '## What comes in': '3. **weekly.** On a push touching 1 path; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC. Runs tools/render.js.',
-      '## What happens through Checks': '2. That reaches lib (1 file).',
-      '## Who reads the results': '- **reports/** has no reader in this repository.',
+      '## What happens through Ingest': '2. That reaches lib (4 files).',
+      '## Who reads the results': '- **records/** has no reader in this repository.',
       '## The other doors': '**weekly** runs tools/render.js, reaches lib, writes to reports/, and sends a dispatch to acme/hub.',
       '## What breaks what': '- **lib** is imported by 1 part (tools) and sits on the path of 4 doors.',
       '## What tends to change together': 'No two source files changed together often enough to name.',
@@ -130,9 +137,9 @@ describe('atlas page', () => {
       '## Helpers that look duplicated': '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.',
       '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
       '## Hand-authored': 'People write .github/, policies/, the repository root and site/. Nothing in this repository writes to them.',
-      // tools/render.js imports ../lib/schema.js first; lib names no entry
-      // point, and the file the door's code opens is named instead of lib/.
-      '## Where to start': '.github/workflows/checks.yml → tools/render.js → lib/schema.js',
+      // tools/ingest.js imports lib/policy.js first; lib names no entry point,
+      // and the file the door's code opens is named instead of lib/.
+      '## Where to start': '.github/workflows/ingest.yml → tools/ingest.js → lib/policy.js → indexes/ → site/index.html',
       '## What this map cannot see': REGENERATE,
     };
     for (const [heading, sentence] of Object.entries(exact)) {
@@ -223,7 +230,7 @@ describe('atlas page', () => {
       ['auditRecord', 'lib/policy.js', 3],
       ['sealRecord', 'lib/store.js', 5],
     ]);
-    assert.deepEqual(JSON.parse(page(doors).json).sequences, []);
+    assert.deepEqual(JSON.parse(page(doors, { structure: withoutIngest }).json).sequences, []);
   });
 
   it('follows a called function in the entry\'s own part once it has three steps, and names no part for it', () => {
@@ -312,7 +319,7 @@ describe('atlas page', () => {
     );
     const clear = buildPage({
       structure: {
-        ...doors.structure,
+        ...withoutIngest(doors.structure),
         boundaries: doors.structure.boundaries.map((boundary) => ({ ...boundary, dynamicReads: 0, dynamicWrites: 0, unresolvedSites: 0 })),
       },
       statistics: { ...doors.statistics, confidence: { level: 'high' } },
@@ -419,15 +426,12 @@ describe('atlas page', () => {
     const statistics = JSON.parse(readFileSync(join(atlas, 'statistics.json'), 'utf8'));
     const structure = JSON.parse(readFileSync(join(atlas, 'structure.json'), 'utf8'));
     const own = buildPage({ structure, statistics, document: readBoundaryFile(REPO_ROOT), repoName: 'dogfood-lab/testing-os' });
-    // CI is this repository's busiest door; the ingest door's files carry the
-    // deepest order of work, so it is followed alone to measure the bound.
-    const ingest = buildPage({
-      structure: { ...structure, doors: structure.doors.filter((door) => door.file === '.github/workflows/ingest.yml') },
-      statistics,
-      document: readBoundaryFile(REPO_ROOT),
-      repoName: 'dogfood-lab/testing-os',
-    });
-    const happens = section(ingest.markdown, '## What happens through Ingest dogfood submission').split('\n');
+    // CI reaches further, but the ingest door commits into the repository, so
+    // it is the one the page follows, and the page says why.
+    assert.ok(section(own.markdown, '## What this is').split('\n').includes(
+      '22 parts. Work enters through 6 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).',
+    ));
+    const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
     assert.ok(followed.length <= 5);
     assert.ok(followed.some((line) => line.includes('**Verify** (verify) runs, in order:')));
@@ -541,13 +545,16 @@ describe('atlas page', () => {
     assert.deepEqual(Object.keys(data), [...Object.keys(data)].sort());
     assert.equal(data.repo, 'acme/doors');
     assert.equal(data.parts, 9);
-    assert.equal(data.mainDoor, '.github/workflows/checks.yml');
+    assert.equal(data.mainDoor, '.github/workflows/ingest.yml');
     assert.deepEqual(data.doors.map((door) => door.name), ['Checks', 'Ingest', 'weekly', 'Manual', 'broken']);
     assert.deepEqual(data.doors[2].triggers, ['on a push touching 1 path', 'on a schedule (`0 6 * * 1`), Monday at 06:00 UTC']);
     assert.deepEqual(data.doors[2].sends, ['sends a dispatch to acme/hub']);
-    assert.deepEqual(data.startHere, ['.github/workflows/checks.yml', 'tools/render.js', 'lib/schema.js']);
+    assert.deepEqual(data.startHere, ['.github/workflows/ingest.yml', 'tools/ingest.js', 'lib/policy.js', 'indexes/', 'site/index.html']);
     assert.deepEqual(data.authored, ['.github/', 'policies/', 'root', 'site/']);
-    assert.deepEqual(data.readers, [{ readers: [], target: 'reports/' }]);
+    assert.deepEqual(data.readers, [
+      { readers: ['site/index.html (found by text)', 'tools/render.js', 'tools/report.py'], target: 'indexes/' },
+      { readers: [], target: 'records/' },
+    ]);
     assert.equal(data.limits.at(-1), `Statistics confidence is low: ${doors.statistics.confidence.reason.replace(/\.$/, '')}.`);
   });
 
