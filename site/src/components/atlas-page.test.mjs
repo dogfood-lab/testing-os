@@ -63,10 +63,93 @@ test('the sentences are the ones the committed markdown carries', () => {
     'Release runs scripts/build.mjs, scripts/check-doc-drift.mjs, scripts/check-finding-regression-pins.mjs and 1 more, reaches ingest and portfolio, publishes to npm, and creates a GitHub release.',
     'Read those in order to follow one dogfood submission end to end.',
     'Regenerate with npx --yes @dogfood-lab/atlas map.',
+    'Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.',
   ]) {
     assert.ok(text.includes(sentence), sentence);
     assert.ok(markdown.includes(sentence), `the markdown twin says it too: ${sentence}`);
   }
+});
+
+// The section's own markup, so a nested list is read where it sits.
+function happensSection(html) {
+  const start = html.indexOf('<h2>What happens through ');
+  return html.slice(start, html.indexOf('</section>', start));
+}
+
+// The <li> items directly inside the <ol> that opens at `from`, each with
+// its own markup, so a list nested inside an item stays inside that item.
+function listItems(html, from) {
+  const items = [];
+  let depth = 0;
+  let start = -1;
+  const tags = /<(\/?)(ol|li)>/g;
+  tags.lastIndex = from;
+  for (let match = tags.exec(html); match; match = tags.exec(html)) {
+    const [, close, tag] = match;
+    if (tag === 'ol') {
+      depth += close ? -1 : 1;
+      if (depth === 0) return items;
+    } else if (depth === 1 && !close) {
+      start = tags.lastIndex;
+    } else if (depth === 1 && close) {
+      items.push(html.slice(start, match.index));
+    }
+  }
+  return items;
+}
+
+function plain(html) {
+  return html.replace(/<[^>]+>/g, '');
+}
+
+test('the order of work sits under step 1, as the markdown nests it', () => {
+  const section = happensSection(render.renderPage(page, { repo: page.repo }));
+  const steps = listItems(section, section.indexOf('<ol>'));
+  const inside = listItems(steps[0], steps[0].indexOf('<ol>'));
+  const expected = page.sequences.reduce((sum, sequence) => sum + 1 + sequence.inner.length, 0);
+  assert.equal(inside.length, expected, 'one item per sequence and per inner function');
+  assert.ok(plain(inside[0]).startsWith('Inside packages/ingest/run.js, ingest does, in order:'), plain(inside[0]));
+  const blob = `https://github.com/dogfood-lab/testing-os/blob/${page.commit}/`;
+  assert.ok(inside[0].includes(`<a href="${blob}packages/ingest/run.js"><code>packages/ingest/run.js</code></a>`), 'the file links to the mapped commit');
+  for (const step of steps.slice(1)) assert.equal(step.includes('<ol>'), false, 'only step 1 carries the order of work');
+
+  const verify = inside.find((item) => item.startsWith('Verify in verify does, in order:'));
+  assert.ok(verify, 'the verify inner item');
+  const verifySteps = listItems(verify, verify.indexOf('<ol>')).map(plain);
+  assert.equal(verifySteps.length, 8, 'eight steps read as a list');
+  assert.equal(verifySteps[0], 'parse run url repo');
+  assert.equal(verifySteps.at(-1), 'compute verdict');
+  assert.deepEqual(verifySteps, page.sequences[0].inner.find((inner) => inner.name === 'verify').steps.map((step) => step.phrase));
+  const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8');
+  const lines = markdown.split(/\r?\n/);
+  const lead = lines.indexOf('   5. Verify in verify does, in order:');
+  assert.ok(lead !== -1, 'the markdown nests verify the same way');
+  assert.deepEqual(lines.slice(lead + 1, lead + 9).map((line) => line.replace(/^\s+\d+\. /, '')), verifySteps);
+
+  const isDuplicate = inside.find((item) => item.startsWith('Is duplicate in ingest'));
+  assert.equal(isDuplicate.includes('<ol>'), false, 'seven steps or fewer read as one sentence');
+  assert.equal(isDuplicate, 'Is duplicate in ingest does, in order: is unsafe segment and parse rejection reason (verify).');
+});
+
+test('more than twelve steps list twelve and count the rest', () => {
+  const steps = Array.from({ length: 14 }, (_, index) => ({ name: `step${index}`, part: 'ingest', phrase: `step ${index}` }));
+  const fixture = { ...page, sequences: [{ entry: 'main', file: 'packages/ingest/run.js', inner: [], part: 'ingest', phrase: 'main', steps }] };
+  const section = happensSection(render.renderPage(fixture, { repo: page.repo }));
+  const inside = listItems(section, section.indexOf('<ol>', section.indexOf('<ol>') + 1));
+  const listed = listItems(inside[0], inside[0].indexOf('<ol>'));
+  assert.equal(listed.length, 12);
+  assert.equal(listed.at(-1), 'step 11, and 2 more');
+});
+
+test('a page.json without sequences renders the section as before', () => {
+  const { sequences, ...older } = page;
+  assert.ok(Array.isArray(sequences) && sequences.length > 0, 'this repository has sequences to leave out');
+  const section = happensSection(render.renderPage(older, { repo: page.repo }));
+  const steps = listItems(section, section.indexOf('<ol>'));
+  assert.equal((section.match(/<ol>/g) ?? []).length, 1, 'no nested list');
+  assert.ok(plain(steps[0]).startsWith('The workflow runs packages/ingest/run.js'));
+  assert.equal(section.includes('in order:'), false);
+  assert.equal(happensSection(render.renderPage({ ...page, sequences: [] }, { repo: page.repo })), section, 'an empty list is the same as none');
 });
 
 test('file paths link to the blob at the mapped commit, places to the tree', () => {
@@ -92,6 +175,14 @@ test('every string from JSON is escaped before it reaches the markup', () => {
     breaks: [{ kind: 'part', name: hostile, importedBy: [hostile], doors: 1 }],
     readers: [{ target: 'indexes/', readers: [hostile] }],
     limits: [hostile],
+    sequences: [{
+      entry: hostile,
+      file: `${hostile}.js`,
+      part: hostile,
+      phrase: hostile,
+      steps: [{ part: hostile, phrase: hostile }, { phrase: hostile }],
+      inner: [{ file: `${hostile}.js`, part: null, phrase: hostile, steps: [{ phrase: hostile }, { phrase: hostile }] }],
+    }],
   };
   const html = render.renderPage(fixture, {});
   assert.equal(html.includes('<script>'), false);

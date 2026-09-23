@@ -14,6 +14,8 @@
 
 const RUNS_SHOWN = 3;
 const READERS_DRAWN = 6;
+const SENTENCE_STEPS = 7;
+const LISTED_STEPS = 12;
 const REPO = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/;
 const COMMIT = /^[0-9a-f]{7,40}$/i;
 const PATH = /^[A-Za-z0-9._@+-]+(?:\/[A-Za-z0-9._@+-]+)*\/?$/;
@@ -234,8 +236,57 @@ function doorSteps(ctx, door) {
   return steps;
 }
 
+// Another part is named after the first step that goes into it, once. The
+// name is the part's id as page.json keeps it, as every other part name on
+// this page is; the markdown words a root-level part as the repository root.
+function stepTexts(steps, ownPart) {
+  const named = new Set();
+  return arr(steps).filter((step) => step && typeof step === 'object').map((step) => {
+    const notes = [];
+    const part = step.part == null ? null : str(step.part);
+    if (part != null && part !== ownPart && !named.has(part)) {
+      named.add(part);
+      notes.push(part);
+    }
+    const collapsed = Number(step.count) || 0;
+    if (collapsed > 0) notes.push(`${collapsed} steps`);
+    const phrase = str(step.phrase);
+    return esc(notes.length > 0 ? `${phrase} (${notes.join(', ')})` : phrase);
+  });
+}
+
+// Up to seven steps read as one sentence; more read as a numbered list of at
+// most twelve, the last carrying how many were left off.
+function inOrder(lead, texts) {
+  if (texts.length <= SENTENCE_STEPS) return `${lead} ${list(texts)}.`;
+  const items = texts.slice(0, LISTED_STEPS);
+  if (texts.length > LISTED_STEPS) items[items.length - 1] += `, and ${texts.length - LISTED_STEPS} more`;
+  return `${lead}${ol(items)}`;
+}
+
+function sequenceItems(ctx) {
+  const items = [];
+  for (const sequence of arr(ctx.page.sequences)) {
+    if (!sequence || typeof sequence !== 'object') continue;
+    const own = sequence.part == null ? null : str(sequence.part);
+    items.push(inOrder(`Inside ${pathHtml(ctx, sequence.file)}, ${esc(sequence.phrase)} does, in order:`, stepTexts(sequence.steps, own)));
+    for (const inner of arr(sequence.inner)) {
+      if (!inner || typeof inner !== 'object') continue;
+      const part = inner.part == null ? null : str(inner.part);
+      const where = part != null ? esc(part) : pathHtml(ctx, inner.file);
+      items.push(inOrder(`${esc(capitalize(str(inner.phrase)))} in ${where} does, in order:`, stepTexts(inner.steps, part)));
+    }
+  }
+  return items;
+}
+
+// The order of work inside the files the door runs sits under the step that
+// runs them. A page.json written before sequences existed has none to show.
 function happens(ctx) {
-  return section(`What happens through ${str(ctx.main.name)}`, ol(doorSteps(ctx, ctx.main)));
+  const steps = doorSteps(ctx, ctx.main);
+  const inside = sequenceItems(ctx);
+  if (inside.length > 0) steps[0] = `${steps[0]}${ol(inside)}`;
+  return section(`What happens through ${str(ctx.main.name)}`, ol(steps));
 }
 
 function readsSection(ctx) {
