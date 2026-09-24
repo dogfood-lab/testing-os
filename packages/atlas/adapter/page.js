@@ -315,8 +315,8 @@ function runKinds(door) {
 // covers. A directory that is only checked never stands for a path that is
 // run. What the commands name comes before what a tool's patterns matched, so
 // a door that runs a script and a test suite leads with the script. A
-// package names the code it loads before the data it exports. Given a kind,
-// only the paths of that kind are named.
+// package names its entry first, then the code it loads before the data it
+// exports. Given a kind, only the paths of that kind are named.
 function shownRuns(door, kind = null) {
   const paths = runPaths(door);
   const kinds = runKinds(door);
@@ -328,6 +328,7 @@ function shownRuns(door, kind = null) {
     .filter((path) => !dirs.some((dir) => within(path, dir)))
     .filter((path) => kind == null || kinds.get(path) === kind)
     .sort((a, b) => Number(!named.has(a)) - Number(!named.has(b))
+      || Number(a !== door.entry) - Number(b !== door.entry)
       || (installed(door) ? Number(!isCodePath(a)) - Number(!isCodePath(b)) : 0) || cmp(a, b));
 }
 
@@ -1692,7 +1693,8 @@ function startHere(ctx, main) {
   const filesIn = (path) => depthZero.find((entry) => entry.boundary === runPart(ctx, path))?.files ?? 0;
   const readable = (path) => runsAsCode(path) && !ctx.fileOf.get(path)?.noStatements;
   let current = null;
-  for (const path of [...paths].sort((a, b) => filesIn(b) - filesIn(a) || cmp(a, b))) {
+  // A package is read from what an import of its name loads.
+  for (const path of [...paths].sort((a, b) => Number(a !== main.entry) - Number(b !== main.entry) || filesIn(b) - filesIn(a) || cmp(a, b))) {
     const file = path.endsWith('/') ? fileInRun(ctx, main, path) : path;
     if (file != null && readable(file)) {
       current = file;

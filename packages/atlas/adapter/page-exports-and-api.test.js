@@ -31,8 +31,12 @@ describe('a package that exports several files', () => {
   it('loads every subpath its exports name, counted past three', () => {
     const pkg = structure.doors.find((door) => door.kind === 'package');
     assert.deepEqual(pkg.runs.map((run) => run.path), ['schema.json', 'src/a.js', 'src/b.js', 'src/c.js', 'src/index.js']);
-    // The code it loads is named before the data it exports.
-    assert.match(markdown, /\*\*@fixture\/exports-and-api\*\* \(the package people import\)\. Loads src\/a\.js, src\/b\.js, src\/c\.js and 2 more\./);
+    // Its entry leads, then the code it loads, then the data it exports.
+    assert.equal(pkg.entry, 'src/index.js');
+    assert.match(markdown, /\*\*@fixture\/exports-and-api\*\* \(the package people import\)\. Loads src\/index\.js, src\/a\.js, src\/b\.js and 2 more\./);
+    // Followed alone, the package is read from its entry.
+    const alone = buildPage({ structure: { ...structure, doors: structure.doors.filter((door) => door.kind === 'package') }, statistics: {}, document: {}, repoName: 'fixture/exports-and-api' });
+    assert.equal(JSON.parse(alone.json).startHere[0], 'src/index.js');
   });
 });
 
