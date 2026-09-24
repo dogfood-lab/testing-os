@@ -5,7 +5,29 @@
     "root",
     "site/"
   ],
-  "breaks": [],
+  "breaks": [
+    {
+      "calledBy": [
+        "ui"
+      ],
+      "doors": 1,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "server",
+      "partLabel": "server"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "desktop"
+      ],
+      "target": "apps/desktop/msix/Assets/",
+      "writers": [
+        "desktop"
+      ]
+    }
+  ],
   "changes": {
     "fileCounts": {
       "added": 0,
@@ -16,8 +38,48 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI no longer runs packages/server/src/engine-manager.test.ts, packages/server/src/presets.test.ts, packages/server/src/state.test.ts and 1 more.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "packages/server/src/engine-manager.test.ts",
+          "packages/server/src/presets.test.ts",
+          "packages/server/src/state.test.ts",
+          "packages/server/src/version-alignment.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "apps/desktop/msix/layout/ is now written by apps/desktop/msix/build-msix.ps1.",
+        "subjects": [
+          "apps/desktop/msix/layout/",
+          "apps/desktop/msix/build-msix.ps1"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "apps/desktop/msix/layout/Assets/ is now written by apps/desktop/msix/build-msix.ps1.",
+        "subjects": [
+          "apps/desktop/msix/layout/Assets/",
+          "apps/desktop/msix/build-msix.ps1"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "apps/desktop/msix/AppxManifest.xml is now read by apps/desktop/msix/build-msix.ps1.",
+        "subjects": [
+          "apps/desktop/msix/AppxManifest.xml",
+          "apps/desktop/msix/build-msix.ps1"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 17 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 107 files changed content.",
+        "sentence": "107 files changed content, across 7 parts.",
         "subjects": []
       }
     ],
@@ -25,7 +87,7 @@
       "commit": "26647adb400f0def524ecde5694cca44e4628090",
       "generatedAt": "2026-09-24T08:37:30.625Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -40,7 +102,7 @@
         "server",
         "ui"
       ],
-      "relation": "none",
+      "relation": "b-calls-a",
       "shared": 6
     },
     {
@@ -55,7 +117,7 @@
         "server",
         "ui"
       ],
-      "relation": "none",
+      "relation": "b-calls-a",
       "shared": 5
     },
     {
@@ -70,7 +132,7 @@
         "server",
         "ui"
       ],
-      "relation": "none",
+      "relation": "b-calls-a",
       "shared": 6
     },
     {
@@ -85,7 +147,7 @@
         "server",
         "ui"
       ],
-      "relation": "none",
+      "relation": "b-calls-a",
       "shared": 5
     },
     {
@@ -100,7 +162,7 @@
         "server",
         "ui"
       ],
-      "relation": "none",
+      "relation": "b-calls-a",
       "shared": 5
     }
   ],
@@ -119,6 +181,7 @@
         "packages/ui/src/"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -128,7 +191,7 @@
         {
           "boundary": "server",
           "depth": 0,
-          "files": 13
+          "files": 8
         },
         {
           "boundary": "ui",
@@ -137,14 +200,11 @@
         }
       ],
       "runs": [
-        "packages/server/src/engine-manager.test.ts",
-        "packages/server/src/presets.test.ts",
         "packages/server/src/routes/api.test.ts",
-        "packages/server/src/routes/events.test.ts",
-        "packages/server/src/state.test.ts",
-        "packages/server/src/version-alignment.test.ts"
+        "packages/server/src/routes/events.test.ts"
       ],
-      "runsCount": 6,
+      "runsCount": 2,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -156,6 +216,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -173,6 +234,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site on a push"
       ],
@@ -196,15 +258,24 @@
       ]
     },
     {
+      "place": "apps/desktop/msix/layout/",
+      "writers": [
+        "apps/desktop/msix/build-msix.ps1"
+      ]
+    },
+    {
       "place": "apps/desktop/src-tauri/icons/",
       "writers": [
         "apps/desktop/src-tauri/gen-icons.mjs"
       ]
     }
   ],
-  "generatedAt": "2026-09-24T08:56:41.537Z",
+  "generatedAt": "2026-09-24T11:54:20.523Z",
   "limits": [
     "2 writes and 12 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "4 test files under `packages/server/src/` are not run by CI on Linux, where the shell expands `**` as one directory level.",
+    "ui calls server over HTTP at 13 routes, a link no import shows: the map draws it, and no door's reach follows it.",
+    "There is a Tauri app under apps/desktop/ (2 Rust files) that no workflow builds; the map reads no Rust, so what it does is not on this page.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -224,7 +295,7 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "packages/server/src/index.ts"
+    "packages/server/src/server.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -236,15 +307,9 @@
   "unnamedWrites": 0,
   "unread": [
     {
-      "place": "apps/desktop/msix/Assets/",
+      "place": "apps/desktop/msix/layout/",
       "writers": [
-        "apps/desktop/msix/gen-assets.mjs"
-      ]
-    },
-    {
-      "place": "apps/desktop/src-tauri/icons/",
-      "writers": [
-        "apps/desktop/src-tauri/gen-icons.mjs"
+        "apps/desktop/msix/build-msix.ps1"
       ]
     }
   ],
@@ -258,5 +323,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 2
+  "written": 3
 }

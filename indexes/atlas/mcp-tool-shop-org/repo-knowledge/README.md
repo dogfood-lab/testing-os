@@ -15,15 +15,15 @@ Mapped at 2026-09-24 from commit 4435870.
 - And 2 more changes to doors.
 - .github/workflows/ci.yml is now read by test/build-health.test.ts, test/doctor.test.ts, test/feed.test.ts, test/health-commands.test.ts, test/migration-009.test.ts and test/table.test.ts.
 - .github/workflows/release.yml is now read by test/build-health.test.ts.
-- CHANGELOG.md is now also read by test/version.test.ts.
-- And 9 more new writers and readers of places.
+- CHANGELOG.md is now also read by src/sync/local.ts and test/version.test.ts.
+- And 12 more new writers and readers of places.
 - data was generated and is now authored.
 - 775 files changed content, across 10 parts.
 
 ## What comes in
 
 1. **CI.** On a pull request touching 14 paths; on a push to main touching 14 paths; or by hand. Runs scripts/postbuild.js and test/; checks src/.
-2. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs scripts/gen-audit-report.mjs, scripts/gen-worklist.mjs, scripts/postbuild.js and 1 more; checks src/.
+2. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs scripts/gen-audit-report.mjs, scripts/gen-worklist.mjs, scripts/postbuild.js and 48 more; checks src/.
 3. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/repo-knowledge** (the package people import). Loads src/index.ts and src/mcp/server.ts.
 5. **rk** (a command people run). Runs src/cli.ts.
@@ -34,17 +34,17 @@ Mapped at 2026-09-24 from commit 4435870.
 
 ## Who reads the results
 
-CI writes nothing in the files this map could read; 3 files could not be.
+CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs scripts/gen-audit-report.mjs, scripts/gen-worklist.mjs, scripts/postbuild.js and 1 more, checks src/, publishes to npm on a tag push, and creates a GitHub release on a tag push.
+**Release** runs scripts/gen-audit-report.mjs, scripts/gen-worklist.mjs, scripts/postbuild.js and 48 more, checks src/, publishes to npm on a tag push, and creates a GitHub release on a tag push.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on a push to main.
 
 **@mcptoolshop/repo-knowledge** (the package people import) loads src/index.ts and src/mcp/server.ts.
 
-**rk** (a command people run) runs src/cli.ts and runs gh.
+**rk** (a command people run) runs src/cli.ts and runs gh and git.
 
 ## What breaks what
 
@@ -78,7 +78,7 @@ Window: 180 days; a pair counts from 3 shared commits, since 3 source files reac
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike in the files this map could read; 3 files could not be.
+No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
@@ -94,17 +94,16 @@ People write .claude/, .github/, assets/, data/, research/, site/ and templates/
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts
+src/cli.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of rk end to end. This path follows rk (a command people run) from its entry, since CI runs only tests and scripts that import no code here.
 
 ## What this map cannot see
 
 - 1 import site could not be resolved.
-- 3 files use syntax the parser cannot read (src/sync/local.ts, test/fsck.test.ts and test/sync-recursive-local.test.ts), so what they import is not known: 2 in test (`typeof import(…)` as a type argument), 1 in src (an import type followed by `[]`).
 - 3 writes and 27 reads use paths built at run time and are not named here.
-- 6 writes and 71 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 11 commands are built at run time and not followed, 9 of them in tests.
+- 6 writes and 86 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 2 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

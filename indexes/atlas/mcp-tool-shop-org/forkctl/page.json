@@ -28,8 +28,37 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": ".github/workflows/ is now read by src/lib/rename/identity/simple-text.ts.",
+        "subjects": [
+          ".github/workflows/",
+          "src/lib/rename/identity/simple-text.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "LICENSE is now also read by src/lib/rename/identity/simple-text.ts.",
+        "subjects": [
+          "LICENSE",
+          "src/lib/rename/identity/simple-text.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "README.md is now also read by src/lib/rename/identity/simple-text.ts.",
+        "subjects": [
+          "README.md",
+          "src/lib/rename/identity/simple-text.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 2 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -37,7 +66,7 @@
       "commit": "31ad2f423e60a56a5c82487bc2c371e2f4bd0d7d",
       "generatedAt": "2026-09-24T08:48:55.872Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -53,6 +82,7 @@
         "src/"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -113,6 +143,7 @@
         "tests/sync.test.ts"
       ],
       "runsCount": 40,
+      "runsMore": 47,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -124,6 +155,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -141,6 +173,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -153,6 +186,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#@mcptoolshop/forkctl",
       "kind": "package",
@@ -170,6 +204,7 @@
         "src/index.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [],
@@ -178,6 +213,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#forkctl",
       "kind": "command",
@@ -195,6 +231,7 @@
         "src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [
         "changes other repositories through the GitHub API"
       ],
@@ -204,6 +241,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#forkctl-mcp",
       "kind": "command",
@@ -221,6 +259,7 @@
         "src/server.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [
         "changes other repositories through the GitHub API"
       ],
@@ -233,13 +272,12 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-24T08:56:08.850Z",
+  "generatedAt": "2026-09-24T11:51:19.561Z",
   "limits": [
     "1 import site could not be resolved.",
-    "7 files in src use syntax the parser cannot read (src/lib/rename/identity/go-mod.ts, src/lib/rename/identity/package-json.ts, src/lib/rename/identity/simple-text.ts and 4 more), so what they import is not known: an import type followed by `[]` (7).",
-    "1 write and 1 read use paths built at run time and are not named here.",
-    "7 writes and 7 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "1 command is built at run time and not followed.",
+    "8 writes and 8 reads use paths built at run time and are not named here.",
+    "26 writes and 22 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "3 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -256,20 +294,20 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/forkctl",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "package.json#forkctl",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "src/index.ts"
+    "src/cli.ts"
   ],
+  "startReason": "This path follows forkctl (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 60,
   "testedBy": {
     "src": 51
   },
-  "unnamedWrites": 1,
+  "unnamedWrites": 8,
   "unread": [],
-  "unreadFiles": 7,
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],

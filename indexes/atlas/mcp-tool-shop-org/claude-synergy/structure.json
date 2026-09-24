@@ -6321,7 +6321,7 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 1,
+      "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
@@ -6378,7 +6378,6 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
-      "outsideReads": 2,
       "outsideWrites": 1,
       "role": "code",
       "testedBy": 0,
@@ -7892,7 +7891,7 @@
       "outsideReads": 43,
       "outsideWrites": 9,
       "role": "code",
-      "testedBy": 44,
+      "testedBy": 45,
       "unresolvedSites": 0
     },
     {
@@ -7968,8 +7967,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 4,
-      "dynamicSpawnsInTests": 4,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -9187,6 +9186,11 @@
   ],
   "edges": [
     {
+      "from": "scripts",
+      "kind": "spawns",
+      "to": "src"
+    },
+    {
       "from": "test",
       "fromTests": true,
       "kind": "file",
@@ -9340,7 +9344,17 @@
         },
         {
           "by": "scripts/validate-dataset.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/validate-dataset.mjs",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/validate-dataset.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         }
       ],
@@ -9386,7 +9400,17 @@
         },
         {
           "by": "scripts/validate-dataset.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/validate-dataset.mjs",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/validate-dataset.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         }
       ],

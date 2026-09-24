@@ -1,10 +1,10 @@
 # registry-sync: how it works
 
-Mapped at 2026-09-24 from commit bd8e894.
+Mapped at 2026-09-24 from commit e8f8621.
 
 ## What this is
 
-7 parts, mostly TypeScript (38 files). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run registry-sync. People import @mcptoolshop/registry-sync.
+7 parts, mostly TypeScript (40 files). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run registry-sync. People import @mcptoolshop/registry-sync.
 
 ## What changed since 2026-09-23 (e78b5d0)
 
@@ -13,8 +13,8 @@ Mapped at 2026-09-24 from commit bd8e894.
 - CI now also runs src/cli.ts.
 - CHANGELOG.md is now read by test/version.test.ts.
 - README.md is now read by test/providers/github.test.ts.
-- package.json is now also read by test/version.test.ts.
-- 80 files changed content, across 7 parts.
+- package.json is now also read by test/cli-commands.test.ts and test/version.test.ts.
+- 2 files added and 80 changed content, across 7 parts.
 
 ## What comes in
 

@@ -117,6 +117,7 @@
         "test/extension-host/"
       ],
       "checksCount": 2,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -176,6 +177,7 @@
         "test/workspace-trust-guard.test.ts"
       ],
       "runsCount": 34,
+      "runsMore": 31,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -189,6 +191,7 @@
         "src/extension.ts"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/publish.yml",
       "id": ".github/workflows/publish.yml",
       "landings": [],
@@ -248,6 +251,7 @@
         "test/workspace-trust-guard.test.ts"
       ],
       "runsCount": 34,
+      "runsMore": 31,
       "sends": [
         "creates a GitHub release on a tag push",
         "publishes to the VS Code Marketplace when run by hand"
@@ -261,6 +265,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -278,6 +283,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -290,6 +296,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "extension": true,
       "file": "package.json",
       "id": "package.json#runforge",
@@ -314,6 +321,7 @@
         "src/extension.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -330,12 +338,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T08:37:12.507Z",
+  "generatedAt": "2026-09-24T11:53:38.418Z",
   "limits": [
     "83 import sites could not be resolved.",
-    "3 files in src use syntax the parser cannot read (src/observability/cancelled-marker-reader.ts, src/observability/orphan-markers.ts and src/observability/recover-index-command.ts), so what they import is not known: an import type followed by `[]` (3).",
     "2 writes and 16 reads use paths built at run time and are not named here.",
-    "6 writes and 17 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "9 writes and 20 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "8 commands are built at run time and not followed, 5 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -356,11 +363,11 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/runforge-vscode",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "package.json#runforge",
   "startHere": [
-    ".github/workflows/ci.yml",
     "src/extension.ts"
   ],
+  "startReason": "This path follows runforge (the extension people install from the VS Code Marketplace) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 64,
@@ -371,7 +378,7 @@
   },
   "unnamedWrites": 2,
   "unread": [],
-  "unreadFiles": 3,
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
     {

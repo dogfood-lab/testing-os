@@ -13,8 +13,8 @@ Nothing structural changed since 2026-09-24; 588 files changed content.
 ## What comes in
 
 1. **Publish to GHCR.** When a release is published; or by hand. Runs packages/node/src/main.ts; checks package.json, packages/, pnpm-lock.yaml and 2 more.
-2. **Release.** When a tag matching `v*` is pushed. Runs packages/attestia/tests/, packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts and 94 more; checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 11 more.
-3. **CI.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts, packages/chain-observer/tests/evm/ and 93 more; checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 11 more.
+2. **Release.** When a tag matching `v*` is pushed. Runs packages/attestia/tests/, packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts and 181 more; checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 152 more.
+3. **CI.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts, packages/chain-observer/tests/evm/ and 175 more; checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 152 more.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 5. **attestia-demo** (a command people run). Runs packages/demo/src/index.ts.
 
@@ -42,9 +42,9 @@ Publish to GHCR writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs packages/attestia/tests/, packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts and 94 more, checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 11 more, publishes @mcptoolshop/attestia (packages/attestia) to npm, and creates a GitHub release.
+**Release** runs packages/attestia/tests/, packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts and 181 more, checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 152 more, publishes @mcptoolshop/attestia (packages/attestia) to npm, and creates a GitHub release.
 
-**CI** runs packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts, packages/chain-observer/tests/evm/ and 93 more, and checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 11 more.
+**CI** runs packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts, packages/chain-observer/tests/evm/ and 175 more, and checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 152 more.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -92,14 +92,15 @@ People write .github/, assets/, docs/, resources/, the repository root, site/ an
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/node/src/main.ts
+packages/demo/src/index.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of attestia-demo end to end. This path follows attestia-demo (a command people run) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 
 - 5 writes and 7 reads use paths built at run time and are not named here.
 - 6 writes and 66 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

@@ -305,7 +305,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 59 more new writers and readers of places.",
+        "sentence": "And 65 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -433,6 +433,7 @@
         "vitest.config.ts"
       ],
       "checksCount": 9,
+      "checksMore": 21,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [
@@ -813,6 +814,7 @@
         "templates/starter/src/starter.test.ts"
       ],
       "runsCount": 393,
+      "runsMore": 390,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -834,6 +836,7 @@
         "vitest.config.ts"
       ],
       "checksCount": 9,
+      "checksMore": 21,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [
@@ -1214,6 +1217,7 @@
         "templates/starter/src/starter.test.ts"
       ],
       "runsCount": 392,
+      "runsMore": 389,
       "sends": [
         "publishes workspace packages to npm and a container image (on a run by hand, only with dry_run false)"
       ],
@@ -1226,6 +1230,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -1243,6 +1248,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site on main"
       ],
@@ -1256,6 +1262,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/docs-integrity.yml",
       "id": ".github/workflows/docs-integrity.yml",
       "landings": [],
@@ -1275,6 +1282,7 @@
         "docs/check-docs-integrity.mjs"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -1286,6 +1294,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/cli/package.json",
       "id": "packages/cli/package.json#ai-rpg-engine",
       "kind": "command",
@@ -1428,6 +1437,7 @@
         "packages/cli/src/bin.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -1435,6 +1445,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/ollama/package.json",
       "id": "packages/ollama/package.json#ai",
       "kind": "command",
@@ -1482,6 +1493,7 @@
         "packages/ollama/src/bin.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -1702,14 +1714,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T08:33:27.018Z",
+  "generatedAt": "2026-09-24T11:49:19.913Z",
   "limits": [
     "3 import sites could not be resolved.",
-    "10 files use syntax the parser cannot read (packages/cli/src/sidecar-pack-intake.test.ts, packages/content-schema/src/loader.ts, packages/core/src/engine.ts and 7 more), so what they import is not known: 4 in modules (an import type followed by `[]`), 2 in ledger-adapter (a NUL character inside a string), 1 in cli (`typeof import(…)` as a type argument), 1 in content-schema (a NUL character inside a string), 1 in core (an import type followed by `[]`), 1 in ollama (an import type followed by `[]`).",
-    "26 writes and 36 reads use paths built at run time and are not named here.",
+    "3 files use syntax the parser cannot read (packages/content-schema/src/loader.ts, packages/ledger-adapter/src/transport/dry-run.ts and packages/ledger-adapter/src/transport/testnet.ts), so what they import is not known: 2 in ledger-adapter (a NUL character inside a string), 1 in content-schema (a NUL character inside a string).",
+    "26 writes and 35 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "29 writes and 113 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "9 commands are built at run time and not followed, 8 of them in tests.",
+    "29 writes and 114 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "2 commands are built at run time and not followed, 1 of them in tests.",
     "CI runs or checks 402 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
     "Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
@@ -1982,7 +1994,8 @@
   "startHere": [
     ".github/workflows/ci.yml",
     "packages/cli/src/bin.ts",
-    "packages/modules/src/index.ts"
+    "packages/modules/src/ability-builders.ts",
+    "packages/content-schema/src/build-catalog.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -1991,21 +2004,21 @@
     "asset-registry": 6,
     "audio-director": 3,
     "campaign-memory": 7,
-    "character-creation": 115,
+    "character-creation": 117,
     "character-profile": 12,
-    "cli": 41,
-    "content-schema": 189,
-    "core": 276,
-    "equipment": 157,
+    "cli": 44,
+    "content-schema": 190,
+    "core": 280,
+    "equipment": 159,
     "image-gen": 6,
     "ledger-adapter": 17,
-    "modules": 231,
+    "modules": 236,
     "ollama": 38,
     "pack-registry": 105,
     "presentation": 6,
     "rumor-system": 3,
     "scripts": 0,
-    "sidecar": 14,
+    "sidecar": 15,
     "soundpack-core": 8,
     "starter": 3,
     "starter-bounty-hunter": 34,
@@ -2020,7 +2033,7 @@
     "starter-vampire": 43,
     "starter-weird-west": 42,
     "starter-zombie": 42,
-    "terminal-ui": 24
+    "terminal-ui": 28
   },
   "unnamedWrites": 26,
   "unread": [
@@ -2073,7 +2086,7 @@
       ]
     }
   ],
-  "unreadFiles": 10,
+  "unreadFiles": 3,
   "unreadNote": [],
   "untested": [
     {

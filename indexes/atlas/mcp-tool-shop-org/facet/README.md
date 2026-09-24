@@ -15,7 +15,7 @@ Mapped at 2026-09-24 from commit 8d2fa34.
 - tools/diagnostics/front_padded.png is now written by tools/diagnostics/prep_front.py.
 - .gitattributes is now read by tests/test_t06_line_endings.py.
 - .github/workflows/release.yml is now read by tests/test_t27_packaging_shape.py.
-- And 78 more new writers and readers of places.
+- And 79 more new writers and readers of places.
 - 1 file changed content, across 1 part.
 
 ## What comes in
@@ -87,9 +87,9 @@ People write .claude/, .github/, canon/, profiles/ and the repository root; 126 
 
 ## Where to start
 
-.github/workflows/ci.yml → tools/facet_index.py
+bin/facet.js
 
-Read those in order to follow one push end to end.
+Read those in order to follow one run of facet end to end. This path follows facet (a command people run) from its entry, since ci runs only tests.
 
 ## What this map cannot see
 

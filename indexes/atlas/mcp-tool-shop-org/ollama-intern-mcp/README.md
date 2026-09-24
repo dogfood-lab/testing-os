@@ -17,8 +17,8 @@ Mapped at 2026-09-24 from commit 1249f83.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 18 paths; on a push to main touching 18 paths; or by hand. Runs scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, src/index.ts and 40 more; checks hermes.config.example.yaml, package-lock.json, package.json and 2 more. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
-2. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 38 more; checks hermes.config.example.yaml, package-lock.json, package.json and 2 more.
+1. **CI.** On a pull request touching 18 paths; on a push to main touching 18 paths; or by hand. Runs scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, src/index.ts and 98 more; checks hermes.config.example.yaml, package-lock.json, package.json and 93 more. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
+2. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more; checks hermes.config.example.yaml, package-lock.json, package.json and 93 more.
 3. **Doc Drift.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs scripts/sync-doc-versions.mjs; checks HANDOFF.md, README.md and SHIP_GATE.md.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 5. **CodeQL.** On a pull request; on a push to main; on a schedule (`0 9 * * 0`), Sunday at 09:00 UTC; or by hand. Runs no file this map can see.
@@ -35,11 +35,11 @@ Mapped at 2026-09-24 from commit 1249f83.
 
 ## Who reads the results
 
-CI writes nothing in the files this map could read; 4 files could not be.
+CI writes nothing in the files this map could read; 2 files could not be.
 
 ## The other doors
 
-**Release** runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 38 more, checks hermes.config.example.yaml, package-lock.json, package.json and 2 more, creates a GitHub release on a tag push, and publishes to npm and a container image (on a run by hand, only with dry_run false).
+**Release** runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more, checks hermes.config.example.yaml, package-lock.json, package.json and 93 more, creates a GitHub release on a tag push, and publishes to npm and a container image (on a run by hand, only with dry_run false).
 
 **Doc Drift** runs scripts/sync-doc-versions.mjs and checks HANDOFF.md, README.md and SHIP_GATE.md.
 
@@ -78,23 +78,24 @@ Window: 180 days; a pair counts from 3 shared commits, since 15 source files rea
 
 - **bench** is imported by no test.
 - **examples** is imported by no test.
-- **scripts** is imported by no test.
+
+scripts is touched by tests only through a spawn: a test runs its files as a child process.
 
 ## Written but never read
 
-No place is written by the files this map could read, so none goes unread; 4 files could not be.
+No place is written by the files this map could read, so none goes unread; 2 files could not be.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike in the files this map could read; 4 files could not be.
+No two parts export a helper that looks alike in the files this map could read; 2 files could not be.
 
 ## Generated, never hand-edited
 
-Nothing in the files this map could read writes to a tracked place; 4 files could not be.
+Nothing in the files this map could read writes to a tracked place; 2 files could not be.
 
 ## Hand-authored
 
-People write .github/, docs/, evals/, the repository root and site/; 1 write with a path built at run time may land here.
+People write .github/, docs/, evals/, the repository root and site/; 2 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -104,11 +105,11 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 4 files use syntax the parser cannot read (scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, tests/tools/artifactWrite.test.ts and 1 more), so what they import is not known: 2 in scripts (a NUL character inside a string), 2 in tests (`typeof import(…)` as a type argument).
-- 1 write and 6 reads use paths built at run time and are not named here.
+- 2 files in scripts use syntax the parser cannot read (scripts/gen-tool-docs.mjs and scripts/sync-doc-versions.mjs), so what they import is not known: a NUL character inside a string (2).
+- 2 writes and 6 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 19 writes and 32 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 7 commands are built at run time and not followed, 5 of them in tests.
+- 18 writes and 32 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 3 commands are built at run time and not followed, 1 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

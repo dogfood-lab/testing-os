@@ -85,7 +85,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 78 more new writers and readers of places.",
+        "sentence": "And 79 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -189,6 +189,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -210,6 +211,7 @@
         "tests/"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -220,6 +222,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -237,6 +240,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -252,6 +256,7 @@
         "tools/verify/"
       ],
       "checksCount": 2,
+      "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -269,6 +274,7 @@
         "tools/record_mcp.py"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "publishes to npm and PyPI",
         "creates a GitHub release"
@@ -282,6 +288,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#facet",
       "kind": "command",
@@ -299,6 +306,7 @@
         "bin/facet.js"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -306,6 +314,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "pyproject.toml",
       "id": "pyproject.toml#facet-index",
       "kind": "command",
@@ -323,6 +332,7 @@
         "tools/facet_index.py"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -330,6 +340,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "pyproject.toml",
       "id": "pyproject.toml#facet-mcp",
       "kind": "command",
@@ -347,6 +358,7 @@
         "tools/record_mcp.py"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -370,7 +382,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T08:35:32.673Z",
+  "generatedAt": "2026-09-24T11:51:16.292Z",
   "limits": [
     "205 import sites could not be resolved.",
     "126 writes and 99 reads use paths built at run time and are not named here.",
@@ -395,11 +407,11 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/facet",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "package.json#facet",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "tools/facet_index.py"
+    "bin/facet.js"
   ],
+  "startReason": "This path follows facet (a command people run) from its entry, since ci runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 133,

@@ -7555,8 +7555,8 @@
       "readers": [
         {
           "by": ".pre-commit-config.yaml",
-          "call": "literal",
-          "confidence": "text"
+          "call": "configuration",
+          "confidence": "config"
         }
       ],
       "target": ".secrets.baseline",
@@ -7604,6 +7604,11 @@
     {
       "readers": [
         {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
           "by": "scripts/check_doc_drift.py",
           "call": "read_text",
           "confidence": "ast"
@@ -7619,7 +7624,10 @@
       "writers": [
         {
           "by": "backpropagate/export.py",
-          "confidence": "weak"
+          "confidence": "weak",
+          "unless": [
+            "exists"
+          ]
         }
       ]
     },
@@ -7627,13 +7635,18 @@
       "readers": [
         {
           "by": ".pre-commit-config.yaml",
-          "call": "literal",
-          "confidence": "text"
+          "call": "configuration",
+          "confidence": "config"
         },
         {
           "by": "CONTRIBUTING.md",
           "call": "--cov",
           "confidence": "text"
+        },
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
         },
         {
           "by": "scripts/preflight.sh",
@@ -7845,8 +7858,8 @@
         },
         {
           "by": ".pre-commit-config.yaml",
-          "call": "literal",
-          "confidence": "text"
+          "call": "configuration",
+          "confidence": "config"
         },
         {
           "by": "scripts/preflight.sh",
@@ -7971,6 +7984,11 @@
     {
       "readers": [
         {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
           "by": "scripts/preflight.sh",
           "call": "literal",
           "confidence": "text"
@@ -8025,5 +8043,13 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 73,
-  "unassigned": []
+  "unassigned": [],
+  "unseen": [
+    {
+      "files": [
+        "compose.yaml"
+      ],
+      "kind": "deploy"
+    }
+  ]
 }

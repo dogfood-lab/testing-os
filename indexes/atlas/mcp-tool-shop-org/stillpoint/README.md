@@ -8,16 +8,21 @@ Mapped at 2026-09-24 from commit c7fbc27.
 
 ## What changed since 2026-09-24 (26647ad)
 
-Nothing structural changed since 2026-09-24; 107 files changed content.
+- CI no longer runs packages/server/src/engine-manager.test.ts, packages/server/src/presets.test.ts, packages/server/src/state.test.ts and 1 more.
+- apps/desktop/msix/layout/ is now written by apps/desktop/msix/build-msix.ps1.
+- apps/desktop/msix/layout/Assets/ is now written by apps/desktop/msix/build-msix.ps1.
+- apps/desktop/msix/AppxManifest.xml is now read by apps/desktop/msix/build-msix.ps1.
+- And 17 more new writers and readers of places.
+- 107 files changed content, across 7 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 7 paths; on a push to main touching 7 paths; or by hand. Runs packages/server/src/engine-manager.test.ts, packages/server/src/presets.test.ts, packages/server/src/routes/api.test.ts and 3 more; checks packages/ui/src/.
+1. **CI.** On a pull request touching 7 paths; on a push to main touching 7 paths; or by hand. Runs packages/server/src/routes/api.test.ts and packages/server/src/routes/events.test.ts; checks packages/ui/src/.
 2. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 
 ## What happens through CI
 
-1. The workflow runs 6 files in server; it checks packages/ui/src/ in ui.
+1. The workflow runs packages/server/src/routes/api.test.ts and packages/server/src/routes/events.test.ts in server; it checks packages/ui/src/ in ui.
 
 ## Who reads the results
 
@@ -29,15 +34,16 @@ CI writes nothing this map can see.
 
 ## What breaks what
 
-No part is imported by another part, and no part sits on the path of two doors.
+- **server** is called over HTTP by 1 part (ui) and sits on the path of 1 door.
+- **apps/desktop/msix/Assets/** is written by desktop and read by desktop; a hand edit reaches every reader.
 
 ## What tends to change together
 
-- **packages/server/src/routes/api.test.ts** and **packages/ui/src/hooks/useRegulator.ts** changed together in 6 of 7 commits, though neither part imports the other.
-- **packages/server/src/presets.ts** and **packages/ui/src/App.tsx** changed together in 5 of 6 commits, though neither part imports the other.
-- **packages/server/src/routes/api.ts** and **packages/ui/src/hooks/useRegulator.ts** changed together in 6 of 8 commits, though neither part imports the other.
-- **packages/server/src/routes/api.test.ts** and **packages/ui/src/App.tsx** changed together in 5 of 8 commits, though neither part imports the other.
-- **packages/server/src/routes/api.ts** and **packages/ui/src/App.tsx** changed together in 5 of 9 commits, though neither part imports the other.
+- **packages/server/src/routes/api.test.ts** and **packages/ui/src/hooks/useRegulator.ts** changed together in 6 of 7 commits, and the ui part calls the server part over HTTP.
+- **packages/server/src/presets.ts** and **packages/ui/src/App.tsx** changed together in 5 of 6 commits, and the ui part calls the server part over HTTP.
+- **packages/server/src/routes/api.ts** and **packages/ui/src/hooks/useRegulator.ts** changed together in 6 of 8 commits, and the ui part calls the server part over HTTP.
+- **packages/server/src/routes/api.test.ts** and **packages/ui/src/App.tsx** changed together in 5 of 8 commits, and the ui part calls the server part over HTTP.
+- **packages/server/src/routes/api.ts** and **packages/ui/src/App.tsx** changed together in 5 of 9 commits, and the ui part calls the server part over HTTP.
 
 1 file changed together with its own test, as expected.
 
@@ -51,8 +57,7 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 
 ## Written but never read
 
-- **apps/desktop/msix/Assets/** is written by apps/desktop/msix/gen-assets.mjs and read by nothing else in this repository.
-- **apps/desktop/src-tauri/icons/** is written by apps/desktop/src-tauri/gen-icons.mjs and read by nothing else in this repository.
+- **apps/desktop/msix/layout/** is written by apps/desktop/msix/build-msix.ps1 and read by nothing else in this repository.
 
 ## Helpers that look duplicated
 
@@ -61,6 +66,7 @@ No two parts export a helper that looks alike.
 ## Generated, never hand-edited
 
 - **apps/desktop/msix/Assets/** is written by apps/desktop/msix/gen-assets.mjs.
+- **apps/desktop/msix/layout/** is written by apps/desktop/msix/build-msix.ps1.
 - **apps/desktop/src-tauri/icons/** is written by apps/desktop/src-tauri/gen-icons.mjs.
 
 ## Hand-authored
@@ -69,13 +75,16 @@ People write .claude/, .github/, the repository root and site/. Nothing in this 
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/server/src/index.ts
+.github/workflows/ci.yml → packages/server/src/server.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
 - 2 writes and 12 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 4 test files under `packages/server/src/` are not run by CI on Linux, where the shell expands `**` as one directory level.
+- ui calls server over HTTP at 13 routes, a link no import shows: the map draws it, and no door's reach follows it.
+- There is a Tauri app under apps/desktop/ (2 Rust files) that no workflow builds; the map reads no Rust, so what it does is not on this page.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

@@ -12,8 +12,8 @@ Nothing structural changed since 2026-09-24; 109 files changed content.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 11 paths; on a push to main touching 11 paths; or by hand. Runs test/register-vscode-stub.js; checks eslint.config.mjs, scripts/, site/ and 2 more.
-2. **Build and Release.** When a tag matching `v*` is pushed; or by hand. Runs test/register-vscode-stub.js; checks eslint.config.mjs, scripts/, site/ and 2 more.
+1. **CI.** On a pull request touching 11 paths; on a push to main touching 11 paths; or by hand. Runs test/register-vscode-stub.js; checks eslint.config.mjs, scripts/, site/ and 49 more.
+2. **Build and Release.** When a tag matching `v*` is pushed; or by hand. Runs test/register-vscode-stub.js; checks eslint.config.mjs, scripts/, site/ and 49 more.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **codecomfy-vscode** (the extension people install from the VS Code Marketplace). Loads src/extension.ts.
 
@@ -23,11 +23,11 @@ Nothing structural changed since 2026-09-24; 109 files changed content.
 
 ## Who reads the results
 
-CI writes nothing in the files this map could read; 1 file could not be.
+CI writes nothing this map can see.
 
 ## The other doors
 
-**Build and Release** runs test/register-vscode-stub.js, checks eslint.config.mjs, scripts/, site/ and 2 more, creates a GitHub release on a tag push, and publishes to the VS Code Marketplace when run by hand.
+**Build and Release** runs test/register-vscode-stub.js, checks eslint.config.mjs, scripts/, site/ and 49 more, creates a GitHub release on a tag push, and publishes to the VS Code Marketplace when run by hand.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -57,15 +57,15 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 
 ## Written but never read
 
-No place is written by the files this map could read, so none goes unread; 1 file could not be.
+No place this map can see is written, so none goes unread.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike in the files this map could read; 1 file could not be.
+No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-Nothing in the files this map could read writes to a tracked place; 1 file could not be.
+Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
@@ -73,12 +73,13 @@ People write .github/, assets/, docs/, the repository root, schemas/ and site/; 
 
 ## Where to start
 
-CI runs no code this map can follow; it only checks code, so there is no path of files to read in order.
+src/extension.ts
+
+Read those in order to follow one activation of codecomfy-vscode end to end. This path follows codecomfy-vscode (the extension people install from the VS Code Marketplace) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 
 - 1 import site could not be resolved.
-- 1 file uses syntax the parser cannot read (test/unit/ffmpeg-utils.test.ts), so what it imports is not known.
 - 4 writes and 8 reads use paths built at run time and are not named here.
 - 16 writes and 39 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 3 commands are built at run time and not followed.

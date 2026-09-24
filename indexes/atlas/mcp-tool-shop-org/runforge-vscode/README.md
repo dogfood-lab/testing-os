@@ -28,7 +28,7 @@ Mapped at 2026-09-24 from commit da77f7a.
 
 ## Who reads the results
 
-CI writes nothing in the files this map could read; 3 files could not be.
+CI writes nothing this map can see.
 
 ## The other doors
 
@@ -58,15 +58,15 @@ Window: 180 days; a pair counts from 3 shared commits, since 0 source files reac
 
 ## Written but never read
 
-No place is written by the files this map could read, so none goes unread; 3 files could not be.
+No place this map can see is written, so none goes unread.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike in the files this map could read; 3 files could not be.
+No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-Nothing in the files this map could read writes to a tracked place; 3 files could not be.
+Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
@@ -74,16 +74,15 @@ People write .github/, assets/, docs/, resources/, the repository root and site/
 
 ## Where to start
 
-.github/workflows/ci.yml → src/extension.ts
+src/extension.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one activation of runforge end to end. This path follows runforge (the extension people install from the VS Code Marketplace) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 
 - 83 import sites could not be resolved.
-- 3 files in src use syntax the parser cannot read (src/observability/cancelled-marker-reader.ts, src/observability/orphan-markers.ts and src/observability/recover-index-command.ts), so what they import is not known: an import type followed by `[]` (3).
 - 2 writes and 16 reads use paths built at run time and are not named here.
-- 6 writes and 17 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 9 writes and 20 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 8 commands are built at run time and not followed, 5 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

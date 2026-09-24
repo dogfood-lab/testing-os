@@ -117,6 +117,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -142,6 +143,7 @@
         "test/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "sends a dispatch to dogfood-lab/testing-os on main"
       ],
@@ -155,6 +157,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -180,6 +183,7 @@
         "test/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "publishes to npm"
       ],
@@ -192,6 +196,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -209,6 +214,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -223,6 +229,7 @@
         "package.json"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/repomesh-broadcast.yml",
       "id": ".github/workflows/repomesh-broadcast.yml",
       "landings": [],
@@ -237,6 +244,7 @@
       ],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [
         "commits into a clone of mcp-tool-shop-org/repomesh and pushes there",
         "opens a pull request"
@@ -249,6 +257,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#shipcheck",
       "kind": "command",
@@ -269,6 +278,7 @@
         "bin/shipcheck.mjs"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -285,12 +295,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T08:37:15.527Z",
+  "generatedAt": "2026-09-24T11:53:45.337Z",
   "limits": [
     "1 import site could not be resolved.",
     "4 reads use paths built at run time and are not named here.",
     "1 write and 44 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "3 commands are built at run time and not followed, all of them in tests.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -310,16 +319,16 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/shipcheck",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "package.json#shipcheck",
   "startHere": [
-    ".github/workflows/ci.yml",
     "bin/shipcheck.mjs"
   ],
+  "startReason": "This path follows shipcheck (a command people run) from its entry, since CI runs only tests and scripts that import no code here.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 3,
   "testedBy": {
-    "bin": 2,
+    "bin": 3,
     "site": 0
   },
   "unnamedWrites": 0,

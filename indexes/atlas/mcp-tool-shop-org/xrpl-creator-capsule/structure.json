@@ -90,9 +90,12 @@
         },
         {
           "hash": "ab0e84130332fd49d802100c0edbad838cc7b6cba3e25af60c2ca43d8a82c5dc",
-          "parseError": true,
-          "path": "app/bridge-worker-mint-persist.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "app/bridge-worker-commands.ts",
+            "packages/core/src/index.ts",
+            "packages/xrpl/src/index.ts"
+          ],
+          "path": "app/bridge-worker-mint-persist.test.ts"
         },
         {
           "hash": "ee86ec0a7408a30bdf4f6c4d84810b2122d4a209bcfd1c4f38c9ae07ea13f517",
@@ -722,16 +725,27 @@
           "path": "app/src/components/studio/PublishPage.tsx"
         },
         {
+          "exports": [
+            "RecoveryPage"
+          ],
           "hash": "fa07bfd7928ec0061f4927f3e1efeeb1a1f4829421073d316bb1f2526e4480df",
-          "parseError": true,
-          "path": "app/src/components/studio/RecoveryPage.tsx",
-          "unreadSyntax": "jsx-ampersand"
+          "importsFiles": [
+            "app/src/components/panels/PanelShell.tsx",
+            "app/src/state/release.tsx",
+            "app/src/state/studio.tsx"
+          ],
+          "path": "app/src/components/studio/RecoveryPage.tsx"
         },
         {
+          "exports": [
+            "ReviewPage"
+          ],
           "hash": "f66b0edba9b3af42bcfbabcc600a56c0cf048f06a33a06d3da8729bb5e067dde",
-          "parseError": true,
-          "path": "app/src/components/studio/ReviewPage.tsx",
-          "unreadSyntax": "jsx-ampersand"
+          "importsFiles": [
+            "app/src/components/panels/PanelShell.tsx",
+            "app/src/state/studio.tsx"
+          ],
+          "path": "app/src/components/studio/ReviewPage.tsx"
         },
         {
           "hash": "93103e5198267dfc4b35d2d0fe0f29f98d6d13aa4e1306a65b877fc108aaab5e",
@@ -1010,8 +1024,8 @@
       "outsideReads": 31,
       "outsideWrites": 13,
       "role": "code",
-      "testedBy": 25,
-      "unresolvedSites": 3
+      "testedBy": 26,
+      "unresolvedSites": 4
     },
     {
       "dynamicReads": 0,
@@ -1206,9 +1220,11 @@
         },
         {
           "hash": "4897369c8c00199ceca6e33bdc2cad911e769e3af1da40dbba0e0c1499570cd9",
-          "parseError": true,
-          "path": "packages/cli/src/bin-mainnet-write.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/cli/src/test-support/run-bin.ts",
+            "packages/xrpl/src/index.ts"
+          ],
+          "path": "packages/cli/src/bin-mainnet-write.test.ts"
         },
         {
           "hash": "46c6c7efeb5cb38c12eb0ca6ac0f872f379061422aea64b1553fd509f60ea2bc",
@@ -2617,9 +2633,10 @@
         },
         {
           "hash": "79e4318dc1e8edb0565eb88a6591ba378572a05af358f70fb66cadaf6befdc11",
-          "parseError": true,
-          "path": "packages/cli/src/commands/init-wallets.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/cli/src/commands/init-wallets.ts"
+          ],
+          "path": "packages/cli/src/commands/init-wallets.test.ts"
         },
         {
           "entry": "initWallets",
@@ -3012,9 +3029,12 @@
         },
         {
           "hash": "9b648015d2ce07c499dd4c64b9f4f337c10a3d859104ca0a70706d37d50b0b82",
-          "parseError": true,
-          "path": "packages/cli/src/commands/verify-payout.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/cli/src/commands/verify-payout.ts",
+            "packages/core/src/index.ts",
+            "packages/xrpl/src/index.ts"
+          ],
+          "path": "packages/cli/src/commands/verify-payout.test.ts"
         },
         {
           "exports": [
@@ -3126,9 +3146,12 @@
         },
         {
           "hash": "fd95cdf9969714a13c9b843f1d9a438c2bcf71c2f5319b86b389b1a69fb4a1c1",
-          "parseError": true,
-          "path": "packages/cli/src/commands/xaman-flow.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/cli/src/commands/xaman-flow.ts",
+            "packages/core/src/index.ts",
+            "packages/xaman/src/index.ts"
+          ],
+          "path": "packages/cli/src/commands/xaman-flow.test.ts"
         },
         {
           "entry": "mintReleaseViaXaman",
@@ -3270,7 +3293,8 @@
             "packages/cli/src/commands/verify-release.ts",
             "packages/cli/src/commands/xaman-flow.ts"
           ],
-          "path": "packages/cli/src/index.ts"
+          "path": "packages/cli/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "c9efa185901a7fa25b85aa83155e375973acedca25c83731fece49c3b3e67759",
@@ -3311,7 +3335,7 @@
       "outsideReads": 3,
       "outsideWrites": 8,
       "role": "code",
-      "testedBy": 22,
+      "testedBy": 23,
       "unresolvedSites": 0
     },
     {
@@ -3520,7 +3544,8 @@
             "packages/core/src/schema.ts",
             "packages/core/src/validate.ts"
           ],
-          "path": "packages/core/src/index.ts"
+          "path": "packages/core/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "b4b60a5f850b10e090c2421844db03c710fcffb93f5c3c66fbfb06604351cb49",
@@ -3708,7 +3733,7 @@
       "name": "core",
       "origin": "authored",
       "role": "code",
-      "testedBy": 30,
+      "testedBy": 35,
       "unresolvedSites": 0
     },
     {
@@ -4030,7 +4055,8 @@
             "packages/storage/src/mock-store.ts",
             "packages/storage/src/store.ts"
           ],
-          "path": "packages/storage/src/index.ts"
+          "path": "packages/storage/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "af7756db829c990ba92db9e8052b1e6163cd8a0ea8f32d569f52c49b12e36316",
@@ -4064,7 +4090,7 @@
       "outsideReads": 2,
       "outsideWrites": 1,
       "role": "code",
-      "testedBy": 11,
+      "testedBy": 13,
       "unresolvedSites": 0
     },
     {
@@ -4083,9 +4109,10 @@
         },
         {
           "hash": "dd9e6cb079439294cb8dad6bc2487b6856c8d56a740cb8d8bc8cbfbe472563e0",
-          "parseError": true,
-          "path": "packages/xaman/src/client.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/xaman/src/client.ts"
+          ],
+          "path": "packages/xaman/src/client.test.ts"
         },
         {
           "hash": "332322a14f8a96870379503501e1c043b9ab4ccfb06bf89856f02c1bfa8d34ed",
@@ -4102,7 +4129,8 @@
             "packages/xaman/src/types.ts",
             "packages/xaman/src/verify.ts"
           ],
-          "path": "packages/xaman/src/index.ts"
+          "path": "packages/xaman/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "fbf35528b4e5be6c42afaf3962a468a90372f566e5eecd2a198aac4d657bb59d",
@@ -4161,7 +4189,7 @@
       "origin": "authored",
       "outsideReads": 1,
       "role": "code",
-      "testedBy": 3,
+      "testedBy": 4,
       "unresolvedSites": 0
     },
     {
@@ -4180,9 +4208,10 @@
         },
         {
           "hash": "2e4ae21242ab2d79694eff018490c4d1e88da9a4ddaf51ab982d4d21981ce124",
-          "parseError": true,
-          "path": "packages/xrpl/src/account-nfts.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/xrpl/src/account-nfts.ts"
+          ],
+          "path": "packages/xrpl/src/account-nfts.test.ts"
         },
         {
           "exports": [
@@ -4193,9 +4222,10 @@
         },
         {
           "hash": "5d11bbc6c3025638237cf3d50242561abf14e1a0ce068f8684669c5820b5a5ac",
-          "parseError": true,
-          "path": "packages/xrpl/src/check-holder.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/xrpl/src/check-holder.ts"
+          ],
+          "path": "packages/xrpl/src/check-holder.test.ts"
         },
         {
           "exports": [
@@ -4219,13 +4249,20 @@
             "packages/xrpl/src/verify-minter.ts",
             "packages/xrpl/src/wallet.ts"
           ],
-          "path": "packages/xrpl/src/index.ts"
+          "path": "packages/xrpl/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "1dbe960c613f9555e32ae4c59c6109303c0e7af84d7b92f8975a78e437da2f80",
-          "parseError": true,
-          "path": "packages/xrpl/src/issue-release.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/core/src/index.ts",
+            "packages/storage/src/index.ts",
+            "packages/xrpl/src/issue-release.ts",
+            "packages/xrpl/src/mint.ts",
+            "packages/xrpl/src/verify-minter.ts",
+            "packages/xrpl/src/wallet.ts"
+          ],
+          "path": "packages/xrpl/src/issue-release.test.ts"
         },
         {
           "exports": [
@@ -4244,9 +4281,12 @@
         },
         {
           "hash": "94d75553d5bc2c8703dfb995f8b1f0be4eb31d047c1660ed26c93bc6a99507e7",
-          "parseError": true,
-          "path": "packages/xrpl/src/mint.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/core/src/index.ts",
+            "packages/xrpl/src/mint.ts",
+            "packages/xrpl/src/wallet.ts"
+          ],
+          "path": "packages/xrpl/src/mint.test.ts"
         },
         {
           "exports": [
@@ -4277,9 +4317,10 @@
         },
         {
           "hash": "9f1a67ce6e538613d35c178adcc2364afd8899321e9d5daa468e48b91c373a11",
-          "parseError": true,
-          "path": "packages/xrpl/src/read-nft.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/xrpl/src/read-nft.ts"
+          ],
+          "path": "packages/xrpl/src/read-nft.test.ts"
         },
         {
           "exports": [
@@ -4294,9 +4335,10 @@
         },
         {
           "hash": "db377b437be2456180d8b1786976234a91e8fc65c3806d2864bce8cc1b6d63ae",
-          "parseError": true,
-          "path": "packages/xrpl/src/verify-minter.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/xrpl/src/verify-minter.ts"
+          ],
+          "path": "packages/xrpl/src/verify-minter.test.ts"
         },
         {
           "exports": [
@@ -4310,9 +4352,10 @@
         },
         {
           "hash": "f4f19f9c0a63e89fda1e1ee9d051bc60ad83db215fbf2cc5d95e7238b34ef97a",
-          "parseError": true,
-          "path": "packages/xrpl/src/wallet.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/xrpl/src/wallet.ts"
+          ],
+          "path": "packages/xrpl/src/wallet.test.ts"
         },
         {
           "exports": [
@@ -4340,7 +4383,7 @@
       "name": "xrpl",
       "origin": "authored",
       "role": "code",
-      "testedBy": 24,
+      "testedBy": 28,
       "unresolvedSites": 0
     }
   ],
@@ -5501,6 +5544,61 @@
     {
       "readers": [
         {
+          "by": "app/src-tauri/tauri.conf.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "app/src-tauri/icons/128x128.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "app/src-tauri/tauri.conf.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "app/src-tauri/icons/128x128@2x.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "app/src-tauri/tauri.conf.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "app/src-tauri/icons/32x32.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "app/src-tauri/tauri.conf.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "app/src-tauri/icons/icon.ico",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "app/src-tauri/tauri.conf.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "app/src-tauri/icons/icon.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "app/src/__test__/tauri-security-config.test.ts",
           "call": "existsSync",
           "confidence": "ast",
@@ -5532,6 +5630,17 @@
           "confidence": "ast"
         }
       ]
+    },
+    {
+      "readers": [
+        {
+          "by": "app/src-tauri/Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "app/src-tauri/src/main.rs",
+      "writers": []
     },
     {
       "readers": [
@@ -5763,5 +5872,13 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 76,
-  "unassigned": []
+  "unassigned": [],
+  "unseen": [
+    {
+      "built": true,
+      "dir": "app",
+      "kind": "tauri",
+      "rust": 4
+    }
+  ]
 }

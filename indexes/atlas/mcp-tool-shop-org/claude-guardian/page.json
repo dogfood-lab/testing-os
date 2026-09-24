@@ -95,6 +95,7 @@
         "src/"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -116,6 +117,7 @@
         "tests/"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -129,6 +131,7 @@
         "src/"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -150,6 +153,7 @@
         "tests/"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [
         "publishes to npm",
         "creates a GitHub release"
@@ -163,6 +167,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -180,6 +185,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -192,16 +198,19 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/dogfood.yml",
       "held": [
         {
           "checks": [
             "src/"
           ],
+          "checksMore": 0,
           "lead": "on main",
           "runs": [
             "src/cli.ts"
           ],
+          "runsMore": 0,
           "when": "on main"
         }
       ],
@@ -218,6 +227,7 @@
       ],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [
         "sends a dispatch to dogfood-lab/testing-os on main"
       ],
@@ -230,6 +240,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#claude-guardian",
       "kind": "command",
@@ -247,6 +258,7 @@
         "src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -294,7 +306,7 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-24T08:34:14.779Z",
+  "generatedAt": "2026-09-24T11:50:07.866Z",
   "limits": [
     "1 import site could not be resolved.",
     "1 write and 3 reads use paths built at run time and are not named here.",
@@ -316,11 +328,11 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/claude-guardian",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "package.json#claude-guardian",
   "startHere": [
-    ".github/workflows/ci.yml",
     "src/cli.ts"
   ],
+  "startReason": "This path follows claude-guardian (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 16,

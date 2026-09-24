@@ -1,6 +1,6 @@
 # mcp-arcade-cabinets: how it works
 
-Mapped at 2026-09-24 from commit 735b11d.
+Mapped at 2026-09-24 from commit 745115c.
 
 ## What this is
 
@@ -8,13 +8,13 @@ Mapped at 2026-09-24 from commit 735b11d.
 
 ## What changed since 2026-09-24 (8ebb997)
 
-Nothing structural changed since 2026-09-24; 2 files changed content.
+Nothing structural changed since 2026-09-24; 3 files changed content.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 20 paths; on a push to main touching 20 paths; or by hand. Runs scripts/play.mjs, apps/cabinets/test/, packages/cabinet-server/test/ and 21 more; checks apps/cabinets/package.json, fixtures/tapes/, package.json and 15 more.
-2. **Site.** On a pull request touching 14 paths; on a push to main touching 14 paths; or by hand. Runs site/astro.config.mjs and site/src/. On main, it also runs scripts/play.mjs, apps/cabinets/test/, packages/cabinet-server/test/ and 21 more; checks packages/cabinet-server/src/index.ts, packages/cabinet-server/src/server-vibe.ts, packages/cabinet-server/src/server.ts and 13 more.
-3. **Publish.** When a release is published; or by hand. Runs packages/launcher-vibe-typer/scripts/build.mjs, packages/launcher/scripts/build.mjs, scripts/play.mjs and 23 more; checks package.json, packages/cabinet-server/src/index.ts, packages/cabinet-server/src/server-vibe.ts and 14 more.
+1. **CI.** On a pull request touching 20 paths; on a push to main touching 20 paths; or by hand. Runs scripts/play.mjs, apps/cabinets/test/, packages/cabinet-server/test/ and 45 more; checks apps/cabinets/package.json, fixtures/tapes/, package.json and 177 more.
+2. **Site.** On a pull request touching 14 paths; on a push to main touching 14 paths; or by hand. Runs site/astro.config.mjs and site/src/. On main, it also runs scripts/play.mjs, apps/cabinets/test/, packages/cabinet-server/test/ and 45 more; checks packages/cabinet-server/src/index.ts, packages/cabinet-server/src/server-vibe.ts, packages/cabinet-server/src/server.ts and 175 more.
+3. **Publish.** When a release is published; or by hand. Runs packages/launcher-vibe-typer/scripts/build.mjs, packages/launcher/scripts/build.mjs, scripts/play.mjs and 73 more; checks package.json, packages/cabinet-server/src/index.ts, packages/cabinet-server/src/server-vibe.ts and 176 more.
 4. **cabinet-server** (a command people run). Runs packages/cabinet-server/dist/server.js, built from a source this map cannot place.
 5. **ghost-on-the-menu** (a command people run). Runs packages/launcher/dist/cli.js, built from a source this map cannot place.
 6. **vibe-typer** (a command people run). Runs packages/launcher-vibe-typer/dist/cli.js, built from a source this map cannot place.
@@ -25,13 +25,13 @@ Nothing structural changed since 2026-09-24; 2 files changed content.
 
 ## Who reads the results
 
-CI writes nothing in the files this map could read; 2 files could not be.
+CI writes nothing in the files this map could read; 1 file could not be.
 
 ## The other doors
 
-**Site** runs site/astro.config.mjs and site/src/, runs scripts/play.mjs, apps/cabinets/test/, packages/cabinet-server/test/ and 21 more and checks packages/cabinet-server/src/index.ts, packages/cabinet-server/src/server-vibe.ts, packages/cabinet-server/src/server.ts and 13 more on main, and deploys the site on main.
+**Site** runs site/astro.config.mjs and site/src/, runs scripts/play.mjs, apps/cabinets/test/, packages/cabinet-server/test/ and 45 more and checks packages/cabinet-server/src/index.ts, packages/cabinet-server/src/server-vibe.ts, packages/cabinet-server/src/server.ts and 175 more on main, and deploys the site on main.
 
-**Publish** runs packages/launcher-vibe-typer/scripts/build.mjs, packages/launcher/scripts/build.mjs, scripts/play.mjs and 23 more, checks package.json, packages/cabinet-server/src/index.ts, packages/cabinet-server/src/server-vibe.ts and 14 more, and publishes a package to npm, chosen at run time (on a run by hand, only with dry_run false).
+**Publish** runs packages/launcher-vibe-typer/scripts/build.mjs, packages/launcher/scripts/build.mjs, scripts/play.mjs and 73 more, checks package.json, packages/cabinet-server/src/index.ts, packages/cabinet-server/src/server-vibe.ts and 176 more, and publishes a package to npm, chosen at run time (on a run by hand, only with dry_run false).
 
 **cabinet-server** (a command people run) runs packages/cabinet-server/dist/server.js, built from a source this map cannot place.
 
@@ -95,7 +95,7 @@ And 16 more pairs.
 
 ## Hand-authored
 
-People write .github/, catalog/, fixtures/, the repository root and site/; 12 writes with paths built at run time may land here.
+People write .github/, catalog/, fixtures/, the repository root and site/; 11 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -106,9 +106,9 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 17 import sites could not be resolved.
-- 2 files use syntax the parser cannot read (apps/cabinets/test/typer-menu.test.ts and packages/ghost-on-the-menu/src/play.ts), so what they import is not known: `typeof import(…)` as a type argument (1) and other syntax (1).
-- 12 writes and 15 reads use paths built at run time and are not named here.
-- 12 writes and 107 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 11 commands are built at run time and not followed, 5 of them in tests.
+- 1 file uses syntax the parser cannot read (packages/ghost-on-the-menu/src/play.ts), so what it imports is not known.
+- 11 writes and 14 reads use paths built at run time and are not named here.
+- 13 writes and 107 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 6 commands are built at run time and not followed, 3 of them in tests.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

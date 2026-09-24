@@ -1,12 +1,17 @@
 {
   "authored": [
     ".github/",
+    "assets/",
     "presets/",
     "root",
     "site/"
   ],
   "breaks": [
     {
+      "calledBy": [
+        "cockpit",
+        "scripts"
+      ],
       "doors": 14,
       "importedBy": [
         "scripts"
@@ -45,8 +50,15 @@
     },
     "items": [
       {
+        "kind": "origin",
+        "sentence": "assets was generated and is now authored.",
+        "subjects": [
+          "assets"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 203 files changed content.",
+        "sentence": "203 files changed content, across 9 parts.",
         "subjects": []
       }
     ],
@@ -54,7 +66,7 @@
       "commit": "f8fe895f7a07bdf1d2c127e038bfc986b2987c3b",
       "generatedAt": "2026-09-24T08:29:57.961Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -70,11 +82,10 @@
         "src/"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
-      "landings": [
-        "tests/__bench__/baseline.json"
-      ],
+      "landings": [],
       "name": "CI",
       "pushes": false,
       "reach": [
@@ -115,6 +126,7 @@
         "tests/ws-schema-fuzz.test.ts"
       ],
       "runsCount": 18,
+      "runsMore": 15,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -129,6 +141,7 @@
         "src/"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -172,6 +185,7 @@
         "tests/ws-schema-fuzz.test.ts"
       ],
       "runsCount": 18,
+      "runsMore": 15,
       "sends": [
         "publishes to npm",
         "creates a GitHub release"
@@ -184,6 +198,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -201,6 +216,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -213,16 +229,19 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/dogfood.yml",
       "held": [
         {
           "checks": [
             "src/"
           ],
+          "checksMore": 0,
           "lead": "on main",
           "runs": [
             "src/server/index.prod.ts"
           ],
+          "runsMore": 0,
           "when": "on main"
         }
       ],
@@ -242,6 +261,7 @@
       ],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [
         "sends a dispatch to mcp-tool-shop-org/dogfood-labs on main"
       ],
@@ -254,6 +274,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#@mcptoolshop/vocal-synth-engine",
       "kind": "package",
@@ -281,6 +302,7 @@
         "src/types/scoreSchema.ts"
       ],
       "runsCount": 11,
+      "runsMore": 8,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -288,6 +310,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#vocal-synth-engine-mcp",
       "kind": "command",
@@ -308,6 +331,7 @@
         "src/mcp/server.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -315,12 +339,11 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#vse-analyze",
       "kind": "command",
-      "landings": [
-        "assets/"
-      ],
+      "landings": [],
       "name": "vse-analyze",
       "pushes": false,
       "reach": [
@@ -334,6 +357,7 @@
         "src/cli/analyze.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -341,6 +365,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#vse-build-preset",
       "kind": "command",
@@ -358,6 +383,7 @@
         "src/cli/build-preset.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -365,6 +391,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#vse-compare",
       "kind": "command",
@@ -382,6 +409,7 @@
         "src/cli/compare.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -389,6 +417,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#vse-gen-vowel-wav",
       "kind": "command",
@@ -406,6 +435,7 @@
         "src/cli/gen-vowel-wav.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -413,6 +443,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#vse-inspect",
       "kind": "command",
@@ -430,6 +461,7 @@
         "src/cli/inspect.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -437,6 +469,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#vse-phonemize",
       "kind": "command",
@@ -454,6 +487,7 @@
         "src/cli/phonemize.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -461,6 +495,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#vse-play-score",
       "kind": "command",
@@ -478,6 +513,7 @@
         "src/cli/play-score.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -485,6 +521,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#vse-resynth",
       "kind": "command",
@@ -502,6 +539,7 @@
         "src/cli/resynth.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -509,6 +547,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#vse-score-from-midi",
       "kind": "command",
@@ -526,6 +565,7 @@
         "src/cli/score-from-midi.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -548,30 +588,27 @@
   ],
   "generated": [
     {
-      "place": "assets/",
-      "writers": [
-        "src/cli/analyze.ts"
-      ]
-    },
-    {
       "place": "ref/ah_sustain.wav",
       "writers": [
         "scripts/generate-ref-wav.ts"
       ]
     },
     {
-      "block": true,
+      "once": true,
       "place": "tests/__bench__/baseline.json",
       "writers": [
-        "scripts/bench-gate.mjs"
+        "scripts/bench-gate.mjs when absent"
       ]
     }
   ],
-  "generatedAt": "2026-09-24T08:56:47.160Z",
+  "generatedAt": "2026-09-24T11:54:47.636Z",
   "limits": [
-    "4 writes and 9 reads use paths built at run time and are not named here.",
-    "33 writes and 50 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "1 write and 4 reads use paths built at run time and are not named here.",
+    "38 writes and 55 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed, and it is in tests.",
+    "cockpit calls src over HTTP at 11 routes, a link no import shows: the map draws it, and no door's reach follows it.",
+    "scripts calls src over HTTP at 1 route, a link no import shows: the map draws it, and no door's reach follows it.",
+    "There is a Dockerfile, a fly.toml and a render.yaml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -591,11 +628,11 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/vocal-synth-engine",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "package.json#vocal-synth-engine-mcp",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "src/index.ts"
+    "src/mcp/server.ts"
   ],
+  "startReason": "This path follows vocal-synth-engine-mcp (a command people run) from its entry, since CI runs only tests and scripts that import no code here.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 22,
@@ -604,14 +641,8 @@
     "scripts": 0,
     "src": 17
   },
-  "unnamedWrites": 4,
+  "unnamedWrites": 1,
   "unread": [
-    {
-      "place": "assets/",
-      "writers": [
-        "src/cli/analyze.ts"
-      ]
-    },
     {
       "place": "ref/ah_sustain.wav",
       "writers": [
@@ -634,5 +665,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 3
+  "written": 2
 }

@@ -15,15 +15,15 @@ Mapped at 2026-09-24 from commit f7e56e6.
 - docs/c0-alignment/intake-table.json is now written by packages/cli/src/c0-intake-table.test.ts.
 - docs/c0-alignment/reverse-table.json is now written by packages/cli/src/c0-reverse-table.test.ts.
 - docs/c0-alignment/version-skew.json is now written by packages/cli/src/c0-version-skew.test.ts.
-- And 59 more new writers and readers of places.
+- And 65 more new writers and readers of places.
 - docs was authored and is now mixed.
 - scripts/verify-isolated-consumer.mjs now starts at run; it started at publishable workspaces.
 - No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 15 paths; on a push touching 15 paths; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 390 more; checks package-lock.json, package.json, packages/ and 6 more.
-2. **Release.** When a release is published; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more; checks package-lock.json, package.json, packages/ and 6 more.
+1. **CI.** On a pull request touching 15 paths; on a push touching 15 paths; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 390 more; checks package-lock.json, package.json, packages/ and 21 more.
+2. **Release.** When a release is published; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more; checks package-lock.json, package.json, packages/ and 21 more.
 3. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Docs Integrity.** On a pull request touching 5 paths; on a push touching 5 paths; or by hand. Runs docs/check-docs-integrity.mjs.
 5. **ai-rpg-engine** (a command people run). Runs packages/cli/src/bin.ts.
@@ -56,7 +56,7 @@ Mapped at 2026-09-24 from commit f7e56e6.
 
 ## The other doors
 
-**Release** runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more, checks package-lock.json, package.json, packages/ and 6 more, writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json, and publishes workspace packages to npm and a container image (on a run by hand, only with dry_run false).
+**Release** runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more, checks package-lock.json, package.json, packages/ and 21 more, writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json, and publishes workspace packages to npm and a container image (on a run by hand, only with dry_run false).
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on main.
 
@@ -128,18 +128,18 @@ People write .claude/, .github/, dogfood/, the repository root and site/; 26 wri
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/cli/src/bin.ts → packages/modules/src/index.ts
+.github/workflows/ci.yml → packages/cli/src/bin.ts → packages/modules/src/ability-builders.ts → packages/content-schema/src/build-catalog.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
 - 3 import sites could not be resolved.
-- 10 files use syntax the parser cannot read (packages/cli/src/sidecar-pack-intake.test.ts, packages/content-schema/src/loader.ts, packages/core/src/engine.ts and 7 more), so what they import is not known: 4 in modules (an import type followed by `[]`), 2 in ledger-adapter (a NUL character inside a string), 1 in cli (`typeof import(…)` as a type argument), 1 in content-schema (a NUL character inside a string), 1 in core (an import type followed by `[]`), 1 in ollama (an import type followed by `[]`).
-- 26 writes and 36 reads use paths built at run time and are not named here.
+- 3 files use syntax the parser cannot read (packages/content-schema/src/loader.ts, packages/ledger-adapter/src/transport/dry-run.ts and packages/ledger-adapter/src/transport/testnet.ts), so what they import is not known: 2 in ledger-adapter (a NUL character inside a string), 1 in content-schema (a NUL character inside a string).
+- 26 writes and 35 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 29 writes and 113 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 9 commands are built at run time and not followed, 8 of them in tests.
+- 29 writes and 114 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 2 commands are built at run time and not followed, 1 of them in tests.
 - CI runs or checks 402 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 - Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 

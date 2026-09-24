@@ -188,7 +188,8 @@
             "packages/cli/src/refresh.ts",
             "packages/cli/src/report.ts"
           ],
-          "path": "packages/cli/src/index.ts"
+          "path": "packages/cli/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -1099,7 +1100,8 @@
             "packages/kernel/src/usage.ts",
             "packages/kernel/src/validate.ts"
           ],
-          "path": "packages/kernel/src/index.ts"
+          "path": "packages/kernel/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -1303,8 +1305,8 @@
     },
     {
       "dynamicReads": 6,
-      "dynamicSpawns": 3,
-      "dynamicSpawnsInTests": 3,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
         "packages/memories/src/cli.ts",
@@ -2034,7 +2036,8 @@
             "packages/memories/src/types.ts",
             "packages/memories/src/validate.ts"
           ],
-          "path": "packages/memories/src/index.ts"
+          "path": "packages/memories/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -2165,9 +2168,10 @@
         },
         {
           "hash": "0c088cde8e4e74671ce4e563320cccdd62f0308052620b5b8030a64552294c82",
-          "parseError": true,
-          "path": "packages/memories/src/types.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "packages/kernel/src/index.ts"
+          ],
+          "path": "packages/memories/src/types.ts"
         },
         {
           "entry": "validateMemory",
@@ -2345,8 +2349,8 @@
     },
     {
       "dynamicReads": 9,
-      "dynamicSpawns": 7,
-      "dynamicSpawnsInTests": 7,
+      "dynamicSpawns": 1,
+      "dynamicSpawnsInTests": 1,
       "dynamicWrites": 4,
       "entryPoints": [
         "packages/rules/src/cli.ts",
@@ -3381,7 +3385,8 @@
             "packages/rules/src/types.ts",
             "packages/rules/src/validate.ts"
           ],
-          "path": "packages/rules/src/index.ts"
+          "path": "packages/rules/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -4168,12 +4173,73 @@
           "via": "tsc packages/cli/tsconfig.json"
         },
         {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/cli/src/tests/console.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/cli/src/tests/dispatch.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/cli/src/tests/doctor.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/cli/src/tests/help.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/cli/src/tests/hook.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/cli/src/tests/refresh.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/cli/src/tests/report.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/cli/src/tests/split.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/cli/src/tests/wrapped.test.ts",
+          "runKind": "executes"
+        },
+        {
           "directory": true,
           "job": "build-and-test",
           "matched": true,
           "path": "packages/kernel/src/",
           "runKind": "checks",
           "via": "tsc packages/kernel/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/kernel/src/tests/",
+          "runKind": "executes"
         },
         {
           "directory": true,
@@ -4187,9 +4253,23 @@
           "directory": true,
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/memories/src/tests/",
+          "runKind": "executes"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/rules/src/",
           "runKind": "checks",
           "via": "tsc packages/rules/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/rules/src/tests/",
+          "runKind": "executes"
         },
         {
           "job": "deploy-pages",
@@ -4219,7 +4299,7 @@
           }
         }
       ],
-      "runsCount": 6,
+      "runsCount": 18,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -4380,12 +4460,73 @@
           "via": "tsc packages/cli/tsconfig.json"
         },
         {
+          "job": "release",
+          "matched": true,
+          "path": "packages/cli/src/tests/console.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/cli/src/tests/dispatch.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/cli/src/tests/doctor.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/cli/src/tests/help.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/cli/src/tests/hook.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/cli/src/tests/refresh.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/cli/src/tests/report.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/cli/src/tests/split.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/cli/src/tests/wrapped.test.ts",
+          "runKind": "executes"
+        },
+        {
           "directory": true,
           "job": "release",
           "matched": true,
           "path": "packages/kernel/src/",
           "runKind": "checks",
           "via": "tsc packages/kernel/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/kernel/src/tests/",
+          "runKind": "executes"
         },
         {
           "directory": true,
@@ -4399,12 +4540,26 @@
           "directory": true,
           "job": "release",
           "matched": true,
+          "path": "packages/memories/src/tests/",
+          "runKind": "executes"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "matched": true,
           "path": "packages/rules/src/",
           "runKind": "checks",
           "via": "tsc packages/rules/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/rules/src/tests/",
+          "runKind": "executes"
         }
       ],
-      "runsCount": 5,
+      "runsCount": 17,
       "secrets": [
         "GITHUB_TOKEN"
       ],

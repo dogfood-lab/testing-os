@@ -73,7 +73,7 @@
       ],
       "importConfidence": "full",
       "name": "assets",
-      "origin": "generated",
+      "origin": "authored",
       "role": "data",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -1126,7 +1126,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 1,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -1232,6 +1232,7 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsideReads": 1,
       "outsideWrites": 5,
       "role": "code",
       "testedBy": 0,
@@ -1337,10 +1338,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 8,
+      "dynamicReads": 4,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 4,
+      "dynamicWrites": 1,
       "entryPoints": [
         "src/cli/analyze.ts",
         "src/cli/build-preset.ts",
@@ -1915,7 +1916,8 @@
             "src/types/score.ts",
             "src/types/scoreSchema.ts"
           ],
-          "path": "src/index.ts"
+          "path": "src/index.ts",
+          "reexportsOnly": true
         },
         {
           "entry": "main",
@@ -2457,8 +2459,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 50,
-      "outsideWrites": 28,
+      "outsideReads": 54,
+      "outsideWrites": 33,
       "role": "code",
       "testedBy": 17,
       "unresolvedSites": 0
@@ -2730,9 +2732,7 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "landings": [
-        "tests/__bench__/baseline.json"
-      ],
+      "landings": [],
       "mentions": [
         {
           "job": "lint-and-test",
@@ -2759,20 +2759,7 @@
           "files": 18
         }
       ],
-      "readers": [
-        {
-          "by": "scripts/bench-gate.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "tests/__bench__/baseline.json"
-        },
-        {
-          "by": "scripts/bench-gate.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "tests/__bench__/baseline.json"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "job": "bench-gate",
@@ -3733,9 +3720,7 @@
       "elsewhere": [],
       "file": "package.json",
       "kind": "command",
-      "landings": [
-        "assets"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "vse-analyze",
       "permissions": [],
@@ -4110,8 +4095,20 @@
   ],
   "edges": [
     {
+      "from": "cockpit",
+      "kind": "http",
+      "routes": 11,
+      "to": "src"
+    },
+    {
       "from": "scripts",
       "kind": "file",
+      "to": "src"
+    },
+    {
+      "from": "scripts",
+      "kind": "http",
+      "routes": 1,
       "to": "src"
     },
     {
@@ -4151,16 +4148,6 @@
       ],
       "target": "apps/cockpit/tests",
       "writers": []
-    },
-    {
-      "readers": [],
-      "target": "assets",
-      "writers": [
-        {
-          "by": "src/cli/analyze.ts",
-          "confidence": "ast"
-        }
-      ]
     },
     {
       "readers": [
@@ -4315,7 +4302,9 @@
         {
           "by": "scripts/bench-gate.mjs",
           "confidence": "ast",
-          "stamps": true
+          "unless": [
+            "exists"
+          ]
         }
       ]
     },
@@ -4355,5 +4344,15 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 22,
-  "unassigned": []
+  "unassigned": [],
+  "unseen": [
+    {
+      "files": [
+        "Dockerfile",
+        "fly.toml",
+        "render.yaml"
+      ],
+      "kind": "deploy"
+    }
+  ]
 }

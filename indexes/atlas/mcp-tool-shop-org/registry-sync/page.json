@@ -28,7 +28,7 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 2,
       "changed": 80,
       "moved": 0,
       "parts": 7,
@@ -75,15 +75,16 @@
       },
       {
         "kind": "landing",
-        "sentence": "package.json is now also read by test/version.test.ts.",
+        "sentence": "package.json is now also read by test/cli-commands.test.ts and test/version.test.ts.",
         "subjects": [
           "package.json",
+          "test/cli-commands.test.ts",
           "test/version.test.ts"
         ]
       },
       {
         "kind": "counts",
-        "sentence": "80 files changed content, across 7 parts.",
+        "sentence": "2 files added and 80 changed content, across 7 parts.",
         "subjects": []
       }
     ],
@@ -98,13 +99,14 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "bd8e89433728f9b9bf1700379507b46a8c50cdc9",
+  "commit": "e8f862135007272c51e6f43c2de7c0d972abfe9c",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly TypeScript (38 files). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run registry-sync. People import @mcptoolshop/registry-sync.",
+  "derived": "7 parts, mostly TypeScript (40 files). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run registry-sync. People import @mcptoolshop/registry-sync.",
   "doors": [
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -122,7 +124,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 15
+          "files": 17
         }
       ],
       "runs": [
@@ -130,6 +132,7 @@
         "test/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "changes other repositories through the GitHub API"
       ],
@@ -143,6 +146,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/publish.yml",
       "id": ".github/workflows/publish.yml",
       "landings": [],
@@ -152,7 +156,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 15
+          "files": 17
         },
         {
           "boundary": "src",
@@ -164,6 +168,7 @@
         "test/"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [
         "publishes to npm"
       ],
@@ -176,6 +181,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -193,6 +199,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -205,6 +212,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#@mcptoolshop/registry-sync",
       "kind": "package",
@@ -222,6 +230,7 @@
         "src/index.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -229,6 +238,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#registry-sync",
       "kind": "command",
@@ -249,6 +259,7 @@
         "src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [
         "changes other repositories through the GitHub API"
       ],
@@ -267,7 +278,7 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T11:30:03.356Z",
+  "generatedAt": "2026-09-24T11:53:07.523Z",
   "limits": [
     "4 writes and 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
@@ -567,9 +578,9 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 15,
+  "testFiles": 17,
   "testedBy": {
-    "src": 14
+    "src": 16
   },
   "unnamedWrites": 0,
   "unread": [],

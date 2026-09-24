@@ -20,7 +20,7 @@ Mapped at 2026-09-24 from commit dd0e1de.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push to main touching 13 paths; or by hand. Runs scripts/check-report-schema.mjs, scripts/eval-planted.mjs, src/index.ts and 1 more; checks src/.
+1. **CI.** On a pull request; on a push to main touching 13 paths; or by hand. Runs scripts/check-report-schema.mjs, scripts/eval-planted.mjs, src/index.ts and 16 more; checks src/.
 2. **Release (npm via Trusted Publishing).** When a release is published; or by hand. Runs scripts/check-report-schema.mjs, src/index.ts and tests/; checks src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/synthesis** (the package people import). Loads src/index.ts.
@@ -95,7 +95,6 @@ Read those in order to follow one pull request end to end.
 - 1 import site could not be resolved.
 - 1 import site names a path outside this repository, so what it loads is not followed.
 - 3 writes and 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 1 command is built at run time and not followed, and it is in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

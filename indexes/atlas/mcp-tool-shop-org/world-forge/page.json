@@ -281,7 +281,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 87 more new writers and readers of places.",
+        "sentence": "And 89 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -402,6 +402,7 @@
         "packages/schema/src/"
       ],
       "checksCount": 8,
+      "checksMore": 222,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [
@@ -535,6 +536,7 @@
         "site/src/"
       ],
       "runsCount": 63,
+      "runsMore": 211,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -555,6 +557,7 @@
         "packages/schema/src/"
       ],
       "checksCount": 8,
+      "checksMore": 222,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [
@@ -680,6 +683,7 @@
         "packages/schema/src/__tests__/zone-exits-validation.test.ts"
       ],
       "runsCount": 60,
+      "runsMore": 117,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -689,15 +693,18 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "held": [
         {
           "checks": [],
+          "checksMore": 0,
           "lead": "except on a release event",
           "runs": [
             "site/astro.config.mjs",
             "site/src/"
           ],
+          "runsMore": 0,
           "when": "except on a release event"
         }
       ],
@@ -714,6 +721,7 @@
       ],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [
         "deploys the site except on a release event"
       ],
@@ -727,6 +735,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/export-ai-rpg/package.json",
       "id": "packages/export-ai-rpg/package.json#world-forge-export",
       "kind": "command",
@@ -749,6 +758,7 @@
         "packages/export-ai-rpg/src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -756,6 +766,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/export-godot/package.json",
       "id": "packages/export-godot/package.json#world-forge-export-godot",
       "kind": "command",
@@ -778,6 +789,7 @@
         "packages/export-godot/src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -785,6 +797,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/export-unreal/package.json",
       "id": "packages/export-unreal/package.json#world-forge-export-unreal",
       "kind": "command",
@@ -807,6 +820,7 @@
         "packages/export-unreal/src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -1007,14 +1021,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T08:38:13.121Z",
+  "generatedAt": "2026-09-24T11:54:58.244Z",
   "limits": [
     "8 import sites could not be resolved.",
-    "4 files use syntax the parser cannot read (packages/editor/src/Canvas.tsx, packages/editor/src/panels/PresetBrowser.tsx, packages/editor/src/panels/ZoneProperties.tsx and 1 more), so what they import is not known: 3 in editor (an import type followed by `[]` in 2 and other syntax in 1), 1 in export-ai-rpg (`typeof import(…)` as a type argument).",
+    "1 file uses syntax the parser cannot read (packages/editor/src/panels/PresetBrowser.tsx), so what it imports is not known.",
     "3 writes and 3 reads use paths built at run time and are not named here.",
     "40 writes go to places this repository does not track, so they are not listed as generated.",
-    "30 writes and 70 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "17 commands are built at run time and not followed, 13 of them in tests.",
+    "30 writes and 56 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "3 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -1047,20 +1061,20 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "packages/export-ai-rpg/src/index.ts"
+    "scripts/check-pack.mjs"
   ],
   "summary": null,
   "summaryFrom": null,
   "testFiles": 231,
   "testedBy": {
-    "dogfood": 4,
+    "dogfood": 8,
     "e2e": 2,
     "editor": 110,
-    "export-ai-rpg": 61,
-    "export-godot": 44,
-    "export-unreal": 35,
+    "export-ai-rpg": 64,
+    "export-godot": 45,
+    "export-unreal": 38,
     "renderer-2d": 10,
-    "schema": 196,
+    "schema": 199,
     "scripts": 1
   },
   "unnamedWrites": 3,
@@ -1096,7 +1110,7 @@
       ]
     }
   ],
-  "unreadFiles": 4,
+  "unreadFiles": 1,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],

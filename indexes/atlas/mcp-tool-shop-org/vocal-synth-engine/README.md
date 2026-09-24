@@ -8,7 +8,8 @@ Mapped at 2026-09-24 from commit a2738c5.
 
 ## What changed since 2026-09-24 (f8fe895)
 
-Nothing structural changed since 2026-09-24; 203 files changed content.
+- assets was generated and is now authored.
+- 203 files changed content, across 9 parts.
 
 ## What comes in
 
@@ -31,11 +32,10 @@ Nothing structural changed since 2026-09-24; 203 files changed content.
 ## What happens through CI
 
 1. The workflow runs scripts/bench-gate.mjs in scripts and 17 files in tests; it checks src/ in src.
-2. It writes to tests/__bench__/baseline.json.
 
 ## Who reads the results
 
-Only CI itself reads what it writes.
+CI writes nothing this map can see.
 
 ## The other doors
 
@@ -49,7 +49,7 @@ Only CI itself reads what it writes.
 
 **vocal-synth-engine-mcp** (a command people run) runs src/mcp/server.ts and runs git.
 
-**vse-analyze** (a command people run) runs src/cli/analyze.ts and writes to assets/.
+**vse-analyze** (a command people run) runs src/cli/analyze.ts.
 
 **vse-build-preset** (a command people run) runs src/cli/build-preset.ts.
 
@@ -69,7 +69,7 @@ Only CI itself reads what it writes.
 
 ## What breaks what
 
-- **src** is imported by 1 part (scripts), and by 1 more only from tests; it sits on the path of 14 doors.
+- **src** is imported by 1 part (scripts), and by 1 more only from tests, is called over HTTP by 2 parts (cockpit, scripts), and sits on the path of 14 doors.
 - **scripts** is imported by no other part and sits on the path of 2 doors.
 - **tests** is imported by no other part and sits on the path of 2 doors.
 
@@ -86,7 +86,6 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 
 ## Written but never read
 
-- **assets/** is written by src/cli/analyze.ts and read by nothing else in this repository.
 - **ref/ah_sustain.wav** is written by scripts/generate-ref-wav.ts and read by nothing else in this repository.
 
 ## Helpers that look duplicated
@@ -95,25 +94,27 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **assets/** is written by src/cli/analyze.ts.
 - **ref/ah_sustain.wav** is written by scripts/generate-ref-wav.ts.
-- **tests/__bench__/baseline.json** has a block written by scripts/bench-gate.mjs.
+- **tests/__bench__/baseline.json** is written once by scripts/bench-gate.mjs when absent.
 
 ## Hand-authored
 
-People write .github/, presets/, the repository root and site/; 4 writes with paths built at run time may land here.
+People write .github/, assets/, presets/, the repository root and site/; 1 write with a path built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts
+src/mcp/server.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of vocal-synth-engine-mcp end to end. This path follows vocal-synth-engine-mcp (a command people run) from its entry, since CI runs only tests and scripts that import no code here.
 
 ## What this map cannot see
 
-- 4 writes and 9 reads use paths built at run time and are not named here.
-- 33 writes and 50 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 1 write and 4 reads use paths built at run time and are not named here.
+- 38 writes and 55 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed, and it is in tests.
+- cockpit calls src over HTTP at 11 routes, a link no import shows: the map draws it, and no door's reach follows it.
+- scripts calls src over HTTP at 1 route, a link no import shows: the map draws it, and no door's reach follows it.
+- There is a Dockerfile, a fly.toml and a render.yaml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

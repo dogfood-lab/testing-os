@@ -1689,10 +1689,17 @@
           ]
         },
         {
+          "exports": [
+            "isValidCancelledMarker",
+            "listCancelledRuns",
+            "readCancelledMarker"
+          ],
           "hash": "2ccfed88b5b0460aa47d875e9293a3215233c31971c01de7ed6a32fedd958f1d",
-          "parseError": true,
-          "path": "src/observability/cancelled-marker-reader.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/observability/fs-safe.ts",
+            "src/types.ts"
+          ],
+          "path": "src/observability/cancelled-marker-reader.ts"
         },
         {
           "exports": [
@@ -1926,16 +1933,28 @@
           "path": "src/observability/open-summary.ts"
         },
         {
+          "exports": [
+            "humanizeOrphanRecovery",
+            "listOrphanedRuns"
+          ],
           "hash": "ca17fa2be061df08c8dd777bf6e5eff02d13af25c48924cf0341eaea56462945",
-          "parseError": true,
-          "path": "src/observability/orphan-markers.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/observability/fs-safe.ts",
+            "src/types.ts"
+          ],
+          "path": "src/observability/orphan-markers.ts"
         },
         {
+          "exports": [
+            "recoverIndex",
+            "recoverIndexForWorkspace"
+          ],
           "hash": "98b3bc9dfb215f0ef8be17b54aac46f15ee158d6876cf568cf8404bd817db9e0",
-          "parseError": true,
-          "path": "src/observability/recover-index-command.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/observability/fs-safe.ts",
+            "src/types.ts"
+          ],
+          "path": "src/observability/recover-index-command.ts"
         },
         {
           "exports": [
@@ -2362,8 +2381,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 17,
-      "outsideWrites": 6,
+      "outsideReads": 20,
+      "outsideWrites": 9,
       "role": "code",
       "testedBy": 32,
       "unresolvedSites": 0

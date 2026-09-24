@@ -64,8 +64,16 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "apps/desktop/src-tauri/src/main.rs is now read by apps/desktop/src-tauri/Cargo.toml.",
+        "subjects": [
+          "apps/desktop/src-tauri/src/main.rs",
+          "apps/desktop/src-tauri/Cargo.toml"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 652 files changed content.",
+        "sentence": "652 files changed content, across 14 parts.",
         "subjects": []
       }
     ],
@@ -73,7 +81,7 @@
       "commit": "cfb891743d975536ee393631177f9419c82f9768",
       "generatedAt": "2026-09-24T08:27:41.404Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -91,6 +99,7 @@
         "packages/state/src/"
       ],
       "checksCount": 3,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [
@@ -245,6 +254,7 @@
         "packages/state/src/workspaceStore.test.ts"
       ],
       "runsCount": 120,
+      "runsMore": 118,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -256,6 +266,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -273,6 +284,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -285,6 +297,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/dogfood.yml",
       "id": ".github/workflows/dogfood.yml",
       "landings": [],
@@ -293,6 +306,7 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [
         "sends a dispatch to dogfood-lab/testing-os"
       ],
@@ -462,12 +476,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T08:35:48.481Z",
+  "generatedAt": "2026-09-24T11:51:31.158Z",
   "limits": [
     "17 import sites could not be resolved.",
-    "1 file uses syntax the parser cannot read (apps/desktop/src/components/VectorReductionPanel.tsx), so what it imports is not known: a bare `&` in JSX text (1).",
-    "2 reads use paths built at run time and are not named here.",
-    "4 writes and 24 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "1 read uses a path built at run time and is not named here.",
+    "4 writes and 25 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "There is a Tauri app under apps/desktop/ (46 Rust files) that no workflow builds; the map reads no Rust, so what it does is not on this page.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -511,8 +525,9 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "packages/state/src/index.ts",
-    "packages/domain/src/index.ts"
+    "packages/state/src/aiStore.ts",
+    "packages/api-contract/src/commands.ts",
+    "packages/domain/src/anchor.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -577,7 +592,7 @@
       ]
     }
   ],
-  "unreadFiles": 1,
+  "unreadFiles": 0,
   "unreadNote": [
     "And 12 more places."
   ],

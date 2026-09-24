@@ -22,7 +22,9 @@
       "place": "ledger/events/events.jsonl",
       "writers": [
         ".github/workflows/anchor-xrpl.yml",
-        ".github/workflows/attestor-ci.yml"
+        ".github/workflows/attestor-ci.yml",
+        "attestor/scripts/emit-key-event.mjs",
+        "packages/repomesh-cli/src/key/rotate-revoke.mjs"
       ]
     }
   ],
@@ -64,7 +66,7 @@
       "partLabel": "repomesh-cli"
     },
     {
-      "doors": 3,
+      "doors": 5,
       "importedBy": [
         "registry"
       ],
@@ -76,7 +78,7 @@
       "partLabel": "ledger"
     },
     {
-      "doors": 3,
+      "doors": 4,
       "importedBy": [],
       "importedByTests": [
         "tools"
@@ -85,17 +87,19 @@
       "name": "registry",
       "partLabel": "registry",
       "spawnedBy": [
+        "repomesh-cli",
         "tools"
       ]
     },
     {
-      "doors": 1,
+      "doors": 3,
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
       "name": "pages",
       "partLabel": "pages",
       "spawnedBy": [
+        "repomesh-cli",
         "tools"
       ]
     },
@@ -114,7 +118,9 @@
       ],
       "target": "ledger/events/events.jsonl",
       "writers": [
-        ".github"
+        ".github",
+        "attestor",
+        "repomesh-cli"
       ]
     },
     {
@@ -128,6 +134,7 @@
       ],
       "target": "ledger/nodes/",
       "writers": [
+        "attestor",
         "tools"
       ]
     }
@@ -251,11 +258,173 @@
   "changesTogetherWithTests": 0,
   "commit": "8843b8894a8ccae1569bce0ad24618ed0ce208e7",
   "defaultBranch": "main",
-  "derived": "18 parts, mostly JavaScript (175 files). Work enters through 9 doors; the busiest is pages-ci, which reaches 6 parts. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image. People run repomesh.",
+  "derived": "18 parts, mostly JavaScript (175 files). Work enters through 9 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image. People run repomesh.",
   "doors": [
+    {
+      "checks": [
+        "anchor/xrpl/config.json",
+        "anchor/xrpl/package-lock.json",
+        "anchor/xrpl/package.json",
+        "anchor/xrpl/scripts/",
+        "package-lock.json",
+        "package.json",
+        "packages/repomesh-cli/"
+      ],
+      "checksCount": 7,
+      "checksMore": 66,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "anchor",
+          "depth": 0,
+          "files": 10
+        },
+        {
+          "boundary": "repomesh-cli",
+          "depth": 0,
+          "files": 58
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "pages",
+          "depth": 1,
+          "files": 2
+        },
+        {
+          "boundary": "registry",
+          "depth": 1,
+          "files": 4
+        },
+        {
+          "boundary": "tools",
+          "depth": 1,
+          "files": 5
+        },
+        {
+          "boundary": "verifiers",
+          "depth": 1,
+          "files": 4
+        },
+        {
+          "boundary": "ledger",
+          "depth": 3,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "packages/repomesh-cli/scripts/build.mjs",
+        "packages/repomesh-cli/tests/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "anchor/xrpl/config.json",
+        "anchor/xrpl/package-lock.json",
+        "anchor/xrpl/package.json",
+        "anchor/xrpl/scripts/",
+        "package-lock.json",
+        "package.json",
+        "packages/repomesh-cli/"
+      ],
+      "checksCount": 7,
+      "checksMore": 66,
+      "file": ".github/workflows/anchor-xrpl.yml",
+      "id": ".github/workflows/anchor-xrpl.yml",
+      "landings": [
+        "anchor/xrpl/manifests/",
+        "ledger/events/events.jsonl",
+        "registry/anchors.json",
+        "registry/trust.json"
+      ],
+      "name": "anchor-xrpl",
+      "pushes": false,
+      "pushesForReview": true,
+      "reach": [
+        {
+          "boundary": "anchor",
+          "depth": 0,
+          "files": 10
+        },
+        {
+          "boundary": "registry",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "repomesh-cli",
+          "depth": 0,
+          "files": 58
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "pages",
+          "depth": 1,
+          "files": 2
+        },
+        {
+          "boundary": "tools",
+          "depth": 1,
+          "files": 5
+        },
+        {
+          "boundary": "verifiers",
+          "depth": 1,
+          "files": 4
+        },
+        {
+          "boundary": "ledger",
+          "depth": 3,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "anchor/xrpl/scripts/compute-root.mjs",
+        "anchor/xrpl/scripts/emit-anchor-event.mjs",
+        "packages/repomesh-cli/scripts/build.mjs",
+        "registry/scripts/build-anchors.mjs"
+      ],
+      "runsCount": 4,
+      "runsMore": 1,
+      "sends": [
+        "opens an issue when it fails",
+        "opens a pull request"
+      ],
+      "stages": [
+        "anchor/xrpl/manifests/*.json",
+        "ledger/events/events.jsonl",
+        "registry/anchors.json"
+      ],
+      "triggers": [
+        "on a schedule (`0 0 * * *`)",
+        "or by hand"
+      ]
+    },
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages-ci.yml",
       "id": ".github/workflows/pages-ci.yml",
       "landings": [
@@ -310,6 +479,7 @@
         "site/src/"
       ],
       "runsCount": 9,
+      "runsMore": 7,
       "sends": [
         "deploys the site"
       ],
@@ -321,131 +491,10 @@
     },
     {
       "checks": [
-        "anchor/xrpl/config.json",
-        "anchor/xrpl/package-lock.json",
-        "anchor/xrpl/package.json",
-        "anchor/xrpl/scripts/",
-        "package-lock.json",
-        "package.json",
-        "packages/repomesh-cli/"
-      ],
-      "checksCount": 7,
-      "file": ".github/workflows/anchor-xrpl.yml",
-      "id": ".github/workflows/anchor-xrpl.yml",
-      "landings": [
-        "anchor/xrpl/manifests/",
-        "ledger/events/events.jsonl",
-        "registry/anchors.json",
-        "registry/trust.json"
-      ],
-      "name": "anchor-xrpl",
-      "pushes": false,
-      "pushesForReview": true,
-      "reach": [
-        {
-          "boundary": "anchor",
-          "depth": 0,
-          "files": 10
-        },
-        {
-          "boundary": "registry",
-          "depth": 0,
-          "files": 1
-        },
-        {
-          "boundary": "repomesh-cli",
-          "depth": 0,
-          "files": 58
-        },
-        {
-          "boundary": "root",
-          "depth": 0,
-          "files": 2
-        },
-        {
-          "boundary": "verifiers",
-          "depth": 1,
-          "files": 3
-        }
-      ],
-      "runs": [
-        "anchor/xrpl/scripts/compute-root.mjs",
-        "anchor/xrpl/scripts/emit-anchor-event.mjs",
-        "packages/repomesh-cli/scripts/build.mjs",
-        "registry/scripts/build-anchors.mjs"
-      ],
-      "runsCount": 4,
-      "sends": [
-        "opens an issue when it fails",
-        "opens a pull request"
-      ],
-      "stages": [
-        "anchor/xrpl/manifests/*.json",
-        "ledger/events/events.jsonl",
-        "registry/anchors.json"
-      ],
-      "triggers": [
-        "on a schedule (`0 0 * * *`)",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [
-        "anchor/xrpl/config.json",
-        "anchor/xrpl/package-lock.json",
-        "anchor/xrpl/package.json",
-        "anchor/xrpl/scripts/",
-        "package-lock.json",
-        "package.json",
-        "packages/repomesh-cli/"
-      ],
-      "checksCount": 7,
-      "file": ".github/workflows/release.yml",
-      "id": ".github/workflows/release.yml",
-      "landings": [],
-      "name": "Release",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "anchor",
-          "depth": 0,
-          "files": 10
-        },
-        {
-          "boundary": "repomesh-cli",
-          "depth": 0,
-          "files": 58
-        },
-        {
-          "boundary": "root",
-          "depth": 0,
-          "files": 2
-        },
-        {
-          "boundary": "verifiers",
-          "depth": 1,
-          "files": 2
-        }
-      ],
-      "runs": [
-        "packages/repomesh-cli/scripts/build.mjs",
-        "packages/repomesh-cli/tests/"
-      ],
-      "runsCount": 2,
-      "sends": [
-        "publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image"
-      ],
-      "stages": [],
-      "triggers": [
-        "when a release is published",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [
         "LICENSE"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/attestor-ci.yml",
       "id": ".github/workflows/attestor-ci.yml",
       "landings": [
@@ -489,6 +538,7 @@
         "verifiers/security/scripts/verify-security.mjs"
       ],
       "runsCount": 5,
+      "runsMore": 2,
       "sends": [
         "opens an issue when it fails",
         "opens a pull request"
@@ -504,6 +554,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/registry-ci.yml",
       "id": ".github/workflows/registry-ci.yml",
       "landings": [
@@ -546,6 +597,7 @@
         "registry/scripts/build-verifiers.mjs"
       ],
       "runsCount": 7,
+      "runsMore": 4,
       "sends": [
         "opens a pull request"
       ],
@@ -567,6 +619,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/ledger-ci.yml",
       "id": ".github/workflows/ledger-ci.yml",
       "landings": [],
@@ -588,6 +641,7 @@
         "ledger/scripts/validate-ledger.mjs"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -598,6 +652,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/xrpl-watch.yml",
       "id": ".github/workflows/xrpl-watch.yml",
       "landings": [],
@@ -619,6 +674,7 @@
         "anchor/xrpl/scripts/watch.mjs"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [
         "opens an issue"
       ],
@@ -631,6 +687,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/repomesh-broadcast.yml",
       "id": ".github/workflows/repomesh-broadcast.yml",
       "landings": [],
@@ -647,6 +704,7 @@
         "packages/repomesh-cli/scripts/build.mjs"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [
         "commits into a clone of mcp-tool-shop-org/repomesh and pushes there",
         "opens a pull request"
@@ -660,6 +718,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/repomesh-cli/package.json",
       "id": "packages/repomesh-cli/package.json#repomesh",
       "kind": "command",
@@ -669,6 +728,7 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [],
@@ -797,7 +857,9 @@
     {
       "place": "ledger/nodes/",
       "writers": [
-        "tools/join-node.mjs"
+        "attestor/scripts/emit-key-event.mjs",
+        "tools/join-node.mjs",
+        "tools/register-node.mjs"
       ]
     },
     {
@@ -873,17 +935,16 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-24T08:37:00.265Z",
+  "generatedAt": "2026-09-24T11:53:21.070Z",
   "limits": [
     "114 import sites could not be resolved.",
-    "11 reads use paths built at run time and are not named here.",
+    "7 reads use paths built at run time and are not named here.",
     "24 writes go to places this repository does not track, so they are not listed as generated.",
-    "45 writes and 170 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "40 commands are built at run time and not followed, 35 of them in tests.",
-    "Readers marked (found by text) come from scanning unparsed files.",
+    "45 writes and 166 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "10 commands are built at run time and not followed, 9 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
-  "mainDoor": ".github/workflows/pages-ci.yml",
+  "mainDoor": ".github/workflows/release.yml",
   "partLabels": {
     ".github": ".github",
     "anchor": "anchor",
@@ -905,16 +966,7 @@
     "verifiers": "verifiers"
   },
   "parts": 18,
-  "readers": [
-    {
-      "readers": [
-        "packages/repomesh-cli/src/verify/verify-all.mjs",
-        "pages (5 files)",
-        "scripts/verify.sh (found by text)"
-      ],
-      "target": "registry/"
-    }
-  ],
+  "readers": [],
   "repo": "mcp-tool-shop-org/repomesh",
   "sequences": [],
   "startDoor": ".github/workflows/ledger-ci.yml",
@@ -927,15 +979,15 @@
   "summaryFrom": null,
   "testFiles": 108,
   "testedBy": {
-    "anchor": 16,
-    "attestor": 6,
-    "ledger": 17,
+    "anchor": 17,
+    "attestor": 8,
+    "ledger": 18,
     "pages": 5,
     "policy": 3,
     "registry": 15,
-    "repomesh-cli": 20,
-    "tools": 7,
-    "verifiers": 49
+    "repomesh-cli": 26,
+    "tools": 13,
+    "verifiers": 53
   },
   "unnamedWrites": 0,
   "unread": [

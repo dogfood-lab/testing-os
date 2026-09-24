@@ -177,6 +177,7 @@
         "test/"
       ],
       "checksCount": 3,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -307,6 +308,7 @@
         "test/xor.engine.test.ts"
       ],
       "runsCount": 105,
+      "runsMore": 102,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -321,6 +323,7 @@
         "test/"
       ],
       "checksCount": 2,
+      "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -452,6 +455,7 @@
         "test/xor.engine.test.ts"
       ],
       "runsCount": 106,
+      "runsMore": 103,
       "sends": [
         "publishes to npm",
         "creates a GitHub release"
@@ -467,6 +471,7 @@
         "src/"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/pack-smoke.yml",
       "id": ".github/workflows/pack-smoke.yml",
       "landings": [],
@@ -488,6 +493,7 @@
         "scripts/pack-install-smoke.mjs"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -498,6 +504,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -515,6 +522,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -527,6 +535,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/codeql.yml",
       "id": ".github/workflows/codeql.yml",
       "landings": [],
@@ -535,6 +544,7 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -546,6 +556,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#@mcptoolshop/backprop-trace",
       "kind": "package",
@@ -605,6 +616,7 @@
         "schemas/topology-input.v0.4.0.json"
       ],
       "runsCount": 38,
+      "runsMore": 35,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -612,6 +624,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#bp",
       "kind": "command",
@@ -629,6 +642,7 @@
         "src/bin/bp.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -891,7 +905,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T08:33:45.616Z",
+  "generatedAt": "2026-09-24T11:49:40.174Z",
   "limits": [
     "2 import sites name a declared dependency that shares its name with a local module (jax); they are read as the dependency, which is not in this repository.",
     "3 import sites could not be resolved.",
@@ -899,7 +913,7 @@
     "16 writes and 11 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
     "21 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "35 commands are built at run time and not followed, 32 of them in tests.",
+    "7 commands are built at run time and not followed, 6 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -919,18 +933,18 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/backprop-trace",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "package.json#bp",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "src/index.ts"
+    "src/bin/bp.ts"
   ],
+  "startReason": "This path follows bp (a command people run) from its entry, since ci runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 106,
   "testedBy": {
     "examples": 0,
     "scripts": 0,
-    "src": 85
+    "src": 99
   },
   "unnamedWrites": 16,
   "unread": [

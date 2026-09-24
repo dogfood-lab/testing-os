@@ -33,8 +33,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 1,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
         "packages/cabinet-server/src/index.ts"
@@ -62,7 +62,8 @@
             "packages/cabinet-server/src/voice-vibe.ts",
             "packages/cabinet-server/src/voice.ts"
           ],
-          "path": "packages/cabinet-server/src/browser.ts"
+          "path": "packages/cabinet-server/src/browser.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -197,7 +198,8 @@
             "packages/cabinet-server/src/voice-words.ts",
             "packages/cabinet-server/src/voice.ts"
           ],
-          "path": "packages/cabinet-server/src/index.ts"
+          "path": "packages/cabinet-server/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -576,14 +578,14 @@
       "origin": "authored",
       "outsideReads": 2,
       "role": "code",
-      "testedBy": 21,
+      "testedBy": 22,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 1,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 3,
+      "dynamicWrites": 2,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -1490,9 +1492,13 @@
         },
         {
           "hash": "6b33373c5dbe01d6f9adbfc9ebbcbd7ac89717e06dcf22060007dac4b1c5964b",
-          "parseError": true,
-          "path": "apps/cabinets/test/typer-menu.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "apps/cabinets/src/main.ts",
+            "apps/cabinets/src/seats.ts",
+            "apps/cabinets/src/vibe-typer.ts",
+            "packages/vibe-typer/src/index.ts"
+          ],
+          "path": "apps/cabinets/test/typer-menu.test.ts"
         },
         {
           "hash": "dc919473669de392ac910dd66f4b0d68fdee93b9c13f012b197db8606945443a",
@@ -1538,9 +1544,9 @@
       "name": "cabinets",
       "origin": "authored",
       "outsideReads": 15,
-      "outsideWrites": 3,
+      "outsideWrites": 4,
       "role": "code",
-      "testedBy": 12,
+      "testedBy": 13,
       "unresolvedSites": 2
     },
     {
@@ -3137,12 +3143,12 @@
       "origin": "authored",
       "outsideReads": 24,
       "role": "code",
-      "testedBy": 30,
+      "testedBy": 31,
       "unresolvedSites": 4
     },
     {
       "dynamicReads": 5,
-      "dynamicSpawns": 2,
+      "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 1,
       "entryPoints": [],
@@ -3322,7 +3328,7 @@
     },
     {
       "dynamicReads": 3,
-      "dynamicSpawns": 2,
+      "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
@@ -3449,7 +3455,7 @@
           "path": "Dockerfile"
         },
         {
-          "hash": "5915e3db6c8ebae104eeac97c77b9ab5e4a0227ac72763be62742157cf79af94",
+          "hash": "f6396a62f03d4a6658597c428a69481f710069a81be5280652e6394ea568012a",
           "path": "HANDOFF.md"
         },
         {
@@ -4005,7 +4011,8 @@
             "packages/tape-core/src/slice.ts",
             "packages/tape-core/src/types.ts"
           ],
-          "path": "packages/tape-core/src/index.ts"
+          "path": "packages/tape-core/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -4085,13 +4092,13 @@
       "origin": "authored",
       "outsideReads": 1,
       "role": "code",
-      "testedBy": 25,
+      "testedBy": 26,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 3,
-      "dynamicSpawnsInTests": 2,
+      "dynamicSpawns": 1,
+      "dynamicSpawnsInTests": 1,
       "dynamicWrites": 5,
       "entryPoints": [
         "packages/vibe-typer/src/index.ts"
@@ -4887,7 +4894,7 @@
       "origin": "mixed",
       "outsideReads": 47,
       "role": "code",
-      "testedBy": 31,
+      "testedBy": 32,
       "unresolvedSites": 3
     },
     {
@@ -6934,7 +6941,7 @@
     }
   ],
   "generatedFrom": {
-    "commit": "735b11db87f23d18ced8ffcc1f79cc045a01ef7f",
+    "commit": "745115cd1f0653a4e243b189e2cd0f749f795dc1",
     "tracked": 751
   },
   "landings": [

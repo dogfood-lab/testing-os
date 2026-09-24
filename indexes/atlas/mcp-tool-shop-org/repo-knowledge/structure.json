@@ -3606,7 +3606,8 @@
             "src/games/scorer.ts",
             "src/games/types.ts"
           ],
-          "path": "src/games/index.ts"
+          "path": "src/games/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -3698,7 +3699,8 @@
             "src/health/fsck.ts",
             "src/health/table.ts"
           ],
-          "path": "src/health/index.ts"
+          "path": "src/health/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -4013,10 +4015,18 @@
           "path": "src/sync/index.ts"
         },
         {
+          "exports": [
+            "detectTech",
+            "indexDocs",
+            "ingestLocalRepo",
+            "scanDirectory",
+            "scanLocalRepo"
+          ],
           "hash": "0599e01d4ac67a57b05a7bb9831806155f66f9e45c5da04c6cc8c871a5f62b83",
-          "parseError": true,
-          "path": "src/sync/local.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/db/init.ts"
+          ],
+          "path": "src/sync/local.ts"
         },
         {
           "exports": [
@@ -4051,10 +4061,10 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 70,
+      "outsideReads": 85,
       "outsideWrites": 6,
       "role": "code",
-      "testedBy": 45,
+      "testedBy": 48,
       "unresolvedSites": 1
     },
     {
@@ -4098,8 +4108,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 9,
-      "dynamicSpawnsInTests": 9,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -4302,9 +4312,12 @@
         },
         {
           "hash": "ff8e80835542f4e9903bb6d95588b93de985e73bb4586cd25d2cb0caea7dea83",
-          "parseError": true,
-          "path": "test/fsck.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/db/init.ts",
+            "src/health/fsck.ts",
+            "src/search/fts.ts"
+          ],
+          "path": "test/fsck.test.ts"
         },
         {
           "hash": "219a0010a5078e64737f0c3ef5073cbf9a88ae4b9ccdb4a2972ca6b23050afa8",
@@ -4468,9 +4481,11 @@
         },
         {
           "hash": "52d362df4ffc78f6180f54501083b59a618140e53326992c9b801e4add56c66d",
-          "parseError": true,
-          "path": "test/sync-recursive-local.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/db/init.ts",
+            "src/sync/local.ts"
+          ],
+          "path": "test/sync-recursive-local.test.ts"
         },
         {
           "hash": "b8f673e66ae98d7eaa181fdfc272c4338a2545b45474b9348612cffddcead662",
@@ -5004,7 +5019,8 @@
       "name": "rk",
       "permissions": [],
       "programs": [
-        "gh"
+        "gh",
+        "git"
       ],
       "pushes": false,
       "reach": [
@@ -5148,6 +5164,11 @@
           "by": ".github/workflows/release.yml"
         },
         {
+          "by": "src/sync/local.ts",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
           "by": "test/version.test.ts",
           "call": "readFileSync",
           "confidence": "ast",
@@ -5175,6 +5196,11 @@
           "confidence": "text",
           "ref": "master",
           "repo": "unclechu/node-deep-extend"
+        },
+        {
+          "by": "src/sync/local.ts",
+          "call": "literal",
+          "confidence": "ast"
         }
       ],
       "target": "LICENSE",
@@ -5183,7 +5209,18 @@
     {
       "readers": [
         {
+          "by": "src/sync/local.ts",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
           "by": "test/db.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/fsck.test.ts",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -5232,6 +5269,28 @@
           ]
         }
       ]
+    },
+    {
+      "readers": [
+        {
+          "by": "src/sync/local.ts",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "SECURITY.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/sync/local.ts",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "SHIP_GATE.md",
+      "writers": []
     },
     {
       "readers": [],

@@ -8,11 +8,15 @@ Mapped at 2026-09-24 from commit e2ce19a.
 
 ## What changed since 2026-09-24 (1f7eeff)
 
-Nothing structural changed since 2026-09-24; 263 files changed content.
+- app/src-tauri/icons/128x128.png is now read by app/src-tauri/tauri.conf.json.
+- app/src-tauri/icons/128x128@2x.png is now read by app/src-tauri/tauri.conf.json.
+- app/src-tauri/icons/32x32.png is now read by app/src-tauri/tauri.conf.json.
+- And 3 more new writers and readers of places.
+- 263 files changed content, across 12 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; when a release is published; or by hand. Runs app/scripts/bundle-bridge.mjs, verify.sh, app/bridge-worker-access.test.ts and 75 more; checks app/bridge-worker-commands.ts, app/bridge-worker.ts, app/src/ and 7 more.
+1. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; when a release is published; or by hand. Runs app/scripts/bundle-bridge.mjs, verify.sh, app/bridge-worker-access.test.ts and 75 more; checks app/bridge-worker-commands.ts, app/bridge-worker.ts, app/src/ and 116 more.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **capsule** (a command people run). Runs packages/cli/src/bin.ts.
 
@@ -23,7 +27,7 @@ Nothing structural changed since 2026-09-24; 263 files changed content.
 
 ## Who reads the results
 
-CI writes nothing in the files this map could read; 15 files could not be.
+CI writes nothing this map can see.
 
 ## The other doors
 
@@ -57,15 +61,15 @@ Every code part is imported by at least one test.
 
 ## Written but never read
 
-No place is written by the files this map could read, so none goes unread; 15 files could not be.
+No place this map can see is written, so none goes unread.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike in the files this map could read; 15 files could not be.
+No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-Nothing in the files this map could read writes to a tracked place; 15 files could not be.
+Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
@@ -73,18 +77,18 @@ People write .github/, artifacts/, docs/, fixtures/, the repository root and sit
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/core/src/index.ts
+packages/cli/src/bin.ts → packages/core/src/access-grant-schema.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of capsule end to end. This path follows capsule (a command people run) from its entry, since CI runs only tests and scripts that import no code here.
 
 ## What this map cannot see
 
-- 3 import sites could not be resolved.
-- 15 files use syntax the parser cannot read (app/bridge-worker-mint-persist.test.ts, app/src/components/studio/RecoveryPage.tsx, app/src/components/studio/ReviewPage.tsx and 12 more), so what they import is not known: 7 in xrpl (`typeof import(…)` as a type argument), 4 in cli (`typeof import(…)` as a type argument), 3 in app (a bare `&` in JSX text in 2 and `typeof import(…)` as a type argument in 1), 1 in xaman (`typeof import(…)` as a type argument).
+- 4 import sites could not be resolved.
 - 2 writes and 14 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
 - 22 writes and 37 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed, and it is in tests.
+- There is a Tauri app under app/ (4 Rust files) that a workflow builds; the map reads no Rust, so what its Rust code does is not on this page.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

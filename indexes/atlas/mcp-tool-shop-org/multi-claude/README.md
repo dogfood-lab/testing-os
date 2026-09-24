@@ -8,11 +8,13 @@ Mapped at 2026-09-24 from commit 7e09d24.
 
 ## What changed since 2026-09-24 (9d36a21)
 
-Nothing structural changed since 2026-09-24; 472 files changed content.
+- .multi-claude/drill/drill-report.json is now written by test/drill/stop-drill.ts.
+- .multi-claude was authored and is now mixed.
+- 472 files changed content, across 11 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 12 paths; on a push touching 12 paths; or by hand. Runs test/claim.test.ts, test/commands/, test/console/ and 39 more; checks bin/ and src/.
+1. **CI.** On a pull request touching 12 paths; on a push touching 12 paths; or by hand. Runs test/claim.test.ts, test/commands/, test/console/ and 53 more; checks bin/ and src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **multi-claude** (a command people run). Runs bin/multi-claude.ts.
 
@@ -32,7 +34,7 @@ CI writes nothing this map can see.
 
 ## What breaks what
 
-- **src** is imported by 1 part (bin), and by 1 more only from tests; it sits on the path of 2 doors.
+- **src** is imported by 1 part (bin), and by 1 more only from tests, is called over HTTP by 1 part (control-plane-monitor), and sits on the path of 2 doors.
 - **bin** is imported by no other part and sits on the path of 2 doors.
 
 ## What tends to change together
@@ -48,7 +50,7 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 
 ## Written but never read
 
-No place this map can see is written, so none goes unread.
+- **.multi-claude/drill/drill-report.json** is written by test/drill/stop-drill.ts (a test) and read by nothing else in this repository.
 
 ## Helpers that look duplicated
 
@@ -56,17 +58,17 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-Nothing in this repository writes to a tracked place this map can see.
+- **.multi-claude/drill/drill-report.json** is written by test/drill/stop-drill.ts (a test) when run from the repository root, and committed.
 
 ## Hand-authored
 
-People write .claude/, .github/, .multi-claude/, docs/, reports/, the repository root and site/; 3 writes with paths built at run time may land here.
+People write .claude/, .github/, docs/, reports/, the repository root and site/; 3 writes with paths built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → src/commands/claim.ts
+bin/multi-claude.ts → src/commands/approve.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of multi-claude end to end. This path follows multi-claude (a command people run) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 
@@ -74,6 +76,7 @@ Read those in order to follow one pull request end to end.
 - 2 writes go to places this repository does not track, so they are not listed as generated.
 - 3 writes and 129 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed.
+- control-plane-monitor calls src over HTTP at 6 routes, a link no import shows: the map draws it, and no door's reach follows it.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

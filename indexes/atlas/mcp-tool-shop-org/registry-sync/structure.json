@@ -13,7 +13,7 @@
           "path": ".claude/context/brand-rules.md"
         },
         {
-          "hash": "fa2fdeab142f9538454dc7ba683d5204deeed8cf9d52cfd624f1efc7982eda14",
+          "hash": "24625bb9cd67fc4f040388bd456e311f22cc02be3b7014e42dbc59959b2945c3",
           "path": ".claude/context/current-priorities.md"
         },
         {
@@ -83,7 +83,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "9201546c340e24bb29fce1c7914203c105a0d87b7fccebf93ac096b3e70f52f5",
+          "hash": "f3cde831cf9432977cec2075ece27f066375ba12b6d0d5bca7804a520e6a52c6",
           "path": "CHANGELOG.md"
         },
         {
@@ -155,7 +155,7 @@
           "path": "tsup.config.ts"
         },
         {
-          "hash": "4cd59067561ca73ad697cf1ada7e8cc04e1eae6679e481495cf97cec68f1c158",
+          "hash": "cb3636d300275cc2f2accc03d008db0e44eaa393d4dc17b5417d3309347e5edd",
           "path": "vitest.config.ts"
         }
       ],
@@ -429,9 +429,10 @@
           "entryRule": 1,
           "exports": [
             "loadAuditFromFile",
+            "main",
             "parseArgs"
           ],
-          "hash": "f94625d2a0f4622cb13a4276aa0a0390d7ac059d9db839ef382238cbec154ec2",
+          "hash": "34cb1d82e4bae28c35ccd33dc397b10d7f0d854213f0e7bc4a6a5effce0e3cfa",
           "importsFiles": [
             "src/apply.ts",
             "src/audit.ts",
@@ -640,28 +641,28 @@
             {
               "calls": [
                 {
-                  "line": 302,
+                  "line": 318,
                   "name": "diff",
                   "target": {
                     "file": "src/diff.ts"
                   }
                 },
                 {
-                  "line": 308,
+                  "line": 324,
                   "name": "formatDiffJson",
                   "target": {
                     "file": "src/format/diff.ts"
                   }
                 },
                 {
-                  "line": 311,
+                  "line": 327,
                   "name": "formatDiffMarkdown",
                   "target": {
                     "file": "src/format/diff.ts"
                   }
                 },
                 {
-                  "line": 315,
+                  "line": 331,
                   "name": "formatDiffTable",
                   "target": {
                     "file": "src/format/diff.ts"
@@ -967,7 +968,7 @@
                   "via": "runApply"
                 },
                 {
-                  "line": 302,
+                  "line": 318,
                   "name": "diff",
                   "target": {
                     "file": "src/diff.ts"
@@ -975,7 +976,7 @@
                   "via": "runDiff"
                 },
                 {
-                  "line": 308,
+                  "line": 324,
                   "name": "formatDiffJson",
                   "target": {
                     "file": "src/format/diff.ts"
@@ -983,7 +984,7 @@
                   "via": "runDiff"
                 },
                 {
-                  "line": 311,
+                  "line": 327,
                   "name": "formatDiffMarkdown",
                   "target": {
                     "file": "src/format/diff.ts"
@@ -991,7 +992,7 @@
                   "via": "runDiff"
                 },
                 {
-                  "line": 315,
+                  "line": 331,
                   "name": "formatDiffTable",
                   "target": {
                     "file": "src/format/diff.ts"
@@ -999,7 +1000,7 @@
                   "via": "runDiff"
                 }
               ],
-              "exported": false,
+              "exported": true,
               "invokedAtTopLevel": true,
               "isDefaultExport": false,
               "name": "main"
@@ -1112,7 +1113,8 @@
             "src/semver.ts",
             "src/types.ts"
           ],
-          "path": "src/index.ts"
+          "path": "src/index.ts",
+          "reexportsOnly": true
         },
         {
           "entry": "plan",
@@ -1186,7 +1188,7 @@
       "outsideReads": 6,
       "outsideWrites": 4,
       "role": "code",
-      "testedBy": 14,
+      "testedBy": 16,
       "unresolvedSites": 0
     },
     {
@@ -1256,6 +1258,16 @@
           "path": "test/auth.test.ts"
         },
         {
+          "hash": "30990aa81bb40b56578dad69da1c0e77190af52d5968278912f723bca8f789a6",
+          "importsFiles": [
+            "src/audit.ts",
+            "src/cli.ts",
+            "src/errors.ts",
+            "src/types.ts"
+          ],
+          "path": "test/cli-commands.test.ts"
+        },
+        {
           "hash": "bcbb1dbe7687b4cfb63d8d00110715f576a84973260dbc9542c4f13bbce5a986",
           "importsFiles": [
             "src/cli.ts"
@@ -1290,6 +1302,14 @@
             "src/fetch.ts"
           ],
           "path": "test/fetch.test.ts"
+        },
+        {
+          "hash": "ef89cafbd16fc2346941e1c74c2583e8e7dbf810e8f424e26516e72957112e8f",
+          "importsFiles": [
+            "src/format/diff.ts",
+            "src/types.ts"
+          ],
+          "path": "test/format-diff.test.ts"
         },
         {
           "hash": "7e476d8d1c4cfe2c7a3d7aa08a54ceaf6bf043635d8361cda324b1635be412e3",
@@ -1414,7 +1434,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 15
+          "files": 17
         }
       ],
       "readers": [],
@@ -1612,7 +1632,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 15
+          "files": 17
         },
         {
           "boundary": "src",
@@ -1775,8 +1795,8 @@
     }
   ],
   "generatedFrom": {
-    "commit": "bd8e89433728f9b9bf1700379507b46a8c50cdc9",
-    "tracked": 80
+    "commit": "e8f862135007272c51e6f43c2de7c0d972abfe9c",
+    "tracked": 82
   },
   "landings": [
     {
@@ -1840,6 +1860,12 @@
           "by": "templates/ci-node-lib.yml",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "test/cli-commands.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "test/version.test.ts",
@@ -1915,6 +1941,6 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 15,
+  "testFiles": 17,
   "unassigned": []
 }

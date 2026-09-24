@@ -14,8 +14,8 @@ Mapped at 2026-09-24 from commit fd35beb.
 - And 4 more changes to doors.
 - .github/mutmut-baseline.txt is now written by .github/workflows/mutmut.yml.
 - .github/workflows/ci.yml is now read by docs/ci-gates-triage-plan.md.
-- README.md is now also read by tests/test_model_card.py.
-- And 15 more new writers and readers of places.
+- README.md is now also read by pyproject.toml and tests/test_model_card.py.
+- And 16 more new writers and readers of places.
 - .github was generated and is now mixed.
 - 247 files changed content, across 10 parts.
 
@@ -105,9 +105,9 @@ People write .claude/, assets/, docs/, examples/ and site/; 13 writes with paths
 
 ## Where to start
 
-.github/workflows/ci.yml → backpropagate/cli.py
+backpropagate/cli.py
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of backprop end to end. This path follows backprop (a command people run) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 
@@ -115,5 +115,6 @@ Read those in order to follow one pull request end to end.
 - 6 import sites could not be resolved.
 - 13 writes and 33 reads use paths built at run time and are not named here.
 - 3 writes and 9 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- There is a compose.yaml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

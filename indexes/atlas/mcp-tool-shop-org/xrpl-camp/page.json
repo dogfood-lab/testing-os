@@ -88,6 +88,14 @@
       },
       {
         "kind": "landing",
+        "sentence": "README.md is now read by pyproject.toml.",
+        "subjects": [
+          "README.md",
+          "pyproject.toml"
+        ]
+      },
+      {
+        "kind": "landing",
         "sentence": "bin/xrpl-camp.js is now read by tests/test_version.py.",
         "subjects": [
           "bin/xrpl-camp.js",
@@ -96,16 +104,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "package.json is now also read by bin/xrpl-camp.js and tests/test_version.py.",
-        "subjects": [
-          "package.json",
-          "bin/xrpl-camp.js",
-          "tests/test_version.py"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 2 more new writers and readers of places.",
+        "sentence": "And 3 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -167,6 +166,7 @@
         "xrpl_camp/"
       ],
       "checksCount": 2,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -200,6 +200,7 @@
         "tests/"
       ],
       "runsCount": 3,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -211,6 +212,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/publish.yml",
       "held": [
         {
@@ -220,6 +222,7 @@
             "pyproject.toml",
             "xrpl_camp/"
           ],
+          "checksMore": 10,
           "lead": "on a tag push",
           "runs": [
             "docker-entrypoint.sh",
@@ -227,6 +230,7 @@
             "xrpl_camp/__main__.py",
             "xrpl_camp/cli.py"
           ],
+          "runsMore": 1,
           "when": "on a tag push"
         }
       ],
@@ -253,6 +257,7 @@
       ],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [
         "publishes to PyPI and a container image on a tag push",
         "creates a GitHub release on a tag push"
@@ -266,6 +271,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -283,6 +289,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -295,6 +302,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -311,6 +319,7 @@
         "scripts/check-versions.sh"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [
         "publishes to npm"
       ],
@@ -323,6 +332,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/freshness-check.yml",
       "id": ".github/workflows/freshness-check.yml",
       "landings": [
@@ -342,6 +352,7 @@
         "scripts/check-freshness.sh"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [
         "opens a pull request"
       ],
@@ -356,6 +367,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#xrpl-camp",
       "kind": "command",
@@ -373,6 +385,7 @@
         "bin/xrpl-camp.js"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -380,6 +393,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "pyproject.toml",
       "id": "pyproject.toml#xrpl-camp",
       "kind": "command",
@@ -397,6 +411,7 @@
         "xrpl_camp/cli.py"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -414,7 +429,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T08:38:18.394Z",
+  "generatedAt": "2026-09-24T11:55:02.566Z",
   "limits": [
     "1 import site could not be resolved.",
     "4 writes and 11 reads use paths built at run time and are not named here.",
@@ -434,11 +449,11 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/xrpl-camp",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "package.json#xrpl-camp",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "xrpl_camp/cli.py"
+    "bin/xrpl-camp.js"
   ],
+  "startReason": "This path follows xrpl-camp (a command people run, from package.json) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 29,

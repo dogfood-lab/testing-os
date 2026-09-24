@@ -8,11 +8,15 @@ Mapped at 2026-09-24 from commit 72e9d21.
 
 ## What changed since 2026-09-24 (31ad2f4)
 
-Nothing structural changed since 2026-09-24; no file changed.
+- .github/workflows/ is now read by src/lib/rename/identity/simple-text.ts.
+- LICENSE is now also read by src/lib/rename/identity/simple-text.ts.
+- README.md is now also read by src/lib/rename/identity/simple-text.ts.
+- And 2 more new writers and readers of places.
+- No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 11 paths; on a push to main touching 11 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 37 more; checks src/.
+1. **CI.** On a pull request touching 11 paths; on a push to main touching 11 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 47 more; checks src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **@mcptoolshop/forkctl** (the package's entry, not published from here). Loads src/index.ts.
 4. **forkctl** (a command people run). Runs src/cli.ts.
@@ -24,7 +28,7 @@ Nothing structural changed since 2026-09-24; no file changed.
 
 ## Who reads the results
 
-CI writes nothing in the files this map could read; 7 files could not be.
+CI writes nothing this map can see.
 
 ## The other doors
 
@@ -52,33 +56,32 @@ Every code part is imported by at least one test.
 
 ## Written but never read
 
-No place is written by the files this map could read, so none goes unread; 7 files could not be.
+No place this map can see is written, so none goes unread.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike in the files this map could read; 7 files could not be.
+No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-Nothing in the files this map could read writes to a tracked place; 7 files could not be.
+Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, assets/, design/, the repository root and site/; 1 write with a path built at run time may land here.
+People write .github/, assets/, design/, the repository root and site/; 8 writes with paths built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts
+src/cli.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of forkctl end to end. This path follows forkctl (a command people run) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 
 - 1 import site could not be resolved.
-- 7 files in src use syntax the parser cannot read (src/lib/rename/identity/go-mod.ts, src/lib/rename/identity/package-json.ts, src/lib/rename/identity/simple-text.ts and 4 more), so what they import is not known: an import type followed by `[]` (7).
-- 1 write and 1 read use paths built at run time and are not named here.
-- 7 writes and 7 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 1 command is built at run time and not followed.
+- 8 writes and 8 reads use paths built at run time and are not named here.
+- 26 writes and 22 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 3 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

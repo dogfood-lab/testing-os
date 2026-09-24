@@ -2,7 +2,6 @@
   "authored": [
     ".claude/",
     ".github/",
-    ".multi-claude/",
     "docs/",
     "reports/",
     "root",
@@ -10,6 +9,9 @@
   ],
   "breaks": [
     {
+      "calledBy": [
+        "control-plane-monitor"
+      ],
       "doors": 2,
       "importedBy": [
         "bin"
@@ -40,8 +42,23 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": ".multi-claude/drill/drill-report.json is now written by test/drill/stop-drill.ts.",
+        "subjects": [
+          ".multi-claude/drill/drill-report.json",
+          "test/drill/stop-drill.ts"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": ".multi-claude was authored and is now mixed.",
+        "subjects": [
+          ".multi-claude"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 472 files changed content.",
+        "sentence": "472 files changed content, across 11 parts.",
         "subjects": []
       }
     ],
@@ -49,7 +66,7 @@
       "commit": "9d36a213c2ce7852ec073000e429f67024f04601",
       "generatedAt": "2026-09-24T08:46:45.768Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -66,6 +83,7 @@
         "src/"
       ],
       "checksCount": 2,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -133,6 +151,7 @@
         "test/verify.test.ts"
       ],
       "runsCount": 42,
+      "runsMore": 53,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -144,6 +163,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -161,6 +181,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -173,6 +194,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#multi-claude",
       "kind": "command",
@@ -198,6 +220,7 @@
         "bin/multi-claude.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -213,13 +236,22 @@
       "to": "src"
     }
   ],
-  "generated": [],
-  "generatedAt": "2026-09-24T08:56:19.311Z",
+  "generated": [
+    {
+      "fromRoot": true,
+      "place": ".multi-claude/drill/drill-report.json",
+      "writers": [
+        "test/drill/stop-drill.ts (a test)"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-24T11:52:28.702Z",
   "limits": [
     "3 writes and 5 reads use paths built at run time and are not named here.",
     "2 writes go to places this repository does not track, so they are not listed as generated.",
     "3 writes and 129 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed.",
+    "control-plane-monitor calls src over HTTP at 6 routes, a link no import shows: the map draws it, and no door's reach follows it.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -240,11 +272,12 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/multi-claude",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "package.json#multi-claude",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "src/commands/claim.ts"
+    "bin/multi-claude.ts",
+    "src/commands/approve.ts"
   ],
+  "startReason": "This path follows multi-claude (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 74,
@@ -254,7 +287,14 @@
     "src": 72
   },
   "unnamedWrites": 3,
-  "unread": [],
+  "unread": [
+    {
+      "place": ".multi-claude/drill/drill-report.json",
+      "writers": [
+        "test/drill/stop-drill.ts (a test)"
+      ]
+    }
+  ],
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
@@ -270,5 +310,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 0
+  "written": 1
 }

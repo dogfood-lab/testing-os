@@ -8,11 +8,12 @@ Mapped at 2026-09-24 from commit 6767835.
 
 ## What changed since 2026-09-24 (cfb8917)
 
-Nothing structural changed since 2026-09-24; 652 files changed content.
+- apps/desktop/src-tauri/src/main.rs is now read by apps/desktop/src-tauri/Cargo.toml.
+- 652 files changed content, across 14 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs packages/domain/src/ciGates.test.ts, packages/domain/src/shortcutManifest.test.ts, packages/domain/src/sizeProfile.test.ts and 117 more; checks packages/domain/src/, packages/mcp-sprite-server/src/ and packages/state/src/.
+1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs packages/domain/src/ciGates.test.ts, packages/domain/src/shortcutManifest.test.ts, packages/domain/src/sizeProfile.test.ts and 118 more; checks packages/domain/src/, packages/mcp-sprite-server/src/ and packages/state/src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Dogfood.** By hand. Runs no file this map can see.
 
@@ -67,7 +68,7 @@ And 12 more places.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike in the files this map could read; 1 file could not be.
+No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
@@ -97,20 +98,20 @@ No two parts export a helper that looks alike in the files this map could read; 
 
 ## Hand-authored
 
-People write .github/, assets/, audit/, dogfood/, the repository root and site/. Nothing in the files this map could read writes to them; 1 file could not be.
+People write .github/, assets/, audit/, dogfood/, the repository root and site/. Nothing in this repository writes to them.
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/state/src/index.ts → packages/domain/src/index.ts
+.github/workflows/ci.yml → packages/state/src/aiStore.ts → packages/api-contract/src/commands.ts → packages/domain/src/anchor.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
 - 17 import sites could not be resolved.
-- 1 file uses syntax the parser cannot read (apps/desktop/src/components/VectorReductionPanel.tsx), so what it imports is not known: a bare `&` in JSX text (1).
-- 2 reads use paths built at run time and are not named here.
-- 4 writes and 24 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 1 read uses a path built at run time and is not named here.
+- 4 writes and 25 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- There is a Tauri app under apps/desktop/ (46 Rust files) that no workflow builds; the map reads no Rust, so what it does is not on this page.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

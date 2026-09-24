@@ -60,7 +60,9 @@ Window: 180 days; a pair counts from 3 shared commits, since 11 source files rea
 
 ## What no test touches
 
-- **scripts** is imported by no test.
+Every code part is touched by at least one test.
+
+scripts is touched by tests only through a spawn: a test runs its files as a child process.
 
 ## Written but never read
 
@@ -82,16 +84,15 @@ People write .github/, docs/, the repository root and site/; 2 writes with paths
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts
+src/index.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of sensor-humor end to end. This path follows sensor-humor (a command people run) from its entry, since CI runs only tests and scripts that import no code here.
 
 ## What this map cannot see
 
 - 1 import site could not be resolved.
 - 2 writes use paths built at run time and are not named here.
-- 8 writes and 22 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 1 command is built at run time and not followed, and it is in tests.
+- 8 writes and 21 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

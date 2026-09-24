@@ -8,7 +8,11 @@ Mapped at 2026-09-24 from commit aae7ad5.
 
 ## What changed since 2026-09-24 (09f49ca)
 
-Nothing structural changed since 2026-09-24; 408 files changed content.
+- packages/fantasy-heroes-48/assets/artificer/albedo/ is now read by packages/fantasy-heroes-48/assets/artificer/manifest.json.
+- packages/fantasy-heroes-48/assets/artificer/depth/ is now read by packages/fantasy-heroes-48/assets/artificer/manifest.json.
+- packages/fantasy-heroes-48/assets/artificer/normal/ is now read by packages/fantasy-heroes-48/assets/artificer/manifest.json.
+- And 5801 more new writers and readers of places.
+- 408 files changed content, across 19 parts.
 
 ## What comes in
 

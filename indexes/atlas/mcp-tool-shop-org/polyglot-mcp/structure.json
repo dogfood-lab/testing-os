@@ -389,10 +389,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 3,
-      "dynamicSpawns": 1,
+      "dynamicReads": 5,
+      "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 2,
+      "dynamicWrites": 3,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -423,8 +423,6 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
-      "outsideReads": 2,
-      "outsideWrites": 1,
       "role": "code",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -510,8 +508,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 4,
-      "dynamicSpawnsInTests": 2,
+      "dynamicSpawns": 3,
+      "dynamicSpawnsInTests": 1,
       "dynamicWrites": 0,
       "entryPoints": [
         "src/index.ts"
@@ -1346,9 +1344,11 @@
         },
         {
           "hash": "50fe944032c3ac1306431f19d834a4b9be21e699c7e68940e5b340e4f2166ff7",
-          "parseError": true,
-          "path": "src/translateReadme.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/translateAll.ts",
+            "src/translateReadme.ts"
+          ],
+          "path": "src/translateReadme.test.ts"
         },
         {
           "exports": [
@@ -1472,9 +1472,135 @@
           "path": "src/",
           "runKind": "checks",
           "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/cache.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/codeSpans.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/errors.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/glossary.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/index.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/integration.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/languages.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/ollama.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/polish.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/semaphore.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/translate.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/translateAll.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/translateMarkdown.codespans.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/translateMarkdown.roundtrip.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/translateMarkdown.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/translateReadme.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/validate.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/version.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 1,
+      "runsCount": 19,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -1673,9 +1799,135 @@
           "path": "src/",
           "runKind": "checks",
           "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/cache.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/codeSpans.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/errors.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/glossary.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/index.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/integration.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/languages.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/ollama.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/polish.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/semaphore.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/translate.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/translateAll.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/translateMarkdown.codespans.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/translateMarkdown.roundtrip.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/translateMarkdown.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/translateReadme.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/validate.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/version.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 1,
+      "runsCount": 19,
       "secrets": [
         "NPM_TOKEN"
       ],
@@ -1877,6 +2129,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "src/translateReadme.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.ja.md",
@@ -1885,9 +2143,27 @@
     {
       "readers": [
         {
+          "by": "src/translateReadme.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "scripts/translate-all.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "src/translateReadme.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.pt-BR.md",
@@ -1897,6 +2173,18 @@
           "confidence": "weak"
         }
       ]
+    },
+    {
+      "readers": [
+        {
+          "by": "src/translateReadme.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.zh.md",
+      "writers": []
     },
     {
       "readers": [

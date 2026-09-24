@@ -78,16 +78,15 @@ People write .claude/, .github/, contracts/, docs/, dogfood/, the repository roo
 
 ## Where to start
 
-.github/workflows/ci.yml → bin/shipcheck.mjs
+bin/shipcheck.mjs
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of shipcheck end to end. This path follows shipcheck (a command people run) from its entry, since CI runs only tests and scripts that import no code here.
 
 ## What this map cannot see
 
 - 1 import site could not be resolved.
 - 4 reads use paths built at run time and are not named here.
 - 1 write and 44 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 3 commands are built at run time and not followed, all of them in tests.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

@@ -26,7 +26,10 @@
       ],
       "kind": "part",
       "name": "scripts",
-      "partLabel": "scripts"
+      "partLabel": "scripts",
+      "spawnedBy": [
+        "experiments"
+      ]
     },
     {
       "doors": 2,
@@ -89,8 +92,37 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "datasets/jam-actions-v0-public/ is now also written by scripts/run-jam-actions-corpus-eval.ts.",
+        "subjects": [
+          "datasets/jam-actions-v0-public/",
+          "scripts/run-jam-actions-corpus-eval.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "datasets/jam-actions-v0-public/evals/ is now written by scripts/run-jam-actions-corpus-eval.ts.",
+        "subjects": [
+          "datasets/jam-actions-v0-public/evals/",
+          "scripts/run-jam-actions-corpus-eval.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "apps/cockpit/public/samples/salamander/102-v0.ogg is now read by apps/cockpit/public/samples/salamander/manifest.json.",
+        "subjects": [
+          "apps/cockpit/public/samples/salamander/102-v0.ogg",
+          "apps/cockpit/public/samples/salamander/manifest.json"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 105 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 1961 files changed content.",
+        "sentence": "1961 files changed content, across 13 parts.",
         "subjects": []
       }
     ],
@@ -98,7 +130,7 @@
       "commit": "8734514e3d140be8776b5326332831e7091c395d",
       "generatedAt": "2026-09-24T09:18:42.006Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -131,6 +163,7 @@
         "scripts/annotate-batch.ts"
       ],
       "checksCount": 179,
+      "checksMore": 572,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [
@@ -274,6 +307,7 @@
         "src/vocal/melody-notes.test.ts"
       ],
       "runsCount": 191,
+      "runsMore": 188,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -296,6 +330,7 @@
         "tsconfig.json"
       ],
       "checksCount": 119,
+      "checksMore": 481,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [
@@ -443,6 +478,7 @@
         "src/vocal/melody-notes.test.ts"
       ],
       "runsCount": 190,
+      "runsMore": 187,
       "sends": [
         "publishes to npm and a container image"
       ],
@@ -455,6 +491,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/publish-jam-actions-v0.yml",
       "id": ".github/workflows/publish-jam-actions-v0.yml",
       "landings": [],
@@ -477,6 +514,7 @@
         "scripts/verify-public-package-checksums.ts"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -486,6 +524,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -503,6 +542,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -515,6 +555,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/push-adapters-hf.yml",
       "id": ".github/workflows/push-adapters-hf.yml",
       "landings": [],
@@ -523,6 +564,7 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -532,6 +574,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/push-jam-actions-v0-hf.yml",
       "id": ".github/workflows/push-jam-actions-v0-hf.yml",
       "landings": [],
@@ -540,6 +583,7 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -549,6 +593,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/zenodo-edit-record.yml",
       "id": ".github/workflows/zenodo-edit-record.yml",
       "landings": [],
@@ -557,6 +602,7 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -566,6 +612,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#@mcptoolshop/ai-jam-sessions",
       "kind": "package",
@@ -585,6 +632,7 @@
         "src/index.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -592,6 +640,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#ai-jam-sessions",
       "kind": "command",
@@ -611,6 +660,7 @@
         "src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -618,23 +668,27 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#ai-jam-sessions-mcp",
       "kind": "command",
-      "landings": [],
+      "landings": [
+        "songs/"
+      ],
       "name": "ai-jam-sessions-mcp",
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
-          "files": 1
+          "files": 137
         }
       ],
       "runs": [
         "src/mcp-server.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -764,7 +818,8 @@
       "place": "datasets/jam-actions-v0-public/",
       "writers": [
         "scripts/package-jam-actions-public.ts",
-        "scripts/regenerate-public-package-checksums.ts"
+        "scripts/regenerate-public-package-checksums.ts",
+        "scripts/run-jam-actions-corpus-eval.ts"
       ]
     },
     {
@@ -1405,15 +1460,16 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T09:44:06.872Z",
+  "generatedAt": "2026-09-24T11:48:57.765Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "11 import sites could not be resolved.",
-    "8 files use syntax the parser cannot read (scripts/compose-realize-demo.ts, scripts/run-jam-actions-corpus-eval.ts, src/dataset/acoustic-v1/generate-public.ts and 5 more), so what they import is not known: 6 in src (`typeof import(…)` as a type argument in 3, an import type followed by `[]` in 1, a NUL character inside a string in 1 and other syntax in 1), 2 in scripts (an import type followed by `[]`).",
-    "49 writes and 131 reads use paths built at run time and are not named here.",
+    "2 files in src use syntax the parser cannot read (src/dataset/acoustic-v1/generate-public.ts and src/songs/midi/meta.test.ts), so what they import is not known: a NUL character inside a string (1) and other syntax (1).",
+    "57 writes and 140 reads use paths built at run time and are not named here.",
     "16 writes go to places this repository does not track, so they are not listed as generated.",
-    "97 writes and 343 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "18 commands are built at run time and not followed, 4 of them in tests.",
+    "98 writes and 342 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "10 commands are built at run time and not followed, 1 of them in tests.",
+    "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "Readers marked (found by text) come from scanning unparsed files.",
     "CI runs or checks 459 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
     "Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
@@ -1451,15 +1507,69 @@
         "docs/dogfood-swarm-grok-w2-kickoff.md (found by text)",
         "docs/dogfood-swarm-grok-w3-kickoff.md (found by text)",
         "experiments (5 files)",
-        "scripts (19 files)",
-        "src (5 files)"
+        "scripts (20 files)",
+        "src (6 files)"
       ],
       "target": "songs/",
       "tests": 6
     }
   ],
   "repo": "mcp-tool-shop-org/ai-jam-sessions",
-  "sequences": [],
+  "sequences": [
+    {
+      "alternatives": [
+        {
+          "steps": [
+            {
+              "name": "runStdioSupervisor",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "run stdio supervisor"
+            }
+          ],
+          "when": "shouldSuperviseStdio()"
+        }
+      ],
+      "entry": "main",
+      "file": "src/mcp-server.ts",
+      "inner": [],
+      "part": "src",
+      "partLabel": "src",
+      "phrase": "main",
+      "steps": [
+        {
+          "name": "shouldSuperviseStdio",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "should supervise stdio"
+        },
+        {
+          "name": "userSongsDir",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "user songs dir"
+        },
+        {
+          "name": "initializeFromLibrary",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "initialize from library"
+        },
+        {
+          "name": "serverStatePath",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "server state path"
+        },
+        {
+          "name": "openRpcOutputStream",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "open rpc output stream"
+        }
+      ]
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
@@ -1475,7 +1585,7 @@
     "spaces": 0,
     "src": 168
   },
-  "unnamedWrites": 49,
+  "unnamedWrites": 57,
   "unread": [
     {
       "place": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json",
@@ -1526,7 +1636,7 @@
       ]
     }
   ],
-  "unreadFiles": 8,
+  "unreadFiles": 2,
   "unreadNote": [
     "And 61 more places."
   ],

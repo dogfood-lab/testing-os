@@ -104,15 +104,16 @@
       },
       {
         "kind": "landing",
-        "sentence": "CHANGELOG.md is now also read by test/version.test.ts.",
+        "sentence": "CHANGELOG.md is now also read by src/sync/local.ts and test/version.test.ts.",
         "subjects": [
           "CHANGELOG.md",
+          "src/sync/local.ts",
           "test/version.test.ts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "And 9 more new writers and readers of places.",
+        "sentence": "And 12 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -225,6 +226,7 @@
         "src/"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -252,6 +254,7 @@
         "test/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -265,6 +268,7 @@
         "src/"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -294,6 +298,7 @@
         "test/"
       ],
       "runsCount": 4,
+      "runsMore": 48,
       "sends": [
         "publishes to npm on a tag push",
         "creates a GitHub release on a tag push"
@@ -307,6 +312,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -324,6 +330,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site on a push to main"
       ],
@@ -337,6 +344,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#@mcptoolshop/repo-knowledge",
       "kind": "package",
@@ -355,6 +363,7 @@
         "src/mcp/server.ts"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -362,13 +371,15 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#rk",
       "kind": "command",
       "landings": [],
       "name": "rk",
       "programs": [
-        "gh"
+        "gh",
+        "git"
       ],
       "pushes": false,
       "reach": [
@@ -382,6 +393,7 @@
         "src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -429,13 +441,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T11:30:08.578Z",
+  "generatedAt": "2026-09-24T11:53:15.005Z",
   "limits": [
     "1 import site could not be resolved.",
-    "3 files use syntax the parser cannot read (src/sync/local.ts, test/fsck.test.ts and test/sync-recursive-local.test.ts), so what they import is not known: 2 in test (`typeof import(…)` as a type argument), 1 in src (an import type followed by `[]`).",
     "3 writes and 27 reads use paths built at run time and are not named here.",
-    "6 writes and 71 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "11 commands are built at run time and not followed, 9 of them in tests.",
+    "6 writes and 86 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "2 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -456,17 +467,17 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/repo-knowledge",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "package.json#rk",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "src/index.ts"
+    "src/cli.ts"
   ],
+  "startReason": "This path follows rk (a command people run) from its entry, since CI runs only tests and scripts that import no code here.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 55,
   "testedBy": {
     "scripts": 0,
-    "src": 45
+    "src": 48
   },
   "unnamedWrites": 3,
   "unread": [
@@ -501,7 +512,7 @@
       ]
     }
   ],
-  "unreadFiles": 3,
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
     {

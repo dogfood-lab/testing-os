@@ -1776,6 +1776,17 @@
     {
       "readers": [
         {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "site/astro.config.mjs",
           "call": "content-collection",
           "confidence": "ast"
@@ -1798,6 +1809,17 @@
     {
       "readers": [
         {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "src/mcp_stress_test",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "src/mcp_stress_test/patterns/library.py",
           "call": "literal",
           "confidence": "ast"
@@ -1809,12 +1831,72 @@
     {
       "readers": [
         {
+          "by": "src/mcp_stress_test/patterns/data/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "src/mcp_stress_test/patterns/data/cases.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "src/mcp_stress_test/chains/loader.py",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "src/mcp_stress_test/patterns/data/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
         }
       ],
       "target": "src/mcp_stress_test/patterns/data/chains.yaml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/mcp_stress_test/patterns/data/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "src/mcp_stress_test/patterns/data/patterns.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/mcp_stress_test/patterns/data/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "src/mcp_stress_test/patterns/data/payloads.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/mcp_stress_test/patterns/data/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "src/mcp_stress_test/patterns/data/profiles.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/mcp_stress_test/patterns/data/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "src/mcp_stress_test/patterns/data/tools.json",
       "writers": []
     }
   ],

@@ -163,6 +163,7 @@
         "tsconfig.json"
       ],
       "checksCount": 5,
+      "checksMore": 2,
       "file": ".github/workflows/docker.yml",
       "id": ".github/workflows/docker.yml",
       "landings": [],
@@ -254,6 +255,7 @@
         "packages/node/src/main.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [
         "publishes a container image"
       ],
@@ -281,6 +283,7 @@
         "packages/witness/src/"
       ],
       "checksCount": 14,
+      "checksMore": 152,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -463,6 +466,7 @@
         "packages/witness/tests/witness.test.ts"
       ],
       "runsCount": 97,
+      "runsMore": 181,
       "sends": [
         "publishes @mcptoolshop/attestia (packages/attestia) to npm",
         "creates a GitHub release"
@@ -490,6 +494,7 @@
         "packages/witness/src/"
       ],
       "checksCount": 14,
+      "checksMore": 152,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -666,6 +671,7 @@
         "packages/witness/tests/witness.test.ts"
       ],
       "runsCount": 96,
+      "runsMore": 175,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -677,6 +683,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -694,6 +701,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -706,6 +714,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/demo/package.json",
       "id": "packages/demo/package.json#attestia-demo",
       "kind": "command",
@@ -768,6 +777,7 @@
         "packages/demo/src/index.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -850,10 +860,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T08:33:38.532Z",
+  "generatedAt": "2026-09-24T11:49:32.796Z",
   "limits": [
     "5 writes and 7 reads use paths built at run time and are not named here.",
     "6 writes and 66 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/docker.yml",
@@ -991,11 +1002,11 @@
       ]
     }
   ],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "packages/demo/package.json#attestia-demo",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "packages/node/src/main.ts"
+    "packages/demo/src/index.ts"
   ],
+  "startReason": "This path follows attestia-demo (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 192,

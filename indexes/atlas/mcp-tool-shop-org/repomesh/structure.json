@@ -334,7 +334,7 @@
       "name": "anchor",
       "origin": "mixed",
       "role": "code",
-      "testedBy": 16,
+      "testedBy": 17,
       "unresolvedSites": 0
     },
     {
@@ -362,8 +362,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 1,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -584,7 +584,7 @@
       "outsideReads": 12,
       "outsideWrites": 4,
       "role": "code",
-      "testedBy": 6,
+      "testedBy": 8,
       "unresolvedSites": 2
     },
     {
@@ -644,8 +644,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 8,
-      "dynamicSpawnsInTests": 8,
+      "dynamicSpawns": 1,
+      "dynamicSpawnsInTests": 1,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -873,13 +873,13 @@
       "importConfidence": "full",
       "name": "ledger",
       "origin": "mixed",
-      "outsideReads": 16,
+      "outsideReads": 14,
       "role": "code",
-      "testedBy": 17,
+      "testedBy": 18,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 10,
+      "dynamicReads": 6,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -1026,8 +1026,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 1,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -1628,8 +1628,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 13,
-      "dynamicSpawnsInTests": 12,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -1728,7 +1728,8 @@
             "packages/repomesh-cli/src/verify/verify-anchor.mjs",
             "packages/repomesh-cli/src/verify/verify-release.mjs"
           ],
-          "path": "packages/repomesh-cli/src/index.mjs"
+          "path": "packages/repomesh-cli/src/index.mjs",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -2104,10 +2105,10 @@
       "importConfidence": "full",
       "name": "repomesh-cli",
       "origin": "authored",
-      "outsideReads": 52,
+      "outsideReads": 51,
       "outsideWrites": 17,
       "role": "code",
-      "testedBy": 20,
+      "testedBy": 26,
       "unresolvedSites": 98
     },
     {
@@ -2387,8 +2388,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 11,
-      "dynamicSpawnsInTests": 8,
+      "dynamicSpawns": 5,
+      "dynamicSpawnsInTests": 4,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -2538,13 +2539,13 @@
       "outsideReads": 43,
       "outsideWrites": 17,
       "role": "code",
-      "testedBy": 7,
+      "testedBy": 13,
       "unresolvedSites": 10
     },
     {
       "dynamicReads": 1,
-      "dynamicSpawns": 2,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -4798,10 +4799,10 @@
       "importConfidence": "full",
       "name": "verifiers",
       "origin": "authored",
-      "outsideReads": 21,
+      "outsideReads": 20,
       "outsideWrites": 5,
       "role": "code",
-      "testedBy": 49,
+      "testedBy": 53,
       "unresolvedSites": 0
     }
   ],
@@ -4888,7 +4889,7 @@
         {
           "boundary": "registry",
           "depth": 0,
-          "files": 1
+          "files": 4
         },
         {
           "boundary": "repomesh-cli",
@@ -4901,13 +4902,40 @@
           "files": 2
         },
         {
+          "boundary": "pages",
+          "depth": 1,
+          "enters": {
+            "file": "pages/build-pages.mjs",
+            "from": "packages/repomesh-cli/src/cli.mjs"
+          },
+          "files": 2
+        },
+        {
+          "boundary": "tools",
+          "depth": 1,
+          "enters": {
+            "file": "tools/repomesh.mjs",
+            "from": "packages/repomesh-cli/src/cli.mjs"
+          },
+          "files": 5
+        },
+        {
           "boundary": "verifiers",
           "depth": 1,
           "enters": {
             "file": "verifiers/lib/common.mjs",
             "from": "anchor/xrpl/scripts/emit-anchor-event.mjs"
           },
-          "files": 3
+          "files": 4
+        },
+        {
+          "boundary": "ledger",
+          "depth": 3,
+          "enters": {
+            "file": "ledger/scripts/canonicalize.mjs",
+            "from": "registry/scripts/build-trust.mjs"
+          },
+          "files": 1
         }
       ],
       "readers": [
@@ -5139,7 +5167,19 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "ledger/events/events.jsonl"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "target": "ledger/events/events.jsonl"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast",
           "target": "ledger/events/events.jsonl"
         },
@@ -5268,7 +5308,19 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "registry/anchors.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "target": "registry/anchors.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast",
           "target": "registry/anchors.json"
         },
@@ -5369,7 +5421,19 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "registry/trust.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "target": "registry/trust.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast",
           "target": "registry/trust.json"
         },
@@ -5755,7 +5819,19 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "ledger/events/events.jsonl"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "target": "ledger/events/events.jsonl"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast",
           "target": "ledger/events/events.jsonl"
         },
@@ -5884,7 +5960,19 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "registry/anchors.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "target": "registry/anchors.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast",
           "target": "registry/anchors.json"
         },
@@ -5985,7 +6073,19 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "registry/trust.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "target": "registry/trust.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast",
           "target": "registry/trust.json"
         },
@@ -6363,7 +6463,19 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "registry/anchors.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "target": "registry/anchors.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast",
           "target": "registry/anchors.json"
         },
@@ -6472,7 +6584,19 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "registry/trust.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "target": "registry/trust.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast",
           "target": "registry/trust.json"
         },
@@ -6746,7 +6870,19 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "registry/anchors.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "target": "registry/anchors.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast",
           "target": "registry/anchors.json"
         },
@@ -6897,7 +7033,19 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "registry/trust.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "target": "registry/trust.json"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast",
           "target": "registry/trust.json"
         },
@@ -7161,13 +7309,49 @@
           "files": 2
         },
         {
+          "boundary": "pages",
+          "depth": 1,
+          "enters": {
+            "file": "pages/build-pages.mjs",
+            "from": "packages/repomesh-cli/src/cli.mjs"
+          },
+          "files": 2
+        },
+        {
+          "boundary": "registry",
+          "depth": 1,
+          "enters": {
+            "file": "registry/scripts/build-anchors.mjs",
+            "from": "packages/repomesh-cli/src/cli.mjs"
+          },
+          "files": 4
+        },
+        {
+          "boundary": "tools",
+          "depth": 1,
+          "enters": {
+            "file": "tools/repomesh.mjs",
+            "from": "packages/repomesh-cli/src/cli.mjs"
+          },
+          "files": 5
+        },
+        {
           "boundary": "verifiers",
           "depth": 1,
           "enters": {
             "file": "verifiers/lib/common.mjs",
             "from": "anchor/xrpl/scripts/emit-anchor-event.mjs"
           },
-          "files": 2
+          "files": 4
+        },
+        {
+          "boundary": "ledger",
+          "depth": 3,
+          "enters": {
+            "file": "ledger/scripts/canonicalize.mjs",
+            "from": "registry/scripts/build-trust.mjs"
+          },
+          "files": 1
         }
       ],
       "readers": [],
@@ -7554,6 +7738,21 @@
       "from": "registry",
       "kind": "file",
       "to": "verifiers"
+    },
+    {
+      "from": "repomesh-cli",
+      "kind": "spawns",
+      "to": "pages"
+    },
+    {
+      "from": "repomesh-cli",
+      "kind": "spawns",
+      "to": "registry"
+    },
+    {
+      "from": "repomesh-cli",
+      "kind": "spawns",
+      "to": "tools"
     },
     {
       "from": "tools",
@@ -8141,7 +8340,17 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         },
         {
@@ -8223,6 +8432,16 @@
         },
         {
           "by": ".github/workflows/attestor-ci.yml"
+        },
+        {
+          "by": "attestor/scripts/emit-key-event.mjs",
+          "confidence": "ast",
+          "fromCwd": true
+        },
+        {
+          "by": "packages/repomesh-cli/src/key/rotate-revoke.mjs",
+          "confidence": "ast",
+          "fromCwd": true
         }
       ]
     },
@@ -8387,8 +8606,18 @@
       "target": "ledger/nodes",
       "writers": [
         {
+          "by": "attestor/scripts/emit-key-event.mjs",
+          "confidence": "ast",
+          "fromCwd": true
+        },
+        {
           "by": "tools/join-node.mjs",
           "confidence": "ast"
+        },
+        {
+          "by": "tools/register-node.mjs",
+          "confidence": "ast",
+          "fromCwd": true
         }
       ]
     },
@@ -9686,7 +9915,17 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         },
         {
@@ -10037,7 +10276,17 @@
         },
         {
           "by": "pages/build-status.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "pages/build-status.mjs",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "pages/build-status.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         },
         {

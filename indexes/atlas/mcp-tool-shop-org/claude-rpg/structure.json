@@ -960,7 +960,7 @@
       ],
       "importConfidence": "full",
       "name": "dogfood",
-      "origin": "authored",
+      "origin": "mixed",
       "role": "data",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -3129,10 +3129,128 @@
           "path": "src/character/session-recap.test.ts"
         },
         {
+          "entry": "renderFullRecap",
+          "entryRule": 4,
+          "exports": [
+            "computeCompanionRecapEntries",
+            "computeCraftingRecapEntries",
+            "computeCraftingRecapFromJournal",
+            "computeDistrictDeltas",
+            "computeEconomyRecapEntries",
+            "computeFactionDeltas",
+            "computeItemRecapEntries",
+            "computeOpportunityRecapEntries",
+            "computeRumorDelta",
+            "deriveWhatPeopleAreSaying",
+            "renderFullRecap"
+          ],
           "hash": "ebe3e2f50e981e5b39d27c58c69dc53718ff323dce9032684edbf8ef1be2cb91",
-          "parseError": true,
+          "importsFiles": [
+            "src/character/recap-delta.ts",
+            "src/character/world-delta.ts",
+            "src/cli/colors.ts",
+            "src/display/play-renderer.ts"
+          ],
           "path": "src/character/session-recap.ts",
-          "unreadSyntax": "import-type-array"
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 26,
+                  "name": "getTerminalWidth",
+                  "target": {
+                    "file": "src/display/play-renderer.ts"
+                  }
+                },
+                {
+                  "line": 26,
+                  "name": "dim",
+                  "target": {
+                    "file": "src/cli/colors.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "divider"
+            },
+            {
+              "calls": [
+                {
+                  "line": 29,
+                  "name": "getTerminalWidth",
+                  "target": {
+                    "file": "src/display/play-renderer.ts"
+                  }
+                },
+                {
+                  "line": 29,
+                  "name": "dim",
+                  "target": {
+                    "file": "src/cli/colors.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "heavyDivider"
+            },
+            {
+              "calls": [
+                {
+                  "line": 557,
+                  "name": "query",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "computeCraftingRecapFromJournal"
+            },
+            {
+              "calls": [
+                {
+                  "line": 29,
+                  "name": "getTerminalWidth",
+                  "target": {
+                    "file": "src/display/play-renderer.ts"
+                  },
+                  "via": "heavyDivider"
+                },
+                {
+                  "line": 29,
+                  "name": "dim",
+                  "target": {
+                    "file": "src/cli/colors.ts"
+                  },
+                  "via": "heavyDivider"
+                },
+                {
+                  "line": 26,
+                  "name": "getTerminalWidth",
+                  "target": {
+                    "file": "src/display/play-renderer.ts"
+                  },
+                  "via": "divider"
+                },
+                {
+                  "line": 26,
+                  "name": "dim",
+                  "target": {
+                    "file": "src/cli/colors.ts"
+                  },
+                  "via": "divider"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "renderFullRecap"
+            }
+          ]
         },
         {
           "hash": "5bd89430c64361af77b9d30a999e2c60fa517410d74cfd1a9c944c029faef054",
@@ -4155,9 +4273,10 @@
         },
         {
           "hash": "d22b723a893beefc48aebe875adaabcaa025576f45a517d79929ba348a2aa8f1",
-          "parseError": true,
-          "path": "src/dialogue/npc-context.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/dialogue/npc-context.ts"
+          ],
+          "path": "src/dialogue/npc-context.test.ts"
         },
         {
           "exports": [
@@ -4732,9 +4851,22 @@
         },
         {
           "hash": "b83da37f5c9453922bf66b79c5023c3b8a7410747ff508e62902a77bf1536589",
-          "parseError": true,
-          "path": "src/game.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/display/play-renderer.ts",
+            "src/foundry/world-gen.ts",
+            "src/game.ts",
+            "src/game/debug-logger.ts",
+            "src/game/game-state.ts",
+            "src/game/round-metrics.ts",
+            "src/game/tuning.ts",
+            "src/narrator/narrator.ts",
+            "src/runtime/audio-bridge.ts",
+            "src/session/session.ts",
+            "src/turn-loop.ts",
+            "test/helpers/fake-claude-client.ts",
+            "test/helpers/game-harness.ts"
+          ],
+          "path": "src/game.test.ts"
         },
         {
           "hash": "a64af4be741e7d2376a9fd991548fe29acd7acc03ba0e9dfdecd86b8812a7498",
@@ -4867,9 +4999,13 @@
         },
         {
           "hash": "b84461433af6602d10dd11c4b78d29a601d7428e15aeac9772790a5e511d3143",
-          "parseError": true,
-          "path": "src/game/game-narration.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/claude-client.ts",
+            "src/game/game-narration.ts",
+            "src/narrator/finale-narrator.ts",
+            "src/narrator/narrator.ts"
+          ],
+          "path": "src/game/game-narration.test.ts"
         },
         {
           "exports": [
@@ -4886,9 +5022,11 @@
         },
         {
           "hash": "d4f9695a7f487047fa6ca012dc09ce357fb11eb31dbf154d049e2f8fa9f175ff",
-          "parseError": true,
-          "path": "src/game/game-presenter.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/display/play-renderer.ts",
+            "src/game/game-presenter.ts"
+          ],
+          "path": "src/game/game-presenter.test.ts"
         },
         {
           "exports": [
@@ -5176,7 +5314,8 @@
             "src/session/session.ts",
             "src/turn-loop.ts"
           ],
-          "path": "src/index.ts"
+          "path": "src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "4e67e891ae0e600562f1611267a5f7c0149c042acbf78a82316f8051154211c4",
@@ -5277,9 +5416,10 @@
         },
         {
           "hash": "3cd45d059caa3c45e525968a54c81bfb47a5d51a3032c5d424a317f7c0eb0896",
-          "parseError": true,
-          "path": "src/narrator/scene-context-perf.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/narrator/scene-context.ts"
+          ],
+          "path": "src/narrator/scene-context-perf.test.ts"
         },
         {
           "hash": "424fd6f6842cccb30c3c38da4e215a797d4557addcca396627ab8eb0c0e00c7b",
@@ -5603,9 +5743,11 @@
         },
         {
           "hash": "e81420ab99e1cbe6f9bc350ce44ebd579db8d2cea0eea8fe01503c11305b30fa",
-          "parseError": true,
-          "path": "src/session/session-backup-integrity.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/session/history.ts",
+            "src/session/session.ts"
+          ],
+          "path": "src/session/session-backup-integrity.test.ts"
         },
         {
           "hash": "c6472b5cda907dd026468ac57e9c54c02eec6ed63cfe8320bf5f07d398363735",
@@ -5945,9 +6087,20 @@
         },
         {
           "hash": "2a1e63ea9be3c5e77080d35f5193616b4f9da114ae6ba904fc346adc51e83c27",
-          "parseError": true,
-          "path": "src/turn-loop.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/claude-client.ts",
+            "src/dialogue/dialogue-mind.ts",
+            "src/dialogue/npc-context.ts",
+            "src/game/debug-logger.ts",
+            "src/game/tuning.ts",
+            "src/llm/claude-errors.ts",
+            "src/narrator/narrator.ts",
+            "src/npc/ambient-dialogue.ts",
+            "src/session/history.ts",
+            "src/turn-loop.ts",
+            "test/helpers/game-harness.ts"
+          ],
+          "path": "src/turn-loop.test.ts"
         },
         {
           "exports": [
@@ -5987,7 +6140,7 @@
       "outsideReads": 18,
       "outsideWrites": 7,
       "role": "code",
-      "testedBy": 120,
+      "testedBy": 124,
       "unresolvedSites": 2
     },
     {
@@ -6047,9 +6200,10 @@
         },
         {
           "hash": "6849d24fba82ed461fa3eea8ac5fd2f83983e4b322239fea73b8ad867e992d16",
-          "parseError": true,
-          "path": "test/helpers/bin-cli-harness.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "test/helpers/bin-cli-harness.ts"
+          ],
+          "path": "test/helpers/bin-cli-harness.test.ts"
         },
         {
           "exports": [
@@ -6419,9 +6573,11 @@
         },
         {
           "hash": "3235ea8d622a0886ce8fcc66ae2b1dc98af21ebcb08a44c8c2e43002aa80b84c",
-          "parseError": true,
-          "path": "test/integration/session-persistence.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/session/history.ts",
+            "src/session/session.ts"
+          ],
+          "path": "test/integration/session-persistence.test.ts"
         },
         {
           "hash": "e408818d757e5c96b057fcbfe8319ff6ef5a045266ce1e58feb11e0a917d98fc",
@@ -6511,7 +6667,9 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "dogfood/tuning"
+      ],
       "mentions": [
         {
           "job": "build-and-test",
@@ -7404,7 +7562,9 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
-      "landings": [],
+      "landings": [
+        "dogfood/tuning"
+      ],
       "mentions": [
         {
           "job": "release",
@@ -8527,6 +8687,17 @@
       "writers": []
     },
     {
+      "readers": [],
+      "target": "dogfood/tuning",
+      "writers": [
+        {
+          "by": "test/helpers/living-world-matrix.ts",
+          "confidence": "ast",
+          "fromCwd": true
+        }
+      ]
+    },
+    {
       "readers": [
         {
           "by": ".github/workflows/release.yml"
@@ -9074,6 +9245,12 @@
           "by": "scripts/check-coverage-utils.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "src/game.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "test/check-critical-coverage.test.ts",

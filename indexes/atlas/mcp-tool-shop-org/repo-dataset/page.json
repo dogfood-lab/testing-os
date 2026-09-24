@@ -25,8 +25,66 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI now also runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "src/tests/extractors/code.test.ts",
+          "src/tests/extractors/commits.test.ts",
+          "src/tests/extractors/docs.test.ts",
+          "src/tests/extractors/tests.test.ts",
+          "src/tests/validate/content.test.ts",
+          "src/tests/validate/distribution.test.ts",
+          "src/tests/validate/report.test.ts",
+          "src/tests/validate/scoring.test.ts",
+          "src/tests/validate/structural.test.ts",
+          "src/tests/visual/extractors.test.ts",
+          "src/tests/visual/formatters.test.ts",
+          "src/tests/visual/image.test.ts",
+          "src/tests/visual/runner.test.ts",
+          "src/tests/visual/scanner.test.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Publish now also runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more.",
+        "subjects": [
+          ".github/workflows/publish.yml",
+          "src/tests/extractors/code.test.ts",
+          "src/tests/extractors/commits.test.ts",
+          "src/tests/extractors/docs.test.ts",
+          "src/tests/extractors/tests.test.ts",
+          "src/tests/validate/content.test.ts",
+          "src/tests/validate/distribution.test.ts",
+          "src/tests/validate/report.test.ts",
+          "src/tests/validate/scoring.test.ts",
+          "src/tests/validate/structural.test.ts",
+          "src/tests/visual/extractors.test.ts",
+          "src/tests/visual/formatters.test.ts",
+          "src/tests/visual/image.test.ts",
+          "src/tests/visual/runner.test.ts",
+          "src/tests/visual/scanner.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "package-lock.json is now also read by src/discovery/filters.ts.",
+        "subjects": [
+          "package-lock.json",
+          "src/discovery/filters.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "src/ is now also read by src/extractors/imports.ts.",
+        "subjects": [
+          "src/",
+          "src/extractors/imports.ts"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 129 files changed content.",
+        "sentence": "129 files changed content, across 5 parts.",
         "subjects": []
       }
     ],
@@ -34,7 +92,7 @@
       "commit": "3665fc1f2e6bab2d267c1b054480ee5f844467f2",
       "generatedAt": "2026-09-24T08:44:55.228Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -43,35 +101,56 @@
   "changesTogetherWithTests": 0,
   "commit": "4198db586f87a4bb9d69a087dd0ce57bbd0c9a52",
   "defaultBranch": "main",
-  "derived": "5 parts, mostly TypeScript (78 files). Work enters through 5 doors; the busiest is @mcptoolshop/repo-dataset, which reaches 1 part. It publishes to npm. People run repo-dataset. People import @mcptoolshop/repo-dataset.",
+  "derived": "5 parts, mostly TypeScript (78 files). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run repo-dataset. People import @mcptoolshop/repo-dataset.",
   "doors": [
     {
-      "checks": [],
-      "checksCount": 0,
-      "file": "package.json",
-      "id": "package.json#@mcptoolshop/repo-dataset",
-      "kind": "package",
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
       "landings": [],
-      "name": "@mcptoolshop/repo-dataset",
+      "name": "CI",
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
-          "files": 38
+          "files": 76
         }
       ],
       "runs": [
-        "src/index.ts"
+        "src/tests/extractors/code.test.ts",
+        "src/tests/extractors/commits.test.ts",
+        "src/tests/extractors/docs.test.ts",
+        "src/tests/extractors/tests.test.ts",
+        "src/tests/validate/content.test.ts",
+        "src/tests/validate/distribution.test.ts",
+        "src/tests/validate/report.test.ts",
+        "src/tests/validate/scoring.test.ts",
+        "src/tests/validate/structural.test.ts",
+        "src/tests/visual/extractors.test.ts",
+        "src/tests/visual/formatters.test.ts",
+        "src/tests/visual/image.test.ts",
+        "src/tests/visual/runner.test.ts",
+        "src/tests/visual/scanner.test.ts"
       ],
-      "runsCount": 1,
+      "runsCount": 14,
+      "runsMore": 11,
       "sends": [],
       "stages": [],
-      "triggers": []
+      "triggers": [
+        "on a pull request touching 8 paths",
+        "on a push touching 8 paths",
+        "or by hand"
+      ]
     },
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -89,6 +168,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -103,33 +183,7 @@
         "src/"
       ],
       "checksCount": 1,
-      "file": ".github/workflows/ci.yml",
-      "id": ".github/workflows/ci.yml",
-      "landings": [],
-      "name": "CI",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "src",
-          "depth": 0,
-          "files": 76
-        }
-      ],
-      "runs": [],
-      "runsCount": 0,
-      "sends": [],
-      "stages": [],
-      "triggers": [
-        "on a pull request touching 8 paths",
-        "on a push touching 8 paths",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [
-        "src/"
-      ],
-      "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/publish.yml",
       "id": ".github/workflows/publish.yml",
       "landings": [],
@@ -142,8 +196,24 @@
           "files": 76
         }
       ],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        "src/tests/extractors/code.test.ts",
+        "src/tests/extractors/commits.test.ts",
+        "src/tests/extractors/docs.test.ts",
+        "src/tests/extractors/tests.test.ts",
+        "src/tests/validate/content.test.ts",
+        "src/tests/validate/distribution.test.ts",
+        "src/tests/validate/report.test.ts",
+        "src/tests/validate/scoring.test.ts",
+        "src/tests/validate/structural.test.ts",
+        "src/tests/visual/extractors.test.ts",
+        "src/tests/visual/formatters.test.ts",
+        "src/tests/visual/image.test.ts",
+        "src/tests/visual/runner.test.ts",
+        "src/tests/visual/scanner.test.ts"
+      ],
+      "runsCount": 14,
+      "runsMore": 11,
       "sends": [
         "publishes to npm"
       ],
@@ -155,6 +225,33 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/repo-dataset",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/repo-dataset",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 38
+        }
+      ],
+      "runs": [
+        "src/index.ts"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#repo-dataset",
       "kind": "command",
@@ -175,6 +272,7 @@
         "src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -185,14 +283,15 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-24T08:56:27.073Z",
+  "generatedAt": "2026-09-24T11:53:10.381Z",
   "limits": [
     "8 reads use paths built at run time and are not named here.",
-    "9 writes and 17 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "2 commands are built at run time and not followed, 1 of them in tests.",
+    "9 writes and 15 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "1 command is built at run time and not followed.",
+    "19 test files under `src/tests/` are not run by CI and Publish on Linux, where the shell expands `**` as one directory level.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
-  "mainDoor": "package.json#@mcptoolshop/repo-dataset",
+  "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
     ".github": ".github",
     "docs": "docs",
@@ -204,10 +303,11 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/repo-dataset",
   "sequences": [],
-  "startDoor": "package.json#@mcptoolshop/repo-dataset",
+  "startDoor": "package.json#repo-dataset",
   "startHere": [
-    "src/index.ts"
+    "src/cli.ts"
   ],
+  "startReason": "This path follows repo-dataset (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 49,

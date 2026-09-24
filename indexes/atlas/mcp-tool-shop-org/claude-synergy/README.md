@@ -47,7 +47,7 @@ Nothing structural changed since 2026-09-24; 1701 files changed content.
 
 ## What breaks what
 
-- **src** is imported only from tests, by 1 part (test), and sits on the path of 6 doors.
+- **src** is run as a child process by 1 part (scripts) and sits on the path of 6 doors.
 - **test** is imported by no other part and sits on the path of 2 doors.
 - **dataset/changelog-actions/v1/entries/** is written by scripts and read by scripts; a hand edit reaches every reader.
 - **dataset/changelog-actions/v1/holdout.jsonl** is written by scripts and read by scripts; a hand edit reaches every reader.
@@ -100,15 +100,14 @@ People write .github/, docs/, site/ and synergies/. Nothing in this repository w
 
 ## Where to start
 
-.github/workflows/test.yml → src/cli.ts
+src/mcp-server.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of claude-synergy-mcp end to end. This path follows claude-synergy-mcp (a command people run) from its entry, since Tests runs only tests.
 
 ## What this map cannot see
 
 - 5 reads use paths built at run time and are not named here.
-- 10 writes and 45 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 5 commands are built at run time and not followed, 4 of them in tests.
+- 10 writes and 43 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

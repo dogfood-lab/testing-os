@@ -132,9 +132,9 @@ People write .github/, docs/, the repository root, schemas/ and site/; 16 writes
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts
+src/bin/bp.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of bp end to end. This path follows bp (a command people run) from its entry, since ci runs only tests.
 
 ## What this map cannot see
 
@@ -144,7 +144,7 @@ Read those in order to follow one pull request end to end.
 - 16 writes and 11 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
 - 21 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 35 commands are built at run time and not followed, 32 of them in tests.
+- 7 commands are built at run time and not followed, 6 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

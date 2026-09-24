@@ -61,11 +61,42 @@
     "items": [
       {
         "kind": "door",
-        "sentence": "CI now also runs site/astro.config.mjs and site/src/.",
+        "sentence": "CI now also runs packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts, packages/cli/src/tests/doctor.test.ts and 11 more.",
         "subjects": [
           ".github/workflows/ci.yml",
+          "packages/cli/src/tests/console.test.ts",
+          "packages/cli/src/tests/dispatch.test.ts",
+          "packages/cli/src/tests/doctor.test.ts",
+          "packages/cli/src/tests/help.test.ts",
+          "packages/cli/src/tests/hook.test.ts",
+          "packages/cli/src/tests/refresh.test.ts",
+          "packages/cli/src/tests/report.test.ts",
+          "packages/cli/src/tests/split.test.ts",
+          "packages/cli/src/tests/wrapped.test.ts",
+          "packages/kernel/src/tests/",
+          "packages/memories/src/tests/",
+          "packages/rules/src/tests/",
           "site/astro.config.mjs",
           "site/src/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release now also runs packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts, packages/cli/src/tests/doctor.test.ts and 9 more.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "packages/cli/src/tests/console.test.ts",
+          "packages/cli/src/tests/dispatch.test.ts",
+          "packages/cli/src/tests/doctor.test.ts",
+          "packages/cli/src/tests/help.test.ts",
+          "packages/cli/src/tests/hook.test.ts",
+          "packages/cli/src/tests/refresh.test.ts",
+          "packages/cli/src/tests/report.test.ts",
+          "packages/cli/src/tests/split.test.ts",
+          "packages/cli/src/tests/wrapped.test.ts",
+          "packages/kernel/src/tests/",
+          "packages/memories/src/tests/",
+          "packages/rules/src/tests/"
         ]
       },
       {
@@ -77,15 +108,7 @@
       },
       {
         "kind": "door",
-        "sentence": "ai-loadout (packages/kernel/package.json) is a new command. It runs packages/kernel/src/cli.ts.",
-        "subjects": [
-          "packages/kernel/package.json",
-          "packages/kernel/src/cli.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 2 more changes to doors.",
+        "sentence": "And 3 more changes to doors.",
         "subjects": []
       },
       {
@@ -153,15 +176,18 @@
         "packages/rules/src/"
       ],
       "checksCount": 4,
+      "checksMore": 17,
       "file": ".github/workflows/ci.yml",
       "held": [
         {
           "checks": [],
+          "checksMore": 0,
           "lead": "on a push to main",
           "runs": [
             "site/astro.config.mjs",
             "site/src/"
           ],
+          "runsMore": 0,
           "when": "on a push to main"
         }
       ],
@@ -196,8 +222,22 @@
           "files": 3
         }
       ],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        "packages/cli/src/tests/console.test.ts",
+        "packages/cli/src/tests/dispatch.test.ts",
+        "packages/cli/src/tests/doctor.test.ts",
+        "packages/cli/src/tests/help.test.ts",
+        "packages/cli/src/tests/hook.test.ts",
+        "packages/cli/src/tests/refresh.test.ts",
+        "packages/cli/src/tests/report.test.ts",
+        "packages/cli/src/tests/split.test.ts",
+        "packages/cli/src/tests/wrapped.test.ts",
+        "packages/kernel/src/tests/",
+        "packages/memories/src/tests/",
+        "packages/rules/src/tests/"
+      ],
+      "runsCount": 12,
+      "runsMore": 31,
       "sends": [
         "deploys the site on a push to main"
       ],
@@ -216,6 +256,7 @@
         "packages/rules/src/"
       ],
       "checksCount": 4,
+      "checksMore": 17,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -244,9 +285,22 @@
         }
       ],
       "runs": [
-        "packages/cli/esbuild.config.mjs"
+        "packages/cli/esbuild.config.mjs",
+        "packages/cli/src/tests/console.test.ts",
+        "packages/cli/src/tests/dispatch.test.ts",
+        "packages/cli/src/tests/doctor.test.ts",
+        "packages/cli/src/tests/help.test.ts",
+        "packages/cli/src/tests/hook.test.ts",
+        "packages/cli/src/tests/refresh.test.ts",
+        "packages/cli/src/tests/report.test.ts",
+        "packages/cli/src/tests/split.test.ts",
+        "packages/cli/src/tests/wrapped.test.ts",
+        "packages/kernel/src/tests/",
+        "packages/memories/src/tests/",
+        "packages/rules/src/tests/"
       ],
-      "runsCount": 1,
+      "runsCount": 13,
+      "runsMore": 32,
       "sends": [
         "publishes @mcptoolshop/loadout-os (packages/cli) to npm",
         "creates a GitHub release"
@@ -259,6 +313,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/memories/package.json",
       "id": "packages/memories/package.json#claude-memories",
       "kind": "command",
@@ -281,6 +336,7 @@
         "packages/memories/src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -288,6 +344,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/rules/package.json",
       "id": "packages/rules/package.json#claude-rules",
       "kind": "command",
@@ -310,6 +367,7 @@
         "packages/rules/src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -317,6 +375,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/kernel/package.json",
       "id": "packages/kernel/package.json#ai-loadout",
       "kind": "command",
@@ -334,6 +393,7 @@
         "packages/kernel/src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -341,6 +401,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/cli/package.json",
       "id": "packages/cli/package.json#loadout-os",
       "kind": "command",
@@ -350,6 +411,7 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [],
@@ -465,12 +527,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T08:35:54.047Z",
+  "generatedAt": "2026-09-24T11:51:38.597Z",
   "limits": [
-    "1 file uses syntax the parser cannot read (packages/memories/src/types.ts), so what it imports is not known: an import type followed by `[]` (1).",
     "8 writes and 22 reads use paths built at run time and are not named here.",
     "12 writes and 55 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "12 commands are built at run time and not followed, 11 of them in tests.",
+    "3 commands are built at run time and not followed, 2 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -489,9 +550,11 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/loadout-os",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
-  "startHere": [],
-  "startNote": "CI runs no code this map can follow; it only checks code, so there is no path of files to read in order.",
+  "startDoor": "packages/memories/package.json#claude-memories",
+  "startHere": [
+    "packages/memories/src/cli.ts"
+  ],
+  "startReason": "This path follows claude-memories (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 45,
@@ -502,7 +565,7 @@
   },
   "unnamedWrites": 8,
   "unread": [],
-  "unreadFiles": 1,
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
     {

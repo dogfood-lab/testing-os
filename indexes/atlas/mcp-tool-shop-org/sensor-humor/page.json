@@ -152,6 +152,7 @@
         "tsconfig.json"
       ],
       "checksCount": 5,
+      "checksMore": 2,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -210,6 +211,7 @@
         "tests/version-alignment.test.ts"
       ],
       "runsCount": 28,
+      "runsMore": 25,
       "sends": [
         "publishes to npm and a container image",
         "creates a GitHub release"
@@ -224,6 +226,7 @@
         "src/"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -276,6 +279,7 @@
         "tests/version-alignment.test.ts"
       ],
       "runsCount": 27,
+      "runsMore": 24,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -287,6 +291,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -304,6 +309,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -316,6 +322,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#@mcptoolshop/sensor-humor",
       "kind": "package",
@@ -333,6 +340,7 @@
         "src/index.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -340,6 +348,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#sensor-humor",
       "kind": "command",
@@ -357,6 +366,7 @@
         "src/index.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -391,12 +401,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T08:56:35.650Z",
+  "generatedAt": "2026-09-24T11:53:43.054Z",
   "limits": [
     "1 import site could not be resolved.",
     "2 writes use paths built at run time and are not named here.",
-    "8 writes and 22 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "1 command is built at run time and not followed, and it is in tests.",
+    "8 writes and 21 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/release.yml",
@@ -414,16 +423,19 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/sensor-humor",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "spawnTested": [
+    "scripts"
+  ],
+  "startDoor": "package.json#sensor-humor",
   "startHere": [
-    ".github/workflows/ci.yml",
     "src/index.ts"
   ],
+  "startReason": "This path follows sensor-humor (a command people run) from its entry, since CI runs only tests and scripts that import no code here.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 27,
   "testedBy": {
-    "scripts": 0,
+    "scripts": 1,
     "src": 25
   },
   "unnamedWrites": 2,
@@ -443,13 +455,9 @@
   ],
   "unreadFiles": 0,
   "unreadNote": [],
-  "untested": [
-    {
-      "part": "scripts",
-      "partLabel": "scripts",
-      "testedBy": 0
-    }
+  "untested": [],
+  "untestedNote": [
+    "scripts is touched by tests only through a spawn: a test runs its files as a child process."
   ],
-  "untestedNote": [],
   "written": 2
 }

@@ -1,0 +1,1153 @@
+{
+  "authored": [
+    ".github/",
+    ".stage-b-amend/",
+    ".stage-b-audit/",
+    ".verifier-outputs-b1/",
+    ".verifier-outputs/",
+    "docs/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 8,
+      "importedBy": [
+        "scripts"
+      ],
+      "importedByTests": [
+        "test"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    },
+    {
+      "doors": 3,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "test",
+      "partLabel": "test",
+      "spawnedBy": [
+        "scripts"
+      ]
+    },
+    {
+      "doors": 4,
+      "importedBy": [],
+      "importedByTests": [
+        "test"
+      ],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    },
+    {
+      "doors": 3,
+      "importedBy": [],
+      "importedByTests": [
+        "test"
+      ],
+      "kind": "part",
+      "name": "dashboard",
+      "partLabel": "dashboard"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "examples",
+      "partLabel": "examples"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 423,
+      "moved": 0,
+      "parts": 13,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "import-removed",
+        "sentence": "dashboard no longer imports src.",
+        "subjects": [
+          "dashboard",
+          "src"
+        ]
+      },
+      {
+        "kind": "import-removed",
+        "sentence": "examples no longer imports src.",
+        "subjects": [
+          "examples",
+          "src"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Docker Publish now also runs src/cli.ts.",
+        "subjects": [
+          ".github/workflows/docker-publish.yml",
+          "src/cli.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Docker Publish now also checks LICENSE, README.md, docs/ and 4 more.",
+        "subjects": [
+          ".github/workflows/docker-publish.yml",
+          "LICENSE",
+          "README.md",
+          "docs/",
+          "package-lock.json",
+          "package.json",
+          "src/",
+          "tsconfig.json"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release Gate now also runs scripts/completeness-checks.mjs, scripts/doc-drift.mjs, scripts/jsdoc-gate.mjs and 118 more.",
+        "subjects": [
+          ".github/workflows/release-gate.yml",
+          "scripts/completeness-checks.mjs",
+          "scripts/doc-drift.mjs",
+          "scripts/jsdoc-gate.mjs",
+          "scripts/smoke-install.mjs",
+          "test/adapters.test.ts",
+          "test/backend-parity.test.ts",
+          "test/cli-docs.test.ts",
+          "test/cli.test.ts",
+          "test/command-index-consistency.test.ts",
+          "test/command-persistence.test.ts",
+          "test/content-index.test.ts",
+          "test/contracts.test.ts",
+          "test/dashboard-command-preview.test.ts",
+          "test/dashboard-model.test.ts",
+          "test/dashboard-ops.test.ts",
+          "test/dashboard-policy-view.test.ts",
+          "test/dashboard-snapshot.test.ts",
+          "test/doctor-head-truncation-regression.test.ts",
+          "test/dogfood-mutation.test.ts",
+          "test/dogfood-ops.test.ts",
+          "test/dogfood-policy.test.ts",
+          "test/dogfood-replay.test.ts",
+          "test/dogfood-retrieval.test.ts",
+          "test/dogfood-trace.test.ts",
+          "test/explain.test.ts",
+          "test/install-smoke.test.ts",
+          "test/kernel.test.ts",
+          "test/path-traversal.test.ts",
+          "test/phase10-proof.test.ts",
+          "test/phase11-proof.test.ts",
+          "test/phase12-proof.test.ts",
+          "test/phase13-proof.test.ts",
+          "test/phase14-proof.test.ts",
+          "test/phase15-proof.test.ts",
+          "test/phase2-proof.test.ts",
+          "test/phase3-proof.test.ts",
+          "test/phase4-proof.test.ts",
+          "test/phase5-proof.test.ts",
+          "test/phase8-proof.test.ts",
+          "test/phase9-proof.test.ts",
+          "test/policy-engine.test.ts",
+          "test/policy-kernel.test.ts",
+          "test/policy-surface.test.ts",
+          "test/postgres-canonical-store.test.ts",
+          "test/postgres-kernel-regression.test.ts",
+          "test/proof.test.ts",
+          "test/rebuild.test.ts",
+          "test/repo-knowledge-dashboard.test.ts",
+          "test/repo-knowledge-ingest.test.ts",
+          "test/repo-knowledge-mapping.test.ts",
+          "test/repo-knowledge-mutation.test.ts",
+          "test/repo-knowledge-ops.test.ts",
+          "test/repo-knowledge-retrieval.test.ts",
+          "test/resolver.test.ts",
+          "test/restore-artifacts.test.ts",
+          "test/retrieval.test.ts",
+          "test/sql-injection.test.ts",
+          "test/typed-error-regression.test.ts",
+          "test/uri.test.ts",
+          "test/verb-parity.test.ts",
+          "test/wave-a3-kernel-regression.test.ts",
+          "test/wave-a3-stores-regression.test.ts",
+          "test/wave-a3-surface-regression.test.ts",
+          "test/wave-a3-tests-regression.test.ts",
+          "test/wave-a4-fixup-regression.test.ts",
+          "test/wave-a4-kernel-regression.test.ts",
+          "test/wave-a4-stores-regression.test.ts",
+          "test/wave-a4-surface-regression.test.ts",
+          "test/wave-a4-tests-regression.test.ts",
+          "test/wave-b1-cidocs-regression.test.ts",
+          "test/wave-b1-fixup-regression.test.ts",
+          "test/wave-b1-kernel-regression.test.ts",
+          "test/wave-b1-stores-regression.test.ts",
+          "test/wave-b1-surface-regression.test.ts",
+          "test/wave-c1-cidocs-regression.test.ts",
+          "test/wave-c1-fixup-regression.test.ts",
+          "test/wave-c1-kernel-regression.test.ts",
+          "test/wave-c1-stores-regression.test.ts",
+          "test/wave-c1-surface-regression.test.ts",
+          "test/wave-c1-tests-cli-snapshots.test.ts",
+          "test/wave-c1-tests-dashboard-render.test.ts",
+          "test/wave-c1-tests-exit-codes.test.ts",
+          "test/wave-c1-tests-jsdoc-examples.test.ts",
+          "test/wave-c1-tests-mcp-envelope.test.ts",
+          "test/wave-phase-10-cli-color.test.ts",
+          "test/wave-s2a1-contracts-regression.test.ts",
+          "test/wave-s2a1-fixup-ops-regression.test.ts",
+          "test/wave-s2a1-fixup-wiring-regression.test.ts",
+          "test/wave-s2a1-kernel-regression.test.ts",
+          "test/wave-s2a1-local-adapters-regression.test.ts",
+          "test/wave-s2a1-ops-regression.test.ts",
+          "test/wave-s2a1-surface-regression.test.ts",
+          "test/wave-s2a2-cli-ops-regression.test.ts",
+          "test/wave-s2a2-docs-regression.test.ts",
+          "test/wave-s2a2-fixup-regression.test.ts",
+          "test/wave-s2a2-gating-regression.test.ts",
+          "test/wave-s2a2-policy-regression.test.ts",
+          "test/wave-s2a2-surfaces-regression.test.ts",
+          "test/wave-v1-callsite-regression.test.ts",
+          "test/wave-v1-ranker-regression.test.ts",
+          "test/wave-v1-retrieval-regression.test.ts",
+          "test/wave-v1-store-regression.test.ts",
+          "test/wave-v1-tests-regression.test.ts",
+          "test/wave-v2-kernel-reads.test.ts",
+          "test/wave-v2-mcp-cli.test.ts",
+          "test/wave-v2-policy-versions.test.ts",
+          "test/wave-v2-sdk.test.ts",
+          "test/wave-v2-tests-regression.test.ts",
+          "test/wave-v3-cross-adapter-integrity.test.ts",
+          "test/wave-v3-sqlite-canonical-artifact.test.ts",
+          "test/wave-v3-sqlite-foundation.test.ts",
+          "test/wave-v3-sqlite-hardening.test.ts",
+          "test/wave-v3-sqlite-index-ledger.test.ts",
+          "test/wave-v3-sqlite-parity.test.ts",
+          "test/wave-v4-cli-exit-codes.test.ts",
+          "test/wave-v4-mcp-gate-iserror.test.ts",
+          "test/wave-v5-snippet-redaction.test.ts",
+          "test/wave5-parity.test.ts",
+          "test/wave5-redaction.test.ts",
+          "test/wave6-policy-proof.test.ts",
+          "test/wave6-proof.test.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 1 more change to a door.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": "examples/dogfood-project-memory/.db-cluster is now written by src/adapters/local/index.ts.",
+        "subjects": [
+          "examples/dogfood-project-memory/.db-cluster",
+          "src/adapters/local/index.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": ".github/workflows/ci.yml is now read by test/wave-b1-cidocs-regression.test.ts.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "test/wave-b1-cidocs-regression.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": ".github/workflows/release-gate.yml is now read by test/wave-b1-cidocs-regression.test.ts.",
+        "subjects": [
+          ".github/workflows/release-gate.yml",
+          "test/wave-b1-cidocs-regression.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 108 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "counts",
+        "sentence": "423 files changed content, across 13 parts.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "2fb8e756e5bddee9c7e55f728c46d90b9289478d",
+      "generatedAt": "2026-09-23T22:31:52.086Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [
+    {
+      "a": "src/mcp/server.ts",
+      "b": "src/sdk/cluster-sdk.ts",
+      "either": 7,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 6
+    },
+    {
+      "a": "scripts/completeness-checks.mjs",
+      "b": "src/mcp/server.ts",
+      "either": 8,
+      "partLabels": [
+        "scripts",
+        "src"
+      ],
+      "parts": [
+        "scripts",
+        "src"
+      ],
+      "relation": "a-imports-b",
+      "shared": 5
+    },
+    {
+      "a": "src/kernel/policy-enforced-kernel.ts",
+      "b": "src/sdk/cluster-sdk.ts",
+      "either": 8,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 5
+    },
+    {
+      "a": "src/kernel/policy-enforced-kernel.ts",
+      "b": "src/mcp/server.ts",
+      "either": 9,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 5
+    },
+    {
+      "a": "scripts/completeness-checks.mjs",
+      "b": "src/sdk/cluster-sdk.ts",
+      "either": 8,
+      "partLabels": [
+        "scripts",
+        "src"
+      ],
+      "parts": [
+        "scripts",
+        "src"
+      ],
+      "relation": "a-imports-b",
+      "shared": 4
+    }
+  ],
+  "changesTogetherNote": [
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 2 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "f7808668046451e1a4be3f834688df5c9bc2c809",
+  "defaultBranch": "main",
+  "derived": "13 parts, mostly TypeScript (247 files). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.",
+  "doors": [
+    {
+      "checks": [
+        "examples/",
+        "src/"
+      ],
+      "checksCount": 2,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "examples",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 99
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 117
+        },
+        {
+          "boundary": "dashboard",
+          "depth": 1,
+          "files": 1
+        },
+        {
+          "boundary": "scripts",
+          "depth": 1,
+          "files": 4
+        }
+      ],
+      "runs": [
+        "test/adapters.test.ts",
+        "test/backend-parity.test.ts",
+        "test/cli-docs.test.ts",
+        "test/cli.test.ts",
+        "test/command-index-consistency.test.ts",
+        "test/command-persistence.test.ts",
+        "test/content-index.test.ts",
+        "test/contracts.test.ts",
+        "test/dashboard-command-preview.test.ts",
+        "test/dashboard-model.test.ts",
+        "test/dashboard-ops.test.ts",
+        "test/dashboard-policy-view.test.ts",
+        "test/dashboard-snapshot.test.ts",
+        "test/doctor-head-truncation-regression.test.ts",
+        "test/dogfood-mutation.test.ts",
+        "test/dogfood-ops.test.ts",
+        "test/dogfood-policy.test.ts",
+        "test/dogfood-replay.test.ts",
+        "test/dogfood-retrieval.test.ts",
+        "test/dogfood-trace.test.ts",
+        "test/explain.test.ts",
+        "test/install-smoke.test.ts",
+        "test/kernel.test.ts",
+        "test/path-traversal.test.ts",
+        "test/phase10-proof.test.ts",
+        "test/phase11-proof.test.ts",
+        "test/phase12-proof.test.ts",
+        "test/phase13-proof.test.ts",
+        "test/phase14-proof.test.ts",
+        "test/phase15-proof.test.ts",
+        "test/phase2-proof.test.ts",
+        "test/phase3-proof.test.ts",
+        "test/phase4-proof.test.ts",
+        "test/phase5-proof.test.ts",
+        "test/phase8-proof.test.ts",
+        "test/phase9-proof.test.ts",
+        "test/policy-engine.test.ts",
+        "test/policy-kernel.test.ts",
+        "test/policy-surface.test.ts",
+        "test/postgres-canonical-store.test.ts",
+        "test/postgres-kernel-regression.test.ts",
+        "test/proof.test.ts",
+        "test/rebuild.test.ts",
+        "test/repo-knowledge-dashboard.test.ts",
+        "test/repo-knowledge-ingest.test.ts",
+        "test/repo-knowledge-mapping.test.ts",
+        "test/repo-knowledge-mutation.test.ts",
+        "test/repo-knowledge-ops.test.ts",
+        "test/repo-knowledge-retrieval.test.ts",
+        "test/resolver.test.ts",
+        "test/restore-artifacts.test.ts",
+        "test/retrieval.test.ts",
+        "test/sql-injection.test.ts",
+        "test/typed-error-regression.test.ts",
+        "test/uri.test.ts",
+        "test/verb-parity.test.ts",
+        "test/wave-a3-kernel-regression.test.ts",
+        "test/wave-a3-stores-regression.test.ts",
+        "test/wave-a3-surface-regression.test.ts",
+        "test/wave-a3-tests-regression.test.ts",
+        "test/wave-a4-fixup-regression.test.ts",
+        "test/wave-a4-kernel-regression.test.ts",
+        "test/wave-a4-stores-regression.test.ts",
+        "test/wave-a4-surface-regression.test.ts",
+        "test/wave-a4-tests-regression.test.ts",
+        "test/wave-b1-cidocs-regression.test.ts",
+        "test/wave-b1-fixup-regression.test.ts",
+        "test/wave-b1-kernel-regression.test.ts",
+        "test/wave-b1-stores-regression.test.ts",
+        "test/wave-b1-surface-regression.test.ts",
+        "test/wave-c1-cidocs-regression.test.ts",
+        "test/wave-c1-fixup-regression.test.ts",
+        "test/wave-c1-kernel-regression.test.ts",
+        "test/wave-c1-stores-regression.test.ts",
+        "test/wave-c1-surface-regression.test.ts",
+        "test/wave-c1-tests-cli-snapshots.test.ts",
+        "test/wave-c1-tests-dashboard-render.test.ts",
+        "test/wave-c1-tests-exit-codes.test.ts",
+        "test/wave-c1-tests-jsdoc-examples.test.ts",
+        "test/wave-c1-tests-mcp-envelope.test.ts",
+        "test/wave-phase-10-cli-color.test.ts",
+        "test/wave-s2a1-contracts-regression.test.ts",
+        "test/wave-s2a1-fixup-ops-regression.test.ts",
+        "test/wave-s2a1-fixup-wiring-regression.test.ts",
+        "test/wave-s2a1-kernel-regression.test.ts",
+        "test/wave-s2a1-local-adapters-regression.test.ts",
+        "test/wave-s2a1-ops-regression.test.ts",
+        "test/wave-s2a1-surface-regression.test.ts",
+        "test/wave-s2a2-cli-ops-regression.test.ts",
+        "test/wave-s2a2-docs-regression.test.ts",
+        "test/wave-s2a2-fixup-regression.test.ts",
+        "test/wave-s2a2-gating-regression.test.ts",
+        "test/wave-s2a2-policy-regression.test.ts",
+        "test/wave-s2a2-surfaces-regression.test.ts",
+        "test/wave-v1-callsite-regression.test.ts",
+        "test/wave-v1-ranker-regression.test.ts",
+        "test/wave-v1-retrieval-regression.test.ts",
+        "test/wave-v1-store-regression.test.ts",
+        "test/wave-v1-tests-regression.test.ts",
+        "test/wave-v2-kernel-reads.test.ts",
+        "test/wave-v2-mcp-cli.test.ts",
+        "test/wave-v2-policy-versions.test.ts",
+        "test/wave-v2-sdk.test.ts",
+        "test/wave-v2-tests-regression.test.ts",
+        "test/wave-v3-cross-adapter-integrity.test.ts",
+        "test/wave-v3-sqlite-canonical-artifact.test.ts",
+        "test/wave-v3-sqlite-foundation.test.ts",
+        "test/wave-v3-sqlite-hardening.test.ts",
+        "test/wave-v3-sqlite-index-ledger.test.ts",
+        "test/wave-v3-sqlite-parity.test.ts",
+        "test/wave-v4-cli-exit-codes.test.ts",
+        "test/wave-v4-mcp-gate-iserror.test.ts",
+        "test/wave-v5-snippet-redaction.test.ts",
+        "test/wave5-parity.test.ts",
+        "test/wave5-redaction.test.ts",
+        "test/wave6-policy-proof.test.ts",
+        "test/wave6-proof.test.ts"
+      ],
+      "runsCount": 117,
+      "runsMore": 114,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request",
+        "on a push",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "examples/",
+        "src/"
+      ],
+      "checksCount": 2,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "examples",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 99
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 117
+        },
+        {
+          "boundary": "dashboard",
+          "depth": 1,
+          "files": 1
+        },
+        {
+          "boundary": "scripts",
+          "depth": 1,
+          "files": 4
+        }
+      ],
+      "runs": [
+        "test/adapters.test.ts",
+        "test/backend-parity.test.ts",
+        "test/cli-docs.test.ts",
+        "test/cli.test.ts",
+        "test/command-index-consistency.test.ts",
+        "test/command-persistence.test.ts",
+        "test/content-index.test.ts",
+        "test/contracts.test.ts",
+        "test/dashboard-command-preview.test.ts",
+        "test/dashboard-model.test.ts",
+        "test/dashboard-ops.test.ts",
+        "test/dashboard-policy-view.test.ts",
+        "test/dashboard-snapshot.test.ts",
+        "test/doctor-head-truncation-regression.test.ts",
+        "test/dogfood-mutation.test.ts",
+        "test/dogfood-ops.test.ts",
+        "test/dogfood-policy.test.ts",
+        "test/dogfood-replay.test.ts",
+        "test/dogfood-retrieval.test.ts",
+        "test/dogfood-trace.test.ts",
+        "test/explain.test.ts",
+        "test/install-smoke.test.ts",
+        "test/kernel.test.ts",
+        "test/path-traversal.test.ts",
+        "test/phase10-proof.test.ts",
+        "test/phase11-proof.test.ts",
+        "test/phase12-proof.test.ts",
+        "test/phase13-proof.test.ts",
+        "test/phase14-proof.test.ts",
+        "test/phase15-proof.test.ts",
+        "test/phase2-proof.test.ts",
+        "test/phase3-proof.test.ts",
+        "test/phase4-proof.test.ts",
+        "test/phase5-proof.test.ts",
+        "test/phase8-proof.test.ts",
+        "test/phase9-proof.test.ts",
+        "test/policy-engine.test.ts",
+        "test/policy-kernel.test.ts",
+        "test/policy-surface.test.ts",
+        "test/postgres-canonical-store.test.ts",
+        "test/postgres-kernel-regression.test.ts",
+        "test/proof.test.ts",
+        "test/rebuild.test.ts",
+        "test/repo-knowledge-dashboard.test.ts",
+        "test/repo-knowledge-ingest.test.ts",
+        "test/repo-knowledge-mapping.test.ts",
+        "test/repo-knowledge-mutation.test.ts",
+        "test/repo-knowledge-ops.test.ts",
+        "test/repo-knowledge-retrieval.test.ts",
+        "test/resolver.test.ts",
+        "test/restore-artifacts.test.ts",
+        "test/retrieval.test.ts",
+        "test/sql-injection.test.ts",
+        "test/typed-error-regression.test.ts",
+        "test/uri.test.ts",
+        "test/verb-parity.test.ts",
+        "test/wave-a3-kernel-regression.test.ts",
+        "test/wave-a3-stores-regression.test.ts",
+        "test/wave-a3-surface-regression.test.ts",
+        "test/wave-a3-tests-regression.test.ts",
+        "test/wave-a4-fixup-regression.test.ts",
+        "test/wave-a4-kernel-regression.test.ts",
+        "test/wave-a4-stores-regression.test.ts",
+        "test/wave-a4-surface-regression.test.ts",
+        "test/wave-a4-tests-regression.test.ts",
+        "test/wave-b1-cidocs-regression.test.ts",
+        "test/wave-b1-fixup-regression.test.ts",
+        "test/wave-b1-kernel-regression.test.ts",
+        "test/wave-b1-stores-regression.test.ts",
+        "test/wave-b1-surface-regression.test.ts",
+        "test/wave-c1-cidocs-regression.test.ts",
+        "test/wave-c1-fixup-regression.test.ts",
+        "test/wave-c1-kernel-regression.test.ts",
+        "test/wave-c1-stores-regression.test.ts",
+        "test/wave-c1-surface-regression.test.ts",
+        "test/wave-c1-tests-cli-snapshots.test.ts",
+        "test/wave-c1-tests-dashboard-render.test.ts",
+        "test/wave-c1-tests-exit-codes.test.ts",
+        "test/wave-c1-tests-jsdoc-examples.test.ts",
+        "test/wave-c1-tests-mcp-envelope.test.ts",
+        "test/wave-phase-10-cli-color.test.ts",
+        "test/wave-s2a1-contracts-regression.test.ts",
+        "test/wave-s2a1-fixup-ops-regression.test.ts",
+        "test/wave-s2a1-fixup-wiring-regression.test.ts",
+        "test/wave-s2a1-kernel-regression.test.ts",
+        "test/wave-s2a1-local-adapters-regression.test.ts",
+        "test/wave-s2a1-ops-regression.test.ts",
+        "test/wave-s2a1-surface-regression.test.ts",
+        "test/wave-s2a2-cli-ops-regression.test.ts",
+        "test/wave-s2a2-docs-regression.test.ts",
+        "test/wave-s2a2-fixup-regression.test.ts",
+        "test/wave-s2a2-gating-regression.test.ts",
+        "test/wave-s2a2-policy-regression.test.ts",
+        "test/wave-s2a2-surfaces-regression.test.ts",
+        "test/wave-v1-callsite-regression.test.ts",
+        "test/wave-v1-ranker-regression.test.ts",
+        "test/wave-v1-retrieval-regression.test.ts",
+        "test/wave-v1-store-regression.test.ts",
+        "test/wave-v1-tests-regression.test.ts",
+        "test/wave-v2-kernel-reads.test.ts",
+        "test/wave-v2-mcp-cli.test.ts",
+        "test/wave-v2-policy-versions.test.ts",
+        "test/wave-v2-sdk.test.ts",
+        "test/wave-v2-tests-regression.test.ts",
+        "test/wave-v3-cross-adapter-integrity.test.ts",
+        "test/wave-v3-sqlite-canonical-artifact.test.ts",
+        "test/wave-v3-sqlite-foundation.test.ts",
+        "test/wave-v3-sqlite-hardening.test.ts",
+        "test/wave-v3-sqlite-index-ledger.test.ts",
+        "test/wave-v3-sqlite-parity.test.ts",
+        "test/wave-v4-cli-exit-codes.test.ts",
+        "test/wave-v4-mcp-gate-iserror.test.ts",
+        "test/wave-v5-snippet-redaction.test.ts",
+        "test/wave5-parity.test.ts",
+        "test/wave5-redaction.test.ts",
+        "test/wave6-policy-proof.test.ts",
+        "test/wave6-proof.test.ts"
+      ],
+      "runsCount": 117,
+      "runsMore": 114,
+      "sends": [
+        "publishes to npm",
+        "creates a GitHub release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*` is pushed"
+      ]
+    },
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "checksMore": 0,
+      "file": ".github/workflows/release-gate.yml",
+      "id": ".github/workflows/release-gate.yml",
+      "landings": [],
+      "name": "Release Gate",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 10
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 99
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 117
+        },
+        {
+          "boundary": "dashboard",
+          "depth": 1,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "scripts/completeness-checks.mjs",
+        "scripts/doc-drift.mjs",
+        "scripts/jsdoc-gate.mjs",
+        "scripts/release-gate.mjs",
+        "scripts/smoke-install.mjs",
+        "test/adapters.test.ts",
+        "test/backend-parity.test.ts",
+        "test/cli-docs.test.ts",
+        "test/cli.test.ts",
+        "test/command-index-consistency.test.ts",
+        "test/command-persistence.test.ts",
+        "test/content-index.test.ts",
+        "test/contracts.test.ts",
+        "test/dashboard-command-preview.test.ts",
+        "test/dashboard-model.test.ts",
+        "test/dashboard-ops.test.ts",
+        "test/dashboard-policy-view.test.ts",
+        "test/dashboard-snapshot.test.ts",
+        "test/doctor-head-truncation-regression.test.ts",
+        "test/dogfood-mutation.test.ts",
+        "test/dogfood-ops.test.ts",
+        "test/dogfood-policy.test.ts",
+        "test/dogfood-replay.test.ts",
+        "test/dogfood-retrieval.test.ts",
+        "test/dogfood-trace.test.ts",
+        "test/explain.test.ts",
+        "test/install-smoke.test.ts",
+        "test/kernel.test.ts",
+        "test/path-traversal.test.ts",
+        "test/phase10-proof.test.ts",
+        "test/phase11-proof.test.ts",
+        "test/phase12-proof.test.ts",
+        "test/phase13-proof.test.ts",
+        "test/phase14-proof.test.ts",
+        "test/phase15-proof.test.ts",
+        "test/phase2-proof.test.ts",
+        "test/phase3-proof.test.ts",
+        "test/phase4-proof.test.ts",
+        "test/phase5-proof.test.ts",
+        "test/phase8-proof.test.ts",
+        "test/phase9-proof.test.ts",
+        "test/policy-engine.test.ts",
+        "test/policy-kernel.test.ts",
+        "test/policy-surface.test.ts",
+        "test/postgres-canonical-store.test.ts",
+        "test/postgres-kernel-regression.test.ts",
+        "test/proof.test.ts",
+        "test/rebuild.test.ts",
+        "test/repo-knowledge-dashboard.test.ts",
+        "test/repo-knowledge-ingest.test.ts",
+        "test/repo-knowledge-mapping.test.ts",
+        "test/repo-knowledge-mutation.test.ts",
+        "test/repo-knowledge-ops.test.ts",
+        "test/repo-knowledge-retrieval.test.ts",
+        "test/resolver.test.ts",
+        "test/restore-artifacts.test.ts",
+        "test/retrieval.test.ts",
+        "test/sql-injection.test.ts",
+        "test/typed-error-regression.test.ts",
+        "test/uri.test.ts",
+        "test/verb-parity.test.ts",
+        "test/wave-a3-kernel-regression.test.ts",
+        "test/wave-a3-stores-regression.test.ts",
+        "test/wave-a3-surface-regression.test.ts",
+        "test/wave-a3-tests-regression.test.ts",
+        "test/wave-a4-fixup-regression.test.ts",
+        "test/wave-a4-kernel-regression.test.ts",
+        "test/wave-a4-stores-regression.test.ts",
+        "test/wave-a4-surface-regression.test.ts",
+        "test/wave-a4-tests-regression.test.ts",
+        "test/wave-b1-cidocs-regression.test.ts",
+        "test/wave-b1-fixup-regression.test.ts",
+        "test/wave-b1-kernel-regression.test.ts",
+        "test/wave-b1-stores-regression.test.ts",
+        "test/wave-b1-surface-regression.test.ts",
+        "test/wave-c1-cidocs-regression.test.ts",
+        "test/wave-c1-fixup-regression.test.ts",
+        "test/wave-c1-kernel-regression.test.ts",
+        "test/wave-c1-stores-regression.test.ts",
+        "test/wave-c1-surface-regression.test.ts",
+        "test/wave-c1-tests-cli-snapshots.test.ts",
+        "test/wave-c1-tests-dashboard-render.test.ts",
+        "test/wave-c1-tests-exit-codes.test.ts",
+        "test/wave-c1-tests-jsdoc-examples.test.ts",
+        "test/wave-c1-tests-mcp-envelope.test.ts",
+        "test/wave-phase-10-cli-color.test.ts",
+        "test/wave-s2a1-contracts-regression.test.ts",
+        "test/wave-s2a1-fixup-ops-regression.test.ts",
+        "test/wave-s2a1-fixup-wiring-regression.test.ts",
+        "test/wave-s2a1-kernel-regression.test.ts",
+        "test/wave-s2a1-local-adapters-regression.test.ts",
+        "test/wave-s2a1-ops-regression.test.ts",
+        "test/wave-s2a1-surface-regression.test.ts",
+        "test/wave-s2a2-cli-ops-regression.test.ts",
+        "test/wave-s2a2-docs-regression.test.ts",
+        "test/wave-s2a2-fixup-regression.test.ts",
+        "test/wave-s2a2-gating-regression.test.ts",
+        "test/wave-s2a2-policy-regression.test.ts",
+        "test/wave-s2a2-surfaces-regression.test.ts",
+        "test/wave-v1-callsite-regression.test.ts",
+        "test/wave-v1-ranker-regression.test.ts",
+        "test/wave-v1-retrieval-regression.test.ts",
+        "test/wave-v1-store-regression.test.ts",
+        "test/wave-v1-tests-regression.test.ts",
+        "test/wave-v2-kernel-reads.test.ts",
+        "test/wave-v2-mcp-cli.test.ts",
+        "test/wave-v2-policy-versions.test.ts",
+        "test/wave-v2-sdk.test.ts",
+        "test/wave-v2-tests-regression.test.ts",
+        "test/wave-v3-cross-adapter-integrity.test.ts",
+        "test/wave-v3-sqlite-canonical-artifact.test.ts",
+        "test/wave-v3-sqlite-foundation.test.ts",
+        "test/wave-v3-sqlite-hardening.test.ts",
+        "test/wave-v3-sqlite-index-ledger.test.ts",
+        "test/wave-v3-sqlite-parity.test.ts",
+        "test/wave-v4-cli-exit-codes.test.ts",
+        "test/wave-v4-mcp-gate-iserror.test.ts",
+        "test/wave-v5-snippet-redaction.test.ts",
+        "test/wave5-parity.test.ts",
+        "test/wave5-redaction.test.ts",
+        "test/wave6-policy-proof.test.ts",
+        "test/wave6-proof.test.ts"
+      ],
+      "runsCount": 122,
+      "runsMore": 119,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a push to main",
+        "when a tag matching `v*` is pushed",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "checksMore": 0,
+      "file": ".github/workflows/smoke-install.yml",
+      "id": ".github/workflows/smoke-install.yml",
+      "landings": [],
+      "name": "Smoke Install",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 99
+        }
+      ],
+      "runs": [
+        "scripts/smoke-install.mjs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 1 path",
+        "when a tag matching `v*` is pushed",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "LICENSE",
+        "README.md",
+        "docs/",
+        "package-lock.json",
+        "package.json",
+        "src/",
+        "tsconfig.json"
+      ],
+      "checksCount": 7,
+      "checksMore": 102,
+      "file": ".github/workflows/docker-publish.yml",
+      "id": ".github/workflows/docker-publish.yml",
+      "landings": [],
+      "name": "Docker Publish",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 99
+        }
+      ],
+      "runs": [
+        "src/cli.ts"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [
+        "publishes a container image"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*` is pushed",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/db-cluster",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/db-cluster",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 83
+        }
+      ],
+      "runs": [
+        "src/index.ts",
+        "src/mcp/index.ts",
+        "src/policy/index.ts",
+        "src/sdk/index.ts",
+        "src/types/index.ts",
+        "src/unsafe.ts"
+      ],
+      "runsCount": 6,
+      "runsMore": 3,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#db-cluster",
+      "kind": "command",
+      "landings": [],
+      "name": "db-cluster",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 67
+        }
+      ],
+      "runs": [
+        "src/cli.ts"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#db-cluster-mcp",
+      "kind": "command",
+      "landings": [],
+      "name": "db-cluster-mcp",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 52
+        }
+      ],
+      "runs": [
+        "src/mcp/server.ts"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "scripts",
+      "fromTests": false,
+      "to": "src"
+    },
+    {
+      "from": "test",
+      "fromTests": true,
+      "to": "dashboard"
+    },
+    {
+      "from": "test",
+      "fromTests": true,
+      "to": "scripts"
+    },
+    {
+      "from": "test",
+      "fromTests": true,
+      "to": "src"
+    }
+  ],
+  "generated": [],
+  "generatedAt": "2026-09-24T11:50:33.918Z",
+  "limits": [
+    "17 import sites could not be resolved.",
+    "2 files in test use syntax the parser cannot read (test/wave-a4-kernel-regression.test.ts and test/wave-s2a2-policy-regression.test.ts), so what they import is not known: a NUL character inside a string (1) and other syntax (1).",
+    "7 writes and 16 reads use paths built at run time and are not named here.",
+    "3 writes go to places this repository does not track, so they are not listed as generated.",
+    "49 writes and 106 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "1 command is built at run time and not followed, and it is in tests.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    ".stage-b-amend": ".stage-b-amend",
+    ".stage-b-audit": ".stage-b-audit",
+    ".verifier-outputs": ".verifier-outputs",
+    ".verifier-outputs-b1": ".verifier-outputs-b1",
+    "dashboard": "dashboard",
+    "docs": "docs",
+    "examples": "examples",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "the site",
+    "src": "src",
+    "test": "test"
+  },
+  "parts": 13,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/db-cluster",
+  "sequences": [],
+  "startDoor": "package.json#db-cluster",
+  "startHere": [
+    "src/cli.ts"
+  ],
+  "startReason": "This path follows db-cluster (a command people run) from its entry, since CI runs only tests.",
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 122,
+  "testedBy": {
+    "dashboard": 3,
+    "examples": 0,
+    "scripts": 14,
+    "src": 113
+  },
+  "unnamedWrites": 7,
+  "unread": [],
+  "unreadFiles": 2,
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "examples",
+      "partLabel": "examples",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 0
+}

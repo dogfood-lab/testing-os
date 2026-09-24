@@ -479,7 +479,8 @@
       "name": "scripts",
       "origin": "authored",
       "role": "code",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedThroughSpawn": true,
       "unresolvedSites": 0
     },
     {
@@ -869,7 +870,7 @@
       "dynamicReads": 6,
       "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 2,
       "entryPoints": [
         "src/index.ts"
       ],
@@ -2745,15 +2746,15 @@
       "name": "src",
       "origin": "authored",
       "outsideReads": 31,
-      "outsideWrites": 19,
+      "outsideWrites": 18,
       "role": "code",
-      "testedBy": 94,
+      "testedBy": 97,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 5,
-      "dynamicSpawnsInTests": 5,
+      "dynamicSpawns": 1,
+      "dynamicSpawnsInTests": 1,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -2791,7 +2792,8 @@
             "tests/_helpers/fakeOllama.ts",
             "tests/_helpers/fixtures.ts"
           ],
-          "path": "tests/_helpers/index.ts"
+          "path": "tests/_helpers/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "b4d4b0607cedc5b13f2e88b07657faa25c07b82d29ec81b7708c3affc532ffab",
@@ -3288,9 +3290,10 @@
         },
         {
           "hash": "10e46afb0d38a3d3f54fa573640b3a22d6760fb8ebe2491bd2985a22df8187cd",
-          "parseError": true,
-          "path": "tests/tools/artifactWrite.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/tools/packs/artifactWrite.ts"
+          ],
+          "path": "tests/tools/artifactWrite.test.ts"
         },
         {
           "hash": "052026f7cdc17ee0b4f048de97bcc0b9ea8257bd3270693653c5c17a4dcac48b",
@@ -3646,9 +3649,11 @@
         },
         {
           "hash": "2e2a65df1d37d759160b5d8da44bbb09bd8cbfd1ccc1333690edafb622c739a5",
-          "parseError": true,
-          "path": "tests/tools/logStats.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/tools/logStats.ts",
+            "tests/_helpers/index.ts"
+          ],
+          "path": "tests/tools/logStats.test.ts"
         },
         {
           "hash": "eafef577ee618c1c73bf2b954e99aaa1ce083605c709e82b1ee7565be76645cd",

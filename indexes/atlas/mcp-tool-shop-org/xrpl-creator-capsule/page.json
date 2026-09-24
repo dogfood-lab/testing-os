@@ -78,8 +78,37 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "app/src-tauri/icons/128x128.png is now read by app/src-tauri/tauri.conf.json.",
+        "subjects": [
+          "app/src-tauri/icons/128x128.png",
+          "app/src-tauri/tauri.conf.json"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "app/src-tauri/icons/128x128@2x.png is now read by app/src-tauri/tauri.conf.json.",
+        "subjects": [
+          "app/src-tauri/icons/128x128@2x.png",
+          "app/src-tauri/tauri.conf.json"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "app/src-tauri/icons/32x32.png is now read by app/src-tauri/tauri.conf.json.",
+        "subjects": [
+          "app/src-tauri/icons/32x32.png",
+          "app/src-tauri/tauri.conf.json"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 3 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 263 files changed content.",
+        "sentence": "263 files changed content, across 12 parts.",
         "subjects": []
       }
     ],
@@ -87,7 +116,7 @@
       "commit": "1f7eeff8bb9d6761be60a628902c6d498472cec8",
       "generatedAt": "2026-09-24T08:33:39.867Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -189,6 +218,7 @@
         "packages/xrpl/src/"
       ],
       "checksCount": 10,
+      "checksMore": 116,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -317,6 +347,7 @@
         "packages/xrpl/src/wallet.test.ts"
       ],
       "runsCount": 78,
+      "runsMore": 75,
       "sends": [
         "creates a GitHub release on a release event"
       ],
@@ -331,6 +362,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -348,6 +380,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -360,6 +393,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/cli/package.json",
       "id": "packages/cli/package.json#capsule",
       "kind": "command",
@@ -397,6 +431,7 @@
         "packages/cli/src/bin.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -443,14 +478,14 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T08:56:52.319Z",
+  "generatedAt": "2026-09-24T11:55:06.833Z",
   "limits": [
-    "3 import sites could not be resolved.",
-    "15 files use syntax the parser cannot read (app/bridge-worker-mint-persist.test.ts, app/src/components/studio/RecoveryPage.tsx, app/src/components/studio/ReviewPage.tsx and 12 more), so what they import is not known: 7 in xrpl (`typeof import(…)` as a type argument), 4 in cli (`typeof import(…)` as a type argument), 3 in app (a bare `&` in JSX text in 2 and `typeof import(…)` as a type argument in 1), 1 in xaman (`typeof import(…)` as a type argument).",
+    "4 import sites could not be resolved.",
     "2 writes and 14 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
     "22 writes and 37 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed, and it is in tests.",
+    "There is a Tauri app under app/ (4 Rust files) that a workflow builds; the map reads no Rust, so what its Rust code does is not on this page.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -472,25 +507,26 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/xrpl-creator-capsule",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "packages/cli/package.json#capsule",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "packages/core/src/index.ts"
+    "packages/cli/src/bin.ts",
+    "packages/core/src/access-grant-schema.ts"
   ],
+  "startReason": "This path follows capsule (a command people run) from its entry, since CI runs only tests and scripts that import no code here.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 76,
   "testedBy": {
-    "app": 25,
-    "cli": 22,
-    "core": 30,
-    "storage": 11,
-    "xaman": 3,
-    "xrpl": 24
+    "app": 26,
+    "cli": 23,
+    "core": 35,
+    "storage": 13,
+    "xaman": 4,
+    "xrpl": 28
   },
   "unnamedWrites": 2,
   "unread": [],
-  "unreadFiles": 15,
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],

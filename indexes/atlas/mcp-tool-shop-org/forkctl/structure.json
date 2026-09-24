@@ -275,10 +275,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 1,
-      "dynamicSpawns": 1,
+      "dynamicReads": 8,
+      "dynamicSpawns": 3,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 8,
       "entryPoints": [
         "src/cli.ts",
         "src/index.ts",
@@ -437,6 +437,7 @@
           ]
         },
         {
+          "constantOnly": true,
           "hash": "17a577eb72975d0cb9363ce43bc5572d868ada7d0ab38404062a08368561af7b",
           "path": "src/index.ts"
         },
@@ -581,9 +582,11 @@
         },
         {
           "hash": "55bbf88f35a862c0d5560d89fac319f7f7ee9a834b965ab9ca90220ca68cf4c9",
-          "parseError": true,
-          "path": "src/lib/rename/identity/go-mod.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/lib/rename/identity/types.ts",
+            "src/schemas/rename.ts"
+          ],
+          "path": "src/lib/rename/identity/go-mod.ts"
         },
         {
           "exports": [
@@ -602,21 +605,27 @@
         },
         {
           "hash": "1346677821cf8632a690a7dcf824f5f00fa5919ae9e81c46d2efe9ad74801b4d",
-          "parseError": true,
-          "path": "src/lib/rename/identity/package-json.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/lib/rename/identity/types.ts",
+            "src/schemas/rename.ts"
+          ],
+          "path": "src/lib/rename/identity/package-json.ts"
         },
         {
           "hash": "03edf258f2cf08f2e1aa56ce87acdbdd1234d27ff7635e6ab1ea86184b0e1781",
-          "parseError": true,
-          "path": "src/lib/rename/identity/simple-text.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/lib/rename/identity/types.ts",
+            "src/schemas/rename.ts"
+          ],
+          "path": "src/lib/rename/identity/simple-text.ts"
         },
         {
           "hash": "eb6e8bc6eb8b61f765b6169a56c74fc0d9dd05e3a8927f3380b43922181fac01",
-          "parseError": true,
-          "path": "src/lib/rename/identity/toml-based.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/lib/rename/identity/types.ts",
+            "src/schemas/rename.ts"
+          ],
+          "path": "src/lib/rename/identity/toml-based.ts"
         },
         {
           "hash": "730563787059e78b48becb35fce883247e587764c0d3a521b36b65f10e44dede",
@@ -646,16 +655,29 @@
           "path": "src/lib/rename/plan.ts"
         },
         {
+          "exports": [
+            "runPostPass"
+          ],
           "hash": "703f61683af509671d8177d3b6983f3929e520fcfc385496835ba18ee67081f3",
-          "parseError": true,
-          "path": "src/lib/rename/post.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/lib/rename/exclusions.ts",
+            "src/lib/rename/variants.ts",
+            "src/lib/rename/walk.ts",
+            "src/schemas/rename.ts"
+          ],
+          "path": "src/lib/rename/post.ts"
         },
         {
+          "exports": [
+            "gcSnapshots",
+            "rollbackSnapshot",
+            "takeSnapshot"
+          ],
           "hash": "e1bd0d1634e25c17ebf0db345eaa4319dbee9d9e04cf6acfd18f9e7fbc8f2455",
-          "parseError": true,
-          "path": "src/lib/rename/snapshot.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/lib/errors.ts"
+          ],
+          "path": "src/lib/rename/snapshot.ts"
         },
         {
           "exports": [
@@ -699,10 +721,18 @@
           "path": "src/lib/rename/variants.ts"
         },
         {
+          "exports": [
+            "buildLanguageManifest",
+            "languageForFile",
+            "matchAnyGlob",
+            "matchGlob",
+            "walkRepo"
+          ],
           "hash": "3f89b76e24a35cb6bcf3f98fea4bced7dcddffcb3617ff3c2c2047554ae24d83",
-          "parseError": true,
-          "path": "src/lib/rename/walk.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/lib/rename/exclusions.ts"
+          ],
+          "path": "src/lib/rename/walk.ts"
         },
         {
           "exports": [
@@ -1223,8 +1253,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 7,
-      "outsideWrites": 7,
+      "outsideReads": 22,
+      "outsideWrites": 26,
       "role": "code",
       "testedBy": 51,
       "unresolvedSites": 1
@@ -2570,6 +2600,17 @@
     {
       "readers": [
         {
+          "by": "src/lib/rename/identity/simple-text.ts",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": ".github/workflows",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "tests/_helpers/rename-fixtures.ts",
           "call": "literal",
           "confidence": "ast",
@@ -2606,6 +2647,11 @@
     {
       "readers": [
         {
+          "by": "src/lib/rename/identity/simple-text.ts",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
           "by": "src/tools/make-forkable.ts",
           "call": "literal",
           "confidence": "ast"
@@ -2628,6 +2674,11 @@
     },
     {
       "readers": [
+        {
+          "by": "src/lib/rename/identity/simple-text.ts",
+          "call": "literal",
+          "confidence": "ast"
+        },
         {
           "by": "src/tools/make-forkable.ts",
           "call": "literal",
@@ -2721,6 +2772,11 @@
     {
       "readers": [
         {
+          "by": "src/lib/rename/post.ts",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
           "by": "tests/_helpers/rename-fixtures.ts",
           "call": "literal",
           "confidence": "ast",
@@ -2746,6 +2802,11 @@
       "readers": [
         {
           "by": ".github/workflows/ci.yml"
+        },
+        {
+          "by": "src/lib/rename/identity/package-json.ts",
+          "call": "literal",
+          "confidence": "ast"
         },
         {
           "by": "src/tools/scan-drift.ts",

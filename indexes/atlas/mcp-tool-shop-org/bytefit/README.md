@@ -4,35 +4,37 @@ Mapped at 2026-09-24 from commit 0f920ec.
 
 ## What this is
 
-6 parts, mostly TypeScript (49 files). Work enters through 5 doors; the busiest is @mcptoolshop/bytefit, which reaches 1 part. It publishes to npm. People run bytefit. People import @mcptoolshop/bytefit.
+6 parts, mostly TypeScript (49 files). Work enters through 5 doors; ci, Deploy site to GitHub Pages, Release, @mcptoolshop/bytefit and bytefit each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. People run bytefit. People import @mcptoolshop/bytefit.
 
 ## What changed since 2026-09-24 (1941e05)
 
-Nothing structural changed since 2026-09-24; 88 files changed content.
+- ci now also runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more.
+- Release now also runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more.
+- 88 files changed content, across 5 parts.
 
 ## What comes in
 
-1. **@mcptoolshop/bytefit** (the package people import). Loads src/index.ts.
+1. **ci.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; checks src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **ci.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Checks src/.
-4. **Release.** When a tag matching `v*` is pushed. Checks src/.
+3. **Release.** When a tag matching `v*` is pushed. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; checks src/.
+4. **@mcptoolshop/bytefit** (the package people import). Loads src/index.ts.
 5. **bytefit** (a command people run). Runs src/cli.ts.
 
-## What happens through @mcptoolshop/bytefit
+## What happens through ci
 
-1. The package loads src/index.ts in src.
+1. The workflow runs 16 files in src; it checks src/ in src.
 
 ## Who reads the results
 
-@mcptoolshop/bytefit writes nothing this map can see.
+ci writes nothing this map can see.
 
 ## The other doors
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**ci** checks src/.
+**Release** runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more, checks src/, publishes to npm, and creates a GitHub release.
 
-**Release** checks src/, publishes to npm, and creates a GitHub release.
+**@mcptoolshop/bytefit** (the package people import) loads src/index.ts.
 
 **bytefit** (a command people run) runs src/cli.ts.
 
@@ -74,14 +76,14 @@ People write .github/, assets/, docs/, the repository root and site/. Nothing in
 
 ## Where to start
 
-src/index.ts
+src/cli.ts
 
-Read those in order to follow one import of @mcptoolshop/bytefit end to end.
+Read those in order to follow one run of bytefit end to end. This path follows bytefit (a command people run) from its entry, since ci runs only tests.
 
 ## What this map cannot see
 
 - 1 write and 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 2 commands are built at run time and not followed, 1 of them in tests.
+- 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

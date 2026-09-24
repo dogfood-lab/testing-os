@@ -75,7 +75,8 @@
             "packages/api-contract/src/commands.ts",
             "packages/api-contract/src/errors.ts",
             "packages/api-contract/src/events.ts"
-          ]
+          ],
+          "reexportsOnly": true
         },
         {
           "hash": "7cb9ada1a10c7d5a578506d60ad3dfafbd34fbbfa68d13c46dd014a436081e75",
@@ -1542,10 +1543,15 @@
           "path": "apps/desktop/src/components/VectorReductionPanel.test.tsx"
         },
         {
+          "exports": [
+            "VectorReductionPanel"
+          ],
           "hash": "7349f684feea252b1452a2413361e98c0b34e987a2528bcead406ca131922182",
-          "parseError": true,
-          "path": "apps/desktop/src/components/VectorReductionPanel.tsx",
-          "unreadSyntax": "jsx-ampersand"
+          "importsFiles": [
+            "packages/domain/src/index.ts",
+            "packages/state/src/index.ts"
+          ],
+          "path": "apps/desktop/src/components/VectorReductionPanel.tsx"
         },
         {
           "hash": "01e2752ca64c540f505a6efaf8f88511df5bb4d28d539ab968e4cb0720999d8c",
@@ -3090,7 +3096,8 @@
             "packages/domain/src/vector.ts",
             "packages/domain/src/workflow.ts",
             "packages/domain/src/workspace.ts"
-          ]
+          ],
+          "reexportsOnly": true
         },
         {
           "hash": "e0984aa8f8a1f46170ea6bfe4b08f0fad259dd29e72e2cb4cdebed8f4e343806",
@@ -3680,7 +3687,8 @@
             "packages/mcp-sprite-server/src/session/sessionManager.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/index.ts"
+          "path": "packages/mcp-sprite-server/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "78da8cb2388e5babbd359fb12184a9306449999f4452d7b7861f8a1b29fdfbf7",
@@ -4062,7 +4070,8 @@
             "packages/mcp-sprite-server/src/workflows/types.ts",
             "packages/mcp-sprite-server/src/workflows/verify.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/workflows/index.ts"
+          "path": "packages/mcp-sprite-server/src/workflows/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "6203a1ff39bd0ec9e8e1e712de3f3c1df045adac6a031831c59ef6c88318c562",
@@ -4265,7 +4274,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 1,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -4347,7 +4356,7 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
-      "outsideReads": 4,
+      "outsideReads": 5,
       "role": "code",
       "testedBy": 0,
       "unresolvedSites": 17
@@ -4987,7 +4996,8 @@
             "packages/state/src/workflowStore.ts",
             "packages/state/src/workspaceStore.ts"
           ],
-          "path": "packages/state/src/index.ts"
+          "path": "packages/state/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "b77eb775e938bd7e07337f883409e480eeefe57ca9a590fb6c3399135473342f",
@@ -7487,6 +7497,17 @@
     {
       "readers": [
         {
+          "by": "apps/desktop/src-tauri/Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/desktop/src-tauri/src/main.rs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "audit/event-handlers/1-handler-registry.json",
           "call": "literal",
           "confidence": "text"
@@ -8197,5 +8218,13 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 187,
-  "unassigned": []
+  "unassigned": [],
+  "unseen": [
+    {
+      "built": false,
+      "dir": "apps/desktop",
+      "kind": "tauri",
+      "rust": 46
+    }
+  ]
 }

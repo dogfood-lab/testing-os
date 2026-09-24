@@ -130,8 +130,8 @@
     },
     {
       "dynamicReads": 2,
-      "dynamicSpawns": 13,
-      "dynamicSpawnsInTests": 11,
+      "dynamicSpawns": 2,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 3,
       "entryPoints": [],
       "externals": 0,
@@ -389,7 +389,7 @@
       "origin": "mixed",
       "outsideReads": 3,
       "role": "code",
-      "testedBy": 4,
+      "testedBy": 8,
       "unresolvedSites": 8
     },
     {
@@ -565,10 +565,34 @@
           "path": "packages/editor/src/App.tsx"
         },
         {
+          "exports": [
+            "Canvas"
+          ],
           "hash": "6ea5a24a82435a982d620af890872d05e4accdba3508e224e410cd372c7b83cf",
-          "parseError": true,
-          "path": "packages/editor/src/Canvas.tsx",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "packages/editor/src/canvas-placement.ts",
+            "packages/editor/src/connection-lines.ts",
+            "packages/editor/src/hit-testing.ts",
+            "packages/editor/src/hotkeys.ts",
+            "packages/editor/src/ids.ts",
+            "packages/editor/src/mode-profiles.ts",
+            "packages/editor/src/preset-actions.ts",
+            "packages/editor/src/presets/preset-store.ts",
+            "packages/editor/src/resize-handles.ts",
+            "packages/editor/src/snap.ts",
+            "packages/editor/src/speed-panel-actions.ts",
+            "packages/editor/src/speed-panel-execute.ts",
+            "packages/editor/src/store/editor-store.ts",
+            "packages/editor/src/store/modal-store.ts",
+            "packages/editor/src/store/project-store.ts",
+            "packages/editor/src/tile-render.ts",
+            "packages/editor/src/town-markers.ts",
+            "packages/editor/src/ui/Toast.tsx",
+            "packages/editor/src/ui/css-var.ts",
+            "packages/editor/src/viewport.ts",
+            "packages/schema/src/index.ts"
+          ],
+          "path": "packages/editor/src/Canvas.tsx"
         },
         {
           "hash": "e57052bb7810d815a5347731c715c6668e45908830e381e355190f8b217a7309",
@@ -1572,7 +1596,8 @@
           "importsFiles": [
             "packages/editor/src/App.tsx"
           ],
-          "path": "packages/editor/src/index.ts"
+          "path": "packages/editor/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "3006e28bdc35e12c1c8c3345329a52066fe1098b1ee034506e13ac67b843e599",
@@ -1621,7 +1646,8 @@
             "packages/editor/src/kits/types.ts",
             "packages/editor/src/kits/validate-kit.ts"
           ],
-          "path": "packages/editor/src/kits/index.ts"
+          "path": "packages/editor/src/kits/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "84fd0083f46f65ee05605f04a88c0bd73cafb09ee30bdb9272ba09fc112a61a2",
@@ -1744,7 +1770,8 @@
           "importsFiles": [
             "packages/editor/src/panels/SelectionActionsPanel.tsx"
           ],
-          "path": "packages/editor/src/panels/BatchZoneActions.tsx"
+          "path": "packages/editor/src/panels/BatchZoneActions.tsx",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -2373,10 +2400,21 @@
           "path": "packages/editor/src/panels/ValidationPanel.tsx"
         },
         {
+          "exports": [
+            "ZoneProperties"
+          ],
           "hash": "e857d5b169ed01480bf24ceb936b9b3ff3e1cf812d2ae9231e80afe34c5d132a",
-          "parseError": true,
-          "path": "packages/editor/src/panels/ZoneProperties.tsx",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "packages/editor/src/mode-profiles.ts",
+            "packages/editor/src/panels/ScenePreview.tsx",
+            "packages/editor/src/panels/shared.tsx",
+            "packages/editor/src/panels/zone-2d5-helpers.ts",
+            "packages/editor/src/store/editor-store.ts",
+            "packages/editor/src/store/project-store.ts",
+            "packages/editor/src/ui/styles.ts",
+            "packages/schema/src/index.ts"
+          ],
+          "path": "packages/editor/src/panels/ZoneProperties.tsx"
         },
         {
           "hash": "2b07ce0539ae37d0edcb09d705a8e47c1379dc7da48abe179db1317630a8900a",
@@ -2769,7 +2807,8 @@
             "packages/editor/src/presets/preset-store.ts",
             "packages/editor/src/presets/types.ts"
           ],
-          "path": "packages/editor/src/presets/index.ts"
+          "path": "packages/editor/src/presets/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "9c38928520556d60779302e94d3bde0e0f2b66713c16a657f9ae35de9bf9d2aa",
@@ -2815,7 +2854,8 @@
           "importsFiles": [
             "packages/editor/src/projects/bundle.ts"
           ],
-          "path": "packages/editor/src/projects/index.ts"
+          "path": "packages/editor/src/projects/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -3245,15 +3285,15 @@
       "importConfidence": "full",
       "name": "editor",
       "origin": "authored",
-      "outsideReads": 30,
+      "outsideReads": 32,
       "role": "code",
       "testedBy": 110,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 1,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
         "packages/export-ai-rpg/src/cli.ts",
@@ -3431,9 +3471,12 @@
         },
         {
           "hash": "41add5e2fd3f13c305c2cc64afeb40b17fd0effb0e19a436f9fd136fa6b1c278",
-          "parseError": true,
-          "path": "packages/export-ai-rpg/src/__tests__/f-1d037344-browser-safe-hash.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/export-ai-rpg/src/content-hash.ts",
+            "packages/export-ai-rpg/src/export.ts",
+            "packages/schema/src/__tests__/fixtures/minimal.ts"
+          ],
+          "path": "packages/export-ai-rpg/src/__tests__/f-1d037344-browser-safe-hash.test.ts"
         },
         {
           "hash": "6ed3f397b153265a422a7c4a28f04d8daff274da6bc0db71d02cff5fd904c2dd",
@@ -5131,7 +5174,8 @@
             "packages/export-ai-rpg/src/fidelity.ts",
             "packages/export-ai-rpg/src/import.ts"
           ],
-          "path": "packages/export-ai-rpg/src/index.ts"
+          "path": "packages/export-ai-rpg/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -5154,7 +5198,7 @@
       "outsideReads": 7,
       "outsideWrites": 4,
       "role": "code",
-      "testedBy": 61,
+      "testedBy": 64,
       "unresolvedSites": 0
     },
     {
@@ -6114,7 +6158,8 @@
             "packages/export-godot/src/scene-builder.ts",
             "packages/export-godot/src/tres-serializer.ts"
           ],
-          "path": "packages/export-godot/src/index.ts"
+          "path": "packages/export-godot/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -6184,16 +6229,16 @@
       "importConfidence": "full",
       "name": "export-godot",
       "origin": "authored",
-      "outsideReads": 17,
+      "outsideReads": 4,
       "outsideWrites": 9,
       "role": "code",
-      "testedBy": 44,
+      "testedBy": 45,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 1,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
         "packages/export-unreal/src/cli.ts",
@@ -6982,7 +7027,8 @@
             "packages/export-unreal/src/import.ts",
             "packages/export-unreal/src/migrations.ts"
           ],
-          "path": "packages/export-unreal/src/index.ts"
+          "path": "packages/export-unreal/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -7054,7 +7100,7 @@
       "outsideReads": 8,
       "outsideWrites": 17,
       "role": "code",
-      "testedBy": 35,
+      "testedBy": 38,
       "unresolvedSites": 0
     },
     {
@@ -7231,7 +7277,8 @@
             "packages/renderer-2d/src/viewport.ts",
             "packages/renderer-2d/src/zone-renderer.ts"
           ],
-          "path": "packages/renderer-2d/src/index.ts"
+          "path": "packages/renderer-2d/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "7beeef75f0b905536cfdf9fcf34f1983dcdb86f9d5530b009c1c805d3677e446",
@@ -7849,7 +7896,8 @@
             "packages/schema/src/validate.ts",
             "packages/schema/src/visual.ts"
           ],
-          "path": "packages/schema/src/index.ts"
+          "path": "packages/schema/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "bcc6907cdc2a7798113387118ca96614aa40d16664bc74216cd640cf2499bdaa",
@@ -7978,14 +8026,14 @@
       "importConfidence": "full",
       "name": "schema",
       "origin": "authored",
-      "outsideReads": 4,
+      "outsideReads": 1,
       "role": "code",
-      "testedBy": 196,
+      "testedBy": 199,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 2,
+      "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
@@ -11163,6 +11211,30 @@
         }
       ],
       "target": "packages/export-ai-rpg/src/cli.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/export-ai-rpg/src/__tests__/f-1d037344-browser-safe-hash.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/export-ai-rpg/src/content-hash.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/export-ai-rpg/src/__tests__/f-1d037344-browser-safe-hash.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/export-ai-rpg/src/export.ts",
       "writers": []
     },
     {

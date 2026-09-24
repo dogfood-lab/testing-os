@@ -79,9 +79,9 @@ People write .github/; 1 write with a path built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → src/cli.ts
+src/cli.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of claude-guardian end to end. This path follows claude-guardian (a command people run) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 

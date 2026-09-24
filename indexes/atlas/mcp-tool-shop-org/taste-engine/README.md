@@ -64,9 +64,9 @@ People write .claude/, .github/, canon/, docs/, migrations/, proving/, the repos
 
 ## Where to start
 
-.github/workflows/ci.yml → src/cli/index.ts
+src/cli/index.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of taste end to end. This path follows taste (a command people run) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 

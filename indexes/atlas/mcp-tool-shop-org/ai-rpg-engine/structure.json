@@ -164,7 +164,8 @@
             "packages/asset-registry/src/quota.ts",
             "packages/asset-registry/src/types.ts"
           ],
-          "path": "packages/asset-registry/src/index.ts"
+          "path": "packages/asset-registry/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "6e41097334c74a56a701e5fb97503e348fb1f3b3f6bcc4c1d851eb70ffbf2487",
@@ -298,7 +299,8 @@
             "packages/audio-director/src/scheduler.ts",
             "packages/audio-director/src/types.ts"
           ],
-          "path": "packages/audio-director/src/index.ts"
+          "path": "packages/audio-director/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -418,7 +420,8 @@
             "packages/campaign-memory/src/types.ts",
             "packages/campaign-memory/src/validate.ts"
           ],
-          "path": "packages/campaign-memory/src/index.ts"
+          "path": "packages/campaign-memory/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "db6523ad20ef1e899a0dd87900fb9f93496fbdc3a33391dd1047697eee673521",
@@ -588,7 +591,8 @@
             "packages/character-creation/src/types.ts",
             "packages/character-creation/src/validate.ts"
           ],
-          "path": "packages/character-creation/src/index.ts"
+          "path": "packages/character-creation/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "981c956ee56af65a69bd7b218609c29b905f0d175f098073eef44363f5bdea55",
@@ -753,7 +757,7 @@
       "name": "character-creation",
       "origin": "authored",
       "role": "code",
-      "testedBy": 115,
+      "testedBy": 117,
       "unresolvedSites": 0
     },
     {
@@ -818,7 +822,8 @@
             "packages/character-profile/src/types.ts",
             "packages/equipment/src/index.ts"
           ],
-          "path": "packages/character-profile/src/index.ts"
+          "path": "packages/character-profile/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "6fc60e76ea752ba6c6594e78c0a7517672f4004424ca760a51ff575668c48dc0",
@@ -1010,9 +1015,9 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 17,
-      "dynamicSpawns": 7,
-      "dynamicSpawnsInTests": 7,
+      "dynamicReads": 16,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 9,
       "entryPoints": [
         "packages/cli/src/bin.ts",
@@ -4931,9 +4936,12 @@
         },
         {
           "hash": "da3883ead66b1d656a70b1fe4b7e838637762f74d3d024e741264629c3a57e92",
-          "parseError": true,
-          "path": "packages/cli/src/sidecar-pack-intake.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "packages/cli/src/engine-version.ts",
+            "packages/cli/src/sidecar-command.ts",
+            "packages/sidecar/src/index.ts"
+          ],
+          "path": "packages/cli/src/sidecar-pack-intake.test.ts"
         },
         {
           "hash": "cc312394fbcc61d41fca19ecead7299dae1b9f04172c079a90d4ecc0b2963326",
@@ -4994,6 +5002,7 @@
           "path": "packages/cli/test-fixtures/mini-pack/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "709c778cffa4e9983938abe1215358311f381be1e465bc720282a6d3f21a6e51",
           "path": "packages/cli/test-fixtures/not-a-pack.mjs"
         },
@@ -5008,10 +5017,10 @@
       "importConfidence": "full",
       "name": "cli",
       "origin": "authored",
-      "outsideReads": 32,
+      "outsideReads": 33,
       "outsideWrites": 4,
       "role": "code",
-      "testedBy": 41,
+      "testedBy": 44,
       "unresolvedSites": 1
     },
     {
@@ -5154,7 +5163,8 @@
             "packages/content-schema/src/schemas.ts",
             "packages/content-schema/src/semver-range.ts",
             "packages/content-schema/src/validate.ts"
-          ]
+          ],
+          "reexportsOnly": true
         },
         {
           "hash": "7573dd8eb851f58b4aa4387309e288c33888120953932c5b749cf2d14b2ddbba",
@@ -5356,7 +5366,7 @@
       "name": "content-schema",
       "origin": "authored",
       "role": "code",
-      "testedBy": 189,
+      "testedBy": 190,
       "unresolvedSites": 0
     },
     {
@@ -5472,9 +5482,17 @@
         },
         {
           "hash": "5d4fb9d8e47812b3e4585409da091681e453cc2e7f9817fcfe89cf942140e939",
-          "parseError": true,
-          "path": "packages/core/src/engine.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "packages/core/src/actions.ts",
+            "packages/core/src/channels.ts",
+            "packages/core/src/events.ts",
+            "packages/core/src/formulas.ts",
+            "packages/core/src/modules.ts",
+            "packages/core/src/state-hash.ts",
+            "packages/core/src/types.ts",
+            "packages/core/src/world.ts"
+          ],
+          "path": "packages/core/src/engine.ts"
         },
         {
           "hash": "514e6784ee328378036d11e114d6511f7ab340a04449029d5877f270be9bf306",
@@ -5548,7 +5566,8 @@
             "packages/core/src/test-harness.ts",
             "packages/core/src/types.ts",
             "packages/core/src/world.ts"
-          ]
+          ],
+          "reexportsOnly": true
         },
         {
           "hash": "194affc8c56e851523651862537f21239570e820f6f7af5a9ba3490dc1f23074",
@@ -5723,7 +5742,7 @@
       "origin": "authored",
       "outsideReads": 10,
       "role": "code",
-      "testedBy": 276,
+      "testedBy": 280,
       "unresolvedSites": 0
     },
     {
@@ -6448,7 +6467,8 @@
             "packages/equipment/src/relic-growth.ts",
             "packages/equipment/src/types.ts"
           ],
-          "path": "packages/equipment/src/index.ts"
+          "path": "packages/equipment/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "e6fd3e85695bd84dbec8637d3f76aeb78cbdbea4ba75053bdbece923c0964657",
@@ -6563,7 +6583,7 @@
       "origin": "authored",
       "outsideReads": 2,
       "role": "code",
-      "testedBy": 157,
+      "testedBy": 159,
       "unresolvedSites": 0
     },
     {
@@ -6678,7 +6698,8 @@
             "packages/image-gen/src/styles.ts",
             "packages/image-gen/src/types.ts"
           ],
-          "path": "packages/image-gen/src/index.ts"
+          "path": "packages/image-gen/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "3d52ebd8bb15c148bbfcb66df3895ac7444f15243b3a9813de6c33fa314d266d",
@@ -6981,7 +7002,8 @@
             "packages/ledger-adapter/src/engine/equipment-snapshot.ts",
             "packages/ledger-adapter/src/engine/snapshot.ts"
           ],
-          "path": "packages/ledger-adapter/src/engine/index.ts"
+          "path": "packages/ledger-adapter/src/engine/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "0245c38c830af3467e844a515ada02d508790bbef9a2df024f87d2e6024fa471",
@@ -7077,7 +7099,8 @@
             "packages/ledger-adapter/src/security/guard.ts",
             "packages/ledger-adapter/src/security/secrets.ts"
           ],
-          "path": "packages/ledger-adapter/src/security/index.ts"
+          "path": "packages/ledger-adapter/src/security/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "52550564a5eb6db238fb8b5ee57d0dbac57e66cee4b6d83d1712d531d4292587",
@@ -7139,7 +7162,8 @@
             "packages/ledger-adapter/src/settle/reconcile-ledger.ts",
             "packages/ledger-adapter/src/settle/reconcile.ts"
           ],
-          "path": "packages/ledger-adapter/src/settle/index.ts"
+          "path": "packages/ledger-adapter/src/settle/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "0f4b749abf39b4a8f74a1fb9a3bcc811368071cf61f77094107f2a24a4f642af",
@@ -7223,7 +7247,8 @@
           "importsFiles": [
             "packages/ledger-adapter/src/state/state.ts"
           ],
-          "path": "packages/ledger-adapter/src/state/index.ts"
+          "path": "packages/ledger-adapter/src/state/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "0d04ee752a51913541b9e24fbe7be3941e59b25b117eb3b867bbb40f3f276392",
@@ -7269,7 +7294,8 @@
             "packages/ledger-adapter/src/transport/dry-run.ts",
             "packages/ledger-adapter/src/transport/testnet.ts"
           ],
-          "path": "packages/ledger-adapter/src/transport/index.ts"
+          "path": "packages/ledger-adapter/src/transport/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "b780d84895722f587603e10f8384324b311073a3d42dbc718da7781e54af22ee",
@@ -8007,9 +8033,13 @@
         },
         {
           "hash": "21a8601dce1645ed4256ab4756502e79cd85e7935bc063fc112aaaace656e206",
-          "parseError": true,
-          "path": "packages/modules/src/combat-state-narration.test.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "packages/core/src/index.ts",
+            "packages/modules/src/combat-core.ts",
+            "packages/modules/src/combat-state-narration.ts",
+            "packages/modules/src/status-core.ts"
+          ],
+          "path": "packages/modules/src/combat-state-narration.test.ts"
         },
         {
           "exports": [
@@ -8580,9 +8610,14 @@
         },
         {
           "hash": "c100613197e734aea0271567af2b2c0e541f3d8a1914cf8dbc5967c1136a0cb5",
-          "parseError": true,
-          "path": "packages/modules/src/engagement-narration.test.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "packages/core/src/index.ts",
+            "packages/modules/src/combat-core.ts",
+            "packages/modules/src/engagement-core.ts",
+            "packages/modules/src/engagement-narration.ts",
+            "packages/modules/src/status-core.ts"
+          ],
+          "path": "packages/modules/src/engagement-narration.test.ts"
         },
         {
           "exports": [
@@ -8836,7 +8871,8 @@
             "packages/modules/src/world-tick.ts",
             "packages/modules/src/zone-state.ts"
           ],
-          "path": "packages/modules/src/index.ts"
+          "path": "packages/modules/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -9004,10 +9040,22 @@
           "path": "packages/modules/src/move-advisor.test.ts"
         },
         {
+          "exports": [
+            "deriveSituation",
+            "getPersistedMoveRecommendation",
+            "recommendMoves",
+            "scoreAction",
+            "setPersistedMoveRecommendation"
+          ],
           "hash": "cc2bc110d761ab2f5102d615ca8e4f607178e1e6193b0b19fde693f70e4eb40c",
-          "parseError": true,
-          "path": "packages/modules/src/move-advisor.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "packages/core/src/index.ts",
+            "packages/modules/src/opportunity-core.ts",
+            "packages/modules/src/player-leverage.ts",
+            "packages/modules/src/pressure-system.ts",
+            "packages/modules/src/strategic-map.ts"
+          ],
+          "path": "packages/modules/src/move-advisor.ts"
         },
         {
           "hash": "a457d351148d3731ef05ddbfa6565611aa60bc9cde58781e9101a0d7cd13a89a",
@@ -9765,10 +9813,25 @@
           "path": "packages/modules/src/strategic-map.test.ts"
         },
         {
+          "exports": [
+            "buildStrategicMap",
+            "formatStrategicMapForDirector",
+            "formatStrategicMapForPlayer"
+          ],
           "hash": "6dd00dfe904d5453e456101b3b386be2e53ccc03257ef6c6649f31044089bcb5",
-          "parseError": true,
-          "path": "packages/modules/src/strategic-map.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "packages/core/src/index.ts",
+            "packages/modules/src/district-core.ts",
+            "packages/modules/src/district-mood.ts",
+            "packages/modules/src/economy-core.ts",
+            "packages/modules/src/faction-agency.ts",
+            "packages/modules/src/faction-cognition.ts",
+            "packages/modules/src/opportunity-core.ts",
+            "packages/modules/src/player-rumor.ts",
+            "packages/modules/src/pressure-system.ts",
+            "packages/modules/src/social-consequence.ts"
+          ],
+          "path": "packages/modules/src/strategic-map.ts"
         },
         {
           "hash": "e3ceb23606bb40ab535f9cf706432939d615274305cc399ed081d0aef455102a",
@@ -10092,7 +10155,7 @@
       "origin": "authored",
       "outsideReads": 19,
       "role": "code",
-      "testedBy": 231,
+      "testedBy": 236,
       "unresolvedSites": 0
     },
     {
@@ -10692,9 +10755,15 @@
         },
         {
           "hash": "d14a9f6813690ff33932dbf600db10f806dbaf6a3ed716a7ea83cddc2d9b3cf1",
-          "parseError": true,
-          "path": "packages/ollama/src/chat-tuning-engine.test.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "packages/ollama/src/chat-balance-analyzer.ts",
+            "packages/ollama/src/chat-router.ts",
+            "packages/ollama/src/chat-tools.ts",
+            "packages/ollama/src/chat-tuning-engine.ts",
+            "packages/ollama/src/chat-types.ts",
+            "packages/ollama/src/session.ts"
+          ],
+          "path": "packages/ollama/src/chat-tuning-engine.test.ts"
         },
         {
           "exports": [
@@ -11530,7 +11599,8 @@
             "packages/ollama/src/session.ts",
             "packages/ollama/src/validators.ts"
           ],
-          "path": "packages/ollama/src/index.ts"
+          "path": "packages/ollama/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "0d853c3bd39951d0a5747a2271e856705011452035c9fa9089a0307eeeca2a29",
@@ -12190,7 +12260,8 @@
             "packages/pack-registry/src/rubric.ts",
             "packages/pack-registry/src/types.ts"
           ],
-          "path": "packages/pack-registry/src/index.ts"
+          "path": "packages/pack-registry/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "b24a438142e2fc8e23085f585ccc076d20435c29a1deecf62a07444a281b3d69",
@@ -12354,7 +12425,8 @@
             "packages/presentation/src/types.ts",
             "packages/presentation/src/validate.ts"
           ],
-          "path": "packages/presentation/src/index.ts"
+          "path": "packages/presentation/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "d4d2b104472994d5de107fc177183547f76f0a4e96b66c65be4858d1a260cad3",
@@ -12609,7 +12681,8 @@
             "packages/rumor-system/src/types.ts",
             "packages/rumor-system/src/validate.ts"
           ],
-          "path": "packages/rumor-system/src/index.ts"
+          "path": "packages/rumor-system/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "9fee67edff871f37a7ce734f630cc80163f9e80ac5c5ad3c7d1b10128ba9b396",
@@ -12825,7 +12898,8 @@
             "packages/sidecar/src/server.ts",
             "packages/sidecar/src/socket.ts",
             "packages/sidecar/src/stdio.ts"
-          ]
+          ],
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -12950,7 +13024,7 @@
       "origin": "authored",
       "outsideReads": 4,
       "role": "code",
-      "testedBy": 14,
+      "testedBy": 15,
       "unresolvedSites": 0
     },
     {
@@ -13428,7 +13502,8 @@
             "packages/soundpack-core/src/types.ts",
             "packages/soundpack-core/src/validate.ts"
           ],
-          "path": "packages/soundpack-core/src/index.ts"
+          "path": "packages/soundpack-core/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "9d40f4e17fa79391b557224af927939d2f9ba0d7bf88c6f235b1f1bae7d9c987",
@@ -13562,7 +13637,8 @@
             "templates/starter/src/ruleset.ts",
             "templates/starter/src/setup.ts"
           ],
-          "path": "templates/starter/src/index.ts"
+          "path": "templates/starter/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "10e83370b68df7ca88601821b4123df7c0db8ed3c5d2b7027de20389029979de",
@@ -13707,7 +13783,8 @@
             "packages/starter-bounty-hunter/src/ruleset.ts",
             "packages/starter-bounty-hunter/src/setup.ts"
           ],
-          "path": "packages/starter-bounty-hunter/src/index.ts"
+          "path": "packages/starter-bounty-hunter/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -13875,7 +13952,8 @@
             "packages/starter-colony/src/ruleset.ts",
             "packages/starter-colony/src/setup.ts"
           ],
-          "path": "packages/starter-colony/src/index.ts"
+          "path": "packages/starter-colony/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "9f9997f2dc8929c0eb71eec73e1fd85d78888ab09787ea21b736193b36b2349f",
@@ -14059,7 +14137,8 @@
             "packages/starter-cyberpunk/src/ruleset.ts",
             "packages/starter-cyberpunk/src/setup.ts"
           ],
-          "path": "packages/starter-cyberpunk/src/index.ts"
+          "path": "packages/starter-cyberpunk/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "e490916eac127b0a158b361fbe6aeb04a592875145a82836172edae1c174a1ff",
@@ -14278,7 +14357,8 @@
             "packages/starter-detective/src/ruleset.ts",
             "packages/starter-detective/src/setup.ts"
           ],
-          "path": "packages/starter-detective/src/index.ts"
+          "path": "packages/starter-detective/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "23a752b4be89f15d8450f5b210a8279904e2f7897aa879f6bcd02dfa3def87a9",
@@ -14462,7 +14542,8 @@
             "packages/starter-fantasy/src/ruleset.ts",
             "packages/starter-fantasy/src/setup.ts"
           ],
-          "path": "packages/starter-fantasy/src/index.ts"
+          "path": "packages/starter-fantasy/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "4dfc81783fdc8b9b90567b83fda66819752199f5a4c6b2ca1ba51399f1027ec7",
@@ -14678,7 +14759,8 @@
             "packages/starter-gladiator/src/ruleset.ts",
             "packages/starter-gladiator/src/setup.ts"
           ],
-          "path": "packages/starter-gladiator/src/index.ts"
+          "path": "packages/starter-gladiator/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "d89c2f6ff9d7c08fa5b2f3bc8ca622fcc74e89930337e3d61d984c1e6879edb0",
@@ -14918,7 +15000,8 @@
             "packages/starter-merchant/src/ruleset.ts",
             "packages/starter-merchant/src/setup.ts"
           ],
-          "path": "packages/starter-merchant/src/index.ts"
+          "path": "packages/starter-merchant/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "5f5948f2a2e7324ad94aa8a2d130074eab3e05bb654e25e22d0ac3cd7ca90e5c",
@@ -15106,7 +15189,8 @@
             "packages/starter-pirate/src/ruleset.ts",
             "packages/starter-pirate/src/setup.ts"
           ],
-          "path": "packages/starter-pirate/src/index.ts"
+          "path": "packages/starter-pirate/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "a11e7619f6476e510dc41d71ca446902e490f96913e6f5e24d1482406584b34b",
@@ -15283,7 +15367,8 @@
             "packages/starter-ronin/src/ruleset.ts",
             "packages/starter-ronin/src/setup.ts"
           ],
-          "path": "packages/starter-ronin/src/index.ts"
+          "path": "packages/starter-ronin/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "09c8f2d1bfd07934b827c560a4aaa96624f83038d56cf9b910f48ee7342c7129",
@@ -15469,7 +15554,8 @@
             "packages/starter-vampire/src/ruleset.ts",
             "packages/starter-vampire/src/setup.ts"
           ],
-          "path": "packages/starter-vampire/src/index.ts"
+          "path": "packages/starter-vampire/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "5438c73ca3b14a3bd39fbe5faac445a6fb7193732891d4b9a22f168e62c0a794",
@@ -15646,7 +15732,8 @@
             "packages/starter-weird-west/src/ruleset.ts",
             "packages/starter-weird-west/src/setup.ts"
           ],
-          "path": "packages/starter-weird-west/src/index.ts"
+          "path": "packages/starter-weird-west/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "7261caec7d6b5aa81b40ac4134b71d7af140af8b67c6c227410010d9b700d6ca",
@@ -15832,7 +15919,8 @@
             "packages/starter-zombie/src/ruleset.ts",
             "packages/starter-zombie/src/setup.ts"
           ],
-          "path": "packages/starter-zombie/src/index.ts"
+          "path": "packages/starter-zombie/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "7cb8501b7be21edc7ed1104a70cd8b617e3614fe3af983fcb98cd3545910d9ad",
@@ -15984,7 +16072,8 @@
             "packages/terminal-ui/src/renderer.ts",
             "packages/terminal-ui/src/styles.ts"
           ],
-          "path": "packages/terminal-ui/src/index.ts"
+          "path": "packages/terminal-ui/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "70ec3bcb98ee87c1fe219b4d376699b16e04d7af129965c9459e478d493a64dd",
@@ -16084,7 +16173,7 @@
       "name": "terminal-ui",
       "origin": "authored",
       "role": "code",
-      "testedBy": 24,
+      "testedBy": 28,
       "unresolvedSites": 0
     }
   ],
@@ -22423,8 +22512,15 @@
           "fromTests": true
         }
       ],
+      "spans": 31,
       "target": "packages",
-      "writers": []
+      "writers": [
+        {
+          "by": "packages/cli/src/create-starter.ts",
+          "confidence": "ast",
+          "fromCwd": true
+        }
+      ]
     },
     {
       "readers": [
@@ -23863,12 +23959,72 @@
     {
       "readers": [
         {
+          "by": "templates/starter/src/starter.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "templates/starter/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "templates/starter/src/starter.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "templates/starter/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "templates/starter/src/starter.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "templates/starter/src/content.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "templates/starter/src/starter.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "templates/starter/src/index.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/cli/src/create-starter.ts",
           "call": "existsSync",
           "confidence": "ast"
         }
       ],
       "target": "templates/starter/src/setup.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "templates/starter/src/starter.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "templates/starter/tsconfig.json",
       "writers": []
     },
     {

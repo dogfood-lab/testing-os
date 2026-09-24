@@ -12,10 +12,10 @@ Mapped at 2026-09-24 from commit 743f657.
 - CI's push trigger now also names `atlas/**`.
 - Publish to PyPI now also checks src/portlight/.
 - And 1 more change to a door.
+- README.md is now read by pyproject.toml.
 - dogfood/scenarios/ is now also read by tests/test_dogfood_runner.py.
 - dogfood/scenarios/gray_seizure_60d_s17.json is now read by tests/test_dogfood_runner.py.
-- dogfood/scenarios/recovery_broke_hull_45d_s99.json is now read by tests/test_dogfood_runner.py.
-- And 3 more new writers and readers of places.
+- And 5 more new writers and readers of places.
 - 316 files changed content, across 8 parts.
 
 ## What comes in
@@ -81,9 +81,9 @@ People write .github/, design/, the repository root, site/ and world/; 5 writes 
 
 ## Where to start
 
-.github/workflows/ci.yml → src/portlight/app/cli.py
+src/portlight/app/cli.py
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of starfreight end to end. This path follows starfreight (a command people run) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 

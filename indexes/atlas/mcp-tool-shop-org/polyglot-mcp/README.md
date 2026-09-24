@@ -4,70 +4,43 @@ Mapped at 2026-09-24 from commit c7c22e5.
 
 ## What this is
 
-7 parts, mostly TypeScript (36 files). Work enters through 5 doors; the busiest is @mcptoolshop/polyglot-mcp, which reaches 1 part. It publishes to npm. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.
+7 parts, mostly TypeScript (36 files). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.
 
 ## What changed since 2026-09-23 (a91c112)
 
+- CI now also runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
-- @mcptoolshop/polyglot-mcp (package.json) is a new package. It loads src/cache.ts, src/codeSpans.ts, src/glossary.ts and 9 more.
-- polyglot-mcp (package.json) is a new command. It runs src/index.ts.
+- Publish to npm now also runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more.
+- And 2 more changes to doors.
 - CHANGELOG.md is now read by src/version.test.ts.
-- README.ja.md is now also read by src/translateAll.test.ts.
-- package.json is now also read by src/version.test.ts.
-- And 2 more new writers and readers of places.
+- README.ja.md is now also read by src/translateAll.test.ts and src/translateReadme.test.ts.
+- README.md is now also read by src/translateReadme.test.ts.
+- And 5 more new writers and readers of places.
 - 127 files changed content, across 6 parts.
 
 ## What comes in
 
-1. **@mcptoolshop/polyglot-mcp** (the package people import). Loads src/index.ts, src/cache.ts, src/codeSpans.ts and 9 more.
+1. **CI.** On a pull request touching 9 paths; on a push to main touching 9 paths; or by hand. Runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more; checks src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **CI.** On a pull request touching 9 paths; on a push to main touching 9 paths; or by hand. Checks src/.
-4. **Publish to npm.** When a release is published; or by hand. Checks src/.
+3. **Publish to npm.** When a release is published; or by hand. Runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more; checks src/.
+4. **@mcptoolshop/polyglot-mcp** (the package people import). Loads src/index.ts, src/cache.ts, src/codeSpans.ts and 9 more.
 5. **polyglot-mcp** (a command people run). Runs src/index.ts.
 
-## What happens through @mcptoolshop/polyglot-mcp
+## What happens through CI
 
-1. The package loads 12 files in src.
-   1. Inside src/translate.ts, translate does, in order: resolve language, ensure running (OllamaClient), ensure model (OllamaClient), build glossary hint, contains code placeholder, polish and validate translation.
-   2. Inside src/translateAll.ts, translate all does, in order: acquire (Semaphore), translate markdown and on progress.
-   3. **Translate markdown** runs, in order: resolve language, cache (5 steps), mask code spans, cache (3 steps), on progress and translate batch.
-   4. Inside src/translateMarkdown.ts, translate markdown does, in order:
-      1. resolve language
-      2. cache (5 steps)
-      3. mask code spans
-      4. cache (3 steps)
-      5. on progress
-      6. translate batch
-      7. cache key
-      8. set cached
-      9. on progress
-      10. validate translation
-      11. restore code spans
-      12. save cache
-   5. **Translate batch** runs, in order:
-      1. resolve language
-      2. ensure running (OllamaClient)
-      3. ensure model (OllamaClient)
-      4. build glossary hint
-      5. contains code placeholder
-      6. polish
-      7. build glossary hint
-      8. contains code placeholder
-      9. polish
-      10. build glossary hint
-      11. polish
+1. The workflow runs 18 files in src; it checks src/ in src.
 
 ## Who reads the results
 
-@mcptoolshop/polyglot-mcp writes nothing in the files this map could read; 1 file could not be.
+CI writes nothing this map can see.
 
 ## The other doors
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**CI** checks src/.
+**Publish to npm** runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more, checks src/, and publishes to npm.
 
-**Publish to npm** checks src/ and publishes to npm.
+**@mcptoolshop/polyglot-mcp** (the package people import) loads src/index.ts, src/cache.ts, src/codeSpans.ts and 9 more.
 
 **polyglot-mcp** (a command people run) runs src/index.ts.
 
@@ -88,11 +61,11 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 
 ## Written but never read
 
-No place is written by the files this map could read, so none goes unread; 1 file could not be.
+No place this map can see is written, so none goes unread.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike in the files this map could read; 1 file could not be.
+No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
@@ -111,14 +84,13 @@ No configuration or documentation part is left to people alone.
 
 src/index.ts
 
-Read those in order to follow one import of @mcptoolshop/polyglot-mcp end to end.
+Read those in order to follow one run of polyglot-mcp end to end. This path follows polyglot-mcp (a command people run) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 
-- 1 file uses syntax the parser cannot read (src/translateReadme.test.ts), so what it imports is not known: `typeof import(…)` as a type argument (1).
-- 2 writes and 3 reads use paths built at run time and are not named here.
-- 4 writes and 7 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 5 commands are built at run time and not followed, 2 of them in tests.
+- 3 writes and 5 reads use paths built at run time and are not named here.
+- 3 writes and 5 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 3 commands are built at run time and not followed, 1 of them in tests.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

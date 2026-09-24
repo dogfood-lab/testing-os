@@ -81,7 +81,7 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 3 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 2 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

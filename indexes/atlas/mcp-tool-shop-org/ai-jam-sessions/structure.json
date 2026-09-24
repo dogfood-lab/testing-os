@@ -6553,7 +6553,7 @@
     },
     {
       "dynamicReads": 70,
-      "dynamicSpawns": 8,
+      "dynamicSpawns": 4,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 12,
       "entryPoints": [],
@@ -11733,10 +11733,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 25,
+      "dynamicReads": 29,
       "dynamicSpawns": 3,
       "dynamicSpawnsInTests": 1,
-      "dynamicWrites": 23,
+      "dynamicWrites": 25,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -12036,9 +12036,13 @@
         },
         {
           "hash": "b75a17438e71e0d4b9b6e068630fa982bb1247c91475974d3f8565ddc1b13016",
-          "parseError": true,
-          "path": "scripts/compose-realize-demo.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/analysis/index.ts",
+            "src/compose/index.ts",
+            "src/songs/library.ts",
+            "src/songs/registry.ts"
+          ],
+          "path": "scripts/compose-realize-demo.ts"
         },
         {
           "hash": "c5ccce6c7f8c484263f1b378fe0a9e8a225b3645d0375e78ca76495b38b251d0",
@@ -12374,9 +12378,19 @@
         },
         {
           "hash": "9e5c2f29fd735ce4ac0ca938f408cb8f3207f13a1d7e6c424f9f9ed846088ef0",
-          "parseError": true,
-          "path": "scripts/run-jam-actions-corpus-eval.ts",
-          "unreadSyntax": "import-type-array"
+          "importsFiles": [
+            "src/dataset/eval/annotation-grounding-tool.ts",
+            "src/dataset/eval/annotation-grounding.ts",
+            "src/dataset/eval/corpus-sampler.ts",
+            "src/dataset/eval/llm-backends/anthropic.ts",
+            "src/dataset/eval/llm-backends/ollama-intern.ts",
+            "src/dataset/eval/llm-backends/ollama.ts",
+            "src/dataset/eval/llm-runner.ts",
+            "src/dataset/eval/multi-run-aggregator.ts",
+            "src/dataset/eval/phrase-continuation.ts",
+            "src/dataset/trace-validator.ts"
+          ],
+          "path": "scripts/run-jam-actions-corpus-eval.ts"
         },
         {
           "hash": "07dd89142a07f5e01cb01a0aecb13772a779f0152e19fb1b1dbf7f4b3864fe11",
@@ -12611,8 +12625,8 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
-      "outsideReads": 45,
-      "outsideWrites": 26,
+      "outsideReads": 47,
+      "outsideWrites": 28,
       "role": "code",
       "testedBy": 11,
       "unresolvedSites": 8
@@ -13397,10 +13411,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 35,
-      "dynamicSpawns": 7,
-      "dynamicSpawnsInTests": 3,
-      "dynamicWrites": 14,
+      "dynamicReads": 40,
+      "dynamicSpawns": 3,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 20,
       "entryPoints": [
         "src/cli.ts",
         "src/index.ts",
@@ -13522,7 +13536,8 @@
             "src/analysis/symbols.ts",
             "src/analysis/types.ts"
           ],
-          "path": "src/analysis/index.ts"
+          "path": "src/analysis/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "ac16108ae29e97c7d7d565349c654e0267256d98ee0aa6aa4866be6fc95144f5",
@@ -13856,7 +13871,8 @@
             "src/audio/wav.ts",
             "src/audio/window.ts"
           ],
-          "path": "src/audio/index.ts"
+          "path": "src/audio/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "be685016a4b17b9505d070b7cbcf15e348f84100a433f2329e92ddf706593801",
@@ -16174,7 +16190,8 @@
             "src/dataset/acoustic/schema.ts",
             "src/dataset/acoustic/task.ts"
           ],
-          "path": "src/dataset/acoustic/index.ts"
+          "path": "src/dataset/acoustic/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "f0a0c58c956db42e34d726d5ba06e813e2481cdf57b9124564560d520b200f99",
@@ -16717,7 +16734,8 @@
             "src/dataset/experiment/split.ts",
             "src/dataset/experiment/task.ts"
           ],
-          "path": "src/dataset/experiment/index.ts"
+          "path": "src/dataset/experiment/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "6b1acdcc8ec8c0584a0d0ebadf999c09a88f587796580cc6396b5c19268900a0",
@@ -17340,9 +17358,10 @@
         },
         {
           "hash": "1c379d321fe8a93158f98e95333e61db4dd9c9f0ff20c50cf48fed0beb208a22",
-          "parseError": true,
-          "path": "src/guitar-voices.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/guitar-voices.ts"
+          ],
+          "path": "src/guitar-voices.test.ts"
         },
         {
           "entry": "loadGuitarUserTuningStatus",
@@ -17515,7 +17534,8 @@
             "src/vocal-tract-engine.ts",
             "src/vocal/index.ts"
           ],
-          "path": "src/index.ts"
+          "path": "src/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "9f296226edf3e9cb4c7ee75dc1b4c2c267139f1bc933542e8c88c70b53411671",
@@ -17953,10 +17973,260 @@
           "path": "src/mcp-server.test.ts"
         },
         {
+          "entry": "main",
+          "entryRule": 1,
+          "exports": [
+            "setLiveEnsemble"
+          ],
           "hash": "9e1d1f2ed151e8aecc613f68586488d14712fabba18c83fd0d13663e81e88abd",
-          "parseError": true,
+          "importsFiles": [
+            "src/analysis/index.ts",
+            "src/annotation-scorer.ts",
+            "src/audio-engine.ts",
+            "src/audio-shared.ts",
+            "src/audio/bridge.ts",
+            "src/audio/ensemble.ts",
+            "src/audio/index.ts",
+            "src/audio/roster.ts",
+            "src/audio/stream.ts",
+            "src/audio/tap.ts",
+            "src/chord-detect.ts",
+            "src/compose/index.ts",
+            "src/compose/panel-progress.ts",
+            "src/errors.ts",
+            "src/guitar-engine.ts",
+            "src/guitar-tab-roll.ts",
+            "src/guitar-voices.ts",
+            "src/journal.ts",
+            "src/maker/abc-chord-proposer.ts",
+            "src/maker/auto-reharmonize-tool.ts",
+            "src/maker/chord-proposer.ts",
+            "src/maker/verify-harmony.ts",
+            "src/mcp-error.ts",
+            "src/mcp-schema.ts",
+            "src/midi/parser.ts",
+            "src/note-parser.ts",
+            "src/piano-roll.ts",
+            "src/piano-voices.ts",
+            "src/playback/controls.ts",
+            "src/playback/midi-engine.ts",
+            "src/practice-loop.ts",
+            "src/sample-engine.ts",
+            "src/sample-paths.ts",
+            "src/score-performance.ts",
+            "src/session.ts",
+            "src/song-compare.ts",
+            "src/songs/index.ts",
+            "src/songs/types.ts",
+            "src/state-home.ts",
+            "src/stdio-supervisor.ts",
+            "src/teaching.ts",
+            "src/teaching/live-midi-feedback.ts",
+            "src/teaching/midi-feedback.ts",
+            "src/teaching/sing-on-midi.ts",
+            "src/types.ts",
+            "src/version.ts",
+            "src/vmpk.ts",
+            "src/vocal-engine.ts",
+            "src/vocal-tract-engine.ts",
+            "src/vocal/prepare.ts",
+            "src/vocal/score-singer.ts"
+          ],
           "path": "src/mcp-server.ts",
-          "unreadSyntax": "import-type-array"
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 260,
+                  "name": "toUserString",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "fsErrorResult"
+            },
+            {
+              "calls": [
+                {
+                  "line": 1057,
+                  "name": "getRecording",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "captureLastRecording"
+            },
+            {
+              "calls": [
+                {
+                  "line": 1057,
+                  "name": "getRecording",
+                  "target": null,
+                  "via": "captureLastRecording"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "stopActive"
+            },
+            {
+              "calls": [
+                {
+                  "line": 2770,
+                  "name": "decodeWav",
+                  "target": {
+                    "file": "src/audio/index.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "loadAudioFile"
+            },
+            {
+              "calls": [
+                {
+                  "line": 3193,
+                  "name": "getSharedAudioContext",
+                  "target": {
+                    "file": "src/audio-shared.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "ensembleNowSec"
+            },
+            {
+              "calls": [
+                {
+                  "line": 4528,
+                  "name": "userSongsDir",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "getUserSongsDir"
+            },
+            {
+              "calls": [
+                {
+                  "line": 4532,
+                  "name": "serverStatePath",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "getServerStateFile"
+            },
+            {
+              "calls": [
+                {
+                  "line": 4532,
+                  "name": "serverStatePath",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  },
+                  "via": "getServerStateFile"
+                },
+                {
+                  "line": 4565,
+                  "name": "stateHome",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "persistSessionState"
+            },
+            {
+              "calls": [
+                {
+                  "line": 4532,
+                  "name": "serverStatePath",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  },
+                  "via": "getServerStateFile"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "loadSessionState"
+            },
+            {
+              "calls": [
+                {
+                  "line": 4611,
+                  "name": "shouldSuperviseStdio",
+                  "target": {
+                    "file": "src/stdio-supervisor.ts"
+                  }
+                },
+                {
+                  "branch": "shouldSuperviseStdio()",
+                  "line": 4612,
+                  "name": "runStdioSupervisor",
+                  "target": {
+                    "file": "src/stdio-supervisor.ts"
+                  }
+                },
+                {
+                  "line": 4528,
+                  "name": "userSongsDir",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  },
+                  "via": "getUserSongsDir"
+                },
+                {
+                  "line": 4622,
+                  "name": "initializeFromLibrary",
+                  "target": {
+                    "file": "src/songs/index.ts"
+                  }
+                },
+                {
+                  "line": 4532,
+                  "name": "serverStatePath",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  },
+                  "via": "getServerStateFile"
+                },
+                {
+                  "line": 4636,
+                  "name": "openRpcOutputStream",
+                  "target": {
+                    "file": "src/stdio-supervisor.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "main"
+            }
+          ]
         },
         {
           "hash": "e27bca3b7c5b6d3426509f91449a194be933c6d6df4d4400ffba4a17e686a47f",
@@ -18532,9 +18802,10 @@
         },
         {
           "hash": "5f38760c44ee03ab2df5942638e0fec8617d22e025f08cf156fe69329332fa77",
-          "parseError": true,
-          "path": "src/piano-voices.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/piano-voices.ts"
+          ],
+          "path": "src/piano-voices.test.ts"
         },
         {
           "entry": "loadUserTuningStatus",
@@ -19131,7 +19402,8 @@
             "src/songs/transpose.ts",
             "src/songs/types.ts"
           ],
-          "path": "src/songs/index.ts"
+          "path": "src/songs/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "3fda62ff81ce32741f44fefda914bc81eaeb9a67336e9c47f75aa5603a1af15a",
@@ -19198,9 +19470,12 @@
         },
         {
           "hash": "8ed436d2955b7c2cfbea1d97abd4b665294145071f496179c9dfdbe0db643c78",
-          "parseError": true,
-          "path": "src/songs/loader.test.ts",
-          "unreadSyntax": "typeof-import-argument"
+          "importsFiles": [
+            "src/songs/loader.ts",
+            "src/songs/registry.ts",
+            "src/songs/types.ts"
+          ],
+          "path": "src/songs/loader.test.ts"
         },
         {
           "exports": [
@@ -19684,7 +19959,8 @@
             "src/vocal/types.ts",
             "src/vocal/voice-changer.ts"
           ],
-          "path": "src/vocal/index.ts"
+          "path": "src/vocal/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "1ea34ae0fa495b5c7882c87ecc024ec7d5654b1f25f03d880525d3d5f7a35e0e",
@@ -19977,8 +20253,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "mixed",
-      "outsideReads": 114,
-      "outsideWrites": 25,
+      "outsideReads": 111,
+      "outsideWrites": 24,
       "role": "code",
       "testedBy": 168,
       "unresolvedSites": 0
@@ -20165,6 +20441,12 @@
       ],
       "readers": [
         {
+          "by": "datasets/jam-actions-acoustic-v0/manifest.json",
+          "call": "configuration",
+          "confidence": "config",
+          "target": "datasets/jam-actions-acoustic-v0"
+        },
+        {
           "by": "experiments/acoustic-sft/eval.ts",
           "call": "literal",
           "confidence": "ast",
@@ -20200,6 +20482,12 @@
           "confidence": "ast",
           "fromTests": true,
           "target": "datasets/jam-actions-acoustic-v0"
+        },
+        {
+          "by": "datasets/jam-actions-acoustic-v0/manifest.json",
+          "call": "configuration",
+          "confidence": "config",
+          "target": "datasets/jam-actions-acoustic-v0/checksums.sha256"
         },
         {
           "by": "src/dataset/acoustic/reproduce.test.ts",
@@ -20361,6 +20649,12 @@
           "target": "songs"
         },
         {
+          "by": "scripts/compose-realize-demo.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
           "by": "scripts/compose-refine-lift.ts",
           "call": "literal",
           "confidence": "ast",
@@ -20495,6 +20789,12 @@
         },
         {
           "by": "src/dataset/acoustic-v1/library.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/mcp-server.ts",
           "call": "literal",
           "confidence": "ast",
           "target": "songs"
@@ -20685,6 +20985,12 @@
           "target": "songs/library"
         },
         {
+          "by": "scripts/compose-realize-demo.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs/library"
+        },
+        {
           "by": "scripts/compose-refine-lift.ts",
           "call": "literal",
           "confidence": "ast",
@@ -20813,6 +21119,12 @@
         },
         {
           "by": "src/dataset/acoustic-v1/library.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs/library"
+        },
+        {
+          "by": "src/mcp-server.ts",
           "call": "literal",
           "confidence": "ast",
           "target": "songs/library"
@@ -24190,6 +24502,12 @@
       ],
       "readers": [
         {
+          "by": "datasets/jam-actions-acoustic-v0/manifest.json",
+          "call": "configuration",
+          "confidence": "config",
+          "target": "datasets/jam-actions-acoustic-v0"
+        },
+        {
           "by": "experiments/acoustic-sft/eval.ts",
           "call": "literal",
           "confidence": "ast",
@@ -24225,6 +24543,12 @@
           "confidence": "ast",
           "fromTests": true,
           "target": "datasets/jam-actions-acoustic-v0"
+        },
+        {
+          "by": "datasets/jam-actions-acoustic-v0/manifest.json",
+          "call": "configuration",
+          "confidence": "config",
+          "target": "datasets/jam-actions-acoustic-v0/checksums.sha256"
         },
         {
           "by": "src/dataset/acoustic/reproduce.test.ts",
@@ -24386,6 +24710,12 @@
           "target": "songs"
         },
         {
+          "by": "scripts/compose-realize-demo.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
           "by": "scripts/compose-refine-lift.ts",
           "call": "literal",
           "confidence": "ast",
@@ -24520,6 +24850,12 @@
         },
         {
           "by": "src/dataset/acoustic-v1/library.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/mcp-server.ts",
           "call": "literal",
           "confidence": "ast",
           "target": "songs"
@@ -24710,6 +25046,12 @@
           "target": "songs/library"
         },
         {
+          "by": "scripts/compose-realize-demo.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs/library"
+        },
+        {
           "by": "scripts/compose-refine-lift.ts",
           "call": "literal",
           "confidence": "ast",
@@ -24838,6 +25180,12 @@
         },
         {
           "by": "src/dataset/acoustic-v1/library.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs/library"
+        },
+        {
+          "by": "src/mcp-server.ts",
           "call": "literal",
           "confidence": "ast",
           "target": "songs/library"
@@ -26571,6 +26919,12 @@
           "target": "songs"
         },
         {
+          "by": "scripts/compose-realize-demo.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
           "by": "scripts/compose-refine-lift.ts",
           "call": "literal",
           "confidence": "ast",
@@ -26705,6 +27059,12 @@
         },
         {
           "by": "src/dataset/acoustic-v1/library.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/mcp-server.ts",
           "call": "literal",
           "confidence": "ast",
           "target": "songs"
@@ -26940,6 +27300,12 @@
           "target": "songs"
         },
         {
+          "by": "scripts/compose-realize-demo.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
           "by": "scripts/compose-refine-lift.ts",
           "call": "literal",
           "confidence": "ast",
@@ -27079,6 +27445,12 @@
           "target": "songs"
         },
         {
+          "by": "src/mcp-server.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
           "by": "src/piano-roll.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -27179,7 +27551,9 @@
       "elsewhere": [],
       "file": "package.json",
       "kind": "command",
-      "landings": [],
+      "landings": [
+        "songs"
+      ],
       "mentions": [],
       "name": "ai-jam-sessions-mcp",
       "permissions": [],
@@ -27188,10 +27562,347 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 1
+          "files": 137
         }
       ],
-      "readers": [],
+      "readers": [
+        {
+          "by": "docs/dogfood-swarm-grok-w2-kickoff.md",
+          "call": "--",
+          "confidence": "text",
+          "target": "songs"
+        },
+        {
+          "by": "docs/dogfood-swarm-grok-w3-kickoff.md",
+          "call": "--",
+          "confidence": "text",
+          "target": "songs"
+        },
+        {
+          "by": "experiments/rollout-arc/p3/scripts/emit-er-prompts.mts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "experiments/rollout-arc/p4/scripts/emit-progression-fixture.mts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "experiments/rollout-arc/p4/scripts/emit-spec-prompts.mts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "experiments/rollout-arc/p4/scripts/emit-vl-prompts.mts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "experiments/rollout-arc/scripts/p4-vl-server.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/analysis-validate.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/annotate-batch.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/annotate-batch.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/annotate-batch.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/auto-reharmonize-demo.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/bass-aware-completeness.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/build-jam-actions-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/build-pilot-records.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/build-record-fur-elise-m001-008.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/build-score-clock.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/build-score-clock.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/compose-bws-smoke.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/compose-realize-demo.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/compose-refine-lift.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/compose-spec-membership.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/compose-style-matrix.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/compose-style-reference.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/download-library.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/er-experiments.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/er-gate.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/implied-chord-snapshot.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/import-classical.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/npm-ship-list.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/npm-ship-list.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/provenance-audit.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/provenance-audit.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/provenance-audit.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/provenance-audit.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/revise-jam-actions-v0-r001-bach-window.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/revise-jam-actions-v0-r002-bach-annotation-prose.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/scan-dataset-provenance.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "scripts/scan-dataset-provenance.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/cli.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/allowlist.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "songs"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/allowlist.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/library.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/mcp-server.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/piano-roll.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "songs"
+        },
+        {
+          "by": "src/session.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "songs"
+        },
+        {
+          "by": "src/smoke.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/songs/library.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/songs/library.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/songs/library.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/songs/library.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/songs/loader.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "songs"
+        },
+        {
+          "by": "src/songs/provenance.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "songs"
+        },
+        {
+          "by": "src/teaching.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "songs"
+        },
+        {
+          "by": "src/vocal/score-clock.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "songs"
+        }
+      ],
       "runs": [
         {
           "path": "src/mcp-server.ts",
@@ -27226,6 +27937,11 @@
       "from": "docs",
       "kind": "file",
       "to": "src"
+    },
+    {
+      "from": "experiments",
+      "kind": "spawns",
+      "to": "scripts"
     },
     {
       "from": "experiments",
@@ -27282,7 +27998,12 @@
         }
       ],
       "target": "README.md",
-      "writers": []
+      "writers": [
+        {
+          "by": "src/dataset/acoustic-v1/generate-probe.ts",
+          "confidence": "weak"
+        }
+      ]
     },
     {
       "readers": [
@@ -27293,6 +28014,996 @@
         }
       ],
       "target": "apps/cockpit/public/samples/salamander",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/102-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/102-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/102-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/105-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/105-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/105-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/108-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/108-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/108-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/21-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/21-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/21-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/24-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/24-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/24-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/27-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/27-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/27-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/30-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/30-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/30-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/33-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/33-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/33-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/36-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/36-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/36-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/39-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/39-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/39-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/42-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/42-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/42-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/45-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/45-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/45-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/48-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/48-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/48-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/51-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/51-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/51-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/54-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/54-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/54-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/57-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/57-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/57-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/60-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/60-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/60-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/63-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/63-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/63-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/66-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/66-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/66-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/69-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/69-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/69-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/72-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/72-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/72-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/75-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/75-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/75-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/78-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/78-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/78-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/81-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/81-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/81-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/84-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/84-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/84-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/87-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/87-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/87-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/90-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/90-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/90-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/93-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/93-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/93-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/96-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/96-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/96-v2.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/99-v0.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/99-v1.ogg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cockpit/public/samples/salamander/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cockpit/public/samples/salamander/99-v2.ogg",
       "writers": []
     },
     {
@@ -27311,6 +29022,30 @@
         }
       ],
       "target": "apps/cockpit/public/samples/salamander/manifest.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/piano-timbre.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "apps/cockpit/src/piano-timbre.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/dataset/experiment/published-set.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "datasets",
       "writers": []
     },
     {
@@ -27336,6 +29071,11 @@
     },
     {
       "readers": [
+        {
+          "by": "datasets/jam-actions-acoustic-v0/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        },
         {
           "by": "src/dataset/acoustic/reproduce.test.ts",
           "call": "readFileSync",
@@ -27432,6 +29172,11 @@
           "confidence": "ast"
         },
         {
+          "by": "scripts/run-jam-actions-corpus-eval.ts",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
           "by": "scripts/verify-public-package-execution.ts",
           "call": "literal",
           "confidence": "ast"
@@ -27456,6 +29201,10 @@
       "writers": [
         {
           "by": "scripts/package-jam-actions-public.ts",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/run-jam-actions-corpus-eval.ts",
           "confidence": "ast"
         }
       ]
@@ -27488,6 +29237,11 @@
     {
       "readers": [
         {
+          "by": "datasets/jam-actions-v0-public/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
           "by": "scripts/package-jam-actions-public.ts",
           "call": "literal",
           "confidence": "ast"
@@ -27518,6 +29272,22 @@
           "by": "scripts/regenerate-public-package-checksums.ts",
           "confidence": "ast",
           "stamps": true
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/run-jam-actions-corpus-eval.ts",
+          "call": "existsSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "datasets/jam-actions-v0-public/evals",
+      "writers": [
+        {
+          "by": "scripts/run-jam-actions-corpus-eval.ts",
+          "confidence": "ast"
         }
       ]
     },
@@ -27675,6 +29445,16 @@
         {
           "by": "experiments/finetune-arc-v2/scripts/derive-b1-cohort.ts",
           "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/run-jam-actions-corpus-eval.ts",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/run-jam-actions-corpus-eval.ts",
+          "call": "readdirSync",
           "confidence": "ast"
         }
       ],
@@ -27979,6 +29759,11 @@
           "by": "experiments/finetune-arc/evals/ft-seed512-results.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "scripts/run-jam-actions-corpus-eval.ts",
+          "call": "literal",
+          "confidence": "ast"
         }
       ],
       "target": "datasets/jam-actions-v0/evals/llm-in-the-loop-qwen2.5-7b-hardened.json",
@@ -28394,6 +30179,18 @@
     {
       "readers": [
         {
+          "by": "src/dataset/schema-placeholder.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "datasets/jam-actions-v0/records/bach-prelude-c-major-bwv846-m001-004.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "scripts/revise-jam-actions-v0-r001-bach-window.ts",
           "call": "readFileSync",
           "confidence": "ast"
@@ -28452,6 +30249,12 @@
           "by": "scripts/build-jam-actions-corpus.ts",
           "call": "readFileSync",
           "confidence": "ast"
+        },
+        {
+          "by": "src/dataset/schema-placeholder.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "datasets/jam-actions-v0/records/fur-elise-m001-008.json",
@@ -28466,6 +30269,18 @@
           "confidence": "ast"
         }
       ]
+    },
+    {
+      "readers": [
+        {
+          "by": "src/dataset/schema-placeholder.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "datasets/jam-actions-v0/records/mozart-k545-mvt1-m001-004.json",
+      "writers": []
     },
     {
       "readers": [
@@ -28506,6 +30321,11 @@
     },
     {
       "readers": [
+        {
+          "by": "datasets/jam-actions-v0/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        },
         {
           "by": "experiments/jam-actions-v0-lora/generate_train_jsonl.py",
           "call": "open",
@@ -28578,6 +30398,16 @@
           "confidence": "ast"
         },
         {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast"
+        },
+        {
           "by": "src/dataset/acoustic-v1/v1.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -28602,6 +30432,16 @@
         {
           "by": "src/dataset/acoustic-v1/generate-probe.ts",
           "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-probe.ts",
+          "call": "readdirSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-probe.ts",
+          "call": "statSync",
           "confidence": "ast"
         },
         {
@@ -31419,6 +33259,17 @@
     {
       "readers": [
         {
+          "by": "src/sample-engine.ts",
+          "call": "readFileSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "samples/AccurateSalamander",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "src/sfz-parser.ts",
           "call": "readFileSync",
           "confidence": "ast"
@@ -32022,6 +33873,11 @@
           "confidence": "ast"
         },
         {
+          "by": "scripts/compose-realize-demo.ts",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
           "by": "scripts/compose-refine-lift.ts",
           "call": "literal",
           "confidence": "ast"
@@ -32109,6 +33965,11 @@
         },
         {
           "by": "src/dataset/acoustic-v1/library.ts",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/mcp-server.ts",
           "call": "literal",
           "confidence": "ast"
         },
@@ -32430,6 +34291,11 @@
     {
       "readers": [
         {
+          "by": "datasets/jam-actions-v0/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
           "by": "experiments/acoustic-sft/runpod.mjs",
           "call": "literal",
           "confidence": "ast"
@@ -32522,6 +34388,18 @@
     {
       "readers": [
         {
+          "by": "src/piano-timbre.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "src/piano-timbre.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "vitest.config.ts",
           "call": "literal",
           "confidence": "ast"
@@ -32546,5 +34424,13 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 191,
-  "unassigned": []
+  "unassigned": [],
+  "unseen": [
+    {
+      "files": [
+        "docker-compose.yml"
+      ],
+      "kind": "deploy"
+    }
+  ]
 }

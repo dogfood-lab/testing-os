@@ -12,10 +12,10 @@ Mapped at 2026-09-24 from commit a8a79e8.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - Publish now also runs src/mcp_stress_test/cli/__init__.py.
 - And 2 more changes to doors.
+- README.md is now also read by pyproject.toml.
 - site/src/content/docs/ is now read by site/astro.config.mjs.
 - site/src/content/docs/handbook/ is now read by site/astro.config.mjs.
-- src/mcp_stress_test/patterns/data/ is now read by src/mcp_stress_test/patterns/library.py.
-- And 1 more new writer or reader of a place.
+- And 8 more new writers and readers of places.
 - 134 files changed content, across 6 parts.
 
 ## What comes in

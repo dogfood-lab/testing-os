@@ -196,14 +196,17 @@
         "tsconfig.json"
       ],
       "checksCount": 5,
+      "checksMore": 93,
       "file": ".github/workflows/ci.yml",
       "held": [
         {
           "checks": [],
+          "checksMore": 0,
           "lead": "when run by hand with run_generate true",
           "runs": [
             "scripts/cloud-smoke-generate.mjs"
           ],
+          "runsMore": 0,
           "when": "when run by hand with run_generate true"
         }
       ],
@@ -279,6 +282,7 @@
         "tests/version.test.ts"
       ],
       "runsCount": 43,
+      "runsMore": 98,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -296,6 +300,7 @@
         "tsconfig.json"
       ],
       "checksCount": 5,
+      "checksMore": 93,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -362,6 +367,7 @@
         "tests/version.test.ts"
       ],
       "runsCount": 41,
+      "runsMore": 96,
       "sends": [
         "creates a GitHub release on a tag push",
         "publishes to npm and a container image (on a run by hand, only with dry_run false)"
@@ -379,6 +385,7 @@
         "SHIP_GATE.md"
       ],
       "checksCount": 3,
+      "checksMore": 0,
       "file": ".github/workflows/doc-drift.yml",
       "id": ".github/workflows/doc-drift.yml",
       "landings": [],
@@ -400,6 +407,7 @@
         "scripts/sync-doc-versions.mjs"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -411,6 +419,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -428,6 +437,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -440,6 +450,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/codeql.yml",
       "id": ".github/workflows/codeql.yml",
       "landings": [],
@@ -448,6 +459,7 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -460,6 +472,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/dependency-review.yml",
       "id": ".github/workflows/dependency-review.yml",
       "landings": [],
@@ -468,6 +481,7 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -477,6 +491,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#ollama-intern-mcp",
       "kind": "command",
@@ -494,6 +509,7 @@
         "src/index.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -501,6 +517,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#ollama-intern-mcp",
       "kind": "package",
@@ -518,6 +535,7 @@
         "src/index.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -539,13 +557,13 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T08:36:30.480Z",
+  "generatedAt": "2026-09-24T11:52:35.182Z",
   "limits": [
-    "4 files use syntax the parser cannot read (scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, tests/tools/artifactWrite.test.ts and 1 more), so what they import is not known: 2 in scripts (a NUL character inside a string), 2 in tests (`typeof import(…)` as a type argument).",
-    "1 write and 6 reads use paths built at run time and are not named here.",
+    "2 files in scripts use syntax the parser cannot read (scripts/gen-tool-docs.mjs and scripts/sync-doc-versions.mjs), so what they import is not known: a NUL character inside a string (2).",
+    "2 writes and 6 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "19 writes and 32 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "7 commands are built at run time and not followed, 5 of them in tests.",
+    "18 writes and 32 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "3 commands are built at run time and not followed, 1 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -631,6 +649,9 @@
       ]
     }
   ],
+  "spawnTested": [
+    "scripts"
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
@@ -642,13 +663,13 @@
   "testedBy": {
     "bench": 0,
     "examples": 0,
-    "scripts": 0,
+    "scripts": 1,
     "smoke": 1,
-    "src": 94
+    "src": 97
   },
-  "unnamedWrites": 1,
+  "unnamedWrites": 2,
   "unread": [],
-  "unreadFiles": 4,
+  "unreadFiles": 2,
   "unreadNote": [],
   "untested": [
     {
@@ -660,13 +681,10 @@
       "part": "examples",
       "partLabel": "examples",
       "testedBy": 0
-    },
-    {
-      "part": "scripts",
-      "partLabel": "scripts",
-      "testedBy": 0
     }
   ],
-  "untestedNote": [],
+  "untestedNote": [
+    "scripts is touched by tests only through a spawn: a test runs its files as a child process."
+  ],
   "written": 0
 }

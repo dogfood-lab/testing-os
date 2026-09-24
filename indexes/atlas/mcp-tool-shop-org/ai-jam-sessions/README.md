@@ -8,12 +8,16 @@ Mapped at 2026-09-24 from commit 5139ec7.
 
 ## What changed since 2026-09-24 (8734514)
 
-Nothing structural changed since 2026-09-24; 1961 files changed content.
+- datasets/jam-actions-v0-public/ is now also written by scripts/run-jam-actions-corpus-eval.ts.
+- datasets/jam-actions-v0-public/evals/ is now written by scripts/run-jam-actions-corpus-eval.ts.
+- apps/cockpit/public/samples/salamander/102-v0.ogg is now read by apps/cockpit/public/samples/salamander/manifest.json.
+- And 105 more new writers and readers of places.
+- 1961 files changed content, across 13 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 20 paths; on a push to main touching 20 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/capture.test.ts and 188 more; checks LICENSE, README.md, logo.png and 176 more.
-2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more; checks LICENSE, README.md, logo.png and 116 more.
+1. **CI.** On a pull request touching 20 paths; on a push to main touching 20 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/capture.test.ts and 188 more; checks LICENSE, README.md, logo.png and 572 more.
+2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more; checks LICENSE, README.md, logo.png and 481 more.
 3. **Publish jam-actions-v0.** By hand. Runs scripts/check-release-gate.ts and scripts/verify-public-package-checksums.ts.
 4. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 5. **Push jam-actions adapters to HuggingFace.** By hand. Runs no file this map can see.
@@ -26,16 +30,18 @@ Nothing structural changed since 2026-09-24; 1961 files changed content.
 ## What happens through CI
 
 1. The workflow runs 10 files in cockpit, 9 files in experiments, 4 files in scripts, and 71 files in src; it checks apps/cockpit/src/ in cockpit, 7 files in the repository root, 6 files in scripts, src/ in src, samples/vocal/ in samples, and songs/library/ in songs.
+   1. Inside src/mcp-server.ts, main does, in order: should supervise stdio, user songs dir, initialize from library, server state path and open rpc output stream.
+   2. Or, when `shouldSuperviseStdio()`, main does run stdio supervisor instead.
 2. It writes to datasets/jam-actions-acoustic-v0/, datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md, datasets/jam-actions-v1-probe/README.md, datasets/jam-actions-v1-probe/applied.json, datasets/jam-actions-v1-probe/checksums.sha256, datasets/jam-actions-v1-probe/manifest.json, datasets/jam-actions-v1-probe/records/, datasets/jam-actions-v1-probe/records.jsonl, datasets/jam-actions-v1-probe/splits.json, experiments/acoustic-sft/data/sft-test.jsonl, experiments/acoustic-sft/data/sft-train.jsonl, experiments/acoustic-sft/runs/ and songs/.
 
 ## Who reads the results
 
 - **datasets/** is read by experiments/acoustic-sft/eval.ts and experiments/acoustic-sft/format-sft.ts, and by 2 tests.
-- **songs/** is read by docs/dogfood-swarm-grok-w2-kickoff.md (found by text), docs/dogfood-swarm-grok-w3-kickoff.md (found by text), experiments (5 files), scripts (19 files) and src (5 files), and by 6 tests.
+- **songs/** is read by docs/dogfood-swarm-grok-w2-kickoff.md (found by text), docs/dogfood-swarm-grok-w3-kickoff.md (found by text), experiments (5 files), scripts (20 files) and src (6 files), and by 6 tests.
 
 ## The other doors
 
-**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more, checks LICENSE, README.md, logo.png and 116 more, writes to datasets/jam-actions-acoustic-v0/, datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md, datasets/jam-actions-v1-probe/README.md, datasets/jam-actions-v1-probe/applied.json, datasets/jam-actions-v1-probe/checksums.sha256, datasets/jam-actions-v1-probe/manifest.json, datasets/jam-actions-v1-probe/records/, datasets/jam-actions-v1-probe/records.jsonl, datasets/jam-actions-v1-probe/splits.json, experiments/acoustic-sft/data/sft-test.jsonl, experiments/acoustic-sft/data/sft-train.jsonl, experiments/acoustic-sft/runs/ and songs/, and publishes to npm and a container image.
+**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more, checks LICENSE, README.md, logo.png and 481 more, writes to datasets/jam-actions-acoustic-v0/, datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md, datasets/jam-actions-v1-probe/README.md, datasets/jam-actions-v1-probe/applied.json, datasets/jam-actions-v1-probe/checksums.sha256, datasets/jam-actions-v1-probe/manifest.json, datasets/jam-actions-v1-probe/records/, datasets/jam-actions-v1-probe/records.jsonl, datasets/jam-actions-v1-probe/splits.json, experiments/acoustic-sft/data/sft-test.jsonl, experiments/acoustic-sft/data/sft-train.jsonl, experiments/acoustic-sft/runs/ and songs/, and publishes to npm and a container image.
 
 **Publish jam-actions-v0** runs scripts/check-release-gate.ts and scripts/verify-public-package-checksums.ts, and reaches src.
 
@@ -51,12 +57,12 @@ Nothing structural changed since 2026-09-24; 1961 files changed content.
 
 **ai-jam-sessions** (a command people run) runs src/cli.ts and writes to songs/.
 
-**ai-jam-sessions-mcp** (a command people run) runs src/mcp-server.ts.
+**ai-jam-sessions-mcp** (a command people run) runs src/mcp-server.ts and writes to songs/.
 
 ## What breaks what
 
 - **src** is imported by 4 parts (cockpit, docs, experiments, scripts) and sits on the path of 6 doors.
-- **scripts** is imported only from tests, by 1 part (src), and sits on the path of 3 doors.
+- **scripts** is run as a child process by 1 part (experiments) and sits on the path of 3 doors.
 - **cockpit** is imported only from tests, by 1 part (src), and sits on the path of 2 doors.
 - **experiments** is imported only from tests, by 1 part (src), and sits on the path of 2 doors.
 - **the repository root** is imported by no other part and sits on the path of 2 doors.
@@ -103,7 +109,7 @@ And 2 more pairs.
 ## Generated, never hand-edited
 
 - **datasets/jam-actions-acoustic-v0/** is written by src/dataset/acoustic/generate-corpus.ts.
-- **datasets/jam-actions-v0-public/** is written by scripts/package-jam-actions-public.ts and scripts/regenerate-public-package-checksums.ts.
+- **datasets/jam-actions-v0-public/** is written by scripts/package-jam-actions-public.ts, scripts/regenerate-public-package-checksums.ts and scripts/run-jam-actions-corpus-eval.ts.
 - **datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-results.json** is written by scripts/build-slice19-unified-baseline.mjs.
 - **datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json** is written by scripts/build-slice19-unified-baseline.mjs.
 - **datasets/jam-actions-v0/** is written by scripts (6 files).
@@ -212,7 +218,7 @@ And 2 more pairs.
 
 ## Hand-authored
 
-People write .github/, the repository root and site/; 49 writes with paths built at run time may land here.
+People write .github/, the repository root and site/; 57 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -224,11 +230,12 @@ Read those in order to follow one pull request end to end.
 
 - 5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.
 - 11 import sites could not be resolved.
-- 8 files use syntax the parser cannot read (scripts/compose-realize-demo.ts, scripts/run-jam-actions-corpus-eval.ts, src/dataset/acoustic-v1/generate-public.ts and 5 more), so what they import is not known: 6 in src (`typeof import(…)` as a type argument in 3, an import type followed by `[]` in 1, a NUL character inside a string in 1 and other syntax in 1), 2 in scripts (an import type followed by `[]`).
-- 49 writes and 131 reads use paths built at run time and are not named here.
+- 2 files in src use syntax the parser cannot read (src/dataset/acoustic-v1/generate-public.ts and src/songs/midi/meta.test.ts), so what they import is not known: a NUL character inside a string (1) and other syntax (1).
+- 57 writes and 140 reads use paths built at run time and are not named here.
 - 16 writes go to places this repository does not track, so they are not listed as generated.
-- 97 writes and 343 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 18 commands are built at run time and not followed, 4 of them in tests.
+- 98 writes and 342 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 10 commands are built at run time and not followed, 1 of them in tests.
+- There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 - Readers marked (found by text) come from scanning unparsed files.
 - CI runs or checks 459 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 - Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.

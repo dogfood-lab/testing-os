@@ -2,7 +2,6 @@
   "authored": [
     ".github/",
     "docs/",
-    "dogfood/",
     "root",
     "site/"
   ],
@@ -48,8 +47,31 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "dogfood/tuning/ is now written by test/helpers/living-world-matrix.ts.",
+        "subjects": [
+          "dogfood/tuning/",
+          "test/helpers/living-world-matrix.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "src/game.ts is now also read by src/game.test.ts.",
+        "subjects": [
+          "src/game.ts",
+          "src/game.test.ts"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "dogfood was authored and is now mixed.",
+        "subjects": [
+          "dogfood"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 493 files changed content.",
+        "sentence": "493 files changed content, across 8 parts.",
         "subjects": []
       }
     ],
@@ -57,7 +79,7 @@
       "commit": "d22db1236c2745c249ce959157c0f891fae3b3c2",
       "generatedAt": "2026-09-24T02:25:38.136Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -75,19 +97,24 @@
         "test/"
       ],
       "checksCount": 2,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "held": [
         {
           "checks": [],
+          "checksMore": 0,
           "lead": "on a pull request",
           "runs": [
             "scripts/check-critical-coverage.mjs"
           ],
+          "runsMore": 0,
           "when": "on a pull request"
         }
       ],
       "id": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "dogfood/tuning/"
+      ],
       "name": "CI",
       "programs": [
         "git"
@@ -204,6 +231,7 @@
         "test/integration/"
       ],
       "runsCount": 91,
+      "runsMore": 118,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -217,9 +245,12 @@
         "src/"
       ],
       "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
-      "landings": [],
+      "landings": [
+        "dogfood/tuning/"
+      ],
       "name": "Release",
       "pushes": false,
       "reach": [
@@ -333,6 +364,7 @@
         "test/integration/"
       ],
       "runsCount": 91,
+      "runsMore": 118,
       "sends": [
         "publishes to npm",
         "creates a GitHub release"
@@ -345,6 +377,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/pages.yml",
       "id": ".github/workflows/pages.yml",
       "landings": [],
@@ -362,6 +395,7 @@
         "site/src/"
       ],
       "runsCount": 2,
+      "runsMore": 0,
       "sends": [
         "deploys the site"
       ],
@@ -374,6 +408,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#@mcptoolshop/claude-rpg",
       "kind": "package",
@@ -391,6 +426,7 @@
         "src/index.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -398,6 +434,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#claude-rpg",
       "kind": "command",
@@ -415,6 +452,7 @@
         "src/bin.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -440,11 +478,18 @@
       "to": "src"
     }
   ],
-  "generated": [],
-  "generatedAt": "2026-09-24T08:34:24.142Z",
+  "generated": [
+    {
+      "fromRoot": true,
+      "place": "dogfood/tuning/",
+      "writers": [
+        "test/helpers/living-world-matrix.ts (a test)"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-24T11:50:15.703Z",
   "limits": [
     "2 import sites could not be resolved.",
-    "10 files use syntax the parser cannot read (src/character/session-recap.ts, src/dialogue/npc-context.test.ts, src/game.test.ts and 7 more), so what they import is not known: 8 in src (`typeof import(…)` as a type argument in 7 and an import type followed by `[]` in 1), 2 in test (`typeof import(…)` as a type argument).",
     "7 writes and 18 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed, and it is in tests."
   ],
@@ -460,26 +505,38 @@
     "test": "test"
   },
   "parts": 8,
-  "readers": [],
+  "readers": [
+    {
+      "readers": [],
+      "target": "dogfood/tuning/"
+    }
+  ],
   "repo": "mcp-tool-shop-org/claude-rpg",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "package.json#claude-rpg",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "src/index.ts"
+    "src/bin.ts"
   ],
+  "startReason": "This path follows claude-rpg (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 140,
   "testedBy": {
     "scripts": 1,
-    "src": 120
+    "src": 124
   },
   "unnamedWrites": 0,
-  "unread": [],
-  "unreadFiles": 10,
+  "unread": [
+    {
+      "place": "dogfood/tuning/",
+      "writers": [
+        "test/helpers/living-world-matrix.ts (a test)"
+      ]
+    }
+  ],
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],
-  "written": 0
+  "written": 1
 }

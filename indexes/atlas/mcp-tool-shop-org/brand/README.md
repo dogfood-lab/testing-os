@@ -15,7 +15,7 @@ Mapped at 2026-09-24 from commit 49c1e9d.
 - README.ja.md is now read by tests/migrate.test.ts.
 - README.md is now also read by tests/audit.test.ts, tests/json-output.test.ts, tests/migrate-journal.test.ts and tests/migrate.test.ts.
 - README.zh.md is now read by tests/migrate.test.ts.
-- And 5 more new writers and readers of places.
+- And 238 more new writers and readers of places.
 - src/cli.ts now starts at main; it started at with globals.
 - 100 files changed content, across 8 parts.
 
@@ -53,7 +53,7 @@ CI writes nothing in the files this map could read; 1 file could not be.
 - **the site** is imported only from tests, by 1 part (tests), and sits on the path of 3 doors.
 - **scripts** is imported by no other part and sits on the path of 2 doors.
 - **tests** is imported by no other part and sits on the path of 2 doors.
-- **logos/** is written by .github and read by the site and src; a hand edit reaches every reader.
+- **logos/** is written by .github and read by the repository root, the site and src; a hand edit reaches every reader.
 - **manifest.json** is written by .github and read by .github, the site and src; a hand edit reaches every reader.
 
 ## What tends to change together
@@ -98,7 +98,6 @@ Read those in order to follow one pull request end to end.
 - 1 file uses syntax the parser cannot read (tests/manifest.test.ts), so what it imports is not known: a NUL character inside a string (1).
 - 6 reads use paths built at run time and are not named here.
 - 24 writes and 73 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 5 commands are built at run time and not followed, all of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

@@ -269,8 +269,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 2,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 1,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
         "src/cli.ts",
@@ -302,7 +302,8 @@
             "src/catalog/to-model-meta.ts",
             "src/catalog/types.ts"
           ],
-          "path": "src/catalog/index.ts"
+          "path": "src/catalog/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -505,7 +506,8 @@
             "src/emit/emit.ts",
             "src/emit/types.ts"
           ],
-          "path": "src/emit/index.ts"
+          "path": "src/emit/index.ts",
+          "reexportsOnly": true
         },
         {
           "hash": "e2050f2ca7195509f735c636419d281b061e2465adcfaf1c6d2669d835925351",
@@ -535,7 +537,8 @@
             "src/gguf/read-file.ts",
             "src/gguf/types.ts"
           ],
-          "path": "src/gguf/index.ts"
+          "path": "src/gguf/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -608,7 +611,8 @@
             "src/gguf/index.ts",
             "src/probe/index.ts",
             "src/types.ts"
-          ]
+          ],
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -657,7 +661,8 @@
             "src/probe/probe.ts",
             "src/probe/types.ts"
           ],
-          "path": "src/probe/index.ts"
+          "path": "src/probe/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -920,9 +925,105 @@
           "path": "src/",
           "runKind": "checks",
           "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/catalog.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/cli.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/docs-drift.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/emit.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/footprint.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/gguf-safety.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/gguf.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/gqa.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/headroom.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/hf.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/placement.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/plan.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/probe.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/quant-risk.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/quant.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-test",
+          "matched": true,
+          "path": "src/tests/roofline.test.ts",
+          "runKind": "executes"
         }
       ],
-      "runsCount": 1,
+      "runsCount": 17,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -1139,9 +1240,105 @@
           "path": "src/",
           "runKind": "checks",
           "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/catalog.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/cli.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/docs-drift.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/emit.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/footprint.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/gguf-safety.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/gguf.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/gqa.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/headroom.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/hf.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/placement.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/plan.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/probe.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/quant-risk.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/quant.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "src/tests/roofline.test.ts",
+          "runKind": "executes"
         }
       ],
-      "runsCount": 1,
+      "runsCount": 17,
       "secrets": [
         "GITHUB_TOKEN"
       ],
