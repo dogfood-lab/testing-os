@@ -147,8 +147,13 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     door.reach = walked.reach;
     door.reachFiles = walkReach(door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path), graph).files;
     // A file the door runs that changes other repositories through the API
-    // sends out of this one, as a dispatch does.
-    if (door.reachFiles.some((path) => (graph.files.get(path)?.githubChanges ?? 0) > 0)) door.sends.changesRepositories = true;
+    // sends out of this one, as a dispatch does. A test that imports that
+    // file runs it against its own stand-ins, and a package only loaded
+    // calls nothing, so neither is the door's reach for this.
+    if (door.kind !== 'package') {
+      const runs = door.runs.filter((run) => run.runKind !== 'checks' && !isTestFile(run.path)).map((run) => run.path);
+      if (walkReach(runs, graph).files.some((path) => (graph.files.get(path)?.githubChanges ?? 0) > 0)) door.sends.changesRepositories = true;
+    }
   }
   const landings = attachLandings({ files: [...graph.files.values()], doors, boundaries: boundaryList, places });
   // The flags a run passes matter only to which of a writer's guarded writes

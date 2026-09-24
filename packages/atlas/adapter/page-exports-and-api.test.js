@@ -44,6 +44,10 @@ describe('a door that writes through the GitHub API', () => {
   it('says it changes other repositories, and not for a read or a change to its own', () => {
     const sync = structure.doors.find((door) => door.kind === 'command' && door.name === 'sync');
     assert.equal(sync.sends.changesRepositories, true);
+    // The suite imports the same code, and the package exports it; neither
+    // runs a call.
+    assert.equal(structure.doors.find((door) => door.file === '.github/workflows/ci.yml').sends.changesRepositories, undefined);
+    assert.equal(structure.doors.find((door) => door.kind === 'package').sends.changesRepositories, undefined);
     assert.match(markdown, /\*\*sync\*\* \(a command people run\) runs bin\/sync\.js, reaches src, and changes other repositories through the GitHub API\./);
   });
 });
