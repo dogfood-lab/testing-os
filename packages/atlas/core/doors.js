@@ -3,6 +3,7 @@ import { join, posix } from 'node:path';
 import { parse } from 'yaml';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 import { isTestFile } from './landings.js';
+import { storedText } from './text.js';
 
 const WORKFLOW = /^\.github\/workflows\/[^/]+\.ya?ml$/;
 const TRIGGER_LISTS = ['paths', 'branches', 'tags', 'types', 'workflows'];
@@ -163,7 +164,7 @@ function readDoor(repoPath, file, repo) {
   let text;
   let doc;
   try {
-    text = readFileSync(join(repoPath, file), 'utf8');
+    text = storedText(readFileSync(join(repoPath, file), 'utf8'));
     doc = parse(text);
   } catch {
     return { file, name: fallback, parseError: true };

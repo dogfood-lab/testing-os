@@ -4,6 +4,7 @@ import picomatch from 'picomatch';
 import { parse as parseYaml } from 'yaml';
 import { isCodePath } from './languages.js';
 import { wheelPackages } from './python-manifest.js';
+import { storedText } from './text.js';
 import {
   eslintTargets,
   jestTargets,
@@ -139,7 +140,7 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
       if (!texts.has(path)) {
         let text = null;
         try {
-          text = readFileSync(joinFs(repoPath, path), 'utf8');
+          text = storedText(readFileSync(joinFs(repoPath, path), 'utf8'));
         } catch {
           text = null;
         }

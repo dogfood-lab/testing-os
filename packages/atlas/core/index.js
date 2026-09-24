@@ -15,6 +15,7 @@ import { walkReach } from './reach.js';
 import { attachResolution, emittedFiles, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
+import { storedBytes, textAttributes } from './text.js';
 import { unseenParts } from './unseen.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
@@ -68,6 +69,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
 
   const tracked = listTracked(repoPath);
   const places = trackedPlaces(tracked.regular);
+  const attributes = textAttributes(repoPath, tracked.regular);
   const matchers = ordered.map((boundary) => ({
     name: boundary.name,
     isMatch: picomatch(boundary.globs, { dot: true }),
@@ -96,7 +98,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const facts = new Map();
   const spawned = new Map();
   for (const path of tracked.regular) {
-    const file = describeFile(repoPath, path, places, facts, spawned);
+    const file = describeFile(repoPath, path, places, facts, spawned, attributes.get(path));
     const hits = [];
     for (const matcher of matchers) {
       if (matcher.isMatch(path)) hits.push(matcher.name);
@@ -385,8 +387,10 @@ function symlinkTarget(repoPath, path) {
   }
 }
 
-function describeFile(repoPath, path, places, facts, spawned) {
-  const bytes = readFileSync(join(repoPath, path));
+// A file is read as git stores it (text.js), so what is hashed and parsed is
+// the same on a checkout with either line ending.
+function describeFile(repoPath, path, places, facts, spawned, attributes) {
+  const bytes = storedBytes(readFileSync(join(repoPath, path)), attributes);
   const hash = createHash('sha256').update(bytes).digest('hex');
   const language = languageOf(path);
   if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };

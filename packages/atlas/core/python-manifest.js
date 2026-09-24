@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { storedText } from './text.js';
 
 /**
  * What a Python project declares about itself: the distributions it depends
@@ -116,7 +117,7 @@ function dependencySpecs(tables) {
 
 function readText(repoPath, path) {
   try {
-    return readFileSync(join(repoPath, path), 'utf8');
+    return storedText(readFileSync(join(repoPath, path), 'utf8'));
   } catch {
     return '';
   }
