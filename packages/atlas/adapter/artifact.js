@@ -106,10 +106,12 @@ function testReach(mapped) {
   const byPath = new Map(all.map((file) => [file.path, file]));
   const boundaryOf = new Map();
   for (const boundary of mapped.boundaries) for (const file of boundary.files) boundaryOf.set(file.path, boundary.name);
-  const tests = all.filter((file) => isTestFile(file.path));
+  // A GDScript test runner's suite is a test by what it extends.
+  const isTest = (file) => isTestFile(file.path) || file.testSuite === true;
+  const tests = all.filter(isTest);
   const byStem = new Map();
   for (const file of all) {
-    if (isTestFile(file.path) || !boundaryOf.has(file.path)) continue;
+    if (isTest(file) || !boundaryOf.has(file.path)) continue;
     const base = file.path.slice(file.path.lastIndexOf('/') + 1);
     const stem = base.includes('.') ? base.slice(0, base.lastIndexOf('.')) : base;
     if (!byStem.has(stem)) byStem.set(stem, []);
@@ -229,6 +231,7 @@ function carryFile(file) {
   if (file.parseError) out.parseError = true;
   if (file.noStatements) out.noStatements = true;
   if (file.testsInside) out.testsInside = true;
+  if (file.testSuite) out.testSuite = true;
   if (file.reexportsOnly) out.reexportsOnly = true;
   if (file.constantOnly) out.constantOnly = true;
   if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;

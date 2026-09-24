@@ -496,7 +496,7 @@ function nativeReadings(language, root) {
   const gd = language === 'gdscript' ? gdscriptReadings(root) : null;
   return {
     imports: rust ? rust.imports : gd ? gd.imports : [],
-    ...(gd ? { native: { godot: gd.godot } } : {}),
+    ...(gd ? { native: { godot: gd.godot, ...(gd.testSuite ? { testSuite: true } : {}) } } : {}),
     ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}), ...(rust.paths.length > 0 ? { rustPaths: rust.paths } : {}), ...(rust.tests ? { testsInside: true } : {}) } } : {}),
     landings: noLandings(),
     sequence: rust ? rustSequence(root, rust.imports) : gd ? gd.sequence : { functions: [], topLevel: [], reexports: [] },

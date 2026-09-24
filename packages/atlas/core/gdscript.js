@@ -30,10 +30,12 @@ const SCENE_SWITCHES = new Set(['change_scene_to_file', 'change_scene']);
 // it starts: a node's callbacks, and a SceneTree script's _initialize.
 const CALLBACKS = new Set(['_init', '_initialize', '_enter_tree', '_ready', '_process', '_physics_process', '_input', '_unhandled_input', '_run']);
 const CONDITION_SHOWN = 60;
+// The classes a test runner's tests extend: GUT's and gdUnit4's.
+const TEST_BASES = new Set(['GutTest', 'GdUnitTestSuite']);
 
 /**
  * @param {object} root tree-sitter root node
- * @returns {{ imports: object[], godot: object, sequence: object }}
+ * @returns {{ imports: object[], testSuite?: true, godot: object, sequence: object }}
  */
 export function gdscriptReadings(root) {
   const imports = [];
@@ -117,8 +119,12 @@ export function gdscriptReadings(root) {
     const text = stringText(node);
     if (text?.startsWith('res://')) loads.push({ text, call: 'literal' });
   });
+  // A GUT test and a gdUnit4 suite are tests by what they extend, wherever
+  // they are kept.
+  const suite = TEST_BASES.has(extendsName) || imports.some((entry) => /(^|\/)addons\/gut\/test\.gd$/.test(entry.specifier) && entry.line === 1);
   return {
     imports,
+    ...(suite ? { testSuite: true } : {}),
     godot: {
       loads,
       files,
