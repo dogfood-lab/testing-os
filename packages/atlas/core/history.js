@@ -28,7 +28,7 @@ function round(value) {
   return Math.round(value * 1e6) / 1e6;
 }
 
-export const SOURCE_EXTENSIONS = ['.js', '.mjs', '.cjs', '.jsx', '.ts', '.tsx', '.mts', '.cts', '.py'];
+export const SOURCE_EXTENSIONS = ['.js', '.mjs', '.cjs', '.jsx', '.ts', '.tsx', '.mts', '.cts', '.py', '.rs', '.gd'];
 export const SOURCE_FILE_REACH = 20;
 export const SOURCE_FILE_RISE = 25;
 

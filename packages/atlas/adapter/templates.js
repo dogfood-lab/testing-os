@@ -14,12 +14,15 @@ export function isTestPath(path) {
   return false;
 }
 
-const CODE_EXT = new Set(['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'mts', 'cts', 'py', 'pyi']);
+const CODE_EXT = new Set(['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'mts', 'cts', 'py', 'pyi', 'rs', 'gd']);
 // Shell scripts are code a part runs, though Atlas does not parse them.
 const SCRIPT_EXT = new Set(['sh', 'bash', 'zsh', 'ps1']);
 // What a part holds as data: records, schemas, tables and images a program
 // reads, as against the settings a tool reads.
-const DATA_EXT = new Set(['json', 'jsonl', 'ndjson', 'yaml', 'yml', 'csv', 'tsv', 'geojson', 'xml']);
+const DATA_EXT = new Set(['json', 'jsonl', 'ndjson', 'yaml', 'yml', 'csv', 'tsv', 'geojson', 'xml', 'tres']);
+// A Godot scene instances the scripts that run the game, so it is code as a
+// part's vote goes, though a directory of fixture data may hold one.
+const SCENE_EXT = new Set(['tscn', 'scn']);
 // A tool's settings, whatever the extension: a dotfile, a *.config.* file, a
 // tsconfig, a lockfile or a compose file.
 const SETTINGS_NAME = /^\.|(^|[.-])config([.-]|$)|^tsconfig|^jsconfig|(^|[.-])lock(\.|$)|^(docker-)?compose\./i;
@@ -28,7 +31,7 @@ const SETTINGS_DIRS = new Set(['config', 'configs', 'conf', 'settings', '.config
 const DOCS_EXT = new Set(['md', 'mdx', 'rst', 'txt']);
 // A pinned dependency list is a .txt file a tool reads, not prose.
 const DEPENDENCY_LIST = /^(requirements|constraints)([-_.].*)?\.txt$/i;
-const CONFIG_EXT = new Set(['json', 'yaml', 'yml', 'toml', 'jsonl', 'lock']);
+const CONFIG_EXT = new Set(['json', 'yaml', 'yml', 'toml', 'jsonl', 'lock', 'godot', 'cfg', 'import']);
 const IMAGE_EXT = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'ico', 'bmp', 'avif']);
 const FONT_EXT = new Set(['woff', 'woff2', 'ttf', 'otf', 'eot']);
 const BINARY_EXT = new Set(['wasm', 'exe', 'dll', 'so', 'dylib', 'bin']);
@@ -60,7 +63,7 @@ export function fileKind(path) {
   if (DEPENDENCY_LIST.test(base)) return 'other';
   if (DOCS_EXT.has(ext)) return 'docs';
   if (CONFIG_EXT.has(ext) || isConfigName(base)) return 'config';
-  if (CODE_EXT.has(ext) || SCRIPT_EXT.has(ext)) return 'code';
+  if (CODE_EXT.has(ext) || SCRIPT_EXT.has(ext) || SCENE_EXT.has(ext)) return 'code';
   if (base === '.gitkeep' || IMAGE_EXT.has(ext) || FONT_EXT.has(ext) || BINARY_EXT.has(ext)) return 'other';
   return 'other';
 }

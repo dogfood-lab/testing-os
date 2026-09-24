@@ -1,10 +1,40 @@
 {
-  "source": "@vscode/tree-sitter-wasm",
-  "version": "0.3.1",
-  "sha256": {
-    "tree-sitter-javascript.wasm": "5fb488d0cabb4775a594bab85682de5ad6ce83c0d6ac997a9f82dd084d571240",
-    "tree-sitter-typescript.wasm": "778025db5a8be0e70f8ccc3671e486dfeddd048c25d9e8a70c26de2e1bf6f97d",
-    "tree-sitter-tsx.wasm": "79e5da75ea62855a0cd67177685f0164eac87d5f630b3cbe1e0a099751ad30f8",
-    "tree-sitter-python.wasm": "16108b50df4ee9a30168794252ab55e7c93bfc5765d7fa0aa3e335752c515f47"
+  "grammars": {
+    "tree-sitter-gdscript.wasm": {
+      "source": "tree-sitter-gdscript",
+      "version": "6.1.0",
+      "built": {
+        "cli": "tree-sitter-cli@0.27.0",
+        "command": "tree-sitter build --wasm",
+        "sourceIntegrity": "sha512-Uy5+GWLkec2JaS1mamiJYsC9j/JoW2FxFq4bnji95gyTtMTsqO6+RSVIaBTU/vRGSNEi3PVDZzyV0j3B4RdntA==",
+        "toolchain": "wasi-sdk 34, binaryen 132, as the CLI downloads them"
+      },
+      "sha256": "3339feb066adb430066d59043dab659f101a415bc22751e4159cbf15ddfa4149"
+    },
+    "tree-sitter-javascript.wasm": {
+      "source": "@vscode/tree-sitter-wasm",
+      "version": "0.3.1",
+      "sha256": "5fb488d0cabb4775a594bab85682de5ad6ce83c0d6ac997a9f82dd084d571240"
+    },
+    "tree-sitter-python.wasm": {
+      "source": "@vscode/tree-sitter-wasm",
+      "version": "0.3.1",
+      "sha256": "16108b50df4ee9a30168794252ab55e7c93bfc5765d7fa0aa3e335752c515f47"
+    },
+    "tree-sitter-rust.wasm": {
+      "source": "@vscode/tree-sitter-wasm",
+      "version": "0.3.1",
+      "sha256": "0dac14947cb04d94466e3df659f80a4e264c216a60b3eda175eae4cf12ed7a8d"
+    },
+    "tree-sitter-tsx.wasm": {
+      "source": "@vscode/tree-sitter-wasm",
+      "version": "0.3.1",
+      "sha256": "79e5da75ea62855a0cd67177685f0164eac87d5f630b3cbe1e0a099751ad30f8"
+    },
+    "tree-sitter-typescript.wasm": {
+      "source": "@vscode/tree-sitter-wasm",
+      "version": "0.3.1",
+      "sha256": "778025db5a8be0e70f8ccc3671e486dfeddd048c25d9e8a70c26de2e1bf6f97d"
+    }
   }
 }

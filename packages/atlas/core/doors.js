@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join, posix } from 'node:path';
 import { parse } from 'yaml';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
+import { godotProjects } from './godot.js';
 import { isTestFile } from './landings.js';
 import { storedText } from './text.js';
 
@@ -34,13 +35,14 @@ const ACTION_SENDS = [
  * A workflow that does not parse is still a door; it is recorded as such and
  * the rest of the map is unaffected.
  *
- * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, builtFrom?: (path: string) => string|null }} input
+ * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, builtFrom?: (path: string) => string|null, unitTests?: Set<string> }} input
  *   spawned holds, per JavaScript or TypeScript file, the command lines it
  *   hands to a child process (core/spawned.js); builtFrom is the source a
- *   build output is compiled from
+ *   build output is compiled from; unitTests is every Rust file holding its
+ *   own unit tests, which cargo test runs
  */
-export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom, emitted }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted });
+export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom, emitted, unitTests }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests });
   return [...tracked]
     .filter(isWorkflow)
     .sort()
@@ -60,8 +62,8 @@ export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom,
  *
  * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, commands: Array<{ kind: string, name: string, manifest: string, path: string }> }} input
  */
-export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom, emitted }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted });
+export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests });
   return commands.map((command) => {
     const programs = command.path == null ? [] : (command.paths ?? [command.path]);
     const read = new Map();
@@ -76,6 +78,8 @@ export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFro
       ...(command.kind === 'package' ? { exported: programs } : {}),
       // What an import of the bare name loads, among every file it exports.
       ...(command.kind === 'package' && command.path != null ? { entry: command.path } : {}),
+      // What kind of program people install, past a command they type.
+      ...(command.app ? { app: command.app } : {}),
       kind: command.kind,
       file: command.manifest,
       name: command.name,
@@ -225,6 +229,17 @@ function readDoor(repoPath, file, repo) {
     // clones. A step that works inside one works on that repository.
     const clones = new Map();
     const rawJobDir = rawWorkingDirectory(body.defaults) ?? rawWorkingDirectory(doc.defaults) ?? '';
+    // A job that checks this repository out into a directory of the
+    // workspace (actions/checkout with a path and no other repository) works
+    // on it only from inside that directory: a step there is at the
+    // repository's root, one anywhere else is outside it.
+    const selfPath = ownCheckoutPath(steps);
+    const own = (raw) => {
+      if (selfPath == null) return raw;
+      const clean = cleanDir(String(raw ?? ''));
+      if (clean == null || clean === '' || !(clean === selfPath || clean.startsWith(`${selfPath}/`))) return null;
+      return clean === selfPath ? '' : clean.slice(selfPath.length + 1);
+    };
     // The run texts of the job's steps so far, where a later step's run-time
     // directory is assigned.
     const jobTexts = [];
@@ -259,7 +274,9 @@ function readDoor(repoPath, file, repo) {
       scope.texts.push(step.run);
       const stepEnv = envOf(step.env);
       const lookup = (variable) => [stepEnv, jobEnv, workflowEnv].find((env) => env.has(variable))?.get(variable) ?? null;
-      const start = placeOf({ here: true, dir: '' }, step['working-directory'] ?? rawJobDir, clones, repo, lookup);
+      const rawDir = step['working-directory'] ?? rawJobDir;
+      const ownDir = own(rawDir);
+      const start = ownDir == null ? { here: false, dir: String(rawDir ?? ''), clone: null } : placeOf({ here: true, dir: '' }, ownDir, clones, repo, lookup);
       // The directory the step's shell starts in, when it is this repository's,
       // for the files its own redirects write (landings.js attachLandings).
       commands.push({ job, step: name, text: step.run, ...(start.here ? { dir: start.dir } : {}) });
@@ -274,13 +291,13 @@ function readDoor(repoPath, file, repo) {
         for (const staged of entry.stages) found.stages.add(staged);
         if (entry.pushes) found.pushes = true;
       }
-      const place = { raw: step['working-directory'] ?? rawJobDir, jobTexts, repo, tagged: triggers.some((trigger) => (trigger.tags?.length ?? 0) > 0) };
+      const place = { raw: ownDir ?? rawDir, jobTexts, repo, tagged: triggers.some((trigger) => (trigger.tags?.length ?? 0) > 0) };
       commandSends(expandEnv(step.run, lookup), scope.sends, place);
       jobTexts.push(step.run);
       if (/\bgh\s+issue\s+create\b/.test(step.run)) scope.issues.push(onlyOnFailure(step.if) || onlyOnFailure(body.if));
       // A step whose working directory cannot be read as a repository path
       // names nothing Atlas can place, so its tokens are left unresolved.
-      const dir = step['working-directory'] === undefined ? jobDir : cleanDir(step['working-directory']);
+      const dir = selfPath != null ? ownDir : step['working-directory'] === undefined ? jobDir : cleanDir(step['working-directory']);
       if (dir == null) return;
       // Actions spells ${{ env.X }} out before the shell sees the step.
       const named = readCommands(expandEnv(step.run, lookup), dir, repo, platforms);
@@ -390,18 +407,20 @@ function jobPlatforms(body) {
 
 
 function emptySends() {
-  return { publishesTo: new Set(), packages: new Map(), releases: false, deploysPages: false, opensPullRequests: false };
+  return { publishesTo: new Set(), packages: new Map(), exports: new Set(), releases: false, deploysPages: false, opensPullRequests: false };
 }
 
 function finishSends(sends, issues, texts) {
   const joined = texts.join('\n');
   const publishesTo = [...sends.publishesTo].sort();
   const packages = [...sends.packages.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
+  const exports = [...sends.exports].sort();
   return {
     dispatchesTo: [
       ...new Set([...joined.matchAll(/repos\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)\/dispatches\b/g)].map((m) => `${m[1]}/${m[2]}`)),
     ].sort(),
     ...(packages.length > 0 ? { packages } : {}),
+    ...(exports.length > 0 ? { exports } : {}),
     publishes: publishesTo.length > 0,
     publishesTo,
     releases: sends.releases,
@@ -419,6 +438,7 @@ function sendKeys(sends) {
   for (const repo of sends.dispatchesTo) keys.push(`dispatchesTo:${repo}`);
   for (const registry of sends.publishesTo) keys.push(`publishesTo:${registry}`);
   for (const entry of sends.packages ?? []) keys.push(`packages:${JSON.stringify(entry)}`);
+  for (const platform of sends.exports ?? []) keys.push(`exports:${platform}`);
   for (const flag of ['releases', 'deploysPages', 'opensIssues', 'opensIssuesOnFailure', 'opensPullRequests']) if (sends[flag]) keys.push(flag);
   return keys;
 }
@@ -689,6 +709,11 @@ function commandSends(run, sends, place) {
     const [program, sub] = words;
     if (program === 'gh' && sub === 'release' && words[2] === 'create') sends.releases = true;
     if (program === 'gh' && sub === 'pr' && words[2] === 'create') sends.opensPullRequests = true;
+    const exported = godotExport(words, place);
+    if (exported != null) {
+      sends.exports.add(exported);
+      continue;
+    }
     const registry = publishRegistry(words);
     if (registry == null || words.includes('--dry-run')) continue;
     sends.publishesTo.add(registry);
@@ -740,6 +765,23 @@ function unrolled(lines, depth = 0) {
     i = end;
   }
   return out;
+}
+
+const GODOT_BINARY = /^godot(?:[\d.]*|_v[\w.-]+)(?:\.exe)?$/i;
+
+/**
+ * What a Godot export builds a release of: the platform of the preset
+ * --export-release, --export-debug or --export-pack names, from the
+ * export_presets.cfg of the project, or the preset's name when the file is
+ * not tracked. null for any other command line.
+ */
+function godotExport(words, place) {
+  if (!GODOT_BINARY.test(words[0] ?? '')) return null;
+  const at = words.findIndex((word) => /^--export-(?:release|debug|pack)$/.test(word));
+  if (at === -1 || words[at + 1] == null) return null;
+  const preset = words[at + 1];
+  const found = godotProjects(place.repo.repoPath, place.repo.tracked).flatMap((project) => project.presets).find((entry) => entry.name === preset);
+  return found?.platform ?? preset;
 }
 
 // The registry a command line publishes to, from its program and subcommand.
@@ -1153,6 +1195,21 @@ function repositoryName(text) {
   if (github) return `${github[1]}/${github[2]}`;
   if (/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(url)) return url;
   return url.includes('://') ? url : null;
+}
+
+// The directory a job checks this repository out into, when it names one:
+// actions/checkout with a path and no repository, or this repository by the
+// expression that names it.
+function ownCheckoutPath(steps) {
+  for (const step of steps) {
+    if (!isMapping(step) || typeof step.uses !== 'string' || step.uses.replace(/@.*$/, '') !== 'actions/checkout') continue;
+    const input = isMapping(step.with) ? step.with : {};
+    const repository = typeof input.repository === 'string' ? input.repository.replace(/\s+/g, '') : null;
+    if (repository != null && repository !== '${{github.repository}}') continue;
+    const dir = typeof input.path === 'string' ? cleanDir(input.path) : null;
+    return dir == null || dir === '' ? null : dir;
+  }
+  return null;
 }
 
 // actions/checkout of another repository into a directory of the workspace.

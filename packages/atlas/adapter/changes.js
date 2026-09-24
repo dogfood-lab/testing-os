@@ -1,5 +1,5 @@
 import { unassignedDrift } from './check.js';
-import { capitalize, count, displayName, doorKey, installed, list, mainDoor, runsShown, triggerPhrases, words } from './page.js';
+import { capitalize, count, displayName, doorKey, installed, leadName, list, mainDoor, runsShown, triggerPhrases, words } from './page.js';
 
 /**
  * What changed since the last committed map, as structural facts in fixed
@@ -254,9 +254,12 @@ function bare(triggers) {
 }
 
 // What a door is called when it appears or goes: a workflow is a door, and
-// a manifest's entry is the command or the package it installs.
+// a manifest's entry is the command, the desktop app, the game or the
+// package it installs.
 function doorNoun(door) {
   if (!installed(door)) return 'door';
+  if (door.app === 'desktop') return 'desktop app';
+  if (door.app === 'game') return 'game';
   return door.kind === 'package' ? 'package' : 'command';
 }
 
@@ -264,8 +267,8 @@ function newDoorSentence(door, file) {
   if (door.parseError) return `${door.name} (${file}) is a new door; its workflow could not be read.`;
   if (installed(door)) {
     const paths = runPaths(door);
-    const verb = door.kind === 'package' ? 'loads' : 'runs';
-    return `${door.name} (${file}) is a new ${doorNoun(door)}. ${paths.length > 0 ? `It ${verb} ${runsShown(paths)}.` : `It ${verb} no file this map can see.`}`;
+    const verb = door.kind === 'package' ? 'loads' : door.app === 'game' ? 'starts' : 'runs';
+    return `${leadName(door)} (${file}) is a new ${doorNoun(door)}. ${paths.length > 0 ? `It ${verb} ${runsShown(paths)}.` : `It ${verb} no file this map can see.`}`;
   }
   return `${door.name} (${file}) is a new door. It starts ${startsPhrase(door)}. ${runsSentence(door)}`;
 }

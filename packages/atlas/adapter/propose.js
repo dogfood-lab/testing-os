@@ -2,8 +2,9 @@ import { readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import picomatch from 'picomatch';
+import { parseToml } from '../core/toml.js';
 
-const MANIFEST_BASENAMES = new Set(['pyproject.toml', 'setup.py', 'setup.cfg']);
+const MANIFEST_BASENAMES = new Set(['pyproject.toml', 'setup.py', 'setup.cfg', 'project.godot']);
 // A manifest under one of these is a sample a test works on, not a package of
 // this repository, so it proposes no part; the test directory holding it does.
 const TEST_HOMES = new Set(['test', 'tests', 'fixtures', '__fixtures__', '__tests__', 'spec']);
@@ -58,6 +59,8 @@ function claimed(path, dirs) {
 
 export function manifestDirs(repoPath, paths) {
   const dirs = [];
+  const named = new Set();
+  const crates = [];
   for (const path of paths) {
     if (inAtlas(path) || inTestMaterial(path)) continue;
     const slash = path.lastIndexOf('/');
@@ -65,12 +68,38 @@ export function manifestDirs(repoPath, paths) {
     const dir = slash === -1 ? '' : path.slice(0, slash);
     if (base === 'package.json') {
       const pkg = readJson(repoPath, path);
-      if (pkg && typeof pkg.name === 'string' && pkg.name.trim() !== '') dirs.push(dir);
+      if (pkg && typeof pkg.name === 'string' && pkg.name.trim() !== '') {
+        dirs.push(dir);
+        named.add(dir);
+      }
     } else if (MANIFEST_BASENAMES.has(base)) {
       dirs.push(dir);
+    } else if (base === 'Cargo.toml' && isCrate(repoPath, path)) {
+      crates.push(dir);
     }
   }
+  // A Tauri app's Rust half is built with the web package it sits in, into
+  // one app, so it is that package's and proposes no part of its own.
+  const tracked = new Set(paths);
+  for (const dir of crates) {
+    const parent = dir.includes('/') ? dir.slice(0, dir.lastIndexOf('/')) : '';
+    const tauri = TAURI_CONFIGS.some((name) => tracked.has(dir ? `${dir}/${name}` : name));
+    if (!(tauri && named.has(parent))) dirs.push(dir);
+  }
   return [...new Set(dirs)];
+}
+
+const TAURI_CONFIGS = ['tauri.conf.json', 'tauri.conf.json5', 'Tauri.toml'];
+
+// A Cargo.toml with a [package] is a crate; one with only a [workspace] is
+// the workspace around crates, as a package.json with no name is.
+function isCrate(repoPath, path) {
+  try {
+    const doc = parseToml(readFileSync(join(repoPath, path), 'utf8'));
+    return typeof doc.package?.name === 'string' && doc.package.name !== '';
+  } catch {
+    return false;
+  }
 }
 
 /**

@@ -1,0 +1,8 @@
+name: bake
+on: [workflow_dispatch]
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: godot --headless --script res://scripts/bake.gd

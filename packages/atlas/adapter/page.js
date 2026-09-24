@@ -241,8 +241,12 @@ export function orderDoors(doors) {
 // What the page calls an installed door, and the verb for what it starts.
 // A package whose entry is a command runs it on import, so it is no library;
 // a private member's command is installed only inside the package bundling it.
+// A Tauri app's binary is installed as the app, not typed as a command, and
+// a Godot project's main scene is what the engine runs.
 function installedAs(door) {
-  const what = door.kind !== 'package' ? (door.bundledInto?.length > 0 ? `a command bundled into ${list(door.bundledInto)}` : 'a command people run')
+  const what = door.app === 'desktop' ? 'the desktop app people install'
+    : door.app === 'game' ? 'what Godot runs'
+    : door.kind !== 'package' ? (door.bundledInto?.length > 0 ? `a command bundled into ${list(door.bundledInto)}` : 'a command people run')
     : door.runsCommand != null ? `the package's entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${door.runsCommand}` : 'runs a program as it loads'}; it is not a library`
     : door.extension ? (door.unpublished ? "the extension's entry, not published from here" : `the extension people install from ${registryList(door.publishedTo ?? [])}`)
       : door.unpublished ? "the package's entry, not published from here" : 'the package people import';
@@ -257,8 +261,19 @@ function markSharedNames(doors) {
   return doors.map((door) => (installed(door) && counts.get(door.name) > 1 ? { ...door, sharedName: true } : door));
 }
 
+// A game starts its main scene; a scene is not a program run on its own.
+/**
+ * A door's name at the start of a sentence: the game, which the page names
+ * as a noun and not by a name a person gave it, is capitalized there.
+ *
+ * @param {{ name: string, app?: string }} door
+ */
+export function leadName(door) {
+  return door.app === 'game' ? capitalize(door.name) : door.name;
+}
+
 function startVerb(door) {
-  return door.kind === 'package' ? 'loads' : 'runs';
+  return door.kind === 'package' ? 'loads' : door.app === 'game' ? 'starts' : 'runs';
 }
 
 // A job that commits only on one trigger still commits into the repository;
@@ -609,6 +624,8 @@ export function sendPhrases(door) {
   for (const repo of sends.dispatchesTo ?? []) phrases.push(`sends a dispatch to ${repo}`);
   const published = publishPhrase(sends);
   if (published) phrases.push(published);
+  // A Godot export builds the game for a platform, a release's asset.
+  if (sends.exports?.length > 0) phrases.push(`exports the game for ${list(sends.exports)}`);
   if (sends.releases) phrases.push('creates a GitHub release');
   if (sends.deploysPages) phrases.push('deploys the site');
   if (sends.opensIssues) phrases.push(sends.opensIssuesOnFailure ? 'opens an issue when it fails' : 'opens an issue');
@@ -675,7 +692,7 @@ const GATE_EVENTS = {
 
 // A gated job's send keys read back into the shape sendPhrases reads.
 function sendsFrom(keys) {
-  const sends = { dispatchesTo: [], packages: [], publishesTo: [] };
+  const sends = { dispatchesTo: [], exports: [], packages: [], publishesTo: [] };
   for (const key of keys ?? []) {
     const at = key.indexOf(':');
     if (at === -1) sends[key] = true;
@@ -859,7 +876,8 @@ function doorSteps(ctx, door) {
   const steps = [];
   const ran = shownRuns(door, 'executes');
   const checked = shownRuns(door, 'checks');
-  const subject = installed(door) ? `The ${door.extension ? 'extension' : door.kind} ${startVerb(door)}` : 'The workflow runs';
+  const noun = door.extension ? 'extension' : door.app === 'desktop' ? 'desktop app' : door.app === 'game' ? 'game' : door.kind;
+  const subject = installed(door) ? `The ${noun} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
   if (ran.length > 0) clauses.push(`${subject} ${runGroups(ctx, door, ran)}`);
   if (checked.length > 0) clauses.push(`${ran.length > 0 ? 'it' : 'The workflow'} checks ${runGroups(ctx, door, checked)}`);
@@ -981,7 +999,10 @@ function sequences(ctx, door) {
   const out = [];
   const held = heldRuns(door);
   const named = [...new Set((door.runs ?? []).filter((run) => !run.matched && run.runKind !== 'checks' && !held.has(run.path)).map((run) => run.path))].sort(cmp);
-  for (const path of named) {
+  // A scene the door starts runs the scripts it instances, which is where
+  // its order of work is.
+  const scripts = [...new Set(named.flatMap((path) => (/\.(?:tscn|scn)$/.test(path) ? (ctx.fileOf.get(path)?.importsFiles ?? []).filter((file) => file.endsWith('.gd')) : [path])))];
+  for (const path of scripts) {
     const file = ctx.fileOf.get(path);
     const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
     if (!root) continue;
@@ -1235,7 +1256,7 @@ function unreadCount(ctx) {
 function readsSection(ctx, main, groups) {
   const lines = ['## Who reads the results'];
   if ((main.landings ?? []).length === 0) {
-    lines.push(absence('writes', unreadCount(ctx), main.name));
+    lines.push(absence('writes', unreadCount(ctx), leadName(main)));
     return lines.join('\n\n');
   }
   const bullets = groups.map((group) => {
@@ -1684,14 +1705,28 @@ function untested(ctx) {
   const parts = ctx.boundaries.filter((boundary) => boundary.role === 'code'
     && (boundary.files ?? []).some((file) => isSourcePath(file.path) && !isTestMaterial(file.path)));
   const testedBy = Object.fromEntries(parts.map((boundary) => [boundary.name, boundary.testedBy ?? 0]));
-  if (testFiles === 0) return { items: [], note: ['No test files were found by name.'], testedBy, testFiles, spawned: [] };
+  if (testFiles === 0) return { items: [], note: ['No test files were found by name.'], testedBy, testFiles, spawned: [], inside: [] };
   const all = parts.filter((boundary) => (boundary.testedBy ?? 0) === 0)
     .map((boundary) => ({ part: boundary.name, partLabel: ctx.shown(boundary.name), testedBy: 0 }));
   // A part a test runs as a child process and none imports is touched, but
   // only by running it, so the page says how.
   const spawned = parts.filter((boundary) => boundary.testedThroughSpawn && (boundary.testedBy ?? 0) > 0).map((boundary) => boundary.name);
   const through = spawned.map((name) => spawnedLine(ctx.shown(name)));
-  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned };
+  // A part only the unit tests in its own files test is touched from inside.
+  const inside = parts.filter((boundary) => boundary.testedInside && (boundary.testedBy ?? 0) > 0).map((boundary) => boundary.name);
+  const within = inside.map((name) => insideLine(ctx.shown(name)));
+  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside };
+}
+
+/**
+ * What the page says of a part only the unit tests inside its own files test
+ * (a Rust #[cfg(test)] module).
+ *
+ * @param {string} partLabel
+ * @returns {string}
+ */
+export function insideLine(partLabel) {
+  return `${partLabel} is tested only by the unit tests in its own files.`;
 }
 
 /**
@@ -1705,7 +1740,7 @@ export function spawnedLine(partLabel) {
 }
 
 function untestedSection(found) {
-  const every = found.spawned.length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.';
+  const every = found.spawned.length > 0 || found.inside.length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.';
   const body = found.items.length > 0
     ? found.items.map((item) => `- **${item.partLabel}** is imported by no test.`).join('\n')
     : (found.testFiles === 0 ? null : every);
@@ -2052,6 +2087,10 @@ function startHere(ctx, main) {
   const named = new Set(runs.filter((run) => !run.matched).map((run) => run.path));
   const executed = new Set(runs.filter((run) => run.runKind !== 'checks').map((run) => run.path));
   const ran = shownRuns(main, 'executes').filter((path) => executed.has(path));
+  // A file a test runner runs for the unit tests it holds (cargo test and a
+  // #[cfg(test)] module) is a test's way in, as a test file is, not the
+  // door's entry.
+  const unitRun = (path) => !named.has(path) && ctx.fileOf.get(path)?.testsInside === true;
   const spelled = ran.filter((path) => named.has(path));
   const paths = (spelled.length > 0 ? spelled : ran).filter((path) => path.endsWith('/') || runsAsCode(path));
   const filesIn = (path) => depthZero.find((entry) => entry.boundary === runPart(ctx, path))?.files ?? 0;
@@ -2085,14 +2124,18 @@ function startHere(ctx, main) {
   // linter only reads is read, not followed, and a part a test reaches is
   // reached through the test (firstOf), never as the door's own entry.
   const executedParts = partsReached(ctx, filesOfRuns(ctx, ran).filter((path) => !isTestFile(path)));
+  // An entry the door only compiles or lints (cargo check of a crate's
+  // library), or runs only for the unit tests it holds, is read, not
+  // followed, as a file it only lints is.
+  const checkedOnly = new Set(runs.filter((run) => run.runKind === 'checks' && !executed.has(run.path)).map((run) => run.path));
   const partEntries = (main.reach ?? [])
     .filter((entry) => executedParts.has(entry.boundary))
     .map((entry) => entryFile(ctx.boundaries.find((boundary) => boundary.name === entry.boundary)))
-    .filter((path) => path != null && readable(path) && !isTestFile(path));
+    .filter((path) => path != null && readable(path) && !isTestFile(path) && !checkedOnly.has(path) && !unitRun(path));
   const drives = (path) => !path.endsWith('/') && !isTestFile(path) && (ctx.fileOf.get(path)?.importsFiles ?? []).length > 0;
   const helper = (path) => !path.endsWith('/') && !isTestFile(path) && (ctx.fileOf.get(path)?.importsFiles ?? []).length === 0;
   const candidates = [
-    ...ran.filter((path) => entries.has(path) && !isTestFile(path)).sort(byWidth),
+    ...ran.filter((path) => entries.has(path) && !isTestFile(path) && !unitRun(path)).sort(byWidth),
     ...spelled.filter(drives).sort(byWidth),
     ...[...new Set(partEntries)].sort((a, b) => Number(!imported.has(a)) - Number(!imported.has(b)) || byWidth(a, b)),
     // A helper that imports nothing comes after a test's way into the code.
@@ -2201,8 +2244,11 @@ function testsOnly(ctx, door) {
   const executed = new Set(startRuns(door).filter((run) => run.runKind !== 'checks').map((run) => run.path));
   const files = filesOfRuns(ctx, shownRuns(door, 'executes').filter((path) => executed.has(path))).filter(runsAsCode);
   if (files.length === 0) return (door.runs ?? []).length > 0 ? { checks: true } : null;
-  if (!files.some(isTestFile)) return null;
-  const helpers = files.filter((path) => !isTestFile(path));
+  // cargo test runs a file holding its own unit tests for those tests, and
+  // a GDScript suite is a test by what it extends.
+  const isTest = (path) => isTestFile(path) || ctx.fileOf.get(path)?.testsInside === true || ctx.fileOf.get(path)?.testSuite === true;
+  if (!files.some(isTest)) return null;
+  const helpers = files.filter((path) => !isTest(path));
   if (helpers.some((path) => (ctx.fileOf.get(path)?.importsFiles ?? []).length > 0)) return null;
   return { helpers: helpers.length > 0 };
 }
@@ -2386,6 +2432,14 @@ function limits(ctx, shownText) {
     const verb = outsideWrites + outsideReads === 1 ? 'goes' : 'go';
     lines.push(`${list(what)} ${verb} to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.`);
   }
+  // A Godot game's user:// is the player's own data directory, on their
+  // machine, never this repository.
+  const userWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.userDataWrites ?? 0), 0);
+  const userReads = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.userDataReads ?? 0), 0);
+  if (userWrites + userReads > 0) {
+    const what = [userWrites > 0 ? count(userWrites, 'write') : null, userReads > 0 ? count(userReads, 'read') : null].filter(Boolean);
+    lines.push(`${list(what)} ${userWrites + userReads === 1 ? 'goes' : 'go'} to the player's data directory (user://), not to this repository.`);
+  }
   // Most such commands are a test spawning the command it tests, which is
   // not a gap in what the repository does; the share in tests is said.
   const dynamicSpawns = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicSpawns ?? 0), 0);
@@ -2404,7 +2458,7 @@ function limits(ctx, shownText) {
     const recorded = new Set((door.runs ?? []).map((run) => run.path)).size;
     if ((door.runsCount ?? 0) <= recorded) continue;
     const verb = (door.checksCount ?? 0) > 0 ? 'runs or checks' : 'runs';
-    lines.push(`${door.name} ${verb} ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from those.`);
+    lines.push(`${leadName(door)} ${verb} ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from those.`);
   }
   const confidence = ctx.statistics.confidence;
   if (confidence?.level === 'low') {
@@ -2425,20 +2479,13 @@ function httpLines(ctx) {
 }
 
 /**
- * The apps the map reads none of and the deployments no workflow reaches
+ * The deployments no workflow reaches and what ships by hand
  * (core/unseen.js), each said as what the page cannot show.
  */
 function unseenLines(ctx) {
   const lines = [];
   for (const entry of ctx.structure.unseen ?? []) {
-    const where = entry.dir ? `under ${entry.dir}/` : 'at the repository root';
-    const what = entry.kind === 'tauri' ? 'a Tauri app' : 'a Rust crate';
-    // A workflow may build the Rust; the map still reads none of it.
-    if (entry.kind === 'tauri' || entry.kind === 'crate') {
-      lines.push(entry.built
-        ? `There is ${what} ${where} (${count(entry.rust, 'Rust file')}) that a workflow builds; the map reads no Rust, so what its Rust code does is not on this page.`
-        : `There is ${what} ${where} (${count(entry.rust, 'Rust file')}) that no workflow builds; the map reads no Rust, so what it does is not on this page.`);
-    } else if (entry.kind === 'deploy') {
+    if (entry.kind === 'deploy') {
       const files = entry.files ?? [];
       const dockerfiles = files.filter((path) => /(^|\/)(Dockerfile[^/]*|[^/]+\.Dockerfile)$/.test(path));
       const others = files.filter((path) => !dockerfiles.includes(path));
@@ -2541,7 +2588,7 @@ function summaryOf(document) {
   return text || null;
 }
 
-const LANGUAGE_NAMES = { javascript: 'JavaScript', python: 'Python', tsx: 'TypeScript', typescript: 'TypeScript' };
+const LANGUAGE_NAMES = { gdscript: 'GDScript', javascript: 'JavaScript', python: 'Python', rust: 'Rust', tsx: 'TypeScript', typescript: 'TypeScript' };
 // A command's name is what a reader types, so up to twelve are all named;
 // past that, ten are and the rest counted.
 const INSTALLED_ALL = 12;
@@ -2620,10 +2667,11 @@ function publishesSentence(ctx) {
 }
 
 // A package nothing here publishes is no package people import, and an
-// extension is installed, not imported.
-function installedNames(ctx, kind, { extension = false } = {}) {
+// extension is installed, not imported; a desktop app is installed, not run
+// by its name.
+function installedNames(ctx, kind, { extension = false, app = null } = {}) {
   const names = [...new Set(ctx.doors.filter((door) => door.kind === kind && !door.unpublished && Boolean(door.extension) === extension
-    && door.runsCommand == null && !(door.bundledInto?.length > 0)).map((door) => door.name))].sort(cmp);
+    && (door.app ?? null) === app && door.runsCommand == null && !(door.bundledInto?.length > 0)).map((door) => door.name))].sort(cmp);
   if (names.length <= INSTALLED_ALL) return list(names);
   return `${names.slice(0, INSTALLED_NAMED).join(', ')} and ${names.length - INSTALLED_NAMED} more`;
 }
@@ -2644,12 +2692,17 @@ function derivedLine(ctx, main) {
   if (packages) sentences.push(`People import ${packages}.`);
   const extensions = installedNames(ctx, 'package', { extension: true });
   if (extensions) sentences.push(`People install the ${extensions} extension.`);
+  const game = installedNames(ctx, 'command', { app: 'game' });
+  if (game) sentences.push(`People run ${game}.`);
+  const desktop = installedNames(ctx, 'command', { app: 'desktop' });
+  if (desktop) sentences.push(`People install the ${desktop} desktop ${desktop.includes(' and ') ? 'apps' : 'app'}.`);
   return sentences.join(' ');
 }
 
 function doorData(ctx, door) {
   if (door.parseError) return { file: door.file, id: doorKey(door), name: door.name, parseError: true };
   return {
+    ...(door.app ? { app: door.app } : {}),
     file: door.file,
     id: doorKey(door),
     ...(installed(door) ? { kind: door.kind } : {}),
@@ -2799,6 +2852,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     summary,
     summaryFrom: summary ? 'person' : null,
     ...(untestedParts.spawned.length > 0 ? { spawnTested: untestedParts.spawned } : {}),
+    ...(untestedParts.inside.length > 0 ? { testedInside: untestedParts.inside } : {}),
     testedBy: untestedParts.testedBy,
     testFiles: untestedParts.testFiles,
     unreadFiles: unreadCount(ctx),

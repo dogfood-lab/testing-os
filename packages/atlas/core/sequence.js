@@ -142,7 +142,12 @@ export function attachSequences({ files, facts, doors, entryPoints, entryFunctio
     // A file a tool's patterns selected is one of many the tool runs, not an
     // entry the door names, and a file a checker is handed is read, not run,
     // so the order of work of neither is read from here.
-    for (const run of door.runs) if (!run.matched && run.runKind !== 'checks' && facts.has(run.path)) seeds.add(run.path);
+    for (const run of door.runs) {
+      if (run.matched || run.runKind === 'checks') continue;
+      if (facts.has(run.path)) seeds.add(run.path);
+      // A scene the door starts runs the scripts it instances.
+      else if (SCENE.test(run.path)) for (const path of sceneScripts(files.get(run.path))) if (facts.has(path)) seeds.add(path);
+    }
   }
   const built = new Map();
   const build = (path) => {
@@ -183,6 +188,20 @@ export function attachSequences({ files, facts, doors, entryPoints, entryFunctio
       file.entryRule = result.entryRule;
     }
   }
+}
+
+const SCENE = /\.(?:tscn|scn)$/;
+
+/**
+ * The scripts a Godot scene instances, which run when it does: every
+ * GDScript file its [ext_resource] lines import.
+ *
+ * @param {{ imports?: unknown }} [file]
+ * @returns {string[]}
+ */
+export function sceneScripts(file) {
+  if (!Array.isArray(file?.imports)) return [];
+  return file.imports.filter((site) => site.resolved?.outcome === 'file' && site.resolved.path.endsWith('.gd')).map((site) => site.resolved.path);
 }
 
 function targetFiles(target, entryPoints) {

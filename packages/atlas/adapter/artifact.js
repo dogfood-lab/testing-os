@@ -60,6 +60,8 @@ function dynamicCounts(files) {
   let spawnsInTests = 0;
   let outsideReads = 0;
   let outsideWrites = 0;
+  let userDataReads = 0;
+  let userDataWrites = 0;
   for (const file of files) {
     spawns += file.dynamicSpawns ?? 0;
     if (isTestFile(file.path)) spawnsInTests += file.dynamicSpawns ?? 0;
@@ -68,8 +70,10 @@ function dynamicCounts(files) {
     writes += file.dynamicWrites ?? 0;
     outsideReads += file.outsideReads ?? 0;
     outsideWrites += file.outsideWrites ?? 0;
+    userDataReads += file.userDataReads ?? 0;
+    userDataWrites += file.userDataWrites ?? 0;
   }
-  return { outsideReads, outsideWrites, reads, spawns, spawnsInTests, writes };
+  return { outsideReads, outsideWrites, reads, spawns, spawnsInTests, userDataReads, userDataWrites, writes };
 }
 
 function resolvedFiles(file) {
@@ -102,10 +106,12 @@ function testReach(mapped) {
   const byPath = new Map(all.map((file) => [file.path, file]));
   const boundaryOf = new Map();
   for (const boundary of mapped.boundaries) for (const file of boundary.files) boundaryOf.set(file.path, boundary.name);
-  const tests = all.filter((file) => isTestFile(file.path));
+  // A GDScript test runner's suite is a test by what it extends.
+  const isTest = (file) => isTestFile(file.path) || file.testSuite === true;
+  const tests = all.filter(isTest);
   const byStem = new Map();
   for (const file of all) {
-    if (isTestFile(file.path) || !boundaryOf.has(file.path)) continue;
+    if (isTest(file) || !boundaryOf.has(file.path)) continue;
     const base = file.path.slice(file.path.lastIndexOf('/') + 1);
     const stem = base.includes('.') ? base.slice(0, base.lastIndexOf('.')) : base;
     if (!byStem.has(stem)) byStem.set(stem, []);
@@ -136,10 +142,21 @@ function testReach(mapped) {
     for (const part of byImport) imported.add(part);
     for (const part of new Set([...byImport, ...bySpawn])) testedBy.set(part, (testedBy.get(part) ?? 0) + 1);
   }
+  // A file that holds its own unit tests (a Rust #[cfg(test)] module) is a
+  // test of the part it is in, and a test file, though not one by name.
+  const inside = all.filter((file) => file.testsInside && !isTestFile(file.path) && boundaryOf.has(file.path));
+  const insideParts = new Set();
+  for (const file of inside) {
+    const part = boundaryOf.get(file.path);
+    insideParts.add(part);
+    testedBy.set(part, (testedBy.get(part) ?? 0) + 1);
+  }
   // A part no test imports that a test runs as a child process is touched
-  // only through that spawn, which the page says.
-  const throughSpawn = new Set([...testedBy.keys()].filter((part) => !imported.has(part)));
-  return { testFiles: tests.length, testedBy, throughSpawn };
+  // only through that spawn, which the page says, and so is one only the
+  // unit tests in its own files test.
+  const throughSpawn = new Set([...testedBy.keys()].filter((part) => !imported.has(part) && !insideParts.has(part)));
+  const testedInside = new Set([...insideParts].filter((part) => !imported.has(part)));
+  return { testFiles: tests.length + inside.length, testedBy, throughSpawn, testedInside };
 }
 
 // A boundary file may leave a role out; the role is then derived from the
@@ -155,6 +172,8 @@ export function buildArtifact(mapped, commit) {
       ...(sites.outside > 0 ? { outsideImports: sites.outside } : {}),
       ...(dynamic.outsideReads > 0 ? { outsideReads: dynamic.outsideReads } : {}),
       ...(dynamic.outsideWrites > 0 ? { outsideWrites: dynamic.outsideWrites } : {}),
+      ...(dynamic.userDataReads > 0 ? { userDataReads: dynamic.userDataReads } : {}),
+      ...(dynamic.userDataWrites > 0 ? { userDataWrites: dynamic.userDataWrites } : {}),
     };
     return {
       ...named,
@@ -172,6 +191,7 @@ export function buildArtifact(mapped, commit) {
       origin: boundary.origin,
       role: boundary.role ?? roleFor(files.map((file) => file.path), { manifest: boundary.holdsManifest === true }),
       testedBy: tested.testedBy.get(boundary.name) ?? 0,
+      ...(tested.testedInside.has(boundary.name) ? { testedInside: true } : {}),
       ...(tested.throughSpawn.has(boundary.name) ? { testedThroughSpawn: true } : {}),
       unresolvedSites: sites.unresolved,
     };
@@ -210,6 +230,8 @@ function carryFile(file) {
   // with the construct the parser stopped on when it is one of the known ones.
   if (file.parseError) out.parseError = true;
   if (file.noStatements) out.noStatements = true;
+  if (file.testsInside) out.testsInside = true;
+  if (file.testSuite) out.testSuite = true;
   if (file.reexportsOnly) out.reexportsOnly = true;
   if (file.constantOnly) out.constantOnly = true;
   if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
@@ -305,8 +327,7 @@ function carryReader(entry) {
 
 function carryUnseen(entry) {
   if (entry.kind === 'deploy') return { files: [...entry.files], kind: entry.kind };
-  if (entry.kind === 'shipped') return { items: entry.items.map((item) => ({ kind: item.kind, path: item.path })), kind: entry.kind };
-  return { built: entry.built, dir: entry.dir, kind: entry.kind, rust: entry.rust };
+  return { items: entry.items.map((item) => ({ kind: item.kind, path: item.path })), kind: entry.kind };
 }
 
 // A run always says whether the door runs the file or only checks it; it
@@ -329,6 +350,7 @@ function carryDoor(door) {
   if (door.parseError) return { file: door.file, name: door.name, parseError: true };
   return {
     ...(door.kind ? { kind: door.kind } : {}),
+    ...(door.app ? { app: door.app } : {}),
     ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
     ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),
@@ -358,6 +380,7 @@ function carryDoor(door) {
     sends: {
       ...(door.sends.changesRepositories ? { changesRepositories: true } : {}),
       deploysPages: door.sends.deploysPages,
+      ...(door.sends.exports?.length > 0 ? { exports: [...door.sends.exports] } : {}),
       dispatchesTo: [...door.sends.dispatchesTo],
       ...(door.sends.packages?.length > 0 ? { packages: door.sends.packages.map((entry) => ({ ...entry })) } : {}),
       opensIssues: door.sends.opensIssues,

@@ -8,16 +8,21 @@ import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
-import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
+import { declaredEntries, deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
-import { languageOf } from './languages.js';
+import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
 import { walkReach } from './reach.js';
 import { attachResolution, emittedFiles, registerBuilds, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
 import { storedBytes, textAttributes } from './text.js';
+import { rustImports, rustPaths, rustSequence, settleRustPaths } from './rust.js';
+import { cargoProject, owningCrate } from './cargo.js';
 import { unseenParts } from './unseen.js';
+import { godotResourceReadings, gdscriptReadings, settleGodotPaths } from './gdscript.js';
+
+const GODOT_TEXT = /\.(?:tscn|tres)$/;
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
 
@@ -26,6 +31,8 @@ const GRAMMAR_FILE = {
   typescript: 'tree-sitter-typescript.wasm',
   tsx: 'tree-sitter-tsx.wasm',
   python: 'tree-sitter-python.wasm',
+  rust: 'tree-sitter-rust.wasm',
+  gdscript: 'tree-sitter-gdscript.wasm',
 };
 
 // Grammars load when this module evaluates, once per process, and every
@@ -121,11 +128,12 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const scripts = pythonScripts(repoPath, trackedSet);
   const commands = manifestCommands(repoPath, trackedSet, scripts);
   const manifests = repositoryManifests(repoPath, trackedSet);
+  const crates = declaredEntries(repoPath, trackedSet);
   for (const boundary of boundaryList) {
     boundary.files.sort(byPath);
     boundary.holdsManifest = boundary.files.some((file) => manifests.includes(file.path));
     boundary.parseErrors = boundary.files.filter((file) => file.parseError).length;
-    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts, commands });
+    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts, commands, crates });
   }
   unassigned.sort(byPath);
   overlaps.sort(byPath);
@@ -139,15 +147,19 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     overlaps,
     tracked: tracked.regular,
   });
+  const project = cargoProject(repoPath, trackedSet);
+  settleRustPaths({ files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places, crateDirOf: (path) => owningCrate(project, path)?.dir ?? null });
+  settleGodotPaths({ repoPath, tracked: trackedSet, files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places });
   settleHelperPaths([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]);
   settleParamPaths([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places);
   settleSpawnHelpers([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], spawned);
 
   const builtFrom = (path) => (trackedSet.has(path) ? null : resolveDeclaredPath(repoPath, path, trackedSet));
   const emitted = () => emittedFiles(repoPath, trackedSet);
+  const unitTests = new Set([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps].filter((file) => file.testsInside).map((file) => file.path));
   const doors = settleInstalled([
-    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
-    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
+    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests }),
+    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests }),
   ], [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], repoPath, trackedSet);
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
@@ -224,13 +236,14 @@ function rootManifest(repoPath, tracked) {
 
 /**
  * The manifests at the top of the tree that name and configure the project as
- * a whole: a package.json with a name, pyproject.toml, Cargo.toml or go.mod.
+ * a whole: a package.json with a name, pyproject.toml, Cargo.toml, go.mod or
+ * a Godot project.godot.
  * A package.json with no name is a workspace shell or a tool's settings, not a
  * project's manifest. A manifest further down belongs to one package of the
  * repository, such as a docs site, and says nothing about the part it is in.
  */
 function repositoryManifests(repoPath, tracked) {
-  const found = ['pyproject.toml', 'Cargo.toml', 'go.mod'].filter((path) => tracked.has(path));
+  const found = ['pyproject.toml', 'Cargo.toml', 'go.mod', 'project.godot'].filter((path) => tracked.has(path));
   if (tracked.has('package.json')) {
     try {
       const pkg = JSON.parse(readFileSync(join(repoPath, 'package.json'), 'utf8'));
@@ -401,6 +414,9 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   const bytes = storedBytes(readFileSync(join(repoPath, path)), attributes);
   const hash = createHash('sha256').update(bytes).digest('hex');
   const language = languageOf(path);
+  // A scene or resource Godot saves as text names what it instances and
+  // reads line by line, read as text by rule (core/gdscript.js).
+  if (language == null && GODOT_TEXT.test(path)) return { path, hash, language: null, ...godotResourceReadings(bytes.toString('utf8')), ...noLandings() };
   if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };
   const extracted = parseFile(language, path, bytes.toString('utf8'), places);
   if (extracted.parseError) {
@@ -422,7 +438,9 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   // Read once imports resolve, then dropped (core/spawned.js settleSpawnHelpers).
   const helpers = Object.keys(extracted.spawned.helpers ?? {}).length > 0 ? { spawnHelpers: extracted.spawned.helpers } : {};
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts };
+  // Read once every file and manifest is known, then dropped (core/rust-modules.js).
+  const native = extracted.native ?? {};
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts, ...native };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -436,7 +454,7 @@ function parseFile(language, path, original, places) {
   try {
     parser.setLanguage(languages[language]);
     tree = parser.parse(source);
-    if (tree != null && tree.rootNode.hasError && language !== 'python') {
+    if (tree != null && tree.rootNode.hasError && SCRIPT_LANGUAGES.has(language)) {
       const repaired = repairSource(source, (text) => parser.parse(text));
       if (repaired) {
         tree.delete();
@@ -450,6 +468,7 @@ function parseFile(language, path, original, places) {
   if (tree == null) return { parseError: true, imports: [] };
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [], unreadSyntax: unreadSyntax(tree.rootNode, source) };
+    if (!SCRIPT_LANGUAGES.has(language) && language !== 'python') return nativeReadings(language, tree.rootNode);
     const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode), ...typeSites];
     return {
       imports,
@@ -466,6 +485,29 @@ function parseFile(language, path, original, places) {
   } finally {
     tree.delete();
   }
+}
+
+// What a file of a language compiled or run by its own engine (Rust,
+// GDScript) holds, read from its tree. `native` is what the file carries
+// past its imports: testsInside, for a file holding its own unit tests, and
+// what resolution reads once every file is known and then drops.
+function nativeReadings(language, root) {
+  const rust = language === 'rust' ? { ...rustImports(root), paths: rustPaths(root) } : null;
+  const gd = language === 'gdscript' ? gdscriptReadings(root) : null;
+  return {
+    imports: rust ? rust.imports : gd ? gd.imports : [],
+    ...(gd ? { native: { godot: gd.godot, ...(gd.testSuite ? { testSuite: true } : {}) } } : {}),
+    ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}), ...(rust.paths.length > 0 ? { rustPaths: rust.paths } : {}), ...(rust.tests ? { testsInside: true } : {}) } } : {}),
+    landings: noLandings(),
+    sequence: rust ? rustSequence(root, rust.imports) : gd ? gd.sequence : { functions: [], topLevel: [], reexports: [] },
+    spawned: { commands: [], built: 0 },
+    githubChanges: 0,
+    noStatements: statementless(root),
+    startsOnLoad: false,
+    holds: null,
+    http: null,
+    builds: [],
+  };
 }
 
 // typeof import(…) in a type, and import(…).T[], which the vendored grammar
@@ -692,8 +734,9 @@ function comparisons(text, root) {
 }
 
 // A module with nothing but comments, or a Python docstring, runs nothing.
+// Rust names its comments line_comment and block_comment.
 function statementless(root) {
-  const statements = root.namedChildren.filter((child) => child.type !== 'comment');
+  const statements = root.namedChildren.filter((child) => !/comment$/.test(child.type));
   if (statements.length === 0) return true;
   return statements.length === 1 && statements[0].type === 'expression_statement' && statements[0].namedChildren[0]?.type === 'string';
 }

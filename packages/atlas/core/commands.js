@@ -2,6 +2,8 @@ import { readFileSync } from 'node:fs';
 import { join as joinFs, posix } from 'node:path';
 import picomatch from 'picomatch';
 import { parse as parseYaml } from 'yaml';
+import { cargoProject, owningCrate } from './cargo.js';
+import { godotProjects, projectOf, resPath } from './godot.js';
 import { isCodePath } from './languages.js';
 import { wheelPackages } from './python-manifest.js';
 import { storedText } from './text.js';
@@ -117,8 +119,10 @@ const VALUE_SETS = Object.fromEntries(Object.entries(VALUES).map(([tool, flags])
  * that runs dist/cli.js runs the CLI src/cli.ts is built into. emitted is
  * every path the build emits, with its source (core/resolve.js
  * emittedFiles), which a glob over the build's output is matched against.
+ * unitTests is every Rust file that holds its own unit tests, which cargo
+ * test runs with the crate's test targets.
  */
-export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null, emitted = () => new Map() }) {
+export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null, emitted = () => new Map(), unitTests = new Set() }) {
   const dirs = new Set(['']);
   // The commands the repository installs, by the name a step types.
   const installed = new Map();
@@ -132,12 +136,14 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
   const under = new Map();
   let members = null;
   const view = {
+    repoPath,
     tracked,
     dirs,
     spawned,
     installed,
     commands,
     builtFrom,
+    unitTests,
     text(path) {
       if (!tracked.has(path)) return null;
       if (!texts.has(path)) {
@@ -1251,6 +1257,104 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const name = baseName(argv[0]);
       wrapped(argv, 1, dir, frame, VALUE_SETS[name] ?? new Set(), { assignments: name === 'env', count: name === 'timeout', chdir: name === 'env' ? ['-C', '--chdir'] : [] });
     },
+    /**
+     * cargo, by subcommand, over the packages it selects (cargoPackages):
+     * test and nextest run each test target and every file holding unit
+     * tests; run and bench run the binary or benches they name; build,
+     * check, clippy, doc, fmt and install compile the targets and run none
+     * of them. tauri hands on to the Tauri CLI.
+     */
+    cargo(argv, dir, frame) {
+      let i = 1;
+      let cwd = dir;
+      if (argv[i]?.startsWith('+')) i += 1;
+      for (; i < argv.length && argv[i].startsWith('-'); i += 1) {
+        if (argv[i] === '-C' && argv[i + 1] != null) cwd = cleanDir(posix.join(cwd || '.', argv[++i])) ?? cwd;
+        else if (CARGO_VALUE_FLAGS.has(argv[i])) i += 1;
+      }
+      const sub = CARGO_ALIASES[argv[i]] ?? argv[i];
+      if (sub == null || cwd == null) return;
+      if (sub === 'tauri') {
+        handlers.tauri(['tauri', ...argv.slice(i + 1)], cwd, frame);
+        return;
+      }
+      const end = argv.indexOf('--', i + 1);
+      const parsed = split(end === -1 ? argv : argv.slice(0, end), sub === 'nextest' ? i + 2 : i + 1, CARGO_VALUE_FLAGS);
+      const packages = cargoPackages(repo, cwd, parsed);
+      const chain = via(frame, `cargo ${sub}`);
+      const targets = (crate) => cargoTargets(repo, crate, sub, parsed);
+      if (sub === 'test' || (sub === 'nextest' && argv[i + 1] === 'run')) {
+        const files = packages.flatMap((crate) => targets(crate));
+        for (const entry of repo.compact([...new Set(files)])) record(stamp({ ...entry, matched: true }, frame, chain));
+      } else if (sub === 'run') {
+        for (const crate of packages) {
+          const bin = runBinary(crate, valueOf(parsed, '--bin'));
+          if (bin) record(stamp({ path: bin.path }, frame));
+        }
+      } else if (sub === 'bench') {
+        for (const path of packages.flatMap((crate) => crate.benches)) record(stamp({ path, matched: true }, frame, chain));
+      } else if (CARGO_CHECKS.has(sub)) {
+        const checks = { ...frame, runKind: 'checks' };
+        for (const path of [...new Set(packages.flatMap((crate) => targets(crate)))]) record(stamp({ path, matched: true }, checks, chain));
+      }
+    },
+    /**
+     * The Tauri CLI's build and dev compile the app's Rust half, which a
+     * build only compiles and dev runs, after the command tauri.conf.json
+     * names to build or serve the web half, run from the directory the web
+     * half is in.
+     */
+    tauri(argv, dir, frame) {
+      const sub = ['android', 'ios'].includes(argv[1]) ? argv[2] : argv[1];
+      if (sub !== 'build' && sub !== 'dev') return;
+      const app = tauriApp(repo, dir);
+      if (!app) return;
+      const chain = via(frame, `tauri ${sub}`);
+      const before = app.config?.build?.[sub === 'build' ? 'beforeBuildCommand' : 'beforeDevCommand'];
+      const script = typeof before === 'string' ? before : typeof before?.script === 'string' ? before.script : null;
+      const at = typeof before?.cwd === 'string' ? cleanDir(posix.join(app.web || '.', before.cwd)) : app.web;
+      if (script && at != null) read(script, at, { level: 1, via: chain, active: frame.active, installed: frame.installed });
+      if (!app.crate) return;
+      const kind = sub === 'build' ? { ...frame, runKind: 'checks' } : frame;
+      const roots = [...app.crate.bins.map((bin) => bin.path), ...(sub === 'build' && app.crate.lib ? [app.crate.lib.path] : [])];
+      for (const path of roots) record(stamp({ path, matched: true }, kind, chain));
+    },
+    /**
+     * Godot, from the project --path names or the directory it runs in: a
+     * script --script (or -s) names runs, one GUT's runner (-gdir, -gtest)
+     * or gdUnit4's (-a) is handed runs its tests; a scene named on the line,
+     * or with nothing else asked of it the project's main scene, runs as the
+     * game does. --check-only parses the script and runs none of it, and
+     * --import and an export run no script (an export is a send,
+     * core/doors.js).
+     */
+    godot(argv, dir, frame) {
+      const parsed = split(argv, 1, GODOT_VALUE_FLAGS);
+      const at = valueOf(parsed, '--path') != null ? pathFrom(dir, valueOf(parsed, '--path')) : dir;
+      if (at == null) return;
+      const projects = godotProjects(repo.repoPath, repo.tracked);
+      const project = projects.find((entry) => entry.dir === at) ?? projectOf(projects, at ? `${at}/x` : 'x');
+      const place = (text) => (text.startsWith('res://') ? resPath(project, text, repo.tracked) : [pathFrom(at, text), pathFrom(dir, text)].find((path) => path != null && repo.tracked.has(path)) ?? null);
+      const script = valueOf(parsed, '--script', '-s');
+      const exporting = ['--export-release', '--export-debug', '--export-pack'].some((flag) => parsed.values.has(flag));
+      if (exporting || parsed.flags.has('--import') || parsed.flags.has('--editor') || parsed.flags.has('-e') || parsed.flags.has('--version') || parsed.flags.has('--help')) return;
+      const checks = parsed.flags.has('--check-only') ? { ...frame, runKind: 'checks' } : frame;
+      if (script != null) {
+        const path = place(script);
+        if (path) record(stamp({ path }, checks));
+        const base = path ? posix.basename(path) : posix.basename(script);
+        const runner = base === 'gut_cmdln.gd' ? 'gut' : /^GdUnitCmdTool\.gd$/i.test(base) ? 'gdUnit4' : null;
+        if (runner) matched(repo.compact(godotTests(repo, project, runner, argv, place)), frame, runner);
+        return;
+      }
+      const scene = parsed.positional.map(place).find((path) => path != null && /\.t?scn$/.test(path)) ?? project?.mainScene ?? null;
+      if (scene) record(stamp({ path: scene }, frame));
+    },
+    // gdlint and gdformat read the scripts they are handed and run none.
+    gdtoolkit(argv, dir, frame) {
+      const checks = { ...frame, runKind: 'checks' };
+      for (const token of argv.slice(1)) if (!token.startsWith('-')) file(token, dir, checks, { directories: true });
+    },
     none() {},
   };
 
@@ -1259,6 +1363,160 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     program: (path, frame) => file(path, '', frame, { script: true }),
     container: (context, dockerfile, dir, frame) => readContainer(context, dockerfile, dir, frame),
   };
+}
+
+const GODOT_BINARY = /^godot(?:[\d.]*|_v[\w.-]+)(?:\.exe)?$/i;
+// The flags Godot takes a value after, written apart; GUT and gdUnit4 read
+// their own after the script.
+const GODOT_VALUE_FLAGS = new Set(['--path', '--script', '-s', '--main-pack', '--render-thread', '--remote-debug', '--position', '--resolution', '--screen', '--display-driver', '--rendering-driver', '--audio-driver', '--xr-mode', '--log-file', '--quit-after', '--export-release', '--export-debug', '--export-pack', '--frame-delay', '--time-scale', '--fixed-fps', '--write-movie', '-a', '--add', '-i', '--ignore', '-c', '--config']);
+
+// The flags cargo and its subcommands take a value after, written apart.
+const CARGO_VALUE_FLAGS = new Set([
+  '-C', '-Z', '--config', '--color', '-p', '--package', '--manifest-path', '--bin', '--test', '--example', '--bench', '--target',
+  '--target-dir', '-F', '--features', '-j', '--jobs', '--profile', '--exclude', '--message-format', '--lockfile-path',
+]);
+const CARGO_ALIASES = { b: 'build', c: 'check', t: 'test', r: 'run', d: 'doc' };
+// The subcommands that compile what they select and run none of it.
+const CARGO_CHECKS = new Set(['build', 'check', 'clippy', 'doc', 'fmt', 'install']);
+
+/**
+ * The test files a Godot test runner is handed: GUT's -gdir directories
+ * (test_*.gd in each, and under it with -ginclude_subdirs) and -gtest files,
+ * and gdUnit4's -a paths, a suite being a script that extends
+ * GdUnitTestSuite.
+ */
+function godotTests(repo, project, runner, argv, place) {
+  const out = [];
+  const under = (dir, deep) => repo.filesUnder(dir).filter((path) => path.endsWith('.gd') && (deep || posix.dirname(path) === dir));
+  const directory = (value) => {
+    if (project == null) return null;
+    const rest = posix.normalize(value.replace(/^res:\/\//, '').replace(/\/+$/, '') || '.');
+    if (rest === '..' || rest.startsWith('../')) return null;
+    const path = project.dir ? (rest === '.' ? project.dir : `${project.dir}/${rest}`) : rest === '.' ? '' : rest;
+    return path === '' || repo.dirs.has(path) ? path : null;
+  };
+  if (runner === 'gut') {
+    const deep = argv.includes('-ginclude_subdirs');
+    for (const arg of argv) {
+      const option = /^-(gdir|gtest)=(.*)$/.exec(arg);
+      if (!option) continue;
+      for (const value of option[2].split(',').filter(Boolean)) {
+        if (option[1] === 'gtest') {
+          const found = place(value);
+          if (found) out.push(found);
+          continue;
+        }
+        const dir = directory(value);
+        if (dir != null) out.push(...under(dir, deep).filter((path) => posix.basename(path).startsWith('test_')));
+      }
+    }
+    return out;
+  }
+  for (let i = 0; i < argv.length; i += 1) {
+    if (argv[i] !== '-a' && argv[i] !== '--add') continue;
+    const value = argv[i + 1] ?? '';
+    const found = place(value);
+    const dir = found ? null : directory(value);
+    const candidates = found ? [found] : dir != null ? under(dir, true) : [];
+    out.push(...candidates.filter((path) => /\bextends\s+GdUnitTestSuite\b/.test(repo.text(path) ?? '')));
+  }
+  return out;
+}
+
+/**
+ * The crates a cargo command works on, as cargo selects them: those -p
+ * names, every member for --workspace (or --all) less --exclude, and
+ * otherwise the package whose manifest the command finds from where it runs
+ * (--manifest-path, or the nearest Cargo.toml above), or at a virtual
+ * workspace's root its default members, all of them when it names none.
+ */
+function cargoPackages(repo, dir, parsed) {
+  const project = cargoProject(repo.repoPath, repo.tracked);
+  const named = parsed.values.get('--manifest-path')?.[0];
+  let manifest = named != null ? pathFrom(dir, named) : null;
+  for (let at = dir; manifest == null; at = at.includes('/') ? at.slice(0, at.lastIndexOf('/')) : '') {
+    const candidate = at ? `${at}/Cargo.toml` : 'Cargo.toml';
+    if (repo.tracked.has(candidate)) manifest = candidate;
+    else if (at === '') break;
+  }
+  if (manifest == null) return [];
+  const here = project.crates.find((crate) => crate.manifest === manifest) ?? null;
+  const workspace = project.workspaces.find((entry) => entry.manifest === (here ? here.workspace : manifest)) ?? null;
+  const members = workspace ? project.crates.filter((crate) => crate.workspace === workspace.manifest) : here ? [here] : [];
+  const names = [...(parsed.values.get('-p') ?? []), ...(parsed.values.get('--package') ?? [])];
+  if (names.length > 0) return project.crates.filter((crate) => names.includes(crate.name) && (members.length === 0 || members.includes(crate)));
+  if (parsed.flags.has('--workspace') || parsed.flags.has('--all')) {
+    const excluded = parsed.values.get('--exclude') ?? [];
+    return members.filter((crate) => !excluded.includes(crate.name));
+  }
+  if (here) return [here];
+  if (workspace && workspace.defaults.length > 0) {
+    const isDefault = picomatch(workspace.defaults);
+    return members.filter((crate) => isDefault(crate.dir));
+  }
+  return members;
+}
+
+/**
+ * The files a cargo subcommand compiles or runs of one crate: for test,
+ * its test targets and every file of the crate holding unit tests; for the
+ * commands that only compile, its library and binaries, and its tests,
+ * examples and benches too with --all-targets. --lib, --bin and --test
+ * narrow either to the target they name.
+ */
+function cargoTargets(repo, crate, sub, parsed) {
+  const owned = (path) => owningCrate(cargoProject(repo.repoPath, repo.tracked), path) === crate;
+  const bin = parsed.values.get('--bin') ?? [];
+  const tests = parsed.values.get('--test') ?? [];
+  const narrowed = parsed.flags.has('--lib') || bin.length > 0 || tests.length > 0;
+  const lib = crate.lib && (!narrowed || parsed.flags.has('--lib')) ? [crate.lib.path] : [];
+  const bins = crate.bins.filter((entry) => (narrowed ? bin.includes(entry.name) : true)).map((entry) => entry.path);
+  const named = crate.tests.filter((path) => tests.includes(posix.basename(path).replace(/\.rs$/, '')) || tests.includes(posix.basename(posix.dirname(path))));
+  if (sub === 'test' || sub === 'nextest') {
+    const units = !narrowed || parsed.flags.has('--lib') ? [...repo.unitTests].filter(owned) : [];
+    return [...(narrowed ? named : crate.tests), ...units].sort();
+  }
+  if (sub === 'fmt') return [...(crate.lib ? [crate.lib.path] : []), ...crate.bins.map((entry) => entry.path), ...crate.tests, ...crate.examples, ...crate.benches];
+  const all = parsed.flags.has('--all-targets');
+  return [
+    ...lib,
+    ...bins,
+    ...(narrowed ? named : all || parsed.flags.has('--tests') ? crate.tests : []),
+    ...(all || parsed.flags.has('--examples') ? crate.examples : []),
+    ...(all || parsed.flags.has('--benches') ? crate.benches : []),
+  ];
+}
+
+// The binary cargo run starts: the one --bin names, the one default-run
+// names, or the package's only one.
+function runBinary(crate, name) {
+  if (name != null) return crate.bins.find((bin) => bin.name === name) ?? null;
+  return crate.bins.find((bin) => bin.name === crate.defaultRun) ?? (crate.bins.length === 1 ? crate.bins[0] : null);
+}
+
+/**
+ * The Tauri app the Tauri CLI finds from a directory: tauri.conf.json (or
+ * Tauri.toml) in its src-tauri/ or in the directory itself, the crate beside
+ * it, and the directory the web half is built in, the one the CLI runs from.
+ */
+function tauriApp(repo, dir) {
+  const join = (...parts) => parts.filter(Boolean).join('/');
+  for (const confDir of [join(dir, 'src-tauri'), dir]) {
+    const conf = ['tauri.conf.json', 'tauri.conf.json5', 'Tauri.toml'].map((name) => join(confDir, name)).find((path) => repo.tracked.has(path));
+    if (!conf) continue;
+    let config = null;
+    if (conf.endsWith('.json')) {
+      try {
+        config = JSON.parse(repo.text(conf) ?? 'null');
+      } catch {
+        config = null;
+      }
+    }
+    const crate = cargoProject(repo.repoPath, repo.tracked).crates.find((entry) => entry.dir === confDir) ?? null;
+    const parent = dir.includes('/') ? dir.slice(0, dir.lastIndexOf('/')) : '';
+    return { crate, config, web: confDir === dir && posix.basename(dir) === 'src-tauri' ? parent : dir };
+  }
+  return null;
 }
 
 /**
@@ -1338,6 +1596,9 @@ function stamp(entry, frame, via = frame.via) {
 function toolOf(word) {
   if (typeof word !== 'string' || word === '') return null;
   const name = word.includes('/') ? word.slice(word.lastIndexOf('/') + 1) : word;
+  // Godot is a binary a job downloads and runs by its path, ~/godot/godot or
+  // Godot_v4.7-stable_linux.x86_64; it is never a file of the repository.
+  if (GODOT_BINARY.test(name)) return 'godot';
   // A path to a tool's binary is the tool; a path to a tracked file is not.
   if (word.includes('/') && !word.includes('node_modules/.bin/')) return null;
   if (name === 'node' || name === 'nodejs') return 'node';
@@ -1351,7 +1612,10 @@ function toolOf(word) {
   if (name === 'pyinstaller') return 'pyinstaller';
   if (name === 'poetry' || name === 'flit' || name === 'pdm') return name === 'poetry' ? 'poetry' : 'pybuild';
   if (name === 'gmake') return 'make';
-  if (['tox', 'cargo'].includes(name)) return 'none';
+  if (name === 'tox') return 'none';
+  if (name === 'gdlint' || name === 'gdformat') return 'gdtoolkit';
+  if (name === 'cargo') return 'cargo';
+  if (name === 'tauri') return 'tauri';
   const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro', 'vite'];
   return known.includes(name) ? name : null;
 }

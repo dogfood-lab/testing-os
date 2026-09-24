@@ -32,7 +32,7 @@ const CONTENT_READS = new Set(['readFileSync', 'readFile', 'createReadStream', '
 // writes nothing into it, so it says only that the file writes somewhere
 // there: evidence that stands when nothing else the file writes is placed
 // inside it, and is dropped when something is.
-const DIRECTORY_MAKERS = new Set(['mkdirSync', 'mkdir', 'os.makedirs', 'os.mkdir']);
+const DIRECTORY_MAKERS = new Set(['mkdirSync', 'mkdir', 'os.makedirs', 'os.mkdir', 'create_dir_all', 'create_dir']);
 const JS_OPEN = new Set(['open', 'openSync']);
 const NETWORK = new Set(['fetch', 'get']);
 const JS_PATH_MODULES = new Set(['path', 'posix', 'win32', 'path.posix', 'path.win32']);
@@ -1221,6 +1221,39 @@ function landingEntry(target, call, value, places) {
   if (value.anchor == null && !value.rooted) entry.relative = true;
   if (value.anchor === 'file' && !value.open) entry.fixed = true;
   return entry;
+}
+
+/**
+ * The landings a reader of another language (core/rust.js, core/gdscript.js)
+ * found, placed as the JavaScript and Python readings place theirs: each
+ * value a { text, open, anchor? } path, anchor file for one fixed to a
+ * place of this repository and none for one relative to where the code
+ * runs. A place the caller decides is counted by the reader, never passed
+ * here. Returns the file's writes and reads with these added, and how many
+ * sites named no place (built at run time).
+ *
+ * @param {{ writes?: object[], reads?: object[] }} file
+ * @param {Array<{ kind: 'write'|'read', call: string, values: Array<{ text: string, open: boolean, anchor?: 'file' }> }>} sites
+ * @param {{ files: Set<string>, dirs: Set<string> }} places
+ * @returns {{ writes: object[], reads: object[], dynamicWrites: number, dynamicReads: number }}
+ */
+export function placeLandings(file, sites, places) {
+  const found = { writes: [...(file.writes ?? [])], reads: [...(file.reads ?? [])], dynamicWrites: 0, dynamicReads: 0 };
+  for (const site of sites) {
+    const list = site.kind === 'write' ? found.writes : found.reads;
+    const before = list.length;
+    for (const value of site.values) {
+      const target = shapedLikeNothing(value, site.call, places) ? shapedTarget(value) : site.kind === 'write' ? writtenPlace(value, places) : landingOf(value, places);
+      if (target != null) list.push(landingEntry(target, site.call, value, places));
+    }
+    if (list.length === before) found[site.kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
+  }
+  return {
+    writes: sortEntries(withoutRedundantDirectories(found.writes, places)),
+    reads: sortEntries(found.reads),
+    dynamicWrites: found.dynamicWrites,
+    dynamicReads: found.dynamicReads,
+  };
 }
 
 /**

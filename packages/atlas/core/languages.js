@@ -13,7 +13,14 @@ export const LANGUAGE_BY_EXT = new Map([
   ['.cts', 'typescript'],
   ['.tsx', 'tsx'],
   ['.py', 'python'],
+  ['.rs', 'rust'],
+  ['.gd', 'gdscript'],
 ]);
+
+// The languages read with a JavaScript grammar, whose readings (spawned
+// commands, HTTP calls, bundler calls, what a module holds) are written for
+// that grammar's trees.
+export const SCRIPT_LANGUAGES = new Set(['javascript', 'typescript', 'tsx']);
 
 export function languageOf(path) {
   return LANGUAGE_BY_EXT.get(extname(path).toLowerCase()) ?? null;
