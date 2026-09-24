@@ -1,0 +1,14 @@
+name: render
+on:
+  schedule:
+    - cron: '0 8 * * 1'
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/changelog.mjs
+      - run: |
+          git add CHANGELOG.md
+          git commit -m "render"
+          git push --force origin HEAD:refs/heads/render

@@ -1,0 +1,17 @@
+name: sync logos
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/sync.mjs
+      - run: |
+          BRANCH=auto/sync-logos
+          git checkout -B "$BRANCH"
+          git add logos/
+          git commit -m "sync logos"
+          git push --force-with-lease="$BRANCH" -u origin "$BRANCH"
+          gh pr create --head "$BRANCH" --title "Sync logos"

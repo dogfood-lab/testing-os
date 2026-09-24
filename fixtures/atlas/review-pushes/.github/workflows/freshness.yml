@@ -1,0 +1,15 @@
+name: freshness
+on:
+  schedule:
+    - cron: '0 7 * * 1'
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/changelog.mjs
+      - run: git checkout -b "freshness/$(date -u +%Y-%m-%d)"
+      - run: |
+          git add CHANGELOG.md
+          git commit -m "freshness"
+          git push origin HEAD

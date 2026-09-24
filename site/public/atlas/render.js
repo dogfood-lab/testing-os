@@ -265,10 +265,22 @@ function placesHtml(ctx, places) {
   return list(arr(places).map((place) => pathHtml(ctx, place)));
 }
 
+// A push to another branch than main is said as page.js pushWords says it.
+function pushWords(door) {
+  if (door.pushes) return 'pushes';
+  if (door.pushesForReview) return 'pushes to a branch for review, never to main';
+  const to = arr(door.pushesTo).map(str);
+  if (to.length === 0) return null;
+  const named = to.filter((branch) => !branch.includes('$'));
+  const branches = [...named.map((branch) => `the ${esc(branch)} branch`), ...(named.length < to.length ? ['a branch set at run time'] : [])];
+  return `pushes to ${list(branches).replace(/ and /g, ' or ')}, not to main`;
+}
+
 function commitsClause(ctx, door) {
   const stages = arr(door.stages).map((place) => pathHtml(ctx, place));
-  if (!door.pushes) return list(stages);
-  return stages.length > 1 ? `${list(stages)}, then pushes` : `${list(stages)} and pushes`;
+  const push = pushWords(door);
+  if (!push) return list(stages);
+  return stages.length > 1 ? `${list(stages)}, then ${push}` : `${list(stages)} and ${push}`;
 }
 
 function section(heading, body) {
@@ -517,7 +529,8 @@ function otherDoors(ctx) {
     if (landings.length > 0) clauses.push({ html: `writes to ${placesHtml(ctx, landings)}`, text: `writes to ${list(landings)}` });
     const stages = arr(door.stages).map(str);
     if (stages.length > 0) {
-      const text = door.pushes ? (stages.length > 1 ? `${list(stages)}, then pushes` : `${list(stages)} and pushes`) : list(stages);
+      const push = pushWords(door);
+      const text = push ? (stages.length > 1 ? `${list(stages)}, then ${push}` : `${list(stages)} and ${push}`) : list(stages);
       clauses.push({ html: `commits ${commitsClause(ctx, door)}`, text: `commits ${text}` });
     }
     for (const send of arr(door.sends)) clauses.push({ html: inline(send), text: str(send) });

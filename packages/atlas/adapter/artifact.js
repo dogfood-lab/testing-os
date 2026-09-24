@@ -310,13 +310,15 @@ function carryDoor(door) {
     elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
     file: door.file,
     ...(door.gated?.length > 0
-      ? { gated: door.gated.map((entry) => ({ jobs: [...entry.jobs], pushes: entry.pushes, sends: [...entry.sends], stages: [...entry.stages], when: { ...entry.when } })) }
+      ? { gated: door.gated.map((entry) => ({ jobs: [...entry.jobs], pushes: entry.pushes, ...(entry.pushesForReview ? { pushesForReview: true } : {}), ...(entry.pushesTo ? { pushesTo: [...entry.pushesTo] } : {}), sends: [...entry.sends], stages: [...entry.stages], when: { ...entry.when } })) }
       : {}),
     landings: door.landings.filter((target) => !inAtlas(target)),
     mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),
     name: door.name,
     permissions: [...door.permissions],
     pushes: door.pushes,
+    ...(door.pushesForReview ? { pushesForReview: true } : {}),
+    ...(door.pushesTo ? { pushesTo: [...door.pushesTo] } : {}),
     reach: door.reach.map(carryReach),
     readers: door.readers.filter((entry) => !inAtlas(entry.target) && !inAtlas(entry.by)).map(carryReader),
     runs: door.runs.map(carryRun),

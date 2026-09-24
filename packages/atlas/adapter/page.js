@@ -240,9 +240,12 @@ function startVerb(door) {
   return door.kind === 'package' ? 'loads' : 'runs';
 }
 
-// A job that commits only on one trigger still commits into the repository.
+// A job that commits only on one trigger still commits into the repository;
+// one that pushes its commit to another branch does not: a branch for review
+// reaches main when a person merges it, and a branch of its own never does.
 function commits(door) {
-  return (door.stages ?? []).length > 0 || (door.gated ?? []).some((entry) => entry.stages.length > 0);
+  const intoMain = (entry) => (entry.stages ?? []).length > 0 && !entry.pushesForReview && !(entry.pushesTo?.length > 0);
+  return intoMain(door) || (door.gated ?? []).some(intoMain);
 }
 
 function reaching(doors) {
@@ -416,10 +419,28 @@ export function stagedShown(stages) {
 }
 
 // Two staged places already hold an "and", so the push is joined with "then".
-function commitsClause(door) {
+export function commitsClause(door) {
   const stages = stagedShown(door.stages);
-  if (!door.pushes) return list(stages);
-  return stages.length > 1 ? `${list(stages)}, then pushes` : `${list(stages)} and pushes`;
+  const push = pushWords(door);
+  if (!push) return list(stages);
+  return stages.length > 1 ? `${list(stages)}, then ${push}` : `${list(stages)} and ${push}`;
+}
+
+/**
+ * Where a door's push goes, in the page's words: "pushes" to main, "pushes
+ * to a branch for review, never to main", or "pushes to the atlas-render
+ * branch, not to main"; null when it pushes nothing.
+ *
+ * @param {{ pushes?: boolean, pushesForReview?: boolean, pushesTo?: string[] }} door
+ * @returns {string|null}
+ */
+export function pushWords(door) {
+  if (door.pushes) return 'pushes';
+  if (door.pushesForReview) return 'pushes to a branch for review, never to main';
+  if (!(door.pushesTo?.length > 0)) return null;
+  const named = door.pushesTo.filter((branch) => !branch.includes('$'));
+  const branches = [...named.map((branch) => `the ${branch} branch`), ...(named.length < door.pushesTo.length ? ['a branch set at run time'] : [])];
+  return `pushes to ${list(branches).replace(/ and /g, ' or ')}, not to main`;
 }
 
 const REGISTRIES = { 'crates.io': 'crates.io', npm: 'npm', pypi: 'PyPI', rubygems: 'RubyGems' };
@@ -469,7 +490,7 @@ export function sendPhrases(door) {
   for (const entry of door.gated ?? []) {
     const when = gatePhrase(entry.when);
     const stages = stagedShown(entry.stages);
-    if (stages.length > 0) phrases.push(`commits ${commitsClause({ stages: entry.stages, pushes: entry.pushes })} ${when}`);
+    if (stages.length > 0) phrases.push(`commits ${commitsClause({ stages: entry.stages, pushes: entry.pushes, pushesForReview: entry.pushesForReview, pushesTo: entry.pushesTo })} ${when}`);
     for (const phrase of sendPhrases({ sends: sendsFrom(entry.sends) })) phrases.push(`${phrase} ${when}`);
   }
   return phrases;
@@ -1883,7 +1904,8 @@ function doorsSentence(ctx, main) {
   const reach = count(reachSize(main), 'part');
   const wider = widerDoor(ctx.doors, main);
   if (wider) {
-    return `Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach} and commits into the repository (${wider.name} reaches ${reachSize(wider)} but commits nothing).`;
+    const but = wider.pushesForReview ? 'commits only to a branch for review' : wider.pushesTo?.length > 0 ? 'commits only to another branch' : 'commits nothing';
+    return `Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach} and commits into the repository (${wider.name} reaches ${reachSize(wider)} but ${but}).`;
   }
   return `Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach}.`;
 }
@@ -1933,6 +1955,8 @@ function doorData(ctx, door) {
     landings: writes(ctx, door),
     name: door.name,
     pushes: door.pushes === true,
+    ...(door.pushesForReview ? { pushesForReview: true } : {}),
+    ...(door.pushesTo ? { pushesTo: door.pushesTo } : {}),
     reach: (door.reach ?? []).map((entry) => ({ boundary: entry.boundary, depth: entry.depth, files: entry.files })),
     checks: shownRuns(door, 'checks'),
     checksCount: runTotal(door, 'checks'),

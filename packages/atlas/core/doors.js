@@ -118,6 +118,7 @@ function readDoor(repoPath, file, repo) {
   const mentions = new Map();
   const stages = new Set();
   let pushes = false;
+  const sidePushes = [];
   const elsewhere = new Map();
   const sends = emptySends();
   const issues = [];
@@ -130,9 +131,11 @@ function readDoor(repoPath, file, repo) {
   for (const [job, body] of Object.entries(isMapping(doc.jobs) ? doc.jobs : {})) {
     if (!isMapping(body)) continue;
     const gate = jobGate(body.if, triggers);
-    if (gate && !gates.has(canonical(gate))) gates.set(canonical(gate), { when: gate, jobs: [], sends: emptySends(), issues: [], texts: [], stages: new Set(), pushes: false });
+    if (gate && !gates.has(canonical(gate))) gates.set(canonical(gate), { when: gate, jobs: [], sends: emptySends(), issues: [], texts: [], stages: new Set(), pushes: false, sidePushes: [] });
     if (gate) gates.get(canonical(gate)).jobs.push(job);
-    const scope = gate ? gates.get(canonical(gate)) : { sends, issues, texts, stages, pushes: false };
+    const scope = gate ? gates.get(canonical(gate)) : { sends, issues, texts, stages, pushes: false, sidePushes: [] };
+    // The branch a job has moved onto, which later steps push.
+    const branch = { made: false, name: null };
     for (const permission of permissionList(body.permissions)) permissions.add(permission);
     const jobDir = workingDirectory(body.defaults) ?? workflowDir ?? '';
     const jobEnv = envOf(body.env);
@@ -169,9 +172,10 @@ function readDoor(repoPath, file, repo) {
       const stepEnv = envOf(step.env);
       const lookup = (variable) => [stepEnv, jobEnv, workflowEnv].find((env) => env.has(variable))?.get(variable) ?? null;
       const start = placeOf({ here: true, dir: '' }, step['working-directory'] ?? rawJobDir, clones, repo, lookup);
-      const work = gitWork(step.run, lookup, start, clones, repo);
+      const work = gitWork(step.run, lookup, start, clones, repo, branch);
       for (const staged of work.stages) scope.stages.add(staged);
       if (work.pushes) scope.pushes = true;
+      scope.sidePushes.push(...work.sidePushes);
       for (const entry of work.elsewhere) {
         const key = `${entry.dir}\0${entry.clone ?? ''}`;
         if (!elsewhere.has(key)) elsewhere.set(key, { clone: entry.clone, dir: entry.dir, pushes: false, stages: new Set() });
@@ -195,6 +199,7 @@ function readDoor(repoPath, file, repo) {
       for (const path of named.mentions) mentions.set(`${path}\0${job}`, { path, job });
     });
     if (!gate && scope.pushes) pushes = true;
+    if (!gate) sidePushes.push(...scope.sidePushes);
   }
 
   const recorded = recordedRuns([...runs.values()]);
@@ -203,8 +208,15 @@ function readDoor(repoPath, file, repo) {
   const byPathThenJob = (a, b) => compare(a.path, b.path) || compare(a.job, b.job);
   const gated = [...gates.entries()]
     .sort(([a], [b]) => compare(a, b))
-    .map(([, entry]) => ({ when: entry.when, jobs: [...entry.jobs].sort(), sends: sendKeys(finishSends(entry.sends, entry.issues, entry.texts)), stages: [...entry.stages].sort(), pushes: entry.pushes }))
-    .filter((entry) => entry.sends.length > 0 || entry.stages.length > 0 || entry.pushes);
+    .map(([, entry]) => ({
+      when: entry.when,
+      jobs: [...entry.jobs].sort(),
+      sends: sendKeys(finishSends(entry.sends, entry.issues, entry.texts)),
+      stages: [...entry.stages].sort(),
+      pushes: entry.pushes,
+      ...pushedElsewhere(entry.pushes, entry.sidePushes, entry.sends),
+    }))
+    .filter((entry) => entry.sends.length > 0 || entry.stages.length > 0 || entry.pushes || entry.pushesForReview || entry.pushesTo);
   return {
     file,
     name: typeof doc.name === 'string' && doc.name.trim() !== '' ? doc.name : fallback,
@@ -221,6 +233,7 @@ function readDoor(repoPath, file, repo) {
       .sort(byPathThenJob),
     stages: [...stages].sort(),
     pushes,
+    ...pushedElsewhere(pushes, sidePushes, sends),
     elsewhere: [...elsewhere.values()]
       .map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages].sort() }))
       .sort((a, b) => compare(a.dir, b.dir) || compare(a.clone ?? '', b.clone ?? '')),
@@ -476,10 +489,15 @@ const CLONE_VALUE_FLAGS = new Set(['-b', '--branch', '--depth', '-o', '--origin'
  * step's, the job's and the workflow's env; a staged path whose variable is
  * set at run time stays as written, and the page says so.
  *
- * @returns {{ stages: string[], pushes: boolean, elsewhere: Array<{ dir: string, clone: string|null, stages: string[], pushes: boolean }> }}
+ * A push to a branch other than the default one, named in its refspec or
+ * made by an earlier git checkout -b or git switch -c in the job, is a push
+ * for review: the commit reaches main only through a pull request, so it is
+ * kept apart from a push that lands there.
+ *
+ * @returns {{ stages: string[], pushes: boolean, sidePushes: Array<{ branch: string|null, made: boolean }>, elsewhere: Array<{ dir: string, clone: string|null, stages: string[], pushes: boolean }> }}
  */
-function gitWork(text, lookup, start, clones, repo) {
-  const out = { stages: [], pushes: false, elsewhere: [] };
+function gitWork(text, lookup, start, clones, repo, branch = { made: false, name: null }) {
+  const out = { stages: [], pushes: false, sidePushes: [], elsewhere: [] };
   const assigned = new Map();
   const value = (name) => (assigned.has(name) ? assigned.get(name) : lookup(name));
   let place = start;
@@ -529,9 +547,18 @@ function gitWork(text, lookup, start, clones, repo) {
       else if (GIT_VALUE_FLAGS.has(words[i])) i += 1;
     }
     const sub = words[i];
+    if ((sub === 'checkout' || sub === 'switch') && at.here) {
+      const made = madeBranch(words.slice(i + 1), value);
+      if (made != null) {
+        branch.made = !DEFAULT_BRANCHES.has(made);
+        branch.name = branch.made && !made.includes('$') ? made : null;
+      }
+    }
     if (sub === 'push') {
-      if (at.here) out.pushes = true;
-      else away(at).pushes = true;
+      const side = at.here ? sidePush(words.slice(i + 1), value, branch) : null;
+      if (!at.here) away(at).pushes = true;
+      else if (side) out.sidePushes.push(side);
+      else out.pushes = true;
     }
     if (sub !== 'add') continue;
     for (const token of words.slice(i + 1)) {
@@ -544,6 +571,67 @@ function gitWork(text, lookup, start, clones, repo) {
   }
   for (const entry of out.elsewhere) entry.stages = [...new Set(entry.stages)];
   return out;
+}
+
+const DEFAULT_BRANCHES = new Set(['main', 'master']);
+const PUSH_VALUE_FLAGS = new Set(['-o', '--push-option', '--repo', '--receive-pack', '--exec']);
+
+// The branch git checkout -b X, -B X, --orphan X or git switch -c X, -C X
+// makes, spelled out where its variable is known; null when the command
+// makes none.
+function madeBranch(args, lookup) {
+  for (let i = 0; i < args.length; i += 1) {
+    if (['-b', '-B', '--orphan', '-c', '-C', '--create', '--force-create'].includes(args[i])) return args[i + 1] == null ? null : substitute(args[i + 1], lookup);
+  }
+  return null;
+}
+
+/**
+ * Where a push goes when it is not main: the branch its refspecs name, all
+ * other than the default one, or the branch the job made when it pushes that
+ * (no refspec, HEAD, or a refspec set at run time), with whether the job made
+ * it. null for a push that may land on main: one to main, to tags, of
+ * everything, or of a refspec set at run time on a job that made no branch.
+ *
+ * @returns {{ branch: string|null, made: boolean } | null}
+ */
+function sidePush(args, lookup, branch) {
+  if (args.includes('--tags') || args.includes('--all') || args.includes('--mirror')) return null;
+  const positional = [];
+  for (let i = 0; i < args.length; i += 1) {
+    if (args[i].startsWith('-')) {
+      if (PUSH_VALUE_FLAGS.has(args[i])) i += 1;
+      continue;
+    }
+    positional.push(args[i]);
+  }
+  const refspecs = positional.slice(1);
+  const made = { branch: branch.name, made: true };
+  if (refspecs.length === 0) return branch.made ? made : null;
+  const targets = [];
+  for (const raw of refspecs) {
+    const spec = substitute(raw, lookup).replace(/^\+/, '');
+    const target = (spec.includes(':') ? spec.slice(spec.indexOf(':') + 1) : spec).replace(/^refs\/heads\//, '');
+    if (target === 'HEAD' || target.includes('$')) {
+      if (!branch.made) return null;
+      targets.push(made);
+    } else if (target.startsWith('refs/tags/') || DEFAULT_BRANCHES.has(target)) return null;
+    else targets.push({ branch: target, made: branch.made && target === branch.name });
+  }
+  return targets.length === 1 ? targets[0] : { branch: null, made: targets.every((target) => target.made) };
+}
+
+/**
+ * What a door or a gated job's pushes to other branches than main say. A push
+ * of a branch the job made, or with a pull request opened for it, is a push
+ * for review: the commit reaches main only when a person merges it. One to a
+ * branch kept for its own sake (a render branch, a baseline) names that
+ * branch. Either is said only when nothing the door does pushes to main.
+ */
+function pushedElsewhere(pushes, sidePushes, sends) {
+  if (pushes || sidePushes.length === 0) return {};
+  if (sends.opensPullRequests || sidePushes.some((push) => push.made)) return { pushesForReview: true };
+  return { pushesTo: [...new Set(sidePushes.map((push) => push.branch ?? '$'))].sort() };
 }
 
 /**
