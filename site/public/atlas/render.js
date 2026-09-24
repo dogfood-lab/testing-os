@@ -193,8 +193,11 @@ function installed(door) {
   return door?.kind === 'command' || door?.kind === 'package';
 }
 
+// page.json carries where an extension is installed from as the page words it.
 function installedAs(door) {
-  const what = door.kind !== 'package' ? 'a command people run' : door.unpublished ? 'the package&#39;s entry, not published from here' : 'the package people import';
+  const what = door.kind !== 'package' ? 'a command people run'
+    : door.extension ? (door.unpublished ? 'the extension&#39;s entry, not published from here' : `the extension people install from ${esc(str(door.publishedTo))}`)
+      : door.unpublished ? 'the package&#39;s entry, not published from here' : 'the package people import';
   return door.sharedName ? `${what}, from ${esc(door.file)}` : what;
 }
 
@@ -413,7 +416,7 @@ function doorSteps(ctx, door) {
   const steps = [];
   const paths = runs(ctx, door);
   const checked = checks(ctx, door);
-  const subject = installed(door) ? `The ${door.kind} ${startVerb(door)}` : 'The workflow runs';
+  const subject = installed(door) ? `The ${door.extension ? 'extension' : door.kind} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
   if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths))}`);
   if (checked.length > 0) clauses.push(`${paths.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked))}`);

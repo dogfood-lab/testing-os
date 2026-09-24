@@ -42,3 +42,24 @@ describe('the package a manifest names', () => {
     assert.doesNotMatch(markdown, /People import/);
   });
 });
+
+describe('what a publish step sends, and which package', () => {
+  it('reads vsce and ovsx publish as sends to the marketplaces, and makes the extension a published door', () => {
+    const { markdown } = mapped('extension');
+    assert.match(markdown, /\*\*runforge\*\* \(the extension people install from Open VSX and the VS Code Marketplace\)\. Loads src\/extension\.ts\./);
+    assert.match(markdown, /publishes to Open VSX, and publishes to the VS Code Marketplace when run by hand/);
+    assert.match(markdown, /It publishes to Open VSX and the VS Code Marketplace\. People install the runforge extension\./);
+    assert.doesNotMatch(markdown, /People import/);
+  });
+
+  it('names the package a publish in a working directory or after a cd sends, and reads a dry run as no publish', () => {
+    const { structure, markdown } = mapped('member');
+    assert.match(markdown, /\*\*Release\*\* runs no file this map can see and publishes @member\/core \(packages\/core\) and @member\/extra \(packages\/extra\) to npm\./);
+    assert.deepEqual(structure.doors.find((door) => door.file === '.github/workflows/check.yml').sends.publishesTo, []);
+    assert.equal(structure.doors.find((door) => door.kind === 'package').unpublished, true);
+  });
+
+  it('says a package chosen at run time from the tag as one of the packages it could be', () => {
+    assert.match(mapped('chosen').markdown, /publishes one of the 3 packages under packages\/ to npm, chosen by the tag/);
+  });
+});

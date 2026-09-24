@@ -224,7 +224,9 @@ export function orderDoors(doors) {
 
 // What the page calls an installed door, and the verb for what it starts.
 function installedAs(door) {
-  const what = door.kind !== 'package' ? 'a command people run' : door.unpublished ? "the package's entry, not published from here" : 'the package people import';
+  const what = door.kind !== 'package' ? 'a command people run'
+    : door.extension ? (door.unpublished ? "the extension's entry, not published from here" : `the extension people install from ${registryList(door.publishedTo ?? [])}`)
+      : door.unpublished ? "the package's entry, not published from here" : 'the package people import';
   return door.sharedName ? `${what}, from ${door.file}` : what;
 }
 
@@ -446,20 +448,60 @@ export function pushWords(door) {
   return `pushes to ${list(branches).replace(/ and /g, ' or ')}, not to main`;
 }
 
-const REGISTRIES = { 'crates.io': 'crates.io', npm: 'npm', pypi: 'PyPI', rubygems: 'RubyGems' };
+const REGISTRIES = {
+  'crates.io': 'crates.io',
+  npm: 'npm',
+  'open-vsx': 'Open VSX',
+  pypi: 'PyPI',
+  rubygems: 'RubyGems',
+  'vscode-marketplace': 'the VS Code Marketplace',
+};
 const IMAGE = 'container image';
 
+export function registryList(names) {
+  return list(names.map((name) => REGISTRIES[name] ?? name));
+}
+
+// A package a publish sends whose directory is set at run time: one of the
+// packages under the directory it is assigned under, the workspace's
+// packages, or a package this map cannot name.
+function chosenPackage(entry) {
+  if (entry.under != null) return `one of the ${count(entry.count, 'package')} under ${entry.under}`;
+  if (entry.workspace === 'every') return 'every workspace package';
+  if (entry.workspace) return 'workspace packages';
+  return 'a package';
+}
+
+function chosenBy(entry) {
+  if (entry.chosenBy == null) return '';
+  return entry.chosenBy === 'tag' ? ', chosen by the tag' : ', chosen at run time';
+}
+
 // Registries a door publishes to, then the image it pushes: "publishes to
-// PyPI and a container image". An artifact written before publishesTo
-// existed meant npm by publishes.
+// PyPI and a container image", naming the packages a publish names that are
+// not the repository's own: "publishes attestia (packages/attestia) to npm",
+// and one chosen at run time as what it could be. An item that already holds
+// an "and" or a comma is joined to the next with a comma. An artifact written
+// before publishesTo existed meant npm by publishes.
 function publishPhrase(sends) {
   const to = Array.isArray(sends.publishesTo) ? sends.publishesTo : sends.publishes ? ['npm'] : [];
-  const registries = to.filter((name) => name !== IMAGE).map((name) => REGISTRIES[name] ?? name);
-  const image = to.includes(IMAGE);
-  if (registries.length === 0) return image ? 'publishes a container image' : null;
-  const where = `publishes to ${list(registries)}`;
-  if (!image) return where;
-  return registries.length > 1 ? `${where}, and a container image` : `${where} and a container image`;
+  const packages = (Array.isArray(sends.packages) ? sends.packages : []).filter((entry) => entry.name == null || entry.dir !== '');
+  const bare = to.filter((name) => name !== IMAGE && !packages.some((entry) => entry.registry === name));
+  const items = [];
+  if (bare.length > 0) items.push({ text: `to ${registryList(bare)}`, compound: bare.length > 1 });
+  for (const name of to.filter((registry) => registry !== IMAGE && !bare.includes(registry))) {
+    const where = REGISTRIES[name] ?? name;
+    const entries = packages.filter((entry) => entry.registry === name);
+    const named = entries.filter((entry) => entry.name != null);
+    if (named.length > 0) items.push({ text: `${list(named.map((entry) => (entry.dir ? `${entry.name} (${entry.dir})` : entry.name)))} to ${where}`, compound: named.length > 1 });
+    for (const entry of entries.filter((item) => item.name == null)) items.push({ text: `${chosenPackage(entry)} to ${where}${chosenBy(entry)}`, compound: entry.chosenBy != null });
+  }
+  if (to.includes(IMAGE)) items.push({ text: 'a container image', compound: false });
+  if (items.length === 0) return null;
+  if (items.length === 1) return `publishes ${items[0].text}`;
+  const plain = items.length === 2 && !items.some((item) => item.compound);
+  const head = items.slice(0, -1).map((item) => item.text).join(', ');
+  return `publishes ${head}${plain ? ' and ' : ', and '}${items[items.length - 1].text}`;
 }
 
 /**
@@ -530,10 +572,11 @@ const GATE_EVENTS = {
 
 // A gated job's send keys read back into the shape sendPhrases reads.
 function sendsFrom(keys) {
-  const sends = { dispatchesTo: [], publishesTo: [] };
+  const sends = { dispatchesTo: [], packages: [], publishesTo: [] };
   for (const key of keys ?? []) {
     const at = key.indexOf(':');
     if (at === -1) sends[key] = true;
+    else if (key.slice(0, at) === 'packages') sends.packages.push(JSON.parse(key.slice(at + 1)));
     else sends[key.slice(0, at)].push(key.slice(at + 1));
   }
   return sends;
@@ -688,7 +731,7 @@ function doorSteps(ctx, door) {
   const steps = [];
   const ran = shownRuns(door, 'executes');
   const checked = shownRuns(door, 'checks');
-  const subject = installed(door) ? `The ${door.kind} ${startVerb(door)}` : 'The workflow runs';
+  const subject = installed(door) ? `The ${door.extension ? 'extension' : door.kind} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
   if (ran.length > 0) clauses.push(`${subject} ${runGroups(ctx, door, ran)}`);
   if (checked.length > 0) clauses.push(`${ran.length > 0 ? 'it' : 'The workflow'} checks ${runGroups(ctx, door, checked)}`);
@@ -2007,18 +2050,23 @@ function doorsSentence(ctx, main) {
 // words it.
 function publishesSentence(ctx) {
   const to = new Set();
-  for (const door of ctx.doors) {
-    const sends = door.sends ?? {};
+  const packages = new Map();
+  const add = (sends) => {
     for (const name of Array.isArray(sends.publishesTo) ? sends.publishesTo : sends.publishes ? ['npm'] : []) to.add(name);
-    for (const entry of door.gated ?? []) for (const name of sendsFrom(entry.sends).publishesTo) to.add(name);
+    for (const entry of sends.packages ?? []) packages.set(JSON.stringify(entry), entry);
+  };
+  for (const door of ctx.doors) {
+    add(door.sends ?? {});
+    for (const entry of door.gated ?? []) add(sendsFrom(entry.sends));
   }
-  const phrase = publishPhrase({ publishesTo: [...to].sort(cmp) });
+  const phrase = publishPhrase({ publishesTo: [...to].sort(cmp), packages: [...packages.values()] });
   return phrase ? `It ${phrase}.` : null;
 }
 
-// A package nothing here publishes is no package people import.
-function installedNames(ctx, kind) {
-  const names = [...new Set(ctx.doors.filter((door) => door.kind === kind && !door.unpublished).map((door) => door.name))].sort(cmp);
+// A package nothing here publishes is no package people import, and an
+// extension is installed, not imported.
+function installedNames(ctx, kind, { extension = false } = {}) {
+  const names = [...new Set(ctx.doors.filter((door) => door.kind === kind && !door.unpublished && Boolean(door.extension) === extension).map((door) => door.name))].sort(cmp);
   if (names.length <= INSTALLED_ALL) return list(names);
   return `${names.slice(0, INSTALLED_NAMED).join(', ')} and ${names.length - INSTALLED_NAMED} more`;
 }
@@ -2037,6 +2085,8 @@ function derivedLine(ctx, main) {
   if (commands) sentences.push(`People run ${commands}.`);
   const packages = installedNames(ctx, 'package');
   if (packages) sentences.push(`People import ${packages}.`);
+  const extensions = installedNames(ctx, 'package', { extension: true });
+  if (extensions) sentences.push(`People install the ${extensions} extension.`);
   return sentences.join(' ');
 }
 
@@ -2061,6 +2111,8 @@ function doorData(ctx, door) {
     triggers: triggerPhrases(door),
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
     ...(door.unpublished ? { unpublished: true } : {}),
+    ...(door.extension ? { extension: true } : {}),
+    ...(door.publishedTo ? { publishedTo: registryList(door.publishedTo) } : {}),
   };
 }
 

@@ -1,0 +1,23 @@
+name: Build and Release
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npx vsce package
+      - run: npx --yes ovsx publish -p "$OVSX_PAT"
+  marketplace:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          npx --yes vsce verify-pat acme -p "$VSCE_PAT"
+          npx --yes vsce publish -p "$VSCE_PAT" || {
+            echo "Local workaround: npx vsce publish"
+            exit 1
+          }

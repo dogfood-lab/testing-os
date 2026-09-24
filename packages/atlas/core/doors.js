@@ -6,15 +6,9 @@ import { better, cleanDir, commandLines, readCommands, readContainer, readProgra
 const WORKFLOW = /^\.github\/workflows\/[^/]+\.ya?ml$/;
 const TRIGGER_LISTS = ['paths', 'branches', 'tags', 'types', 'workflows'];
 
-// What a step's command text sends out of the repository, by the command
-// that sends it. A registry is named the way its users name it.
-const PUBLISH_COMMANDS = [
-  [/\b(?:npm|pnpm)\s+publish\b|\byarn\s+(?:npm\s+)?publish\b/, 'npm'],
-  [/\btwine\s+upload\b|\b(?:uv|poetry|hatch|flit)\s+publish\b/, 'pypi'],
-  [/\bcargo\s+publish\b/, 'crates.io'],
-  [/\bgem\s+push\b/, 'rubygems'],
-  [/\b(?:docker|podman)\s+push\b|\bdocker\s+(?:buildx\s+)?build\b[^\n]*\s--push\b/, 'container image'],
-];
+// Words that start the program a command line runs without being it.
+const RUNNER_WORDS = new Set(['sudo', 'env', 'time', 'exec', 'command', 'nohup']);
+const NPX_VALUE_FLAGS = new Set(['-p', '--package', '-c', '--call']);
 // And by the action a step uses, matched on the action's name without its ref.
 const ACTION_SENDS = [
   ['pypa/gh-action-pypi-publish', (sends) => sends.publishesTo.add('pypi')],
@@ -118,12 +112,45 @@ export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFro
  */
 export function markUnpublished(doors, manifest) {
   const workflows = doors.filter((door) => !door.kind && !door.parseError);
-  const toNpm = workflows.some((door) => door.sends.publishesTo.includes('npm')
-    || (door.gated ?? []).some((entry) => entry.sends.includes('publishesTo:npm')));
+  const sent = workflows.flatMap(sendsOf);
+  // A VS Code extension is installed from a marketplace, never imported from
+  // npm, so it is published when a door sends it to one.
+  if (manifest?.engines != null && typeof manifest.engines === 'object' && manifest.engines.vscode != null) {
+    const to = [...new Set(sent.flatMap((sends) => sends.publishesTo).filter((registry) => MARKETPLACES.includes(registry)))].sort();
+    for (const door of doors) {
+      if (door.kind !== 'package') continue;
+      door.extension = true;
+      if (to.length > 0) door.publishedTo = to;
+      else door.unpublished = true;
+    }
+    return;
+  }
+  // An npm publish that names only other packages (a workspace member's
+  // directory) does not publish this one.
+  const toNpm = sent.some((sends) => sends.publishesTo.includes('npm') && rootSent(sends.packages));
   const declared = manifest?.private === false
     && workflows.some((door) => /publish|release/i.test(`${posix.basename(door.file)} ${door.name}`));
   if (toNpm || declared) return;
   for (const door of doors) if (door.kind === 'package') door.unpublished = true;
+}
+
+const MARKETPLACES = ['open-vsx', 'vscode-marketplace'];
+
+// A door's sends, and each gated job's, read back from the keys they are kept as.
+function sendsOf(door) {
+  const out = [{ publishesTo: door.sends.publishesTo, packages: door.sends.packages ?? [] }];
+  for (const entry of door.gated ?? []) {
+    const publishesTo = entry.sends.filter((key) => key.startsWith('publishesTo:')).map((key) => key.slice('publishesTo:'.length));
+    const packages = entry.sends.filter((key) => key.startsWith('packages:')).map((key) => JSON.parse(key.slice('packages:'.length)));
+    out.push({ publishesTo, packages });
+  }
+  return out;
+}
+
+// A publish whose package this map could not name may be the root's.
+function rootSent(packages) {
+  const npm = packages.filter((entry) => entry.registry === 'npm');
+  return npm.length === 0 || npm.some((entry) => entry.dir === '');
 }
 
 export function isWorkflow(path) {
@@ -179,6 +206,9 @@ function readDoor(repoPath, file, repo) {
     // clones. A step that works inside one works on that repository.
     const clones = new Map();
     const rawJobDir = rawWorkingDirectory(body.defaults) ?? rawWorkingDirectory(doc.defaults) ?? '';
+    // The run texts of the job's steps so far, where a later step's run-time
+    // directory is assigned.
+    const jobTexts = [];
     steps.forEach((step, index) => {
       if (!isMapping(step)) return;
       if (typeof step.uses === 'string') {
@@ -217,7 +247,9 @@ function readDoor(repoPath, file, repo) {
         for (const staged of entry.stages) found.stages.add(staged);
         if (entry.pushes) found.pushes = true;
       }
-      commandSends(step.run, scope.sends);
+      const place = { raw: step['working-directory'] ?? rawJobDir, jobTexts, repo, tagged: triggers.some((trigger) => (trigger.tags?.length ?? 0) > 0) };
+      commandSends(expandEnv(step.run, lookup), scope.sends, place);
+      jobTexts.push(step.run);
       if (/\bgh\s+issue\s+create\b/.test(step.run)) scope.issues.push(onlyOnFailure(step.if) || onlyOnFailure(body.if));
       // A step whose working directory cannot be read as a repository path
       // names nothing Atlas can place, so its tokens are left unresolved.
@@ -279,16 +311,18 @@ function readDoor(repoPath, file, repo) {
 }
 
 function emptySends() {
-  return { publishesTo: new Set(), releases: false, deploysPages: false, opensPullRequests: false };
+  return { publishesTo: new Set(), packages: new Map(), releases: false, deploysPages: false, opensPullRequests: false };
 }
 
 function finishSends(sends, issues, texts) {
   const joined = texts.join('\n');
   const publishesTo = [...sends.publishesTo].sort();
+  const packages = [...sends.packages.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
   return {
     dispatchesTo: [
       ...new Set([...joined.matchAll(/repos\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)\/dispatches\b/g)].map((m) => `${m[1]}/${m[2]}`)),
     ].sort(),
+    ...(packages.length > 0 ? { packages } : {}),
     publishes: publishesTo.length > 0,
     publishesTo,
     releases: sends.releases,
@@ -300,10 +334,12 @@ function finishSends(sends, issues, texts) {
 }
 
 // A gated job's sends as a list, the shape the page reads them back from.
+// A package it names is carried whole, as JSON after its key.
 function sendKeys(sends) {
   const keys = [];
   for (const repo of sends.dispatchesTo) keys.push(`dispatchesTo:${repo}`);
   for (const registry of sends.publishesTo) keys.push(`publishesTo:${registry}`);
+  for (const entry of sends.packages ?? []) keys.push(`packages:${JSON.stringify(entry)}`);
   for (const flag of ['releases', 'deploysPages', 'opensIssues', 'opensIssuesOnFailure', 'opensPullRequests']) if (sends[flag]) keys.push(flag);
   return keys;
 }
@@ -429,11 +465,142 @@ function recordedRuns(entries) {
   return { all, kept: all.filter((entry) => shown.has(entry.path)), count: paths.length, checks: paths.filter((path) => !executed.has(path)).length };
 }
 
-function commandSends(run, sends) {
-  const text = run.replace(/\\\r?\n/g, ' ');
-  for (const [pattern, registry] of PUBLISH_COMMANDS) if (pattern.test(text)) sends.publishesTo.add(registry);
-  if (/\bgh\s+release\s+create\b/.test(text)) sends.releases = true;
-  if (/\bgh\s+pr\s+create\b/.test(text)) sends.opensPullRequests = true;
+/**
+ * What a step's command lines send out of the repository, read word by word
+ * the way the shell splits them, so a command quoted inside an echo sends
+ * nothing. A publish with --dry-run sends nothing either. An npm publish
+ * names the package at the directory it runs in: the step's
+ * working-directory, moved by cd, or the directory it is handed.
+ */
+function commandSends(run, sends, place) {
+  let cwd = place.raw;
+  for (const tokens of commandLines(run)) {
+    if (tokens[0] === 'cd' && tokens.length <= 2) {
+      cwd = tokens[1] == null ? '' : joinDir(cwd, tokens[1]);
+      continue;
+    }
+    const words = programWords(tokens);
+    if (words.length === 0) continue;
+    const [program, sub] = words;
+    if (program === 'gh' && sub === 'release' && words[2] === 'create') sends.releases = true;
+    if (program === 'gh' && sub === 'pr' && words[2] === 'create') sends.opensPullRequests = true;
+    const registry = publishRegistry(words);
+    if (registry == null || words.includes('--dry-run')) continue;
+    sends.publishesTo.add(registry);
+    if (registry !== 'npm') continue;
+    for (const entry of publishedPackages(words, cwd, place)) sends.packages.set(entry.key, entry.value);
+  }
+}
+
+// The registry a command line publishes to, from its program and subcommand.
+// A registry is named the way its users name it.
+function publishRegistry(words) {
+  const [program, sub, next] = words;
+  if ((program === 'npm' || program === 'pnpm' || program === 'bun') && sub === 'publish') return 'npm';
+  if (program === 'yarn' && (sub === 'publish' || (sub === 'npm' && next === 'publish'))) return 'npm';
+  if (program === 'twine' && sub === 'upload') return 'pypi';
+  if (['uv', 'poetry', 'hatch', 'flit'].includes(program) && sub === 'publish') return 'pypi';
+  if (program === 'cargo' && sub === 'publish') return 'crates.io';
+  if (program === 'gem' && sub === 'push') return 'rubygems';
+  if (program === 'vsce' && sub === 'publish') return 'vscode-marketplace';
+  if (program === 'ovsx' && sub === 'publish') return 'open-vsx';
+  if ((program === 'docker' || program === 'podman') && sub === 'push') return 'container image';
+  if (program === 'docker' && (sub === 'build' || (sub === 'buildx' && next === 'build')) && words.includes('--push')) return 'container image';
+  return null;
+}
+
+// A command line's words from the program it runs: assignments, runners such
+// as sudo and env, and a package runner (npx, pnpm dlx, python -m) put aside,
+// and a program typed by its path or its scoped package name named by itself.
+function programWords(tokens) {
+  let at = 0;
+  const skipAssignments = () => {
+    while (at < tokens.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(tokens[at])) at += 1;
+  };
+  skipAssignments();
+  while (at < tokens.length && (RUNNER_WORDS.has(tokens[at]) || SHELL_KEYWORDS.has(tokens[at]))) {
+    at += 1;
+    skipAssignments();
+  }
+  const name = (word) => (word ?? '').replace(/^.*\//, '').replace(/@[^/]*$/, '');
+  let program = name(tokens[at]);
+  if (program === 'npx' || program === 'bunx' || ((program === 'pnpm' || program === 'yarn') && ['dlx', 'exec'].includes(tokens[at + 1])) || (program === 'npm' && tokens[at + 1] === 'exec')) {
+    at += program === 'npx' || program === 'bunx' ? 1 : 2;
+    while (at < tokens.length && tokens[at].startsWith('-')) at += NPX_VALUE_FLAGS.has(tokens[at]) ? 2 : 1;
+    program = name(tokens[at]);
+  } else if (/^python[\d.]*$/.test(program) && tokens[at + 1] === '-m') {
+    at += 2;
+    program = name(tokens[at]);
+  }
+  if (at >= tokens.length) return [];
+  return [program, ...tokens.slice(at + 1)];
+}
+
+function joinDir(dir, next) {
+  if (next.includes('$') || dir.includes('$')) return next.startsWith('/') || next.startsWith('$') ? next : `${dir}/${next}`;
+  return posix.normalize(dir ? `${dir}/${next}` : next).replace(/\/+$/, '').replace(/^\.$/, '');
+}
+
+/**
+ * The packages an npm publish sends: each workspace member -w names, or the
+ * one at the directory it is handed or runs in, by its manifest's name. A
+ * directory set at run time names no one package; when an earlier step of
+ * the job assigns it under a fixed directory (PKG_DIR="packages/$SLUG"), it
+ * is one of the packages there, chosen by the tag when a tag starts the
+ * workflow.
+ */
+function publishedPackages(words, cwd, place) {
+  const at = words.indexOf('publish');
+  const args = words.slice(at + 1);
+  const chosen = place.tagged ? 'tag' : 'run';
+  if (args.includes('--workspaces') || args.includes('-ws')) return [{ key: 'workspaces', value: { registry: 'npm', workspace: 'every' } }];
+  const members = [];
+  for (let i = 0; i < args.length; i += 1) {
+    const flag = args[i].split('=')[0];
+    if (flag !== '-w' && flag !== '--workspace') continue;
+    const value = args[i].includes('=') ? args[i].slice(args[i].indexOf('=') + 1) : args[i + 1];
+    if (value == null) continue;
+    // A member named at run time, as a loop over packages/* does.
+    if (value.includes('$')) {
+      members.push({ key: 'workspace', value: { chosenBy: chosen, registry: 'npm', workspace: true } });
+      continue;
+    }
+    for (const [dir, name] of place.repo.workspaces()) {
+      if (typeof name === 'string' && (name === value || dir === joinDir(cwd, value))) members.push({ key: `named\0${dir}`, value: { dir, name, registry: 'npm' } });
+    }
+  }
+  if (members.length > 0) return members;
+  const handed = args.find((word, index) => !word.startsWith('-') && !/\.tgz$/.test(word)
+    && !(index > 0 && ['--tag', '--access', '--otp', '--registry', '-w', '--workspace'].includes(args[index - 1])));
+  const dir = handed != null ? joinDir(cwd, handed) : cwd;
+  if (!dir.includes('$')) {
+    const clean = dir.replace(/^\.\/?/, '').replace(/\/+$/, '');
+    const name = place.repo.manifest(clean)?.name;
+    if (typeof name !== 'string' || name === '') return [];
+    return [{ key: `named\0${clean}`, value: { dir: clean, name, registry: 'npm' } }];
+  }
+  const variable = /\$\{\{\s*env\.([A-Za-z_][A-Za-z0-9_]*)\s*\}\}|\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?/.exec(dir);
+  const assigned = variable ? assignment(place.jobTexts, variable[1] ?? variable[2]) : null;
+  const prefix = assigned && assigned.includes('$') ? assigned.slice(0, assigned.indexOf('$')) : null;
+  const under = prefix && prefix.endsWith('/') ? prefix.replace(/^\.\//, '').replace(/\/+$/, '') : null;
+  if (under == null || !place.repo.dirs.has(under)) return [{ key: 'run-time', value: { chosenBy: chosen, registry: 'npm' } }];
+  const count = place.repo.filesUnder(under).filter((path) => /^[^/]+\/package\.json$/.test(path.slice(under.length + 1))).length;
+  return [{ key: `under\0${under}`, value: { chosenBy: chosen, count, registry: 'npm', under: `${under}/` } }];
+}
+
+// The value a job's earlier steps give a shell variable, quotes dropped: the
+// last assignment wins, as it would when the steps run in order.
+function assignment(texts, variable) {
+  let value = null;
+  for (const text of texts) {
+    for (const tokens of commandLines(text)) {
+      let at = ['export', 'local', 'declare', 'readonly'].includes(tokens[0]) ? 1 : 0;
+      for (; at < tokens.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(tokens[at]); at += 1) {
+        if (tokens[at].startsWith(`${variable}=`)) value = tokens[at].slice(variable.length + 1);
+      }
+    }
+  }
+  return value;
 }
 
 // A push input set to true, or to an expression that is true on some runs.

@@ -1,0 +1,14 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish core
+        working-directory: packages/core
+        run: npm publish --provenance --access public
+      - name: Publish extra
+        run: cd packages/extra && npm publish --access public

@@ -311,6 +311,7 @@ function carryDoor(door) {
     ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),
     elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
     ...(door.entry ? { entry: door.entry } : {}),
+    ...(door.extension ? { extension: true } : {}),
     file: door.file,
     ...(door.gated?.length > 0
       ? { gated: door.gated.map((entry) => ({ jobs: [...entry.jobs], pushes: entry.pushes, ...(entry.pushesForReview ? { pushesForReview: true } : {}), ...(entry.pushesTo ? { pushesTo: [...entry.pushesTo] } : {}), sends: [...entry.sends], stages: [...entry.stages], when: { ...entry.when } })) }
@@ -319,6 +320,7 @@ function carryDoor(door) {
     mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),
     name: door.name,
     permissions: [...door.permissions],
+    ...(door.publishedTo ? { publishedTo: [...door.publishedTo] } : {}),
     pushes: door.pushes,
     ...(door.pushesForReview ? { pushesForReview: true } : {}),
     ...(door.pushesTo ? { pushesTo: [...door.pushesTo] } : {}),
@@ -332,6 +334,7 @@ function carryDoor(door) {
       ...(door.sends.changesRepositories ? { changesRepositories: true } : {}),
       deploysPages: door.sends.deploysPages,
       dispatchesTo: [...door.sends.dispatchesTo],
+      ...(door.sends.packages?.length > 0 ? { packages: door.sends.packages.map((entry) => ({ ...entry })) } : {}),
       opensIssues: door.sends.opensIssues,
       opensIssuesOnFailure: door.sends.opensIssuesOnFailure,
       opensPullRequests: door.sends.opensPullRequests,
