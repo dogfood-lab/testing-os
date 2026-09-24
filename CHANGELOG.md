@@ -2,7 +2,7 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.18.0] — 2026-09-24
 
 ### Added
 - **Publishes to the Hugging Face Hub and Zenodo are named.** `huggingface_hub` upload calls, `huggingface-cli upload` and `hf upload` say "publishes to the Hugging Face Hub"; `zenodo.org/api/deposit` together with `actions/publish` says "publishes a record on Zenodo", while a draft deposit or a comment publishes nothing. A shell `for` over literal words is unrolled, so each package it publishes is named. ai-jam-sessions' dataset push and Zenodo record had run "no file this map can see"; mcp-arcade-cabinets' release had published "a package chosen at run time".

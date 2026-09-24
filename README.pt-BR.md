@@ -21,7 +21,7 @@
 *Protocolos, repositórios de evidências e ciclos de aprendizado para software assistido por IA.*
 
 <!-- version:start -->
-**v1.17.0** — versão atual. Consulte [CHANGELOG.md](CHANGELOG.md) para ver o que foi incluído.
+**v1.18.0** — versão atual. Consulte [CHANGELOG.md](CHANGELOG.md) para ver o que foi incluído.
 <!-- version:end -->
 
 📖 **[Leia o manual →](https://dogfood-lab.github.io/testing-os/handbook/)**
@@ -36,7 +36,7 @@
 
 O que você obtém:
 
-- **Registros com confirmação de procedência.** Cada envio é vinculado a uma execução real de CI — sem necessidade de chaves, por meio da própria identidade do provedor — antes de ser aceito. O resultado é um repositório de evidências à prova de adulteração e com anexação exclusiva, e não apenas uma marca de seleção verde baseada na confiança.
+- **Registros com confirmação de procedência.** Cada envio é vinculado a uma execução real de CI — sem necessidade de chaves, por meio da própria identidade do provedor — antes de ser aceito. O resultado é um repositório de evidências à prova de adulteração e com anexação exclusiva, e não apenas uma marcação verde baseada na confiança.
 - **Um contrato de política que você controla.** Declare o que conta como "verificado" em YAML — um DSL de predicados limitado e sem avaliação (`field`/`op`/`value` + `all`/`any`/`not`/`implies`) — e aplique-o em todos os seus repositórios. Valide uma política antes de enviá-la com `dogfood-verify lint`.
 - **Um protocolo de enxame de agentes paralelos.** Execute auditorias multiagente em uma base de código e, em seguida, transforme os resultados brutos em padrões e doutrinas reutilizáveis.
 - **Uma superfície de status em tempo real.** Registros e índices por repositório, além de um selo de status, tudo servido a partir de um único repositório de evidências.
@@ -67,11 +67,11 @@ docker compose -f docker/compose.example.yml up -d
 
 ## Modelo de ameaças
 
-O testing-os processa os envios do dogfood enviados por meio de `repository_dispatch` de repositórios GitHub confiáveis sob `mcp-tool-shop-org/*` e `dogfood-lab/*`. O verificador requer a procedência do CI — os IDs de execução reivindicados são confirmados por meio da API do provedor, e os envios com formas malformadas, referências ausentes ou reivindicações de política inválidas são rejeitados.
+O testing-os processa os envios do dogfood enviados por meio de `repository_dispatch` de repositórios GitHub confiáveis sob `mcp-tool-shop-org/*` e `dogfood-lab/*`. O verificador exige a procedência do CI — os IDs de execução reivindicados são confirmados por meio da API do provedor, e os envios com formas malformadas, referências ausentes ou reivindicações de política inválidas são rejeitados.
 
 **A procedência é a garantia.** Para um envio `github`, o verificador confirma que a execução do GitHub Actions reivindicada realmente existe (API do GitHub) e vincula o `repo` e o `commit_sha` do envio a essa execução confirmada — uma verificação ao vivo e sem necessidade de chaves, enraizada na própria identidade OIDC do GitHub, para que um registro não possa atestar uma execução ou um commit que não ocorreu. O **GitLab CI** é suportado opcionalmente (`source.provider: gitlab`); um envio do GitLab é o único caso em que o verificador chama um host que não é do GitHub (`gitlab.com/api`), e apenas para envios `gitlab`.
 
-**A integridade do registro é à prova de adulteração, mas não à prova de adulteração total.** Cada registro persistido carrega um bloco `integrity` (`submission_digest` + `prev_digest`) formando uma cadeia de hash de anexação exclusiva que `node packages/ingest/run.js --verify-chain` valida totalmente offline — detectando adulterações externas, corrupção de disco e restaurações parciais. Ele **não** se defende contra a credencial de ingestão em si, que pode reescrever tanto um registro quanto a cadeia; fechar isso requer uma âncora fora do controle do escritor. Uma **âncora opcional, desativada por padrão no XRPL** (`node packages/ingest/run.js --anchor-*`) testemunha o cabeçalho da cadeia no XRP Ledger público, tornando qualquer truncamento ou reescrita abaixo de um ponto ancorado detectável — a segunda chamada divulgada que não é do GitHub, e apenas quando um operador a habilita.
+**A integridade do registro é à prova de adulteração, mas não à prova de adulteração total.** Cada registro persistido carrega um bloco `integrity` (`submission_digest` + `prev_digest`) formando uma cadeia de hash de anexação exclusiva que `node packages/ingest/run.js --verify-chain` valida completamente offline — detectando adulterações externas, corrupção de disco e restaurações parciais. Ele **não** se defende contra a credencial de ingestão em si, que pode reescrever tanto um registro quanto a cadeia; fechar isso requer uma âncora fora do controle do escritor. Uma âncora **opcional, desativada por padrão do XRPL** (`node packages/ingest/run.js --anchor-*`) testemunha o cabeçalho da cadeia no XRP Ledger público, tornando qualquer truncamento ou reescrita abaixo de um ponto ancorado detectável — a segunda chamada divulgada que não é do GitHub, e apenas quando um operador a habilita.
 
 **O que o testing-os afeta:** o JSON de envio em cada carga útil `repository_dispatch`; `policies/`, `fixtures/`, `records/`, `indexes/` e `dogfood/roadmap/` neste repositório (o último é escrito apenas por um `swarm roadmap compile` invocado por um operador — nunca pelo caminho automatizado de ingestão); chamadas de saída para `api.github.com` para verificação de proveniência; e — apenas para envios `github` — uma recuperação somente leitura do `dogfood/scenarios/<scenario_id>.yaml` do repositório de envio no commit comprovado (a definição de cenário que impulsiona a aplicação de etapas obrigatórias; com tamanho limitado e validado pelo esquema antes do uso, arquivos ausentes simplesmente deixam essa verificação sem ser aplicada, com um aviso visível).
 
@@ -83,15 +83,15 @@ O testing-os processa os envios do dogfood enviados por meio de `repository_disp
 
 ## Pacotes
 
-| Pacote | Origem | Finalidade |
+| Pacote | Fonte | Finalidade |
 |---------|--------|---------|
 | `@dogfood-lab/schemas` | TypeScript | Os 8 esquemas JSON (registro, descoberta, padrão, recomendação, doutrina, política, cenário, envio). |
 | `@dogfood-lab/verify` | JS | Validador central de envio. Os envios passam por aqui antes de serem persistidos. |
 | `@dogfood-lab/findings` | JS | Contrato de descoberta + pipelines de derivação/revisão/síntese/aconselhamento. |
-| `@dogfood-lab/ingest` | JS | Conexão do pipeline: envio → verificação → persistência → indexação. |
+| `@dogfood-lab/ingest` | JS | Cola do pipeline: envio → verificação → persistência → indexação. |
 | `@dogfood-lab/report` | JS | Construtor de envio para repositórios de origem. |
 | `@dogfood-lab/portfolio` | JS | Gerador de portfólio entre repositórios. |
-| `@dogfood-lab/dogfood-swarm` | JS | O protocolo de agente paralelo de 10 fases + plano de controle SQLite + `swarm` bin. |
+| `@dogfood-lab/dogfood-swarm` | JS | O protocolo paralelo de 10 fases + plano de controle SQLite + `swarm` bin. |
 | `@dogfood-lab/atlas` | JS | Lê um repositório e grava a página que diz como ele funciona (`atlas/README.md`); `atlas check` controla o mapa no CI. Sem dependências entre os arquivos; executa em qualquer repositório. |
 
 Ferramentas de teste paralelas que **permanecem independentes**, mas se integram por meio de APIs publicadas: [`shipcheck`](https://github.com/mcp-tool-shop-org/shipcheck), [`repo-knowledge`](https://github.com/mcp-tool-shop-org/repo-knowledge), [`ai-eyes-mcp`](https://github.com/mcp-tool-shop-org/ai-eyes-mcp), [`taste-engine`](https://github.com/mcp-tool-shop-org/taste-engine), [`style-dataset-lab`](https://github.com/mcp-tool-shop-org/style-dataset-lab).
@@ -125,13 +125,13 @@ npm test            # vitest for schemas, node --test for the rest
 npm run verify      # version-sync + doc-drift + regression-pin gates + build + tests (canonical pre-commit check — NOT the same as build && test)
 ```
 
-Requer Node ≥ 22. A matriz CI executa Node 22 + 24 em `ubuntu-latest`; validado localmente em Node 25.
+Requer Node ≥ 22. A matriz de CI executa Node 22 + 24 em `ubuntu-latest`; validado localmente em Node 25.
 
 **Sistemas de arquivos suportados:** APFS, HFS+, ext4 (linha de base do CI), NTFS — qualquer sistema que implemente POSIX `link(2)`. **Não suportado:** exFAT, FAT32. O CAS de bloqueio de arquivo em [`packages/findings/lib/file-lock.js`](packages/findings/lib/file-lock.js) requer semântica de link rígido para publicação atômica; no exFAT, `linkSync` lança `ENOTSUP` (alto, não silencioso). Problema comum: SSDs externos multiplataforma geralmente são formatados em exFAT — clone o repositório para APFS/HFS+ local em vez disso. Consulte [`docs/m5-validation-2026-04-29.md`](docs/m5-validation-2026-04-29.md) para a matriz de validação completa da Sessão G.
 
 ## Versionamento
 
-Todos os pacotes `@dogfood-lab/*` são atualizados juntos — um número em todo o monorepos. Sete pacotes são publicados no npm sob `@dogfood-lab` na versão 1.17.0 em sincronia (`schemas`, `verify`, `report`, `ingest`, `findings`, `dogfood-swarm`, `atlas`); o oitavo, `@dogfood-lab/portfolio`, permanece interno. A linha de versão perto do topo deste README é gerada automaticamente a partir de `package.json` por meio de [`scripts/sync-version.mjs`](scripts/sync-version.mjs) em cada `npm run build`.
+Todos os pacotes `@dogfood-lab/*` são atualizados juntos — um número em todo o monorepos. Sete pacotes são publicados no npm sob `@dogfood-lab` na versão 1.18.0 em sincronia (`schemas`, `verify`, `report`, `ingest`, `findings`, `dogfood-swarm`, `atlas`); o oitavo, `@dogfood-lab/portfolio`, permanece interno. A linha de versão perto do topo deste README é automaticamente inserida a partir de `package.json` por meio de [`scripts/sync-version.mjs`](scripts/sync-version.mjs) em cada `npm run build`.
 
 ## Licença
 
@@ -141,7 +141,7 @@ Todos os pacotes `@dogfood-lab/*` são atualizados juntos — um número em todo
 
 <div align="center">
 
-**[Manual](https://dogfood-lab.github.io/testing-os/handbook/)** · **[Todos os Repositórios](https://github.com/orgs/dogfood-lab/repositories)** · **[Perfil](https://github.com/dogfood-lab)**
+**[Manual](https://dogfood-lab.github.io/testing-os/handbook/)** · **[Todos os repositórios](https://github.com/orgs/dogfood-lab/repositories)** · **[Perfil](https://github.com/dogfood-lab)**
 
 *Coma primeiro. Envie depois.*
 
