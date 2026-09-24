@@ -2368,7 +2368,7 @@ function limits(ctx, shownText) {
   if (outsideWrites + outsideReads > 0) {
     const what = [outsideWrites > 0 ? count(outsideWrites, 'write') : null, outsideReads > 0 ? count(outsideReads, 'read') : null].filter(Boolean);
     const verb = outsideWrites + outsideReads === 1 ? 'goes' : 'go';
-    lines.push(`${list(what)} ${verb} to the directory the command is run in, the home directory or a path its caller passes, not to this repository.`);
+    lines.push(`${list(what)} ${verb} to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.`);
   }
   // Most such commands are a test spawning the command it tests, which is
   // not a gap in what the repository does; the share in tests is said.

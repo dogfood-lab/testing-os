@@ -83,6 +83,10 @@ const PY_IDENTITY = new Set([
 const PY_ABSOLUTE = new Set(['os.path.abspath', 'os.path.realpath', 'abspath', 'realpath']);
 const PY_CWD = new Set(['os.getcwd', 'getcwd', 'Path.cwd', 'pathlib.Path.cwd']);
 const PY_HOME = new Set(['Path.home', 'pathlib.Path.home']);
+// A directory made or named for scratch, which is the system's, not this
+// repository's: mkdtemp(), tmpdir(), tempfile.gettempdir().
+const JS_TEMP = new Set(['tmpdir', 'mkdtempSync', 'mkdtemp', 'mkdtempDisposableSync']);
+const PY_TEMP = new Set(['tempfile.mkdtemp', 'mkdtemp', 'tempfile.gettempdir', 'gettempdir', 'tempfile.mktemp']);
 const HOME_VARIABLES = new Set(['HOME', 'USERPROFILE']);
 // The checkout a workflow runs in: a path under it is this repository, which
 // the map cannot place from the variable alone, so it names no caller's place.
@@ -972,8 +976,13 @@ export function settleParamPaths(files, places) {
           out.outside ||= deeper.outside;
           out.unread ||= deeper.unread;
           out.unreadFree ||= deeper.unreadFree;
-        } else if (isHelper(value)) unread();
-        else if (outside(value)) out.outside = true;
+        } else if (isHelper(value)) {
+          // A root another file's function returns from the home directory
+          // or the environment is the caller's through every call it is
+          // handed down; any other such root stays unread.
+          if (helperRooted(byPath, call.path, value)) out.outside = true;
+          else unread();
+        } else if (outside(value)) out.outside = true;
         else out.places.push({ ...appendRest(value, rest), ...(main ? { main: true } : {}) });
       }
     }
@@ -1024,7 +1033,21 @@ export function settleParamPaths(files, places) {
       }));
     }
   }
-  for (const file of byPath.values()) delete file.defaultCalls;
+  for (const file of byPath.values()) {
+    delete file.defaultCalls;
+    delete file.callerRooted;
+  }
+}
+
+// Whether a value is the return of a function another file exports whose
+// every return is the caller's place (callerRootedFunctions).
+function helperRooted(byPath, path, value) {
+  const helper = value.anchor.slice(HELPER.length);
+  const at = helper.lastIndexOf('#');
+  const specifier = helper.slice(0, at);
+  const imports = byPath.get(path)?.imports;
+  const site = Array.isArray(imports) ? imports.find((item) => item.specifier === specifier && item.resolved?.outcome === 'file') : null;
+  return site != null && byPath.get(site.resolved.path)?.callerRooted?.[helper.slice(at + 1)] != null;
 }
 
 // The function a recorded call names, as path#name.
@@ -1104,8 +1127,7 @@ function moduleFunctions(root, python) {
  * now that imports resolve: outside when every such function, followed one
  * call into the file its import names, returns the caller's place; otherwise
  * what the site read with that root unreadable, its landings kept and a path
- * that was only the return counted as built at run time. The functions'
- * names are dropped once used.
+ * that was only the return counted as built at run time.
  *
  * @param {Iterable<object>} files every file of the map
  */
@@ -1134,7 +1156,8 @@ export function settleHelperPaths(files) {
       delete file[pending];
     }
   }
-  for (const file of byPath.values()) delete file.callerRooted;
+  // settleParamPaths reads callerRooted for the roots calls hand down, and
+  // drops it.
 }
 
 // A write shaped like no tracked file (a temporary file) places nothing in
@@ -1394,6 +1417,7 @@ function evalJs(node, ctx, depth) {
       // command line, and so is whatever is destructured from that.
       if (fn?.type === 'member_expression' && (fn.childForFieldName('object')?.text === 'process.argv' || (fn.childForFieldName('object')?.type === 'identifier' && CLI_BAGS.has(fn.childForFieldName('object').text)))) return [atCaller('', 'argument')];
       if (name === 'homedir' && (fn?.type === 'identifier' || fn?.childForFieldName('object')?.text === 'os')) return [atCaller('', 'home')];
+      if (JS_TEMP.has(name) && (fn?.type === 'identifier' || fn?.type === 'member_expression')) return [atCaller('', 'temp')];
       if (jsPathCall(fn, name) && name === 'resolve') {
         // resolve() starts from the directory the process runs in unless a
         // segment is absolute, so a relative first segment is the caller's.
@@ -1743,6 +1767,7 @@ function evalPy(node, ctx, depth) {
       const name = dottedName(fn);
       if (PY_CWD.has(name)) return [atCaller('', 'cwd')];
       if (PY_HOME.has(name)) return [atCaller('', 'home')];
+      if (PY_TEMP.has(name)) return [atCaller('', 'temp')];
       if (name === 'os.environ.get' || name === 'os.getenv' || name === 'getenv') return pyEnvironment(null, args[0]);
       if (PY_ABSOLUTE.has(name)) return fromCaller(evalPy(args[0], ctx, next));
       if (PY_JOIN.has(name) || PY_PATH.has(name)) {
@@ -2107,15 +2132,16 @@ function starlightReads(root, ctx, places) {
   return reads;
 }
 
-// A value relative to where the code is run from ('cwd') or to the home
-// directory ('home') is the caller's place, not the repository's: the same
-// line writes somewhere else for every person who runs it.
+// A value relative to where the code is run from ('cwd'), to the home
+// directory ('home') or to a temporary directory ('temp') is the caller's
+// place, not the repository's: the same line writes somewhere else for every
+// person who runs it, and every time.
 function atCaller(text, anchor) {
   return { text, open: false, anchor };
 }
 
 function outside(value) {
-  return value.anchor === 'cwd' || value.anchor === 'home' || value.anchor === 'argument' || value.anchor === 'env' || value.anchor === 'param';
+  return value.anchor === 'cwd' || value.anchor === 'home' || value.anchor === 'temp' || value.anchor === 'argument' || value.anchor === 'env' || value.anchor === 'param';
 }
 
 function isHelper(value) {
