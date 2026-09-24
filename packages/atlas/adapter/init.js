@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { stringify } from 'yaml';
 import { mapRepository } from '../core/index.js';
@@ -27,6 +27,56 @@ function refuse(details) {
     }),
   );
   return 2;
+}
+
+// The ignore files a packager or a formatter reads, the line that keeps the
+// map out of each, and when the file is written: a VS Code extension is
+// packed by what .vscodeignore leaves, an npm package by what .npmignore
+// leaves, both only when the manifest lists no files of its own; prettier
+// --check . formats atlas/ unless .prettierignore says not to.
+const IGNORES = [
+  { file: '.vscodeignore', line: 'atlas/**', when: (pkg, present) => present && !Array.isArray(pkg?.files) },
+  { file: '.npmignore', line: 'atlas/', when: (pkg, present) => present && !Array.isArray(pkg?.files) },
+  { file: '.prettierignore', line: 'atlas/', when: (pkg) => usesPrettier(pkg) },
+];
+const COVERS = new Set(['atlas', 'atlas/', 'atlas/**', 'atlas/**/*', '/atlas', '/atlas/', '/atlas/**', '**/atlas', '**/atlas/', '**/atlas/**']);
+
+/**
+ * Adds the line that keeps atlas/ out of each ignore file the repository's
+ * packaging or formatting reads, once: a line already covering atlas/ is
+ * left as it is. A missing .prettierignore is made; a missing packaging
+ * ignore file is not, since the manifest decides what ships without one.
+ *
+ * @param {string} repo
+ * @returns {Array<{ file: string, line: string }>} what was added
+ */
+function keepMapOut(repo) {
+  let pkg = null;
+  try {
+    pkg = JSON.parse(readFileSync(join(repo, 'package.json'), 'utf8'));
+  } catch {
+    pkg = null;
+  }
+  const added = [];
+  for (const ignore of IGNORES) {
+    const path = join(repo, ignore.file);
+    const present = existsSync(path);
+    if (!ignore.when(pkg, present)) continue;
+    const text = present ? readFileSync(path, 'utf8') : '';
+    if (text.split(/\r?\n/).some((line) => COVERS.has(line.trim()))) continue;
+    const eol = text.includes('\r\n') ? '\r\n' : '\n';
+    writeArtifactSync(path, `${text}${text === '' || text.endsWith('\n') ? '' : eol}${ignore.line}${eol}`);
+    added.push({ file: ignore.file, line: ignore.line });
+  }
+  return added;
+}
+
+function usesPrettier(pkg) {
+  if (pkg == null || typeof pkg !== 'object') return false;
+  const declared = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']
+    .some((field) => pkg[field] != null && typeof pkg[field] === 'object' && Object.hasOwn(pkg[field], 'prettier'));
+  const scripts = pkg.scripts != null && typeof pkg.scripts === 'object' ? Object.values(pkg.scripts) : [];
+  return declared || scripts.some((script) => typeof script === 'string' && /\bprettier\b/.test(script));
 }
 
 export function initCommand(repo, argv) {
@@ -72,9 +122,11 @@ export function initCommand(repo, argv) {
     lines.push('', `overlaps  ${mapped.overlaps.length} files`);
     for (const overlap of mapped.overlaps) lines.push(`  ${overlap.path}`);
   }
+  const added = keepMapOut(repo);
   lines.push(
     '',
     'wrote atlas/boundaries.yaml',
+    ...(added.length > 0 ? [`added ${added.map((entry) => `${entry.line} to ${entry.file}`).join(', ')}`] : []),
     'next: run atlas map, then commit atlas/',
     '',
   );
