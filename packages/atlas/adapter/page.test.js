@@ -125,7 +125,7 @@ describe('atlas page', () => {
     const exact = {
       // Checks reaches one part more, but Ingest is the door that commits into
       // the repository, so the page follows it and says why.
-      '## What this is': '9 parts, mostly JavaScript (12 files). Work enters through 5 doors; the busiest is Ingest, which reaches 2 parts and commits into the repository (Checks reaches 3 but commits nothing).',
+      '## What this is': '9 parts, mostly JavaScript (12 files) and Python (1). Work enters through 5 doors; the busiest is Ingest, which reaches 2 parts and commits into the repository (Checks reaches 3 but commits nothing).',
       '## What comes in': '3. **weekly.** On a push touching 1 path; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC. Runs tools/render.js.',
       '## What happens through Ingest': '2. That reaches lib (4 files).',
       '## Who reads the results': '- **records/** has no reader in this repository.',
@@ -459,7 +459,7 @@ describe('atlas page', () => {
     // it is the one the page follows, and the page says why.
     // The file count moves with every fixture added, so it is matched, not pinned.
     const derived = section(own.markdown, '## What this is').split('\n').find((line) => line.startsWith('23 parts'));
-    assert.match(derived ?? '', /^23 parts, mostly JavaScript \(\d+ files\)\. Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository \(Release reaches 12 but commits nothing\)\. It publishes workspace packages to npm and a container image\. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm\.$/);
+    assert.match(derived ?? '', /^23 parts, mostly JavaScript \(\d+ files\), TypeScript \(\d+\), Python \(\d+\), Rust \(\d+\) and GDScript \(\d+\)\. Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository \(Release reaches 12 but commits nothing\)\. It publishes workspace packages to npm and a container image\. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm\.$/);
     const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
     assert.ok(followed.length <= 5);

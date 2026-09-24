@@ -71,7 +71,7 @@ describe('the commands a repository installs, on the page', () => {
   });
 
   it('says what the repository is written in, and names the commands people run and no package nothing publishes', () => {
-    has('## What this is', '7 parts, mostly JavaScript (6 files). Work enters through 5 doors; CI, kit and tool each reach 2 parts, and CI is followed because it is a workflow, where the others are installed for people to use. People run acme-py, kit and tool.');
+    has('## What this is', '7 parts, mostly JavaScript (6 files) and Python (3). Work enters through 5 doors; CI, kit and tool each reach 2 parts, and CI is followed because it is a workflow, where the others are installed for people to use. People run acme-py, kit and tool.');
     assert.equal(json.derived, section('## What this is')[2]);
   });
 

@@ -2594,8 +2594,10 @@ const LANGUAGE_NAMES = { gdscript: 'GDScript', javascript: 'JavaScript', python:
 const INSTALLED_ALL = 12;
 const INSTALLED_NAMED = 10;
 
-// "mostly TypeScript (412 files)" when one language holds most of the code
-// files, every language otherwise, and nothing when there is no code. When
+// "mostly TypeScript (59 files) and Rust (53)" when one language holds most of
+// the code files, each other language after it, since a bare majority says
+// nothing of the rest; every language when none holds most, and nothing when
+// there is no code. When
 // images are most of the tracked files, the images come first and the code
 // after them: a sprite pack's four scripts are not what it is.
 function languageClause(ctx) {
@@ -2614,7 +2616,7 @@ function languageClause(ctx) {
   if (ranked.length === 0) return '';
   const total = ranked.reduce((sum, [, n]) => sum + n, 0);
   const [name, n] = ranked[0];
-  if (n * 2 > total) return `, mostly ${name} (${count(n, 'file')})`;
+  if (n * 2 > total) return `, mostly ${list([`${name} (${count(n, 'file')})`, ...ranked.slice(1).map(([other, m]) => `${other} (${m})`)])}`;
   return `, in ${list(ranked.map(([other, m]) => `${other} (${count(m, 'file')})`))}`;
 }
 
