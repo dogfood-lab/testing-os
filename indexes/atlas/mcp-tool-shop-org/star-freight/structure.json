@@ -533,6 +533,7 @@
         },
         {
           "hash": "9778ef19d3cf51289a698dfebb027c864f71bf4422cc5bd9f300293fb32afade",
+          "noStatements": true,
           "path": "src/portlight/app/__init__.py"
         },
         {
@@ -4849,6 +4850,7 @@
         },
         {
           "hash": "04fd003d34bb82a13b9ecac3276fa0d50861094fe93664e49638cfde91e5a9fb",
+          "noStatements": true,
           "path": "src/portlight/app/tui/__init__.py"
         },
         {
@@ -4865,6 +4867,7 @@
         },
         {
           "hash": "a814bcc970c32c3f65073ca59a756941a70ddd0af03c5ca00c1ac2a637e9ba27",
+          "noStatements": true,
           "path": "src/portlight/app/tui/screens/__init__.py"
         },
         {
@@ -4999,6 +5002,7 @@
         },
         {
           "hash": "c9b9abce2d2458741144137df7a711c187162fa8f5a21a5fe44704f5a4ead20b",
+          "noStatements": true,
           "path": "src/portlight/balance/__init__.py"
         },
         {
@@ -5088,6 +5092,7 @@
         },
         {
           "hash": "780897d5b841409b82b99d180f536267a2f86408b60652053a1bd31af9e2363f",
+          "noStatements": true,
           "path": "src/portlight/content/__init__.py"
         },
         {
@@ -5471,6 +5476,7 @@
         },
         {
           "hash": "892df38d07c96f3933c1baca451924dae24b6cf41bf2e45cbdeed2f314393bce",
+          "noStatements": true,
           "path": "src/portlight/engine/__init__.py"
         },
         {
@@ -8233,6 +8239,7 @@
         },
         {
           "hash": "2fe5ab7eeaf5ec51f773f50f54eb67beeab6d81b4d390d1392bd163e1160a968",
+          "noStatements": true,
           "path": "src/portlight/printandplay/__init__.py"
         },
         {
@@ -8531,6 +8538,7 @@
         },
         {
           "hash": "2a7ef29854483cdf5ad7f0e9979699fa946a7db2e632e6572da5c1228c5b4e1a",
+          "noStatements": true,
           "path": "src/portlight/receipts/__init__.py"
         },
         {
@@ -8576,6 +8584,7 @@
         },
         {
           "hash": "b3faea922d425eafd254afa846d509463d44b9b8dc263418e76cafffa7550729",
+          "noStatements": true,
           "path": "src/portlight/stress/__init__.py"
         },
         {
@@ -8643,6 +8652,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsideReads": 3,
+      "outsideWrites": 1,
       "role": "code",
       "testedBy": 85,
       "unresolvedSites": 2
@@ -8657,10 +8668,12 @@
       "files": [
         {
           "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "noStatements": true,
           "path": "tests/__init__.py"
         },
         {
           "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "noStatements": true,
           "path": "tests/balance/__init__.py"
         },
         {
@@ -8701,6 +8714,7 @@
         },
         {
           "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "noStatements": true,
           "path": "tests/rpc/__init__.py"
         },
         {
@@ -8724,6 +8738,7 @@
         },
         {
           "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "noStatements": true,
           "path": "tests/stress/__init__.py"
         },
         {
@@ -10084,7 +10099,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 0,
+      "checksCount": 1,
       "commands": [
         {
           "job": "publish",
@@ -10106,10 +10121,24 @@
         "id-token:write"
       ],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 115
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "directory": true,
+          "job": "publish",
+          "path": "src/portlight/",
+          "runKind": "checks",
+          "via": "build pyproject.toml"
+        }
+      ],
+      "runsCount": 1,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -10180,10 +10209,22 @@
         "contents:write"
       ],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 88
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "job": "build",
+          "path": "src/portlight/__main__.py",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -10293,9 +10334,39 @@
           "by": "dogfood/run_wave3.py",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/test_dogfood_runner.py",
+          "call": "glob",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "dogfood/scenarios",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_dogfood_runner.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "dogfood/scenarios/gray_seizure_60d_s17.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_dogfood_runner.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "dogfood/scenarios/recovery_broke_hull_45d_s99.json",
       "writers": []
     },
     {
@@ -10307,6 +10378,18 @@
         }
       ],
       "target": "dogfood/scenarios/recovery_burned_rep_45d_s99.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_dogfood_runner.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "dogfood/scenarios/relief_baseline_90d_s42.json",
       "writers": []
     },
     {
@@ -10342,6 +10425,18 @@
     {
       "readers": [
         {
+          "by": "tests/test_version.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "pyproject.toml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "site/astro.config.mjs",
           "call": "content-collection",
           "confidence": "ast"
@@ -10359,6 +10454,18 @@
         }
       ],
       "target": "site/src/content/docs/handbook",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_campaign.py",
+          "call": "get",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "world",
       "writers": []
     }
   ],

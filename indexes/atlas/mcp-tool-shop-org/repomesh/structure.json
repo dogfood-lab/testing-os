@@ -330,7 +330,7 @@
       "name": "anchor",
       "origin": "mixed",
       "role": "code",
-      "testedBy": 14,
+      "testedBy": 16,
       "unresolvedSites": 0
     },
     {
@@ -357,10 +357,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 0,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 1,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -577,6 +577,8 @@
       "importConfidence": "full",
       "name": "attestor",
       "origin": "authored",
+      "outsideReads": 6,
+      "outsideWrites": 1,
       "role": "code",
       "testedBy": 6,
       "unresolvedSites": 2
@@ -867,6 +869,7 @@
       "importConfidence": "full",
       "name": "ledger",
       "origin": "mixed",
+      "outsideReads": 11,
       "role": "code",
       "testedBy": 17,
       "unresolvedSites": 0
@@ -1021,7 +1024,7 @@
       "dynamicReads": 0,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 1,
-      "dynamicWrites": 2,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -1060,6 +1063,8 @@
       "importConfidence": "full",
       "name": "policy",
       "origin": "authored",
+      "outsideReads": 4,
+      "outsideWrites": 2,
       "role": "code",
       "testedBy": 3,
       "unresolvedSites": 0
@@ -1617,10 +1622,10 @@
       "unresolvedSites": 1
     },
     {
-      "dynamicReads": 11,
-      "dynamicSpawns": 14,
-      "dynamicSpawnsInTests": 13,
-      "dynamicWrites": 4,
+      "dynamicReads": 5,
+      "dynamicSpawns": 13,
+      "dynamicSpawnsInTests": 12,
+      "dynamicWrites": 3,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -2094,10 +2099,10 @@
       "importConfidence": "full",
       "name": "repomesh-cli",
       "origin": "authored",
-      "outsideReads": 20,
-      "outsideWrites": 13,
+      "outsideReads": 37,
+      "outsideWrites": 14,
       "role": "code",
-      "testedBy": 14,
+      "testedBy": 20,
       "unresolvedSites": 98
     },
     {
@@ -2376,9 +2381,9 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 9,
-      "dynamicSpawns": 34,
-      "dynamicSpawnsInTests": 22,
+      "dynamicReads": 5,
+      "dynamicSpawns": 19,
+      "dynamicSpawnsInTests": 8,
       "dynamicWrites": 1,
       "entryPoints": [],
       "externals": 0,
@@ -2525,10 +2530,10 @@
       "importConfidence": "full",
       "name": "tools",
       "origin": "authored",
-      "outsideReads": 7,
+      "outsideReads": 35,
       "outsideWrites": 16,
       "role": "code",
-      "testedBy": 2,
+      "testedBy": 7,
       "unresolvedSites": 1
     },
     {
@@ -4694,13 +4699,13 @@
       "origin": "authored",
       "outsideReads": 11,
       "role": "code",
-      "testedBy": 44,
+      "testedBy": 49,
       "unresolvedSites": 0
     }
   ],
   "doors": [
     {
-      "checksCount": 0,
+      "checksCount": 8,
       "commands": [
         {
           "job": "anchor",
@@ -4752,10 +4757,6 @@
         },
         {
           "job": "anchor",
-          "path": "anchor/xrpl/scripts/post-anchor.mjs"
-        },
-        {
-          "job": "anchor",
           "path": "ledger/events/events.jsonl"
         },
         {
@@ -4773,17 +4774,28 @@
         "issues:write",
         "pull-requests:write"
       ],
-      "pushes": true,
+      "pushes": false,
+      "pushesForReview": true,
       "reach": [
         {
           "boundary": "anchor",
           "depth": 0,
-          "files": 4
+          "files": 10
         },
         {
           "boundary": "registry",
           "depth": 0,
           "files": 1
+        },
+        {
+          "boundary": "repomesh-cli",
+          "depth": 0,
+          "files": 58
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 2
         },
         {
           "boundary": "verifiers",
@@ -4843,21 +4855,24 @@
           "target": "anchor/xrpl/manifests"
         },
         {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "anchor/xrpl/manifests"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
+          "by": "ledger/tests/immutability-coverage.test.mjs",
           "call": "readFileSync",
           "confidence": "ast",
+          "fromTests": true,
           "target": "anchor/xrpl/manifests"
         },
         {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
-          "call": "readdirSync",
+          "by": "packages/repomesh-cli/tests/verify-anchor-gate.test.mjs",
+          "call": "literal",
           "confidence": "ast",
+          "fromTests": true,
+          "target": "anchor/xrpl/manifests"
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-legibility.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
           "target": "anchor/xrpl/manifests"
         },
         {
@@ -4886,14 +4901,15 @@
         },
         {
           "by": "tools/verify-release.mjs",
-          "call": "readFileSync",
+          "call": "readdirSync",
           "confidence": "ast",
           "target": "anchor/xrpl/manifests"
         },
         {
-          "by": "tools/verify-release.mjs",
-          "call": "readdirSync",
+          "by": "verifiers/tests/anchor-notes-parser.test.mjs",
+          "call": "literal",
           "confidence": "ast",
+          "fromTests": true,
           "target": "anchor/xrpl/manifests"
         },
         {
@@ -4979,6 +4995,27 @@
           "target": "ledger/events/events.jsonl"
         },
         {
+          "by": "ledger/tests/immutability-coverage.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "ledger/events/events.jsonl"
+        },
+        {
+          "by": "ledger/tests/validate-ledger-amend.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "ledger/events/events.jsonl"
+        },
+        {
+          "by": "ledger/tests/verifier-policy-contract.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "ledger/events/events.jsonl"
+        },
+        {
           "by": "packages/repomesh-cli/src/key/rotate-revoke.mjs",
           "call": "existsSync",
           "confidence": "ast",
@@ -5010,30 +5047,6 @@
         },
         {
           "by": "packages/repomesh-cli/src/verify/verify-all.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-anchor.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-anchor.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
           "call": "readFileSync",
           "confidence": "ast",
           "target": "ledger/events/events.jsonl"
@@ -5111,6 +5124,13 @@
           "target": "ledger/events/events.jsonl"
         },
         {
+          "by": "verifiers/tests/anchor-notes-parser.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "ledger/events/events.jsonl"
+        },
+        {
           "by": ".github/workflows/anchor-xrpl.yml",
           "target": "registry/anchors.json"
         },
@@ -5177,9 +5197,41 @@
           "call": "readFileSync",
           "confidence": "ast",
           "target": "registry/anchors.json"
+        },
+        {
+          "by": "registry/tests/registry-amend.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "registry/anchors.json"
         }
       ],
       "runs": [
+        {
+          "job": "anchor",
+          "path": "anchor/xrpl/config.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "anchor",
+          "path": "anchor/xrpl/package-lock.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "anchor",
+          "path": "anchor/xrpl/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
+          "job": "anchor",
+          "path": "anchor/xrpl/scripts/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
         {
           "job": "anchor",
           "path": "anchor/xrpl/scripts/compute-root.mjs",
@@ -5192,11 +5244,42 @@
         },
         {
           "job": "anchor",
+          "path": "package-lock.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "anchor",
+          "path": "package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
+          "job": "anchor",
+          "path": "packages/repomesh-cli/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "anchor",
+          "path": "packages/repomesh-cli/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "anchor",
+          "path": "packages/repomesh-cli/scripts/build.mjs",
+          "runKind": "executes",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "anchor",
           "path": "registry/scripts/build-anchors.mjs",
           "runKind": "executes"
         }
       ],
-      "runsCount": 3,
+      "runsCount": 12,
       "secrets": [
         "REPOMESH_LEDGER_TOKEN",
         "REPOMESH_SIGNING_KEY",
@@ -5308,7 +5391,8 @@
         "issues:write",
         "pull-requests:write"
       ],
-      "pushes": true,
+      "pushes": false,
+      "pushesForReview": true,
       "reach": [
         {
           "boundary": "attestor",
@@ -5415,6 +5499,27 @@
           "target": "ledger/events/events.jsonl"
         },
         {
+          "by": "ledger/tests/immutability-coverage.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "ledger/events/events.jsonl"
+        },
+        {
+          "by": "ledger/tests/validate-ledger-amend.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "ledger/events/events.jsonl"
+        },
+        {
+          "by": "ledger/tests/verifier-policy-contract.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "ledger/events/events.jsonl"
+        },
+        {
           "by": "packages/repomesh-cli/src/key/rotate-revoke.mjs",
           "call": "existsSync",
           "confidence": "ast",
@@ -5446,30 +5551,6 @@
         },
         {
           "by": "packages/repomesh-cli/src/verify/verify-all.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-anchor.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-anchor.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
           "call": "readFileSync",
           "confidence": "ast",
           "target": "ledger/events/events.jsonl"
@@ -5544,6 +5625,13 @@
           "by": "tools/verify-release.mjs",
           "call": "readFileSync",
           "confidence": "ast",
+          "target": "ledger/events/events.jsonl"
+        },
+        {
+          "by": "verifiers/tests/anchor-notes-parser.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
           "target": "ledger/events/events.jsonl"
         }
       ],
@@ -5992,7 +6080,8 @@
       "permissions": [
         "contents:write"
       ],
-      "pushes": true,
+      "pushes": false,
+      "pushesForReview": true,
       "reach": [
         {
           "boundary": "registry",
@@ -6085,6 +6174,13 @@
           "by": "registry/scripts/build-snippets.mjs",
           "call": "readFileSync",
           "confidence": "ast",
+          "target": "registry/anchors.json"
+        },
+        {
+          "by": "registry/tests/registry-amend.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
           "target": "registry/anchors.json"
         },
         {
@@ -6316,7 +6412,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 0,
+      "checksCount": 8,
       "commands": [
         {
           "job": "publish",
@@ -6379,10 +6475,6 @@
       "landings": [],
       "mentions": [
         {
-          "job": "image",
-          "path": "packages/repomesh-cli/package.json"
-        },
-        {
           "job": "publish",
           "path": "packages/repomesh-cli/package.json"
         }
@@ -6396,13 +6488,88 @@
       "pushes": false,
       "reach": [
         {
+          "boundary": "anchor",
+          "depth": 0,
+          "files": 10
+        },
+        {
           "boundary": "repomesh-cli",
           "depth": 0,
-          "files": 39
+          "files": 58
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "verifiers",
+          "depth": 1,
+          "enters": {
+            "file": "verifiers/lib/common.mjs",
+            "from": "anchor/xrpl/scripts/emit-anchor-event.mjs"
+          },
+          "files": 2
         }
       ],
       "readers": [],
       "runs": [
+        {
+          "job": "image",
+          "path": "anchor/xrpl/config.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "image",
+          "path": "anchor/xrpl/package-lock.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "image",
+          "path": "anchor/xrpl/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
+          "job": "image",
+          "path": "anchor/xrpl/scripts/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "image",
+          "path": "package-lock.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "image",
+          "path": "package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
+          "job": "image",
+          "path": "packages/repomesh-cli/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "image",
+          "path": "packages/repomesh-cli/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "image",
+          "path": "packages/repomesh-cli/scripts/build.mjs",
+          "runKind": "executes",
+          "via": "docker build Dockerfile"
+        },
         {
           "job": "publish",
           "path": "packages/repomesh-cli/scripts/build.mjs",
@@ -6416,7 +6583,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 2,
+      "runsCount": 10,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -6653,6 +6820,38 @@
         "actions/setup-node"
       ],
       "usesWorkflowToken": true
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "packages/repomesh-cli/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "repomesh",
+      "permissions": [],
+      "pushes": false,
+      "reach": [],
+      "readers": [],
+      "runs": [],
+      "runsCount": 0,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "unplaced": "packages/repomesh-cli/dist/cli.mjs",
+      "uses": [],
+      "usesWorkflowToken": false
     }
   ],
   "edges": [
@@ -6727,6 +6926,48 @@
     {
       "readers": [
         {
+          "by": "tools/tests/verify-action.test.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/verify-action.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": ".github/actions/verify/action.yml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "anchor/xrpl/tests/idle-epoch.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": ".github/workflows/anchor-xrpl.yml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "policy/tests/attestor-empty-commit.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": ".github/workflows/attestor-ci.yml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": ".github/workflows/repomesh-broadcast.yml"
         },
         {
@@ -6741,6 +6982,30 @@
         }
       ],
       "target": ".github/workflows/repomesh-broadcast.yml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "anchor/xrpl/tests/docker-image.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "Dockerfile",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/tests/docs-contract.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.md",
       "writers": []
     },
     {
@@ -6781,6 +7046,12 @@
           "by": "anchor/xrpl/scripts/watch.mjs",
           "call": "readFileSync",
           "confidence": "ast"
+        },
+        {
+          "by": "anchor/xrpl/tests/verify-anchor.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "tools/verify-release.mjs",
@@ -6829,21 +7100,6 @@
           "confidence": "ast"
         },
         {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
-          "call": "readdirSync",
-          "confidence": "ast"
-        },
-        {
           "by": "registry/scripts/build-anchors.mjs",
           "call": "existsSync",
           "confidence": "ast"
@@ -6861,11 +7117,6 @@
         {
           "by": "tools/verify-release.mjs",
           "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/verify-release.mjs",
-          "call": "readFileSync",
           "confidence": "ast"
         },
         {
@@ -6889,9 +7140,39 @@
       "readers": [
         {
           "by": ".github/workflows/anchor-xrpl.yml"
+        },
+        {
+          "by": "ledger/tests/immutability-coverage.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-gate.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-legibility.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "anchor/xrpl/manifests/all.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "verifiers/tests/anchor-notes-parser.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "anchor/xrpl/manifests/genesis.json",
       "writers": []
     },
     {
@@ -6924,10 +7205,67 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/anchor-xrpl.yml"
+          "by": "anchor/xrpl/tests/anchor-writepath-stagec.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "anchor/xrpl/scripts/compute-root.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "anchor/xrpl/tests/anchor-writepath-stagec.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "anchor/xrpl/scripts/emit-anchor-event.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/merkle-v2.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "anchor/xrpl/scripts/merkle.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "anchor/xrpl/tests/anchor-writepath-stagec.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "anchor/xrpl/tests/verify-anchor-humanize.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "anchor/xrpl/scripts/post-anchor.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "anchor/xrpl/tests/verify-anchor-humanize.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "anchor/xrpl/scripts/verify-anchor.mjs",
       "writers": []
     },
     {
@@ -6947,7 +7285,55 @@
     {
       "readers": [
         {
+          "by": "tools/tests/forged-window-probe.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/sec-b2-composed-cross-layer-probe.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/sec-b3-end-to-end-exploit-probe.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "verifiers/tests/sec-008-readevents.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "attestor/scripts/attest-release.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "attestor/tests/emit-key-event.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "attestor/scripts/emit-key-event.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": ".github/workflows/ledger-ci.yml"
+        },
+        {
+          "by": "tools/tests/docs-contract.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/handbook.md",
@@ -6964,6 +7350,12 @@
           "by": "pages/build-pages.mjs",
           "call": "readFileSync",
           "confidence": "ast"
+        },
+        {
+          "by": "tools/tests/docs-contract.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/verification.md",
@@ -7039,6 +7431,24 @@
           "confidence": "ast"
         },
         {
+          "by": "ledger/tests/immutability-coverage.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "ledger/tests/validate-ledger-amend.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "ledger/tests/verifier-policy-contract.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/repomesh-cli/src/key/rotate-revoke.mjs",
           "call": "existsSync",
           "confidence": "ast"
@@ -7065,26 +7475,6 @@
         },
         {
           "by": "packages/repomesh-cli/src/verify/verify-all.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-anchor.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-anchor.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
           "call": "readFileSync",
           "confidence": "ast"
         },
@@ -7147,6 +7537,12 @@
           "by": "tools/verify-release.mjs",
           "call": "readFileSync",
           "confidence": "ast"
+        },
+        {
+          "by": "verifiers/tests/anchor-notes-parser.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "ledger/events/events.jsonl",
@@ -7302,9 +7698,69 @@
     {
       "readers": [
         {
+          "by": "ledger/tests/validate-ledger-amend.test.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/tools.test.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "ledger/nodes/a",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/tests/tools.test.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "ledger/nodes/demo-org",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "ledger/tests/immutability-coverage.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "ledger/tests/key-lifecycle.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "ledger/tests/validate-ledger-amend.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "ledger/tests/verifier-policy-contract.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "scripts/verify.sh",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tools/tests/forged-window-probe.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "ledger/scripts/validate-ledger.mjs",
@@ -7322,9 +7778,26 @@
     {
       "readers": [
         {
+          "by": "docs/handbook.md",
+          "call": "--test",
+          "confidence": "text"
+        }
+      ],
+      "target": "ledger/tests/validate-ledger.test.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/repomesh-cli/src/doctor.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "packages/repomesh-cli/tests/cli-flags.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "node.json",
@@ -7341,9 +7814,27 @@
           "by": "packages/repomesh-cli/scripts/build.mjs",
           "call": "existsSync",
           "confidence": "ast"
+        },
+        {
+          "by": "packages/repomesh-cli/tests/version.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "packages/repomesh-cli",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/version.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/CHANGELOG.md",
       "writers": []
     },
     {
@@ -7355,6 +7846,12 @@
           "by": "packages/repomesh-cli/src/cli.mjs",
           "call": "readFileSync",
           "confidence": "ast"
+        },
+        {
+          "by": "packages/repomesh-cli/tests/version.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "packages/repomesh-cli/package.json",
@@ -7390,12 +7887,726 @@
     {
       "readers": [
         {
+          "by": "packages/repomesh-cli/tests/schema-sha256.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/event-schema-conditional.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/schemas/event.schema.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "anchor/xrpl/tests/root-overrides-schema-d14.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/overrides-schema.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/schemas/repomesh.overrides.schema.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/repomesh-cli/scripts/build.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/anchor-prev-chain.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/attestor-allowlist.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/cli-features.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/cli-flags.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/hardening.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/http-env-validation.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/http-hardening.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/http-https-required.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/http-retry-chatter.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-keygen.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-rotate-revoke.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-window-b3-ordering.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-window-verify-release.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/ledger-a-005-immutability.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/merkle-v2.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/path-guard.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/remote-revocation-warning.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/safe-json.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-checks.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-closetime.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-degradation.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-exit-codes.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-gate.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-gate.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-legibility.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/satisfied-alignment.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "packages/repomesh-cli/src",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/cli-exit-codes.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/cli-flags.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-keygen.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-rotate-revoke.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/remote-revocation-warning.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/version.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/forged-window-probe.test.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/cli.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/hardening.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/http-env-validation.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/http-hardening.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/http-https-required.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/http-retry-chatter.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/http.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/lib-api.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/index.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/key-keygen.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/init.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/key-keygen.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/key/keygen.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/key-keygen.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-rotate-revoke.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/key/rotate-revoke.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/cli-flags.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/log.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/attestor-allowlist.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/hardening.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/remote-revocation-warning.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/remote-defaults.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/anchor-notes-drift.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/verify/anchor-notes.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/anchor-prev-chain.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/attestor-allowlist.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/cli-features.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/cli-flags.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-keygen.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-rotate-revoke.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-window-b3-ordering.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-window-verify-release.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/ledger-a-005-immutability.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-checks.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-closetime.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-degradation.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-exit-codes.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-gate.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-gate.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-legibility.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/verify/canonicalize.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/key-window-drift.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/verify/key-window.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/anchor-prev-chain.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-window-b3-ordering.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-window-verify-release.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/ledger-a-005-immutability.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/merkle-v2.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-checks.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-closetime.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-degradation.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-exit-codes.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-gate.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-legibility.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/verify/merkle.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/path-guard.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/safe-json.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/verify/safe-json.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/cli-features.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/verify/verify-all.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/anchor-prev-chain.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-checks.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-closetime.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-degradation.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-exit-codes.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/verify/verify-anchor.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/attestor-allowlist.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/cli-features.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/cli-flags.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/hardening.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-window-b3-ordering.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-window-verify-release.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/ledger-a-005-immutability.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-anchor-gate.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-gate.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/verify-legibility.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/satisfied-alignment.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/repomesh-cli/src/verify/verify-release.mjs",
       "writers": []
     },
     {
@@ -7442,6 +8653,12 @@
           "by": "scripts/verify.sh",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tools/tests/tools.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "pages/build-pages.mjs",
@@ -7453,6 +8670,12 @@
           "by": "scripts/verify.sh",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tools/tests/tools.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "pages/build-timeline.mjs",
@@ -7614,6 +8837,18 @@
     {
       "readers": [
         {
+          "by": "policy/tests/check-policy.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "policy/scripts/check-policy.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "registry/scripts/build-verifiers.mjs",
           "call": "existsSync",
           "confidence": "ast"
@@ -7640,6 +8875,12 @@
     {
       "readers": [
         {
+          "by": "tools/tests/satisfied-alignment.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tools/verify-release.mjs",
           "call": "existsSync",
           "confidence": "ast"
@@ -7651,6 +8892,18 @@
         }
       ],
       "target": "profiles/baseline.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/tests/satisfied-alignment.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "profiles/regulated.json",
       "writers": []
     },
     {
@@ -7721,6 +8974,12 @@
           "by": "registry/scripts/build-snippets.mjs",
           "call": "readFileSync",
           "confidence": "ast"
+        },
+        {
+          "by": "registry/tests/registry-amend.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "registry/anchors.json",
@@ -7856,6 +9115,12 @@
     {
       "readers": [
         {
+          "by": "registry/tests/registry-scoring-amend.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "scripts/verify.sh",
           "call": "literal",
           "confidence": "text"
@@ -7877,6 +9142,30 @@
     },
     {
       "readers": [
+        {
+          "by": "registry/tests/registry-amend.test.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "registry/scripts/event-cache.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "registry/tests/registry-amend-wave2.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "registry/tests/registry-scoring-amend.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "scripts/verify.sh",
           "call": "literal",
@@ -8039,9 +9328,117 @@
           "confidence": "ast"
         },
         {
+          "by": "ledger/tests/key-lifecycle.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "ledger/tests/validate-ledger-amend.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "ledger/tests/validate-ledger-amend.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "ledger/tests/verifier-policy-contract.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "node.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "policy/tests/violation-event-schema.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "registry/tests/registry-amend-wave2.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "registry/tests/registry-amend.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "registry/tests/registry-disputes.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "registry/tests/registry-humanize.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "registry/tests/registry-key-window.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "registry/tests/registry-policy-contract-capability.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "registry/tests/registry-scoring-amend.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "registry/tests/registry-untrusted-cause.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "registry/tests/verify-trust-disputes.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/event-schema-conditional.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/event-schema-conditional.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/sec-b2-composed-cross-layer-probe.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/sec-b3-end-to-end-exploit-probe.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "schemas/event.schema.json",
@@ -8068,6 +9465,18 @@
           "by": "tools/join-node.mjs",
           "call": "readFileSync",
           "confidence": "ast"
+        },
+        {
+          "by": "tools/tests/event-schema-conditional.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/tools.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "schemas/node.schema.json",
@@ -8075,6 +9484,18 @@
     },
     {
       "readers": [
+        {
+          "by": "anchor/xrpl/tests/root-overrides-schema-d14.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/overrides-schema.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "verifiers/lib/load-overrides.mjs",
           "call": "readFileSync",
@@ -8090,6 +9511,12 @@
           "by": "ledger/scripts/validate-ledger.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "ledger/tests/verifier-policy-contract.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "schemas/verifier.policy.schema.json",
@@ -8147,12 +9574,59 @@
     {
       "readers": [
         {
+          "by": "tools/tests/tools.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tools/register-node.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/repomesh-cli/src/cli.mjs",
           "call": "literal",
           "confidence": "ast"
         }
       ],
       "target": "tools/repomesh.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/handbook.md",
+          "call": "--test",
+          "confidence": "text"
+        }
+      ],
+      "target": "tools/tests/tools.test.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/tests/forged-window-probe.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/sec-b2-composed-cross-layer-probe.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/tests/sec-b3-end-to-end-exploit-probe.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tools/verify-release.mjs",
       "writers": []
     },
     {
@@ -8178,14 +9652,22 @@
           "confidence": "ast"
         },
         {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
-          "call": "existsSync",
-          "confidence": "weak"
+          "by": "ledger/tests/verifier-policy-contract.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
-          "by": "packages/repomesh-cli/src/verify/verify-release.mjs",
-          "call": "readFileSync",
-          "confidence": "weak"
+          "by": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "registry/scripts/build-trust.mjs",
@@ -8204,6 +9686,84 @@
         }
       ],
       "target": "verifier.policy.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/repomesh-cli/tests/anchor-notes-drift.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "verifiers/lib/anchor-notes.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "attestor/tests/emit-key-event.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "verifiers/lib/common.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "ledger/tests/key-lifecycle.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/repomesh-cli/tests/key-window-drift.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "verifiers/lib/key-window.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "verifiers/tests/sec-004-repro-allowlist.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "verifiers/tests/sec-stgb-ver-006-repro-distinct.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "verifiers/repro/config.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "verifiers/tests/sec-stgb-ver-001-osv-unscored.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "verifiers/tests/sec-stgb-ver-004-sbom-timeout.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "verifiers/security/config.json",
       "writers": []
     }
   ],

@@ -1,6 +1,6 @@
 # facet: how it works
 
-Mapped at 2026-09-23 from commit 8d2fa34.
+Mapped at 2026-09-24 from commit 8d2fa34.
 
 ## What this is
 
@@ -10,17 +10,19 @@ Mapped at 2026-09-23 from commit 8d2fa34.
 
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - Release now also runs tools/facet_index.py and tools/record_mcp.py.
-- facet (package.json) is a new command. It runs bin/facet.js.
-- And 2 more changes to doors.
-- site/src/content/docs/ is now also read by site/astro.config.mjs.
-- site/src/content/docs/handbook/ is now read by site/astro.config.mjs.
+- Release now also checks tools/diagnostics/ and tools/verify/.
+- And 3 more changes to doors.
+- .gitattributes is now read by tests/test_t06_line_endings.py.
+- .github/workflows/release.yml is now read by tests/test_t27_packaging_shape.py.
+- CHANGELOG.md is now also read by tests/test_t05_claims_sweep.py and tests/test_t34_front_door_counts.py.
+- And 95 more new writers and readers of places.
 - 1 file changed content, across 1 part.
 
 ## What comes in
 
 1. **ci.** On a push touching 10 paths; or by hand. Runs tests/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tools/facet_index.py and tools/record_mcp.py.
+3. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tools/facet_index.py and tools/record_mcp.py; checks tools/diagnostics/ and tools/verify/.
 4. **facet** (a command people run). Runs bin/facet.js.
 5. **facet-index** (a command people run). Runs tools/facet_index.py.
 6. **facet-mcp** (a command people run). Runs tools/record_mcp.py.
@@ -38,7 +40,7 @@ ci writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Release** runs tools/facet_index.py and tools/record_mcp.py, publishes to npm and PyPI, and creates a GitHub release.
+**Release** runs tools/facet_index.py and tools/record_mcp.py, checks tools/diagnostics/ and tools/verify/, publishes to npm and PyPI, and creates a GitHub release.
 
 **facet** (a command people run) runs bin/facet.js.
 
@@ -81,7 +83,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .claude/, .github/, canon/, profiles/ and the repository root; 323 writes with paths built at run time may land here.
+People write .claude/, .github/, canon/, profiles/ and the repository root; 192 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -92,8 +94,8 @@ Read those in order to follow one push end to end.
 ## What this map cannot see
 
 - 205 import sites could not be resolved.
-- 323 writes and 159 reads use paths built at run time and are not named here.
-- 30 writes go to the directory the command is run in or the home directory, not to this repository.
+- 192 writes and 109 reads use paths built at run time and are not named here.
+- 183 writes and 81 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

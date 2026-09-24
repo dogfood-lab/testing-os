@@ -1,4 +1,36 @@
 {
+  "authorship": {
+    "parts": [
+      {
+        "addedBy": "repomesh-bot",
+        "name": "assets"
+      },
+      {
+        "addedBy": "repomesh-bot",
+        "name": "profiles"
+      },
+      {
+        "addedBy": "repomesh-bot",
+        "name": "scripts"
+      },
+      {
+        "addedBy": "repomesh-bot",
+        "name": "templates"
+      }
+    ],
+    "places": [
+      {
+        "byPeople": 5,
+        "commits": 7,
+        "target": "anchor/xrpl/manifests"
+      },
+      {
+        "byPeople": 14,
+        "commits": 27,
+        "target": "ledger/events/events.jsonl"
+      }
+    ]
+  },
   "boundaries": [
     {
       "breakage": {
@@ -32,7 +64,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "anchor",
-      "qualifyingSourceCommits": 3,
+      "qualifyingSourceCommits": 2,
       "rebaseline": null
     },
     {
@@ -64,7 +96,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "attestor",
-      "qualifyingSourceCommits": 2,
+      "qualifyingSourceCommits": 1,
       "rebaseline": null
     },
     {
@@ -88,19 +120,18 @@
         "coChangesOnly": [],
         "collapsed": false,
         "confidence": "low",
-        "importsAndCoChanges": [
-          "registry"
-        ],
+        "importsAndCoChanges": [],
         "importsOnly": [
+          "registry",
           "tools"
         ]
       },
-      "cohesion": 0,
+      "cohesion": null,
       "cohesionDropped": false,
       "confidence": "low",
       "highWater": null,
       "name": "ledger",
-      "qualifyingSourceCommits": 5,
+      "qualifyingSourceCommits": 4,
       "rebaseline": null
     },
     {
@@ -116,7 +147,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "pages",
-      "qualifyingSourceCommits": 3,
+      "qualifyingSourceCommits": 2,
       "rebaseline": null
     },
     {
@@ -132,7 +163,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "policy",
-      "qualifyingSourceCommits": 2,
+      "qualifyingSourceCommits": 1,
       "rebaseline": null
     },
     {
@@ -153,9 +184,7 @@
     },
     {
       "breakage": {
-        "coChangesOnly": [
-          "ledger"
-        ],
+        "coChangesOnly": [],
         "collapsed": false,
         "confidence": "low",
         "importsAndCoChanges": [],
@@ -163,12 +192,12 @@
           "tools"
         ]
       },
-      "cohesion": 0,
+      "cohesion": null,
       "cohesionDropped": false,
       "confidence": "low",
       "highWater": null,
       "name": "registry",
-      "qualifyingSourceCommits": 6,
+      "qualifyingSourceCommits": 5,
       "rebaseline": null
     },
     {
@@ -187,7 +216,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "repomesh-cli",
-      "qualifyingSourceCommits": 6,
+      "qualifyingSourceCommits": 5,
       "rebaseline": null
     },
     {
@@ -283,7 +312,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "tools",
-      "qualifyingSourceCommits": 5,
+      "qualifyingSourceCommits": 4,
       "rebaseline": null
     },
     {
@@ -305,7 +334,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "verifiers",
-      "qualifyingSourceCommits": 6,
+      "qualifyingSourceCommits": 5,
       "rebaseline": null
     }
   ],
@@ -323,33 +352,33 @@
         "path": ".github/actions/verify/action.yml"
       },
       {
-        "commits": 2,
-        "lines": 29,
+        "commits": 4,
+        "lines": 63,
         "path": ".github/dependabot.yml"
       },
       {
-        "commits": 9,
-        "lines": 213,
+        "commits": 11,
+        "lines": 345,
         "path": ".github/workflows/anchor-xrpl.yml"
       },
       {
-        "commits": 14,
-        "lines": 370,
+        "commits": 15,
+        "lines": 666,
         "path": ".github/workflows/attestor-ci.yml"
       },
       {
-        "commits": 12,
-        "lines": 179,
+        "commits": 13,
+        "lines": 263,
         "path": ".github/workflows/ledger-ci.yml"
       },
       {
-        "commits": 8,
-        "lines": 105,
+        "commits": 9,
+        "lines": 261,
         "path": ".github/workflows/pages-ci.yml"
       },
       {
-        "commits": 7,
-        "lines": 213,
+        "commits": 8,
+        "lines": 345,
         "path": ".github/workflows/registry-ci.yml"
       },
       {
@@ -368,13 +397,13 @@
         "path": ".github/workflows/xrpl-watch.yml"
       },
       {
-        "commits": 2,
-        "lines": 16,
+        "commits": 3,
+        "lines": 44,
         "path": ".gitignore"
       },
       {
-        "commits": 10,
-        "lines": 285,
+        "commits": 12,
+        "lines": 349,
         "path": "CHANGELOG.md"
       },
       {
@@ -383,83 +412,83 @@
         "path": "Dockerfile"
       },
       {
-        "commits": 1,
-        "lines": 21,
+        "commits": 3,
+        "lines": 63,
         "path": "LICENSE"
       },
       {
-        "commits": 9,
-        "lines": 1219,
+        "commits": 11,
+        "lines": 1753,
         "path": "README.es.md"
       },
       {
-        "commits": 9,
-        "lines": 1239,
+        "commits": 11,
+        "lines": 1773,
         "path": "README.fr.md"
       },
       {
-        "commits": 9,
-        "lines": 904,
+        "commits": 11,
+        "lines": 1438,
         "path": "README.hi.md"
       },
       {
-        "commits": 9,
-        "lines": 971,
+        "commits": 11,
+        "lines": 1505,
         "path": "README.it.md"
       },
       {
-        "commits": 9,
-        "lines": 1343,
+        "commits": 11,
+        "lines": 1877,
         "path": "README.ja.md"
       },
       {
-        "commits": 12,
-        "lines": 629,
+        "commits": 13,
+        "lines": 1171,
         "path": "README.md"
       },
       {
-        "commits": 9,
-        "lines": 1057,
+        "commits": 11,
+        "lines": 1591,
         "path": "README.pt-BR.md"
       },
       {
-        "commits": 9,
-        "lines": 1152,
+        "commits": 11,
+        "lines": 1686,
         "path": "README.zh.md"
       },
       {
-        "commits": 3,
-        "lines": 76,
+        "commits": 5,
+        "lines": 166,
         "path": "SCORECARD.md"
       },
       {
-        "commits": 3,
-        "lines": 66,
+        "commits": 5,
+        "lines": 188,
         "path": "SECURITY.md"
       },
       {
-        "commits": 2,
-        "lines": 94,
+        "commits": 4,
+        "lines": 254,
         "path": "SHIP_GATE.md"
       },
       {
-        "commits": 3,
-        "lines": 13,
+        "commits": 5,
+        "lines": 25,
         "path": "anchor/xrpl/config.json"
       },
       {
-        "commits": 1,
-        "lines": 14,
+        "commits": 3,
+        "lines": 42,
         "path": "anchor/xrpl/manifests/2026-02-28.json"
       },
       {
-        "commits": 9,
-        "lines": 94,
+        "commits": 11,
+        "lines": 122,
         "path": "anchor/xrpl/manifests/all.json"
       },
       {
-        "commits": 1,
-        "lines": 14,
+        "commits": 3,
+        "lines": 42,
         "path": "anchor/xrpl/manifests/genesis.json"
       },
       {
@@ -468,23 +497,23 @@
         "path": "anchor/xrpl/manifests/since-2026-06-21T01-13-55.605Z.json"
       },
       {
-        "commits": 4,
-        "lines": 382,
+        "commits": 6,
+        "lines": 806,
         "path": "anchor/xrpl/package-lock.json"
       },
       {
-        "commits": 2,
-        "lines": 11,
+        "commits": 4,
+        "lines": 29,
         "path": "anchor/xrpl/package.json"
       },
       {
-        "commits": 5,
-        "lines": 258,
+        "commits": 6,
+        "lines": 524,
         "path": "anchor/xrpl/scripts/compute-root.mjs"
       },
       {
-        "commits": 5,
-        "lines": 377,
+        "commits": 6,
+        "lines": 445,
         "path": "anchor/xrpl/scripts/emit-anchor-event.mjs"
       },
       {
@@ -493,18 +522,18 @@
         "path": "anchor/xrpl/scripts/explorer.mjs"
       },
       {
-        "commits": 2,
-        "lines": 89,
+        "commits": 4,
+        "lines": 163,
         "path": "anchor/xrpl/scripts/merkle.mjs"
       },
       {
-        "commits": 6,
-        "lines": 385,
+        "commits": 7,
+        "lines": 521,
         "path": "anchor/xrpl/scripts/post-anchor.mjs"
       },
       {
-        "commits": 6,
-        "lines": 494,
+        "commits": 7,
+        "lines": 860,
         "path": "anchor/xrpl/scripts/verify-anchor.mjs"
       },
       {
@@ -568,7 +597,7 @@
         "path": "anchor/xrpl/watch-baseline.json"
       },
       {
-        "commits": 1,
+        "commits": 3,
         "lines": 0,
         "path": "assets/readme.png"
       },
@@ -603,8 +632,8 @@
         "path": "attestor/package.json"
       },
       {
-        "commits": 5,
-        "lines": 952,
+        "commits": 6,
+        "lines": 1472,
         "path": "attestor/scripts/attest-release.mjs"
       },
       {
@@ -648,8 +677,8 @@
         "path": "docs/contracts/key-lifecycle-contract.md"
       },
       {
-        "commits": 4,
-        "lines": 1453,
+        "commits": 5,
+        "lines": 3219,
         "path": "docs/handbook.md"
       },
       {
@@ -668,8 +697,8 @@
         "path": "docs/threat-model.md"
       },
       {
-        "commits": 2,
-        "lines": 331,
+        "commits": 4,
+        "lines": 563,
         "path": "docs/verification.md"
       },
       {
@@ -688,73 +717,73 @@
         "path": "docs/xrpl-web3-6mo.study-swarm.dispatch.md"
       },
       {
-        "commits": 41,
-        "lines": 141,
+        "commits": 42,
+        "lines": 161,
         "path": "ledger/events/events.jsonl"
       },
       {
-        "commits": 2,
-        "lines": 23,
+        "commits": 4,
+        "lines": 65,
         "path": "ledger/nodes/mcp-tool-shop-org/repomesh-license-verifier/node.json"
       },
       {
-        "commits": 2,
-        "lines": 22,
+        "commits": 4,
+        "lines": 62,
         "path": "ledger/nodes/mcp-tool-shop-org/repomesh-repro-verifier/node.json"
       },
       {
-        "commits": 2,
-        "lines": 23,
+        "commits": 4,
+        "lines": 65,
         "path": "ledger/nodes/mcp-tool-shop-org/repomesh-security-verifier/node.json"
       },
       {
-        "commits": 2,
-        "lines": 20,
+        "commits": 4,
+        "lines": 56,
         "path": "ledger/nodes/mcp-tool-shop-org/repomesh-xrpl-anchor/node.json"
       },
       {
-        "commits": 1,
-        "lines": 31,
+        "commits": 3,
+        "lines": 93,
         "path": "ledger/nodes/mcp-tool-shop-org/repomesh/node.json"
       },
       {
-        "commits": 1,
-        "lines": 29,
+        "commits": 3,
+        "lines": 87,
         "path": "ledger/nodes/mcp-tool-shop-org/shipcheck/node.json"
       },
       {
-        "commits": 1,
-        "lines": 1,
+        "commits": 3,
+        "lines": 3,
         "path": "ledger/nodes/mcp-tool-shop-org/shipcheck/repomesh.overrides.json"
       },
       {
-        "commits": 1,
-        "lines": 5,
+        "commits": 3,
+        "lines": 15,
         "path": "ledger/nodes/mcp-tool-shop-org/shipcheck/repomesh.profile.json"
       },
       {
-        "commits": 3,
-        "lines": 96,
+        "commits": 5,
+        "lines": 264,
         "path": "ledger/package-lock.json"
       },
       {
-        "commits": 2,
-        "lines": 15,
+        "commits": 3,
+        "lines": 41,
         "path": "ledger/package.json"
       },
       {
-        "commits": 1,
-        "lines": 15,
+        "commits": 3,
+        "lines": 45,
         "path": "ledger/scripts/canonicalize.mjs"
       },
       {
-        "commits": 11,
-        "lines": 1481,
+        "commits": 12,
+        "lines": 2013,
         "path": "ledger/scripts/validate-ledger.mjs"
       },
       {
-        "commits": 4,
-        "lines": 602,
+        "commits": 5,
+        "lines": 852,
         "path": "ledger/scripts/verify-release.mjs"
       },
       {
@@ -783,98 +812,98 @@
         "path": "ledger/tests/verifier-policy-contract.test.mjs"
       },
       {
-        "commits": 1,
-        "lines": 31,
+        "commits": 3,
+        "lines": 93,
         "path": "node.json"
       },
       {
-        "commits": 5,
-        "lines": 509,
+        "commits": 7,
+        "lines": 1127,
         "path": "package-lock.json"
       },
       {
-        "commits": 1,
-        "lines": 6,
+        "commits": 3,
+        "lines": 18,
         "path": "package.json"
       },
       {
-        "commits": 10,
-        "lines": 239,
+        "commits": 12,
+        "lines": 265,
         "path": "packages/repomesh-cli/CHANGELOG.md"
       },
       {
-        "commits": 1,
-        "lines": 21,
+        "commits": 3,
+        "lines": 63,
         "path": "packages/repomesh-cli/LICENSE"
       },
       {
-        "commits": 3,
-        "lines": 168,
+        "commits": 5,
+        "lines": 388,
         "path": "packages/repomesh-cli/README.md"
       },
       {
-        "commits": 11,
-        "lines": 91,
+        "commits": 13,
+        "lines": 193,
         "path": "packages/repomesh-cli/package.json"
       },
       {
-        "commits": 1,
-        "lines": 17,
+        "commits": 3,
+        "lines": 51,
         "path": "packages/repomesh-cli/profiles/baseline.json"
       },
       {
-        "commits": 1,
-        "lines": 17,
+        "commits": 3,
+        "lines": 51,
         "path": "packages/repomesh-cli/profiles/open-source.json"
       },
       {
-        "commits": 1,
-        "lines": 87,
+        "commits": 3,
+        "lines": 261,
         "path": "packages/repomesh-cli/profiles/profile.schema.json"
       },
       {
-        "commits": 1,
-        "lines": 24,
+        "commits": 3,
+        "lines": 72,
         "path": "packages/repomesh-cli/profiles/regulated.json"
       },
       {
-        "commits": 4,
-        "lines": 197,
+        "commits": 6,
+        "lines": 335,
         "path": "packages/repomesh-cli/schemas/event.schema.json"
       },
       {
-        "commits": 3,
-        "lines": 120,
+        "commits": 5,
+        "lines": 316,
         "path": "packages/repomesh-cli/schemas/node.schema.json"
       },
       {
-        "commits": 2,
-        "lines": 78,
+        "commits": 4,
+        "lines": 224,
         "path": "packages/repomesh-cli/schemas/repomesh.overrides.schema.json"
       },
       {
-        "commits": 1,
-        "lines": 32,
+        "commits": 3,
+        "lines": 96,
         "path": "packages/repomesh-cli/schemas/repomesh.profile.schema.json"
       },
       {
-        "commits": 1,
-        "lines": 31,
+        "commits": 3,
+        "lines": 93,
         "path": "packages/repomesh-cli/scripts/build.mjs"
       },
       {
-        "commits": 8,
-        "lines": 866,
+        "commits": 9,
+        "lines": 1084,
         "path": "packages/repomesh-cli/src/cli.mjs"
       },
       {
-        "commits": 2,
-        "lines": 168,
+        "commits": 3,
+        "lines": 442,
         "path": "packages/repomesh-cli/src/doctor.mjs"
       },
       {
-        "commits": 7,
-        "lines": 387,
+        "commits": 8,
+        "lines": 447,
         "path": "packages/repomesh-cli/src/http.mjs"
       },
       {
@@ -883,8 +912,8 @@
         "path": "packages/repomesh-cli/src/index.mjs"
       },
       {
-        "commits": 4,
-        "lines": 521,
+        "commits": 5,
+        "lines": 817,
         "path": "packages/repomesh-cli/src/init.mjs"
       },
       {
@@ -903,13 +932,13 @@
         "path": "packages/repomesh-cli/src/log.mjs"
       },
       {
-        "commits": 1,
-        "lines": 27,
+        "commits": 3,
+        "lines": 81,
         "path": "packages/repomesh-cli/src/mode.mjs"
       },
       {
-        "commits": 6,
-        "lines": 142,
+        "commits": 7,
+        "lines": 156,
         "path": "packages/repomesh-cli/src/remote-defaults.mjs"
       },
       {
@@ -923,8 +952,8 @@
         "path": "packages/repomesh-cli/src/verify/anchor-notes.mjs"
       },
       {
-        "commits": 1,
-        "lines": 14,
+        "commits": 3,
+        "lines": 42,
         "path": "packages/repomesh-cli/src/verify/canonicalize.mjs"
       },
       {
@@ -938,8 +967,8 @@
         "path": "packages/repomesh-cli/src/verify/key-window.mjs"
       },
       {
-        "commits": 2,
-        "lines": 100,
+        "commits": 4,
+        "lines": 156,
         "path": "packages/repomesh-cli/src/verify/merkle.mjs"
       },
       {
@@ -953,28 +982,28 @@
         "path": "packages/repomesh-cli/src/verify/verify-all.mjs"
       },
       {
-        "commits": 8,
-        "lines": 720,
+        "commits": 9,
+        "lines": 1082,
         "path": "packages/repomesh-cli/src/verify/verify-anchor.mjs"
       },
       {
-        "commits": 9,
-        "lines": 2323,
+        "commits": 10,
+        "lines": 2885,
         "path": "packages/repomesh-cli/src/verify/verify-release.mjs"
       },
       {
-        "commits": 2,
-        "lines": 266,
+        "commits": 3,
+        "lines": 768,
         "path": "packages/repomesh-cli/templates/repomesh-broadcast.yml"
       },
       {
-        "commits": 1,
-        "lines": 2,
+        "commits": 3,
+        "lines": 6,
         "path": "packages/repomesh-cli/templates/repomesh.overrides.json"
       },
       {
-        "commits": 1,
-        "lines": 5,
+        "commits": 3,
+        "lines": 15,
         "path": "packages/repomesh-cli/templates/repomesh.profile.json"
       },
       {
@@ -1153,33 +1182,33 @@
         "path": "packages/repomesh-cli/tests/verify-legibility.test.mjs"
       },
       {
-        "commits": 1,
-        "lines": 47,
+        "commits": 3,
+        "lines": 141,
         "path": "packages/repomesh-cli/tests/version.test.mjs"
       },
       {
-        "commits": 2,
-        "lines": 108,
+        "commits": 4,
+        "lines": 170,
         "path": "pages/assets/main.js"
       },
       {
-        "commits": 4,
-        "lines": 202,
+        "commits": 6,
+        "lines": 402,
         "path": "pages/assets/style.css"
       },
       {
-        "commits": 5,
-        "lines": 201,
+        "commits": 6,
+        "lines": 383,
         "path": "pages/build-metrics.mjs"
       },
       {
-        "commits": 7,
-        "lines": 1519,
+        "commits": 8,
+        "lines": 2389,
         "path": "pages/build-pages.mjs"
       },
       {
-        "commits": 5,
-        "lines": 169,
+        "commits": 6,
+        "lines": 287,
         "path": "pages/build-stats.mjs"
       },
       {
@@ -1188,8 +1217,8 @@
         "path": "pages/build-status.mjs"
       },
       {
-        "commits": 3,
-        "lines": 139,
+        "commits": 4,
+        "lines": 261,
         "path": "pages/build-timeline.mjs"
       },
       {
@@ -1213,8 +1242,8 @@
         "path": "pages/tests/status-endpoint.test.mjs"
       },
       {
-        "commits": 6,
-        "lines": 410,
+        "commits": 7,
+        "lines": 878,
         "path": "policy/scripts/check-policy.mjs"
       },
       {
@@ -1233,28 +1262,28 @@
         "path": "policy/tests/violation-event-schema.test.mjs"
       },
       {
-        "commits": 1,
-        "lines": 17,
+        "commits": 3,
+        "lines": 51,
         "path": "profiles/baseline.json"
       },
       {
-        "commits": 1,
-        "lines": 17,
+        "commits": 3,
+        "lines": 51,
         "path": "profiles/open-source.json"
       },
       {
-        "commits": 1,
-        "lines": 87,
+        "commits": 3,
+        "lines": 261,
         "path": "profiles/profile.schema.json"
       },
       {
-        "commits": 1,
-        "lines": 24,
+        "commits": 3,
+        "lines": 72,
         "path": "profiles/regulated.json"
       },
       {
-        "commits": 16,
-        "lines": 351,
+        "commits": 18,
+        "lines": 493,
         "path": "registry/anchors.json"
       },
       {
@@ -1273,78 +1302,78 @@
         "path": "registry/badges/mcp-tool-shop-org/repomesh/integrity.svg"
       },
       {
-        "commits": 1,
-        "lines": 19,
+        "commits": 3,
+        "lines": 57,
         "path": "registry/badges/mcp-tool-shop-org/shipcheck/anchored.svg"
       },
       {
-        "commits": 1,
-        "lines": 19,
+        "commits": 3,
+        "lines": 57,
         "path": "registry/badges/mcp-tool-shop-org/shipcheck/assurance.svg"
       },
       {
-        "commits": 1,
-        "lines": 19,
+        "commits": 3,
+        "lines": 57,
         "path": "registry/badges/mcp-tool-shop-org/shipcheck/integrity.svg"
       },
       {
-        "commits": 1,
-        "lines": 29,
+        "commits": 3,
+        "lines": 87,
         "path": "registry/capabilities.json"
       },
       {
-        "commits": 1,
-        "lines": 69,
+        "commits": 3,
+        "lines": 207,
         "path": "registry/dependencies.json"
       },
       {
-        "commits": 1,
-        "lines": 108,
+        "commits": 3,
+        "lines": 324,
         "path": "registry/nodes.json"
       },
       {
-        "commits": 5,
-        "lines": 233,
+        "commits": 6,
+        "lines": 461,
         "path": "registry/scripts/build-anchors.mjs"
       },
       {
-        "commits": 5,
-        "lines": 296,
+        "commits": 6,
+        "lines": 466,
         "path": "registry/scripts/build-badges.mjs"
       },
       {
-        "commits": 1,
-        "lines": 121,
+        "commits": 3,
+        "lines": 363,
         "path": "registry/scripts/build-dependencies.mjs"
       },
       {
-        "commits": 1,
-        "lines": 70,
+        "commits": 3,
+        "lines": 210,
         "path": "registry/scripts/build-registry.mjs"
       },
       {
-        "commits": 3,
-        "lines": 254,
+        "commits": 4,
+        "lines": 418,
         "path": "registry/scripts/build-snippets.mjs"
       },
       {
-        "commits": 11,
-        "lines": 2542,
+        "commits": 12,
+        "lines": 3394,
         "path": "registry/scripts/build-trust.mjs"
       },
       {
-        "commits": 2,
-        "lines": 174,
+        "commits": 3,
+        "lines": 496,
         "path": "registry/scripts/build-verifiers.mjs"
       },
       {
-        "commits": 3,
-        "lines": 149,
+        "commits": 4,
+        "lines": 217,
         "path": "registry/scripts/event-cache.mjs"
       },
       {
-        "commits": 4,
-        "lines": 416,
+        "commits": 6,
+        "lines": 1024,
         "path": "registry/scripts/verify-trust.mjs"
       },
       {
@@ -1353,8 +1382,8 @@
         "path": "registry/snippets/mcp-tool-shop-org/repomesh.md"
       },
       {
-        "commits": 3,
-        "lines": 51,
+        "commits": 5,
+        "lines": 115,
         "path": "registry/snippets/mcp-tool-shop-org/shipcheck.md"
       },
       {
@@ -1413,33 +1442,33 @@
         "path": "registry/tests/verify-trust-disputes.test.mjs"
       },
       {
-        "commits": 13,
-        "lines": 3054,
+        "commits": 15,
+        "lines": 3788,
         "path": "registry/trust.json"
       },
       {
-        "commits": 18,
-        "lines": 208,
+        "commits": 20,
+        "lines": 328,
         "path": "registry/verifiers.json"
       },
       {
-        "commits": 4,
-        "lines": 191,
+        "commits": 6,
+        "lines": 329,
         "path": "schemas/event.schema.json"
       },
       {
-        "commits": 3,
-        "lines": 120,
+        "commits": 5,
+        "lines": 316,
         "path": "schemas/node.schema.json"
       },
       {
-        "commits": 2,
-        "lines": 78,
+        "commits": 4,
+        "lines": 224,
         "path": "schemas/repomesh.overrides.schema.json"
       },
       {
-        "commits": 1,
-        "lines": 32,
+        "commits": 3,
+        "lines": 96,
         "path": "schemas/repomesh.profile.schema.json"
       },
       {
@@ -1448,48 +1477,48 @@
         "path": "schemas/verifier.policy.schema.json"
       },
       {
-        "commits": 1,
-        "lines": 37,
+        "commits": 3,
+        "lines": 111,
         "path": "scripts/verify.sh"
       },
       {
-        "commits": 2,
-        "lines": 26,
+        "commits": 4,
+        "lines": 74,
         "path": "site/astro.config.mjs"
       },
       {
-        "commits": 2,
-        "lines": 13590,
+        "commits": 4,
+        "lines": 28668,
         "path": "site/package-lock.json"
       },
       {
-        "commits": 2,
-        "lines": 24,
+        "commits": 4,
+        "lines": 60,
         "path": "site/package.json"
       },
       {
-        "commits": 2,
-        "lines": 9,
+        "commits": 4,
+        "lines": 21,
         "path": "site/src/content.config.ts"
       },
       {
-        "commits": 1,
-        "lines": 130,
+        "commits": 3,
+        "lines": 390,
         "path": "site/src/content/docs/handbook/architecture.md"
       },
       {
-        "commits": 1,
-        "lines": 148,
+        "commits": 3,
+        "lines": 444,
         "path": "site/src/content/docs/handbook/beginners.md"
       },
       {
-        "commits": 2,
-        "lines": 143,
+        "commits": 4,
+        "lines": 409,
         "path": "site/src/content/docs/handbook/getting-started.md"
       },
       {
-        "commits": 2,
-        "lines": 48,
+        "commits": 4,
+        "lines": 140,
         "path": "site/src/content/docs/handbook/index.md"
       },
       {
@@ -1498,78 +1527,78 @@
         "path": "site/src/content/docs/handbook/key-lifecycle.md"
       },
       {
-        "commits": 1,
-        "lines": 99,
+        "commits": 3,
+        "lines": 297,
         "path": "site/src/content/docs/handbook/ledger.md"
       },
       {
-        "commits": 1,
-        "lines": 167,
+        "commits": 3,
+        "lines": 501,
         "path": "site/src/content/docs/handbook/verification.md"
       },
       {
-        "commits": 1,
-        "lines": 33,
+        "commits": 3,
+        "lines": 99,
         "path": "site/src/pages/index.astro"
       },
       {
-        "commits": 1,
-        "lines": 99,
+        "commits": 3,
+        "lines": 297,
         "path": "site/src/site-config.ts"
       },
       {
-        "commits": 1,
-        "lines": 3,
+        "commits": 3,
+        "lines": 9,
         "path": "site/src/styles/global.css"
       },
       {
-        "commits": 1,
-        "lines": 65,
+        "commits": 3,
+        "lines": 195,
         "path": "site/src/styles/starlight-custom.css"
       },
       {
-        "commits": 1,
-        "lines": 5,
+        "commits": 3,
+        "lines": 15,
         "path": "site/tsconfig.json"
       },
       {
-        "commits": 1,
-        "lines": 252,
+        "commits": 3,
+        "lines": 756,
         "path": "templates/repomesh-broadcast.yml"
       },
       {
-        "commits": 1,
-        "lines": 2,
+        "commits": 3,
+        "lines": 6,
         "path": "templates/repomesh.overrides.json"
       },
       {
-        "commits": 1,
-        "lines": 5,
+        "commits": 3,
+        "lines": 15,
         "path": "templates/repomesh.profile.json"
       },
       {
-        "commits": 3,
-        "lines": 607,
+        "commits": 4,
+        "lines": 1161,
         "path": "tools/init-node.mjs"
       },
       {
-        "commits": 2,
-        "lines": 214,
+        "commits": 3,
+        "lines": 410,
         "path": "tools/join-node.mjs"
       },
       {
-        "commits": 3,
-        "lines": 101,
+        "commits": 4,
+        "lines": 217,
         "path": "tools/keygen.mjs"
       },
       {
-        "commits": 3,
-        "lines": 415,
+        "commits": 4,
+        "lines": 689,
         "path": "tools/register-node.mjs"
       },
       {
-        "commits": 3,
-        "lines": 282,
+        "commits": 4,
+        "lines": 658,
         "path": "tools/repomesh.mjs"
       },
       {
@@ -1633,13 +1662,13 @@
         "path": "tools/tests/verify-action.test.mjs"
       },
       {
-        "commits": 10,
-        "lines": 1691,
+        "commits": 11,
+        "lines": 2271,
         "path": "tools/verify-release.mjs"
       },
       {
-        "commits": 4,
-        "lines": 130,
+        "commits": 6,
+        "lines": 262,
         "path": "verifier.policy.json"
       },
       {
@@ -1648,13 +1677,13 @@
         "path": "verifiers/lib/anchor-notes.mjs"
       },
       {
-        "commits": 6,
-        "lines": 491,
+        "commits": 8,
+        "lines": 763,
         "path": "verifiers/lib/common.mjs"
       },
       {
-        "commits": 2,
-        "lines": 152,
+        "commits": 4,
+        "lines": 306,
         "path": "verifiers/lib/fetch-sbom.mjs"
       },
       {
@@ -1688,13 +1717,13 @@
         "path": "verifiers/lib/spdx.mjs"
       },
       {
-        "commits": 1,
-        "lines": 15,
+        "commits": 3,
+        "lines": 45,
         "path": "verifiers/license/config.json"
       },
       {
-        "commits": 3,
-        "lines": 390,
+        "commits": 4,
+        "lines": 832,
         "path": "verifiers/license/scripts/verify-license.mjs"
       },
       {
@@ -1703,13 +1732,13 @@
         "path": "verifiers/package.json"
       },
       {
-        "commits": 1,
-        "lines": 7,
+        "commits": 3,
+        "lines": 21,
         "path": "verifiers/repro/config.json"
       },
       {
-        "commits": 3,
-        "lines": 558,
+        "commits": 4,
+        "lines": 1114,
         "path": "verifiers/repro/scripts/verify-repro.mjs"
       },
       {
@@ -1718,8 +1747,8 @@
         "path": "verifiers/security/config.json"
       },
       {
-        "commits": 3,
-        "lines": 683,
+        "commits": 4,
+        "lines": 1169,
         "path": "verifiers/security/scripts/verify-security.mjs"
       },
       {
@@ -1833,7 +1862,7 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-09-23T23:03:34.069Z",
+  "generatedAt": "2026-09-24T01:55:28.728Z",
   "generatedFrom": {
     "commit": "609c77de7b90ccd3baaa146c5114134b87f2d304"
   },
@@ -1841,23 +1870,16 @@
     {
       "a": "README.md",
       "b": "packages/repomesh-cli/CHANGELOG.md",
-      "either": 7,
+      "either": 6,
       "shared": 4,
-      "strength": 0.571429
+      "strength": 0.666667
     },
     {
       "a": "README.md",
       "b": "packages/repomesh-cli/package.json",
-      "either": 8,
+      "either": 7,
       "shared": 4,
-      "strength": 0.5
-    },
-    {
-      "a": "ledger/scripts/validate-ledger.mjs",
-      "b": "registry/scripts/build-trust.mjs",
-      "either": 5,
-      "shared": 5,
-      "strength": 1
+      "strength": 0.571429
     },
     {
       "a": "packages/repomesh-cli/CHANGELOG.md",
@@ -1895,7 +1917,7 @@
     "inScopeFiles": 302,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 60,
+    "qualifyingCommits": 58,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,

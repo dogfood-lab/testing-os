@@ -267,10 +267,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 27,
+      "dynamicReads": 23,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [
         "bin/shipcheck.mjs"
       ],
@@ -315,7 +315,8 @@
       "importConfidence": "full",
       "name": "bin",
       "origin": "authored",
-      "outsideReads": 12,
+      "outsideReads": 16,
+      "outsideWrites": 1,
       "role": "code",
       "testedBy": 2,
       "unresolvedSites": 1
@@ -1225,6 +1226,18 @@
           "by": "bin/shipcheck.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "test/shipcheck.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/version.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "CHANGELOG.md",
@@ -1233,9 +1246,33 @@
     {
       "readers": [
         {
+          "by": "test/shipcheck.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "LICENSE",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "bin/shipcheck.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "test/front-door.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/shipcheck.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.md",
@@ -1247,6 +1284,12 @@
           "by": "bin/shipcheck.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "test/shipcheck.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "SCORECARD.md",
@@ -1258,6 +1301,12 @@
           "by": "bin/shipcheck.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "test/shipcheck.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "SECURITY.md",
@@ -1272,6 +1321,12 @@
           "by": "bin/shipcheck.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "test/shipcheck.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "SHIP_GATE.md",
@@ -1283,6 +1338,24 @@
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "test/front-door.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/shipcheck.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/version.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "bin/shipcheck.mjs",
@@ -1294,6 +1367,12 @@
           "by": "bin/shipcheck.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "test/shipcheck.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "package-lock.json",
@@ -1323,6 +1402,18 @@
           "by": "bin/shipcheck.mjs",
           "call": "readFileSync",
           "confidence": "ast"
+        },
+        {
+          "by": "test/shipcheck.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/version.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "package.json",

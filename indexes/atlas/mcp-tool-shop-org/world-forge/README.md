@@ -1,6 +1,6 @@
 # world-forge: how it works
 
-Mapped at 2026-09-23 from commit 333532b.
+Mapped at 2026-09-24 from commit 333532b.
 
 ## What this is
 
@@ -8,6 +8,7 @@ Mapped at 2026-09-23 from commit 333532b.
 
 ## What changed since 2026-09-23 (b6fa56a)
 
+- site no longer imports the repository root.
 - CI now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 58 more.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - Release now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 56 more.
@@ -15,7 +16,7 @@ Mapped at 2026-09-23 from commit 333532b.
 - docs/c0-alignment/export-table.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
 - docs/c0-alignment/export-table.md is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
 - docs/c0-alignment/fixture-manifest.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
-- And 36 more new writers and readers of places.
+- And 82 more new writers and readers of places.
 - docs was authored and is now mixed.
 - 633 files changed content, across 14 parts.
 
@@ -31,7 +32,7 @@ Mapped at 2026-09-23 from commit 333532b.
 ## What happens through CI
 
 1. The workflow runs scripts/check-pack.mjs and scripts/sync-version.mjs in scripts, dogfood/__tests__/ in dogfood, 112 files in editor, 22 files in export-ai-rpg, packages/export-godot/src/__tests__/ in export-godot, and 50 files in 4 more parts; it checks dogfood/ in dogfood, e2e/ in e2e, packages/editor/src/ in editor, packages/export-ai-rpg/src/ in export-ai-rpg, packages/export-godot/src/ in export-godot, and 108 files in 3 more parts.
-2. That reaches the repository root (2 files).
+2. That reaches the repository root (1 file).
 3. It writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json.
 
 ## Who reads the results
@@ -42,7 +43,7 @@ Mapped at 2026-09-23 from commit 333532b.
 
 **Release** runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 57 more, checks dogfood/, e2e/, packages/editor/src/ and 5 more, reaches the repository root, and writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json.
 
-**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, reaches the repository root, and deploys the site.
+**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
 **world-forge-export** (a command people run) runs packages/export-ai-rpg/src/cli.ts and reaches schema.
 
@@ -56,7 +57,7 @@ Mapped at 2026-09-23 from commit 333532b.
 - **export-ai-rpg** is imported by 2 parts (dogfood, editor) and sits on the path of 3 doors.
 - **export-godot** is imported by 2 parts (dogfood, editor) and sits on the path of 3 doors.
 - **export-unreal** is imported by 2 parts (dogfood, editor) and sits on the path of 3 doors.
-- **the repository root** is imported by 1 part (site), and by 1 more only from tests; it sits on the path of 3 doors.
+- **the repository root** is imported only from tests, by 1 part (dogfood), and sits on the path of 2 doors.
 - **dogfood** is imported by no other part and sits on the path of 2 doors.
 - **e2e** is imported by no other part and sits on the path of 2 doors.
 - **editor** is imported by no other part and sits on the path of 2 doors.
@@ -114,16 +115,16 @@ People write .claude/, .github/, assets/ and site/; 4 writes with paths built at
 
 ## Where to start
 
-.github/workflows/ci.yml → scripts/check-pack.mjs → playwright.config.ts
+.github/workflows/ci.yml → scripts/check-pack.mjs
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 4 files use syntax the parser cannot read, so what they import is not known: 3 in editor (an import type followed by `[]` in 2 and other syntax in 1), 1 in export-ai-rpg (`typeof import(…)` as a type argument).
-- 4 writes and 18 reads use paths built at run time and are not named here.
+- 4 files use syntax the parser cannot read (packages/editor/src/Canvas.tsx, packages/editor/src/panels/PresetBrowser.tsx, packages/editor/src/panels/ZoneProperties.tsx and 1 more), so what they import is not known: 3 in editor (an import type followed by `[]` in 2 and other syntax in 1), 1 in export-ai-rpg (`typeof import(…)` as a type argument).
+- 4 writes and 13 reads use paths built at run time and are not named here.
 - 37 writes go to places this repository does not track, so they are not listed as generated.
-- 28 writes go to the directory the command is run in or the home directory, not to this repository.
+- 28 writes and 5 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 17 commands are built at run time and not followed, 13 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

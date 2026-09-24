@@ -51,6 +51,14 @@
     "items": [
       {
         "kind": "door",
+        "sentence": "CI now also runs src/index.ts.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "src/index.ts"
+        ]
+      },
+      {
+        "kind": "door",
         "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
         "subjects": [
           ".github/workflows/pages.yml",
@@ -60,43 +68,46 @@
       },
       {
         "kind": "door",
-        "sentence": "@mcptoolshop/synthesis (package.json) is a new package. It loads src/index.ts.",
+        "sentence": "Release (npm via Trusted Publishing) now also runs src/index.ts.",
         "subjects": [
-          "package.json",
+          ".github/workflows/release.yml",
           "src/index.ts"
         ]
       },
       {
         "kind": "door",
-        "sentence": "synthesis (package.json) is a new command. It runs src/index.ts.",
+        "sentence": "And 2 more changes to doors.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": "CHANGELOG.md is now also read by tests/version-alignment.test.ts.",
         "subjects": [
-          "package.json",
-          "src/index.ts"
+          "CHANGELOG.md",
+          "tests/version-alignment.test.ts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "site/src/content/docs/ is now read by site/astro.config.mjs.",
+        "sentence": "data/DATASHEET.md is now read by tests/fairness.test.ts.",
         "subjects": [
-          "site/src/content/docs/",
-          "site/astro.config.mjs"
+          "data/DATASHEET.md",
+          "tests/fairness.test.ts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "site/src/content/docs/handbook/ is now read by site/astro.config.mjs.",
+        "sentence": "data/evals.jsonl is now also read by tests/fairness.test.ts and tests/planted-theater.test.ts.",
         "subjects": [
-          "site/src/content/docs/handbook/",
-          "site/astro.config.mjs"
+          "data/evals.jsonl",
+          "tests/fairness.test.ts",
+          "tests/planted-theater.test.ts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "src/checks/lexicons/concreteness.ts is now read by src/checks/performative.ts.",
-        "subjects": [
-          "src/checks/lexicons/concreteness.ts",
-          "src/checks/performative.ts"
-        ]
+        "sentence": "And 13 more new writers and readers of places.",
+        "subjects": []
       },
       {
         "kind": "counts",
@@ -196,9 +207,10 @@
       "runs": [
         "scripts/check-report-schema.mjs",
         "scripts/eval-planted.mjs",
+        "src/index.ts",
         "tests/"
       ],
-      "runsCount": 3,
+      "runsCount": 4,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -236,9 +248,10 @@
       ],
       "runs": [
         "scripts/check-report-schema.mjs",
+        "src/index.ts",
         "tests/"
       ],
-      "runsCount": 2,
+      "runsCount": 3,
       "sends": [
         "publishes to npm"
       ],
@@ -349,11 +362,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T23:04:24.376Z",
+  "generatedAt": "2026-09-24T01:56:25.515Z",
   "limits": [
     "1 import site could not be resolved.",
     "1 import site names a path outside this repository, so what it loads is not followed.",
-    "3 writes and 8 reads use paths built at run time and are not named here.",
+    "3 writes and 7 reads use paths built at run time and are not named here.",
+    "1 read goes to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed, it in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -375,11 +389,110 @@
   "parts": 12,
   "readers": [],
   "repo": "mcp-tool-shop-org/synthesis",
-  "sequences": [],
+  "sequences": [
+    {
+      "entry": "main",
+      "file": "src/index.ts",
+      "inner": [
+        {
+          "file": "src/runner.ts",
+          "name": "runAllCases",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run all cases",
+          "steps": [
+            {
+              "name": "checkAgency",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "check agency"
+            },
+            {
+              "name": "checkReassurance",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "check reassurance"
+            },
+            {
+              "name": "checkPivot",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "check pivot"
+            },
+            {
+              "name": "checkPerformativeEmpathy",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "check performative empathy"
+            },
+            {
+              "name": "checkGroundedUptake",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "check grounded uptake"
+            },
+            {
+              "name": "computeRelationalPosture",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "compute relational posture"
+            }
+          ]
+        }
+      ],
+      "part": "src",
+      "partLabel": "src",
+      "phrase": "main",
+      "steps": [
+        {
+          "name": "evaluatePlanted",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "evaluate planted"
+        },
+        {
+          "name": "loadCases",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "load cases"
+        },
+        {
+          "name": "runAllCases",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run all cases"
+        },
+        {
+          "name": "writeReport",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "write report"
+        },
+        {
+          "name": "hasColors",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "has colors"
+        },
+        {
+          "name": "printSummary",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "print summary"
+        },
+        {
+          "name": "formatArtifact",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "format artifact"
+        }
+      ]
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "scripts/check-report-schema.mjs"
+    "src/index.ts"
   ],
   "summary": null,
   "summaryFrom": null,

@@ -8,7 +8,7 @@
   ],
   "breaks": [
     {
-      "doors": 5,
+      "doors": 6,
       "importedBy": [
         "scripts"
       ],
@@ -28,6 +28,22 @@
       "kind": "part",
       "name": "scripts",
       "partLabel": "scripts"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "bin",
+      "partLabel": "bin"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "root",
+      "partLabel": "the repository root"
     },
     {
       "kind": "place",
@@ -68,15 +84,15 @@
       },
       {
         "kind": "door",
-        "sentence": "backpropagate (package.json) is a new command. It runs bin/backpropagate.js.",
+        "sentence": "Publish now also runs bin/backpropagate.js.",
         "subjects": [
-          "package.json",
+          ".github/workflows/publish.yml",
           "bin/backpropagate.js"
         ]
       },
       {
         "kind": "door",
-        "sentence": "And 2 more changes to doors.",
+        "sentence": "And 4 more changes to doors.",
         "subjects": []
       },
       {
@@ -89,23 +105,23 @@
       },
       {
         "kind": "landing",
-        "sentence": "backpropagate/rxconfig.py is now read by backpropagate/cli.py.",
+        "sentence": ".github/workflows/ci.yml is now read by docs/ci-gates-triage-plan.md.",
         "subjects": [
-          "backpropagate/rxconfig.py",
-          "backpropagate/cli.py"
+          ".github/workflows/ci.yml",
+          "docs/ci-gates-triage-plan.md"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "backpropagate/ui_app/ is now read by scripts/check_doc_drift.py.",
+        "sentence": "README.md is now also read by tests/test_model_card.py.",
         "subjects": [
-          "backpropagate/ui_app/",
-          "scripts/check_doc_drift.py"
+          "README.md",
+          "tests/test_model_card.py"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "And 4 more new writers and readers of places.",
+        "sentence": "And 15 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -195,6 +211,50 @@
       "triggers": [
         "on a pull request",
         "on a push to main touching 8 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "LICENSE",
+        "README.md",
+        "backpropagate/",
+        "pyproject.toml"
+      ],
+      "checksCount": 4,
+      "file": ".github/workflows/publish.yml",
+      "id": ".github/workflows/publish.yml",
+      "landings": [],
+      "name": "Publish",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "backpropagate",
+          "depth": 0,
+          "files": 51
+        },
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "bin/backpropagate.js"
+      ],
+      "runsCount": 1,
+      "sends": [
+        "publishes to PyPI and a container image"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "when the workflow Release completes",
         "or by hand"
       ]
     },
@@ -324,7 +384,8 @@
         ".github/mutmut-baseline.txt"
       ],
       "name": "Mutation testing (mutmut)",
-      "pushes": true,
+      "pushes": false,
+      "pushesForReview": true,
       "reach": [],
       "runs": [],
       "runsCount": 0,
@@ -355,27 +416,6 @@
         "on a `branch_protection_rule` event",
         "on a push to main",
         "on a schedule (`0 6 * * 1`), Monday at 06:00 UTC",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "file": ".github/workflows/publish.yml",
-      "id": ".github/workflows/publish.yml",
-      "landings": [],
-      "name": "Publish",
-      "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
-      "sends": [
-        "publishes to PyPI and a container image"
-      ],
-      "stages": [],
-      "triggers": [
-        "when a release is published",
-        "when the workflow Release completes",
         "or by hand"
       ]
     },
@@ -497,12 +537,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T23:01:19.215Z",
+  "generatedAt": "2026-09-24T01:52:48.122Z",
   "limits": [
     "40 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "6 import sites could not be resolved.",
-    "15 writes and 39 reads use paths built at run time and are not named here.",
-    "1 write and 1 read go to the directory the command is run in or the home directory, not to this repository."
+    "13 writes and 33 reads use paths built at run time and are not named here.",
+    "3 writes and 9 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -536,7 +576,7 @@
     "bin": 0,
     "scripts": 2
   },
-  "unnamedWrites": 15,
+  "unnamedWrites": 13,
   "unread": [
     {
       "place": ".github/mutmut-baseline.txt",

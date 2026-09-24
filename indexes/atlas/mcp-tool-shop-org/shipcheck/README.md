@@ -1,6 +1,6 @@
 # shipcheck: how it works
 
-Mapped at 2026-09-23 from commit 838720f.
+Mapped at 2026-09-24 from commit 838720f.
 
 ## What this is
 
@@ -11,8 +11,10 @@ Mapped at 2026-09-23 from commit 838720f.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - repomesh-broadcast now also checks package.json.
 - shipcheck (package.json) is a new command. It runs bin/shipcheck.mjs.
-- site/src/content/docs/ is now read by site/astro.config.mjs.
-- site/src/content/docs/handbook/ is now read by site/astro.config.mjs.
+- CHANGELOG.md is now also read by test/shipcheck.test.mjs and test/version.test.mjs.
+- LICENSE is now also read by test/shipcheck.test.mjs.
+- README.md is now also read by test/front-door.test.mjs and test/shipcheck.test.mjs.
+- And 8 more new writers and readers of places.
 - 101 files changed content, across 10 parts.
 
 ## What comes in
@@ -71,7 +73,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .claude/, .github/, contracts/, docs/, dogfood/, the repository root and templates/; 1 write with a path built at run time may land here.
+People write .claude/, .github/, contracts/, docs/, dogfood/, the repository root and templates/. Nothing in this repository writes to them.
 
 ## Where to start
 
@@ -82,8 +84,8 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 1 import site could not be resolved.
-- 1 write and 27 reads use paths built at run time and are not named here.
-- 12 reads go to the directory the command is run in or the home directory, not to this repository.
+- 23 reads use paths built at run time and are not named here.
+- 1 write and 16 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 3 commands are built at run time and not followed, all of them in tests.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

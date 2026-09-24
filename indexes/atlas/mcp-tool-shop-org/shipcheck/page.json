@@ -64,19 +64,34 @@
       },
       {
         "kind": "landing",
-        "sentence": "site/src/content/docs/ is now read by site/astro.config.mjs.",
+        "sentence": "CHANGELOG.md is now also read by test/shipcheck.test.mjs and test/version.test.mjs.",
         "subjects": [
-          "site/src/content/docs/",
-          "site/astro.config.mjs"
+          "CHANGELOG.md",
+          "test/shipcheck.test.mjs",
+          "test/version.test.mjs"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "site/src/content/docs/handbook/ is now read by site/astro.config.mjs.",
+        "sentence": "LICENSE is now also read by test/shipcheck.test.mjs.",
         "subjects": [
-          "site/src/content/docs/handbook/",
-          "site/astro.config.mjs"
+          "LICENSE",
+          "test/shipcheck.test.mjs"
         ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "README.md is now also read by test/front-door.test.mjs and test/shipcheck.test.mjs.",
+        "subjects": [
+          "README.md",
+          "test/front-door.test.mjs",
+          "test/shipcheck.test.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 8 more new writers and readers of places.",
+        "subjects": []
       },
       {
         "kind": "counts",
@@ -261,11 +276,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-23T23:03:46.963Z",
+  "generatedAt": "2026-09-24T01:55:42.728Z",
   "limits": [
     "1 import site could not be resolved.",
-    "1 write and 27 reads use paths built at run time and are not named here.",
-    "12 reads go to the directory the command is run in or the home directory, not to this repository.",
+    "23 reads use paths built at run time and are not named here.",
+    "1 write and 16 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "3 commands are built at run time and not followed, all of them in tests.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
@@ -298,7 +313,7 @@
     "bin": 2,
     "site": 0
   },
-  "unnamedWrites": 1,
+  "unnamedWrites": 0,
   "unread": [],
   "unreadNote": [],
   "untested": [

@@ -1,9 +1,5 @@
 {
-  "authored": [
-    ".github/",
-    "docs/",
-    "root"
-  ],
+  "authored": [],
   "breaks": [
     {
       "doors": 3,
@@ -60,7 +56,7 @@
       },
       {
         "kind": "door",
-        "sentence": "And 1 more change to a door.",
+        "sentence": "And 2 more changes to doors.",
         "subjects": []
       },
       {
@@ -111,8 +107,51 @@
   "changesTogetherWithTests": 0,
   "commit": "a8a79e8ac1f94d79173271b443e304d501a8bf24",
   "defaultBranch": "main",
-  "derived": "6 parts, mostly Python (76 files). Work enters through 4 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI and a container image. People run mcp-stress.",
+  "derived": "6 parts, mostly Python (76 files). Work enters through 4 doors; the busiest is Publish, which reaches 3 parts. It publishes to PyPI and a container image. People run mcp-stress.",
   "doors": [
+    {
+      "checks": [
+        "README.md",
+        "pyproject.toml",
+        "src/"
+      ],
+      "checksCount": 3,
+      "file": ".github/workflows/publish.yml",
+      "id": ".github/workflows/publish.yml",
+      "landings": [],
+      "name": "Publish",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 65
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 11
+        }
+      ],
+      "runs": [
+        "src/mcp_stress_test/cli/__init__.py",
+        "tests/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "publishes to PyPI and a container image"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    },
     {
       "checks": [
         "src/"
@@ -145,40 +184,6 @@
       "triggers": [
         "on a pull request",
         "on a push to main touching 8 paths",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "file": ".github/workflows/publish.yml",
-      "id": ".github/workflows/publish.yml",
-      "landings": [],
-      "name": "Publish",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "src",
-          "depth": 0,
-          "files": 63
-        },
-        {
-          "boundary": "tests",
-          "depth": 0,
-          "files": 11
-        }
-      ],
-      "runs": [
-        "src/mcp_stress_test/cli/__init__.py",
-        "tests/"
-      ],
-      "runsCount": 2,
-      "sends": [
-        "publishes to PyPI and a container image"
-      ],
-      "stages": [],
-      "triggers": [
-        "when a release is published",
         "or by hand"
       ]
     },
@@ -247,14 +252,35 @@
       "to": "src"
     }
   ],
-  "generated": [],
-  "generatedAt": "2026-09-23T23:02:56.461Z",
+  "generated": [
+    {
+      "addedBy": "dependabot[bot]",
+      "place": ".github/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "docs/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "root",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "site/",
+      "writers": []
+    }
+  ],
+  "generatedAt": "2026-09-24T01:54:47.581Z",
   "limits": [
     "2 import sites could not be resolved.",
     "15 writes and 14 reads use paths built at run time and are not named here.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
-  "mainDoor": ".github/workflows/ci.yml",
+  "mainDoor": ".github/workflows/publish.yml",
   "partLabels": {
     ".github": ".github",
     "docs": "docs",
@@ -267,9 +293,9 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/mcp-stress-test",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": ".github/workflows/publish.yml",
   "startHere": [
-    ".github/workflows/ci.yml",
+    ".github/workflows/publish.yml",
     "src/mcp_stress_test/cli/__init__.py"
   ],
   "summary": null,

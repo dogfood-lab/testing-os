@@ -51,7 +51,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 21,
+      "dynamicReads": 20,
       "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 1,
       "dynamicWrites": 4,
@@ -316,7 +316,7 @@
       "importConfidence": "full",
       "name": "cli",
       "origin": "authored",
-      "outsideReads": 7,
+      "outsideReads": 8,
       "outsideWrites": 5,
       "role": "code",
       "testedBy": 12,
@@ -2239,6 +2239,7 @@
       "importConfidence": "full",
       "name": "memories",
       "origin": "authored",
+      "outsideWrites": 1,
       "role": "docs",
       "testedBy": 16,
       "unresolvedSites": 0
@@ -2339,7 +2340,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 18,
+      "dynamicReads": 14,
       "dynamicSpawns": 7,
       "dynamicSpawnsInTests": 7,
       "dynamicWrites": 4,
@@ -3940,7 +3941,7 @@
       "importConfidence": "full",
       "name": "rules",
       "origin": "authored",
-      "outsideReads": 5,
+      "outsideReads": 9,
       "outsideWrites": 2,
       "role": "docs",
       "testedBy": 15,
@@ -4396,6 +4397,38 @@
       "checksCount": 0,
       "commands": [],
       "elsewhere": [],
+      "file": "packages/cli/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "loadout-os",
+      "permissions": [],
+      "pushes": false,
+      "reach": [],
+      "readers": [],
+      "runs": [],
+      "runsCount": 0,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "unplaced": "packages/cli/dist/loadout-os.js",
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
       "file": "packages/kernel/package.json",
       "kind": "command",
       "landings": [],
@@ -4577,6 +4610,23 @@
     {
       "readers": [
         {
+          "by": "packages/cli/src/tests/split.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": ".claude/CLAUDE.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "ROADMAP.md",
+          "call": "--no-index",
+          "confidence": "text"
+        },
+        {
           "by": "apps/hook/esbuild.config.mjs",
           "call": "readFileSync",
           "confidence": "ast"
@@ -4747,6 +4797,96 @@
         }
       ],
       "target": "packages/memories/site/src/content/docs/handbook",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/memories/src/tests/analyze.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/memories/src/tests/cli.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/memories/src/tests/diagnostics.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/memories/src/tests/stats.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/memories/src/tests/validate.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/memories/src/tests/fixtures",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/memories/src/tests/analyze.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/memories/src/tests/cli.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/memories/src/tests/diagnostics.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/memories/src/tests/index-gen.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/memories/src/tests/stats.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/memories/src/tests/validate.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/memories/src/tests/fixtures/MEMORY.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/memories/src/tests/index-gen.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/memories/src/tests/fixtures/flat-store/memory/MEMORY.md",
       "writers": []
     },
     {

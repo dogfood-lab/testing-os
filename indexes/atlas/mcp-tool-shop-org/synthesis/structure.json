@@ -548,7 +548,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 3,
+      "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -587,6 +587,7 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsideReads": 1,
       "role": "code",
       "testedBy": 0,
       "unresolvedSites": 1
@@ -1495,6 +1496,11 @@
           "via": "tsc tsconfig.json"
         },
         {
+          "job": "test",
+          "path": "src/index.ts",
+          "runKind": "executes"
+        },
+        {
           "directory": true,
           "job": "test",
           "matched": true,
@@ -1503,7 +1509,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 4,
+      "runsCount": 5,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -1733,6 +1739,11 @@
           "via": "tsc tsconfig.json"
         },
         {
+          "job": "publish",
+          "path": "src/index.ts",
+          "runKind": "executes"
+        },
+        {
           "directory": true,
           "job": "publish",
           "matched": true,
@@ -1741,7 +1752,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 3,
+      "runsCount": 4,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -1777,6 +1788,7 @@
       "checksCount": 0,
       "commands": [],
       "elsewhere": [],
+      "entry": "src/index.ts",
       "file": "package.json",
       "kind": "package",
       "landings": [],
@@ -1879,6 +1891,30 @@
     {
       "readers": [
         {
+          "by": "tests/version-alignment.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "CHANGELOG.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fairness.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "data/DATASHEET.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": ".github/workflows/ci.yml"
         },
         {
@@ -1893,9 +1929,39 @@
           "by": "src/index.ts",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/fairness.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/planted-theater.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "data/evals.jsonl",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fairness.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/planted-theater.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "data/fairness.jsonl",
       "writers": []
     },
     {
@@ -1914,6 +1980,12 @@
           "by": "src/planted.ts",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/planted-theater.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "data/planted-theater.jsonl",
@@ -1934,14 +2006,15 @@
           "by": ".github/workflows/release.yml"
         },
         {
-          "by": "CHANGELOG.md",
+          "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
         },
         {
-          "by": "package-lock.json",
-          "call": "literal",
-          "confidence": "text"
+          "by": "tests/version-alignment.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "package.json",
@@ -1974,6 +2047,42 @@
           "by": "src/index.ts",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/fairness.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/index.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/index.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/load.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/load.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/planted-theater.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "schemas/eval_case.schema.json",
@@ -1985,6 +2094,12 @@
           "by": "scripts/check-report-schema.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/report-schema.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "schemas/eval_report.schema.json",
@@ -1996,6 +2111,12 @@
           "by": "scripts/check-report-schema.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/report-schema.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "schemas/report.fail.json",
@@ -2007,6 +2128,12 @@
           "by": "scripts/check-report-schema.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/report-schema.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "schemas/report.good.json",
@@ -2049,6 +2176,48 @@
           "confidence": "ast"
         }
       ]
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/index.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/index.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "src/index.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/report-schema.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/gold/report.fail.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/report-schema.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/gold/report.good.json",
+      "writers": []
     },
     {
       "readers": [

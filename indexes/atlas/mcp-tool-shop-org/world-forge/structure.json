@@ -129,7 +129,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 4,
+      "dynamicReads": 2,
       "dynamicSpawns": 13,
       "dynamicSpawnsInTests": 11,
       "dynamicWrites": 3,
@@ -387,6 +387,7 @@
       "importConfidence": "full",
       "name": "dogfood",
       "origin": "mixed",
+      "outsideReads": 2,
       "role": "code",
       "testedBy": 4,
       "unresolvedSites": 0
@@ -3249,7 +3250,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 3,
+      "dynamicReads": 2,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 1,
       "dynamicWrites": 1,
@@ -5110,13 +5111,14 @@
       "importConfidence": "full",
       "name": "export-ai-rpg",
       "origin": "authored",
+      "outsideReads": 1,
       "outsideWrites": 2,
       "role": "code",
       "testedBy": 61,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 3,
+      "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -6142,13 +6144,14 @@
       "importConfidence": "full",
       "name": "export-godot",
       "origin": "authored",
+      "outsideReads": 1,
       "outsideWrites": 9,
       "role": "code",
       "testedBy": 44,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 7,
+      "dynamicReads": 6,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 1,
       "dynamicWrites": 0,
@@ -7008,6 +7011,7 @@
       "importConfidence": "full",
       "name": "export-unreal",
       "origin": "authored",
+      "outsideReads": 1,
       "outsideWrites": 17,
       "role": "code",
       "testedBy": 35,
@@ -8288,7 +8292,7 @@
             "file": "playwright.config.ts",
             "from": "dogfood/__tests__/playwright-reporter.test.ts"
           },
-          "files": 2
+          "files": 1
         }
       ],
       "readers": [],
@@ -8926,15 +8930,6 @@
           "boundary": "site",
           "depth": 0,
           "files": 3
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "enters": {
-            "file": "package.json",
-            "from": "site/src/site-config.ts"
-          },
-          "files": 1
         }
       ],
       "readers": [],
@@ -9894,11 +9889,6 @@
       "from": "renderer-2d",
       "kind": "file",
       "to": "schema"
-    },
-    {
-      "from": "site",
-      "kind": "file",
-      "to": "root"
     }
   ],
   "generatedFrom": {
@@ -9909,12 +9899,102 @@
     {
       "readers": [
         {
+          "by": "packages/editor/src/__tests__/leftover-480.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": ".github/workflows/release.yml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/schema/src/__tests__/version.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "CHANGELOG.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/schema/src/__tests__/version.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "scripts/check-pack.mjs",
           "call": "literal",
           "confidence": "ast"
         }
       ],
       "target": "LICENSE",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.es.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.fr.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.hi.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.it.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.ja.md",
       "writers": []
     },
     {
@@ -9941,6 +10021,30 @@
           ]
         }
       ]
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.pt-BR.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.zh.md",
+      "writers": []
     },
     {
       "readers": [],
@@ -9983,6 +10087,59 @@
       ]
     },
     {
+      "readers": [
+        {
+          "by": "dogfood/__tests__/chapel-threshold-unreal-25d-gate.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "dogfood/chapel-threshold-unreal.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "dogfood/__tests__/chapel-threshold-gap-gate.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "dogfood/chapel-threshold.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "dogfood/__tests__/dogfood-runner-exit-codes.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "dogfood/__tests__/export-stage-fixture-presentation.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "dogfood/export-stage-fixture.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "AUDIT_PASS_2026-04-30.md",
+          "call": "--path",
+          "confidence": "text"
+        }
+      ],
+      "target": "dogfood/godot-smoke",
+      "writers": []
+    },
+    {
       "readers": [],
       "target": "dogfood/godot-smoke/world.tscn",
       "tracked": false,
@@ -9995,6 +10152,12 @@
     },
     {
       "readers": [
+        {
+          "by": "dogfood/__tests__/multi-target-export-proof-exit-code.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "scripts/run-proofs.mjs",
           "call": "literal",
@@ -10263,7 +10426,14 @@
       ]
     },
     {
-      "readers": [],
+      "readers": [
+        {
+          "by": "dogfood/__tests__/chapel-threshold-unreal-25d-gate.test.ts",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
       "target": "dogfood/output/unreal/actors/parallax-manifest.json",
       "tracked": false,
       "writers": [
@@ -10375,6 +10545,12 @@
     {
       "readers": [
         {
+          "by": "dogfood/__tests__/dogfood-runner-exit-codes.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "scripts/run-proofs.mjs",
           "call": "literal",
           "confidence": "ast"
@@ -10386,6 +10562,12 @@
     {
       "readers": [
         {
+          "by": "dogfood/__tests__/dogfood-runner-exit-codes.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "scripts/run-proofs.mjs",
           "call": "literal",
           "confidence": "ast"
@@ -10396,6 +10578,12 @@
     },
     {
       "readers": [
+        {
+          "by": "dogfood/__tests__/unreal-smoke-transitions.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "scripts/run-proofs.mjs",
           "call": "literal",
@@ -10426,8 +10614,19 @@
           "by": ".github/workflows/release.yml"
         },
         {
+          "by": "packages/schema/src/__tests__/version.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "scripts/sync-version.mjs",
           "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "site/src/site-config.ts",
+          "call": "import",
           "confidence": "ast"
         }
       ],
@@ -10436,6 +10635,18 @@
     },
     {
       "readers": [
+        {
+          "by": "dogfood/__tests__/vitest-include-floor.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/schema/src/__tests__/version.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "scripts/check-pack.mjs",
           "call": "existsSync",
@@ -10473,8 +10684,93 @@
     {
       "readers": [
         {
+          "by": "README.es.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "README.fr.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "README.hi.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "README.it.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "README.ja.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "README.pt-BR.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "README.zh.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
           "by": "package-lock.json",
           "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/editor/README.es.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/editor/README.fr.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/editor/README.hi.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/editor/README.it.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/editor/README.ja.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/editor/README.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/editor/README.pt-BR.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/editor/README.zh.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "site/src/content/docs/handbook/beginners.md",
+          "call": "--workspace",
+          "confidence": "text"
+        },
+        {
+          "by": "site/src/content/docs/handbook/getting-started.md",
+          "call": "--workspace",
           "confidence": "text"
         },
         {
@@ -10484,6 +10780,204 @@
         }
       ],
       "target": "packages/editor",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "dogfood/__tests__/vitest-include-floor.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/__tests__/hotkeys.test.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "dogfood/__tests__/vitest-include-floor.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/modal-guards.test.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/item-loot-transition-helpers.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/EconomyPanel.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/entity-properties-helpers.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/EntityProperties.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/export-download-fallback.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/ExportModal.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/item-loot-transition-helpers.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/HazardLibraryPanel.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/item-loot-transition-helpers.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/ItemProperties.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/landmark-spawn-helpers.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/LandmarkProperties.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/item-loot-transition-helpers.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/LootTablePanel.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/item-loot-transition-helpers.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/ObjectListPanel.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/item-loot-transition-helpers.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/PlayerTemplatePanel.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/item-loot-transition-helpers.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/editor/src/panels/__tests__/search-overlay-recent.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/SearchOverlay.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/landmark-spawn-helpers.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/SpawnProperties.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/export-download-fallback.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/TemplateManager.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/editor/src/panels/__tests__/item-loot-transition-helpers.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/panels/TransitionProperties.tsx",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "dogfood/__tests__/vitest-include-floor.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/editor/src/speed-panel-actions.test.ts",
       "writers": []
     },
     {
@@ -10511,6 +11005,42 @@
         }
       ],
       "target": "packages/export-ai-rpg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/export-ai-rpg/src/__tests__/engine-deps-3x.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/export-ai-rpg/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/export-ai-rpg/src/__tests__/c0/export-differ.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/export-ai-rpg/src/__tests__/leftover-pack.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/export-ai-rpg/src/cli.ts",
       "writers": []
     },
     {
@@ -10548,6 +11078,36 @@
     {
       "readers": [
         {
+          "by": "packages/export-unreal/src/__tests__/f-36785d5f-browser-safe-graph.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/export-unreal/src/export.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/export-unreal/src/__tests__/f-36785d5f-browser-safe-graph.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/export-unreal/src/__tests__/f-36785d5f-browser-safe-graph.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/export-unreal/src/index.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
@@ -10575,6 +11135,30 @@
         }
       ],
       "target": "packages/schema",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "dogfood/__tests__/playwright-reporter.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "playwright.config.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "dogfood/__tests__/sync-version.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "scripts/sync-version.mjs",
       "writers": []
     },
     {
@@ -10613,6 +11197,12 @@
     },
     {
       "readers": [
+        {
+          "by": "dogfood/__tests__/vitest-include-floor.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "scripts/sync-version.mjs",
           "call": "literal",

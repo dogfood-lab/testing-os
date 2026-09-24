@@ -1,22 +1,8 @@
 {
   "authored": [
-    ".claude/",
-    ".github/",
-    "docs/",
-    "root",
-    "site/"
+    ".github/"
   ],
   "breaks": [
-    {
-      "doors": 4,
-      "importedBy": [
-        "src"
-      ],
-      "importedByTests": [],
-      "kind": "part",
-      "name": "root",
-      "partLabel": "the repository root"
-    },
     {
       "doors": 4,
       "importedBy": [],
@@ -46,6 +32,14 @@
     },
     "items": [
       {
+        "kind": "import-removed",
+        "sentence": "src no longer imports the repository root.",
+        "subjects": [
+          "src",
+          "root"
+        ]
+      },
+      {
         "kind": "door",
         "sentence": "CI's pull request trigger now also names `atlas/**`.",
         "subjects": [
@@ -57,6 +51,22 @@
         "sentence": "CI's push trigger now also names `atlas/**`.",
         "subjects": [
           ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Dogfood now also runs src/cli.ts.",
+        "subjects": [
+          ".github/workflows/dogfood.yml",
+          "src/cli.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "package.json is now also read by src/cli.ts.",
+        "subjects": [
+          "package.json",
+          "src/cli.ts"
         ]
       },
       {
@@ -78,7 +88,7 @@
   "changesTogetherWithTests": 0,
   "commit": "65dce696cf1d1022aa3a5309fe8561db6c7303c3",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly TypeScript (38 files). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. People run claude-guardian.",
+  "derived": "7 parts, mostly TypeScript (38 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. People run claude-guardian.",
   "doors": [
     {
       "checks": [
@@ -100,11 +110,6 @@
           "boundary": "tests",
           "depth": 0,
           "files": 16
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "files": 1
         }
       ],
       "runs": [
@@ -139,11 +144,6 @@
           "boundary": "tests",
           "depth": 0,
           "files": 16
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "files": 1
         }
       ],
       "runs": [
@@ -157,39 +157,6 @@
       "stages": [],
       "triggers": [
         "when a tag matching `v*` is pushed",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [
-        "src/"
-      ],
-      "checksCount": 1,
-      "file": ".github/workflows/dogfood.yml",
-      "id": ".github/workflows/dogfood.yml",
-      "landings": [],
-      "name": "Dogfood",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "src",
-          "depth": 0,
-          "files": 19
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "files": 1
-        }
-      ],
-      "runs": [],
-      "runsCount": 0,
-      "sends": [
-        "sends a dispatch to dogfood-lab/testing-os on main"
-      ],
-      "stages": [],
-      "triggers": [
-        "on a push to main touching 3 paths",
         "or by hand"
       ]
     },
@@ -223,6 +190,36 @@
       ]
     },
     {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/dogfood.yml",
+      "id": ".github/workflows/dogfood.yml",
+      "landings": [],
+      "name": "Dogfood",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 19
+        }
+      ],
+      "runs": [
+        "src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [
+        "sends a dispatch to dogfood-lab/testing-os on main"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 3 paths",
+        "or by hand"
+      ]
+    },
+    {
       "checks": [],
       "checksCount": 0,
       "file": "package.json",
@@ -236,11 +233,6 @@
           "boundary": "src",
           "depth": 0,
           "files": 19
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "files": 1
         }
       ],
       "runs": [
@@ -257,20 +249,47 @@
   "duplicatesNote": [],
   "edges": [
     {
-      "from": "src",
-      "fromTests": false,
-      "to": "root"
-    },
-    {
       "from": "tests",
       "fromTests": true,
       "to": "src"
     }
   ],
-  "generated": [],
-  "generatedAt": "2026-09-23T23:01:32.943Z",
+  "generated": [
+    {
+      "addedBy": "dependabot[bot]",
+      "place": ".claude/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "docs/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "root",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "site/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "src/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "tests/",
+      "writers": []
+    }
+  ],
+  "generatedAt": "2026-09-24T01:53:03.279Z",
   "limits": [
-    "15 writes and 24 reads use paths built at run time and are not named here.",
+    "4 writes and 13 reads use paths built at run time and are not named here.",
+    "14 writes and 16 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
@@ -291,7 +310,8 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "tests/budget-mcp.test.ts"
+    "tests/budget-mcp.test.ts",
+    "src/budget-store.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -299,7 +319,7 @@
   "testedBy": {
     "src": 16
   },
-  "unnamedWrites": 15,
+  "unnamedWrites": 4,
   "unread": [],
   "unreadNote": [],
   "untested": [],

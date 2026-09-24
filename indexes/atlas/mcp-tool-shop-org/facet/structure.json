@@ -251,7 +251,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 1,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -2276,6 +2276,7 @@
       "importConfidence": "full",
       "name": "docs",
       "origin": "mixed",
+      "outsideReads": 1,
       "outsideWrites": 1,
       "role": "docs",
       "testedBy": 0,
@@ -4238,10 +4239,10 @@
       "unresolvedSites": 165
     },
     {
-      "dynamicReads": 158,
+      "dynamicReads": 109,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 323,
+      "dynamicWrites": 192,
       "entryPoints": [
         "tools/facet_index.py",
         "tools/record_mcp.py"
@@ -6201,7 +6202,8 @@
       "importConfidence": "full",
       "name": "tools",
       "origin": "authored",
-      "outsideWrites": 29,
+      "outsideReads": 80,
+      "outsideWrites": 182,
       "role": "code",
       "testedBy": 3,
       "unresolvedSites": 40
@@ -6398,7 +6400,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 0,
+      "checksCount": 2,
       "commands": [
         {
           "job": "binaries",
@@ -6488,11 +6490,18 @@
         {
           "boundary": "tools",
           "depth": 0,
-          "files": 2
+          "files": 119
         }
       ],
       "readers": [],
       "runs": [
+        {
+          "directory": true,
+          "job": "release",
+          "path": "tools/diagnostics/",
+          "runKind": "checks",
+          "via": "build pyproject.toml"
+        },
         {
           "job": "release",
           "path": "tools/facet_index.py",
@@ -6501,15 +6510,22 @@
         {
           "job": "binaries",
           "path": "tools/record_mcp.py",
-          "runKind": "checks"
+          "runKind": "executes"
         },
         {
           "job": "release",
           "path": "tools/record_mcp.py",
           "runKind": "executes"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "path": "tools/verify/",
+          "runKind": "checks",
+          "via": "build pyproject.toml"
         }
       ],
-      "runsCount": 2,
+      "runsCount": 4,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -6691,9 +6707,45 @@
     {
       "readers": [
         {
+          "by": "tests/test_t06_line_endings.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": ".gitattributes",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_t27_packaging_shape.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": ".github/workflows/release.yml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "docs/index/conventions.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t05_claims_sweep.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "CHANGELOG.md",
@@ -6701,21 +6753,6 @@
     },
     {
       "readers": [
-        {
-          "by": "docs/experiments/E24-installed-paths-kickoff.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "docs/experiments/E24-installed-paths-report.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "docs/experiments/E31-publish-the-pipeline-kickoff.md",
-          "call": "literal",
-          "confidence": "text"
-        },
         {
           "by": "docs/index/conventions.json",
           "call": "literal",
@@ -6730,6 +6767,36 @@
           "by": "docs/instrument-census.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t20_record_mcp_certificate.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t21_record_mcp_health.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t22_record_mcp_tools.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t32_installed_wheel.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t59_measure_mcp_install_geometry.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "tools/record_mcp.py",
@@ -6743,12 +6810,13 @@
     {
       "readers": [
         {
-          "by": "docs/specs/comfy-preflight-spec.md",
+          "by": "tests/test_t34_front_door_counts.py",
           "call": "literal",
-          "confidence": "text"
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
-      "target": "LICENSE",
+      "target": "README.ja.md",
       "writers": []
     },
     {
@@ -6769,9 +6837,28 @@
           "confidence": "text"
         },
         {
-          "by": "docs/specs/comfy-preflight-spec.md",
+          "by": "tests/test_t20_record_mcp_certificate.py",
           "call": "literal",
-          "confidence": "text"
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t21_record_mcp_health.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t24_index_parsers.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.md",
@@ -6780,14 +6867,15 @@
     {
       "readers": [
         {
-          "by": "docs/experiments/E25-diagnostics-gates-report.md",
+          "by": "docs/index/conventions.json",
           "call": "literal",
           "confidence": "text"
         },
         {
-          "by": "docs/index/conventions.json",
+          "by": "tests/test_t34_front_door_counts.py",
           "call": "literal",
-          "confidence": "text"
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "SCORECARD.md",
@@ -6799,6 +6887,12 @@
           "by": "docs/index/conventions.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "SECURITY.md",
@@ -6810,6 +6904,12 @@
           "by": "docs/index/conventions.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "SHIP_GATE.md",
@@ -6818,18 +6918,13 @@
     {
       "readers": [
         {
-          "by": "docs/specs/comfy-preflight-spec.md",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "bin",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": ".github/workflows/release.yml"
+        },
+        {
+          "by": "tests/test_t27_packaging_shape.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "bin/facet.js",
@@ -6864,19 +6959,15 @@
           "confidence": "text"
         },
         {
-          "by": "docs/experiments/E57-a1-reference-first-kickoff.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "docs/experiments/E57-a1-reference-first-report.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "profiles/a1.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t91_canon_in_path.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "tools/canon_gate.py",
@@ -6889,6 +6980,11 @@
     },
     {
       "readers": [
+        {
+          "by": "docs/experiments/E58-a1-twin-ring-report.md",
+          "call": "--",
+          "confidence": "text"
+        },
         {
           "by": "profiles/a1.json",
           "call": "literal",
@@ -6905,6 +7001,11 @@
     },
     {
       "readers": [
+        {
+          "by": "docs/experiments/E71-hole-fill-report.md",
+          "call": "--palette",
+          "confidence": "text"
+        },
         {
           "by": "profiles/a1.json",
           "call": "literal",
@@ -7045,6 +7146,12 @@
           "confidence": "text"
         },
         {
+          "by": "tests/test_t93_canon_worksheet.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tools/canon_gate.py",
           "call": "literal",
           "confidence": "ast"
@@ -7066,19 +7173,15 @@
     {
       "readers": [
         {
-          "by": "docs/experiments/E57-a1-reference-first-kickoff.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "docs/experiments/E57-a1-reference-first-report.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "profiles/a1.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t91_canon_in_path.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "tools/canon_compose.py",
@@ -7097,12 +7200,34 @@
     {
       "readers": [
         {
+          "by": "docs/experiments/E12-task3-report.md",
+          "call": "--materials",
+          "confidence": "text"
+        }
+      ],
+      "target": "canon/dragon-materials-estimated.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "profiles/ship.json",
           "call": "literal",
           "confidence": "text"
         }
       ],
       "target": "canon/galleon-materials-estimated.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/experiments/E14-handoff2-report.md",
+          "call": "--materials",
+          "confidence": "text"
+        }
+      ],
+      "target": "canon/longsword-materials-estimated.json",
       "writers": []
     },
     {
@@ -7156,6 +7281,12 @@
           "confidence": "text"
         },
         {
+          "by": "tests/test_t97_canon_bind.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tools/canon_bind.py",
           "call": "literal",
           "confidence": "ast"
@@ -7185,6 +7316,12 @@
           "by": "docs/index/facet.db.cert.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/advisor-kickoff.md",
@@ -7196,6 +7333,12 @@
           "by": "docs/index/facet.db.cert.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t24_index_parsers.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/arc-history.md",
@@ -7214,6 +7357,11 @@
     },
     {
       "readers": [
+        {
+          "by": "docs/brand/README.md",
+          "call": "--out",
+          "confidence": "text"
+        },
         {
           "by": "docs/brand/make_asset_sheet.py",
           "call": "literal",
@@ -7363,19 +7511,15 @@
     {
       "readers": [
         {
-          "by": "docs/experiments/E24-installed-paths-report.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "docs/experiments/E31-publish-the-pipeline-kickoff.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "docs/index/conventions.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t32_installed_wheel.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/experiments",
@@ -8808,6 +8952,18 @@
           "by": "docs/instrument-census.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t04_discovery_guards.py",
+          "call": "get",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t24_index_parsers.py",
+          "call": "get",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/experiments/E10-offsurface-ruling.md",
@@ -8824,6 +8980,12 @@
           "by": "docs/index/facet.db.cert.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t24_index_parsers.py",
+          "call": "get",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/experiments/E10-ruling.md",
@@ -9406,6 +9568,12 @@
           "by": "docs/instrument-census.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t04_discovery_guards.py",
+          "call": "get",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/experiments/E12-ruling.md",
@@ -10026,6 +10194,12 @@
           "by": "docs/index/facet.db.cert.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t04_discovery_guards.py",
+          "call": "get",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/experiments/E14-ruling.md",
@@ -10107,6 +10281,24 @@
           "by": "docs/index/facet.db.cert.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t04_discovery_guards.py",
+          "call": "get",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t04_discovery_guards.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t24_index_parsers.py",
+          "call": "get",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/experiments/E15-context-index-kickoff.md",
@@ -10189,6 +10381,12 @@
           "by": "docs/index/facet.db.cert.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t04_discovery_guards.py",
+          "call": "get",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/experiments/E15-ruling.md",
@@ -10205,6 +10403,12 @@
           "by": "docs/instrument-census.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t04_discovery_guards.py",
+          "call": "get",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/experiments/E16-errands-kickoff.md",
@@ -10248,6 +10452,12 @@
           "by": "docs/index/facet.db.cert.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t04_discovery_guards.py",
+          "call": "get",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/experiments/E17-harness-kickoff.md",
@@ -10320,11 +10530,6 @@
     },
     {
       "readers": [
-        {
-          "by": "docs/experiments/E18-index-mcp-report.md",
-          "call": "literal",
-          "confidence": "text"
-        },
         {
           "by": "docs/index/facet.db.cert.json",
           "call": "literal",
@@ -10405,6 +10610,12 @@
           "by": "docs/index/facet.db.cert.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t24_index_parsers.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/experiments/E20-coverage-kickoff.md",
@@ -12683,6 +12894,11 @@
     {
       "readers": [
         {
+          "by": "docs/experiments/E72-stroke-one-kickoff.md",
+          "call": "--key",
+          "confidence": "text"
+        },
+        {
           "by": "profiles/a1.json",
           "call": "literal",
           "confidence": "text"
@@ -13035,6 +13251,12 @@
           "by": "docs/index/conventions.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/handbook",
@@ -13051,6 +13273,18 @@
           "by": "docs/index/facet.db.cert.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t24_index_parsers.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/handbook/index.md",
@@ -13107,6 +13341,17 @@
     {
       "readers": [
         {
+          "by": "docs/experiments/E71-hole-fill-kickoff.md",
+          "call": "--",
+          "confidence": "text"
+        }
+      ],
+      "target": "docs/index/conventions.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "docs/index/conventions.json",
           "call": "literal",
           "confidence": "text"
@@ -13147,6 +13392,12 @@
           "by": "docs/instrument-census.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t41_instrument_census.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "tools/instrument_census.py",
@@ -13427,6 +13678,12 @@
       "readers": [
         {
           "by": ".github/workflows/release.yml"
+        },
+        {
+          "by": "tests/test_t27_packaging_shape.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "package.json",
@@ -13435,9 +13692,38 @@
     {
       "readers": [
         {
-          "by": "docs/experiments/E58-a1-twin-ring-report.md",
+          "by": "tests/test_t20_record_mcp_certificate.py",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "profiles",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/experiments/E70-baked-look-report.md",
+          "call": "--profile",
           "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E71-hole-fill-kickoff.md",
+          "call": "--profile",
+          "confidence": "text"
+        },
+        {
+          "by": "tests/test_t87_canon_gate.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t91_canon_in_path.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "tools/canon_gate.py",
@@ -13450,6 +13736,21 @@
     },
     {
       "readers": [
+        {
+          "by": "docs/experiments/E12-handoff15-halt.md",
+          "call": "--profile",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E12-task1-sweep.md",
+          "call": "--profile",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E12-task2-report.md",
+          "call": "--profile",
+          "confidence": "text"
+        },
         {
           "by": "docs/index/conventions.json",
           "call": "literal",
@@ -13471,21 +13772,6 @@
     },
     {
       "readers": [
-        {
-          "by": "docs/experiments/E57-a1-reference-first-kickoff.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "docs/experiments/E57-a1-reference-first-report.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "docs/experiments/E58-a1-twin-ring-report.md",
-          "call": "literal",
-          "confidence": "text"
-        },
         {
           "by": "docs/index/conventions.json",
           "call": "literal",
@@ -13513,9 +13799,59 @@
     {
       "readers": [
         {
-          "by": "docs/experiments/E71-hole-fill-kickoff.md",
-          "call": "literal",
+          "by": "docs/experiments/E14-handoff2-report.md",
+          "call": "--profile",
           "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E14-handoff5-report.md",
+          "call": "--profile",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E14-handoff6-report.md",
+          "call": "--profile",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E14-task1-sweep.md",
+          "call": "--profile",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E14-task4-report.md",
+          "call": "--profile",
+          "confidence": "text"
+        },
+        {
+          "by": "tests/test_t10_projection.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t11_edge_mode.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t91_canon_in_path.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t92_canon_router.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t93_canon_worksheet.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "tools/canon_gate.py",
@@ -13534,6 +13870,21 @@
     {
       "readers": [
         {
+          "by": "docs/experiments/E04-armT-halt.md",
+          "call": "--profile",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E04-ruling.md",
+          "call": "--profile",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E10-w2-preflight-halt.md",
+          "call": "--profile",
+          "confidence": "text"
+        },
+        {
           "by": "docs/index/conventions.json",
           "call": "literal",
           "confidence": "text"
@@ -13542,6 +13893,12 @@
           "by": "docs/index/facet.db.cert.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t57_galleon_commit_replay.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "tools/canon_gate.py",
@@ -13566,9 +13923,27 @@
       "readers": [
         {
           "by": ".github/workflows/release.yml"
+        },
+        {
+          "by": "tests/test_t27_packaging_shape.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "pyproject.toml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_t05_claims_sweep.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site",
       "writers": []
     },
     {
@@ -13582,6 +13957,18 @@
           "by": "site/astro.config.mjs",
           "call": "content-collection",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/test_t05_claims_sweep.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "site/src/content/docs",
@@ -13606,6 +13993,82 @@
     {
       "readers": [
         {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/src/content/docs/handbook/getting-started.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/src/content/docs/handbook/index.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/src/content/docs/handbook/reference.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/src/pages",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_t34_front_door_counts.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/src/site-config.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/experiments/E12-task2-report.md",
+          "call": ".",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E20-gate-halt.md",
+          "call": "--",
+          "confidence": "text"
+        }
+      ],
+      "target": "tests",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "docs/instrument-census.json",
           "call": "literal",
           "confidence": "text"
@@ -13623,6 +14086,316 @@
         }
       ],
       "target": "tests/fixtures/make_measure_fixture.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/experiments/E27-ruling.md",
+          "call": "--glb",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E28-instrument-census-kickoff.md",
+          "call": "--glb",
+          "confidence": "text"
+        },
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/meshes/cube.glb",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/meshes/nonmanifold.glb",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/meshes/pinch.glb",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/meshes/sheet.glb",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/meshes/sliver.glb",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/meshes/twoshell.glb",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/prep/mask.npy",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/prep/nor.npy",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/prep/pos.npy",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/prep/prep_uv.glb",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/report/asset/final_0.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/report/masks/w3clay_0.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/report/prov/prov_0.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/report/twins/twin_0.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/state/job_y+090_e+00/inpainted.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/state/job_y+090_e+00/mask.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/state/stage1.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/state/stage1_holes.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_measure_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/measure_min/state/stage1_styled_mask.npy",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_selftest_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/selftest_min/prep/mask.npy",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_selftest_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/selftest_min/prep/nor.npy",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_selftest_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/selftest_min/prep/pos.npy",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_selftest_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/selftest_min/state/atlas.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_selftest_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/selftest_min/state/holes.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/fixtures/make_selftest_fixture.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/selftest_min/state/styled_mask.npy",
       "writers": []
     },
     {
@@ -13694,6 +14467,18 @@
     {
       "readers": [
         {
+          "by": "tests/test_t21_record_mcp_health.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/test_t22_record_mcp_tools.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "docs/instrument-census.json",
           "call": "literal",
           "confidence": "text"
@@ -13711,6 +14496,17 @@
         }
       ],
       "target": "tests/test_t25_mask_geometry.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/experiments/E24-installed-paths-report.md",
+          "call": "--",
+          "confidence": "text"
+        }
+      ],
+      "target": "tests/test_t28_frozen_runtime.py",
       "writers": []
     },
     {
@@ -14079,6 +14875,86 @@
     {
       "readers": [
         {
+          "by": "docs/experiments/E04-armT-halt.md",
+          "call": "--tools",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E12-task1-sweep.md",
+          "call": "--tools",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E14-task1-sweep.md",
+          "call": "--tools",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E21-cli-contract-report.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E21-ruling.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E22-gates-report.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E23-route-gates-report.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E25-diagnostics-gates-report.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E27-ruling.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E28-instrument-census-kickoff.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E28-instrument-census-report.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E28-ruling.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E28-task3-report.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E29-clay-reconstruction-report.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E30-polish-anchor-gates-kickoff.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/experiments/E30-polish-anchor-gates-report.md",
+          "call": "--",
+          "confidence": "text"
+        },
+        {
           "by": "tools/brush_cloud_step.py",
           "call": "get",
           "confidence": "ast"
@@ -14115,6 +14991,18 @@
           "confidence": "text"
         },
         {
+          "by": "tests/test_t41_instrument_census.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t65_register_sheet.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tools/instrument_census.py",
           "call": "literal",
           "confidence": "ast"
@@ -14125,6 +15013,18 @@
     },
     {
       "readers": [
+        {
+          "by": "tests/test_t37_measure_reach_ceiling.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t75_ceiling_custom_cams.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "tools/measure_mcp.py",
           "call": "literal",
@@ -14188,6 +15088,12 @@
     {
       "readers": [
         {
+          "by": "tests/test_t45_measure_offsurface.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tools/measure_mcp.py",
           "call": "literal",
           "confidence": "ast"
@@ -14198,6 +15104,23 @@
     },
     {
       "readers": [
+        {
+          "by": "docs/experiments/E58-a1-twin-ring-report.md",
+          "call": "--",
+          "confidence": "text"
+        }
+      ],
+      "target": "tools/diagnostics/e12_pair_cloud_step.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_t44_measure_thin_curve.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "tools/measure_mcp.py",
           "call": "literal",
@@ -14226,12 +15149,30 @@
     {
       "readers": [
         {
+          "by": "tests/test_t43_measure_mesh_topology.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tools/measure_mcp.py",
           "call": "literal",
           "confidence": "ast"
         }
       ],
       "target": "tools/diagnostics/e14_topology.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_t65_register_sheet.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tools/diagnostics/e33_register_sheet.py",
       "writers": []
     },
     {
@@ -14248,9 +15189,56 @@
     {
       "readers": [
         {
+          "by": "tests/test_t73_fire_repaints.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tools/e37_fire_repaints.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/experiments/E18-index-mcp-report.md",
+          "call": ".",
+          "confidence": "text"
+        },
+        {
+          "by": "tests/test_t06_line_endings.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tools/facet_index.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": ".mcp.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t23_mount_path.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t58_measure_mcp_registration.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t61_frozen_instrument_invocation.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "tools/measure_mcp.py",
@@ -14270,12 +15258,18 @@
     {
       "readers": [
         {
-          "by": ".mcp.json",
-          "call": "literal",
+          "by": "docs/experiments/E69-whole-figure-withhold-report.md",
+          "call": "--",
           "confidence": "text"
-        },
+        }
+      ],
+      "target": "tools/project_twins.py",
+      "writers": []
+    },
+    {
+      "readers": [
         {
-          "by": "docs/experiments/E18-index-mcp-report.md",
+          "by": ".mcp.json",
           "call": "literal",
           "confidence": "text"
         },
@@ -14285,12 +15279,42 @@
           "confidence": "text"
         },
         {
+          "by": "tests/test_t23_mount_path.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t27_packaging_shape.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t61_frozen_instrument_invocation.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tools/record_mcp.py",
           "call": "literal",
           "confidence": "ast"
         }
       ],
       "target": "tools/record_mcp.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_t72_rgba_turnaround.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tools/rgba_turnaround.py",
       "writers": []
     },
     {
@@ -14312,9 +15336,26 @@
     {
       "readers": [
         {
+          "by": "docs/experiments/E25-diagnostics-gates-report.md",
+          "call": "--",
+          "confidence": "text"
+        }
+      ],
+      "target": "tools/superseded",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "docs/instrument-census.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_t41_instrument_census.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "tools/instrument_census.py",
@@ -14328,6 +15369,12 @@
     {
       "readers": [
         {
+          "by": "tests/test_t46_measure_anchor_check.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tools/measure_mcp.py",
           "call": "literal",
           "confidence": "ast"
@@ -14338,6 +15385,12 @@
     },
     {
       "readers": [
+        {
+          "by": "tests/test_t59_measure_mcp_install_geometry.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "tools/measure_mcp.py",
           "call": "literal",
@@ -14360,6 +15413,24 @@
     },
     {
       "readers": [
+        {
+          "by": "tests/test_t35_measure_mcp_surface.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t58_measure_mcp_registration.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_t63_the_wheel_carries_the_instruments.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "tools/measure_mcp.py",
           "call": "literal",

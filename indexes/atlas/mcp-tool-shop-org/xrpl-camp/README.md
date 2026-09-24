@@ -1,65 +1,66 @@
 # xrpl-camp: how it works
 
-Mapped at 2026-09-23 from commit 8af7371.
+Mapped at 2026-09-24 from commit 8af7371.
 
 ## What this is
 
-7 parts, mostly Python (31 files). Work enters through 7 doors; the busiest is Freshness Check, which reaches 1 part and commits into the repository (CI reaches 5 but commits nothing). It publishes to npm and PyPI, and a container image. People run xrpl-camp.
+7 parts, mostly Python (31 files). Work enters through 7 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. People run xrpl-camp.
 
 ## What changed since 2026-09-23 (d3e4b7d)
 
+- bin no longer imports the repository root.
 - CI's pull request trigger now also names `atlas/**`.
 - CI's push trigger now also names `atlas/**`.
+- Publish now also runs docker-entrypoint.sh and xrpl_camp/__main__.py.
+- And 1 more change to a door.
+- CHANGELOG.md is now read by tests/test_version.py.
+- bin/xrpl-camp.js is now read by tests/test_version.py.
+- package.json is now also read by bin/xrpl-camp.js and tests/test_version.py.
+- And 2 more new writers and readers of places.
 - 77 files changed content, across 6 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 11 paths; on a push touching 11 paths; or by hand. Runs bin/xrpl-camp.js, scripts/check-versions.sh, scripts/verify.sh and 1 more; checks xrpl_camp/.
-2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **Publish.** When a tag matching `v*` is pushed; or by hand. Runs scripts/verify-pypi-publish.sh.
+1. **CI.** On a pull request touching 11 paths; on a push touching 11 paths; or by hand. Runs scripts/check-versions.sh, scripts/verify.sh and tests/; checks bin/xrpl-camp.js and xrpl_camp/.
+2. **Publish.** When a tag matching `v*` is pushed; or by hand. Runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh and xrpl_camp/__main__.py; checks LICENSE, README.md, pyproject.toml and 1 more.
+3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Release (npm).** When a tag matching `v*` is pushed; or by hand. Runs scripts/check-versions.sh.
 5. **Freshness Check.** On a schedule (`0 8 * * 1`), Monday at 08:00 UTC; or by hand. Runs scripts/check-freshness.sh.
 6. **xrpl-camp** (a command people run, from package.json). Runs bin/xrpl-camp.js.
 7. **xrpl-camp** (a command people run, from pyproject.toml). Runs xrpl_camp/cli.py.
 
-## What happens through Freshness Check
+## What happens through CI
 
-1. The workflow runs scripts/check-freshness.sh in scripts.
-2. It writes to .github/freshness-report.md.
-3. It commits .github/freshness-report.md and pushes.
-4. It opens a pull request.
+1. The workflow runs scripts/check-versions.sh and scripts/verify.sh in scripts and tests/ in tests; it checks bin/xrpl-camp.js in bin and xrpl_camp/ in xrpl_camp.
 
 ## Who reads the results
 
-Only Freshness Check itself reads what it writes.
+CI writes nothing this map can see.
 
 ## The other doors
 
-**CI** runs bin/xrpl-camp.js, scripts/check-versions.sh, scripts/verify.sh and 1 more, checks xrpl_camp/, and reaches the repository root.
+**Publish** runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh and xrpl_camp/__main__.py, checks LICENSE, README.md, pyproject.toml and 1 more, publishes to PyPI and a container image on a tag push, and creates a GitHub release on a tag push.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Publish** runs scripts/verify-pypi-publish.sh, publishes to PyPI and a container image on a tag push, and creates a GitHub release on a tag push.
-
 **Release (npm)** runs scripts/check-versions.sh and publishes to npm.
 
-**xrpl-camp** (a command people run, from package.json) runs bin/xrpl-camp.js and reaches the repository root.
+**Freshness Check** runs scripts/check-freshness.sh, writes to .github/freshness-report.md, commits .github/freshness-report.md and pushes to a branch for review, never to main, and opens a pull request.
+
+**xrpl-camp** (a command people run, from package.json) runs bin/xrpl-camp.js.
 
 **xrpl-camp** (a command people run, from pyproject.toml) runs xrpl_camp/cli.py.
 
 ## What breaks what
 
-- **the repository root** is imported by 1 part (bin) and sits on the path of 2 doors.
 - **scripts** is imported by no other part and sits on the path of 4 doors.
-- **xrpl_camp** is imported only from tests, by 1 part (tests), and sits on the path of 2 doors.
+- **xrpl_camp** is imported only from tests, by 1 part (tests), and sits on the path of 3 doors.
 - **bin** is imported by no other part and sits on the path of 2 doors.
 
 ## What tends to change together
 
-- **xrpl_camp/cli.py** and **xrpl_camp/lessons.py** changed together in 6 of 9 commits, inside the xrpl_camp part.
-- **xrpl_camp/__init__.py** and **xrpl_camp/lessons.py** changed together in 5 of 9 commits, inside the xrpl_camp part.
-- **xrpl_camp/__init__.py** and **xrpl_camp/cli.py** changed together in 5 of 10 commits, inside the xrpl_camp part.
-- **xrpl_camp/lessons.py** and **xrpl_camp/models.py** changed together in 4 of 8 commits, inside the xrpl_camp part.
+- **xrpl_camp/cli.py** and **xrpl_camp/lessons.py** changed together in 5 of 8 commits, inside the xrpl_camp part.
+- **xrpl_camp/__init__.py** and **xrpl_camp/lessons.py** changed together in 4 of 8 commits, inside the xrpl_camp part.
 
 Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
@@ -87,7 +88,7 @@ People write the repository root, scripts/ and site/; 4 writes with paths built 
 
 ## Where to start
 
-.github/workflows/ci.yml → tests/__init__.py
+.github/workflows/ci.yml → tests/conftest.py → xrpl_camp/__init__.py
 
 Read those in order to follow one pull request end to end.
 

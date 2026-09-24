@@ -56,10 +56,8 @@
       "partLabel": "export-unreal"
     },
     {
-      "doors": 3,
-      "importedBy": [
-        "site"
-      ],
+      "doors": 2,
+      "importedBy": [],
       "importedByTests": [
         "dogfood"
       ],
@@ -101,6 +99,14 @@
       "removed": 0
     },
     "items": [
+      {
+        "kind": "import-removed",
+        "sentence": "site no longer imports the repository root.",
+        "subjects": [
+          "site",
+          "root"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "CI now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 58 more.",
@@ -275,7 +281,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 36 more new writers and readers of places.",
+        "sentence": "And 82 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -460,7 +466,7 @@
         {
           "boundary": "root",
           "depth": 1,
-          "files": 2
+          "files": 1
         }
       ],
       "runs": [
@@ -693,11 +699,6 @@
           "boundary": "site",
           "depth": 0,
           "files": 3
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "files": 1
         }
       ],
       "runs": [
@@ -998,12 +999,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T23:04:34.830Z",
+  "generatedAt": "2026-09-24T01:56:40.237Z",
   "limits": [
-    "4 files use syntax the parser cannot read, so what they import is not known: 3 in editor (an import type followed by `[]` in 2 and other syntax in 1), 1 in export-ai-rpg (`typeof import(…)` as a type argument).",
-    "4 writes and 18 reads use paths built at run time and are not named here.",
+    "4 files use syntax the parser cannot read (packages/editor/src/Canvas.tsx, packages/editor/src/panels/PresetBrowser.tsx, packages/editor/src/panels/ZoneProperties.tsx and 1 more), so what they import is not known: 3 in editor (an import type followed by `[]` in 2 and other syntax in 1), 1 in export-ai-rpg (`typeof import(…)` as a type argument).",
+    "4 writes and 13 reads use paths built at run time and are not named here.",
     "37 writes go to places this repository does not track, so they are not listed as generated.",
-    "28 writes go to the directory the command is run in or the home directory, not to this repository.",
+    "28 writes and 5 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "17 commands are built at run time and not followed, 13 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -1037,8 +1038,7 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "scripts/check-pack.mjs",
-    "playwright.config.ts"
+    "scripts/check-pack.mjs"
   ],
   "summary": null,
   "summaryFrom": null,

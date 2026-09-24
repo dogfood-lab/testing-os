@@ -260,7 +260,7 @@
       },
       {
         "kind": "door",
-        "sentence": "CI runs 389 more files than before.",
+        "sentence": "CI runs 392 more files than before.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
@@ -305,7 +305,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 5 more new writers and readers of places.",
+        "sentence": "And 59 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -415,14 +415,17 @@
   "doors": [
     {
       "checks": [
+        "package-lock.json",
+        "package.json",
+        "packages/",
+        "templates/",
+        "tsconfig.json",
         "docs/",
         "eslint.config.js",
-        "packages/",
         "scripts/",
-        "templates/",
         "vitest.config.ts"
       ],
-      "checksCount": 6,
+      "checksCount": 9,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [
@@ -461,7 +464,7 @@
         {
           "boundary": "cli",
           "depth": 0,
-          "files": 72
+          "files": 71
         },
         {
           "boundary": "content-schema",
@@ -516,7 +519,7 @@
         {
           "boundary": "root",
           "depth": 0,
-          "files": 2
+          "files": 5
         },
         {
           "boundary": "rumor-system",
@@ -760,21 +763,18 @@
         "packages/starter-gladiator/src/equipment-integration.test.ts",
         "packages/starter-gladiator/src/intent-profiles.test.ts",
         "packages/starter-gladiator/src/perception.test.ts",
-        "packages/starter-gladiator/src/quests.test.ts",
         "packages/starter-merchant/src/anti-inert.test.ts",
         "packages/starter-merchant/src/content-truth.test.ts",
         "packages/starter-merchant/src/content.test.ts",
         "packages/starter-merchant/src/contract-core.test.ts",
         "packages/starter-merchant/src/equipment-integration.test.ts",
         "packages/starter-merchant/src/firewall.test.ts",
-        "packages/starter-merchant/src/intent-profiles.test.ts",
         "packages/starter-pirate/src/ability-integration.test.ts",
         "packages/starter-pirate/src/content-truth.test.ts",
         "packages/starter-pirate/src/content.test.ts",
         "packages/starter-pirate/src/intent-profiles.test.ts",
         "packages/starter-pirate/src/perception.test.ts",
         "packages/starter-pirate/src/ruleset.test.ts",
-        "packages/starter-pirate/src/schema-conformance.test.ts",
         "packages/starter-ronin/src/ability-integration.test.ts",
         "packages/starter-ronin/src/content-truth.test.ts",
         "packages/starter-ronin/src/content.test.ts",
@@ -816,14 +816,17 @@
     },
     {
       "checks": [
+        "package-lock.json",
+        "package.json",
+        "packages/",
+        "templates/",
+        "tsconfig.json",
         "docs/",
         "eslint.config.js",
-        "packages/",
         "scripts/",
-        "templates/",
         "vitest.config.ts"
       ],
-      "checksCount": 6,
+      "checksCount": 9,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [
@@ -862,7 +865,7 @@
         {
           "boundary": "cli",
           "depth": 0,
-          "files": 72
+          "files": 71
         },
         {
           "boundary": "content-schema",
@@ -917,7 +920,7 @@
         {
           "boundary": "root",
           "depth": 0,
-          "files": 2
+          "files": 5
         },
         {
           "boundary": "rumor-system",
@@ -1161,21 +1164,18 @@
         "packages/starter-gladiator/src/equipment-integration.test.ts",
         "packages/starter-gladiator/src/intent-profiles.test.ts",
         "packages/starter-gladiator/src/perception.test.ts",
-        "packages/starter-gladiator/src/quests.test.ts",
         "packages/starter-merchant/src/anti-inert.test.ts",
         "packages/starter-merchant/src/content-truth.test.ts",
         "packages/starter-merchant/src/content.test.ts",
         "packages/starter-merchant/src/contract-core.test.ts",
         "packages/starter-merchant/src/equipment-integration.test.ts",
         "packages/starter-merchant/src/firewall.test.ts",
-        "packages/starter-merchant/src/intent-profiles.test.ts",
         "packages/starter-pirate/src/ability-integration.test.ts",
         "packages/starter-pirate/src/content-truth.test.ts",
         "packages/starter-pirate/src/content.test.ts",
         "packages/starter-pirate/src/intent-profiles.test.ts",
         "packages/starter-pirate/src/perception.test.ts",
         "packages/starter-pirate/src/ruleset.test.ts",
-        "packages/starter-pirate/src/schema-conformance.test.ts",
         "packages/starter-ronin/src/ability-integration.test.ts",
         "packages/starter-ronin/src/content-truth.test.ts",
         "packages/starter-ronin/src/content.test.ts",
@@ -1286,7 +1286,7 @@
         {
           "boundary": "cli",
           "depth": 0,
-          "files": 21
+          "files": 20
         },
         {
           "boundary": "character-creation",
@@ -1692,16 +1692,16 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T23:01:02.033Z",
+  "generatedAt": "2026-09-24T01:52:25.215Z",
   "limits": [
     "3 import sites could not be resolved.",
-    "10 files use syntax the parser cannot read, so what they import is not known: 4 in modules (an import type followed by `[]`), 2 in ledger-adapter (a NUL character inside a string), 1 in cli (`typeof import(…)` as a type argument), 1 in content-schema (a NUL character inside a string), 1 in core (an import type followed by `[]`), 1 in ollama (an import type followed by `[]`).",
-    "45 writes and 61 reads use paths built at run time and are not named here.",
+    "10 files use syntax the parser cannot read (packages/cli/src/sidecar-pack-intake.test.ts, packages/content-schema/src/loader.ts, packages/core/src/engine.ts and 7 more), so what they import is not known: 4 in modules (an import type followed by `[]`), 2 in ledger-adapter (a NUL character inside a string), 1 in cli (`typeof import(…)` as a type argument), 1 in content-schema (a NUL character inside a string), 1 in core (an import type followed by `[]`), 1 in ollama (an import type followed by `[]`).",
+    "38 writes and 56 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "2 writes and 5 reads go to the directory the command is run in or the home directory, not to this repository.",
-    "10 commands are built at run time and not followed, 8 of them in tests.",
-    "CI runs or checks 398 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Release runs or checks 398 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
+    "9 writes and 11 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "9 commands are built at run time and not followed, 8 of them in tests.",
+    "CI runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -1768,7 +1768,7 @@
     "campaign-memory": 7,
     "character-creation": 115,
     "character-profile": 12,
-    "cli": 42,
+    "cli": 41,
     "content-schema": 189,
     "core": 276,
     "equipment": 157,
@@ -1797,7 +1797,7 @@
     "starter-zombie": 42,
     "terminal-ui": 24
   },
-  "unnamedWrites": 45,
+  "unnamedWrites": 38,
   "unread": [
     {
       "place": "docs/c0-alignment/intake-table.json",

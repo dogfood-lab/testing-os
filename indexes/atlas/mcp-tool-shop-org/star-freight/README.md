@@ -1,6 +1,6 @@
 # star-freight: how it works
 
-Mapped at 2026-09-23 from commit 743f657.
+Mapped at 2026-09-24 from commit 743f657.
 
 ## What this is
 
@@ -10,14 +10,20 @@ Mapped at 2026-09-23 from commit 743f657.
 
 - CI's pull request trigger now also names `atlas/**`.
 - CI's push trigger now also names `atlas/**`.
+- Publish to PyPI now also checks src/portlight/.
+- And 1 more change to a door.
+- dogfood/scenarios/ is now also read by tests/test_dogfood_runner.py.
+- dogfood/scenarios/gray_seizure_60d_s17.json is now read by tests/test_dogfood_runner.py.
+- dogfood/scenarios/recovery_broke_hull_45d_s99.json is now read by tests/test_dogfood_runner.py.
+- And 3 more new writers and readers of places.
 - 316 files changed content, across 8 parts.
 
 ## What comes in
 
 1. **CI.** On a pull request touching 8 paths; on a push touching 8 paths; or by hand. Runs tests/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **Publish to PyPI.** When a release is published; or by hand. Runs no file this map can see.
-4. **Release Binaries.** When a release is published; or by hand. Runs no file this map can see.
+3. **Publish to PyPI.** When a release is published; or by hand. Checks src/portlight/.
+4. **Release Binaries.** When a release is published; or by hand. Runs src/portlight/__main__.py.
 5. **starfreight** (a command people run). Runs src/portlight/app/cli.py.
 
 ## What happens through CI
@@ -33,15 +39,15 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Publish to PyPI** runs no file this map can see and publishes to PyPI.
+**Publish to PyPI** checks src/portlight/ and publishes to PyPI.
 
-**Release Binaries** runs no file this map can see and creates a GitHub release.
+**Release Binaries** runs src/portlight/__main__.py and creates a GitHub release.
 
 **starfreight** (a command people run) runs src/portlight/app/cli.py.
 
 ## What breaks what
 
-- **src** is imported by 1 part (dogfood), and by 1 more only from tests; it sits on the path of 2 doors.
+- **src** is imported by 1 part (dogfood), and by 1 more only from tests; it sits on the path of 4 doors.
 
 ## What tends to change together
 
@@ -83,6 +89,7 @@ Read those in order to follow one pull request end to end.
 
 - 2 import sites could not be resolved.
 - 5 writes and 2 reads use paths built at run time and are not named here.
+- 1 write and 3 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

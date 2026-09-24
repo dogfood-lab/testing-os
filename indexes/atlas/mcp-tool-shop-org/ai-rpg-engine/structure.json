@@ -1007,10 +1007,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 27,
+      "dynamicReads": 26,
       "dynamicSpawns": 7,
       "dynamicSpawnsInTests": 7,
-      "dynamicWrites": 8,
+      "dynamicWrites": 7,
       "entryPoints": [
         "packages/cli/src/bin.ts",
         "packages/cli/src/index.ts"
@@ -4931,10 +4931,10 @@
       "importConfidence": "full",
       "name": "cli",
       "origin": "authored",
-      "outsideReads": 5,
-      "outsideWrites": 2,
+      "outsideReads": 7,
+      "outsideWrites": 3,
       "role": "code",
-      "testedBy": 42,
+      "testedBy": 41,
       "unresolvedSites": 1
     },
     {
@@ -10012,10 +10012,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 13,
+      "dynamicReads": 9,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 26,
+      "dynamicWrites": 20,
       "entryPoints": [
         "packages/ollama/src/bin.ts",
         "packages/ollama/src/index.ts"
@@ -11996,6 +11996,8 @@
       "importConfidence": "full",
       "name": "ollama",
       "origin": "authored",
+      "outsideReads": 4,
+      "outsideWrites": 6,
       "role": "code",
       "testedBy": 38,
       "unresolvedSites": 0
@@ -12571,7 +12573,7 @@
     },
     {
       "dynamicReads": 6,
-      "dynamicSpawns": 3,
+      "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 1,
       "dynamicWrites": 0,
       "entryPoints": [],
@@ -16000,7 +16002,7 @@
   ],
   "doors": [
     {
-      "checksCount": 6,
+      "checksCount": 9,
       "commands": [
         {
           "job": "build-and-test",
@@ -16125,7 +16127,7 @@
         {
           "boundary": "cli",
           "depth": 0,
-          "files": 72
+          "files": 71
         },
         {
           "boundary": "content-schema",
@@ -16180,7 +16182,7 @@
         {
           "boundary": "root",
           "depth": 0,
-          "files": 2
+          "files": 5
         },
         {
           "boundary": "rumor-system",
@@ -16298,12 +16300,31 @@
           "via": "eslint eslint.config.js"
         },
         {
+          "job": "docker-smoke",
+          "path": "package-lock.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "docker-smoke",
+          "path": "package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
           "directory": true,
           "job": "build-and-test",
           "matched": true,
           "path": "packages/",
           "runKind": "checks",
           "via": "eslint eslint.config.js"
+        },
+        {
+          "directory": true,
+          "job": "docker-smoke",
+          "path": "packages/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
         },
         {
           "job": "build-and-test",
@@ -17330,13 +17351,6 @@
         {
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-gladiator/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
           "path": "packages/starter-merchant/src/anti-inert.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -17379,13 +17393,6 @@
         {
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-merchant/src/intent-profiles.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
           "path": "packages/starter-pirate/src/ability-integration.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -17422,13 +17429,6 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/starter-pirate/src/ruleset.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/starter-pirate/src/schema-conformance.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -17660,11 +17660,24 @@
           "via": "eslint eslint.config.js"
         },
         {
+          "directory": true,
+          "job": "docker-smoke",
+          "path": "templates/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
           "job": "build-and-test",
           "matched": true,
           "path": "templates/starter/src/starter.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "docker-smoke",
+          "path": "tsconfig.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
         },
         {
           "job": "build-and-test",
@@ -17674,7 +17687,7 @@
           "via": "eslint eslint.config.js"
         }
       ],
-      "runsCount": 398,
+      "runsCount": 401,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -17930,7 +17943,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 6,
+      "checksCount": 9,
       "commands": [
         {
           "job": "npm",
@@ -18057,7 +18070,7 @@
         {
           "boundary": "cli",
           "depth": 0,
-          "files": 72
+          "files": 71
         },
         {
           "boundary": "content-schema",
@@ -18112,7 +18125,7 @@
         {
           "boundary": "root",
           "depth": 0,
-          "files": 2
+          "files": 5
         },
         {
           "boundary": "rumor-system",
@@ -18221,6 +18234,25 @@
           "path": "eslint.config.js",
           "runKind": "checks",
           "via": "eslint eslint.config.js"
+        },
+        {
+          "job": "docker",
+          "path": "package-lock.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "docker",
+          "path": "package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
+          "job": "docker",
+          "path": "packages/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
         },
         {
           "directory": true,
@@ -19260,13 +19292,6 @@
         {
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-gladiator/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
           "path": "packages/starter-merchant/src/anti-inert.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -19309,13 +19334,6 @@
         {
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-merchant/src/intent-profiles.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
           "path": "packages/starter-pirate/src/ability-integration.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -19352,13 +19370,6 @@
           "job": "npm",
           "matched": true,
           "path": "packages/starter-pirate/src/ruleset.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
-          "path": "packages/starter-pirate/src/schema-conformance.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -19583,6 +19594,13 @@
         },
         {
           "directory": true,
+          "job": "docker",
+          "path": "templates/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
           "job": "npm",
           "matched": true,
           "path": "templates/",
@@ -19597,6 +19615,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "job": "docker",
+          "path": "tsconfig.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
           "job": "npm",
           "matched": true,
           "path": "vitest.config.ts",
@@ -19604,7 +19628,7 @@
           "via": "eslint eslint.config.js"
         }
       ],
-      "runsCount": 398,
+      "runsCount": 401,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -19660,7 +19684,7 @@
         {
           "boundary": "cli",
           "depth": 0,
-          "files": 21
+          "files": 20
         },
         {
           "boundary": "character-creation",
@@ -21150,6 +21174,12 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "scripts/gates.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": ".github/workflows/ci.yml",
@@ -21222,6 +21252,12 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "scripts/gates.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": ".github/workflows/pages.yml",
@@ -21268,6 +21304,12 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "scripts/gates.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": ".github/workflows/release.yml",
@@ -21386,6 +21428,12 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "scripts/gates.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "Dockerfile",
@@ -21397,6 +21445,12 @@
           "by": "scripts/check-packaging.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "scripts/gates.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "LICENSE",
@@ -21469,6 +21523,36 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.es.md",
@@ -21505,6 +21589,36 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.fr.md",
@@ -21541,6 +21655,42 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "scripts/gates.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.hi.md",
@@ -21577,6 +21727,36 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.it.md",
@@ -21613,6 +21793,36 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.ja.md",
@@ -21661,14 +21871,50 @@
           "confidence": "text"
         },
         {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/cli/src/create-starter.ts",
           "call": "literal",
           "confidence": "ast"
         },
         {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "scripts/check-packaging.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "scripts/gates.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.md",
@@ -21705,6 +21951,36 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.pt-BR.md",
@@ -21741,6 +22017,36 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.zh.md",
@@ -21845,6 +22151,18 @@
       ]
     },
     {
+      "readers": [
+        {
+          "by": "scripts/gates.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "docs/check-docs-integrity.mjs",
+      "writers": []
+    },
+    {
       "readers": [],
       "target": "docs/contract-v1/rng-audit.json",
       "writers": [
@@ -21942,6 +22260,12 @@
           "confidence": "ast"
         },
         {
+          "by": "packages/pack-registry/src/catalog.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "scripts/check-packaging.mjs",
           "call": "readFileSync",
           "confidence": "ast"
@@ -21968,6 +22292,24 @@
         }
       ],
       "target": "package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/modules/src/ability-phase4-integration.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/pack-registry/src/catalog.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages",
       "writers": []
     },
     {
@@ -22037,6 +22379,66 @@
     {
       "readers": [
         {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-creation/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-creation/src/package-json.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-creation/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-creation/src/package-json.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-creation/src/index.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-creation/src/package-json.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-creation/src/resolve.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-creation/src/package-json.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-creation/src/types.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
@@ -22069,12 +22471,40 @@
     {
       "readers": [
         {
+          "by": "packages/cli/src/bin.ts",
+          "call": "import",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/cli/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/cli/src/c0/fixture-path.ts",
           "call": "literal",
           "confidence": "ast"
         }
       ],
       "target": "packages/cli/src/__fixtures__/c0-forge-pack.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/contract-v1/e2e-transcript.md",
+          "call": "--manifest",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/cli/src/c1-gate.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/cli/src/__fixtures__/c1-forge-manifest.json",
       "writers": []
     },
     {
@@ -22091,6 +22521,66 @@
         }
       ],
       "target": "packages/cli/src/bin.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/cli/src/c0-intake-table.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/cli/src/c0-intake-table.test.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/cli/src/c0-reverse-table.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/cli/src/c0-reverse-table.test.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/cli/src/c0-version-skew.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/cli/src/c0-version-skew.test.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/cli/src/c4-tcp-conformance.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/cli/src/c1-conformance.test.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/cli/src/c4-tcp-conformance.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/cli/src/c4-tcp-conformance.test.ts",
       "writers": []
     },
     {
@@ -22128,6 +22618,72 @@
     {
       "readers": [
         {
+          "by": "packages/cli/src/external-pack.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/cli/test-fixtures",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/cli/src/bin.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/cli/src/c4-content-intake.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/cli/src/cli.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/cli/src/external-pack.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/cli/test-fixtures/mini-pack",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/cli/src/external-pack.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/cli/test-fixtures/mini-pack/index.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/cli/src/external-pack.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/cli/test-fixtures/not-a-pack.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
@@ -22144,12 +22700,42 @@
     {
       "readers": [
         {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/content-schema/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/content-schema/src/json-schema.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/content-schema/src/json-schema.ts",
           "call": "readFileSync",
           "confidence": "ast"
         }
       ],
       "target": "packages/content-schema/schema/content-pack.schema.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/content-schema/src/intake.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/content-schema/src/intake.ts",
       "writers": []
     },
     {
@@ -22257,6 +22843,18 @@
         }
       ],
       "target": "packages/image-gen",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/image-gen/src/comfyui-provider.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/image-gen/src/comfyui-provider.ts",
       "writers": []
     },
     {
@@ -22377,6 +22975,18 @@
     {
       "readers": [
         {
+          "by": "packages/modules/src/minimal-install-proof.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/modules/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.1.json",
           "call": "literal",
           "confidence": "text"
@@ -22404,6 +23014,30 @@
         }
       ],
       "target": "packages/modules/src/hazard-interpreter.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/modules/src/minimal-install-proof.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/modules/src/minimal-install-proof.test.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/modules/src/social-consequence.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/modules/src/social-consequence.ts",
       "writers": []
     },
     {
@@ -22446,6 +23080,12 @@
           "confidence": "text"
         },
         {
+          "by": "packages/ollama/src/packaging.test.ts",
+          "call": "readdir",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tsconfig.json",
           "call": "literal",
           "confidence": "text"
@@ -22457,12 +23097,36 @@
     {
       "readers": [
         {
+          "by": "packages/ollama/src/cli-run.test.ts",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/ollama/src/cli.ts",
           "call": "readFile",
           "confidence": "ast"
+        },
+        {
+          "by": "packages/ollama/src/packaging.test.ts",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "packages/ollama/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/ollama/src/packaging.test.ts",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/ollama/src/bin.ts",
       "writers": []
     },
     {
@@ -22484,6 +23148,18 @@
     {
       "readers": [
         {
+          "by": "packages/ollama/src/packaging.test.ts",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/ollama/src/index.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
@@ -22495,6 +23171,18 @@
         }
       ],
       "target": "packages/pack-registry",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/pack-registry/README.md",
       "writers": []
     },
     {
@@ -22559,6 +23247,42 @@
         }
       ],
       "target": "packages/sidecar",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/sidecar/src/gdscript-kit.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/sidecar/gdscript/fixtures/split-frames.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/sidecar/src/gdscript-kit.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/sidecar/gdscript/framing.gd",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/sidecar/src/gdscript-kit.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/sidecar/gdscript/sidecar_client.gd",
       "writers": []
     },
     {
@@ -22676,6 +23400,30 @@
     {
       "readers": [
         {
+          "by": "packages/starter-bounty-hunter/src/firewall.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/starter-bounty-hunter/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/starter-bounty-hunter/src/firewall.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/starter-bounty-hunter/src",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
@@ -22740,6 +23488,18 @@
     {
       "readers": [
         {
+          "by": "packages/content-schema/src/intake.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/starter-fantasy/src/content.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
@@ -22767,6 +23527,30 @@
         }
       ],
       "target": "packages/starter-merchant",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/starter-merchant/src/firewall.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/starter-merchant/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/starter-merchant/src/firewall.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/starter-merchant/src",
       "writers": []
     },
     {
@@ -22884,6 +23668,18 @@
     {
       "readers": [
         {
+          "by": "scripts/gates.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "scripts/check-packaging.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "site/astro.config.mjs",
           "call": "content-collection",
           "confidence": "ast"
@@ -22916,6 +23712,11 @@
     {
       "readers": [
         {
+          "by": "docs/handbook/58-create-your-own-starter.md",
+          "call": "cp",
+          "confidence": "text"
+        },
+        {
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
@@ -22929,6 +23730,17 @@
           "by": "packages/cli/src/create-starter.ts",
           "call": "readFileSync",
           "confidence": "ast"
+        },
+        {
+          "by": "site/src/content/docs/handbook/58-create-your-own-starter.md",
+          "call": "cp",
+          "confidence": "text"
+        },
+        {
+          "by": "templates/starter/src/starter.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "templates/starter",

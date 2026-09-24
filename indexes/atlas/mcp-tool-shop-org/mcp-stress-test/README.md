@@ -1,17 +1,17 @@
 # mcp-stress-test: how it works
 
-Mapped at 2026-09-23 from commit a8a79e8.
+Mapped at 2026-09-24 from commit a8a79e8.
 
 ## What this is
 
-6 parts, mostly Python (76 files). Work enters through 4 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI and a container image. People run mcp-stress.
+6 parts, mostly Python (76 files). Work enters through 4 doors; the busiest is Publish, which reaches 3 parts. It publishes to PyPI and a container image. People run mcp-stress.
 
 ## What changed since 2026-09-23 (be7da06)
 
 - CI now also runs src/mcp_stress_test/cli/__init__.py.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - Publish now also runs src/mcp_stress_test/cli/__init__.py.
-- And 1 more change to a door.
+- And 2 more changes to doors.
 - site/src/content/docs/ is now read by site/astro.config.mjs.
 - site/src/content/docs/handbook/ is now read by site/astro.config.mjs.
 - src/mcp_stress_test/patterns/data/ is now read by src/mcp_stress_test/patterns/library.py.
@@ -20,22 +20,23 @@ Mapped at 2026-09-23 from commit a8a79e8.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push to main touching 8 paths; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks src/.
-2. **Publish.** When a release is published; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/.
+1. **Publish.** When a release is published; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks README.md, pyproject.toml and src/.
+2. **CI.** On a pull request; on a push to main touching 8 paths; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks src/.
 3. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **mcp-stress** (a command people run). Runs src/mcp_stress_test/cli/__init__.py.
 
-## What happens through CI
+## What happens through Publish
 
-1. The workflow runs src/mcp_stress_test/cli/__init__.py in src and tests/ in tests; it checks src/ in src.
+1. The workflow runs src/mcp_stress_test/cli/__init__.py in src and tests/ in tests; it checks README.md and pyproject.toml in the repository root and src/ in src.
+2. It publishes to PyPI and a container image.
 
 ## Who reads the results
 
-CI writes nothing this map can see.
+Publish writes nothing this map can see.
 
 ## The other doors
 
-**Publish** runs src/mcp_stress_test/cli/__init__.py and tests/, and publishes to PyPI and a container image.
+**CI** runs src/mcp_stress_test/cli/__init__.py and tests/, and checks src/.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on a push to main.
 
@@ -66,17 +67,20 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-Nothing in this repository writes to a tracked place this map can see.
+- **.github/** is written by dependabot[bot], which added every file in it.
+- **docs/** is written by dependabot[bot], which added every file in it.
+- **the repository root** is written by dependabot[bot], which added every file in it.
+- **site/** is written by dependabot[bot], which added every file in it.
 
 ## Hand-authored
 
-People write .github/, docs/ and the repository root; 15 writes with paths built at run time may land here.
+No configuration or documentation part is left to people alone.
 
 ## Where to start
 
-.github/workflows/ci.yml → src/mcp_stress_test/cli/__init__.py
+.github/workflows/publish.yml → src/mcp_stress_test/cli/__init__.py
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one release end to end.
 
 ## What this map cannot see
 

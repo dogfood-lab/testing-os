@@ -70,6 +70,13 @@
       },
       {
         "kind": "door",
+        "sentence": "loadout-os (packages/cli/package.json) is a new command. It runs no file this map can see.",
+        "subjects": [
+          "packages/cli/package.json"
+        ]
+      },
+      {
+        "kind": "door",
         "sentence": "ai-loadout (packages/kernel/package.json) is a new command. It runs packages/kernel/src/cli.ts.",
         "subjects": [
           "packages/kernel/package.json",
@@ -78,16 +85,24 @@
       },
       {
         "kind": "door",
-        "sentence": "claude-memories (packages/memories/package.json) is a new command. It runs packages/memories/src/cli.ts.",
+        "sentence": "And 2 more changes to doors.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": ".claude/CLAUDE.md is now also read by packages/cli/src/tests/split.test.ts.",
         "subjects": [
-          "packages/memories/package.json",
-          "packages/memories/src/cli.ts"
+          ".claude/CLAUDE.md",
+          "packages/cli/src/tests/split.test.ts"
         ]
       },
       {
-        "kind": "door",
-        "sentence": "And 1 more change to a door.",
-        "subjects": []
+        "kind": "landing",
+        "sentence": "apps/hook/ is now also read by ROADMAP.md.",
+        "subjects": [
+          "apps/hook/",
+          "ROADMAP.md"
+        ]
       },
       {
         "kind": "landing",
@@ -99,23 +114,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "packages/kernel/site/src/content/docs/handbook/ is now read by packages/kernel/site/astro.config.mjs.",
-        "subjects": [
-          "packages/kernel/site/src/content/docs/handbook/",
-          "packages/kernel/site/astro.config.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "packages/memories/site/src/content/docs/ is now read by packages/memories/site/astro.config.mjs.",
-        "subjects": [
-          "packages/memories/site/src/content/docs/",
-          "packages/memories/site/astro.config.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 5 more new writers and readers of places.",
+        "sentence": "And 10 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -144,7 +143,7 @@
   "changesTogetherWithTests": 0,
   "commit": "61d98b601565a5b7eccd66a4baf98a4e1b8c3032",
   "defaultBranch": "main",
-  "derived": "9 parts, mostly TypeScript (84 files). Work enters through 5 doors; the busiest is CI, which reaches 5 parts. It publishes to npm. People run ai-loadout, claude-memories and claude-rules.",
+  "derived": "9 parts, mostly TypeScript (84 files). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes to npm. People run ai-loadout, claude-memories, claude-rules and loadout-os.",
   "doors": [
     {
       "checks": [
@@ -330,6 +329,23 @@
       "sends": [],
       "stages": [],
       "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "packages/cli/package.json",
+      "id": "packages/cli/package.json#loadout-os",
+      "kind": "command",
+      "landings": [],
+      "name": "loadout-os",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [],
+      "unplaced": "packages/cli/dist/loadout-os.js"
     }
   ],
   "duplicates": [
@@ -441,11 +457,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-23T23:02:28.108Z",
+  "generatedAt": "2026-09-24T01:54:22.142Z",
   "limits": [
-    "1 file uses syntax the parser cannot read, so what it imports is not known: an import type followed by `[]` (1).",
-    "9 writes and 59 reads use paths built at run time and are not named here.",
-    "9 writes and 15 reads go to the directory the command is run in or the home directory, not to this repository.",
+    "1 file uses syntax the parser cannot read (packages/memories/src/types.ts), so what it imports is not known: an import type followed by `[]` (1).",
+    "9 writes and 54 reads use paths built at run time and are not named here.",
+    "10 writes and 20 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "12 commands are built at run time and not followed, 11 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],

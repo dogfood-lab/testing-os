@@ -476,10 +476,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 24,
+      "dynamicReads": 13,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 15,
+      "dynamicWrites": 4,
       "entryPoints": [
         "src/cli.ts"
       ],
@@ -773,6 +773,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsideReads": 16,
+      "outsideWrites": 14,
       "role": "code",
       "testedBy": 16,
       "unresolvedSites": 0
@@ -970,15 +972,6 @@
           "boundary": "tests",
           "depth": 0,
           "files": 16
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "enters": {
-            "file": "package.json",
-            "from": "src/cli.ts"
-          },
-          "files": 1
         }
       ],
       "readers": [],
@@ -1133,15 +1126,6 @@
           "boundary": "src",
           "depth": 0,
           "files": 19
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "enters": {
-            "file": "package.json",
-            "from": "src/cli.ts"
-          },
-          "files": 1
         }
       ],
       "readers": [],
@@ -1153,9 +1137,14 @@
           "path": "src/",
           "runKind": "checks",
           "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "dogfood",
+          "path": "src/cli.ts",
+          "runKind": "executes"
         }
       ],
-      "runsCount": 1,
+      "runsCount": 2,
       "secrets": [
         "DOGFOOD_TOKEN"
       ],
@@ -1351,15 +1340,6 @@
           "boundary": "tests",
           "depth": 0,
           "files": 16
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "enters": {
-            "file": "package.json",
-            "from": "src/cli.ts"
-          },
-          "files": 1
         }
       ],
       "readers": [],
@@ -1431,15 +1411,6 @@
           "boundary": "src",
           "depth": 0,
           "files": 19
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "enters": {
-            "file": "package.json",
-            "from": "src/cli.ts"
-          },
-          "files": 1
         }
       ],
       "readers": [],
@@ -1469,11 +1440,6 @@
   ],
   "edges": [
     {
-      "from": "src",
-      "kind": "file",
-      "to": "root"
-    },
-    {
       "from": "tests",
       "fromTests": true,
       "kind": "file",
@@ -1498,6 +1464,11 @@
       "readers": [
         {
           "by": ".github/workflows/release.yml"
+        },
+        {
+          "by": "src/cli.ts",
+          "call": "import",
+          "confidence": "ast"
         },
         {
           "by": "src/project-classify.ts",

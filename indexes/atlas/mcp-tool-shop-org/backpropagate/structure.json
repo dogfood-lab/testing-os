@@ -122,10 +122,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 31,
+      "dynamicReads": 28,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 14,
+      "dynamicWrites": 13,
       "entryPoints": [
         "backpropagate/cli.py"
       ],
@@ -3443,6 +3443,7 @@
         },
         {
           "hash": "ea306e6ea28de2c717afd89428a2997d43cb9ea648b48cb0e6b1be091bd92eb3",
+          "noStatements": true,
           "path": "backpropagate/ui_app/__init__.py"
         },
         {
@@ -3494,6 +3495,7 @@
         },
         {
           "hash": "757386698e37e0db2c6494a57d83a2b20fb1b3951d751814333b0d327db50592",
+          "noStatements": true,
           "path": "backpropagate/ui_app/components/__init__.py"
         },
         {
@@ -3620,6 +3622,7 @@
         },
         {
           "hash": "595c532991538719e8cbb4f8324ed901acc4eb4c30eae105f6b3ed07e3abda1d",
+          "noStatements": true,
           "path": "backpropagate/ui_app/pages/__init__.py"
         },
         {
@@ -3928,8 +3931,8 @@
       "importConfidence": "full",
       "name": "backpropagate",
       "origin": "authored",
-      "outsideReads": 1,
-      "outsideWrites": 1,
+      "outsideReads": 5,
+      "outsideWrites": 2,
       "role": "code",
       "testedBy": 63,
       "unresolvedSites": 2
@@ -4183,10 +4186,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 8,
+      "dynamicReads": 5,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -4447,6 +4450,8 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsideReads": 4,
+      "outsideWrites": 1,
       "role": "code",
       "testedBy": 2,
       "unresolvedSites": 0
@@ -4603,6 +4608,7 @@
         },
         {
           "hash": "7c7ab207bdd8f29a9a09f0fcab811de8cc7b0b9a0603639a35c113caea0835bd",
+          "noStatements": true,
           "path": "tests/__init__.py"
         },
         {
@@ -5745,6 +5751,13 @@
         },
         {
           "directory": true,
+          "job": "build",
+          "path": "backpropagate/",
+          "runKind": "checks",
+          "via": "build pyproject.toml"
+        },
+        {
+          "directory": true,
           "job": "test",
           "path": "backpropagate/",
           "runKind": "checks"
@@ -5970,7 +5983,8 @@
         "issues:write",
         "pull-requests:write"
       ],
-      "pushes": true,
+      "pushes": false,
+      "pushesForReview": true,
       "reach": [],
       "readers": [],
       "runs": [],
@@ -6273,7 +6287,7 @@
       "usesWorkflowToken": true
     },
     {
-      "checksCount": 0,
+      "checksCount": 4,
       "commands": [
         {
           "job": "build",
@@ -6312,10 +6326,65 @@
         "packages:write"
       ],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "backpropagate",
+          "depth": 0,
+          "files": 51
+        },
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 3
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "job": "docker",
+          "path": "LICENSE",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "docker",
+          "path": "README.md",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "path": "backpropagate/",
+          "runKind": "checks",
+          "via": "build pyproject.toml"
+        },
+        {
+          "directory": true,
+          "job": "docker",
+          "path": "backpropagate/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "docker",
+          "path": "bin/backpropagate.js",
+          "runKind": "executes",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "docker",
+          "path": "pyproject.toml",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        }
+      ],
+      "runsCount": 5,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -6709,6 +6778,17 @@
     {
       "readers": [
         {
+          "by": "docs/ci-gates-triage-plan.md",
+          "call": "--",
+          "confidence": "text"
+        }
+      ],
+      "target": ".github/workflows/ci.yml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": ".pre-commit-config.yaml",
           "call": "literal",
           "confidence": "text"
@@ -6762,6 +6842,12 @@
           "by": "scripts/check_doc_drift.py",
           "call": "read_text",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/test_model_card.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.md",
@@ -6777,6 +6863,11 @@
         {
           "by": ".pre-commit-config.yaml",
           "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "CONTRIBUTING.md",
+          "call": "--cov",
           "confidence": "text"
         },
         {
@@ -6810,6 +6901,12 @@
           "by": "scripts/check_doc_drift.py",
           "call": "read_text",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/test_wave6b_flags.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "backpropagate/cli.py",
@@ -6840,6 +6937,18 @@
     {
       "readers": [
         {
+          "by": "tests/test_multi_run.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "backpropagate/multi_run.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "backpropagate/cli.py",
           "call": "literal",
           "confidence": "ast"
@@ -6850,6 +6959,11 @@
     },
     {
       "readers": [
+        {
+          "by": "CONTRIBUTING.md",
+          "call": "--paths-to-mutate",
+          "confidence": "text"
+        },
         {
           "by": "scripts/run_mutmut.sh",
           "call": "literal",
@@ -6873,6 +6987,30 @@
     {
       "readers": [
         {
+          "by": "tests/test_auth_middleware.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "backpropagate/ui_app/app.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_auth_middleware.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "backpropagate/ui_app/auth.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "scripts/check_doc_drift.py",
           "call": "read_text",
           "confidence": "ast"
@@ -6884,59 +7022,9 @@
     {
       "readers": [
         {
-          "by": "README.es.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.fr.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.hi.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.it.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.ja.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.pt-BR.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "README.zh.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
-          "by": "docs/index.md",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "scripts/nightly_train_smoke.py",
           "call": "literal",
           "confidence": "ast"
-        },
-        {
-          "by": "site/src/content/docs/handbook/getting-started.md",
-          "call": "literal",
-          "confidence": "text"
         }
       ],
       "target": "examples/quickstart.jsonl",
@@ -6962,6 +7050,18 @@
           "by": "scripts/preflight.sh",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_release_versions.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_release_versions.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "package.json",
@@ -6992,6 +7092,18 @@
           "by": "scripts/prep_release.sh",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_release_versions.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_release_versions.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "pyproject.toml",
@@ -7008,6 +7120,18 @@
           "by": "scripts/prep_release.sh",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_check_doc_drift.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_doc_drift.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "scripts/check_doc_drift.py",

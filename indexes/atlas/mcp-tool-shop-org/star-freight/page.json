@@ -8,7 +8,7 @@
   ],
   "breaks": [
     {
-      "doors": 2,
+      "doors": 4,
       "importedBy": [
         "dogfood"
       ],
@@ -42,6 +42,48 @@
         "subjects": [
           ".github/workflows/ci.yml"
         ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Publish to PyPI now also checks src/portlight/.",
+        "subjects": [
+          ".github/workflows/publish.yml",
+          "src/portlight/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 1 more change to a door.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": "dogfood/scenarios/ is now also read by tests/test_dogfood_runner.py.",
+        "subjects": [
+          "dogfood/scenarios/",
+          "tests/test_dogfood_runner.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "dogfood/scenarios/gray_seizure_60d_s17.json is now read by tests/test_dogfood_runner.py.",
+        "subjects": [
+          "dogfood/scenarios/gray_seizure_60d_s17.json",
+          "tests/test_dogfood_runner.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "dogfood/scenarios/recovery_broke_hull_45d_s99.json is now read by tests/test_dogfood_runner.py.",
+        "subjects": [
+          "dogfood/scenarios/recovery_broke_hull_45d_s99.json",
+          "tests/test_dogfood_runner.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 3 more new writers and readers of places.",
+        "subjects": []
       },
       {
         "kind": "counts",
@@ -126,14 +168,22 @@
       ]
     },
     {
-      "checks": [],
-      "checksCount": 0,
+      "checks": [
+        "src/portlight/"
+      ],
+      "checksCount": 1,
       "file": ".github/workflows/publish.yml",
       "id": ".github/workflows/publish.yml",
       "landings": [],
       "name": "Publish to PyPI",
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 115
+        }
+      ],
       "runs": [],
       "runsCount": 0,
       "sends": [
@@ -153,9 +203,17 @@
       "landings": [],
       "name": "Release Binaries",
       "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 88
+        }
+      ],
+      "runs": [
+        "src/portlight/__main__.py"
+      ],
+      "runsCount": 1,
       "sends": [
         "creates a GitHub release"
       ],
@@ -214,10 +272,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-23T23:04:07.382Z",
+  "generatedAt": "2026-09-24T01:56:07.730Z",
   "limits": [
     "2 import sites could not be resolved.",
     "5 writes and 2 reads use paths built at run time and are not named here.",
+    "1 write and 3 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",

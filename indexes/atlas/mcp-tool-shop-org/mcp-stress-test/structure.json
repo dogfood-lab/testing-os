@@ -1070,6 +1070,7 @@
       "files": [
         {
           "hash": "951c8264030d02834a38367e7d333f8dbaaec97a67b035a0814a13db3d79a064",
+          "noStatements": true,
           "path": "tests/__init__.py"
         },
         {
@@ -1495,7 +1496,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 0,
+      "checksCount": 4,
       "commands": [
         {
           "job": "build",
@@ -1552,9 +1553,14 @@
       "pushes": false,
       "reach": [
         {
+          "boundary": "root",
+          "depth": 0,
+          "files": 2
+        },
+        {
           "boundary": "src",
           "depth": 0,
-          "files": 63
+          "files": 65
         },
         {
           "boundary": "tests",
@@ -1564,6 +1570,45 @@
       ],
       "readers": [],
       "runs": [
+        {
+          "job": "docker",
+          "path": "README.md",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "docker",
+          "path": "pyproject.toml",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
+          "job": "docker",
+          "path": "src/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "path": "src/mcp_stress_test/",
+          "runKind": "checks",
+          "via": "build pyproject.toml"
+        },
+        {
+          "directory": true,
+          "job": "docker",
+          "path": "src/mcp_stress_test/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile → build pyproject.toml"
+        },
+        {
+          "job": "docker",
+          "path": "src/mcp_stress_test/cli/__init__.py",
+          "runKind": "executes",
+          "via": "docker build Dockerfile"
+        },
         {
           "job": "package-smoke",
           "path": "src/mcp_stress_test/cli/__init__.py",
@@ -1576,7 +1621,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 2,
+      "runsCount": 6,
       "secrets": [
         "GITHUB_TOKEN"
       ],

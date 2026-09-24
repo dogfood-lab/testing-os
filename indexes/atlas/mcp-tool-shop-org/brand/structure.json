@@ -1417,16 +1417,16 @@
       "importConfidence": "full",
       "name": "site",
       "origin": "authored",
-      "outsideReads": 7,
+      "outsideReads": 13,
       "role": "site",
       "testedBy": 1,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 49,
+      "dynamicReads": 24,
       "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 19,
+      "dynamicWrites": 17,
       "entryPoints": [
         "src/cli.ts"
       ],
@@ -1647,7 +1647,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 1,
+      "outsideReads": 29,
+      "outsideWrites": 3,
       "role": "code",
       "testedBy": 16,
       "unresolvedSites": 0
@@ -2041,9 +2042,7 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "landings": [
-        "logos"
-      ],
+      "landings": [],
       "mentions": [
         {
           "job": "lint-test-build",
@@ -2085,94 +2084,7 @@
           "files": 1
         }
       ],
-      "readers": [
-        {
-          "by": ".claude/context/current-priorities.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": ".github/SECURITY-CONTROLS.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/scripts/check-deployed-bytes.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/scripts/check-deployed-bytes.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/src/content/docs/handbook/reference.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "src/cli.ts",
-          "call": "raw-url",
-          "confidence": "ast",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "src/commands/audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/commands/remove.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/commands/stats.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/manifest.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "job": "lint-test-build",
@@ -2194,6 +2106,11 @@
           "path": "src/",
           "runKind": "checks",
           "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "integrity",
+          "path": "src/cli.ts",
+          "runKind": "executes"
         },
         {
           "job": "lint-test-build",
@@ -2329,7 +2246,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 21,
+      "runsCount": 22,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -2421,6 +2338,24 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "gated": [
+        {
+          "jobs": [
+            "deploy"
+          ],
+          "pushes": false,
+          "sends": [
+            "deploysPages"
+          ],
+          "stages": [],
+          "when": {
+            "branches": [
+              "main"
+            ],
+            "event": "push"
+          }
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -2476,7 +2411,7 @@
       "runsCount": 3,
       "secrets": [],
       "sends": {
-        "deploysPages": true,
+        "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,
         "opensIssuesOnFailure": false,
@@ -2580,9 +2515,7 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
-      "landings": [
-        "logos"
-      ],
+      "landings": [],
       "mentions": [
         {
           "job": "release",
@@ -2620,94 +2553,7 @@
           "files": 1
         }
       ],
-      "readers": [
-        {
-          "by": ".claude/context/current-priorities.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": ".github/SECURITY-CONTROLS.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/scripts/check-deployed-bytes.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/scripts/check-deployed-bytes.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/src/content/docs/handbook/reference.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "src/cli.ts",
-          "call": "raw-url",
-          "confidence": "ast",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "src/commands/audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/commands/remove.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/commands/stats.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/manifest.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "directory": true,
@@ -2953,7 +2799,8 @@
         "issues:write",
         "pull-requests:write"
       ],
-      "pushes": true,
+      "pushes": false,
+      "pushesForReview": true,
       "reach": [
         {
           "boundary": "scripts",
@@ -2968,19 +2815,9 @@
       ],
       "readers": [
         {
-          "by": ".claude/context/current-priorities.md",
-          "call": "raw-url",
+          "by": "docs/model-channels-spec.md",
+          "call": "<",
           "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": ".github/SECURITY-CONTROLS.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
           "target": "logos"
         },
         {
@@ -3014,14 +2851,6 @@
           "target": "logos"
         },
         {
-          "by": "site/src/content/docs/handbook/reference.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
           "by": "src/cli.ts",
           "call": "raw-url",
           "confidence": "ast",
@@ -3036,12 +2865,6 @@
           "target": "logos"
         },
         {
-          "by": "src/commands/remove.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
           "by": "src/commands/stats.ts",
           "call": "literal",
           "confidence": "ast",
@@ -3051,6 +2874,49 @@
           "by": "src/manifest.ts",
           "call": "literal",
           "confidence": "ast",
+          "target": "logos"
+        },
+        {
+          "by": "tests/audit.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "logos"
+        },
+        {
+          "by": "tests/json-output.test.ts",
+          "call": "raw-url",
+          "confidence": "ast",
+          "fromTests": true,
+          "ref": "main",
+          "repo": "mcp-tool-shop-org/brand",
+          "target": "logos"
+        },
+        {
+          "by": "tests/migrate-journal.test.ts",
+          "call": "raw-url",
+          "confidence": "ast",
+          "fromTests": true,
+          "ref": "main",
+          "repo": "mcp-tool-shop-org/brand",
+          "target": "logos"
+        },
+        {
+          "by": "tests/migrate.test.ts",
+          "call": "raw-url",
+          "confidence": "ast",
+          "fromTests": true,
+          "ref": "main",
+          "repo": "mcp-tool-shop-org/brand",
+          "target": "logos"
+        },
+        {
+          "by": "tests/sync.test.ts",
+          "call": "raw-url",
+          "confidence": "ast",
+          "fromTests": true,
+          "ref": "main",
+          "repo": "mcp-tool-shop-org/brand",
           "target": "logos"
         },
         {
@@ -3080,19 +2946,13 @@
           "target": "manifest.json"
         },
         {
-          "by": "src/commands/add-gallery.ts",
+          "by": "src/cli.ts",
           "call": "literal",
           "confidence": "ast",
           "target": "manifest.json"
         },
         {
           "by": "src/commands/audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "manifest.json"
-        },
-        {
-          "by": "src/commands/remove.ts",
           "call": "literal",
           "confidence": "ast",
           "target": "manifest.json"
@@ -3111,9 +2971,14 @@
           "path": "src/",
           "runKind": "checks",
           "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "sync",
+          "path": "src/cli.ts",
+          "runKind": "executes"
         }
       ],
-      "runsCount": 2,
+      "runsCount": 3,
       "secrets": [
         "GITHUB_TOKEN",
         "SYNC_PAT"
@@ -3153,9 +3018,7 @@
       "elsewhere": [],
       "file": "package.json",
       "kind": "command",
-      "landings": [
-        "logos"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "brand",
       "permissions": [],
@@ -3167,94 +3030,7 @@
           "files": 17
         }
       ],
-      "readers": [
-        {
-          "by": ".claude/context/current-priorities.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": ".github/SECURITY-CONTROLS.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/scripts/check-deployed-bytes.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/scripts/check-deployed-bytes.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/src/content/docs/handbook/reference.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "src/cli.ts",
-          "call": "raw-url",
-          "confidence": "ast",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "src/commands/audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/commands/remove.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/commands/stats.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/manifest.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "path": "src/cli.ts",
@@ -3324,9 +3100,45 @@
     {
       "readers": [
         {
+          "by": "tests/migrate.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.ja.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "src/commands/audit.ts",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/audit.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/json-output.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/migrate-journal.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/migrate.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.md",
@@ -3335,18 +3147,33 @@
     {
       "readers": [
         {
-          "by": ".claude/context/current-priorities.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand"
-        },
+          "by": "tests/migrate.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.zh.md",
+      "writers": []
+    },
+    {
+      "readers": [
         {
-          "by": ".github/SECURITY-CONTROLS.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand"
+          "by": "tests/readme-parser.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "assets/logo.jpg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/model-channels-spec.md",
+          "call": "<",
+          "confidence": "text"
         },
         {
           "by": "site/integrations/model-passthrough.mjs",
@@ -3374,13 +3201,6 @@
           "confidence": "ast"
         },
         {
-          "by": "site/src/content/docs/handbook/reference.md",
-          "call": "raw-url",
-          "confidence": "text",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand"
-        },
-        {
           "by": "src/cli.ts",
           "call": "raw-url",
           "confidence": "ast",
@@ -3393,11 +3213,6 @@
           "confidence": "ast"
         },
         {
-          "by": "src/commands/remove.ts",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
           "by": "src/commands/stats.ts",
           "call": "literal",
           "confidence": "ast"
@@ -3406,18 +3221,58 @@
           "by": "src/manifest.ts",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/json-output.test.ts",
+          "call": "raw-url",
+          "confidence": "ast",
+          "fromTests": true,
+          "ref": "main",
+          "repo": "mcp-tool-shop-org/brand"
+        },
+        {
+          "by": "tests/migrate-journal.test.ts",
+          "call": "raw-url",
+          "confidence": "ast",
+          "fromTests": true,
+          "ref": "main",
+          "repo": "mcp-tool-shop-org/brand"
+        },
+        {
+          "by": "tests/migrate.test.ts",
+          "call": "raw-url",
+          "confidence": "ast",
+          "fromTests": true,
+          "ref": "main",
+          "repo": "mcp-tool-shop-org/brand"
+        },
+        {
+          "by": "tests/sync.test.ts",
+          "call": "raw-url",
+          "confidence": "ast",
+          "fromTests": true,
+          "ref": "main",
+          "repo": "mcp-tool-shop-org/brand"
         }
       ],
       "target": "logos",
       "writers": [
         {
           "by": ".github/workflows/sync.yml"
-        },
-        {
-          "by": "src/commands/remove.ts",
-          "confidence": "ast"
         }
       ]
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/audit.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "logos/pirate-raiders-3d-2/readme.png",
+      "writers": []
     },
     {
       "readers": [
@@ -3443,17 +3298,12 @@
           "confidence": "ast"
         },
         {
-          "by": "src/commands/add-gallery.ts",
+          "by": "src/cli.ts",
           "call": "literal",
           "confidence": "ast"
         },
         {
           "by": "src/commands/audit.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/commands/remove.ts",
           "call": "literal",
           "confidence": "ast"
         }

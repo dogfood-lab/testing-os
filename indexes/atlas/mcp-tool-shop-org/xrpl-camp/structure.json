@@ -294,6 +294,7 @@
       "files": [
         {
           "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "noStatements": true,
           "path": "tests/__init__.py"
         },
         {
@@ -6557,7 +6558,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 2,
       "commands": [
         {
           "job": "lint-and-test",
@@ -6654,15 +6655,6 @@
           "boundary": "xrpl_camp",
           "depth": 0,
           "files": 10
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "enters": {
-            "file": "package.json",
-            "from": "bin/xrpl-camp.js"
-          },
-          "files": 1
         }
       ],
       "readers": [],
@@ -6670,7 +6662,7 @@
         {
           "job": "npm-check",
           "path": "bin/xrpl-camp.js",
-          "runKind": "executes"
+          "runKind": "checks"
         },
         {
           "job": "npm-check",
@@ -6692,10 +6684,9 @@
         {
           "directory": true,
           "job": "lint-and-test",
-          "matched": true,
           "path": "xrpl_camp/",
           "runKind": "checks",
-          "via": "scripts/verify.sh → ruff"
+          "via": "scripts/verify.sh → build pyproject.toml"
         }
       ],
       "runsCount": 5,
@@ -6786,7 +6777,8 @@
         "contents:write",
         "pull-requests:write"
       ],
-      "pushes": true,
+      "pushes": false,
+      "pushesForReview": true,
       "reach": [
         {
           "boundary": "scripts",
@@ -6923,7 +6915,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 0,
+      "checksCount": 4,
       "commands": [
         {
           "job": "build-binaries",
@@ -7001,12 +6993,7 @@
         }
       ],
       "landings": [],
-      "mentions": [
-        {
-          "job": "build-binaries",
-          "path": "xrpl_camp/__main__.py"
-        }
-      ],
+      "mentions": [],
       "name": "Publish",
       "permissions": [
         "contents:read",
@@ -7017,20 +7004,73 @@
       "pushes": false,
       "reach": [
         {
+          "boundary": "root",
+          "depth": 0,
+          "files": 4
+        },
+        {
           "boundary": "scripts",
           "depth": 0,
           "files": 1
+        },
+        {
+          "boundary": "xrpl_camp",
+          "depth": 0,
+          "files": 10
         }
       ],
       "readers": [],
       "runs": [
         {
+          "job": "docker",
+          "path": "LICENSE",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "docker",
+          "path": "README.md",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "docker",
+          "path": "docker-entrypoint.sh",
+          "runKind": "executes",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "docker",
+          "path": "pyproject.toml",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
           "job": "publish-pypi",
           "path": "scripts/verify-pypi-publish.sh",
           "runKind": "executes"
+        },
+        {
+          "directory": true,
+          "job": "docker",
+          "path": "xrpl_camp/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
+          "job": "publish-pypi",
+          "path": "xrpl_camp/",
+          "runKind": "checks",
+          "via": "build pyproject.toml"
+        },
+        {
+          "job": "build-binaries",
+          "path": "xrpl_camp/__main__.py",
+          "runKind": "executes"
         }
       ],
-      "runsCount": 1,
+      "runsCount": 7,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -7186,15 +7226,6 @@
           "boundary": "bin",
           "depth": 0,
           "files": 1
-        },
-        {
-          "boundary": "root",
-          "depth": 1,
-          "enters": {
-            "file": "package.json",
-            "from": "bin/xrpl-camp.js"
-          },
-          "files": 1
         }
       ],
       "readers": [],
@@ -7266,11 +7297,6 @@
   ],
   "edges": [
     {
-      "from": "bin",
-      "kind": "file",
-      "to": "root"
-    },
-    {
       "from": "tests",
       "fromTests": true,
       "kind": "file",
@@ -7298,12 +7324,47 @@
     {
       "readers": [
         {
+          "by": "tests/test_version.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "CHANGELOG.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_version.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "bin/xrpl-camp.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": ".github/workflows/release.yml"
+        },
+        {
+          "by": "bin/xrpl-camp.js",
+          "call": "import",
+          "confidence": "ast"
         },
         {
           "by": "scripts/check-versions.sh",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_version.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "package.json",
@@ -7320,6 +7381,18 @@
           "by": "scripts/check-versions.sh",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_version.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_xrpl_models.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "pyproject.toml",
@@ -7364,18 +7437,15 @@
           "by": "scripts/check-versions.sh",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_version.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "xrpl_camp/__init__.py",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": ".github/workflows/publish.yml"
-        }
-      ],
-      "target": "xrpl_camp/__main__.py",
       "writers": []
     }
   ],

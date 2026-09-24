@@ -1,10 +1,5 @@
 {
-  "authored": [
-    ".claude/",
-    ".github/",
-    "assets/",
-    "root"
-  ],
+  "authored": [],
   "breaks": [
     {
       "doors": 4,
@@ -37,10 +32,21 @@
       },
       {
         "kind": "door",
-        "sentence": "@mcptoolshop/polyglot-mcp (package.json) is a new package. It loads src/index.ts.",
+        "sentence": "@mcptoolshop/polyglot-mcp (package.json) is a new package. It loads src/cache.ts, src/codeSpans.ts, src/glossary.ts and 9 more.",
         "subjects": [
           "package.json",
-          "src/index.ts"
+          "src/cache.ts",
+          "src/codeSpans.ts",
+          "src/glossary.ts",
+          "src/index.ts",
+          "src/languages.ts",
+          "src/ollama.ts",
+          "src/polish.ts",
+          "src/semaphore.ts",
+          "src/translate.ts",
+          "src/translateAll.ts",
+          "src/translateMarkdown.ts",
+          "src/validate.ts"
         ]
       },
       {
@@ -53,19 +59,32 @@
       },
       {
         "kind": "landing",
-        "sentence": "site/src/content/docs/ is now read by site/astro.config.mjs.",
+        "sentence": "CHANGELOG.md is now read by src/version.test.ts.",
         "subjects": [
-          "site/src/content/docs/",
-          "site/astro.config.mjs"
+          "CHANGELOG.md",
+          "src/version.test.ts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "site/src/content/docs/handbook/ is now read by site/astro.config.mjs.",
+        "sentence": "README.ja.md is now also read by src/translateAll.test.ts.",
         "subjects": [
-          "site/src/content/docs/handbook/",
-          "site/astro.config.mjs"
+          "README.ja.md",
+          "src/translateAll.test.ts"
         ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "package.json is now also read by src/version.test.ts.",
+        "subjects": [
+          "package.json",
+          "src/version.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 2 more new writers and readers of places.",
+        "subjects": []
       },
       {
         "kind": "counts",
@@ -105,9 +124,20 @@
         }
       ],
       "runs": [
-        "src/index.ts"
+        "src/index.ts",
+        "src/cache.ts",
+        "src/codeSpans.ts",
+        "src/glossary.ts",
+        "src/languages.ts",
+        "src/ollama.ts",
+        "src/polish.ts",
+        "src/semaphore.ts",
+        "src/translate.ts",
+        "src/translateAll.ts",
+        "src/translateMarkdown.ts",
+        "src/validate.ts"
       ],
-      "runsCount": 1,
+      "runsCount": 12,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -225,10 +255,41 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "generated": [],
-  "generatedAt": "2026-09-23T23:03:05.795Z",
+  "generated": [
+    {
+      "addedBy": "dependabot[bot]",
+      "place": ".claude/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": ".github/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "assets/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "root",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "scripts/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "site/",
+      "writers": []
+    }
+  ],
+  "generatedAt": "2026-09-24T01:54:57.058Z",
   "limits": [
-    "1 file uses syntax the parser cannot read, so what it imports is not known: `typeof import(…)` as a type argument (1).",
+    "1 file uses syntax the parser cannot read (src/translateReadme.test.ts), so what it imports is not known: `typeof import(…)` as a type argument (1).",
     "5 writes and 6 reads use paths built at run time and are not named here.",
     "5 commands are built at run time and not followed, 2 of them in tests.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
@@ -246,7 +307,301 @@
   "parts": 7,
   "readers": [],
   "repo": "mcp-tool-shop-org/polyglot-mcp",
-  "sequences": [],
+  "sequences": [
+    {
+      "entry": "translate",
+      "file": "src/translate.ts",
+      "inner": [],
+      "part": "src",
+      "partLabel": "src",
+      "phrase": "translate",
+      "steps": [
+        {
+          "name": "resolveLanguage",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "resolve language"
+        },
+        {
+          "name": "ensureRunning",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "ensure running",
+          "receiver": "OllamaClient"
+        },
+        {
+          "name": "ensureModel",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "ensure model",
+          "receiver": "OllamaClient"
+        },
+        {
+          "name": "buildGlossaryHint",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "build glossary hint"
+        },
+        {
+          "name": "containsCodePlaceholder",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "contains code placeholder"
+        },
+        {
+          "name": "polish",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "polish"
+        },
+        {
+          "name": "validateTranslation",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "validate translation"
+        }
+      ]
+    },
+    {
+      "entry": "translateAll",
+      "file": "src/translateAll.ts",
+      "inner": [
+        {
+          "file": "src/translateMarkdown.ts",
+          "name": "translateMarkdown",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "translate markdown",
+          "steps": [
+            {
+              "name": "resolveLanguage",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "resolve language"
+            },
+            {
+              "count": 5,
+              "name": null,
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "cache"
+            },
+            {
+              "name": "maskCodeSpans",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "mask code spans"
+            },
+            {
+              "count": 3,
+              "name": null,
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "cache"
+            },
+            {
+              "name": "onProgress",
+              "part": null,
+              "partLabel": null,
+              "phrase": "on progress"
+            },
+            {
+              "name": "translateBatch",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "translate batch"
+            }
+          ]
+        }
+      ],
+      "part": "src",
+      "partLabel": "src",
+      "phrase": "translate all",
+      "steps": [
+        {
+          "name": "acquire",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "acquire",
+          "receiver": "Semaphore"
+        },
+        {
+          "name": "translateMarkdown",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "translate markdown"
+        },
+        {
+          "name": "onProgress",
+          "part": null,
+          "partLabel": null,
+          "phrase": "on progress"
+        }
+      ]
+    },
+    {
+      "entry": "translateMarkdown",
+      "file": "src/translateMarkdown.ts",
+      "inner": [
+        {
+          "file": "src/translate.ts",
+          "name": "translateBatch",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "translate batch",
+          "steps": [
+            {
+              "name": "resolveLanguage",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "resolve language"
+            },
+            {
+              "name": "ensureRunning",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "ensure running",
+              "receiver": "OllamaClient"
+            },
+            {
+              "name": "ensureModel",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "ensure model",
+              "receiver": "OllamaClient"
+            },
+            {
+              "name": "buildGlossaryHint",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "build glossary hint"
+            },
+            {
+              "name": "containsCodePlaceholder",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "contains code placeholder"
+            },
+            {
+              "name": "polish",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "polish"
+            },
+            {
+              "name": "buildGlossaryHint",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "build glossary hint"
+            },
+            {
+              "name": "containsCodePlaceholder",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "contains code placeholder"
+            },
+            {
+              "name": "polish",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "polish"
+            },
+            {
+              "name": "buildGlossaryHint",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "build glossary hint"
+            },
+            {
+              "name": "polish",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "polish"
+            }
+          ]
+        }
+      ],
+      "part": "src",
+      "partLabel": "src",
+      "phrase": "translate markdown",
+      "steps": [
+        {
+          "name": "resolveLanguage",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "resolve language"
+        },
+        {
+          "count": 5,
+          "name": null,
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "cache"
+        },
+        {
+          "name": "maskCodeSpans",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "mask code spans"
+        },
+        {
+          "count": 3,
+          "name": null,
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "cache"
+        },
+        {
+          "name": "onProgress",
+          "part": null,
+          "partLabel": null,
+          "phrase": "on progress"
+        },
+        {
+          "name": "translateBatch",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "translate batch"
+        },
+        {
+          "name": "cacheKey",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "cache key"
+        },
+        {
+          "name": "setCached",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "set cached"
+        },
+        {
+          "name": "onProgress",
+          "part": null,
+          "partLabel": null,
+          "phrase": "on progress"
+        },
+        {
+          "name": "validateTranslation",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "validate translation"
+        },
+        {
+          "name": "restoreCodeSpans",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "restore code spans"
+        },
+        {
+          "name": "saveCache",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "save cache"
+        }
+      ]
+    }
+  ],
   "startDoor": "package.json#@mcptoolshop/polyglot-mcp",
   "startHere": [
     "src/index.ts"

@@ -654,6 +654,7 @@
       "checksCount": 0,
       "commands": [],
       "elsewhere": [],
+      "entry": "src/index.ts",
       "file": "package.json",
       "kind": "package",
       "landings": [],
@@ -689,6 +690,7 @@
       },
       "stages": [],
       "triggers": [],
+      "unpublished": true,
       "uses": [],
       "usesWorkflowToken": false
     }
@@ -709,6 +711,36 @@
     {
       "readers": [
         {
+          "by": "test/pipeline.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "knowledge/corpus/fixtures/corpus-divergence.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "test/contracts.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/pipeline.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "knowledge/roles",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "site/astro.config.mjs",
           "call": "content-collection",
           "confidence": "ast"
@@ -726,6 +758,30 @@
         }
       ],
       "target": "site/src/content/docs/handbook",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "test/contracts.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "test/fixtures",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "test/contracts.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "test/fixtures/bundle-weak.json",
       "writers": []
     }
   ],

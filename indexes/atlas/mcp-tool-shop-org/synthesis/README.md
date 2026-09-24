@@ -1,6 +1,6 @@
 # synthesis: how it works
 
-Mapped at 2026-09-23 from commit dd0e1de.
+Mapped at 2026-09-24 from commit dd0e1de.
 
 ## What this is
 
@@ -8,25 +8,29 @@ Mapped at 2026-09-23 from commit dd0e1de.
 
 ## What changed since 2026-09-23 (0128f11)
 
+- CI now also runs src/index.ts.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
-- @mcptoolshop/synthesis (package.json) is a new package. It loads src/index.ts.
-- synthesis (package.json) is a new command. It runs src/index.ts.
-- site/src/content/docs/ is now read by site/astro.config.mjs.
-- site/src/content/docs/handbook/ is now read by site/astro.config.mjs.
-- src/checks/lexicons/concreteness.ts is now read by src/checks/performative.ts.
+- Release (npm via Trusted Publishing) now also runs src/index.ts.
+- And 2 more changes to doors.
+- CHANGELOG.md is now also read by tests/version-alignment.test.ts.
+- data/DATASHEET.md is now read by tests/fairness.test.ts.
+- data/evals.jsonl is now also read by tests/fairness.test.ts and tests/planted-theater.test.ts.
+- And 13 more new writers and readers of places.
 - 153 files changed content, across 11 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push to main touching 13 paths; or by hand. Runs scripts/check-report-schema.mjs, scripts/eval-planted.mjs and tests/; checks src/.
-2. **Release (npm via Trusted Publishing).** When a release is published; or by hand. Runs scripts/check-report-schema.mjs and tests/; checks src/.
+1. **CI.** On a pull request; on a push to main touching 13 paths; or by hand. Runs scripts/check-report-schema.mjs, scripts/eval-planted.mjs, src/index.ts and 1 more; checks src/.
+2. **Release (npm via Trusted Publishing).** When a release is published; or by hand. Runs scripts/check-report-schema.mjs, src/index.ts and tests/; checks src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/synthesis** (the package people import). Loads src/index.ts.
 5. **synthesis** (a command people run). Runs src/index.ts.
 
 ## What happens through CI
 
-1. The workflow runs scripts/check-report-schema.mjs and scripts/eval-planted.mjs in scripts and tests/ in tests; it checks src/ in src.
+1. The workflow runs scripts/check-report-schema.mjs and scripts/eval-planted.mjs in scripts, src/index.ts in src, and tests/ in tests; it checks src/ in src.
+   1. Inside src/index.ts, main does, in order: evaluate planted, load cases, run all cases, write report, has colors, print summary and format artifact.
+   2. **Run all cases** runs, in order: check agency, check reassurance, check pivot, check performative empathy, check grounded uptake and compute relational posture.
 
 ## Who reads the results
 
@@ -34,7 +38,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release (npm via Trusted Publishing)** runs scripts/check-report-schema.mjs and tests/, checks src/, and publishes to npm.
+**Release (npm via Trusted Publishing)** runs scripts/check-report-schema.mjs, src/index.ts and tests/, checks src/, and publishes to npm.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -80,7 +84,7 @@ People write .claude/, .github/, assets/, data/, docs/, research/, the repositor
 
 ## Where to start
 
-.github/workflows/ci.yml → scripts/check-report-schema.mjs
+.github/workflows/ci.yml → src/index.ts
 
 Read those in order to follow one pull request end to end.
 
@@ -88,7 +92,8 @@ Read those in order to follow one pull request end to end.
 
 - 1 import site could not be resolved.
 - 1 import site names a path outside this repository, so what it loads is not followed.
-- 3 writes and 8 reads use paths built at run time and are not named here.
+- 3 writes and 7 reads use paths built at run time and are not named here.
+- 1 read goes to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed, it in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

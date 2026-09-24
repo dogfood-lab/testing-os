@@ -1,29 +1,31 @@
 # claude-guardian: how it works
 
-Mapped at 2026-09-23 from commit 65dce69.
+Mapped at 2026-09-24 from commit 65dce69.
 
 ## What this is
 
-7 parts, mostly TypeScript (38 files). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. People run claude-guardian.
+7 parts, mostly TypeScript (38 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. People run claude-guardian.
 
 ## What changed since 2026-09-23 (628c46f)
 
+- src no longer imports the repository root.
 - CI's pull request trigger now also names `atlas/**`.
 - CI's push trigger now also names `atlas/**`.
+- Dogfood now also runs src/cli.ts.
+- package.json is now also read by src/cli.ts.
 - 130 files changed content, across 7 parts.
 
 ## What comes in
 
 1. **CI.** On a pull request touching 10 paths; on a push to main touching 10 paths; or by hand. Runs tests/; checks src/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; checks src/.
-3. **Dogfood.** On a push to main touching 3 paths; or by hand. Checks src/.
-4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+4. **Dogfood.** On a push to main touching 3 paths; or by hand. Runs src/cli.ts; checks src/.
 5. **claude-guardian** (a command people run). Runs src/cli.ts.
 
 ## What happens through CI
 
 1. The workflow runs tests/ in tests; it checks src/ in src.
-2. That reaches the repository root (1 file).
 
 ## Who reads the results
 
@@ -31,17 +33,16 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs tests/, checks src/, reaches the repository root, publishes to npm, and creates a GitHub release.
-
-**Dogfood** checks src/, reaches the repository root, and sends a dispatch to dogfood-lab/testing-os on main.
+**Release** runs tests/, checks src/, publishes to npm, and creates a GitHub release.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**claude-guardian** (a command people run) runs src/cli.ts and reaches the repository root.
+**Dogfood** runs src/cli.ts, checks src/, and sends a dispatch to dogfood-lab/testing-os on main.
+
+**claude-guardian** (a command people run) runs src/cli.ts.
 
 ## What breaks what
 
-- **the repository root** is imported by 1 part (src) and sits on the path of 4 doors.
 - **src** is imported only from tests, by 1 part (tests), and sits on the path of 4 doors.
 - **tests** is imported by no other part and sits on the path of 2 doors.
 
@@ -65,21 +66,27 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-Nothing in this repository writes to a tracked place this map can see.
+- **.claude/** is written by dependabot[bot], which added every file in it.
+- **docs/** is written by dependabot[bot], which added every file in it.
+- **the repository root** is written by dependabot[bot], which added every file in it.
+- **site/** is written by dependabot[bot], which added every file in it.
+- **src/** is written by dependabot[bot], which added every file in it.
+- **tests/** is written by dependabot[bot], which added every file in it.
 
 ## Hand-authored
 
-People write .claude/, .github/, docs/, the repository root and site/; 15 writes with paths built at run time may land here.
+People write .github/; 4 writes with paths built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → tests/budget-mcp.test.ts
+.github/workflows/ci.yml → tests/budget-mcp.test.ts → src/budget-store.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 15 writes and 24 reads use paths built at run time and are not named here.
+- 4 writes and 13 reads use paths built at run time and are not named here.
+- 14 writes and 16 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
