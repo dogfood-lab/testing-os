@@ -2162,7 +2162,7 @@ const START_STEPS = 6;
  * outside the door's own reach, so it ends at whoever uses the result rather
  * than whoever makes it.
  */
-function startHere(ctx, main) {
+function startHere(ctx, main, first = null) {
   const chain = installed(main) ? [] : [main.file];
   const add = (path) => {
     if (path != null && !chain.includes(path)) chain.push(path);
@@ -2230,8 +2230,9 @@ function startHere(ctx, main) {
     // A helper that imports nothing comes after a test's way into the code.
     ...[...paths].sort((a, b) => Number(helper(a)) - Number(helper(b)) || byWidth(a, b)),
   ];
-  let current = null;
-  for (const path of candidates) {
+  // A path that starts at a test the door runs (widestTest) begins there.
+  let current = first;
+  for (const path of first == null ? candidates : []) {
     const file = firstOf(path);
     if (file != null) {
       current = file;
@@ -2262,8 +2263,9 @@ function startHere(ctx, main) {
   const next = (path) => {
     const part = ctx.boundaryOf.get(path) ?? null;
     // A Rust binary that uses its own package's library goes into it at its
-    // root, in the part the binary is in or not.
-    const library = ctx.fileOf.get(path)?.library;
+    // root, in the part the binary is in or not. A test goes on to the code
+    // it tests, not to the helpers its package holds.
+    const library = isTestFile(path) ? null : ctx.fileOf.get(path)?.library;
     if (library != null && ctx.fileOf.has(library) && readable(library) && !chain.includes(library)) return library;
     const options = (ctx.fileOf.get(path)?.importsFiles ?? [])
       .filter((target) => ctx.fileOf.has(target) && readable(target) && !chain.includes(target) && !isTestFile(target) && !ctx.fileOf.get(target)?.constantOnly);
@@ -2370,6 +2372,27 @@ function testsOnly(ctx, door) {
   const helpers = files.filter((path) => !isTest(path));
   if (helpers.some((path) => (ctx.fileOf.get(path)?.importsFiles ?? []).length > 0)) return null;
   return { helpers: helpers.length > 0 };
+}
+
+// Whether a door runs a file for the unit tests it holds (cargo test and a
+// #[cfg(test)] module), which is no way into the code.
+function runsUnitTests(ctx, door) {
+  const executed = new Set(startRuns(door).filter((run) => run.runKind !== 'checks').map((run) => run.path));
+  return filesOfRuns(ctx, shownRuns(door, 'executes').filter((path) => executed.has(path)))
+    .some((path) => !isTestFile(path) && ctx.fileOf.get(path)?.testsInside === true);
+}
+
+/**
+ * The test a door that runs only tests is best entered by: the test file it
+ * runs that reaches the most parts through what it imports. Null when it
+ * runs none the map can read.
+ */
+function widestTest(ctx, door) {
+  const executed = new Set(startRuns(door).filter((run) => run.runKind !== 'checks').map((run) => run.path));
+  const isTest = (path) => isTestFile(path) || ctx.fileOf.get(path)?.testSuite === true;
+  const tests = filesOfRuns(ctx, shownRuns(door, 'executes').filter((path) => executed.has(path))).filter((path) => runsAsCode(path) && isTest(path));
+  const reach = new Map(tests.map((path) => [path, partsReached(ctx, [path]).size]));
+  return [...tests].sort((a, b) => reach.get(b) - reach.get(a) || cmp(a, b))[0] ?? null;
 }
 
 /**
@@ -2982,6 +3005,18 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
       starting = door;
       start = found;
       break;
+    }
+  }
+  // With nothing installed to follow, a door that runs only tests under
+  // cargo test would start at whichever file it runs for the unit tests the
+  // file holds, or the entry of that file's part; it starts at the test that
+  // reaches the most parts instead, and says so.
+  if (tested && !tested.checks && start.chain.length === 0 && runsUnitTests(ctx, starting)) {
+    const test = widestTest(ctx, starting);
+    const found = test ? startHere(ctx, starting, test) : null;
+    if (found?.chain.length > 0) {
+      start = found;
+      reason = `This path starts at ${test}, the test ${starting.name} runs that reaches the most parts, since ${starting.name} runs only tests.`;
     }
   }
   if (start.chain.length === 0 && starting) start = startHere(ctx, starting);
