@@ -881,6 +881,6 @@ describe('commands built at run time', () => {
     // The spelled-out commands are still followed: the test reaches run.js.
     assert.equal(tools.testedBy, 1);
     const limits = JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits;
-    assert.ok(limits.includes('1 command is built at run time and not followed, it in tests.'), limits.join('\n'));
+    assert.ok(limits.includes('1 command is built at run time and not followed, and it is in tests.'), limits.join('\n'));
   });
 });

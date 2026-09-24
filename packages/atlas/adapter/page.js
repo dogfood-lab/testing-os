@@ -2198,7 +2198,9 @@ function limits(ctx, shownText) {
   const dynamicSpawns = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicSpawns ?? 0), 0);
   const inTests = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicSpawnsInTests ?? 0), 0);
   if (dynamicSpawns > 0) {
-    const share = inTests === 0 ? '' : inTests === dynamicSpawns ? `, ${dynamicSpawns === 1 ? 'it' : 'all of them'} in tests` : `, ${inTests} of them in tests`;
+    // "all of them in tests" and "2 of them in tests" read as phrases; a
+    // single command needs its verb.
+    const share = inTests === 0 ? '' : inTests === dynamicSpawns ? (dynamicSpawns === 1 ? ', and it is in tests' : ', all of them in tests') : `, ${inTests} of them in tests`;
     lines.push(`${count(dynamicSpawns, 'command')} ${dynamicSpawns === 1 ? 'is' : 'are'} built at run time and not followed${share}.`);
   }
   if (shownText) lines.push('Readers marked (found by text) come from scanning unparsed files.');
