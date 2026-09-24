@@ -250,13 +250,15 @@ function carryFile(file) {
  * The places a file's resolved imports land on, deduplicated and sorted: a
  * tracked file by its path, and a build chunk whose sources share a part as
  * @part, since no one file is what it imports. The files it re-exports whole
- * (export * from) are listed apart as well.
+ * (export * from) are listed apart as well. A manifest a file loads for a
+ * field is read, not imported (languages.js), and is the file's read of it.
  */
 function importTargets(file) {
   const files = new Set();
   const all = new Set();
   if (!Array.isArray(file.imports)) return { files: [], all: [] };
   for (const site of file.imports) {
+    if (loadsManifest(site)) continue;
     const resolved = site.resolved;
     let target = null;
     if (resolved?.outcome === 'file') target = resolved.path;
