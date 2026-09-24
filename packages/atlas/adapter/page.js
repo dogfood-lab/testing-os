@@ -2309,6 +2309,7 @@ function limits(ctx, shownText) {
     const share = inTests === 0 ? '' : inTests === dynamicSpawns ? (dynamicSpawns === 1 ? ', and it is in tests' : ', all of them in tests') : `, ${inTests} of them in tests`;
     lines.push(`${count(dynamicSpawns, 'command')} ${dynamicSpawns === 1 ? 'is' : 'are'} built at run time and not followed${share}.`);
   }
+  lines.push(...shellLines(ctx));
   if (shownText) lines.push('Readers marked (found by text) come from scanning unparsed files.');
   for (const door of ctx.doors) {
     if (door.parseError) continue;
@@ -2323,6 +2324,38 @@ function limits(ctx, shownText) {
     lines.push(reason ? `Statistics confidence is low: ${reason}.` : 'Statistics confidence is low.');
   }
   return lines;
+}
+
+const PLATFORM_NAMES = { linux: 'Linux', macos: 'macOS', windows: 'Windows' };
+
+/**
+ * The files a door's shell leaves out of a glob its commands hand a tool:
+ * "3 test files under `src/` are not run by CI on Linux, where the shell
+ * expands `**` as one directory level." Doors that leave out the same files
+ * are named together. This is the repository's own gap, said as found; the
+ * map does not read the glob as the tool would have.
+ *
+ * @param {object} ctx
+ * @returns {string[]}
+ */
+function shellLines(ctx) {
+  const groups = new Map();
+  for (const door of ctx.doors) {
+    for (const entry of door.parseError ? [] : door.shellMissed ?? []) {
+      const key = JSON.stringify([entry.base, entry.files, entry.platform, Boolean(entry.tests), Boolean(entry.twoStars)]);
+      if (!groups.has(key)) groups.set(key, { entry, doors: [] });
+      groups.get(key).doors.push(door.name);
+    }
+  }
+  return [...groups.values()].map(({ entry, doors }) => shellLine(entry, doors));
+}
+
+function shellLine(entry, doors) {
+  const what = count(entry.files, entry.tests ? 'test file' : 'file');
+  const where = entry.base === '' ? 'at the repository root' : `under \`${entry.base}\``;
+  const verb = entry.files === 1 ? 'is' : 'are';
+  const why = entry.twoStars ? 'where the shell expands `**` as one directory level' : 'where the shell expands the glob before the tool sees it';
+  return `${what} ${where} ${verb} not run by ${list(doors)} on ${PLATFORM_NAMES[entry.platform] ?? entry.platform}, ${why}.`;
 }
 
 // One fact per bullet: GitHub joins bare consecutive lines into one paragraph.

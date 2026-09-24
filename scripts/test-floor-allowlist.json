@@ -136,6 +136,30 @@
     {
       "path": "fixtures/atlas/spawned-scripts/tests/add.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the spawned-scripts fixture repository that packages/atlas/adapter/page-spawned-scripts.test.js maps, where the tests either run scripts/ as a child process or import src/, so the map counts scripts as touched only through a spawn. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/src/a.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/src/d.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/src/deep/b.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/src/deep/deeper/c.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/tools/lib/e.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/tools/lib/inner/f.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
     }
   ]
 }

@@ -357,6 +357,7 @@ function carryDoor(door) {
       publishesTo: [...door.sends.publishesTo],
       releases: door.sends.releases,
     },
+    ...(door.shellMissed?.length > 0 ? { shellMissed: door.shellMissed.map((entry) => ({ ...entry })) } : {}),
     stages: [...door.stages],
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
