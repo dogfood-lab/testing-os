@@ -684,7 +684,7 @@ Every failure names what changed and what to do; the second line is never option
 :::
 
 - **Trigger:** unreadable file, invalid YAML, an unknown field at either level, a missing or duplicate `name`, `globs` that is not an array of strings, or a `role` outside `code | test | docs | config`. The fields of the retired acceptance ladder (`status`, `reason`, `why_from`, `will_break`, `will_break_from`, `start_here`, `machine_budget`) are not errors: they are ignored, and `atlas map` prints one notice naming them.
-- **Message shape:** `what changed:` names the one field, e.g. `boundaries[3].role must be code, test, docs, config, or site`.
+- **Message shape:** `what changed:` names the one field, e.g. `boundaries[3].role must be code, test, docs, config, site, or data`.
 - **Operator action:** fix the named field. The validator reports the first problem it meets; run again for the next.
 
 ### `ATLAS_NO_BOUNDARY_FILE`
