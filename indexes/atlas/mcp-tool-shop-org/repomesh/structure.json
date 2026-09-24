@@ -2543,7 +2543,7 @@
       "unresolvedSites": 10
     },
     {
-      "dynamicReads": 1,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -4799,7 +4799,7 @@
       "importConfidence": "full",
       "name": "verifiers",
       "origin": "authored",
-      "outsideReads": 20,
+      "outsideReads": 21,
       "outsideWrites": 5,
       "role": "code",
       "testedBy": 53,
@@ -4940,10 +4940,6 @@
       ],
       "readers": [
         {
-          "by": ".github/workflows/anchor-xrpl.yml",
-          "target": "anchor/xrpl/manifests"
-        },
-        {
           "by": "anchor/xrpl/scripts/compute-root.mjs",
           "call": "existsSync",
           "confidence": "ast",
@@ -4999,6 +4995,13 @@
           "target": "anchor/xrpl/manifests"
         },
         {
+          "by": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "anchor/xrpl/manifests"
+        },
+        {
           "by": "packages/repomesh-cli/tests/verify-anchor-gate.test.mjs",
           "call": "literal",
           "confidence": "ast",
@@ -5048,14 +5051,6 @@
           "confidence": "ast",
           "fromTests": true,
           "target": "anchor/xrpl/manifests"
-        },
-        {
-          "by": ".github/workflows/anchor-xrpl.yml",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": ".github/workflows/attestor-ci.yml",
-          "target": "ledger/events/events.jsonl"
         },
         {
           "by": ".github/workflows/ledger-ci.yml",
@@ -5166,6 +5161,13 @@
           "target": "ledger/events/events.jsonl"
         },
         {
+          "by": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "ledger/events/events.jsonl"
+        },
+        {
           "by": "pages/build-status.mjs",
           "call": "existsSync",
           "confidence": "ast",
@@ -5269,14 +5271,6 @@
           "target": "ledger/events/events.jsonl"
         },
         {
-          "by": ".github/workflows/anchor-xrpl.yml",
-          "target": "registry/anchors.json"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/anchors.json"
-        },
-        {
           "by": "pages/build-metrics.mjs",
           "call": "literal",
           "confidence": "ast",
@@ -5372,10 +5366,6 @@
           "call": "existsSync",
           "confidence": "ast",
           "target": "registry/anchors.json"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/trust.json"
         },
         {
           "by": "packages/repomesh-cli/src/verify/verify-all.mjs",
@@ -5702,14 +5692,6 @@
       ],
       "readers": [
         {
-          "by": ".github/workflows/anchor-xrpl.yml",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
-          "by": ".github/workflows/attestor-ci.yml",
-          "target": "ledger/events/events.jsonl"
-        },
-        {
           "by": ".github/workflows/ledger-ci.yml",
           "target": "ledger/events/events.jsonl"
         },
@@ -5818,6 +5800,13 @@
           "target": "ledger/events/events.jsonl"
         },
         {
+          "by": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "ledger/events/events.jsonl"
+        },
+        {
           "by": "pages/build-status.mjs",
           "call": "existsSync",
           "confidence": "ast",
@@ -5921,14 +5910,6 @@
           "target": "ledger/events/events.jsonl"
         },
         {
-          "by": ".github/workflows/anchor-xrpl.yml",
-          "target": "registry/anchors.json"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/anchors.json"
-        },
-        {
           "by": "pages/build-metrics.mjs",
           "call": "literal",
           "confidence": "ast",
@@ -6024,10 +6005,6 @@
           "call": "existsSync",
           "confidence": "ast",
           "target": "registry/anchors.json"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/trust.json"
         },
         {
           "by": "packages/repomesh-cli/src/verify/verify-all.mjs",
@@ -6424,14 +6401,6 @@
       ],
       "readers": [
         {
-          "by": ".github/workflows/anchor-xrpl.yml",
-          "target": "registry/anchors.json"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/anchors.json"
-        },
-        {
           "by": "pages/build-metrics.mjs",
           "call": "literal",
           "confidence": "ast",
@@ -6535,10 +6504,6 @@
           "ref": "main",
           "repo": "mcp-tool-shop-org/repomesh",
           "target": "registry/badges"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/trust.json"
         },
         {
           "by": "packages/repomesh-cli/src/verify/verify-all.mjs",
@@ -6772,32 +6737,7 @@
         "registry/trust.json",
         "registry/verifiers.json"
       ],
-      "mentions": [
-        {
-          "job": "build-registry",
-          "path": "registry/anchors.json"
-        },
-        {
-          "job": "build-registry",
-          "path": "registry/capabilities.json"
-        },
-        {
-          "job": "build-registry",
-          "path": "registry/dependencies.json"
-        },
-        {
-          "job": "build-registry",
-          "path": "registry/nodes.json"
-        },
-        {
-          "job": "build-registry",
-          "path": "registry/trust.json"
-        },
-        {
-          "job": "build-registry",
-          "path": "registry/verifiers.json"
-        }
-      ],
+      "mentions": [],
       "name": "registry-ci",
       "permissions": [
         "contents:write"
@@ -6830,14 +6770,6 @@
         }
       ],
       "readers": [
-        {
-          "by": ".github/workflows/anchor-xrpl.yml",
-          "target": "registry/anchors.json"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/anchors.json"
-        },
         {
           "by": "pages/build-metrics.mjs",
           "call": "literal",
@@ -6944,18 +6876,6 @@
           "target": "registry/badges"
         },
         {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/capabilities.json"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/dependencies.json"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/nodes.json"
-        },
-        {
           "by": "pages/build-metrics.mjs",
           "call": "literal",
           "confidence": "ast",
@@ -6984,10 +6904,6 @@
           "call": "literal",
           "confidence": "ast",
           "target": "registry/nodes.json"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/trust.json"
         },
         {
           "by": "packages/repomesh-cli/src/verify/verify-all.mjs",
@@ -7096,10 +7012,6 @@
           "call": "existsSync",
           "confidence": "ast",
           "target": "registry/trust.json"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml",
-          "target": "registry/verifiers.json"
         },
         {
           "by": "pages/build-metrics.mjs",
@@ -7877,6 +7789,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tools/tests/docs-contract.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "README.md",
@@ -7979,6 +7897,12 @@
           "confidence": "ast"
         },
         {
+          "by": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "registry/scripts/build-anchors.mjs",
           "call": "existsSync",
           "confidence": "ast"
@@ -8007,9 +7931,6 @@
       "target": "anchor/xrpl/manifests",
       "writers": [
         {
-          "by": ".github/workflows/anchor-xrpl.yml"
-        },
-        {
           "by": "anchor/xrpl/scripts/compute-root.mjs",
           "confidence": "ast"
         }
@@ -8017,9 +7938,6 @@
     },
     {
       "readers": [
-        {
-          "by": ".github/workflows/anchor-xrpl.yml"
-        },
         {
           "by": "ledger/tests/immutability-coverage.test.mjs",
           "call": "readFileSync",
@@ -8213,6 +8131,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tools/tests/docs-contract.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/handbook.md",
@@ -8235,6 +8159,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tools/tests/docs-contract.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/verification.md",
@@ -8243,11 +8173,17 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/anchor-xrpl.yml"
-        },
-        {
-          "by": ".github/workflows/attestor-ci.yml"
-        },
+          "by": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "ledger/events",
+      "writers": []
+    },
+    {
+      "readers": [
         {
           "by": ".github/workflows/ledger-ci.yml"
         },
@@ -8483,6 +8419,12 @@
           "confidence": "ast"
         },
         {
+          "by": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "policy/scripts/check-policy.mjs",
           "call": "existsSync",
           "confidence": "ast"
@@ -8654,6 +8596,18 @@
     {
       "readers": [
         {
+          "by": "ledger/tests/key-lifecycle.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "ledger/scripts/canonicalize.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "ledger/tests/immutability-coverage.test.mjs",
           "call": "literal",
           "confidence": "ast",
@@ -8690,6 +8644,18 @@
         }
       ],
       "target": "ledger/scripts/validate-ledger.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "ledger/tests/key-lifecycle.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "ledger/scripts/verify-release.mjs",
       "writers": []
     },
     {
@@ -9883,12 +9849,6 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/anchor-xrpl.yml"
-        },
-        {
-          "by": ".github/workflows/registry-ci.yml"
-        },
-        {
           "by": "pages/build-metrics.mjs",
           "call": "literal",
           "confidence": "ast"
@@ -9971,9 +9931,6 @@
           "by": ".github/workflows/anchor-xrpl.yml"
         },
         {
-          "by": ".github/workflows/registry-ci.yml"
-        },
-        {
           "by": "verifiers/lib/common.mjs",
           "confidence": "ast"
         }
@@ -10009,25 +9966,15 @@
       "target": "registry/badges",
       "writers": [
         {
-          "by": ".github/workflows/registry-ci.yml"
-        },
-        {
           "by": "registry/scripts/build-badges.mjs",
           "confidence": "ast"
         }
       ]
     },
     {
-      "readers": [
-        {
-          "by": ".github/workflows/registry-ci.yml"
-        }
-      ],
+      "readers": [],
       "target": "registry/capabilities.json",
       "writers": [
-        {
-          "by": ".github/workflows/registry-ci.yml"
-        },
         {
           "by": "registry/scripts/build-registry.mjs",
           "confidence": "ast"
@@ -10035,16 +9982,9 @@
       ]
     },
     {
-      "readers": [
-        {
-          "by": ".github/workflows/registry-ci.yml"
-        }
-      ],
+      "readers": [],
       "target": "registry/dependencies.json",
       "writers": [
-        {
-          "by": ".github/workflows/registry-ci.yml"
-        },
         {
           "by": "registry/scripts/build-dependencies.mjs",
           "confidence": "ast"
@@ -10086,9 +10026,6 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/registry-ci.yml"
-        },
-        {
           "by": "pages/build-metrics.mjs",
           "call": "literal",
           "confidence": "ast"
@@ -10116,9 +10053,6 @@
       ],
       "target": "registry/nodes.json",
       "writers": [
-        {
-          "by": ".github/workflows/registry-ci.yml"
-        },
         {
           "by": "registry/scripts/build-registry.mjs",
           "confidence": "ast"
@@ -10191,6 +10125,12 @@
           "fromTests": true
         },
         {
+          "by": "registry/tests/verify-trust-disputes.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "scripts/verify.sh",
           "call": "literal",
           "confidence": "text"
@@ -10203,9 +10143,6 @@
       "readers": [],
       "target": "registry/snippets",
       "writers": [
-        {
-          "by": ".github/workflows/registry-ci.yml"
-        },
         {
           "by": "registry/scripts/build-snippets.mjs",
           "confidence": "ast"
@@ -10236,9 +10173,6 @@
     },
     {
       "readers": [
-        {
-          "by": ".github/workflows/registry-ci.yml"
-        },
         {
           "by": "packages/repomesh-cli/src/verify/verify-all.mjs",
           "call": "existsSync",
@@ -10328,9 +10262,6 @@
       "target": "registry/trust.json",
       "writers": [
         {
-          "by": ".github/workflows/registry-ci.yml"
-        },
-        {
           "by": "verifiers/lib/common.mjs",
           "confidence": "ast"
         }
@@ -10355,9 +10286,6 @@
     },
     {
       "readers": [
-        {
-          "by": ".github/workflows/registry-ci.yml"
-        },
         {
           "by": "pages/build-metrics.mjs",
           "call": "literal",
@@ -10386,9 +10314,6 @@
       ],
       "target": "registry/verifiers.json",
       "writers": [
-        {
-          "by": ".github/workflows/registry-ci.yml"
-        },
         {
           "by": "registry/scripts/build-verifiers.mjs",
           "confidence": "ast"
@@ -10611,6 +10536,16 @@
       ],
       "target": "schemas/verifier.policy.schema.json",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": "site/public",
+      "tracked": false,
+      "writers": [
+        {
+          "by": ".github/workflows/pages-ci.yml"
+        }
+      ]
     },
     {
       "readers": [
@@ -10838,6 +10773,18 @@
     {
       "readers": [
         {
+          "by": "verifiers/tests/sec-d13-unbound-unscored.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "verifiers/license/config.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "verifiers/tests/sec-004-repro-allowlist.test.mjs",
           "call": "readFileSync",
           "confidence": "ast",
@@ -10855,6 +10802,12 @@
     },
     {
       "readers": [
+        {
+          "by": "verifiers/tests/sec-d13-unbound-unscored.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "verifiers/tests/sec-stgb-ver-001-osv-unscored.test.mjs",
           "call": "literal",

@@ -6175,7 +6175,7 @@
       ],
       "importConfidence": "full",
       "name": "products",
-      "origin": "generated",
+      "origin": "authored",
       "role": "docs",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -6314,7 +6314,7 @@
       ],
       "importConfidence": "full",
       "name": "root",
-      "origin": "mixed",
+      "origin": "authored",
       "role": "config",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -6471,7 +6471,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 5,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -7888,7 +7888,7 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 43,
+      "outsideReads": 48,
       "outsideWrites": 9,
       "role": "code",
       "testedBy": 45,
@@ -8812,21 +8812,8 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/sync.yml",
-      "landings": [
-        "SOURCES.md",
-        "URGENT_FINDINGS.md",
-        "products"
-      ],
-      "mentions": [
-        {
-          "job": "sync",
-          "path": "SOURCES.md"
-        },
-        {
-          "job": "sync",
-          "path": "URGENT_FINDINGS.md"
-        }
-      ],
+      "landings": [],
+      "mentions": [],
       "name": "Daily sync",
       "permissions": [
         "contents:write"
@@ -8842,35 +8829,7 @@
           "files": 29
         }
       ],
-      "readers": [
-        {
-          "by": ".github/workflows/sync.yml",
-          "target": "SOURCES.md"
-        },
-        {
-          "by": ".github/workflows/sync.yml",
-          "target": "URGENT_FINDINGS.md"
-        },
-        {
-          "by": "scripts/verify-citations-sample.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "products"
-        },
-        {
-          "by": "scripts/verify-citations-sample.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "products"
-        },
-        {
-          "by": "test/smoke/full-corpus.test.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "products"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "job": "sync",
@@ -8913,6 +8872,11 @@
         {
           "event": "workflow_dispatch"
         }
+      ],
+      "unwrittenStages": [
+        "SOURCES.md",
+        "URGENT_FINDINGS.md",
+        "products"
       ],
       "uses": [
         "actions/checkout",
@@ -9076,6 +9040,7 @@
           "runKind": "executes"
         }
       ],
+      "runsCommand": "hk",
       "runsCount": 2,
       "secrets": [],
       "sends": {
@@ -9202,32 +9167,6 @@
     "tracked": 1703
   },
   "landings": [
-    {
-      "readers": [
-        {
-          "by": ".github/workflows/sync.yml"
-        }
-      ],
-      "target": "SOURCES.md",
-      "writers": [
-        {
-          "by": ".github/workflows/sync.yml"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": ".github/workflows/sync.yml"
-        }
-      ],
-      "target": "URGENT_FINDINGS.md",
-      "writers": [
-        {
-          "by": ".github/workflows/sync.yml"
-        }
-      ]
-    },
     {
       "readers": [
         {
@@ -9451,17 +9390,18 @@
         }
       ],
       "target": "products",
-      "writers": [
-        {
-          "by": ".github/workflows/sync.yml"
-        }
-      ]
+      "writers": []
     },
     {
       "readers": [
         {
           "by": "src/products-config.ts",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/products-config.ts",
+          "call": "readFileSync",
           "confidence": "ast"
         }
       ],
@@ -9472,7 +9412,7 @@
       "readers": [
         {
           "by": "src/embed.ts",
-          "call": "literal",
+          "call": "readFileSync",
           "confidence": "ast"
         }
       ],
@@ -9483,7 +9423,7 @@
       "readers": [
         {
           "by": "src/db.ts",
-          "call": "literal",
+          "call": "readFileSync",
           "confidence": "ast"
         }
       ],
@@ -9644,6 +9584,27 @@
         }
       ],
       "target": "src/providers/types.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/mcp-server.ts",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/mcp-server.ts",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/mcp-server.ts",
+          "call": "readdirSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "synergies",
       "writers": []
     },
     {

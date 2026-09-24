@@ -1455,6 +1455,8 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsideReads": 3,
+      "outsideWrites": 2,
       "role": "code",
       "testedBy": 0,
       "unresolvedSites": 2
@@ -4069,10 +4071,15 @@
           "path": "src/schema-loader.ts"
         },
         {
+          "exports": [
+            "assertTopologyValid",
+            "findBiasForUnit",
+            "findHiddenBias",
+            "findOutputBias",
+            "findWeight"
+          ],
           "hash": "506219256a899d45b15a0fbc8841f78f8c4c9a64b62a61e06c6a0a4bf412ce2d",
-          "parseError": true,
-          "path": "src/topology.ts",
-          "unreadSyntax": "nul-character"
+          "path": "src/topology.ts"
         },
         {
           "entry": "stripInvalidKeywordAnnotations",
@@ -8078,6 +8085,96 @@
     {
       "readers": [
         {
+          "by": "test/cli.multi-step-import-pipe.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/cli.multi-step-import-pipe.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/bad/multi-step-external.bad-bundle-digest-tampered.jsonl",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "test/cli.multi-step-import-pipe.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/cli.multi-step-import-pipe.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/bad/multi-step-external.bad-chain-break-cross-step-internally-consistent.jsonl",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "test/cli.multi-step-import-pipe.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/cli.multi-step-import-pipe.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/bad/multi-step-external.bad-cross-trace-splice.jsonl",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "test/cli.multi-step-import-pipe.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/cli.multi-step-import-pipe.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/bad/multi-step-external.bad-fabricated-mid-step.jsonl",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "test/cli.multi-step-import-pipe.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/cli.multi-step-import-pipe.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/bad/multi-step-external.bad-step-index-gap.jsonl",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "test/bp.verify-multi.cli.test.ts",
           "call": "existsSync",
           "confidence": "ast",
@@ -8618,12 +8715,6 @@
         },
         {
           "by": "test/bp.verify-general.cli.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "test/bp.verify-general.cli.test.ts",
           "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
@@ -8666,7 +8757,13 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -8747,7 +8844,7 @@
         },
         {
           "by": "test/bp.verify-general.cli.test.ts",
-          "call": "literal",
+          "call": "existsSync",
           "confidence": "ast",
           "fromTests": true
         },
@@ -8765,7 +8862,19 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -8855,7 +8964,13 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -9008,7 +9123,13 @@
       "readers": [
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -9059,7 +9180,19 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -9126,7 +9259,19 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -9237,7 +9382,13 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -9360,7 +9511,19 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -9687,7 +9850,13 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -9831,6 +10000,12 @@
           "fromTests": true
         },
         {
+          "by": "test/hash.general-receipt.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "test/iris.engine.test.ts",
           "call": "existsSync",
           "confidence": "ast",
@@ -9856,7 +10031,13 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -10065,7 +10246,13 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         },
@@ -10171,6 +10358,12 @@
           "fromTests": true
         },
         {
+          "by": "test/hash.general-receipt.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "test/reconcile.bad-dual-form.test.ts",
           "call": "existsSync",
           "confidence": "ast",
@@ -10226,7 +10419,19 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         },
@@ -10262,7 +10467,13 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -10339,6 +10550,12 @@
           "fromTests": true
         },
         {
+          "by": "test/hash.general-receipt.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "test/reconcile.bad-dual-form.test.ts",
           "call": "existsSync",
           "confidence": "ast",
@@ -10364,7 +10581,19 @@
         },
         {
           "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/schema-tolerance-ceiling.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         },
@@ -10454,13 +10683,7 @@
         }
       ],
       "target": "package.json",
-      "writers": [
-        {
-          "by": "scripts/pack-install-smoke.mjs",
-          "confidence": "weak",
-          "stamps": true
-        }
-      ]
+      "writers": []
     },
     {
       "readers": [

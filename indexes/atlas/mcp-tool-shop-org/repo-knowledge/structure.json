@@ -2843,7 +2843,6 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
-      "outsideReads": 1,
       "role": "code",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -2940,7 +2939,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 27,
+      "dynamicReads": 15,
       "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 3,
@@ -5404,9 +5403,35 @@
           "by": "scripts/postbuild.js",
           "call": "readdirSync",
           "confidence": "ast"
+        },
+        {
+          "by": "src/db/init.ts",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/db/init.ts",
+          "call": "readFileSync",
+          "confidence": "ast"
         }
       ],
       "target": "src/db",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/db/init.ts",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/db/init.ts",
+          "call": "readFileSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "src/db/db",
       "writers": []
     },
     {

@@ -4,7 +4,7 @@ Mapped at 2026-09-24 from commit 53be69f.
 
 ## What this is
 
-8 parts, mostly TypeScript (86 files). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. People run sensor-humor. People import @mcptoolshop/sensor-humor.
+8 parts, mostly TypeScript (86 files). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. People run sensor-humor.
 
 ## What changed since 2026-09-24 (6e8ea9a)
 
@@ -15,7 +15,7 @@ Nothing structural changed since 2026-09-24; 152 files changed content.
 1. **Release.** When a tag matching `v*` is pushed. Runs scripts/check-pack.mjs, src/index.ts, tests/capture.test.ts and 25 more; checks package-lock.json, package.json, src/ and 2 more.
 2. **CI.** On a pull request touching 12 paths; on a push touching 12 paths; or by hand. Runs scripts/check-pack.mjs, tests/capture.test.ts, tests/character-voice-schema.test.ts and 24 more; checks src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-4. **@mcptoolshop/sensor-humor** (the package people import). Loads src/index.ts.
+4. **@mcptoolshop/sensor-humor** (the package's entry, which runs the command sensor-humor; it is not a library). Loads src/index.ts.
 5. **sensor-humor** (a command people run). Runs src/index.ts.
 
 ## What happens through Release
@@ -34,7 +34,7 @@ Release writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**@mcptoolshop/sensor-humor** (the package people import) loads src/index.ts.
+**@mcptoolshop/sensor-humor** (the package's entry, which runs the command sensor-humor; it is not a library) loads src/index.ts.
 
 **sensor-humor** (a command people run) runs src/index.ts.
 
@@ -92,7 +92,7 @@ Read those in order to follow one run of sensor-humor end to end. This path foll
 
 - 1 import site could not be resolved.
 - 2 writes use paths built at run time and are not named here.
-- 8 writes and 21 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 8 writes and 21 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

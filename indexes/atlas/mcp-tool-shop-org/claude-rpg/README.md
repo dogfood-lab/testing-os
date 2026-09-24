@@ -85,7 +85,7 @@ Read those in order to follow one run of claude-rpg end to end. This path follow
 ## What this map cannot see
 
 - 2 import sites could not be resolved.
-- 7 writes and 18 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 7 writes and 18 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed, and it is in tests.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

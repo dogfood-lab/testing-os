@@ -79,7 +79,7 @@ Read those in order to follow one run of repo-dataset end to end. This path foll
 ## What this map cannot see
 
 - 8 reads use paths built at run time and are not named here.
-- 9 writes and 15 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 9 writes and 15 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed.
 - 19 test files under `src/tests/` are not run by CI and Publish on Linux, where the shell expands `**` as one directory level.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.

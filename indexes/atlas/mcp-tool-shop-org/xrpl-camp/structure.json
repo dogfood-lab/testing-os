@@ -6762,6 +6762,7 @@
       "importConfidence": "full",
       "name": "xrpl_camp",
       "origin": "authored",
+      "outsideWrites": 1,
       "role": "code",
       "testedBy": 19,
       "unresolvedSites": 1
@@ -6997,12 +6998,7 @@
           "files": 1
         }
       ],
-      "readers": [
-        {
-          "by": ".github/workflows/freshness-check.yml",
-          "target": ".github/freshness-report.md"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "job": "check",
@@ -7569,11 +7565,7 @@
   },
   "landings": [
     {
-      "readers": [
-        {
-          "by": ".github/workflows/freshness-check.yml"
-        }
-      ],
+      "readers": [],
       "target": ".github/freshness-report.md",
       "writers": [
         {

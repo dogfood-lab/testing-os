@@ -15,7 +15,8 @@ Mapped at 2026-09-24 from commit 49c1e9d.
 - README.ja.md is now read by tests/migrate.test.ts.
 - README.md is now also read by tests/audit.test.ts, tests/json-output.test.ts, tests/migrate-journal.test.ts and tests/migrate.test.ts.
 - README.zh.md is now read by tests/migrate.test.ts.
-- And 238 more new writers and readers of places.
+- And 239 more new writers and readers of places.
+- logos was generated and is now authored.
 - src/cli.ts now starts at main; it started at with globals.
 - 100 files changed content, across 8 parts.
 
@@ -35,7 +36,7 @@ Mapped at 2026-09-24 from commit 49c1e9d.
 
 ## Who reads the results
 
-CI writes nothing in the files this map could read; 1 file could not be.
+CI writes nothing this map can see.
 
 ## The other doors
 
@@ -43,7 +44,7 @@ CI writes nothing in the files this map could read; 1 file could not be.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, checks src/, and deploys the site on a push to main.
 
-**Sync org logos** runs scripts/sync-org-logos.sh and src/cli.ts, checks src/, writes to logos/ and manifest.json, commits logos/ and manifest.json, then pushes to a branch for review, never to main, runs git, opens an issue, and opens a pull request.
+**Sync org logos** runs scripts/sync-org-logos.sh and src/cli.ts, checks src/, writes to manifest.json, commits logos/ (written by people) and manifest.json, then pushes to a branch for review, never to main, runs git, opens an issue, and opens a pull request.
 
 **brand** (a command people run) runs src/cli.ts and runs git.
 
@@ -53,7 +54,6 @@ CI writes nothing in the files this map could read; 1 file could not be.
 - **the site** is imported only from tests, by 1 part (tests), and sits on the path of 3 doors.
 - **scripts** is imported by no other part and sits on the path of 2 doors.
 - **tests** is imported by no other part and sits on the path of 2 doors.
-- **logos/** is written by .github and read by the repository root, the site and src; a hand edit reaches every reader.
 - **manifest.json** is written by .github and read by .github, the site and src; a hand edit reaches every reader.
 
 ## What tends to change together
@@ -74,18 +74,17 @@ Every written place has a reader.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike in the files this map could read; 1 file could not be.
+No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-Nothing in the files this map could read writes to a tracked place; 1 file could not be.
+Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .claude/, .githooks/, .github/, assets/, docs/ and site/. Nothing in the files this map could read writes to them; 1 file could not be.
+People write .claude/, .githooks/, .github/, assets/, docs/, logos/ and site/. Nothing in this repository writes to them.
 
-- **logos/** is written by .github/workflows/sync.yml, and by people: 67 of its 68 commits in the window are theirs.
-- **manifest.json** is written by .github/workflows/sync.yml, and by people: 41 of its 42 commits in the window are theirs.
+- **manifest.json** is written by .github/workflows/sync.yml, and by people: 42 of its 43 commits in the window are theirs.
 
 ## Where to start
 
@@ -95,9 +94,8 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 file uses syntax the parser cannot read (tests/manifest.test.ts), so what it imports is not known: a NUL character inside a string (1).
 - 6 reads use paths built at run time and are not named here.
-- 24 writes and 73 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 24 writes and 73 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

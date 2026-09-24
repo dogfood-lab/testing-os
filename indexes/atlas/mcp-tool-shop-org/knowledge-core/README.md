@@ -12,8 +12,8 @@ Mapped at 2026-09-24 from commit f7dfb2e.
 - CI's push trigger now also names `atlas/**`.
 - knowledge/corpus/fixtures/corpus-divergence.json is now read by test/pipeline.test.ts.
 - knowledge/roles/ is now read by test/contracts.test.ts and test/pipeline.test.ts.
-- test/fixtures/ is now read by test/contracts.test.ts.
-- And 1 more new writer or reader of a place.
+- knowledge/roles/competitive-analyst.json is now read by test/pipeline.test.ts.
+- And 6 more new writers and readers of places.
 - 56 files changed content, across 6 parts.
 
 ## What comes in
@@ -74,7 +74,7 @@ Read those in order to follow one import of @roleos/knowledge-core end to end. T
 
 ## What this map cannot see
 
-- 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

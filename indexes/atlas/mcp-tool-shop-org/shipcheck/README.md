@@ -11,10 +11,10 @@ Mapped at 2026-09-24 from commit 838720f.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - repomesh-broadcast now also checks package.json.
 - shipcheck (package.json) is a new command. It runs bin/shipcheck.mjs.
-- CHANGELOG.md is now also read by test/shipcheck.test.mjs and test/version.test.mjs.
+- CHANGELOG.md is now also read by test/version.test.mjs.
 - LICENSE is now also read by test/shipcheck.test.mjs.
 - README.md is now also read by test/front-door.test.mjs and test/shipcheck.test.mjs.
-- And 8 more new writers and readers of places.
+- And 7 more new writers and readers of places.
 - 101 files changed content, across 10 parts.
 
 ## What comes in
@@ -85,8 +85,8 @@ Read those in order to follow one run of shipcheck end to end. This path follows
 ## What this map cannot see
 
 - 1 import site could not be resolved.
-- 4 reads use paths built at run time and are not named here.
-- 1 write and 44 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 2 reads use paths built at run time and are not named here.
+- 4 writes and 44 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

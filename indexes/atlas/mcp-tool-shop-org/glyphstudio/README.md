@@ -110,7 +110,7 @@ Read those in order to follow one pull request end to end.
 
 - 17 import sites could not be resolved.
 - 1 read uses a path built at run time and is not named here.
-- 4 writes and 25 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 4 writes and 25 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - There is a Tauri app under apps/desktop/ (46 Rust files) that no workflow builds; the map reads no Rust, so what it does is not on this page.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

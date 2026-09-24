@@ -8,7 +8,7 @@
   ],
   "breaks": [
     {
-      "doors": 3,
+      "doors": 4,
       "importedBy": [
         "cabinet-server",
         "cabinets",
@@ -21,7 +21,7 @@
       "partLabel": "tape-core"
     },
     {
-      "doors": 3,
+      "doors": 6,
       "importedBy": [
         "cabinets",
         "launcher",
@@ -33,7 +33,7 @@
       "partLabel": "cabinet-server"
     },
     {
-      "doors": 3,
+      "doors": 4,
       "importedBy": [
         "cabinet-server",
         "cabinets"
@@ -55,7 +55,7 @@
       "partLabel": "vibe-typer"
     },
     {
-      "doors": 3,
+      "doors": 5,
       "importedBy": [
         "launcher-vibe-typer"
       ],
@@ -67,20 +67,20 @@
       "partLabel": "launcher"
     },
     {
-      "doors": 3,
+      "doors": 4,
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
-      "name": "cabinets",
-      "partLabel": "cabinets"
+      "name": "launcher-vibe-typer",
+      "partLabel": "launcher-vibe-typer"
     },
     {
       "doors": 3,
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
-      "name": "launcher-vibe-typer",
-      "partLabel": "launcher-vibe-typer"
+      "name": "cabinets",
+      "partLabel": "cabinets"
     },
     {
       "kind": "place",
@@ -103,8 +103,69 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI now also runs apps/cabinets/src/ and apps/cabinets/vite.config.ts.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "apps/cabinets/src/",
+          "apps/cabinets/vite.config.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Site now also runs apps/cabinets/src/ and apps/cabinets/vite.config.ts.",
+        "subjects": [
+          ".github/workflows/pages.yml",
+          "apps/cabinets/src/",
+          "apps/cabinets/vite.config.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Publish now also runs apps/cabinets/src/ and apps/cabinets/vite.config.ts.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "apps/cabinets/src/",
+          "apps/cabinets/vite.config.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 3 more changes to doors.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": "packages/vibe-typer/patterns/corpus/bash.json is now written by packages/vibe-typer/scripts/port-corpus.mjs.",
+        "subjects": [
+          "packages/vibe-typer/patterns/corpus/bash.json",
+          "packages/vibe-typer/scripts/port-corpus.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "packages/vibe-typer/patterns/corpus/csharp.json is now written by packages/vibe-typer/scripts/port-corpus.mjs.",
+        "subjects": [
+          "packages/vibe-typer/patterns/corpus/csharp.json",
+          "packages/vibe-typer/scripts/port-corpus.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "packages/vibe-typer/patterns/corpus/java.json is now written by packages/vibe-typer/scripts/port-corpus.mjs.",
+        "subjects": [
+          "packages/vibe-typer/patterns/corpus/java.json",
+          "packages/vibe-typer/scripts/port-corpus.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 19 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 3 files changed content.",
+        "sentence": "3 files changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -112,7 +173,7 @@
       "commit": "8ebb9976f0a90b96e11c3a836594992f0529ded4",
       "generatedAt": "2026-09-24T09:33:55.493Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -198,7 +259,7 @@
   "changesTogetherWithTests": 5,
   "commit": "745115cd1f0653a4e243b189e2cd0f749f795dc1",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly TypeScript (156 files). Work enters through 6 doors; CI and Site each reach 10 parts, and CI is followed because it comes first by name. It publishes a package to npm, chosen at run time. People run cabinet-server, ghost-on-the-menu and vibe-typer.",
+  "derived": "15 parts, mostly TypeScript (156 files). Work enters through 6 doors; CI and Site each reach 10 parts, and CI is followed because it comes first by name. It publishes @mcptoolshop/ghost-on-the-menu (packages/launcher) and @mcptoolshop/vibe-typer (packages/launcher-vibe-typer) to npm. People run ghost-on-the-menu and vibe-typer.",
   "doors": [
     {
       "checks": [
@@ -282,7 +343,9 @@
       ],
       "runs": [
         "scripts/play.mjs",
+        "apps/cabinets/src/",
         "apps/cabinets/test/",
+        "apps/cabinets/vite.config.ts",
         "packages/cabinet-server/test/",
         "packages/ghost-on-the-menu/test/",
         "packages/launcher-vibe-typer/test/",
@@ -306,8 +369,8 @@
         "packages/vibe-typer/test/spelling.test.ts",
         "scripts/test/"
       ],
-      "runsCount": 24,
-      "runsMore": 45,
+      "runsCount": 26,
+      "runsMore": 61,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -430,11 +493,13 @@
         }
       ],
       "runs": [
+        "apps/cabinets/src/",
+        "apps/cabinets/vite.config.ts",
         "site/astro.config.mjs",
         "site/src/"
       ],
-      "runsCount": 2,
-      "runsMore": 0,
+      "runsCount": 4,
+      "runsMore": 2,
       "sends": [
         "deploys the site on main"
       ],
@@ -523,7 +588,9 @@
         "packages/launcher-vibe-typer/scripts/build.mjs",
         "packages/launcher/scripts/build.mjs",
         "scripts/play.mjs",
+        "apps/cabinets/src/",
         "apps/cabinets/test/",
+        "apps/cabinets/vite.config.ts",
         "packages/cabinet-server/test/",
         "packages/ghost-on-the-menu/test/",
         "packages/launcher-vibe-typer/test/",
@@ -547,10 +614,10 @@
         "packages/vibe-typer/test/spelling.test.ts",
         "scripts/test/"
       ],
-      "runsCount": 26,
-      "runsMore": 73,
+      "runsCount": 28,
+      "runsMore": 86,
       "sends": [
-        "publishes a package to npm, chosen at run time (on a run by hand, only with dry_run false)"
+        "publishes @mcptoolshop/ghost-on-the-menu (packages/launcher) and @mcptoolshop/vibe-typer (packages/launcher-vibe-typer) to npm (on a run by hand, only with dry_run false)"
       ],
       "stages": [],
       "triggers": [
@@ -559,6 +626,9 @@
       ]
     },
     {
+      "bundledInto": [
+        "@mcptoolshop/ghost-on-the-menu"
+      ],
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
@@ -568,33 +638,31 @@
       "landings": [],
       "name": "cabinet-server",
       "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
+      "reach": [
+        {
+          "boundary": "cabinet-server",
+          "depth": 0,
+          "files": 14
+        },
+        {
+          "boundary": "ghost-on-the-menu",
+          "depth": 1,
+          "files": 25
+        },
+        {
+          "boundary": "tape-core",
+          "depth": 1,
+          "files": 6
+        }
+      ],
+      "runs": [
+        "packages/cabinet-server/src/server.ts"
+      ],
+      "runsCount": 1,
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": [],
-      "unplaced": "packages/cabinet-server/dist/server.js"
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "checksMore": 0,
-      "file": "packages/launcher/package.json",
-      "id": "packages/launcher/package.json#ghost-on-the-menu",
-      "kind": "command",
-      "landings": [],
-      "name": "ghost-on-the-menu",
-      "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
-      "runsMore": 0,
-      "sends": [],
-      "stages": [],
-      "triggers": [],
-      "unplaced": "packages/launcher/dist/cli.js"
+      "triggers": []
     },
     {
       "checks": [],
@@ -606,14 +674,62 @@
       "landings": [],
       "name": "vibe-typer",
       "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
+      "reach": [
+        {
+          "boundary": "launcher-vibe-typer",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "cabinet-server",
+          "depth": 1,
+          "files": 1
+        },
+        {
+          "boundary": "launcher",
+          "depth": 1,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "packages/launcher-vibe-typer/src/cli.ts"
+      ],
+      "runsCount": 1,
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": [],
-      "unplaced": "packages/launcher-vibe-typer/dist/cli.js"
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "packages/launcher/package.json",
+      "id": "packages/launcher/package.json#ghost-on-the-menu",
+      "kind": "command",
+      "landings": [],
+      "name": "ghost-on-the-menu",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "launcher",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "cabinet-server",
+          "depth": 1,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "packages/launcher/src/cli.ts"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
     }
   ],
   "duplicates": [
@@ -630,6 +746,21 @@
       "parts": [
         "launcher-vibe-typer",
         "launcher"
+      ]
+    },
+    {
+      "files": [
+        "packages/ghost-on-the-menu/src/play.ts",
+        "packages/vibe-typer/src/play.ts"
+      ],
+      "name": "botFor",
+      "partLabels": [
+        "ghost-on-the-menu",
+        "vibe-typer"
+      ],
+      "parts": [
+        "ghost-on-the-menu",
+        "vibe-typer"
       ]
     },
     {
@@ -676,26 +807,11 @@
         "launcher-vibe-typer",
         "launcher"
       ]
-    },
-    {
-      "files": [
-        "packages/launcher-vibe-typer/src/cli.ts",
-        "packages/launcher/src/cli.ts"
-      ],
-      "name": "floorIn",
-      "partLabels": [
-        "launcher-vibe-typer",
-        "launcher"
-      ],
-      "parts": [
-        "launcher-vibe-typer",
-        "launcher"
-      ]
     }
   ],
   "duplicatesLead": "These are candidates from names and call order, not a judgement.",
   "duplicatesNote": [
-    "And 16 more pairs."
+    "And 18 more pairs."
   ],
   "edges": [
     {
@@ -794,7 +910,48 @@
     {
       "place": "packages/vibe-typer/patterns/corpus/",
       "writers": [
-        "packages/vibe-typer/scripts/author.mjs",
+        "packages/vibe-typer/scripts/author.mjs"
+      ]
+    },
+    {
+      "block": true,
+      "place": "packages/vibe-typer/patterns/corpus/bash.json",
+      "writers": [
+        "packages/vibe-typer/scripts/port-corpus.mjs"
+      ]
+    },
+    {
+      "block": true,
+      "place": "packages/vibe-typer/patterns/corpus/csharp.json",
+      "writers": [
+        "packages/vibe-typer/scripts/port-corpus.mjs"
+      ]
+    },
+    {
+      "block": true,
+      "place": "packages/vibe-typer/patterns/corpus/java.json",
+      "writers": [
+        "packages/vibe-typer/scripts/port-corpus.mjs"
+      ]
+    },
+    {
+      "block": true,
+      "place": "packages/vibe-typer/patterns/corpus/javascript.json",
+      "writers": [
+        "packages/vibe-typer/scripts/port-corpus.mjs"
+      ]
+    },
+    {
+      "block": true,
+      "place": "packages/vibe-typer/patterns/corpus/python.json",
+      "writers": [
+        "packages/vibe-typer/scripts/port-corpus.mjs"
+      ]
+    },
+    {
+      "block": true,
+      "place": "packages/vibe-typer/patterns/corpus/sql.json",
+      "writers": [
         "packages/vibe-typer/scripts/port-corpus.mjs"
       ]
     },
@@ -813,13 +970,13 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T11:52:12.808Z",
+  "generatedAt": "2026-09-24T17:38:56.993Z",
   "limits": [
     "17 import sites could not be resolved.",
-    "1 file uses syntax the parser cannot read (packages/ghost-on-the-menu/src/play.ts), so what it imports is not known.",
-    "11 writes and 14 reads use paths built at run time and are not named here.",
-    "13 writes and 107 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "6 commands are built at run time and not followed, 3 of them in tests."
+    "7 writes and 14 reads use paths built at run time and are not named here.",
+    "17 writes and 109 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "6 commands are built at run time and not followed, 3 of them in tests.",
+    "There is a Dockerfile that a workflow builds and none pushes and Docker MCP Catalog entries at catalog/server.vibe.yaml and catalog/server.yaml; what ships from them goes from outside this repository, and is not on this page."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -858,11 +1015,11 @@
     "launcher": 9,
     "launcher-vibe-typer": 3,
     "scripts": 8,
-    "tape-core": 26,
+    "tape-core": 27,
     "vibe-typer": 32,
     "voice": 1
   },
-  "unnamedWrites": 11,
+  "unnamedWrites": 7,
   "unread": [
     {
       "place": "docs/vibe-typer.author-sample.md",
@@ -877,9 +1034,9 @@
       ]
     }
   ],
-  "unreadFiles": 1,
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],
-  "written": 7
+  "written": 13
 }

@@ -8,7 +8,12 @@ Mapped at 2026-09-24 from commit 93df7e1.
 
 ## What changed since 2026-09-24 (e196fbe)
 
-Nothing structural changed since 2026-09-24; 109 files changed content.
+- src/kb/nodes.json is now written by scripts/sync-kb.mjs.
+- src/kb/presets.json is now written by scripts/sync-kb.mjs.
+- src/kb/nodes.json is now also read by src/profiles/registry.ts.
+- And 1 more new writer or reader of a place.
+- src was authored and is now mixed.
+- 109 files changed content, across 9 parts.
 
 ## What comes in
 
@@ -40,6 +45,8 @@ CI writes nothing this map can see.
 - **the repository root** is imported by no other part and sits on the path of 2 doors.
 - **scripts** is imported by no other part and sits on the path of 2 doors.
 - **test** is imported by no other part and sits on the path of 2 doors.
+- **src/kb/nodes.json** is written by scripts and read by scripts and src; a hand edit reaches every reader.
+- **src/kb/presets.json** is written by scripts and read by scripts and src; a hand edit reaches every reader.
 
 ## What tends to change together
 
@@ -57,7 +64,7 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 
 ## Written but never read
 
-No place this map can see is written, so none goes unread.
+Every written place has a reader.
 
 ## Helpers that look duplicated
 
@@ -65,11 +72,12 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-Nothing in this repository writes to a tracked place this map can see.
+- **src/kb/nodes.json** is written by scripts/sync-kb.mjs.
+- **src/kb/presets.json** is written by scripts/sync-kb.mjs.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, the repository root, schemas/ and site/; 4 writes with paths built at run time may land here.
+People write .github/, assets/, docs/, the repository root, schemas/ and site/; 2 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -80,8 +88,8 @@ Read those in order to follow one activation of codecomfy-vscode end to end. Thi
 ## What this map cannot see
 
 - 1 import site could not be resolved.
-- 4 writes and 8 reads use paths built at run time and are not named here.
-- 16 writes and 39 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 2 writes and 6 reads use paths built at run time and are not named here.
+- 16 writes and 39 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 3 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

@@ -82,7 +82,7 @@ Read those in order to follow one run of bytefit end to end. This path follows b
 
 ## What this map cannot see
 
-- 1 write and 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 1 write and 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

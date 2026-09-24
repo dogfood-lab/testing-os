@@ -4,22 +4,26 @@ Mapped at 2026-09-24 from commit 5139ec7.
 
 ## What this is
 
-14 parts, mostly TypeScript (555 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
+14 parts, mostly TypeScript (555 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
 ## What changed since 2026-09-24 (8734514)
 
+- CI now also runs files in apps/cockpit/.
+- CI runs 1 more file than before.
+- Deploy site to GitHub Pages now also runs apps/cockpit/src/ and apps/cockpit/vite.config.ts.
 - datasets/jam-actions-v0-public/ is now also written by scripts/run-jam-actions-corpus-eval.ts.
 - datasets/jam-actions-v0-public/evals/ is now written by scripts/run-jam-actions-corpus-eval.ts.
-- apps/cockpit/public/samples/salamander/102-v0.ogg is now read by apps/cockpit/public/samples/salamander/manifest.json.
-- And 105 more new writers and readers of places.
+- site/dist is now written by .github/workflows/pages.yml.
+- And 115 more new writers and readers of places.
+- songs was generated and is now mixed.
 - 1961 files changed content, across 13 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 20 paths; on a push to main touching 20 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/capture.test.ts and 188 more; checks LICENSE, README.md, logo.png and 572 more.
+1. **CI.** On a pull request touching 20 paths; on a push to main touching 20 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/ and 180 more; checks LICENSE, README.md, logo.png and 541 more.
 2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more; checks LICENSE, README.md, logo.png and 481 more.
-3. **Publish jam-actions-v0.** By hand. Runs scripts/check-release-gate.ts and scripts/verify-public-package-checksums.ts.
-4. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+3. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; or by hand. Runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more.
+4. **Publish jam-actions-v0.** By hand. Runs scripts/check-release-gate.ts and scripts/verify-public-package-checksums.ts.
 5. **Push jam-actions adapters to HuggingFace.** By hand. Runs no file this map can see.
 6. **Push jam-actions dataset to HuggingFace.** By hand. Runs no file this map can see.
 7. **Zenodo edit record metadata.** By hand. Runs no file this map can see.
@@ -29,41 +33,39 @@ Mapped at 2026-09-24 from commit 5139ec7.
 
 ## What happens through CI
 
-1. The workflow runs 10 files in cockpit, 9 files in experiments, 4 files in scripts, and 71 files in src; it checks apps/cockpit/src/ in cockpit, 7 files in the repository root, 6 files in scripts, src/ in src, samples/vocal/ in samples, and songs/library/ in songs.
+1. The workflow runs apps/cockpit/src/ and apps/cockpit/vite.config.ts in cockpit, 9 files in experiments, 4 files in scripts, and 71 files in src; it checks 7 files in the repository root, 6 files in scripts, src/ in src, samples/vocal/ in samples, and songs/library/ in songs.
    1. Inside src/mcp-server.ts, main does, in order: should supervise stdio, user songs dir, initialize from library, server state path and open rpc output stream.
    2. Or, when `shouldSuperviseStdio()`, main does run stdio supervisor instead.
-2. It writes to datasets/jam-actions-acoustic-v0/, datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md, datasets/jam-actions-v1-probe/README.md, datasets/jam-actions-v1-probe/applied.json, datasets/jam-actions-v1-probe/checksums.sha256, datasets/jam-actions-v1-probe/manifest.json, datasets/jam-actions-v1-probe/records/, datasets/jam-actions-v1-probe/records.jsonl, datasets/jam-actions-v1-probe/splits.json, experiments/acoustic-sft/data/sft-test.jsonl, experiments/acoustic-sft/data/sft-train.jsonl, experiments/acoustic-sft/runs/ and songs/.
 
 ## Who reads the results
 
-- **datasets/** is read by experiments/acoustic-sft/eval.ts and experiments/acoustic-sft/format-sft.ts, and by 2 tests.
-- **songs/** is read by docs/dogfood-swarm-grok-w2-kickoff.md (found by text), docs/dogfood-swarm-grok-w3-kickoff.md (found by text), experiments (5 files), scripts (20 files) and src (6 files), and by 6 tests.
+CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more, checks LICENSE, README.md, logo.png and 481 more, writes to datasets/jam-actions-acoustic-v0/, datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md, datasets/jam-actions-v1-probe/README.md, datasets/jam-actions-v1-probe/applied.json, datasets/jam-actions-v1-probe/checksums.sha256, datasets/jam-actions-v1-probe/manifest.json, datasets/jam-actions-v1-probe/records/, datasets/jam-actions-v1-probe/records.jsonl, datasets/jam-actions-v1-probe/splits.json, experiments/acoustic-sft/data/sft-test.jsonl, experiments/acoustic-sft/data/sft-train.jsonl, experiments/acoustic-sft/runs/ and songs/, and publishes to npm and a container image.
+**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more, checks LICENSE, README.md, logo.png and 481 more, and publishes to npm and a container image.
 
-**Publish jam-actions-v0** runs scripts/check-release-gate.ts and scripts/verify-public-package-checksums.ts, and reaches src.
+**Deploy site to GitHub Pages** runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more, reaches src, and deploys the site.
 
-**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
+**Publish jam-actions-v0** runs scripts/check-release-gate.ts and scripts/verify-public-package-checksums.ts, reaches src, publishes to the Hugging Face Hub when run by hand with confirm_irreversible yes-mint-doi and mode publish, and publishes a record on Zenodo when run by hand with confirm_irreversible yes-mint-doi.
 
-**Push jam-actions adapters to HuggingFace** runs no file this map can see.
+**Push jam-actions adapters to HuggingFace** runs no file this map can see and publishes to the Hugging Face Hub.
 
-**Push jam-actions dataset to HuggingFace** runs no file this map can see.
+**Push jam-actions dataset to HuggingFace** runs no file this map can see and publishes to the Hugging Face Hub.
 
-**Zenodo edit record metadata** runs no file this map can see.
+**Zenodo edit record metadata** runs no file this map can see and publishes a record on Zenodo.
 
-**@mcptoolshop/ai-jam-sessions** (the package people import) loads src/index.ts and writes to songs/.
+**@mcptoolshop/ai-jam-sessions** (the package people import) loads src/index.ts.
 
-**ai-jam-sessions** (a command people run) runs src/cli.ts and writes to songs/.
+**ai-jam-sessions** (a command people run) runs src/cli.ts.
 
-**ai-jam-sessions-mcp** (a command people run) runs src/mcp-server.ts and writes to songs/.
+**ai-jam-sessions-mcp** (a command people run) runs src/mcp-server.ts.
 
 ## What breaks what
 
-- **src** is imported by 4 parts (cockpit, docs, experiments, scripts) and sits on the path of 6 doors.
+- **src** is imported by 4 parts (cockpit, docs, experiments, scripts) and sits on the path of 7 doors.
 - **scripts** is run as a child process by 1 part (experiments) and sits on the path of 3 doors.
-- **cockpit** is imported only from tests, by 1 part (src), and sits on the path of 2 doors.
+- **cockpit** is imported only from tests, by 1 part (src), and sits on the path of 3 doors.
 - **experiments** is imported only from tests, by 1 part (src), and sits on the path of 2 doors.
 - **the repository root** is imported by no other part and sits on the path of 2 doors.
 - **experiments/rollout-arc/p4/runs/** is written by experiments and read by experiments; a hand edit reaches every reader.
@@ -210,15 +212,17 @@ And 2 more pairs.
 - **plugin/** is written by dependabot[bot], which added every file in it.
 - **samples/** is written by dependabot[bot], which added every file in it.
 - **samples/vocal/** is written by scripts/bake-carriers.ts, scripts/generate-carriers.ts and scripts/synth-carriers.ts.
-- **scores/amazing-grace.score-clock.v1.json** has a block written by scripts/build-score-clock.mjs.
-- **songs/** is written by scripts (4 files) and src/songs/loader.ts.
+- **scores/amazing-grace.score-clock.v1.json** is written by scripts/build-score-clock.mjs.
+- **songs/library/** is written by scripts/annotate-batch.ts and scripts/download-library.ts.
+- **songs/library/.npmignore** is written by scripts/npm-ship-list.ts.
+- **songs/quarantine/** is written by scripts/provenance-audit.ts.
 - **spaces/jam-actions-live/demo_data.json** is written by spaces/jam-actions-live/extract-demo-data.mjs.
 - **spaces/jam-actions-live/divergence.json** is written by spaces/jam-actions-live/gen-divergence.mjs.
 - **src/dataset/tool-schemas.json** is written by scripts/extract-mcp-tool-schemas.ts.
 
 ## Hand-authored
 
-People write .github/, the repository root and site/; 57 writes with paths built at run time may land here.
+People write .github/, the repository root and site/; 52 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -230,14 +234,13 @@ Read those in order to follow one pull request end to end.
 
 - 5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.
 - 11 import sites could not be resolved.
-- 2 files in src use syntax the parser cannot read (src/dataset/acoustic-v1/generate-public.ts and src/songs/midi/meta.test.ts), so what they import is not known: a NUL character inside a string (1) and other syntax (1).
-- 57 writes and 140 reads use paths built at run time and are not named here.
+- 52 writes and 134 reads use paths built at run time and are not named here.
 - 16 writes go to places this repository does not track, so they are not listed as generated.
-- 98 writes and 342 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 109 writes and 360 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 10 commands are built at run time and not followed, 1 of them in tests.
 - There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
-- Readers marked (found by text) come from scanning unparsed files.
-- CI runs or checks 459 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.
+- CI runs or checks 460 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 - Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

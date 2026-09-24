@@ -39,6 +39,14 @@
     "items": [
       {
         "kind": "door",
+        "sentence": "CI now also runs packages/ui/vite.config.ts.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "packages/ui/vite.config.ts"
+        ]
+      },
+      {
+        "kind": "door",
         "sentence": "CI no longer runs packages/server/src/engine-manager.test.ts, packages/server/src/presets.test.ts, packages/server/src/state.test.ts and 1 more.",
         "subjects": [
           ".github/workflows/ci.yml",
@@ -177,10 +185,8 @@
   "derived": "7 parts, mostly TypeScript (26 files). Work enters through 2 doors; the busiest is CI, which reaches 2 parts.",
   "doors": [
     {
-      "checks": [
-        "packages/ui/src/"
-      ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -196,15 +202,17 @@
         {
           "boundary": "ui",
           "depth": 0,
-          "files": 9
+          "files": 10
         }
       ],
       "runs": [
         "packages/server/src/routes/api.test.ts",
-        "packages/server/src/routes/events.test.ts"
+        "packages/server/src/routes/events.test.ts",
+        "packages/ui/src/",
+        "packages/ui/vite.config.ts"
       ],
-      "runsCount": 2,
-      "runsMore": 0,
+      "runsCount": 4,
+      "runsMore": 1,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -270,9 +278,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T11:54:20.523Z",
+  "generatedAt": "2026-09-24T17:41:50.925Z",
   "limits": [
-    "2 writes and 12 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "2 writes and 12 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
     "4 test files under `packages/server/src/` are not run by CI on Linux, where the shell expands `**` as one directory level.",
     "ui calls server over HTTP at 13 routes, a link no import shows: the map draws it, and no door's reach follows it.",
     "There is a Tauri app under apps/desktop/ (2 Rust files) that no workflow builds; the map reads no Rust, so what it does is not on this page.",

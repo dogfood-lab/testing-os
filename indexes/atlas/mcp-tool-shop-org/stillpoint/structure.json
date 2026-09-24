@@ -899,7 +899,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "build",
@@ -953,7 +953,7 @@
         {
           "boundary": "ui",
           "depth": 0,
-          "files": 9
+          "files": 10
         }
       ],
       "readers": [],
@@ -973,11 +973,18 @@
           "job": "build",
           "matched": true,
           "path": "packages/ui/src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc packages/ui/tsconfig.json"
+        },
+        {
+          "job": "build",
+          "matched": true,
+          "path": "packages/ui/vite.config.ts",
+          "runKind": "executes",
+          "via": "vite build"
         }
       ],
-      "runsCount": 3,
+      "runsCount": 4,
       "secrets": [],
       "sends": {
         "deploysPages": false,

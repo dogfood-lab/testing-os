@@ -4,11 +4,12 @@ Mapped at 2026-09-24 from commit 47e1a45.
 
 ## What this is
 
-23 parts, mostly TypeScript (407 files). Work enters through 5 doors; the busiest is Publish to GHCR, which reaches 16 parts. It publishes @mcptoolshop/attestia (packages/attestia) to npm and a container image. People run attestia-demo.
+23 parts, mostly TypeScript (407 files). Work enters through 4 doors; the busiest is Publish to GHCR, which reaches 16 parts. It publishes @mcptoolshop/attestia (packages/attestia) to npm and a container image.
 
 ## What changed since 2026-09-24 (245af30)
 
-Nothing structural changed since 2026-09-24; 588 files changed content.
+- attestia-demo (packages/demo/package.json) is no longer a command.
+- 588 files changed content, across 22 parts.
 
 ## What comes in
 
@@ -16,7 +17,6 @@ Nothing structural changed since 2026-09-24; 588 files changed content.
 2. **Release.** When a tag matching `v*` is pushed. Runs packages/attestia/tests/, packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts and 181 more; checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 152 more.
 3. **CI.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts, packages/chain-observer/tests/evm/ and 175 more; checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 152 more.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-5. **attestia-demo** (a command people run). Runs packages/demo/src/index.ts.
 
 ## What happens through Publish to GHCR
 
@@ -48,18 +48,16 @@ Publish to GHCR writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**attestia-demo** (a command people run) runs packages/demo/src/index.ts and reaches chain-observer, event-store, ledger, proof, reconciler, registrum, types, vault and verify.
-
 ## What breaks what
 
-- **types** is imported by 13 parts (attestia, chain-observer, demo, event-store, ledger, node, proof, reconciler, registrum, treasury, vault, verify, witness) and sits on the path of 4 doors.
-- **ledger** is imported by 7 parts (attestia, demo, node, reconciler, treasury, vault, verify) and sits on the path of 4 doors.
-- **registrum** is imported by 5 parts (attestia, demo, node, reconciler, verify) and sits on the path of 4 doors.
-- **chain-observer** is imported by 4 parts (attestia, demo, node, vault) and sits on the path of 4 doors.
-- **reconciler** is imported by 4 parts (attestia, demo, node, witness) and sits on the path of 4 doors.
-- **event-store** is imported by 3 parts (attestia, demo, node) and sits on the path of 4 doors.
-- **proof** is imported by 3 parts (attestia, demo, node) and sits on the path of 4 doors.
-- **vault** is imported by 3 parts (attestia, demo, node) and sits on the path of 4 doors.
+- **types** is imported by 13 parts (attestia, chain-observer, demo, event-store, ledger, node, proof, reconciler, registrum, treasury, vault, verify, witness) and sits on the path of 3 doors.
+- **ledger** is imported by 7 parts (attestia, demo, node, reconciler, treasury, vault, verify) and sits on the path of 3 doors.
+- **registrum** is imported by 5 parts (attestia, demo, node, reconciler, verify) and sits on the path of 3 doors.
+- **chain-observer** is imported by 4 parts (attestia, demo, node, vault) and sits on the path of 3 doors.
+- **reconciler** is imported by 4 parts (attestia, demo, node, witness) and sits on the path of 3 doors.
+- **event-store** is imported by 3 parts (attestia, demo, node) and sits on the path of 3 doors.
+- **proof** is imported by 3 parts (attestia, demo, node) and sits on the path of 3 doors.
+- **vault** is imported by 3 parts (attestia, demo, node) and sits on the path of 3 doors.
 
 ## What tends to change together
 
@@ -92,14 +90,14 @@ People write .github/, assets/, docs/, resources/, the repository root, site/ an
 
 ## Where to start
 
-packages/demo/src/index.ts
+.github/workflows/ci.yml → packages/node/src/app.ts
 
-Read those in order to follow one run of attestia-demo end to end. This path follows attestia-demo (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
 - 5 writes and 7 reads use paths built at run time and are not named here.
-- 6 writes and 66 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 6 writes and 66 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

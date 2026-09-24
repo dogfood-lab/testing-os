@@ -94,7 +94,7 @@ Read those in order to follow one pull request end to end.
 
 - 1 import site could not be resolved.
 - 1 import site names a path outside this repository, so what it loads is not followed.
-- 3 writes and 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 3 writes and 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

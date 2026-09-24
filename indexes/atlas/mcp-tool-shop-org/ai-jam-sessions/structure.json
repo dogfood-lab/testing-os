@@ -11210,7 +11210,7 @@
       "importConfidence": "full",
       "name": "experiments",
       "origin": "mixed",
-      "outsideReads": 171,
+      "outsideReads": 172,
       "outsideWrites": 46,
       "role": "code",
       "testedBy": 10,
@@ -11733,7 +11733,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 29,
+      "dynamicReads": 25,
       "dynamicSpawns": 3,
       "dynamicSpawnsInTests": 1,
       "dynamicWrites": 25,
@@ -12625,7 +12625,7 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
-      "outsideReads": 47,
+      "outsideReads": 50,
       "outsideWrites": 28,
       "role": "code",
       "testedBy": 11,
@@ -13324,7 +13324,7 @@
       ],
       "importConfidence": "full",
       "name": "songs",
-      "origin": "generated",
+      "origin": "mixed",
       "role": "data",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -13411,10 +13411,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 40,
+      "dynamicReads": 38,
       "dynamicSpawns": 3,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 20,
+      "dynamicWrites": 15,
       "entryPoints": [
         "src/cli.ts",
         "src/index.ts",
@@ -16011,8 +16011,18 @@
           "path": "src/dataset/acoustic-v1/generate-probe.ts"
         },
         {
+          "exports": [
+            "assertNoDraftBanner",
+            "checksumManifest",
+            "prettyDescriptionFromCard",
+            "publicFiles",
+            "readCardOrHalt",
+            "readLicenseOrHalt",
+            "sha256",
+            "spec",
+            "writePublicSet"
+          ],
           "hash": "5b865d94e137985ff409aade3bd67488986f1a4b4e400fa3a7ef7de88cf6e899",
-          "parseError": true,
           "path": "src/dataset/acoustic-v1/generate-public.ts"
         },
         {
@@ -19559,9 +19569,10 @@
         },
         {
           "hash": "ba6a3eec41b1e87b6df9b9bc72c6f94a7a0c7924ee8d6edd5b95cfa70d3dae0d",
-          "parseError": true,
-          "path": "src/songs/midi/meta.test.ts",
-          "unreadSyntax": "nul-character"
+          "importsFiles": [
+            "src/songs/midi/meta.ts"
+          ],
+          "path": "src/songs/midi/meta.test.ts"
         },
         {
           "exports": [
@@ -20253,8 +20264,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "mixed",
-      "outsideReads": 111,
-      "outsideWrites": 24,
+      "outsideReads": 125,
+      "outsideWrites": 35,
       "role": "code",
       "testedBy": 168,
       "unresolvedSites": 0
@@ -20262,7 +20273,7 @@
   ],
   "doors": [
     {
-      "checksCount": 268,
+      "checksCount": 267,
       "commands": [
         {
           "job": "ci",
@@ -20367,24 +20378,7 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "landings": [
-        "datasets/jam-actions-acoustic-v0",
-        "datasets/jam-actions-acoustic-v0/checksums.sha256",
-        "datasets/jam-actions-acoustic-v0/records",
-        "datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md",
-        "datasets/jam-actions-v1-probe/README.md",
-        "datasets/jam-actions-v1-probe/applied.json",
-        "datasets/jam-actions-v1-probe/checksums.sha256",
-        "datasets/jam-actions-v1-probe/manifest.json",
-        "datasets/jam-actions-v1-probe/records",
-        "datasets/jam-actions-v1-probe/records.jsonl",
-        "datasets/jam-actions-v1-probe/splits.json",
-        "experiments/acoustic-sft/data/sft-test.jsonl",
-        "experiments/acoustic-sft/data/sft-train.jsonl",
-        "experiments/acoustic-sft/runs",
-        "songs",
-        "songs/library"
-      ],
+      "landings": [],
       "mentions": [
         {
           "job": "plugin-validate",
@@ -20416,7 +20410,7 @@
         {
           "boundary": "cockpit",
           "depth": 0,
-          "files": 32
+          "files": 33
         },
         {
           "boundary": "experiments",
@@ -20439,762 +20433,7 @@
           "files": 366
         }
       ],
-      "readers": [
-        {
-          "by": "datasets/jam-actions-acoustic-v0/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "experiments/acoustic-sft/eval.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "experiments/acoustic-sft/format-sft.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "experiments/acoustic-sft/format-sft.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "src/dataset/acoustic/generate-corpus.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "src/dataset/acoustic/generate-corpus.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "src/dataset/acoustic/reproduce.test.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "datasets/jam-actions-acoustic-v0/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "datasets/jam-actions-acoustic-v0/checksums.sha256"
-        },
-        {
-          "by": "src/dataset/acoustic/reproduce.test.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "datasets/jam-actions-acoustic-v0/checksums.sha256"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/probe.test.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "datasets/jam-actions-v1-probe/records.jsonl"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/probe.test.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "datasets/jam-actions-v1-probe/records.jsonl"
-        },
-        {
-          "by": "experiments/acoustic-sft/runpod.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "experiments/acoustic-sft/data/sft-test.jsonl"
-        },
-        {
-          "by": "experiments/acoustic-sft/scripts/predict_acoustic.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "experiments/acoustic-sft/data/sft-test.jsonl"
-        },
-        {
-          "by": "experiments/acoustic-sft/runpod.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "experiments/acoustic-sft/data/sft-train.jsonl"
-        },
-        {
-          "by": "experiments/acoustic-sft/scripts/train_acoustic_sft.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "experiments/acoustic-sft/data/sft-train.jsonl"
-        },
-        {
-          "by": "docs/dogfood-swarm-grok-w2-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs"
-        },
-        {
-          "by": "docs/dogfood-swarm-grok-w3-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p3/scripts/emit-er-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-progression-fixture.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-spec-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-vl-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/scripts/p4-vl-server.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/analysis-validate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/auto-reharmonize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/bass-aware-completeness.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-jam-actions-corpus.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-pilot-records.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-record-fur-elise-m001-008.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-bws-smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-realize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-refine-lift.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-spec-membership.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-style-matrix.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-style-reference.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/download-library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/er-experiments.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/er-gate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/implied-chord-snapshot.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/import-classical.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r001-bach-window.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r002-bach-annotation-prose.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/cli.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/library.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/mcp-server.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/piano-roll.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/session.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/loader.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/provenance.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/teaching.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/vocal/score-clock.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "docs/dogfood-swarm-grok-w2-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs/library"
-        },
-        {
-          "by": "docs/dogfood-swarm-grok-w3-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs/library"
-        },
-        {
-          "by": "experiments/rollout-arc/p3/scripts/emit-er-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-progression-fixture.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-spec-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-vl-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "experiments/rollout-arc/scripts/p4-vl-server.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/analysis-validate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/auto-reharmonize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/bass-aware-completeness.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/build-jam-actions-corpus.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/build-pilot-records.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/build-record-fur-elise-m001-008.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-bws-smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-realize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-refine-lift.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-spec-membership.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-style-matrix.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-style-reference.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/download-library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/er-experiments.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/er-gate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/implied-chord-snapshot.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r001-bach-window.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r002-bach-annotation-prose.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/cli.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/library.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/mcp-server.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/piano-roll.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        },
-        {
-          "by": "src/session.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        },
-        {
-          "by": "src/smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/songs/provenance.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        },
-        {
-          "by": "src/teaching.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        },
-        {
-          "by": "src/vocal/score-clock.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "job": "docker-image",
@@ -21213,7 +20452,7 @@
           "job": "cockpit",
           "matched": true,
           "path": "apps/cockpit/src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc apps/cockpit/tsconfig.json"
         },
         {
@@ -21355,6 +20594,13 @@
           "path": "apps/cockpit/src/transport.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "cockpit",
+          "matched": true,
+          "path": "apps/cockpit/vite.config.ts",
+          "runKind": "executes",
+          "via": "vite build"
         },
         {
           "job": "ci",
@@ -22904,20 +22150,6 @@
         {
           "job": "ci",
           "matched": true,
-          "path": "src/dataset/provenance-url-verifier.ts",
-          "runKind": "checks",
-          "via": "tsc tsconfig.json"
-        },
-        {
-          "job": "pnpm10-install",
-          "matched": true,
-          "path": "src/dataset/provenance-url-verifier.ts",
-          "runKind": "checks",
-          "via": "tsc tsconfig.json"
-        },
-        {
-          "job": "ci",
-          "matched": true,
           "path": "src/dataset/release/release-gate.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -23924,7 +23156,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 459,
+      "runsCount": 460,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -24045,13 +23277,42 @@
       "pushes": false,
       "reach": [
         {
+          "boundary": "cockpit",
+          "depth": 0,
+          "files": 33
+        },
+        {
           "boundary": "site",
           "depth": 0,
           "files": 3
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "enters": {
+            "file": "src/compose/human-audio-panel.ts",
+            "from": "apps/cockpit/src/panel-clip.ts"
+          },
+          "files": 34
         }
       ],
       "readers": [],
       "runs": [
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
+          "path": "apps/cockpit/src/",
+          "runKind": "executes",
+          "via": "vite build"
+        },
+        {
+          "job": "build",
+          "matched": true,
+          "path": "apps/cockpit/vite.config.ts",
+          "runKind": "executes",
+          "via": "vite build"
+        },
         {
           "job": "build",
           "matched": true,
@@ -24068,7 +23329,7 @@
           "via": "astro build"
         }
       ],
-      "runsCount": 2,
+      "runsCount": 4,
       "secrets": [],
       "sends": {
         "deploysPages": true,
@@ -24187,6 +23448,41 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish-jam-actions-v0.yml",
+      "gated": [
+        {
+          "jobs": [
+            "publish"
+          ],
+          "pushes": false,
+          "sends": [
+            "publishesTo:huggingface"
+          ],
+          "stages": [],
+          "when": {
+            "event": "workflow_dispatch",
+            "inputs": {
+              "confirm_irreversible": "yes-mint-doi",
+              "mode": "publish"
+            }
+          }
+        },
+        {
+          "jobs": [
+            "publish"
+          ],
+          "pushes": false,
+          "sends": [
+            "publishesTo:zenodo"
+          ],
+          "stages": [],
+          "when": {
+            "event": "workflow_dispatch",
+            "inputs": {
+              "confirm_irreversible": "yes-mint-doi"
+            }
+          }
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -24319,8 +23615,10 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
-        "publishes": false,
-        "publishesTo": [],
+        "publishes": true,
+        "publishesTo": [
+          "huggingface"
+        ],
         "releases": false
       },
       "stages": [],
@@ -24390,8 +23688,10 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
-        "publishes": false,
-        "publishesTo": [],
+        "publishes": true,
+        "publishesTo": [
+          "huggingface"
+        ],
         "releases": false
       },
       "stages": [],
@@ -24442,24 +23742,7 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
-      "landings": [
-        "datasets/jam-actions-acoustic-v0",
-        "datasets/jam-actions-acoustic-v0/checksums.sha256",
-        "datasets/jam-actions-acoustic-v0/records",
-        "datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md",
-        "datasets/jam-actions-v1-probe/README.md",
-        "datasets/jam-actions-v1-probe/applied.json",
-        "datasets/jam-actions-v1-probe/checksums.sha256",
-        "datasets/jam-actions-v1-probe/manifest.json",
-        "datasets/jam-actions-v1-probe/records",
-        "datasets/jam-actions-v1-probe/records.jsonl",
-        "datasets/jam-actions-v1-probe/splits.json",
-        "experiments/acoustic-sft/data/sft-test.jsonl",
-        "experiments/acoustic-sft/data/sft-train.jsonl",
-        "experiments/acoustic-sft/runs",
-        "songs",
-        "songs/library"
-      ],
+      "landings": [],
       "mentions": [
         {
           "job": "publish-npm",
@@ -24500,762 +23783,7 @@
           "files": 366
         }
       ],
-      "readers": [
-        {
-          "by": "datasets/jam-actions-acoustic-v0/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "experiments/acoustic-sft/eval.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "experiments/acoustic-sft/format-sft.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "experiments/acoustic-sft/format-sft.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "src/dataset/acoustic/generate-corpus.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "src/dataset/acoustic/generate-corpus.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "src/dataset/acoustic/reproduce.test.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "datasets/jam-actions-acoustic-v0"
-        },
-        {
-          "by": "datasets/jam-actions-acoustic-v0/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "datasets/jam-actions-acoustic-v0/checksums.sha256"
-        },
-        {
-          "by": "src/dataset/acoustic/reproduce.test.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "datasets/jam-actions-acoustic-v0/checksums.sha256"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/probe.test.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "datasets/jam-actions-v1-probe/records.jsonl"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/probe.test.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "datasets/jam-actions-v1-probe/records.jsonl"
-        },
-        {
-          "by": "experiments/acoustic-sft/runpod.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "experiments/acoustic-sft/data/sft-test.jsonl"
-        },
-        {
-          "by": "experiments/acoustic-sft/scripts/predict_acoustic.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "experiments/acoustic-sft/data/sft-test.jsonl"
-        },
-        {
-          "by": "experiments/acoustic-sft/runpod.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "experiments/acoustic-sft/data/sft-train.jsonl"
-        },
-        {
-          "by": "experiments/acoustic-sft/scripts/train_acoustic_sft.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "experiments/acoustic-sft/data/sft-train.jsonl"
-        },
-        {
-          "by": "docs/dogfood-swarm-grok-w2-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs"
-        },
-        {
-          "by": "docs/dogfood-swarm-grok-w3-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p3/scripts/emit-er-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-progression-fixture.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-spec-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-vl-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/scripts/p4-vl-server.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/analysis-validate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/auto-reharmonize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/bass-aware-completeness.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-jam-actions-corpus.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-pilot-records.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-record-fur-elise-m001-008.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-bws-smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-realize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-refine-lift.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-spec-membership.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-style-matrix.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-style-reference.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/download-library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/er-experiments.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/er-gate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/implied-chord-snapshot.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/import-classical.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r001-bach-window.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r002-bach-annotation-prose.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/cli.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/library.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/mcp-server.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/piano-roll.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/session.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/loader.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/provenance.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/teaching.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/vocal/score-clock.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "docs/dogfood-swarm-grok-w2-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs/library"
-        },
-        {
-          "by": "docs/dogfood-swarm-grok-w3-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs/library"
-        },
-        {
-          "by": "experiments/rollout-arc/p3/scripts/emit-er-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-progression-fixture.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-spec-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-vl-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "experiments/rollout-arc/scripts/p4-vl-server.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/analysis-validate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/auto-reharmonize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/bass-aware-completeness.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/build-jam-actions-corpus.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/build-pilot-records.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/build-record-fur-elise-m001-008.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-bws-smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-realize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-refine-lift.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-spec-membership.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-style-matrix.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/compose-style-reference.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/download-library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/er-experiments.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/er-gate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/implied-chord-snapshot.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r001-bach-window.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r002-bach-annotation-prose.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/cli.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/library.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/mcp-server.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/piano-roll.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        },
-        {
-          "by": "src/session.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        },
-        {
-          "by": "src/smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "songs/library"
-        },
-        {
-          "by": "src/songs/provenance.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        },
-        {
-          "by": "src/teaching.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        },
-        {
-          "by": "src/vocal/score-clock.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs/library"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "job": "publish-docker",
@@ -26766,8 +25294,10 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
-        "publishes": false,
-        "publishesTo": [],
+        "publishes": true,
+        "publishesTo": [
+          "zenodo"
+        ],
         "releases": false
       },
       "stages": [],
@@ -26789,9 +25319,7 @@
       "entry": "src/index.ts",
       "file": "package.json",
       "kind": "package",
-      "landings": [
-        "songs"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "@mcptoolshop/ai-jam-sessions",
       "permissions": [],
@@ -26803,344 +25331,7 @@
           "files": 82
         }
       ],
-      "readers": [
-        {
-          "by": "docs/dogfood-swarm-grok-w2-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs"
-        },
-        {
-          "by": "docs/dogfood-swarm-grok-w3-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p3/scripts/emit-er-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-progression-fixture.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-spec-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-vl-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/scripts/p4-vl-server.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/analysis-validate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/auto-reharmonize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/bass-aware-completeness.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-jam-actions-corpus.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-pilot-records.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-record-fur-elise-m001-008.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-bws-smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-realize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-refine-lift.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-spec-membership.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-style-matrix.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-style-reference.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/download-library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/er-experiments.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/er-gate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/implied-chord-snapshot.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/import-classical.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r001-bach-window.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r002-bach-annotation-prose.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/cli.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/library.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/mcp-server.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/piano-roll.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/session.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/loader.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/provenance.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/teaching.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/vocal/score-clock.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "path": "src/index.ts",
@@ -27170,9 +25361,7 @@
       "elsewhere": [],
       "file": "package.json",
       "kind": "command",
-      "landings": [
-        "songs"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "ai-jam-sessions",
       "permissions": [],
@@ -27184,344 +25373,7 @@
           "files": 82
         }
       ],
-      "readers": [
-        {
-          "by": "docs/dogfood-swarm-grok-w2-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs"
-        },
-        {
-          "by": "docs/dogfood-swarm-grok-w3-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p3/scripts/emit-er-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-progression-fixture.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-spec-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-vl-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/scripts/p4-vl-server.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/analysis-validate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/auto-reharmonize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/bass-aware-completeness.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-jam-actions-corpus.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-pilot-records.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-record-fur-elise-m001-008.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-bws-smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-realize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-refine-lift.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-spec-membership.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-style-matrix.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-style-reference.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/download-library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/er-experiments.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/er-gate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/implied-chord-snapshot.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/import-classical.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r001-bach-window.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r002-bach-annotation-prose.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/cli.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/library.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/mcp-server.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/piano-roll.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/session.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/loader.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/provenance.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/teaching.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/vocal/score-clock.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "path": "src/cli.ts",
@@ -27551,9 +25403,7 @@
       "elsewhere": [],
       "file": "package.json",
       "kind": "command",
-      "landings": [
-        "songs"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "ai-jam-sessions-mcp",
       "permissions": [],
@@ -27565,344 +25415,7 @@
           "files": 137
         }
       ],
-      "readers": [
-        {
-          "by": "docs/dogfood-swarm-grok-w2-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs"
-        },
-        {
-          "by": "docs/dogfood-swarm-grok-w3-kickoff.md",
-          "call": "--",
-          "confidence": "text",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p3/scripts/emit-er-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-progression-fixture.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-spec-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/p4/scripts/emit-vl-prompts.mts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "experiments/rollout-arc/scripts/p4-vl-server.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/analysis-validate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/annotate-batch.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/auto-reharmonize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/bass-aware-completeness.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-jam-actions-corpus.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-pilot-records.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-record-fur-elise-m001-008.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/build-score-clock.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-bws-smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-realize-demo.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-refine-lift.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-spec-membership.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-style-matrix.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/compose-style-reference.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/download-library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/er-experiments.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/er-gate.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/implied-chord-snapshot.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/import-classical.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/npm-ship-list.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/provenance-audit.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r001-bach-window.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/revise-jam-actions-v0-r002-bach-annotation-prose.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "scripts/scan-dataset-provenance.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/cli.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/allowlist.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/dataset/acoustic-v1/library.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/mcp-server.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/piano-roll.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/session.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/smoke.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/library.ts",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/loader.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "songs"
-        },
-        {
-          "by": "src/songs/provenance.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/teaching.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        },
-        {
-          "by": "src/vocal/score-clock.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "songs"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "path": "src/mcp-server.ts",
@@ -27979,6 +25492,11 @@
   "landings": [
     {
       "readers": [
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast"
+        },
         {
           "by": "src/dataset/acoustic-v1/public.test.ts",
           "call": "get",
@@ -29065,7 +26583,10 @@
       "writers": [
         {
           "by": "src/dataset/acoustic/generate-corpus.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -29087,7 +26608,10 @@
       "writers": [
         {
           "by": "src/dataset/acoustic/generate-corpus.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -29097,7 +26621,10 @@
       "writers": [
         {
           "by": "src/dataset/acoustic/generate-corpus.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -30408,6 +27935,11 @@
           "confidence": "ast"
         },
         {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
           "by": "src/dataset/acoustic-v1/v1.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -30445,6 +27977,11 @@
           "confidence": "ast"
         },
         {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
           "by": "src/dataset/acoustic-v1/v1.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -30455,12 +27992,26 @@
       "writers": []
     },
     {
+      "readers": [
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "datasets/jam-actions-v1-probe-public",
+      "writers": []
+    },
+    {
       "readers": [],
       "target": "datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md",
       "writers": [
         {
           "by": "src/dataset/acoustic-v1/generate-probe.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -30470,7 +28021,10 @@
       "writers": [
         {
           "by": "src/dataset/acoustic-v1/generate-probe.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -30480,7 +28034,10 @@
       "writers": [
         {
           "by": "src/dataset/acoustic-v1/generate-probe.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -30490,7 +28047,10 @@
       "writers": [
         {
           "by": "src/dataset/acoustic-v1/generate-probe.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -30500,7 +28060,10 @@
       "writers": [
         {
           "by": "src/dataset/acoustic-v1/generate-probe.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -30510,7 +28073,10 @@
       "writers": [
         {
           "by": "src/dataset/acoustic-v1/generate-probe.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -30533,7 +28099,10 @@
       "writers": [
         {
           "by": "src/dataset/acoustic-v1/generate-probe.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -30543,9 +28112,23 @@
       "writers": [
         {
           "by": "src/dataset/acoustic-v1/generate-probe.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
+    },
+    {
+      "readers": [
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "datasets/jam-actions-v1-public",
+      "writers": []
     },
     {
       "readers": [],
@@ -30766,6 +28349,50 @@
     {
       "readers": [
         {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "docs/hf-cards/jam-actions-v1-probe.LICENSE-DATASET.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "docs/hf-cards/jam-actions-v1-probe.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "docs/hf-cards/jam-actions-v1.LICENSE-DATASET.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "docs/hf-cards/jam-actions-v1.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "scripts/revise-jam-actions-v0-r001-bach-window.ts",
           "call": "literal",
           "confidence": "ast"
@@ -30874,7 +28501,10 @@
       "writers": [
         {
           "by": "experiments/acoustic-sft/format-sft.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -30895,7 +28525,10 @@
       "writers": [
         {
           "by": "experiments/acoustic-sft/format-sft.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -30931,7 +28564,10 @@
       "writers": [
         {
           "by": "experiments/acoustic-sft/runpod.mjs",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },
@@ -33489,8 +31125,7 @@
       "writers": [
         {
           "by": "scripts/build-score-clock.mjs",
-          "confidence": "ast",
-          "stamps": true
+          "confidence": "ast"
         }
       ]
     },
@@ -33735,6 +31370,16 @@
       "writers": []
     },
     {
+      "readers": [],
+      "target": "site/dist",
+      "tracked": false,
+      "writers": [
+        {
+          "by": ".github/workflows/pages.yml"
+        }
+      ]
+    },
+    {
       "readers": [
         {
           "by": "site/astro.config.mjs",
@@ -33755,33 +31400,6 @@
       ],
       "target": "site/src/content/docs/handbook",
       "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "src/songs/loader.ts",
-          "call": "existsSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": "songs",
-      "writers": [
-        {
-          "by": "src/songs/loader.ts",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [],
-      "target": "songs/*.*-*.tmp",
-      "tracked": false,
-      "writers": [
-        {
-          "by": "src/songs/loader.ts",
-          "confidence": "ast"
-        }
-      ]
     },
     {
       "readers": [
@@ -34027,7 +31645,10 @@
       "writers": [
         {
           "by": "scripts/annotate-batch.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         },
         {
           "by": "scripts/download-library.ts",
@@ -34068,8 +31689,7 @@
       "writers": [
         {
           "by": "scripts/npm-ship-list.ts",
-          "confidence": "ast",
-          "stamps": true
+          "confidence": "ast"
         }
       ]
     },
@@ -34431,6 +32051,15 @@
         "docker-compose.yml"
       ],
       "kind": "deploy"
+    },
+    {
+      "items": [
+        {
+          "kind": "space",
+          "path": "spaces/jam-actions-live"
+        }
+      ],
+      "kind": "shipped"
     }
   ]
 }

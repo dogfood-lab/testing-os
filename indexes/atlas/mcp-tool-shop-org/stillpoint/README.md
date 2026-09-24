@@ -8,6 +8,7 @@ Mapped at 2026-09-24 from commit c7fbc27.
 
 ## What changed since 2026-09-24 (26647ad)
 
+- CI now also runs packages/ui/vite.config.ts.
 - CI no longer runs packages/server/src/engine-manager.test.ts, packages/server/src/presets.test.ts, packages/server/src/state.test.ts and 1 more.
 - apps/desktop/msix/layout/ is now written by apps/desktop/msix/build-msix.ps1.
 - apps/desktop/msix/layout/Assets/ is now written by apps/desktop/msix/build-msix.ps1.
@@ -17,12 +18,12 @@ Mapped at 2026-09-24 from commit c7fbc27.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 7 paths; on a push to main touching 7 paths; or by hand. Runs packages/server/src/routes/api.test.ts and packages/server/src/routes/events.test.ts; checks packages/ui/src/.
+1. **CI.** On a pull request touching 7 paths; on a push to main touching 7 paths; or by hand. Runs packages/server/src/routes/api.test.ts, packages/server/src/routes/events.test.ts, packages/ui/src/ and 1 more.
 2. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 
 ## What happens through CI
 
-1. The workflow runs packages/server/src/routes/api.test.ts and packages/server/src/routes/events.test.ts in server; it checks packages/ui/src/ in ui.
+1. The workflow runs packages/server/src/routes/api.test.ts and packages/server/src/routes/events.test.ts in server and packages/ui/src/ and packages/ui/vite.config.ts in ui.
 
 ## Who reads the results
 
@@ -81,7 +82,7 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 2 writes and 12 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 2 writes and 12 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 4 test files under `packages/server/src/` are not run by CI on Linux, where the shell expands `**` as one directory level.
 - ui calls server over HTTP at 13 routes, a link no import shows: the map draws it, and no door's reach follows it.
 - There is a Tauri app under apps/desktop/ (2 Rust files) that no workflow builds; the map reads no Rust, so what it does is not on this page.

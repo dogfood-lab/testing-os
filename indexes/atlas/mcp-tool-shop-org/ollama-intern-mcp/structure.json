@@ -443,10 +443,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 0,
+      "dynamicReads": 3,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 0,
+      "dynamicWrites": 2,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -460,16 +460,25 @@
           "path": "scripts/cloud-smoke-generate.mjs"
         },
         {
+          "entry": "run",
+          "entryRule": 1,
+          "exports": [
+            "parseImports",
+            "parseRegistrations",
+            "renderIndexBlock",
+            "renderPage",
+            "slugFor"
+          ],
           "hash": "8517c60c68afc3ab3c7548bd7d7c61d81062f335791bc682248f66f3ab0aba72",
-          "parseError": true,
           "path": "scripts/gen-tool-docs.mjs",
-          "unreadSyntax": "nul-character"
+          "sequences": []
         },
         {
+          "entry": "run",
+          "entryRule": 1,
           "hash": "86215e121863fb9fa5b7868c340096c7085c1bf4af9cec8c9acd831764bc9515",
-          "parseError": true,
           "path": "scripts/sync-doc-versions.mjs",
-          "unreadSyntax": "nul-character"
+          "sequences": []
         }
       ],
       "globs": [
@@ -481,7 +490,7 @@
       "role": "code",
       "testedBy": 1,
       "testedThroughSpawn": true,
-      "unresolvedSites": 0
+      "unresolvedSites": 1
     },
     {
       "dynamicReads": 0,
@@ -773,7 +782,7 @@
       ],
       "importConfidence": "full",
       "name": "site",
-      "origin": "authored",
+      "origin": "mixed",
       "role": "site",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -870,7 +879,7 @@
       "dynamicReads": 6,
       "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 2,
+      "dynamicWrites": 1,
       "entryPoints": [
         "src/index.ts"
       ],
@@ -2746,7 +2755,7 @@
       "name": "src",
       "origin": "authored",
       "outsideReads": 31,
-      "outsideWrites": 18,
+      "outsideWrites": 19,
       "role": "code",
       "testedBy": 97,
       "unresolvedSites": 0
@@ -3940,7 +3949,9 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "site/src/content/docs/handbook/tools.md"
+      ],
       "mentions": [
         {
           "job": "lockfile-sync",
@@ -3980,7 +3991,26 @@
           "files": 101
         }
       ],
-      "readers": [],
+      "readers": [
+        {
+          "by": "scripts/gen-tool-docs.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "site/src/content/docs/handbook/tools.md"
+        },
+        {
+          "by": "scripts/sync-doc-versions.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "site/src/content/docs/handbook/tools.md"
+        },
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast",
+          "target": "site/src/content/docs/handbook/tools.md"
+        }
+      ],
       "runs": [
         {
           "job": "docker-build",
@@ -4074,35 +4104,35 @@
           "matched": true,
           "path": "tests/cli.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/cloudCheck.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/cloudClient.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/cloudConfig.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/cloudEscalation.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "directory": true,
@@ -4110,42 +4140,42 @@
           "matched": true,
           "path": "tests/corpus/",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/coverage.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/doctorCloud.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/embedMath.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/envelope.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/errorHintQuality.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "directory": true,
@@ -4153,7 +4183,7 @@
           "matched": true,
           "path": "tests/evals/",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "directory": true,
@@ -4161,7 +4191,7 @@
           "matched": true,
           "path": "tests/guardrails/",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "directory": true,
@@ -4169,175 +4199,175 @@
           "matched": true,
           "path": "tests/integration/",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/logTailRoster.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/mcpGolden.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/numCtx.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/observability.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/ollama.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/ollamaRetry.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/pack.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/prewarm.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/prewarmInvariants.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/profiles.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/protectedPaths.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/regressions.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/releaseWorkflowGate.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/routing.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/routingIntegration.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/routingStandby.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/runContext.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/semaphore.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/signalChainE2E.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/sources.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/startupProbe.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/tiers.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/timeoutLogEnrichment.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/toolDocsGen.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "directory": true,
@@ -4345,14 +4375,14 @@
           "matched": true,
           "path": "tests/tools/",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "verify",
           "matched": true,
           "path": "tests/version.test.ts",
           "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         },
         {
           "job": "docker-build",
@@ -4593,6 +4623,20 @@
           "boundary": "scripts",
           "depth": 0,
           "files": 1
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 101
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "enters": {
+            "file": "src/cloudCheck.ts",
+            "from": "tests/cloudCheck.test.ts"
+          },
+          "files": 90
         }
       ],
       "readers": [],
@@ -4616,9 +4660,294 @@
           "job": "drift",
           "path": "scripts/sync-doc-versions.mjs",
           "runKind": "executes"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/cli.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/cloudCheck.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/cloudClient.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/cloudConfig.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/cloudEscalation.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "drift",
+          "matched": true,
+          "path": "tests/corpus/",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/coverage.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/doctorCloud.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/embedMath.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/envelope.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/errorHintQuality.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "drift",
+          "matched": true,
+          "path": "tests/evals/",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "drift",
+          "matched": true,
+          "path": "tests/guardrails/",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "drift",
+          "matched": true,
+          "path": "tests/integration/",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/logTailRoster.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/mcpGolden.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/numCtx.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/observability.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/ollama.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/ollamaRetry.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/pack.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/prewarm.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/prewarmInvariants.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/profiles.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/protectedPaths.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/regressions.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/releaseWorkflowGate.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/routing.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/routingIntegration.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/routingStandby.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/runContext.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/semaphore.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/signalChainE2E.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/sources.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/startupProbe.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/tiers.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/timeoutLogEnrichment.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/toolDocsGen.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "drift",
+          "matched": true,
+          "path": "tests/tools/",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "drift",
+          "matched": true,
+          "path": "tests/version.test.ts",
+          "runKind": "executes",
+          "via": "scripts/sync-doc-versions.mjs → vitest vitest.config.ts"
         }
       ],
-      "runsCount": 4,
+      "runsCount": 44,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -5351,6 +5680,11 @@
       "to": "src"
     },
     {
+      "from": "scripts",
+      "kind": "spawns",
+      "to": "tests"
+    },
+    {
       "from": "smoke",
       "kind": "file",
       "to": "src"
@@ -5377,6 +5711,17 @@
         }
       ],
       "target": ".github",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/sync-doc-versions.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": ".github/ISSUE_TEMPLATE/feature_request.md",
       "writers": []
     },
     {
@@ -5434,6 +5779,11 @@
     {
       "readers": [
         {
+          "by": "scripts/sync-doc-versions.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
           "by": "src/tools/codeMap.ts",
           "call": "literal",
           "confidence": "ast"
@@ -5451,6 +5801,17 @@
         }
       ],
       "target": "Dockerfile",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/sync-doc-versions.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "HANDOFF.md",
       "writers": []
     },
     {
@@ -5489,6 +5850,11 @@
     },
     {
       "readers": [
+        {
+          "by": "scripts/sync-doc-versions.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        },
         {
           "by": "src/tools/codeMap.ts",
           "call": "literal",
@@ -5548,6 +5914,17 @@
         }
       ],
       "target": "SECURITY.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/sync-doc-versions.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "SHIP_GATE.md",
       "writers": []
     },
     {
@@ -5633,6 +6010,11 @@
         },
         {
           "by": ".github/workflows/release.yml"
+        },
+        {
+          "by": "scripts/sync-doc-versions.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
         },
         {
           "by": "src/corpus/manifest.ts",
@@ -5731,6 +6113,32 @@
     {
       "readers": [
         {
+          "by": "scripts/sync-doc-versions.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook/index.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/gen-tool-docs.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/gen-tool-docs.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/gen-tool-docs.mjs",
+          "call": "readdirSync",
+          "confidence": "ast"
+        },
+        {
           "by": "tests/toolDocsGen.test.ts",
           "call": "readdirSync",
           "confidence": "ast",
@@ -5738,6 +6146,39 @@
         }
       ],
       "target": "site/src/content/docs/handbook/tools",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/gen-tool-docs.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/sync-doc-versions.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook/tools.md",
+      "writers": [
+        {
+          "by": "scripts/gen-tool-docs.mjs",
+          "confidence": "ast",
+          "stamps": true
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/sync-doc-versions.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/site-config.ts",
       "writers": []
     },
     {
@@ -5754,6 +6195,16 @@
     },
     {
       "readers": [
+        {
+          "by": "scripts/gen-tool-docs.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/sync-doc-versions.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
         {
           "by": "tests/logTailRoster.test.ts",
           "call": "readFileSync",

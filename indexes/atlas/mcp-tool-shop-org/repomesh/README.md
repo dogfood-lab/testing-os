@@ -15,7 +15,7 @@ Mapped at 2026-09-24 from commit 8843b88.
 - anchor/xrpl/anchor-result.json is now written by anchor/xrpl/scripts/post-anchor.mjs.
 - anchor/xrpl/partition-root.json is now written by anchor/xrpl/scripts/compute-root.mjs.
 - packages/repomesh-cli/dist is now written by packages/repomesh-cli/scripts/build.mjs.
-- And 99 more new writers and readers of places.
+- And 106 more new writers and readers of places.
 - .github was mixed and is now authored.
 - pages was mixed and is now authored.
 - the repository root was mixed and is now authored.
@@ -86,9 +86,9 @@ Every code part is imported by at least one test.
 
 ## Written but never read
 
-- **registry/capabilities.json** is written by .github/workflows/registry-ci.yml and registry/scripts/build-registry.mjs, and read by nothing else in this repository.
-- **registry/dependencies.json** is written by .github/workflows/registry-ci.yml and registry/scripts/build-dependencies.mjs, and read by nothing else in this repository.
-- **registry/snippets/** is written by .github/workflows/registry-ci.yml and registry/scripts/build-snippets.mjs, and read by nothing else in this repository.
+- **registry/capabilities.json** is written by registry/scripts/build-registry.mjs and read by nothing else in this repository.
+- **registry/dependencies.json** is written by registry/scripts/build-dependencies.mjs and read by nothing else in this repository.
+- **registry/snippets/** is written by registry/scripts/build-snippets.mjs and read by nothing else in this repository.
 
 ## Helpers that look duplicated
 
@@ -104,17 +104,18 @@ And 9 more pairs.
 
 ## Generated, never hand-edited
 
+- **anchor/xrpl/manifests/** is written by anchor/xrpl/scripts/compute-root.mjs.
 - **assets/** is written by repomesh-bot, which added every file in it.
 - **ledger/nodes/** is written by attestor/scripts/emit-key-event.mjs, tools/join-node.mjs and tools/register-node.mjs.
 - **profiles/** is written by repomesh-bot, which added every file in it.
-- **registry/anchors.json** is written by .github/workflows/anchor-xrpl.yml, .github/workflows/registry-ci.yml and verifiers/lib/common.mjs.
-- **registry/badges/** is written by .github/workflows/registry-ci.yml and registry/scripts/build-badges.mjs.
-- **registry/capabilities.json** is written by .github/workflows/registry-ci.yml and registry/scripts/build-registry.mjs.
-- **registry/dependencies.json** is written by .github/workflows/registry-ci.yml and registry/scripts/build-dependencies.mjs.
-- **registry/nodes.json** is written by .github/workflows/registry-ci.yml and registry/scripts/build-registry.mjs.
-- **registry/snippets/** is written by .github/workflows/registry-ci.yml and registry/scripts/build-snippets.mjs.
-- **registry/trust.json** is written by .github/workflows/registry-ci.yml and verifiers/lib/common.mjs.
-- **registry/verifiers.json** is written by .github/workflows/registry-ci.yml and registry/scripts/build-verifiers.mjs.
+- **registry/anchors.json** is written by .github/workflows/anchor-xrpl.yml and verifiers/lib/common.mjs.
+- **registry/badges/** is written by registry/scripts/build-badges.mjs.
+- **registry/capabilities.json** is written by registry/scripts/build-registry.mjs.
+- **registry/dependencies.json** is written by registry/scripts/build-dependencies.mjs.
+- **registry/nodes.json** is written by registry/scripts/build-registry.mjs.
+- **registry/snippets/** is written by registry/scripts/build-snippets.mjs.
+- **registry/trust.json** is written by verifiers/lib/common.mjs.
+- **registry/verifiers.json** is written by registry/scripts/build-verifiers.mjs.
 - **scripts/** is written by repomesh-bot, which added every file in it.
 - **templates/** is written by repomesh-bot, which added every file in it.
 
@@ -122,7 +123,6 @@ And 9 more pairs.
 
 People write .github/, docs/, the repository root, schemas/ and site/. Nothing in this repository writes to them.
 
-- **anchor/xrpl/manifests/** is written by .github/workflows/anchor-xrpl.yml and anchor/xrpl/scripts/compute-root.mjs, and by people: 5 of its 7 commits in the window are theirs.
 - **ledger/events/events.jsonl** is written by .github/workflows/anchor-xrpl.yml, .github/workflows/attestor-ci.yml, attestor/scripts/emit-key-event.mjs and packages/repomesh-cli/src/key/rotate-revoke.mjs, and by people: 14 of its 27 commits in the window are theirs.
 
 ## Where to start
@@ -134,9 +134,9 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 114 import sites could not be resolved.
-- 7 reads use paths built at run time and are not named here.
-- 24 writes go to places this repository does not track, so they are not listed as generated.
-- 45 writes and 166 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 6 reads use paths built at run time and are not named here.
+- 25 writes go to places this repository does not track, so they are not listed as generated.
+- 45 writes and 167 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 10 commands are built at run time and not followed, 9 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

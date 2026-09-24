@@ -1169,7 +1169,7 @@
       ],
       "importConfidence": "full",
       "name": "logos",
-      "origin": "generated",
+      "origin": "authored",
       "role": "config",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -1880,9 +1880,10 @@
         },
         {
           "hash": "5c1957b9b674f989d964ed7deaae46c628d6e54d03570954bd42fdfe73157f09",
-          "parseError": true,
-          "path": "tests/manifest.test.ts",
-          "unreadSyntax": "nul-character"
+          "importsFiles": [
+            "src/manifest.ts"
+          ],
+          "path": "tests/manifest.test.ts"
         },
         {
           "hash": "4555c21d9d9a14d8c17a20fd0c08bb2123e855a07b8a6950d6f69c365498e87e",
@@ -2795,7 +2796,6 @@
       "elsewhere": [],
       "file": ".github/workflows/sync.yml",
       "landings": [
-        "logos",
         "manifest.json"
       ],
       "mentions": [
@@ -2830,122 +2830,7 @@
       ],
       "readers": [
         {
-          "by": "docs/model-channels-spec.md",
-          "call": "<",
-          "confidence": "text",
-          "target": "logos"
-        },
-        {
-          "by": "manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/scripts/check-deployed-bytes.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "site/scripts/check-deployed-bytes.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/cli.ts",
-          "call": "raw-url",
-          "confidence": "ast",
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "src/commands/audit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/commands/stats.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "src/manifest.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "logos"
-        },
-        {
-          "by": "tests/audit.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "logos"
-        },
-        {
-          "by": "tests/json-output.test.ts",
-          "call": "raw-url",
-          "confidence": "ast",
-          "fromTests": true,
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "tests/migrate-journal.test.ts",
-          "call": "raw-url",
-          "confidence": "ast",
-          "fromTests": true,
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "tests/migrate.test.ts",
-          "call": "raw-url",
-          "confidence": "ast",
-          "fromTests": true,
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
-          "by": "tests/sync.test.ts",
-          "call": "raw-url",
-          "confidence": "ast",
-          "fromTests": true,
-          "ref": "main",
-          "repo": "mcp-tool-shop-org/brand",
-          "target": "logos"
-        },
-        {
           "by": ".github/workflows/ci.yml",
-          "target": "manifest.json"
-        },
-        {
-          "by": ".github/workflows/sync.yml",
           "target": "manifest.json"
         },
         {
@@ -3038,6 +2923,9 @@
         {
           "event": "workflow_dispatch"
         }
+      ],
+      "unwrittenStages": [
+        "logos"
       ],
       "uses": [
         "actions/checkout",
@@ -3252,6 +3140,12 @@
           "repo": "mcp-tool-shop-org/brand"
         },
         {
+          "by": "tests/manifest.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tests/migrate-journal.test.ts",
           "call": "raw-url",
           "confidence": "ast",
@@ -3277,11 +3171,7 @@
         }
       ],
       "target": "logos",
-      "writers": [
-        {
-          "by": ".github/workflows/sync.yml"
-        }
-      ]
+      "writers": []
     },
     {
       "readers": [
@@ -5878,9 +5768,6 @@
           "by": ".github/workflows/ci.yml"
         },
         {
-          "by": ".github/workflows/sync.yml"
-        },
-        {
           "by": "site/integrations/model-passthrough.mjs",
           "call": "existsSync",
           "confidence": "ast"
@@ -6010,6 +5897,18 @@
         }
       ],
       "target": "tests/_helpers/global-setup.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/manifest.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/manifests/v1.0-frozen.json",
       "writers": []
     },
     {

@@ -12,11 +12,11 @@ Mapped at 2026-09-24 from commit fd35beb.
 - Post-Publish Smoke now also runs backpropagate/cli.py.
 - Publish now also runs backpropagate/cli.py.
 - And 4 more changes to doors.
-- .github/mutmut-baseline.txt is now written by .github/workflows/mutmut.yml.
 - .github/workflows/ci.yml is now read by docs/ci-gates-triage-plan.md.
 - README.md is now also read by pyproject.toml and tests/test_model_card.py.
-- And 16 more new writers and readers of places.
-- .github was generated and is now mixed.
+- backpropagate/ is now also read by CONTRIBUTING.md and pyproject.toml.
+- And 15 more new writers and readers of places.
+- .github was generated and is now authored.
 - 247 files changed content, across 10 parts.
 
 ## What comes in
@@ -55,7 +55,7 @@ CI writes nothing this map can see.
 
 **Post-Publish Smoke** runs backpropagate/cli.py and opens an issue when it fails.
 
-**Mutation testing (mutmut)** runs no file this map can see, writes to .github/mutmut-baseline.txt, commits .github/mutmut-baseline.txt and pushes to a branch for review, never to main, and opens a pull request.
+**Mutation testing (mutmut)** runs no file this map can see, commits .github/mutmut-baseline.txt and pushes to a branch for review, never to main, and opens a pull request.
 
 **OpenSSF Scorecard** runs no file this map can see.
 
@@ -88,7 +88,7 @@ Window: 180 days; a pair counts from 10 shared commits, since 20 source files re
 
 ## Written but never read
 
-- **.github/mutmut-baseline.txt** is written by .github/workflows/mutmut.yml and read by nothing else in this repository.
+Every written place has a reader.
 
 ## Helpers that look duplicated
 
@@ -96,12 +96,11 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **.github/mutmut-baseline.txt** is written by .github/workflows/mutmut.yml.
 - **CITATION.cff** is written by scripts/prep_release.sh.
 
 ## Hand-authored
 
-People write .claude/, assets/, docs/, examples/ and site/; 13 writes with paths built at run time may land here.
+People write .claude/, .github/, assets/, docs/, examples/ and site/; 13 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -114,7 +113,7 @@ Read those in order to follow one run of backprop end to end. This path follows 
 - 40 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.
 - 6 import sites could not be resolved.
 - 13 writes and 33 reads use paths built at run time and are not named here.
-- 3 writes and 9 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 3 writes and 9 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - There is a compose.yaml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

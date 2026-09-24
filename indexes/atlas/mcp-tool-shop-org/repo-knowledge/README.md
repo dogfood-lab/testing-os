@@ -16,7 +16,7 @@ Mapped at 2026-09-24 from commit 4435870.
 - .github/workflows/ci.yml is now read by test/build-health.test.ts, test/doctor.test.ts, test/feed.test.ts, test/health-commands.test.ts, test/migration-009.test.ts and test/table.test.ts.
 - .github/workflows/release.yml is now read by test/build-health.test.ts.
 - CHANGELOG.md is now also read by src/sync/local.ts and test/version.test.ts.
-- And 12 more new writers and readers of places.
+- And 14 more new writers and readers of places.
 - data was generated and is now authored.
 - 775 files changed content, across 10 parts.
 
@@ -101,8 +101,8 @@ Read those in order to follow one run of rk end to end. This path follows rk (a 
 ## What this map cannot see
 
 - 1 import site could not be resolved.
-- 3 writes and 27 reads use paths built at run time and are not named here.
-- 6 writes and 86 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 3 writes and 15 reads use paths built at run time and are not named here.
+- 6 writes and 85 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 2 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

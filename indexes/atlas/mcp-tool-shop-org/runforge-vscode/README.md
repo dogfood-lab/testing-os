@@ -82,7 +82,7 @@ Read those in order to follow one activation of runforge end to end. This path f
 
 - 83 import sites could not be resolved.
 - 2 writes and 16 reads use paths built at run time and are not named here.
-- 9 writes and 20 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 9 writes and 20 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 8 commands are built at run time and not followed, 5 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

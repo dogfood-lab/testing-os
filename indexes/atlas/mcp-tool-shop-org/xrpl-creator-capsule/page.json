@@ -9,7 +9,7 @@
   ],
   "breaks": [
     {
-      "doors": 2,
+      "doors": 1,
       "importedBy": [
         "app",
         "cli",
@@ -24,7 +24,7 @@
       "partLabel": "core"
     },
     {
-      "doors": 2,
+      "doors": 1,
       "importedBy": [
         "app",
         "cli",
@@ -36,7 +36,7 @@
       "partLabel": "storage"
     },
     {
-      "doors": 2,
+      "doors": 1,
       "importedBy": [
         "app",
         "artifacts",
@@ -48,7 +48,7 @@
       "partLabel": "xrpl"
     },
     {
-      "doors": 2,
+      "doors": 1,
       "importedBy": [
         "cli"
       ],
@@ -58,7 +58,7 @@
       "partLabel": "xaman"
     },
     {
-      "doors": 2,
+      "doors": 1,
       "importedBy": [],
       "importedByTests": [
         "artifacts"
@@ -77,6 +77,13 @@
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "capsule (packages/cli/package.json) is no longer a command.",
+        "subjects": [
+          "packages/cli/package.json"
+        ]
+      },
       {
         "kind": "landing",
         "sentence": "app/src-tauri/icons/128x128.png is now read by app/src-tauri/tauri.conf.json.",
@@ -103,7 +110,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 3 more new writers and readers of places.",
+        "sentence": "And 7 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -202,14 +209,12 @@
   "changesTogetherWithTests": 0,
   "commit": "e2ce19a5099a1e2fba8c13c8bac76019e0db761a",
   "defaultBranch": "main",
-  "derived": "12 parts, mostly TypeScript (183 files). Work enters through 3 doors; the busiest is CI, which reaches 8 parts. People run capsule.",
+  "derived": "12 parts, mostly TypeScript (183 files). Work enters through 2 doors; the busiest is CI, which reaches 8 parts.",
   "doors": [
     {
       "checks": [
         "app/bridge-worker-commands.ts",
         "app/bridge-worker.ts",
-        "app/src/",
-        "app/vite.config.ts",
         "artifacts/",
         "packages/cli/src/",
         "packages/core/src/",
@@ -217,8 +222,8 @@
         "packages/xaman/src/",
         "packages/xrpl/src/"
       ],
-      "checksCount": 10,
-      "checksMore": 116,
+      "checksCount": 8,
+      "checksMore": 110,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -277,26 +282,8 @@
         "app/bridge-worker-stdout-flush.test.ts",
         "app/bridge-worker-verify-release.test.ts",
         "app/bridge-worker.test.ts",
-        "app/src/ErrorBoundary.test.tsx",
-        "app/src/__test__/tauri-security-config.test.ts",
-        "app/src/bridge/engine.test.ts",
-        "app/src/components/CloseWarningGate.test.tsx",
-        "app/src/components/TitleBar.test.tsx",
-        "app/src/components/panels/GovernancePanel.test.tsx",
-        "app/src/components/panels/MintPanel.test.tsx",
-        "app/src/components/panels/PanelShell.test.tsx",
-        "app/src/components/panels/RecoveryPanel.test.tsx",
-        "app/src/components/studio/StudioShell.sample-error.test.tsx",
-        "app/src/components/studio/StudioShell.test.tsx",
-        "app/src/errors/humanize.test.ts",
-        "app/src/state/actionlog.test.ts",
-        "app/src/state/release-reconcile.test.tsx",
-        "app/src/state/release-timeout.test.tsx",
-        "app/src/state/release-trust.test.tsx",
-        "app/src/state/release.test.tsx",
-        "app/src/state/session.test.ts",
-        "app/src/state/studio.test.tsx",
-        "app/src/state/validate.test.ts",
+        "app/src/",
+        "app/vite.config.ts",
         "artifacts/failure-drills.test.ts",
         "artifacts/governance-drills.test.ts",
         "artifacts/governance-golden-path.test.ts",
@@ -346,8 +333,8 @@
         "packages/xrpl/src/verify-minter.test.ts",
         "packages/xrpl/src/wallet.test.ts"
       ],
-      "runsCount": 78,
-      "runsMore": 75,
+      "runsCount": 60,
+      "runsMore": 109,
       "sends": [
         "creates a GitHub release on a release event"
       ],
@@ -389,52 +376,6 @@
         "on a push to main touching 2 paths",
         "or by hand"
       ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "checksMore": 0,
-      "file": "packages/cli/package.json",
-      "id": "packages/cli/package.json#capsule",
-      "kind": "command",
-      "landings": [],
-      "name": "capsule",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "cli",
-          "depth": 0,
-          "files": 17
-        },
-        {
-          "boundary": "core",
-          "depth": 1,
-          "files": 28
-        },
-        {
-          "boundary": "storage",
-          "depth": 1,
-          "files": 5
-        },
-        {
-          "boundary": "xaman",
-          "depth": 1,
-          "files": 5
-        },
-        {
-          "boundary": "xrpl",
-          "depth": 1,
-          "files": 9
-        }
-      ],
-      "runs": [
-        "packages/cli/src/bin.ts"
-      ],
-      "runsCount": 1,
-      "runsMore": 0,
-      "sends": [],
-      "stages": [],
-      "triggers": []
     }
   ],
   "duplicates": [],
@@ -478,12 +419,12 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T11:55:06.833Z",
+  "generatedAt": "2026-09-24T17:42:50.789Z",
   "limits": [
     "4 import sites could not be resolved.",
     "2 writes and 14 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "22 writes and 37 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "22 writes and 37 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed, and it is in tests.",
     "There is a Tauri app under app/ (4 Rust files) that a workflow builds; the map reads no Rust, so what its Rust code does is not on this page.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -507,12 +448,11 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/xrpl-creator-capsule",
   "sequences": [],
-  "startDoor": "packages/cli/package.json#capsule",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "packages/cli/src/bin.ts",
-    "packages/core/src/access-grant-schema.ts"
+    ".github/workflows/ci.yml",
+    "app/scripts/bundle-bridge.mjs"
   ],
-  "startReason": "This path follows capsule (a command people run) from its entry, since CI runs only tests and scripts that import no code here.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 76,

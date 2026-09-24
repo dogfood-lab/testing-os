@@ -96,6 +96,7 @@ Read those in order to follow one run of xrpl-camp end to end. This path follows
 
 - 1 import site could not be resolved.
 - 4 writes and 11 reads use paths built at run time and are not named here.
+- 1 write goes to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

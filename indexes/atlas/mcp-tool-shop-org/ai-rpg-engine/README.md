@@ -15,7 +15,7 @@ Mapped at 2026-09-24 from commit f7e56e6.
 - docs/c0-alignment/intake-table.json is now written by packages/cli/src/c0-intake-table.test.ts.
 - docs/c0-alignment/reverse-table.json is now written by packages/cli/src/c0-reverse-table.test.ts.
 - docs/c0-alignment/version-skew.json is now written by packages/cli/src/c0-version-skew.test.ts.
-- And 65 more new writers and readers of places.
+- And 87 more new writers and readers of places.
 - docs was authored and is now mixed.
 - scripts/verify-isolated-consumer.mjs now starts at run; it started at publishable workspaces.
 - No file changed.
@@ -135,10 +135,9 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 3 import sites could not be resolved.
-- 3 files use syntax the parser cannot read (packages/content-schema/src/loader.ts, packages/ledger-adapter/src/transport/dry-run.ts and packages/ledger-adapter/src/transport/testnet.ts), so what they import is not known: 2 in ledger-adapter (a NUL character inside a string), 1 in content-schema (a NUL character inside a string).
 - 26 writes and 35 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 29 writes and 114 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 36 writes and 133 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 2 commands are built at run time and not followed, 1 of them in tests.
 - CI runs or checks 402 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 - Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.

@@ -5,20 +5,13 @@
     ".github/",
     "assets/",
     "docs/",
+    "logos/",
     "site/"
   ],
   "authoredWritten": [
     {
-      "byPeople": 67,
-      "commits": 68,
-      "place": "logos/",
-      "writers": [
-        ".github/workflows/sync.yml"
-      ]
-    },
-    {
-      "byPeople": 41,
-      "commits": 42,
+      "byPeople": 42,
+      "commits": 43,
       "place": "manifest.json",
       "writers": [
         ".github/workflows/sync.yml"
@@ -63,18 +56,6 @@
       "kind": "part",
       "name": "tests",
       "partLabel": "tests"
-    },
-    {
-      "kind": "place",
-      "readers": [
-        "root",
-        "site",
-        "src"
-      ],
-      "target": "logos/",
-      "writers": [
-        ".github"
-      ]
     },
     {
       "kind": "place",
@@ -154,8 +135,15 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 238 more new writers and readers of places.",
+        "sentence": "And 239 more new writers and readers of places.",
         "subjects": []
+      },
+      {
+        "kind": "origin",
+        "sentence": "logos was generated and is now authored.",
+        "subjects": [
+          "logos"
+        ]
       },
       {
         "kind": "sequence",
@@ -364,7 +352,6 @@
       "file": ".github/workflows/sync.yml",
       "id": ".github/workflows/sync.yml",
       "landings": [
-        "logos/",
         "manifest.json"
       ],
       "name": "Sync org logos",
@@ -402,6 +389,9 @@
       "triggers": [
         "on a schedule (`0 6 * * *`)",
         "or by hand"
+      ],
+      "unwrittenStages": [
+        "logos"
       ]
     },
     {
@@ -455,11 +445,10 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T11:50:02.548Z",
+  "generatedAt": "2026-09-24T17:35:26.625Z",
   "limits": [
-    "1 file uses syntax the parser cannot read (tests/manifest.test.ts), so what it imports is not known: a NUL character inside a string (1).",
     "6 reads use paths built at run time and are not named here.",
-    "24 writes and 73 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "24 writes and 73 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -494,7 +483,7 @@
   },
   "unnamedWrites": 0,
   "unread": [],
-  "unreadFiles": 1,
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
     {
@@ -504,5 +493,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 2
+  "written": 1
 }

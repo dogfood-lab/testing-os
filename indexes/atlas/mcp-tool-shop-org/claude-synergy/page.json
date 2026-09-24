@@ -2,18 +2,10 @@
   "authored": [
     ".github/",
     "docs/",
+    "products/",
+    "root",
     "site/",
     "synergies/"
-  ],
-  "authoredWritten": [
-    {
-      "byPeople": 7,
-      "commits": 7,
-      "place": "products/",
-      "writers": [
-        ".github/workflows/sync.yml"
-      ]
-    }
   ],
   "breaks": [
     {
@@ -68,8 +60,30 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "synergies/ is now read by src/mcp-server.ts.",
+        "subjects": [
+          "synergies/",
+          "src/mcp-server.ts"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "products was generated and is now authored.",
+        "subjects": [
+          "products"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "the repository root was mixed and is now authored.",
+        "subjects": [
+          "root"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 1701 files changed content.",
+        "sentence": "1701 files changed content, across 9 parts.",
         "subjects": []
       }
     ],
@@ -77,7 +91,7 @@
       "commit": "fb90b80c2a5dbd4e51646bf8642a81f63c4c92b9",
       "generatedAt": "2026-09-24T09:07:24.868Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -148,7 +162,7 @@
   "changesTogetherWithTests": 0,
   "commit": "6d91d8cceb43d7acbbcd994ba718ee17ef9bf483",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly TypeScript (83 files). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk. People import @mcptoolshop/claude-synergy.",
+  "derived": "10 parts, mostly TypeScript (83 files). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk.",
   "doors": [
     {
       "checks": [
@@ -268,11 +282,7 @@
       "checksMore": 0,
       "file": ".github/workflows/sync.yml",
       "id": ".github/workflows/sync.yml",
-      "landings": [
-        "SOURCES.md",
-        "URGENT_FINDINGS.md",
-        "products/"
-      ],
+      "landings": [],
       "name": "Daily sync",
       "programs": [
         "gh"
@@ -302,6 +312,11 @@
       "triggers": [
         "on a schedule (`0 12 * * *`)",
         "or by hand"
+      ],
+      "unwrittenStages": [
+        "SOURCES.md",
+        "URGENT_FINDINGS.md",
+        "products"
       ]
     },
     {
@@ -325,6 +340,7 @@
         "src/cli.ts",
         "src/mcp-server.ts"
       ],
+      "runsCommand": "hk",
       "runsCount": 2,
       "runsMore": 0,
       "sends": [],
@@ -402,18 +418,6 @@
   ],
   "generated": [
     {
-      "place": "SOURCES.md",
-      "writers": [
-        ".github/workflows/sync.yml"
-      ]
-    },
-    {
-      "place": "URGENT_FINDINGS.md",
-      "writers": [
-        ".github/workflows/sync.yml"
-      ]
-    },
-    {
       "place": "dataset/changelog-actions/v1/entries/",
       "writers": [
         "scripts/apply-a3c-review.mjs"
@@ -456,10 +460,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T11:50:20.123Z",
+  "generatedAt": "2026-09-24T17:35:51.815Z",
   "limits": [
-    "5 reads use paths built at run time and are not named here.",
-    "10 writes and 43 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "10 writes and 48 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/sync.yml",
@@ -476,15 +479,7 @@
     "test": "test"
   },
   "parts": 10,
-  "readers": [
-    {
-      "readers": [
-        "scripts/verify-citations-sample.mjs"
-      ],
-      "target": "products/",
-      "tests": 1
-    }
-  ],
+  "readers": [],
   "repo": "mcp-tool-shop-org/claude-synergy",
   "sequences": [],
   "startDoor": "package.json#claude-synergy-mcp",
@@ -501,18 +496,6 @@
   },
   "unnamedWrites": 0,
   "unread": [
-    {
-      "place": "SOURCES.md",
-      "writers": [
-        ".github/workflows/sync.yml"
-      ]
-    },
-    {
-      "place": "URGENT_FINDINGS.md",
-      "writers": [
-        ".github/workflows/sync.yml"
-      ]
-    },
     {
       "place": "dataset/changelog-actions/v1/eval-report-run1.json",
       "writers": [
@@ -548,5 +531,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 10
+  "written": 7
 }

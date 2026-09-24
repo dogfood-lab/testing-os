@@ -267,7 +267,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 4,
+      "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -316,7 +316,7 @@
       "name": "bin",
       "origin": "authored",
       "outsideReads": 44,
-      "outsideWrites": 1,
+      "outsideWrites": 4,
       "role": "code",
       "testedBy": 3,
       "unresolvedSites": 1
@@ -1228,12 +1228,6 @@
           "confidence": "ast"
         },
         {
-          "by": "test/shipcheck.test.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
           "by": "test/version.test.mjs",
           "call": "readFileSync",
           "confidence": "ast",
@@ -1276,23 +1270,6 @@
         }
       ],
       "target": "README.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "bin/shipcheck.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "test/shipcheck.test.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "SCORECARD.md",
       "writers": []
     },
     {
@@ -1445,7 +1422,12 @@
       "readers": [
         {
           "by": "bin/shipcheck.mjs",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "bin/shipcheck.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         }
       ],
@@ -1456,7 +1438,12 @@
       "readers": [
         {
           "by": "bin/shipcheck.mjs",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "bin/shipcheck.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         }
       ],
@@ -1467,7 +1454,12 @@
       "readers": [
         {
           "by": "bin/shipcheck.mjs",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "bin/shipcheck.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         }
       ],
@@ -1478,7 +1470,12 @@
       "readers": [
         {
           "by": "bin/shipcheck.mjs",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "bin/shipcheck.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         }
       ],

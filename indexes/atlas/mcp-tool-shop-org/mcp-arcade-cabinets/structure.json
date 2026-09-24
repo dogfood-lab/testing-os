@@ -37,7 +37,8 @@
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
-        "packages/cabinet-server/src/index.ts"
+        "packages/cabinet-server/src/index.ts",
+        "packages/cabinet-server/src/server.ts"
       ],
       "externals": 0,
       "files": [
@@ -66,6 +67,8 @@
           "reexportsOnly": true
         },
         {
+          "entry": "createCabinet",
+          "entryRule": 4,
           "exports": [
             "createCabinet",
             "tapeLine",
@@ -80,7 +83,31 @@
             "packages/cabinet-server/src/tool-names.ts",
             "packages/ghost-on-the-menu/src/index.ts"
           ],
-          "path": "packages/cabinet-server/src/cabinet.ts"
+          "path": "packages/cabinet-server/src/cabinet.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 262,
+                  "name": "enumOf",
+                  "target": {
+                    "file": "packages/cabinet-server/src/contract.ts"
+                  }
+                },
+                {
+                  "line": 265,
+                  "name": "toolDef",
+                  "target": {
+                    "file": "packages/cabinet-server/src/contract.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "createCabinet"
+            }
+          ]
         },
         {
           "exports": [
@@ -105,6 +132,8 @@
           "path": "packages/cabinet-server/src/client.ts"
         },
         {
+          "entry": "loadContract",
+          "entryRule": 1,
           "exports": [
             "assertCatalogTools",
             "enumOf",
@@ -119,7 +148,72 @@
             "packages/cabinet-server/tools.json",
             "packages/cabinet-server/tools.vibe.json"
           ],
-          "path": "packages/cabinet-server/src/contract.ts"
+          "path": "packages/cabinet-server/src/contract.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 163,
+                  "name": "test",
+                  "target": {
+                    "file": "packages/cabinet-server/src/gate.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "words"
+            },
+            {
+              "calls": [
+                {
+                  "line": 163,
+                  "name": "test",
+                  "target": {
+                    "file": "packages/cabinet-server/src/gate.ts"
+                  },
+                  "via": "words"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "loadProperty"
+            },
+            {
+              "calls": [
+                {
+                  "line": 163,
+                  "name": "test",
+                  "target": {
+                    "file": "packages/cabinet-server/src/gate.ts"
+                  },
+                  "via": "words"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "loadTool"
+            },
+            {
+              "calls": [
+                {
+                  "line": 163,
+                  "name": "test",
+                  "target": {
+                    "file": "packages/cabinet-server/src/gate.ts"
+                  },
+                  "via": "words"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "loadContract"
+            }
+          ]
         },
         {
           "exports": [
@@ -161,6 +255,8 @@
           "path": "packages/cabinet-server/src/gate.ts"
         },
         {
+          "entry": "seatView",
+          "entryRule": 4,
           "exports": [
             "hostForRound",
             "seatView",
@@ -173,7 +269,60 @@
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/cabinet-server/src/host.ts"
+          "path": "packages/cabinet-server/src/host.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 64,
+                  "name": "waveKindAt",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/index.ts"
+                  }
+                },
+                {
+                  "line": 77,
+                  "name": "hpWord",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/index.ts"
+                  }
+                },
+                {
+                  "line": 78,
+                  "name": "columnWord",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/index.ts"
+                  }
+                },
+                {
+                  "line": 79,
+                  "name": "stickWord",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/index.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "seatView"
+            },
+            {
+              "calls": [
+                {
+                  "line": 96,
+                  "name": "labelTape",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/index.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "tapeCards"
+            }
+          ]
         },
         {
           "hash": "5dfaed1733384f6c07dd174cc448d5a08dcfe99d9cd9e0c1ff60305b0278f013",
@@ -279,6 +428,8 @@
           "path": "packages/cabinet-server/src/server-vibe.ts"
         },
         {
+          "entry": "startStdio",
+          "entryRule": 1,
           "exports": [
             "buildServer",
             "ghostEnv",
@@ -304,7 +455,378 @@
             "packages/ghost-on-the-menu/src/play.ts",
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/cabinet-server/src/server.ts"
+          "path": "packages/cabinet-server/src/server.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 91,
+                  "name": "loadTape",
+                  "target": {
+                    "file": "packages/tape-core/src/index.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "listTapesDir"
+            },
+            {
+              "calls": [
+                {
+                  "line": 91,
+                  "name": "loadTape",
+                  "target": {
+                    "file": "packages/tape-core/src/index.ts"
+                  },
+                  "via": "listTapesDir"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "listTapes"
+            },
+            {
+              "calls": [
+                {
+                  "line": 151,
+                  "name": "assertCatalogTools",
+                  "target": {
+                    "file": "packages/cabinet-server/src/contract.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkCatalogListing"
+            },
+            {
+              "calls": [
+                {
+                  "line": 91,
+                  "name": "loadTape",
+                  "target": {
+                    "file": "packages/tape-core/src/index.ts"
+                  },
+                  "via": "listTapesDir"
+                },
+                {
+                  "line": 265,
+                  "name": "prepassRound",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/index.ts"
+                  },
+                  "via": "makeRound"
+                },
+                {
+                  "line": 271,
+                  "name": "createRoundState",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/index.ts"
+                  }
+                },
+                {
+                  "line": 272,
+                  "name": "botFor",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/play.ts"
+                  }
+                },
+                {
+                  "line": 278,
+                  "name": "createStepFaults",
+                  "target": {
+                    "file": "packages/cabinet-server/src/step-guard.ts"
+                  }
+                },
+                {
+                  "line": 323,
+                  "name": "voiceHealth",
+                  "target": {
+                    "file": "packages/cabinet-server/src/voice.ts"
+                  },
+                  "via": "probe"
+                },
+                {
+                  "line": 338,
+                  "name": "hostForRound",
+                  "target": {
+                    "file": "packages/cabinet-server/src/host.ts"
+                  }
+                },
+                {
+                  "line": 394,
+                  "name": "createCabinet",
+                  "target": {
+                    "file": "packages/cabinet-server/src/cabinet.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "headlessRound"
+            },
+            {
+              "calls": [
+                {
+                  "line": 479,
+                  "name": "setEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  }
+                },
+                {
+                  "line": 485,
+                  "name": "wholeEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  }
+                },
+                {
+                  "line": 488,
+                  "name": "setEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  }
+                },
+                {
+                  "line": 489,
+                  "name": "SEED_NOTE",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  }
+                },
+                {
+                  "line": 493,
+                  "name": "wholeEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  }
+                },
+                {
+                  "line": 496,
+                  "name": "setEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  }
+                },
+                {
+                  "line": 497,
+                  "name": "tierNote",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  }
+                },
+                {
+                  "line": 502,
+                  "name": "setEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "ghostEnv"
+            },
+            {
+              "calls": [
+                {
+                  "line": 573,
+                  "name": "leverRows",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  }
+                },
+                {
+                  "line": 573,
+                  "name": "CONTRACT",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/cabinet-server/src/contract.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "helpText"
+            },
+            {
+              "calls": [
+                {
+                  "line": 151,
+                  "name": "assertCatalogTools",
+                  "target": {
+                    "file": "packages/cabinet-server/src/contract.ts"
+                  },
+                  "via": "checkCatalogListing"
+                },
+                {
+                  "line": 479,
+                  "name": "setEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  },
+                  "via": "ghostEnv"
+                },
+                {
+                  "line": 485,
+                  "name": "wholeEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  },
+                  "via": "ghostEnv"
+                },
+                {
+                  "line": 488,
+                  "name": "setEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  },
+                  "via": "ghostEnv"
+                },
+                {
+                  "line": 489,
+                  "name": "SEED_NOTE",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  },
+                  "via": "ghostEnv"
+                },
+                {
+                  "line": 493,
+                  "name": "wholeEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  },
+                  "via": "ghostEnv"
+                },
+                {
+                  "line": 496,
+                  "name": "setEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  },
+                  "via": "ghostEnv"
+                },
+                {
+                  "line": 497,
+                  "name": "tierNote",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  },
+                  "via": "ghostEnv"
+                },
+                {
+                  "line": 502,
+                  "name": "setEnv",
+                  "target": {
+                    "file": "packages/cabinet-server/src/env.ts"
+                  },
+                  "via": "ghostEnv"
+                },
+                {
+                  "line": 91,
+                  "name": "loadTape",
+                  "target": {
+                    "file": "packages/tape-core/src/index.ts"
+                  },
+                  "via": "listTapesDir"
+                },
+                {
+                  "line": 265,
+                  "name": "prepassRound",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/index.ts"
+                  },
+                  "via": "makeRound"
+                },
+                {
+                  "line": 271,
+                  "name": "createRoundState",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/index.ts"
+                  },
+                  "via": "headlessRound"
+                },
+                {
+                  "line": 272,
+                  "name": "botFor",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/play.ts"
+                  },
+                  "via": "headlessRound"
+                },
+                {
+                  "line": 278,
+                  "name": "createStepFaults",
+                  "target": {
+                    "file": "packages/cabinet-server/src/step-guard.ts"
+                  },
+                  "via": "headlessRound"
+                },
+                {
+                  "line": 323,
+                  "name": "voiceHealth",
+                  "target": {
+                    "file": "packages/cabinet-server/src/voice.ts"
+                  },
+                  "via": "probe"
+                },
+                {
+                  "line": 338,
+                  "name": "hostForRound",
+                  "target": {
+                    "file": "packages/cabinet-server/src/host.ts"
+                  },
+                  "via": "headlessRound"
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 262,
+                      "name": "enumOf",
+                      "target": {
+                        "file": "packages/cabinet-server/src/contract.ts"
+                      }
+                    },
+                    {
+                      "line": 265,
+                      "name": "toolDef",
+                      "target": {
+                        "file": "packages/cabinet-server/src/contract.ts"
+                      }
+                    }
+                  ],
+                  "line": 394,
+                  "name": "createCabinet",
+                  "target": {
+                    "file": "packages/cabinet-server/src/cabinet.ts"
+                  },
+                  "via": "headlessRound"
+                },
+                {
+                  "line": 633,
+                  "name": "guardStep",
+                  "target": {
+                    "file": "packages/cabinet-server/src/step-guard.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "startStdio"
+            }
+          ]
         },
         {
           "exports": [
@@ -396,6 +918,8 @@
           "path": "packages/cabinet-server/src/voice-words.ts"
         },
         {
+          "entry": "speakLine",
+          "entryRule": 4,
           "exports": [
             "createVoicer",
             "speakLine",
@@ -407,7 +931,37 @@
             "packages/cabinet-server/src/host.ts",
             "packages/cabinet-server/src/voice-words.ts"
           ],
-          "path": "packages/cabinet-server/src/voice.ts"
+          "path": "packages/cabinet-server/src/voice.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 92,
+                  "name": "json",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "readError"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "res.status === 400 || res.status === 401 || res.status === …",
+                  "line": 92,
+                  "name": "json",
+                  "target": null,
+                  "via": "readError"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "speakLine"
+            }
+          ]
         },
         {
           "hash": "254a0e6e1fd0dcc05b44e0ae58ed2a1b4014898a3431b4f93d135f9775882cb6",
@@ -2903,9 +3457,319 @@
           "path": "packages/ghost-on-the-menu/src/pilot.ts"
         },
         {
+          "entry": "play",
+          "entryRule": 3,
+          "exports": [
+            "botFor",
+            "endlessTranscript",
+            "loadRoster",
+            "play",
+            "playTape",
+            "tellIds"
+          ],
           "hash": "52924571c856cff80e087a6b7c363a9c3772b11ea19924e4ae5f9d9b67b7b5c2",
-          "parseError": true,
-          "path": "packages/ghost-on-the-menu/src/play.ts"
+          "importsFiles": [
+            "packages/ghost-on-the-menu/src/endless.ts",
+            "packages/ghost-on-the-menu/src/patterns.ts",
+            "packages/ghost-on-the-menu/src/prepass.ts",
+            "packages/ghost-on-the-menu/src/render.ts",
+            "packages/ghost-on-the-menu/src/sim.ts",
+            "packages/ghost-on-the-menu/src/types.ts",
+            "packages/tape-core/src/index.ts"
+          ],
+          "path": "packages/ghost-on-the-menu/src/play.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 287,
+                  "name": "isHittable",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sweeperInput"
+            },
+            {
+              "calls": [
+                {
+                  "line": 381,
+                  "name": "loadTape",
+                  "target": {
+                    "file": "packages/tape-core/src/index.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "loadRoster"
+            },
+            {
+              "calls": [
+                {
+                  "line": 395,
+                  "name": "endlessWords",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/endless.ts"
+                  }
+                },
+                {
+                  "line": 406,
+                  "name": "rungWord",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/patterns.ts"
+                  }
+                },
+                {
+                  "line": 410,
+                  "name": "FIELD_SEP",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  }
+                },
+                {
+                  "line": 423,
+                  "name": "endlessScoreLines",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/endless.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "endlessTranscript"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "args.endless",
+                  "line": 381,
+                  "name": "loadTape",
+                  "target": {
+                    "file": "packages/tape-core/src/index.ts"
+                  },
+                  "via": "loadRoster"
+                },
+                {
+                  "branch": "args.endless",
+                  "line": 462,
+                  "name": "runEndless",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/endless.ts"
+                  }
+                },
+                {
+                  "branch": "args.endless",
+                  "line": 395,
+                  "name": "endlessWords",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/endless.ts"
+                  },
+                  "via": "endlessTranscript"
+                },
+                {
+                  "branch": "args.endless",
+                  "line": 406,
+                  "name": "rungWord",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/patterns.ts"
+                  },
+                  "via": "endlessTranscript"
+                },
+                {
+                  "branch": "args.endless",
+                  "line": 410,
+                  "name": "FIELD_SEP",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  },
+                  "via": "endlessTranscript"
+                },
+                {
+                  "branch": "args.endless",
+                  "line": 423,
+                  "name": "endlessScoreLines",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/endless.ts"
+                  },
+                  "via": "endlessTranscript"
+                },
+                {
+                  "line": 502,
+                  "name": "loadTape",
+                  "target": {
+                    "file": "packages/tape-core/src/index.ts"
+                  }
+                },
+                {
+                  "line": 536,
+                  "name": "prepassRound",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/prepass.ts"
+                  },
+                  "via": "playTape"
+                },
+                {
+                  "line": 541,
+                  "name": "createRoundState",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  },
+                  "via": "playTape"
+                },
+                {
+                  "line": 562,
+                  "name": "watchSaid",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  },
+                  "via": "playTape"
+                },
+                {
+                  "line": 585,
+                  "name": "stepRound",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  },
+                  "via": "playTape"
+                },
+                {
+                  "line": 592,
+                  "name": "frame",
+                  "target": null,
+                  "via": "playTape"
+                },
+                {
+                  "line": 605,
+                  "name": "makeTextCtx",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/render.ts"
+                  },
+                  "via": "playTape"
+                },
+                {
+                  "line": 606,
+                  "name": "renderRound",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/render.ts"
+                  },
+                  "via": "playTape"
+                },
+                {
+                  "line": 612,
+                  "name": "saidLine",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  },
+                  "via": "playTape"
+                },
+                {
+                  "line": 640,
+                  "name": "FIELD_SEP",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  },
+                  "via": "playTape"
+                },
+                {
+                  "line": 646,
+                  "name": "summary",
+                  "target": null,
+                  "via": "playTape"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "play"
+            },
+            {
+              "calls": [
+                {
+                  "line": 536,
+                  "name": "prepassRound",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/prepass.ts"
+                  }
+                },
+                {
+                  "line": 541,
+                  "name": "createRoundState",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  }
+                },
+                {
+                  "line": 562,
+                  "name": "watchSaid",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  }
+                },
+                {
+                  "line": 585,
+                  "name": "stepRound",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  }
+                },
+                {
+                  "line": 592,
+                  "name": "frame",
+                  "target": null
+                },
+                {
+                  "line": 605,
+                  "name": "makeTextCtx",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/render.ts"
+                  }
+                },
+                {
+                  "line": 606,
+                  "name": "renderRound",
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/render.ts"
+                  }
+                },
+                {
+                  "line": 612,
+                  "name": "saidLine",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  }
+                },
+                {
+                  "line": 640,
+                  "name": "FIELD_SEP",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/ghost-on-the-menu/src/sim.ts"
+                  }
+                },
+                {
+                  "line": 646,
+                  "name": "summary",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "playTape"
+            }
+          ]
         },
         {
           "exports": [
@@ -3141,7 +4005,7 @@
       "importConfidence": "full",
       "name": "ghost-on-the-menu",
       "origin": "authored",
-      "outsideReads": 24,
+      "outsideReads": 26,
       "role": "code",
       "testedBy": 31,
       "unresolvedSites": 4
@@ -3151,7 +4015,9 @@
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 1,
-      "entryPoints": [],
+      "entryPoints": [
+        "packages/launcher/src/cli.ts"
+      ],
       "externals": 0,
       "files": [
         {
@@ -3194,6 +4060,8 @@
           "path": "packages/launcher/src/allow.ts"
         },
         {
+          "entry": "main",
+          "entryRule": 1,
           "exports": [
             "badArgLines",
             "bugsIn",
@@ -3224,7 +4092,185 @@
             "packages/cabinet-server/src/tool-names.ts",
             "packages/launcher/src/serve.ts"
           ],
-          "path": "packages/launcher/src/cli.ts"
+          "path": "packages/launcher/src/cli.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 168,
+                  "name": "checkSeatUrl",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkSeats"
+            },
+            {
+              "calls": [
+                {
+                  "line": 432,
+                  "name": "on",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "forwardSignals"
+            },
+            {
+              "calls": [
+                {
+                  "line": 432,
+                  "name": "on",
+                  "target": null,
+                  "via": "forwardSignals"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runMcp"
+            },
+            {
+              "calls": [
+                {
+                  "line": 168,
+                  "name": "checkSeatUrl",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "checkSeats"
+                },
+                {
+                  "branch": "bad",
+                  "line": 585,
+                  "name": "seatHaltLines",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  }
+                },
+                {
+                  "line": 596,
+                  "name": "createCabinetServer",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  }
+                },
+                {
+                  "line": 599,
+                  "name": "listenFrom",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  }
+                },
+                {
+                  "line": 601,
+                  "name": "listenLines",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runPlay"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "args.mode === 'mcp'",
+                  "line": 432,
+                  "name": "on",
+                  "target": null,
+                  "via": "forwardSignals"
+                },
+                {
+                  "line": 168,
+                  "name": "checkSeatUrl",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "checkSeats"
+                },
+                {
+                  "branch": "bad",
+                  "line": 585,
+                  "name": "seatHaltLines",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "runPlay"
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 1067,
+                      "name": "onTrouble",
+                      "target": null
+                    },
+                    {
+                      "line": 333,
+                      "name": "setHeader",
+                      "target": null,
+                      "via": "sendJson"
+                    },
+                    {
+                      "line": 334,
+                      "name": "end",
+                      "target": null,
+                      "via": "sendJson"
+                    }
+                  ],
+                  "line": 596,
+                  "name": "createCabinetServer",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "runPlay"
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 1156,
+                      "name": "once",
+                      "target": null,
+                      "via": "attempt"
+                    },
+                    {
+                      "line": 1158,
+                      "name": "listen",
+                      "target": null,
+                      "via": "attempt"
+                    }
+                  ],
+                  "line": 599,
+                  "name": "listenFrom",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "runPlay"
+                },
+                {
+                  "line": 601,
+                  "name": "listenLines",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "runPlay"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "main"
+            }
+          ]
         },
         {
           "exports": [
@@ -3239,6 +4285,8 @@
           "path": "packages/launcher/src/levers.ts"
         },
         {
+          "entry": "createCabinetServer",
+          "entryRule": 4,
           "exports": [
             "ceilingLine",
             "checkSeatUrl",
@@ -3263,7 +4311,354 @@
             "packages/launcher/src/allow.ts",
             "packages/launcher/src/files.ts"
           ],
-          "path": "packages/launcher/src/serve.ts"
+          "path": "packages/launcher/src/serve.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 333,
+                  "name": "setHeader",
+                  "target": null
+                },
+                {
+                  "line": 334,
+                  "name": "end",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sendJson"
+            },
+            {
+              "calls": [
+                {
+                  "line": 344,
+                  "name": "setHeader",
+                  "target": null
+                },
+                {
+                  "line": 345,
+                  "name": "end",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sendText"
+            },
+            {
+              "calls": [
+                {
+                  "line": 333,
+                  "name": "setHeader",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "line": 334,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sendTooLarge"
+            },
+            {
+              "calls": [
+                {
+                  "line": 365,
+                  "name": "setHeader",
+                  "target": null
+                },
+                {
+                  "line": 334,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sendSlowDown"
+            },
+            {
+              "calls": [
+                {
+                  "line": 373,
+                  "name": "setHeader",
+                  "target": null
+                },
+                {
+                  "line": 334,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sendBusy"
+            },
+            {
+              "calls": [
+                {
+                  "line": 333,
+                  "name": "setHeader",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "line": 334,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sendNoSuchSeat"
+            },
+            {
+              "calls": [
+                {
+                  "line": 333,
+                  "name": "setHeader",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "line": 334,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sendNoBundle"
+            },
+            {
+              "calls": [
+                {
+                  "line": 333,
+                  "name": "setHeader",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "line": 334,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sendBadJson"
+            },
+            {
+              "calls": [
+                {
+                  "line": 333,
+                  "name": "setHeader",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "line": 334,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sendBadView"
+            },
+            {
+              "calls": [
+                {
+                  "line": 475,
+                  "name": "on",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "readBody"
+            },
+            {
+              "calls": [
+                {
+                  "line": 510,
+                  "name": "resolveUnder",
+                  "target": {
+                    "file": "packages/launcher/src/files.ts"
+                  }
+                },
+                {
+                  "branch": "!file",
+                  "line": 344,
+                  "name": "setHeader",
+                  "target": null,
+                  "via": "sendText"
+                },
+                {
+                  "branch": "!file",
+                  "line": 345,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendText"
+                },
+                {
+                  "line": 519,
+                  "name": "resolveUnder",
+                  "target": {
+                    "file": "packages/launcher/src/files.ts"
+                  }
+                },
+                {
+                  "line": 532,
+                  "name": "typeFor",
+                  "target": {
+                    "file": "packages/launcher/src/files.ts"
+                  }
+                },
+                {
+                  "line": 532,
+                  "name": "setHeader",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "serveFile"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "Number.isFinite(declared) && declared > PROXY_MAX_BYTES",
+                  "line": 333,
+                  "name": "setHeader",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "branch": "Number.isFinite(declared) && declared > PROXY_MAX_BYTES",
+                  "line": 334,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "branch": "Number.isFinite(declared) && declared > PROXY_MAX_BYTES",
+                  "line": 572,
+                  "name": "resume",
+                  "target": null
+                },
+                {
+                  "line": 475,
+                  "name": "on",
+                  "target": null,
+                  "via": "readBody"
+                },
+                {
+                  "line": 604,
+                  "name": "answering",
+                  "target": null
+                },
+                {
+                  "line": 607,
+                  "name": "setHeader",
+                  "target": null
+                },
+                {
+                  "branch": "!upstream.body",
+                  "line": 609,
+                  "name": "end",
+                  "target": null
+                },
+                {
+                  "line": 618,
+                  "name": "on",
+                  "target": null
+                },
+                {
+                  "line": 636,
+                  "name": "trouble",
+                  "target": null
+                },
+                {
+                  "line": 642,
+                  "name": "end",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "proxy"
+            },
+            {
+              "calls": [
+                {
+                  "line": 1067,
+                  "name": "onTrouble",
+                  "target": null
+                },
+                {
+                  "line": 333,
+                  "name": "setHeader",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "line": 334,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "createCabinetServer"
+            },
+            {
+              "calls": [
+                {
+                  "line": 1156,
+                  "name": "once",
+                  "target": null,
+                  "via": "attempt"
+                },
+                {
+                  "line": 1158,
+                  "name": "listen",
+                  "target": null,
+                  "via": "attempt"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "listenFrom"
+            }
+          ]
         },
         {
           "hash": "1ae9115c9e5c2e8ef560a1e9613e90894dd00f4a2e574cac18d7d46be97aebc1",
@@ -3331,7 +4726,9 @@
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
-      "entryPoints": [],
+      "entryPoints": [
+        "packages/launcher-vibe-typer/src/cli.ts"
+      ],
       "externals": 0,
       "files": [
         {
@@ -3354,6 +4751,8 @@
           "path": "packages/launcher-vibe-typer/scripts/build.mjs"
         },
         {
+          "entry": "main",
+          "entryRule": 1,
           "exports": [
             "badArgLines",
             "bugsIn",
@@ -3381,7 +4780,185 @@
             "packages/cabinet-server/src/tool-names.ts",
             "packages/launcher/src/serve.ts"
           ],
-          "path": "packages/launcher-vibe-typer/src/cli.ts"
+          "path": "packages/launcher-vibe-typer/src/cli.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 136,
+                  "name": "checkSeatUrl",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkSeats"
+            },
+            {
+              "calls": [
+                {
+                  "line": 440,
+                  "name": "on",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "forwardSignals"
+            },
+            {
+              "calls": [
+                {
+                  "line": 440,
+                  "name": "on",
+                  "target": null,
+                  "via": "forwardSignals"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runMcp"
+            },
+            {
+              "calls": [
+                {
+                  "line": 136,
+                  "name": "checkSeatUrl",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "checkSeats"
+                },
+                {
+                  "branch": "bad",
+                  "line": 501,
+                  "name": "seatHaltLines",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  }
+                },
+                {
+                  "line": 512,
+                  "name": "createCabinetServer",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  }
+                },
+                {
+                  "line": 540,
+                  "name": "listenFrom",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  }
+                },
+                {
+                  "line": 542,
+                  "name": "listenLines",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runPlay"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "args.mode === 'mcp'",
+                  "line": 440,
+                  "name": "on",
+                  "target": null,
+                  "via": "forwardSignals"
+                },
+                {
+                  "line": 136,
+                  "name": "checkSeatUrl",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "checkSeats"
+                },
+                {
+                  "branch": "bad",
+                  "line": 501,
+                  "name": "seatHaltLines",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "runPlay"
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 1067,
+                      "name": "onTrouble",
+                      "target": null
+                    },
+                    {
+                      "line": 333,
+                      "name": "setHeader",
+                      "target": null,
+                      "via": "sendJson"
+                    },
+                    {
+                      "line": 334,
+                      "name": "end",
+                      "target": null,
+                      "via": "sendJson"
+                    }
+                  ],
+                  "line": 512,
+                  "name": "createCabinetServer",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "runPlay"
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 1156,
+                      "name": "once",
+                      "target": null,
+                      "via": "attempt"
+                    },
+                    {
+                      "line": 1158,
+                      "name": "listen",
+                      "target": null,
+                      "via": "attempt"
+                    }
+                  ],
+                  "line": 540,
+                  "name": "listenFrom",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "runPlay"
+                },
+                {
+                  "line": 542,
+                  "name": "listenLines",
+                  "target": {
+                    "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "runPlay"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "main"
+            }
+          ]
         },
         {
           "hash": "e950f76e0a55240281cc34031cad97ad844583e9313877d6cbc9533c8790daab",
@@ -4092,14 +5669,14 @@
       "origin": "authored",
       "outsideReads": 1,
       "role": "code",
-      "testedBy": 26,
+      "testedBy": 27,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 1,
-      "dynamicWrites": 5,
+      "dynamicWrites": 1,
       "entryPoints": [
         "packages/vibe-typer/src/index.ts"
       ],
@@ -4893,6 +6470,7 @@
       "name": "vibe-typer",
       "origin": "mixed",
       "outsideReads": 47,
+      "outsideWrites": 4,
       "role": "code",
       "testedBy": 32,
       "unresolvedSites": 3
@@ -5133,9 +6711,24 @@
           "directory": true,
           "job": "check",
           "matched": true,
+          "path": "apps/cabinets/src/",
+          "runKind": "executes",
+          "via": "tsc apps/cabinets/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "check",
+          "matched": true,
           "path": "apps/cabinets/test/",
           "runKind": "executes",
           "via": "tsc apps/cabinets/tsconfig.json"
+        },
+        {
+          "job": "check",
+          "matched": true,
+          "path": "apps/cabinets/vite.config.ts",
+          "runKind": "executes",
+          "via": "vite build"
         },
         {
           "job": "check",
@@ -5497,7 +7090,7 @@
           "runKind": "checks"
         }
       ],
-      "runsCount": 53,
+      "runsCount": 55,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -5751,6 +7344,14 @@
           "directory": true,
           "job": "build",
           "matched": true,
+          "path": "apps/cabinets/src/",
+          "runKind": "executes",
+          "via": "tsc apps/cabinets/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
           "path": "apps/cabinets/test/",
           "runKind": "executes",
           "via": "tsc apps/cabinets/tsconfig.json",
@@ -5759,6 +7360,13 @@
               "main"
             ]
           }
+        },
+        {
+          "job": "build",
+          "matched": true,
+          "path": "apps/cabinets/vite.config.ts",
+          "runKind": "executes",
+          "via": "vite build"
         },
         {
           "job": "build",
@@ -6228,7 +7836,7 @@
           }
         }
       ],
-      "runsCount": 42,
+      "runsCount": 44,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -6370,7 +7978,8 @@
           "pushes": false,
           "sends": [
             "publishesTo:npm",
-            "packages:{\"chosenBy\":\"run\",\"registry\":\"npm\"}"
+            "packages:{\"dir\":\"packages/launcher\",\"name\":\"@mcptoolshop/ghost-on-the-menu\",\"registry\":\"npm\"}",
+            "packages:{\"dir\":\"packages/launcher-vibe-typer\",\"name\":\"@mcptoolshop/vibe-typer\",\"registry\":\"npm\"}"
           ],
           "stages": [],
           "when": {
@@ -6462,9 +8071,24 @@
           "directory": true,
           "job": "publish",
           "matched": true,
+          "path": "apps/cabinets/src/",
+          "runKind": "executes",
+          "via": "tsc apps/cabinets/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "publish",
+          "matched": true,
           "path": "apps/cabinets/test/",
           "runKind": "executes",
           "via": "tsc apps/cabinets/tsconfig.json"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "apps/cabinets/vite.config.ts",
+          "runKind": "executes",
+          "via": "vite build"
         },
         {
           "job": "publish",
@@ -6744,7 +8368,7 @@
           "via": "eslint eslint.config.js"
         }
       ],
-      "runsCount": 43,
+      "runsCount": 45,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -6776,6 +8400,9 @@
       "usesWorkflowToken": false
     },
     {
+      "bundledInto": [
+        "@mcptoolshop/ghost-on-the-menu"
+      ],
       "checksCount": 0,
       "commands": [],
       "elsewhere": [],
@@ -6786,10 +8413,39 @@
       "name": "cabinet-server",
       "permissions": [],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "cabinet-server",
+          "depth": 0,
+          "files": 14
+        },
+        {
+          "boundary": "ghost-on-the-menu",
+          "depth": 1,
+          "enters": {
+            "file": "packages/ghost-on-the-menu/src/index.ts",
+            "from": "packages/cabinet-server/src/server.ts"
+          },
+          "files": 25
+        },
+        {
+          "boundary": "tape-core",
+          "depth": 1,
+          "enters": {
+            "file": "packages/tape-core/src/index.ts",
+            "from": "packages/cabinet-server/src/server.ts"
+          },
+          "files": 6
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "path": "packages/cabinet-server/src/server.ts",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -6803,7 +8459,6 @@
       },
       "stages": [],
       "triggers": [],
-      "unplaced": "packages/cabinet-server/dist/server.js",
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -6818,10 +8473,39 @@
       "name": "vibe-typer",
       "permissions": [],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "launcher-vibe-typer",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "cabinet-server",
+          "depth": 1,
+          "enters": {
+            "file": "packages/cabinet-server/src/tool-names.ts",
+            "from": "packages/launcher-vibe-typer/src/cli.ts"
+          },
+          "files": 1
+        },
+        {
+          "boundary": "launcher",
+          "depth": 1,
+          "enters": {
+            "file": "packages/launcher/src/serve.ts",
+            "from": "packages/launcher-vibe-typer/src/cli.ts"
+          },
+          "files": 3
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "path": "packages/launcher-vibe-typer/src/cli.ts",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -6835,7 +8519,6 @@
       },
       "stages": [],
       "triggers": [],
-      "unplaced": "packages/launcher-vibe-typer/dist/cli.js",
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -6850,10 +8533,30 @@
       "name": "ghost-on-the-menu",
       "permissions": [],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "launcher",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "cabinet-server",
+          "depth": 1,
+          "enters": {
+            "file": "packages/cabinet-server/src/tool-names.ts",
+            "from": "packages/launcher/src/cli.ts"
+          },
+          "files": 1
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "path": "packages/launcher/src/cli.ts",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -6867,7 +8570,6 @@
       },
       "stages": [],
       "triggers": [],
-      "unplaced": "packages/launcher/dist/cli.js",
       "uses": [],
       "usesWorkflowToken": false
     }
@@ -7039,8 +8741,68 @@
     {
       "readers": [
         {
+          "by": "packages/ghost-on-the-menu/test/render.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "apps/cabinets/public/sprites/boss-archivist-open.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/ghost-on-the-menu/test/render.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "apps/cabinets/public/sprites/boss-archivist.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/ghost-on-the-menu/test/render.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "apps/cabinets/public/sprites/ledger.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/ghost-on-the-menu/test/render.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "apps/cabinets/public/sprites/probe.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/ghost-on-the-menu/test/render.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "apps/cabinets/public/sprites/shelf.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "apps/cabinets/test/bed-length.test.ts",
-          "call": "literal",
+          "call": "readdirSync",
           "confidence": "ast",
           "fromTests": true
         },
@@ -7185,7 +8947,7 @@
       "readers": [
         {
           "by": "apps/cabinets/test/bed-length.test.ts",
-          "call": "literal",
+          "call": "readdirSync",
           "confidence": "ast",
           "fromTests": true
         },
@@ -7336,6 +9098,78 @@
     {
       "readers": [
         {
+          "by": "packages/vibe-typer/test/spelling.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/vibe-typer/test/spelling.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "apps/cabinets/src/typer-audio.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/vibe-typer/test/spelling.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/vibe-typer/test/spelling.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "apps/cabinets/src/typer-cues.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/vibe-typer/test/spelling.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/vibe-typer/test/spelling.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "apps/cabinets/src/typer-keys.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/vibe-typer/test/spelling.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/vibe-typer/test/spelling.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "apps/cabinets/src/vibe-typer.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": ".github/workflows/ci.yml"
         },
         {
@@ -7399,7 +9233,7 @@
         },
         {
           "by": "packages/vibe-typer/test/spelling.test.ts",
-          "call": "literal",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -8462,6 +10296,11 @@
           "fromTests": true
         },
         {
+          "by": "packages/ghost-on-the-menu/src/play.ts",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
           "by": "packages/ghost-on-the-menu/test/band.test.ts",
           "call": "readdirSync",
           "confidence": "ast",
@@ -8736,7 +10575,7 @@
         },
         {
           "by": "packages/vibe-typer/test/spelling.test.ts",
-          "call": "literal",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -9097,11 +10936,6 @@
           "confidence": "ast"
         },
         {
-          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
           "by": "packages/vibe-typer/test/normalize.test.ts",
           "call": "readdirSync",
           "confidence": "ast",
@@ -9119,15 +10953,16 @@
         {
           "by": "packages/vibe-typer/scripts/author.mjs",
           "confidence": "ast"
-        },
-        {
-          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
-          "confidence": "ast"
         }
       ]
     },
     {
       "readers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
         {
           "by": "packages/vibe-typer/src/corpus.ts",
           "call": "import",
@@ -9135,10 +10970,21 @@
         }
       ],
       "target": "packages/vibe-typer/patterns/corpus/bash.json",
-      "writers": []
+      "writers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "confidence": "ast",
+          "stamps": true
+        }
+      ]
     },
     {
       "readers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
         {
           "by": "packages/vibe-typer/src/corpus.ts",
           "call": "import",
@@ -9146,10 +10992,21 @@
         }
       ],
       "target": "packages/vibe-typer/patterns/corpus/csharp.json",
-      "writers": []
+      "writers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "confidence": "ast",
+          "stamps": true
+        }
+      ]
     },
     {
       "readers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
         {
           "by": "packages/vibe-typer/src/corpus.ts",
           "call": "import",
@@ -9157,10 +11014,21 @@
         }
       ],
       "target": "packages/vibe-typer/patterns/corpus/java.json",
-      "writers": []
+      "writers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "confidence": "ast",
+          "stamps": true
+        }
+      ]
     },
     {
       "readers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
         {
           "by": "packages/vibe-typer/src/corpus.ts",
           "call": "import",
@@ -9168,10 +11036,21 @@
         }
       ],
       "target": "packages/vibe-typer/patterns/corpus/javascript.json",
-      "writers": []
+      "writers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "confidence": "ast",
+          "stamps": true
+        }
+      ]
     },
     {
       "readers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
         {
           "by": "packages/vibe-typer/src/corpus.ts",
           "call": "import",
@@ -9179,10 +11058,21 @@
         }
       ],
       "target": "packages/vibe-typer/patterns/corpus/python.json",
-      "writers": []
+      "writers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "confidence": "ast",
+          "stamps": true
+        }
+      ]
     },
     {
       "readers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
         {
           "by": "packages/vibe-typer/src/corpus.ts",
           "call": "import",
@@ -9190,7 +11080,13 @@
         }
       ],
       "target": "packages/vibe-typer/patterns/corpus/sql.json",
-      "writers": []
+      "writers": [
+        {
+          "by": "packages/vibe-typer/scripts/port-corpus.mjs",
+          "confidence": "ast",
+          "stamps": true
+        }
+      ]
     },
     {
       "readers": [
@@ -9591,5 +11487,24 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 76,
-  "unassigned": []
+  "unassigned": [],
+  "unseen": [
+    {
+      "items": [
+        {
+          "kind": "image",
+          "path": "Dockerfile"
+        },
+        {
+          "kind": "catalog",
+          "path": "catalog/server.vibe.yaml"
+        },
+        {
+          "kind": "catalog",
+          "path": "catalog/server.yaml"
+        }
+      ],
+      "kind": "shipped"
+    }
+  ]
 }

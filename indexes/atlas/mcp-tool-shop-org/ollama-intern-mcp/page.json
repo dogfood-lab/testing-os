@@ -3,12 +3,11 @@
     ".github/",
     "docs/",
     "evals/",
-    "root",
-    "site/"
+    "root"
   ],
   "breaks": [
     {
-      "doors": 4,
+      "doors": 5,
       "importedBy": [
         "scripts",
         "smoke"
@@ -25,6 +24,17 @@
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
+      "name": "tests",
+      "partLabel": "tests",
+      "spawnedBy": [
+        "scripts"
+      ]
+    },
+    {
+      "doors": 3,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
       "name": "root",
       "partLabel": "the repository root"
     },
@@ -35,14 +45,6 @@
       "kind": "part",
       "name": "scripts",
       "partLabel": "scripts"
-    },
-    {
-      "doors": 2,
-      "importedBy": [],
-      "importedByTests": [],
-      "kind": "part",
-      "name": "tests",
-      "partLabel": "tests"
     }
   ],
   "changes": {
@@ -56,10 +58,93 @@
     "items": [
       {
         "kind": "door",
+        "sentence": "Doc Drift now also runs tests/cli.test.ts, tests/cloudCheck.test.ts, tests/cloudClient.test.ts and 37 more.",
+        "subjects": [
+          ".github/workflows/doc-drift.yml",
+          "tests/cli.test.ts",
+          "tests/cloudCheck.test.ts",
+          "tests/cloudClient.test.ts",
+          "tests/cloudConfig.test.ts",
+          "tests/cloudEscalation.test.ts",
+          "tests/corpus/",
+          "tests/coverage.test.ts",
+          "tests/doctorCloud.test.ts",
+          "tests/embedMath.test.ts",
+          "tests/envelope.test.ts",
+          "tests/errorHintQuality.test.ts",
+          "tests/evals/",
+          "tests/guardrails/",
+          "tests/integration/",
+          "tests/logTailRoster.test.ts",
+          "tests/mcpGolden.test.ts",
+          "tests/numCtx.test.ts",
+          "tests/observability.test.ts",
+          "tests/ollama.test.ts",
+          "tests/ollamaRetry.test.ts",
+          "tests/pack.test.ts",
+          "tests/prewarm.test.ts",
+          "tests/prewarmInvariants.test.ts",
+          "tests/profiles.test.ts",
+          "tests/protectedPaths.test.ts",
+          "tests/regressions.test.ts",
+          "tests/releaseWorkflowGate.test.ts",
+          "tests/routing.test.ts",
+          "tests/routingIntegration.test.ts",
+          "tests/routingStandby.test.ts",
+          "tests/runContext.test.ts",
+          "tests/semaphore.test.ts",
+          "tests/signalChainE2E.test.ts",
+          "tests/sources.test.ts",
+          "tests/startupProbe.test.ts",
+          "tests/tiers.test.ts",
+          "tests/timeoutLogEnrichment.test.ts",
+          "tests/toolDocsGen.test.ts",
+          "tests/tools/",
+          "tests/version.test.ts"
+        ]
+      },
+      {
+        "kind": "door",
         "sentence": "Release now also runs src/index.ts.",
         "subjects": [
           ".github/workflows/release.yml",
           "src/index.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "site/src/content/docs/handbook/tools.md is now written by scripts/gen-tool-docs.mjs.",
+        "subjects": [
+          "site/src/content/docs/handbook/tools.md",
+          "scripts/gen-tool-docs.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": ".github/ISSUE_TEMPLATE/feature_request.md is now read by scripts/sync-doc-versions.mjs.",
+        "subjects": [
+          ".github/ISSUE_TEMPLATE/feature_request.md",
+          "scripts/sync-doc-versions.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "CONTRIBUTING.md is now also read by scripts/sync-doc-versions.mjs.",
+        "subjects": [
+          "CONTRIBUTING.md",
+          "scripts/sync-doc-versions.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 9 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "origin",
+        "sentence": "the site was authored and is now mixed.",
+        "subjects": [
+          "site"
         ]
       },
       {
@@ -185,7 +270,7 @@
   "changesTogetherWithTests": 2,
   "commit": "1249f8307d15e578f101622a6ab257d340dab8ab",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly TypeScript (196 files). Work enters through 8 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and a container image. People run ollama-intern-mcp. People import ollama-intern-mcp.",
+  "derived": "11 parts, mostly TypeScript (196 files). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. People run ollama-intern-mcp. People import ollama-intern-mcp.",
   "doors": [
     {
       "checks": [
@@ -211,7 +296,9 @@
         }
       ],
       "id": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "site/src/content/docs/handbook/tools.md"
+      ],
       "name": "CI",
       "pushes": false,
       "reach": [
@@ -288,6 +375,94 @@
       "triggers": [
         "on a pull request touching 18 paths",
         "on a push to main touching 18 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "HANDOFF.md",
+        "README.md",
+        "SHIP_GATE.md"
+      ],
+      "checksCount": 3,
+      "checksMore": 0,
+      "file": ".github/workflows/doc-drift.yml",
+      "id": ".github/workflows/doc-drift.yml",
+      "landings": [],
+      "name": "Doc Drift",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 101
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 90
+        }
+      ],
+      "runs": [
+        "scripts/sync-doc-versions.mjs",
+        "tests/cli.test.ts",
+        "tests/cloudCheck.test.ts",
+        "tests/cloudClient.test.ts",
+        "tests/cloudConfig.test.ts",
+        "tests/cloudEscalation.test.ts",
+        "tests/corpus/",
+        "tests/coverage.test.ts",
+        "tests/doctorCloud.test.ts",
+        "tests/embedMath.test.ts",
+        "tests/envelope.test.ts",
+        "tests/errorHintQuality.test.ts",
+        "tests/evals/",
+        "tests/guardrails/",
+        "tests/integration/",
+        "tests/logTailRoster.test.ts",
+        "tests/mcpGolden.test.ts",
+        "tests/numCtx.test.ts",
+        "tests/observability.test.ts",
+        "tests/ollama.test.ts",
+        "tests/ollamaRetry.test.ts",
+        "tests/pack.test.ts",
+        "tests/prewarm.test.ts",
+        "tests/prewarmInvariants.test.ts",
+        "tests/profiles.test.ts",
+        "tests/protectedPaths.test.ts",
+        "tests/regressions.test.ts",
+        "tests/releaseWorkflowGate.test.ts",
+        "tests/routing.test.ts",
+        "tests/routingIntegration.test.ts",
+        "tests/routingStandby.test.ts",
+        "tests/runContext.test.ts",
+        "tests/semaphore.test.ts",
+        "tests/signalChainE2E.test.ts",
+        "tests/sources.test.ts",
+        "tests/startupProbe.test.ts",
+        "tests/tiers.test.ts",
+        "tests/timeoutLogEnrichment.test.ts",
+        "tests/toolDocsGen.test.ts",
+        "tests/tools/",
+        "tests/version.test.ts"
+      ],
+      "runsCount": 41,
+      "runsMore": 96,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 12 paths",
+        "on a push to main touching 12 paths",
         "or by hand"
       ]
     },
@@ -375,44 +550,6 @@
       "stages": [],
       "triggers": [
         "when a tag matching `v*.*.*` is pushed",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [
-        "HANDOFF.md",
-        "README.md",
-        "SHIP_GATE.md"
-      ],
-      "checksCount": 3,
-      "checksMore": 0,
-      "file": ".github/workflows/doc-drift.yml",
-      "id": ".github/workflows/doc-drift.yml",
-      "landings": [],
-      "name": "Doc Drift",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "root",
-          "depth": 0,
-          "files": 3
-        },
-        {
-          "boundary": "scripts",
-          "depth": 0,
-          "files": 1
-        }
-      ],
-      "runs": [
-        "scripts/sync-doc-versions.mjs"
-      ],
-      "runsCount": 1,
-      "runsMore": 0,
-      "sends": [],
-      "stages": [],
-      "triggers": [
-        "on a pull request touching 12 paths",
-        "on a push to main touching 12 paths",
         "or by hand"
       ]
     },
@@ -556,13 +693,21 @@
       "to": "src"
     }
   ],
-  "generated": [],
-  "generatedAt": "2026-09-24T11:52:35.182Z",
+  "generated": [
+    {
+      "block": true,
+      "place": "site/src/content/docs/handbook/tools.md",
+      "writers": [
+        "scripts/gen-tool-docs.mjs"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-24T17:39:23.866Z",
   "limits": [
-    "2 files in scripts use syntax the parser cannot read (scripts/gen-tool-docs.mjs and scripts/sync-doc-versions.mjs), so what they import is not known: a NUL character inside a string (2).",
-    "2 writes and 6 reads use paths built at run time and are not named here.",
+    "1 import site could not be resolved.",
+    "3 writes and 9 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "18 writes and 32 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "19 writes and 32 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
     "3 commands are built at run time and not followed, 1 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -581,7 +726,15 @@
     "tests": "tests"
   },
   "parts": 11,
-  "readers": [],
+  "readers": [
+    {
+      "readers": [
+        "scripts/sync-doc-versions.mjs",
+        "site/astro.config.mjs"
+      ],
+      "target": "site/src/content/docs/handbook/tools.md"
+    }
+  ],
   "repo": "mcp-tool-shop-org/ollama-intern-mcp",
   "sequences": [
     {
@@ -667,9 +820,9 @@
     "smoke": 1,
     "src": 97
   },
-  "unnamedWrites": 2,
+  "unnamedWrites": 3,
   "unread": [],
-  "unreadFiles": 2,
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
     {
@@ -686,5 +839,5 @@
   "untestedNote": [
     "scripts is touched by tests only through a spawn: a test runs its files as a child process."
   ],
-  "written": 0
+  "written": 1
 }

@@ -141,7 +141,7 @@
   "changesTogetherWithTests": 1,
   "commit": "53be69f8bd3e3aca26a8cde1aa9e8f0b36f0cd84",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly TypeScript (86 files). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. People run sensor-humor. People import @mcptoolshop/sensor-humor.",
+  "derived": "8 parts, mostly TypeScript (86 files). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. People run sensor-humor.",
   "doors": [
     {
       "checks": [
@@ -339,6 +339,7 @@
       "runs": [
         "src/index.ts"
       ],
+      "runsCommand": "sensor-humor",
       "runsCount": 1,
       "runsMore": 0,
       "sends": [],
@@ -401,11 +402,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T11:53:43.054Z",
+  "generatedAt": "2026-09-24T17:40:46.308Z",
   "limits": [
     "1 import site could not be resolved.",
     "2 writes use paths built at run time and are not named here.",
-    "8 writes and 21 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "8 writes and 21 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/release.yml",

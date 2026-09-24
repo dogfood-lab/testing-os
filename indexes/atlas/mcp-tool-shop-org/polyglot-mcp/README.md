@@ -89,7 +89,7 @@ Read those in order to follow one run of polyglot-mcp end to end. This path foll
 ## What this map cannot see
 
 - 3 writes and 5 reads use paths built at run time and are not named here.
-- 3 writes and 5 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 3 writes and 5 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 3 commands are built at run time and not followed, 1 of them in tests.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

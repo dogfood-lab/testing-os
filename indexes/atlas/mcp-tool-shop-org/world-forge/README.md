@@ -16,7 +16,7 @@ Mapped at 2026-09-24 from commit 333532b.
 - docs/c0-alignment/export-table.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
 - docs/c0-alignment/export-table.md is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
 - docs/c0-alignment/fixture-manifest.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
-- And 89 more new writers and readers of places.
+- And 98 more new writers and readers of places.
 - docs was authored and is now mixed.
 - 633 files changed content, across 14 parts.
 
@@ -122,10 +122,9 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 8 import sites could not be resolved.
-- 1 file uses syntax the parser cannot read (packages/editor/src/panels/PresetBrowser.tsx), so what it imports is not known.
 - 3 writes and 3 reads use paths built at run time and are not named here.
 - 40 writes go to places this repository does not track, so they are not listed as generated.
-- 30 writes and 56 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 30 writes and 56 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 3 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

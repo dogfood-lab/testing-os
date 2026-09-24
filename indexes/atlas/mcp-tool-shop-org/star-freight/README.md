@@ -89,7 +89,7 @@ Read those in order to follow one run of starfreight end to end. This path follo
 
 - 2 import sites could not be resolved.
 - 5 writes and 2 reads use paths built at run time and are not named here.
-- 1 write and 3 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 1 write and 3 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

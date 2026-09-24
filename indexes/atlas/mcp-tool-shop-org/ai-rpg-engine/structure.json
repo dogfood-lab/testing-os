@@ -5018,7 +5018,7 @@
       "name": "cli",
       "origin": "authored",
       "outsideReads": 33,
-      "outsideWrites": 4,
+      "outsideWrites": 5,
       "role": "code",
       "testedBy": 44,
       "unresolvedSites": 1
@@ -5224,10 +5224,16 @@
           "path": "packages/content-schema/src/loader.test.ts"
         },
         {
+          "exports": [
+            "loadContent",
+            "loadContentFromFile"
+          ],
           "hash": "10eba2b6afb1c91695c2e87f2b3dd808db80ef302eea0177cfd1c22db4b3804d",
-          "parseError": true,
-          "path": "packages/content-schema/src/loader.ts",
-          "unreadSyntax": "nul-character"
+          "importsFiles": [
+            "packages/content-schema/src/refs.ts",
+            "packages/content-schema/src/validate.ts"
+          ],
+          "path": "packages/content-schema/src/loader.ts"
         },
         {
           "hash": "d6dd52d9d56cdfaef8a9cea99442849c0a33bed2f4343f32d7054fd010a4ca40",
@@ -5365,6 +5371,7 @@
       "importConfidence": "full",
       "name": "content-schema",
       "origin": "authored",
+      "outsideReads": 1,
       "role": "code",
       "testedBy": 190,
       "unresolvedSites": 0
@@ -7284,9 +7291,10 @@
         },
         {
           "hash": "3beed3e6a1295a2b0a592ee825c8ede109c7c210514648e2ae6b3148d8ea4fe2",
-          "parseError": true,
-          "path": "packages/ledger-adapter/src/transport/dry-run.ts",
-          "unreadSyntax": "nul-character"
+          "importsFiles": [
+            "packages/ledger-adapter/src/contracts.ts"
+          ],
+          "path": "packages/ledger-adapter/src/transport/dry-run.ts"
         },
         {
           "hash": "9b0c2c321a98e5f4c9fdaaa4c9430428d71f0b1019ef705a6c96715c92c895b7",
@@ -7307,9 +7315,11 @@
         },
         {
           "hash": "0bf1037a79d4fa5c79924b43d27359f6b7b6bc17c4eb009caed6e93eb333e958",
-          "parseError": true,
-          "path": "packages/ledger-adapter/src/transport/testnet.ts",
-          "unreadSyntax": "nul-character"
+          "importsFiles": [
+            "packages/ledger-adapter/src/contracts.ts",
+            "packages/ledger-adapter/src/security/index.ts"
+          ],
+          "path": "packages/ledger-adapter/src/transport/testnet.ts"
         },
         {
           "hash": "37aca8d3a2bc42f92778fbb1715ae40f9093bdf8cf4ede76a6c4b8e23491e8d3",
@@ -7326,7 +7336,7 @@
       "importConfidence": "full",
       "name": "ledger-adapter",
       "origin": "mixed",
-      "outsideReads": 3,
+      "outsideReads": 18,
       "outsideWrites": 2,
       "role": "code",
       "testedBy": 17,
@@ -12777,6 +12787,8 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsideReads": 3,
+      "outsideWrites": 6,
       "role": "code",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -21730,36 +21742,6 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "packages/character-creation/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/character-profile/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/content-schema/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
         }
       ],
       "target": "README.es.md",
@@ -21796,36 +21778,6 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "packages/character-creation/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/character-profile/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/content-schema/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
         }
       ],
       "target": "README.fr.md",
@@ -21862,36 +21814,6 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "packages/character-creation/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/character-profile/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/content-schema/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
         },
         {
           "by": "scripts/gates.test.ts",
@@ -21934,36 +21856,6 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "packages/character-creation/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/character-profile/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/content-schema/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
         }
       ],
       "target": "README.it.md",
@@ -22000,36 +21892,6 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "packages/character-creation/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/character-profile/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/content-schema/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
         }
       ],
       "target": "README.ja.md",
@@ -22084,17 +21946,6 @@
           "fromTests": true
         },
         {
-          "by": "packages/character-profile/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/cli/src/create-starter.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "packages/content-schema/src/readme-usage.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -22102,12 +21953,6 @@
         },
         {
           "by": "packages/pack-registry/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -22158,36 +22003,6 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "packages/character-creation/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/character-profile/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/content-schema/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
         }
       ],
       "target": "README.pt-BR.md",
@@ -22224,36 +22039,6 @@
           "by": "dogfood/roadmap/swarm-1788226678-0c6b.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "packages/character-creation/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/character-profile/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/content-schema/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/pack-registry/src/starter-readme-usage.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
         }
       ],
       "target": "README.zh.md",
@@ -22447,11 +22232,6 @@
           "confidence": "ast"
         },
         {
-          "by": "packages/cli/src/create-starter.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "packages/ollama/src/commands/emit-pack.ts",
           "call": "literal",
           "confidence": "ast"
@@ -22512,15 +22292,8 @@
           "fromTests": true
         }
       ],
-      "spans": 31,
       "target": "packages",
-      "writers": [
-        {
-          "by": "packages/cli/src/create-starter.ts",
-          "confidence": "ast",
-          "fromCwd": true
-        }
-      ]
+      "writers": []
     },
     {
       "readers": [
@@ -22595,7 +22368,91 @@
           "fromTests": true
         }
       ],
+      "target": "packages/character-creation/README.es.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-creation/README.fr.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-creation/README.hi.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-creation/README.it.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-creation/README.ja.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
       "target": "packages/character-creation/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-creation/README.pt-BR.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-creation/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-creation/README.zh.md",
       "writers": []
     },
     {
@@ -22660,6 +22517,102 @@
         }
       ],
       "target": "packages/character-profile",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-profile/README.es.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-profile/README.fr.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-profile/README.hi.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-profile/README.it.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-profile/README.ja.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-profile/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-profile/README.pt-BR.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/character-profile/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/character-profile/README.zh.md",
       "writers": []
     },
     {
@@ -22916,7 +22869,91 @@
           "fromTests": true
         }
       ],
+      "target": "packages/content-schema/README.es.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/content-schema/README.fr.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/content-schema/README.hi.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/content-schema/README.it.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/content-schema/README.ja.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
       "target": "packages/content-schema/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/content-schema/README.pt-BR.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/content-schema/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/content-schema/README.zh.md",
       "writers": []
     },
     {
@@ -23392,7 +23429,91 @@
           "fromTests": true
         }
       ],
+      "target": "packages/pack-registry/README.es.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/pack-registry/README.fr.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/pack-registry/README.hi.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/pack-registry/README.it.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/pack-registry/README.ja.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
       "target": "packages/pack-registry/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/pack-registry/README.pt-BR.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/pack-registry/src/readme-usage.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/pack-registry/README.zh.md",
       "writers": []
     },
     {
@@ -23932,16 +24053,6 @@
           "confidence": "text"
         },
         {
-          "by": "packages/cli/src/create-starter.ts",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/cli/src/create-starter.ts",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
           "by": "site/src/content/docs/handbook/58-create-your-own-starter.md",
           "call": "cp",
           "confidence": "text"
@@ -24033,11 +24144,6 @@
           "by": "docs/examples/tsconfig.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "packages/cli/src/create-starter.ts",
-          "call": "literal",
-          "confidence": "ast"
         },
         {
           "by": "packages/ollama/src/commands/emit-pack.ts",

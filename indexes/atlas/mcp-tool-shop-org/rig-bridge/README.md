@@ -67,7 +67,7 @@ Nothing structural changed since 2026-09-24; 87 files changed content.
 
 ## Who reads the results
 
-ci writes nothing in the files this map could read; 1 file could not be.
+ci writes nothing this map can see.
 
 ## The other doors
 
@@ -93,19 +93,19 @@ Every code part is imported by at least one test.
 
 ## Written but never read
 
-No place is written by the files this map could read, so none goes unread; 1 file could not be.
+No place this map can see is written, so none goes unread.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike in the files this map could read; 1 file could not be.
+No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-Nothing in the files this map could read writes to a tracked place; 1 file could not be.
+Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root, schemas/ and site/. Nothing in the files this map could read writes to them; 1 file could not be.
+People write .github/, docs/, the repository root, schemas/ and site/. Nothing in this repository writes to them.
 
 ## Where to start
 
@@ -115,8 +115,7 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 file uses syntax the parser cannot read (src/engine/envelope.test.ts), so what it imports is not known: a NUL character inside a string (1).
-- 9 writes and 46 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 9 writes and 46 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 2 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

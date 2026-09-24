@@ -49,6 +49,28 @@
       "kind": "part",
       "name": "test",
       "partLabel": "test"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "scripts",
+        "src"
+      ],
+      "target": "src/kb/nodes.json",
+      "writers": [
+        "scripts"
+      ]
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "scripts",
+        "src"
+      ],
+      "target": "src/kb/presets.json",
+      "writers": [
+        "scripts"
+      ]
     }
   ],
   "changes": {
@@ -61,8 +83,44 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "src/kb/nodes.json is now written by scripts/sync-kb.mjs.",
+        "subjects": [
+          "src/kb/nodes.json",
+          "scripts/sync-kb.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "src/kb/presets.json is now written by scripts/sync-kb.mjs.",
+        "subjects": [
+          "src/kb/presets.json",
+          "scripts/sync-kb.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "src/kb/nodes.json is now also read by src/profiles/registry.ts.",
+        "subjects": [
+          "src/kb/nodes.json",
+          "src/profiles/registry.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 1 more new writer or reader of a place.",
+        "subjects": []
+      },
+      {
+        "kind": "origin",
+        "sentence": "src was authored and is now mixed.",
+        "subjects": [
+          "src"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 109 files changed content.",
+        "sentence": "109 files changed content, across 9 parts.",
         "subjects": []
       }
     ],
@@ -70,7 +128,7 @@
       "commit": "e196fbe4488b606c3ec0aa30d9cad995315fe571",
       "generatedAt": "2026-09-24T09:03:59.912Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -310,12 +368,25 @@
       "to": "src"
     }
   ],
-  "generated": [],
-  "generatedAt": "2026-09-24T11:50:23.180Z",
+  "generated": [
+    {
+      "place": "src/kb/nodes.json",
+      "writers": [
+        "scripts/sync-kb.mjs"
+      ]
+    },
+    {
+      "place": "src/kb/presets.json",
+      "writers": [
+        "scripts/sync-kb.mjs"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-24T17:35:55.574Z",
   "limits": [
     "1 import site could not be resolved.",
-    "4 writes and 8 reads use paths built at run time and are not named here.",
-    "16 writes and 39 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "2 writes and 6 reads use paths built at run time and are not named here.",
+    "16 writes and 39 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
     "3 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
@@ -347,7 +418,7 @@
     "scripts": 0,
     "src": 22
   },
-  "unnamedWrites": 4,
+  "unnamedWrites": 2,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],
@@ -359,5 +430,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 0
+  "written": 2
 }

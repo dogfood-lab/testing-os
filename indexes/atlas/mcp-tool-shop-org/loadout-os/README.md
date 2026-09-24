@@ -90,7 +90,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .claude/, .github/, packages/kernel/, packages/memories/, packages/rules/ and the repository root; 8 writes with paths built at run time may land here.
+People write .claude/, .github/, packages/kernel/, packages/memories/, packages/rules/ and the repository root; 6 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -100,8 +100,8 @@ Read those in order to follow one run of claude-memories end to end. This path f
 
 ## What this map cannot see
 
-- 8 writes and 22 reads use paths built at run time and are not named here.
-- 12 writes and 55 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 6 writes and 10 reads use paths built at run time and are not named here.
+- 16 writes and 67 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 3 commands are built at run time and not followed, 2 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

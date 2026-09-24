@@ -80,7 +80,7 @@ Read those in order to follow one run of forkctl end to end. This path follows f
 
 - 1 import site could not be resolved.
 - 8 writes and 8 reads use paths built at run time and are not named here.
-- 26 writes and 22 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 26 writes and 22 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 3 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

@@ -1248,8 +1248,6 @@
           "path": "packages/cli/src/bin.test.ts"
         },
         {
-          "entry": "main",
-          "entryRule": 1,
           "hash": "6443bc5c2ccdd83d851d4390b8a6b7f07387cfb4751d83da8e8c15a5067cf6ca",
           "importsFiles": [
             "packages/cli/src/commands/configure-minter.ts",
@@ -1273,854 +1271,7 @@
             "packages/xaman/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/bin.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "inner": [
-                    {
-                      "line": 41,
-                      "name": "generateWalletPair",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 46,
-                      "name": "fundWalletPair",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 56,
-                      "name": "authorizeOperatorAsMinter",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 67,
-                      "name": "exportWalletPair",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 223,
-                  "name": "initWallets",
-                  "target": {
-                    "file": "packages/cli/src/commands/init-wallets.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 127,
-                      "name": "buildConfigureMinterPayload",
-                      "target": {
-                        "file": "packages/xaman/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 128,
-                      "name": "createPayload",
-                      "receiver": "XamanClient",
-                      "target": {
-                        "file": "packages/xaman/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 135,
-                      "name": "subscribeToPayload",
-                      "receiver": "XamanClient",
-                      "target": {
-                        "file": "packages/xaman/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 141,
-                      "name": "verifyPayloadResult",
-                      "target": {
-                        "file": "packages/xaman/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 262,
-                  "name": "configureMinterViaXaman",
-                  "target": {
-                    "file": "packages/cli/src/commands/xaman-flow.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 31,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 32,
-                      "name": "importWalletPair",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 35,
-                      "name": "authorizeOperatorAsMinter",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 42,
-                      "name": "verifyAuthorizedMinter",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 269,
-                  "name": "configureMinter",
-                  "target": {
-                    "file": "packages/cli/src/commands/configure-minter.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 33,
-                      "name": "assertManifest",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 36,
-                      "name": "stampManifestId",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 300,
-                  "name": "createRelease",
-                  "target": {
-                    "file": "packages/cli/src/commands/create-release.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 20,
-                      "name": "validateManifest",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 318,
-                  "name": "validateManifestFile",
-                  "target": {
-                    "file": "packages/cli/src/commands/validate.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 19,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 20,
-                      "name": "assertManifest",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 21,
-                      "name": "resolveManifestPointers",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 338,
-                  "name": "resolveManifestFile",
-                  "target": {
-                    "file": "packages/cli/src/commands/resolve.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 170,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 170,
-                      "name": "assertManifest",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 172,
-                      "name": "computeManifestId",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 173,
-                      "name": "computeRevisionHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 184,
-                      "name": "buildMintPayload",
-                      "target": {
-                        "file": "packages/xaman/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 185,
-                      "name": "createPayload",
-                      "receiver": "XamanClient",
-                      "target": {
-                        "file": "packages/xaman/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 192,
-                      "name": "subscribeToPayload",
-                      "receiver": "XamanClient",
-                      "target": {
-                        "file": "packages/xaman/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 203,
-                      "name": "verifySignerAddress",
-                      "target": {
-                        "file": "packages/xaman/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 204,
-                      "name": "verifyPayloadResult",
-                      "target": {
-                        "file": "packages/xaman/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 382,
-                  "name": "mintReleaseViaXaman",
-                  "target": {
-                    "file": "packages/cli/src/commands/xaman-flow.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 35,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 35,
-                      "name": "assertManifest",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 38,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 38,
-                      "name": "importWalletPair",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 57,
-                      "name": "issueRelease",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 417,
-                  "name": "mintReleaseCommand",
-                  "target": {
-                    "file": "packages/cli/src/commands/mint-release.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 44,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 44,
-                      "name": "assertManifest",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 45,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 45,
-                      "name": "assertReceipt",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 49,
-                      "name": "computeManifestId",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 61,
-                      "name": "computeRevisionHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 74,
-                      "name": "computeReceiptHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 170,
-                      "name": "verifyAuthorizedMinter",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 198,
-                      "name": "readNftFromLedger",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 449,
-                  "name": "verifyRelease",
-                  "target": {
-                    "file": "packages/cli/src/commands/verify-release.ts"
-                  }
-                },
-                {
-                  "line": 490,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 490,
-                  "name": "assertManifest",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 491,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 491,
-                  "name": "assertReceipt",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 496,
-                  "name": "computeManifestId",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 40,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 40,
-                      "name": "assertManifest",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 41,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 41,
-                      "name": "assertReceipt",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 42,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 42,
-                      "name": "assertAccessPolicy",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 48,
-                      "name": "checkPolicyCoherence",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "branch": "!coherence.coherent",
-                      "line": 50,
-                      "name": "stampGrantHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 68,
-                      "name": "computeReceiptHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "branch": "receipt.receiptHash !== expectedHash",
-                      "line": 70,
-                      "name": "stampGrantHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 88,
-                      "name": "computeManifestId",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "branch": "receipt.manifestId !== expectedManifestId",
-                      "line": 90,
-                      "name": "stampGrantHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    }
-                  ],
-                  "innerTruncated": true,
-                  "line": 542,
-                  "name": "grantAccess",
-                  "target": {
-                    "file": "packages/cli/src/commands/grant-access.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 103,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 103,
-                      "name": "assertManifest",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 104,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 104,
-                      "name": "assertReceipt",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 108,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 108,
-                      "name": "assertAccessPolicy",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 113,
-                      "name": "deriveRecoveryBundle",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 117,
-                      "name": "computeManifestId",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 118,
-                      "name": "computeRevisionHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 150,
-                      "name": "computeReceiptHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 223,
-                      "name": "verifyAuthorizedMinter",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 244,
-                      "name": "readNftFromLedger",
-                      "target": {
-                        "file": "packages/xrpl/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 589,
-                  "name": "recoverRelease",
-                  "target": {
-                    "file": "packages/cli/src/commands/recover-release.ts"
-                  }
-                },
-                {
-                  "line": 648,
-                  "name": "parseJsonArgument",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 34,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 34,
-                      "name": "assertManifest",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 35,
-                      "name": "computeManifestId",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 59,
-                      "name": "assertGovernancePolicy",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 61,
-                      "name": "stampPolicyHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 644,
-                  "name": "createGovernancePolicy",
-                  "target": {
-                    "file": "packages/cli/src/commands/create-governance-policy.ts"
-                  }
-                },
-                {
-                  "line": 692,
-                  "name": "parseJsonArgument",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 30,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 30,
-                      "name": "assertGovernancePolicy",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 47,
-                      "name": "assertPayoutProposal",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 50,
-                      "name": "checkProposalAgainstPolicy",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 57,
-                      "name": "stampProposalHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 689,
-                  "name": "proposePayout",
-                  "target": {
-                    "file": "packages/cli/src/commands/propose-payout.ts"
-                  }
-                },
-                {
-                  "line": 728,
-                  "name": "parseJsonArgument",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 30,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 30,
-                      "name": "assertGovernancePolicy",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 31,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 31,
-                      "name": "assertPayoutProposal",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 34,
-                      "name": "evaluateApprovals",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 63,
-                      "name": "checkDecisionAgainstProposal",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 70,
-                      "name": "stampDecisionHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 725,
-                  "name": "decidePayout",
-                  "target": {
-                    "file": "packages/cli/src/commands/decide-payout.ts"
-                  }
-                },
-                {
-                  "line": 777,
-                  "name": "parseJsonArgument",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 40,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 40,
-                      "name": "assertGovernancePolicy",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 41,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 41,
-                      "name": "assertPayoutProposal",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 42,
-                      "name": "readJsonFile",
-                      "target": {
-                        "file": "packages/cli/src/lib/json-input.ts"
-                      }
-                    },
-                    {
-                      "line": 42,
-                      "name": "assertPayoutDecision",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 73,
-                      "name": "checkExecutionAgainstDecision",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    },
-                    {
-                      "line": 85,
-                      "name": "stampExecutionHash",
-                      "target": {
-                        "file": "packages/core/src/index.ts"
-                      }
-                    }
-                  ],
-                  "line": 773,
-                  "name": "executePayout",
-                  "target": {
-                    "file": "packages/cli/src/commands/execute-payout.ts"
-                  }
-                }
-              ],
-              "exported": false,
-              "invokedAtTopLevel": true,
-              "isDefaultExport": false,
-              "name": "main",
-              "truncated": true
-            }
-          ]
+          "path": "packages/cli/src/bin.ts"
         },
         {
           "hash": "5eea2e3a6246dabcf19e5adaa6a2ab08b2294b06fe564af3ed21a53395c14cc3",
@@ -2131,8 +1282,6 @@
           "path": "packages/cli/src/commands/configure-minter.test.ts"
         },
         {
-          "entry": "configureMinter",
-          "entryRule": 4,
           "exports": [
             "configureMinter"
           ],
@@ -2141,45 +1290,7 @@
             "packages/cli/src/lib/json-input.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/configure-minter.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 31,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 32,
-                  "name": "importWalletPair",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                },
-                {
-                  "line": 35,
-                  "name": "authorizeOperatorAsMinter",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                },
-                {
-                  "line": 42,
-                  "name": "verifyAuthorizedMinter",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "configureMinter"
-            }
-          ]
+          "path": "packages/cli/src/commands/configure-minter.ts"
         },
         {
           "hash": "d2e488a665d44b0aeb99a8f88af6560cdb4143a34d4be4bedcb37f089b0fd947",
@@ -2190,8 +1301,6 @@
           "path": "packages/cli/src/commands/create-governance-policy.test.ts"
         },
         {
-          "entry": "createGovernancePolicy",
-          "entryRule": 4,
           "exports": [
             "createGovernancePolicy"
           ],
@@ -2200,52 +1309,7 @@
             "packages/cli/src/lib/json-input.ts",
             "packages/core/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/create-governance-policy.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 34,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 34,
-                  "name": "assertManifest",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 35,
-                  "name": "computeManifestId",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 59,
-                  "name": "assertGovernancePolicy",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 61,
-                  "name": "stampPolicyHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "createGovernancePolicy"
-            }
-          ]
+          "path": "packages/cli/src/commands/create-governance-policy.ts"
         },
         {
           "hash": "587da9fd7aa1fc8a9a56e450d7040e33e8e2a292a04f8bae4e6c90f7a2694515",
@@ -2255,8 +1319,6 @@
           "path": "packages/cli/src/commands/create-release.test.ts"
         },
         {
-          "entry": "createRelease",
-          "entryRule": 4,
           "exports": [
             "createRelease"
           ],
@@ -2264,31 +1326,7 @@
           "importsFiles": [
             "packages/core/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/create-release.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 33,
-                  "name": "assertManifest",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 36,
-                  "name": "stampManifestId",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "createRelease"
-            }
-          ]
+          "path": "packages/cli/src/commands/create-release.ts"
         },
         {
           "hash": "56df7ee8510fc0cc05e3ec65c955a070a0013f35bad977dd5cc895df7c482424",
@@ -2300,8 +1338,6 @@
           "path": "packages/cli/src/commands/decide-payout.test.ts"
         },
         {
-          "entry": "decidePayout",
-          "entryRule": 4,
           "exports": [
             "decidePayout"
           ],
@@ -2310,66 +1346,7 @@
             "packages/cli/src/lib/json-input.ts",
             "packages/core/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/decide-payout.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 30,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 30,
-                  "name": "assertGovernancePolicy",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 31,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 31,
-                  "name": "assertPayoutProposal",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 34,
-                  "name": "evaluateApprovals",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 63,
-                  "name": "checkDecisionAgainstProposal",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 70,
-                  "name": "stampDecisionHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "decidePayout"
-            }
-          ]
+          "path": "packages/cli/src/commands/decide-payout.ts"
         },
         {
           "hash": "85b3ef54ba1a09ac376ef4fc6a11837d1512de289ed520e9b3ecf1c64e97b8b3",
@@ -2381,8 +1358,6 @@
           "path": "packages/cli/src/commands/execute-payout.test.ts"
         },
         {
-          "entry": "executePayout",
-          "entryRule": 4,
           "exports": [
             "executePayout"
           ],
@@ -2391,73 +1366,7 @@
             "packages/cli/src/lib/json-input.ts",
             "packages/core/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/execute-payout.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 40,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 40,
-                  "name": "assertGovernancePolicy",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 41,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 41,
-                  "name": "assertPayoutProposal",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 42,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 42,
-                  "name": "assertPayoutDecision",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 73,
-                  "name": "checkExecutionAgainstDecision",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 85,
-                  "name": "stampExecutionHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "executePayout"
-            }
-          ]
+          "path": "packages/cli/src/commands/execute-payout.ts"
         },
         {
           "hash": "dc63146b5339e25824f934480027f29ed42f77b4fc46116fb7e6189b9218c46d",
@@ -2470,8 +1379,6 @@
           "path": "packages/cli/src/commands/grant-access.test.ts"
         },
         {
-          "entry": "grantAccess",
-          "entryRule": 4,
           "exports": [
             "grantAccess"
           ],
@@ -2482,154 +1389,7 @@
             "packages/storage/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/grant-access.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 40,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 40,
-                  "name": "assertManifest",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 41,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 41,
-                  "name": "assertReceipt",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 42,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 42,
-                  "name": "assertAccessPolicy",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 48,
-                  "name": "checkPolicyCoherence",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "branch": "!coherence.coherent",
-                  "line": 50,
-                  "name": "stampGrantHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 68,
-                  "name": "computeReceiptHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "branch": "receipt.receiptHash !== expectedHash",
-                  "line": 70,
-                  "name": "stampGrantHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 88,
-                  "name": "computeManifestId",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "branch": "receipt.manifestId !== expectedManifestId",
-                  "line": 90,
-                  "name": "stampGrantHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 107,
-                  "name": "computeRevisionHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "branch": "receipt.manifestRevisionHash !== expectedRevision",
-                  "line": 109,
-                  "name": "stampGrantHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 126,
-                  "name": "checkHolder",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                },
-                {
-                  "branch": "holderResult.error",
-                  "line": 133,
-                  "name": "stampGrantHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "branch": "!holderResult.holds",
-                  "line": 152,
-                  "name": "stampGrantHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 172,
-                  "name": "createToken",
-                  "target": null
-                },
-                {
-                  "line": 177,
-                  "name": "stampGrantHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "grantAccess"
-            }
-          ]
+          "path": "packages/cli/src/commands/grant-access.ts"
         },
         {
           "hash": "79e4318dc1e8edb0565eb88a6591ba378572a05af358f70fb66cadaf6befdc11",
@@ -2639,8 +1399,6 @@
           "path": "packages/cli/src/commands/init-wallets.test.ts"
         },
         {
-          "entry": "initWallets",
-          "entryRule": 4,
           "exports": [
             "initWallets"
           ],
@@ -2648,45 +1406,7 @@
           "importsFiles": [
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/init-wallets.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 41,
-                  "name": "generateWalletPair",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                },
-                {
-                  "line": 46,
-                  "name": "fundWalletPair",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                },
-                {
-                  "line": 56,
-                  "name": "authorizeOperatorAsMinter",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                },
-                {
-                  "line": 67,
-                  "name": "exportWalletPair",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "initWallets"
-            }
-          ]
+          "path": "packages/cli/src/commands/init-wallets.ts"
         },
         {
           "hash": "2efa343176b9fd0ca0b3d6e072000a8918d7e4e666e63fcf00f54a087a3900cf",
@@ -2696,8 +1416,6 @@
           "path": "packages/cli/src/commands/mint-release.test.ts"
         },
         {
-          "entry": "mintReleaseCommand",
-          "entryRule": 4,
           "exports": [
             "mintReleaseCommand"
           ],
@@ -2708,52 +1426,7 @@
             "packages/storage/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/mint-release.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 35,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 35,
-                  "name": "assertManifest",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 38,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 38,
-                  "name": "importWalletPair",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                },
-                {
-                  "line": 57,
-                  "name": "issueRelease",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "mintReleaseCommand"
-            }
-          ]
+          "path": "packages/cli/src/commands/mint-release.ts"
         },
         {
           "hash": "e8492b3fb1d78ce38d3f50011b7434c99850697bc88fe00b87bbd6eb430a42a2",
@@ -2765,8 +1438,6 @@
           "path": "packages/cli/src/commands/propose-payout.test.ts"
         },
         {
-          "entry": "proposePayout",
-          "entryRule": 4,
           "exports": [
             "proposePayout"
           ],
@@ -2775,52 +1446,7 @@
             "packages/cli/src/lib/json-input.ts",
             "packages/core/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/propose-payout.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 30,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 30,
-                  "name": "assertGovernancePolicy",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 47,
-                  "name": "assertPayoutProposal",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 50,
-                  "name": "checkProposalAgainstPolicy",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 57,
-                  "name": "stampProposalHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "proposePayout"
-            }
-          ]
+          "path": "packages/cli/src/commands/propose-payout.ts"
         },
         {
           "hash": "26f669b9bbe116ba6cc447e83f449d2c0d625c1b6538bbe91a57f6c5f5391258",
@@ -2832,8 +1458,6 @@
           "path": "packages/cli/src/commands/recover-release.test.ts"
         },
         {
-          "entry": "recoverRelease",
-          "entryRule": 4,
           "exports": [
             "buildMintFactsLines",
             "recoverRelease"
@@ -2844,101 +1468,7 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/recover-release.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 103,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 103,
-                  "name": "assertManifest",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 104,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 104,
-                  "name": "assertReceipt",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 108,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 108,
-                  "name": "assertAccessPolicy",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 113,
-                  "name": "deriveRecoveryBundle",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 117,
-                  "name": "computeManifestId",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 118,
-                  "name": "computeRevisionHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 150,
-                  "name": "computeReceiptHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 223,
-                  "name": "verifyAuthorizedMinter",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                },
-                {
-                  "line": 244,
-                  "name": "readNftFromLedger",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "recoverRelease"
-            }
-          ]
+          "path": "packages/cli/src/commands/recover-release.ts"
         },
         {
           "hash": "7623492866a3013b445f7afc8c81a873601d8b884fc56be6b9cd1ef1d94bcdfe",
@@ -2948,8 +1478,6 @@
           "path": "packages/cli/src/commands/resolve.test.ts"
         },
         {
-          "entry": "resolveManifestFile",
-          "entryRule": 4,
           "exports": [
             "resolveManifestFile"
           ],
@@ -2958,38 +1486,7 @@
             "packages/cli/src/lib/json-input.ts",
             "packages/core/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/resolve.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 19,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 20,
-                  "name": "assertManifest",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 21,
-                  "name": "resolveManifestPointers",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "resolveManifestFile"
-            }
-          ]
+          "path": "packages/cli/src/commands/resolve.ts"
         },
         {
           "hash": "700ccedd945e9fdd632e6f146b2f74ea785f1b274bfc7d535e034895454bbe5f",
@@ -2999,8 +1496,6 @@
           "path": "packages/cli/src/commands/validate.test.ts"
         },
         {
-          "entry": "validateManifestFile",
-          "entryRule": 4,
           "exports": [
             "validateManifestFile"
           ],
@@ -3008,24 +1503,7 @@
           "importsFiles": [
             "packages/core/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/validate.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 20,
-                  "name": "validateManifest",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "validateManifestFile"
-            }
-          ]
+          "path": "packages/cli/src/commands/validate.ts"
         },
         {
           "hash": "9b648015d2ce07c499dd4c64b9f4f337c10a3d859104ca0a70706d37d50b0b82",
@@ -3058,8 +1536,6 @@
           "path": "packages/cli/src/commands/verify-release.test.ts"
         },
         {
-          "entry": "verifyRelease",
-          "entryRule": 4,
           "exports": [
             "verifyRelease"
           ],
@@ -3069,80 +1545,7 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/verify-release.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 44,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 44,
-                  "name": "assertManifest",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 45,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 45,
-                  "name": "assertReceipt",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 49,
-                  "name": "computeManifestId",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 61,
-                  "name": "computeRevisionHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 74,
-                  "name": "computeReceiptHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 170,
-                  "name": "verifyAuthorizedMinter",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                },
-                {
-                  "line": 198,
-                  "name": "readNftFromLedger",
-                  "target": {
-                    "file": "packages/xrpl/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "verifyRelease"
-            }
-          ]
+          "path": "packages/cli/src/commands/verify-release.ts"
         },
         {
           "hash": "fd95cdf9969714a13c9b843f1d9a438c2bcf71c2f5319b86b389b1a69fb4a1c1",
@@ -3154,8 +1557,6 @@
           "path": "packages/cli/src/commands/xaman-flow.test.ts"
         },
         {
-          "entry": "mintReleaseViaXaman",
-          "entryRule": 4,
           "exports": [
             "configureMinterViaXaman",
             "mintReleaseViaXaman"
@@ -3166,120 +1567,7 @@
             "packages/core/src/index.ts",
             "packages/xaman/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/xaman-flow.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 127,
-                  "name": "buildConfigureMinterPayload",
-                  "target": {
-                    "file": "packages/xaman/src/index.ts"
-                  }
-                },
-                {
-                  "line": 128,
-                  "name": "createPayload",
-                  "receiver": "XamanClient",
-                  "target": {
-                    "file": "packages/xaman/src/index.ts"
-                  }
-                },
-                {
-                  "line": 135,
-                  "name": "subscribeToPayload",
-                  "receiver": "XamanClient",
-                  "target": {
-                    "file": "packages/xaman/src/index.ts"
-                  }
-                },
-                {
-                  "line": 141,
-                  "name": "verifyPayloadResult",
-                  "target": {
-                    "file": "packages/xaman/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "configureMinterViaXaman"
-            },
-            {
-              "calls": [
-                {
-                  "line": 170,
-                  "name": "readJsonFile",
-                  "target": {
-                    "file": "packages/cli/src/lib/json-input.ts"
-                  }
-                },
-                {
-                  "line": 170,
-                  "name": "assertManifest",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 172,
-                  "name": "computeManifestId",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 173,
-                  "name": "computeRevisionHash",
-                  "target": {
-                    "file": "packages/core/src/index.ts"
-                  }
-                },
-                {
-                  "line": 184,
-                  "name": "buildMintPayload",
-                  "target": {
-                    "file": "packages/xaman/src/index.ts"
-                  }
-                },
-                {
-                  "line": 185,
-                  "name": "createPayload",
-                  "receiver": "XamanClient",
-                  "target": {
-                    "file": "packages/xaman/src/index.ts"
-                  }
-                },
-                {
-                  "line": 192,
-                  "name": "subscribeToPayload",
-                  "receiver": "XamanClient",
-                  "target": {
-                    "file": "packages/xaman/src/index.ts"
-                  }
-                },
-                {
-                  "line": 203,
-                  "name": "verifySignerAddress",
-                  "target": {
-                    "file": "packages/xaman/src/index.ts"
-                  }
-                },
-                {
-                  "line": 204,
-                  "name": "verifyPayloadResult",
-                  "target": {
-                    "file": "packages/xaman/src/index.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "mintReleaseViaXaman"
-            }
-          ]
+          "path": "packages/cli/src/commands/xaman-flow.ts"
         },
         {
           "hash": "3897faa24760e5ffd65d8f2aa668733710269c76f90448adbf64dc3469f37c37",
@@ -4389,7 +2677,7 @@
   ],
   "doors": [
     {
-      "checksCount": 10,
+      "checksCount": 8,
       "commands": [
         {
           "job": "test",
@@ -4620,7 +2908,7 @@
           "job": "cargo-check",
           "matched": true,
           "path": "app/src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc app/tsconfig.json"
         },
         {
@@ -4775,7 +3063,7 @@
           "job": "cargo-check",
           "matched": true,
           "path": "app/vite.config.ts",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc app/tsconfig.json"
         },
         {
@@ -5329,84 +3617,6 @@
         "actions/upload-pages-artifact"
       ],
       "usesWorkflowToken": false
-    },
-    {
-      "checksCount": 0,
-      "commands": [],
-      "elsewhere": [],
-      "file": "packages/cli/package.json",
-      "kind": "command",
-      "landings": [],
-      "mentions": [],
-      "name": "capsule",
-      "permissions": [],
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "cli",
-          "depth": 0,
-          "files": 17
-        },
-        {
-          "boundary": "core",
-          "depth": 1,
-          "enters": {
-            "file": "packages/core/src/index.ts",
-            "from": "packages/cli/src/bin.ts"
-          },
-          "files": 28
-        },
-        {
-          "boundary": "storage",
-          "depth": 1,
-          "enters": {
-            "file": "packages/storage/src/index.ts",
-            "from": "packages/cli/src/bin.ts"
-          },
-          "files": 5
-        },
-        {
-          "boundary": "xaman",
-          "depth": 1,
-          "enters": {
-            "file": "packages/xaman/src/index.ts",
-            "from": "packages/cli/src/bin.ts"
-          },
-          "files": 5
-        },
-        {
-          "boundary": "xrpl",
-          "depth": 1,
-          "enters": {
-            "file": "packages/xrpl/src/index.ts",
-            "from": "packages/cli/src/bin.ts"
-          },
-          "files": 9
-        }
-      ],
-      "readers": [],
-      "runs": [
-        {
-          "path": "packages/cli/src/bin.ts",
-          "runKind": "executes"
-        }
-      ],
-      "runsCount": 1,
-      "secrets": [],
-      "sends": {
-        "deploysPages": false,
-        "dispatchesTo": [],
-        "opensIssues": false,
-        "opensIssuesOnFailure": false,
-        "opensPullRequests": false,
-        "publishes": false,
-        "publishesTo": [],
-        "releases": false
-      },
-      "stages": [],
-      "triggers": [],
-      "uses": [],
-      "usesWorkflowToken": false
     }
   ],
   "edges": [
@@ -5668,6 +3878,18 @@
     {
       "readers": [
         {
+          "by": "artifacts/governance-golden-path.test.ts",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "artifacts/direct-rail/governance-policy.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "artifacts/failure-drills.test.ts",
           "call": "readFile",
           "confidence": "ast",
@@ -5675,6 +3897,42 @@
         }
       ],
       "target": "artifacts/direct-rail/issuance-receipt.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "artifacts/governance-golden-path.test.ts",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "artifacts/direct-rail/payout-decision.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "artifacts/governance-golden-path.test.ts",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "artifacts/direct-rail/payout-execution.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "artifacts/governance-golden-path.test.ts",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "artifacts/direct-rail/payout-proposal.json",
       "writers": []
     },
     {

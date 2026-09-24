@@ -246,10 +246,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 2,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -1313,7 +1313,7 @@
       ],
       "importConfidence": "full",
       "name": "src",
-      "origin": "authored",
+      "origin": "mixed",
       "outsideReads": 35,
       "outsideWrites": 16,
       "role": "code",
@@ -2162,34 +2162,53 @@
       "readers": [
         {
           "by": "scripts/sync-kb.mjs",
-          "call": "literal",
+          "call": "existsSync",
           "confidence": "ast"
-        }
-      ],
-      "target": "src/kb",
-      "writers": []
-    },
-    {
-      "readers": [
+        },
         {
           "by": "scripts/sync-kb.mjs",
-          "call": "literal",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/profiles/registry.ts",
+          "call": "import",
           "confidence": "ast"
         }
       ],
       "target": "src/kb/nodes.json",
-      "writers": []
+      "writers": [
+        {
+          "by": "scripts/sync-kb.mjs",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [
         {
           "by": "scripts/sync-kb.mjs",
-          "call": "literal",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/sync-kb.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/profiles/registry.ts",
+          "call": "import",
           "confidence": "ast"
         }
       ],
       "target": "src/kb/presets.json",
-      "writers": []
+      "writers": [
+        {
+          "by": "scripts/sync-kb.mjs",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [

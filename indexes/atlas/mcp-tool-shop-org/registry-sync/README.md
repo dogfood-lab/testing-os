@@ -1,6 +1,6 @@
 # registry-sync: how it works
 
-Mapped at 2026-09-24 from commit e8f8621.
+Mapped at 2026-09-24 from commit b7d57d3.
 
 ## What this is
 
@@ -99,7 +99,7 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 4 writes and 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 4 writes and 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

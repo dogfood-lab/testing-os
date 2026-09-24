@@ -10,6 +10,8 @@ Mapped at 2026-09-24 from commit 8b16ae0.
 
 - fixtures/bad/ is now also written by scripts/build-pytorch-helper-fixtures.mjs.
 - fixtures/bad/* is now written by scripts/build-pytorch-helper-fixtures.mjs.
+- fixtures/bad/multi-step-external.bad-bundle-digest-tampered.jsonl is now read by test/cli.multi-step-import-pipe.test.ts.
+- And 7 more new writers and readers of places.
 - No file changed.
 
 ## What comes in
@@ -28,7 +30,7 @@ Mapped at 2026-09-24 from commit 8b16ae0.
 
 ## Who reads the results
 
-ci writes nothing in the files this map could read; 1 file could not be.
+ci writes nothing this map can see.
 
 ## The other doors
 
@@ -81,7 +83,7 @@ Window: 180 days; a pair counts from 3 shared commits, since 8 source files reac
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike in the files this map could read; 1 file could not be.
+No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
@@ -140,10 +142,9 @@ Read those in order to follow one run of bp end to end. This path follows bp (a 
 
 - 2 import sites name a declared dependency that shares its name with a local module (jax); they are read as the dependency, which is not in this repository.
 - 3 import sites could not be resolved.
-- 1 file uses syntax the parser cannot read (src/topology.ts), so what it imports is not known: a NUL character inside a string (1).
 - 16 writes and 11 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 21 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 2 writes and 24 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 7 commands are built at run time and not followed, 6 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
