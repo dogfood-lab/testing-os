@@ -1,6 +1,6 @@
 # testing-os: how it works
 
-Mapped at 2026-09-24 from commit aa8d0d4.
+Mapped at 2026-09-24 from commit a4ff8a4.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-09-24 from commit aa8d0d4.
 
 ## What changed since 2026-09-24 (330577c)
 
-Nothing structural changed since 2026-09-24; 5 files changed content.
+Nothing structural changed since 2026-09-24; 1 file added and 8 changed content.
 
 ## What comes in
 
