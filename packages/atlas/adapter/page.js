@@ -1331,7 +1331,10 @@ function writtenPlaces(ctx) {
     // Every writer reading the file first is a script stamping a block of a
     // file people write, not a generator of the file.
     const stamped = inside.length > 0 && inside.every((landing) => landing.writers.length > 0 && landing.writers.every((entry) => entry.stamps));
-    return { target, writers, readers, guards: guardsOf(inside), ...(stamped ? { stamped: true } : {}) };
+    // A writer that only bootstraps the file, once when it is absent, reads
+    // the committed file every other time: its reads are a use of it.
+    const once = [...new Set(inside.flatMap((landing) => landing.writers.filter((entry) => (entry.unless ?? []).includes('exists')).map((entry) => entry.by)))];
+    return { target, writers, readers, guards: guardsOf(inside), once, ...(stamped ? { stamped: true } : {}) };
   });
 }
 
@@ -1356,11 +1359,12 @@ function guardsOf(landings) {
  * @returns {string}
  */
 export function guardClause(guards) {
-  const flags = (guards ?? []).filter((guard) => guard !== 'ci');
+  const flags = (guards ?? []).filter((guard) => guard !== 'ci' && guard !== 'exists');
   const parts = [];
   if ((guards ?? []).includes('ci')) parts.push('outside CI');
   if (flags.length > 0) parts.push(`without ${list(flags).replace(/ and /g, ' or ')}`);
-  return parts.length > 0 ? ` when run ${parts.join(' and ')}` : '';
+  const run = parts.length > 0 ? ` when run ${parts.join(' and ')}` : '';
+  return (guards ?? []).includes('exists') ? `${run} when absent` : run;
 }
 
 // A test that writes a tracked place is said to be one: the place changes
@@ -1636,7 +1640,7 @@ function untestedSection(found) {
 function unread(ctx) {
   const written = writtenPlaces(ctx);
   const all = written
-    .filter((place) => !place.stamped && place.readers.every((reader) => place.writers.includes(reader.path)))
+    .filter((place) => !place.stamped && place.readers.every((reader) => place.writers.includes(reader.path) && !place.once.includes(reader.path)))
     .map((place) => ({
       place: ctx.place(place.target),
       writers: writerItems(ctx, place.writers, place.guards),
@@ -1760,12 +1764,14 @@ function generated(ctx) {
       for (const [by, list] of place.guards) guards.set(by, guards.has(by) ? guards.get(by).filter((guard) => list.includes(guard)) : list);
     }
     claimed.push(inside);
-    items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers, guards });
+    const once = writers.length > 0 && writers.every((by) => (guards.get(by) ?? []).includes('exists'));
+    items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers, guards, ...(once ? { once: true } : {}) });
   }
   for (const place of written) {
     if (claimed.some((inside) => inside(place.target))) continue;
     const target = ctx.place(place.target);
-    items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}) });
+    const once = place.writers.length > 0 && place.writers.every((by) => (place.guards.get(by) ?? []).includes('exists'));
+    items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}), ...(once ? { once: true } : {}) });
   }
   for (const boundary of ctx.boundaries.filter((item) => item.origin !== 'generated')) {
     const bot = botAdded(ctx, boundary.name);
@@ -1782,6 +1788,7 @@ function generatedSection(ctx, items) {
       if (item.addedBy) return `- **${item.shown}** is written by ${item.addedBy}, which added every file in it.`;
       if (item.writers.length === 0) return `- **${item.shown}** is written by code this map cannot name.`;
       const by = list(worded(item.writers, ctx.shown));
+      if (item.once) return `- **${item.shown}** is written once by ${by}.`;
       return item.block ? `- **${item.shown}** has a block written by ${by}.` : `- **${item.shown}** is written by ${by}.`;
     }).join('\n')
     : absence('generated', unreadCount(ctx));
@@ -2594,7 +2601,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesLead: duplicated.lead,
     duplicatesNote: duplicated.note,
     edges: breakEdges(ctx, breakEntries),
-    generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), place: item.place, writers: worded(item.writers, id) })),
+    generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), ...(item.once ? { once: true } : {}), place: item.place, writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
     mainDoor: main ? doorKey(main) : null,

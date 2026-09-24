@@ -746,6 +746,7 @@ function generatedSection(ctx) {
       if (writers.length === 0) return `${place} is written by code this map cannot name.`;
       const by = list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
       // A stamped file is written by people, with one block a script keeps.
+      if (item.once) return `${place} is written once by ${by}.`;
       return item.block ? `${place} has a block written by ${by}.` : `${place} is written by ${by}.`;
     }))
     : p(absence('generated', unreadFiles(ctx)));

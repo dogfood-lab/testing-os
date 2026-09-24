@@ -15,6 +15,13 @@
  * `unless`. Only what a condition forces is read: `a || b` leaves when either
  * does, `a && b` only when both do, and a name bound to a condition in the
  * file is read as the condition. Anything else guards nothing.
+ *
+ * A third kind decides whether the write happens at all once the file is
+ * committed: `exists`, a write skipped when the file it writes is already
+ * there (if (!existsSync(p)) writeFileSync(p, ...), an early return when it
+ * exists, or a write in the catch of a try that reads it first). Such a write
+ * bootstraps the file once; a checkout holds it, so no door makes it. The
+ * file is the one the write names, compared by the text of the path.
  */
 
 const CI_VARIABLES = new Set(['CI', 'GITHUB_ACTIONS']);
@@ -32,6 +39,11 @@ const PY_FUNCTIONS = new Set(['function_definition', 'lambda']);
 const PY_BLOCKS = new Set(['module', 'block']);
 const PY_EXITS = new Set(['sys.exit', 'exit', 'quit', 'os._exit']);
 const MAX_DEPTH = 8;
+const JS_EXISTS = new Set(['existsSync', 'pathExistsSync', 'pathExists']);
+const JS_READS = new Set(['readFileSync', 'readFile', 'statSync', 'stat', 'accessSync', 'access', 'openSync', 'readJsonSync', 'readJSONSync']);
+const PY_EXISTS = new Set(['os.path.exists', 'os.path.isfile', 'path.exists', 'path.isfile', 'exists', 'isfile']);
+const PY_RECEIVER_EXISTS = new Set(['exists', 'is_file']);
+const PY_RECEIVER_READS = new Set(['read_text', 'read_bytes', 'open', 'stat']);
 
 /**
  * @param {object} node a tree-sitter node inside the write call
@@ -41,13 +53,17 @@ const MAX_DEPTH = 8;
 export function writeGuards(node, python) {
   const lang = python ? PYTHON : SCRIPT;
   const guards = new Set();
-  const candidates = (condition) => ['ci', ...flagsIn(condition, lang, 0, new Set())];
+  const target = pathText(node);
+  const candidates = (condition) => ['ci', ...(target ? ['exists'] : []), ...flagsIn(condition, lang, 0, new Set())];
   const record = (condition, value) => {
-    for (const guard of candidates(condition)) if (forced(condition, guard, value, lang, 0, new Set())) guards.add(guard);
+    for (const guard of candidates(condition)) if (forced(condition, guard, value, lang, 0, new Set(), target)) guards.add(guard);
   };
   let child = node;
   for (let scope = node.parent; scope; child = scope, scope = scope.parent) {
     if (lang.functions.has(scope.type)) break;
+    // A write in the catch of a try that reads the same file runs only when
+    // that read failed: the file was not there.
+    if (target && scope.type === lang.catchType && lang.readsFirst(scope.parent, target)) guards.add('exists');
     if (scope.type === lang.ifType) {
       const condition = scope.childForFieldName('condition');
       const consequence = scope.childForFieldName('consequence');
@@ -74,29 +90,63 @@ function within(node, container) {
  * Whether the guard, holding, forces the condition to `value`: a write under
  * a condition that CI forces false does not happen in CI.
  */
-function forced(node, guard, value, lang, depth, visiting) {
+function forced(node, guard, value, lang, depth, visiting, target) {
   if (!node || depth > MAX_DEPTH) return false;
   const next = depth + 1;
   const inner = lang.unwrap(node);
-  if (inner !== node) return forced(inner, guard, value, lang, next, visiting);
+  if (inner !== node) return forced(inner, guard, value, lang, next, visiting, target);
   const negated = lang.negated(node);
-  if (negated) return forced(negated, guard, !value, lang, next, visiting);
+  if (negated) return forced(negated, guard, !value, lang, next, visiting, target);
   const split = lang.logical(node);
   if (split) {
     const [left, right] = split.operands;
-    const l = (v) => forced(left, guard, v, lang, next, visiting);
-    const r = (v) => forced(right, guard, v, lang, next, visiting);
+    const l = (v) => forced(left, guard, v, lang, next, visiting, target);
+    const r = (v) => forced(right, guard, v, lang, next, visiting, target);
     if (split.or) return value ? l(true) || r(true) : l(false) && r(false);
     return value ? l(true) && r(true) : l(false) || r(false);
   }
   const bound = lang.binding(node, visiting);
   if (bound) {
     visiting.add(bound.id);
-    const result = forced(bound.value, guard, value, lang, next, visiting);
+    const result = forced(bound.value, guard, value, lang, next, visiting, target);
     visiting.delete(bound.id);
     return result;
   }
+  if (guard === 'exists') return value === true && lang.exists(node, target);
   return value === true && lang.atom(node, guard);
+}
+
+// The text a path is written as, spaces aside: BASELINE_PATH, join(dir, 'x').
+function pathText(node) {
+  const text = node?.text?.replace(/\s+/g, '') ?? '';
+  return text === '' ? null : text;
+}
+
+// existsSync(p), fs.existsSync(p) and fs-extra's pathExists(p), of the path.
+function scriptExists(node, target) {
+  if (node.type === 'await_expression') return scriptExists(node.namedChildren[0], target);
+  if (node.type !== 'call_expression') return false;
+  const fn = node.childForFieldName('function');
+  const name = fn?.type === 'member_expression' ? fn.childForFieldName('property')?.text : fn?.text;
+  if (!JS_EXISTS.has(name)) return false;
+  return pathText(node.childForFieldName('arguments')?.namedChildren[0]) === target;
+}
+
+// A try whose body reads the path before anything writes it.
+function scriptReadsFirst(tryStatement, target) {
+  const body = tryStatement?.childForFieldName('body');
+  if (!body) return false;
+  const stack = [body];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    if (current.type === 'call_expression') {
+      const fn = current.childForFieldName('function');
+      const name = fn?.type === 'member_expression' ? fn.childForFieldName('property')?.text : fn?.text;
+      if (JS_READS.has(name) && pathText(current.childForFieldName('arguments')?.namedChildren[0]) === target) return true;
+    }
+    stack.push(...current.namedChildren);
+  }
+  return false;
 }
 
 // The flags a condition tests, by name, through the names it is bound to.
@@ -216,6 +266,9 @@ function scriptExits(statement) {
 
 const SCRIPT = {
   ifType: 'if_statement',
+  catchType: 'catch_clause',
+  exists: scriptExists,
+  readsFirst: scriptReadsFirst,
   blockType: 'statement_block',
   blocks: JS_BLOCKS,
   functions: JS_FUNCTIONS,
@@ -259,6 +312,32 @@ function pythonFlag(node) {
   return flagText(node.namedChildren[0]);
 }
 
+// os.path.exists(p), os.path.isfile(p), p.exists() and p.is_file().
+function pythonExists(node, target) {
+  if (node.type !== 'call') return false;
+  const fn = node.childForFieldName('function');
+  if (fn?.type === 'attribute' && PY_RECEIVER_EXISTS.has(fn.childForFieldName('attribute')?.text) && pathText(fn.childForFieldName('object')) === target) return true;
+  if (!PY_EXISTS.has(fn?.text)) return false;
+  return pathText(node.childForFieldName('arguments')?.namedChildren[0]) === target;
+}
+
+// A try whose body opens or reads the path: open(p), p.read_text().
+function pythonReadsFirst(tryStatement, target) {
+  const body = tryStatement?.childForFieldName('body');
+  if (!body) return false;
+  const stack = [body];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    if (current.type === 'call') {
+      const fn = current.childForFieldName('function');
+      if (fn?.type === 'identifier' && fn.text === 'open' && pathText(current.childForFieldName('arguments')?.namedChildren[0]) === target) return true;
+      if (fn?.type === 'attribute' && PY_RECEIVER_READS.has(fn.childForFieldName('attribute')?.text) && pathText(fn.childForFieldName('object')) === target) return true;
+    }
+    stack.push(...current.namedChildren);
+  }
+  return false;
+}
+
 function pythonExits(statement) {
   if (statement.type === 'return_statement' || statement.type === 'raise_statement') return true;
   if (statement.type !== 'expression_statement') return false;
@@ -268,6 +347,9 @@ function pythonExits(statement) {
 
 const PYTHON = {
   ifType: 'if_statement',
+  catchType: 'except_clause',
+  exists: pythonExists,
+  readsFirst: pythonReadsFirst,
   blockType: 'block',
   blocks: PY_BLOCKS,
   functions: PY_FUNCTIONS,

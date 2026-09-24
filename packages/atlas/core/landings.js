@@ -2404,7 +2404,10 @@ export function attachLandings({ files, doors, boundaries, places }) {
   for (const file of [...own, ...tests]) {
     for (const write of file.writes) {
       const entry = { by: file.path, confidence: write.confidence };
-      if (stamps(file, write.target, places)) entry.stamps = true;
+      // A write made only when a committed file is absent bootstraps it:
+      // it happens once, before the commit, and stamps nothing.
+      if (bootstraps(write, places)) entry.unless = ['exists'];
+      else if (stamps(file, write.target, places)) entry.stamps = true;
       add(writers, write.target, entry);
     }
   }
@@ -2465,7 +2468,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     for (const path of door.reachFiles ?? []) {
       for (const write of byPath.get(path)?.writes ?? []) {
         if (write.confidence === 'weak') continue;
-        const guards = guardsHit(door, path, write);
+        const guards = guardsHit(door, path, write, places);
         if (guards.length === 0) targets.add(write.target);
         else for (const guard of guards) note(skipped, `${write.target}\0${path}`, guard);
       }
@@ -2489,7 +2492,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
   for (const [target, entries] of writers) {
     for (const entry of entries.values()) {
       const hit = skipped.get(`${target}\0${entry.by}`);
-      if (hit) entry.unless = [...hit].sort();
+      if (hit) entry.unless = [...new Set([...(entry.unless ?? []), ...hit])].sort();
     }
   }
 
@@ -2599,13 +2602,15 @@ function keptForOutput(target, places) {
  * file the door only imports carries no flags of its own run, so a flag guard
  * holds only for a file the door runs by name.
  */
-function guardsHit(door, path, write) {
+function guardsHit(door, path, write, places) {
   const unless = write.unless ?? [];
   if (unless.length === 0) return [];
   const hit = [];
   if (!door.kind && unless.includes('ci')) hit.push('ci');
+  // A checkout holds the committed file, so no door's run makes it.
+  if (bootstraps(write, places)) hit.push('exists');
   const runs = (door.runs ?? []).filter((run) => run.path === path && run.runKind !== 'checks');
-  const flags = unless.filter((guard) => guard !== 'ci');
+  const flags = unless.filter((guard) => guard !== 'ci' && guard !== 'exists');
   if (runs.length > 0 && flags.length > 0 && runs.every((run) => (run.passes ?? []).some((flag) => flags.includes(flag)))) {
     for (const run of runs) for (const flag of run.passes) if (flags.includes(flag)) hit.push(flag);
   }
@@ -2615,6 +2620,11 @@ function guardsHit(door, path, write) {
 function note(map, key, value) {
   if (!map.has(key)) map.set(key, new Set());
   map.get(key).add(value);
+}
+
+// The write happens only when the file is absent, and the file is committed.
+function bootstraps(write, places) {
+  return (write.unless ?? []).includes('exists') && places.files.has(write.target);
 }
 
 // The writer reads the tracked file's content before it writes the file.
