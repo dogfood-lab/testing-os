@@ -2265,10 +2265,11 @@ export function externalsLine(sites, names) {
 // A line names this many of the files the parser could not read, the rest
 // counted, so a reader can open the one that stopped it.
 const UNREAD_NAMED = 3;
+// A directory of scripts a person runs by hand, named after the production files.
+const SCRIPT_HOMES = /(^|\/)(scripts?|tools|bin)\//;
 const UNREAD_SYNTAX = {
   'jsx-ampersand': 'a bare `&` in JSX text',
   'import-type-array': 'an import type followed by `[]`',
-  'nul-character': 'a NUL character inside a string',
   'typeof-import-argument': '`typeof import(…)` as a type argument',
 };
 
@@ -2312,14 +2313,18 @@ function unreadGroup(group) {
  * part holds more than one such file the count is given by part, since five
  * fixtures broken on purpose and one schema the parser trips on are not the
  * same finding; with every file in one part, that part is named once. Up to
- * three files are named by path, the rest counted.
+ * three files are named by path, the rest counted: entry points first, then
+ * the other production files, then tests and scripts, since a reader opens
+ * the file that runs before the one that checks it.
  *
- * @param {Array<{ path?: string, unreadSyntax?: string, part?: string|null, partLabel?: string|null }>} files
+ * @param {Array<{ path?: string, unreadSyntax?: string, part?: string|null, partLabel?: string|null, entry?: boolean }>} files
  * @returns {string|null}
  */
 export function unreadLine(files) {
   if (files.length === 0) return null;
-  const paths = files.map((file) => file.path).filter((path) => typeof path === 'string' && path !== '').sort(cmp);
+  const rank = (file) => (isTestMaterial(file.path) || SCRIPT_HOMES.test(file.path) ? 2 : file.entry ? 0 : 1);
+  const paths = files.filter((file) => typeof file.path === 'string' && file.path !== '')
+    .sort((a, b) => rank(a) - rank(b) || cmp(a.path, b.path)).map((file) => file.path);
   const named = paths.length === 0 ? '' : paths.length > UNREAD_NAMED
     ? ` (${paths.slice(0, UNREAD_NAMED).join(', ')} and ${paths.length - UNREAD_NAMED} more)`
     : ` (${list(paths)})`;
@@ -2358,9 +2363,10 @@ function limits(ctx, shownText) {
   if (outside > 0) {
     lines.push(`${count(outside, 'import site')} ${outside === 1 ? 'names' : 'name'} a path outside this repository, so what ${outside === 1 ? 'it loads' : 'they load'} is not followed.`);
   }
+  const entries = new Set([...ctx.boundaries.flatMap((boundary) => boundary.entryPoints ?? []), ...ctx.doors.flatMap((door) => (door.runs ?? []).map((run) => run.path))]);
   const unparsed = unreadLine([...ctx.fileOf.values()].filter((file) => file.parseError).map((file) => {
     const part = ctx.boundaryOf.get(file.path) ?? null;
-    return { part, partLabel: part == null ? null : ctx.shown(part), path: file.path, unreadSyntax: file.unreadSyntax };
+    return { part, partLabel: part == null ? null : ctx.shown(part), path: file.path, unreadSyntax: file.unreadSyntax, ...(entries.has(file.path) ? { entry: true } : {}) };
   }));
   if (unparsed) lines.push(unparsed);
   const dynamicWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);

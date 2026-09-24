@@ -212,6 +212,10 @@
     {
       "path": "fixtures/atlas/main-guards/test/generators.test.mjs",
       "reason": "Atlas fixture, not a test. It sits inside the main-guards fixture repository that packages/atlas/adapter/page-main-guards.test.js maps, where CI's node --test runs it and it imports the generators' pure functions, so the page must credit CI with none of the writes behind their main guards. It is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/grammar-shapes/src/trailing.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the grammar-shapes fixture repository that packages/atlas/core/grammar-shapes.test.js maps, where the grammar must read typeof import(...) on a line of its own with a trailing comma, the vitest importOriginal mock shape, and record its specifier. It holds no test and is never meant to run."
     }
   ]
 }

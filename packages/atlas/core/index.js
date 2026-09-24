@@ -426,9 +426,12 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
 
 // One parse serves every reading of a file: its imports, its landings, the
 // order of the calls it makes and the commands it hands a child process.
-function parseFile(language, path, source, places) {
+function parseFile(language, path, original, places) {
   let tree;
   let typeSites = [];
+  // The grammar stops at a raw NUL byte wherever it is, a comment or a
+  // string; a space in its place reads the same, every offset unmoved.
+  const source = original.includes('\0') ? original.replaceAll('\0', ' ') : original;
   try {
     parser.setLanguage(languages[language]);
     tree = parser.parse(source);
@@ -474,7 +477,15 @@ function parseFile(language, path, source, places) {
 // construct spread over lines is left as it is.
 const TYPEOF_IMPORT = /(\btypeof[ \t]+)(import[ \t]*\([ \t]*(['"`])([^'"`\n]*)\3[ \t]*\))/g;
 const IMPORT_ARRAY = /\bimport[ \t]*\([ \t]*(['"`])([^'"`\n]*)\1[ \t]*\)(?=(?:[ \t]*\.[ \t]*[A-Za-z_$][\w$]*)+[ \t]*\[[ \t]*\])/g;
-// A bare & in JSX text is rewritten one error at a time, this many at most.
+// abstract read as a name (let abstract: string; abstract = ...), which the
+// grammar takes for the modifier at the start of a statement; the modifier
+// itself is followed by what it modifies.
+const ABSTRACT_NAME = /\babstract\b(?!\s+[A-Za-z_$])/g;
+// A decimal character reference past five digits (&#128274;, a padlock),
+// which the grammar does not read, though HTML and JSX do.
+const LONG_REFERENCE = /&#[0-9]{6,};/g;
+// A bare & in JSX text, and a comparison the grammar reads as the start of a
+// type argument list, are rewritten one error at a time, this many at most.
 const REPAIR_ROUNDS = 16;
 
 /**
@@ -482,7 +493,12 @@ const REPAIR_ROUNDS = 16;
  * accepts, read again with each such construct rewritten to a form the
  * grammar reads, of the same length, so every byte offset, line and column
  * the readings record is the original's: typeof import(…) as a type
- * argument, import(…).T[], and a bare & in JSX text, which becomes a space.
+ * argument, import(…).T[], abstract as a name, which becomes abstrac$; a
+ * decimal character reference past five digits and a bare & in JSX text,
+ * which become spaces; and a comparison < with a space
+ * after it on a line that stops the parse, which becomes <= so that
+ * { left: dx < -3, right: dx > 3 } reads as two comparisons, not a call with
+ * type arguments.
  * Returns the tree and the import sites the rewrite took out of the text,
  * or null when the file still does not parse, and the original's error
  * stands, named as before.
@@ -502,11 +518,15 @@ function repairSource(source, parse) {
     sites.push({ specifier, kind: 'dynamic-literal', line: lineAt(offset) });
     return '_'.repeat(call.length);
   });
+  text = text.replace(ABSTRACT_NAME, () => 'abstrac$');
+  text = text.replace(LONG_REFERENCE, (reference) => ' '.repeat(reference.length));
   let tree = parse(text);
   for (let round = 0; round < REPAIR_ROUNDS && tree != null && tree.rootNode.hasError; round += 1) {
     const at = jsxAmpersands(text, tree.rootNode);
-    if (at.length === 0) break;
+    const compared = at.length > 0 ? [] : comparisons(text, tree.rootNode);
+    if (at.length === 0 && compared.length === 0) break;
     for (const index of at) text = `${text.slice(0, index)} ${text.slice(index + 1)}`;
+    for (const index of compared) text = `${text.slice(0, index)}<=${text.slice(index + 2)}`;
     tree.delete();
     tree = parse(text);
   }
@@ -646,6 +666,30 @@ function settleInstalled(doors, files, repoPath, tracked) {
   return kept;
 }
 
+// The offsets of each < on a line where the parse stops that has a space on
+// both sides, as a comparison is written and a type argument list is not.
+function comparisons(text, root) {
+  const lines = text.split('\n');
+  const starts = [];
+  for (let i = 0, at = 0; i < lines.length; i += 1) {
+    starts.push(at);
+    at += lines[i].length + 1;
+  }
+  const rows = new Set();
+  const stack = [root];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (node.type === 'ERROR' || node.isMissing) rows.add(node.startPosition.row);
+    else for (const child of node.children) stack.push(child);
+  }
+  const out = [];
+  for (const row of [...rows].sort((a, b) => a - b)) {
+    const line = lines[row] ?? '';
+    for (let column = line.indexOf(' < '); column !== -1; column = line.indexOf(' < ', column + 1)) out.push(starts[row] + column + 1);
+  }
+  return out;
+}
+
 // A module with nothing but comments, or a Python docstring, runs nothing.
 function statementless(root) {
   const statements = root.namedChildren.filter((child) => child.type !== 'comment');
@@ -694,7 +738,6 @@ function lineOf(node) {
 // the line its first error starts on; one that matches none is counted
 // without a name.
 const UNREAD = [
-  ['nul-character', (line) => line.includes('\0')],
   ['import-type-array', (line) => /\bimport\(\s*(['"`])[^'"`]*\1\s*\)(\s*\.\s*[A-Za-z_$][\w$]*)+\s*\[\s*\]/.test(line)],
   ['typeof-import-argument', (line) => /<\s*typeof\s+import\(/.test(line)],
   // Rasterize & Edit in JSX text: the grammar reads & there as the start of

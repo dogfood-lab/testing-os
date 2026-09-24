@@ -820,7 +820,8 @@ describe('files the parser cannot read', () => {
     // ai-rpg-engine, written as that repository writes them, and one error
     // that is none of them. The map now reads the two import types by
     // rewriting them (core/index.js repairSource); a line of syntax nothing
-    // reads after each keeps them unread, named by the first construct.
+    // reads after each keeps them unread, named by the first construct. It
+    // reads a raw NUL byte as a space, so key.ts and wire.ts are read.
     const files = {
       'lib/inspect.ts': "export class Engine {\n  getPanels(): import('./core.js').Panel[] {\n    return [];\n  }\n}\nexport const = ;\n",
       'lib/key.ts': 'export function key(a: string, b: string): string {\n  return `${a}\0${b}`;\n}\n',
@@ -841,12 +842,10 @@ describe('files the parser cannot read', () => {
     assert.deepEqual(unread, {
       'lib/broken.ts': null,
       'lib/inspect.ts': 'import-type-array',
-      'lib/key.ts': 'nul-character',
       'lib/mocked.test.ts': 'typeof-import-argument',
-      'lib/wire.ts': 'nul-character',
     });
-    // All five are in lib, so the part is named once.
-    const line = '5 files in lib use syntax the parser cannot read (lib/broken.ts, lib/inspect.ts, lib/key.ts and 2 more), so what they import is not known: a NUL character inside a string (2), an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
+    // All three are in lib, so the part is named once, the test last.
+    const line = '3 files in lib use syntax the parser cannot read (lib/broken.ts, lib/inspect.ts and lib/mocked.test.ts), so what they import is not known: an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
     assert.ok(JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits.includes(line));
     assert.ok(readFileSync(join(root, 'atlas', 'README.md'), 'utf8').includes(`\n- ${line}\n`));
   });

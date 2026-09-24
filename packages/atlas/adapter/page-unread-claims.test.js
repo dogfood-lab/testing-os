@@ -8,8 +8,8 @@ import { buildArtifact } from './artifact.js';
 import { buildPage } from './page.js';
 
 // fixtures/atlas/unread-claims: a JSX label with a bare & and a generator
-// with a NUL inside a string, the two files the parser cannot read (see the
-// fixture's README).
+// with a NUL inside a string, each ending in a line nothing reads, the two
+// files the parser cannot read (see the fixture's README).
 
 const FIXTURE = resolve(import.meta.dirname, '../../../fixtures/atlas/unread-claims');
 const roots = [];
@@ -34,7 +34,7 @@ after(() => {
 
 describe('files the parser cannot read', () => {
   it('names the construct that stopped it in each', () => {
-    assert.ok(json.limits.includes('2 files use syntax the parser cannot read (scripts/gen.mjs and src/panel.tsx), so what they import is not known: a bare `&` in JSX text (1) and a NUL character inside a string (1).'), json.limits.join('\n'));
+    assert.ok(json.limits.includes('2 files use syntax the parser cannot read (src/panel.tsx and scripts/gen.mjs), so what they import is not known: a bare `&` in JSX text (1) and other syntax (1).'), json.limits.join('\n'));
   });
 
   it('qualifies every claim that nothing does something by the files it could read', () => {
