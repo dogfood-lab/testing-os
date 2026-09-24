@@ -225,6 +225,22 @@ function stripDot(pattern) {
   return pattern.replace(/^\.\//, '');
 }
 
+const PACKAGING = new WeakMap();
+
+// The directories a Python packaging file sits in, and their src/, by path.
+function packagingRoots(repo) {
+  if (PACKAGING.has(repo)) return PACKAGING.get(repo);
+  const roots = [];
+  for (const path of [...repo.tracked].sort()) {
+    const base = path.slice(path.lastIndexOf('/') + 1);
+    if (base !== 'pyproject.toml' && base !== 'setup.py' && base !== 'setup.cfg') continue;
+    const dir = path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '';
+    for (const root of [dir, dir ? `${dir}/src` : 'src']) if (!roots.includes(root)) roots.push(root);
+  }
+  PACKAGING.set(repo, roots);
+  return roots;
+}
+
 /**
  * Read one piece of level-0 command text run from `dir`.
  * Returns the runs keyed by path, and the tracked files it mentions.
@@ -498,7 +514,10 @@ function makeReader(repo, runs, mentions) {
     const parts = name.split('.');
     if (parts.some((part) => !/^[A-Za-z_][A-Za-z0-9_]*$/.test(part))) return;
     const stem = parts.join('/');
-    for (const base of [dir, dir ? `${dir}/src` : 'src']) {
+    // From the directory it runs in first; then from each directory a
+    // pyproject.toml, setup.py or setup.cfg packages, where an installed
+    // package's modules are found wherever the command runs.
+    for (const base of [dir, dir ? `${dir}/src` : 'src', ...packagingRoots(repo)]) {
       for (const candidate of [`${stem}.py`, `${stem}/__main__.py`, `${stem}/__init__.py`]) {
         const path = pathFrom(base, candidate);
         if (path != null && repo.tracked.has(path)) {
@@ -507,7 +526,14 @@ function makeReader(repo, runs, mentions) {
         }
       }
     }
-    if (PY_TOOLS.has(name)) interpret([name, ...rest], dir, frame);
+    if (PY_TOOLS.has(name)) {
+      interpret([name, ...rest], dir, frame);
+      return;
+    }
+    // A package whose __main__.py the repository holds in one place only is
+    // the one -m names, wherever the command sets its working directory.
+    const mains = repo.filesUnder('').filter((path) => path === `${stem}/__main__.py` || path.endsWith(`/${stem}/__main__.py`));
+    if (mains.length === 1) record(stamp({ path: mains[0] }, frame));
   }
 
   function reparse(argv, dir, frame) {

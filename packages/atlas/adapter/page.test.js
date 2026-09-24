@@ -850,6 +850,8 @@ describe('files the parser cannot read', () => {
 
 describe('commands built at run time', () => {
   it('counts each spawn whose program or arguments are computed, tests included, and follows the spelled ones', () => {
+    // A const array the file spells out, and process.execPath for node, are
+    // spelled: only the template indexing into the array is built at run time.
     const root = mkdtempSync(join(tmpdir(), 'atlas-spawns-'));
     roots.push(root);
     cpSync(join(FIXTURES, 'root-part'), root, { recursive: true });
@@ -874,11 +876,11 @@ describe('commands built at run time', () => {
     assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
     const structure = JSON.parse(readFileSync(join(root, 'atlas', 'structure.json'), 'utf8'));
     const tools = structure.boundaries.find((boundary) => boundary.name === 'tools');
-    assert.equal(tools.dynamicSpawns, 3);
+    assert.equal(tools.dynamicSpawns, 1);
     assert.equal(structure.boundaries.find((boundary) => boundary.name === 'lib').dynamicSpawns, 0);
     // The spelled-out commands are still followed: the test reaches run.js.
     assert.equal(tools.testedBy, 1);
     const limits = JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits;
-    assert.ok(limits.includes('3 commands are built at run time and not followed, all of them in tests.'), limits.join('\n'));
+    assert.ok(limits.includes('1 command is built at run time and not followed, it in tests.'), limits.join('\n'));
   });
 });

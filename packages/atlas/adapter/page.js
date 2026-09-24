@@ -833,6 +833,8 @@ function doorSteps(ctx, door) {
   const places = writes(ctx, door);
   if (places.length > 0) steps.push(`It writes to ${list(places)}.`);
   if ((door.stages ?? []).length > 0) steps.push(`It commits ${commitsClause(door)}.`);
+  // git and gh from outside the repository, which its code starts.
+  if ((door.programs ?? []).length > 0) steps.push(`It runs ${list(door.programs)}.`);
   for (const phrase of sendPhrases(door)) steps.push(`It ${phrase}.`);
   return steps;
 }
@@ -1237,6 +1239,7 @@ function otherDoors(ctx, main) {
     if (places.length > 0) clauses.push(`writes to ${list(places)}`);
     const stages = door.stages ?? [];
     if (stages.length > 0) clauses.push(`commits ${commitsClause(door)}`);
+    if ((door.programs ?? []).length > 0) clauses.push(`runs ${list(door.programs)}`);
     clauses.push(...sendPhrases(door));
     const named = installed(door) ? `**${door.name}** (${installedAs(door)})` : `**${door.name}**`;
     return `${named} ${clauseList(clauses)}.`;
@@ -1252,6 +1255,17 @@ function importers(ctx, { tests = false } = {}) {
   for (const edge of ctx.structure.edges ?? []) {
     if (edge.kind !== 'file' && edge.kind !== 'chunk') continue;
     if (edge.from === edge.to || Boolean(edge.fromTests) !== tests) continue;
+    if (!from.has(edge.to)) from.set(edge.to, new Set());
+    from.get(edge.to).add(edge.from);
+  }
+  return from;
+}
+
+// The parts whose production code runs each part's files as a child process.
+function spawners(ctx) {
+  const from = new Map();
+  for (const edge of ctx.structure.edges ?? []) {
+    if (edge.kind !== 'spawns' || edge.from === edge.to || edge.fromTests) continue;
     if (!from.has(edge.to)) from.set(edge.to, new Set());
     from.get(edge.to).add(edge.from);
   }
@@ -1362,6 +1376,7 @@ function partsOf(ctx, paths) {
 function breaks(ctx) {
   const from = importers(ctx);
   const fromTests = testImporters(ctx);
+  const spawnedBy = spawners(ctx);
   const on = doorsThrough(ctx);
   // A stamped file is written by people; a hand edit is how it changes.
   // A test reading a place is how it is checked, not what it breaks.
@@ -1385,10 +1400,11 @@ function breaks(ctx) {
       partLabel: ctx.shown(boundary.name),
       importedBy: [...(from.get(boundary.name) ?? [])].sort(cmp),
       importedByTests: [...(fromTests.get(boundary.name) ?? [])].sort(cmp),
+      ...(spawnedBy.has(boundary.name) ? { spawnedBy: [...spawnedBy.get(boundary.name)].sort(cmp) } : {}),
       doors: on.get(boundary.name) ?? 0,
     }))
-    .filter((part) => part.importedBy.length > 0 || part.importedByTests.length > 0 || part.doors >= 2)
-    .sort((a, b) => b.importedBy.length - a.importedBy.length || b.doors - a.doors
+    .filter((part) => part.importedBy.length > 0 || part.importedByTests.length > 0 || (part.spawnedBy?.length ?? 0) > 0 || part.doors >= 2)
+    .sort((a, b) => b.importedBy.length - a.importedBy.length || (b.spawnedBy?.length ?? 0) - (a.spawnedBy?.length ?? 0) || b.doors - a.doors
       || b.importedByTests.length - a.importedByTests.length || cmp(a.name, b.name))
     .slice(0, BREAK_LINES - places.length);
   return [...parts, ...places];
@@ -1421,6 +1437,17 @@ function breakLine(ctx, entry) {
   }
   const fromTests = entry.importedByTests ?? [];
   const path = entry.doors === 0 ? 'no door' : count(entry.doors, 'door');
+  // A part another part runs as a child process breaks it as an import does.
+  const spawned = entry.spawnedBy ?? [];
+  if (spawned.length > 0) {
+    const clauses = [];
+    if (entry.importedBy.length > 0) clauses.push(`is imported by ${count(entry.importedBy.length, 'part')} (${entry.importedBy.map(ctx.shown).join(', ')})`);
+    const tests = testsClause(entry.importedBy.length, fromTests.length);
+    if (tests) clauses.push(tests);
+    clauses.push(`is run as a child process by ${count(spawned.length, 'part')} (${spawned.map(ctx.shown).join(', ')})`);
+    const joined = clauses.length > 1 ? `${clauses.join(', ')},` : clauses[0];
+    return `- **${ctx.shown(entry.name)}** ${joined} and sits on the path of ${path}.`;
+  }
   if (entry.importedBy.length === 0 && fromTests.length > 0) {
     return `- **${ctx.shown(entry.name)}** is imported only from tests, by ${count(fromTests.length, 'part')} (${fromTests.map(ctx.shown).join(', ')}), and sits on the path of ${path}.`;
   }
@@ -2329,6 +2356,7 @@ function doorData(ctx, door) {
     ...(installed(door) ? { kind: door.kind } : {}),
     landings: writes(ctx, door),
     name: door.name,
+    ...(door.programs?.length > 0 ? { programs: [...door.programs] } : {}),
     pushes: door.pushes === true,
     ...(door.pushesForReview ? { pushesForReview: true } : {}),
     ...(door.pushesTo ? { pushesTo: door.pushesTo } : {}),

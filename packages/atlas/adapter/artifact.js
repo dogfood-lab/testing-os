@@ -322,6 +322,7 @@ function carryDoor(door) {
     mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),
     name: door.name,
     permissions: [...door.permissions],
+    ...(door.programs?.length > 0 ? { programs: [...door.programs] } : {}),
     ...(door.publishedTo ? { publishedTo: [...door.publishedTo] } : {}),
     pushes: door.pushes,
     ...(door.pushesForReview ? { pushesForReview: true } : {}),

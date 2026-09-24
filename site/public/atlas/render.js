@@ -453,6 +453,7 @@ function doorSteps(ctx, door) {
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
   if (arr(door.stages).length > 0) steps.push(`It commits ${commitsClause(ctx, door)}.`);
+  if (arr(door.programs).length > 0) steps.push(`It runs ${esc(list(arr(door.programs).map(str)))}.`);
   for (const send of arr(door.sends)) steps.push(`It ${inline(send)}.`);
   return steps;
 }
@@ -597,6 +598,8 @@ function otherDoors(ctx) {
       const text = push ? (stages.length > 1 ? `${list(stages)}, then ${push}` : `${list(stages)} and ${push}`) : list(stages);
       clauses.push({ html: `commits ${commitsClause(ctx, door)}`, text: `commits ${text}` });
     }
+    const programs = arr(door.programs).map(str);
+    if (programs.length > 0) clauses.push({ html: `runs ${esc(list(programs))}`, text: `runs ${list(programs)}` });
     for (const send of arr(door.sends)) clauses.push({ html: inline(send), text: str(send) });
     const named = installed(door) ? `<strong>${esc(door.name)}</strong> (${installedAs(door)})` : `<strong>${esc(door.name)}</strong>`;
     return p(`${named} ${clauseList(clauses)}.`);
@@ -623,6 +626,16 @@ function breakLine(ctx, entry) {
   const doors = Number(entry?.doors) || 0;
   const path = doors === 0 ? 'no door' : count(doors, 'door');
   const fromTests = arr(entry?.importedByTests).map((part) => ctx.name(part));
+  // A part another part runs as a child process, as page.js says it.
+  const spawned = arr(entry?.spawnedBy).map((part) => ctx.name(part));
+  if (spawned.length > 0) {
+    const clauses = [];
+    if (importedBy.length > 0) clauses.push(`is imported by ${count(importedBy.length, 'part')} (${esc(importedBy.join(', '))})`);
+    if (importedBy.length > 0 && fromTests.length > 0) clauses.push(`and by ${fromTests.length} more only from tests`);
+    clauses.push(`is run as a child process by ${count(spawned.length, 'part')} (${esc(spawned.join(', '))})`);
+    const joined = clauses.length > 1 ? `${clauses.join(', ')},` : clauses[0];
+    return `<strong>${esc(breakLabel(ctx, entry))}</strong> ${joined} and sits on the path of ${path}.`;
+  }
   if (importedBy.length === 0 && fromTests.length > 0) {
     return `<strong>${esc(breakLabel(ctx, entry))}</strong> is imported only from tests, by ${count(fromTests.length, 'part')} (${esc(fromTests.join(', '))}), and sits on the path of ${path}.`;
   }

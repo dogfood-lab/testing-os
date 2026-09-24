@@ -28,6 +28,10 @@ const FUNCTIONS = new Set(['function_declaration', 'function_expression', 'arrow
 // What a template's part the map cannot read becomes: a word the shell
 // reader takes for a variable, so it never passes for a path.
 const UNREAD = '$ATLAS_BUILT';
+// Programs from outside the repository a file runs whatever their arguments,
+// which the page says under the door rather than counting the call as a
+// command built at run time.
+const OUTSIDE_PROGRAMS = new Set(['git', 'gh']);
 
 /**
  * @param {object} root tree-sitter root node
@@ -42,6 +46,7 @@ const UNREAD = '$ATLAS_BUILT';
  */
 export function spawnedCommands(root, pathText = () => null) {
   const found = new Set();
+  const programs = new Set();
   let built = 0;
   const helpers = commandHelpers(root);
   const imports = relativeImports(root);
@@ -52,7 +57,10 @@ export function spawnedCommands(root, pathText = () => null) {
     if (node.type === 'call_expression') {
       const read = commandOf(node, pathText, helpers);
       if (read?.command != null) found.add(read.command);
+      else if (read?.program != null) programs.add(read.program);
       else if (read?.built) built += 1;
+      const first = read?.command?.trim().split(/\s+/)[0];
+      if (first != null && OUTSIDE_PROGRAMS.has(first)) programs.add(first);
       const callee = node.childForFieldName('function');
       if (read == null && callee?.type === 'identifier' && imports.has(callee.text)) {
         const args = node.childForFieldName('arguments')?.namedChildren ?? [];
@@ -63,7 +71,7 @@ export function spawnedCommands(root, pathText = () => null) {
     }
     for (const child of node.namedChildren) stack.push(child);
   }
-  return { commands: [...found].sort(), built, helpers: Object.fromEntries(helpers.exported), pending };
+  return { commands: [...found].sort(), built, helpers: Object.fromEntries(helpers.exported), pending, programs: [...programs].sort() };
 }
 
 /**
@@ -112,15 +120,27 @@ function commandOf(node, pathText, helpers) {
   if (name == null) return null;
   if (args.length === 0) return null;
   if (helpers.params.has(key(args[0]))) return null;
-  const program = text(args[0], pathText);
+  // spawn(process.execPath, [...]) runs Node.
+  const program = args[0]?.text === 'process.execPath' ? 'node' : text(args[0], pathText);
+  const list = ARGUMENT_LISTS.has(name) ? arrayOf(args[1]) : null;
+  const words = list?.type === 'array' ? list.namedChildren.map((word) => text(word, pathText)) : null;
+  // spawn(pythonPath, ['-m', 'jobs']) runs the module whatever interpreter
+  // is handed in: -m is Python's, and the module is the program.
+  if (program == null && words && words[0] === '-m' && words[1] != null) {
+    const known = [];
+    for (const word of words) {
+      if (word == null) break;
+      known.push(word);
+    }
+    return { command: ['python', ...known].map(quoted).join(' ') };
+  }
   if (program == null) return { built: true };
   if (program.trim() === '') return null;
   if (!ARGUMENT_LISTS.has(name)) return { command: program };
-  const list = args[1];
   if (list == null || list.type === 'object') return { command: program };
-  if (list.type !== 'array') return { built: true };
-  const words = list.namedChildren.map((word) => text(word, pathText));
-  if (words.some((word) => word == null)) return { built: true };
+  const outside = OUTSIDE_PROGRAMS.has(program.trim());
+  if (list.type !== 'array') return outside ? { program: program.trim() } : { built: true };
+  if (words.some((word) => word == null)) return outside ? { program: program.trim() } : { built: true };
   return { command: [program, ...words].map(quoted).join(' ') };
 }
 
@@ -222,6 +242,25 @@ function relativeImports(root) {
     }
   }
   return out;
+}
+
+// An argument list named by a const the file declares in an enclosing scope
+// is that array: const args = ['-m', 'ml_runner']; spawn(python, args).
+// Items pushed onto it later come after, and are left unread.
+function arrayOf(node) {
+  if (node?.type !== 'identifier') return node;
+  for (let scope = node.parent; scope; scope = scope.parent) {
+    for (const statement of scope.namedChildren ?? []) {
+      if (statement.type !== 'lexical_declaration' || !statement.children.some((child) => child.type === 'const')) continue;
+      if (statement.startIndex > node.startIndex) continue;
+      for (const declarator of statement.namedChildren) {
+        if (declarator.type !== 'variable_declarator' || declarator.childForFieldName('name')?.text !== node.text) continue;
+        const value = declarator.childForFieldName('value');
+        return value?.type === 'array' ? value : node;
+      }
+    }
+  }
+  return node;
 }
 
 function calledName(fn) {

@@ -140,6 +140,8 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom }));
+  const edges = [...resolution.edges, ...spawnEdges(graph)]
+    .sort((a, b) => a.from.localeCompare(b.from) || a.to.localeCompare(b.to) || a.kind.localeCompare(b.kind));
   for (const door of doors) {
     if (door.parseError) continue;
     // A checker reaches the code it reads, so the reach is walked from every
@@ -153,9 +155,14 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     // calls nothing, so neither is the door's reach for this.
     if (door.kind !== 'package') {
       const runs = door.runs.filter((run) => run.runKind !== 'checks' && !isTestFile(run.path)).map((run) => run.path);
-      if (walkReach(runs, graph).files.some((path) => (graph.files.get(path)?.githubChanges ?? 0) > 0)) door.sends.changesRepositories = true;
+      const walkedRuns = walkReach(runs, graph).files;
+      if (walkedRuns.some((path) => (graph.files.get(path)?.githubChanges ?? 0) > 0)) door.sends.changesRepositories = true;
+      // git and gh the code it runs starts, which change no part here.
+      const programs = [...new Set(walkedRuns.flatMap((path) => graph.files.get(path)?.programs ?? []))].sort();
+      if (programs.length > 0) door.programs = programs;
     }
   }
+  for (const file of graph.files.values()) delete file.programs;
   const landings = attachLandings({ files: [...graph.files.values()], doors, boundaries: boundaryList, places });
   // The flags a run passes matter only to which of a writer's guarded writes
   // the door is credited with, which attachLandings has now decided.
@@ -178,7 +185,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     overlaps,
     symlinks: tracked.symlinks,
     submodules: tracked.submodules,
-    edges: resolution.edges,
+    edges,
     importConfidence: resolution.importConfidence,
     doors,
     landings,
@@ -226,13 +233,18 @@ function repositoryManifests(repoPath, tracked) {
 function attachTestSpawns(files, spawned, repo) {
   for (const [path, commands] of spawned) {
     const file = files.get(path);
-    if (!file || !isTestFile(path)) continue;
+    if (!file) continue;
+    // Production code runs its child processes from where the door that
+    // runs it stands, the repository root.
     const dirs = [''];
-    for (let at = path.lastIndexOf('/'); at > 0; at = path.lastIndexOf('/', at - 1)) dirs.push(path.slice(0, at));
+    if (isTestFile(path)) for (let at = path.lastIndexOf('/'); at > 0; at = path.lastIndexOf('/', at - 1)) dirs.push(path.slice(0, at));
     for (const dir of dirs) {
       const runs = new Set();
       for (const command of commands) {
         for (const run of readCommands(command, dir, repo).runs.values()) {
+          // Production code that type-checks or lints another part runs none
+          // of it; a test's checks are how it reaches what it checks.
+          if (!isTestFile(path) && run.runKind === 'checks') continue;
           if (run.path.endsWith('/')) {
             for (const [other, entry] of files) if (entry.language != null && other.startsWith(run.path)) runs.add(other);
           } else if (run.path !== path) runs.add(run.path);
@@ -244,6 +256,21 @@ function attachTestSpawns(files, spawned, repo) {
       }
     }
   }
+}
+
+// A part whose production code runs another part's file as a child process
+// depends on it as an import does: kind spawns, one per ordered pair.
+function spawnEdges(graph) {
+  const pairs = new Map();
+  for (const [path, file] of graph.files) {
+    if (isTestFile(path)) continue;
+    const from = graph.boundaryOf.get(path);
+    for (const target of file.spawns ?? []) {
+      const to = graph.boundaryOf.get(target);
+      if (from && to && from !== to) pairs.set(`${from}\0${to}`, { from, to, kind: 'spawns' });
+    }
+  }
+  return [...pairs.values()];
 }
 
 // The names a file hands out, from the same reading the order of work comes
@@ -361,12 +388,13 @@ function describeFile(repoPath, path, places, facts, spawned) {
   facts.set(path, extracted.sequence);
   if (extracted.spawned.commands.length > 0) spawned.set(path, extracted.spawned.commands);
   const built = extracted.spawned.built > 0 ? { dynamicSpawns: extracted.spawned.built } : {};
+  const programs = extracted.spawned.programs?.length > 0 && !isTestFile(path) ? { programs: extracted.spawned.programs } : {};
   const empty = extracted.noStatements ? { noStatements: true } : {};
   const api = extracted.githubChanges > 0 && !isTestFile(path) ? { githubChanges: extracted.githubChanges } : {};
   // Read once imports resolve, then dropped (core/spawned.js settleSpawnHelpers).
   const helpers = Object.keys(extracted.spawned.helpers ?? {}).length > 0 ? { spawnHelpers: extracted.spawned.helpers } : {};
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...helpers, ...pending, ...api, ...empty };
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
