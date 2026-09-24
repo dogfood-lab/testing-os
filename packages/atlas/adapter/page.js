@@ -1736,6 +1736,9 @@ export function externalsLine(sites, names) {
 }
 
 // The constructs the core names when a file stops the parser (core/index.js).
+// A line names this many of the files the parser could not read, the rest
+// counted, so a reader can open the one that stopped it.
+const UNREAD_NAMED = 3;
 const UNREAD_SYNTAX = {
   'import-type-array': 'an import type followed by `[]`',
   'nul-character': 'a NUL character inside a string',
@@ -1781,13 +1784,18 @@ function unreadGroup(group) {
  * stated rather than left for a reader to infer from a missing edge. Where a
  * part holds more than one such file the count is given by part, since five
  * fixtures broken on purpose and one schema the parser trips on are not the
- * same finding; with every file in one part, that part is named once.
+ * same finding; with every file in one part, that part is named once. Up to
+ * three files are named by path, the rest counted.
  *
- * @param {Array<{ unreadSyntax?: string, part?: string|null, partLabel?: string|null }>} files
+ * @param {Array<{ path?: string, unreadSyntax?: string, part?: string|null, partLabel?: string|null }>} files
  * @returns {string|null}
  */
 export function unreadLine(files) {
   if (files.length === 0) return null;
+  const paths = files.map((file) => file.path).filter((path) => typeof path === 'string' && path !== '').sort(cmp);
+  const named = paths.length === 0 ? '' : paths.length > UNREAD_NAMED
+    ? ` (${paths.slice(0, UNREAD_NAMED).join(', ')} and ${paths.length - UNREAD_NAMED} more)`
+    : ` (${list(paths)})`;
   const groups = new Map();
   for (const file of files) {
     const key = file.part ?? null;
@@ -1795,7 +1803,7 @@ export function unreadLine(files) {
     groups.get(key).files.push(file);
   }
   const verb = files.length === 1 ? 'uses' : 'use';
-  const reason = `syntax the parser cannot read, so what ${files.length === 1 ? 'it imports' : 'they import'} is not known`;
+  const reason = `syntax the parser cannot read${named}, so what ${files.length === 1 ? 'it imports' : 'they import'} is not known`;
   const byPart = [...groups.entries()].some(([key, group]) => key != null && group.files.length > 1);
   if (byPart && groups.size === 1) {
     const [group] = groups.values();
@@ -1825,7 +1833,7 @@ function limits(ctx, shownText) {
   }
   const unparsed = unreadLine([...ctx.fileOf.values()].filter((file) => file.parseError).map((file) => {
     const part = ctx.boundaryOf.get(file.path) ?? null;
-    return { part, partLabel: part == null ? null : ctx.shown(part), unreadSyntax: file.unreadSyntax };
+    return { part, partLabel: part == null ? null : ctx.shown(part), path: file.path, unreadSyntax: file.unreadSyntax };
   }));
   if (unparsed) lines.push(unparsed);
   const dynamicWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);

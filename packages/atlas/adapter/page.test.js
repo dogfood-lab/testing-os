@@ -840,7 +840,7 @@ describe('files the parser cannot read', () => {
       'lib/wire.ts': 'nul-character',
     });
     // All five are in lib, so the part is named once.
-    const line = '5 files in lib use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (2), an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
+    const line = '5 files in lib use syntax the parser cannot read (lib/broken.ts, lib/inspect.ts, lib/key.ts and 2 more), so what they import is not known: a NUL character inside a string (2), an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
     assert.ok(JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits.includes(line));
     assert.ok(readFileSync(join(root, 'atlas', 'README.md'), 'utf8').includes(`\n- ${line}\n`));
   });

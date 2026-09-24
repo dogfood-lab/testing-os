@@ -50,10 +50,22 @@ describe('what the map cannot see, told apart by where it lives', () => {
     assert.ok(limits.includes('3 commands are built at run time and not followed, 2 of them in tests.'), limits.join('\n'));
   });
 
-  it('groups the files the parser cannot read by part when a part holds more than one', () => {
+  it('groups the files the parser cannot read by part when a part holds more than one, and names them', () => {
     assert.ok(
-      limits.includes('3 files use syntax the parser cannot read, so what they import is not known: 2 in fixtures, 1 in schemas (a NUL character inside a string).'),
+      limits.includes('3 files use syntax the parser cannot read (fixtures/broken/a.ts, fixtures/broken/b.ts and schemas/key.ts), so what they import is not known: 2 in fixtures, 1 in schemas (a NUL character inside a string).'),
       limits.join('\n'),
+    );
+  });
+
+  it('names three of the files it cannot read and counts the rest', () => {
+    const five = ['e.ts', 'a.ts', 'd.ts', 'b.ts', 'c.ts'].map((path) => ({ path, part: 'lib', unreadSyntax: 'nul-character' }));
+    assert.equal(
+      unreadLine(five),
+      '5 files in lib use syntax the parser cannot read (a.ts, b.ts, c.ts and 2 more), so what they import is not known: a NUL character inside a string (5).',
+    );
+    assert.equal(
+      unreadLine([{ path: 'src/kernel.ts', part: 'src' }]),
+      '1 file uses syntax the parser cannot read (src/kernel.ts), so what it imports is not known.',
     );
   });
 
