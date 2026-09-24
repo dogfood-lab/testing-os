@@ -87,7 +87,7 @@ Found while tracing. The code is what runs.
 | The two other flows | Same as the two above, for doors other than the main one | Same. |
 | Release | The release door's checks, publish step, and which packages are not marked private | Not recorded. |
 | What breaks what | Import fan-in per part (recorded); which doors pass through each part; role | Fan-in recorded. Door coverage not recorded. |
-| Generated, never hand-edited | Paths that code or workflows write (git add in a workflow; write calls naming a tracked directory in code) | Not recorded. |
+| Generated, never hand-edited | Paths that code writes (write calls naming a tracked directory), or that a workflow writes by its own shell or names as a staged path in its steps; a `git add` alone is not a write, and a staged place with no writer is people's | Not recorded. |
 | Hand-authored | Tracked directories with no writer | Follows from the above. |
 | Where to start | The file chain along the door with the greatest reach | Follows from reach order. |
 | Where the docs and the code disagree | Prose claims that name a countable or checkable fact, checked against the recorded facts | Not in scope yet. Recorded here so it is not forgotten. |
