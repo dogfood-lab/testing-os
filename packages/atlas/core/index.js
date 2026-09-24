@@ -145,10 +145,10 @@ export function mapRepository({ repoPath, boundaries } = {}) {
 
   const builtFrom = (path) => (trackedSet.has(path) ? null : resolveDeclaredPath(repoPath, path, trackedSet));
   const emitted = () => emittedFiles(repoPath, trackedSet);
-  const doors = [
+  const doors = settleInstalled([
     ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
     ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
-  ];
+  ], [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], repoPath, trackedSet);
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }));
@@ -412,6 +412,8 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   const built = extracted.spawned.built > 0 ? { dynamicSpawns: extracted.spawned.built } : {};
   const programs = extracted.spawned.programs?.length > 0 && !isTestFile(path) ? { programs: extracted.spawned.programs } : {};
   const empty = extracted.noStatements ? { noStatements: true } : {};
+  // Read by settleInstalled, then dropped.
+  const starts = extracted.startsOnLoad ? { startsOnLoad: true } : {};
   const holds = extracted.holds === 'reexports' ? { reexportsOnly: true } : extracted.holds === 'constant' ? { constantOnly: true } : {};
   // Read once the parts are known, then dropped (core/http.js httpEdges).
   const http = extracted.http ? { http: extracted.http } : {};
@@ -419,7 +421,7 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   // Read once imports resolve, then dropped (core/spawned.js settleSpawnHelpers).
   const helpers = Object.keys(extracted.spawned.helpers ?? {}).length > 0 ? { spawnHelpers: extracted.spawned.helpers } : {};
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http };
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -452,6 +454,7 @@ function parseFile(language, path, source, places) {
       spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
       githubChanges: language === 'python' ? 0 : githubChanges(tree.rootNode),
       noStatements: statementless(tree.rootNode),
+      startsOnLoad: language !== 'python' && startsOnLoad(tree.rootNode),
       holds: language === 'python' ? null : onlyHolds(tree.rootNode),
       http: language === 'python' ? null : httpFacts(tree.rootNode),
       builds: language === 'python' || isTestFile(path) ? [] : buildCalls(tree.rootNode, (node) => pathShape(node, path)),
@@ -542,6 +545,105 @@ function jsxAmpersands(text, root) {
     for (const child of node.children) stack.push(child);
   }
   return [...out].sort((a, b) => a - b);
+}
+
+// Names a top-level call starts a program by: main().catch(...), run(); and
+// what a server does to start: await server.connect(transport), app.listen().
+const STARTERS = new Set(['main', 'run', 'cli', 'start']);
+const SERVES = new Set(['connect', 'listen']);
+
+/**
+ * Whether a module runs a program the moment it loads: a statement at its
+ * top, behind no condition, that parses the command line (program.parse(
+ * process.argv), yargs(hideBin(process.argv)).parse()), calls the module's
+ * own main(), or starts a server (await server.connect(transport)).
+ */
+function startsOnLoad(root) {
+  const local = new Set();
+  for (const child of root.namedChildren) {
+    const declaration = child.type === 'export_statement' ? child.childForFieldName('declaration') : child;
+    if (declaration?.type === 'function_declaration') local.add(declaration.childForFieldName('name')?.text);
+  }
+  const starts = (node) => {
+    if (!node) return false;
+    if (node.type === 'await_expression' || node.type === 'parenthesized_expression') return starts(node.namedChildren[0]);
+    if (node.type === 'unary_expression' && node.childForFieldName('operator')?.text === 'void') return starts(node.childForFieldName('argument'));
+    if (node.type !== 'call_expression') return false;
+    const fn = node.childForFieldName('function');
+    if (fn?.type === 'identifier') return STARTERS.has(fn.text) && local.has(fn.text);
+    if (fn?.type !== 'member_expression') return false;
+    const property = fn.childForFieldName('property')?.text;
+    if ((property === 'parse' || property === 'parseAsync') && node.text.replace(/\s+/g, '').includes('process.argv')) return true;
+    if (SERVES.has(property)) return true;
+    // main().catch(...) and main().then(...) start main.
+    return (property === 'catch' || property === 'then' || property === 'finally') && starts(fn.childForFieldName('object'));
+  };
+  return root.namedChildren.some((child) => child.type === 'expression_statement' && starts(child.namedChildren[0]));
+}
+
+/**
+ * What the commands and packages a manifest installs are, past the files
+ * they run. A package every file of which it exports runs a program as it
+ * loads is no library: an import runs the program. runsCommand names the
+ * command its entry is, when one of its manifest's commands runs that file,
+ * and is true otherwise. A package that also exports modules that start
+ * nothing (a server beside the functions it serves) is a library still. A
+ * command a private workspace member declares is installed by no one: when
+ * a file of a package that publishes names the command's built file by its
+ * path, the command is bundled into that package (bundledInto), and
+ * otherwise it is no door.
+ * Mutates the doors it keeps.
+ */
+function settleInstalled(doors, files, repoPath, tracked) {
+  const byPath = new Map(files.map((file) => [file.path, file]));
+  const manifests = new Map();
+  const manifestOf = (dir) => {
+    if (!manifests.has(dir)) {
+      let pkg = null;
+      try {
+        const path = dir ? `${dir}/package.json` : 'package.json';
+        pkg = tracked.has(path) ? JSON.parse(readFileSync(join(repoPath, path), 'utf8')) : null;
+      } catch {
+        pkg = null;
+      }
+      manifests.set(dir, pkg && typeof pkg === 'object' ? pkg : null);
+    }
+    return manifests.get(dir);
+  };
+  // The package a file belongs to: the nearest directory above it with a manifest.
+  const ownerOf = (path) => {
+    for (let at = path.lastIndexOf('/'); ; at = path.lastIndexOf('/', at - 1)) {
+      const dir = at <= 0 ? '' : path.slice(0, at);
+      if (tracked.has(dir ? `${dir}/package.json` : 'package.json')) return manifestOf(dir);
+      if (at <= 0) return null;
+    }
+  };
+  const kept = [];
+  for (const door of doors) {
+    if (door.kind === 'package' && door.entry != null && (door.exported ?? []).every((path) => byPath.get(path)?.startsOnLoad)) {
+      const command = doors.find((other) => other.kind === 'command' && other.file === door.file && !other.privateMember && (other.runs ?? []).some((run) => run.path === door.entry));
+      door.runsCommand = command ? command.name : true;
+    }
+    delete door.exported;
+    if (door.privateMember) {
+      const into = new Set();
+      for (const file of files) {
+        if (isTestMaterial(file.path) || !(file.builtNames ?? []).includes(door.declared)) continue;
+        const owner = ownerOf(file.path);
+        if (owner && owner.private !== true && typeof owner.name === 'string' && owner.name !== '') into.add(owner.name);
+      }
+      delete door.privateMember;
+      delete door.declared;
+      if (into.size === 0) continue;
+      door.bundledInto = [...into].sort();
+    }
+    kept.push(door);
+  }
+  for (const file of files) {
+    delete file.builtNames;
+    delete file.startsOnLoad;
+  }
+  return kept;
 }
 
 // A module with nothing but comments, or a Python docstring, runs nothing.

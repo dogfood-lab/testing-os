@@ -90,11 +90,15 @@ export function manifestCommands(repoPath, tracked, scripts = []) {
     if (isTestMaterial(manifest)) continue;
     const pkg = dir ? readManifest(repoPath, manifest, tracked) : root;
     if (!pkg) continue;
+    // A private member's command is installed by no one; index.js decides
+    // whether a package it publishes bundles the file.
+    const member = dir !== '' && pkg.private === true;
     for (const [name, spec] of binEntries(pkg)) {
       const path = declaredFile(repoPath, dir, spec, tracked);
       const unplaced = path ? null : unplacedFile(repoPath, dir, spec, tracked);
-      if (path) out.push({ kind: 'command', name, manifest, path });
-      else if (unplaced) out.push({ kind: 'command', name, manifest, path: null, unplaced });
+      const privately = member ? { privateMember: true, declared: joinRelative(dir, spec) } : {};
+      if (path) out.push({ kind: 'command', name, manifest, path, ...privately });
+      else if (unplaced) out.push({ kind: 'command', name, manifest, path: null, unplaced, ...privately });
     }
     if (dir !== '' || typeof pkg.name !== 'string' || pkg.name === '' || pkg.private === true) continue;
     const specs = mainSpecs(pkg);

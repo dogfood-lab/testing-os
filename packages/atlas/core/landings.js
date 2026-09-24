@@ -98,6 +98,7 @@ const CLI_BAGS = new Set(['args', 'argv', 'opts', 'options', 'flags', 'cliArgs',
 // A value returned by a function imported from another file of the
 // repository: whose place it is is settled once imports resolve.
 const HELPER = 'helper:';
+const BUILD_OUTPUTS = new Set(['dist', 'build', 'out']);
 const PY_SCOPES = new Set(['function_definition', 'lambda']);
 const PY_NESTED = new Set(['function_definition', 'class_definition', 'lambda']);
 
@@ -727,10 +728,20 @@ export function astLandings(language, root, path, places) {
     assignments: new Map(),
   };
   const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, pendingWrites: [], pendingReads: [], pendingParams: [] };
+  // The build outputs the file names by a path this repository does not
+  // track (packages/server/dist/server.js), for the commands a build bundles
+  // (index.js bundledCommands).
+  const builtNames = new Set();
+  const named = (value) => {
+    if (value.open || value.rooted || outside(value) || isHelper(value) || value.text.includes('://')) return;
+    const text = posix.normalize(value.text.replaceAll('\\', '/'));
+    if (!text.startsWith('../') && !places.files.has(text) && text.split('/').some((part) => BUILD_OUTPUTS.has(part))) builtNames.add(text);
+  };
   const evaluate = ctx.python ? evalPy : evalJs;
   const site = (kind, call, node, countDynamic = true) => {
     if (!node) return;
     const all = ctx.python ? evaluate(node, ctx, 0) : throughClosure(node, ctx);
+    for (const value of all) named(value);
     const unless = kind === 'write' ? writeGuards(node, ctx.python) : [];
     if (all.length === 0) {
       if (countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
@@ -829,6 +840,7 @@ export function astLandings(language, root, path, places) {
     if (ctx.seen.has(key(node))) return;
     if (!isStringNode(node, ctx.python) && !isPathConstructor(node, ctx.python)) return;
     for (const raw of evaluate(node, ctx, 0)) {
+      named(raw);
       const value = isHelper(raw) ? asRoot(raw) : raw;
       if (value.open || outside(value) || namesItself(value, ctx)) continue;
       const target = literalPlace(value.text, places);
@@ -852,6 +864,7 @@ export function astLandings(language, root, path, places) {
     ...(found.pendingParams.length > 0 ? { pendingParams: found.pendingParams } : {}),
     ...(paramCalls.length > 0 ? { paramCalls } : {}),
     ...(defaultCalls.length > 0 ? { defaultCalls } : {}),
+    ...(builtNames.size > 0 ? { builtNames: [...builtNames].sort() } : {}),
   };
 }
 

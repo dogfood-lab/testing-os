@@ -239,8 +239,11 @@ export function orderDoors(doors) {
 }
 
 // What the page calls an installed door, and the verb for what it starts.
+// A package whose entry is a command runs it on import, so it is no library;
+// a private member's command is installed only inside the package bundling it.
 function installedAs(door) {
-  const what = door.kind !== 'package' ? 'a command people run'
+  const what = door.kind !== 'package' ? (door.bundledInto?.length > 0 ? `a command bundled into ${list(door.bundledInto)}` : 'a command people run')
+    : door.runsCommand != null ? `the package's entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${door.runsCommand}` : 'runs a program as it loads'}; it is not a library`
     : door.extension ? (door.unpublished ? "the extension's entry, not published from here" : `the extension people install from ${registryList(door.publishedTo ?? [])}`)
       : door.unpublished ? "the package's entry, not published from here" : 'the package people import';
   return door.sharedName ? `${what}, from ${door.file}` : what;
@@ -2595,7 +2598,8 @@ function publishesSentence(ctx) {
 // A package nothing here publishes is no package people import, and an
 // extension is installed, not imported.
 function installedNames(ctx, kind, { extension = false } = {}) {
-  const names = [...new Set(ctx.doors.filter((door) => door.kind === kind && !door.unpublished && Boolean(door.extension) === extension).map((door) => door.name))].sort(cmp);
+  const names = [...new Set(ctx.doors.filter((door) => door.kind === kind && !door.unpublished && Boolean(door.extension) === extension
+    && door.runsCommand == null && !(door.bundledInto?.length > 0)).map((door) => door.name))].sort(cmp);
   if (names.length <= INSTALLED_ALL) return list(names);
   return `${names.slice(0, INSTALLED_NAMED).join(', ')} and ${names.length - INSTALLED_NAMED} more`;
 }

@@ -71,6 +71,9 @@ export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFro
     const recorded = recordedRuns([...read.values()]);
     return {
       ...(command.unplaced ? { unplaced: command.unplaced } : {}),
+      // Read by index.js settleInstalled, then dropped.
+      ...(command.privateMember ? { privateMember: true, declared: command.declared } : {}),
+      ...(command.kind === 'package' ? { exported: programs } : {}),
       // What an import of the bare name loads, among every file it exports.
       ...(command.kind === 'package' && command.path != null ? { entry: command.path } : {}),
       kind: command.kind,

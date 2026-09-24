@@ -323,6 +323,7 @@ function carryDoor(door) {
   if (door.parseError) return { file: door.file, name: door.name, parseError: true };
   return {
     ...(door.kind ? { kind: door.kind } : {}),
+    ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
     ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),
     elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
@@ -344,6 +345,7 @@ function carryDoor(door) {
     reach: door.reach.map(carryReach),
     readers: door.readers.filter((entry) => !inAtlas(entry.target) && !inAtlas(entry.by)).map(carryReader),
     runs: door.runs.map(carryRun),
+    ...(door.runsCommand != null ? { runsCommand: door.runsCommand } : {}),
     runsCount: door.runsCount,
     checksCount: door.checksCount ?? 0,
     secrets: [...door.secrets],
