@@ -1,0 +1,262 @@
+{
+  "authored": [
+    ".claude/",
+    ".github/",
+    "root",
+    "site/"
+  ],
+  "breaks": [],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 107,
+      "moved": 0,
+      "parts": 7,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-24; 107 files changed content.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "26647adb400f0def524ecde5694cca44e4628090",
+      "generatedAt": "2026-09-24T08:37:30.625Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [
+    {
+      "a": "packages/server/src/routes/api.test.ts",
+      "b": "packages/ui/src/hooks/useRegulator.ts",
+      "either": 7,
+      "partLabels": [
+        "server",
+        "ui"
+      ],
+      "parts": [
+        "server",
+        "ui"
+      ],
+      "relation": "none",
+      "shared": 6
+    },
+    {
+      "a": "packages/server/src/presets.ts",
+      "b": "packages/ui/src/App.tsx",
+      "either": 6,
+      "partLabels": [
+        "server",
+        "ui"
+      ],
+      "parts": [
+        "server",
+        "ui"
+      ],
+      "relation": "none",
+      "shared": 5
+    },
+    {
+      "a": "packages/server/src/routes/api.ts",
+      "b": "packages/ui/src/hooks/useRegulator.ts",
+      "either": 8,
+      "partLabels": [
+        "server",
+        "ui"
+      ],
+      "parts": [
+        "server",
+        "ui"
+      ],
+      "relation": "none",
+      "shared": 6
+    },
+    {
+      "a": "packages/server/src/routes/api.test.ts",
+      "b": "packages/ui/src/App.tsx",
+      "either": 8,
+      "partLabels": [
+        "server",
+        "ui"
+      ],
+      "parts": [
+        "server",
+        "ui"
+      ],
+      "relation": "none",
+      "shared": 5
+    },
+    {
+      "a": "packages/server/src/routes/api.ts",
+      "b": "packages/ui/src/App.tsx",
+      "either": 9,
+      "partLabels": [
+        "server",
+        "ui"
+      ],
+      "parts": [
+        "server",
+        "ui"
+      ],
+      "relation": "none",
+      "shared": 5
+    }
+  ],
+  "changesTogetherNote": [
+    "1 file changed together with its own test, as expected.",
+    "Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.",
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 1,
+  "commit": "c7fbc277057214aea33336843166518ea69f7d9d",
+  "defaultBranch": "main",
+  "derived": "7 parts, mostly TypeScript (26 files). Work enters through 2 doors; the busiest is CI, which reaches 2 parts.",
+  "doors": [
+    {
+      "checks": [
+        "packages/ui/src/"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "server",
+          "depth": 0,
+          "files": 13
+        },
+        {
+          "boundary": "ui",
+          "depth": 0,
+          "files": 9
+        }
+      ],
+      "runs": [
+        "packages/server/src/engine-manager.test.ts",
+        "packages/server/src/presets.test.ts",
+        "packages/server/src/routes/api.test.ts",
+        "packages/server/src/routes/events.test.ts",
+        "packages/server/src/state.test.ts",
+        "packages/server/src/version-alignment.test.ts"
+      ],
+      "runsCount": 6,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 7 paths",
+        "on a push to main touching 7 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site on a push"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 2 paths",
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "generated": [
+    {
+      "place": "apps/desktop/msix/Assets/",
+      "writers": [
+        "apps/desktop/msix/gen-assets.mjs"
+      ]
+    },
+    {
+      "place": "apps/desktop/src-tauri/icons/",
+      "writers": [
+        "apps/desktop/src-tauri/gen-icons.mjs"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-24T08:56:41.537Z",
+  "limits": [
+    "2 writes and 12 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".claude": ".claude",
+    ".github": ".github",
+    "desktop": "desktop",
+    "root": "the repository root",
+    "server": "server",
+    "site": "the site",
+    "ui": "ui"
+  },
+  "parts": 7,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/stillpoint",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "packages/server/src/index.ts"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 6,
+  "testedBy": {
+    "server": 5,
+    "ui": 0
+  },
+  "unnamedWrites": 0,
+  "unread": [
+    {
+      "place": "apps/desktop/msix/Assets/",
+      "writers": [
+        "apps/desktop/msix/gen-assets.mjs"
+      ]
+    },
+    {
+      "place": "apps/desktop/src-tauri/icons/",
+      "writers": [
+        "apps/desktop/src-tauri/gen-icons.mjs"
+      ]
+    }
+  ],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "ui",
+      "partLabel": "ui",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 2
+}

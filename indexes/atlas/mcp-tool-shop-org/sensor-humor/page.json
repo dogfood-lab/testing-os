@@ -1,0 +1,455 @@
+{
+  "authored": [
+    ".github/",
+    "docs/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 4,
+      "importedBy": [
+        "scripts"
+      ],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "tests",
+      "partLabel": "tests"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 152,
+      "moved": 0,
+      "parts": 8,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-24; 152 files changed content.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "6e8ea9a82d220b4f0a6eb197d1176fddc6d8e6f8",
+      "generatedAt": "2026-09-24T08:40:36.224Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [
+    {
+      "a": "src/tools/heckle.ts",
+      "b": "src/tools/roast.ts",
+      "either": 15,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 13
+    },
+    {
+      "a": "src/ollama.ts",
+      "b": "src/tools/catchphrase.ts",
+      "either": 14,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 10
+    },
+    {
+      "a": "src/tools/comic_timing.ts",
+      "b": "src/tools/roast.ts",
+      "either": 17,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 12
+    },
+    {
+      "a": "src/tools/catchphrase.ts",
+      "b": "src/tools/roast.ts",
+      "either": 15,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 10
+    },
+    {
+      "a": "src/tools/catchphrase.ts",
+      "b": "src/tools/comic_timing.ts",
+      "either": 16,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 10
+    }
+  ],
+  "changesTogetherNote": [
+    "1 file changed together with its own test, as expected.",
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 11 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 1,
+  "commit": "53be69f8bd3e3aca26a8cde1aa9e8f0b36f0cd84",
+  "defaultBranch": "main",
+  "derived": "8 parts, mostly TypeScript (86 files). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. People run sensor-humor. People import @mcptoolshop/sensor-humor.",
+  "doors": [
+    {
+      "checks": [
+        "package-lock.json",
+        "package.json",
+        "src/",
+        "tsconfig.build.json",
+        "tsconfig.json"
+      ],
+      "checksCount": 5,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 43
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 27
+        }
+      ],
+      "runs": [
+        "scripts/check-pack.mjs",
+        "src/index.ts",
+        "tests/capture.test.ts",
+        "tests/character-voice-schema.test.ts",
+        "tests/dataset-enrich.test.ts",
+        "tests/dataset-eval-caricature.test.ts",
+        "tests/dataset-eval-core.test.ts",
+        "tests/dataset-eval-judge.test.ts",
+        "tests/dataset-label-active.test.ts",
+        "tests/dataset-label-bws.test.ts",
+        "tests/dataset-label-schema.test.ts",
+        "tests/dataset-pii-scrub.test.ts",
+        "tests/dataset-provenance.test.ts",
+        "tests/dataset-schema.test.ts",
+        "tests/index.test.ts",
+        "tests/label-cli-smoke.test.ts",
+        "tests/loader.test.ts",
+        "tests/ollama.test.ts",
+        "tests/running_gag.test.ts",
+        "tests/scorecard-cli.test.ts",
+        "tests/scorecard-frozen-prompts.test.ts",
+        "tests/scorecard-rules.test.ts",
+        "tests/scorecard-stats.test.ts",
+        "tests/session.test.ts",
+        "tests/techniques.test.ts",
+        "tests/tools.test.ts",
+        "tests/validators.test.ts",
+        "tests/version-alignment.test.ts"
+      ],
+      "runsCount": 28,
+      "sends": [
+        "publishes to npm and a container image",
+        "creates a GitHub release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*` is pushed"
+      ]
+    },
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 43
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 27
+        }
+      ],
+      "runs": [
+        "scripts/check-pack.mjs",
+        "tests/capture.test.ts",
+        "tests/character-voice-schema.test.ts",
+        "tests/dataset-enrich.test.ts",
+        "tests/dataset-eval-caricature.test.ts",
+        "tests/dataset-eval-core.test.ts",
+        "tests/dataset-eval-judge.test.ts",
+        "tests/dataset-label-active.test.ts",
+        "tests/dataset-label-bws.test.ts",
+        "tests/dataset-label-schema.test.ts",
+        "tests/dataset-pii-scrub.test.ts",
+        "tests/dataset-provenance.test.ts",
+        "tests/dataset-schema.test.ts",
+        "tests/index.test.ts",
+        "tests/label-cli-smoke.test.ts",
+        "tests/loader.test.ts",
+        "tests/ollama.test.ts",
+        "tests/running_gag.test.ts",
+        "tests/scorecard-cli.test.ts",
+        "tests/scorecard-frozen-prompts.test.ts",
+        "tests/scorecard-rules.test.ts",
+        "tests/scorecard-stats.test.ts",
+        "tests/session.test.ts",
+        "tests/techniques.test.ts",
+        "tests/tools.test.ts",
+        "tests/validators.test.ts",
+        "tests/version-alignment.test.ts"
+      ],
+      "runsCount": 27,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 12 paths",
+        "on a push touching 12 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/sensor-humor",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/sensor-humor",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 24
+        }
+      ],
+      "runs": [
+        "src/index.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#sensor-humor",
+      "kind": "command",
+      "landings": [],
+      "name": "sensor-humor",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 24
+        }
+      ],
+      "runs": [
+        "src/index.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "scripts",
+      "fromTests": false,
+      "to": "src"
+    },
+    {
+      "from": "tests",
+      "fromTests": true,
+      "to": "src"
+    }
+  ],
+  "generated": [
+    {
+      "place": "swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/citation-receipt.json",
+      "writers": [
+        "swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs"
+      ]
+    },
+    {
+      "place": "swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/gate-result.json",
+      "writers": [
+        "swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-24T08:56:35.650Z",
+  "limits": [
+    "1 import site could not be resolved.",
+    "2 writes use paths built at run time and are not named here.",
+    "8 writes and 22 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "1 command is built at run time and not followed, and it is in tests.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/release.yml",
+  "partLabels": {
+    ".github": ".github",
+    "docs": "docs",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "the site",
+    "src": "src",
+    "swarms": "swarms",
+    "tests": "tests"
+  },
+  "parts": 8,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/sensor-humor",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "src/index.ts"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 27,
+  "testedBy": {
+    "scripts": 0,
+    "src": 25
+  },
+  "unnamedWrites": 2,
+  "unread": [
+    {
+      "place": "swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/citation-receipt.json",
+      "writers": [
+        "swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs"
+      ]
+    },
+    {
+      "place": "swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/gate-result.json",
+      "writers": [
+        "swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs"
+      ]
+    }
+  ],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "scripts",
+      "partLabel": "scripts",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 2
+}

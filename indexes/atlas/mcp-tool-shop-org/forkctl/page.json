@@ -1,0 +1,277 @@
+{
+  "authored": [
+    ".github/",
+    "assets/",
+    "design/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 4,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-24; no file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "31ad2f423e60a56a5c82487bc2c371e2f4bd0d7d",
+      "generatedAt": "2026-09-24T08:48:55.872Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "72e9d2192606c42df73a34dff75e045f7cef28a7",
+  "defaultBranch": "main",
+  "derived": "7 parts, mostly TypeScript (128 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. People run forkctl and forkctl-mcp.",
+  "doors": [
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 65
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 60
+        }
+      ],
+      "runs": [
+        "tests/assess.test.ts",
+        "tests/audit.test.ts",
+        "tests/backend-hardening.test.ts",
+        "tests/batch-sync.test.ts",
+        "tests/bootstrap.test.ts",
+        "tests/check-operation.test.ts",
+        "tests/choose-path.test.ts",
+        "tests/configure-upstream.test.ts",
+        "tests/create-fork.test.ts",
+        "tests/create-from-template.test.ts",
+        "tests/diagnose-divergence.test.ts",
+        "tests/dispatch-error-operation-id.test.ts",
+        "tests/dispatch.test.ts",
+        "tests/drift.test.ts",
+        "tests/emit-handoff.test.ts",
+        "tests/errors.test.ts",
+        "tests/fleet-health.test.ts",
+        "tests/fleet-octokit-dispatch.test.ts",
+        "tests/github.test.ts",
+        "tests/list-forks.test.ts",
+        "tests/logger.test.ts",
+        "tests/make-forkable.test.ts",
+        "tests/migration-runner.test.ts",
+        "tests/network-errors.test.ts",
+        "tests/operations.test.ts",
+        "tests/parse-repo-ref.test.ts",
+        "tests/policy.test.ts",
+        "tests/preflight-policy.test.ts",
+        "tests/profiles.test.ts",
+        "tests/propose-sync-pr.test.ts",
+        "tests/rate-limit.test.ts",
+        "tests/readiness.test.ts",
+        "tests/receipt.test.ts",
+        "tests/registry.test.ts",
+        "tests/rename/",
+        "tests/scan-drift.test.ts",
+        "tests/schemas.test.ts",
+        "tests/snapshot.test.ts",
+        "tests/state.test.ts",
+        "tests/sync.test.ts"
+      ],
+      "runsCount": 40,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 11 paths",
+        "on a push to main touching 11 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 4
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/forkctl",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/forkctl",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "src/index.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": [],
+      "unpublished": true
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#forkctl",
+      "kind": "command",
+      "landings": [],
+      "name": "forkctl",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 65
+        }
+      ],
+      "runs": [
+        "src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [
+        "changes other repositories through the GitHub API"
+      ],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#forkctl-mcp",
+      "kind": "command",
+      "landings": [],
+      "name": "forkctl-mcp",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 64
+        }
+      ],
+      "runs": [
+        "src/server.ts"
+      ],
+      "runsCount": 1,
+      "sends": [
+        "changes other repositories through the GitHub API"
+      ],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "generated": [],
+  "generatedAt": "2026-09-24T08:56:08.850Z",
+  "limits": [
+    "1 import site could not be resolved.",
+    "7 files in src use syntax the parser cannot read (src/lib/rename/identity/go-mod.ts, src/lib/rename/identity/package-json.ts, src/lib/rename/identity/simple-text.ts and 4 more), so what they import is not known: an import type followed by `[]` (7).",
+    "1 write and 1 read use paths built at run time and are not named here.",
+    "7 writes and 7 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "1 command is built at run time and not followed.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "assets": "assets",
+    "design": "design",
+    "root": "the repository root",
+    "site": "the site",
+    "src": "src",
+    "tests": "tests"
+  },
+  "parts": 7,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/forkctl",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "src/index.ts"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 60,
+  "testedBy": {
+    "src": 51
+  },
+  "unnamedWrites": 1,
+  "unread": [],
+  "unreadFiles": 7,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [],
+  "written": 0
+}
