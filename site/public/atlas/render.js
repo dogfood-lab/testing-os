@@ -497,10 +497,12 @@ function readsSection(ctx) {
   if (groups.length === 0) return section('Who reads the results', p(`Only ${name} itself reads what it writes.`));
   const bullets = groups.map((group) => {
     const target = `<strong>${pathHtml(ctx, group.target)}</strong>`;
-    const readers = arr(group.readers);
-    return readers.length === 0
-      ? `${target} has no reader in this repository.`
-      : `${target} is read by ${list(readers.map((reader) => readerHtml(ctx, wordedName(ctx, reader))))}.`;
+    const readers = arr(group.readers).map((reader) => readerHtml(ctx, wordedName(ctx, reader)));
+    // The tests that read the place are counted after its code readers.
+    const tests = Number(group.tests) || 0;
+    if (readers.length === 0 && tests === 0) return `${target} has no reader in this repository.`;
+    const by = tests === 0 ? list(readers) : readers.length === 0 ? count(tests, 'test') : `${list(readers)}, and by ${count(tests, 'test')}`;
+    return `${target} is read by ${by}.`;
   });
   return section('Who reads the results', ul(bullets));
 }

@@ -5,7 +5,7 @@ import { after, before, describe, it } from 'node:test';
 import { mapRepository } from '../core/index.js';
 import { makeRepo } from '../core/fixture-repo.js';
 import { buildArtifact } from './artifact.js';
-import { buildPage } from './page.js';
+import { buildPage, readersClause } from './page.js';
 
 // fixtures/atlas/test-readers: a script a workflow commits the output of
 // writes two fixture files, and a test reads one of them by its path.
@@ -41,6 +41,12 @@ describe('a test that reads a place', () => {
     assert.deepEqual(golden.readers.filter((entry) => entry.by !== '.github/workflows/goldens.yml'), [{ by: 'test/golden.test.js', call: 'readFileSync', confidence: 'ast', fromTests: true }]);
     // The door's two landings share fixtures/, which Who reads the results names.
     assert.ok(markdown.includes('- **fixtures/** is read by test/golden.test.js (from tests).'), markdown);
+  });
+
+  it('counts the tests that read a place after the code that does', () => {
+    assert.equal(readersClause(['scripts/report.mjs'], 3), 'scripts/report.mjs, and by 3 tests');
+    assert.equal(readersClause([], 2), '2 tests');
+    assert.equal(readersClause(['a.js', 'b.js'], 0), 'a.js and b.js');
   });
 
   it('keeps the place out of written but never read, which names only what no reader of either kind reads', () => {

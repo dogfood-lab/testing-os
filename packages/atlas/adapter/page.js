@@ -969,7 +969,7 @@ function readerGroups(ctx, main) {
   for (const group of [...groups.values()].sort((a, b) => cmp(a.key, b.key))) {
     const target = ctx.place(group.key);
     if (group.entries.length === 0) {
-      out.push({ target, readers: [], files: [] });
+      out.push({ target, readers: [], files: [], tests: 0 });
       continue;
     }
     // The door naming its own output, a writer reading back what it wrote, and
@@ -982,8 +982,14 @@ function readerGroups(ctx, main) {
       reader.path !== main.file && !writers.has(reader.path) && !under(reader.path, group.key)
     ));
     if (files.length === 0) continue;
-    const readers = collapse(ctx, files.map(readerItem));
-    out.push({ target, readers, files, entries: group.entries });
+    // The tests that read a place are counted after the code that does, the
+    // way a part imported only from tests is; a place one test alone reads
+    // names it.
+    const code = files.filter((reader) => !reader.fromTests);
+    const tests = files.length - code.length;
+    const alone = code.length === 0 && tests === 1;
+    const readers = collapse(ctx, (alone ? files : code).map(readerItem));
+    out.push({ target, readers, files, entries: group.entries, tests: alone ? 0 : tests });
   }
   return out;
 }
@@ -994,11 +1000,26 @@ function readsSection(ctx, main, groups) {
     lines.push(`${main.name} writes nothing this map can see.`);
     return lines.join('\n\n');
   }
-  const bullets = groups.map((group) => (group.readers.length === 0
-    ? `- **${group.target}** has no reader in this repository.`
-    : `- **${group.target}** is read by ${list(worded(group.readers, ctx.shown))}.`));
+  const bullets = groups.map((group) => {
+    if (group.readers.length === 0 && !group.tests) return `- **${group.target}** has no reader in this repository.`;
+    return `- **${group.target}** is read by ${readersClause(worded(group.readers, ctx.shown), group.tests)}.`;
+  });
   lines.push(bullets.length > 0 ? bullets.join('\n') : `Only ${main.name} itself reads what it writes.`);
   return lines.join('\n\n');
+}
+
+/**
+ * The readers of a place as the page words them: the code that reads it, then
+ * how many tests do, "A and B, and by 3 tests", or the tests alone.
+ *
+ * @param {string[]} readers
+ * @param {number} tests
+ * @returns {string}
+ */
+export function readersClause(readers, tests) {
+  if (!tests) return list(readers);
+  if (readers.length === 0) return count(tests, 'test');
+  return `${list(readers)}, and by ${count(tests, 'test')}`;
 }
 
 function otherDoors(ctx, main) {
@@ -2121,7 +2142,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     mainDoor: main ? doorKey(main) : null,
     partLabels: ctx.partLabels,
     parts: ctx.boundaries.length,
-    readers: groups.map((group) => ({ readers: worded(group.readers, id), target: group.target })),
+    readers: groups.map((group) => ({ readers: worded(group.readers, id), target: group.target, ...(group.tests ? { tests: group.tests } : {}) })),
     repo: String(repoName ?? ''),
     sequences: found,
     startDoor: starting ? doorKey(starting) : null,
