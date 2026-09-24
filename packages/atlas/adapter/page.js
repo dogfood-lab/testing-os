@@ -2087,6 +2087,10 @@ function startHere(ctx, main) {
   const named = new Set(runs.filter((run) => !run.matched).map((run) => run.path));
   const executed = new Set(runs.filter((run) => run.runKind !== 'checks').map((run) => run.path));
   const ran = shownRuns(main, 'executes').filter((path) => executed.has(path));
+  // A file a test runner runs for the unit tests it holds (cargo test and a
+  // #[cfg(test)] module) is a test's way in, as a test file is, not the
+  // door's entry.
+  const unitRun = (path) => !named.has(path) && ctx.fileOf.get(path)?.testsInside === true;
   const spelled = ran.filter((path) => named.has(path));
   const paths = (spelled.length > 0 ? spelled : ran).filter((path) => path.endsWith('/') || runsAsCode(path));
   const filesIn = (path) => depthZero.find((entry) => entry.boundary === runPart(ctx, path))?.files ?? 0;
@@ -2120,14 +2124,18 @@ function startHere(ctx, main) {
   // linter only reads is read, not followed, and a part a test reaches is
   // reached through the test (firstOf), never as the door's own entry.
   const executedParts = partsReached(ctx, filesOfRuns(ctx, ran).filter((path) => !isTestFile(path)));
+  // An entry the door only compiles or lints (cargo check of a crate's
+  // library), or runs only for the unit tests it holds, is read, not
+  // followed, as a file it only lints is.
+  const checkedOnly = new Set(runs.filter((run) => run.runKind === 'checks' && !executed.has(run.path)).map((run) => run.path));
   const partEntries = (main.reach ?? [])
     .filter((entry) => executedParts.has(entry.boundary))
     .map((entry) => entryFile(ctx.boundaries.find((boundary) => boundary.name === entry.boundary)))
-    .filter((path) => path != null && readable(path) && !isTestFile(path));
+    .filter((path) => path != null && readable(path) && !isTestFile(path) && !checkedOnly.has(path) && !unitRun(path));
   const drives = (path) => !path.endsWith('/') && !isTestFile(path) && (ctx.fileOf.get(path)?.importsFiles ?? []).length > 0;
   const helper = (path) => !path.endsWith('/') && !isTestFile(path) && (ctx.fileOf.get(path)?.importsFiles ?? []).length === 0;
   const candidates = [
-    ...ran.filter((path) => entries.has(path) && !isTestFile(path)).sort(byWidth),
+    ...ran.filter((path) => entries.has(path) && !isTestFile(path) && !unitRun(path)).sort(byWidth),
     ...spelled.filter(drives).sort(byWidth),
     ...[...new Set(partEntries)].sort((a, b) => Number(!imported.has(a)) - Number(!imported.has(b)) || byWidth(a, b)),
     // A helper that imports nothing comes after a test's way into the code.

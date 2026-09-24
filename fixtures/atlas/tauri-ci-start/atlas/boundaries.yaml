@@ -1,0 +1,17 @@
+summary: ""
+boundaries:
+  - name: root
+    globs:
+      - "*"
+      - .github/**
+    role: config
+  - name: tauri
+    globs:
+      - app/src-tauri/**
+    role: code
+  - name: web
+    globs:
+      - app/*
+      - app/scripts/**
+      - app/src/**
+    role: code
