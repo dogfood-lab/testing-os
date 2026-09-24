@@ -45,9 +45,13 @@ describe('what runs where no workflow reaches', () => {
     assert.match(section(markdown, 'What breaks what'), /- \*\*server\*\* is called over HTTP by 1 part \(ui\) and sits on the path of 1 door\./);
   });
 
-  it('says the HTTP link, the Tauri app and the deployments in the limits', () => {
+  it('says the HTTP link and the deployments in the limits', () => {
     assert.ok(data.limits.includes('ui calls server over HTTP at 2 routes, a link no import shows: the map draws it, and no door\'s reach follows it.'), data.limits.join('\n'));
-    assert.ok(data.limits.includes('There is a Tauri app under apps/desktop/ (2 Rust files) that no workflow builds; the map reads no Rust, so what it does is not on this page.'), data.limits.join('\n'));
     assert.ok(data.limits.includes('There is a Dockerfile, a fly.toml and a render.yaml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.'), data.limits.join('\n'));
+  });
+
+  it('reads the Tauri app as the desktop app people install, so it is no longer unseen', () => {
+    assert.ok(!data.limits.some((line) => line.includes('Tauri')), data.limits.join('\n'));
+    assert.match(markdown, /\*\*fixture\*\* \(the desktop app people install\)\. Runs apps\/desktop\/src-tauri\/src\/main\.rs\./);
   });
 });

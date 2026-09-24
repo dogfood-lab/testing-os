@@ -241,8 +241,10 @@ export function orderDoors(doors) {
 // What the page calls an installed door, and the verb for what it starts.
 // A package whose entry is a command runs it on import, so it is no library;
 // a private member's command is installed only inside the package bundling it.
+// A Tauri app's binary is installed as the app, not typed as a command.
 function installedAs(door) {
-  const what = door.kind !== 'package' ? (door.bundledInto?.length > 0 ? `a command bundled into ${list(door.bundledInto)}` : 'a command people run')
+  const what = door.app === 'desktop' ? 'the desktop app people install'
+    : door.kind !== 'package' ? (door.bundledInto?.length > 0 ? `a command bundled into ${list(door.bundledInto)}` : 'a command people run')
     : door.runsCommand != null ? `the package's entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${door.runsCommand}` : 'runs a program as it loads'}; it is not a library`
     : door.extension ? (door.unpublished ? "the extension's entry, not published from here" : `the extension people install from ${registryList(door.publishedTo ?? [])}`)
       : door.unpublished ? "the package's entry, not published from here" : 'the package people import';
@@ -2425,20 +2427,13 @@ function httpLines(ctx) {
 }
 
 /**
- * The apps the map reads none of and the deployments no workflow reaches
+ * The deployments no workflow reaches and what ships by hand
  * (core/unseen.js), each said as what the page cannot show.
  */
 function unseenLines(ctx) {
   const lines = [];
   for (const entry of ctx.structure.unseen ?? []) {
-    const where = entry.dir ? `under ${entry.dir}/` : 'at the repository root';
-    const what = entry.kind === 'tauri' ? 'a Tauri app' : 'a Rust crate';
-    // A workflow may build the Rust; the map still reads none of it.
-    if (entry.kind === 'tauri' || entry.kind === 'crate') {
-      lines.push(entry.built
-        ? `There is ${what} ${where} (${count(entry.rust, 'Rust file')}) that a workflow builds; the map reads no Rust, so what its Rust code does is not on this page.`
-        : `There is ${what} ${where} (${count(entry.rust, 'Rust file')}) that no workflow builds; the map reads no Rust, so what it does is not on this page.`);
-    } else if (entry.kind === 'deploy') {
+    if (entry.kind === 'deploy') {
       const files = entry.files ?? [];
       const dockerfiles = files.filter((path) => /(^|\/)(Dockerfile[^/]*|[^/]+\.Dockerfile)$/.test(path));
       const others = files.filter((path) => !dockerfiles.includes(path));
@@ -2620,10 +2615,11 @@ function publishesSentence(ctx) {
 }
 
 // A package nothing here publishes is no package people import, and an
-// extension is installed, not imported.
-function installedNames(ctx, kind, { extension = false } = {}) {
+// extension is installed, not imported; a desktop app is installed, not run
+// by its name.
+function installedNames(ctx, kind, { extension = false, app = null } = {}) {
   const names = [...new Set(ctx.doors.filter((door) => door.kind === kind && !door.unpublished && Boolean(door.extension) === extension
-    && door.runsCommand == null && !(door.bundledInto?.length > 0)).map((door) => door.name))].sort(cmp);
+    && (door.app ?? null) === app && door.runsCommand == null && !(door.bundledInto?.length > 0)).map((door) => door.name))].sort(cmp);
   if (names.length <= INSTALLED_ALL) return list(names);
   return `${names.slice(0, INSTALLED_NAMED).join(', ')} and ${names.length - INSTALLED_NAMED} more`;
 }
@@ -2644,12 +2640,15 @@ function derivedLine(ctx, main) {
   if (packages) sentences.push(`People import ${packages}.`);
   const extensions = installedNames(ctx, 'package', { extension: true });
   if (extensions) sentences.push(`People install the ${extensions} extension.`);
+  const desktop = installedNames(ctx, 'command', { app: 'desktop' });
+  if (desktop) sentences.push(`People install the ${desktop} desktop ${desktop.includes(' and ') ? 'apps' : 'app'}.`);
   return sentences.join(' ');
 }
 
 function doorData(ctx, door) {
   if (door.parseError) return { file: door.file, id: doorKey(door), name: door.name, parseError: true };
   return {
+    ...(door.app ? { app: door.app } : {}),
     file: door.file,
     id: doorKey(door),
     ...(installed(door) ? { kind: door.kind } : {}),

@@ -3,12 +3,12 @@ import { isTestMaterial } from './landings.js';
 
 /**
  * What the repository holds that the map, which follows the workflows and
- * the code they run, cannot say what it does: a Tauri app or a Rust crate,
- * since the map reads no Rust, whether a workflow builds it or not; and the
- * files a hosting service deploys from (a Dockerfile, fly.toml, render.yaml
- * and their kin) that no workflow runs. A workflow reaches one when it runs
- * or checks a file of it, names the file, or runs the tool that builds or
- * deploys it.
+ * the code they run, cannot say what it does: the files a hosting service
+ * deploys from (a Dockerfile, fly.toml, render.yaml and their kin) that no
+ * workflow runs. A workflow reaches one when it runs or checks a file of it,
+ * names the file, or runs the tool that builds or deploys it. A Tauri app and
+ * a Rust crate are read as code like any other (core/cargo.js), so neither is
+ * here.
  *
  * And what goes out by hand, `shipped`: a Dockerfile a workflow builds whose
  * image no workflow pushes, a Hugging Face Space (an app.py beside a README
@@ -19,7 +19,7 @@ import { isTestMaterial } from './landings.js';
  * @param {Set<string>} tracked
  * @param {object[]} doors every door of the map
  * @param {(path: string) => string|null} [read] a tracked file's text
- * @returns {Array<{ kind: 'tauri'|'crate', dir: string, rust: number, built: boolean } | { kind: 'deploy', files: string[] } | { kind: 'shipped', items: Array<{ kind: 'image'|'space'|'catalog', path: string }> }>}
+ * @returns {Array<{ kind: 'deploy', files: string[] } | { kind: 'shipped', items: Array<{ kind: 'image'|'space'|'catalog', path: string }> }>}
  */
 export function unseenParts(tracked, doors, read = () => null) {
   const workflows = doors.filter((door) => !door.kind && !door.parseError);
@@ -27,25 +27,8 @@ export function unseenParts(tracked, doors, read = () => null) {
   const says = (pattern) => texts.some((text) => pattern.test(text));
   const touches = (path) => workflows.some((door) => (door.runs ?? []).some((run) => run.path === path || (run.via ?? '').includes(path))
     || (door.mentions ?? []).some((mention) => mention.path === path));
-  const runsUnder = (dir) => workflows.some((door) => (door.runs ?? []).some((run) => run.path.startsWith(`${dir}/`)));
   const paths = [...tracked].filter((path) => !isTestMaterial(path)).sort();
-  const rustUnder = (dir) => paths.filter((path) => path.endsWith('.rs') && (dir === '' || path.startsWith(`${dir}/`))).length;
   const out = [];
-  const apps = [];
-  for (const path of paths) {
-    if (!/(^|\/)tauri\.conf\.json5?$|(^|\/)Tauri\.toml$/.test(path)) continue;
-    const conf = dirOf(path);
-    const app = posix.basename(conf) === 'src-tauri' ? dirOf(conf) : conf;
-    apps.push(conf);
-    const built = says(/\btauri\b[^\n]*\bbuild\b|tauri-apps\/tauri-action/) || says(CARGO) || runsUnder(conf);
-    out.push({ kind: 'tauri', dir: app, rust: rustUnder(app), built });
-  }
-  for (const path of paths) {
-    if (posix.basename(path) !== 'Cargo.toml') continue;
-    const dir = dirOf(path);
-    if (apps.some((conf) => dir === conf || dir.startsWith(`${conf}/`))) continue;
-    out.push({ kind: 'crate', dir, rust: rustUnder(dir), built: says(CARGO) || touches(path) });
-  }
   const deploys = [];
   for (const path of paths) {
     const base = posix.basename(path);
@@ -80,8 +63,6 @@ const HUB_SPACE = /repo_type\s*=\s*["']space["']|--repo-type[= ]space\b|huggingf
 const CATALOG_SUBMIT = /docker\/mcp-registry/;
 // The front matter a Space's README opens with names the sdk it runs on.
 const FRONT_SDK = /^---\r?\n(?:[^\n]*\n)*?sdk:\s*\S+[^\n]*\n(?:[^\n]*\n)*?---/;
-
-const CARGO = /\bcargo\s+(build|test|check|clippy|run|publish|install|nextest)\b|dtolnay\/rust-toolchain|actions-rs\//;
 
 // Each file a hosting service deploys from, and what a workflow says to run
 // the tool that reads it.

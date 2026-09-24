@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import picomatch from 'picomatch';
+import { cargoProject } from './cargo.js';
 import { repositoryView } from './commands.js';
 import { isTestFile, isTestMaterial } from './landings.js';
 import { declaredScripts } from './python-manifest.js';
@@ -22,18 +23,19 @@ const FALLBACKS = [
  * package.json whose bin lives there although bin/ has no manifest of its
  * own. An entry is always one of the boundary's own files: the root
  * boundary of that same repository gets no entry from the bin, since bin/ is
- * not in it.
+ * not in it. A crate's library is the entry of the part that holds it, as
+ * its binaries are through the commands.
  *
- * @param {{ repoPath: string, globs: string[], tracked: Set<string>, scripts?: Array<{ path: string }>, commands?: Array<{ path: string }> }} input
- *   scripts is pythonScripts() and commands is manifestCommands() for the
- *   repository, each read once per map
+ * @param {{ repoPath: string, globs: string[], tracked: Set<string>, scripts?: Array<{ path: string }>, commands?: Array<{ path: string }>, crates?: Array<{ path: string }> }} input
+ *   scripts is pythonScripts(), commands is manifestCommands() and crates
+ *   is crateEntries() for the repository, each read once per map
  */
-export function deriveEntryPoints({ repoPath, globs, tracked, scripts = [], commands = [] }) {
+export function deriveEntryPoints({ repoPath, globs, tracked, scripts = [], commands = [], crates = [] }) {
   if (!Array.isArray(globs) || globs.length === 0) return [];
   const inside = picomatch(globs, { dot: true });
   const root = boundaryRoot(globs);
   const manifest = root ? `${root}/package.json` : 'package.json';
-  const declared = [...scripts, ...commands].map((entry) => entry.path).filter((path) => path != null && inside(path));
+  const declared = [...scripts, ...commands, ...crates].map((entry) => entry.path).filter((path) => path != null && inside(path));
   let found;
   if (tracked.has(manifest)) found = [...fromPackage(repoPath, root, manifest, tracked), ...declared];
   else found = declared.length > 0 ? declared : fromNames(root, tracked);
@@ -65,7 +67,9 @@ export function pythonScripts(repoPath, tracked) {
 /**
  * What a repository installs for people to use, read from its manifests:
  * every bin of the root package.json and of each npm workspace member's,
- * every script a pyproject.toml declares, and, when the root package is
+ * every script a pyproject.toml declares, every binary a crate's Cargo.toml
+ * declares or Cargo finds (a Tauri app's being the desktop app, marked app
+ * desktop), and, when the root package is
  * published (it has a name and is not private), the file its exports["."] or
  * main loads, with in `paths` every file an exports subpath names (types
  * and the manifest itself aside), which an import of the package can load. A manifest inside test material is a copy a test works on, not
@@ -78,7 +82,7 @@ export function pythonScripts(repoPath, tracked) {
  * @param {string} repoPath
  * @param {Set<string>} tracked
  * @param {Array<{ path: string, name: string, manifest: string }>} scripts pythonScripts()
- * @returns {Array<{ kind: 'command'|'package', name: string, manifest: string, path: string|null, unplaced?: string }>}
+ * @returns {Array<{ kind: 'command'|'package', name: string, manifest: string, path: string|null, unplaced?: string, app?: 'desktop' }>}
  *   sorted by manifest, then name
  */
 export function manifestCommands(repoPath, tracked, scripts = []) {
@@ -111,8 +115,30 @@ export function manifestCommands(repoPath, tracked, scripts = []) {
   for (const script of scripts) {
     if (!isTestMaterial(script.manifest)) out.push({ kind: 'command', name: script.name, manifest: script.manifest, path: script.path });
   }
+  for (const crate of cargoProject(repoPath, tracked).crates) {
+    for (const bin of crate.bins) out.push({ kind: 'command', name: bin.name, manifest: crate.manifest, path: bin.path, ...(desktopBin(crate, bin) ? { app: 'desktop' } : {}) });
+  }
   const unique = new Map(out.map((entry) => [`${entry.manifest}\0${entry.name}\0${entry.kind}`, entry]));
   return [...unique.values()].sort((a, b) => compare(a.manifest, b.manifest) || compare(a.name, b.name) || compare(a.kind, b.kind));
+}
+
+/**
+ * The library of every crate, which is the entry of whichever part holds
+ * it: what the crate's other targets and the crates depending on it import.
+ *
+ * @param {string} repoPath
+ * @param {Set<string>} tracked
+ * @returns {Array<{ path: string }>}
+ */
+export function crateEntries(repoPath, tracked) {
+  return cargoProject(repoPath, tracked).crates.filter((crate) => crate.lib).map((crate) => ({ path: crate.lib.path }));
+}
+
+// A Tauri app's binary is the desktop app: the one src/main.rs is, or the
+// crate's only one. A second binary beside it is a command of its own.
+function desktopBin(crate, bin) {
+  if (!crate.tauri) return false;
+  return crate.bins.length === 1 || bin.path === (crate.dir ? `${crate.dir}/src/main.rs` : 'src/main.rs');
 }
 
 function readManifest(repoPath, path, tracked) {

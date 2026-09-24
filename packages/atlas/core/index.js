@@ -8,7 +8,7 @@ import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
-import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
+import { crateEntries, deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
@@ -123,11 +123,12 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const scripts = pythonScripts(repoPath, trackedSet);
   const commands = manifestCommands(repoPath, trackedSet, scripts);
   const manifests = repositoryManifests(repoPath, trackedSet);
+  const crates = crateEntries(repoPath, trackedSet);
   for (const boundary of boundaryList) {
     boundary.files.sort(byPath);
     boundary.holdsManifest = boundary.files.some((file) => manifests.includes(file.path));
     boundary.parseErrors = boundary.files.filter((file) => file.parseError).length;
-    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts, commands });
+    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts, commands, crates });
   }
   unassigned.sort(byPath);
   overlaps.sort(byPath);

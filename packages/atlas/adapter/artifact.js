@@ -305,8 +305,7 @@ function carryReader(entry) {
 
 function carryUnseen(entry) {
   if (entry.kind === 'deploy') return { files: [...entry.files], kind: entry.kind };
-  if (entry.kind === 'shipped') return { items: entry.items.map((item) => ({ kind: item.kind, path: item.path })), kind: entry.kind };
-  return { built: entry.built, dir: entry.dir, kind: entry.kind, rust: entry.rust };
+  return { items: entry.items.map((item) => ({ kind: item.kind, path: item.path })), kind: entry.kind };
 }
 
 // A run always says whether the door runs the file or only checks it; it
@@ -329,6 +328,7 @@ function carryDoor(door) {
   if (door.parseError) return { file: door.file, name: door.name, parseError: true };
   return {
     ...(door.kind ? { kind: door.kind } : {}),
+    ...(door.app ? { app: door.app } : {}),
     ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
     ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),
