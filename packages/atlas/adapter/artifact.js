@@ -112,9 +112,9 @@ function testReach(mapped) {
     byStem.get(stem).push(file.path);
   }
   const testedBy = new Map();
-  for (const test of tests) {
-    const direct = resolvedFiles(test);
-    direct.files.push(...(test.spawns ?? []));
+  const imported = new Set();
+  // The parts a test reaches from the given files, one hop past each.
+  const partsFrom = (test, direct) => {
     const parts = new Set(direct.boundaries);
     const reached = new Set(direct.files);
     for (const path of direct.files) {
@@ -127,10 +127,19 @@ function testReach(mapped) {
     for (const path of reached) {
       if (path !== test.path && !isTestFile(path) && boundaryOf.has(path)) parts.add(boundaryOf.get(path));
     }
-    for (const path of byStem.get(testedStem(test.path)) ?? []) if (isOwnTest(test.path, path)) parts.add(boundaryOf.get(path));
-    for (const part of parts) testedBy.set(part, (testedBy.get(part) ?? 0) + 1);
+    return parts;
+  };
+  for (const test of tests) {
+    const byImport = partsFrom(test, resolvedFiles(test));
+    for (const path of byStem.get(testedStem(test.path)) ?? []) if (isOwnTest(test.path, path)) byImport.add(boundaryOf.get(path));
+    const bySpawn = partsFrom(test, { files: [...(test.spawns ?? [])], boundaries: [] });
+    for (const part of byImport) imported.add(part);
+    for (const part of new Set([...byImport, ...bySpawn])) testedBy.set(part, (testedBy.get(part) ?? 0) + 1);
   }
-  return { testFiles: tests.length, testedBy };
+  // A part no test imports that a test runs as a child process is touched
+  // only through that spawn, which the page says.
+  const throughSpawn = new Set([...testedBy.keys()].filter((part) => !imported.has(part)));
+  return { testFiles: tests.length, testedBy, throughSpawn };
 }
 
 // A boundary file may leave a role out; the role is then derived from the
@@ -163,6 +172,7 @@ export function buildArtifact(mapped, commit) {
       origin: boundary.origin,
       role: boundary.role ?? roleFor(files.map((file) => file.path), { manifest: boundary.holdsManifest === true }),
       testedBy: tested.testedBy.get(boundary.name) ?? 0,
+      ...(tested.throughSpawn.has(boundary.name) ? { testedThroughSpawn: true } : {}),
       unresolvedSites: sites.unresolved,
     };
   });

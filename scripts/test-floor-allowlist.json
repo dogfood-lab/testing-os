@@ -124,6 +124,18 @@
     {
       "path": "fixtures/atlas/start-tests/constant/tests/work.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the start-tests fixture repository that packages/atlas/adapter/page-start-tests.test.js maps, where it imports a file holding one constant before the file doing the work, and Where to start must pass over the constant to the work. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/spawned-scripts/tests/smoke.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the spawned-scripts fixture repository that packages/atlas/adapter/page-spawned-scripts.test.js maps, where the tests either run scripts/ as a child process or import src/, so the map counts scripts as touched only through a spawn. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/spawned-scripts/tests/run-gate.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the spawned-scripts fixture repository that packages/atlas/adapter/page-spawned-scripts.test.js maps, where the tests either run scripts/ as a child process or import src/, so the map counts scripts as touched only through a spawn. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/spawned-scripts/tests/add.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the spawned-scripts fixture repository that packages/atlas/adapter/page-spawned-scripts.test.js maps, where the tests either run scripts/ as a child process or import src/, so the map counts scripts as touched only through a spawn. It holds no test and is never meant to run."
     }
   ]
 }

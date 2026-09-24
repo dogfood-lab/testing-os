@@ -1603,16 +1603,31 @@ function untested(ctx) {
   const parts = ctx.boundaries.filter((boundary) => boundary.role === 'code'
     && (boundary.files ?? []).some((file) => isSourcePath(file.path) && !isTestMaterial(file.path)));
   const testedBy = Object.fromEntries(parts.map((boundary) => [boundary.name, boundary.testedBy ?? 0]));
-  if (testFiles === 0) return { items: [], note: ['No test files were found by name.'], testedBy, testFiles };
+  if (testFiles === 0) return { items: [], note: ['No test files were found by name.'], testedBy, testFiles, spawned: [] };
   const all = parts.filter((boundary) => (boundary.testedBy ?? 0) === 0)
     .map((boundary) => ({ part: boundary.name, partLabel: ctx.shown(boundary.name), testedBy: 0 }));
-  return { items: all.slice(0, UNTESTED_SHOWN), note: more(all.length, UNTESTED_SHOWN, 'part'), testedBy, testFiles };
+  // A part a test runs as a child process and none imports is touched, but
+  // only by running it, so the page says how.
+  const spawned = parts.filter((boundary) => boundary.testedThroughSpawn && (boundary.testedBy ?? 0) > 0).map((boundary) => boundary.name);
+  const through = spawned.map((name) => spawnedLine(ctx.shown(name)));
+  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned };
+}
+
+/**
+ * What the page says of a part tests touch only by running its files.
+ *
+ * @param {string} partLabel
+ * @returns {string}
+ */
+export function spawnedLine(partLabel) {
+  return `${partLabel} is touched by tests only through a spawn: a test runs its files as a child process.`;
 }
 
 function untestedSection(found) {
+  const every = found.spawned.length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.';
   const body = found.items.length > 0
     ? found.items.map((item) => `- **${item.partLabel}** is imported by no test.`).join('\n')
-    : (found.testFiles === 0 ? null : 'Every code part is imported by at least one test.');
+    : (found.testFiles === 0 ? null : every);
   return ['## What no test touches', ...(body ? [body] : []), ...found.note].join('\n\n');
 }
 
@@ -2594,6 +2609,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     ...(starting && start.chain.length === 0 ? { startNote: noPath(starting) } : {}),
     summary,
     summaryFrom: summary ? 'person' : null,
+    ...(untestedParts.spawned.length > 0 ? { spawnTested: untestedParts.spawned } : {}),
     testedBy: untestedParts.testedBy,
     testFiles: untestedParts.testFiles,
     unreadFiles: unreadCount(ctx),

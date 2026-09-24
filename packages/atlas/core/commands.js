@@ -736,7 +736,9 @@ function makeReader(repo, runs, mentions) {
         return;
       }
       if (!test) {
-        if (i < argv.length) file(argv[i], dir, frame, { script: true, args: argv.slice(i + 1) });
+        const tool = i < argv.length ? nodeModulesTool(argv[i]) : null;
+        if (tool != null) interpret([tool, ...argv.slice(i + 1)], dir, frame);
+        else if (i < argv.length) file(argv[i], dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
       for (; i < argv.length; i += 1) parsed.push(argv[i]);
@@ -1160,6 +1162,21 @@ function toolOf(word) {
   if (['tox', 'cargo'].includes(name)) return 'none';
   const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro'];
   return known.includes(name) ? name : null;
+}
+
+/**
+ * The tool a script under node_modules is, named by its file or its package:
+ * node node_modules/tsx/dist/cli.mjs x.ts is tsx running x.ts, and node
+ * node_modules/vitest/vitest.mjs run is vitest. Null for any other script.
+ */
+function nodeModulesTool(token) {
+  const at = token.lastIndexOf('node_modules/');
+  if (at === -1) return null;
+  const rest = token.slice(at + 'node_modules/'.length).split('/');
+  const pkg = rest[0]?.startsWith('@') ? rest[1] : rest[0];
+  const base = rest[rest.length - 1].replace(/\.[cm]?js$/, '');
+  if (pkg === 'typescript' && base === 'tsc') return 'tsc';
+  return [base, pkg].find((name) => name && toolOf(name) != null && toolOf(name) !== 'none') ?? null;
 }
 
 /**
