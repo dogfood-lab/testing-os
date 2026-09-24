@@ -18,8 +18,10 @@ import { cargoProject, crateRoots, RUST_STD } from './cargo.js';
  * declares is unresolved.
  *
  * Mutates each Rust file: fills `resolved` on its sites, drops the sites a
- * path in code named that are not a module here, and drops what the
- * readings carried for this (`rust` on each site, `rustModule`).
+ * path in code named that are not a module here, sets `library` to the root
+ * of its package's own library on a binary, test, example or bench that
+ * uses it, and drops what the readings carried for this (`rust` on each
+ * site, `rustModule`).
  *
  * @param {{ repoPath: string, tracked: Set<string>, files: object[] }} input
  */
@@ -73,12 +75,16 @@ export function resolveRust({ repoPath, tracked, files }) {
         kept.push(site);
         continue;
       }
-      const resolved = resolveUse(info, file, context, { libOf, crateAt });
+      const through = {};
+      const resolved = resolveUse(info, file, context, { libOf, crateAt }, through);
       // A path in code that names no module here is a type, a function in
       // scope or another crate's item, and was never an import to count.
       if (info.expression && (resolved.outcome !== 'file' || resolved.path === file.path)) continue;
       site.resolved = resolved;
       kept.push(site);
+      // A binary, test or example that uses its own package's library goes
+      // through that library's root, whichever module the path ends in.
+      if (through.own && resolved.outcome === 'file') file.library = context.tree.crate.lib.path;
     }
     file.imports = kept;
   }
@@ -118,7 +124,7 @@ function moduleFile(path, owner, info, tracked) {
  *
  * @returns {{ outcome: 'file', path: string } | { outcome: 'external' } | { outcome: 'unresolved', reason: string }}
  */
-function resolveUse(info, file, context, { libOf, crateAt }) {
+function resolveUse(info, file, context, { libOf, crateAt }, through = {}) {
   const segments = [...info.use];
   const here = context ? [...context.modulePath, ...info.scope] : null;
   let tree = context?.tree ?? null;
@@ -128,6 +134,7 @@ function resolveUse(info, file, context, { libOf, crateAt }) {
   if (first === '') {
     const found = externCrate(segments.shift(), tree, { libOf, crateAt });
     if (found.tree == null) return found.resolved;
+    if (found.own) through.own = true;
     tree = found.tree;
     at = [];
   } else if (first === 'crate') {
@@ -148,6 +155,7 @@ function resolveUse(info, file, context, { libOf, crateAt }) {
   } else {
     const found = externCrate(first, tree, { libOf, crateAt });
     if (found.tree != null) {
+      if (found.own) through.own = true;
       tree = found.tree;
       at = [];
     } else if (found.resolved.outcome !== 'unresolved' || info.crate) {
@@ -181,7 +189,7 @@ function externCrate(name, tree, { libOf, crateAt }) {
   const crate = tree.crate;
   if (tree.kind !== 'lib' && crate.lib?.name === name) {
     const lib = libOf(crate);
-    return lib ? { tree: lib, resolved: null } : unresolved;
+    return lib ? { tree: lib, resolved: null, own: true } : unresolved;
   }
   const dep = crate.deps.get(name);
   if (!dep) return unresolved;

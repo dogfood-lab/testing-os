@@ -2172,12 +2172,34 @@ function startHere(ctx, main) {
   };
   const next = (path) => {
     const part = ctx.boundaryOf.get(path) ?? null;
+    // A Rust binary that uses its own package's library goes into it at its
+    // root, in the part the binary is in or not.
+    const library = ctx.fileOf.get(path)?.library;
+    if (library != null && ctx.fileOf.has(library) && readable(library) && !chain.includes(library)) return library;
     const options = (ctx.fileOf.get(path)?.importsFiles ?? [])
       .filter((target) => ctx.fileOf.has(target) && readable(target) && !chain.includes(target) && !isTestFile(target) && !ctx.fileOf.get(target)?.constantOnly);
     const writer = options.find((target) => ending(target));
     if (writer) return writer;
     const width = (target) => breadth.get(ctx.boundaryOf.get(target)) ?? 0;
     return options.filter((target) => (ctx.boundaryOf.get(target) ?? null) !== part).sort((a, b) => width(b) - width(a) || cmp(a, b))[0] ?? null;
+  };
+  // Of the files a binary uses through its library, and the files those use
+  // in the same part, the first that imports another part, the one the door
+  // reaches most files of.
+  const intoLibrary = (binary, root) => {
+    const part = ctx.boundaryOf.get(root) ?? null;
+    const inPart = (paths) => paths.filter((target) => target !== root && ctx.fileOf.has(target) && (ctx.boundaryOf.get(target) ?? null) === part
+      && readable(target) && !isTestFile(target) && !chain.includes(target));
+    const reach = (target) => Math.max(0, ...(ctx.fileOf.get(target)?.importsFiles ?? [])
+      .filter((other) => ctx.fileOf.has(other) && !isTestFile(other) && (ctx.boundaryOf.get(other) ?? null) !== part)
+      .map((other) => breadth.get(ctx.boundaryOf.get(other)) ?? 0));
+    const first = inPart(ctx.fileOf.get(binary)?.importsFiles ?? []);
+    const second = inPart([...new Set(first.flatMap((target) => ctx.fileOf.get(target)?.importsFiles ?? []))]);
+    for (const level of [first, second]) {
+      const found = level.filter((target) => reach(target) > 0).sort((a, b) => reach(b) - reach(a) || cmp(a, b))[0];
+      if (found) return found;
+    }
+    return null;
   };
   for (let step = 0; step < START_STEPS; step += 1) {
     const end = ending(current);
@@ -2193,7 +2215,15 @@ function startHere(ctx, main) {
       if (following == null || chain.includes(following)) break;
     }
     add(following);
-    if (isIndex(following)) {
+    if (following === ctx.fileOf.get(current)?.library) {
+      // The library's root declares its modules; the path goes through it
+      // to the module the binary uses that goes on into another part.
+      const through = intoLibrary(current, following);
+      if (through != null) {
+        add(through);
+        following = through;
+      }
+    } else if (isIndex(following)) {
       // A package index that only hands a name on is followed to the file the
       // entry's call reaches through it, since that is where the work is.
       const through = firstCallInto(ctx, current, ctx.boundaryOf.get(following));

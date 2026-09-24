@@ -31,7 +31,7 @@ describe('where to start reading a Rust command whose CI only tests it', () => {
 
   it('reads a file cargo test runs for its own unit tests as a test, so the path follows the command', () => {
     assert.equal(data.startDoor, 'Cargo.toml#mile');
-    assert.deepEqual(data.startHere, ['src/main.rs']);
+    assert.deepEqual(data.startHere, ['src/main.rs', 'src/lib.rs']);
     assert.equal(data.startReason, 'This path follows mile (a command people run) from its entry, since CI runs only tests.');
   });
 });
