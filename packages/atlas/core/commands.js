@@ -1286,6 +1286,8 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const packages = cargoPackages(repo, cwd, parsed);
       const chain = via(frame, `cargo ${sub}`);
       const targets = (crate) => cargoTargets(repo, crate, sub, parsed);
+      // Every subcommand that compiles a crate first runs its build script.
+      if (sub !== 'fmt') for (const crate of packages) if (crate.build) record(stamp({ path: crate.build, matched: true }, { ...frame, runKind: 'executes' }, chain));
       if (sub === 'test' || (sub === 'nextest' && argv[i + 1] === 'run')) {
         const files = packages.flatMap((crate) => targets(crate));
         for (const entry of repo.compact([...new Set(files)])) record(stamp({ ...entry, matched: true }, frame, chain));
@@ -1325,6 +1327,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const at = typeof before?.cwd === 'string' ? cleanDir(posix.join(app.web || '.', before.cwd)) : app.web;
       if (script && at != null) read(script, at, { level: 1, via: chain, active: frame.active, installed: frame.installed });
       if (!app.crate) return;
+      if (app.crate.build) record(stamp({ path: app.crate.build, matched: true }, { ...frame, runKind: 'executes' }, chain));
       const kind = sub === 'build' ? { ...frame, runKind: 'checks' } : frame;
       const bins = app.crate.bins.map((bin) => bin.path);
       const roots = [...bins, ...(sub === 'build' && app.crate.lib ? [app.crate.lib.path] : [])];

@@ -149,6 +149,10 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     tracked: tracked.regular,
   });
   const project = cargoProject(repoPath, trackedSet);
+  // A crate's build script is run by every build of the crate; the page says
+  // what a writer that is one is.
+  const buildScripts = new Set(project.crates.map((crate) => crate.build).filter(Boolean));
+  for (const file of [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]) if (buildScripts.has(file.path)) file.buildScript = true;
   settleRustPaths({ files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places, crateDirOf: (path) => owningCrate(project, path)?.dir ?? null, isTest: isTestMaterial });
   for (const file of [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]) {
     delete file.rustBound;

@@ -243,6 +243,7 @@ function carryFile(file) {
   if (file.testsInside) out.testsInside = true;
   if (file.testSuite) out.testSuite = true;
   if (file.reexportsOnly) out.reexportsOnly = true;
+  if (file.buildScript) out.buildScript = true;
   // The root of the library a Rust binary uses from its own package.
   if (file.library && !inAtlas(file.library)) out.library = file.library;
   if (file.constantOnly) out.constantOnly = true;

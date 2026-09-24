@@ -154,6 +154,10 @@ export function rustPaths(root) {
       for (const [kind, call, arg] of fsSites(node)) {
         out.push({ kind, call, values: arg ? rustValues(arg, { consts }, 0) : [] });
       }
+      // tauri-build, which a Tauri crate's build script runs on every build
+      // of the crate, writes the capability schemas under the crate's gen/.
+      const called = pathSegments(node.childForFieldName('function'))?.join('::');
+      if (called === 'tauri_build::build' || called === 'tauri_build::try_build') out.push({ kind: 'write', call: called, values: [{ text: 'gen/schemas', open: false, anchor: 'crate' }] });
     }
     for (const child of node.namedChildren) visit(child);
   };

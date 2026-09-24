@@ -1535,8 +1535,10 @@ export function guardClause(guards) {
 
 // A test that writes a tracked place is said to be one: the place changes
 // every time the suite runs.
+// A test and a crate's build script, which every build of the crate runs,
+// are said as what they are.
 function writerItems(ctx, writers, guards) {
-  return collapse(ctx, writers.map((path) => ({ path, text: `${path}${isTestFile(path) ? ' (a test)' : ''}${guardClause(guards.get(path))}` })));
+  return collapse(ctx, writers.map((path) => ({ path, text: `${path}${isTestFile(path) ? ' (a test)' : ctx.fileOf.get(path)?.buildScript ? ' (a build script)' : ''}${guardClause(guards.get(path))}` })));
 }
 
 const QUOTING = /\.(md|mdx|json|jsonl)$/i;
