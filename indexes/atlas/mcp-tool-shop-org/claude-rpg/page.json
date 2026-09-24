@@ -67,7 +67,7 @@
   "changesTogetherWithTests": 8,
   "commit": "55ff274cb62e0ae50b50bab77bb06e68426de98c",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly TypeScript (218 files). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. People run claude-rpg. People import @mcptoolshop/claude-rpg.",
+  "derived": "8 parts, mostly TypeScript (218 files). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-rpg. People import @mcptoolshop/claude-rpg.",
   "doors": [
     {
       "checks": [
@@ -76,9 +76,22 @@
       ],
       "checksCount": 2,
       "file": ".github/workflows/ci.yml",
+      "held": [
+        {
+          "checks": [],
+          "lead": "on a pull request",
+          "runs": [
+            "scripts/check-critical-coverage.mjs"
+          ],
+          "when": "on a pull request"
+        }
+      ],
       "id": ".github/workflows/ci.yml",
       "landings": [],
       "name": "CI",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -98,7 +111,6 @@
         }
       ],
       "runs": [
-        "scripts/check-critical-coverage.mjs",
         "src/action-interpreter.test.ts",
         "src/bin-defenses.test.ts",
         "src/character/builder.test.ts",
@@ -191,7 +203,7 @@
         "test/helpers/game-harness.test.ts",
         "test/integration/"
       ],
-      "runsCount": 92,
+      "runsCount": 91,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -429,13 +441,12 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T02:34:33.975Z",
+  "generatedAt": "2026-09-24T08:23:37.668Z",
   "limits": [
     "2 import sites could not be resolved.",
     "10 files use syntax the parser cannot read (src/character/session-recap.ts, src/dialogue/npc-context.test.ts, src/game.test.ts and 7 more), so what they import is not known: 8 in src (`typeof import(…)` as a type argument in 7 and an import type followed by `[]` in 1), 2 in test (`typeof import(…)` as a type argument).",
-    "5 writes and 3 reads use paths built at run time and are not named here.",
-    "2 writes and 2 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "1 command is built at run time and not followed, it in tests."
+    "7 writes and 18 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "1 command is built at run time and not followed, and it is in tests."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -455,7 +466,7 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "scripts/check-critical-coverage.mjs"
+    "src/index.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -464,8 +475,9 @@
     "scripts": 1,
     "src": 120
   },
-  "unnamedWrites": 5,
+  "unnamedWrites": 0,
   "unread": [],
+  "unreadFiles": 10,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],

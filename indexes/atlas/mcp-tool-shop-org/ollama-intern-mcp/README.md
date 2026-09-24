@@ -8,12 +8,17 @@ Mapped at 2026-09-24 from commit 1249f83.
 
 ## What changed since 2026-09-24 (5e48e36)
 
-Nothing structural changed since 2026-09-24; no file changed.
+- Release now also runs src/index.ts.
+- In src/index.ts, main lost a step, note prewarm in progress request.
+- In src/index.ts, main lost a step, mint run id.
+- In src/index.ts, main lost a step, with run context.
+- And 13 more changes to the order of work.
+- No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 18 paths; on a push to main touching 18 paths; or by hand. Runs scripts/cloud-smoke-generate.mjs, scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs and 41 more; checks hermes.config.example.yaml, package-lock.json, package.json and 2 more.
-2. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs tests/cli.test.ts, tests/cloudCheck.test.ts, tests/cloudClient.test.ts and 37 more; checks hermes.config.example.yaml, package-lock.json, package.json and 2 more.
+1. **CI.** On a pull request touching 18 paths; on a push to main touching 18 paths; or by hand. Runs scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, src/index.ts and 40 more; checks hermes.config.example.yaml, package-lock.json, package.json and 2 more. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
+2. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 38 more; checks hermes.config.example.yaml, package-lock.json, package.json and 2 more.
 3. **Doc Drift.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs scripts/sync-doc-versions.mjs; checks HANDOFF.md, README.md and SHIP_GATE.md.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 5. **CodeQL.** On a pull request; on a push to main; on a schedule (`0 9 * * 0`), Sunday at 09:00 UTC; or by hand. Runs no file this map can see.
@@ -23,92 +28,18 @@ Nothing structural changed since 2026-09-24; no file changed.
 
 ## What happens through CI
 
-1. The workflow runs scripts/cloud-smoke-generate.mjs, scripts/gen-tool-docs.mjs and scripts/sync-doc-versions.mjs in scripts, src/index.ts in src, and 98 files in tests; it checks 4 files in the repository root and src/ in src.
-   1. Inside src/index.ts, main does, in order:
-      1. profiles (3 steps)
-      2. ollama (3 steps)
-      3. timestamp
-      4. run prewarm
-      5. note prewarm in progress request
-      6. mint run id
-      7. with run context
-      8. to error shape
-      9. handle research
-      10. handle corpus search
-      11. handle corpus answer
-      12. handle incident brief, and 8 more
-   2. **Handle corpus search** runs, in order:
-      1. resolve tier
-      2. load corpus
-      3. is empty query
-      4. build envelope
-      5. call event
-      6. search corpus
-      7. resolve tier
-      8. resolve num ctx
-      9. cloud may serve
-      10. build envelope
-      11. call event
-   3. **Handle corpus answer** runs, in order:
-      1. load corpus
-      2. is empty query
-      3. resolve tier
-      4. build envelope
-      5. call event
-      6. resolve tier
-      7. search corpus
-      8. resolve tier
-      9. build envelope
-      10. call event
-      11. resolve tier
-      12. build envelope
-   4. **Handle incident pack** runs, in order:
-      1. get run context
-      2. mint call id
-      3. with call context
-      4. assert cloud escalation configured
-      5. build pack step event with correlation
-      6. handle triage logs
-      7. build pack step event with correlation
-      8. normalize corpus query
-      9. assemble evidence
-      10. build pack step event with correlation
-      11. synthesize incident brief
-      12. build pack step event with correlation
-   5. **Handle repo pack** runs, in order:
-      1. get run context
-      2. mint call id
-      3. with call context
-      4. assert cloud escalation configured
-      5. build pack step event with correlation
-      6. normalize corpus query
-      7. assemble evidence
-      8. build pack step event with correlation
-      9. synthesize repo brief
-      10. build pack step event with correlation
-      11. load sources
-      12. format sources block
-   6. **Handle change pack** runs, in order:
-      1. get run context
-      2. mint call id
-      3. with call context
-      4. assert cloud escalation configured
-      5. build pack step event with correlation
-      6. normalize corpus query
-      7. assemble evidence
-      8. build pack step event with correlation
-      9. handle triage logs
-      10. build pack step event with correlation
-      11. synthesize change brief
-      12. build pack step event with correlation
+1. The workflow runs scripts/gen-tool-docs.mjs and scripts/sync-doc-versions.mjs in scripts, src/index.ts in src, and 98 files in tests; it checks 4 files in the repository root and src/ in src.
+   1. Inside src/index.ts, main does, in order: profiles (3 steps), ollama (3 steps), timestamp and run prewarm.
+   2. **Run prewarm** runs, in order: resolve tier, resolve num ctx and timestamp.
+2. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
 
 ## Who reads the results
 
-CI writes nothing this map can see.
+CI writes nothing in the files this map could read; 4 files could not be.
 
 ## The other doors
 
-**Release** runs tests/cli.test.ts, tests/cloudCheck.test.ts, tests/cloudClient.test.ts and 37 more, checks hermes.config.example.yaml, package-lock.json, package.json and 2 more, publishes to npm and a container image, and creates a GitHub release.
+**Release** runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 38 more, checks hermes.config.example.yaml, package-lock.json, package.json and 2 more, creates a GitHub release on a tag push, and publishes to npm and a container image (on a run by hand, only with dry_run false).
 
 **Doc Drift** runs scripts/sync-doc-versions.mjs and checks HANDOFF.md, README.md and SHIP_GATE.md.
 
@@ -151,19 +82,19 @@ Window: 180 days; a pair counts from 3 shared commits, since 15 source files rea
 
 ## Written but never read
 
-No place this map can see is written, so none goes unread.
+No place is written by the files this map could read, so none goes unread; 4 files could not be.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike.
+No two parts export a helper that looks alike in the files this map could read; 4 files could not be.
 
 ## Generated, never hand-edited
 
-Nothing in this repository writes to a tracked place this map can see.
+Nothing in the files this map could read writes to a tracked place; 4 files could not be.
 
 ## Hand-authored
 
-People write .github/, docs/, evals/, the repository root and site/; 18 writes with paths built at run time may land here.
+People write .github/, docs/, evals/, the repository root and site/; 1 write with a path built at run time may land here.
 
 ## Where to start
 
@@ -174,9 +105,9 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 4 files use syntax the parser cannot read (scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, tests/tools/artifactWrite.test.ts and 1 more), so what they import is not known: 2 in scripts (a NUL character inside a string), 2 in tests (`typeof import(…)` as a type argument).
-- 18 writes and 23 reads use paths built at run time and are not named here.
+- 1 write and 6 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 2 writes and 11 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 19 writes and 32 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 7 commands are built at run time and not followed, 5 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

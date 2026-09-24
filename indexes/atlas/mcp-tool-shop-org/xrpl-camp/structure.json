@@ -1125,6 +1125,7 @@
             {
               "calls": [
                 {
+                  "branch": "value",
                   "line": 183,
                   "name": "EXIT_OK",
                   "passed": true,
@@ -1241,6 +1242,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "json_output",
                   "line": 323,
                   "name": "load_wallet",
                   "target": {
@@ -1249,6 +1251,7 @@
                   "via": "_print_status_json"
                 },
                 {
+                  "branch": "json_output",
                   "line": 413,
                   "name": "get_rpc_url",
                   "target": {
@@ -1257,6 +1260,7 @@
                   "via": "_live_balance"
                 },
                 {
+                  "branch": "json_output",
                   "line": 418,
                   "name": "get_balance",
                   "target": {
@@ -1265,6 +1269,7 @@
                   "via": "_live_balance"
                 },
                 {
+                  "branch": "json_output",
                   "line": 332,
                   "name": "get_rpc_url",
                   "target": {
@@ -1273,6 +1278,7 @@
                   "via": "_print_status_json"
                 },
                 {
+                  "branch": "json_output",
                   "line": 333,
                   "name": "network_label_for_url",
                   "target": {
@@ -1281,6 +1287,7 @@
                   "via": "_print_status_json"
                 },
                 {
+                  "branch": "json_output",
                   "line": 121,
                   "name": "load_mailbox",
                   "target": {
@@ -1289,18 +1296,21 @@
                   "via": "_read_mailbox_address"
                 },
                 {
+                  "branch": "json_output",
                   "line": 341,
                   "name": "is_complete",
                   "target": null,
                   "via": "_print_status_json"
                 },
                 {
+                  "branch": "json_output",
                   "line": 350,
                   "name": "total_duration",
                   "target": null,
                   "via": "_print_status_json"
                 },
                 {
+                  "branch": "json_output",
                   "line": 352,
                   "name": "STATE_DIR",
                   "passed": true,
@@ -1659,6 +1669,7 @@
                   }
                 },
                 {
+                  "branch": "not w",
                   "line": 557,
                   "name": "wallet_missing_error",
                   "target": {
@@ -1957,7 +1968,15 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "not txid",
                   "line": 733,
+                  "name": "memo_for",
+                  "target": null,
+                  "via": "_expected_memo"
+                },
+                {
+                  "branch": "txid == session.txids.get(\"lesson_4\", \"\")",
+                  "line": 738,
                   "name": "memo_for",
                   "target": null,
                   "via": "_expected_memo"
@@ -1978,7 +1997,14 @@
             {
               "calls": [
                 {
+                  "branch": "not txid",
                   "line": 733,
+                  "name": "memo_for",
+                  "target": null
+                },
+                {
+                  "branch": "txid == session.txids.get(\"lesson_4\", \"\")",
+                  "line": 738,
                   "name": "memo_for",
                   "target": null
                 }
@@ -2047,6 +2073,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "not _has_progress(session)",
                   "line": 769,
                   "name": "CampError",
                   "target": {
@@ -2054,6 +2081,7 @@
                   }
                 },
                 {
+                  "branch": "not _has_progress(session)",
                   "line": 773,
                   "name": "EXIT_USER",
                   "passed": true,
@@ -2082,12 +2110,14 @@
                   "target": null
                 },
                 {
+                  "branch": "file.is_dir()",
                   "line": 1021,
                   "name": "glob",
                   "target": null,
                   "via": "_packs_in"
                 },
                 {
+                  "branch": "file.is_dir()",
                   "line": 1035,
                   "name": "CampError",
                   "target": {
@@ -2096,6 +2126,7 @@
                   "via": "_verify_folder"
                 },
                 {
+                  "branch": "file.is_dir()",
                   "line": 1039,
                   "name": "EXIT_USER",
                   "passed": true,
@@ -2105,6 +2136,7 @@
                   "via": "_verify_folder"
                 },
                 {
+                  "branch": "file.is_dir()",
                   "line": 77,
                   "name": "record_error",
                   "target": {
@@ -2113,6 +2145,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "file.is_dir()",
                   "line": 78,
                   "name": "format_error",
                   "target": {
@@ -2121,6 +2154,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "file.is_dir()",
                   "line": 1055,
                   "name": "verify_proof_pack",
                   "target": {
@@ -2134,6 +2168,7 @@
                   "target": null
                 },
                 {
+                  "branch": "not file.exists()",
                   "line": 846,
                   "name": "CampError",
                   "target": {
@@ -2141,6 +2176,7 @@
                   }
                 },
                 {
+                  "branch": "not file.exists()",
                   "line": 850,
                   "name": "EXIT_USER",
                   "passed": true,
@@ -2161,6 +2197,22 @@
                   }
                 },
                 {
+                  "branch": "not isinstance(pack, dict)",
+                  "line": 863,
+                  "name": "pack_invalid_error",
+                  "target": {
+                    "file": "xrpl_camp/errors.py"
+                  }
+                },
+                {
+                  "branch": "schema != PROOF_PACK_SCHEMA",
+                  "line": 869,
+                  "name": "pack_invalid_error",
+                  "target": {
+                    "file": "xrpl_camp/errors.py"
+                  }
+                },
+                {
                   "line": 873,
                   "name": "verify_proof_pack",
                   "target": {
@@ -2168,6 +2220,7 @@
                   }
                 },
                 {
+                  "branch": "online",
                   "line": 940,
                   "name": "resolve_verification_endpoint",
                   "target": {
@@ -2176,6 +2229,7 @@
                   "via": "_verify_online"
                 },
                 {
+                  "branch": "online",
                   "line": 941,
                   "name": "endpoint_claim",
                   "target": {
@@ -2184,6 +2238,7 @@
                   "via": "_verify_online"
                 },
                 {
+                  "branch": "online",
                   "line": 949,
                   "name": "online_lookup_plan",
                   "target": {
@@ -2192,6 +2247,7 @@
                   "via": "_verify_online"
                 },
                 {
+                  "branch": "online",
                   "line": 952,
                   "name": "classify_lesson_online",
                   "target": {
@@ -2200,6 +2256,7 @@
                   "via": "_verify_online"
                 },
                 {
+                  "branch": "online",
                   "line": 954,
                   "name": "try_network",
                   "target": {
@@ -2208,6 +2265,7 @@
                   "via": "_verify_online"
                 },
                 {
+                  "branch": "online",
                   "line": 960,
                   "name": "lookup_tx",
                   "target": {
@@ -2216,6 +2274,7 @@
                   "via": "_verify_online"
                 },
                 {
+                  "branch": "online",
                   "line": 965,
                   "name": "lookup_error",
                   "passed": true,
@@ -2225,6 +2284,7 @@
                   "via": "_verify_online"
                 },
                 {
+                  "branch": "online",
                   "line": 968,
                   "name": "classify_lesson_online",
                   "target": {
@@ -2233,16 +2293,9 @@
                   "via": "_verify_online"
                 },
                 {
+                  "branch": "online",
                   "line": 973,
                   "name": "summarize_online",
-                  "target": {
-                    "file": "xrpl_camp/proof_pack.py"
-                  },
-                  "via": "_verify_online"
-                },
-                {
-                  "line": 974,
-                  "name": "online_exit_code",
                   "target": {
                     "file": "xrpl_camp/proof_pack.py"
                   },
@@ -2252,7 +2305,8 @@
               "exported": true,
               "invokedAtTopLevel": false,
               "isDefaultExport": false,
-              "name": "proof_verify"
+              "name": "proof_verify",
+              "truncated": true
             },
             {
               "calls": [
@@ -2355,6 +2409,7 @@
                   "via": "_packs_in"
                 },
                 {
+                  "branch": "not packs",
                   "line": 1035,
                   "name": "CampError",
                   "target": {
@@ -2362,6 +2417,7 @@
                   }
                 },
                 {
+                  "branch": "not packs",
                   "line": 1039,
                   "name": "EXIT_USER",
                   "passed": true,
@@ -2370,6 +2426,7 @@
                   }
                 },
                 {
+                  "branch": "not packs",
                   "line": 77,
                   "name": "record_error",
                   "target": {
@@ -2378,6 +2435,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "not packs",
                   "line": 78,
                   "name": "format_error",
                   "target": {
@@ -2708,6 +2766,7 @@
                   "via": "_collect_network_checks"
                 },
                 {
+                  "branch": "failed",
                   "line": 1408,
                   "name": "CampError",
                   "target": {
@@ -2715,6 +2774,7 @@
                   }
                 },
                 {
+                  "branch": "failed",
                   "line": 1412,
                   "name": "EXIT_USER",
                   "passed": true,
@@ -2723,6 +2783,7 @@
                   }
                 },
                 {
+                  "branch": "failed",
                   "line": 77,
                   "name": "record_error",
                   "target": {
@@ -2731,6 +2792,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "failed",
                   "line": 78,
                   "name": "format_error",
                   "target": {
@@ -2739,6 +2801,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "os.environ.get(\"XRPL_CAMP_RPC_URL\", \"\").strip()",
                   "line": 1427,
                   "name": "CampError",
                   "target": {
@@ -2746,6 +2809,7 @@
                   }
                 },
                 {
+                  "branch": "os.environ.get(\"XRPL_CAMP_RPC_URL\", \"\").strip()",
                   "line": 1431,
                   "name": "EXIT_USER",
                   "passed": true,
@@ -3004,6 +3068,7 @@
             {
               "calls": [
                 {
+                  "branch": "os.name == \"nt\"",
                   "line": 270,
                   "name": "fileno",
                   "target": null,
@@ -3031,6 +3096,7 @@
             {
               "calls": [
                 {
+                  "branch": "os.name == \"nt\"",
                   "line": 270,
                   "name": "fileno",
                   "target": null,
@@ -3389,6 +3455,7 @@
                   }
                 },
                 {
+                  "branch": "not known_test_host and not overridden",
                   "line": 714,
                   "name": "endpoint_error",
                   "target": {
@@ -3555,6 +3622,7 @@
                   "via": "_load_wallet"
                 },
                 {
+                  "branch": "not w",
                   "line": 763,
                   "name": "wallet_missing_error",
                   "target": {
@@ -3693,6 +3761,7 @@
             {
               "calls": [
                 {
+                  "branch": "len(encoded) > MEMO_MAX_BYTES",
                   "line": 884,
                   "name": "memo_too_long_error",
                   "target": {
@@ -3700,7 +3769,16 @@
                   }
                 },
                 {
+                  "branch": "secret and secret in memo",
                   "line": 887,
+                  "name": "memo_secret_error",
+                  "target": {
+                    "file": "xrpl_camp/errors.py"
+                  }
+                },
+                {
+                  "branch": "SEED_PATTERN.match(token)",
+                  "line": 890,
                   "name": "memo_secret_error",
                   "target": {
                     "file": "xrpl_camp/errors.py"
@@ -3715,7 +3793,16 @@
                   "via": "_looks_like_a_seed"
                 },
                 {
+                  "branch": "_looks_like_a_seed(run)",
                   "line": 895,
+                  "name": "memo_secret_error",
+                  "target": {
+                    "file": "xrpl_camp/errors.py"
+                  }
+                },
+                {
+                  "branch": "run.startswith(\"sEd\", index) and _looks_like_a_seed(run[ind…",
+                  "line": 901,
                   "name": "memo_secret_error",
                   "target": {
                     "file": "xrpl_camp/errors.py"
@@ -3730,6 +3817,7 @@
             {
               "calls": [
                 {
+                  "branch": "len(encoded) > MEMO_MAX_BYTES",
                   "line": 884,
                   "name": "memo_too_long_error",
                   "target": {
@@ -3738,7 +3826,17 @@
                   "via": "validate_memo"
                 },
                 {
+                  "branch": "secret and secret in memo",
                   "line": 887,
+                  "name": "memo_secret_error",
+                  "target": {
+                    "file": "xrpl_camp/errors.py"
+                  },
+                  "via": "validate_memo"
+                },
+                {
+                  "branch": "SEED_PATTERN.match(token)",
+                  "line": 890,
                   "name": "memo_secret_error",
                   "target": {
                     "file": "xrpl_camp/errors.py"
@@ -3754,7 +3852,17 @@
                   "via": "_looks_like_a_seed"
                 },
                 {
+                  "branch": "_looks_like_a_seed(run)",
                   "line": 895,
+                  "name": "memo_secret_error",
+                  "target": {
+                    "file": "xrpl_camp/errors.py"
+                  },
+                  "via": "validate_memo"
+                },
+                {
+                  "branch": "run.startswith(\"sEd\", index) and _looks_like_a_seed(run[ind…",
+                  "line": 901,
                   "name": "memo_secret_error",
                   "target": {
                     "file": "xrpl_camp/errors.py"
@@ -3809,6 +3917,7 @@
             {
               "calls": [
                 {
+                  "branch": "os.name == \"nt\"",
                   "line": 270,
                   "name": "fileno",
                   "target": null,
@@ -3847,6 +3956,7 @@
                   "via": "_validated_ledger"
                 },
                 {
+                  "branch": "os.name == \"nt\"",
                   "line": 270,
                   "name": "fileno",
                   "target": null,
@@ -3894,6 +4004,7 @@
                   "via": "_load_wallet"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 315,
                   "name": "record_error",
                   "target": {
@@ -3902,6 +4013,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 317,
                   "name": "format_error",
                   "target": {
@@ -3910,11 +4022,13 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "w",
                   "line": 1066,
                   "name": "mark_complete",
                   "target": null
                 },
                 {
+                  "branch": "w",
                   "line": 1069,
                   "name": "save",
                   "target": null
@@ -4077,6 +4191,7 @@
                   "via": "_load_wallet"
                 },
                 {
+                  "branch": "not w",
                   "line": 763,
                   "name": "wallet_missing_error",
                   "target": {
@@ -4085,6 +4200,7 @@
                   "via": "_require_wallet"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 315,
                   "name": "record_error",
                   "target": {
@@ -4093,6 +4209,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 317,
                   "name": "format_error",
                   "target": {
@@ -4109,6 +4226,7 @@
                   "via": "_show_endpoint"
                 },
                 {
+                  "branch": "not known_test_host and not overridden",
                   "line": 714,
                   "name": "endpoint_error",
                   "target": {
@@ -4279,6 +4397,7 @@
                   "via": "_load_wallet"
                 },
                 {
+                  "branch": "not w",
                   "line": 763,
                   "name": "wallet_missing_error",
                   "target": {
@@ -4287,6 +4406,7 @@
                   "via": "_require_wallet"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 315,
                   "name": "record_error",
                   "target": {
@@ -4295,6 +4415,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 317,
                   "name": "format_error",
                   "target": {
@@ -4311,6 +4432,7 @@
                   "via": "_show_endpoint"
                 },
                 {
+                  "branch": "not known_test_host and not overridden",
                   "line": 714,
                   "name": "endpoint_error",
                   "target": {
@@ -4443,6 +4565,7 @@
                   "via": "is_valid_address"
                 },
                 {
+                  "branch": "not is_valid_address(to_address)",
                   "line": 1243,
                   "name": "bad_address_error",
                   "target": {
@@ -4450,6 +4573,7 @@
                   }
                 },
                 {
+                  "branch": "to_address == w.get(\"address\", \"\")",
                   "line": 1245,
                   "name": "CampError",
                   "target": {
@@ -4466,6 +4590,7 @@
             {
               "calls": [
                 {
+                  "branch": "not txid",
                   "line": 1478,
                   "name": "CampError",
                   "target": {
@@ -4473,6 +4598,7 @@
                   }
                 },
                 {
+                  "branch": "not txid",
                   "line": 315,
                   "name": "record_error",
                   "target": {
@@ -4481,6 +4607,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "not txid",
                   "line": 317,
                   "name": "format_error",
                   "target": {
@@ -4489,6 +4616,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "not ours and not is_tx_hash(txid)",
                   "line": 1492,
                   "name": "bad_hash_error",
                   "target": {
@@ -4630,6 +4758,7 @@
                   "via": "_own_address"
                 },
                 {
+                  "branch": "result_code and result_code != \"tesSUCCESS\"",
                   "line": 1669,
                   "name": "verification_error",
                   "target": {
@@ -4638,16 +4767,18 @@
                   "via": "_verification_problem"
                 },
                 {
-                  "line": 1690,
-                  "name": "no_account_yet_error",
+                  "branch": "missing",
+                  "line": 1680,
+                  "name": "verification_error",
                   "target": {
                     "file": "xrpl_camp/errors.py"
                   },
                   "via": "_verification_problem"
                 },
                 {
-                  "line": 1692,
-                  "name": "not_your_transaction_error",
+                  "branch": "not own_address",
+                  "line": 1690,
+                  "name": "no_account_yet_error",
                   "target": {
                     "file": "xrpl_camp/errors.py"
                   },
@@ -4678,6 +4809,7 @@
             {
               "calls": [
                 {
+                  "branch": "result_code and result_code != \"tesSUCCESS\"",
                   "line": 1669,
                   "name": "verification_error",
                   "target": {
@@ -4685,6 +4817,15 @@
                   }
                 },
                 {
+                  "branch": "missing",
+                  "line": 1680,
+                  "name": "verification_error",
+                  "target": {
+                    "file": "xrpl_camp/errors.py"
+                  }
+                },
+                {
+                  "branch": "not own_address",
                   "line": 1690,
                   "name": "no_account_yet_error",
                   "target": {
@@ -4692,6 +4833,7 @@
                   }
                 },
                 {
+                  "branch": "sender != own_address",
                   "line": 1692,
                   "name": "not_your_transaction_error",
                   "target": {
@@ -4699,6 +4841,7 @@
                   }
                 },
                 {
+                  "branch": "expected_memo and str(tx.get(\"memo\", \"\")) != expected_memo",
                   "line": 1695,
                   "name": "verification_error",
                   "target": {
@@ -4719,6 +4862,7 @@
                   "target": null
                 },
                 {
+                  "branch": "missing",
                   "line": 1720,
                   "name": "prerequisites_error",
                   "target": {
@@ -4726,6 +4870,7 @@
                   }
                 },
                 {
+                  "branch": "missing",
                   "line": 315,
                   "name": "record_error",
                   "target": {
@@ -4734,6 +4879,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "missing",
                   "line": 317,
                   "name": "format_error",
                   "target": {
@@ -4808,6 +4954,7 @@
                   }
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "unsupported_feature_error",
                   "target": {
@@ -4815,6 +4962,7 @@
                   }
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "CampFailure",
                   "target": {
@@ -4839,6 +4987,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "unsupported_feature_error",
                   "target": {
@@ -4847,6 +4996,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "CampFailure",
                   "target": {
@@ -4961,6 +5111,7 @@
                   }
                 },
                 {
+                  "branch": "err is not None",
                   "line": 299,
                   "name": "record_error",
                   "target": {
@@ -4969,6 +5120,7 @@
                   "via": "_report"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 300,
                   "name": "format_error",
                   "target": {
@@ -5098,6 +5250,7 @@
                   }
                 },
                 {
+                  "branch": "err is not None",
                   "line": 299,
                   "name": "record_error",
                   "target": {
@@ -5106,6 +5259,7 @@
                   "via": "_report"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 300,
                   "name": "format_error",
                   "target": {
@@ -5122,6 +5276,7 @@
             {
               "calls": [
                 {
+                  "branch": "not target",
                   "line": 1641,
                   "name": "load_wallet",
                   "target": {
@@ -5130,6 +5285,7 @@
                   "via": "_own_address"
                 },
                 {
+                  "branch": "not address",
                   "line": 1954,
                   "name": "wallet_missing_error",
                   "target": {
@@ -5137,6 +5293,7 @@
                   }
                 },
                 {
+                  "branch": "not address",
                   "line": 299,
                   "name": "record_error",
                   "target": {
@@ -5145,6 +5302,7 @@
                   "via": "_report"
                 },
                 {
+                  "branch": "not address",
                   "line": 300,
                   "name": "format_error",
                   "target": {
@@ -5153,6 +5311,7 @@
                   "via": "_report"
                 },
                 {
+                  "branch": "not target",
                   "line": 1835,
                   "name": "transport",
                   "passed": true,
@@ -5162,6 +5321,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not target",
                   "line": 1837,
                   "name": "unsupported_feature_error",
                   "target": {
@@ -5170,6 +5330,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not target",
                   "line": 1837,
                   "name": "CampFailure",
                   "target": {
@@ -5178,6 +5339,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not target",
                   "line": 590,
                   "name": "CampError",
                   "passed": true,
@@ -5187,6 +5349,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 595,
                   "name": "get_rpc_url",
                   "target": {
@@ -5195,6 +5358,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 598,
                   "name": "connection_error",
                   "target": {
@@ -5203,6 +5367,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 600,
                   "name": "wallet_seed_invalid_error",
                   "target": {
@@ -5211,6 +5376,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 602,
                   "name": "malformed_response_error",
                   "target": {
@@ -5219,6 +5385,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 604,
                   "name": "wrong_network_error",
                   "target": {
@@ -5227,6 +5394,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 609,
                   "name": "unfunded_error",
                   "target": {
@@ -5235,6 +5403,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 612,
                   "name": "CampError",
                   "target": {
@@ -5243,6 +5412,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 616,
                   "name": "EXIT_USER",
                   "passed": true,
@@ -5252,6 +5422,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 619,
                   "name": "balance_error",
                   "target": {
@@ -5260,6 +5431,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 629,
                   "name": "transaction_failed_error",
                   "target": {
@@ -5268,6 +5440,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 631,
                   "name": "unexpected_error",
                   "target": {
@@ -5276,6 +5449,7 @@
                   "via": "_classify"
                 },
                 {
+                  "branch": "not target",
                   "line": 1866,
                   "name": "lookup_error",
                   "passed": true,
@@ -5285,6 +5459,7 @@
                   "via": "read_account"
                 },
                 {
+                  "branch": "is_tx_hash(target)",
                   "line": 1920,
                   "name": "lookup_tx",
                   "target": {
@@ -5293,6 +5468,7 @@
                   "via": "read_transaction"
                 },
                 {
+                  "branch": "is_tx_hash(target)",
                   "line": 1921,
                   "name": "lookup_error",
                   "passed": true,
@@ -5311,6 +5487,7 @@
                   "via": "is_valid_address"
                 },
                 {
+                  "branch": "target[:1] == \"r\"",
                   "line": 1969,
                   "name": "bad_address_error",
                   "target": {
@@ -5336,6 +5513,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "unsupported_feature_error",
                   "target": {
@@ -5344,6 +5522,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "CampFailure",
                   "target": {
@@ -5386,6 +5565,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "unsupported_feature_error",
                   "target": {
@@ -5394,6 +5574,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "CampFailure",
                   "target": {
@@ -5419,6 +5600,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "unsupported_feature_error",
                   "target": {
@@ -5427,6 +5609,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "CampFailure",
                   "target": {
@@ -5452,6 +5635,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "unsupported_feature_error",
                   "target": {
@@ -5460,6 +5644,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "CampFailure",
                   "target": {
@@ -5485,6 +5670,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "unsupported_feature_error",
                   "target": {
@@ -5493,6 +5679,7 @@
                   "via": "_need"
                 },
                 {
+                  "branch": "not callable(fn)",
                   "line": 1837,
                   "name": "CampFailure",
                   "target": {
@@ -5524,6 +5711,7 @@
             {
               "calls": [
                 {
+                  "branch": "wanted and wanted not in TRY_CASES",
                   "line": 2171,
                   "name": "CampError",
                   "target": {
@@ -5531,6 +5719,7 @@
                   }
                 },
                 {
+                  "branch": "wanted and wanted not in TRY_CASES",
                   "line": 2175,
                   "name": "EXIT_USER",
                   "passed": true,
@@ -5539,6 +5728,7 @@
                   }
                 },
                 {
+                  "branch": "wanted and wanted not in TRY_CASES",
                   "line": 299,
                   "name": "record_error",
                   "target": {
@@ -5547,6 +5737,7 @@
                   "via": "_report"
                 },
                 {
+                  "branch": "wanted and wanted not in TRY_CASES",
                   "line": 300,
                   "name": "format_error",
                   "target": {
@@ -5571,6 +5762,7 @@
                   "via": "_load_wallet"
                 },
                 {
+                  "branch": "not w",
                   "line": 763,
                   "name": "wallet_missing_error",
                   "target": {
@@ -5587,6 +5779,7 @@
                   "via": "check_endpoint"
                 },
                 {
+                  "branch": "not known_test_host and not overridden",
                   "line": 714,
                   "name": "endpoint_error",
                   "target": {
@@ -5821,6 +6014,7 @@
                   "via": "_report"
                 },
                 {
+                  "branch": "os.name == \"nt\"",
                   "line": 270,
                   "name": "fileno",
                   "target": null,
@@ -5864,6 +6058,7 @@
                   "via": "lesson_1_mental_model"
                 },
                 {
+                  "branch": "not result",
                   "line": 2335,
                   "name": "is_verbose",
                   "target": {
@@ -5872,6 +6067,7 @@
                   "via": "_halt"
                 },
                 {
+                  "branch": "not result",
                   "line": 2336,
                   "name": "strip",
                   "target": {
@@ -5904,6 +6100,7 @@
                   "via": "_load_wallet"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 315,
                   "name": "record_error",
                   "target": {
@@ -5912,6 +6109,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 317,
                   "name": "format_error",
                   "target": {
@@ -5920,12 +6118,14 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "w",
                   "line": 1066,
                   "name": "mark_complete",
                   "target": null,
                   "via": "lesson_2_create_wallet"
                 },
                 {
+                  "branch": "w",
                   "line": 1069,
                   "name": "save",
                   "target": null,
@@ -6009,6 +6209,7 @@
                   "via": "_report"
                 },
                 {
+                  "branch": "os.name == \"nt\"",
                   "line": 270,
                   "name": "fileno",
                   "target": null,
@@ -6052,6 +6253,7 @@
                   "via": "lesson_1_mental_model"
                 },
                 {
+                  "branch": "not result",
                   "line": 2335,
                   "name": "is_verbose",
                   "target": {
@@ -6060,6 +6262,7 @@
                   "via": "_halt"
                 },
                 {
+                  "branch": "not result",
                   "line": 2336,
                   "name": "strip",
                   "target": {
@@ -6092,6 +6295,7 @@
                   "via": "_load_wallet"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 315,
                   "name": "record_error",
                   "target": {
@@ -6100,6 +6304,7 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "err is not None",
                   "line": 317,
                   "name": "format_error",
                   "target": {
@@ -6108,12 +6313,14 @@
                   "via": "_fail"
                 },
                 {
+                  "branch": "w",
                   "line": 1066,
                   "name": "mark_complete",
                   "target": null,
                   "via": "lesson_2_create_wallet"
                 },
                 {
+                  "branch": "w",
                   "line": 1069,
                   "name": "save",
                   "target": null,
@@ -6341,12 +6548,14 @@
                   "via": "_warn_if_world_readable"
                 },
                 {
+                  "branch": "required",
                   "line": 380,
                   "name": "read_text",
                   "target": null,
                   "via": "_busy_error"
                 },
                 {
+                  "branch": "required",
                   "line": 381,
                   "name": "CampError",
                   "target": {
@@ -6355,6 +6564,7 @@
                   "via": "_busy_error"
                 },
                 {
+                  "branch": "required",
                   "line": 394,
                   "name": "EXIT_USER",
                   "passed": true,
@@ -6434,6 +6644,7 @@
                   "via": "proof_pack_has_seed"
                 },
                 {
+                  "branch": "proof_pack_has_seed(pack)",
                   "line": 294,
                   "name": "SeedLeakDetected",
                   "target": {
@@ -7025,52 +7236,94 @@
           "job": "docker",
           "path": "LICENSE",
           "runKind": "checks",
-          "via": "docker build Dockerfile"
+          "via": "docker build Dockerfile",
+          "when": {
+            "event": "push",
+            "tags": true
+          }
         },
         {
           "job": "docker",
           "path": "README.md",
           "runKind": "checks",
-          "via": "docker build Dockerfile"
+          "via": "docker build Dockerfile",
+          "when": {
+            "event": "push",
+            "tags": true
+          }
         },
         {
           "job": "docker",
           "path": "docker-entrypoint.sh",
           "runKind": "executes",
-          "via": "docker build Dockerfile"
+          "via": "docker build Dockerfile",
+          "when": {
+            "event": "push",
+            "tags": true
+          }
         },
         {
           "job": "docker",
           "path": "pyproject.toml",
           "runKind": "checks",
-          "via": "docker build Dockerfile"
+          "via": "docker build Dockerfile",
+          "when": {
+            "event": "push",
+            "tags": true
+          }
         },
         {
           "job": "publish-pypi",
           "path": "scripts/verify-pypi-publish.sh",
-          "runKind": "executes"
+          "runKind": "executes",
+          "when": {
+            "event": "push",
+            "tags": true
+          }
         },
         {
           "directory": true,
           "job": "docker",
           "path": "xrpl_camp/",
           "runKind": "checks",
-          "via": "docker build Dockerfile"
+          "via": "docker build Dockerfile",
+          "when": {
+            "event": "push",
+            "tags": true
+          }
         },
         {
           "directory": true,
           "job": "publish-pypi",
           "path": "xrpl_camp/",
           "runKind": "checks",
-          "via": "build pyproject.toml"
+          "via": "build pyproject.toml",
+          "when": {
+            "event": "push",
+            "tags": true
+          }
         },
         {
           "job": "build-binaries",
           "path": "xrpl_camp/__main__.py",
-          "runKind": "executes"
+          "runKind": "executes",
+          "when": {
+            "event": "push",
+            "tags": true
+          }
+        },
+        {
+          "job": "docker",
+          "path": "xrpl_camp/cli.py",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → docker-entrypoint.sh",
+          "when": {
+            "event": "push",
+            "tags": true
+          }
         }
       ],
-      "runsCount": 7,
+      "runsCount": 8,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -7186,6 +7439,13 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/xrpl-camp",
+            "registry": "npm"
+          }
+        ],
         "publishes": true,
         "publishesTo": [
           "npm"

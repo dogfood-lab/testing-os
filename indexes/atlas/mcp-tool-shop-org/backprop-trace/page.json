@@ -56,8 +56,24 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "fixtures/bad/ is now also written by scripts/build-pytorch-helper-fixtures.mjs.",
+        "subjects": [
+          "fixtures/bad/",
+          "scripts/build-pytorch-helper-fixtures.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "fixtures/bad/* is now written by scripts/build-pytorch-helper-fixtures.mjs.",
+        "subjects": [
+          "fixtures/bad/*",
+          "scripts/build-pytorch-helper-fixtures.mjs"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -65,7 +81,7 @@
       "commit": "5611f68d25356248f54ae9123e3b2a7a282af219",
       "generatedAt": "2026-09-24T01:59:16.033Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -152,8 +168,153 @@
   "changesTogetherWithTests": 1,
   "commit": "8b16ae0a42ca1d8c0a9f6d9efa8247953dbeab2d",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly TypeScript (148 files). Work enters through 7 doors; the busiest is Release, which reaches 3 parts. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.",
+  "derived": "10 parts, mostly TypeScript (148 files). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.",
   "doors": [
+    {
+      "checks": [
+        "fixtures/mazur.golden.jsonl",
+        "src/",
+        "test/"
+      ],
+      "checksCount": 3,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "ci",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "fixtures",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 22
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 106
+        }
+      ],
+      "runs": [
+        "test/import-jax-helper.jax-e2e.test.ts",
+        "test/import-pytorch-helper.torch-e2e.test.ts",
+        "test/activations.test.ts",
+        "test/bp.cli.help-version.test.ts",
+        "test/bp.color.test.ts",
+        "test/bp.examples-jax.cli.test.ts",
+        "test/bp.examples-pytorch.cli.test.ts",
+        "test/bp.generate-from-config.cli.test.ts",
+        "test/bp.generate-iris.cli.test.ts",
+        "test/bp.generate-mazur.cli.test.ts",
+        "test/bp.generate-xor.cli.test.ts",
+        "test/bp.help-consistency.cli.test.ts",
+        "test/bp.rule-coverage.cli.test.ts",
+        "test/bp.scaffold-topology.cli.test.ts",
+        "test/bp.stdin.test.ts",
+        "test/bp.unknown-flag.cli.test.ts",
+        "test/bp.validate-input.cli.test.ts",
+        "test/bp.validate.cli.test.ts",
+        "test/bp.verify-general.cli.test.ts",
+        "test/bp.verify-mazur.cli.test.ts",
+        "test/bp.verify-multi.cli.test.ts",
+        "test/cli.error-envelope.test.ts",
+        "test/cli.multi-step-import-pipe.test.ts",
+        "test/determinism.math-exp-canary.test.ts",
+        "test/emit-multi.test.ts",
+        "test/emit.optional-fields.test.ts",
+        "test/engine.invalid-input.test.ts",
+        "test/error-messages.test.ts",
+        "test/exports-drift.test.ts",
+        "test/extract.test.ts",
+        "test/format.policy.test.ts",
+        "test/format.property.test.ts",
+        "test/general-engine.test.ts",
+        "test/hash.general-receipt.test.ts",
+        "test/hash.test.ts",
+        "test/hero-classifier.engine.test.ts",
+        "test/hybrid-tolerance.test.ts",
+        "test/import-jax.test.ts",
+        "test/import-pytorch-adam.test.ts",
+        "test/import-pytorch-batched.test.ts",
+        "test/import-pytorch-helper.test.ts",
+        "test/import-pytorch-momentum.test.ts",
+        "test/import-pytorch-multi-step.test.ts",
+        "test/import-pytorch.test.ts",
+        "test/import-tensorflow.test.ts",
+        "test/import.humanization.test.ts",
+        "test/import.sidecar-bounds.test.ts",
+        "test/iris.engine.test.ts",
+        "test/mazur.engine.test.ts",
+        "test/multi-step.test.ts",
+        "test/pack-install-smoke.presence.test.ts",
+        "test/parse.test.ts",
+        "test/per-neuron-bias.engine.test.ts",
+        "test/published-claims.test.ts",
+        "test/reconcile.bad-adam.test.ts",
+        "test/reconcile.bad-backprop-sum.test.ts",
+        "test/reconcile.bad-batch.test.ts",
+        "test/reconcile.bad-bias-gradient.test.ts",
+        "test/reconcile.bad-bias-mode-mismatch.test.ts",
+        "test/reconcile.bad-bias-params-after.test.ts",
+        "test/reconcile.bad-bias-provenance.test.ts",
+        "test/reconcile.bad-bias-sharing-mismatch.test.ts",
+        "test/reconcile.bad-bias-update-value.test.ts",
+        "test/reconcile.bad-bias-weight-after.test.ts",
+        "test/reconcile.bad-ce-per-output.test.ts",
+        "test/reconcile.bad-contribution.test.ts",
+        "test/reconcile.bad-dual-form.test.ts",
+        "test/reconcile.bad-external.test.ts",
+        "test/reconcile.bad-forward-unit-dropped.test.ts",
+        "test/reconcile.bad-gradient.cli.test.ts",
+        "test/reconcile.bad-gradient.test.ts",
+        "test/reconcile.bad-hidden-signal.test.ts",
+        "test/reconcile.bad-jax.test.ts",
+        "test/reconcile.bad-kind-vs-role.test.ts",
+        "test/reconcile.bad-loss-total.test.ts",
+        "test/reconcile.bad-momentum.test.ts",
+        "test/reconcile.bad-multi-step-external.test.ts",
+        "test/reconcile.bad-output-signal.test.ts",
+        "test/reconcile.bad-params-after.test.ts",
+        "test/reconcile.bad-per-sample-omission.test.ts",
+        "test/reconcile.bad-prob-bound.test.ts",
+        "test/reconcile.bad-provenance.test.ts",
+        "test/reconcile.bad-pytorch-helper.test.ts",
+        "test/reconcile.bad-softmax-sum.test.ts",
+        "test/reconcile.bad-tensorflow.test.ts",
+        "test/reconcile.bad-topology-size.test.ts",
+        "test/reconcile.bad-update-value.test.ts",
+        "test/reconcile.bad-weight-after.test.ts",
+        "test/reconcile.doctrine.test.ts",
+        "test/reconcile.good.cli.test.ts",
+        "test/reconcile.nan-poisoning.test.ts",
+        "test/reconcile.rule14-post-update.test.ts",
+        "test/runtime-format.test.ts",
+        "test/schema-emit-consistency.test.ts",
+        "test/schema-loader.test.ts",
+        "test/schema-tolerance-ceiling.test.ts",
+        "test/schema.input-schema.test.ts",
+        "test/sgd-coupled-l2.engine.test.ts",
+        "test/softmax-ce.engine.test.ts",
+        "test/topology.min-size.test.ts",
+        "test/topology.test.ts",
+        "test/validate.multi-version.test.ts",
+        "test/validate.test.ts",
+        "test/verify-engine.test.ts",
+        "test/xor.engine.test.ts"
+      ],
+      "runsCount": 105,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request",
+        "on a push to main",
+        "or by hand"
+      ]
+    },
     {
       "checks": [
         "src/",
@@ -298,151 +459,6 @@
       "stages": [],
       "triggers": [
         "when a tag matching `v*` is pushed",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [
-        "fixtures/mazur.golden.jsonl",
-        "src/",
-        "test/"
-      ],
-      "checksCount": 3,
-      "file": ".github/workflows/ci.yml",
-      "id": ".github/workflows/ci.yml",
-      "landings": [],
-      "name": "ci",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "fixtures",
-          "depth": 0,
-          "files": 1
-        },
-        {
-          "boundary": "src",
-          "depth": 0,
-          "files": 22
-        },
-        {
-          "boundary": "test",
-          "depth": 0,
-          "files": 106
-        }
-      ],
-      "runs": [
-        "test/import-jax-helper.jax-e2e.test.ts",
-        "test/import-pytorch-helper.torch-e2e.test.ts",
-        "test/activations.test.ts",
-        "test/bp.cli.help-version.test.ts",
-        "test/bp.color.test.ts",
-        "test/bp.examples-jax.cli.test.ts",
-        "test/bp.examples-pytorch.cli.test.ts",
-        "test/bp.generate-from-config.cli.test.ts",
-        "test/bp.generate-iris.cli.test.ts",
-        "test/bp.generate-mazur.cli.test.ts",
-        "test/bp.generate-xor.cli.test.ts",
-        "test/bp.help-consistency.cli.test.ts",
-        "test/bp.rule-coverage.cli.test.ts",
-        "test/bp.scaffold-topology.cli.test.ts",
-        "test/bp.stdin.test.ts",
-        "test/bp.unknown-flag.cli.test.ts",
-        "test/bp.validate-input.cli.test.ts",
-        "test/bp.validate.cli.test.ts",
-        "test/bp.verify-general.cli.test.ts",
-        "test/bp.verify-mazur.cli.test.ts",
-        "test/bp.verify-multi.cli.test.ts",
-        "test/cli.error-envelope.test.ts",
-        "test/cli.multi-step-import-pipe.test.ts",
-        "test/determinism.math-exp-canary.test.ts",
-        "test/emit-multi.test.ts",
-        "test/emit.optional-fields.test.ts",
-        "test/engine.invalid-input.test.ts",
-        "test/error-messages.test.ts",
-        "test/exports-drift.test.ts",
-        "test/extract.test.ts",
-        "test/format.policy.test.ts",
-        "test/format.property.test.ts",
-        "test/general-engine.test.ts",
-        "test/hash.general-receipt.test.ts",
-        "test/hash.test.ts",
-        "test/hero-classifier.engine.test.ts",
-        "test/hybrid-tolerance.test.ts",
-        "test/import-jax.test.ts",
-        "test/import-pytorch-adam.test.ts",
-        "test/import-pytorch-batched.test.ts",
-        "test/import-pytorch-helper.test.ts",
-        "test/import-pytorch-momentum.test.ts",
-        "test/import-pytorch-multi-step.test.ts",
-        "test/import-pytorch.test.ts",
-        "test/import-tensorflow.test.ts",
-        "test/import.humanization.test.ts",
-        "test/import.sidecar-bounds.test.ts",
-        "test/iris.engine.test.ts",
-        "test/mazur.engine.test.ts",
-        "test/multi-step.test.ts",
-        "test/pack-install-smoke.presence.test.ts",
-        "test/parse.test.ts",
-        "test/per-neuron-bias.engine.test.ts",
-        "test/published-claims.test.ts",
-        "test/reconcile.bad-adam.test.ts",
-        "test/reconcile.bad-backprop-sum.test.ts",
-        "test/reconcile.bad-batch.test.ts",
-        "test/reconcile.bad-bias-gradient.test.ts",
-        "test/reconcile.bad-bias-mode-mismatch.test.ts",
-        "test/reconcile.bad-bias-params-after.test.ts",
-        "test/reconcile.bad-bias-provenance.test.ts",
-        "test/reconcile.bad-bias-sharing-mismatch.test.ts",
-        "test/reconcile.bad-bias-update-value.test.ts",
-        "test/reconcile.bad-bias-weight-after.test.ts",
-        "test/reconcile.bad-ce-per-output.test.ts",
-        "test/reconcile.bad-contribution.test.ts",
-        "test/reconcile.bad-dual-form.test.ts",
-        "test/reconcile.bad-external.test.ts",
-        "test/reconcile.bad-forward-unit-dropped.test.ts",
-        "test/reconcile.bad-gradient.cli.test.ts",
-        "test/reconcile.bad-gradient.test.ts",
-        "test/reconcile.bad-hidden-signal.test.ts",
-        "test/reconcile.bad-jax.test.ts",
-        "test/reconcile.bad-kind-vs-role.test.ts",
-        "test/reconcile.bad-loss-total.test.ts",
-        "test/reconcile.bad-momentum.test.ts",
-        "test/reconcile.bad-multi-step-external.test.ts",
-        "test/reconcile.bad-output-signal.test.ts",
-        "test/reconcile.bad-params-after.test.ts",
-        "test/reconcile.bad-per-sample-omission.test.ts",
-        "test/reconcile.bad-prob-bound.test.ts",
-        "test/reconcile.bad-provenance.test.ts",
-        "test/reconcile.bad-pytorch-helper.test.ts",
-        "test/reconcile.bad-softmax-sum.test.ts",
-        "test/reconcile.bad-tensorflow.test.ts",
-        "test/reconcile.bad-topology-size.test.ts",
-        "test/reconcile.bad-update-value.test.ts",
-        "test/reconcile.bad-weight-after.test.ts",
-        "test/reconcile.doctrine.test.ts",
-        "test/reconcile.good.cli.test.ts",
-        "test/reconcile.nan-poisoning.test.ts",
-        "test/reconcile.rule14-post-update.test.ts",
-        "test/runtime-format.test.ts",
-        "test/schema-emit-consistency.test.ts",
-        "test/schema-loader.test.ts",
-        "test/schema-tolerance-ceiling.test.ts",
-        "test/schema.input-schema.test.ts",
-        "test/sgd-coupled-l2.engine.test.ts",
-        "test/softmax-ce.engine.test.ts",
-        "test/topology.min-size.test.ts",
-        "test/topology.test.ts",
-        "test/validate.multi-version.test.ts",
-        "test/validate.test.ts",
-        "test/verify-engine.test.ts",
-        "test/xor.engine.test.ts"
-      ],
-      "runsCount": 105,
-      "sends": [],
-      "stages": [],
-      "triggers": [
-        "on a pull request",
-        "on a push to main",
         "or by hand"
       ]
     },
@@ -637,7 +653,7 @@
     {
       "place": "fixtures/bad/",
       "writers": [
-        "scripts (7 files)"
+        "scripts (8 files)"
       ]
     },
     {
@@ -875,17 +891,18 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T02:04:33.553Z",
+  "generatedAt": "2026-09-24T08:23:00.022Z",
   "limits": [
     "2 import sites name a declared dependency that shares its name with a local module (jax); they are read as the dependency, which is not in this repository.",
     "3 import sites could not be resolved.",
     "1 file uses syntax the parser cannot read (src/topology.ts), so what it imports is not known: a NUL character inside a string (1).",
-    "20 writes and 16 reads use paths built at run time and are not named here.",
-    "10 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "38 commands are built at run time and not followed, 35 of them in tests.",
+    "16 writes and 11 reads use paths built at run time and are not named here.",
+    "1 write goes to places this repository does not track, so it is not listed as generated.",
+    "21 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "35 commands are built at run time and not followed, 32 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
-  "mainDoor": ".github/workflows/release.yml",
+  "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
     ".github": ".github",
     "docs": "docs",
@@ -905,8 +922,7 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "test/activations.test.ts",
-    "src/activations.ts"
+    "src/index.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -914,9 +930,9 @@
   "testedBy": {
     "examples": 0,
     "scripts": 0,
-    "src": 83
+    "src": 85
   },
-  "unnamedWrites": 20,
+  "unnamedWrites": 16,
   "unread": [
     {
       "place": "fixtures/external/adam.reddi-2018-pathology.note.json",
@@ -955,6 +971,7 @@
       ]
     }
   ],
+  "unreadFiles": 1,
   "unreadNote": [],
   "untested": [
     {

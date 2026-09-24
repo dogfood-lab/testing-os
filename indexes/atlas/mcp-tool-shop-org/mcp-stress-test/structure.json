@@ -1541,6 +1541,38 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish.yml",
+      "gated": [
+        {
+          "jobs": [
+            "docker"
+          ],
+          "pushes": false,
+          "sends": [
+            "publishesTo:container image"
+          ],
+          "stages": [],
+          "when": {
+            "inputs": {
+              "publish_docker": true
+            }
+          }
+        },
+        {
+          "jobs": [
+            "publish-pypi"
+          ],
+          "pushes": false,
+          "sends": [
+            "publishesTo:pypi"
+          ],
+          "stages": [],
+          "when": {
+            "inputs": {
+              "publish_pypi": true
+            }
+          }
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Publish",
@@ -1574,20 +1606,35 @@
           "job": "docker",
           "path": "README.md",
           "runKind": "checks",
-          "via": "docker build Dockerfile"
+          "via": "docker build Dockerfile",
+          "when": {
+            "inputs": {
+              "publish_docker": true
+            }
+          }
         },
         {
           "job": "docker",
           "path": "pyproject.toml",
           "runKind": "checks",
-          "via": "docker build Dockerfile"
+          "via": "docker build Dockerfile",
+          "when": {
+            "inputs": {
+              "publish_docker": true
+            }
+          }
         },
         {
           "directory": true,
           "job": "docker",
           "path": "src/",
           "runKind": "checks",
-          "via": "docker build Dockerfile"
+          "via": "docker build Dockerfile",
+          "when": {
+            "inputs": {
+              "publish_docker": true
+            }
+          }
         },
         {
           "directory": true,
@@ -1601,13 +1648,23 @@
           "job": "docker",
           "path": "src/mcp_stress_test/",
           "runKind": "checks",
-          "via": "docker build Dockerfile → build pyproject.toml"
+          "via": "docker build Dockerfile → build pyproject.toml",
+          "when": {
+            "inputs": {
+              "publish_docker": true
+            }
+          }
         },
         {
           "job": "docker",
           "path": "src/mcp_stress_test/cli/__init__.py",
           "runKind": "executes",
-          "via": "docker build Dockerfile"
+          "via": "docker build Dockerfile",
+          "when": {
+            "inputs": {
+              "publish_docker": true
+            }
+          }
         },
         {
           "job": "package-smoke",
@@ -1631,11 +1688,8 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
-        "publishes": true,
-        "publishesTo": [
-          "container image",
-          "pypi"
-        ],
+        "publishes": false,
+        "publishesTo": [],
         "releases": false
       },
       "stages": [],

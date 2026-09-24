@@ -4,12 +4,12 @@ Mapped at 2026-09-24 from commit f7e56e6.
 
 ## What this is
 
-39 parts, mostly TypeScript (797 files). Work enters through 6 doors; the busiest is CI, which reaches 35 parts. It publishes to npm and a container image. People run ai and ai-rpg-engine.
+39 parts, mostly TypeScript (797 files). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. People run ai and ai-rpg-engine.
 
 ## What changed since 2026-09-23 (7ff40cd)
 
 - CI now also runs files in docs/examples/, packages/asset-registry/src/, packages/audio-director/src/ and 34 more.
-- CI runs 392 more files than before.
+- CI runs 393 more files than before.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - And 4 more changes to doors.
 - docs/c0-alignment/intake-table.json is now written by packages/cli/src/c0-intake-table.test.ts.
@@ -17,11 +17,12 @@ Mapped at 2026-09-24 from commit f7e56e6.
 - docs/c0-alignment/version-skew.json is now written by packages/cli/src/c0-version-skew.test.ts.
 - And 59 more new writers and readers of places.
 - docs was authored and is now mixed.
+- scripts/verify-isolated-consumer.mjs now starts at run; it started at publishable workspaces.
 - No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 15 paths; on a push touching 15 paths; or by hand. Runs scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs, scripts/verify-mixed-game-viability.mjs and 389 more; checks package-lock.json, package.json, packages/ and 6 more.
+1. **CI.** On a pull request touching 15 paths; on a push touching 15 paths; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 390 more; checks package-lock.json, package.json, packages/ and 6 more.
 2. **Release.** When a release is published; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more; checks package-lock.json, package.json, packages/ and 6 more.
 3. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Docs Integrity.** On a pull request touching 5 paths; on a push touching 5 paths; or by hand. Runs docs/check-docs-integrity.mjs.
@@ -30,7 +31,23 @@ Mapped at 2026-09-24 from commit f7e56e6.
 
 ## What happens through CI
 
-1. The workflow runs 4 files in scripts, packages/asset-registry/src/file-store.test.ts, packages/asset-registry/src/hash.test.ts and packages/asset-registry/src/memory-store.test.ts in asset-registry, packages/audio-director/src/director.test.ts in audio-director, 4 files in campaign-memory, 7 files in character-creation, and 172 files in 29 more parts; it checks docs/ in docs, 5 files in the repository root, scripts/ in scripts, templates/ in starter, and packages/ (31 parts).
+1. The workflow runs 8 files in cli, 4 files in scripts, packages/asset-registry/src/file-store.test.ts, packages/asset-registry/src/hash.test.ts and packages/asset-registry/src/memory-store.test.ts in asset-registry, packages/audio-director/src/director.test.ts in audio-director, 4 files in campaign-memory, and 171 files in 29 more parts; it checks docs/ in docs, 5 files in the repository root, scripts/ in scripts, templates/ in starter, and packages/ (31 parts).
+   1. Inside packages/cli/src/bin.ts, main does, in order:
+      1. some
+      2. find
+      3. load external pack
+      4. glyphs for (terminal-ui)
+      5. close readline
+      6. prompt menu
+      7. read run history
+      8. map
+      9. format recent runs
+      10. map
+   2. Or, when `args.includes('--version') || args.includes('-v') || comman…`, main does close readline instead.
+   3. Or, when `wantsHelp && !COMMANDS_WITH_OWN_HELP.has(command)`, main does close readline instead.
+   4. Or, when `raw === undefined || raw === '' || raw.startsWith('-')`, main does map instead.
+   5. Main returns early 5 more ways.
+   6. **Restore session from save** runs, in order: create game, deserialize (core) and migrate module states.
 2. It writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json.
 
 ## Who reads the results
@@ -39,11 +56,11 @@ Mapped at 2026-09-24 from commit f7e56e6.
 
 ## The other doors
 
-**Release** runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more, checks package-lock.json, package.json, packages/ and 6 more, writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json, and publishes to npm and a container image.
+**Release** runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more, checks package-lock.json, package.json, packages/ and 6 more, writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json, and publishes workspace packages to npm and a container image (on a run by hand, only with dry_run false).
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on main.
 
-**Docs Integrity** runs docs/check-docs-integrity.mjs.
+**Docs Integrity** runs docs/check-docs-integrity.mjs and runs git.
 
 **ai-rpg-engine** (a command people run) runs packages/cli/src/bin.ts and reaches audio-director, campaign-memory, character-creation, character-profile, content-schema, core, equipment, modules, pack-registry, presentation, sidecar, soundpack-core, starter-bounty-hunter, starter-colony, starter-cyberpunk, starter-detective, starter-fantasy, starter-gladiator, starter-merchant, starter-pirate, starter-ronin, starter-vampire, starter-weird-west, starter-zombie and terminal-ui.
 
@@ -78,10 +95,10 @@ Window: 180 days; a pair counts from 10 shared commits, since 56 source files re
 
 ## Written but never read
 
-- **docs/c0-alignment/intake-table.json** is written by packages/cli/src/c0-intake-table.test.ts and read by nothing else in this repository.
-- **docs/c0-alignment/reverse-table.json** is written by packages/cli/src/c0-reverse-table.test.ts and read by nothing else in this repository.
-- **docs/c0-alignment/version-skew.json** is written by packages/cli/src/c0-version-skew.test.ts and read by nothing else in this repository.
-- **docs/contract-v1/rng-audit.json** is written by packages/cli/src/c1-rng-audit.test.ts and read by nothing else in this repository.
+- **docs/c0-alignment/intake-table.json** is written by packages/cli/src/c0-intake-table.test.ts (a test) and read by nothing else in this repository.
+- **docs/c0-alignment/reverse-table.json** is written by packages/cli/src/c0-reverse-table.test.ts (a test) and read by nothing else in this repository.
+- **docs/c0-alignment/version-skew.json** is written by packages/cli/src/c0-version-skew.test.ts (a test) and read by nothing else in this repository.
+- **docs/contract-v1/rng-audit.json** is written by packages/cli/src/c1-rng-audit.test.ts (a test) and read by nothing else in this repository.
 - **packages/ledger-adapter/scripts/gladiator-nft-live-replay-receipt.json** is written by packages/ledger-adapter/scripts/gladiator-nft-live-replay.mjs and read by nothing else in this repository.
 - **packages/ledger-adapter/scripts/merchant-live-replay-receipt.json** is written by packages/ledger-adapter/scripts/merchant-live-replay.mjs and read by nothing else in this repository.
 - **packages/ledger-adapter/scripts/nft-live-replay-receipt.json** is written by packages/ledger-adapter/scripts/nft-live-replay.mjs and read by nothing else in this repository.
@@ -96,10 +113,10 @@ These are candidates from names and call order, not a judgement.
 
 ## Generated, never hand-edited
 
-- **docs/c0-alignment/intake-table.json** is written by packages/cli/src/c0-intake-table.test.ts.
-- **docs/c0-alignment/reverse-table.json** is written by packages/cli/src/c0-reverse-table.test.ts.
-- **docs/c0-alignment/version-skew.json** is written by packages/cli/src/c0-version-skew.test.ts.
-- **docs/contract-v1/rng-audit.json** is written by packages/cli/src/c1-rng-audit.test.ts.
+- **docs/c0-alignment/intake-table.json** is written by packages/cli/src/c0-intake-table.test.ts (a test).
+- **docs/c0-alignment/reverse-table.json** is written by packages/cli/src/c0-reverse-table.test.ts (a test).
+- **docs/c0-alignment/version-skew.json** is written by packages/cli/src/c0-version-skew.test.ts (a test).
+- **docs/contract-v1/rng-audit.json** is written by packages/cli/src/c1-rng-audit.test.ts (a test).
 - **packages/ledger-adapter/scripts/gladiator-nft-live-replay-receipt.json** is written by packages/ledger-adapter/scripts/gladiator-nft-live-replay.mjs.
 - **packages/ledger-adapter/scripts/merchant-live-replay-receipt.json** is written by packages/ledger-adapter/scripts/merchant-live-replay.mjs.
 - **packages/ledger-adapter/scripts/nft-live-replay-receipt.json** is written by packages/ledger-adapter/scripts/nft-live-replay.mjs.
@@ -107,11 +124,11 @@ These are candidates from names and call order, not a judgement.
 
 ## Hand-authored
 
-People write .claude/, .github/, dogfood/, the repository root and site/; 38 writes with paths built at run time may land here.
+People write .claude/, .github/, dogfood/, the repository root and site/; 26 writes with paths built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → scripts/check-packaging.mjs
+.github/workflows/ci.yml → packages/cli/src/bin.ts → packages/modules/src/index.ts
 
 Read those in order to follow one pull request end to end.
 
@@ -119,11 +136,11 @@ Read those in order to follow one pull request end to end.
 
 - 3 import sites could not be resolved.
 - 10 files use syntax the parser cannot read (packages/cli/src/sidecar-pack-intake.test.ts, packages/content-schema/src/loader.ts, packages/core/src/engine.ts and 7 more), so what they import is not known: 4 in modules (an import type followed by `[]`), 2 in ledger-adapter (a NUL character inside a string), 1 in cli (`typeof import(…)` as a type argument), 1 in content-schema (a NUL character inside a string), 1 in core (an import type followed by `[]`), 1 in ollama (an import type followed by `[]`).
-- 38 writes and 56 reads use paths built at run time and are not named here.
+- 26 writes and 36 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 9 writes and 11 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 29 writes and 113 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 9 commands are built at run time and not followed, 8 of them in tests.
-- CI runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- CI runs or checks 402 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 - Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

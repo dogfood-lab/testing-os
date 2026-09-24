@@ -10,7 +10,7 @@ Mapped at 2026-09-24 from commit fd35beb.
 
 - Pages deploy now also runs site/astro.config.mjs and site/src/.
 - Post-Publish Smoke now also runs backpropagate/cli.py.
-- Publish now also runs bin/backpropagate.js.
+- Publish now also runs backpropagate/cli.py.
 - And 4 more changes to doors.
 - .github/mutmut-baseline.txt is now written by .github/workflows/mutmut.yml.
 - .github/workflows/ci.yml is now read by docs/ci-gates-triage-plan.md.
@@ -22,7 +22,7 @@ Mapped at 2026-09-24 from commit fd35beb.
 ## What comes in
 
 1. **CI.** On a pull request; on a push to main touching 8 paths; or by hand. Runs tests/ and verify.sh; checks backpropagate/.
-2. **Publish.** When a release is published; when the workflow Release completes; or by hand. Runs bin/backpropagate.js; checks LICENSE, README.md, backpropagate/ and 1 more.
+2. **Publish.** When a release is published; when the workflow Release completes; or by hand. Runs backpropagate/cli.py; checks LICENSE, README.md, backpropagate/ and 1 more.
 3. **Nightly Train Smoke.** On a schedule (`0 4 * * 1`), Monday at 04:00 UTC; or by hand. Runs scripts/nightly_train_smoke.py.
 4. **Doc Drift Check.** On a pull request; on a push to main touching 7 paths; or by hand. Runs scripts/check_doc_drift.py.
 5. **Pages deploy.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
@@ -45,7 +45,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Publish** runs bin/backpropagate.js, checks LICENSE, README.md, backpropagate/ and 1 more, and publishes to PyPI and a container image.
+**Publish** runs backpropagate/cli.py, checks LICENSE, README.md, backpropagate/ and 1 more, and publishes to PyPI and a container image.
 
 **Nightly Train Smoke** runs scripts/nightly_train_smoke.py, reaches backpropagate, and opens an issue when it fails.
 
@@ -71,7 +71,6 @@ CI writes nothing this map can see.
 
 - **backpropagate** is imported by 1 part (scripts), and by 1 more only from tests; it sits on the path of 6 doors.
 - **scripts** is imported only from tests, by 1 part (tests), and sits on the path of 3 doors.
-- **bin** is imported by no other part and sits on the path of 2 doors.
 - **the repository root** is imported by no other part and sits on the path of 2 doors.
 - **CITATION.cff** is written by scripts and read by scripts; a hand edit reaches every reader.
 
@@ -106,7 +105,7 @@ People write .claude/, assets/, docs/, examples/ and site/; 13 writes with paths
 
 ## Where to start
 
-.github/workflows/ci.yml → tests/test_check_doc_drift.py → scripts/check_doc_drift.py
+.github/workflows/ci.yml → backpropagate/cli.py
 
 Read those in order to follow one pull request end to end.
 

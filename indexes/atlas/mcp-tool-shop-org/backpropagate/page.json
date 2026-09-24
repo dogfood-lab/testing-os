@@ -34,14 +34,6 @@
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
-      "name": "bin",
-      "partLabel": "bin"
-    },
-    {
-      "doors": 2,
-      "importedBy": [],
-      "importedByTests": [],
-      "kind": "part",
       "name": "root",
       "partLabel": "the repository root"
     },
@@ -84,10 +76,10 @@
       },
       {
         "kind": "door",
-        "sentence": "Publish now also runs bin/backpropagate.js.",
+        "sentence": "Publish now also runs backpropagate/cli.py.",
         "subjects": [
           ".github/workflows/publish.yml",
-          "bin/backpropagate.js"
+          "backpropagate/cli.py"
         ]
       },
       {
@@ -234,18 +226,13 @@
           "files": 51
         },
         {
-          "boundary": "bin",
-          "depth": 0,
-          "files": 1
-        },
-        {
           "boundary": "root",
           "depth": 0,
           "files": 3
         }
       ],
       "runs": [
-        "bin/backpropagate.js"
+        "backpropagate/cli.py"
       ],
       "runsCount": 1,
       "sends": [
@@ -537,7 +524,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T02:04:47.034Z",
+  "generatedAt": "2026-09-24T08:23:14.309Z",
   "limits": [
     "40 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "6 import sites could not be resolved.",
@@ -565,8 +552,7 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "tests/test_check_doc_drift.py",
-    "scripts/check_doc_drift.py"
+    "backpropagate/cli.py"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -585,6 +571,7 @@
       ]
     }
   ],
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
     {

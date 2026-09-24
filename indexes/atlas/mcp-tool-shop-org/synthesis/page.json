@@ -175,7 +175,7 @@
   "changesTogetherWithTests": 0,
   "commit": "dd0e1de4318d08e23e8da2649dd27df6f7e93548",
   "defaultBranch": "main",
-  "derived": "12 parts, mostly TypeScript (36 files). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.",
+  "derived": "12 parts, mostly TypeScript (36 files). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.",
   "doors": [
     {
       "checks": [
@@ -362,13 +362,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T02:07:55.057Z",
+  "generatedAt": "2026-09-24T08:26:52.685Z",
   "limits": [
     "1 import site could not be resolved.",
     "1 import site names a path outside this repository, so what it loads is not followed.",
-    "3 writes and 7 reads use paths built at run time and are not named here.",
-    "1 read goes to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "1 command is built at run time and not followed, it in tests.",
+    "3 writes and 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "1 command is built at run time and not followed, and it is in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -391,6 +390,30 @@
   "repo": "mcp-tool-shop-org/synthesis",
   "sequences": [
     {
+      "alternatives": [
+        {
+          "steps": [
+            {
+              "name": "evaluatePlanted",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "evaluate planted"
+            }
+          ],
+          "when": "options.planted"
+        },
+        {
+          "steps": [
+            {
+              "name": "printSummary",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "print summary"
+            }
+          ],
+          "when": "isJsonOutput()"
+        }
+      ],
       "entry": "main",
       "file": "src/index.ts",
       "inner": [
@@ -445,12 +468,6 @@
       "phrase": "main",
       "steps": [
         {
-          "name": "evaluatePlanted",
-          "part": "src",
-          "partLabel": "src",
-          "phrase": "evaluate planted"
-        },
-        {
           "name": "loadCases",
           "part": "src",
           "partLabel": "src",
@@ -501,8 +518,9 @@
     "scripts": 0,
     "src": 14
   },
-  "unnamedWrites": 3,
+  "unnamedWrites": 0,
   "unread": [],
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
     {

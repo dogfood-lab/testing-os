@@ -111,12 +111,22 @@
   "doors": [
     {
       "checks": [
-        "README.md",
-        "pyproject.toml",
-        "src/"
+        "src/mcp_stress_test/"
       ],
-      "checksCount": 3,
+      "checksCount": 1,
       "file": ".github/workflows/publish.yml",
+      "held": [
+        {
+          "checks": [
+            "README.md",
+            "pyproject.toml",
+            "src/"
+          ],
+          "lead": "on a run by hand with publish_docker true",
+          "runs": [],
+          "when": "(on a run by hand, only with publish_docker true)"
+        }
+      ],
       "id": ".github/workflows/publish.yml",
       "landings": [],
       "name": "Publish",
@@ -144,7 +154,8 @@
       ],
       "runsCount": 2,
       "sends": [
-        "publishes to PyPI and a container image"
+        "publishes a container image (on a run by hand, only with publish_docker true)",
+        "publishes to PyPI (on a run by hand, only with publish_pypi true)"
       ],
       "stages": [],
       "triggers": [
@@ -274,7 +285,7 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-24T02:06:37.040Z",
+  "generatedAt": "2026-09-24T08:25:16.281Z",
   "limits": [
     "2 import sites could not be resolved.",
     "15 writes and 14 reads use paths built at run time and are not named here.",
@@ -293,9 +304,9 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/mcp-stress-test",
   "sequences": [],
-  "startDoor": ".github/workflows/publish.yml",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    ".github/workflows/publish.yml",
+    ".github/workflows/ci.yml",
     "src/mcp_stress_test/cli/__init__.py"
   ],
   "summary": null,
@@ -307,6 +318,7 @@
   },
   "unnamedWrites": 15,
   "unread": [],
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
     {

@@ -476,10 +476,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 13,
+      "dynamicReads": 3,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 4,
+      "dynamicWrites": 1,
       "entryPoints": [
         "src/cli.ts"
       ],
@@ -511,8 +511,6 @@
           "path": "src/budget.ts"
         },
         {
-          "entry": "printFullStatus",
-          "entryRule": 1,
           "hash": "603926050b2045bb67c9fff6af8d5118f5f89a84209709366d1fd624049a2129",
           "importsFiles": [
             "package.json",
@@ -773,11 +771,11 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 16,
-      "outsideWrites": 14,
+      "outsideReads": 29,
+      "outsideWrites": 17,
       "role": "code",
       "testedBy": 16,
-      "unresolvedSites": 0
+      "unresolvedSites": 1
     },
     {
       "dynamicReads": 0,
@@ -1136,12 +1134,22 @@
           "matched": true,
           "path": "src/",
           "runKind": "checks",
-          "via": "tsc tsconfig.json"
+          "via": "tsc tsconfig.json",
+          "when": {
+            "branches": [
+              "main"
+            ]
+          }
         },
         {
           "job": "dogfood",
           "path": "src/cli.ts",
-          "runKind": "executes"
+          "runKind": "executes",
+          "when": {
+            "branches": [
+              "main"
+            ]
+          }
         }
       ],
       "runsCount": 2,
@@ -1371,6 +1379,13 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/claude-guardian",
+            "registry": "npm"
+          }
+        ],
         "publishes": true,
         "publishesTo": [
           "npm"
@@ -1474,11 +1489,6 @@
           "by": "src/project-classify.ts",
           "call": "literal",
           "confidence": "ast"
-        },
-        {
-          "by": "src/project-classify.ts",
-          "call": "literal",
-          "confidence": "weak"
         }
       ],
       "target": "package.json",
@@ -1504,17 +1514,6 @@
         }
       ],
       "target": "site/src/content/docs/handbook",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "src/project-classify.ts",
-          "call": "readdir",
-          "confidence": "ast"
-        }
-      ],
-      "target": "src",
       "writers": []
     }
   ],

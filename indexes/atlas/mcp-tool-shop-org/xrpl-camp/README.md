@@ -11,7 +11,7 @@ Mapped at 2026-09-24 from commit 8af7371.
 - bin no longer imports the repository root.
 - CI's pull request trigger now also names `atlas/**`.
 - CI's push trigger now also names `atlas/**`.
-- Publish now also runs docker-entrypoint.sh and xrpl_camp/__main__.py.
+- Publish now also runs docker-entrypoint.sh, xrpl_camp/__main__.py and xrpl_camp/cli.py.
 - And 1 more change to a door.
 - CHANGELOG.md is now read by tests/test_version.py.
 - bin/xrpl-camp.js is now read by tests/test_version.py.
@@ -22,7 +22,7 @@ Mapped at 2026-09-24 from commit 8af7371.
 ## What comes in
 
 1. **CI.** On a pull request touching 11 paths; on a push touching 11 paths; or by hand. Runs scripts/check-versions.sh, scripts/verify.sh and tests/; checks bin/xrpl-camp.js and xrpl_camp/.
-2. **Publish.** When a tag matching `v*` is pushed; or by hand. Runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh and xrpl_camp/__main__.py; checks LICENSE, README.md, pyproject.toml and 1 more.
+2. **Publish.** When a tag matching `v*` is pushed; or by hand. On a tag push, it runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh, xrpl_camp/__main__.py and 1 more; checks LICENSE, README.md, pyproject.toml and 1 more.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Release (npm).** When a tag matching `v*` is pushed; or by hand. Runs scripts/check-versions.sh.
 5. **Freshness Check.** On a schedule (`0 8 * * 1`), Monday at 08:00 UTC; or by hand. Runs scripts/check-freshness.sh.
@@ -39,7 +39,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Publish** runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh and xrpl_camp/__main__.py, checks LICENSE, README.md, pyproject.toml and 1 more, publishes to PyPI and a container image on a tag push, and creates a GitHub release on a tag push.
+**Publish** runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh, xrpl_camp/__main__.py and 1 more and checks LICENSE, README.md, pyproject.toml and 1 more on a tag push, publishes to PyPI and a container image on a tag push, and creates a GitHub release on a tag push.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -88,7 +88,7 @@ People write the repository root, scripts/ and site/; 4 writes with paths built 
 
 ## Where to start
 
-.github/workflows/ci.yml → tests/conftest.py → xrpl_camp/__init__.py
+.github/workflows/ci.yml → xrpl_camp/cli.py
 
 Read those in order to follow one pull request end to end.
 

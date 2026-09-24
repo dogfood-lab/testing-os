@@ -22,9 +22,7 @@
       "place": "ledger/events/events.jsonl",
       "writers": [
         ".github/workflows/anchor-xrpl.yml",
-        ".github/workflows/attestor-ci.yml",
-        "attestor/scripts/emit-key-event.mjs",
-        "packages/repomesh-cli/src/key/rotate-revoke.mjs"
+        ".github/workflows/attestor-ci.yml"
       ]
     }
   ],
@@ -85,15 +83,21 @@
       ],
       "kind": "part",
       "name": "registry",
-      "partLabel": "registry"
+      "partLabel": "registry",
+      "spawnedBy": [
+        "tools"
+      ]
     },
     {
-      "doors": 3,
+      "doors": 1,
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
-      "name": "root",
-      "partLabel": "the repository root"
+      "name": "pages",
+      "partLabel": "pages",
+      "spawnedBy": [
+        "tools"
+      ]
     },
     {
       "kind": "place",
@@ -110,9 +114,7 @@
       ],
       "target": "ledger/events/events.jsonl",
       "writers": [
-        ".github",
-        "attestor",
-        "repomesh-cli"
+        ".github"
       ]
     },
     {
@@ -122,19 +124,17 @@
         "ledger",
         "policy",
         "registry",
-        "repomesh-cli",
         "tools"
       ],
       "target": "ledger/nodes/",
       "writers": [
-        "attestor",
         "tools"
       ]
     }
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 296,
       "moved": 0,
       "parts": 17,
@@ -195,16 +195,15 @@
       },
       {
         "kind": "landing",
-        "sentence": "pages/out is now written by pages/build-pages.mjs and pages/build-status.mjs.",
+        "sentence": "packages/repomesh-cli/dist is now written by packages/repomesh-cli/scripts/build.mjs.",
         "subjects": [
-          "pages/out",
-          "pages/build-pages.mjs",
-          "pages/build-status.mjs"
+          "packages/repomesh-cli/dist",
+          "packages/repomesh-cli/scripts/build.mjs"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "And 88 more new writers and readers of places.",
+        "sentence": "And 99 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -235,7 +234,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "296 files changed content, across 17 parts.",
+        "sentence": "1 file added and 296 changed content, across 17 parts.",
         "subjects": []
       }
     ],
@@ -250,9 +249,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "609c77de7b90ccd3baaa146c5114134b87f2d304",
+  "commit": "8843b8894a8ccae1569bce0ad24618ed0ce208e7",
   "defaultBranch": "main",
-  "derived": "18 parts, mostly JavaScript (175 files). Work enters through 9 doors; the busiest is pages-ci, which reaches 6 parts. It publishes to npm and a container image. People run repomesh.",
+  "derived": "18 parts, mostly JavaScript (175 files). Work enters through 9 doors; the busiest is pages-ci, which reaches 6 parts. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image. People run repomesh.",
   "doors": [
     {
       "checks": [],
@@ -260,8 +259,10 @@
       "file": ".github/workflows/pages-ci.yml",
       "id": ".github/workflows/pages-ci.yml",
       "landings": [
+        "registry/anchors.json",
         "registry/badges/",
-        "registry/snippets/"
+        "registry/snippets/",
+        "registry/trust.json"
       ],
       "name": "pages-ci",
       "pushes": false,
@@ -334,7 +335,8 @@
       "landings": [
         "anchor/xrpl/manifests/",
         "ledger/events/events.jsonl",
-        "registry/anchors.json"
+        "registry/anchors.json",
+        "registry/trust.json"
       ],
       "name": "anchor-xrpl",
       "pushes": false,
@@ -431,7 +433,7 @@
       ],
       "runsCount": 2,
       "sends": [
-        "publishes to npm and a container image"
+        "publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image"
       ],
       "stages": [],
       "triggers": [
@@ -447,9 +449,14 @@
       "file": ".github/workflows/attestor-ci.yml",
       "id": ".github/workflows/attestor-ci.yml",
       "landings": [
-        "ledger/events/events.jsonl"
+        "ledger/events/events.jsonl",
+        "registry/anchors.json",
+        "registry/trust.json"
       ],
       "name": "attestor-ci",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "pushesForReview": true,
       "reach": [
@@ -766,6 +773,11 @@
       "to": "verifiers"
     },
     {
+      "from": "pages",
+      "fromTests": false,
+      "to": "anchor"
+    },
+    {
       "from": "registry",
       "fromTests": false,
       "to": "ledger"
@@ -785,7 +797,6 @@
     {
       "place": "ledger/nodes/",
       "writers": [
-        "attestor/scripts/emit-key-event.mjs",
         "tools/join-node.mjs"
       ]
     },
@@ -798,7 +809,8 @@
       "place": "registry/anchors.json",
       "writers": [
         ".github/workflows/anchor-xrpl.yml",
-        ".github/workflows/registry-ci.yml"
+        ".github/workflows/registry-ci.yml",
+        "verifiers/lib/common.mjs"
       ]
     },
     {
@@ -839,7 +851,8 @@
     {
       "place": "registry/trust.json",
       "writers": [
-        ".github/workflows/registry-ci.yml"
+        ".github/workflows/registry-ci.yml",
+        "verifiers/lib/common.mjs"
       ]
     },
     {
@@ -860,13 +873,14 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-24T02:07:08.830Z",
+  "generatedAt": "2026-09-24T08:25:55.990Z",
   "limits": [
-    "103 import sites could not be resolved.",
-    "9 writes and 62 reads use paths built at run time and are not named here.",
-    "19 writes go to places this repository does not track, so they are not listed as generated.",
-    "33 writes and 104 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "49 commands are built at run time and not followed, 35 of them in tests.",
+    "114 import sites could not be resolved.",
+    "11 reads use paths built at run time and are not named here.",
+    "24 writes go to places this repository does not track, so they are not listed as generated.",
+    "45 writes and 170 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "40 commands are built at run time and not followed, 35 of them in tests.",
+    "Readers marked (found by text) come from scanning unparsed files.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/pages-ci.yml",
@@ -894,7 +908,9 @@
   "readers": [
     {
       "readers": [
-        "pages/build-pages.mjs"
+        "packages/repomesh-cli/src/verify/verify-all.mjs",
+        "pages (5 files)",
+        "scripts/verify.sh (found by text)"
       ],
       "target": "registry/"
     }
@@ -921,7 +937,7 @@
     "tools": 7,
     "verifiers": 49
   },
-  "unnamedWrites": 9,
+  "unnamedWrites": 0,
   "unread": [
     {
       "place": "registry/capabilities.json",
@@ -945,6 +961,7 @@
       ]
     }
   ],
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],

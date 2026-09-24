@@ -112,7 +112,7 @@
   "changesTogetherWithTests": 0,
   "commit": "838720f99155a0c6e0be6baa92dd87e1504abdb4",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly JavaScript (5 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. People run shipcheck.",
+  "derived": "10 parts, mostly JavaScript (5 files). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run shipcheck.",
   "doors": [
     {
       "checks": [],
@@ -121,6 +121,9 @@
       "id": ".github/workflows/ci.yml",
       "landings": [],
       "name": "CI",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -156,6 +159,9 @@
       "id": ".github/workflows/release.yml",
       "landings": [],
       "name": "Release",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -248,6 +254,9 @@
       "kind": "command",
       "landings": [],
       "name": "shipcheck",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -276,11 +285,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T02:07:18.970Z",
+  "generatedAt": "2026-09-24T08:26:11.634Z",
   "limits": [
     "1 import site could not be resolved.",
-    "23 reads use paths built at run time and are not named here.",
-    "1 write and 16 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "4 reads use paths built at run time and are not named here.",
+    "1 write and 44 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "3 commands are built at run time and not followed, all of them in tests.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
@@ -315,6 +324,7 @@
   },
   "unnamedWrites": 0,
   "unread": [],
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
     {

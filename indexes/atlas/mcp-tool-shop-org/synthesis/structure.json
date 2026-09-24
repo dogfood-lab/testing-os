@@ -548,7 +548,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -684,10 +684,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 5,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 3,
+      "dynamicWrites": 0,
       "entryPoints": [
         "src/index.ts"
       ],
@@ -814,7 +814,15 @@
             {
               "calls": [
                 {
+                  "branch": "isJsonOutput()",
                   "line": 260,
+                  "name": "printSummary",
+                  "target": {
+                    "file": "src/report.ts"
+                  }
+                },
+                {
+                  "line": 263,
                   "name": "printSummary",
                   "target": {
                     "file": "src/report.ts"
@@ -844,6 +852,7 @@
             {
               "calls": [
                 {
+                  "branch": "options.planted",
                   "inner": [
                     {
                       "line": 197,
@@ -863,6 +872,7 @@
                 {
                   "inner": [
                     {
+                      "branch": "errors.length > 0",
                       "line": 61,
                       "name": "useAsciiGlyphs",
                       "target": {
@@ -958,7 +968,16 @@
                   }
                 },
                 {
+                  "branch": "isJsonOutput()",
                   "line": 260,
+                  "name": "printSummary",
+                  "target": {
+                    "file": "src/report.ts"
+                  },
+                  "via": "emitSummary"
+                },
+                {
+                  "line": 263,
                   "name": "printSummary",
                   "target": {
                     "file": "src/report.ts"
@@ -997,6 +1016,7 @@
             {
               "calls": [
                 {
+                  "branch": "errors.length > 0",
                   "line": 61,
                   "name": "useAsciiGlyphs",
                   "target": {
@@ -1239,6 +1259,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "mixed",
+      "outsideReads": 5,
+      "outsideWrites": 3,
       "role": "code",
       "testedBy": 14,
       "unresolvedSites": 0
@@ -1760,6 +1782,13 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/synthesis",
+            "registry": "npm"
+          }
+        ],
         "publishes": true,
         "publishesTo": [
           "npm"
@@ -1986,6 +2015,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tests/planted-theater.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "data/planted-theater.jsonl",
@@ -2092,12 +2127,28 @@
       "readers": [
         {
           "by": "scripts/check-report-schema.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/check-report-schema.mjs",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/check-report-schema.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         },
         {
           "by": "tests/report-schema.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/report-schema.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -2109,12 +2160,28 @@
       "readers": [
         {
           "by": "scripts/check-report-schema.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/check-report-schema.mjs",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/check-report-schema.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         },
         {
           "by": "tests/report-schema.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/report-schema.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -2126,12 +2193,28 @@
       "readers": [
         {
           "by": "scripts/check-report-schema.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/check-report-schema.mjs",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/check-report-schema.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         },
         {
           "by": "tests/report-schema.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/report-schema.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -2202,6 +2285,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tests/report-schema.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "tests/gold/report.fail.json",
@@ -2212,6 +2301,12 @@
         {
           "by": "tests/report-schema.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/report-schema.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }

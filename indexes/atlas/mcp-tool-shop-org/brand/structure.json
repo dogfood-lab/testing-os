@@ -1305,10 +1305,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 5,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -1417,23 +1417,24 @@
       "importConfidence": "full",
       "name": "site",
       "origin": "authored",
-      "outsideReads": 13,
+      "outsideReads": 18,
+      "outsideWrites": 1,
       "role": "site",
       "testedBy": 1,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 24,
-      "dynamicSpawns": 2,
+      "dynamicReads": 3,
+      "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 17,
+      "dynamicWrites": 0,
       "entryPoints": [
         "src/cli.ts"
       ],
       "externals": 0,
       "files": [
         {
-          "entry": "withGlobals",
+          "entry": "main",
           "entryRule": 1,
           "hash": "45b2c184d6005d40e31ca06aed29aab472a79cffe48ac9c5f9ffd2f0a15312dd",
           "importsFiles": [
@@ -1459,7 +1460,7 @@
                 }
               ],
               "exported": false,
-              "invokedAtTopLevel": true,
+              "invokedAtTopLevel": false,
               "isDefaultExport": false,
               "name": "withGlobals"
             }
@@ -1647,16 +1648,16 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 29,
-      "outsideWrites": 3,
+      "outsideReads": 55,
+      "outsideWrites": 23,
       "role": "code",
       "testedBy": 16,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 6,
-      "dynamicSpawnsInTests": 6,
+      "dynamicSpawns": 5,
+      "dynamicSpawnsInTests": 5,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -2057,6 +2058,9 @@
       "permissions": [
         "contents:read"
       ],
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -2341,6 +2345,7 @@
       "gated": [
         {
           "jobs": [
+            "build",
             "deploy"
           ],
           "pushes": false,
@@ -2707,6 +2712,13 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/brand",
+            "registry": "npm"
+          }
+        ],
         "publishes": true,
         "publishesTo": [
           "npm"
@@ -2798,6 +2810,9 @@
         "contents:write",
         "issues:write",
         "pull-requests:write"
+      ],
+      "programs": [
+        "git"
       ],
       "pushes": false,
       "pushesForReview": true,
@@ -2929,7 +2944,19 @@
         },
         {
           "by": "site/integrations/model-passthrough.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "manifest.json"
+        },
+        {
+          "by": "site/integrations/model-passthrough.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "target": "manifest.json"
+        },
+        {
+          "by": "site/integrations/model-passthrough.mjs",
+          "call": "readFileSync",
           "confidence": "ast",
           "target": "manifest.json"
         },
@@ -3022,6 +3049,9 @@
       "mentions": [],
       "name": "brand",
       "permissions": [],
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -3186,21 +3216,6 @@
           "confidence": "ast"
         },
         {
-          "by": "site/integrations/model-passthrough.mjs",
-          "call": "statSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "site/scripts/check-deployed-bytes.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "site/scripts/check-deployed-bytes.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
           "by": "src/cli.ts",
           "call": "raw-url",
           "confidence": "ast",
@@ -3265,6 +3280,37 @@
     {
       "readers": [
         {
+          "by": "site/integrations/model-passthrough.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "site/integrations/model-passthrough.mjs",
+          "call": "readdirSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "site/integrations/model-passthrough.mjs",
+          "call": "statSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "site/scripts/check-deployed-bytes.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "site/scripts/check-deployed-bytes.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "logos/*",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "tests/audit.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -3284,7 +3330,17 @@
         },
         {
           "by": "site/integrations/model-passthrough.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "site/integrations/model-passthrough.mjs",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "site/integrations/model-passthrough.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         },
         {

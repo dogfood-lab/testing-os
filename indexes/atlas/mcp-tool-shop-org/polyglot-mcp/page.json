@@ -143,33 +143,6 @@
       "triggers": []
     },
     {
-      "checks": [
-        "src/"
-      ],
-      "checksCount": 1,
-      "file": ".github/workflows/ci.yml",
-      "id": ".github/workflows/ci.yml",
-      "landings": [],
-      "name": "CI",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "src",
-          "depth": 0,
-          "files": 33
-        }
-      ],
-      "runs": [],
-      "runsCount": 0,
-      "sends": [],
-      "stages": [],
-      "triggers": [
-        "on a pull request touching 9 paths",
-        "on a push to main touching 9 paths",
-        "or by hand"
-      ]
-    },
-    {
       "checks": [],
       "checksCount": 0,
       "file": ".github/workflows/pages.yml",
@@ -195,6 +168,33 @@
       "stages": [],
       "triggers": [
         "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 33
+        }
+      ],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 9 paths",
+        "on a push to main touching 9 paths",
         "or by hand"
       ]
     },
@@ -287,10 +287,11 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-24T02:06:43.235Z",
+  "generatedAt": "2026-09-24T08:25:27.941Z",
   "limits": [
     "1 file uses syntax the parser cannot read (src/translateReadme.test.ts), so what it imports is not known: `typeof import(…)` as a type argument (1).",
-    "5 writes and 6 reads use paths built at run time and are not named here.",
+    "2 writes and 3 reads use paths built at run time and are not named here.",
+    "4 writes and 7 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "5 commands are built at run time and not followed, 2 of them in tests.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
@@ -614,8 +615,9 @@
     "site": 0,
     "src": 17
   },
-  "unnamedWrites": 5,
+  "unnamedWrites": 2,
   "unread": [],
+  "unreadFiles": 1,
   "unreadNote": [],
   "untested": [
     {

@@ -68,7 +68,7 @@
       ],
       "importConfidence": "full",
       "name": "canon",
-      "origin": "generated",
+      "origin": "authored",
       "role": "config",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -584,10 +584,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 44,
+      "dynamicReads": 7,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 14,
+      "dynamicWrites": 0,
       "entryPoints": [
         "src/cli/index.ts"
       ],
@@ -1827,8 +1827,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 6,
-      "outsideWrites": 1,
+      "outsideReads": 86,
+      "outsideWrites": 19,
       "role": "code",
       "testedBy": 46,
       "unresolvedSites": 0
@@ -2317,9 +2317,7 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "landings": [
-        "canon"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "CI",
       "permissions": [],
@@ -2336,26 +2334,7 @@
           "files": 46
         }
       ],
-      "readers": [
-        {
-          "by": "src/backup/backup-engine.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "canon"
-        },
-        {
-          "by": "src/backup/backup-engine.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "canon"
-        },
-        {
-          "by": "src/backup/backup-engine.ts",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "canon"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "directory": true,
@@ -2528,9 +2507,7 @@
       "elsewhere": [],
       "file": "package.json",
       "kind": "command",
-      "landings": [
-        "canon"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "taste",
       "permissions": [],
@@ -2542,26 +2519,7 @@
           "files": 89
         }
       ],
-      "readers": [
-        {
-          "by": "src/backup/backup-engine.ts",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "canon"
-        },
-        {
-          "by": "src/backup/backup-engine.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": "canon"
-        },
-        {
-          "by": "src/backup/backup-engine.ts",
-          "call": "statSync",
-          "confidence": "ast",
-          "target": "canon"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "path": "src/cli/index.ts",
@@ -2631,57 +2589,21 @@
     {
       "readers": [
         {
-          "by": "src/backup/backup-engine.ts",
-          "call": "existsSync",
+          "by": "src/db/migrate.ts",
+          "call": "readFileSync",
           "confidence": "ast"
         },
         {
-          "by": "src/backup/backup-engine.ts",
+          "by": "src/db/migrate.ts",
           "call": "readdirSync",
           "confidence": "ast"
-        },
-        {
-          "by": "src/backup/backup-engine.ts",
-          "call": "statSync",
-          "confidence": "ast"
         }
       ],
-      "target": "canon",
-      "writers": [
-        {
-          "by": "src/backup/backup-engine.ts",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": "src/onboard/source-scanner.ts",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/onboard/source-scanner.ts",
-          "call": "statSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": "docs",
+      "target": "migrations",
       "writers": []
     },
     {
       "readers": [
-        {
-          "by": "src/onboard/source-scanner.ts",
-          "call": "existsSync",
-          "confidence": "weak"
-        },
-        {
-          "by": "src/onboard/source-scanner.ts",
-          "call": "readFileSync",
-          "confidence": "weak"
-        },
         {
           "by": "test/gate/policy.test.ts",
           "call": "literal",

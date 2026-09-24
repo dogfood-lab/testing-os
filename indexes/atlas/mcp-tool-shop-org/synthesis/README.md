@@ -4,7 +4,7 @@ Mapped at 2026-09-24 from commit dd0e1de.
 
 ## What this is
 
-12 parts, mostly TypeScript (36 files). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.
+12 parts, mostly TypeScript (36 files). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.
 
 ## What changed since 2026-09-23 (0128f11)
 
@@ -29,8 +29,10 @@ Mapped at 2026-09-24 from commit dd0e1de.
 ## What happens through CI
 
 1. The workflow runs scripts/check-report-schema.mjs and scripts/eval-planted.mjs in scripts, src/index.ts in src, and tests/ in tests; it checks src/ in src.
-   1. Inside src/index.ts, main does, in order: evaluate planted, load cases, run all cases, write report, has colors, print summary and format artifact.
-   2. **Run all cases** runs, in order: check agency, check reassurance, check pivot, check performative empathy, check grounded uptake and compute relational posture.
+   1. Inside src/index.ts, main does, in order: load cases, run all cases, write report, has colors, print summary and format artifact.
+   2. Or, when `options.planted`, main does evaluate planted instead.
+   3. Or, when `isJsonOutput()`, main does print summary instead.
+   4. **Run all cases** runs, in order: check agency, check reassurance, check pivot, check performative empathy, check grounded uptake and compute relational posture.
 
 ## Who reads the results
 
@@ -80,7 +82,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .claude/, .github/, assets/, data/, docs/, research/, the repository root, schemas/ and site/; 3 writes with paths built at run time may land here.
+People write .claude/, .github/, assets/, data/, docs/, research/, the repository root, schemas/ and site/. Nothing in this repository writes to them.
 
 ## Where to start
 
@@ -92,9 +94,8 @@ Read those in order to follow one pull request end to end.
 
 - 1 import site could not be resolved.
 - 1 import site names a path outside this repository, so what it loads is not followed.
-- 3 writes and 7 reads use paths built at run time and are not named here.
-- 1 read goes to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 1 command is built at run time and not followed, it in tests.
+- 3 writes and 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 1 command is built at run time and not followed, and it is in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

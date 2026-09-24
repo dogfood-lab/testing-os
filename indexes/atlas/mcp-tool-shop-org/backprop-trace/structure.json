@@ -1236,10 +1236,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 7,
+      "dynamicReads": 6,
       "dynamicSpawns": 3,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 16,
+      "dynamicWrites": 12,
       "entryPoints": [],
       "externalNames": [
         "jax"
@@ -1539,7 +1539,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 9,
+      "dynamicReads": 5,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 4,
@@ -1550,6 +1550,8 @@
       "externals": 0,
       "files": [
         {
+          "entry": "activate",
+          "entryRule": 3,
           "exports": [
             "activate",
             "activationDerivativeFromOut",
@@ -1562,7 +1564,8 @@
             "softmaxVector"
           ],
           "hash": "bada08b0958f3c82a73c119ae1e7ca2ead89074808812e0d4465977102dcbd41",
-          "path": "src/activations.ts"
+          "path": "src/activations.ts",
+          "sequences": []
         },
         {
           "entry": "runVerifyMazur",
@@ -1605,6 +1608,7 @@
             {
               "calls": [
                 {
+                  "branch": "typeof v === \"number\"",
                   "line": 812,
                   "name": "toExponential",
                   "target": null
@@ -1618,6 +1622,7 @@
             {
               "calls": [
                 {
+                  "branch": "typeof v === \"number\"",
                   "line": 812,
                   "name": "toExponential",
                   "target": null,
@@ -1806,6 +1811,7 @@
                   }
                 },
                 {
+                  "branch": "typeof v === \"number\"",
                   "line": 812,
                   "name": "toExponential",
                   "target": null,
@@ -1975,7 +1981,15 @@
             {
               "calls": [
                 {
+                  "branch": "f.from !== undefined",
                   "line": 454,
+                  "name": "formatNumberForEngine",
+                  "target": {
+                    "file": "src/runtime-format.ts"
+                  }
+                },
+                {
+                  "line": 456,
                   "name": "formatNumberForEngine",
                   "target": {
                     "file": "src/runtime-format.ts"
@@ -2376,12 +2390,22 @@
             {
               "calls": [
                 {
+                  "branch": "typeof probe.buffer === \"number\" && probe.m === undefined &…",
                   "line": 1192,
                   "name": "formatNumberForEngine",
                   "target": {
                     "file": "src/runtime-format.ts"
                   },
                   "via": "emitMomentumState"
+                },
+                {
+                  "branch": "typeof probe.m === \"number\" && typeof probe.v === \"number\"",
+                  "line": 1184,
+                  "name": "formatNumberForEngine",
+                  "target": {
+                    "file": "src/runtime-format.ts"
+                  },
+                  "via": "emitAdamState"
                 }
               ],
               "exported": false,
@@ -2397,6 +2421,24 @@
                   "target": {
                     "file": "src/runtime-format.ts"
                   }
+                },
+                {
+                  "branch": "typeof probe.buffer === \"number\" && probe.m === undefined &…",
+                  "line": 1192,
+                  "name": "formatNumberForEngine",
+                  "target": {
+                    "file": "src/runtime-format.ts"
+                  },
+                  "via": "emitMomentumState"
+                },
+                {
+                  "branch": "typeof probe.m === \"number\" && typeof probe.v === \"number\"",
+                  "line": 1184,
+                  "name": "formatNumberForEngine",
+                  "target": {
+                    "file": "src/runtime-format.ts"
+                  },
+                  "via": "emitAdamState"
                 }
               ],
               "exported": false,
@@ -2408,6 +2450,31 @@
               "calls": [
                 {
                   "line": 1261,
+                  "name": "formatNumberForEngine",
+                  "target": {
+                    "file": "src/runtime-format.ts"
+                  }
+                },
+                {
+                  "branch": "typeof probe.buffer === \"number\" && probe.m === undefined &…",
+                  "line": 1192,
+                  "name": "formatNumberForEngine",
+                  "target": {
+                    "file": "src/runtime-format.ts"
+                  },
+                  "via": "emitMomentumState"
+                },
+                {
+                  "branch": "typeof probe.m === \"number\" && typeof probe.v === \"number\"",
+                  "line": 1184,
+                  "name": "formatNumberForEngine",
+                  "target": {
+                    "file": "src/runtime-format.ts"
+                  },
+                  "via": "emitAdamState"
+                },
+                {
+                  "line": 1263,
                   "name": "formatNumberForEngine",
                   "target": {
                     "file": "src/runtime-format.ts"
@@ -4152,15 +4219,15 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 10,
+      "outsideReads": 21,
       "role": "code",
-      "testedBy": 83,
+      "testedBy": 85,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 35,
-      "dynamicSpawnsInTests": 35,
+      "dynamicSpawns": 32,
+      "dynamicSpawnsInTests": 32,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -7471,6 +7538,13 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/backprop-trace",
+            "registry": "npm"
+          }
+        ],
         "publishes": true,
         "publishesTo": [
           "npm"
@@ -7791,6 +7865,10 @@
       "target": "fixtures/bad",
       "writers": [
         {
+          "by": "scripts/build-pytorch-helper-fixtures.mjs",
+          "confidence": "ast"
+        },
+        {
           "by": "scripts/generate-adam-bad-fixtures.ts",
           "confidence": "ast"
         },
@@ -7816,6 +7894,17 @@
         },
         {
           "by": "scripts/generate-softmax-ce-bad-fixtures.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "fixtures/bad/*",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "scripts/build-pytorch-helper-fixtures.mjs",
           "confidence": "ast"
         }
       ]
@@ -7998,6 +8087,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "test/bp.verify-multi.cli.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "fixtures/bad/multi-step.bad-chain.jsonl",
@@ -8014,6 +8109,12 @@
         {
           "by": "test/bp.verify-multi.cli.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/bp.verify-multi.cli.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -8784,6 +8885,11 @@
           "confidence": "ast"
         },
         {
+          "by": "scripts/build-pytorch-helper-fixtures.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
           "by": "scripts/generate-pytorch-helper-goldens.py",
           "call": "literal",
           "confidence": "ast"
@@ -8840,6 +8946,11 @@
           "confidence": "ast"
         },
         {
+          "by": "scripts/build-pytorch-helper-fixtures.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
           "by": "scripts/generate-pytorch-helper-goldens.py",
           "call": "literal",
           "confidence": "ast"
@@ -8859,6 +8970,11 @@
         {
           "by": "scripts/build-pytorch-helper-fixtures.mjs",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/build-pytorch-helper-fixtures.mjs",
+          "call": "readFileSync",
           "confidence": "ast"
         },
         {
@@ -9628,7 +9744,19 @@
       "readers": [
         {
           "by": "test/hero-classifier.engine.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/hero-classifier.engine.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/hero-classifier.engine.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -9692,6 +9820,12 @@
         {
           "by": "test/bp.verify-general.cli.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/bp.verify-general.cli.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         },
@@ -10176,6 +10310,12 @@
         {
           "by": "test/bp.verify-general.cli.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/bp.verify-general.cli.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         },

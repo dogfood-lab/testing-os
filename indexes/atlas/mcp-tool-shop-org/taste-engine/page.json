@@ -2,6 +2,7 @@
   "authored": [
     ".claude/",
     ".github/",
+    "canon/",
     "docs/",
     "migrations/",
     "proving/",
@@ -31,8 +32,23 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "migrations/ is now read by src/db/migrate.ts.",
+        "subjects": [
+          "migrations/",
+          "src/db/migrate.ts"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "canon was generated and is now authored.",
+        "subjects": [
+          "canon"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 235 files changed content.",
+        "sentence": "235 files changed content, across 10 parts.",
         "subjects": []
       }
     ],
@@ -40,7 +56,7 @@
       "commit": "ac181ee84f0579d0d276c2ac4a1776659f75d091",
       "generatedAt": "2026-09-24T02:18:55.078Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -58,9 +74,7 @@
       "checksCount": 1,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
-      "landings": [
-        "canon/"
-      ],
+      "landings": [],
       "name": "CI",
       "pushes": false,
       "reach": [
@@ -122,9 +136,7 @@
       "file": "package.json",
       "id": "package.json#taste",
       "kind": "command",
-      "landings": [
-        "canon/"
-      ],
+      "landings": [],
       "name": "taste",
       "pushes": false,
       "reach": [
@@ -147,18 +159,11 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "generated": [
-    {
-      "place": "canon/",
-      "writers": [
-        "src/backup/backup-engine.ts"
-      ]
-    }
-  ],
-  "generatedAt": "2026-09-24T02:35:31.658Z",
+  "generated": [],
+  "generatedAt": "2026-09-24T08:26:56.134Z",
   "limits": [
-    "14 writes and 44 reads use paths built at run time and are not named here.",
-    "1 write and 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "7 reads use paths built at run time and are not named here.",
+    "19 writes and 86 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -183,8 +188,7 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "test/backup/backup-engine.test.ts",
-    "src/backup/backup-engine.ts"
+    "src/cli/index.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -192,17 +196,11 @@
   "testedBy": {
     "src": 46
   },
-  "unnamedWrites": 14,
-  "unread": [
-    {
-      "place": "canon/",
-      "writers": [
-        "src/backup/backup-engine.ts"
-      ]
-    }
-  ],
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],
-  "written": 1
+  "written": 0
 }

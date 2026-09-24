@@ -4,35 +4,35 @@ Mapped at 2026-09-24 from commit 8b16ae0.
 
 ## What this is
 
-10 parts, mostly TypeScript (148 files). Work enters through 7 doors; the busiest is Release, which reaches 3 parts. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.
+10 parts, mostly TypeScript (148 files). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.
 
 ## What changed since 2026-09-24 (5611f68)
 
-Nothing structural changed since 2026-09-24; no file changed.
+- fixtures/bad/ is now also written by scripts/build-pytorch-helper-fixtures.mjs.
+- fixtures/bad/* is now written by scripts/build-pytorch-helper-fixtures.mjs.
+- No file changed.
 
 ## What comes in
 
-1. **Release.** When a tag matching `v*` is pushed; or by hand. Runs scripts/pack-install-smoke.mjs, test/activations.test.ts, test/bp.cli.help-version.test.ts and 103 more; checks src/ and test/.
-2. **ci.** On a pull request; on a push to main; or by hand. Runs test/import-jax-helper.jax-e2e.test.ts, test/import-pytorch-helper.torch-e2e.test.ts, test/activations.test.ts and 102 more; checks fixtures/mazur.golden.jsonl, src/ and test/.
+1. **ci.** On a pull request; on a push to main; or by hand. Runs test/import-jax-helper.jax-e2e.test.ts, test/import-pytorch-helper.torch-e2e.test.ts, test/activations.test.ts and 102 more; checks fixtures/mazur.golden.jsonl, src/ and test/.
+2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs scripts/pack-install-smoke.mjs, test/activations.test.ts, test/bp.cli.help-version.test.ts and 103 more; checks src/ and test/.
 3. **pack-smoke.** On a pull request; on a push to main. Runs scripts/pack-install-smoke.mjs; checks src/.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 5. **codeql.** On a pull request; on a push to main; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC. Runs no file this map can see.
 6. **@mcptoolshop/backprop-trace** (the package people import). Loads src/index.ts, src/activations.ts, src/emit.ts and 35 more.
 7. **bp** (a command people run). Runs src/bin/bp.ts.
 
-## What happens through Release
+## What happens through ci
 
-1. The workflow runs scripts/pack-install-smoke.mjs in scripts and 105 files in test; it checks src/ in src and test/ in test.
-2. It publishes to npm.
-3. It creates a GitHub release.
+1. The workflow runs 105 files in test; it checks fixtures/mazur.golden.jsonl in fixtures, src/ in src and test/ in test.
 
 ## Who reads the results
 
-Release writes nothing this map can see.
+ci writes nothing in the files this map could read; 1 file could not be.
 
 ## The other doors
 
-**ci** runs test/import-jax-helper.jax-e2e.test.ts, test/import-pytorch-helper.torch-e2e.test.ts, test/activations.test.ts and 102 more, and checks fixtures/mazur.golden.jsonl, src/ and test/.
+**Release** runs scripts/pack-install-smoke.mjs, test/activations.test.ts, test/bp.cli.help-version.test.ts and 103 more, checks src/ and test/, publishes to npm, and creates a GitHub release.
 
 **pack-smoke** runs scripts/pack-install-smoke.mjs and checks src/.
 
@@ -81,11 +81,11 @@ Window: 180 days; a pair counts from 3 shared commits, since 8 source files reac
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike.
+No two parts export a helper that looks alike in the files this map could read; 1 file could not be.
 
 ## Generated, never hand-edited
 
-- **fixtures/bad/** is written by scripts (7 files).
+- **fixtures/bad/** is written by scripts (8 files).
 - **fixtures/bad/jax.bad-pytree-flatten-order.jsonl** is written by scripts/generate-jax-bad-fixtures.ts.
 - **fixtures/bad/tensorflow.bad-variable-list-order.jsonl** is written by scripts/generate-tensorflow-bad-fixtures.ts.
 - **fixtures/external/adam.reddi-2018-pathology.note.json** is written by scripts/generate-pytorch-adam-fixtures.ts.
@@ -128,11 +128,11 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root, schemas/ and site/; 20 writes with paths built at run time may land here.
+People write .github/, docs/, the repository root, schemas/ and site/; 16 writes with paths built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → test/activations.test.ts → src/activations.ts
+.github/workflows/ci.yml → src/index.ts
 
 Read those in order to follow one pull request end to end.
 
@@ -141,9 +141,10 @@ Read those in order to follow one pull request end to end.
 - 2 import sites name a declared dependency that shares its name with a local module (jax); they are read as the dependency, which is not in this repository.
 - 3 import sites could not be resolved.
 - 1 file uses syntax the parser cannot read (src/topology.ts), so what it imports is not known: a NUL character inside a string (1).
-- 20 writes and 16 reads use paths built at run time and are not named here.
-- 10 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 38 commands are built at run time and not followed, 35 of them in tests.
+- 16 writes and 11 reads use paths built at run time and are not named here.
+- 1 write goes to places this repository does not track, so it is not listed as generated.
+- 21 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 35 commands are built at run time and not followed, 32 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

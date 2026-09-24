@@ -59,7 +59,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 6,
+      "dynamicReads": 3,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 9,
@@ -217,6 +217,7 @@
       "importConfidence": "full",
       "name": "asset-registry",
       "origin": "authored",
+      "outsideReads": 10,
       "role": "code",
       "testedBy": 6,
       "unresolvedSites": 0
@@ -330,6 +331,7 @@
       "importConfidence": "full",
       "name": "audio-director",
       "origin": "authored",
+      "outsideReads": 2,
       "role": "code",
       "testedBy": 3,
       "unresolvedSites": 0
@@ -521,6 +523,7 @@
       "importConfidence": "full",
       "name": "campaign-memory",
       "origin": "authored",
+      "outsideReads": 1,
       "role": "code",
       "testedBy": 7,
       "unresolvedSites": 0
@@ -1007,10 +1010,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 26,
+      "dynamicReads": 17,
       "dynamicSpawns": 7,
       "dynamicSpawnsInTests": 7,
-      "dynamicWrites": 7,
+      "dynamicWrites": 9,
       "entryPoints": [
         "packages/cli/src/bin.ts",
         "packages/cli/src/index.ts"
@@ -1175,6 +1178,7 @@
             {
               "calls": [
                 {
+                  "branch": "raw === undefined || raw === '' || raw.startsWith('-')",
                   "line": 188,
                   "name": "map",
                   "target": {
@@ -1189,6 +1193,7 @@
                   }
                 },
                 {
+                  "branch": "!allPacks.some((p) => p.meta.id === raw)",
                   "line": 196,
                   "name": "map",
                   "target": {
@@ -1204,6 +1209,7 @@
             {
               "calls": [
                 {
+                  "branch": "args.includes('--version') || args.includes('-v') || comman…",
                   "line": 255,
                   "name": "closeReadline",
                   "target": {
@@ -1211,6 +1217,15 @@
                   }
                 },
                 {
+                  "branch": "wantsHelp && !COMMANDS_WITH_OWN_HELP.has(command)",
+                  "line": 268,
+                  "name": "closeReadline",
+                  "target": {
+                    "file": "packages/cli/src/prompts.ts"
+                  }
+                },
+                {
+                  "branch": "raw === undefined || raw === '' || raw.startsWith('-')",
                   "line": 188,
                   "name": "map",
                   "target": {
@@ -1227,6 +1242,7 @@
                   "via": "parseRunArgs"
                 },
                 {
+                  "branch": "!allPacks.some((p) => p.meta.id === raw)",
                   "line": 196,
                   "name": "map",
                   "target": {
@@ -1235,6 +1251,7 @@
                   "via": "parseRunArgs"
                 },
                 {
+                  "branch": "!parsed.ok",
                   "line": 876,
                   "name": "glyphsFor",
                   "target": {
@@ -1243,6 +1260,7 @@
                   "via": "runGame"
                 },
                 {
+                  "branch": "!parsed.ok",
                   "line": 879,
                   "name": "closeReadline",
                   "target": {
@@ -1251,6 +1269,7 @@
                   "via": "runGame"
                 },
                 {
+                  "branch": "parsed.listPacks",
                   "line": 886,
                   "name": "formatPackCatalog",
                   "target": {
@@ -1259,6 +1278,7 @@
                   "via": "runGame"
                 },
                 {
+                  "branch": "parsed.listPacks",
                   "line": 887,
                   "name": "closeReadline",
                   "target": {
@@ -1299,6 +1319,7 @@
                   "via": "runGame"
                 },
                 {
+                  "branch": "slot.gameId",
                   "line": 446,
                   "name": "find",
                   "target": {
@@ -1307,6 +1328,7 @@
                   "via": "packForResumeSlot"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 368,
                   "name": "frameRule",
                   "target": {
@@ -1315,6 +1337,7 @@
                   "via": "formatFrameBanner"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 368,
                   "name": "clipToWidth",
                   "target": {
@@ -1323,6 +1346,7 @@
                   "via": "formatFrameBanner"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 370,
                   "name": "frameRule",
                   "target": {
@@ -1331,6 +1355,7 @@
                   "via": "formatFrameBanner"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 476,
                   "name": "promptMenu",
                   "target": {
@@ -1339,6 +1364,7 @@
                   "via": "maybeOfferResume"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "inner": [
                     {
                       "line": 62,
@@ -1413,14 +1439,6 @@
                   "name": "map",
                   "target": {
                     "file": "packages/cli/src/packs.ts"
-                  },
-                  "via": "selectPack"
-                },
-                {
-                  "line": 400,
-                  "name": "promptMenu",
-                  "target": {
-                    "file": "packages/cli/src/prompts.ts"
                   },
                   "via": "selectPack"
                 }
@@ -1594,6 +1612,7 @@
             {
               "calls": [
                 {
+                  "branch": "slot.gameId",
                   "line": 446,
                   "name": "find",
                   "target": {
@@ -1609,6 +1628,7 @@
             {
               "calls": [
                 {
+                  "branch": "slot.gameId",
                   "line": 446,
                   "name": "find",
                   "target": {
@@ -1617,6 +1637,7 @@
                   "via": "packForResumeSlot"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 368,
                   "name": "frameRule",
                   "target": {
@@ -1625,6 +1646,7 @@
                   "via": "formatFrameBanner"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 368,
                   "name": "clipToWidth",
                   "target": {
@@ -1633,6 +1655,7 @@
                   "via": "formatFrameBanner"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 370,
                   "name": "frameRule",
                   "target": {
@@ -1641,6 +1664,7 @@
                   "via": "formatFrameBanner"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 476,
                   "name": "promptMenu",
                   "target": {
@@ -1648,6 +1672,7 @@
                   }
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 1228,
                   "name": "restoreSessionFromSave",
                   "target": {
@@ -1869,6 +1894,7 @@
                   }
                 },
                 {
+                  "branch": "end",
                   "line": 592,
                   "name": "buildExtraActions",
                   "target": {
@@ -1877,6 +1903,7 @@
                   "via": "computeExtras"
                 },
                 {
+                  "branch": "end",
                   "line": 636,
                   "name": "buildPartyStatusLine",
                   "target": {
@@ -1885,6 +1912,7 @@
                   "via": "renderFrame"
                 },
                 {
+                  "branch": "end",
                   "line": 639,
                   "name": "buildHudWorld",
                   "target": {
@@ -1893,6 +1921,7 @@
                   "via": "renderFrame"
                 },
                 {
+                  "branch": "end",
                   "line": 638,
                   "name": "renderFullScreen",
                   "target": {
@@ -1901,6 +1930,7 @@
                   "via": "renderFrame"
                 },
                 {
+                  "branch": "end",
                   "line": 750,
                   "name": "renderSessionEnd",
                   "target": {
@@ -1908,6 +1938,7 @@
                   }
                 },
                 {
+                  "branch": "end",
                   "line": 755,
                   "name": "computeSessionStats",
                   "target": {
@@ -1915,6 +1946,7 @@
                   }
                 },
                 {
+                  "branch": "end",
                   "line": 756,
                   "name": "appendRunRecord",
                   "target": {
@@ -1922,6 +1954,7 @@
                   }
                 },
                 {
+                  "branch": "end",
                   "line": 769,
                   "name": "promptMenu",
                   "target": {
@@ -1936,12 +1969,14 @@
                   }
                 },
                 {
+                  "branch": "firstWord === 'save'",
                   "line": 1359,
                   "name": "serialize",
                   "target": null,
                   "via": "saveGameGuarded"
                 },
                 {
+                  "branch": "firstWord === 'load'",
                   "line": 1228,
                   "name": "restoreSessionFromSave",
                   "target": {
@@ -1950,6 +1985,7 @@
                   "via": "loadSessionFromFile"
                 },
                 {
+                  "branch": "firstWord === 'help'",
                   "line": 1388,
                   "name": "getAvailableActions",
                   "target": null,
@@ -1986,6 +2022,7 @@
                   "via": "handlePlayerInput"
                 },
                 {
+                  "branch": "numAction",
                   "line": 1574,
                   "name": "runGuardedAction",
                   "target": {
@@ -1994,6 +2031,7 @@
                   "via": "handlePlayerInput"
                 },
                 {
+                  "branch": "numAction",
                   "line": 1576,
                   "name": "submitAction",
                   "target": null,
@@ -2016,6 +2054,7 @@
                   "via": "handlePlayerInput"
                 },
                 {
+                  "branch": "extra.group === 'debug'",
                   "line": 1616,
                   "name": "renderInspectorReport",
                   "target": {
@@ -2024,6 +2063,7 @@
                   "via": "handlePlayerInput"
                 },
                 {
+                  "branch": "extra.group === 'director'",
                   "line": 1621,
                   "name": "renderDirectorLedger",
                   "target": {
@@ -2032,6 +2072,7 @@
                   "via": "handlePlayerInput"
                 },
                 {
+                  "branch": "extra.group === 'journal'",
                   "line": 1626,
                   "name": "renderJournal",
                   "target": {
@@ -2175,6 +2216,7 @@
                   "via": "runSession"
                 },
                 {
+                  "branch": "end",
                   "line": 592,
                   "name": "buildExtraActions",
                   "target": {
@@ -2183,6 +2225,7 @@
                   "via": "computeExtras"
                 },
                 {
+                  "branch": "end",
                   "line": 636,
                   "name": "buildPartyStatusLine",
                   "target": {
@@ -2191,6 +2234,7 @@
                   "via": "renderFrame"
                 },
                 {
+                  "branch": "end",
                   "line": 639,
                   "name": "buildHudWorld",
                   "target": {
@@ -2199,6 +2243,7 @@
                   "via": "renderFrame"
                 },
                 {
+                  "branch": "end",
                   "line": 638,
                   "name": "renderFullScreen",
                   "target": {
@@ -2207,6 +2252,7 @@
                   "via": "renderFrame"
                 },
                 {
+                  "branch": "end",
                   "line": 750,
                   "name": "renderSessionEnd",
                   "target": {
@@ -2215,6 +2261,7 @@
                   "via": "runSession"
                 },
                 {
+                  "branch": "end",
                   "line": 755,
                   "name": "computeSessionStats",
                   "target": {
@@ -2223,6 +2270,7 @@
                   "via": "runSession"
                 },
                 {
+                  "branch": "end",
                   "line": 756,
                   "name": "appendRunRecord",
                   "target": {
@@ -2231,6 +2279,7 @@
                   "via": "runSession"
                 },
                 {
+                  "branch": "end",
                   "line": 769,
                   "name": "promptMenu",
                   "target": {
@@ -2248,6 +2297,7 @@
             {
               "calls": [
                 {
+                  "branch": "raw === undefined || raw === '' || raw.startsWith('-')",
                   "line": 188,
                   "name": "map",
                   "target": {
@@ -2264,6 +2314,7 @@
                   "via": "parseRunArgs"
                 },
                 {
+                  "branch": "!allPacks.some((p) => p.meta.id === raw)",
                   "line": 196,
                   "name": "map",
                   "target": {
@@ -2272,6 +2323,7 @@
                   "via": "parseRunArgs"
                 },
                 {
+                  "branch": "!parsed.ok",
                   "line": 876,
                   "name": "glyphsFor",
                   "target": {
@@ -2279,6 +2331,7 @@
                   }
                 },
                 {
+                  "branch": "!parsed.ok",
                   "line": 879,
                   "name": "closeReadline",
                   "target": {
@@ -2286,6 +2339,7 @@
                   }
                 },
                 {
+                  "branch": "parsed.listPacks",
                   "line": 886,
                   "name": "formatPackCatalog",
                   "target": {
@@ -2293,6 +2347,7 @@
                   }
                 },
                 {
+                  "branch": "parsed.listPacks",
                   "line": 887,
                   "name": "closeReadline",
                   "target": {
@@ -2328,6 +2383,7 @@
                   }
                 },
                 {
+                  "branch": "slot.gameId",
                   "line": 446,
                   "name": "find",
                   "target": {
@@ -2336,6 +2392,7 @@
                   "via": "packForResumeSlot"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 368,
                   "name": "frameRule",
                   "target": {
@@ -2344,6 +2401,7 @@
                   "via": "formatFrameBanner"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 368,
                   "name": "clipToWidth",
                   "target": {
@@ -2352,6 +2410,7 @@
                   "via": "formatFrameBanner"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 370,
                   "name": "frameRule",
                   "target": {
@@ -2360,6 +2419,7 @@
                   "via": "formatFrameBanner"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 476,
                   "name": "promptMenu",
                   "target": {
@@ -2368,6 +2428,7 @@
                   "via": "maybeOfferResume"
                 },
                 {
+                  "branch": "restorable.length === 1",
                   "line": 1228,
                   "name": "restoreSessionFromSave",
                   "target": {
@@ -2524,12 +2585,14 @@
             {
               "calls": [
                 {
+                  "branch": "firstWord === 'save'",
                   "line": 1359,
                   "name": "serialize",
                   "target": null,
                   "via": "saveGameGuarded"
                 },
                 {
+                  "branch": "firstWord === 'load'",
                   "line": 1228,
                   "name": "restoreSessionFromSave",
                   "target": {
@@ -2538,6 +2601,7 @@
                   "via": "loadSessionFromFile"
                 },
                 {
+                  "branch": "firstWord === 'help'",
                   "line": 1388,
                   "name": "getAvailableActions",
                   "target": null,
@@ -2570,6 +2634,7 @@
                   }
                 },
                 {
+                  "branch": "numAction",
                   "line": 1574,
                   "name": "runGuardedAction",
                   "target": {
@@ -2577,6 +2642,7 @@
                   }
                 },
                 {
+                  "branch": "numAction",
                   "line": 1576,
                   "name": "submitAction",
                   "target": null
@@ -2596,6 +2662,7 @@
                   }
                 },
                 {
+                  "branch": "extra.group === 'debug'",
                   "line": 1616,
                   "name": "renderInspectorReport",
                   "target": {
@@ -2603,6 +2670,7 @@
                   }
                 },
                 {
+                  "branch": "extra.group === 'director'",
                   "line": 1621,
                   "name": "renderDirectorLedger",
                   "target": {
@@ -2610,6 +2678,7 @@
                   }
                 },
                 {
+                  "branch": "extra.group === 'journal'",
                   "line": 1626,
                   "name": "renderJournal",
                   "target": {
@@ -2617,6 +2686,7 @@
                   }
                 },
                 {
+                  "branch": "extra",
                   "line": 1634,
                   "name": "runGuardedAction",
                   "target": {
@@ -2624,11 +2694,13 @@
                   }
                 },
                 {
+                  "branch": "extra",
                   "line": 1636,
                   "name": "submitAction",
                   "target": null
                 },
                 {
+                  "branch": "/^\\d/.test(trimmed)",
                   "line": 1653,
                   "name": "buildActionList",
                   "target": {
@@ -2643,6 +2715,7 @@
                   }
                 },
                 {
+                  "branch": "textAction",
                   "line": 1667,
                   "name": "runGuardedAction",
                   "target": {
@@ -2650,6 +2723,7 @@
                   }
                 },
                 {
+                  "branch": "textAction",
                   "line": 1669,
                   "name": "submitAction",
                   "target": null
@@ -2663,6 +2737,7 @@
             {
               "calls": [
                 {
+                  "branch": "!parsed.ok",
                   "line": 1821,
                   "name": "glyphsFor",
                   "target": {
@@ -2684,6 +2759,7 @@
                   }
                 },
                 {
+                  "branch": "err instanceof PackLoadError",
                   "line": 1880,
                   "name": "glyphsFor",
                   "target": {
@@ -3348,6 +3424,7 @@
                   }
                 },
                 {
+                  "branch": "trigger",
                   "line": 349,
                   "name": "formatEndgameForNarrator",
                   "target": {
@@ -4931,8 +5008,8 @@
       "importConfidence": "full",
       "name": "cli",
       "origin": "authored",
-      "outsideReads": 7,
-      "outsideWrites": 3,
+      "outsideReads": 32,
+      "outsideWrites": 4,
       "role": "code",
       "testedBy": 41,
       "unresolvedSites": 1
@@ -5644,12 +5721,13 @@
       "importConfidence": "full",
       "name": "core",
       "origin": "authored",
+      "outsideReads": 10,
       "role": "code",
       "testedBy": 276,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 6,
+      "dynamicReads": 4,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -6187,6 +6265,7 @@
       "importConfidence": "full",
       "name": "docs",
       "origin": "mixed",
+      "outsideReads": 2,
       "role": "docs",
       "testedBy": 1,
       "unresolvedSites": 0
@@ -6482,6 +6561,7 @@
       "importConfidence": "full",
       "name": "equipment",
       "origin": "authored",
+      "outsideReads": 2,
       "role": "code",
       "testedBy": 157,
       "unresolvedSites": 0
@@ -6716,15 +6796,16 @@
       "importConfidence": "full",
       "name": "image-gen",
       "origin": "authored",
+      "outsideReads": 4,
       "role": "code",
       "testedBy": 6,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 1,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 2,
+      "dynamicWrites": 0,
       "entryPoints": [
         "packages/ledger-adapter/src/index.ts"
       ],
@@ -7219,6 +7300,8 @@
       "importConfidence": "full",
       "name": "ledger-adapter",
       "origin": "mixed",
+      "outsideReads": 3,
+      "outsideWrites": 2,
       "role": "code",
       "testedBy": 17,
       "unresolvedSites": 0
@@ -10007,15 +10090,16 @@
       "importConfidence": "full",
       "name": "modules",
       "origin": "authored",
+      "outsideReads": 19,
       "role": "code",
       "testedBy": 231,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 9,
+      "dynamicReads": 6,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 20,
+      "dynamicWrites": 8,
       "entryPoints": [
         "packages/ollama/src/bin.ts",
         "packages/ollama/src/index.ts"
@@ -11996,8 +12080,8 @@
       "importConfidence": "full",
       "name": "ollama",
       "origin": "authored",
-      "outsideReads": 4,
-      "outsideWrites": 6,
+      "outsideReads": 11,
+      "outsideWrites": 23,
       "role": "code",
       "testedBy": 38,
       "unresolvedSites": 0
@@ -12186,6 +12270,7 @@
       "importConfidence": "full",
       "name": "pack-registry",
       "origin": "authored",
+      "outsideReads": 1,
       "role": "code",
       "testedBy": 105,
       "unresolvedSites": 2
@@ -12567,6 +12652,7 @@
       "importConfidence": "full",
       "name": "rumor-system",
       "origin": "authored",
+      "outsideReads": 8,
       "role": "code",
       "testedBy": 3,
       "unresolvedSites": 0
@@ -12598,7 +12684,7 @@
           "path": "scripts/mixed-game-viability-proof.tsconfig.json"
         },
         {
-          "entry": "publishableWorkspaces",
+          "entry": "run",
           "entryRule": 1,
           "hash": "9d3e08d9e68efd56634f4ba058f2ccdc009d9a042120552aa187e947f57b39e0",
           "path": "scripts/verify-isolated-consumer.mjs",
@@ -12862,6 +12948,7 @@
       "importConfidence": "full",
       "name": "sidecar",
       "origin": "authored",
+      "outsideReads": 4,
       "role": "code",
       "testedBy": 14,
       "unresolvedSites": 0
@@ -13218,7 +13305,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -13420,6 +13507,7 @@
       "importConfidence": "full",
       "name": "soundpack-core",
       "origin": "authored",
+      "outsideReads": 4,
       "role": "code",
       "testedBy": 8,
       "unresolvedSites": 0
@@ -16495,6 +16583,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "job": "docker-smoke",
+          "path": "packages/cli/src/bin.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile"
+        },
+        {
           "job": "build-and-test",
           "matched": true,
           "path": "packages/cli/src/c0-intake-table.test.ts",
@@ -17302,13 +17396,6 @@
         {
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-fantasy/src/ruleset.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
           "path": "packages/starter-gladiator/src/ability-integration.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -17687,7 +17774,7 @@
           "via": "eslint eslint.config.js"
         }
       ],
-      "runsCount": 401,
+      "runsCount": 402,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -17771,6 +17858,9 @@
       "name": "Docs Integrity",
       "permissions": [
         "contents:read"
+      ],
+      "programs": [
+        "git"
       ],
       "pushes": false,
       "reach": [
@@ -18023,6 +18113,26 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "gated": [
+        {
+          "jobs": [
+            "docker",
+            "npm"
+          ],
+          "pushes": false,
+          "sends": [
+            "publishesTo:container image",
+            "publishesTo:npm",
+            "packages:{\"registry\":\"npm\",\"workspace\":true}"
+          ],
+          "stages": [],
+          "when": {
+            "inputs": {
+              "dry_run": false
+            }
+          }
+        }
+      ],
       "landings": [
         "docs/c0-alignment/intake-table.json",
         "docs/c0-alignment/reverse-table.json",
@@ -18431,9 +18541,20 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "job": "docker",
+          "path": "packages/cli/src/bin.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile"
+        },
+        {
           "job": "npm",
           "path": "packages/cli/src/bin.ts",
-          "runKind": "executes"
+          "runKind": "executes",
+          "when": {
+            "inputs": {
+              "dry_run": false
+            }
+          }
         },
         {
           "job": "npm",
@@ -19638,11 +19759,8 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
-        "publishes": true,
-        "publishesTo": [
-          "container image",
-          "npm"
-        ],
+        "publishes": false,
+        "publishesTo": [],
         "releases": false
       },
       "stages": [],
@@ -22245,16 +22363,6 @@
           "confidence": "ast"
         },
         {
-          "by": "packages/cli/src/external-pack.ts",
-          "call": "existsSync",
-          "confidence": "weak"
-        },
-        {
-          "by": "packages/cli/src/external-pack.ts",
-          "call": "readFileSync",
-          "confidence": "weak"
-        },
-        {
           "by": "packages/ollama/src/commands/emit-pack.ts",
           "call": "literal",
           "confidence": "ast"
@@ -22296,6 +22404,12 @@
     },
     {
       "readers": [
+        {
+          "by": "packages/cli/src/engine-dormant-surface.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "packages/modules/src/ability-phase4-integration.test.ts",
           "call": "readdirSync",

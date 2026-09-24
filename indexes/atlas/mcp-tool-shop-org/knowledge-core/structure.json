@@ -233,7 +233,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 1,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -398,6 +398,7 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsideReads": 6,
       "role": "code",
       "testedBy": 2,
       "unresolvedSites": 0
@@ -715,6 +716,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "test/pipeline.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "knowledge/corpus/fixtures/corpus-divergence.json",
@@ -777,6 +784,12 @@
         {
           "by": "test/contracts.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/contracts.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }

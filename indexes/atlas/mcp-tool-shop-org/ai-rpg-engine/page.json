@@ -260,7 +260,7 @@
       },
       {
         "kind": "door",
-        "sentence": "CI runs 392 more files than before.",
+        "sentence": "CI runs 393 more files than before.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
@@ -313,6 +313,13 @@
         "sentence": "docs was authored and is now mixed.",
         "subjects": [
           "docs"
+        ]
+      },
+      {
+        "kind": "sequence",
+        "sentence": "scripts/verify-isolated-consumer.mjs now starts at run; it started at publishable workspaces.",
+        "subjects": [
+          "scripts/verify-isolated-consumer.mjs"
         ]
       },
       {
@@ -411,7 +418,7 @@
   "changesTogetherWithTests": 11,
   "commit": "f7e56e65779e14e3b061a5e581fd13783abe2e98",
   "defaultBranch": "main",
-  "derived": "39 parts, mostly TypeScript (797 files). Work enters through 6 doors; the busiest is CI, which reaches 35 parts. It publishes to npm and a container image. People run ai and ai-rpg-engine.",
+  "derived": "39 parts, mostly TypeScript (797 files). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. People run ai and ai-rpg-engine.",
   "doors": [
     {
       "checks": [
@@ -613,6 +620,7 @@
         }
       ],
       "runs": [
+        "packages/cli/src/bin.ts",
         "scripts/check-packaging.mjs",
         "scripts/verify-isolated-consumer.mjs",
         "scripts/verify-mixed-game-viability.mjs",
@@ -756,7 +764,6 @@
         "packages/starter-fantasy/src/json-boot-recipe.test.ts",
         "packages/starter-fantasy/src/narration.test.ts",
         "packages/starter-fantasy/src/quests.test.ts",
-        "packages/starter-fantasy/src/ruleset.test.ts",
         "packages/starter-gladiator/src/ability-integration.test.ts",
         "packages/starter-gladiator/src/content-truth.test.ts",
         "packages/starter-gladiator/src/content.test.ts",
@@ -805,7 +812,7 @@
         "scripts/gates.test.ts",
         "templates/starter/src/starter.test.ts"
       ],
-      "runsCount": 392,
+      "runsCount": 393,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -1208,7 +1215,7 @@
       ],
       "runsCount": 392,
       "sends": [
-        "publishes to npm and a container image"
+        "publishes workspace packages to npm and a container image (on a run by hand, only with dry_run false)"
       ],
       "stages": [],
       "triggers": [
@@ -1253,6 +1260,9 @@
       "id": ".github/workflows/docs-integrity.yml",
       "landings": [],
       "name": "Docs Integrity",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -1646,25 +1656,25 @@
     {
       "place": "docs/c0-alignment/intake-table.json",
       "writers": [
-        "packages/cli/src/c0-intake-table.test.ts"
+        "packages/cli/src/c0-intake-table.test.ts (a test)"
       ]
     },
     {
       "place": "docs/c0-alignment/reverse-table.json",
       "writers": [
-        "packages/cli/src/c0-reverse-table.test.ts"
+        "packages/cli/src/c0-reverse-table.test.ts (a test)"
       ]
     },
     {
       "place": "docs/c0-alignment/version-skew.json",
       "writers": [
-        "packages/cli/src/c0-version-skew.test.ts"
+        "packages/cli/src/c0-version-skew.test.ts (a test)"
       ]
     },
     {
       "place": "docs/contract-v1/rng-audit.json",
       "writers": [
-        "packages/cli/src/c1-rng-audit.test.ts"
+        "packages/cli/src/c1-rng-audit.test.ts (a test)"
       ]
     },
     {
@@ -1692,15 +1702,15 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T02:04:22.644Z",
+  "generatedAt": "2026-09-24T08:22:48.103Z",
   "limits": [
     "3 import sites could not be resolved.",
     "10 files use syntax the parser cannot read (packages/cli/src/sidecar-pack-intake.test.ts, packages/content-schema/src/loader.ts, packages/core/src/engine.ts and 7 more), so what they import is not known: 4 in modules (an import type followed by `[]`), 2 in ledger-adapter (a NUL character inside a string), 1 in cli (`typeof import(…)` as a type argument), 1 in content-schema (a NUL character inside a string), 1 in core (an import type followed by `[]`), 1 in ollama (an import type followed by `[]`).",
-    "38 writes and 56 reads use paths built at run time and are not named here.",
+    "26 writes and 36 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "9 writes and 11 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "29 writes and 113 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "9 commands are built at run time and not followed, 8 of them in tests.",
-    "CI runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "CI runs or checks 402 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
     "Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -1753,11 +1763,226 @@
     }
   ],
   "repo": "mcp-tool-shop-org/ai-rpg-engine",
-  "sequences": [],
+  "sequences": [
+    {
+      "alternatives": [
+        {
+          "steps": [
+            {
+              "name": "closeReadline",
+              "part": "cli",
+              "partLabel": "cli",
+              "phrase": "close readline"
+            }
+          ],
+          "when": "args.includes('--version') || args.includes('-v') || comman…"
+        },
+        {
+          "steps": [
+            {
+              "name": "closeReadline",
+              "part": "cli",
+              "partLabel": "cli",
+              "phrase": "close readline"
+            }
+          ],
+          "when": "wantsHelp && !COMMANDS_WITH_OWN_HELP.has(command)"
+        },
+        {
+          "steps": [
+            {
+              "name": "map",
+              "part": "cli",
+              "partLabel": "cli",
+              "phrase": "map"
+            }
+          ],
+          "when": "raw === undefined || raw === '' || raw.startsWith('-')"
+        },
+        {
+          "steps": [
+            {
+              "name": "map",
+              "part": "cli",
+              "partLabel": "cli",
+              "phrase": "map"
+            }
+          ],
+          "when": "!allPacks.some((p) => p.meta.id === raw)"
+        },
+        {
+          "steps": [
+            {
+              "name": "glyphsFor",
+              "part": "terminal-ui",
+              "partLabel": "terminal-ui",
+              "phrase": "glyphs for"
+            },
+            {
+              "name": "closeReadline",
+              "part": "cli",
+              "partLabel": "cli",
+              "phrase": "close readline"
+            }
+          ],
+          "when": "!parsed.ok"
+        },
+        {
+          "steps": [
+            {
+              "name": "formatPackCatalog",
+              "part": "cli",
+              "partLabel": "cli",
+              "phrase": "format pack catalog"
+            },
+            {
+              "name": "closeReadline",
+              "part": "cli",
+              "partLabel": "cli",
+              "phrase": "close readline"
+            }
+          ],
+          "when": "parsed.listPacks"
+        },
+        {
+          "steps": [
+            {
+              "name": "find",
+              "part": "cli",
+              "partLabel": "cli",
+              "phrase": "find"
+            }
+          ],
+          "when": "slot.gameId"
+        },
+        {
+          "steps": [
+            {
+              "count": 3,
+              "name": null,
+              "part": "terminal-ui",
+              "partLabel": "terminal-ui",
+              "phrase": "src"
+            },
+            {
+              "name": "promptMenu",
+              "part": "cli",
+              "partLabel": "cli",
+              "phrase": "prompt menu"
+            },
+            {
+              "name": "restoreSessionFromSave",
+              "part": "cli",
+              "partLabel": "cli",
+              "phrase": "restore session from save"
+            }
+          ],
+          "when": "restorable.length === 1"
+        }
+      ],
+      "entry": "main",
+      "file": "packages/cli/src/bin.ts",
+      "inner": [
+        {
+          "file": "packages/cli/src/restore-session.ts",
+          "name": "restoreSessionFromSave",
+          "part": "cli",
+          "partLabel": "cli",
+          "phrase": "restore session from save",
+          "steps": [
+            {
+              "name": "createGame",
+              "part": null,
+              "partLabel": null,
+              "phrase": "create game"
+            },
+            {
+              "name": "deserialize",
+              "part": "core",
+              "partLabel": "core",
+              "phrase": "deserialize"
+            },
+            {
+              "name": "migrateModuleStates",
+              "part": "core",
+              "partLabel": "core",
+              "phrase": "migrate module states"
+            }
+          ]
+        }
+      ],
+      "part": "cli",
+      "partLabel": "cli",
+      "phrase": "main",
+      "steps": [
+        {
+          "name": "some",
+          "part": "cli",
+          "partLabel": "cli",
+          "phrase": "some"
+        },
+        {
+          "name": "find",
+          "part": "cli",
+          "partLabel": "cli",
+          "phrase": "find"
+        },
+        {
+          "name": "loadExternalPack",
+          "part": "cli",
+          "partLabel": "cli",
+          "phrase": "load external pack"
+        },
+        {
+          "name": "glyphsFor",
+          "part": "terminal-ui",
+          "partLabel": "terminal-ui",
+          "phrase": "glyphs for"
+        },
+        {
+          "name": "closeReadline",
+          "part": "cli",
+          "partLabel": "cli",
+          "phrase": "close readline"
+        },
+        {
+          "name": "promptMenu",
+          "part": "cli",
+          "partLabel": "cli",
+          "phrase": "prompt menu"
+        },
+        {
+          "name": "readRunHistory",
+          "part": "cli",
+          "partLabel": "cli",
+          "phrase": "read run history"
+        },
+        {
+          "name": "map",
+          "part": "cli",
+          "partLabel": "cli",
+          "phrase": "map"
+        },
+        {
+          "name": "formatRecentRuns",
+          "part": "cli",
+          "partLabel": "cli",
+          "phrase": "format recent runs"
+        },
+        {
+          "name": "map",
+          "part": "cli",
+          "partLabel": "cli",
+          "phrase": "map"
+        }
+      ]
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "scripts/check-packaging.mjs"
+    "packages/cli/src/bin.ts",
+    "packages/modules/src/index.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -1797,30 +2022,30 @@
     "starter-zombie": 42,
     "terminal-ui": 24
   },
-  "unnamedWrites": 38,
+  "unnamedWrites": 26,
   "unread": [
     {
       "place": "docs/c0-alignment/intake-table.json",
       "writers": [
-        "packages/cli/src/c0-intake-table.test.ts"
+        "packages/cli/src/c0-intake-table.test.ts (a test)"
       ]
     },
     {
       "place": "docs/c0-alignment/reverse-table.json",
       "writers": [
-        "packages/cli/src/c0-reverse-table.test.ts"
+        "packages/cli/src/c0-reverse-table.test.ts (a test)"
       ]
     },
     {
       "place": "docs/c0-alignment/version-skew.json",
       "writers": [
-        "packages/cli/src/c0-version-skew.test.ts"
+        "packages/cli/src/c0-version-skew.test.ts (a test)"
       ]
     },
     {
       "place": "docs/contract-v1/rng-audit.json",
       "writers": [
-        "packages/cli/src/c1-rng-audit.test.ts"
+        "packages/cli/src/c1-rng-audit.test.ts (a test)"
       ]
     },
     {
@@ -1848,6 +2073,7 @@
       ]
     }
   ],
+  "unreadFiles": 10,
   "unreadNote": [],
   "untested": [
     {

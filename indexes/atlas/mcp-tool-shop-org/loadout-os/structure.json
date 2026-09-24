@@ -51,7 +51,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 20,
+      "dynamicReads": 4,
       "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 1,
       "dynamicWrites": 4,
@@ -316,7 +316,7 @@
       "importConfidence": "full",
       "name": "cli",
       "origin": "authored",
-      "outsideReads": 8,
+      "outsideReads": 25,
       "outsideWrites": 5,
       "role": "code",
       "testedBy": 12,
@@ -365,10 +365,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 6,
+      "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [
         "packages/kernel/src/cli.ts",
         "packages/kernel/src/index.ts"
@@ -844,6 +844,7 @@
                   }
                 },
                 {
+                  "branch": "json",
                   "line": 188,
                   "name": "summaryToJSON",
                   "passed": true,
@@ -1294,12 +1295,14 @@
       "importConfidence": "full",
       "name": "kernel",
       "origin": "authored",
+      "outsideReads": 4,
+      "outsideWrites": 1,
       "role": "docs",
       "testedBy": 31,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 13,
+      "dynamicReads": 6,
       "dynamicSpawns": 3,
       "dynamicSpawnsInTests": 3,
       "dynamicWrites": 0,
@@ -2239,7 +2242,8 @@
       "importConfidence": "full",
       "name": "memories",
       "origin": "authored",
-      "outsideWrites": 1,
+      "outsideReads": 7,
+      "outsideWrites": 2,
       "role": "docs",
       "testedBy": 16,
       "unresolvedSites": 0
@@ -2340,7 +2344,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 14,
+      "dynamicReads": 9,
       "dynamicSpawns": 7,
       "dynamicSpawnsInTests": 7,
       "dynamicWrites": 4,
@@ -2915,12 +2919,21 @@
             {
               "calls": [
                 {
+                  "branch": "!cmd || cmd === \"help\" || cmd === \"--help\" || cmd === \"-h\"",
                   "line": 21,
                   "name": "log",
                   "target": {
                     "file": "packages/rules/src/console.ts"
                   },
                   "via": "helpCommand"
+                },
+                {
+                  "branch": "cmd === \"--version\" || cmd === \"-V\"",
+                  "line": 71,
+                  "name": "log",
+                  "target": {
+                    "file": "packages/rules/src/console.ts"
+                  }
                 },
                 {
                   "inner": [
@@ -3163,6 +3176,7 @@
                       "via": "validateRules"
                     },
                     {
+                      "branch": "issues.length === 0",
                       "line": 301,
                       "name": "ok",
                       "target": {
@@ -3200,6 +3214,7 @@
                       }
                     },
                     {
+                      "branch": "!existsSync(indexPath)",
                       "line": 32,
                       "name": "positionalArgs",
                       "target": {
@@ -3207,6 +3222,7 @@
                       }
                     },
                     {
+                      "branch": "!existsSync(indexPath)",
                       "line": 32,
                       "name": "resolveClaudeMd",
                       "target": {
@@ -3214,6 +3230,7 @@
                       }
                     },
                     {
+                      "branch": "!existsSync(indexPath)",
                       "line": 34,
                       "name": "fail",
                       "target": {
@@ -3221,6 +3238,7 @@
                       }
                     },
                     {
+                      "branch": "!existsSync(indexPath)",
                       "line": 43,
                       "name": "estimateTokens",
                       "target": {
@@ -3228,6 +3246,7 @@
                       }
                     },
                     {
+                      "branch": "!existsSync(indexPath)",
                       "line": 55,
                       "name": "log",
                       "target": {
@@ -3286,6 +3305,7 @@
                       }
                     },
                     {
+                      "branch": "existsSync(outputPath)",
                       "line": 91,
                       "name": "warn",
                       "target": {
@@ -3293,6 +3313,7 @@
                       }
                     },
                     {
+                      "branch": "existsSync(outputPath)",
                       "line": 92,
                       "name": "info",
                       "target": {
@@ -3414,6 +3435,7 @@
                   }
                 },
                 {
+                  "branch": "existsSync(outputPath)",
                   "line": 91,
                   "name": "warn",
                   "target": {
@@ -3421,6 +3443,7 @@
                   }
                 },
                 {
+                  "branch": "existsSync(outputPath)",
                   "line": 92,
                   "name": "info",
                   "target": {
@@ -3591,6 +3614,7 @@
                   }
                 },
                 {
+                  "branch": "report.proposals.length === 0",
                   "line": 189,
                   "name": "ok",
                   "target": {
@@ -3694,6 +3718,7 @@
                   }
                 },
                 {
+                  "branch": "!existsSync(indexPath)",
                   "line": 32,
                   "name": "positionalArgs",
                   "target": {
@@ -3701,6 +3726,7 @@
                   }
                 },
                 {
+                  "branch": "!existsSync(indexPath)",
                   "line": 32,
                   "name": "resolveClaudeMd",
                   "target": {
@@ -3708,6 +3734,7 @@
                   }
                 },
                 {
+                  "branch": "!existsSync(indexPath)",
                   "line": 34,
                   "name": "fail",
                   "target": {
@@ -3715,6 +3742,7 @@
                   }
                 },
                 {
+                  "branch": "!existsSync(indexPath)",
                   "line": 43,
                   "name": "estimateTokens",
                   "target": {
@@ -3722,6 +3750,7 @@
                   }
                 },
                 {
+                  "branch": "!existsSync(indexPath)",
                   "line": 55,
                   "name": "log",
                   "target": {
@@ -3909,6 +3938,7 @@
                   "via": "validateRules"
                 },
                 {
+                  "branch": "issues.length === 0",
                   "line": 301,
                   "name": "ok",
                   "target": {
@@ -3941,7 +3971,7 @@
       "importConfidence": "full",
       "name": "rules",
       "origin": "authored",
-      "outsideReads": 9,
+      "outsideReads": 16,
       "outsideWrites": 2,
       "role": "docs",
       "testedBy": 15,
@@ -4166,7 +4196,13 @@
           "matched": true,
           "path": "site/astro.config.mjs",
           "runKind": "executes",
-          "via": "astro build"
+          "via": "astro build",
+          "when": {
+            "branches": [
+              "main"
+            ],
+            "event": "push"
+          }
         },
         {
           "directory": true,
@@ -4174,7 +4210,13 @@
           "matched": true,
           "path": "site/src/",
           "runKind": "executes",
-          "via": "astro build"
+          "via": "astro build",
+          "when": {
+            "branches": [
+              "main"
+            ],
+            "event": "push"
+          }
         }
       ],
       "runsCount": 6,
@@ -4372,6 +4414,13 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "packages/cli",
+            "name": "@mcptoolshop/loadout-os",
+            "registry": "npm"
+          }
+        ],
         "publishes": true,
         "publishesTo": [
           "npm"
@@ -4644,16 +4693,6 @@
       "readers": [
         {
           "by": "apps/hook/esbuild.config.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/cli/src/doctor.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "packages/cli/src/hook.ts",
           "call": "literal",
           "confidence": "ast"
         }

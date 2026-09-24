@@ -267,7 +267,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 23,
+      "dynamicReads": 4,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -315,7 +315,7 @@
       "importConfidence": "full",
       "name": "bin",
       "origin": "authored",
-      "outsideReads": 16,
+      "outsideReads": 44,
       "outsideWrites": 1,
       "role": "code",
       "testedBy": 2,
@@ -726,6 +726,9 @@
       ],
       "name": "CI",
       "permissions": [],
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -744,7 +747,12 @@
         {
           "job": "dogfood",
           "path": "bin/shipcheck.mjs",
-          "runKind": "executes"
+          "runKind": "executes",
+          "when": {
+            "branches": [
+              "main"
+            ]
+          }
         },
         {
           "job": "verify",
@@ -962,6 +970,9 @@
         "contents:read",
         "id-token:write"
       ],
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -998,6 +1009,13 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/shipcheck",
+            "registry": "npm"
+          }
+        ],
         "publishes": true,
         "publishesTo": [
           "npm"
@@ -1144,6 +1162,9 @@
       "mentions": [],
       "name": "shipcheck",
       "permissions": [],
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -1190,27 +1211,6 @@
     "tracked": 101
   },
   "landings": [
-    {
-      "readers": [
-        {
-          "by": "bin/shipcheck.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "bin/shipcheck.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "bin/shipcheck.mjs",
-          "call": "readdirSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".github/workflows",
-      "writers": []
-    },
     {
       "readers": [
         {
@@ -1385,11 +1385,6 @@
         },
         {
           "by": "bin/shipcheck.mjs",
-          "call": "existsSync",
-          "confidence": "weak"
-        },
-        {
-          "by": "bin/shipcheck.mjs",
           "call": "literal",
           "confidence": "ast"
         },
@@ -1402,6 +1397,11 @@
           "by": "bin/shipcheck.mjs",
           "call": "readFileSync",
           "confidence": "ast"
+        },
+        {
+          "by": "bin/shipcheck.mjs",
+          "call": "readFileSync",
+          "confidence": "weak"
         },
         {
           "by": "test/shipcheck.test.mjs",

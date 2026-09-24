@@ -492,7 +492,23 @@
             {
               "calls": [
                 {
+                  "branch": "not token_path.exists()",
                   "line": 1296,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "line": 1321,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not token_text",
+                  "line": 1328,
                   "name": "UserInputError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -507,6 +523,7 @@
             {
               "calls": [
                 {
+                  "branch": "args.ollama and args.format != \"gguf\"",
                   "line": 1482,
                   "name": "UserInputError",
                   "target": {
@@ -584,11 +601,38 @@
                   }
                 },
                 {
+                  "branch": "inline_hub_token and hub_token_file",
                   "line": 1819,
                   "name": "UserInputError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   }
+                },
+                {
+                  "branch": "not token_path.exists()",
+                  "line": 1296,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_read_hub_token_file"
+                },
+                {
+                  "line": 1321,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_read_hub_token_file"
+                },
+                {
+                  "branch": "not token_text",
+                  "line": 1328,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_read_hub_token_file"
                 },
                 {
                   "line": 1863,
@@ -614,6 +658,7 @@
             {
               "calls": [
                 {
+                  "branch": "getattr(args, \"error_codes\", False)",
                   "line": 2180,
                   "name": "print_error_code_catalog",
                   "target": {
@@ -635,6 +680,7 @@
                   }
                 },
                 {
+                  "branch": "getattr(args, \"json\", False)",
                   "line": 2339,
                   "name": "FEATURES",
                   "passed": true,
@@ -695,6 +741,7 @@
             {
               "calls": [
                 {
+                  "branch": "auth_file and args.auth",
                   "line": 3143,
                   "name": "UserInputError",
                   "target": {
@@ -702,7 +749,54 @@
                   }
                 },
                 {
+                  "branch": "not auth_file_path.exists()",
+                  "line": 3175,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "line": 3198,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not auth_text",
+                  "line": 3205,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "line": 3218,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "args.share and args.auth is None",
                   "line": 3239,
+                  "name": "BackpropagateError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "requested_host is not None and requested_host not in _LOOPB…",
+                  "line": 3257,
+                  "name": "BackpropagateError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "args.auth is not None and not ENFORCEMENT_AVAILABLE",
+                  "line": 3286,
                   "name": "BackpropagateError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -716,6 +810,7 @@
                   }
                 },
                 {
+                  "branch": "_busy_port is not None",
                   "line": 3351,
                   "name": "BackpropagateError",
                   "target": {
@@ -776,6 +871,7 @@
                   }
                 },
                 {
+                  "branch": "session_kind == \"multi_run\"",
                   "line": 3878,
                   "name": "MergeMode",
                   "target": {
@@ -783,6 +879,7 @@
                   }
                 },
                 {
+                  "branch": "session_kind == \"multi_run\"",
                   "line": 3874,
                   "name": "MultiRunConfig",
                   "target": {
@@ -790,6 +887,7 @@
                   }
                 },
                 {
+                  "branch": "session_kind == \"multi_run\"",
                   "line": 3881,
                   "name": "MultiRunTrainer",
                   "target": {
@@ -797,6 +895,7 @@
                   }
                 },
                 {
+                  "branch": "session_kind == \"multi_run\"",
                   "line": 3886,
                   "name": "run",
                   "receiver": "MultiRunTrainer",
@@ -851,11 +950,38 @@
             {
               "calls": [
                 {
+                  "branch": "inline_token and token_file",
                   "line": 3974,
                   "name": "UserInputError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   }
+                },
+                {
+                  "branch": "not token_path.exists()",
+                  "line": 1296,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_read_hub_token_file"
+                },
+                {
+                  "line": 1321,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_read_hub_token_file"
+                },
+                {
+                  "branch": "not token_text",
+                  "line": 1328,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_read_hub_token_file"
                 },
                 {
                   "line": 4021,
@@ -1018,6 +1144,16 @@
                   }
                 },
                 {
+                  "branch": "key in _REPLAY_NUMERIC_OVERRIDE_KEYS",
+                  "line": 4885,
+                  "name": "InvalidSettingError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_coerce"
+                },
+                {
+                  "branch": "session_kind == \"multi_run\"",
                   "line": 4945,
                   "name": "MergeMode",
                   "target": {
@@ -1025,6 +1161,7 @@
                   }
                 },
                 {
+                  "branch": "session_kind == \"multi_run\"",
                   "line": 4955,
                   "name": "MultiRunConfig",
                   "passed": true,
@@ -1033,6 +1170,7 @@
                   }
                 },
                 {
+                  "branch": "session_kind == \"multi_run\"",
                   "line": 4999,
                   "name": "MultiRunConfig",
                   "target": {
@@ -1040,6 +1178,7 @@
                   }
                 },
                 {
+                  "branch": "session_kind == \"multi_run\"",
                   "line": 5000,
                   "name": "MultiRunTrainer",
                   "target": {
@@ -1047,6 +1186,7 @@
                   }
                 },
                 {
+                  "branch": "session_kind == \"multi_run\"",
                   "line": 5005,
                   "name": "run",
                   "receiver": "MultiRunTrainer",
@@ -1160,6 +1300,7 @@
                   }
                 },
                 {
+                  "branch": "gate_tripped",
                   "line": 5693,
                   "name": "get_logger",
                   "target": {
@@ -1211,6 +1352,14 @@
                   }
                 },
                 {
+                  "branch": "not output_dir.exists()",
+                  "line": 5915,
+                  "name": "get_logger",
+                  "target": {
+                    "file": "backpropagate/logging_config.py"
+                  }
+                },
+                {
                   "line": 5927,
                   "name": "RunHistoryManager",
                   "target": {
@@ -1235,6 +1384,30 @@
                   "via": "_resolve"
                 },
                 {
+                  "branch": "not heldout_path.exists() or heldout_path.is_dir()",
+                  "line": 5973,
+                  "name": "get_logger",
+                  "target": {
+                    "file": "backpropagate/logging_config.py"
+                  }
+                },
+                {
+                  "branch": "not prompts_path.exists() or prompts_path.is_dir()",
+                  "line": 5994,
+                  "name": "get_logger",
+                  "target": {
+                    "file": "backpropagate/logging_config.py"
+                  }
+                },
+                {
+                  "branch": "not ref_path.exists() or ref_path.is_dir()",
+                  "line": 6022,
+                  "name": "get_logger",
+                  "target": {
+                    "file": "backpropagate/logging_config.py"
+                  }
+                },
+                {
                   "line": 6088,
                   "name": "evaluate_run",
                   "target": {
@@ -1242,6 +1415,15 @@
                   }
                 },
                 {
+                  "branch": "getattr(args, \"gate_against\", None)",
+                  "line": 6094,
+                  "name": "evaluate_run",
+                  "target": {
+                    "file": "backpropagate/eval.py"
+                  }
+                },
+                {
+                  "branch": "getattr(args, \"gate_against\", None)",
                   "line": 6100,
                   "name": "eval_gate",
                   "target": {
@@ -1249,6 +1431,7 @@
                   }
                 },
                 {
+                  "branch": "not decision.accept",
                   "line": 6134,
                   "name": "get_logger",
                   "target": {
@@ -1256,6 +1439,7 @@
                   }
                 },
                 {
+                  "branch": "getattr(args, \"vs\", None)",
                   "line": 6150,
                   "name": "evaluate_run",
                   "target": {
@@ -1263,6 +1447,7 @@
                   }
                 },
                 {
+                  "branch": "getattr(args, \"vs\", None)",
                   "line": 6151,
                   "name": "diff_evals",
                   "target": {
@@ -1285,7 +1470,24 @@
                   }
                 },
                 {
+                  "branch": "not adapter_path.exists()",
                   "line": 6292,
+                  "name": "get_logger",
+                  "target": {
+                    "file": "backpropagate/logging_config.py"
+                  }
+                },
+                {
+                  "branch": "not adapter_path.is_dir()",
+                  "line": 6307,
+                  "name": "get_logger",
+                  "target": {
+                    "file": "backpropagate/logging_config.py"
+                  }
+                },
+                {
+                  "branch": "not base_model",
+                  "line": 6330,
                   "name": "get_logger",
                   "target": {
                     "file": "backpropagate/logging_config.py"
@@ -1780,7 +1982,7 @@
           ]
         },
         {
-          "entry": "validate_sample",
+          "entry": "filter_by_trace_length",
           "entryRule": 4,
           "exports": [
             "analyze_curriculum",
@@ -1825,6 +2027,7 @@
             {
               "calls": [
                 {
+                  "branch": "format_type == DatasetFormat.CHATML",
                   "line": 925,
                   "name": "count",
                   "target": null,
@@ -1839,6 +2042,7 @@
             {
               "calls": [
                 {
+                  "branch": "format_type == DatasetFormat.CHATML",
                   "line": 925,
                   "name": "count",
                   "target": null,
@@ -1880,7 +2084,24 @@
             {
               "calls": [
                 {
+                  "branch": "min_trace_tokens < 0",
                   "line": 1705,
+                  "name": "InvalidSettingError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "max_trace_tokens < 0",
+                  "line": 1712,
+                  "name": "InvalidSettingError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "min_trace_tokens > max_trace_tokens",
+                  "line": 1719,
                   "name": "InvalidSettingError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -1895,7 +2116,16 @@
             {
               "calls": [
                 {
+                  "branch": "not (0.0 < heldout_ratio < 1.0)",
                   "line": 4288,
+                  "name": "InvalidSettingError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "n < 2",
+                  "line": 4303,
                   "name": "InvalidSettingError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -1951,6 +2181,7 @@
             {
               "calls": [
                 {
+                  "branch": "fn is None",
                   "line": 406,
                   "name": "UserInputError",
                   "target": {
@@ -1966,11 +2197,28 @@
             {
               "calls": [
                 {
+                  "branch": "not isinstance(item, dict)",
                   "line": 477,
                   "name": "UserInputError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   }
+                },
+                {
+                  "line": 492,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "fn is None",
+                  "line": 406,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "compute_task_metric"
                 }
               ],
               "exported": false,
@@ -1981,7 +2229,16 @@
             {
               "calls": [
                 {
+                  "branch": "not path.exists()",
                   "line": 545,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not chosen",
+                  "line": 576,
                   "name": "UserInputError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -2009,6 +2266,7 @@
                   "via": "_loader_to_texts"
                 },
                 {
+                  "branch": "not texts",
                   "line": 607,
                   "name": "UserInputError",
                   "target": {
@@ -2037,6 +2295,7 @@
             {
               "calls": [
                 {
+                  "branch": "not cleaned",
                   "line": 659,
                   "name": "UserInputError",
                   "target": {
@@ -2044,6 +2303,7 @@
                   }
                 },
                 {
+                  "branch": "heldout is not None",
                   "line": 604,
                   "name": "DatasetLoader",
                   "target": {
@@ -2052,12 +2312,14 @@
                   "via": "_heldout_texts_from_path"
                 },
                 {
+                  "branch": "heldout is not None",
                   "line": 621,
                   "name": "to_chatml",
                   "target": null,
                   "via": "_loader_to_texts"
                 },
                 {
+                  "branch": "heldout is not None",
                   "line": 607,
                   "name": "UserInputError",
                   "target": {
@@ -2157,6 +2419,7 @@
                   }
                 },
                 {
+                  "branch": "run is None",
                   "line": 985,
                   "name": "UserInputError",
                   "target": {
@@ -2164,6 +2427,16 @@
                   }
                 },
                 {
+                  "branch": "not cleaned",
+                  "line": 659,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_resolve_heldout_texts"
+                },
+                {
+                  "branch": "heldout is not None",
                   "line": 604,
                   "name": "DatasetLoader",
                   "target": {
@@ -2172,12 +2445,14 @@
                   "via": "_heldout_texts_from_path"
                 },
                 {
+                  "branch": "heldout is not None",
                   "line": 621,
                   "name": "to_chatml",
                   "target": null,
                   "via": "_loader_to_texts"
                 },
                 {
+                  "branch": "heldout is not None",
                   "line": 607,
                   "name": "UserInputError",
                   "target": {
@@ -2211,6 +2486,40 @@
                   "via": "_resolve_heldout_texts"
                 },
                 {
+                  "branch": "not path.exists()",
+                  "line": 545,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_load_prompts"
+                },
+                {
+                  "branch": "not chosen",
+                  "line": 576,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_load_prompts"
+                },
+                {
+                  "branch": "m not in TASK_METRICS",
+                  "line": 1017,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not (isinstance(item, dict) and item.get(\"prompt\"))",
+                  "line": 1031,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
                   "line": 902,
                   "name": "TrainingError",
                   "target": {
@@ -2231,12 +2540,30 @@
                   "via": "_generate"
                 },
                 {
+                  "branch": "not isinstance(item, dict)",
                   "line": 477,
                   "name": "UserInputError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   },
                   "via": "_compute_task_metrics"
+                },
+                {
+                  "line": 492,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_compute_task_metrics"
+                },
+                {
+                  "branch": "fn is None",
+                  "line": 406,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "compute_task_metric"
                 },
                 {
                   "line": 1089,
@@ -2295,7 +2622,40 @@
             {
               "calls": [
                 {
+                  "branch": "not isinstance(model_name, str) or not model_name",
                   "line": 81,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "any(ch in model_name for ch in (\"\\x00\", \"\\n\", \"\\r\"))",
+                  "line": 92,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "model_name.startswith(\"-\")",
+                  "line": 100,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not _OLLAMA_MODEL_NAME_RE.match(model_name)",
+                  "line": 108,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "Path(model_name).name != model_name",
+                  "line": 121,
                   "name": "ExportError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -2310,7 +2670,40 @@
             {
               "calls": [
                 {
+                  "branch": "not isinstance(repo_id, str) or not repo_id",
                   "line": 138,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "\"\\\\\" in repo_id",
+                  "line": 153,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "any(ch in repo_id for ch in (\"\\x00\", \"\\n\", \"\\r\"))",
+                  "line": 166,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "any(seg == \"..\" or seg == \".\" for seg in segments)",
+                  "line": 181,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not _HF_REPO_ID_RE.match(repo_id)",
+                  "line": 189,
                   "name": "ExportError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -2362,12 +2755,64 @@
             {
               "calls": [
                 {
+                  "branch": "not isinstance(repo_id, str) or not repo_id",
                   "line": 138,
                   "name": "ExportError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   },
                   "via": "_validate_repo_id"
+                },
+                {
+                  "branch": "\"\\\\\" in repo_id",
+                  "line": 153,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_repo_id"
+                },
+                {
+                  "branch": "any(ch in repo_id for ch in (\"\\x00\", \"\\n\", \"\\r\"))",
+                  "line": 166,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_repo_id"
+                },
+                {
+                  "branch": "any(seg == \"..\" or seg == \".\" for seg in segments)",
+                  "line": 181,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_repo_id"
+                },
+                {
+                  "branch": "not _HF_REPO_ID_RE.match(repo_id)",
+                  "line": 189,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_repo_id"
+                },
+                {
+                  "line": 512,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not local_path_p.exists()",
+                  "line": 522,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
                 },
                 {
                   "line": 612,
@@ -2388,7 +2833,23 @@
                   "via": "_inventory"
                 },
                 {
+                  "branch": "status in (401, 403)",
                   "line": 711,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "status == 404",
+                  "line": 722,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "line": 732,
                   "name": "ExportError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -2408,6 +2869,7 @@
                   "target": null
                 },
                 {
+                  "branch": "path.is_file()",
                   "line": 865,
                   "name": "stat",
                   "target": null
@@ -2487,6 +2949,22 @@
                   }
                 },
                 {
+                  "branch": "not src_path.exists()",
+                  "line": 1128,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "files_copied == 0",
+                  "line": 1140,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
                   "line": 1146,
                   "name": "save_pretrained",
                   "target": null
@@ -2505,6 +2983,7 @@
                   "via": "_get_dir_size_mb"
                 },
                 {
+                  "branch": "path.is_file()",
                   "line": 865,
                   "name": "stat",
                   "target": null,
@@ -2542,6 +3021,14 @@
               "calls": [
                 {
                   "line": 1230,
+                  "name": "MergeExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not _is_peft_model(model)",
+                  "line": 1238,
                   "name": "MergeExportError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -2592,6 +3079,14 @@
                   }
                 },
                 {
+                  "branch": "not repo_id",
+                  "line": 1274,
+                  "name": "MergeExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
                   "line": 1280,
                   "name": "push_to_hub",
                   "target": null
@@ -2610,6 +3105,7 @@
                   "via": "_get_dir_size_mb"
                 },
                 {
+                  "branch": "path.is_file()",
                   "line": 865,
                   "name": "stat",
                   "target": null,
@@ -2653,6 +3149,7 @@
                   }
                 },
                 {
+                  "branch": "quant_str not in valid_quants",
                   "line": 1368,
                   "name": "InvalidSettingError",
                   "target": {
@@ -2686,7 +3183,16 @@
                   "target": null
                 },
                 {
+                  "branch": "not gguf_files",
                   "line": 1450,
+                  "name": "GGUFExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not gguf_path.exists()",
+                  "line": 1466,
                   "name": "GGUFExportError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -2699,6 +3205,7 @@
                   "via": "_get_dir_size_mb"
                 },
                 {
+                  "branch": "path.is_file()",
                   "line": 865,
                   "name": "stat",
                   "target": null,
@@ -2711,6 +3218,7 @@
                   "via": "_get_dir_size_mb"
                 },
                 {
+                  "branch": "size_mb == 0",
                   "line": 1477,
                   "name": "GGUFExportError",
                   "target": {
@@ -2762,6 +3270,14 @@
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   }
+                },
+                {
+                  "branch": "not gguf_path.exists()",
+                  "line": 1688,
+                  "name": "GGUFExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
                 }
               ],
               "exported": true,
@@ -2772,6 +3288,7 @@
             {
               "calls": [
                 {
+                  "branch": "ord(ch) < 0x20 and ch != \"\\t\"",
                   "line": 1777,
                   "name": "ExportError",
                   "target": {
@@ -2788,7 +3305,44 @@
             {
               "calls": [
                 {
+                  "branch": "not isinstance(model_name, str) or not model_name",
                   "line": 81,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "any(ch in model_name for ch in (\"\\x00\", \"\\n\", \"\\r\"))",
+                  "line": 92,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "model_name.startswith(\"-\")",
+                  "line": 100,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "not _OLLAMA_MODEL_NAME_RE.match(model_name)",
+                  "line": 108,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "Path(model_name).name != model_name",
+                  "line": 121,
                   "name": "ExportError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -2801,6 +3355,7 @@
                   "target": null
                 },
                 {
+                  "branch": "not gguf_path.exists()",
                   "line": 1858,
                   "name": "OllamaRegistrationError",
                   "target": {
@@ -2808,6 +3363,15 @@
                   }
                 },
                 {
+                  "branch": "not shutil.which(\"ollama\")",
+                  "line": 1866,
+                  "name": "OllamaRegistrationError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "ord(ch) < 0x20 and ch != \"\\t\"",
                   "line": 1777,
                   "name": "ExportError",
                   "target": {
@@ -2831,7 +3395,44 @@
             {
               "calls": [
                 {
+                  "branch": "not isinstance(model_name, str) or not model_name",
                   "line": 81,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "any(ch in model_name for ch in (\"\\x00\", \"\\n\", \"\\r\"))",
+                  "line": 92,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "model_name.startswith(\"-\")",
+                  "line": 100,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "not _OLLAMA_MODEL_NAME_RE.match(model_name)",
+                  "line": 108,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "Path(model_name).name != model_name",
+                  "line": 121,
                   "name": "ExportError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -2859,6 +3460,7 @@
                   "target": null
                 },
                 {
+                  "branch": "adapter_path.is_file()",
                   "line": 2154,
                   "name": "GGUFExportError",
                   "target": {
@@ -2871,6 +3473,7 @@
                   "target": null
                 },
                 {
+                  "branch": "not adapter_path.is_dir()",
                   "line": 2169,
                   "name": "GGUFExportError",
                   "target": {
@@ -2917,6 +3520,7 @@
                   "via": "_resolve_adapter_artifact"
                 },
                 {
+                  "branch": "adapter_path.is_file()",
                   "line": 2154,
                   "name": "GGUFExportError",
                   "target": {
@@ -2931,6 +3535,7 @@
                   "via": "_resolve_adapter_artifact"
                 },
                 {
+                  "branch": "not adapter_path.is_dir()",
                   "line": 2169,
                   "name": "GGUFExportError",
                   "target": {
@@ -2953,6 +3558,7 @@
                   "via": "_resolve_adapter_artifact"
                 },
                 {
+                  "branch": "ord(ch) < 0x20 and ch != \"\\t\"",
                   "line": 2315,
                   "name": "ExportError",
                   "target": {
@@ -2975,7 +3581,44 @@
                   "via": "_derive_adapter_tag"
                 },
                 {
+                  "branch": "not isinstance(model_name, str) or not model_name",
                   "line": 81,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "any(ch in model_name for ch in (\"\\x00\", \"\\n\", \"\\r\"))",
+                  "line": 92,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "model_name.startswith(\"-\")",
+                  "line": 100,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "not _OLLAMA_MODEL_NAME_RE.match(model_name)",
+                  "line": 108,
+                  "name": "ExportError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  },
+                  "via": "_validate_model_name"
+                },
+                {
+                  "branch": "Path(model_name).name != model_name",
+                  "line": 121,
                   "name": "ExportError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -2989,6 +3632,7 @@
                   "via": "_resolve_adapter_artifact"
                 },
                 {
+                  "branch": "adapter_path.is_file()",
                   "line": 2154,
                   "name": "GGUFExportError",
                   "target": {
@@ -3003,6 +3647,7 @@
                   "via": "_resolve_adapter_artifact"
                 },
                 {
+                  "branch": "not adapter_path.is_dir()",
                   "line": 2169,
                   "name": "GGUFExportError",
                   "target": {
@@ -3025,6 +3670,7 @@
                   "via": "_resolve_adapter_artifact"
                 },
                 {
+                  "branch": "ord(ch) < 0x20 and ch != \"\\t\"",
                   "line": 2315,
                   "name": "ExportError",
                   "target": {
@@ -3033,25 +3679,36 @@
                   "via": "_reject_modelfile_unsafe"
                 },
                 {
+                  "branch": "modelfile_only",
                   "line": 864,
                   "name": "is_file",
                   "target": null,
                   "via": "_get_dir_size_mb"
                 },
                 {
+                  "branch": "modelfile_only",
                   "line": 865,
                   "name": "stat",
                   "target": null,
                   "via": "_get_dir_size_mb"
                 },
                 {
+                  "branch": "modelfile_only",
                   "line": 867,
                   "name": "rglob",
                   "target": null,
                   "via": "_get_dir_size_mb"
                 },
                 {
+                  "branch": "not shutil.which(\"ollama\")",
                   "line": 2486,
+                  "name": "OllamaRegistrationError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "line": 2516,
                   "name": "OllamaRegistrationError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -3286,6 +3943,29 @@
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   }
+                },
+                {
+                  "branch": "not torch.cuda.is_available()",
+                  "line": 829,
+                  "name": "FsdpUnavailableError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not (dist.is_available() and dist.is_nccl_available())",
+                  "line": 835,
+                  "name": "FsdpUnavailableError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "line": 853,
+                  "name": "FsdpUnavailableError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
                 }
               ],
               "exported": false,
@@ -3344,6 +4024,7 @@
                   "via": "_estimate_param_count_billions"
                 },
                 {
+                  "branch": "estimated_billions > ceiling_billions",
                   "line": 1083,
                   "name": "FullFinetuneModelTooLargeError",
                   "target": {
@@ -3766,6 +4447,7 @@
                   "via": "_is_forbidden_output_base"
                 },
                 {
+                  "branch": "_is_forbidden_output_base(base)",
                   "line": 454,
                   "name": "BackpropagateError",
                   "target": {
@@ -3781,7 +4463,31 @@
             {
               "calls": [
                 {
+                  "branch": "value is None",
                   "line": 957,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "line": 962,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "min_value is not None and num < min_value",
+                  "line": 967,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "max_value is not None and num > max_value",
+                  "line": 970,
                   "name": "UserInputError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -3796,7 +4502,40 @@
             {
               "calls": [
                 {
+                  "branch": "value is None",
                   "line": 1007,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "len(text) > max_length",
+                  "line": 1016,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not allow_empty and len(text.strip()) == 0",
+                  "line": 1021,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "len(text) < min_length",
+                  "line": 1024,
+                  "name": "UserInputError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not re.match(pattern, text)",
+                  "line": 1031,
                   "name": "UserInputError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -3894,7 +4633,31 @@
             {
               "calls": [
                 {
+                  "branch": "not _is_credential_pair(auth)",
                   "line": 3002,
+                  "name": "BackpropagateError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not auth",
+                  "line": 3012,
+                  "name": "BackpropagateError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "branch": "not _is_credential_pair(entry)",
+                  "line": 3020,
+                  "name": "BackpropagateError",
+                  "target": {
+                    "file": "backpropagate/exceptions.py"
+                  }
+                },
+                {
+                  "line": 3031,
                   "name": "BackpropagateError",
                   "target": {
                     "file": "backpropagate/exceptions.py"
@@ -6333,11 +7096,6 @@
           "files": 51
         },
         {
-          "boundary": "bin",
-          "depth": 0,
-          "files": 1
-        },
-        {
           "boundary": "root",
           "depth": 0,
           "files": 3
@@ -6373,7 +7131,7 @@
         },
         {
           "job": "docker",
-          "path": "bin/backpropagate.js",
+          "path": "backpropagate/cli.py",
           "runKind": "executes",
           "via": "docker build Dockerfile"
         },
@@ -6521,6 +7279,13 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/backpropagate",
+            "registry": "npm"
+          }
+        ],
         "publishes": true,
         "publishesTo": [
           "npm"

@@ -22,8 +22,8 @@ Mapped at 2026-09-24 from commit 743f657.
 
 1. **CI.** On a pull request touching 8 paths; on a push touching 8 paths; or by hand. Runs tests/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **Publish to PyPI.** When a release is published; or by hand. Checks src/portlight/.
-4. **Release Binaries.** When a release is published; or by hand. Runs src/portlight/__main__.py.
+3. **Release Binaries.** When a release is published; or by hand. Runs src/portlight/__main__.py.
+4. **Publish to PyPI.** When a release is published; or by hand. Checks src/portlight/.
 5. **starfreight** (a command people run). Runs src/portlight/app/cli.py.
 
 ## What happens through CI
@@ -39,9 +39,9 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Publish to PyPI** checks src/portlight/ and publishes to PyPI.
-
 **Release Binaries** runs src/portlight/__main__.py and creates a GitHub release.
+
+**Publish to PyPI** checks src/portlight/ and publishes to PyPI.
 
 **starfreight** (a command people run) runs src/portlight/app/cli.py.
 
@@ -81,7 +81,7 @@ People write .github/, design/, the repository root, site/ and world/; 5 writes 
 
 ## Where to start
 
-.github/workflows/ci.yml → tests/balance/test_captain_parity.py → src/portlight/balance/aggregates.py
+.github/workflows/ci.yml → src/portlight/app/cli.py
 
 Read those in order to follow one pull request end to end.
 

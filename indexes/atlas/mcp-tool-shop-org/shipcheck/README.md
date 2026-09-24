@@ -4,7 +4,7 @@ Mapped at 2026-09-24 from commit 838720f.
 
 ## What this is
 
-10 parts, mostly JavaScript (5 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. People run shipcheck.
+10 parts, mostly JavaScript (5 files). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run shipcheck.
 
 ## What changed since 2026-09-23 (875a8ae)
 
@@ -28,7 +28,8 @@ Mapped at 2026-09-24 from commit 838720f.
 ## What happens through CI
 
 1. The workflow runs bin/shipcheck.mjs in bin and test/ in test.
-2. It sends a dispatch to dogfood-lab/testing-os on main.
+2. It runs git.
+3. It sends a dispatch to dogfood-lab/testing-os on main.
 
 ## Who reads the results
 
@@ -36,13 +37,13 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs bin/shipcheck.mjs and test/, and publishes to npm.
+**Release** runs bin/shipcheck.mjs and test/, runs git, and publishes to npm.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
 **repomesh-broadcast** checks package.json, commits into a clone of mcp-tool-shop-org/repomesh and pushes there, and opens a pull request.
 
-**shipcheck** (a command people run) runs bin/shipcheck.mjs.
+**shipcheck** (a command people run) runs bin/shipcheck.mjs and runs git.
 
 ## What breaks what
 
@@ -84,8 +85,8 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 1 import site could not be resolved.
-- 23 reads use paths built at run time and are not named here.
-- 1 write and 16 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 4 reads use paths built at run time and are not named here.
+- 1 write and 44 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 3 commands are built at run time and not followed, all of them in tests.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

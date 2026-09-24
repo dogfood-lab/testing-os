@@ -68,13 +68,13 @@ People write .github/, knowledge/, the repository root and site/. Nothing in thi
 
 ## Where to start
 
-.github/workflows/ci.yml → test/contracts.test.ts → src/types.ts
+.github/workflows/ci.yml → src/index.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 read uses a path built at run time and is not named here.
+- 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

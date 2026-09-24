@@ -88,7 +88,7 @@
   "changesTogetherWithTests": 0,
   "commit": "65dce696cf1d1022aa3a5309fe8561db6c7303c3",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly TypeScript (38 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. People run claude-guardian.",
+  "derived": "7 parts, mostly TypeScript (38 files). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-guardian.",
   "doors": [
     {
       "checks": [
@@ -190,11 +190,21 @@
       ]
     },
     {
-      "checks": [
-        "src/"
-      ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "file": ".github/workflows/dogfood.yml",
+      "held": [
+        {
+          "checks": [
+            "src/"
+          ],
+          "lead": "on main",
+          "runs": [
+            "src/cli.ts"
+          ],
+          "when": "on main"
+        }
+      ],
       "id": ".github/workflows/dogfood.yml",
       "landings": [],
       "name": "Dogfood",
@@ -206,10 +216,8 @@
           "files": 19
         }
       ],
-      "runs": [
-        "src/cli.ts"
-      ],
-      "runsCount": 1,
+      "runs": [],
+      "runsCount": 0,
       "sends": [
         "sends a dispatch to dogfood-lab/testing-os on main"
       ],
@@ -286,10 +294,11 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-24T02:05:00.888Z",
+  "generatedAt": "2026-09-24T08:23:28.351Z",
   "limits": [
-    "4 writes and 13 reads use paths built at run time and are not named here.",
-    "14 writes and 16 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "1 import site could not be resolved.",
+    "1 write and 3 reads use paths built at run time and are not named here.",
+    "17 writes and 29 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
@@ -310,8 +319,7 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "tests/budget-mcp.test.ts",
-    "src/budget-store.ts"
+    "src/cli.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -319,8 +327,9 @@
   "testedBy": {
     "src": 16
   },
-  "unnamedWrites": 4,
+  "unnamedWrites": 1,
   "unread": [],
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],

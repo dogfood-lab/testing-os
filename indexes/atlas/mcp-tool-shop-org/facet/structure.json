@@ -2277,7 +2277,7 @@
       "name": "docs",
       "origin": "mixed",
       "outsideReads": 1,
-      "outsideWrites": 1,
+      "outsideWrites": 2,
       "role": "docs",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -4239,10 +4239,10 @@
       "unresolvedSites": 165
     },
     {
-      "dynamicReads": 109,
+      "dynamicReads": 99,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 192,
+      "dynamicWrites": 126,
       "entryPoints": [
         "tools/facet_index.py",
         "tools/record_mcp.py"
@@ -6202,8 +6202,8 @@
       "importConfidence": "full",
       "name": "tools",
       "origin": "authored",
-      "outsideReads": 80,
-      "outsideWrites": 182,
+      "outsideReads": 91,
+      "outsideWrites": 394,
       "role": "code",
       "testedBy": 3,
       "unresolvedSites": 40
@@ -6535,6 +6535,13 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/facet",
+            "registry": "npm"
+          }
+        ],
         "publishes": true,
         "publishesTo": [
           "npm",
@@ -14179,223 +14186,7 @@
           "fromTests": true
         }
       ],
-      "target": "tests/fixtures/measure_min/prep/mask.npy",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/measure_min/prep/nor.npy",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/measure_min/prep/pos.npy",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
       "target": "tests/fixtures/measure_min/prep/prep_uv.glb",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/measure_min/report/asset/final_0.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/measure_min/report/masks/w3clay_0.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/measure_min/report/prov/prov_0.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/measure_min/report/twins/twin_0.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/measure_min/state/job_y+090_e+00/inpainted.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/measure_min/state/job_y+090_e+00/mask.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/measure_min/state/stage1.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/measure_min/state/stage1_holes.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_measure_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/measure_min/state/stage1_styled_mask.npy",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_selftest_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/selftest_min/prep/mask.npy",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_selftest_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/selftest_min/prep/nor.npy",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_selftest_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/selftest_min/prep/pos.npy",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_selftest_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/selftest_min/state/atlas.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_selftest_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/selftest_min/state/holes.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/fixtures/make_selftest_fixture.py",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tests/fixtures/selftest_min/state/styled_mask.npy",
       "writers": []
     },
     {
@@ -15174,6 +14965,17 @@
       ],
       "target": "tools/diagnostics/e33_register_sheet.py",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": "tools/diagnostics/front_padded.png",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "tools/diagnostics/prep_front.py",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [

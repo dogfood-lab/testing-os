@@ -264,10 +264,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 32,
-      "dynamicSpawns": 39,
-      "dynamicSpawnsInTests": 36,
-      "dynamicWrites": 3,
+      "dynamicReads": 0,
+      "dynamicSpawns": 4,
+      "dynamicSpawnsInTests": 2,
+      "dynamicWrites": 0,
       "entryPoints": [
         "src/cli.ts"
       ],
@@ -610,6 +610,7 @@
                       }
                     },
                     {
+                      "branch": "args.auto",
                       "line": 161,
                       "name": "safePull",
                       "target": {
@@ -1372,6 +1373,7 @@
                   }
                 },
                 {
+                  "branch": "args.auto",
                   "line": 161,
                   "name": "safePull",
                   "target": {
@@ -1710,7 +1712,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 4,
+      "outsideReads": 46,
+      "outsideWrites": 9,
       "role": "code",
       "testedBy": 24,
       "unresolvedSites": 0
@@ -1777,6 +1780,9 @@
       "name": "ci",
       "permissions": [
         "contents:read"
+      ],
+      "programs": [
+        "git"
       ],
       "pushes": false,
       "reach": [
@@ -2170,6 +2176,9 @@
         "contents:write",
         "id-token:write"
       ],
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -2373,6 +2382,13 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/rig-bridge",
+            "registry": "npm"
+          }
+        ],
         "publishes": true,
         "publishesTo": [
           "npm"
@@ -2405,6 +2421,9 @@
       "mentions": [],
       "name": "rig-bridge",
       "permissions": [],
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -2451,16 +2470,6 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
-        },
-        {
-          "by": "src/commands/init.ts",
-          "call": "existsSync",
-          "confidence": "weak"
-        },
-        {
-          "by": "src/commands/init.ts",
-          "call": "readFileSync",
-          "confidence": "weak"
         }
       ],
       "target": ".gitignore",

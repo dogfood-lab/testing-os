@@ -65,11 +65,12 @@
       },
       {
         "kind": "door",
-        "sentence": "Publish now also runs docker-entrypoint.sh and xrpl_camp/__main__.py.",
+        "sentence": "Publish now also runs docker-entrypoint.sh, xrpl_camp/__main__.py and xrpl_camp/cli.py.",
         "subjects": [
           ".github/workflows/publish.yml",
           "docker-entrypoint.sh",
-          "xrpl_camp/__main__.py"
+          "xrpl_camp/__main__.py",
+          "xrpl_camp/cli.py"
         ]
       },
       {
@@ -208,14 +209,27 @@
       ]
     },
     {
-      "checks": [
-        "LICENSE",
-        "README.md",
-        "pyproject.toml",
-        "xrpl_camp/"
-      ],
-      "checksCount": 4,
+      "checks": [],
+      "checksCount": 0,
       "file": ".github/workflows/publish.yml",
+      "held": [
+        {
+          "checks": [
+            "LICENSE",
+            "README.md",
+            "pyproject.toml",
+            "xrpl_camp/"
+          ],
+          "lead": "on a tag push",
+          "runs": [
+            "docker-entrypoint.sh",
+            "scripts/verify-pypi-publish.sh",
+            "xrpl_camp/__main__.py",
+            "xrpl_camp/cli.py"
+          ],
+          "when": "on a tag push"
+        }
+      ],
       "id": ".github/workflows/publish.yml",
       "landings": [],
       "name": "Publish",
@@ -237,12 +251,8 @@
           "files": 10
         }
       ],
-      "runs": [
-        "docker-entrypoint.sh",
-        "scripts/verify-pypi-publish.sh",
-        "xrpl_camp/__main__.py"
-      ],
-      "runsCount": 3,
+      "runs": [],
+      "runsCount": 0,
       "sends": [
         "publishes to PyPI and a container image on a tag push",
         "creates a GitHub release on a tag push"
@@ -404,7 +414,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T02:08:11.738Z",
+  "generatedAt": "2026-09-24T08:27:14.567Z",
   "limits": [
     "1 import site could not be resolved.",
     "4 writes and 11 reads use paths built at run time and are not named here.",
@@ -427,8 +437,7 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "tests/conftest.py",
-    "xrpl_camp/__init__.py"
+    "xrpl_camp/cli.py"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -446,6 +455,7 @@
       ]
     }
   ],
+  "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
     {

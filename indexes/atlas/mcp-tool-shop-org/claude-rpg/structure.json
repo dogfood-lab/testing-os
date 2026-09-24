@@ -1218,10 +1218,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 3,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 5,
+      "dynamicWrites": 0,
       "entryPoints": [
         "src/bin.ts",
         "src/index.ts"
@@ -1328,55 +1328,6 @@
                 {
                   "inner": [
                     {
-                      "line": 270,
-                      "name": "isColorEnabled",
-                      "target": {
-                        "file": "src/cli/colors.ts"
-                      },
-                      "via": "renderError"
-                    },
-                    {
-                      "line": 274,
-                      "name": "red",
-                      "target": {
-                        "file": "src/cli/colors.ts"
-                      },
-                      "via": "renderError"
-                    },
-                    {
-                      "line": 276,
-                      "name": "dim",
-                      "target": {
-                        "file": "src/cli/colors.ts"
-                      },
-                      "via": "renderError"
-                    },
-                    {
-                      "line": 277,
-                      "name": "cyan",
-                      "target": {
-                        "file": "src/cli/colors.ts"
-                      },
-                      "via": "renderError"
-                    },
-                    {
-                      "line": 279,
-                      "name": "red",
-                      "target": {
-                        "file": "src/cli/colors.ts"
-                      },
-                      "via": "renderError"
-                    }
-                  ],
-                  "line": 198,
-                  "name": "presentError",
-                  "target": {
-                    "file": "src/cli/error-presenter.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
                       "line": 143,
                       "name": "getTerminalWidth",
                       "target": {
@@ -1454,6 +1405,7 @@
                   }
                 },
                 {
+                  "branch": "command === 'archive'",
                   "inner": [
                     {
                       "line": 611,
@@ -1472,8 +1424,10 @@
                   "via": "runArchive"
                 },
                 {
+                  "branch": "command === 'archive'",
                   "inner": [
                     {
+                      "branch": "campaigns.length === 0",
                       "line": 29,
                       "name": "getTerminalWidth",
                       "target": {
@@ -1482,6 +1436,7 @@
                       "via": "divider"
                     },
                     {
+                      "branch": "campaigns.length === 0",
                       "line": 29,
                       "name": "dim",
                       "target": {
@@ -1558,6 +1513,7 @@
                       }
                     },
                     {
+                      "branch": "!packInfo",
                       "line": 33,
                       "name": "WORLD_FLAG_MAP",
                       "passed": true,
@@ -1880,7 +1836,25 @@
                   "via": "runGameLoop"
                 },
                 {
-                  "line": 1145,
+                  "line": 169,
+                  "name": "question",
+                  "target": null,
+                  "via": "question"
+                },
+                {
+                  "line": 170,
+                  "name": "off",
+                  "target": null,
+                  "via": "question"
+                },
+                {
+                  "line": 173,
+                  "name": "once",
+                  "target": null,
+                  "via": "question"
+                },
+                {
+                  "line": 1186,
                   "name": "getSavePath",
                   "target": {
                     "file": "src/session/session.ts"
@@ -1888,7 +1862,7 @@
                   "via": "runGameLoop"
                 },
                 {
-                  "line": 1146,
+                  "line": 1187,
                   "name": "getDefaultSaveDir",
                   "target": {
                     "file": "src/session/session.ts"
@@ -1905,70 +1879,10 @@
                       }
                     }
                   ],
-                  "line": 1146,
+                  "line": 1187,
                   "name": "attemptExitAutosave",
                   "target": {
                     "file": "src/cli/exit-autosave.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 61,
-                      "name": "getRumorEngineSnapshot",
-                      "target": null
-                    },
-                    {
-                      "line": 79,
-                      "name": "getWorldGenProposal",
-                      "target": null
-                    },
-                    {
-                      "line": 80,
-                      "name": "getWorldSeed",
-                      "target": null
-                    },
-                    {
-                      "line": 83,
-                      "name": "getWorldMovedSnapshot",
-                      "target": null
-                    }
-                  ],
-                  "line": 1147,
-                  "name": "buildSaveInput",
-                  "target": {
-                    "file": "src/cli/save-input-builder.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 254,
-                      "name": "serialize",
-                      "target": null
-                    },
-                    {
-                      "line": 255,
-                      "name": "toJSON",
-                      "target": null
-                    },
-                    {
-                      "line": 265,
-                      "name": "size",
-                      "target": null
-                    },
-                    {
-                      "line": 266,
-                      "name": "serialize",
-                      "target": null
-                    }
-                  ],
-                  "line": 1147,
-                  "name": "saveSession",
-                  "target": {
-                    "file": "src/session/session.ts"
                   },
                   "via": "runGameLoop"
                 }
@@ -2082,62 +1996,6 @@
                   "via": "runGameLoop"
                 },
                 {
-                  "line": 1145,
-                  "name": "getSavePath",
-                  "target": {
-                    "file": "src/session/session.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1146,
-                  "name": "getDefaultSaveDir",
-                  "target": {
-                    "file": "src/session/session.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1146,
-                  "name": "attemptExitAutosave",
-                  "target": {
-                    "file": "src/cli/exit-autosave.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1147,
-                  "name": "buildSaveInput",
-                  "target": {
-                    "file": "src/cli/save-input-builder.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1147,
-                  "name": "saveSession",
-                  "target": {
-                    "file": "src/session/session.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1156,
-                  "name": "presentError",
-                  "target": {
-                    "file": "src/cli/error-presenter.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1165,
-                  "name": "yellow",
-                  "target": {
-                    "file": "src/cli/colors.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
                   "line": 169,
                   "name": "question",
                   "target": null,
@@ -2154,6 +2012,62 @@
                   "name": "once",
                   "target": null,
                   "via": "question"
+                },
+                {
+                  "line": 1186,
+                  "name": "getSavePath",
+                  "target": {
+                    "file": "src/session/session.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1187,
+                  "name": "getDefaultSaveDir",
+                  "target": {
+                    "file": "src/session/session.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1187,
+                  "name": "attemptExitAutosave",
+                  "target": {
+                    "file": "src/cli/exit-autosave.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1188,
+                  "name": "buildSaveInput",
+                  "target": {
+                    "file": "src/cli/save-input-builder.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1188,
+                  "name": "saveSession",
+                  "target": {
+                    "file": "src/session/session.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1196,
+                  "name": "presentError",
+                  "target": {
+                    "file": "src/cli/error-presenter.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1200,
+                  "name": "yellow",
+                  "target": {
+                    "file": "src/cli/colors.ts"
+                  },
+                  "via": "runGameLoop"
                 }
               ],
               "exported": false,
@@ -2488,62 +2402,6 @@
                   "via": "runGameLoop"
                 },
                 {
-                  "line": 1145,
-                  "name": "getSavePath",
-                  "target": {
-                    "file": "src/session/session.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1146,
-                  "name": "getDefaultSaveDir",
-                  "target": {
-                    "file": "src/session/session.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1146,
-                  "name": "attemptExitAutosave",
-                  "target": {
-                    "file": "src/cli/exit-autosave.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1147,
-                  "name": "buildSaveInput",
-                  "target": {
-                    "file": "src/cli/save-input-builder.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1147,
-                  "name": "saveSession",
-                  "target": {
-                    "file": "src/session/session.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1156,
-                  "name": "presentError",
-                  "target": {
-                    "file": "src/cli/error-presenter.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
-                  "line": 1165,
-                  "name": "yellow",
-                  "target": {
-                    "file": "src/cli/colors.ts"
-                  },
-                  "via": "runGameLoop"
-                },
-                {
                   "line": 169,
                   "name": "question",
                   "target": null,
@@ -2571,6 +2429,62 @@
                 },
                 {
                   "line": 1187,
+                  "name": "getDefaultSaveDir",
+                  "target": {
+                    "file": "src/session/session.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1187,
+                  "name": "attemptExitAutosave",
+                  "target": {
+                    "file": "src/cli/exit-autosave.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1188,
+                  "name": "buildSaveInput",
+                  "target": {
+                    "file": "src/cli/save-input-builder.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1188,
+                  "name": "saveSession",
+                  "target": {
+                    "file": "src/session/session.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1196,
+                  "name": "presentError",
+                  "target": {
+                    "file": "src/cli/error-presenter.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1200,
+                  "name": "yellow",
+                  "target": {
+                    "file": "src/cli/colors.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1221,
+                  "name": "getSavePath",
+                  "target": {
+                    "file": "src/session/session.ts"
+                  },
+                  "via": "runGameLoop"
+                },
+                {
+                  "line": 1223,
                   "name": "getDefaultSaveDir",
                   "target": {
                     "file": "src/session/session.ts"
@@ -2638,55 +2552,6 @@
                   "name": "presentError",
                   "target": {
                     "file": "src/cli/error-presenter.ts"
-                  }
-                },
-                {
-                  "line": 1145,
-                  "name": "getSavePath",
-                  "target": {
-                    "file": "src/session/session.ts"
-                  }
-                },
-                {
-                  "line": 1146,
-                  "name": "getDefaultSaveDir",
-                  "target": {
-                    "file": "src/session/session.ts"
-                  }
-                },
-                {
-                  "line": 1146,
-                  "name": "attemptExitAutosave",
-                  "target": {
-                    "file": "src/cli/exit-autosave.ts"
-                  }
-                },
-                {
-                  "line": 1147,
-                  "name": "buildSaveInput",
-                  "target": {
-                    "file": "src/cli/save-input-builder.ts"
-                  }
-                },
-                {
-                  "line": 1147,
-                  "name": "saveSession",
-                  "target": {
-                    "file": "src/session/session.ts"
-                  }
-                },
-                {
-                  "line": 1156,
-                  "name": "presentError",
-                  "target": {
-                    "file": "src/cli/error-presenter.ts"
-                  }
-                },
-                {
-                  "line": 1165,
-                  "name": "yellow",
-                  "target": {
-                    "file": "src/cli/colors.ts"
                   }
                 },
                 {
@@ -2762,6 +2627,56 @@
                   "target": {
                     "file": "src/session/session.ts"
                   }
+                },
+                {
+                  "line": 1223,
+                  "name": "getDefaultSaveDir",
+                  "target": {
+                    "file": "src/session/session.ts"
+                  }
+                },
+                {
+                  "line": 1224,
+                  "name": "isPathInside",
+                  "target": {
+                    "file": "src/cli/path-guard.ts"
+                  }
+                },
+                {
+                  "line": 1233,
+                  "name": "yellow",
+                  "target": {
+                    "file": "src/cli/colors.ts"
+                  }
+                },
+                {
+                  "line": 1236,
+                  "name": "buildSaveInput",
+                  "target": {
+                    "file": "src/cli/save-input-builder.ts"
+                  }
+                },
+                {
+                  "line": 1236,
+                  "name": "saveSession",
+                  "target": {
+                    "file": "src/session/session.ts"
+                  }
+                },
+                {
+                  "line": 1237,
+                  "name": "displayPath",
+                  "target": {
+                    "file": "src/cli/exit-autosave.ts"
+                  }
+                },
+                {
+                  "line": 1386,
+                  "name": "captureSnapshot",
+                  "target": {
+                    "file": "src/character/recap-delta.ts"
+                  },
+                  "via": "buildUnifiedRecap"
                 }
               ],
               "exported": false,
@@ -4158,6 +4073,7 @@
                   }
                 },
                 {
+                  "branch": "!packInfo",
                   "line": 33,
                   "name": "WORLD_FLAG_MAP",
                   "passed": true,
@@ -4307,6 +4223,7 @@
             {
               "calls": [
                 {
+                  "branch": "campaigns.length === 0",
                   "line": 29,
                   "name": "getTerminalWidth",
                   "target": {
@@ -4315,6 +4232,7 @@
                   "via": "divider"
                 },
                 {
+                  "branch": "campaigns.length === 0",
                   "line": 29,
                   "name": "dim",
                   "target": {
@@ -6066,8 +5984,8 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
-      "outsideReads": 2,
-      "outsideWrites": 2,
+      "outsideReads": 18,
+      "outsideWrites": 7,
       "role": "code",
       "testedBy": 120,
       "unresolvedSites": 2
@@ -6602,6 +6520,9 @@
       ],
       "name": "CI",
       "permissions": [],
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -6625,7 +6546,10 @@
         {
           "job": "build-and-test",
           "path": "scripts/check-critical-coverage.mjs",
-          "runKind": "executes"
+          "runKind": "executes",
+          "when": {
+            "event": "pull_request"
+          }
         },
         {
           "directory": true,
@@ -8177,6 +8101,13 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/claude-rpg",
+            "registry": "npm"
+          }
+        ],
         "publishes": true,
         "publishesTo": [
           "npm"

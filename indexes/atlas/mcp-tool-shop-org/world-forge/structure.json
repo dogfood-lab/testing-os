@@ -387,10 +387,10 @@
       "importConfidence": "full",
       "name": "dogfood",
       "origin": "mixed",
-      "outsideReads": 2,
+      "outsideReads": 3,
       "role": "code",
       "testedBy": 4,
-      "unresolvedSites": 0
+      "unresolvedSites": 8
     },
     {
       "dynamicReads": 1,
@@ -3245,15 +3245,16 @@
       "importConfidence": "full",
       "name": "editor",
       "origin": "authored",
+      "outsideReads": 30,
       "role": "code",
       "testedBy": 110,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 0,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 1,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [
         "packages/export-ai-rpg/src/cli.ts",
         "packages/export-ai-rpg/src/index.ts"
@@ -3684,6 +3685,7 @@
             {
               "calls": [
                 {
+                  "branch": "hasImport || hasFromPack",
                   "line": 156,
                   "name": "buildFidelityReport",
                   "target": {
@@ -3692,6 +3694,7 @@
                   "via": "loadPackDirectory"
                 },
                 {
+                  "branch": "hasImport || hasFromPack",
                   "inner": [
                     {
                       "line": 441,
@@ -3799,6 +3802,7 @@
                   "via": "runImport"
                 },
                 {
+                  "branch": "hasImport || hasFromPack",
                   "line": 246,
                   "name": "detectImportFormat",
                   "target": {
@@ -3807,8 +3811,10 @@
                   "via": "runImport"
                 },
                 {
+                  "branch": "hasImport || hasFromPack",
                   "inner": [
                     {
+                      "branch": "format === 'world-project'",
                       "line": 172,
                       "name": "validateProject",
                       "target": {
@@ -3816,6 +3822,7 @@
                       }
                     },
                     {
+                      "branch": "format === 'world-project'",
                       "line": 180,
                       "name": "buildFidelityReport",
                       "target": {
@@ -3823,6 +3830,7 @@
                       }
                     },
                     {
+                      "branch": "format === 'export-result'",
                       "line": 441,
                       "name": "importZones",
                       "target": {
@@ -3831,6 +3839,7 @@
                       "via": "importFromContentPack"
                     },
                     {
+                      "branch": "format === 'export-result'",
                       "line": 443,
                       "name": "importDistricts",
                       "target": {
@@ -3839,6 +3848,7 @@
                       "via": "importFromContentPack"
                     },
                     {
+                      "branch": "format === 'export-result'",
                       "line": 449,
                       "name": "importEntities",
                       "target": {
@@ -3847,6 +3857,7 @@
                       "via": "importFromContentPack"
                     },
                     {
+                      "branch": "format === 'export-result'",
                       "line": 453,
                       "name": "importItems",
                       "target": {
@@ -3855,6 +3866,7 @@
                       "via": "importFromContentPack"
                     },
                     {
+                      "branch": "format === 'export-result'",
                       "line": 457,
                       "name": "importDialogues",
                       "target": {
@@ -3863,6 +3875,7 @@
                       "via": "importFromContentPack"
                     },
                     {
+                      "branch": "format === 'export-result'",
                       "line": 459,
                       "name": "importPlayerTemplate",
                       "target": {
@@ -3871,6 +3884,7 @@
                       "via": "importFromContentPack"
                     },
                     {
+                      "branch": "format === 'export-result'",
                       "line": 461,
                       "name": "importBuildCatalog",
                       "target": {
@@ -3879,6 +3893,7 @@
                       "via": "importFromContentPack"
                     },
                     {
+                      "branch": "format === 'export-result'",
                       "line": 463,
                       "name": "importProgressionTrees",
                       "target": {
@@ -3887,6 +3902,7 @@
                       "via": "importFromContentPack"
                     },
                     {
+                      "branch": "format === 'export-result'",
                       "line": 486,
                       "name": "importConnections",
                       "target": {
@@ -3895,6 +3911,7 @@
                       "via": "importFromContentPack"
                     },
                     {
+                      "branch": "format === 'export-result'",
                       "line": 520,
                       "name": "importSpawnPoints",
                       "target": {
@@ -4335,6 +4352,7 @@
                   }
                 },
                 {
+                  "branch": "profile === 'debug' || emitSchemaVersion",
                   "line": 716,
                   "name": "computeContentHash",
                   "target": {
@@ -4342,6 +4360,7 @@
                   }
                 },
                 {
+                  "branch": "profile === 'debug' || emitSchemaVersion",
                   "line": 719,
                   "name": "buildFidelityReport",
                   "target": {
@@ -4544,6 +4563,7 @@
             {
               "calls": [
                 {
+                  "branch": "format === 'world-project'",
                   "line": 172,
                   "name": "validateProject",
                   "target": {
@@ -4551,6 +4571,7 @@
                   }
                 },
                 {
+                  "branch": "format === 'world-project'",
                   "line": 180,
                   "name": "buildFidelityReport",
                   "target": {
@@ -4558,6 +4579,7 @@
                   }
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 441,
                   "name": "importZones",
                   "target": {
@@ -4566,6 +4588,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 443,
                   "name": "importDistricts",
                   "target": {
@@ -4574,6 +4597,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 449,
                   "name": "importEntities",
                   "target": {
@@ -4582,6 +4606,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 453,
                   "name": "importItems",
                   "target": {
@@ -4590,6 +4615,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 457,
                   "name": "importDialogues",
                   "target": {
@@ -4598,6 +4624,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 459,
                   "name": "importPlayerTemplate",
                   "target": {
@@ -4606,6 +4633,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 461,
                   "name": "importBuildCatalog",
                   "target": {
@@ -4614,6 +4642,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 463,
                   "name": "importProgressionTrees",
                   "target": {
@@ -4622,6 +4651,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 486,
                   "name": "importConnections",
                   "target": {
@@ -4630,6 +4660,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 520,
                   "name": "importSpawnPoints",
                   "target": {
@@ -4638,6 +4669,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 554,
                   "name": "safeLookup",
                   "target": {
@@ -4646,6 +4678,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 731,
                   "name": "formatConditionSpec",
                   "target": {
@@ -4654,6 +4687,7 @@
                   "via": "lootTablesFromPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 102,
                   "name": "isValidMode",
                   "target": {
@@ -4662,6 +4696,7 @@
                   "via": "inferMode"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 341,
                   "name": "SCHEMA_VERSION",
                   "passed": true,
@@ -4671,6 +4706,7 @@
                   "via": "collectProvenanceNotes"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 363,
                   "name": "ENGINE_VERSION_RANGE",
                   "passed": true,
@@ -4680,6 +4716,7 @@
                   "via": "collectProvenanceNotes"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 385,
                   "name": "RETIRED_PHANTOM_MODULES",
                   "passed": true,
@@ -4689,6 +4726,7 @@
                   "via": "collectProvenanceNotes"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 666,
                   "name": "buildFidelityReport",
                   "target": {
@@ -4697,6 +4735,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 700,
                   "name": "validateProject",
                   "target": {
@@ -4705,6 +4744,7 @@
                   "via": "importFromContentPack"
                 },
                 {
+                  "branch": "format === 'export-result'",
                   "line": 214,
                   "name": "isValidMode",
                   "target": {
@@ -5111,14 +5151,14 @@
       "importConfidence": "full",
       "name": "export-ai-rpg",
       "origin": "authored",
-      "outsideReads": 1,
-      "outsideWrites": 2,
+      "outsideReads": 7,
+      "outsideWrites": 4,
       "role": "code",
       "testedBy": 61,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -6144,14 +6184,14 @@
       "importConfidence": "full",
       "name": "export-godot",
       "origin": "authored",
-      "outsideReads": 1,
+      "outsideReads": 17,
       "outsideWrites": 9,
       "role": "code",
       "testedBy": 44,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 6,
+      "dynamicReads": 0,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 1,
       "dynamicWrites": 0,
@@ -7011,7 +7051,7 @@
       "importConfidence": "full",
       "name": "export-unreal",
       "origin": "authored",
-      "outsideReads": 1,
+      "outsideReads": 8,
       "outsideWrites": 17,
       "role": "code",
       "testedBy": 35,
@@ -7372,6 +7412,7 @@
       "importConfidence": "full",
       "name": "root",
       "origin": "mixed",
+      "outsideReads": 1,
       "role": "docs",
       "testedBy": 1,
       "unresolvedSites": 0
@@ -7937,6 +7978,7 @@
       "importConfidence": "full",
       "name": "schema",
       "origin": "authored",
+      "outsideReads": 4,
       "role": "code",
       "testedBy": 196,
       "unresolvedSites": 0
@@ -8916,6 +8958,24 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "gated": [
+        {
+          "jobs": [
+            "build",
+            "deploy"
+          ],
+          "pushes": false,
+          "sends": [
+            "deploysPages"
+          ],
+          "stages": [],
+          "when": {
+            "except": [
+              "release"
+            ]
+          }
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -8939,7 +8999,12 @@
           "matched": true,
           "path": "site/astro.config.mjs",
           "runKind": "executes",
-          "via": "astro build"
+          "via": "astro build",
+          "when": {
+            "except": [
+              "release"
+            ]
+          }
         },
         {
           "directory": true,
@@ -8947,13 +9012,18 @@
           "matched": true,
           "path": "site/src/",
           "runKind": "executes",
-          "via": "astro build"
+          "via": "astro build",
+          "when": {
+            "except": [
+              "release"
+            ]
+          }
         }
       ],
       "runsCount": 2,
       "secrets": [],
       "sends": {
-        "deploysPages": true,
+        "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,
         "opensIssuesOnFailure": false,
@@ -10089,6 +10159,24 @@
     {
       "readers": [
         {
+          "by": "dogfood/__tests__/dogfood-runner-exit-codes.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "dogfood/__tests__/vitest-include-floor.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "dogfood",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "dogfood/__tests__/chapel-threshold-unreal-25d-gate.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -10177,11 +10265,18 @@
           "confidence": "ast"
         },
         {
-          "by": "dogfood/multi-target-export-proof.ts",
-          "confidence": "ast"
-        },
-        {
           "by": "e2e/write-chapel-fixture.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "dogfood/output/DOGFOOD_MULTI_TARGET_EXPORT_*.md",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/multi-target-export-proof.ts",
           "confidence": "ast"
         }
       ]
@@ -10200,6 +10295,17 @@
     {
       "readers": [],
       "target": "dogfood/output/ai-rpg-smoke",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/run-ai-rpg-smoke.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "dogfood/output/ai-rpg-smoke/DOGFOOD_AI_RPG_RUNTIME_SMOKE_*.md",
       "tracked": false,
       "writers": [
         {
@@ -10292,6 +10398,17 @@
     {
       "readers": [],
       "target": "dogfood/output/godot-smoke",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/run-godot-smoke.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "dogfood/output/godot-smoke/DOGFOOD_GODOT_ENGINE_SMOKE_*.md",
       "tracked": false,
       "writers": [
         {
@@ -10395,6 +10512,17 @@
     {
       "readers": [],
       "target": "dogfood/output/unreal-smoke",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "dogfood/run-unreal-smoke.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "dogfood/output/unreal-smoke/DOGFOOD_UNREAL_SMOKE_*.md",
       "tracked": false,
       "writers": [
         {
@@ -10635,12 +10763,6 @@
     },
     {
       "readers": [
-        {
-          "by": "dogfood/__tests__/vitest-include-floor.test.ts",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "fromTests": true
-        },
         {
           "by": "packages/schema/src/__tests__/version.test.ts",
           "call": "readdirSync",

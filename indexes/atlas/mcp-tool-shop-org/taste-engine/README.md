@@ -8,7 +8,9 @@ Mapped at 2026-09-24 from commit c87c284.
 
 ## What changed since 2026-09-24 (ac181ee)
 
-Nothing structural changed since 2026-09-24; 235 files changed content.
+- migrations/ is now read by src/db/migrate.ts.
+- canon was generated and is now authored.
+- 235 files changed content, across 10 parts.
 
 ## What comes in
 
@@ -19,17 +21,16 @@ Nothing structural changed since 2026-09-24; 235 files changed content.
 ## What happens through CI
 
 1. The workflow runs test/ in test; it checks src/ in src.
-2. It writes to canon/.
 
 ## Who reads the results
 
-Only CI itself reads what it writes.
+CI writes nothing this map can see.
 
 ## The other doors
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**taste** (a command people run) runs src/cli/index.ts and writes to canon/.
+**taste** (a command people run) runs src/cli/index.ts.
 
 ## What breaks what
 
@@ -47,7 +48,7 @@ Every code part is imported by at least one test.
 
 ## Written but never read
 
-- **canon/** is written by src/backup/backup-engine.ts and read by nothing else in this repository.
+No place this map can see is written, so none goes unread.
 
 ## Helpers that look duplicated
 
@@ -55,22 +56,22 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **canon/** is written by src/backup/backup-engine.ts.
+Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .claude/, .github/, docs/, migrations/, proving/, the repository root, samples/ and site/; 14 writes with paths built at run time may land here.
+People write .claude/, .github/, canon/, docs/, migrations/, proving/, the repository root, samples/ and site/. Nothing in this repository writes to them.
 
 ## Where to start
 
-.github/workflows/ci.yml → test/backup/backup-engine.test.ts → src/backup/backup-engine.ts
+.github/workflows/ci.yml → src/cli/index.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 14 writes and 44 reads use paths built at run time and are not named here.
-- 1 write and 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 7 reads use paths built at run time and are not named here.
+- 19 writes and 86 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

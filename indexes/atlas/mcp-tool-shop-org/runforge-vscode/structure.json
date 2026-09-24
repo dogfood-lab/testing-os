@@ -741,7 +741,7 @@
       "name": "python",
       "origin": "authored",
       "role": "code",
-      "testedBy": 12,
+      "testedBy": 13,
       "unresolvedSites": 83
     },
     {
@@ -962,10 +962,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 24,
-      "dynamicSpawns": 5,
+      "dynamicReads": 9,
+      "dynamicSpawns": 3,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 5,
+      "dynamicWrites": 0,
       "entryPoints": [
         "src/extension.ts"
       ],
@@ -973,7 +973,7 @@
       "files": [
         {
           "entry": "activate",
-          "entryRule": 4,
+          "entryRule": 3,
           "exports": [
             "activate",
             "deactivate"
@@ -1003,527 +1003,6 @@
                   "name": "setExtensionPath",
                   "target": {
                     "file": "src/runner/run-manager.ts"
-                  }
-                },
-                {
-                  "line": 98,
-                  "name": "isRunning",
-                  "target": {
-                    "file": "src/runner/run-manager.ts"
-                  },
-                  "via": "startTraining"
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 450,
-                      "name": "checkPython",
-                      "target": {
-                        "file": "src/runner/python-runner.ts"
-                      }
-                    },
-                    {
-                      "line": 480,
-                      "name": "detectGpu",
-                      "target": {
-                        "file": "src/runner/gpu-probe.ts"
-                      }
-                    },
-                    {
-                      "line": 496,
-                      "name": "selectDevice",
-                      "target": {
-                        "file": "src/runner/gpu-probe.ts"
-                      }
-                    },
-                    {
-                      "line": 501,
-                      "name": "getPreset",
-                      "target": {
-                        "file": "src/presets/registry.ts"
-                      }
-                    },
-                    {
-                      "line": 509,
-                      "name": "getCpuFallbackMessage",
-                      "target": {
-                        "file": "src/runner/gpu-probe.ts"
-                      }
-                    },
-                    {
-                      "line": 513,
-                      "name": "formatBytes",
-                      "target": {
-                        "file": "src/runner/gpu-probe.ts"
-                      }
-                    },
-                    {
-                      "line": 519,
-                      "name": "generateRunId",
-                      "target": {
-                        "file": "src/workspace/run-folder.ts"
-                      }
-                    },
-                    {
-                      "line": 520,
-                      "name": "createRunFolder",
-                      "target": {
-                        "file": "src/workspace/run-folder.ts"
-                      }
-                    },
-                    {
-                      "line": 521,
-                      "name": "createTimestamp",
-                      "target": {
-                        "file": "src/workspace/index-manager.ts"
-                      }
-                    },
-                    {
-                      "line": 551,
-                      "name": "writeRequest",
-                      "target": {
-                        "file": "src/workspace/run-folder.ts"
-                      }
-                    },
-                    {
-                      "line": 771,
-                      "name": "spawnRunner",
-                      "target": {
-                        "file": "src/runner/python-runner.ts"
-                      }
-                    },
-                    {
-                      "line": 795,
-                      "name": "onCancellationRequested",
-                      "target": null
-                    }
-                  ],
-                  "innerTruncated": true,
-                  "line": 150,
-                  "name": "executeRun",
-                  "target": {
-                    "file": "src/runner/run-manager.ts"
-                  },
-                  "via": "startTraining"
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 22,
-                      "name": "getRecentRuns",
-                      "target": {
-                        "file": "src/workspace/index-manager.ts"
-                      }
-                    },
-                    {
-                      "line": 71,
-                      "name": "formatDuration",
-                      "target": {
-                        "file": "src/utils/format.ts"
-                      },
-                      "via": "formatDetail"
-                    }
-                  ],
-                  "line": 173,
-                  "name": "showRunsPicker",
-                  "target": {
-                    "file": "src/views/runs-picker.ts"
-                  },
-                  "via": "openRuns"
-                },
-                {
-                  "line": 230,
-                  "name": "getOutputChannel",
-                  "target": {
-                    "file": "src/runner/run-manager.ts"
-                  },
-                  "via": "runInspectDataset"
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 39,
-                      "name": "pythonSpawnEnv",
-                      "target": {
-                        "file": "src/runner/python-runner.ts"
-                      }
-                    }
-                  ],
-                  "line": 236,
-                  "name": "inspectDataset",
-                  "target": {
-                    "file": "src/observability/inspect-command.ts"
-                  },
-                  "via": "runInspectDataset"
-                },
-                {
-                  "line": 238,
-                  "name": "formatInspectResult",
-                  "target": {
-                    "file": "src/observability/inspect-command.ts"
-                  },
-                  "via": "runInspectDataset"
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 109,
-                      "name": "listOrphanedRuns",
-                      "target": {
-                        "file": "src/observability/orphan-markers.ts"
-                      },
-                      "via": "surfaceOrphanBannerIfAny"
-                    },
-                    {
-                      "line": 140,
-                      "name": "safeReadIndex",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      }
-                    },
-                    {
-                      "line": 143,
-                      "name": "getActionableMessage",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      }
-                    },
-                    {
-                      "line": 153,
-                      "name": "safeReadRunJson",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      }
-                    },
-                    {
-                      "line": 156,
-                      "name": "getActionableMessage",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      }
-                    }
-                  ],
-                  "line": 268,
-                  "name": "getLatestRunMetadataSafe",
-                  "target": {
-                    "file": "src/observability/metadata-command.ts"
-                  },
-                  "via": "runOpenLatestMetadata"
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 92,
-                      "name": "openJsonDocument",
-                      "target": {
-                        "file": "src/observability/open-summary.ts"
-                      }
-                    }
-                  ],
-                  "line": 275,
-                  "name": "openMetadataInEditor",
-                  "target": {
-                    "file": "src/observability/metadata-command.ts"
-                  },
-                  "via": "runOpenLatestMetadata"
-                },
-                {
-                  "line": 318,
-                  "name": "getOutputChannel",
-                  "target": {
-                    "file": "src/runner/run-manager.ts"
-                  },
-                  "via": "runInspectArtifact"
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 48,
-                      "name": "listOrphanedRuns",
-                      "target": {
-                        "file": "src/observability/orphan-markers.ts"
-                      },
-                      "via": "surfaceArtifactInspectOrphanBanner"
-                    },
-                    {
-                      "line": 101,
-                      "name": "pythonSpawnEnv",
-                      "target": {
-                        "file": "src/runner/python-runner.ts"
-                      }
-                    }
-                  ],
-                  "line": 324,
-                  "name": "inspectArtifact",
-                  "target": {
-                    "file": "src/observability/artifact-inspect-command.ts"
-                  },
-                  "via": "runInspectArtifact"
-                },
-                {
-                  "line": 326,
-                  "name": "formatArtifactInspectResult",
-                  "target": {
-                    "file": "src/observability/artifact-inspect-command.ts"
-                  },
-                  "via": "runInspectArtifact"
-                },
-                {
-                  "line": 329,
-                  "name": "openInspectionInEditor",
-                  "target": {
-                    "file": "src/observability/artifact-inspect-command.ts"
-                  },
-                  "via": "runInspectArtifact"
-                },
-                {
-                  "line": 362,
-                  "name": "getOutputChannel",
-                  "target": {
-                    "file": "src/runner/run-manager.ts"
-                  },
-                  "via": "runBrowseRuns"
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 387,
-                      "name": "safeReadIndex",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      }
-                    },
-                    {
-                      "line": 388,
-                      "name": "listOrphanedRuns",
-                      "target": {
-                        "file": "src/observability/orphan-markers.ts"
-                      }
-                    },
-                    {
-                      "line": 285,
-                      "name": "appendLine",
-                      "target": null,
-                      "via": "logOrphanSkips"
-                    },
-                    {
-                      "line": 409,
-                      "name": "getActionableMessage",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      }
-                    },
-                    {
-                      "line": 310,
-                      "name": "humanizeOrphanRecovery",
-                      "target": {
-                        "file": "src/observability/orphan-markers.ts"
-                      },
-                      "via": "handleOrphanPick"
-                    },
-                    {
-                      "line": 352,
-                      "name": "show",
-                      "target": null,
-                      "via": "handleOrphanPick"
-                    },
-                    {
-                      "line": 353,
-                      "name": "appendLine",
-                      "target": null,
-                      "via": "handleOrphanPick"
-                    },
-                    {
-                      "line": 186,
-                      "name": "safeReadRunJson",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      },
-                      "via": "openRunSummary"
-                    },
-                    {
-                      "line": 189,
-                      "name": "getActionableMessage",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      },
-                      "via": "openRunSummary"
-                    },
-                    {
-                      "line": 197,
-                      "name": "renderRunSummary",
-                      "target": {
-                        "file": "src/observability/render/run-summary.ts"
-                      },
-                      "via": "openRunSummary"
-                    },
-                    {
-                      "line": 199,
-                      "name": "openMarkdownSummary",
-                      "target": {
-                        "file": "src/observability/open-summary.ts"
-                      },
-                      "via": "openRunSummary"
-                    },
-                    {
-                      "line": 210,
-                      "name": "safeReadRunJson",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      },
-                      "via": "viewDiagnostics"
-                    }
-                  ],
-                  "innerTruncated": true,
-                  "line": 364,
-                  "name": "browseRuns",
-                  "target": {
-                    "file": "src/observability/browse-runs-command.ts"
-                  },
-                  "via": "runBrowseRuns"
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 137,
-                      "name": "listOrphanedRuns",
-                      "target": {
-                        "file": "src/observability/orphan-markers.ts"
-                      }
-                    },
-                    {
-                      "line": 147,
-                      "name": "getLatestRunDir",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      }
-                    }
-                  ],
-                  "line": 51,
-                  "name": "viewLatestMetricsV1",
-                  "target": {
-                    "file": "src/observability/metrics-v1-command.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 114,
-                      "name": "listOrphanedRuns",
-                      "target": {
-                        "file": "src/observability/orphan-markers.ts"
-                      }
-                    },
-                    {
-                      "line": 124,
-                      "name": "getLatestRunDir",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      }
-                    }
-                  ],
-                  "line": 53,
-                  "name": "viewLatestFeatureImportance",
-                  "target": {
-                    "file": "src/observability/feature-importance-command.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 147,
-                      "name": "listOrphanedRuns",
-                      "target": {
-                        "file": "src/observability/orphan-markers.ts"
-                      }
-                    },
-                    {
-                      "line": 157,
-                      "name": "getLatestRunDir",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      }
-                    }
-                  ],
-                  "line": 55,
-                  "name": "viewLatestLinearCoefficients",
-                  "target": {
-                    "file": "src/observability/linear-coefficients-command.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 155,
-                      "name": "listOrphanedRuns",
-                      "target": {
-                        "file": "src/observability/orphan-markers.ts"
-                      }
-                    },
-                    {
-                      "line": 165,
-                      "name": "getLatestRunDir",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      }
-                    }
-                  ],
-                  "line": 57,
-                  "name": "viewLatestInterpretabilityIndex",
-                  "target": {
-                    "file": "src/observability/interpretability-index-command.ts"
-                  }
-                },
-                {
-                  "inner": [
-                    {
-                      "line": 232,
-                      "name": "surfaceOrphanBannerIfAny",
-                      "target": {
-                        "file": "src/observability/metadata-command.ts"
-                      }
-                    },
-                    {
-                      "line": 236,
-                      "name": "getLatestRunMetadataSafe",
-                      "target": {
-                        "file": "src/observability/metadata-command.ts"
-                      }
-                    },
-                    {
-                      "line": 247,
-                      "name": "getLatestRunDir",
-                      "target": {
-                        "file": "src/observability/fs-safe.ts"
-                      }
-                    },
-                    {
-                      "line": 67,
-                      "name": "escapeTableCell",
-                      "target": {
-                        "file": "src/observability/render/escape.ts"
-                      },
-                      "via": "buildMarkdown"
-                    }
-                  ],
-                  "line": 59,
-                  "name": "exportLatestRunAsMarkdown",
-                  "target": {
-                    "file": "src/observability/export-markdown-command.ts"
-                  }
-                },
-                {
-                  "line": 67,
-                  "name": "killActiveRun",
-                  "target": {
-                    "file": "src/runner/run-manager.ts"
-                  }
-                },
-                {
-                  "line": 71,
-                  "name": "recoverIndex",
-                  "target": {
-                    "file": "src/observability/recover-index-command.ts"
                   }
                 }
               ],
@@ -1796,6 +1275,7 @@
                   "via": "openRunSummary"
                 },
                 {
+                  "branch": "!result.ok",
                   "line": 189,
                   "name": "getActionableMessage",
                   "target": {
@@ -1828,6 +1308,7 @@
                   "via": "viewDiagnostics"
                 },
                 {
+                  "branch": "!result.ok",
                   "line": 213,
                   "name": "getActionableMessage",
                   "target": {
@@ -1903,6 +1384,7 @@
                   }
                 },
                 {
+                  "branch": "!result.ok",
                   "line": 189,
                   "name": "getActionableMessage",
                   "target": {
@@ -1939,6 +1421,7 @@
                   }
                 },
                 {
+                  "branch": "!result.ok",
                   "line": 213,
                   "name": "getActionableMessage",
                   "target": {
@@ -2065,6 +1548,7 @@
                   "via": "logOrphanSkips"
                 },
                 {
+                  "branch": "items.length === 0",
                   "line": 409,
                   "name": "getActionableMessage",
                   "target": {
@@ -2072,6 +1556,7 @@
                   }
                 },
                 {
+                  "branch": "selectedRun.runKind === 'orphan'",
                   "line": 310,
                   "name": "humanizeOrphanRecovery",
                   "target": {
@@ -2080,12 +1565,14 @@
                   "via": "handleOrphanPick"
                 },
                 {
+                  "branch": "selectedRun.runKind === 'orphan'",
                   "line": 352,
                   "name": "show",
                   "target": null,
                   "via": "handleOrphanPick"
                 },
                 {
+                  "branch": "selectedRun.runKind === 'orphan'",
                   "line": 353,
                   "name": "appendLine",
                   "target": null,
@@ -2100,6 +1587,7 @@
                   "via": "openRunSummary"
                 },
                 {
+                  "branch": "!result.ok",
                   "line": 189,
                   "name": "getActionableMessage",
                   "target": {
@@ -2132,6 +1620,7 @@
                   "via": "viewDiagnostics"
                 },
                 {
+                  "branch": "!result.ok",
                   "line": 213,
                   "name": "getActionableMessage",
                   "target": {
@@ -2213,8 +1702,6 @@
           "path": "src/observability/event-stream-consumer.ts"
         },
         {
-          "entry": "exportLatestRunAsMarkdown",
-          "entryRule": 4,
           "exports": [
             "exportLatestRunAsMarkdown"
           ],
@@ -2225,65 +1712,9 @@
             "src/observability/render/escape.ts",
             "src/types.ts"
           ],
-          "path": "src/observability/export-markdown-command.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 67,
-                  "name": "escapeTableCell",
-                  "target": {
-                    "file": "src/observability/render/escape.ts"
-                  }
-                }
-              ],
-              "exported": false,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "buildMarkdown"
-            },
-            {
-              "calls": [
-                {
-                  "line": 232,
-                  "name": "surfaceOrphanBannerIfAny",
-                  "target": {
-                    "file": "src/observability/metadata-command.ts"
-                  }
-                },
-                {
-                  "line": 236,
-                  "name": "getLatestRunMetadataSafe",
-                  "target": {
-                    "file": "src/observability/metadata-command.ts"
-                  }
-                },
-                {
-                  "line": 247,
-                  "name": "getLatestRunDir",
-                  "target": {
-                    "file": "src/observability/fs-safe.ts"
-                  }
-                },
-                {
-                  "line": 67,
-                  "name": "escapeTableCell",
-                  "target": {
-                    "file": "src/observability/render/escape.ts"
-                  },
-                  "via": "buildMarkdown"
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "exportLatestRunAsMarkdown"
-            }
-          ]
+          "path": "src/observability/export-markdown-command.ts"
         },
         {
-          "entry": "viewLatestFeatureImportance",
-          "entryRule": 4,
           "exports": [
             "formatFeatureImportance",
             "openFeatureImportanceInEditor",
@@ -2295,31 +1726,7 @@
             "src/observability/orphan-markers.ts",
             "src/types.ts"
           ],
-          "path": "src/observability/feature-importance-command.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 114,
-                  "name": "listOrphanedRuns",
-                  "target": {
-                    "file": "src/observability/orphan-markers.ts"
-                  }
-                },
-                {
-                  "line": 124,
-                  "name": "getLatestRunDir",
-                  "target": {
-                    "file": "src/observability/fs-safe.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "viewLatestFeatureImportance"
-            }
-          ]
+          "path": "src/observability/feature-importance-command.ts"
         },
         {
           "exports": [
@@ -2368,8 +1775,6 @@
           ]
         },
         {
-          "entry": "viewLatestInterpretabilityIndex",
-          "entryRule": 4,
           "exports": [
             "formatInterpretabilityIndex",
             "openInterpretabilityIndexInEditor",
@@ -2381,35 +1786,9 @@
             "src/observability/orphan-markers.ts",
             "src/types.ts"
           ],
-          "path": "src/observability/interpretability-index-command.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 155,
-                  "name": "listOrphanedRuns",
-                  "target": {
-                    "file": "src/observability/orphan-markers.ts"
-                  }
-                },
-                {
-                  "line": 165,
-                  "name": "getLatestRunDir",
-                  "target": {
-                    "file": "src/observability/fs-safe.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "viewLatestInterpretabilityIndex"
-            }
-          ]
+          "path": "src/observability/interpretability-index-command.ts"
         },
         {
-          "entry": "viewLatestLinearCoefficients",
-          "entryRule": 4,
           "exports": [
             "formatLinearCoefficients",
             "openLinearCoefficientsInEditor",
@@ -2421,31 +1800,7 @@
             "src/observability/orphan-markers.ts",
             "src/types.ts"
           ],
-          "path": "src/observability/linear-coefficients-command.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 147,
-                  "name": "listOrphanedRuns",
-                  "target": {
-                    "file": "src/observability/orphan-markers.ts"
-                  }
-                },
-                {
-                  "line": 157,
-                  "name": "getLatestRunDir",
-                  "target": {
-                    "file": "src/observability/fs-safe.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "viewLatestLinearCoefficients"
-            }
-          ]
+          "path": "src/observability/linear-coefficients-command.ts"
         },
         {
           "entry": "getLatestRunMetadataSafe",
@@ -2518,6 +1873,7 @@
                   }
                 },
                 {
+                  "branch": "!indexResult.ok",
                   "line": 143,
                   "name": "getActionableMessage",
                   "target": {
@@ -2532,6 +1888,7 @@
                   }
                 },
                 {
+                  "branch": "!runJsonResult.ok",
                   "line": 156,
                   "name": "getActionableMessage",
                   "target": {
@@ -2547,8 +1904,6 @@
           ]
         },
         {
-          "entry": "viewLatestMetricsV1",
-          "entryRule": 4,
           "exports": [
             "formatMetricsV1",
             "openMetricsV1InEditor",
@@ -2560,31 +1915,7 @@
             "src/observability/orphan-markers.ts",
             "src/types.ts"
           ],
-          "path": "src/observability/metrics-v1-command.ts",
-          "sequences": [
-            {
-              "calls": [
-                {
-                  "line": 137,
-                  "name": "listOrphanedRuns",
-                  "target": {
-                    "file": "src/observability/orphan-markers.ts"
-                  }
-                },
-                {
-                  "line": 147,
-                  "name": "getLatestRunDir",
-                  "target": {
-                    "file": "src/observability/fs-safe.ts"
-                  }
-                }
-              ],
-              "exported": true,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "viewLatestMetricsV1"
-            }
-          ]
+          "path": "src/observability/metrics-v1-command.ts"
         },
         {
           "exports": [
@@ -2834,12 +2165,6 @@
                   "target": null
                 },
                 {
-                  "line": 841,
-                  "name": "appendLine",
-                  "target": null,
-                  "via": "cancelActiveRun"
-                },
-                {
                   "line": 1020,
                   "name": "writeResult",
                   "target": {
@@ -3037,14 +2362,16 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsideReads": 17,
+      "outsideWrites": 6,
       "role": "code",
       "testedBy": 32,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 6,
-      "dynamicSpawnsInTests": 6,
+      "dynamicSpawns": 5,
+      "dynamicSpawnsInTests": 5,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -3475,6 +2802,15 @@
           "boundary": "test",
           "depth": 0,
           "files": 36
+        },
+        {
+          "boundary": "python",
+          "depth": 2,
+          "enters": {
+            "file": "python/ml_runner/__main__.py",
+            "from": "src/observability/artifact-inspect-command.ts"
+          },
+          "files": 18
         }
       ],
       "readers": [],
@@ -3944,6 +3280,35 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish.yml",
+      "gated": [
+        {
+          "jobs": [
+            "build"
+          ],
+          "pushes": false,
+          "sends": [
+            "releases"
+          ],
+          "stages": [],
+          "when": {
+            "event": "push",
+            "tags": true
+          }
+        },
+        {
+          "jobs": [
+            "publish_marketplace"
+          ],
+          "pushes": false,
+          "sends": [
+            "publishesTo:vscode-marketplace"
+          ],
+          "stages": [],
+          "when": {
+            "event": "workflow_dispatch"
+          }
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -3966,6 +3331,15 @@
           "boundary": "test",
           "depth": 0,
           "files": 34
+        },
+        {
+          "boundary": "python",
+          "depth": 2,
+          "enters": {
+            "file": "python/ml_runner/__main__.py",
+            "from": "src/observability/artifact-inspect-command.ts"
+          },
+          "files": 18
         }
       ],
       "readers": [],
@@ -4227,7 +3601,7 @@
         "opensPullRequests": false,
         "publishes": false,
         "publishesTo": [],
-        "releases": true
+        "releases": false
       },
       "stages": [],
       "triggers": [
@@ -4253,18 +3627,31 @@
       "commands": [],
       "elsewhere": [],
       "entry": "src/extension.ts",
+      "extension": true,
       "file": "package.json",
       "kind": "package",
       "landings": [],
       "mentions": [],
       "name": "runforge",
       "permissions": [],
+      "publishedTo": [
+        "vscode-marketplace"
+      ],
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
           "files": 31
+        },
+        {
+          "boundary": "python",
+          "depth": 2,
+          "enters": {
+            "file": "python/ml_runner/__main__.py",
+            "from": "src/observability/artifact-inspect-command.ts"
+          },
+          "files": 18
         }
       ],
       "readers": [],
@@ -4288,12 +3675,16 @@
       },
       "stages": [],
       "triggers": [],
-      "unpublished": true,
       "uses": [],
       "usesWorkflowToken": false
     }
   ],
   "edges": [
+    {
+      "from": "src",
+      "kind": "spawns",
+      "to": "python"
+    },
     {
       "from": "test",
       "fromTests": true,
@@ -4353,17 +3744,6 @@
         }
       ],
       "target": "python",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "src/extension.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "python/ml_runner",
       "writers": []
     },
     {

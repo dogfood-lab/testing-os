@@ -153,8 +153,15 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 4 more new writers and readers of places.",
+        "sentence": "And 5 more new writers and readers of places.",
         "subjects": []
+      },
+      {
+        "kind": "sequence",
+        "sentence": "src/cli.ts now starts at main; it started at with globals.",
+        "subjects": [
+          "src/cli.ts"
+        ]
       },
       {
         "kind": "counts",
@@ -176,7 +183,7 @@
   "changesTogetherWithTests": 2,
   "commit": "49c1e9d41bef2557d15834ad3590e0a07e76f71d",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly TypeScript (40 files). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. People run brand.",
+  "derived": "11 parts, mostly images (251 files); code in TypeScript (40) and JavaScript (8). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. People run brand.",
   "doors": [
     {
       "checks": [
@@ -187,6 +194,9 @@
       "id": ".github/workflows/ci.yml",
       "landings": [],
       "name": "CI",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -350,6 +360,9 @@
         "manifest.json"
       ],
       "name": "Sync org logos",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "pushesForReview": true,
       "reach": [
@@ -390,6 +403,9 @@
       "kind": "command",
       "landings": [],
       "name": "brand",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -428,12 +444,12 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T02:04:58.194Z",
+  "generatedAt": "2026-09-24T08:23:25.691Z",
   "limits": [
     "1 file uses syntax the parser cannot read (tests/manifest.test.ts), so what it imports is not known: a NUL character inside a string (1).",
-    "18 writes and 32 reads use paths built at run time and are not named here.",
-    "3 writes and 42 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "8 commands are built at run time and not followed, 6 of them in tests.",
+    "6 reads use paths built at run time and are not named here.",
+    "24 writes and 73 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "5 commands are built at run time and not followed, all of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -466,8 +482,9 @@
     "scripts": 0,
     "src": 16
   },
-  "unnamedWrites": 18,
+  "unnamedWrites": 0,
   "unread": [],
+  "unreadFiles": 1,
   "unreadNote": [],
   "untested": [
     {

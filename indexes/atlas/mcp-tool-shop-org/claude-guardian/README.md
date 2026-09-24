@@ -4,7 +4,7 @@ Mapped at 2026-09-24 from commit 65dce69.
 
 ## What this is
 
-7 parts, mostly TypeScript (38 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. People run claude-guardian.
+7 parts, mostly TypeScript (38 files). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-guardian.
 
 ## What changed since 2026-09-23 (628c46f)
 
@@ -20,7 +20,7 @@ Mapped at 2026-09-24 from commit 65dce69.
 1. **CI.** On a pull request touching 10 paths; on a push to main touching 10 paths; or by hand. Runs tests/; checks src/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; checks src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-4. **Dogfood.** On a push to main touching 3 paths; or by hand. Runs src/cli.ts; checks src/.
+4. **Dogfood.** On a push to main touching 3 paths; or by hand. On main, it runs src/cli.ts; checks src/.
 5. **claude-guardian** (a command people run). Runs src/cli.ts.
 
 ## What happens through CI
@@ -37,7 +37,7 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Dogfood** runs src/cli.ts, checks src/, and sends a dispatch to dogfood-lab/testing-os on main.
+**Dogfood** runs src/cli.ts and checks src/ on main, and sends a dispatch to dogfood-lab/testing-os on main.
 
 **claude-guardian** (a command people run) runs src/cli.ts.
 
@@ -75,18 +75,19 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/; 4 writes with paths built at run time may land here.
+People write .github/; 1 write with a path built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → tests/budget-mcp.test.ts → src/budget-store.ts
+.github/workflows/ci.yml → src/cli.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 4 writes and 13 reads use paths built at run time and are not named here.
-- 14 writes and 16 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 1 import site could not be resolved.
+- 1 write and 3 reads use paths built at run time and are not named here.
+- 17 writes and 29 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

@@ -44,91 +44,8 @@
   "changesTogetherWithTests": 0,
   "commit": "204828b76b942cb4bc89f2baccfe96564090f241",
   "defaultBranch": "main",
-  "derived": "6 parts, mostly TypeScript (48 files). Work enters through 4 doors; the busiest is Deploy site to GitHub Pages, which reaches 1 part. It publishes to npm. People run rig-bridge.",
+  "derived": "6 parts, mostly TypeScript (48 files). Work enters through 4 doors; ci, Deploy site to GitHub Pages and Release each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. People run rig-bridge.",
   "doors": [
-    {
-      "checks": [],
-      "checksCount": 0,
-      "file": ".github/workflows/pages.yml",
-      "id": ".github/workflows/pages.yml",
-      "landings": [],
-      "name": "Deploy site to GitHub Pages",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "site",
-          "depth": 0,
-          "files": 3
-        }
-      ],
-      "runs": [
-        "site/astro.config.mjs",
-        "site/src/"
-      ],
-      "runsCount": 2,
-      "sends": [
-        "deploys the site"
-      ],
-      "stages": [],
-      "triggers": [
-        "on a push to main touching 2 paths",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [
-        "src/"
-      ],
-      "checksCount": 1,
-      "file": ".github/workflows/release.yml",
-      "id": ".github/workflows/release.yml",
-      "landings": [],
-      "name": "Release",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "src",
-          "depth": 0,
-          "files": 46
-        }
-      ],
-      "runs": [
-        "src/cli.ts",
-        "src/cli-e2e.test.ts",
-        "src/cli.test.ts",
-        "src/commands/close.test.ts",
-        "src/commands/init.test.ts",
-        "src/commands/new.test.ts",
-        "src/commands/relay.test.ts",
-        "src/commands/send.test.ts",
-        "src/commands/status.test.ts",
-        "src/commands/sync.test.ts",
-        "src/commands/thread.test.ts",
-        "src/cross-rig.test.ts",
-        "src/engine/body-hash.test.ts",
-        "src/engine/config.test.ts",
-        "src/engine/envelope.test.ts",
-        "src/engine/git-diff.test.ts",
-        "src/engine/git.test.ts",
-        "src/engine/peer-rigs.test.ts",
-        "src/engine/rig-id.test.ts",
-        "src/engine/schema-validator.test.ts",
-        "src/engine/status.test.ts",
-        "src/engine/threads.test.ts",
-        "src/engine/validate-file.test.ts",
-        "src/engine/verify-hash.test.ts",
-        "src/smoke.test.ts"
-      ],
-      "runsCount": 25,
-      "sends": [
-        "publishes to npm",
-        "creates a GitHub release"
-      ],
-      "stages": [],
-      "triggers": [
-        "when a tag matching `v[0-9]+.[0-9]+.[0-9]+` or `v[0-9]+.[0-9]+.[0-9]+-*` is pushed"
-      ]
-    },
     {
       "checks": [
         "src/"
@@ -138,6 +55,9 @@
       "id": ".github/workflows/ci.yml",
       "landings": [],
       "name": "ci",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -185,11 +105,100 @@
     {
       "checks": [],
       "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "programs": [
+        "git"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 46
+        }
+      ],
+      "runs": [
+        "src/cli.ts",
+        "src/cli-e2e.test.ts",
+        "src/cli.test.ts",
+        "src/commands/close.test.ts",
+        "src/commands/init.test.ts",
+        "src/commands/new.test.ts",
+        "src/commands/relay.test.ts",
+        "src/commands/send.test.ts",
+        "src/commands/status.test.ts",
+        "src/commands/sync.test.ts",
+        "src/commands/thread.test.ts",
+        "src/cross-rig.test.ts",
+        "src/engine/body-hash.test.ts",
+        "src/engine/config.test.ts",
+        "src/engine/envelope.test.ts",
+        "src/engine/git-diff.test.ts",
+        "src/engine/git.test.ts",
+        "src/engine/peer-rigs.test.ts",
+        "src/engine/rig-id.test.ts",
+        "src/engine/schema-validator.test.ts",
+        "src/engine/status.test.ts",
+        "src/engine/threads.test.ts",
+        "src/engine/validate-file.test.ts",
+        "src/engine/verify-hash.test.ts",
+        "src/smoke.test.ts"
+      ],
+      "runsCount": 25,
+      "sends": [
+        "publishes to npm",
+        "creates a GitHub release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v[0-9]+.[0-9]+.[0-9]+` or `v[0-9]+.[0-9]+.[0-9]+-*` is pushed"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
       "file": "package.json",
       "id": "package.json#rig-bridge",
       "kind": "command",
       "landings": [],
       "name": "rig-bridge",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -212,15 +221,14 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-24T02:34:59.533Z",
+  "generatedAt": "2026-09-24T08:26:03.210Z",
   "limits": [
     "1 file uses syntax the parser cannot read (src/engine/envelope.test.ts), so what it imports is not known: a NUL character inside a string (1).",
-    "3 writes and 32 reads use paths built at run time and are not named here.",
-    "4 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "39 commands are built at run time and not followed, 36 of them in tests.",
+    "9 writes and 46 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "4 commands are built at run time and not followed, 2 of them in tests.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
-  "mainDoor": ".github/workflows/pages.yml",
+  "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
     ".github": ".github",
     "docs": "docs",
@@ -232,7 +240,340 @@
   "parts": 6,
   "readers": [],
   "repo": "mcp-tool-shop-org/rig-bridge",
-  "sequences": [],
+  "sequences": [
+    {
+      "entry": "main",
+      "file": "src/cli.ts",
+      "inner": [
+        {
+          "file": "src/commands/init.ts",
+          "name": "runInit",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run init",
+          "steps": [
+            {
+              "name": "normalizeRigId",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "normalize rig id"
+            },
+            {
+              "name": "validateRigId",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "validate rig id"
+            },
+            {
+              "name": "isGitRepo",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "is git repo"
+            },
+            {
+              "name": "repoRoot",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "repo root"
+            },
+            {
+              "name": "writeConfig",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "write config"
+            },
+            {
+              "name": "configPath",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "config path"
+            }
+          ]
+        },
+        {
+          "file": "src/commands/new.ts",
+          "name": "runNew",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run new",
+          "steps": [
+            {
+              "name": "repoRoot",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "repo root"
+            },
+            {
+              "name": "readConfig",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "read config"
+            },
+            {
+              "name": "renderEnvelope",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "render envelope"
+            }
+          ]
+        },
+        {
+          "file": "src/commands/send.ts",
+          "name": "runSend",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run send",
+          "steps": [
+            {
+              "name": "validateRigId",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "validate rig id"
+            },
+            {
+              "name": "repoRoot",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "repo root"
+            },
+            {
+              "name": "readConfig",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "read config"
+            },
+            {
+              "name": "markerToStatusClass",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "marker to status class"
+            },
+            {
+              "name": "bodyHash",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "body hash"
+            },
+            {
+              "name": "validateFrontmatter",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "validate frontmatter"
+            },
+            {
+              "name": "renderEnvelope",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "render envelope"
+            },
+            {
+              "name": "safeCommit",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "safe commit"
+            },
+            {
+              "name": "safePush",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "safe push"
+            }
+          ]
+        },
+        {
+          "file": "src/commands/close.ts",
+          "name": "runClose",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run close",
+          "steps": [
+            {
+              "name": "repoRoot",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "repo root"
+            },
+            {
+              "name": "readConfig",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "read config"
+            },
+            {
+              "name": "markerToStatusClass",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "marker to status class"
+            },
+            {
+              "name": "findPeerRigs",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "find peer rigs"
+            },
+            {
+              "name": "bodyHash",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "body hash"
+            },
+            {
+              "name": "validateFrontmatter",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "validate frontmatter"
+            },
+            {
+              "name": "renderEnvelope",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "render envelope"
+            },
+            {
+              "name": "safeCommit",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "safe commit"
+            },
+            {
+              "name": "safePush",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "safe push"
+            }
+          ]
+        },
+        {
+          "file": "src/commands/relay.ts",
+          "name": "runRelay",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run relay",
+          "steps": [
+            {
+              "name": "repoRoot",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "repo root"
+            },
+            {
+              "name": "readConfig",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "read config"
+            },
+            {
+              "name": "runGit",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "run git"
+            },
+            {
+              "name": "validateRigId",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "validate rig id"
+            },
+            {
+              "name": "parseEnvelope",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "parse envelope"
+            },
+            {
+              "name": "normalizeRigId",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "normalize rig id"
+            },
+            {
+              "name": "validateRigId",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "validate rig id"
+            },
+            {
+              "name": "bodyHash",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "body hash"
+            },
+            {
+              "name": "validateFrontmatter",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "validate frontmatter"
+            },
+            {
+              "name": "renderEnvelope",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "render envelope"
+            },
+            {
+              "name": "runGit",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "run git"
+            }
+          ]
+        }
+      ],
+      "part": "src",
+      "partLabel": "src",
+      "phrase": "main",
+      "steps": [
+        {
+          "name": "runInit",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run init"
+        },
+        {
+          "name": "runNew",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run new"
+        },
+        {
+          "name": "runSend",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run send"
+        },
+        {
+          "name": "runClose",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run close"
+        },
+        {
+          "name": "runStatus",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run status"
+        },
+        {
+          "name": "runThread",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run thread"
+        },
+        {
+          "name": "runSync",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run sync"
+        },
+        {
+          "name": "runRelay",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "run relay"
+        }
+      ]
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
@@ -244,8 +585,9 @@
   "testedBy": {
     "src": 24
   },
-  "unnamedWrites": 3,
+  "unnamedWrites": 0,
   "unread": [],
+  "unreadFiles": 1,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],

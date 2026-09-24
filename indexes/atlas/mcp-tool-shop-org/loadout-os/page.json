@@ -143,7 +143,7 @@
   "changesTogetherWithTests": 0,
   "commit": "61d98b601565a5b7eccd66a4baf98a4e1b8c3032",
   "defaultBranch": "main",
-  "derived": "9 parts, mostly TypeScript (84 files). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes to npm. People run ai-loadout, claude-memories, claude-rules and loadout-os.",
+  "derived": "9 parts, mostly TypeScript (84 files). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os (packages/cli) to npm. People run ai-loadout, claude-memories, claude-rules and loadout-os.",
   "doors": [
     {
       "checks": [
@@ -154,6 +154,17 @@
       ],
       "checksCount": 4,
       "file": ".github/workflows/ci.yml",
+      "held": [
+        {
+          "checks": [],
+          "lead": "on a push to main",
+          "runs": [
+            "site/astro.config.mjs",
+            "site/src/"
+          ],
+          "when": "on a push to main"
+        }
+      ],
       "id": ".github/workflows/ci.yml",
       "landings": [],
       "name": "CI",
@@ -185,11 +196,8 @@
           "files": 3
         }
       ],
-      "runs": [
-        "site/astro.config.mjs",
-        "site/src/"
-      ],
-      "runsCount": 2,
+      "runs": [],
+      "runsCount": 0,
       "sends": [
         "deploys the site on a push to main"
       ],
@@ -240,7 +248,7 @@
       ],
       "runsCount": 1,
       "sends": [
-        "publishes to npm",
+        "publishes @mcptoolshop/loadout-os (packages/cli) to npm",
         "creates a GitHub release"
       ],
       "stages": [],
@@ -457,11 +465,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T02:06:12.971Z",
+  "generatedAt": "2026-09-24T08:24:51.880Z",
   "limits": [
     "1 file uses syntax the parser cannot read (packages/memories/src/types.ts), so what it imports is not known: an import type followed by `[]` (1).",
-    "9 writes and 54 reads use paths built at run time and are not named here.",
-    "10 writes and 20 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "8 writes and 22 reads use paths built at run time and are not named here.",
+    "12 writes and 55 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "12 commands are built at run time and not followed, 11 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -492,8 +500,9 @@
     "hook": 0,
     "site": 0
   },
-  "unnamedWrites": 9,
+  "unnamedWrites": 8,
   "unread": [],
+  "unreadFiles": 1,
   "unreadNote": [],
   "untested": [
     {

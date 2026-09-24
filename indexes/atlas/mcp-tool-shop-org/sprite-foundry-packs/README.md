@@ -4,7 +4,7 @@ Mapped at 2026-09-24 from commit aae7ad5.
 
 ## What this is
 
-19 parts, in JavaScript (2 files) and TypeScript (2 files). Work enters through 3 doors; the busiest is CI, which reaches 1 part. It publishes to npm.
+19 parts, mostly images (6651 files); code in JavaScript (2), TypeScript (2) and Python (1). Work enters through 3 doors; CI and Deploy site to GitHub Pages each reach 1 part, and CI is followed because a pull request goes through it. It publishes one of the 14 packages under packages/ to npm, chosen by the tag.
 
 ## What changed since 2026-09-24 (09f49ca)
 
@@ -28,7 +28,7 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Release** runs no file this map can see, publishes to npm, and creates a GitHub release.
+**Release** runs no file this map can see, publishes one of the 14 packages under packages/ to npm, chosen by the tag, and creates a GitHub release.
 
 ## What breaks what
 

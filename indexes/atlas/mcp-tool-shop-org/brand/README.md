@@ -4,7 +4,7 @@ Mapped at 2026-09-24 from commit 49c1e9d.
 
 ## What this is
 
-11 parts, mostly TypeScript (40 files). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. People run brand.
+11 parts, mostly images (251 files); code in TypeScript (40) and JavaScript (8). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. People run brand.
 
 ## What changed since 2026-09-23 (82d3e54)
 
@@ -15,7 +15,8 @@ Mapped at 2026-09-24 from commit 49c1e9d.
 - README.ja.md is now read by tests/migrate.test.ts.
 - README.md is now also read by tests/audit.test.ts, tests/json-output.test.ts, tests/migrate-journal.test.ts and tests/migrate.test.ts.
 - README.zh.md is now read by tests/migrate.test.ts.
-- And 4 more new writers and readers of places.
+- And 5 more new writers and readers of places.
+- src/cli.ts now starts at main; it started at with globals.
 - 100 files changed content, across 8 parts.
 
 ## What comes in
@@ -30,10 +31,11 @@ Mapped at 2026-09-24 from commit 49c1e9d.
 
 1. The workflow runs scripts/check-audit-allowlist.mjs in scripts, src/cli.ts in src, and 19 files in tests; it checks src/ in src.
 2. That reaches the site (1 file).
+3. It runs git.
 
 ## Who reads the results
 
-CI writes nothing this map can see.
+CI writes nothing in the files this map could read; 1 file could not be.
 
 ## The other doors
 
@@ -41,9 +43,9 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, checks src/, and deploys the site on a push to main.
 
-**Sync org logos** runs scripts/sync-org-logos.sh and src/cli.ts, checks src/, writes to logos/ and manifest.json, commits logos/ and manifest.json, then pushes to a branch for review, never to main, opens an issue, and opens a pull request.
+**Sync org logos** runs scripts/sync-org-logos.sh and src/cli.ts, checks src/, writes to logos/ and manifest.json, commits logos/ and manifest.json, then pushes to a branch for review, never to main, runs git, opens an issue, and opens a pull request.
 
-**brand** (a command people run) runs src/cli.ts.
+**brand** (a command people run) runs src/cli.ts and runs git.
 
 ## What breaks what
 
@@ -72,15 +74,15 @@ Every written place has a reader.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike.
+No two parts export a helper that looks alike in the files this map could read; 1 file could not be.
 
 ## Generated, never hand-edited
 
-Nothing in this repository writes to a tracked place this map can see.
+Nothing in the files this map could read writes to a tracked place; 1 file could not be.
 
 ## Hand-authored
 
-People write .claude/, .githooks/, .github/, assets/, docs/ and site/; 18 writes with paths built at run time may land here.
+People write .claude/, .githooks/, .github/, assets/, docs/ and site/. Nothing in the files this map could read writes to them; 1 file could not be.
 
 - **logos/** is written by .github/workflows/sync.yml, and by people: 67 of its 68 commits in the window are theirs.
 - **manifest.json** is written by .github/workflows/sync.yml, and by people: 41 of its 42 commits in the window are theirs.
@@ -94,9 +96,9 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 1 file uses syntax the parser cannot read (tests/manifest.test.ts), so what it imports is not known: a NUL character inside a string (1).
-- 18 writes and 32 reads use paths built at run time and are not named here.
-- 3 writes and 42 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
-- 8 commands are built at run time and not followed, 6 of them in tests.
+- 6 reads use paths built at run time and are not named here.
+- 24 writes and 73 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 5 commands are built at run time and not followed, all of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

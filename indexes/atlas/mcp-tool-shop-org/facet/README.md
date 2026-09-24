@@ -12,10 +12,10 @@ Mapped at 2026-09-24 from commit 8d2fa34.
 - Release now also runs tools/facet_index.py and tools/record_mcp.py.
 - Release now also checks tools/diagnostics/ and tools/verify/.
 - And 3 more changes to doors.
+- tools/diagnostics/front_padded.png is now written by tools/diagnostics/prep_front.py.
 - .gitattributes is now read by tests/test_t06_line_endings.py.
 - .github/workflows/release.yml is now read by tests/test_t27_packaging_shape.py.
-- CHANGELOG.md is now also read by tests/test_t05_claims_sweep.py and tests/test_t34_front_door_counts.py.
-- And 95 more new writers and readers of places.
+- And 78 more new writers and readers of places.
 - 1 file changed content, across 1 part.
 
 ## What comes in
@@ -83,19 +83,20 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .claude/, .github/, canon/, profiles/ and the repository root; 192 writes with paths built at run time may land here.
+People write .claude/, .github/, canon/, profiles/ and the repository root; 126 writes with paths built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → tests/test_t101_rig_report.py → tools/verify/rig_report.py
+.github/workflows/ci.yml → tools/facet_index.py
 
 Read those in order to follow one push end to end.
 
 ## What this map cannot see
 
 - 205 import sites could not be resolved.
-- 192 writes and 109 reads use paths built at run time and are not named here.
-- 183 writes and 81 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 126 writes and 99 reads use paths built at run time and are not named here.
+- 1 write goes to places this repository does not track, so it is not listed as generated.
+- 396 writes and 92 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

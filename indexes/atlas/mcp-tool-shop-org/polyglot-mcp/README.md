@@ -20,8 +20,8 @@ Mapped at 2026-09-24 from commit c7c22e5.
 ## What comes in
 
 1. **@mcptoolshop/polyglot-mcp** (the package people import). Loads src/index.ts, src/cache.ts, src/codeSpans.ts and 9 more.
-2. **CI.** On a pull request touching 9 paths; on a push to main touching 9 paths; or by hand. Checks src/.
-3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+3. **CI.** On a pull request touching 9 paths; on a push to main touching 9 paths; or by hand. Checks src/.
 4. **Publish to npm.** When a release is published; or by hand. Checks src/.
 5. **polyglot-mcp** (a command people run). Runs src/index.ts.
 
@@ -59,13 +59,13 @@ Mapped at 2026-09-24 from commit c7c22e5.
 
 ## Who reads the results
 
-@mcptoolshop/polyglot-mcp writes nothing this map can see.
+@mcptoolshop/polyglot-mcp writes nothing in the files this map could read; 1 file could not be.
 
 ## The other doors
 
-**CI** checks src/.
-
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
+
+**CI** checks src/.
 
 **Publish to npm** checks src/ and publishes to npm.
 
@@ -88,11 +88,11 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 
 ## Written but never read
 
-No place this map can see is written, so none goes unread.
+No place is written by the files this map could read, so none goes unread; 1 file could not be.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike.
+No two parts export a helper that looks alike in the files this map could read; 1 file could not be.
 
 ## Generated, never hand-edited
 
@@ -116,7 +116,8 @@ Read those in order to follow one import of @mcptoolshop/polyglot-mcp end to end
 ## What this map cannot see
 
 - 1 file uses syntax the parser cannot read (src/translateReadme.test.ts), so what it imports is not known: `typeof import(…)` as a type argument (1).
-- 5 writes and 6 reads use paths built at run time and are not named here.
+- 2 writes and 3 reads use paths built at run time and are not named here.
+- 4 writes and 7 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 5 commands are built at run time and not followed, 2 of them in tests.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
