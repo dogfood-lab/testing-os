@@ -1359,8 +1359,10 @@ export function guardClause(guards) {
   return parts.length > 0 ? ` when run ${parts.join(' and ')}` : '';
 }
 
+// A test that writes a tracked place is said to be one: the place changes
+// every time the suite runs.
 function writerItems(ctx, writers, guards) {
-  return collapse(ctx, writers.map((path) => ({ path, text: `${path}${guardClause(guards.get(path))}` })));
+  return collapse(ctx, writers.map((path) => ({ path, text: `${path}${isTestFile(path) ? ' (a test)' : ''}${guardClause(guards.get(path))}` })));
 }
 
 const QUOTING = /\.(md|mdx|json|jsonl)$/i;

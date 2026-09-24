@@ -572,8 +572,9 @@ export function astLandings(language, root, path, places) {
     const specifier = ctx.python ? null : moduleSpecifier(node);
     if (specifier) ctx.seen.add(key(specifier));
   });
+  const pil = ctx.python && importsPillow(root);
   for (const node of calls) {
-    if (ctx.python) pythonSite(node, site);
+    if (ctx.python) pythonSite(node, site, pil);
     else scriptSite(node, site);
   }
   if (!ctx.python && ASTRO_CONFIG.test(path)) found.reads.push(...starlightReads(root, ctx, places));
@@ -681,7 +682,7 @@ export function settleParamPaths(files, places) {
   for (const file of files) byPath.set(file.path, file);
   const callers = new Map();
   for (const file of byPath.values()) {
-    if (!file.paramCalls || isTestMaterial(file.path)) continue;
+    if (!file.paramCalls) continue;
     for (const call of file.paramCalls) {
       let target = null;
       if (call.local != null) target = `${file.path}#${call.local}`;
@@ -694,9 +695,12 @@ export function settleParamPaths(files, places) {
       callers.get(target).push({ path: file.path, args: call.args });
     }
   }
+  // A test's calls hand the functions it calls temporary copies, so they
+  // settle nothing, except the test's calls to its own functions: the test
+  // decides where those write.
   const roots = (path, fn, param, rest, depth) => {
     const out = { places: [], outside: false, unread: false };
-    const calls = callers.get(`${path}#${fn}`) ?? [];
+    const calls = (callers.get(`${path}#${fn}`) ?? []).filter((call) => !isTestMaterial(call.path) || call.path === path);
     if (calls.length === 0) {
       out.outside = true;
       return out;
@@ -864,6 +868,9 @@ function withoutRedundantDirectories(writes, places) {
 // whoever runs the code; attachLandings decides whose directory that is.
 function landingEntry(target, call, value, places) {
   const entry = { target, call, confidence: confidenceOf(value, target, places) };
+  // A path built from the file's own location with its tail read at run
+  // time, which attachLandings keeps for a test when tracked files have its shape.
+  if (value.anchor === 'file' && value.open && value.tail != null) entry.fixedHead = true;
   if (DIRECTORY_MAKERS.has(call) && value.open && value.tail != null) entry.child = true;
   if (value.anchor == null && !value.rooted) entry.relative = true;
   if (value.anchor === 'file' && !value.open) entry.fixed = true;
@@ -983,7 +990,15 @@ function scriptSite(node, site) {
   if (NETWORK.has(name)) site('read', name, args[0], false);
 }
 
-function pythonSite(node, site) {
+// A file that imports Pillow saves an image with img.save(path).
+function importsPillow(root) {
+  return root.namedChildren.some((statement) => (
+    (statement.type === 'import_from_statement' && /^PIL(\.|$)/.test(statement.childForFieldName('module_name')?.text ?? ''))
+    || (statement.type === 'import_statement' && statement.namedChildren.some((child) => /^PIL(\.|$)/.test(child.type === 'aliased_import' ? child.childForFieldName('name')?.text ?? '' : child.text)))
+  ));
+}
+
+function pythonSite(node, site, pil = false) {
   const fn = node.childForFieldName('function');
   if (!fn) return;
   const args = argumentNodes(node);
@@ -1004,6 +1019,7 @@ function pythonSite(node, site) {
   if (owner === 'shutil' && PY_SHUTIL_WRITES.has(attribute)) return site('write', call, args[1]);
   if (owner === 'glob' && attribute === 'glob') return site('read', call, args[0]);
   if (PY_RECEIVER_WRITES.has(attribute)) return site('write', attribute, object);
+  if (pil && attribute === 'save' && args[0]) return site('write', 'save', args[0]);
   if (PY_RECEIVER_READS.has(attribute)) return site('read', attribute, object);
   if (NETWORK.has(attribute)) site('read', attribute, args[0], false);
 }
@@ -2282,8 +2298,14 @@ export function attachLandings({ files, doors, boundaries, places }) {
   // outside test material: a test rewriting a committed table under docs/
   // writes this repository, and one writing a scratch file beside itself
   // does not. Only those writes are kept, and none of a test's reads.
+  // A test's path built from its own file whose tail is read at run time
+  // (materialize.test.ts writing examples/<slug>/<slug>.glyph) rewrites the
+  // tracked directory it names when tracked files there have its shape.
   const tests = files.filter((file) => isTestMaterial(file.path))
-    .map((file) => ({ path: file.path, reads: file.reads ?? [], writes: (file.writes ?? []).filter((write) => write.fixed && places.files.has(write.target) && !isTestMaterial(write.target)) }))
+    .map((file) => ({ path: file.path, reads: file.reads ?? [], writes: (file.writes ?? []).filter((write) => !isTestMaterial(write.target) && (
+      (write.fixed && places.files.has(write.target))
+      || (write.fixedHead && places.dirs.has(write.target) && !write.target.includes('*'))
+    )) }))
     .filter((file) => file.writes.length > 0)
     .sort((a, b) => compare(a.path, b.path));
   const byPath = new Map([...own, ...tests].map((file) => [file.path, file]));
@@ -2296,8 +2318,8 @@ export function attachLandings({ files, doors, boundaries, places }) {
     .sort((a, b) => compare(a.path, b.path));
   for (const file of files) {
     if (!isTestMaterial(file.path)) continue;
-    file.writes = (file.writes ?? []).map(({ fixed, relative, ...rest }) => rest);
-    file.reads = (file.reads ?? []).map(({ fixed, relative, ...rest }) => rest);
+    file.writes = (file.writes ?? []).map(({ fixed, fixedHead, relative, ...rest }) => rest);
+    file.reads = (file.reads ?? []).map(({ fixed, fixedHead, relative, ...rest }) => rest);
   }
 
   const writers = new Map();
