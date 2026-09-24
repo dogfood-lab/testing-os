@@ -192,15 +192,18 @@ function checksOnly(door) {
   return (door.runs ?? []).length > 0 && (door.runs ?? []).every((run) => run.runKind === 'checks');
 }
 
-// Between two doors that reach as far, one that runs code comes before one
-// that only checks it, and the one a pull request goes through first: it is
-// the path a change takes into the repository.
+// Between two doors that reach as far, the one a pull request goes through
+// comes first, whatever it runs: it is the path a change takes into the
+// repository. Then one that runs code comes before one that only checks it,
+// one a change starts before one only the clock does, and a workflow before
+// a command or package people install.
 function byReach(doors) {
   return [...doors].sort((a, b) => (
     reachSize(b) - reachSize(a)
-    || Number(checksOnly(a)) - Number(checksOnly(b))
     || Number(!pullRequested(a)) - Number(!pullRequested(b))
+    || Number(checksOnly(a)) - Number(checksOnly(b))
     || Number(scheduleOnly(a)) - Number(scheduleOnly(b))
+    || Number(installed(a)) - Number(installed(b))
     || cmp(a.name, b.name)
     || cmp(a.file, b.file)
   ));
@@ -2085,15 +2088,16 @@ function working(ctx, path, from, hops = 0) {
   return null;
 }
 
-// A door whose production runs all go nowhere, a gate script that imports
-// nothing beside a suite of tests, runs only tests as far as a reader of the
-// code is concerned: its one way into the code is a test's import. Null when
-// it runs code of its own; otherwise whether it runs such scripts beside the
-// tests, which the page says.
+// A door that only checks code, or whose production runs all go nowhere (a
+// gate script that imports nothing beside a suite of tests), runs none of the
+// code as a person uses it: its one way into the code is a test's import, or
+// none at all. Null when it runs code of its own; otherwise what it runs,
+// which the page says.
 function testsOnly(ctx, door) {
   if (!door || installed(door)) return null;
   const executed = new Set(startRuns(door).filter((run) => run.runKind !== 'checks').map((run) => run.path));
   const files = filesOfRuns(ctx, shownRuns(door, 'executes').filter((path) => executed.has(path))).filter(runsAsCode);
+  if (files.length === 0) return (door.runs ?? []).length > 0 ? { checks: true } : null;
   if (!files.some(isTestFile)) return null;
   const helpers = files.filter((path) => !isTestFile(path));
   if (helpers.some((path) => (ctx.fileOf.get(path)?.importsFiles ?? []).length > 0)) return null;
@@ -2119,7 +2123,7 @@ function installedStart(ctx) {
 // Why the path follows an installed door rather than the pull request's. The
 // door's name is not put first, since it may be spelled in lower case.
 function startReason(from, door, found) {
-  const runs = found.helpers ? 'runs only tests and scripts that import no code here' : 'runs only tests';
+  const runs = found.checks ? 'only checks code' : found.helpers ? 'runs only tests and scripts that import no code here' : 'runs only tests';
   return `This path follows ${door.name} (${installedAs(door)}) from its entry, since ${from.name} ${runs}.`;
 }
 
@@ -2380,18 +2384,21 @@ function doorsSentence(ctx, main) {
     const but = wider.pushesForReview ? 'commits only to a branch for review' : wider.pushesTo?.length > 0 ? 'commits only to another branch' : 'commits nothing';
     return `Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach} and commits into the repository (${wider.name} reaches ${reachSize(wider)} but ${but}).`;
   }
-  // Workflows that reach as far as the one followed are named with it, and
-  // the reason it is the one followed is said.
-  const tied = reaching(ctx.doors).filter((door) => !installed(door) && reachSize(door) === reachSize(main));
+  // The doors that reach as far as the one followed, the commands and the
+  // package a manifest installs among them, are named with it, and the
+  // reason it is the one followed is said.
+  const tied = reaching(ctx.doors).filter((door) => reachSize(door) === reachSize(main));
   if (tied.length > 1 && tied.includes(main)) {
     const others = tied.filter((door) => door !== main);
     // The reason is the first way byReach (and mainDoor's preference for a
     // door that commits) tells the followed door from the rest.
-    const alike = others.filter((door) => checksOnly(door) === checksOnly(main));
+    const alike = others.filter((door) => pullRequested(door) === pullRequested(main));
+    const running = alike.filter((door) => checksOnly(door) === checksOnly(main) && scheduleOnly(door) === scheduleOnly(main));
     const why = commits(main) && !others.every(commits) ? 'it commits into the repository'
-      : alike.length === 0 ? 'it runs code, where the others only check it'
-        : pullRequested(main) && !alike.some(pullRequested) ? 'a pull request goes through it'
-          : 'it comes first by name';
+      : pullRequested(main) && alike.length === 0 ? 'a pull request goes through it'
+        : !checksOnly(main) && alike.every(checksOnly) ? 'it runs code, where the others only check it'
+          : !installed(main) && running.length > 0 && running.every(installed) ? 'it is a workflow, where the others are installed for people to use'
+            : 'it comes first by name';
     return `Work enters through ${doors}; ${list([main, ...others].map((door) => door.name))} each reach ${reach}, and ${main.name} is followed because ${why}.`;
   }
   return `Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach}.`;
