@@ -241,9 +241,11 @@ export function orderDoors(doors) {
 // What the page calls an installed door, and the verb for what it starts.
 // A package whose entry is a command runs it on import, so it is no library;
 // a private member's command is installed only inside the package bundling it.
-// A Tauri app's binary is installed as the app, not typed as a command.
+// A Tauri app's binary is installed as the app, not typed as a command, and
+// a Godot project's main scene is what the engine runs.
 function installedAs(door) {
   const what = door.app === 'desktop' ? 'the desktop app people install'
+    : door.app === 'game' ? 'what Godot runs'
     : door.kind !== 'package' ? (door.bundledInto?.length > 0 ? `a command bundled into ${list(door.bundledInto)}` : 'a command people run')
     : door.runsCommand != null ? `the package's entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${door.runsCommand}` : 'runs a program as it loads'}; it is not a library`
     : door.extension ? (door.unpublished ? "the extension's entry, not published from here" : `the extension people install from ${registryList(door.publishedTo ?? [])}`)
@@ -259,8 +261,9 @@ function markSharedNames(doors) {
   return doors.map((door) => (installed(door) && counts.get(door.name) > 1 ? { ...door, sharedName: true } : door));
 }
 
+// A game starts its main scene; a scene is not a program run on its own.
 function startVerb(door) {
-  return door.kind === 'package' ? 'loads' : 'runs';
+  return door.kind === 'package' ? 'loads' : door.app === 'game' ? 'starts' : 'runs';
 }
 
 // A job that commits only on one trigger still commits into the repository;
@@ -861,7 +864,8 @@ function doorSteps(ctx, door) {
   const steps = [];
   const ran = shownRuns(door, 'executes');
   const checked = shownRuns(door, 'checks');
-  const subject = installed(door) ? `The ${door.extension ? 'extension' : door.kind} ${startVerb(door)}` : 'The workflow runs';
+  const noun = door.extension ? 'extension' : door.app === 'desktop' ? 'desktop app' : door.app === 'game' ? 'game' : door.kind;
+  const subject = installed(door) ? `The ${noun} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
   if (ran.length > 0) clauses.push(`${subject} ${runGroups(ctx, door, ran)}`);
   if (checked.length > 0) clauses.push(`${ran.length > 0 ? 'it' : 'The workflow'} checks ${runGroups(ctx, door, checked)}`);
@@ -2654,6 +2658,8 @@ function derivedLine(ctx, main) {
   if (packages) sentences.push(`People import ${packages}.`);
   const extensions = installedNames(ctx, 'package', { extension: true });
   if (extensions) sentences.push(`People install the ${extensions} extension.`);
+  const game = installedNames(ctx, 'command', { app: 'game' });
+  if (game) sentences.push(`People run ${game}.`);
   const desktop = installedNames(ctx, 'command', { app: 'desktop' });
   if (desktop) sentences.push(`People install the ${desktop} desktop ${desktop.includes(' and ') ? 'apps' : 'app'}.`);
   return sentences.join(' ');

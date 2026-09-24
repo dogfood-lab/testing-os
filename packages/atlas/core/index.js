@@ -8,7 +8,7 @@ import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
-import { crateEntries, deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
+import { declaredEntries, deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
@@ -125,7 +125,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const scripts = pythonScripts(repoPath, trackedSet);
   const commands = manifestCommands(repoPath, trackedSet, scripts);
   const manifests = repositoryManifests(repoPath, trackedSet);
-  const crates = crateEntries(repoPath, trackedSet);
+  const crates = declaredEntries(repoPath, trackedSet);
   for (const boundary of boundaryList) {
     boundary.files.sort(byPath);
     boundary.holdsManifest = boundary.files.some((file) => manifests.includes(file.path));
@@ -232,13 +232,14 @@ function rootManifest(repoPath, tracked) {
 
 /**
  * The manifests at the top of the tree that name and configure the project as
- * a whole: a package.json with a name, pyproject.toml, Cargo.toml or go.mod.
+ * a whole: a package.json with a name, pyproject.toml, Cargo.toml, go.mod or
+ * a Godot project.godot.
  * A package.json with no name is a workspace shell or a tool's settings, not a
  * project's manifest. A manifest further down belongs to one package of the
  * repository, such as a docs site, and says nothing about the part it is in.
  */
 function repositoryManifests(repoPath, tracked) {
-  const found = ['pyproject.toml', 'Cargo.toml', 'go.mod'].filter((path) => tracked.has(path));
+  const found = ['pyproject.toml', 'Cargo.toml', 'go.mod', 'project.godot'].filter((path) => tracked.has(path));
   if (tracked.has('package.json')) {
     try {
       const pkg = JSON.parse(readFileSync(join(repoPath, 'package.json'), 'utf8'));

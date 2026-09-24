@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import picomatch from 'picomatch';
 import { parseToml } from '../core/toml.js';
 
-const MANIFEST_BASENAMES = new Set(['pyproject.toml', 'setup.py', 'setup.cfg']);
+const MANIFEST_BASENAMES = new Set(['pyproject.toml', 'setup.py', 'setup.cfg', 'project.godot']);
 // A manifest under one of these is a sample a test works on, not a package of
 // this repository, so it proposes no part; the test directory holding it does.
 const TEST_HOMES = new Set(['test', 'tests', 'fixtures', '__fixtures__', '__tests__', 'spec']);
