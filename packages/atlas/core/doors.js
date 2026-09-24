@@ -18,6 +18,10 @@ const PUBLISH_COMMANDS = [
 // And by the action a step uses, matched on the action's name without its ref.
 const ACTION_SENDS = [
   ['pypa/gh-action-pypi-publish', (sends) => sends.publishesTo.add('pypi')],
+  ['JS-DevTools/npm-publish', (sends) => sends.publishesTo.add('npm')],
+  ['changesets/action', (sends, step) => {
+    if (typeof step.with?.publish === 'string' && step.with.publish.trim() !== '') sends.publishesTo.add('npm');
+  }],
   ['docker/build-push-action', (sends, step) => {
     if (pushes(step.with?.push)) sends.publishesTo.add('container image');
   }],
@@ -93,6 +97,26 @@ export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFro
       uses: [],
     };
   });
+}
+
+/**
+ * Mark the package door unpublished when nothing here publishes it: no door
+ * sends to npm, and the manifest does not both say "private": false and sit
+ * beside a workflow named for publishing or releasing. The package is then
+ * only its entry, which people cannot import from a registry this
+ * repository fills. Nothing is looked up on the network. Mutates the doors.
+ *
+ * @param {object[]} doors every door of the map
+ * @param {Record<string, unknown> | null} manifest the root package.json
+ */
+export function markUnpublished(doors, manifest) {
+  const workflows = doors.filter((door) => !door.kind && !door.parseError);
+  const toNpm = workflows.some((door) => door.sends.publishesTo.includes('npm')
+    || (door.gated ?? []).some((entry) => entry.sends.includes('publishesTo:npm')));
+  const declared = manifest?.private === false
+    && workflows.some((door) => /publish|release/i.test(`${posix.basename(door.file)} ${door.name}`));
+  if (toNpm || declared) return;
+  for (const door of doors) if (door.kind === 'package') door.unpublished = true;
 }
 
 export function isWorkflow(path) {

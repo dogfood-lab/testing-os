@@ -59,17 +59,19 @@ describe('the commands a repository installs, on the page', () => {
     has('## What comes in', '5. **acme-py** (a command people run). Runs acmepy/cli.py.');
   });
 
-  it('calls a published package the package people import, which loads its main', () => {
-    has('## What comes in', '4. **@acme/tool** (the package people import). Loads lib/api.js.');
-    has('## The other doors', '**@acme/tool** (the package people import) loads lib/api.js.');
+  // No workflow here publishes @acme/tool, so it is the package's entry and
+  // not a package people import (page-package-publishers.test.js has both).
+  it('calls a package nothing here publishes its entry, which loads its main', () => {
+    has('## What comes in', "4. **@acme/tool** (the package's entry, not published from here). Loads lib/api.js.");
+    has('## The other doors', "**@acme/tool** (the package's entry, not published from here) loads lib/api.js.");
   });
 
   it('says what a command reaches, as it does for a workflow', () => {
     has('## The other doors', '**tool** (a command people run) runs bin/tool.mjs and reaches lib.');
   });
 
-  it('says what the repository is written in, and names the commands people run and the package they import', () => {
-    has('## What this is', '7 parts, mostly JavaScript (6 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. People run acme-py, kit and tool. People import @acme/tool.');
+  it('says what the repository is written in, and names the commands people run and no package nothing publishes', () => {
+    has('## What this is', '7 parts, mostly JavaScript (6 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. People run acme-py, kit and tool.');
     assert.equal(json.derived, section('## What this is')[2]);
   });
 

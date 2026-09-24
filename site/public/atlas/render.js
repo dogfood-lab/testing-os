@@ -194,7 +194,7 @@ function installed(door) {
 }
 
 function installedAs(door) {
-  const what = door.kind === 'package' ? 'the package people import' : 'a command people run';
+  const what = door.kind !== 'package' ? 'a command people run' : door.unpublished ? 'the package&#39;s entry, not published from here' : 'the package people import';
   return door.sharedName ? `${what}, from ${esc(door.file)}` : what;
 }
 

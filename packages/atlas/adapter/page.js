@@ -224,7 +224,7 @@ export function orderDoors(doors) {
 
 // What the page calls an installed door, and the verb for what it starts.
 function installedAs(door) {
-  const what = door.kind === 'package' ? 'the package people import' : 'a command people run';
+  const what = door.kind !== 'package' ? 'a command people run' : door.unpublished ? "the package's entry, not published from here" : 'the package people import';
   return door.sharedName ? `${what}, from ${door.file}` : what;
 }
 
@@ -1923,8 +1923,9 @@ function publishesSentence(ctx) {
   return phrase ? `It ${phrase}.` : null;
 }
 
+// A package nothing here publishes is no package people import.
 function installedNames(ctx, kind) {
-  const names = [...new Set(ctx.doors.filter((door) => door.kind === kind).map((door) => door.name))].sort(cmp);
+  const names = [...new Set(ctx.doors.filter((door) => door.kind === kind && !door.unpublished).map((door) => door.name))].sort(cmp);
   if (names.length <= INSTALLED_ALL) return list(names);
   return `${names.slice(0, INSTALLED_NAMED).join(', ')} and ${names.length - INSTALLED_NAMED} more`;
 }
@@ -1966,6 +1967,7 @@ function doorData(ctx, door) {
     stages: stagedShown(door.stages),
     triggers: triggerPhrases(door),
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
+    ...(door.unpublished ? { unpublished: true } : {}),
   };
 }
 

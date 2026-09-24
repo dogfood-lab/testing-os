@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
-import { mapCommandDoors, mapDoors } from './doors.js';
+import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
 import { astLandings, attachLandings, isTestFile, noLandings, pythonPathValues, scriptPath, settleHelperPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
@@ -136,6 +136,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom }),
     ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom }),
   ];
+  markUnpublished(doors, rootManifest(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom }));
   for (const door of doors) {
@@ -173,6 +174,16 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     doors,
     landings,
   };
+}
+
+function rootManifest(repoPath, tracked) {
+  if (!tracked.has('package.json')) return null;
+  try {
+    const pkg = JSON.parse(readFileSync(join(repoPath, 'package.json'), 'utf8'));
+    return pkg != null && typeof pkg === 'object' && !Array.isArray(pkg) ? pkg : null;
+  } catch {
+    return null;
+  }
 }
 
 /**
