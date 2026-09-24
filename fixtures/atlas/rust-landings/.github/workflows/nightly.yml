@@ -1,0 +1,16 @@
+name: Nightly
+on:
+  schedule:
+    - cron: '0 3 * * *'
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo run -- --out out/
+      - run: |
+          git add reports/
+          git commit -m "nightly report"
+          git push

@@ -225,6 +225,22 @@ function targetName(path) {
 }
 
 /**
+ * The crate a file is compiled in: the one whose directory is the deepest
+ * holding it, or null.
+ *
+ * @param {{ crates: object[] }} project
+ * @param {string} path
+ */
+export function owningCrate(project, path) {
+  let best = null;
+  for (const crate of project.crates) {
+    if (crate.dir !== '' && !path.startsWith(`${crate.dir}/`)) continue;
+    if (best == null || crate.dir.length > best.dir.length) best = crate;
+  }
+  return best;
+}
+
+/**
  * Every file Cargo compiles as the root of a crate, with the crate it
  * belongs to and the kind of target: the library, each binary, test,
  * example and bench, and the build script.

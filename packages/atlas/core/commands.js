@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join as joinFs, posix } from 'node:path';
 import picomatch from 'picomatch';
 import { parse as parseYaml } from 'yaml';
-import { cargoProject } from './cargo.js';
+import { cargoProject, owningCrate } from './cargo.js';
 import { isCodePath } from './languages.js';
 import { wheelPackages } from './python-manifest.js';
 import { storedText } from './text.js';
@@ -1379,7 +1379,7 @@ function cargoPackages(repo, dir, parsed) {
  * narrow either to the target they name.
  */
 function cargoTargets(repo, crate, sub, parsed) {
-  const owned = (path) => ownerCrate(repo, path) === crate;
+  const owned = (path) => owningCrate(cargoProject(repo.repoPath, repo.tracked), path) === crate;
   const bin = parsed.values.get('--bin') ?? [];
   const tests = parsed.values.get('--test') ?? [];
   const narrowed = parsed.flags.has('--lib') || bin.length > 0 || tests.length > 0;
@@ -1399,17 +1399,6 @@ function cargoTargets(repo, crate, sub, parsed) {
     ...(all || parsed.flags.has('--examples') ? crate.examples : []),
     ...(all || parsed.flags.has('--benches') ? crate.benches : []),
   ];
-}
-
-// The crate a file is compiled in: the one whose directory is the deepest
-// holding it.
-function ownerCrate(repo, path) {
-  let best = null;
-  for (const crate of cargoProject(repo.repoPath, repo.tracked).crates) {
-    if (crate.dir !== '' && !path.startsWith(`${crate.dir}/`)) continue;
-    if (best == null || crate.dir.length > best.dir.length) best = crate;
-  }
-  return best;
 }
 
 // The binary cargo run starts: the one --bin names, the one default-run

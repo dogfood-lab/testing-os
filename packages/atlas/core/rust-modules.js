@@ -1,6 +1,5 @@
 import { posix } from 'node:path';
 import { cargoProject, crateRoots, RUST_STD } from './cargo.js';
-import { includedPlace } from './rust.js';
 
 /**
  * Rust's module tree, and each import site resolved through it, the way
@@ -19,13 +18,12 @@ import { includedPlace } from './rust.js';
  * declares is unresolved.
  *
  * Mutates each Rust file: fills `resolved` on its sites, drops the sites a
- * path in code named that are not a module here, adds the files its
- * include macros read to its reads, and drops what the readings carried for
- * this (`rust` on each site, `rustModule`, `rustIncludes`).
+ * path in code named that are not a module here, and drops what the
+ * readings carried for this (`rust` on each site, `rustModule`).
  *
- * @param {{ repoPath: string, tracked: Set<string>, files: object[], places: { files: Set<string> } }} input
+ * @param {{ repoPath: string, tracked: Set<string>, files: object[] }} input
  */
-export function resolveRust({ repoPath, tracked, files, places }) {
+export function resolveRust({ repoPath, tracked, files }) {
   const rust = files.filter((file) => file.language === 'rust' && Array.isArray(file.imports));
   if (rust.length === 0) return;
   const byPath = new Map(files.map((file) => [file.path, file]));
@@ -83,18 +81,10 @@ export function resolveRust({ repoPath, tracked, files, places }) {
       kept.push(site);
     }
     file.imports = kept;
-    const crateDir = context?.tree.crate.dir ?? null;
-    const reads = [];
-    for (const include of file.rustIncludes ?? []) {
-      const target = includedPlace(include, file.path, crateDir, places);
-      if (target != null) reads.push({ target, call: include.call, confidence: 'ast', fixed: true });
-    }
-    if (reads.length > 0) file.reads = [...(file.reads ?? []), ...reads];
   }
   for (const file of rust) {
     for (const site of file.imports) delete site.rust;
     delete file.rustModule;
-    delete file.rustIncludes;
   }
 }
 

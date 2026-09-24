@@ -1,4 +1,5 @@
 import { posix } from 'node:path';
+import { placeLandings } from './landings.js';
 
 /**
  * What a Rust file says of the modules it is made of and the code it uses,
@@ -99,6 +100,216 @@ export function rustImports(root) {
   for (const child of root.namedChildren) visit(child, []);
   imports.push(...expressions.values());
   return { imports, module: { inline, names: [...names].sort() }, includes, tests };
+}
+
+// The std::fs calls that write or read a path, by the argument that is the
+// path: fs::copy reads its first and writes its second.
+const FS_CALLS = {
+  write: [['write', 0]],
+  create_dir_all: [['write', 0]],
+  create_dir: [['write', 0]],
+  copy: [['read', 0], ['write', 1]],
+  rename: [['write', 1]],
+  read_to_string: [['read', 0]],
+  read: [['read', 0]],
+  read_dir: [['read', 0]],
+};
+const FILE_CALLS = { create: 'write', open: 'read', create_new: 'write' };
+// A place the caller decides, by the function that returns it.
+const HOME_CALLS = new Set(['home_dir', 'data_dir', 'data_local_dir', 'config_dir', 'config_local_dir', 'cache_dir', 'document_dir', 'download_dir', 'desktop_dir', 'state_dir', 'runtime_dir', 'executable_dir', 'audio_dir', 'picture_dir', 'video_dir']);
+const PASS_THROUGH = new Set(['unwrap', 'expect', 'unwrap_or_default', 'to_path_buf', 'to_owned', 'clone', 'as_path', 'into', 'as_ref', 'canonicalize', 'to_string', 'as_str']);
+// The functions clap and argh parse the command line with; what they return
+// holds the arguments.
+const ARGUMENT_CALLS = new Set(['parse', 'parse_from', 'try_parse', 'try_parse_from', 'from_env', 'from_args']);
+const MAX_DEPTH = 8;
+
+/**
+ * The writes and reads a Rust file makes through std::fs and File, each
+ * with what its path reads as: a literal, a Path or PathBuf built from
+ * one, joined with .join, a crate's own directory (env!("CARGO_MANIFEST_DIR")),
+ * or a place the caller decides: the working directory, the home directory
+ * or one of the directories the dirs crate names, the temporary directory,
+ * an environment variable, a command-line argument clap or argh parses, or a
+ * parameter of the function the call is in. A value followed through a let
+ * in the same function, or a const or static of the file. Code inside a
+ * #[cfg(test)] module or a #[test] function writes into what its test sets
+ * up, and is left out. Settled once the crates are known (settleRustPaths).
+ *
+ * @param {object} root tree-sitter root node
+ * @returns {Array<{ kind: 'write'|'read', call: string, values: object[] }>}
+ */
+export function rustPaths(root) {
+  const out = [];
+  const consts = new Map();
+  for (const child of root.namedChildren) {
+    if ((child.type === 'const_item' || child.type === 'static_item') && child.childForFieldName('name')) consts.set(child.childForFieldName('name').text, child.childForFieldName('value'));
+  }
+  const visit = (node) => {
+    if (node.type === 'mod_item' && attributesOf(node).test) return;
+    if (node.type === 'function_item' && hasTestAttribute(node)) return;
+    if (node.type === 'call_expression') {
+      for (const [kind, call, arg] of fsSites(node)) {
+        out.push({ kind, call, values: arg ? rustValues(arg, { consts }, 0) : [] });
+      }
+    }
+    for (const child of node.namedChildren) visit(child);
+  };
+  visit(root);
+  return out;
+}
+
+function hasTestAttribute(node) {
+  for (let sibling = node.previousNamedSibling; sibling?.type === 'attribute_item' || /comment$/.test(sibling?.type ?? ''); sibling = sibling.previousNamedSibling) {
+    if (sibling.type === 'attribute_item' && testAttribute(sibling)) return true;
+  }
+  return false;
+}
+
+// The paths one call writes or reads: fs::write(p, ...), File::create(p),
+// OpenOptions::new().write(true).open(p), which writes when the options
+// write, append, create or truncate, and reads otherwise.
+function fsSites(call) {
+  const fn = call.childForFieldName('function');
+  const args = (call.childForFieldName('arguments')?.namedChildren ?? []).filter((child) => !/comment$/.test(child.type));
+  if (fn?.type === 'scoped_identifier') {
+    const segments = pathSegments(fn);
+    if (segments == null || segments.length < 2) return [];
+    const [owner, name] = segments.slice(-2);
+    if (owner === 'fs' && FS_CALLS[name]) return FS_CALLS[name].map(([kind, index]) => [kind, name, args[index] ?? null]);
+    if (owner === 'File' && FILE_CALLS[name]) return [[FILE_CALLS[name], name, args[0] ?? null]];
+    return [];
+  }
+  if (fn?.type === 'field_expression' && fn.childForFieldName('field')?.text === 'open') {
+    const options = [];
+    let at = fn.childForFieldName('value');
+    while (at?.type === 'call_expression' && at.childForFieldName('function')?.type === 'field_expression') {
+      options.push(at.childForFieldName('function').childForFieldName('field')?.text);
+      at = at.childForFieldName('function').childForFieldName('value');
+    }
+    const opened = at?.type === 'call_expression' && pathSegments(at.childForFieldName('function'))?.slice(-2).join('::') === 'OpenOptions::new';
+    if (!opened) return [];
+    const writes = options.some((option) => ['write', 'append', 'create', 'create_new', 'truncate'].includes(option));
+    return [[writes ? 'write' : 'read', 'open', args[0] ?? null]];
+  }
+  return [];
+}
+
+/**
+ * What a Rust expression names as a path, each alternative as
+ * { text, open, anchor? }: anchor crate for the crate's directory, and cwd,
+ * home, temp, env, argument or param for a place the caller decides.
+ */
+function rustValues(node, ctx, depth) {
+  if (!node || depth > MAX_DEPTH) return [];
+  switch (node.type) {
+    case 'string_literal':
+    case 'raw_string_literal': {
+      const text = stringText(node);
+      return text == null ? [] : [{ text, open: false }];
+    }
+    case 'reference_expression':
+    case 'parenthesized_expression':
+    case 'try_expression':
+      return rustValues(node.childForFieldName('value') ?? node.namedChildren[node.namedChildren.length - 1], ctx, depth + 1);
+    case 'identifier':
+      return bindingValues(node, ctx, depth);
+    case 'field_expression': {
+      // args.out, a field of what clap or argh parsed.
+      const values = rustValues(node.childForFieldName('value'), ctx, depth + 1);
+      return values.filter((value) => value.anchor === 'argument').map(() => ({ text: '', open: false, anchor: 'argument' }));
+    }
+    case 'macro_invocation':
+      return macroValues(node, ctx, depth);
+    case 'call_expression':
+      return callValues(node, ctx, depth);
+    default:
+      return [];
+  }
+}
+
+function callValues(node, ctx, depth) {
+  const fn = node.childForFieldName('function');
+  const args = (node.childForFieldName('arguments')?.namedChildren ?? []).filter((child) => !/comment$/.test(child.type));
+  if (fn?.type === 'field_expression') {
+    const method = fn.childForFieldName('field')?.text;
+    const receiver = fn.childForFieldName('value');
+    if (PASS_THROUGH.has(method) || method === 'unwrap_or_else' || method === 'unwrap_or') return rustValues(receiver, ctx, depth + 1);
+    if (method === 'join' || method === 'push') return joinValues(rustValues(receiver, ctx, depth + 1), rustValues(args[0], ctx, depth + 1));
+    if (method === 'parent') return [];
+    return [];
+  }
+  const segments = pathSegments(fn);
+  if (segments == null) return [];
+  const [owner, name] = segments.length >= 2 ? segments.slice(-2) : [null, segments[0]];
+  if ((owner === 'Path' || owner === 'PathBuf') && (name === 'new' || name === 'from')) return rustValues(args[0], ctx, depth + 1);
+  if (owner === 'env' && name === 'current_dir') return [{ text: '', open: false, anchor: 'cwd' }];
+  if (owner === 'env' && name === 'temp_dir') return [{ text: '', open: false, anchor: 'temp' }];
+  if (owner === 'env' && (name === 'var' || name === 'var_os')) return [{ text: '', open: false, anchor: 'env' }];
+  if (['dirs', 'dirs_next', 'home', 'directories'].includes(owner) && HOME_CALLS.has(name)) return [{ text: '', open: false, anchor: 'home' }];
+  if (segments.length >= 2 && ARGUMENT_CALLS.has(name) && (owner === 'argh' || /^[A-Z]/.test(owner))) return [{ text: '', open: false, anchor: 'argument' }];
+  return [];
+}
+
+function macroValues(node, ctx, depth) {
+  const name = node.childForFieldName('macro')?.text;
+  const tree = node.namedChildren.find((child) => child.type === 'token_tree');
+  const parts = tree?.namedChildren ?? [];
+  if (name === 'env' && parts.length === 1 && parts[0].type === 'string_literal' && stringText(parts[0]) === 'CARGO_MANIFEST_DIR') return [{ text: '', open: false, anchor: 'crate' }];
+  if (name === 'concat') {
+    const included = includedPath(tree);
+    return included ? [{ text: included.text, open: false, ...(included.anchor === 'crate' ? { anchor: 'crate' } : {}) }] : [];
+  }
+  // format!("assets/{}.json", name) spells a path whose end is read at run
+  // time; the literal before the first {} is where it is.
+  if (name === 'format' && parts[0]?.type === 'string_literal') {
+    const text = stringText(parts[0]);
+    if (text == null) return [];
+    const at = text.indexOf('{');
+    return at === -1 ? [{ text, open: false }] : at === 0 ? [] : [{ text: text.slice(0, at), open: true }];
+  }
+  return [];
+}
+
+// A name bound by a let before the use in the same function, a parameter of
+// that function, or a const or static of the file.
+function bindingValues(node, ctx, depth) {
+  const name = node.text;
+  for (let scope = node.parent; scope; scope = scope.parent) {
+    if (scope.type === 'block') {
+      let found = null;
+      for (const statement of scope.namedChildren) {
+        if (statement.startIndex >= node.startIndex) break;
+        if (statement.type !== 'let_declaration') continue;
+        const pattern = statement.childForFieldName('pattern');
+        if (pattern?.type === 'identifier' && pattern.text === name) found = statement.childForFieldName('value');
+      }
+      if (found) return rustValues(found, ctx, depth + 1);
+    }
+    if (scope.type === 'function_item' || scope.type === 'closure_expression') {
+      const params = scope.childForFieldName('parameters');
+      const bound = (params?.namedChildren ?? []).some((param) => param.childForFieldName('pattern')?.text === name || param.text === name);
+      if (bound) return [{ text: '', open: false, anchor: 'param' }];
+      if (scope.type === 'function_item') break;
+    }
+  }
+  const value = ctx.consts.get(name);
+  return value ? rustValues(value, ctx, depth + 1) : [];
+}
+
+function joinValues(bases, parts) {
+  const out = [];
+  for (const base of bases) {
+    if (parts.length === 0) {
+      out.push({ ...base, text: base.text === '' ? '' : `${base.text.replace(/\/+$/, '')}/`, open: true });
+      continue;
+    }
+    for (const part of parts) {
+      if (base.open) out.push(base);
+      else if (part.anchor != null || part.text.startsWith('/')) out.push(part);
+      else out.push({ ...base, text: base.text === '' ? part.text : `${base.text.replace(/\/+$/, '')}/${part.text}`, open: part.open });
+    }
+  }
+  return out;
 }
 
 // #[test], and a test attribute a runtime provides (#[tokio::test]): the
@@ -278,21 +489,52 @@ export function stringText(node) {
   return out;
 }
 
+// The places a caller decides, which a write or read under them names.
+const CALLER_PLACES = new Set(['cwd', 'home', 'temp', 'env', 'argument', 'param']);
+
 /**
- * The place an include names, from the file it is written in or from its
- * crate's directory, or null when it names no tracked file.
+ * The writes and reads each Rust file's include macros and std::fs calls
+ * name, placed now that each file's crate is known: an include from the
+ * file it is written in, env!("CARGO_MANIFEST_DIR") from the crate's
+ * directory, both fixed to this repository; a bare relative path from where
+ * the program runs; a place the caller decides counted apart, as outside.
+ * Drops what the readings carried for this.
  *
- * @param {{ text: string, anchor: 'file'|'crate' }} include
- * @param {string} path the including file
- * @param {string | null} crateDir
- * @param {{ files: Set<string> }} places
+ * @param {{ files: object[], places: { files: Set<string>, dirs: Set<string> }, crateDirOf: (path: string) => string | null }} input
  */
-export function includedPlace(include, path, crateDir, places) {
-  const base = include.anchor === 'crate' ? crateDir : posix.dirname(path) === '.' ? '' : posix.dirname(path);
-  if (base == null) return null;
-  const joined = posix.normalize(base ? `${base}/${include.text}` : include.text);
-  if (joined === '..' || joined.startsWith('../') || joined.startsWith('/')) return null;
-  return places.files.has(joined) ? joined : null;
+export function settleRustPaths({ files, places, crateDirOf }) {
+  for (const file of files) {
+    if (file.language !== 'rust' || file.parseError) continue;
+    const dir = posix.dirname(file.path) === '.' ? '' : posix.dirname(file.path);
+    const crateDir = crateDirOf(file.path);
+    const fixed = (base, text) => {
+      if (base == null) return null;
+      const joined = posix.normalize(base ? `${base}/${text}` : text);
+      return joined === '..' || joined.startsWith('../') || joined.startsWith('/') ? null : { text: joined, open: false, anchor: 'file' };
+    };
+    const sites = [];
+    for (const include of file.rustIncludes ?? []) {
+      const value = fixed(include.anchor === 'crate' ? crateDir : dir, include.text);
+      sites.push({ kind: 'read', call: include.call, values: value ? [value] : [] });
+    }
+    for (const site of file.rustPaths ?? []) {
+      if (site.values.some((value) => CALLER_PLACES.has(value.anchor))) {
+        const count = site.kind === 'write' ? 'outsideWrites' : 'outsideReads';
+        file[count] = (file[count] ?? 0) + 1;
+        continue;
+      }
+      const values = site.values.map((value) => (value.anchor === 'crate' ? (value.open ? { ...fixed(crateDir, value.text), open: true } : fixed(crateDir, value.text)) : value)).filter(Boolean);
+      sites.push({ kind: site.kind, call: site.call, values });
+    }
+    delete file.rustIncludes;
+    delete file.rustPaths;
+    if (sites.length === 0) continue;
+    const placed = placeLandings(file, sites, places);
+    file.writes = placed.writes;
+    file.reads = placed.reads;
+    file.dynamicWrites = (file.dynamicWrites ?? 0) + placed.dynamicWrites;
+    file.dynamicReads = (file.dynamicReads ?? 0) + placed.dynamicReads;
+  }
 }
 
 function lineOf(node) {

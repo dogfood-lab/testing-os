@@ -61,7 +61,7 @@ export function attachResolution({ repoPath, boundaries, unassigned, overlaps, t
 
   const files = [...boundaries.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps];
   // Rust resolves through a module tree built from every file at once.
-  resolveRust({ repoPath: ctx.repo, tracked: trackedSet, files, places: { files: trackedSet } });
+  resolveRust({ repoPath: ctx.repo, tracked: trackedSet, files });
   for (const file of files) {
     if (!Array.isArray(file.imports) || file.language === 'rust') continue;
     const fromAbs = join(repoPath, file.path);
