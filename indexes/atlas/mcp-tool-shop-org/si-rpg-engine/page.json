@@ -8,8 +8,9 @@
   ],
   "breaks": [
     {
-      "doors": 6,
+      "doors": 7,
       "importedBy": [
+        "harness",
         "host",
         "load",
         "propose"
@@ -65,32 +66,24 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 48,
+      "added": 2,
+      "changed": 1,
       "moved": 0,
-      "parts": 11,
+      "parts": 1,
       "removed": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "write-golden now also runs harness/sim.mjs.",
-        "subjects": [
-          "package.json",
-          "harness/sim.mjs"
-        ]
-      },
-      {
         "kind": "counts",
-        "sentence": "48 files changed content, across 11 parts.",
+        "sentence": "Nothing structural changed since 2026-09-24; 2 files added and 1 changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "ece9100f5cd821b7aae828f3881704f089d9199c",
-      "generatedAt": "2026-09-24T21:06:01.225Z"
+      "commit": "5f47e5821e60f49841bf1e9040061083f52e9dc9",
+      "generatedAt": "2026-09-24T21:27:46.091Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [
     {
@@ -174,15 +167,18 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "eeed37f3bf0e9acd4c5332c54ed4517462baeefc",
+  "commit": "1126282db63d582d0fa62f9319318a22d127a066",
   "defaultBranch": "main",
-  "derived": "12 parts, mostly JavaScript (33 files). Work enters through 7 doors; the busiest is CI, which reaches 7 parts. People run host, load, play, propose, replay and write-golden.",
+  "derived": "12 parts, mostly JavaScript (36 files). Work enters through 7 doors; the busiest is CI, which reaches 7 parts. People run host, load, play, propose, replay and write-golden.",
   "doors": [
     {
       "checks": [
+        "fixtures/golden-arith.txt",
         "fixtures/golden.txt",
+        "harness/arith.mjs",
         "harness/sim.mjs",
         "harness/check.js",
+        "harness/product-scene.mjs",
         "harness/write-golden.js",
         "packages/frame/frame.js",
         "packages/frame/hash.js",
@@ -192,8 +188,8 @@
         "packages/propose/",
         "packages/tick/"
       ],
-      "checksCount": 11,
-      "checksMore": 32,
+      "checksCount": 14,
+      "checksMore": 35,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -203,7 +199,7 @@
         {
           "boundary": "fixtures",
           "depth": 0,
-          "files": 1
+          "files": 2
         },
         {
           "boundary": "frame",
@@ -213,7 +209,7 @@
         {
           "boundary": "harness",
           "depth": 0,
-          "files": 3
+          "files": 6
         },
         {
           "boundary": "host",
@@ -237,13 +233,14 @@
         }
       ],
       "runs": [
+        "harness/product.test.js",
         "packages/host/host.test.js",
         "packages/load/load.test.js",
         "packages/propose/propose.test.js",
         "packages/tick/tick.test.js"
       ],
-      "runsCount": 4,
-      "runsMore": 1,
+      "runsCount": 5,
+      "runsMore": 2,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -365,6 +362,45 @@
       "checksCount": 0,
       "checksMore": 0,
       "file": "package.json",
+      "id": "package.json#write-golden",
+      "kind": "command",
+      "landings": [
+        "fixtures/golden.txt"
+      ],
+      "name": "write-golden",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "harness",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "frame",
+          "depth": 1,
+          "files": 1
+        },
+        {
+          "boundary": "tick",
+          "depth": 2,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "harness/sim.mjs",
+        "harness/write-golden.js"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
       "id": "package.json#play",
       "kind": "command",
       "landings": [],
@@ -421,40 +457,6 @@
       "sends": [],
       "stages": [],
       "triggers": []
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "checksMore": 0,
-      "file": "package.json",
-      "id": "package.json#write-golden",
-      "kind": "command",
-      "landings": [
-        "fixtures/golden.txt"
-      ],
-      "name": "write-golden",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "harness",
-          "depth": 0,
-          "files": 2
-        },
-        {
-          "boundary": "frame",
-          "depth": 1,
-          "files": 1
-        }
-      ],
-      "runs": [
-        "harness/sim.mjs",
-        "harness/write-golden.js"
-      ],
-      "runsCount": 2,
-      "runsMore": 0,
-      "sends": [],
-      "stages": [],
-      "triggers": []
     }
   ],
   "duplicates": [],
@@ -465,6 +467,11 @@
       "from": "harness",
       "fromTests": false,
       "to": "frame"
+    },
+    {
+      "from": "harness",
+      "fromTests": false,
+      "to": "tick"
     },
     {
       "from": "host",
@@ -495,9 +502,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T21:07:40.226Z",
+  "generatedAt": "2026-09-24T21:50:15.240Z",
   "limits": [
+    "1 read uses a path built at run time and is not named here.",
     "4 writes and 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "1 command is built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -629,13 +638,13 @@
   "startReason": "This path follows host (a command people run) from its entry, since CI runs only tests.",
   "summary": "Deterministic 3D RPG tick: the model proposes, a checker admits, and the host draws committed frames.",
   "summaryFrom": "person",
-  "testFiles": 4,
+  "testFiles": 5,
   "testedBy": {
     "frame": 3,
     "host": 1,
     "load": 1,
     "propose": 1,
-    "tick": 4
+    "tick": 5
   },
   "unnamedWrites": 0,
   "unread": [],
