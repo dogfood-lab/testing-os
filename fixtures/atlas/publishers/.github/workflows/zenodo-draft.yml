@@ -1,0 +1,12 @@
+name: Zenodo draft
+on:
+  workflow_dispatch:
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a draft deposit, which mints nothing
+        env:
+          ZEN_TOKEN: ${{ secrets.ZEN_TOKEN }}
+        run: |
+          curl -sS -X POST -H "Authorization: Bearer $ZEN_TOKEN" "https://zenodo.org/api/deposit/depositions" -d '{}'

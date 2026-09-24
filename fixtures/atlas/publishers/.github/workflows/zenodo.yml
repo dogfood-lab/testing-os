@@ -1,0 +1,14 @@
+name: Zenodo deposit
+on:
+  workflow_dispatch:
+jobs:
+  deposit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create and publish the deposit
+        env:
+          ZEN_TOKEN: ${{ secrets.ZEN_TOKEN }}
+        run: |
+          # A comment naming https://zenodo.org/api/deposit publishes nothing.
+          ID=$(curl -sS -X POST -H "Authorization: Bearer $ZEN_TOKEN" "https://zenodo.org/api/deposit/depositions" -d '{}' | jq -r .id)
+          curl -sS -X POST -H "Authorization: Bearer $ZEN_TOKEN" "https://zenodo.org/api/deposit/depositions/$ID/actions/publish"

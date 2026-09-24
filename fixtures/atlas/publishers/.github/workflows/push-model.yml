@@ -1,0 +1,8 @@
+name: Push model
+on:
+  workflow_dispatch:
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - run: huggingface-cli upload acme/model ./weights

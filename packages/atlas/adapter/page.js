@@ -525,6 +525,7 @@ export function pushWords(door) {
 
 const REGISTRIES = {
   'crates.io': 'crates.io',
+  huggingface: 'the Hugging Face Hub',
   npm: 'npm',
   'open-vsx': 'Open VSX',
   pypi: 'PyPI',
@@ -532,6 +533,8 @@ const REGISTRIES = {
   'vscode-marketplace': 'the VS Code Marketplace',
 };
 const IMAGE = 'container image';
+// A deposit on Zenodo mints a record, which is what it publishes.
+const RECORD = 'zenodo';
 
 export function registryList(names) {
   return list(names.map((name) => REGISTRIES[name] ?? name));
@@ -561,10 +564,10 @@ function chosenBy(entry) {
 function publishPhrase(sends) {
   const to = Array.isArray(sends.publishesTo) ? sends.publishesTo : sends.publishes ? ['npm'] : [];
   const packages = (Array.isArray(sends.packages) ? sends.packages : []).filter((entry) => entry.name == null || entry.dir !== '');
-  const bare = to.filter((name) => name !== IMAGE && !packages.some((entry) => entry.registry === name));
+  const bare = to.filter((name) => name !== IMAGE && name !== RECORD && !packages.some((entry) => entry.registry === name));
   const items = [];
   if (bare.length > 0) items.push({ text: `to ${registryList(bare)}`, compound: bare.length > 1 });
-  for (const name of to.filter((registry) => registry !== IMAGE && !bare.includes(registry))) {
+  for (const name of to.filter((registry) => registry !== IMAGE && registry !== RECORD && !bare.includes(registry))) {
     const where = REGISTRIES[name] ?? name;
     const entries = packages.filter((entry) => entry.registry === name);
     const named = entries.filter((entry) => entry.name != null);
@@ -572,6 +575,7 @@ function publishPhrase(sends) {
     for (const entry of entries.filter((item) => item.name == null)) items.push({ text: `${chosenPackage(entry)} to ${where}${chosenBy(entry)}`, compound: entry.chosenBy != null });
   }
   if (to.includes(IMAGE)) items.push({ text: 'a container image', compound: false });
+  if (to.includes(RECORD)) items.push({ text: 'a record on Zenodo', compound: false });
   if (items.length === 0) return null;
   if (items.length === 1) return `publishes ${items[0].text}`;
   const plain = items.length === 2 && !items.some((item) => item.compound);

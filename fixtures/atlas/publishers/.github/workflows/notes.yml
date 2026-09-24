@@ -1,0 +1,10 @@
+name: Notes
+on:
+  workflow_dispatch:
+jobs:
+  notes:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          # Uploads go to https://zenodo.org/api/deposit and huggingface-cli upload, by hand.
+          echo "see the docs"

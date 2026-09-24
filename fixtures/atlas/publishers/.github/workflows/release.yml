@@ -1,0 +1,13 @@
+name: Release
+on:
+  release:
+    types: [published]
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for dir in packages/one packages/two; do
+            echo "publishing $dir"
+            ( cd "$dir" && npm publish --provenance --access public )
+          done
