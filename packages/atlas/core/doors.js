@@ -382,6 +382,8 @@ function readDoor(repoPath, file, repo) {
     ...(conditional.length > 0 ? { conditional: [...conditional].sort() } : {}),
     ...(missed.size > 0 ? { shellMissed: shellMissed(missed) } : {}),
     uses: [...uses].sort(),
+    // Read by index.js markUnshipped, then dropped.
+    publishedCrates: [sends, ...[...gates.values()].map((entry) => entry.sends)].flatMap((scope) => scope.crates),
   };
 }
 
@@ -430,7 +432,7 @@ function jobPlatforms(body) {
 
 
 function emptySends() {
-  return { publishesTo: new Set(), packages: new Map(), exports: new Set(), assets: new Set(), releases: false, deploysPages: false, opensPullRequests: false };
+  return { publishesTo: new Set(), packages: new Map(), exports: new Set(), assets: new Set(), crates: [], releases: false, deploysPages: false, opensPullRequests: false };
 }
 
 function finishSends(sends, issues, texts) {
@@ -880,6 +882,12 @@ function commandSends(run, sends, place) {
     const registry = publishRegistry(words);
     if (registry == null || words.includes('--dry-run')) continue;
     sends.publishesTo.add(registry);
+    // The crate a cargo publish sends: the one -p names, or the one found
+    // from where it runs (index.js markUnshipped).
+    if (registry === 'crates.io') {
+      const at = words.findIndex((word) => word === '-p' || word === '--package');
+      sends.crates.push({ dir: cwd ?? '', ...(at !== -1 && words[at + 1] ? { name: words[at + 1] } : {}) });
+    }
     if (registry !== 'npm') continue;
     for (const entry of publishedPackages(words, cwd, place)) sends.packages.set(entry.key, entry.value);
   }

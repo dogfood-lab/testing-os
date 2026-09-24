@@ -198,7 +198,8 @@ function installed(door) {
 // is bundled into, and the app a Tauri binary or a Godot project is.
 function installedAs(door) {
   const bundled = arr(door.bundledInto).map(str);
-  const what = door.app === 'desktop' ? 'the desktop app people install'
+  const what = door.unshipped ? `${door.app === 'desktop' ? 'a desktop app' : 'a command'} built from ${esc(str(door.builtFrom))}, which nothing ships`
+    : door.app === 'desktop' ? 'the desktop app people install'
     : door.app === 'game' ? 'what Godot runs'
     : door.kind !== 'package' ? (bundled.length > 0 ? `a command bundled into ${esc(list(bundled))}` : 'a command people run')
     : door.runsCommand != null ? `the package&#39;s entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${esc(door.runsCommand)}` : 'runs a program as it loads'}; it is not a library`

@@ -1,7 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, readlinkSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { join, posix, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
@@ -162,6 +162,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests }),
   ], [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], repoPath, trackedSet);
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
+  markUnshipped(doors, cargoProject(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }));
   const edges = [...resolution.edges, ...spawnEdges(graph), ...httpEdges(graph.files, graph.boundaryOf, isTestMaterial)]
@@ -224,6 +225,46 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     landings,
     ...(unseen.length > 0 ? { unseen } : {}),
   };
+}
+
+/**
+ * Mark a crate's binary unshipped when nothing here ships it: no workflow
+ * builds or installs it (cargo build, cargo install, the Tauri CLI's build,
+ * a release that uploads it) and no cargo publish sends its crate. It is
+ * still a door, as a package no door publishes is, and the page says it is
+ * built from its crate and that nothing ships it. Drops what the doors
+ * carried for this. Mutates the doors.
+ *
+ * @param {object[]} doors every door of the map
+ * @param {{ crates: object[], workspaces: object[] }} project
+ */
+function markUnshipped(doors, project) {
+  const workflows = doors.filter((door) => !door.kind && !door.parseError);
+  const built = new Set(workflows.flatMap((door) => (door.runs ?? []).filter((run) => run.builds || run.built).map((run) => run.path)));
+  const published = new Set();
+  for (const entry of workflows.flatMap((door) => door.publishedCrates ?? [])) {
+    if (entry.name != null) {
+      for (const crate of project.crates) if (crate.name === entry.name) published.add(crate.manifest);
+      continue;
+    }
+    // The manifest cargo finds from where it runs; a virtual workspace's
+    // root publishes its members.
+    for (let at = entry.dir; ; at = at.includes('/') ? at.slice(0, at.lastIndexOf('/')) : '') {
+      const manifest = at ? `${at}/Cargo.toml` : 'Cargo.toml';
+      const crate = project.crates.find((item) => item.manifest === manifest);
+      const workspace = project.workspaces.find((item) => item.manifest === manifest);
+      if (crate) published.add(crate.manifest);
+      else if (workspace) for (const member of workspace.members) published.add(member);
+      if (crate || workspace || at === '') break;
+    }
+  }
+  for (const door of doors) {
+    delete door.publishedCrates;
+    for (const run of door.runs ?? []) delete run.builds;
+    if (door.kind !== 'command' || posix.basename(door.file) !== 'Cargo.toml') continue;
+    if (published.has(door.file) || (door.runs ?? []).some((run) => built.has(run.path))) continue;
+    door.unshipped = true;
+  }
 }
 
 function rootManifest(repoPath, tracked) {

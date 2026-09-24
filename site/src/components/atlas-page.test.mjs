@@ -968,3 +968,12 @@ test('a binary a release builds reads apart from what it runs, as the markdown w
   assert.ok(text.includes('On a release event, it builds app/main.rs.'), 'what comes in, held to a trigger');
   assert.ok(text.includes('Release Binaries checks src/lib.rs and builds src/main.rs into an MSIX package and binaries for linux-x64 and win-x64, and uploads them to the release.'), 'the other doors name it with what ships');
 });
+
+// A crate's binary nothing ships, as page.js words it:
+// fixtures/atlas/unshipped-bins gives this sentence in the markdown
+// (packages/atlas/adapter/page-unshipped-bins.test.js).
+test('a binary nothing ships reads as built from its crate, as the markdown words it', () => {
+  const console = { builtFrom: 'crates/console', checks: [], checksCount: 0, checksMore: 0, file: 'crates/console/Cargo.toml', id: 'crates/console/Cargo.toml#console', kind: 'command', landings: [], name: 'console', pushes: false, reach: [], runs: ['crates/console/src/main.rs'], runsCount: 1, runsMore: 0, sends: [], stages: [], triggers: [], unshipped: true };
+  const text = plain(render.renderPage({ ...page, doors: [...page.doors, console] }, { repo: page.repo }));
+  assert.ok(text.includes('console (a command built from crates/console, which nothing ships). Runs crates/console/src/main.rs.'), 'what comes in');
+});

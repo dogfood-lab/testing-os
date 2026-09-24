@@ -43,6 +43,10 @@ describe('a release that builds binaries, on the page', () => {
     assert.ok(!page.markdown.includes('Release Binaries** creates') && !/Release Desktop[^\n]*creates a GitHub release/.test(page.markdown), page.markdown);
   });
 
+  it('says the binaries a release ships are what people run and install', () => {
+    assert.match(data.derived, / People run mile\. People install the mile-desktop desktop app\.$/, data.derived);
+  });
+
   it('names the files an upload of no build here hands over', () => {
     assert.deepEqual(door('.github/workflows/notes.yml').sends, ['uploads SHA256SUMS.txt, dist/*, sbom.json and files named at run time to the release']);
   });

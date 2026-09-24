@@ -403,6 +403,7 @@ function carryDoor(door) {
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
     ...(door.unpublished ? { unpublished: true } : {}),
+    ...(door.unshipped ? { unshipped: true } : {}),
     uses: [...door.uses],
     usesWorkflowToken: door.usesWorkflowToken,
   };

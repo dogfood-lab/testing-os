@@ -40,16 +40,19 @@ describe('what a Cargo workspace installs, on the page', () => {
     assert.equal(desktop.app, 'desktop');
   });
 
-  it('says each binary is a command people run, and the Tauri binary the desktop app people install', () => {
-    assert.match(markdown, /\*\*forge\*\* \(a command people run\)\. Runs crates\/cli\/src\/main\.rs\./);
-    assert.match(markdown, /\*\*doctor\*\* \(a command people run\)\. Runs crates\/cli\/src\/bin\/doctor\.rs\./);
-    assert.match(markdown, /\*\*forge-desktop\*\* \(the desktop app people install\)\. Runs apps\/desktop\/src-tauri\/src\/main\.rs\./);
+  // No workflow of this fixture builds, releases or publishes a binary, so
+  // each is said as built from its crate with nothing shipping it
+  // (fixtures/atlas/unshipped-bins and release-binaries hold the ones shipped).
+  it('says each binary is a command, and the Tauri binary a desktop app, built from its crate', () => {
+    assert.match(markdown, /\*\*forge\*\* \(a command built from crates\/cli, which nothing ships\)\. Runs crates\/cli\/src\/main\.rs\./);
+    assert.match(markdown, /\*\*doctor\*\* \(a command built from crates\/cli, which nothing ships\)\. Runs crates\/cli\/src\/bin\/doctor\.rs\./);
+    assert.match(markdown, /\*\*forge-desktop\*\* \(a desktop app built from apps\/desktop\/src-tauri, which nothing ships\)\. Runs apps\/desktop\/src-tauri\/src\/main\.rs\./);
     const desktop = data.doors.find((door) => door.name === 'forge-desktop');
     assert.equal(desktop.app, 'desktop');
   });
 
   it('names the commands and the desktop app apart on the first line', () => {
-    assert.match(data.derived, / People run doctor and forge\. People install the forge-desktop desktop app\.$/);
+    assert.match(data.derived, / doctor and forge are commands built from crates\/cli \(nothing ships them\)\. forge-desktop is a desktop app built from apps\/desktop\/src-tauri \(nothing ships it\)\.$/, data.derived);
   });
 
   it('no longer says the map reads no Rust', () => {

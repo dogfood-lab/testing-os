@@ -1300,7 +1300,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         const checks = { ...frame, runKind: 'checks' };
         // cargo build makes each binary it compiles, which a later step may
         // ship (core/doors.js); it runs none of them.
-        const bins = new Set(sub === 'build' ? packages.flatMap((crate) => crate.bins.map((bin) => bin.path)) : []);
+        const bins = new Set(sub === 'build' || sub === 'install' ? packages.flatMap((crate) => crate.bins.map((bin) => bin.path)) : []);
         for (const path of [...new Set(packages.flatMap((crate) => targets(crate)))]) record(stamp({ path, matched: true, ...(bins.has(path) ? { builds: true } : {}) }, checks, chain));
       }
     },

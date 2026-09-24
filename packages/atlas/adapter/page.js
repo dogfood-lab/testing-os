@@ -1,3 +1,4 @@
+import { posix } from 'node:path';
 import { isSourcePath } from '../core/history.js';
 import { isTestFile, isTestMaterial, ownTestPair } from '../core/landings.js';
 import { isCodePath, languageOf } from '../core/languages.js';
@@ -244,13 +245,20 @@ export function orderDoors(doors) {
 // A Tauri app's binary is installed as the app, not typed as a command, and
 // a Godot project's main scene is what the engine runs.
 function installedAs(door) {
-  const what = door.app === 'desktop' ? 'the desktop app people install'
+  const what = door.unshipped ? `${door.app === 'desktop' ? 'a desktop app' : 'a command'} built from ${builtFrom(door)}, which nothing ships`
+    : door.app === 'desktop' ? 'the desktop app people install'
     : door.app === 'game' ? 'what Godot runs'
     : door.kind !== 'package' ? (door.bundledInto?.length > 0 ? `a command bundled into ${list(door.bundledInto)}` : 'a command people run')
     : door.runsCommand != null ? `the package's entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${door.runsCommand}` : 'runs a program as it loads'}; it is not a library`
     : door.extension ? (door.unpublished ? "the extension's entry, not published from here" : `the extension people install from ${registryList(door.publishedTo ?? [])}`)
       : door.unpublished ? "the package's entry, not published from here" : 'the package people import';
   return door.sharedName ? `${what}, from ${door.file}` : what;
+}
+
+// The directory a crate's binary is built from, as the page names it.
+export function builtFrom(door) {
+  const dir = posix.dirname(door.file);
+  return dir === '.' ? 'the repository root' : dir;
 }
 
 // backpropagate installs a command of one name from package.json and from
@@ -2759,7 +2767,7 @@ function publishesSentence(ctx) {
 // extension is installed, not imported; a desktop app is installed, not run
 // by its name.
 function installedNames(ctx, kind, { extension = false, app = null } = {}) {
-  const names = [...new Set(ctx.doors.filter((door) => door.kind === kind && !door.unpublished && Boolean(door.extension) === extension
+  const names = [...new Set(ctx.doors.filter((door) => door.kind === kind && !door.unpublished && !door.unshipped && Boolean(door.extension) === extension
     && (door.app ?? null) === app && door.runsCommand == null && !(door.bundledInto?.length > 0)).map((door) => door.name))].sort(cmp);
   if (names.length <= INSTALLED_ALL) return list(names);
   return `${names.slice(0, INSTALLED_NAMED).join(', ')} and ${names.length - INSTALLED_NAMED} more`;
@@ -2785,7 +2793,23 @@ function derivedLine(ctx, main) {
   if (game) sentences.push(`People run ${game}.`);
   const desktop = installedNames(ctx, 'command', { app: 'desktop' });
   if (desktop) sentences.push(`People install the ${desktop} desktop ${desktop.includes(' and ') ? 'apps' : 'app'}.`);
+  sentences.push(...unshippedSentences(ctx));
   return sentences.join(' ');
+}
+
+// A crate's binary nothing ships is said as what it is, a command or a
+// desktop app built from its crate, and that nothing ships it.
+function unshippedSentences(ctx) {
+  const out = [];
+  for (const app of [null, 'desktop']) {
+    const doors = ctx.doors.filter((door) => door.kind === 'command' && door.unshipped && (door.app ?? null) === app);
+    if (doors.length === 0) continue;
+    const noun = app === 'desktop' ? 'desktop app' : 'command';
+    const names = list([...new Set(doors.map((door) => door.name))].sort(cmp));
+    const dirs = list([...new Set(doors.map(builtFrom))].sort(cmp));
+    out.push(doors.length === 1 ? `${names} is a ${noun} built from ${dirs} (nothing ships it).` : `${names} are ${noun}s built from ${dirs} (nothing ships them).`);
+  }
+  return out;
 }
 
 function doorData(ctx, door) {
@@ -2817,6 +2841,7 @@ function doorData(ctx, door) {
     triggers: triggerPhrases(door),
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
     ...(door.unpublished ? { unpublished: true } : {}),
+    ...(door.unshipped ? { builtFrom: builtFrom(door), unshipped: true } : {}),
     ...(door.extension ? { extension: true } : {}),
     ...(door.publishedTo ? { publishedTo: registryList(door.publishedTo) } : {}),
     ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
