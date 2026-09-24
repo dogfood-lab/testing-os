@@ -1377,7 +1377,10 @@ function writtenPlaces(ctx) {
     // A writer that only bootstraps the file, once when it is absent, reads
     // the committed file every other time: its reads are a use of it.
     const once = [...new Set(inside.flatMap((landing) => landing.writers.filter((entry) => (entry.unless ?? []).includes('exists')).map((entry) => entry.by)))];
-    return { target, writers, readers, guards: guardsOf(inside), once, ...(stamped ? { stamped: true } : {}) };
+    // A writer every write of which here is under the directory it is run
+    // in writes the place when run from the repository root.
+    const fromRoot = writers.filter((by) => inside.every((landing) => landing.writers.every((entry) => entry.by !== by || entry.fromCwd)));
+    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}) };
   });
 }
 
@@ -1827,13 +1830,15 @@ function generated(ctx) {
     }
     claimed.push(inside);
     const once = writers.length > 0 && writers.every((by) => (guards.get(by) ?? []).includes('exists'));
-    items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers, guards, ...(once ? { once: true } : {}) });
+    const fromRoot = writers.length > 0 && writers.every((by) => held.every((place) => !place.writers.includes(by) || place.fromRoot.includes(by)));
+    items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers, guards, ...(once ? { once: true } : {}), ...(fromRoot ? { fromRoot: true } : {}) });
   }
   for (const place of written) {
     if (claimed.some((inside) => inside(place.target))) continue;
     const target = ctx.place(place.target);
     const once = place.writers.length > 0 && place.writers.every((by) => (place.guards.get(by) ?? []).includes('exists'));
-    items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}), ...(once ? { once: true } : {}) });
+    const fromRoot = place.writers.length > 0 && place.writers.every((by) => place.fromRoot.includes(by));
+    items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}), ...(once ? { once: true } : {}), ...(fromRoot ? { fromRoot: true } : {}) });
   }
   for (const boundary of ctx.boundaries.filter((item) => item.origin !== 'generated')) {
     const bot = botAdded(ctx, boundary.name);
@@ -1851,6 +1856,8 @@ function generatedSection(ctx, items) {
       if (item.writers.length === 0) return `- **${item.shown}** is written by code this map cannot name.`;
       const by = list(worded(item.writers, ctx.shown));
       if (item.once) return `- **${item.shown}** is written once by ${by}.`;
+      // Output of a run from the root that the repository checks in.
+      if (item.fromRoot) return `- **${item.shown}** is written by ${by} when run from the repository root, and committed.`;
       return item.block ? `- **${item.shown}** has a block written by ${by}.` : `- **${item.shown}** is written by ${by}.`;
     }).join('\n')
     : absence('generated', unreadCount(ctx));
@@ -2736,7 +2743,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesLead: duplicated.lead,
     duplicatesNote: duplicated.note,
     edges: breakEdges(ctx, breakEntries),
-    generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), ...(item.once ? { once: true } : {}), place: item.place, writers: worded(item.writers, id) })),
+    generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), ...(item.fromRoot ? { fromRoot: true } : {}), ...(item.once ? { once: true } : {}), place: item.place, writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
     mainDoor: main ? doorKey(main) : null,

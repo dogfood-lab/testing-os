@@ -763,6 +763,7 @@ function generatedSection(ctx) {
       const by = list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
       // A stamped file is written by people, with one block a script keeps.
       if (item.once) return `${place} is written once by ${by}.`;
+      if (item.fromRoot) return `${place} is written by ${by} when run from the repository root, and committed.`;
       return item.block ? `${place} has a block written by ${by}.` : `${place} is written by ${by}.`;
     }))
     : p(absence('generated', unreadFiles(ctx)));

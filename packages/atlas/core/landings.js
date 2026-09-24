@@ -728,10 +728,21 @@ export function astLandings(language, root, path, places) {
       if (rest.length === 0) return;
     }
     const helpers = [...new Set(all.filter(isHelper).map((value) => value.anchor.slice(HELPER.length)))].sort();
+    const list = kind === 'write' ? found.writes : found.reads;
+    // A write under the directory the command runs in whose path from there
+    // names a place this repository tracks is the committed output of a run
+    // from the repository root: .multi-claude/drill/ written under
+    // process.cwd() and checked in. It lands there, marked fromCwd, and is
+    // not counted as the caller's.
+    const rooted = kind === 'write' ? all.filter((value) => value.anchor === 'cwd' && value.text !== '').map((value) => [value, cwdPlace(value, call, places)]) : [];
+    for (const [, target] of rooted) {
+      if (target != null) list.push({ target, call, confidence: 'ast', fromCwd: true, ...(unless.length > 0 ? { unless } : {}) });
+    }
+    const settled = new Set(rooted.filter(([, target]) => target != null).map(([value]) => value));
     // Until the imported function is read, its return is a root the engine
     // cannot read, as join(root, 'records') has.
-    const values = all.filter((value) => !boundParam(value)).map((value) => (isHelper(value) ? asRoot(value) : value));
-    const list = kind === 'write' ? found.writes : found.reads;
+    const values = all.filter((value) => !boundParam(value) && !settled.has(value)).map((value) => (isHelper(value) ? asRoot(value) : value));
+    if (values.length === 0) return;
     const theirs = values.some(outside);
     if (theirs) found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
     const before = list.length;
@@ -2225,6 +2236,25 @@ function shapedLikeNothing(value, call, places) {
   return cache.get(key);
 }
 
+// The tracked place a write under the working directory names from there:
+// the file or directory its whole path spells, or, for a path with a name
+// read at run time (.multi-claude/drill/logs/run-N.log), the tracked
+// directory it spells whole, when tracked files there have the path's shape.
+// A directory a maker makes is evidence of the writes into it, not output of
+// its own.
+function cwdPlace(value, call, places) {
+  if (DIRECTORY_MAKERS.has(call)) return null;
+  const spelled = posix.normalize(value.text.replaceAll('\\', '/') || '.').replace(/^\.\//, '');
+  if (value.open) {
+    if (value.tail == null || !spelled.includes('/')) return null;
+    const dir = spelled.slice(0, spelled.lastIndexOf('/'));
+    const relative = { text: value.text, open: true, tail: value.tail };
+    return places.dirs.has(dir) && !shapedLikeNothing(relative, call, places) ? dir : null;
+  }
+  const target = spelled.replace(/\/+$/, '');
+  return places.files.has(target) || places.dirs.has(target) ? target : null;
+}
+
 // Where a write shaped like no tracked file goes: the readable head and the
 // first unread segment (swarms/*), a place no one tracks.
 function shapedTarget(value) {
@@ -2582,6 +2612,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     .map((file) => ({ path: file.path, reads: file.reads ?? [], writes: (file.writes ?? []).filter((write) => !isTestMaterial(write.target) && (
       (write.fixed && places.files.has(write.target))
       || (write.fixedHead && places.dirs.has(write.target) && !write.target.includes('*'))
+      || write.fromCwd
     )) }))
     .filter((file) => file.writes.length > 0)
     .sort((a, b) => compare(a.path, b.path));
@@ -2596,6 +2627,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
   for (const file of files) {
     if (!isTestMaterial(file.path)) continue;
     file.writes = (file.writes ?? []).map(({ fixed, fixedHead, relative, ...rest }) => rest);
+    // fromCwd is kept: the page says the place is written from the root.
     file.reads = (file.reads ?? []).map(({ fixed, fixedHead, relative, ...rest }) => rest);
   }
 
@@ -2607,7 +2639,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
   };
   for (const file of [...own, ...tests]) {
     for (const write of file.writes) {
-      const entry = { by: file.path, confidence: write.confidence };
+      const entry = { by: file.path, confidence: write.confidence, ...(write.fromCwd ? { fromCwd: true } : {}) };
       // A write made only when a committed file is absent bootstraps it:
       // it happens once, before the commit, and stamps nothing.
       if (bootstraps(write, places)) entry.unless = ['exists'];
@@ -2732,7 +2764,9 @@ function settleRelativePaths(files, doors) {
       const kept = [];
       for (const entry of file[kind]) {
         const { relative, fixed, ...rest } = entry;
-        if (theirs && relative) file[count] = (file[count] ?? 0) + 1;
+        // Under the working directory is under the person's, for a command
+        // people run from wherever they are.
+        if (theirs && (relative || entry.fromCwd)) file[count] = (file[count] ?? 0) + 1;
         else if (isTestMaterial(file.path)) kept.push({ ...rest, ...(fixed ? { fixed } : {}), ...(relative ? { relative } : {}) });
         else kept.push(rest);
       }
