@@ -262,6 +262,16 @@ function markSharedNames(doors) {
 }
 
 // A game starts its main scene; a scene is not a program run on its own.
+/**
+ * A door's name at the start of a sentence: the game, which the page names
+ * as a noun and not by a name a person gave it, is capitalized there.
+ *
+ * @param {{ name: string, app?: string }} door
+ */
+export function leadName(door) {
+  return door.app === 'game' ? capitalize(door.name) : door.name;
+}
+
 function startVerb(door) {
   return door.kind === 'package' ? 'loads' : door.app === 'game' ? 'starts' : 'runs';
 }
@@ -987,7 +997,10 @@ function sequences(ctx, door) {
   const out = [];
   const held = heldRuns(door);
   const named = [...new Set((door.runs ?? []).filter((run) => !run.matched && run.runKind !== 'checks' && !held.has(run.path)).map((run) => run.path))].sort(cmp);
-  for (const path of named) {
+  // A scene the door starts runs the scripts it instances, which is where
+  // its order of work is.
+  const scripts = [...new Set(named.flatMap((path) => (/\.(?:tscn|scn)$/.test(path) ? (ctx.fileOf.get(path)?.importsFiles ?? []).filter((file) => file.endsWith('.gd')) : [path])))];
+  for (const path of scripts) {
     const file = ctx.fileOf.get(path);
     const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
     if (!root) continue;
@@ -1241,7 +1254,7 @@ function unreadCount(ctx) {
 function readsSection(ctx, main, groups) {
   const lines = ['## Who reads the results'];
   if ((main.landings ?? []).length === 0) {
-    lines.push(absence('writes', unreadCount(ctx), main.name));
+    lines.push(absence('writes', unreadCount(ctx), leadName(main)));
     return lines.join('\n\n');
   }
   const bullets = groups.map((group) => {
@@ -2424,7 +2437,7 @@ function limits(ctx, shownText) {
     const recorded = new Set((door.runs ?? []).map((run) => run.path)).size;
     if ((door.runsCount ?? 0) <= recorded) continue;
     const verb = (door.checksCount ?? 0) > 0 ? 'runs or checks' : 'runs';
-    lines.push(`${door.name} ${verb} ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from those.`);
+    lines.push(`${leadName(door)} ${verb} ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from those.`);
   }
   const confidence = ctx.statistics.confidence;
   if (confidence?.level === 'low') {

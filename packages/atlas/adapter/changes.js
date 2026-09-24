@@ -1,5 +1,5 @@
 import { unassignedDrift } from './check.js';
-import { capitalize, count, displayName, doorKey, installed, list, mainDoor, runsShown, triggerPhrases, words } from './page.js';
+import { capitalize, count, displayName, doorKey, installed, leadName, list, mainDoor, runsShown, triggerPhrases, words } from './page.js';
 
 /**
  * What changed since the last committed map, as structural facts in fixed
@@ -268,7 +268,7 @@ function newDoorSentence(door, file) {
   if (installed(door)) {
     const paths = runPaths(door);
     const verb = door.kind === 'package' ? 'loads' : door.app === 'game' ? 'starts' : 'runs';
-    return `${door.name} (${file}) is a new ${doorNoun(door)}. ${paths.length > 0 ? `It ${verb} ${runsShown(paths)}.` : `It ${verb} no file this map can see.`}`;
+    return `${leadName(door)} (${file}) is a new ${doorNoun(door)}. ${paths.length > 0 ? `It ${verb} ${runsShown(paths)}.` : `It ${verb} no file this map can see.`}`;
   }
   return `${door.name} (${file}) is a new door. It starts ${startsPhrase(door)}. ${runsSentence(door)}`;
 }

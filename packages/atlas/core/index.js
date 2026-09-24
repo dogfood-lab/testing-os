@@ -20,6 +20,9 @@ import { storedBytes, textAttributes } from './text.js';
 import { rustImports, rustPaths, rustSequence, settleRustPaths } from './rust.js';
 import { cargoProject, owningCrate } from './cargo.js';
 import { unseenParts } from './unseen.js';
+import { godotResourceReadings, gdscriptReadings, settleGodotPaths } from './gdscript.js';
+
+const GODOT_TEXT = /\.(?:tscn|tres)$/;
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
 
@@ -146,6 +149,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   });
   const project = cargoProject(repoPath, trackedSet);
   settleRustPaths({ files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places, crateDirOf: (path) => owningCrate(project, path)?.dir ?? null });
+  settleGodotPaths({ repoPath, tracked: trackedSet, files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places });
   settleHelperPaths([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]);
   settleParamPaths([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places);
   settleSpawnHelpers([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], spawned);
@@ -410,6 +414,9 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   const bytes = storedBytes(readFileSync(join(repoPath, path)), attributes);
   const hash = createHash('sha256').update(bytes).digest('hex');
   const language = languageOf(path);
+  // A scene or resource Godot saves as text names what it instances and
+  // reads line by line, read as text by rule (core/gdscript.js).
+  if (language == null && GODOT_TEXT.test(path)) return { path, hash, language: null, ...godotResourceReadings(bytes.toString('utf8')), ...noLandings() };
   if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };
   const extracted = parseFile(language, path, bytes.toString('utf8'), places);
   if (extracted.parseError) {
@@ -486,11 +493,13 @@ function parseFile(language, path, original, places) {
 // what resolution reads once every file is known and then drops.
 function nativeReadings(language, root) {
   const rust = language === 'rust' ? { ...rustImports(root), paths: rustPaths(root) } : null;
+  const gd = language === 'gdscript' ? gdscriptReadings(root) : null;
   return {
-    imports: rust ? rust.imports : [],
+    imports: rust ? rust.imports : gd ? gd.imports : [],
+    ...(gd ? { native: { godot: gd.godot } } : {}),
     ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}), ...(rust.paths.length > 0 ? { rustPaths: rust.paths } : {}), ...(rust.tests ? { testsInside: true } : {}) } } : {}),
     landings: noLandings(),
-    sequence: rust ? rustSequence(root, rust.imports) : { functions: [], topLevel: [], reexports: [] },
+    sequence: rust ? rustSequence(root, rust.imports) : gd ? gd.sequence : { functions: [], topLevel: [], reexports: [] },
     spawned: { commands: [], built: 0 },
     githubChanges: 0,
     noStatements: statementless(root),
