@@ -94,7 +94,7 @@ describe('atlas init', () => {
     assert.equal(byName.get('src').role, 'code');
   });
 
-  it('gives inert directories config and leaves a docs directory as docs', () => {
+  it('gives a workflow directory config, directories of data data, and leaves a docs directory as docs', () => {
     const root = scratch();
     cpSync(ROLES, root, { recursive: true });
     commitTree(root);
@@ -103,10 +103,10 @@ describe('atlas init', () => {
     const doc = readBoundaryFile(root);
     const role = Object.fromEntries(doc.boundaries.map((boundary) => [boundary.name, boundary.role]));
     assert.equal(role['.github'], 'config');
-    assert.equal(role.assets, 'config');
-    assert.equal(role.indexes, 'config');
-    assert.equal(role.records, 'config');
-    assert.equal(role.reports, 'config');
+    assert.equal(role.assets, 'data');
+    assert.equal(role.indexes, 'data');
+    assert.equal(role.records, 'data');
+    assert.equal(role.reports, 'data');
     assert.equal(role.swarms, 'docs');
   });
 

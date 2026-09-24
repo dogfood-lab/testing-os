@@ -1526,7 +1526,7 @@ function generatedSection(ctx, items) {
 
 function authored(ctx) {
   return ctx.boundaries
-    .filter((boundary) => boundary.origin === 'authored' && (boundary.role === 'config' || boundary.role === 'docs' || boundary.role === 'site'))
+    .filter((boundary) => boundary.origin === 'authored' && ['config', 'data', 'docs', 'site'].includes(boundary.role))
     .filter((boundary) => !botAdded(ctx, boundary.name))
     .sort((a, b) => cmp(boundaryPlace(a), boundaryPlace(b)));
 }

@@ -15,6 +15,16 @@ export function isTestPath(path) {
 }
 
 const CODE_EXT = new Set(['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'mts', 'cts', 'py', 'pyi']);
+// Shell scripts are code a part runs, though Atlas does not parse them.
+const SCRIPT_EXT = new Set(['sh', 'bash', 'zsh', 'ps1']);
+// What a part holds as data: records, schemas, tables and images a program
+// reads, as against the settings a tool reads.
+const DATA_EXT = new Set(['json', 'jsonl', 'ndjson', 'yaml', 'yml', 'csv', 'tsv', 'geojson', 'xml']);
+// A tool's settings, whatever the extension: a dotfile, a *.config.* file, a
+// tsconfig, a lockfile or a compose file.
+const SETTINGS_NAME = /^\.|(^|[.-])config([.-]|$)|^tsconfig|^jsconfig|(^|[.-])lock(\.|$)|^(docker-)?compose\./i;
+const MANIFEST_NAME = new Set(['package.json', 'pyproject.toml', 'Cargo.toml', 'go.mod', 'setup.py', 'setup.cfg']);
+const SETTINGS_DIRS = new Set(['config', 'configs', 'conf', 'settings', '.config']);
 const DOCS_EXT = new Set(['md', 'mdx', 'rst', 'txt']);
 // A pinned dependency list is a .txt file a tool reads, not prose.
 const DEPENDENCY_LIST = /^(requirements|constraints)([-_.].*)?\.txt$/i;
@@ -50,7 +60,7 @@ export function fileKind(path) {
   if (DEPENDENCY_LIST.test(base)) return 'other';
   if (DOCS_EXT.has(ext)) return 'docs';
   if (CONFIG_EXT.has(ext) || isConfigName(base)) return 'config';
-  if (CODE_EXT.has(ext)) return 'code';
+  if (CODE_EXT.has(ext) || SCRIPT_EXT.has(ext)) return 'code';
   if (base === '.gitkeep' || IMAGE_EXT.has(ext) || FONT_EXT.has(ext) || BINARY_EXT.has(ext)) return 'other';
   return 'other';
 }
@@ -85,6 +95,24 @@ function roleByFiles(paths, kinds) {
 }
 
 /**
+ * A part that is mostly data (images, JSON, JSON Lines, YAML, CSV) and holds
+ * no manifest and no code: logos, fixtures, schemas, a game's world. A tool's
+ * settings are configuration however they are written, so they are not data,
+ * and neither is a directory named for them (config/, settings/). A .gitkeep
+ * holds a directory open and counts for nothing.
+ */
+function isData(paths) {
+  const kept = paths.filter((path) => baseName(path) !== '.gitkeep');
+  if (kept.length === 0) return false;
+  const bases = kept.map(baseName);
+  if (bases.some((base) => MANIFEST_NAME.has(base) || CODE_EXT.has(extensionOf(base)) || SCRIPT_EXT.has(extensionOf(base)))) return false;
+  const home = commonDirectory(kept).replace(/\/$/, '');
+  if (SETTINGS_DIRS.has(home.slice(home.lastIndexOf('/') + 1).toLowerCase())) return false;
+  const data = bases.filter((base) => !SETTINGS_NAME.test(base) && (DATA_EXT.has(extensionOf(base)) || IMAGE_EXT.has(extensionOf(base))));
+  return data.length * 2 > kept.length;
+}
+
+/**
  * Other casts no vote. Test is reserved for a boundary whose code-shaped
  * files are all tests. A boundary with no voting files is config. A boundary
  * with code is code while its code, tests included, is at least a third of
@@ -99,6 +127,9 @@ function roleByFiles(paths, kinds) {
  * whose package.json, pyproject.toml and Dockerfile configure the whole of it,
  * so it is config unless code, tests included, is a third of its voting files.
  *
+ * A part of mostly data with no manifest and no code is data, a role that
+ * reads as data and is expected to have no test (isData).
+ *
  * @param {string[]} paths
  * @param {{ manifest?: boolean }} [options] manifest: the part holds the
  *   repository's manifest (core/index.js repositoryManifest)
@@ -107,6 +138,7 @@ export function roleFor(paths, { manifest = false } = {}) {
   const kinds = paths.map((path) => fileKind(path));
   const byFiles = roleByFiles(paths, kinds);
   if (byFiles) return byFiles;
+  if (!manifest && isData(paths)) return 'data';
   const voting = kinds.filter((kind) => kind === 'code' || kind === 'docs' || kind === 'config');
   const docs = voting.filter((kind) => kind === 'docs').length;
   const code = voting.filter((kind) => kind === 'code').length;
