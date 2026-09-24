@@ -2,7 +2,7 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.16.0] — 2026-09-24
 
 ### Added
 - **A `data` role.** A part of mostly images, JSON, JSONL, YAML, CSV or XML with no manifest and no code is proposed as `data`, rendered "data", and never asked for tests; a part of shell scripts is code. `logos/`, `fixtures/`, `schemas/`, `knowledge/` and `world/` across wave 2 had all been `config`.
