@@ -184,9 +184,19 @@ function scheduleOnly(door) {
   return events.includes('schedule') && events.every((event) => event === 'schedule' || event === 'workflow_dispatch');
 }
 
+// A door whose every run only checks code, a linter's or a type-checker's.
+function checksOnly(door) {
+  return (door.runs ?? []).length > 0 && (door.runs ?? []).every((run) => run.runKind === 'checks');
+}
+
+// Between two doors that reach as far, one that runs code comes before one
+// that only checks it, and the one a pull request goes through first: it is
+// the path a change takes into the repository.
 function byReach(doors) {
   return [...doors].sort((a, b) => (
     reachSize(b) - reachSize(a)
+    || Number(checksOnly(a)) - Number(checksOnly(b))
+    || Number(!pullRequested(a)) - Number(!pullRequested(b))
     || Number(scheduleOnly(a)) - Number(scheduleOnly(b))
     || cmp(a.name, b.name)
     || cmp(a.file, b.file)
@@ -1754,14 +1764,19 @@ function afterReview(door) {
 
 /**
  * The door "Where to start" follows. A change a person makes enters through
- * the pull request first, so when the busiest door acts only on a push or a
- * schedule, the widest door a pull request starts is followed instead. A door
- * something outside starts (a dispatch, a release) is its own way in and
- * stays, as does a command people run.
+ * the pull request first, so when the busiest door is not one a pull request
+ * starts (a push, a schedule, a tag, a release, a command people run), the
+ * widest door a pull request starts is followed instead. A door another
+ * repository starts with a dispatch is the way that repository's work comes
+ * in, and stays.
  */
 function startDoor(ctx, main) {
-  if (!main || installed(main) || !afterReview(main)) return main;
+  if (!main || pullRequested(main) || dispatched(main)) return main;
   return reaching(ctx.doors).find((door) => !installed(door) && pullRequested(door)) ?? main;
+}
+
+function dispatched(door) {
+  return (door.triggers ?? []).some((trigger) => trigger.event === 'repository_dispatch');
 }
 
 // The runs a pull request reaches: a job held to another trigger, or to what
@@ -1778,6 +1793,37 @@ function startRuns(door) {
  * into the next part the walk reaches, else the part's entry point inside it,
  * else its first code file.
  */
+// The parts a set of files reaches through the imports the map recorded.
+function partsReached(ctx, files) {
+  const seen = new Set();
+  const parts = new Set();
+  const stack = [...files];
+  while (stack.length > 0) {
+    const path = stack.pop();
+    if (seen.has(path)) continue;
+    seen.add(path);
+    const part = ctx.boundaryOf.get(path);
+    if (part) parts.add(part);
+    for (const target of ctx.fileOf.get(path)?.importsFiles ?? []) {
+      // A build chunk whose sources share a part is imported as @part.
+      if (target.startsWith('@')) parts.add(target.slice(1));
+      else if (!seen.has(target)) stack.push(target);
+    }
+  }
+  return parts;
+}
+
+// The files a set of runs stands for: each file, and every file under each
+// directory.
+function filesOfRuns(ctx, paths) {
+  const out = [];
+  for (const path of paths) {
+    if (!path.endsWith('/')) out.push(path);
+    else for (const file of ctx.fileOf.keys()) if (file.startsWith(path)) out.push(file);
+  }
+  return out;
+}
+
 function fileInRun(ctx, door, dir) {
   const next = deeper(door)[0]?.entries.map((entry) => entry.enters?.from).filter((path) => path?.startsWith(dir)) ?? [];
   if (next.length > 0) return [...next].sort(cmp)[0];
@@ -1822,11 +1868,42 @@ function startHere(ctx, main) {
   const paths = (spelled.length > 0 ? spelled : ran).filter((path) => path.endsWith('/') || runsAsCode(path));
   const filesIn = (path) => depthZero.find((entry) => entry.boundary === runPart(ctx, path))?.files ?? 0;
   const readable = (path) => runsAsCode(path) && !ctx.fileOf.get(path)?.noStatements;
-  let current = null;
-  // A package is read from what an import of its name loads.
-  for (const path of [...paths].sort((a, b) => Number(a !== main.entry) - Number(b !== main.entry) || filesIn(b) - filesIn(a) || cmp(a, b))) {
+  const entries = new Set(ctx.boundaries.flatMap((boundary) => boundary.entryPoints ?? []));
+  const byWidth = (a, b) => Number(a !== main.entry) - Number(b !== main.entry) || filesIn(b) - filesIn(a) || cmp(a, b);
+  // The path begins at the door's entry: a file it runs that is its part's
+  // entry point (a bin, a main, a src/index), else a script its commands
+  // name that goes on into the code (python scripts/smoke.py importing the
+  // package), else the entry of a part it reaches, one a file it runs imports
+  // first and then the part it reaches most files of. A helper its commands
+  // name that imports nothing (a coverage gate) comes after all of those, and
+  // a test is passed over for the production file it imports. Every arrow is
+  // an edge the map recorded: a run, an import, the door's reach into a
+  // part. A package is read from what an import of its name loads.
+  const firstOf = (path) => {
     const file = path.endsWith('/') ? fileInRun(ctx, main, path) : path;
-    if (file != null && readable(file)) {
+    if (file == null) return null;
+    if (!isTestFile(file)) return readable(file) ? file : null;
+    return (ctx.fileOf.get(file)?.importsFiles ?? []).find((target) => ctx.fileOf.has(target) && readable(target) && !isTestFile(target)) ?? null;
+  };
+  const imported = new Set(filesOfRuns(ctx, ran).flatMap((path) => ctx.fileOf.get(path)?.importsFiles ?? []));
+  // Only the parts the files it runs reach by import: a part a linter only
+  // reads is read, not followed.
+  const executedParts = partsReached(ctx, filesOfRuns(ctx, ran));
+  const partEntries = (main.reach ?? [])
+    .filter((entry) => executedParts.has(entry.boundary))
+    .map((entry) => entryFile(ctx.boundaries.find((boundary) => boundary.name === entry.boundary)))
+    .filter((path) => path != null && readable(path) && !isTestFile(path));
+  const drives = (path) => !path.endsWith('/') && !isTestFile(path) && (ctx.fileOf.get(path)?.importsFiles ?? []).length > 0;
+  const candidates = [
+    ...ran.filter((path) => entries.has(path) && !isTestFile(path)).sort(byWidth),
+    ...spelled.filter(drives).sort(byWidth),
+    ...[...new Set(partEntries)].sort((a, b) => Number(!imported.has(a)) - Number(!imported.has(b)) || byWidth(a, b)),
+    ...[...paths].sort(byWidth),
+  ];
+  let current = null;
+  for (const path of candidates) {
+    const file = firstOf(path);
+    if (file != null) {
       current = file;
       break;
     }
@@ -2130,6 +2207,20 @@ function doorsSentence(ctx, main) {
     const but = wider.pushesForReview ? 'commits only to a branch for review' : wider.pushesTo?.length > 0 ? 'commits only to another branch' : 'commits nothing';
     return `Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach} and commits into the repository (${wider.name} reaches ${reachSize(wider)} but ${but}).`;
   }
+  // Workflows that reach as far as the one followed are named with it, and
+  // the reason it is the one followed is said.
+  const tied = reaching(ctx.doors).filter((door) => !installed(door) && reachSize(door) === reachSize(main));
+  if (tied.length > 1 && tied.includes(main)) {
+    const others = tied.filter((door) => door !== main);
+    // The reason is the first way byReach (and mainDoor's preference for a
+    // door that commits) tells the followed door from the rest.
+    const alike = others.filter((door) => checksOnly(door) === checksOnly(main));
+    const why = commits(main) && !others.every(commits) ? 'it commits into the repository'
+      : alike.length === 0 ? 'it runs code, where the others only check it'
+        : pullRequested(main) && !alike.some(pullRequested) ? 'a pull request goes through it'
+          : 'it comes first by name';
+    return `Work enters through ${doors}; ${list([main, ...others].map((door) => door.name))} each reach ${reach}, and ${main.name} is followed because ${why}.`;
+  }
   return `Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach}.`;
 }
 
@@ -2231,8 +2322,17 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   const generatedItems = generated(ctx);
   const authoredBoundaries = authored(ctx);
   const sharedPlaces = writtenByPeople(ctx);
-  const starting = startDoor(ctx, main);
-  const start = starting ? startHere(ctx, starting) : { chain: [], words: [] };
+  // A pull request's door that runs no code the map can follow leaves the
+  // path to the busiest door, as before a pull request's door was preferred.
+  let starting = startDoor(ctx, main);
+  let start = starting ? startHere(ctx, starting) : { chain: [], words: [] };
+  if (start.chain.length === 0 && starting !== main && main) {
+    const fallback = startHere(ctx, main);
+    if (fallback.chain.length > 0) {
+      starting = main;
+      start = fallback;
+    }
+  }
   const found = main ? sequences(ctx, main) : [];
   const shownText = groups.some((group) => group.readers.some((reader) => reader.text?.endsWith(' (found by text)')));
   const limitLines = limits(ctx, shownText);

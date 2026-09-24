@@ -39,13 +39,16 @@ after(() => {
   while (roots.length > 0) rmSync(roots.pop(), { recursive: true, force: true });
 });
 
-// An arrow is a door running a file, an import, a write, or a read.
+// An arrow is a door running a file, a test it runs importing it, or the
+// entry of a part it reaches, an import, a write, or a read.
 function edge(from, to) {
   const files = structure.boundaries.flatMap((boundary) => boundary.files);
   const file = files.find((item) => item.path === from);
   const door = structure.doors.find((item) => item.file === from);
   const landing = (target) => structure.landings.find((item) => item.target === target);
-  if (door) return door.runs.some((run) => run.path === to || (run.directory && to.startsWith(run.path)));
+  const imports = (run) => files.filter((item) => (run.directory ? item.path.startsWith(run.path) : item.path === run.path)).flatMap((item) => item.importsFiles ?? []);
+  const reached = (path) => structure.boundaries.some((boundary) => boundary.entryPoints.includes(path) && door.reach.some((entry) => entry.boundary === boundary.name));
+  if (door) return door.runs.some((run) => run.path === to || (run.directory && to.startsWith(run.path)) || imports(run).includes(to)) || reached(to);
   if ((file?.importsFiles ?? []).includes(to)) return true;
   if ((landing(to)?.writers ?? []).some((entry) => entry.by === from)) return true;
   return (landing(from)?.readers ?? []).some((entry) => entry.by === to);
@@ -53,7 +56,7 @@ function edge(from, to) {
 
 describe('where to start', () => {
   it('follows only recorded edges, from a job every pull request runs, past an empty file, to the reader of what it writes', () => {
-    assert.deepEqual(page.startHere, ['.github/workflows/ci.yml', 'test/run.test.js', 'src/run.js', 'src/persist.js', 'out/index.json', 'site/app.js']);
+    assert.deepEqual(page.startHere, ['.github/workflows/ci.yml', 'src/run.js', 'src/persist.js', 'out/index.json', 'site/app.js']);
     for (let i = 1; i < page.startHere.length; i += 1) {
       assert.ok(edge(page.startHere[i - 1], page.startHere[i]), `${page.startHere[i - 1]} → ${page.startHere[i]}`);
     }

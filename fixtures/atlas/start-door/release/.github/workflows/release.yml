@@ -1,0 +1,10 @@
+name: Release
+on:
+  release:
+    types: [published]
+jobs:
+  serve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node packages/server/src/main.js smoke
