@@ -199,6 +199,8 @@ function carryFile(file) {
   // with the construct the parser stopped on when it is one of the known ones.
   if (file.parseError) out.parseError = true;
   if (file.noStatements) out.noStatements = true;
+  if (file.reexportsOnly) out.reexportsOnly = true;
+  if (file.constantOnly) out.constantOnly = true;
   if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
   const imported = importTargets(file);
   if (imported.files.length > 0) out.importsFiles = imported.files;

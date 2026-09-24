@@ -112,6 +112,18 @@
     {
       "path": "fixtures/atlas/exports-and-api/test/apply.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the exports-and-api fixture repository that packages/atlas/adapter/page-exports-and-api.test.js maps, where CI's suite imports the file that changes other repositories through the GitHub API and runs it against a stand-in, so the map must not say CI changes other repositories. It is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-tests/command/tests/run.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-tests fixture repository that packages/atlas/adapter/page-start-tests.test.js maps, where the pull request's door runs it and nothing else, so Where to start must leave it for the command the manifest installs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-tests/package/tests/parse.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-tests fixture repository that packages/atlas/adapter/page-start-tests.test.js maps, where the pull request's door runs only this test, so Where to start follows the package's entry instead. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-tests/constant/tests/work.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-tests fixture repository that packages/atlas/adapter/page-start-tests.test.js maps, where it imports a file holding one constant before the file doing the work, and Where to start must pass over the constant to the work. It holds no test and is never meant to run."
     }
   ]
 }

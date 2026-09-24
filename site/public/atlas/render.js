@@ -777,7 +777,7 @@ function authoredSection(ctx) {
 // page.json keeps the trigger as the sentence page.js wrote, so the noun for
 // "follow one ... end to end" is read back from that sentence's fixed forms.
 export function triggerNoun(door) {
-  if (installed(door)) return door.kind === 'package' ? `import of ${str(door.name)}` : `run of ${str(door.name)}`;
+  if (installed(door)) return door.kind !== 'package' ? `run of ${str(door.name)}` : door.extension ? `activation of ${str(door.name)}` : `import of ${str(door.name)}`;
   const phrases = arr(door?.triggers).map(str);
   const first = phrases.find((phrase) => phrase !== 'by hand' && phrase !== 'or by hand') ?? phrases[0];
   if (!first) return 'run';
@@ -802,7 +802,7 @@ function startSection(ctx) {
   if (chain.length === 0 && ctx.page.startNote) return section('Where to start', p(esc(ctx.page.startNote)));
   const body = [
     `<p class="chain">${chain.join(' <span aria-hidden="true">→</span><span class="sr">, then</span> ')}</p>`,
-    p(`Read those in order to follow one ${esc(triggerNoun(ctx.start))} end to end.`),
+    p(`Read those in order to follow one ${esc(triggerNoun(ctx.start))} end to end.${ctx.page.startReason ? ` ${esc(str(ctx.page.startReason))}` : ''}`),
   ];
   return section('Where to start', body.join('\n'));
 }

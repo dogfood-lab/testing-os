@@ -390,11 +390,12 @@ function describeFile(repoPath, path, places, facts, spawned) {
   const built = extracted.spawned.built > 0 ? { dynamicSpawns: extracted.spawned.built } : {};
   const programs = extracted.spawned.programs?.length > 0 && !isTestFile(path) ? { programs: extracted.spawned.programs } : {};
   const empty = extracted.noStatements ? { noStatements: true } : {};
+  const holds = extracted.holds === 'reexports' ? { reexportsOnly: true } : extracted.holds === 'constant' ? { constantOnly: true } : {};
   const api = extracted.githubChanges > 0 && !isTestFile(path) ? { githubChanges: extracted.githubChanges } : {};
   // Read once imports resolve, then dropped (core/spawned.js settleSpawnHelpers).
   const helpers = Object.keys(extracted.spawned.helpers ?? {}).length > 0 ? { spawnHelpers: extracted.spawned.helpers } : {};
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty };
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -418,6 +419,7 @@ function parseFile(language, path, source, places) {
       spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
       githubChanges: language === 'python' ? 0 : githubChanges(tree.rootNode),
       noStatements: statementless(tree.rootNode),
+      holds: language === 'python' ? null : onlyHolds(tree.rootNode),
     };
   } finally {
     tree.delete();
@@ -429,6 +431,27 @@ function statementless(root) {
   const statements = root.namedChildren.filter((child) => child.type !== 'comment');
   if (statements.length === 0) return true;
   return statements.length === 1 && statements[0].type === 'expression_statement' && statements[0].namedChildren[0]?.type === 'string';
+}
+
+/**
+ * A module that does no work of its own: a barrel whose every statement hands
+ * on what another file exports ('reexports'), or one that holds a single
+ * constant ('constant'), such as a version string. A reader following the
+ * work passes over both, to what the barrel hands on.
+ */
+function onlyHolds(root) {
+  const statements = root.namedChildren.filter((child) => child.type !== 'comment');
+  if (statements.length === 0) return null;
+  if (statements.every((statement) => statement.type === 'export_statement' && statement.childForFieldName('source') != null)) return 'reexports';
+  if (statements.length !== 1) return null;
+  const declaration = statements[0].type === 'export_statement' ? statements[0].childForFieldName('declaration') : statements[0];
+  if (declaration?.type !== 'lexical_declaration' && declaration?.type !== 'variable_declaration') return null;
+  const declarators = declaration.namedChildren.filter((child) => child.type === 'variable_declarator');
+  if (declarators.length !== 1) return null;
+  const value = declarators[0].childForFieldName('value');
+  const literal = ['string', 'number', 'true', 'false', 'null'].includes(value?.type)
+    || (value?.type === 'template_string' && !value.namedChildren.some((child) => child.type === 'template_substitution'));
+  return literal ? 'constant' : null;
 }
 
 function walkNamed(root, visit) {
