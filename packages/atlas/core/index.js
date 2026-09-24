@@ -17,6 +17,7 @@ import { attachResolution, emittedFiles, registerBuilds, resolveDeclaredPath } f
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
 import { storedBytes, textAttributes } from './text.js';
+import { rustImports } from './rust.js';
 import { unseenParts } from './unseen.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
@@ -425,7 +426,9 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   // Read once imports resolve, then dropped (core/spawned.js settleSpawnHelpers).
   const helpers = Object.keys(extracted.spawned.helpers ?? {}).length > 0 ? { spawnHelpers: extracted.spawned.helpers } : {};
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts };
+  // Read once every file and manifest is known, then dropped (core/rust-modules.js).
+  const native = extracted.native ?? {};
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts, ...native };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -453,7 +456,7 @@ function parseFile(language, path, original, places) {
   if (tree == null) return { parseError: true, imports: [] };
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [], unreadSyntax: unreadSyntax(tree.rootNode, source) };
-    if (!SCRIPT_LANGUAGES.has(language) && language !== 'python') return nativeReadings(tree.rootNode);
+    if (!SCRIPT_LANGUAGES.has(language) && language !== 'python') return nativeReadings(language, tree.rootNode);
     const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode), ...typeSites];
     return {
       imports,
@@ -473,10 +476,13 @@ function parseFile(language, path, original, places) {
 }
 
 // What a file of a language compiled or run by its own engine (Rust,
-// GDScript) holds, read from its tree.
-function nativeReadings(root) {
+// GDScript) holds, read from its tree. `native` is what resolution reads
+// once every file is known, and drops.
+function nativeReadings(language, root) {
+  const rust = language === 'rust' ? rustImports(root) : null;
   return {
-    imports: [],
+    imports: rust ? rust.imports : [],
+    ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}) } } : {}),
     landings: noLandings(),
     sequence: { functions: [], topLevel: [], reexports: [] },
     spawned: { commands: [], built: 0 },

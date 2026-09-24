@@ -7,6 +7,7 @@ import { bundledSource, bundleIndex } from './bundles.js';
 import { commandLines, repositoryView } from './commands.js';
 import { isTestFile, isTestMaterial } from './landings.js';
 import { declaredDependencies, importName } from './python-manifest.js';
+import { resolveRust } from './rust-modules.js';
 import { projectFile, tscOutput } from './tool-configs.js';
 import { loadsManifest } from './languages.js';
 
@@ -59,8 +60,10 @@ export function attachResolution({ repoPath, boundaries, unassigned, overlaps, t
   const ctx = createContext(repoPath, trackedSet, trackedLower, boundaryByFile);
 
   const files = [...boundaries.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps];
+  // Rust resolves through a module tree built from every file at once.
+  resolveRust({ repoPath: ctx.repo, tracked: trackedSet, files, places: { files: trackedSet } });
   for (const file of files) {
-    if (!Array.isArray(file.imports)) continue;
+    if (!Array.isArray(file.imports) || file.language === 'rust') continue;
     const fromAbs = join(repoPath, file.path);
     for (const site of file.imports) site.resolved = resolveSite(ctx, fromAbs, file.language, site);
   }
