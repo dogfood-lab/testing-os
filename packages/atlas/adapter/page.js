@@ -314,8 +314,9 @@ function runKinds(door) {
 // script the workflow runs by name stays named under the directory a linter
 // covers. A directory that is only checked never stands for a path that is
 // run. What the commands name comes before what a tool's patterns matched, so
-// a door that runs a script and a test suite leads with the script. Given a
-// kind, only the paths of that kind are named.
+// a door that runs a script and a test suite leads with the script. A
+// package names the code it loads before the data it exports. Given a kind,
+// only the paths of that kind are named.
 function shownRuns(door, kind = null) {
   const paths = runPaths(door);
   const kinds = runKinds(door);
@@ -326,7 +327,8 @@ function shownRuns(door, kind = null) {
   return paths
     .filter((path) => !dirs.some((dir) => within(path, dir)))
     .filter((path) => kind == null || kinds.get(path) === kind)
-    .sort((a, b) => Number(!named.has(a)) - Number(!named.has(b)) || cmp(a, b));
+    .sort((a, b) => Number(!named.has(a)) - Number(!named.has(b))
+      || (installed(door) ? Number(!isCodePath(a)) - Number(!isCodePath(b)) : 0) || cmp(a, b));
 }
 
 function cronWhen(cron) {

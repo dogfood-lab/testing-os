@@ -31,7 +31,8 @@ describe('a package that exports several files', () => {
   it('loads every subpath its exports name, counted past three', () => {
     const pkg = structure.doors.find((door) => door.kind === 'package');
     assert.deepEqual(pkg.runs.map((run) => run.path), ['schema.json', 'src/a.js', 'src/b.js', 'src/c.js', 'src/index.js']);
-    assert.match(markdown, /\*\*@fixture\/exports-and-api\*\* \(the package people import\)\. Loads schema\.json, src\/a\.js, src\/b\.js and 2 more\./);
+    // The code it loads is named before the data it exports.
+    assert.match(markdown, /\*\*@fixture\/exports-and-api\*\* \(the package people import\)\. Loads src\/a\.js, src\/b\.js, src\/c\.js and 2 more\./);
   });
 });
 
