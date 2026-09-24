@@ -9,10 +9,11 @@ import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
 import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
-import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
+import { buildCalls } from './bundles.js';
+import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
-import { attachResolution, emittedFiles, resolveDeclaredPath } from './resolve.js';
+import { attachResolution, emittedFiles, registerBuilds, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
 import { storedBytes, textAttributes } from './text.js';
@@ -97,8 +98,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   // once imports resolve, so the first reading waits here, keyed by path.
   const facts = new Map();
   const spawned = new Map();
+  const builds = new Map();
   for (const path of tracked.regular) {
-    const file = describeFile(repoPath, path, places, facts, spawned, attributes.get(path));
+    const file = describeFile(repoPath, path, places, facts, spawned, attributes.get(path), builds);
     const hits = [];
     for (const matcher of matchers) {
       if (matcher.isMatch(path)) hits.push(matcher.name);
@@ -110,6 +112,11 @@ export function mapRepository({ repoPath, boundaries } = {}) {
 
   const byPath = (a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
   const trackedSet = new Set(tracked.regular);
+  // A bin a bundler writes is traced to its entry before tsconfig is read,
+  // and the esbuild calls that say so are read only while each tree lives.
+  registerBuilds(repoPath, builds, new Map([...byName.values()].flatMap((boundary) => boundary.files).concat(unassigned, overlaps)
+    .filter((file) => builds.size > 0 && Array.isArray(file.imports))
+    .map((file) => [file.path, file.imports.map((site) => site.specifier)])));
   const boundaryList = [...byName.values()];
   const scripts = pythonScripts(repoPath, trackedSet);
   const commands = manifestCommands(repoPath, trackedSet, scripts);
@@ -389,7 +396,7 @@ function symlinkTarget(repoPath, path) {
 
 // A file is read as git stores it (text.js), so what is hashed and parsed is
 // the same on a checkout with either line ending.
-function describeFile(repoPath, path, places, facts, spawned, attributes) {
+function describeFile(repoPath, path, places, facts, spawned, attributes, builds) {
   const bytes = storedBytes(readFileSync(join(repoPath, path)), attributes);
   const hash = createHash('sha256').update(bytes).digest('hex');
   const language = languageOf(path);
@@ -400,6 +407,7 @@ function describeFile(repoPath, path, places, facts, spawned, attributes) {
     return { path, hash, language, parseError: true, ...syntax, imports: [], ...noLandings() };
   }
   facts.set(path, extracted.sequence);
+  if (extracted.builds.length > 0) builds.set(path, extracted.builds);
   if (extracted.spawned.commands.length > 0) spawned.set(path, extracted.spawned.commands);
   const built = extracted.spawned.built > 0 ? { dynamicSpawns: extracted.spawned.built } : {};
   const programs = extracted.spawned.programs?.length > 0 && !isTestFile(path) ? { programs: extracted.spawned.programs } : {};
@@ -446,6 +454,7 @@ function parseFile(language, path, source, places) {
       noStatements: statementless(tree.rootNode),
       holds: language === 'python' ? null : onlyHolds(tree.rootNode),
       http: language === 'python' ? null : httpFacts(tree.rootNode),
+      builds: language === 'python' || isTestFile(path) ? [] : buildCalls(tree.rootNode, (node) => pathShape(node, path)),
     };
   } finally {
     tree.delete();

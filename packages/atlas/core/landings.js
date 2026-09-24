@@ -1221,6 +1221,35 @@ export function pythonPathValues(node, path) {
  * @param {string} path the tracked path of the file the node is in
  * @returns {string | null}
  */
+/**
+ * What a path expression in a build script reads as: `{ path }` when it names
+ * one repository path from the file's own location, `{ tail }` when only its
+ * end is known, under a root read at run time or the directory the script is
+ * run in (core/bundles.js), or null.
+ *
+ * @param {object} node tree-sitter node
+ * @param {string} path the tracked path of the file the node is in
+ */
+export function pathShape(node, path) {
+  if (!node) return null;
+  const dir = posix.dirname(path);
+  const ctx = { python: false, file: path, dir: dir === '.' ? '' : dir, seen: new Set(), visiting: new Set(), assignments: new Map() };
+  const shapes = evalJs(node, ctx, 0).map((value) => {
+    if (value.text.includes('://') || isHelper(value)) return null;
+    if (!value.open && value.anchor === 'file') {
+      const text = posix.normalize(value.text.replaceAll('\\', '/') || '.');
+      return text.startsWith('/') || text === '..' || text.startsWith('../') ? null : { path: text.replace(/^\.\//, '') };
+    }
+    if (!value.open) return value.text === '' ? null : { tail: posix.normalize(value.text.replaceAll('\\', '/')).replace(/^\.\//, '') };
+    // The part past the last segment read at run time, when it is whole.
+    const known = /(?:^|\/)\*\/([^*?[\]{}]+)$/.exec(`${value.text}${tailOf(value)}`);
+    return known ? { tail: known[1] } : null;
+  });
+  if (shapes.length === 0 || shapes.some((shape) => shape == null)) return null;
+  const keys = new Set(shapes.map((shape) => shape.path ?? `*/${shape.tail}`));
+  return keys.size === 1 ? shapes[0] : null;
+}
+
 export function scriptPath(node, path) {
   const dir = posix.dirname(path);
   const ctx = { python: false, file: path, dir: dir === '.' ? '' : dir, seen: new Set(), visiting: new Set(), assignments: new Map() };

@@ -1,0 +1,7 @@
+{
+  "name": "@bundled/tool",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": { "bundled-tool": "dist/cli.js" },
+  "scripts": { "build": "tsup src/cli.ts --format esm --target node22 -d dist" }
+}
