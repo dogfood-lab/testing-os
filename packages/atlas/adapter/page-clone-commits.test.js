@@ -79,7 +79,7 @@ describe('a commit made in a clone of another repository', () => {
     assert.ok(lines.includes('**Mirror** runs no file this map can see and commits into a clone of acme/site and pushes there.'), lines.join('\n'));
     assert.ok(lines.includes('**Wiki** runs no file this map can see and commits into a clone of acme/wiki and pushes there.'), lines.join('\n'));
     assert.ok(lines.includes('**Scratch** runs no file this map can see.'), lines.join('\n'));
-    assert.ok(lines.includes('**Local** runs no file this map can see, writes to packages/app/build.json and records/, and commits packages/app/build.json and records/, then pushes.'), lines.join('\n'));
+    assert.ok(lines.includes('**Local** runs no file this map can see and commits packages/app/build.json (written by people) and records/ (written by people), then pushes.'), lines.join('\n'));
     assert.equal(markdown.includes('events/events.jsonl'), false);
     assert.equal(markdown.includes('MIRROR_TOKEN'), false);
   });

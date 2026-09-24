@@ -496,8 +496,11 @@ export function stagedShown(stages) {
 }
 
 // Two staged places already hold an "and", so the push is joined with "then".
+// A staged place nothing the door runs writes is one people write; the
+// commit only carries their edits along.
 export function commitsClause(door) {
-  const stages = stagedShown(door.stages);
+  const unwritten = new Set(door.unwrittenStages ?? []);
+  const stages = stagedShown(door.stages).map((stage) => (unwritten.has(stage.replace(/^\.\//, '').replace(/\/+$/, '')) ? `${stage} (written by people)` : stage));
   const push = pushWords(door);
   if (!push) return list(stages);
   return stages.length > 1 ? `${list(stages)}, then ${push}` : `${list(stages)} and ${push}`;

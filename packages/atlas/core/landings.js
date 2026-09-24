@@ -543,12 +543,25 @@ function argumentPlace(raw, places) {
  * fixed place and is skipped; a here-document's body is another program's
  * text and is not read as commands. Everything found is text confidence.
  */
-function shellLandings(source, places) {
+// A workflow step's shell is read from the directory it starts in, and cd,
+// pushd and popd move it: a write after cd "$SANDBOX" goes where the
+// variable points, not into this repository, and is not read as a place.
+function shellLandings(source, places, { dir = '', follow = false } = {}) {
   const writes = [];
   const reads = [];
+  let here = dir;
+  const stack = [];
+  const moved = (target) => {
+    if (!target?.fixed || target.text.startsWith('/') || target.text.startsWith('~')) return null;
+    const next = posix.normalize(here === '' ? target.text : `${here}/${target.text}`).replace(/\/+$/, '');
+    if (next === '..' || next.startsWith('../')) return null;
+    return next === '.' ? '' : next;
+  };
   const write = (word, call) => {
-    if (!word?.fixed) return;
-    const target = landingOf(closed(word.text), places);
+    if (!word?.fixed || here == null) return;
+    // Output under a build directory (cp -r out/. site/dist/) is that
+    // directory's, which the repository does not track, never the tracked one above.
+    const target = writtenPlace(closed(here === '' || word.text.startsWith('/') ? word.text : `${here}/${word.text}`), places);
     if (target != null) writes.push({ target, call, confidence: 'text' });
   };
   const read = (word, call) => {
@@ -584,6 +597,15 @@ function shellLandings(source, places) {
       while (start < words.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(words[start].text)) start += 1;
       const name = words[start]?.text;
       const args = words.slice(start + 1).filter((word) => !word.text.startsWith('-'));
+      if (follow && (name === 'cd' || name === 'pushd')) {
+        if (name === 'pushd') stack.push(here);
+        here = here == null ? null : moved(args[0]);
+        continue;
+      }
+      if (follow && name === 'popd') {
+        here = stack.length > 0 ? stack.pop() : dir;
+        continue;
+      }
       if (SHELL_WRITERS.has(name)) {
         for (const arg of args) write(arg, name);
         continue;
@@ -2783,10 +2805,24 @@ export function attachLandings({ files, doors, boundaries, places }) {
       add(writers, write.target, entry);
     }
   }
+  // What git add stages is what a commit may carry, not a write: a place is
+  // written by the code a door runs, and a staged place nothing it runs
+  // writes is one people write, which the commit carries along.
+  // A door writes what its steps' own shell writes, by a redirect or tee
+  // (echo 0 > .github/mutmut-baseline.txt), and a staged place its steps
+  // name outside git add, as a command handed the path it writes to
+  // (check-freshness.sh --out .github/freshness-report.md). A staged place
+  // named nowhere else is one people write.
   for (const door of mapped) {
     // A job that commits only on one trigger still commits what it stages.
     door.stagedTargets = stagedTargets([...door.stages, ...(door.gated ?? []).flatMap((entry) => entry.stages)], places);
-    for (const target of door.stagedTargets) add(writers, target, { by: door.file });
+    const named = new Set(door.mentions.map((mention) => mention.path));
+    door.ownWrites = [...new Set([
+      ...(door.commands ?? []).filter((command) => command.dir != null)
+        .flatMap((command) => shellLandings(command.text, places, { dir: command.dir, follow: true }).writes.map((write) => write.target)),
+      ...door.stagedTargets.filter((place) => named.has(place)),
+    ])].sort(compare);
+    for (const target of door.ownWrites) add(writers, target, { by: door.file });
     for (const mention of door.mentions) add(readers, mention.path, { by: door.file });
   }
   // A place that is not tracked is output the repository does not keep (an
@@ -2836,7 +2872,8 @@ export function attachLandings({ files, doors, boundaries, places }) {
 
   const skipped = new Map();
   for (const door of mapped) {
-    const targets = new Set(door.stagedTargets);
+    const targets = new Set(door.ownWrites);
+    delete door.ownWrites;
     for (const path of door.reachFiles ?? []) {
       for (const write of byPath.get(path)?.writes ?? []) {
         if (write.confidence === 'weak') continue;
@@ -2846,6 +2883,22 @@ export function attachLandings({ files, doors, boundaries, places }) {
       }
     }
     door.landings = [...targets].filter((target) => !spans.has(target) && !untracked.has(target)).sort(compare);
+    const written = (place) => door.landings.some((target) => target === place || target.startsWith(`${place}/`) || place.startsWith(`${target}/`));
+    door.unwrittenStages = door.stagedTargets.filter((place) => (places.files.has(place) || places.dirs.has(place)) && !written(place));
+    delete door.stagedTargets;
+  }
+  // A workflow that names a place its own run writes (echo refreshed
+  // indexes/latest.json) is describing its output, not reading it.
+  for (const door of mapped) {
+    for (const target of door.landings) {
+      for (const [place, entries] of readers) {
+        if (place !== target && !place.startsWith(`${target}/`)) continue;
+        entries.delete(canonicalEntry({ by: door.file }));
+        if (entries.size === 0 && !writers.has(place)) readers.delete(place);
+      }
+    }
+  }
+  for (const door of mapped) {
     const found = new Map();
     for (const target of door.landings) {
       for (const [place, entries] of readers) {
@@ -2856,7 +2909,6 @@ export function attachLandings({ files, doors, boundaries, places }) {
       }
     }
     door.readers = [...found.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
-    delete door.stagedTargets;
   }
 
   // A write a door skips for one of the writer's own guards stays on the

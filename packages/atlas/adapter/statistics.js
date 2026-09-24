@@ -233,9 +233,15 @@ export function buildStatistics({ repo, commit, document, artifact, generatedAt,
 function authorshipOf(repo, artifact, window, minimum) {
   const read = readAuthorship(repo, window);
   if (!read) return { places: [], parts: [] };
-  const committers = new Set((artifact.doors ?? []).filter((door) => !door.kind && (door.stages ?? []).length > 0).map((door) => door.file));
+  // What a workflow stages is what its commits carry: a written place at or
+  // under one is a place the workflow commits.
+  const staged = (artifact.doors ?? []).filter((door) => !door.kind)
+    .flatMap((door) => [...(door.stages ?? []), ...(door.gated ?? []).flatMap((entry) => entry.stages ?? [])])
+    .filter((stage) => !/[*?[{$]/.test(stage))
+    .map((stage) => stage.replace(/^(\.\/)+/, '').replace(/\/+$/, ''));
+  const committed = (target) => staged.some((place) => place === '' || place === '.' || target === place || target.startsWith(`${place}/`));
   const targets = [...new Set((artifact.landings ?? [])
-    .filter((landing) => landing.tracked !== false && !landing.spans && (landing.writers ?? []).some((entry) => committers.has(entry.by)))
+    .filter((landing) => landing.tracked !== false && !landing.spans && (landing.writers ?? []).length > 0 && committed(landing.target))
     .map((landing) => landing.target))].sort();
   const places = targets.map((target) => {
     const touching = read.commits.filter((commit) => commit.paths.some((path) => path === target || path.startsWith(`${target}/`)));

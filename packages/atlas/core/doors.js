@@ -253,11 +253,13 @@ function readDoor(repoPath, file, repo) {
       }
       if (typeof step.run !== 'string') return;
       const name = typeof step.name === 'string' && step.name.trim() !== '' ? step.name : String(index);
-      commands.push({ job, step: name, text: step.run });
       scope.texts.push(step.run);
       const stepEnv = envOf(step.env);
       const lookup = (variable) => [stepEnv, jobEnv, workflowEnv].find((env) => env.has(variable))?.get(variable) ?? null;
       const start = placeOf({ here: true, dir: '' }, step['working-directory'] ?? rawJobDir, clones, repo, lookup);
+      // The directory the step's shell starts in, when it is this repository's,
+      // for the files its own redirects write (landings.js attachLandings).
+      commands.push({ job, step: name, text: step.run, ...(start.here ? { dir: start.dir } : {}) });
       const work = gitWork(step.run, lookup, start, clones, repo, branch);
       for (const staged of work.stages) scope.stages.add(staged);
       if (work.pushes) scope.pushes = true;

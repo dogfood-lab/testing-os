@@ -361,6 +361,7 @@ function carryDoor(door) {
     },
     ...(door.shellMissed?.length > 0 ? { shellMissed: door.shellMissed.map((entry) => ({ ...entry })) } : {}),
     stages: [...door.stages],
+    ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
     ...(door.unpublished ? { unpublished: true } : {}),

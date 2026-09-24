@@ -390,7 +390,10 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
 
   function read(text, dir, frame) {
     if (frame.level === 0) {
-      for (const piece of text.split(/[\s"'`()[\]{}<>|;&,=:]+/)) {
+      // What git add names is what a commit carries, not a file the step
+      // reads (landings.js has staging as neither a write nor a read).
+      const said = text.split('\n').filter((line) => !/^\s*git\s+(?:-C\s+\S+\s+)?add\b/.test(line)).join('\n');
+      for (const piece of said.split(/[\s"'`()[\]{}<>|;&,=:]+/)) {
         const path = pathFrom(dir, piece.replace(/\.+$/, ''));
         if (path != null && repo.tracked.has(path)) mentions.add(path);
       }

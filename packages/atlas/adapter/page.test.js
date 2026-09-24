@@ -135,7 +135,7 @@ describe('atlas page', () => {
       '## What no test touches': '- **tools** is imported by no test.',
       '## Written but never read': '- **cache/state.json** is written by tools/cache.js and read by nothing else in this repository.',
       '## Helpers that look duplicated': '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.',
-      '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
+      '## Generated, never hand-edited': '- **records/** is written by tools/ingest.js and tools/scratch.js.',
       '## Hand-authored': 'People write .github/, policies/, the repository root and site/; 1 write with a path built at run time may land here.',
       // tools/ingest.js writes indexes/latest.json itself, which the site
       // reads, so every arrow is an edge the map recorded.
@@ -171,7 +171,7 @@ describe('atlas page', () => {
       structure: (structure) => ({ ...structure, doors: structure.doors.filter((door) => !door.file.endsWith('checks.yml')) }),
     });
     const happens = section(markdown, '## What happens through Ingest');
-    assert.match(happens, /^3\. It writes to indexes\/ and records\/\.$/m);
+    assert.match(happens, /^3\. It writes to indexes\/latest\.json and records\/\.$/m);
     assert.match(happens, /^4\. It commits indexes\/ and records\/, then pushes\.$/m);
     const reads = section(markdown, '## Who reads the results');
     // tools/ingest.js reads indexes/latest.json as well as writing it; a
@@ -179,13 +179,13 @@ describe('atlas page', () => {
     const ingest = doors.structure.doors.find((door) => door.file.endsWith('ingest.yml'));
     assert.ok(ingest.readers.some((entry) => entry.by === 'tools/ingest.js' && entry.target === 'indexes/latest.json'));
     assert.equal(reads.includes('tools/ingest.js'), false);
-    assert.match(reads, /^- \*\*indexes\/\*\* is read by site\/index\.html \(found by text\), tools\/render\.js and tools\/report\.py\.$/m);
+    assert.match(reads, /^- \*\*indexes\/latest\.json\*\* is read by site\/index\.html \(found by text\), tools\/render\.js and tools\/report\.py\.$/m);
     assert.match(reads, /^- \*\*records\/\*\* has no reader in this repository\.$/m);
     assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → indexes\/latest\.json → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);
     assert.match(section(markdown, '## What this map cannot see'), /^- Readers marked \(found by text\) come from scanning unparsed files\.$/m);
     // site/index.html is found by text, and a page runs what it names, so it
     // is a reader a hand edit reaches.
-    assert.match(section(markdown, '## What breaks what'), /^- \*\*indexes\/\*\* is written by tools and workflows, and read by site and tools; a hand edit reaches every reader\.$/m);
+    assert.match(section(markdown, '## What breaks what'), /^- \*\*indexes\/latest\.json\*\* is written by tools and read by site and tools; a hand edit reaches every reader\.$/m);
   });
 
   it('writes the order of work inside the files the main door runs, one level into what they call', () => {
@@ -611,7 +611,7 @@ describe('atlas page', () => {
     assert.deepEqual(data.startHere, ['.github/workflows/ingest.yml', 'tools/ingest.js', 'indexes/latest.json', 'site/index.html']);
     assert.deepEqual(data.authored, ['.github/', 'policies/', 'root', 'site/']);
     assert.deepEqual(data.readers, [
-      { readers: ['site/index.html (found by text)', 'tools/render.js', 'tools/report.py'], target: 'indexes/' },
+      { readers: ['site/index.html (found by text)', 'tools/render.js', 'tools/report.py'], target: 'indexes/latest.json' },
       { readers: [], target: 'records/' },
     ]);
     assert.equal(data.limits.at(-1), `Statistics confidence is low: ${doors.statistics.confidence.reason.replace(/\.$/, '')}.`);
@@ -626,7 +626,7 @@ describe('atlas page', () => {
       '## Written but never read',
       '',
       '- **cache/state.json** is written by tools/cache.js and read by nothing else in this repository.',
-      '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js, and read by nothing else in this repository.',
+      '- **records/** is written by tools/ingest.js and tools/scratch.js, and read by nothing else in this repository.',
       '- **reports/out.json** is written by tools/report.py and read by nothing else in this repository.',
       '- **reports/out.md** is written by tools/render.js and read by nothing else in this repository.',
       '',
@@ -644,7 +644,7 @@ describe('atlas page', () => {
     assert.deepEqual(data.untested, [{ part: 'tools', partLabel: 'tools', testedBy: 0 }]);
     assert.deepEqual(data.untestedNote, []);
     assert.deepEqual(data.unread.map((item) => item.place), ['cache/state.json', 'records/', 'reports/out.json', 'reports/out.md']);
-    assert.deepEqual(data.unread[1].writers, ['.github/workflows/ingest.yml', 'tools/ingest.js', 'tools/scratch.js']);
+    assert.deepEqual(data.unread[1].writers, ['tools/ingest.js', 'tools/scratch.js']);
     assert.deepEqual(data.unreadNote, []);
     assert.deepEqual(data.duplicates, [{ files: ['lib/store.js', 'tools/prepare.js'], name: 'normalize', partLabels: ['lib', 'tools'], parts: ['lib', 'tools'] }]);
     assert.equal(data.duplicatesLead, 'These are candidates from names and call order, not a judgement.');

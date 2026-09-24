@@ -1,0 +1,20 @@
+name: Sync
+on:
+  schedule:
+    - cron: '0 12 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/sync.mjs
+      - run: node scripts/report.mjs --out REPORT.md
+      - run: |
+          pushd "$RUNNER_TEMP"
+          echo '{"private":true}' > package.json
+          popd
+      - run: |
+          git add -A data/ products/ NOTES.md REPORT.md
+          git diff --staged --quiet || (git commit -m "sync" && git push)
