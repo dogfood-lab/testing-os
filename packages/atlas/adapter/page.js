@@ -354,20 +354,20 @@ function gatedRuns(door) {
 }
 
 // "runs X; checks Y" for the paths of one gated group, or null.
-function heldClause(door, group, verb, joiner = '; ') {
+function heldClause(ctx, door, group, verb, joiner = '; ') {
   const clauses = [];
   const ran = shownRuns(door, 'executes', group.paths);
   const checked = shownRuns(door, 'checks', group.paths);
-  if (ran.length > 0) clauses.push(`${verb} ${runsShown(ran)}`);
-  if (checked.length > 0) clauses.push(`checks ${runsShown(checked)}`);
+  if (ran.length > 0) clauses.push(`${verb} ${filesShown(ctx, ran)}`);
+  if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked)}`);
   return clauses.length > 0 ? clauses.join(joiner) : null;
 }
 
 // The sentence that says what a door does on one trigger only: "On a pull
 // request, it also runs scripts/comment.mjs."
-function heldSentences(door, verb, alsoRuns) {
+function heldSentences(ctx, door, verb, alsoRuns) {
   return gatedRuns(door).map((group) => {
-    const clause = heldClause(door, group, verb);
+    const clause = heldClause(ctx, door, group, verb);
     return clause ? `${capitalize(gateLead(group.when))}, it ${alsoRuns ? 'also ' : ''}${clause}.` : null;
   }).filter(Boolean);
 }
@@ -700,6 +700,29 @@ function runTotal(door, kind = null) {
   return shownRuns(door, kind).length + Math.max(0, counted - held - recorded);
 }
 
+/**
+ * Up to three paths by name, and how many files the rest stand for: a
+ * directory run counts every code file under it, so "and 37 more" adds up
+ * with "50 files in tests". `unrecorded` is how many runs the artifact
+ * counted past the ones it recorded, each one more.
+ */
+function filesShown(ctx, paths, unrecorded = 0) {
+  const more = moreFiles(ctx, paths, unrecorded);
+  if (more === 0) return list(paths);
+  return `${paths.slice(0, RUNS_SHOWN).join(', ')} and ${more} more`;
+}
+
+// The files past the first three paths, and the unrecorded runs.
+function moreFiles(ctx, paths, unrecorded = 0) {
+  const files = (path) => (path.endsWith('/') ? Math.max(1, [...ctx.fileOf.keys()].filter((file) => file.startsWith(path) && isCodePath(file)).length) : 1);
+  return paths.slice(RUNS_SHOWN).reduce((sum, path) => sum + files(path), 0) + Math.max(0, unrecorded);
+}
+
+// The runs of a kind the artifact counted but did not record.
+function unrecordedRuns(door, kind) {
+  return Math.max(0, runTotal(door, kind) - shownRuns(door, kind).length);
+}
+
 // What an installed door runs when its manifest points at a build's output
 // that no tracked config traces to a source: the path, said as that.
 export function unplacedClause(verb, path) {
@@ -707,13 +730,13 @@ export function unplacedClause(verb, path) {
 }
 
 // "runs X; checks Y", or null when the door names no file at all.
-function runsAndChecks(door, verb) {
+function runsAndChecks(ctx, door, verb) {
   if (door.unplaced) return unplacedClause(verb, door.unplaced);
   const clauses = [];
   const ran = shownRuns(door, 'executes');
   const checked = shownRuns(door, 'checks');
-  if (ran.length > 0) clauses.push(`${verb} ${runsShown(ran, runTotal(door, 'executes'))}`);
-  if (checked.length > 0) clauses.push(`checks ${runsShown(checked, runTotal(door, 'checks'))}`);
+  if (ran.length > 0) clauses.push(`${verb} ${filesShown(ctx, ran, unrecordedRuns(door, 'executes'))}`);
+  if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked, unrecordedRuns(door, 'checks'))}`);
   return clauses.length > 0 ? clauses.join('; ') : null;
 }
 
@@ -721,8 +744,8 @@ function comesIn(ctx) {
   const lines = ['## What comes in'];
   const items = ctx.doors.map((door, index) => {
     if (door.parseError) return `${index + 1}. **${door.name}.** This workflow could not be read.`;
-    const named = runsAndChecks(door, startVerb(door));
-    const held = heldSentences(door, startVerb(door), named != null);
+    const named = runsAndChecks(ctx, door, startVerb(door));
+    const held = heldSentences(ctx, door, startVerb(door), named != null);
     const runs = [...(named || held.length === 0 ? [capitalize(named ? `${named}.` : `${startVerb(door)} no file this map can see.`)] : []), ...held].join(' ');
     if (installed(door)) return `${index + 1}. **${door.name}** (${installedAs(door)}). ${runs}`;
     const when = capitalize(triggerPhrases(door).join('; ')) || 'Nothing this map can read starts it';
@@ -830,7 +853,7 @@ function doorSteps(ctx, door) {
   const clauses = [];
   if (ran.length > 0) clauses.push(`${subject} ${runGroups(ctx, door, ran)}`);
   if (checked.length > 0) clauses.push(`${ran.length > 0 ? 'it' : 'The workflow'} checks ${runGroups(ctx, door, checked)}`);
-  const held = heldSentences(door, 'runs', clauses.length > 0);
+  const held = heldSentences(ctx, door, 'runs', clauses.length > 0);
   if (clauses.length > 0 || held.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   steps.push(...held);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
@@ -1239,11 +1262,11 @@ function otherDoors(ctx, main) {
     const groups = gatedRuns(door);
     if (door.unplaced) clauses.push(unplacedClause(verb, door.unplaced));
     else if (ran.length > 0 || (checked.length === 0 && groups.length === 0)) {
-      clauses.push(ran.length > 0 ? `${verb} ${runsShown(ran, runTotal(door, 'executes'))}` : `${verb} no file this map can see`);
+      clauses.push(ran.length > 0 ? `${verb} ${filesShown(ctx, ran, unrecordedRuns(door, 'executes'))}` : `${verb} no file this map can see`);
     }
-    if (checked.length > 0) clauses.push(`checks ${runsShown(checked, runTotal(door, 'checks'))}`);
+    if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked, unrecordedRuns(door, 'checks'))}`);
     for (const group of groups) {
-      const clause = heldClause(door, group, verb, ' and ');
+      const clause = heldClause(ctx, door, group, verb, ' and ');
       if (clause) clauses.push(`${clause} ${gatePhrase(group.when)}`);
     }
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => entry.boundary)))].sort(cmp);
@@ -2595,11 +2618,13 @@ function doorData(ctx, door) {
     reach: (door.reach ?? []).map((entry) => ({ boundary: entry.boundary, depth: entry.depth, files: entry.files })),
     checks: shownRuns(door, 'checks'),
     checksCount: runTotal(door, 'checks'),
+    checksMore: moreFiles(ctx, shownRuns(door, 'checks'), unrecordedRuns(door, 'checks')),
     ...(gatedRuns(door).length > 0
-      ? { held: gatedRuns(door).map((group) => ({ checks: shownRuns(door, 'checks', group.paths), lead: gateLead(group.when), runs: shownRuns(door, 'executes', group.paths), when: gatePhrase(group.when) })) }
+      ? { held: gatedRuns(door).map((group) => ({ checks: shownRuns(door, 'checks', group.paths), checksMore: moreFiles(ctx, shownRuns(door, 'checks', group.paths)), lead: gateLead(group.when), runs: shownRuns(door, 'executes', group.paths), runsMore: moreFiles(ctx, shownRuns(door, 'executes', group.paths)), when: gatePhrase(group.when) })) }
       : {}),
     runs: shownRuns(door, 'executes'),
     runsCount: runTotal(door, 'executes'),
+    runsMore: moreFiles(ctx, shownRuns(door, 'executes'), unrecordedRuns(door, 'executes')),
     sends: sendPhrases(door),
     stages: stagedShown(door.stages),
     triggers: triggerPhrases(door),

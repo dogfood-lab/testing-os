@@ -234,16 +234,25 @@ function checkTotal(door, items) {
   return Math.max(Number(door?.checksCount) || 0, items.length);
 }
 
-function runsShown(items, total = items.length) {
+// "and N more" is how many files the rest stand for, which page.json
+// carries as runsMore and checksMore, a directory counting every file under
+// it; a page.json written before them counted the paths.
+function runsShown(items, total = items.length, more = null) {
+  if (Number.isInteger(more)) return more === 0 ? list(items.map((item) => item.html)) : `${items.slice(0, RUNS_SHOWN).map((item) => item.html).join(', ')} and ${more} more`;
   if (total <= RUNS_SHOWN) return list(items.map((item) => item.html));
   const shown = items.slice(0, RUNS_SHOWN);
   return `${shown.map((item) => item.html).join(', ')} and ${total - shown.length} more`;
 }
 
-function runsShownText(items, total = items.length) {
+function runsShownText(items, total = items.length, more = null) {
+  if (Number.isInteger(more)) return more === 0 ? list(items.map((item) => item.text)) : `${items.slice(0, RUNS_SHOWN).map((item) => item.text).join(', ')} and ${more} more`;
   if (total <= RUNS_SHOWN) return list(items.map((item) => item.text));
   const shown = items.slice(0, RUNS_SHOWN);
   return `${shown.map((item) => item.text).join(', ')} and ${total - shown.length} more`;
+}
+
+function moreOf(value) {
+  return Number.isInteger(value) ? value : null;
 }
 
 function deeper(door) {
@@ -398,14 +407,16 @@ function held(ctx, door) {
     when: str(group.when),
     runs: arr(group.runs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
     checks: arr(group.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+    runsMore: moreOf(group.runsMore),
+    checksMore: moreOf(group.checksMore),
   }));
 }
 
 function heldClause(group, verb, joiner, field) {
   const clauses = [];
-  const shown = (items) => (field === 'html' ? runsShown(items) : runsShownText(items));
-  if (group.runs.length > 0) clauses.push(`${verb} ${shown(group.runs)}`);
-  if (group.checks.length > 0) clauses.push(`checks ${shown(group.checks)}`);
+  const shown = (items, more) => (field === 'html' ? runsShown(items, items.length, more) : runsShownText(items, items.length, more));
+  if (group.runs.length > 0) clauses.push(`${verb} ${shown(group.runs, group.runsMore)}`);
+  if (group.checks.length > 0) clauses.push(`checks ${shown(group.checks, group.checksMore)}`);
   return clauses.length > 0 ? clauses.join(joiner) : null;
 }
 
@@ -424,8 +435,8 @@ function comesIn(ctx) {
     const checked = checks(ctx, door);
     const clauses = [];
     if (door.unplaced) clauses.push(unplacedClause(door));
-    else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths))}`);
-    if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked))}`);
+    else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
+    if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
     const heldText = heldSentences(ctx, door, startVerb(door), clauses.length > 0);
     const ran = [...(clauses.length > 0 || heldText.length === 0 ? [capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`)] : []), ...heldText].join(' ');
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
@@ -445,8 +456,8 @@ function doorSteps(ctx, door) {
   const checked = checks(ctx, door);
   const subject = installed(door) ? `The ${door.extension ? 'extension' : door.kind} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
-  if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths))}`);
-  if (checked.length > 0) clauses.push(`${paths.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked))}`);
+  if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
+  if (checked.length > 0) clauses.push(`${paths.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
   const heldText = heldSentences(ctx, door, 'runs', clauses.length > 0);
   if (clauses.length > 0 || heldText.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   steps.push(...heldText);
@@ -578,11 +589,11 @@ function otherDoors(ctx) {
     if (door.unplaced) clauses.push({ html: unplacedClause(door), text: `${verb} ${str(door.unplaced)}, built from a source this map cannot place` });
     else if (paths.length > 0 || (checked.length === 0 && arr(door.held).length === 0)) {
       clauses.push(paths.length > 0
-        ? { html: `${verb} ${runsShown(paths, runTotal(door, paths))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths))}` }
+        ? { html: `${verb} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths), moreOf(door.runsMore))}` }
         : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
     }
     if (checked.length > 0) {
-      clauses.push({ html: `checks ${runsShown(checked, checkTotal(door, checked))}`, text: `checks ${runsShownText(checked, checkTotal(door, checked))}` });
+      clauses.push({ html: `checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`, text: `checks ${runsShownText(checked, checkTotal(door, checked), moreOf(door.checksMore))}` });
     }
     for (const group of held(ctx, door)) {
       const html = heldClause(group, verb, ' and ', 'html');
