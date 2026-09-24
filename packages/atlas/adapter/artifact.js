@@ -326,6 +326,7 @@ function carryDoor(door) {
     checksCount: door.checksCount ?? 0,
     secrets: [...door.secrets],
     sends: {
+      ...(door.sends.changesRepositories ? { changesRepositories: true } : {}),
       deploysPages: door.sends.deploysPages,
       dispatchesTo: [...door.sends.dispatchesTo],
       opensIssues: door.sends.opensIssues,

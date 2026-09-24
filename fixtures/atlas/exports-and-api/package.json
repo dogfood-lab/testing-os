@@ -1,0 +1,16 @@
+{
+  "name": "@fixture/exports-and-api",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./a": "./src/a.js",
+    "./b": { "import": "./src/b.js", "types": "./types/b.d.ts" },
+    "./c": "./src/c.js",
+    "./schema": "./schema.json",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "sync": "bin/sync.js"
+  }
+}

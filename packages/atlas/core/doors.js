@@ -67,7 +67,12 @@ export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom 
 export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom }) {
   const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom });
   return commands.map((command) => {
-    const recorded = recordedRuns(command.path == null ? [] : [...readProgram(command.path, repo).values()]);
+    const programs = command.path == null ? [] : (command.paths ?? [command.path]);
+    const read = new Map();
+    for (const path of programs) {
+      for (const [key, run] of readProgram(path, repo)) read.set(key, read.has(key) ? better(read.get(key), run) : run);
+    }
+    const recorded = recordedRuns([...read.values()]);
     return {
       ...(command.unplaced ? { unplaced: command.unplaced } : {}),
       kind: command.kind,

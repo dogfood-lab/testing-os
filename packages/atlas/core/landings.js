@@ -730,6 +730,55 @@ export function scriptPath(node, path) {
   return text === '.' ? '' : text.replace(/^\.\//, '');
 }
 
+const API_WRITES = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+// The Octokit methods that change what they are called on; a get or a list
+// reads.
+const API_VERBS = /^(create|update|delete|remove|add|set|merge|replace|upload|lock|unlock|transfer|dismiss|submit|approve|cancel|rerun)/;
+// The names an Octokit client is bound to: octokit, github-script's github.
+const API_CLIENT = /^(?:octokit|github|gh|client|api)$/i;
+// Where a call targets the repository it runs in, which is not another one.
+const OWN_REPOSITORY = /\bcontext\.repo\b|\bGITHUB_REPOSITORY\b|context\.issue\b/;
+
+/**
+ * How many calls in a JavaScript or TypeScript file change repositories
+ * other than the one the code runs in through the GitHub API: fetch of an
+ * api.github.com URL with a POST, PUT, PATCH or DELETE method, an Octokit
+ * method that creates, updates or deletes (octokit.rest.pulls.create), and
+ * octokit.request('POST /repos/…'). A call aimed at context.repo or
+ * GITHUB_REPOSITORY is the repository's own, and a read changes nothing.
+ *
+ * @param {object} root tree-sitter root node
+ * @returns {number}
+ */
+export function githubChanges(root) {
+  let found = 0;
+  walk(root, (node) => {
+    if (node.type !== 'call_expression') return;
+    const fn = node.childForFieldName('function');
+    const args = argumentNodes(node);
+    const text = node.childForFieldName('arguments')?.text ?? '';
+    if (OWN_REPOSITORY.test(text)) return;
+    if (finalName(fn) === 'fetch') {
+      if (!/api\.github\.com/.test(args[0]?.text ?? '')) return;
+      const method = args[1]?.type === 'object' ? args[1].namedChildren.find((pair) => pair.type === 'pair' && pair.childForFieldName('key')?.text === 'method') : null;
+      const value = method?.childForFieldName('value');
+      if (value?.type === 'string' && API_WRITES.has(jsStringText(value).toUpperCase())) found += 1;
+      return;
+    }
+    if (fn?.type !== 'member_expression') return;
+    const chain = fn.text.split('.').map((part) => part.trim());
+    if (!API_CLIENT.test(chain[0]) || chain.length < 2) return;
+    const verb = chain[chain.length - 1];
+    if (verb === 'request') {
+      const route = args[0]?.type === 'string' ? jsStringText(args[0]) : '';
+      if (API_WRITES.has(route.split(/\s+/)[0]?.toUpperCase())) found += 1;
+      return;
+    }
+    if (chain.length >= 3 && API_VERBS.test(verb)) found += 1;
+  });
+  return found;
+}
+
 function scriptSite(node, site) {
   const fn = node.childForFieldName('function');
   const name = finalName(fn);

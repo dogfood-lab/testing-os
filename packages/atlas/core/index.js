@@ -8,7 +8,7 @@ import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
-import { astLandings, attachLandings, isTestFile, noLandings, pythonPathValues, scriptPath, settleHelperPaths, textLandings, trackedPlaces } from './landings.js';
+import { astLandings, attachLandings, githubChanges, isTestFile, noLandings, pythonPathValues, scriptPath, settleHelperPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
 import { attachResolution, resolveDeclaredPath } from './resolve.js';
@@ -146,6 +146,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     const walked = walkReach(door.runs.map((run) => run.path), graph);
     door.reach = walked.reach;
     door.reachFiles = walkReach(door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path), graph).files;
+    // A file the door runs that changes other repositories through the API
+    // sends out of this one, as a dispatch does.
+    if (door.reachFiles.some((path) => (graph.files.get(path)?.githubChanges ?? 0) > 0)) door.sends.changesRepositories = true;
   }
   const landings = attachLandings({ files: [...graph.files.values()], doors, boundaries: boundaryList, places });
   // The flags a run passes matter only to which of a writer's guarded writes
@@ -352,10 +355,11 @@ function describeFile(repoPath, path, places, facts, spawned) {
   facts.set(path, extracted.sequence);
   if (extracted.spawned.commands.length > 0) spawned.set(path, extracted.spawned.commands);
   const built = extracted.spawned.built > 0 ? { dynamicSpawns: extracted.spawned.built } : {};
+  const api = extracted.githubChanges > 0 && !isTestFile(path) ? { githubChanges: extracted.githubChanges } : {};
   // Read once imports resolve, then dropped (core/spawned.js settleSpawnHelpers).
   const helpers = Object.keys(extracted.spawned.helpers ?? {}).length > 0 ? { spawnHelpers: extracted.spawned.helpers } : {};
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...helpers, ...pending };
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...helpers, ...pending, ...api };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -377,6 +381,7 @@ function parseFile(language, path, source, places) {
       landings: astLandings(language, tree.rootNode, path, places),
       sequence: sequenceFacts(language, tree.rootNode),
       spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
+      githubChanges: language === 'python' ? 0 : githubChanges(tree.rootNode),
     };
   } finally {
     tree.delete();

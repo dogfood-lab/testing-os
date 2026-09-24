@@ -67,7 +67,8 @@ export function pythonScripts(repoPath, tracked) {
  * every bin of the root package.json and of each npm workspace member's,
  * every script a pyproject.toml declares, and, when the root package is
  * published (it has a name and is not private), the file its exports["."] or
- * main loads. A manifest inside test material is a copy a test works on, not
+ * main loads, with in `paths` every file an exports subpath names (types
+ * and the manifest itself aside), which an import of the package can load. A manifest inside test material is a copy a test works on, not
  * one of this repository's, and a declared file that is not tracked names
  * nothing to follow. A declared file that is a build's output (dist/cli.js)
  * is traced to its source through the tracked build configs; when none places
@@ -99,7 +100,8 @@ export function manifestCommands(repoPath, tracked, scripts = []) {
     const specs = mainSpecs(pkg);
     const loaded = specs.map((spec) => declaredFile(repoPath, dir, spec, tracked)).find(Boolean);
     const unplaced = loaded ? null : specs.map((spec) => unplacedFile(repoPath, dir, spec, tracked)).find(Boolean);
-    if (loaded) out.push({ kind: 'package', name: pkg.name, manifest, path: loaded });
+    const exported = exportSpecs(pkg).map((spec) => declaredFile(repoPath, dir, spec, tracked)).filter(Boolean);
+    if (loaded) out.push({ kind: 'package', name: pkg.name, manifest, path: loaded, paths: [...new Set([loaded, ...exported])].sort(compare) });
     else if (unplaced) out.push({ kind: 'package', name: pkg.name, manifest, path: null, unplaced });
   }
   for (const script of scripts) {
@@ -151,6 +153,26 @@ function mainSpecs(pkg) {
     collectStrings(subpaths ? exports['.'] : exports, specs);
   }
   if (typeof pkg.main === 'string') specs.push(pkg.main);
+  return specs;
+}
+
+// Every file an exports map names, under every subpath and condition but a
+// types one; ./package.json is the manifest, not code the package loads.
+function exportSpecs(pkg) {
+  const { exports } = pkg;
+  if (typeof exports === 'string') return [exports];
+  if (exports == null || typeof exports !== 'object' || Array.isArray(exports)) return [];
+  const subpaths = Object.keys(exports).some((key) => key.startsWith('.'));
+  const specs = [];
+  const collect = (value) => {
+    if (typeof value === 'string') {
+      if (!/\.d\.[cm]?ts$/.test(value)) specs.push(value);
+    } else if (value && typeof value === 'object' && !Array.isArray(value)) {
+      for (const [key, child] of Object.entries(value)) if (key !== 'types' && key !== 'typings') collect(child);
+    }
+  };
+  if (!subpaths) collect(exports);
+  else for (const [key, value] of Object.entries(exports)) if (key !== './package.json' && !key.includes('*')) collect(value);
   return specs;
 }
 
