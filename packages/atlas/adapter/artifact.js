@@ -357,6 +357,7 @@ function carryDoor(door) {
   return {
     ...(door.kind ? { kind: door.kind } : {}),
     ...(door.app ? { app: door.app } : {}),
+    ...(door.example ? { example: true } : {}),
     ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
     ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),

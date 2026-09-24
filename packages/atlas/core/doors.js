@@ -82,6 +82,7 @@ export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFro
       ...(command.kind === 'package' && command.path != null ? { entry: command.path } : {}),
       // What kind of program people install, past a command they type.
       ...(command.app ? { app: command.app } : {}),
+      ...(command.example ? { example: true } : {}),
       kind: command.kind,
       file: command.manifest,
       name: command.name,

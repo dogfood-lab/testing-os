@@ -133,7 +133,8 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     boundary.files.sort(byPath);
     boundary.holdsManifest = boundary.files.some((file) => manifests.includes(file.path));
     boundary.parseErrors = boundary.files.filter((file) => file.parseError).length;
-    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts, commands, crates });
+    // A Cargo example is a door of its own, never its part's way in.
+    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts, commands: commands.filter((command) => !command.example), crates });
   }
   unassigned.sort(byPath);
   overlaps.sort(byPath);
@@ -261,7 +262,8 @@ function markUnshipped(doors, project) {
   for (const door of doors) {
     delete door.publishedCrates;
     for (const run of door.runs ?? []) delete run.builds;
-    if (door.kind !== 'command' || posix.basename(door.file) !== 'Cargo.toml') continue;
+    // An example is run from a checkout, which is how it reaches people.
+    if (door.kind !== 'command' || door.example || posix.basename(door.file) !== 'Cargo.toml') continue;
     if (published.has(door.file) || (door.runs ?? []).some((run) => built.has(run.path))) continue;
     door.unshipped = true;
   }

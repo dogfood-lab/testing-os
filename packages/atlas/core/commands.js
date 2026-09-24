@@ -1290,9 +1290,13 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         const files = packages.flatMap((crate) => targets(crate));
         for (const entry of repo.compact([...new Set(files)])) record(stamp({ ...entry, matched: true }, frame, chain));
       } else if (sub === 'run') {
-        for (const crate of packages) {
-          const bin = runBinary(crate, valueOf(parsed, '--bin'));
-          if (bin) record(stamp({ path: bin.path }, frame));
+        // --example runs the example of that name of the packages selected,
+        // or of any member when cargo is at a virtual workspace's root.
+        const example = valueOf(parsed, '--example');
+        const project = cargoProject(repo.repoPath, repo.tracked);
+        for (const crate of example != null && packages.length === 0 ? project.crates : packages) {
+          const path = example != null ? crate.examples.find((item) => exampleTarget(item) === example) : runBinary(crate, valueOf(parsed, '--bin'))?.path;
+          if (path) record(stamp({ path }, frame));
         }
       } else if (sub === 'bench') {
         for (const path of packages.flatMap((crate) => crate.benches)) record(stamp({ path, matched: true }, frame, chain));
@@ -1492,6 +1496,12 @@ function cargoTargets(repo, crate, sub, parsed) {
     ...(all || parsed.flags.has('--examples') ? crate.examples : []),
     ...(all || parsed.flags.has('--benches') ? crate.benches : []),
   ];
+}
+
+// The name cargo gives an example: examples/x.rs and examples/x/main.rs are x.
+function exampleTarget(path) {
+  const base = posix.basename(path);
+  return base === 'main.rs' ? posix.basename(posix.dirname(path)) : base.replace(/\.rs$/, '');
 }
 
 // The binary cargo run starts: the one --bin names, the one default-run

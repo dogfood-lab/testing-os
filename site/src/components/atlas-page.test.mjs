@@ -977,3 +977,12 @@ test('a binary nothing ships reads as built from its crate, as the markdown word
   const text = plain(render.renderPage({ ...page, doors: [...page.doors, console] }, { repo: page.repo }));
   assert.ok(text.includes('console (a command built from crates/console, which nothing ships). Runs crates/console/src/main.rs.'), 'what comes in');
 });
+
+// A Cargo example, as page.js words it: fixtures/atlas/cargo-examples gives
+// this sentence in the markdown (packages/atlas/adapter/page-cargo-examples.test.js).
+test('a Cargo example reads as a command people run with cargo run, as the markdown words it', () => {
+  const example = { checks: [], checksCount: 0, checksMore: 0, example: true, file: 'Cargo.toml', id: 'Cargo.toml#export_all', kind: 'command', landings: [], name: 'export_all', pushes: false, reach: [], runWith: 'cargo run --example export_all', runs: ['examples/export_all.rs'], runsCount: 1, runsMore: 0, sends: [], stages: [], triggers: [] };
+  const html = render.renderPage({ ...page, doors: [...page.doors, example] }, { repo: page.repo });
+  assert.ok(plain(html).includes('export_all (a command people run with cargo run --example export_all). Runs examples/export_all.rs.'), 'what comes in');
+  assert.ok(html.includes('<code>cargo run --example export_all</code>'), 'the command is code, as the markdown marks it');
+});
