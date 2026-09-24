@@ -1,0 +1,8 @@
+name: CI
+on: [pull_request]
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node src/pack.js build demo

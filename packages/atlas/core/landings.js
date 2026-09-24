@@ -500,7 +500,7 @@ export function astLandings(language, root, path, places) {
   const evaluate = ctx.python ? evalPy : evalJs;
   const site = (kind, call, node, countDynamic = true) => {
     if (!node) return;
-    const all = evaluate(node, ctx, 0);
+    const all = ctx.python ? evaluate(node, ctx, 0) : throughClosure(node, ctx);
     const unless = kind === 'write' ? writeGuards(node, ctx.python) : [];
     if (all.length === 0) {
       if (countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
@@ -1105,6 +1105,9 @@ function evalJs(node, ctx, depth) {
       const name = finalName(fn);
       const args = argumentNodes(node);
       if (fn?.type === 'member_expression' && fn.childForFieldName('object')?.text === 'process' && name === 'cwd') return [atCaller('', 'cwd')];
+      // process.argv.slice(2), and what a parser is handed it, is still the
+      // command line, and so is whatever is destructured from that.
+      if (fn?.type === 'member_expression' && (fn.childForFieldName('object')?.text === 'process.argv' || (fn.childForFieldName('object')?.type === 'identifier' && CLI_BAGS.has(fn.childForFieldName('object').text)))) return [atCaller('', 'argument')];
       if (name === 'homedir' && (fn?.type === 'identifier' || fn?.childForFieldName('object')?.text === 'os')) return [atCaller('', 'home')];
       if (jsPathCall(fn, name) && name === 'resolve') {
         // resolve() starts from the directory the process runs in unless a
@@ -1142,6 +1145,73 @@ function callerHanded(args, ctx, depth, evaluate) {
     if (values.length > 0 && values.every((value) => outside(value) && !boundParam(value))) return values.some((value) => value.anchor === 'home') ? 'home' : values[0].anchor;
   }
   return null;
+}
+
+// A closure is read once per call to it, this many at most.
+const CLOSURE_CALLS = 16;
+
+/**
+ * What a path inside a closure reads as: a function declared by name inside
+ * another function (const put = (relPath) => writeFileSync(join(root,
+ * relPath))) is called only from where it is declared, so its parameters are
+ * what those calls pass, and the path is read once per call with them bound.
+ * The root it captures from the enclosing function reads as it does there: a
+ * directory from the command line is still the caller's, one built from the
+ * file's own location is still this repository's. A path in any other
+ * function reads as before.
+ */
+function throughClosure(node, ctx) {
+  const found = closureOf(node);
+  if (found == null) return evalJs(node, ctx, 0);
+  const params = found.fn.childForFieldName('parameters')?.namedChildren.filter((param) => param.type !== 'comment') ?? [];
+  const single = found.fn.childForFieldName('parameter');
+  const names = single ? [single.type === 'identifier' ? single.text : null] : params.map((param) => {
+    const pattern = param.type === 'required_parameter' || param.type === 'optional_parameter' ? param.childForFieldName('pattern') : param;
+    return pattern?.type === 'identifier' ? pattern.text : null;
+  });
+  if (!names.some(Boolean) || found.calls.length === 0) return evalJs(node, ctx, 0);
+  const lists = [];
+  for (const call of found.calls.slice(0, CLOSURE_CALLS)) {
+    const args = argumentNodes(call);
+    const scratch = { ...ctx, seen: new Set(), visiting: new Set(ctx.visiting) };
+    const bound = new Map(ctx.bound ?? []);
+    names.forEach((name, index) => {
+      if (name != null) bound.set(`${key(found.fn)}:${name}`, args[index] ? evalJs(args[index], scratch, 0) : []);
+    });
+    lists.push(evalJs(node, { ...ctx, bound }, 0));
+  }
+  return union(lists);
+}
+
+// The innermost function around a node when it is a closure: declared by name
+// inside another function's body, with the calls to it in that body. Null
+// for a module-level function, whose calls settleParamPaths reads.
+function closureOf(node) {
+  let fn = null;
+  for (let scope = node.parent; scope; scope = scope.parent) {
+    if (JS_FUNCTIONS.has(scope.type)) {
+      fn = scope;
+      break;
+    }
+  }
+  if (fn == null) return null;
+  let name = null;
+  let block = null;
+  if (fn.type === 'function_declaration') {
+    name = fn.childForFieldName('name')?.text ?? null;
+    block = fn.parent;
+  } else if (fn.parent?.type === 'variable_declarator' && fn.parent.childForFieldName('name')?.type === 'identifier') {
+    name = fn.parent.childForFieldName('name').text;
+    block = fn.parent.parent?.parent;
+  }
+  if (name == null || block?.type !== 'statement_block') return null;
+  const calls = [];
+  walk(block, (child) => {
+    if (child.type !== 'call_expression') return;
+    const callee = child.childForFieldName('function');
+    if (callee?.type === 'identifier' && callee.text === name && !(child.startIndex >= fn.startIndex && child.endIndex <= fn.endIndex)) calls.push(child);
+  });
+  return { fn, calls };
 }
 
 // A call to a function of this file binds its parameters: what the function
@@ -1492,6 +1562,9 @@ function isPythonModule(name, from, ctx) {
 // from an argument keeps the literal default it started with.
 function bindingJs(name, from, ctx, depth) {
   for (let scope = from.parent; scope; scope = scope.parent) {
+    // A closure's parameter, while a call to it is read (throughClosure), is
+    // what that call passes.
+    if (JS_FUNCTIONS.has(scope.type) && ctx.bound?.has(`${key(scope)}:${name}`)) return ctx.bound.get(`${key(scope)}:${name}`);
     // What a function is handed is the caller's place, until the calls to it
     // say otherwise (paramValue).
     if (JS_FUNCTIONS.has(scope.type) && declaresParameter(scope, name)) return [paramValue(scope, name)];
