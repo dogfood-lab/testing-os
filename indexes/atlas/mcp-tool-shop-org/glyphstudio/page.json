@@ -64,6 +64,14 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "glyphstudio (apps/desktop/src-tauri/Cargo.toml) is a new desktop app. It runs apps/desktop/src-tauri/src/main.rs.",
+        "subjects": [
+          "apps/desktop/src-tauri/Cargo.toml",
+          "apps/desktop/src-tauri/src/main.rs"
+        ]
+      },
+      {
         "kind": "landing",
         "sentence": "apps/desktop/src-tauri/src/main.rs is now read by apps/desktop/src-tauri/Cargo.toml.",
         "subjects": [
@@ -90,7 +98,7 @@
   "changesTogetherWithTests": 0,
   "commit": "67678351f3646a253815501776980898dc612ef6",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly TypeScript (424 files). Work enters through 3 doors; the busiest is CI, which reaches 4 parts.",
+  "derived": "15 parts, mostly TypeScript (424 files). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. People install the glyphstudio desktop app.",
   "doors": [
     {
       "checks": [
@@ -314,6 +322,33 @@
       "triggers": [
         "by hand"
       ]
+    },
+    {
+      "app": "desktop",
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "apps/desktop/src-tauri/Cargo.toml",
+      "id": "apps/desktop/src-tauri/Cargo.toml#glyphstudio",
+      "kind": "command",
+      "landings": [],
+      "name": "glyphstudio",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "desktop",
+          "depth": 0,
+          "files": 45
+        }
+      ],
+      "runs": [
+        "apps/desktop/src-tauri/src/main.rs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
     }
   ],
   "duplicates": [],
@@ -476,12 +511,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T18:18:32.294Z",
+  "generatedAt": "2026-09-24T21:04:29.386Z",
   "limits": [
     "17 import sites could not be resolved.",
-    "1 read uses a path built at run time and is not named here.",
-    "4 writes and 25 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
-    "There is a Tauri app under apps/desktop/ (46 Rust files) that no workflow builds; the map reads no Rust, so what it does is not on this page.",
+    "59 writes and 10 reads use paths built at run time and are not named here.",
+    "13 writes and 31 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -522,26 +556,24 @@
   ],
   "repo": "mcp-tool-shop-org/glyphstudio",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "apps/desktop/src-tauri/Cargo.toml#glyphstudio",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "packages/state/src/aiStore.ts",
-    "packages/api-contract/src/commands.ts",
-    "packages/domain/src/anchor.ts"
+    "apps/desktop/src-tauri/src/main.rs"
   ],
+  "startReason": "This path follows glyphstudio (the desktop app people install) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 187,
+  "testFiles": 202,
   "testedBy": {
     "api-contract": 5,
-    "desktop": 63,
+    "desktop": 78,
     "domain": 140,
     "mcp-sprite-server": 23,
     "scripts": 0,
     "showcase": 0,
     "state": 145
   },
-  "unnamedWrites": 0,
+  "unnamedWrites": 59,
   "unread": [
     {
       "place": "docs/benchmark-assets/",

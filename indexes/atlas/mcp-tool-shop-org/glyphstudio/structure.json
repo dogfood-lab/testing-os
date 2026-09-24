@@ -200,11 +200,14 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 1,
+      "dynamicReads": 10,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 0,
-      "entryPoints": [],
+      "dynamicWrites": 59,
+      "entryPoints": [
+        "apps/desktop/src-tauri/src/lib.rs",
+        "apps/desktop/src-tauri/src/main.rs"
+      ],
       "externals": 0,
       "files": [
         {
@@ -268,104 +271,502 @@
           "path": "apps/desktop/src-tauri/icons/icon.png"
         },
         {
+          "exports": [
+            "ai_comfyui_fetch_image",
+            "ai_comfyui_generate",
+            "ai_comfyui_poll",
+            "ai_comfyui_status",
+            "ai_get_canvas_context",
+            "ai_ollama_chat",
+            "ai_ollama_models",
+            "ai_ollama_status"
+          ],
           "hash": "b8a249cb8558579ac93f0a71767c955284299de8d606cff3c2771326cfdd1b61",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/selection.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/ai.rs"
         },
         {
+          "exports": [
+            "analyze_bounds",
+            "analyze_colors",
+            "compare_frames",
+            "compute_motion_trail"
+          ],
           "hash": "eabce9fed7fd2359399cba1c45a32dc969ba1da0cac057dc9ed46870f8331fa2",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/analysis.rs"
         },
         {
+          "exports": [
+            "bind_anchor_to_selection",
+            "clear_anchor_binding",
+            "clear_anchor_parent",
+            "copy_anchors_to_all_frames",
+            "copy_anchors_to_frame",
+            "create_anchor",
+            "delete_anchor",
+            "list_anchors",
+            "move_anchor",
+            "propagate_anchor_updates",
+            "resize_anchor_bounds",
+            "set_anchor_falloff",
+            "set_anchor_parent",
+            "update_anchor",
+            "validate_anchors"
+          ],
           "hash": "ab2e205e5347bf813dfc63811b207f73e37610991575d733a1dd7154f9ace36e",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/anchor.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/selection.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/anchor.rs"
         },
         {
+          "exports": [
+            "generate_asset_thumbnail",
+            "generate_thumbnail_for_project",
+            "get_asset_catalog_entry",
+            "list_assets",
+            "refresh_asset_catalog",
+            "remove_asset_catalog_entry",
+            "upsert_asset_catalog_entry"
+          ],
           "hash": "f7dc5aef83a145016b4eda111646070f518d40387abe03584beff1c649fe1ee1",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/asset_catalog.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/asset.rs"
         },
         {
+          "exports": [
+            "export_asset_bundle",
+            "export_catalog_bundle",
+            "preview_asset_bundle",
+            "preview_catalog_bundle"
+          ],
           "hash": "d967fd55f23c420d89755bda0cf797d68bb881a6425b646aea8683aa482c674e",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/commands/export.rs",
+            "apps/desktop/src-tauri/src/engine/asset_catalog.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/clip.rs",
+            "apps/desktop/src-tauri/src/errors.rs",
+            "apps/desktop/src-tauri/src/persistence/project_io.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/bundle.rs"
         },
         {
+          "exports": [
+            "begin_stroke",
+            "build_frame",
+            "create_layer",
+            "delete_layer",
+            "duplicate_layer",
+            "end_stroke",
+            "fill_rect",
+            "flood_fill",
+            "get_canvas_state",
+            "init_canvas",
+            "magic_select",
+            "read_pixel",
+            "redo",
+            "rename_layer",
+            "render_template",
+            "reorder_layer",
+            "replace_color",
+            "select_layer",
+            "set_layer_lock",
+            "set_layer_opacity",
+            "set_layer_visibility",
+            "stroke_points",
+            "undo",
+            "write_pixel"
+          ],
           "hash": "b0d7c0bf572be0ad0c35dbf869195e08e8ae4938bee5022730d5a14f149472a3",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/pixel_buffer.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/canvas.rs"
         },
         {
+          "exports": [
+            "add_clip_tag",
+            "clear_clip_pivot",
+            "create_clip",
+            "delete_clip",
+            "list_clips",
+            "remove_clip_tag",
+            "set_clip_pivot",
+            "set_clip_tags",
+            "update_clip",
+            "validate_clips"
+          ],
           "hash": "6ebfb26be48bc3c79ee5f5cd9bcbc0871d99a7899fa6629b35a66c0707308c6f",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/clip.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/clip.rs"
         },
         {
+          "exports": [
+            "export_all_clips_sheet",
+            "export_clip_sequence",
+            "export_clip_sequence_with_manifest",
+            "export_clip_sheet",
+            "export_current_frame_png",
+            "export_preset",
+            "export_slice_regions",
+            "package_info_from_canvas",
+            "preview_sprite_sheet_layout"
+          ],
           "hash": "0655e4db1e7ed81e01abc40251f52961e94cf23ac2fb3a054d4282624ac5b571",
-          "path": "apps/desktop/src-tauri/src/commands/export.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/clip.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/commands/export.rs",
+          "testsInside": true
         },
         {
           "hash": "586592932e21d8a10dc781a4ae4ea39d7d389d8ee4fd1b8d88c6efd454812758",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/commands/ai.rs",
+            "apps/desktop/src-tauri/src/commands/analysis.rs",
+            "apps/desktop/src-tauri/src/commands/anchor.rs",
+            "apps/desktop/src-tauri/src/commands/asset.rs",
+            "apps/desktop/src-tauri/src/commands/bundle.rs",
+            "apps/desktop/src-tauri/src/commands/canvas.rs",
+            "apps/desktop/src-tauri/src/commands/clip.rs",
+            "apps/desktop/src-tauri/src/commands/export.rs",
+            "apps/desktop/src-tauri/src/commands/motion.rs",
+            "apps/desktop/src-tauri/src/commands/preset.rs",
+            "apps/desktop/src-tauri/src/commands/project.rs",
+            "apps/desktop/src-tauri/src/commands/sandbox.rs",
+            "apps/desktop/src-tauri/src/commands/scene.rs",
+            "apps/desktop/src-tauri/src/commands/secondary_motion.rs",
+            "apps/desktop/src-tauri/src/commands/selection.rs",
+            "apps/desktop/src-tauri/src/commands/slice.rs",
+            "apps/desktop/src-tauri/src/commands/timeline.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/mod.rs"
         },
         {
+          "exports": [
+            "accept_motion_proposal",
+            "apply_motion_template",
+            "begin_motion_session",
+            "cancel_motion_session",
+            "commit_motion_proposal",
+            "generate_motion_proposals",
+            "get_motion_session",
+            "list_motion_templates",
+            "redo_motion_commit",
+            "reject_motion_proposal",
+            "undo_motion_commit"
+          ],
           "hash": "b71a61f72c14ea0382c105514b41e7f1f041a1c0b5e2fef0b95c98a5d7a131f1",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/anchor.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/motion.rs",
+            "apps/desktop/src-tauri/src/engine/pixel_buffer.rs",
+            "apps/desktop/src-tauri/src/engine/selection.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/motion.rs"
         },
         {
+          "exports": [
+            "apply_motion_preset",
+            "apply_motion_preset_to_all_frames",
+            "apply_motion_preset_to_span",
+            "check_motion_preset_compatibility",
+            "delete_motion_preset",
+            "get_motion_preset",
+            "list_motion_presets",
+            "preview_motion_preset_apply",
+            "rename_motion_preset",
+            "save_motion_preset"
+          ],
           "hash": "a63605981d19e73a42f2d5b2fab9977be9f5ae5761b8eda280fae9c90c9300bc",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/anchor.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/preset.rs",
+            "apps/desktop/src-tauri/src/errors.rs",
+            "apps/desktop/src-tauri/src/persistence/preset_io.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/preset.rs"
         },
         {
+          "exports": [
+            "autosave_recovery",
+            "check_recovery",
+            "discard_recovery",
+            "export_animated_gif",
+            "export_frame_sequence",
+            "export_png",
+            "export_sprite_strip",
+            "get_asset_package_metadata",
+            "get_project_info",
+            "list_recent_projects",
+            "mark_dirty",
+            "new_project",
+            "open_project",
+            "restore_recovery",
+            "save_project",
+            "set_asset_package_metadata",
+            "update_recents"
+          ],
           "hash": "814ce0e5dff7116af7e5540e337776a253dc8f7f53e23556c4e9b306eeaa91dd",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/commands/asset.rs",
+            "apps/desktop/src-tauri/src/commands/canvas.rs",
+            "apps/desktop/src-tauri/src/engine/asset_catalog.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/motion.rs",
+            "apps/desktop/src-tauri/src/errors.rs",
+            "apps/desktop/src-tauri/src/persistence/autosave.rs",
+            "apps/desktop/src-tauri/src/persistence/project_io.rs",
+            "apps/desktop/src-tauri/src/persistence/recovery.rs",
+            "apps/desktop/src-tauri/src/types/api.rs",
+            "apps/desktop/src-tauri/src/types/domain.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/project.rs"
         },
         {
+          "exports": [
+            "analyze_sandbox_motion",
+            "apply_sandbox_timing",
+            "begin_sandbox_session",
+            "close_sandbox_session",
+            "duplicate_sandbox_span",
+            "get_sandbox_anchor_paths",
+            "get_sandbox_session"
+          ],
           "hash": "9abdd6a71ffe5f65018e129cc6e3f8954bb8a07d78e075fd7c805a18dc98f51f",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/sandbox.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/sandbox.rs"
         },
         {
+          "exports": [
+            "add_scene_camera_keyframe",
+            "add_scene_instance",
+            "delete_scene_camera_keyframe",
+            "export_scene_frame",
+            "get_scene_camera",
+            "get_scene_camera_at_tick",
+            "get_scene_info",
+            "get_scene_instances",
+            "get_scene_playback_state",
+            "get_scene_provenance",
+            "get_scene_timeline_summary",
+            "get_source_asset_frames",
+            "list_scene_camera_keyframes",
+            "list_source_clips",
+            "move_scene_instance",
+            "new_scene",
+            "open_scene",
+            "relink_scene_instance_to_source",
+            "remove_scene_instance",
+            "reset_scene_camera",
+            "restore_scene_instances",
+            "save_scene",
+            "save_scene_as",
+            "seek_scene_tick",
+            "set_scene_camera_position",
+            "set_scene_camera_zoom",
+            "set_scene_instance_clip",
+            "set_scene_instance_layer",
+            "set_scene_instance_opacity",
+            "set_scene_instance_parallax",
+            "set_scene_instance_visibility",
+            "set_scene_loop",
+            "set_scene_playback_fps",
+            "sync_scene_provenance",
+            "unlink_scene_instance_from_source",
+            "update_scene_camera_keyframe"
+          ],
           "hash": "a2392bc51c3daff9538620a2a97ae5b719c74adb6f800acbb7fbcf70c8beb7ef",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/scene.rs",
+            "apps/desktop/src-tauri/src/errors.rs",
+            "apps/desktop/src-tauri/src/persistence/scene_io.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/scene.rs"
         },
         {
+          "exports": [
+            "apply_secondary_motion_template",
+            "check_secondary_readiness",
+            "list_secondary_motion_templates"
+          ],
           "hash": "f15cadb1a924551f184b59b8900e1e54c8de05fb35aa80f7e83252674e4e1458",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/commands/motion.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/motion.rs",
+            "apps/desktop/src-tauri/src/engine/secondary_motion.rs",
+            "apps/desktop/src-tauri/src/engine/selection.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/secondary_motion.rs"
         },
         {
+          "exports": [
+            "begin_selection_transform",
+            "cancel_selection_transform",
+            "clear_selection",
+            "commit_selection_transform",
+            "copy_selection",
+            "cut_selection",
+            "delete_selection",
+            "flip_selection_horizontal",
+            "flip_selection_vertical",
+            "get_selection",
+            "move_selection_preview",
+            "nudge_selection",
+            "paste_selection",
+            "rotate_selection_90_ccw",
+            "rotate_selection_90_cw",
+            "set_selection_rect"
+          ],
           "hash": "9edf5e8b889161d9a88ceb180af231467c20ef2d0b704f704c6a408c5fac2d9f",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/commands/canvas.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/pixel_buffer.rs",
+            "apps/desktop/src-tauri/src/engine/selection.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/selection.rs"
         },
         {
+          "exports": [
+            "clear_slice_regions",
+            "create_slice_region",
+            "delete_slice_region",
+            "list_slice_regions"
+          ],
           "hash": "157cd899798604974c58985c4140eb7192b2803cd1728a0e34a6bb7d70843195",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/slice.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/slice.rs"
         },
         {
+          "exports": [
+            "create_frame",
+            "delete_frame",
+            "delete_frame_range",
+            "duplicate_frame",
+            "duplicate_frame_at",
+            "duplicate_frame_range",
+            "get_onion_skin_frames",
+            "get_timeline",
+            "insert_frame_at",
+            "nudge_frame_range",
+            "nudge_region_in_frame_range",
+            "rename_frame",
+            "reorder_frame",
+            "select_frame",
+            "set_frame_duration",
+            "set_frame_duration_range",
+            "snapshot_frame_range",
+            "transform_frame_range"
+          ],
           "hash": "4996bf0ee092313887a62cfa8f632cd482398f250a14f9c245f600a45121e4cf",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/commands/canvas.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/selection.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/commands/timeline.rs"
         },
         {
           "hash": "c8845e685c97146f820f8b24c223b6e5c1b148bef8760f418f41a95290bc8e58",
-          "path": "apps/desktop/src-tauri/src/engine/anchor.rs"
+          "path": "apps/desktop/src-tauri/src/engine/anchor.rs",
+          "testsInside": true
         },
         {
           "hash": "2c3e6433b3677350396c08b9c6f79bd029a5024db0b65bb25131665bac8720a4",
-          "path": "apps/desktop/src-tauri/src/engine/asset_catalog.rs"
+          "path": "apps/desktop/src-tauri/src/engine/asset_catalog.rs",
+          "testsInside": true
         },
         {
           "hash": "aabf5bbaa089c555fade8f42d7e2921204c345499e75e691f1f7e70ec9f99c05",
-          "path": "apps/desktop/src-tauri/src/engine/canvas_state.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/anchor.rs",
+            "apps/desktop/src-tauri/src/engine/clip.rs",
+            "apps/desktop/src-tauri/src/engine/pixel_buffer.rs",
+            "apps/desktop/src-tauri/src/engine/slice.rs",
+            "apps/desktop/src-tauri/src/types/domain.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+          "testsInside": true
         },
         {
           "hash": "4b8e368153b41ca870288362208c7ef358035e66ec80b552adec52e1304bdb9f",
-          "path": "apps/desktop/src-tauri/src/engine/clip.rs"
+          "path": "apps/desktop/src-tauri/src/engine/clip.rs",
+          "testsInside": true
         },
         {
           "hash": "4a9193b6237f83765f60db7dee8045fc86891942e8276ad5828fa1caffe15231",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/anchor.rs",
+            "apps/desktop/src-tauri/src/engine/asset_catalog.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/clip.rs",
+            "apps/desktop/src-tauri/src/engine/motion.rs",
+            "apps/desktop/src-tauri/src/engine/pixel_buffer.rs",
+            "apps/desktop/src-tauri/src/engine/preset.rs",
+            "apps/desktop/src-tauri/src/engine/quantize.rs",
+            "apps/desktop/src-tauri/src/engine/sandbox.rs",
+            "apps/desktop/src-tauri/src/engine/scene.rs",
+            "apps/desktop/src-tauri/src/engine/secondary_motion.rs",
+            "apps/desktop/src-tauri/src/engine/selection.rs",
+            "apps/desktop/src-tauri/src/engine/slice.rs",
+            "apps/desktop/src-tauri/src/engine/transform.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/engine/mod.rs"
         },
         {
           "hash": "1cb950aa4a75aaf98a5a0847c43b20d243de4cbcd7d6292a6f35317f3e99d89b",
-          "path": "apps/desktop/src-tauri/src/engine/motion.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/anchor.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/selection.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/engine/motion.rs",
+          "testsInside": true
         },
         {
           "hash": "70619875c1a38f8a89efe60e0f0b7617cf4d1de2826960d8f622c68ef6621bb3",
-          "path": "apps/desktop/src-tauri/src/engine/pixel_buffer.rs"
+          "path": "apps/desktop/src-tauri/src/engine/pixel_buffer.rs",
+          "testsInside": true
         },
         {
           "hash": "b99c747ad5c1ffb07d606a657a6d02771c045f82ce383d8ee5ab8b242cb223ec",
@@ -373,23 +774,55 @@
         },
         {
           "hash": "1ad61769b5fd00045a34f7e63ce03298234300eb99643788d9761704fb67c282",
+          "noStatements": true,
           "path": "apps/desktop/src-tauri/src/engine/quantize.rs"
         },
         {
+          "exports": [
+            "compute_bbox",
+            "count_identical_adjacent",
+            "extract_anchor_paths",
+            "frame_delta",
+            "frame_delta_normalized"
+          ],
           "hash": "fc5e9553f1a1940e551ed3dd6b5a009834ba07090e89a92c7f6668fbd961352b",
-          "path": "apps/desktop/src-tauri/src/engine/sandbox.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/anchor.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/engine/sandbox.rs",
+          "testsInside": true
         },
         {
+          "exports": [
+            "composite_scene_frame",
+            "encode_png_public",
+            "list_source_project_clips",
+            "load_source_asset_frames",
+            "resolve_instance_clip",
+            "resolve_scene_camera_at_tick"
+          ],
           "hash": "bb29ec691e833cf0f89d36bd5d84eb21e5fed0634743a09a71914061abd3a939",
-          "path": "apps/desktop/src-tauri/src/engine/scene.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/clip.rs",
+            "apps/desktop/src-tauri/src/persistence/project_io.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/engine/scene.rs",
+          "testsInside": true
         },
         {
           "hash": "bd31dad313fc7b8c2cf32dd0bcc00a11b8c0b1de97e262319dc08a6716a9ec81",
-          "path": "apps/desktop/src-tauri/src/engine/secondary_motion.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/anchor.rs",
+            "apps/desktop/src-tauri/src/engine/motion.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/engine/secondary_motion.rs",
+          "testsInside": true
         },
         {
           "hash": "9df52fa51085bd9efedd538977eb04aae253418b352b5fc7b2e2f7846ea74049",
-          "path": "apps/desktop/src-tauri/src/engine/selection.rs"
+          "path": "apps/desktop/src-tauri/src/engine/selection.rs",
+          "testsInside": true
         },
         {
           "hash": "d129ed8a83aa7d800912e6267c1f20f410360fd9cc9da2ead09b80314b06863c",
@@ -397,6 +830,7 @@
         },
         {
           "hash": "18f6a31b985cd90ab810ee0c08b53704572d4465754244d82102b0cf6dc3c0e4",
+          "noStatements": true,
           "path": "apps/desktop/src-tauri/src/engine/transform.rs"
         },
         {
@@ -404,36 +838,264 @@
           "path": "apps/desktop/src-tauri/src/errors.rs"
         },
         {
+          "entry": "run",
+          "entryRule": 3,
+          "exports": [
+            "run"
+          ],
           "hash": "e95b7b9cded6fca33f1c11c215143783233834d979120f7b7d1ccf1e54fca85c",
-          "path": "apps/desktop/src-tauri/src/lib.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/commands/ai.rs",
+            "apps/desktop/src-tauri/src/commands/analysis.rs",
+            "apps/desktop/src-tauri/src/commands/anchor.rs",
+            "apps/desktop/src-tauri/src/commands/asset.rs",
+            "apps/desktop/src-tauri/src/commands/bundle.rs",
+            "apps/desktop/src-tauri/src/commands/canvas.rs",
+            "apps/desktop/src-tauri/src/commands/clip.rs",
+            "apps/desktop/src-tauri/src/commands/export.rs",
+            "apps/desktop/src-tauri/src/commands/mod.rs",
+            "apps/desktop/src-tauri/src/commands/motion.rs",
+            "apps/desktop/src-tauri/src/commands/preset.rs",
+            "apps/desktop/src-tauri/src/commands/project.rs",
+            "apps/desktop/src-tauri/src/commands/sandbox.rs",
+            "apps/desktop/src-tauri/src/commands/scene.rs",
+            "apps/desktop/src-tauri/src/commands/secondary_motion.rs",
+            "apps/desktop/src-tauri/src/commands/selection.rs",
+            "apps/desktop/src-tauri/src/commands/slice.rs",
+            "apps/desktop/src-tauri/src/commands/timeline.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/mod.rs",
+            "apps/desktop/src-tauri/src/engine/motion.rs",
+            "apps/desktop/src-tauri/src/engine/sandbox.rs",
+            "apps/desktop/src-tauri/src/engine/scene.rs",
+            "apps/desktop/src-tauri/src/engine/selection.rs",
+            "apps/desktop/src-tauri/src/errors.rs",
+            "apps/desktop/src-tauri/src/persistence/mod.rs",
+            "apps/desktop/src-tauri/src/types/mod.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/lib.rs",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 20,
+                  "name": "ManagedCanvasState",
+                  "target": {
+                    "file": "apps/desktop/src-tauri/src/engine/canvas_state.rs"
+                  }
+                },
+                {
+                  "line": 21,
+                  "name": "ManagedProjectMeta",
+                  "target": {
+                    "file": "apps/desktop/src-tauri/src/engine/canvas_state.rs"
+                  }
+                },
+                {
+                  "line": 22,
+                  "name": "new",
+                  "receiver": "SelectionState",
+                  "target": {
+                    "file": "apps/desktop/src-tauri/src/engine/selection.rs"
+                  }
+                },
+                {
+                  "line": 22,
+                  "name": "ManagedSelectionState",
+                  "target": {
+                    "file": "apps/desktop/src-tauri/src/engine/selection.rs"
+                  }
+                },
+                {
+                  "line": 23,
+                  "name": "ManagedMotionState",
+                  "target": {
+                    "file": "apps/desktop/src-tauri/src/engine/motion.rs"
+                  }
+                },
+                {
+                  "line": 27,
+                  "name": "ManagedSandboxState",
+                  "target": {
+                    "file": "apps/desktop/src-tauri/src/engine/sandbox.rs"
+                  }
+                },
+                {
+                  "line": 28,
+                  "name": "ManagedSceneState",
+                  "target": {
+                    "file": "apps/desktop/src-tauri/src/engine/scene.rs"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "run"
+            }
+          ]
         },
         {
+          "entry": "main",
+          "entryRule": 1,
           "hash": "4cc597c963cea5d7b48e17e6feb8ad194a67b78b7c09bc4a056bf2164a370625",
-          "path": "apps/desktop/src-tauri/src/main.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/lib.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/main.rs",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "inner": [
+                    {
+                      "line": 20,
+                      "name": "ManagedCanvasState",
+                      "target": {
+                        "file": "apps/desktop/src-tauri/src/engine/canvas_state.rs"
+                      }
+                    },
+                    {
+                      "line": 21,
+                      "name": "ManagedProjectMeta",
+                      "target": {
+                        "file": "apps/desktop/src-tauri/src/engine/canvas_state.rs"
+                      }
+                    },
+                    {
+                      "line": 22,
+                      "name": "new",
+                      "receiver": "SelectionState",
+                      "target": {
+                        "file": "apps/desktop/src-tauri/src/engine/selection.rs"
+                      }
+                    },
+                    {
+                      "line": 22,
+                      "name": "ManagedSelectionState",
+                      "target": {
+                        "file": "apps/desktop/src-tauri/src/engine/selection.rs"
+                      }
+                    },
+                    {
+                      "line": 23,
+                      "name": "ManagedMotionState",
+                      "target": {
+                        "file": "apps/desktop/src-tauri/src/engine/motion.rs"
+                      }
+                    },
+                    {
+                      "line": 27,
+                      "name": "ManagedSandboxState",
+                      "target": {
+                        "file": "apps/desktop/src-tauri/src/engine/sandbox.rs"
+                      }
+                    },
+                    {
+                      "line": 28,
+                      "name": "ManagedSceneState",
+                      "target": {
+                        "file": "apps/desktop/src-tauri/src/engine/scene.rs"
+                      }
+                    }
+                  ],
+                  "line": 5,
+                  "name": "run",
+                  "target": {
+                    "file": "apps/desktop/src-tauri/src/lib.rs"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "main"
+            }
+          ]
         },
         {
+          "exports": [
+            "clear_recovery",
+            "recovery_dir",
+            "recovery_path",
+            "write_recovery"
+          ],
           "hash": "850750ba69e25477be8e1d17d45fb1757a0cfca12ebffeb53a7ed7067d3515d6",
-          "path": "apps/desktop/src-tauri/src/persistence/autosave.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/persistence/project_io.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/persistence/autosave.rs",
+          "testsInside": true
         },
         {
           "hash": "30abcb90de3eb64488c7f06b3bd640a98f4a3573f8f2bd63024a088fe0ad0afd",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/persistence/autosave.rs",
+            "apps/desktop/src-tauri/src/persistence/preset_io.rs",
+            "apps/desktop/src-tauri/src/persistence/project_io.rs",
+            "apps/desktop/src-tauri/src/persistence/recovery.rs",
+            "apps/desktop/src-tauri/src/persistence/scene_io.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/persistence/mod.rs"
         },
         {
+          "exports": [
+            "delete_preset",
+            "list_presets",
+            "load_preset",
+            "presets_dir",
+            "save_preset"
+          ],
           "hash": "99444d66b99076ab1634ba8d58f89924aa4ed80565e9bfc29b39dba0bcbf6656",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/preset.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/persistence/preset_io.rs"
         },
         {
+          "exports": [
+            "load_from_file",
+            "save_to_file"
+          ],
           "hash": "d455188c743d3a54262269e42f81afa53817dc6f3b8340f9faeb2a633be741db",
-          "path": "apps/desktop/src-tauri/src/persistence/project_io.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/anchor.rs",
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/engine/clip.rs",
+            "apps/desktop/src-tauri/src/engine/pixel_buffer.rs",
+            "apps/desktop/src-tauri/src/engine/slice.rs",
+            "apps/desktop/src-tauri/src/types/domain.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/persistence/project_io.rs",
+          "testsInside": true
         },
         {
+          "exports": [
+            "detect_recoverable_projects",
+            "discard_recovery"
+          ],
           "hash": "cdcb577f71e4a494538d2824870aeafb792481a5b41fc041ab647246f9fd2663",
-          "path": "apps/desktop/src-tauri/src/persistence/recovery.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/canvas_state.rs",
+            "apps/desktop/src-tauri/src/persistence/autosave.rs",
+            "apps/desktop/src-tauri/src/persistence/project_io.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/persistence/recovery.rs",
+          "testsInside": true
         },
         {
+          "exports": [
+            "load_scene",
+            "save_scene"
+          ],
           "hash": "3486929f87c98d95516397c6ea88ea2183397719e554dc6c7629594c70cd6103",
-          "path": "apps/desktop/src-tauri/src/persistence/scene_io.rs"
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/engine/scene.rs",
+            "apps/desktop/src-tauri/src/errors.rs"
+          ],
+          "path": "apps/desktop/src-tauri/src/persistence/scene_io.rs",
+          "testsInside": true
         },
         {
           "hash": "0e20740e682c50bbd0b322bd051544a7fd85eb951bac5c6ec7f799d81a79cb43",
@@ -445,6 +1107,10 @@
         },
         {
           "hash": "b82a9713bae02026968f570c0653471608df35ff1ab1517ced9b91a3ed84e168",
+          "importsFiles": [
+            "apps/desktop/src-tauri/src/types/api.rs",
+            "apps/desktop/src-tauri/src/types/domain.rs"
+          ],
           "path": "apps/desktop/src-tauri/src/types/mod.rs"
         },
         {
@@ -2076,9 +2742,10 @@
       "importConfidence": "full",
       "name": "desktop",
       "origin": "authored",
-      "outsideReads": 9,
+      "outsideReads": 15,
+      "outsideWrites": 9,
       "role": "code",
-      "testedBy": 63,
+      "testedBy": 78,
       "unresolvedSites": 0
     },
     {
@@ -7429,6 +8096,49 @@
         "actions/upload-pages-artifact"
       ],
       "usesWorkflowToken": false
+    },
+    {
+      "app": "desktop",
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "apps/desktop/src-tauri/Cargo.toml",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "glyphstudio",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "desktop",
+          "depth": 0,
+          "files": 45
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "apps/desktop/src-tauri/src/main.rs",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
     }
   ],
   "edges": [
@@ -8217,14 +8927,6 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 187,
-  "unassigned": [],
-  "unseen": [
-    {
-      "built": false,
-      "dir": "apps/desktop",
-      "kind": "tauri",
-      "rust": 46
-    }
-  ]
+  "testFiles": 202,
+  "unassigned": []
 }

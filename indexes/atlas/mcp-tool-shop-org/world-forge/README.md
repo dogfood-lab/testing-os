@@ -10,9 +10,9 @@ Mapped at 2026-09-24 from commit 333532b.
 
 - site no longer imports the repository root.
 - CI now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 58 more.
-- Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
-- Release now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 56 more.
-- And 3 more changes to doors.
+- CI now also checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 6 more.
+- CI no longer runs dogfood/.
+- And 7 more changes to doors.
 - docs/c0-alignment/export-table.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
 - docs/c0-alignment/export-table.md is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
 - docs/c0-alignment/fixture-manifest.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
@@ -22,8 +22,8 @@ Mapped at 2026-09-24 from commit 333532b.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push; or by hand. Runs scripts/check-pack.mjs, scripts/sync-version.mjs, dogfood/__tests__/ and 211 more; checks dogfood/, e2e/, packages/editor/src/ and 222 more.
-2. **Release.** When a release is published. Runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 117 more; checks dogfood/, e2e/, packages/editor/src/ and 222 more.
+1. **CI.** On a pull request; on a push; or by hand. Runs scripts/check-pack.mjs, scripts/sync-version.mjs, dogfood/__tests__/ and 211 more; checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 475 more.
+2. **Release.** When a release is published. Runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 117 more; checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 475 more.
 3. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; when a release is published; or by hand. Except on a release event, it runs site/astro.config.mjs and site/src/.
 4. **world-forge-export** (a command people run). Runs packages/export-ai-rpg/src/cli.ts.
 5. **world-forge-export-godot** (a command people run). Runs packages/export-godot/src/cli.ts.
@@ -31,7 +31,7 @@ Mapped at 2026-09-24 from commit 333532b.
 
 ## What happens through CI
 
-1. The workflow runs scripts/check-pack.mjs and scripts/sync-version.mjs in scripts, dogfood/__tests__/ in dogfood, 112 files in editor, 22 files in export-ai-rpg, packages/export-godot/src/__tests__/ in export-godot, and 50 files in 4 more parts; it checks dogfood/ in dogfood, e2e/ in e2e, packages/editor/src/ in editor, packages/export-ai-rpg/src/ in export-ai-rpg, packages/export-godot/src/ in export-godot, and 108 files in 3 more parts.
+1. The workflow runs scripts/check-pack.mjs and scripts/sync-version.mjs in scripts, dogfood/__tests__/ in dogfood, 112 files in editor, 22 files in export-ai-rpg, packages/export-godot/src/__tests__/ in export-godot, and 50 files in 4 more parts; it checks 11 files in dogfood, e2e/ in e2e, packages/editor/src/ in editor, packages/export-ai-rpg/src/ in export-ai-rpg, packages/export-godot/src/ in export-godot, and 108 files in 3 more parts.
 2. That reaches the repository root (1 file).
 3. It writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json.
 
@@ -41,7 +41,7 @@ Mapped at 2026-09-24 from commit 333532b.
 
 ## The other doors
 
-**Release** runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 117 more, checks dogfood/, e2e/, packages/editor/src/ and 222 more, reaches the repository root, and writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json.
+**Release** runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 117 more, checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 475 more, reaches the repository root, and writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/ except on a release event, and deploys the site except on a release event.
 
@@ -74,7 +74,7 @@ Mapped at 2026-09-24 from commit 333532b.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 14 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 15 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -121,7 +121,7 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 8 import sites could not be resolved.
+- 9 import sites could not be resolved.
 - 3 writes and 3 reads use paths built at run time and are not named here.
 - 40 writes go to places this repository does not track, so they are not listed as generated.
 - 30 writes and 56 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.

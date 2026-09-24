@@ -1,26 +1,34 @@
 # si-rpg-engine: how it works
 
-Mapped at 2026-09-24 from commit e631b2f.
+Mapped at 2026-09-24 from commit eeed37f.
 
 ## What this is
 
-Determinism harness for a 3D RPG tick: one body, fixed quanta, one golden hash checked under three engines. (written by a person)
+Deterministic 3D RPG tick: the model proposes, a checker admits, and the host draws committed frames. (written by a person)
 
-5 parts, mostly JavaScript (3 files). Work enters through 2 doors; the busiest is CI, which reaches 2 parts. People run write-golden.
+12 parts, mostly JavaScript (33 files). Work enters through 7 doors; the busiest is CI, which reaches 7 parts. People run host, load, play, propose, replay and write-golden.
 
-## What changed since 2026-09-24 (73c244d)
+## What changed since 2026-09-24 (ece9100)
 
-- write-golden now also runs harness/sim.js.
-- No file changed.
+- write-golden now also runs harness/sim.mjs.
+- 48 files changed content, across 11 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 5 paths; on a push to main touching 5 paths; or by hand. Checks fixtures/golden.txt and harness/sim.js.
-2. **write-golden** (a command people run). Runs harness/sim.js and harness/write-golden.js.
+1. **CI.** On a pull request touching 9 paths; on a push to main touching 9 paths; or by hand. Runs packages/host/host.test.js, packages/load/load.test.js, packages/propose/propose.test.js and 1 more; checks fixtures/golden.txt, harness/sim.mjs, harness/check.js and 32 more.
+2. **host** (a command people run). Runs packages/host/bin/host.js.
+3. **load** (a command people run). Runs packages/load/bin/load.js.
+4. **propose** (a command people run). Runs packages/propose/bin/propose.js.
+5. **play** (a command people run). Runs packages/tick/bin/play.js.
+6. **replay** (a command people run). Runs packages/tick/bin/replay.js.
+7. **write-golden** (a command people run). Runs harness/sim.mjs and harness/write-golden.js.
 
 ## What happens through CI
 
-1. The workflow checks fixtures/golden.txt in fixtures and harness/sim.js in harness.
+1. The workflow runs packages/host/host.test.js in host, packages/load/load.test.js in load, packages/propose/propose.test.js in propose and packages/tick/tick.test.js in tick; it checks fixtures/golden.txt in fixtures, harness/sim.mjs, harness/check.js and harness/write-golden.js in harness, packages/frame/frame.js, packages/frame/hash.js and packages/frame/types.d.ts in frame, packages/host/ in host, packages/load/ in load, and 18 files in 2 more parts.
+   1. Inside packages/propose/propose.test.js, fresh does, in order: load intent rules (tick), fixture world, create world, create memory and create tick.
+   2. **Create tick** (tick) runs, in order: create hasher (frame) and commit frame.
+   3. Inside packages/tick/tick.test.js, fresh does, in order: fixture world, create world, load intent rules, create memory and create tick.
 
 ## Who reads the results
 
@@ -28,21 +36,42 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**write-golden** (a command people run) runs harness/sim.js and harness/write-golden.js, and writes to fixtures/golden.txt.
+**host** (a command people run) runs packages/host/bin/host.js and reaches frame and tick.
+
+**load** (a command people run) runs packages/load/bin/load.js and reaches frame and tick.
+
+**propose** (a command people run) runs packages/propose/bin/propose.js and reaches frame and tick.
+
+**play** (a command people run) runs packages/tick/bin/play.js and reaches frame.
+
+**replay** (a command people run) runs packages/tick/bin/replay.js and reaches frame.
+
+**write-golden** (a command people run) runs harness/sim.mjs and harness/write-golden.js, reaches frame, and writes to fixtures/golden.txt.
 
 ## What breaks what
 
+- **tick** is imported by 3 parts (host, load, propose) and sits on the path of 6 doors.
+- **frame** is imported by 2 parts (harness, tick) and sits on the path of 7 doors.
 - **harness** is imported by no other part and sits on the path of 2 doors.
+- **host** is imported by no other part and sits on the path of 2 doors.
+- **load** is imported by no other part and sits on the path of 2 doors.
+- **propose** is imported by no other part and sits on the path of 2 doors.
 
 ## What tends to change together
 
-No two source files changed together often enough to name.
+- **packages/propose/bin/propose.js** and **packages/propose/prompt.js** changed together in 5 of 5 commits, inside the propose part.
+- **packages/propose/bin/propose.js** and **packages/propose/propose.test.js** changed together in 5 of 5 commits, inside the propose part.
+- **packages/propose/prompt.js** and **packages/propose/propose.test.js** changed together in 5 of 5 commits, inside the propose part.
+- **packages/propose/bin/propose.js** and **packages/propose/seat.js** changed together in 5 of 6 commits, inside the propose part.
+- **packages/propose/prompt.js** and **packages/propose/seat.js** changed together in 5 of 6 commits, inside the propose part.
+
+Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
 
 ## What no test touches
 
-No test files were found by name.
+Every code part is imported by at least one test.
 
 ## Written but never read
 
@@ -54,20 +83,21 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **fixtures/** is written by harness/write-golden.js.
+- **fixtures/golden.txt** is written by harness/write-golden.js.
 
 ## Hand-authored
 
-People write .github/, docs/ and the repository root. Nothing in this repository writes to them.
+People write .github/, docs/, predicates/hazards/, predicates/intents/ and the repository root. Nothing in this repository writes to them.
 
 ## Where to start
 
-harness/write-golden.js → fixtures/golden.txt → harness/check.js
+packages/host/bin/host.js
 
-Read those in order to follow one run of write-golden end to end. This path follows write-golden (a command people run) from its entry, since CI only checks code.
+Read those in order to follow one run of host end to end. This path follows host (a command people run) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 
+- 4 writes and 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

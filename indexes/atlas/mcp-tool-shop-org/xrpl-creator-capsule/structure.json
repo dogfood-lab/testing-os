@@ -44,11 +44,14 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 13,
+      "dynamicReads": 14,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 1,
-      "dynamicWrites": 0,
-      "entryPoints": [],
+      "dynamicWrites": 4,
+      "entryPoints": [
+        "app/src-tauri/src/lib.rs",
+        "app/src-tauri/src/main.rs"
+      ],
       "externals": 0,
       "files": [
         {
@@ -398,16 +401,80 @@
           "path": "app/src-tauri/permissions/desktop-commands.toml"
         },
         {
+          "exports": [
+            "confirm_close_and_exit",
+            "engine_call",
+            "load_file",
+            "save_file",
+            "save_file_atomic"
+          ],
           "hash": "9dc017339ed76e3149fc4a735140585ba6424f049cdad4ff38c512141e22932d",
-          "path": "app/src-tauri/src/commands.rs"
+          "path": "app/src-tauri/src/commands.rs",
+          "testsInside": true
         },
         {
+          "entry": "run",
+          "entryRule": 3,
+          "exports": [
+            "run"
+          ],
           "hash": "93d2c368572d0efc0a1dbb75706ac7b4159439baa0cffa90a3b9c00cba376819",
-          "path": "app/src-tauri/src/lib.rs"
+          "importsFiles": [
+            "app/src-tauri/src/commands.rs"
+          ],
+          "path": "app/src-tauri/src/lib.rs",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 17,
+                  "name": "default",
+                  "target": {
+                    "file": "app/src-tauri/src/commands.rs"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "run"
+            }
+          ]
         },
         {
+          "entry": "main",
+          "entryRule": 1,
           "hash": "5a78e13716d40435c2681052f75687bf8c8febc1069db698fcf89709444a6c2f",
-          "path": "app/src-tauri/src/main.rs"
+          "importsFiles": [
+            "app/src-tauri/src/lib.rs"
+          ],
+          "path": "app/src-tauri/src/main.rs",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "inner": [
+                    {
+                      "line": 17,
+                      "name": "default",
+                      "target": {
+                        "file": "app/src-tauri/src/commands.rs"
+                      }
+                    }
+                  ],
+                  "line": 4,
+                  "name": "run",
+                  "target": {
+                    "file": "app/src-tauri/src/lib.rs"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "main"
+            }
+          ]
         },
         {
           "hash": "3ccc454c518c8c5f82eef2f5fb0a6420a6e8c304853a075fc7f6c20788df0de4",
@@ -1022,9 +1089,9 @@
       "name": "app",
       "origin": "authored",
       "outsideReads": 31,
-      "outsideWrites": 13,
+      "outsideWrites": 14,
       "role": "code",
-      "testedBy": 26,
+      "testedBy": 27,
       "unresolvedSites": 4
     },
     {
@@ -2677,7 +2744,7 @@
   ],
   "doors": [
     {
-      "checksCount": 8,
+      "checksCount": 10,
       "commands": [
         {
           "job": "test",
@@ -2759,7 +2826,7 @@
         {
           "boundary": "app",
           "depth": 0,
-          "files": 67
+          "files": 70
         },
         {
           "boundary": "artifacts",
@@ -2805,6 +2872,16 @@
           "path": "app/bridge-worker-access.test.ts",
           "runKind": "executes",
           "via": "verify.sh → vitest app/vitest.config.ts"
+        },
+        {
+          "job": "build-desktop",
+          "matched": true,
+          "path": "app/bridge-worker-commands.ts",
+          "runKind": "checks",
+          "via": "tauri build → tsc app/tsconfig.json",
+          "when": {
+            "event": "release"
+          }
         },
         {
           "job": "cargo-check",
@@ -2863,6 +2940,16 @@
           "via": "verify.sh → vitest app/vitest.config.ts"
         },
         {
+          "job": "build-desktop",
+          "matched": true,
+          "path": "app/bridge-worker.test.ts",
+          "runKind": "checks",
+          "via": "tauri build → tsc app/tsconfig.json",
+          "when": {
+            "event": "release"
+          }
+        },
+        {
           "job": "cargo-check",
           "matched": true,
           "path": "app/bridge-worker.test.ts",
@@ -2875,6 +2962,16 @@
           "path": "app/bridge-worker.test.ts",
           "runKind": "executes",
           "via": "verify.sh → tsc app/tsconfig.json"
+        },
+        {
+          "job": "build-desktop",
+          "matched": true,
+          "path": "app/bridge-worker.ts",
+          "runKind": "checks",
+          "via": "tauri build → tsc app/tsconfig.json",
+          "when": {
+            "event": "release"
+          }
         },
         {
           "job": "cargo-check",
@@ -2902,6 +2999,58 @@
           "job": "cargo-check",
           "path": "app/scripts/bundle-bridge.mjs",
           "runKind": "executes"
+        },
+        {
+          "job": "cargo-check",
+          "matched": true,
+          "path": "app/src-tauri/src/commands.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-desktop",
+          "matched": true,
+          "path": "app/src-tauri/src/lib.rs",
+          "runKind": "checks",
+          "via": "tauri build",
+          "when": {
+            "event": "release"
+          }
+        },
+        {
+          "job": "cargo-check",
+          "matched": true,
+          "path": "app/src-tauri/src/lib.rs",
+          "runKind": "checks",
+          "via": "cargo check"
+        },
+        {
+          "job": "build-desktop",
+          "matched": true,
+          "path": "app/src-tauri/src/main.rs",
+          "runKind": "checks",
+          "via": "tauri build",
+          "when": {
+            "event": "release"
+          }
+        },
+        {
+          "job": "cargo-check",
+          "matched": true,
+          "path": "app/src-tauri/src/main.rs",
+          "runKind": "checks",
+          "via": "cargo check"
+        },
+        {
+          "directory": true,
+          "job": "build-desktop",
+          "matched": true,
+          "path": "app/src/",
+          "runKind": "executes",
+          "via": "tauri build → tsc app/tsconfig.json",
+          "when": {
+            "event": "release"
+          }
         },
         {
           "directory": true,
@@ -3058,6 +3207,16 @@
           "path": "app/src/state/validate.test.ts",
           "runKind": "executes",
           "via": "verify.sh → vitest app/vitest.config.ts"
+        },
+        {
+          "job": "build-desktop",
+          "matched": true,
+          "path": "app/vite.config.ts",
+          "runKind": "executes",
+          "via": "tauri build → tsc app/tsconfig.json",
+          "when": {
+            "event": "release"
+          }
         },
         {
           "job": "cargo-check",
@@ -3463,7 +3622,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 88,
+      "runsCount": 91,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -3616,6 +3775,49 @@
         "actions/setup-node",
         "actions/upload-pages-artifact"
       ],
+      "usesWorkflowToken": false
+    },
+    {
+      "app": "desktop",
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "app/src-tauri/Cargo.toml",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "capsule-desktop",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "app",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "app/src-tauri/src/main.rs",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
       "usesWorkflowToken": false
     }
   ],
@@ -4129,14 +4331,6 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 76,
-  "unassigned": [],
-  "unseen": [
-    {
-      "built": true,
-      "dir": "app",
-      "kind": "tauri",
-      "rust": 4
-    }
-  ]
+  "testFiles": 77,
+  "unassigned": []
 }

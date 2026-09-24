@@ -4,10 +4,11 @@ Mapped at 2026-09-24 from commit 6767835.
 
 ## What this is
 
-15 parts, mostly TypeScript (424 files). Work enters through 3 doors; the busiest is CI, which reaches 4 parts.
+15 parts, mostly TypeScript (424 files). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. People install the glyphstudio desktop app.
 
 ## What changed since 2026-09-24 (cfb8917)
 
+- glyphstudio (apps/desktop/src-tauri/Cargo.toml) is a new desktop app. It runs apps/desktop/src-tauri/src/main.rs.
 - apps/desktop/src-tauri/src/main.rs is now read by apps/desktop/src-tauri/Cargo.toml.
 - 652 files changed content, across 14 parts.
 
@@ -16,6 +17,7 @@ Mapped at 2026-09-24 from commit 6767835.
 1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs packages/domain/src/ciGates.test.ts, packages/domain/src/shortcutManifest.test.ts, packages/domain/src/sizeProfile.test.ts and 118 more; checks packages/domain/src/, packages/mcp-sprite-server/src/ and packages/state/src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Dogfood.** By hand. Runs no file this map can see.
+4. **glyphstudio** (the desktop app people install). Runs apps/desktop/src-tauri/src/main.rs.
 
 ## What happens through CI
 
@@ -34,6 +36,8 @@ Mapped at 2026-09-24 from commit 6767835.
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
 **Dogfood** runs no file this map can see and sends a dispatch to dogfood-lab/testing-os.
+
+**glyphstudio** (the desktop app people install) runs apps/desktop/src-tauri/src/main.rs.
 
 ## What breaks what
 
@@ -98,20 +102,19 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, assets/, audit/, dogfood/, the repository root and site/. Nothing in this repository writes to them.
+People write .github/, assets/, audit/, dogfood/, the repository root and site/; 59 writes with paths built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/state/src/aiStore.ts → packages/api-contract/src/commands.ts → packages/domain/src/anchor.ts
+apps/desktop/src-tauri/src/main.rs
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of glyphstudio end to end. This path follows glyphstudio (the desktop app people install) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 
 - 17 import sites could not be resolved.
-- 1 read uses a path built at run time and is not named here.
-- 4 writes and 25 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
-- There is a Tauri app under apps/desktop/ (46 Rust files) that no workflow builds; the map reads no Rust, so what it does is not on this page.
+- 59 writes and 10 reads use paths built at run time and are not named here.
+- 13 writes and 31 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

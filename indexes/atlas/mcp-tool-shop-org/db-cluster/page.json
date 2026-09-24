@@ -23,6 +23,18 @@
       "partLabel": "src"
     },
     {
+      "doors": 4,
+      "importedBy": [
+        "root"
+      ],
+      "importedByTests": [
+        "test"
+      ],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    },
+    {
       "doors": 3,
       "importedBy": [],
       "importedByTests": [],
@@ -32,16 +44,6 @@
       "spawnedBy": [
         "scripts"
       ]
-    },
-    {
-      "doors": 4,
-      "importedBy": [],
-      "importedByTests": [
-        "test"
-      ],
-      "kind": "part",
-      "name": "scripts",
-      "partLabel": "scripts"
     },
     {
       "doors": 3,
@@ -64,10 +66,10 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 7,
-      "changed": 423,
+      "added": 2,
+      "changed": 275,
       "moved": 0,
-      "parts": 13,
+      "parts": 9,
       "removed": 0
     },
     "items": [
@@ -89,15 +91,11 @@
       },
       {
         "kind": "door",
-        "sentence": "CI now also runs test/actor-required-regression.test.ts, test/backend-env-surfaces.test.ts, test/exit-code-tables-regression.test.ts and 3 more.",
+        "sentence": "CI now also runs test/kernel-errors-contract.test.ts and test/policy-kernel-scoping.test.ts.",
         "subjects": [
           ".github/workflows/ci.yml",
-          "test/actor-required-regression.test.ts",
-          "test/backend-env-surfaces.test.ts",
-          "test/exit-code-tables-regression.test.ts",
-          "test/sqlite-driver-presence.test.ts",
-          "test/uri-errors-typed-regression.test.ts",
-          "test/validate-before-write-regression.test.ts"
+          "test/kernel-errors-contract.test.ts",
+          "test/policy-kernel-scoping.test.ts"
         ]
       },
       {
@@ -124,7 +122,7 @@
       },
       {
         "kind": "door",
-        "sentence": "And 4 more changes to doors.",
+        "sentence": "And 3 more changes to doors.",
         "subjects": []
       },
       {
@@ -153,18 +151,18 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 133 more new writers and readers of places.",
+        "sentence": "And 138 more new writers and readers of places.",
         "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "7 files added and 423 changed content, across 13 parts.",
+        "sentence": "2 files added and 275 changed content, across 9 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "2fb8e756e5bddee9c7e55f728c46d90b9289478d",
-      "generatedAt": "2026-09-23T22:31:52.086Z"
+      "commit": "13748608a6d25c077bed3f9f599981d3af14b4d5",
+      "generatedAt": "2026-09-24T18:14:29.725Z"
     },
     "unchanged": false
   },
@@ -235,9 +233,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 2 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "f1d79e07fa601bb910a9042bdbe200599d46e303",
+  "commit": "fe9bf666d4daa3f214126dd3b29d711e718995e8",
   "defaultBranch": "main",
-  "derived": "13 parts, mostly TypeScript (253 files). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.",
+  "derived": "13 parts, mostly TypeScript (258 files). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.",
   "doors": [
     {
       "checks": [
@@ -265,7 +263,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 123
+          "files": 128
         },
         {
           "boundary": "dashboard",
@@ -275,7 +273,7 @@
         {
           "boundary": "scripts",
           "depth": 1,
-          "files": 4
+          "files": 6
         }
       ],
       "runs": [
@@ -304,6 +302,7 @@
         "test/exit-code-tables-regression.test.ts",
         "test/explain.test.ts",
         "test/install-smoke.test.ts",
+        "test/kernel-errors-contract.test.ts",
         "test/kernel.test.ts",
         "test/path-traversal.test.ts",
         "test/phase10-proof.test.ts",
@@ -319,6 +318,7 @@
         "test/phase8-proof.test.ts",
         "test/phase9-proof.test.ts",
         "test/policy-engine.test.ts",
+        "test/policy-kernel-scoping.test.ts",
         "test/policy-kernel.test.ts",
         "test/policy-surface.test.ts",
         "test/postgres-canonical-store.test.ts",
@@ -336,6 +336,8 @@
         "test/retrieval.test.ts",
         "test/sql-injection.test.ts",
         "test/sqlite-driver-presence.test.ts",
+        "test/stryker-exclusions.test.ts",
+        "test/stryker-trust-check.test.ts",
         "test/typed-error-regression.test.ts",
         "test/uri-errors-typed-regression.test.ts",
         "test/uri.test.ts",
@@ -403,8 +405,8 @@
         "test/wave6-policy-proof.test.ts",
         "test/wave6-proof.test.ts"
       ],
-      "runsCount": 123,
-      "runsMore": 120,
+      "runsCount": 127,
+      "runsMore": 124,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -439,7 +441,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 123
+          "files": 128
         },
         {
           "boundary": "dashboard",
@@ -449,7 +451,7 @@
         {
           "boundary": "scripts",
           "depth": 1,
-          "files": 4
+          "files": 6
         }
       ],
       "runs": [
@@ -478,6 +480,7 @@
         "test/exit-code-tables-regression.test.ts",
         "test/explain.test.ts",
         "test/install-smoke.test.ts",
+        "test/kernel-errors-contract.test.ts",
         "test/kernel.test.ts",
         "test/path-traversal.test.ts",
         "test/phase10-proof.test.ts",
@@ -493,6 +496,7 @@
         "test/phase8-proof.test.ts",
         "test/phase9-proof.test.ts",
         "test/policy-engine.test.ts",
+        "test/policy-kernel-scoping.test.ts",
         "test/policy-kernel.test.ts",
         "test/policy-surface.test.ts",
         "test/postgres-canonical-store.test.ts",
@@ -510,6 +514,8 @@
         "test/retrieval.test.ts",
         "test/sql-injection.test.ts",
         "test/sqlite-driver-presence.test.ts",
+        "test/stryker-exclusions.test.ts",
+        "test/stryker-trust-check.test.ts",
         "test/typed-error-regression.test.ts",
         "test/uri-errors-typed-regression.test.ts",
         "test/uri.test.ts",
@@ -577,8 +583,8 @@
         "test/wave6-policy-proof.test.ts",
         "test/wave6-proof.test.ts"
       ],
-      "runsCount": 123,
-      "runsMore": 120,
+      "runsCount": 127,
+      "runsMore": 124,
       "sends": [
         "publishes to npm",
         "creates a GitHub release"
@@ -603,7 +609,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 10
+          "files": 12
         },
         {
           "boundary": "src",
@@ -613,7 +619,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 123
+          "files": 128
         },
         {
           "boundary": "dashboard",
@@ -652,6 +658,7 @@
         "test/exit-code-tables-regression.test.ts",
         "test/explain.test.ts",
         "test/install-smoke.test.ts",
+        "test/kernel-errors-contract.test.ts",
         "test/kernel.test.ts",
         "test/path-traversal.test.ts",
         "test/phase10-proof.test.ts",
@@ -667,6 +674,7 @@
         "test/phase8-proof.test.ts",
         "test/phase9-proof.test.ts",
         "test/policy-engine.test.ts",
+        "test/policy-kernel-scoping.test.ts",
         "test/policy-kernel.test.ts",
         "test/policy-surface.test.ts",
         "test/postgres-canonical-store.test.ts",
@@ -684,6 +692,8 @@
         "test/retrieval.test.ts",
         "test/sql-injection.test.ts",
         "test/sqlite-driver-presence.test.ts",
+        "test/stryker-exclusions.test.ts",
+        "test/stryker-trust-check.test.ts",
         "test/typed-error-regression.test.ts",
         "test/uri-errors-typed-regression.test.ts",
         "test/uri.test.ts",
@@ -751,8 +761,8 @@
         "test/wave6-policy-proof.test.ts",
         "test/wave6-proof.test.ts"
       ],
-      "runsCount": 128,
-      "runsMore": 125,
+      "runsCount": 132,
+      "runsMore": 129,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -982,12 +992,12 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T18:17:09.222Z",
+  "generatedAt": "2026-09-24T21:02:55.461Z",
   "limits": [
     "17 import sites could not be resolved.",
     "7 writes and 14 reads use paths built at run time and are not named here.",
     "3 writes go to places this repository does not track, so they are not listed as generated.",
-    "54 writes and 106 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "54 writes and 107 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed, and it is in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -1018,12 +1028,12 @@
   "startReason": "This path follows db-cluster (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 128,
+  "testFiles": 142,
   "testedBy": {
     "dashboard": 3,
     "examples": 0,
-    "scripts": 14,
-    "src": 120
+    "scripts": 16,
+    "src": 122
   },
   "unnamedWrites": 7,
   "unread": [],

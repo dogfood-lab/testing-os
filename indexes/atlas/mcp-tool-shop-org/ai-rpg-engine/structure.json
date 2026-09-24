@@ -12816,11 +12816,38 @@
           "path": "packages/sidecar/gdscript/fixtures/split-frames.json"
         },
         {
+          "exports": [
+            "encode_message",
+            "push",
+            "push_text"
+          ],
           "hash": "3cd244fa99625f7703f841f328430c4d09ff6b5f66a7479ed82af60c5f055548",
           "path": "packages/sidecar/gdscript/framing.gd"
         },
         {
+          "exports": [
+            "advance",
+            "apply_patches",
+            "canonical_json",
+            "canonical_state_hash",
+            "connect_to_host",
+            "disconnect_from_host",
+            "initialize",
+            "list_actions",
+            "load_save",
+            "poll",
+            "preview",
+            "push_bytes",
+            "replay",
+            "save",
+            "shutdown",
+            "snapshot",
+            "submit_action"
+          ],
           "hash": "acb91917c2317c10e49cde212d17ca02814f045bc8f63bae2ba9b843cec04d77",
+          "importsFiles": [
+            "packages/sidecar/gdscript/framing.gd"
+          ],
           "path": "packages/sidecar/gdscript/sidecar_client.gd"
         },
         {
@@ -16191,7 +16218,7 @@
   ],
   "doors": [
     {
-      "checksCount": 9,
+      "checksCount": 40,
       "commands": [
         {
           "job": "build-and-test",
@@ -16386,7 +16413,7 @@
         {
           "boundary": "sidecar",
           "depth": 0,
-          "files": 17
+          "files": 19
         },
         {
           "boundary": "soundpack-core",
@@ -16502,18 +16529,18 @@
         },
         {
           "directory": true,
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/",
-          "runKind": "checks",
-          "via": "eslint eslint.config.js"
-        },
-        {
-          "directory": true,
           "job": "docker-smoke",
           "path": "packages/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/asset-registry/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -16537,11 +16564,27 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/audio-director/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
+        },
+        {
           "job": "build-and-test",
           "matched": true,
           "path": "packages/audio-director/src/director.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/campaign-memory/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -16570,6 +16613,14 @@
           "path": "packages/campaign-memory/src/memory-core.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/character-creation/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -16614,11 +16665,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/character-creation/src/titles.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/character-profile/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -16663,11 +16715,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/character-profile/src/serialize.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/cli/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -16718,11 +16771,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/cli/src/c1-gate.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/content-schema/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -16760,18 +16814,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/content-schema/src/loader.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/content-schema/src/readme-usage.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/core/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -16809,18 +16857,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/core/src/formulas.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/core/src/humanization.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/equipment/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -16858,11 +16900,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/equipment/src/relic-growth.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/image-gen/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -16900,11 +16943,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/image-gen/src/styles.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/ledger-adapter/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -16938,13 +16982,6 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/ledger-adapter/src/engine/merchant-played-session.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/ledger-adapter/src/engine/pirate-played-session.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -17019,6 +17056,14 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/modules/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
+        },
+        {
           "job": "build-and-test",
           "matched": true,
           "path": "packages/modules/src/ability-builders.test.ts",
@@ -17054,18 +17099,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/modules/src/ability-intent.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/modules/src/ability-phase2-integration.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/ollama/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17103,18 +17142,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/ollama/src/chat-experiments.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/ollama/src/chat-loadout.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/pack-registry/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17152,11 +17185,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/pack-registry/src/starter-readme-usage.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/presentation/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17171,6 +17205,14 @@
           "path": "packages/presentation/src/validate.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/rumor-system/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17192,6 +17234,14 @@
           "path": "packages/rumor-system/src/mutations.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/sidecar/src/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17229,18 +17279,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/sidecar/src/server.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/sidecar/src/socket.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/soundpack-core/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17278,6 +17322,14 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/starter-bounty-hunter/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
+        },
+        {
           "job": "build-and-test",
           "matched": true,
           "path": "packages/starter-bounty-hunter/src/anti-inert.test.ts",
@@ -17304,6 +17356,14 @@
           "path": "packages/starter-bounty-hunter/src/schema-conformance.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/starter-colony/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17341,18 +17401,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-colony/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/starter-colony/src/ruleset.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-cyberpunk/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17390,18 +17444,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-cyberpunk/src/phase5-integration.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/starter-cyberpunk/src/portability.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-detective/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17439,18 +17487,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-detective/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/starter-detective/src/ruleset.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-fantasy/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17488,11 +17530,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-fantasy/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-gladiator/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17530,11 +17573,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-gladiator/src/perception.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-merchant/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17572,11 +17616,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-merchant/src/firewall.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-pirate/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17614,11 +17659,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-pirate/src/ruleset.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-ronin/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17656,11 +17702,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-ronin/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-vampire/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17698,11 +17745,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-vampire/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-weird-west/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17740,11 +17788,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-weird-west/src/schema-conformance.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-zombie/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17782,11 +17831,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/starter-zombie/src/perception.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/terminal-ui/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "build-and-test",
@@ -17875,7 +17925,7 @@
           "via": "eslint eslint.config.js"
         }
       ],
-      "runsCount": 402,
+      "runsCount": 433,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -18134,7 +18184,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 9,
+      "checksCount": 40,
       "commands": [
         {
           "job": "npm",
@@ -18351,7 +18401,7 @@
         {
           "boundary": "sidecar",
           "depth": 0,
-          "files": 17
+          "files": 19
         },
         {
           "boundary": "soundpack-core",
@@ -18469,7 +18519,7 @@
           "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/",
+          "path": "packages/asset-registry/",
           "runKind": "checks",
           "via": "eslint eslint.config.js"
         },
@@ -18495,11 +18545,27 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
+          "job": "npm",
+          "matched": true,
+          "path": "packages/audio-director/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
+        },
+        {
           "job": "npm",
           "matched": true,
           "path": "packages/audio-director/src/director.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "npm",
+          "matched": true,
+          "path": "packages/campaign-memory/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -18528,6 +18594,14 @@
           "path": "packages/campaign-memory/src/memory-core.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "npm",
+          "matched": true,
+          "path": "packages/character-creation/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -18572,11 +18646,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/character-creation/src/titles.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/character-profile/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -18621,11 +18696,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/character-profile/src/serialize.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/cli/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -18686,11 +18762,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/cli/src/c1-gate.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/content-schema/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -18735,11 +18812,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/content-schema/src/readme-usage.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/core/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -18777,18 +18855,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/core/src/formulas.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
-          "path": "packages/core/src/humanization.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/equipment/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -18826,11 +18898,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/equipment/src/relic-growth.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/image-gen/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -18868,11 +18941,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/image-gen/src/styles.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/ledger-adapter/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -18906,13 +18980,6 @@
           "job": "npm",
           "matched": true,
           "path": "packages/ledger-adapter/src/engine/merchant-played-session.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
-          "path": "packages/ledger-adapter/src/engine/pirate-played-session.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -18987,6 +19054,14 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
+          "job": "npm",
+          "matched": true,
+          "path": "packages/modules/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
+        },
+        {
           "job": "npm",
           "matched": true,
           "path": "packages/modules/src/ability-builders.test.ts",
@@ -19022,18 +19097,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/modules/src/ability-intent.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
-          "path": "packages/modules/src/ability-phase2-integration.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/ollama/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19071,18 +19140,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/ollama/src/chat-experiments.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
-          "path": "packages/ollama/src/chat-loadout.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/pack-registry/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19120,11 +19183,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/pack-registry/src/starter-readme-usage.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/presentation/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19139,6 +19203,14 @@
           "path": "packages/presentation/src/validate.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "npm",
+          "matched": true,
+          "path": "packages/rumor-system/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19160,6 +19232,14 @@
           "path": "packages/rumor-system/src/mutations.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "npm",
+          "matched": true,
+          "path": "packages/sidecar/src/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19197,18 +19277,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/sidecar/src/server.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
-          "path": "packages/sidecar/src/socket.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/soundpack-core/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19246,6 +19320,14 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
+          "job": "npm",
+          "matched": true,
+          "path": "packages/starter-bounty-hunter/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
+        },
+        {
           "job": "npm",
           "matched": true,
           "path": "packages/starter-bounty-hunter/src/anti-inert.test.ts",
@@ -19272,6 +19354,14 @@
           "path": "packages/starter-bounty-hunter/src/schema-conformance.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
+        },
+        {
+          "directory": true,
+          "job": "npm",
+          "matched": true,
+          "path": "packages/starter-colony/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19309,18 +19399,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-colony/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
-          "path": "packages/starter-colony/src/ruleset.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-cyberpunk/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19358,18 +19442,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-cyberpunk/src/phase5-integration.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
-          "path": "packages/starter-cyberpunk/src/portability.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-detective/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19407,18 +19485,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-detective/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
-          "path": "packages/starter-detective/src/ruleset.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-fantasy/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19456,18 +19528,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-fantasy/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "npm",
-          "matched": true,
-          "path": "packages/starter-fantasy/src/ruleset.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-gladiator/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19505,11 +19571,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-gladiator/src/perception.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-merchant/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19547,11 +19614,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-merchant/src/firewall.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-pirate/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19589,11 +19657,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-pirate/src/ruleset.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-ronin/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19631,11 +19700,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-ronin/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-vampire/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19673,11 +19743,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-vampire/src/quests.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-weird-west/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19715,11 +19786,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-weird-west/src/schema-conformance.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/starter-zombie/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19757,11 +19829,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "directory": true,
           "job": "npm",
           "matched": true,
-          "path": "packages/starter-zombie/src/perception.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "packages/terminal-ui/",
+          "runKind": "checks",
+          "via": "eslint eslint.config.js"
         },
         {
           "job": "npm",
@@ -19850,7 +19923,7 @@
           "via": "eslint eslint.config.js"
         }
       ],
-      "runsCount": 401,
+      "runsCount": 432,
       "secrets": [
         "GITHUB_TOKEN"
       ],

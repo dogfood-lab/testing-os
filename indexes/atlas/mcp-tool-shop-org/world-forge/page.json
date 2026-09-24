@@ -177,82 +177,31 @@
       },
       {
         "kind": "door",
-        "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
+        "sentence": "CI now also checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 6 more.",
         "subjects": [
-          ".github/workflows/pages.yml",
-          "site/astro.config.mjs",
-          "site/src/"
+          ".github/workflows/ci.yml",
+          "dogfood/chapel-threshold-unreal.ts",
+          "dogfood/chapel-threshold.ts",
+          "dogfood/export-stage-fixture.ts",
+          "dogfood/godot-smoke-verdict.ts",
+          "dogfood/multi-target-export-proof.ts",
+          "dogfood/run-ai-rpg-smoke.ts",
+          "dogfood/run-godot-smoke.ts",
+          "dogfood/run-unreal-smoke.ts",
+          "dogfood/worlds/"
         ]
       },
       {
         "kind": "door",
-        "sentence": "Release now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 56 more.",
+        "sentence": "CI no longer runs dogfood/.",
         "subjects": [
-          ".github/workflows/release.yml",
-          "dogfood/__tests__/",
-          "packages/editor/src/__tests__/",
-          "packages/editor/src/kits/bundle-migrate.test.ts",
-          "packages/editor/src/kits/kit-store-persist.test.ts",
-          "packages/editor/src/modal-guards.test.ts",
-          "packages/editor/src/panels/__tests__/",
-          "packages/editor/src/presets/preset-store-persist.test.ts",
-          "packages/editor/src/speed-panel-actions.test.ts",
-          "packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts",
-          "packages/export-ai-rpg/src/__tests__/c0-fixture-coverage.test.ts",
-          "packages/export-ai-rpg/src/__tests__/c1-manifest-truth.test.ts",
-          "packages/export-ai-rpg/src/__tests__/c3-condition-roundtrip.test.ts",
-          "packages/export-ai-rpg/src/__tests__/cli.test.ts",
-          "packages/export-ai-rpg/src/__tests__/engine-deps-3x.test.ts",
-          "packages/export-ai-rpg/src/__tests__/export.test.ts",
-          "packages/export-ai-rpg/src/__tests__/extension-points.test.ts",
-          "packages/export-ai-rpg/src/__tests__/f-1d037344-browser-safe-hash.test.ts",
-          "packages/export-ai-rpg/src/__tests__/fidelity.test.ts",
-          "packages/export-ai-rpg/src/__tests__/humanization.test.ts",
-          "packages/export-ai-rpg/src/__tests__/import.test.ts",
-          "packages/export-ai-rpg/src/__tests__/leftover-pack.test.ts",
-          "packages/export-ai-rpg/src/__tests__/map-drift.test.ts",
-          "packages/export-ai-rpg/src/__tests__/profiles.test.ts",
-          "packages/export-ai-rpg/src/__tests__/stage-c-amends.test.ts",
-          "packages/export-ai-rpg/src/__tests__/swarm-fixes.test.ts",
-          "packages/export-ai-rpg/src/__tests__/swarm-wave18-amends.test.ts",
-          "packages/export-ai-rpg/src/__tests__/swarm-wave2-amends.test.ts",
-          "packages/export-ai-rpg/src/__tests__/swarm-wave32-amends.test.ts",
-          "packages/export-ai-rpg/src/__tests__/swarm-wave4-amends.test.ts",
-          "packages/export-ai-rpg/src/__tests__/swarm-wave9-amends.test.ts",
-          "packages/export-godot/src/__tests__/",
-          "packages/export-unreal/src/__tests__/",
-          "packages/renderer-2d/src/__tests__/",
-          "packages/schema/src/__tests__/advisory.test.ts",
-          "packages/schema/src/__tests__/authoring-mode.test.ts",
-          "packages/schema/src/__tests__/dependencies.test.ts",
-          "packages/schema/src/__tests__/elevation-validation.test.ts",
-          "packages/schema/src/__tests__/entry-gate-validation.test.ts",
-          "packages/schema/src/__tests__/flavor.test.ts",
-          "packages/schema/src/__tests__/hazards-validation.test.ts",
-          "packages/schema/src/__tests__/nested-array-guards.test.ts",
-          "packages/schema/src/__tests__/optional-world-arrays-validation.test.ts",
-          "packages/schema/src/__tests__/presentation.test.ts",
-          "packages/schema/src/__tests__/project-metadata.test.ts",
-          "packages/schema/src/__tests__/project-shape.test.ts",
-          "packages/schema/src/__tests__/review.test.ts",
-          "packages/schema/src/__tests__/spawn-condition-codec.test.ts",
-          "packages/schema/src/__tests__/stage-c-humanization-v44.test.ts",
-          "packages/schema/src/__tests__/stage-c-humanization.test.ts",
-          "packages/schema/src/__tests__/strata-validation.test.ts",
-          "packages/schema/src/__tests__/town-validation.test.ts",
-          "packages/schema/src/__tests__/valid-sets.test.ts",
-          "packages/schema/src/__tests__/validate.test.ts",
-          "packages/schema/src/__tests__/version.test.ts",
-          "packages/schema/src/__tests__/wave1-schema.test.ts",
-          "packages/schema/src/__tests__/wave18-schema-humanization.test.ts",
-          "packages/schema/src/__tests__/wave9-schema-amends.test.ts",
-          "packages/schema/src/__tests__/world-array-fields-validation.test.ts",
-          "packages/schema/src/__tests__/zone-exits-validation.test.ts"
+          ".github/workflows/ci.yml",
+          "dogfood/"
         ]
       },
       {
         "kind": "door",
-        "sentence": "And 3 more changes to doors.",
+        "sentence": "And 7 more changes to doors.",
         "subjects": []
       },
       {
@@ -383,7 +332,7 @@
   "changesTogetherNote": [
     "5 files changed together with their own tests, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 14 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 15 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 5,
   "commit": "333532bd00696c0ef2b1f500c404102a05483773",
@@ -392,7 +341,15 @@
   "doors": [
     {
       "checks": [
-        "dogfood/",
+        "dogfood/chapel-threshold-unreal.ts",
+        "dogfood/chapel-threshold.ts",
+        "dogfood/export-stage-fixture.ts",
+        "dogfood/godot-smoke-verdict.ts",
+        "dogfood/multi-target-export-proof.ts",
+        "dogfood/run-ai-rpg-smoke.ts",
+        "dogfood/run-godot-smoke.ts",
+        "dogfood/run-unreal-smoke.ts",
+        "dogfood/worlds/",
         "e2e/",
         "packages/editor/src/",
         "packages/export-ai-rpg/src/",
@@ -401,8 +358,8 @@
         "packages/renderer-2d/src/",
         "packages/schema/src/"
       ],
-      "checksCount": 8,
-      "checksMore": 222,
+      "checksCount": 16,
+      "checksMore": 475,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [
@@ -547,7 +504,15 @@
     },
     {
       "checks": [
-        "dogfood/",
+        "dogfood/chapel-threshold-unreal.ts",
+        "dogfood/chapel-threshold.ts",
+        "dogfood/export-stage-fixture.ts",
+        "dogfood/godot-smoke-verdict.ts",
+        "dogfood/multi-target-export-proof.ts",
+        "dogfood/run-ai-rpg-smoke.ts",
+        "dogfood/run-godot-smoke.ts",
+        "dogfood/run-unreal-smoke.ts",
+        "dogfood/worlds/",
         "e2e/",
         "packages/editor/src/",
         "packages/export-ai-rpg/src/",
@@ -556,8 +521,8 @@
         "packages/renderer-2d/src/",
         "packages/schema/src/"
       ],
-      "checksCount": 8,
-      "checksMore": 222,
+      "checksCount": 16,
+      "checksMore": 475,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [
@@ -1021,9 +986,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T18:23:56.721Z",
+  "generatedAt": "2026-09-24T21:09:18.515Z",
   "limits": [
-    "8 import sites could not be resolved.",
+    "9 import sites could not be resolved.",
     "3 writes and 3 reads use paths built at run time and are not named here.",
     "40 writes go to places this repository does not track, so they are not listed as generated.",
     "30 writes and 56 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",

@@ -57,6 +57,14 @@
         ]
       },
       {
+        "kind": "door",
+        "sentence": "stillpoint (apps/desktop/src-tauri/Cargo.toml) is a new desktop app. It runs apps/desktop/src-tauri/src/main.rs.",
+        "subjects": [
+          "apps/desktop/src-tauri/Cargo.toml",
+          "apps/desktop/src-tauri/src/main.rs"
+        ]
+      },
+      {
         "kind": "landing",
         "sentence": "apps/desktop/msix/layout/ is now written by apps/desktop/msix/build-msix.ps1.",
         "subjects": [
@@ -182,7 +190,7 @@
   "changesTogetherWithTests": 1,
   "commit": "c7fbc277057214aea33336843166518ea69f7d9d",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly TypeScript (26 files). Work enters through 2 doors; the busiest is CI, which reaches 2 parts.",
+  "derived": "7 parts, mostly TypeScript (26 files). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. People install the stillpoint desktop app.",
   "doors": [
     {
       "checks": [],
@@ -252,6 +260,33 @@
         "on a push to main touching 2 paths",
         "or by hand"
       ]
+    },
+    {
+      "app": "desktop",
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "apps/desktop/src-tauri/Cargo.toml",
+      "id": "apps/desktop/src-tauri/Cargo.toml#stillpoint",
+      "kind": "command",
+      "landings": [],
+      "name": "stillpoint",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "desktop",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "apps/desktop/src-tauri/src/main.rs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
     }
   ],
   "duplicates": [],
@@ -278,12 +313,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T18:23:04.104Z",
+  "generatedAt": "2026-09-24T21:08:33.615Z",
   "limits": [
     "2 writes and 12 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
     "4 test files under `packages/server/src/` are not run by CI on Linux, where the shell expands `**` as one directory level.",
     "ui calls server over HTTP at 13 routes, a link no import shows: the map draws it, and no door's reach follows it.",
-    "There is a Tauri app under apps/desktop/ (2 Rust files) that no workflow builds; the map reads no Rust, so what it does is not on this page.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",

@@ -8,8 +8,8 @@ Mapped at 2026-09-24 from commit f7e56e6.
 
 ## What changed since 2026-09-23 (7ff40cd)
 
-- CI now also runs files in docs/examples/, packages/asset-registry/src/, packages/audio-director/src/ and 34 more.
-- CI runs 393 more files than before.
+- CI now also runs files in docs/examples/, packages/asset-registry/, packages/asset-registry/src/ and 64 more.
+- CI runs 424 more files than before.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - And 4 more changes to doors.
 - docs/c0-alignment/intake-table.json is now written by packages/cli/src/c0-intake-table.test.ts.
@@ -31,7 +31,7 @@ Mapped at 2026-09-24 from commit f7e56e6.
 
 ## What happens through CI
 
-1. The workflow runs 8 files in cli, 4 files in scripts, packages/asset-registry/src/file-store.test.ts, packages/asset-registry/src/hash.test.ts and packages/asset-registry/src/memory-store.test.ts in asset-registry, packages/audio-director/src/director.test.ts in audio-director, 4 files in campaign-memory, and 171 files in 29 more parts; it checks docs/ in docs, 5 files in the repository root, scripts/ in scripts, templates/ in starter, and packages/ (31 parts).
+1. The workflow runs 7 files in cli, 4 files in scripts, packages/asset-registry/src/file-store.test.ts, packages/asset-registry/src/hash.test.ts and packages/asset-registry/src/memory-store.test.ts in asset-registry, packages/audio-director/src/director.test.ts in audio-director, 4 files in campaign-memory, and 141 files in 29 more parts; it checks docs/ in docs, 5 files in the repository root, scripts/ in scripts, templates/ in starter, and packages/ (31 parts).
    1. Inside packages/cli/src/bin.ts, main does, in order:
       1. some
       2. find
@@ -139,7 +139,7 @@ Read those in order to follow one pull request end to end.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
 - 36 writes and 133 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
 - 2 commands are built at run time and not followed, 1 of them in tests.
-- CI runs or checks 402 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
-- Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- CI runs or checks 433 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- Release runs or checks 432 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

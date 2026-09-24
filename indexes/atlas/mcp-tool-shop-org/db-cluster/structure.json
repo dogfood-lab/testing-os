@@ -25,7 +25,7 @@
           "path": ".github/workflows/pages.yml"
         },
         {
-          "hash": "c6b2b15ebd005eec31fd2bec778cdee441b642c82eb3cdcbdfb799a257ceb901",
+          "hash": "9ae08e17b3d169dcc3a6a147b23e977fc6da87a3e9c044884ba2b00a3cb9d471",
           "path": ".github/workflows/release-gate.yml"
         },
         {
@@ -450,7 +450,7 @@
           "path": "docs/release-notes-v0.1.md"
         },
         {
-          "hash": "9f47903ff11630159af6eceb3291cad89d3b4fa2c7e6ee22a6449bc0eb52af60",
+          "hash": "fc3ac96b654233279475825404586df9f8d4c527acd7718cbec16fdf6b7520eb",
           "path": "docs/release-readiness.md"
         },
         {
@@ -692,11 +692,11 @@
           "path": "package-lock.json"
         },
         {
-          "hash": "4bb6451fd5c6a9604647e2443b6fcbca9458c4b66632b7e103cf2f0ad98e2910",
+          "hash": "3b5d13108786bf100f8f5b60afd8199931327ac7aea722fb9c957df5bd28d7a6",
           "path": "package.json"
         },
         {
-          "hash": "d8667c45b455d4f2650d266b924cd3d8227e276b92db45f1db7f4264aea2d6ec",
+          "hash": "a7c161043358185eaa348d8778fdaa6ec1da2b57349fd9d56575e1afabe440b8",
           "path": "stryker.conf.json"
         },
         {
@@ -792,7 +792,10 @@
           "path": "vitest.config.ts"
         },
         {
-          "hash": "90ff8c999cfd6d081e033187292846b83ed0685c0241858d488776eec739d053",
+          "hash": "0a7655d4fce5ae4b83611561d9cd37f0f6ef79e9c575c22a5902c76f45548e18",
+          "importsFiles": [
+            "scripts/stryker-exclusions.mjs"
+          ],
           "path": "vitest.stryker.config.ts"
         }
       ],
@@ -1081,6 +1084,20 @@
           "hash": "90dd2d0657e3fb0ebb2d9ebd27ac663d10b2326356bcdcb6a76d5f5eafb15110",
           "path": "scripts/smoke-install.mjs",
           "sequences": []
+        },
+        {
+          "exports": [
+            "strykerExclusions"
+          ],
+          "hash": "a6ef1b98d60dc47377ce5e1c008a614abb60b5e5c1b18b45d57e35bfc217b601",
+          "path": "scripts/stryker-exclusions.mjs"
+        },
+        {
+          "exports": [
+            "untrustedSurvivors"
+          ],
+          "hash": "3515e82dc8c1149005f7b757a5dda0f5a1f490883bb5a726726e332af9da3b60",
+          "path": "scripts/stryker-trust-check.mjs"
         }
       ],
       "globs": [
@@ -1089,10 +1106,10 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
-      "outsideReads": 8,
+      "outsideReads": 9,
       "outsideWrites": 9,
       "role": "code",
-      "testedBy": 14,
+      "testedBy": 16,
       "unresolvedSites": 0
     },
     {
@@ -3124,7 +3141,7 @@
       "outsideReads": 98,
       "outsideWrites": 45,
       "role": "code",
-      "testedBy": 120,
+      "testedBy": 122,
       "unresolvedSites": 0
     },
     {
@@ -3136,7 +3153,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "9b56b825038c6a414b213e39511c699fc1205c5081dda37983d9228b368fd02d",
+          "hash": "5f73d514b9cf30be0a28fe8e5a5f9c2d39a74cdcdd8e92c8981cc489630c44a4",
           "path": "test/README.md"
         },
         {
@@ -3387,6 +3404,42 @@
           "path": "test/fixtures/incomplete-ledger-store-receipt.fixture.ts"
         },
         {
+          "hash": "a8e69030c87cac0534a2cdb5820bf80f41e739b5abc171c506606e0de4130085",
+          "path": "test/fixtures/stryker-rule/backslash-read.txt"
+        },
+        {
+          "hash": "bb73a479cc15fbfede66dd3f2fe268726e879916684d4206fabb8c796daf3b7b",
+          "path": "test/fixtures/stryker-rule/chdir.txt"
+        },
+        {
+          "hash": "5b68d744f9c748da6e176cc5a60a3a8da692768365ed9e1dbb3edf7f4ae309f7",
+          "path": "test/fixtures/stryker-rule/helper-read.txt"
+        },
+        {
+          "hash": "5d4e7808b1353eba73b7d36abb4ec9dcd4af4aa1dc259b600d5cc0165ebb7470",
+          "path": "test/fixtures/stryker-rule/imports-dist.txt"
+        },
+        {
+          "hash": "390f577aafa6fcc8aec8ce56f18605996e543bda717ff5479eab5c85ec74beac",
+          "path": "test/fixtures/stryker-rule/mentions-only.txt"
+        },
+        {
+          "hash": "d75d7d087eeee3646db16c08533cd7746224a93cdf260fc29a386fb69d6994e5",
+          "path": "test/fixtures/stryker-rule/raw-read.txt"
+        },
+        {
+          "hash": "ed206729c05bc00f2702ff72ae4c47b0ab62a1f4a91e0c6fea11f2827cea1a94",
+          "path": "test/fixtures/stryker-rule/spawns-dist.txt"
+        },
+        {
+          "hash": "8019edef3a0a1400fd0dd516da7d9029c72250fa8e08106abd732d0b56704887",
+          "path": "test/fixtures/stryker-rule/template-read.txt"
+        },
+        {
+          "hash": "ab2e3beb0ad988a0b2ddc057ab1ce3e587a2cabf13ef3341a8dc5441f33614d3",
+          "path": "test/fixtures/stryker-rule/unmutated-read.txt"
+        },
+        {
           "hash": "1a300b4016801b628835ba41bd89c6d8e27a44f6ff51da28ae300fde25274636",
           "importsFiles": [
             "src/adapters/factory.ts",
@@ -3395,6 +3448,15 @@
             "src/mcp/server.ts"
           ],
           "path": "test/install-smoke.test.ts"
+        },
+        {
+          "hash": "a27acead5c60084d892d052e94615ab31d7f312aaab71dd28c20e45802fd1109",
+          "importsFiles": [
+            "src/cli.ts",
+            "src/kernel/errors.ts",
+            "src/policy/error-formatter.ts"
+          ],
+          "path": "test/kernel-errors-contract.test.ts"
         },
         {
           "hash": "ef4a327266f817e3be6130fe20fcb1690e5cd93683e1a0e92f28ce061317f5fb",
@@ -3582,6 +3644,23 @@
           "path": "test/policy-engine.test.ts"
         },
         {
+          "hash": "ac36bf59bded3d21478c67fbce5476419d1ee97da87b557d201e82ea012ba8d6",
+          "importsFiles": [
+            "src/adapters/local/index.ts",
+            "src/contracts/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/errors.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/kernel/provenance.ts",
+            "src/policy/error-formatter.ts",
+            "src/policy/redactor.ts",
+            "src/types/artifact.ts",
+            "src/types/entity.ts",
+            "src/types/policy.ts"
+          ],
+          "path": "test/policy-kernel-scoping.test.ts"
+        },
+        {
           "hash": "1c1507f59eec25b5d33263fd2503cbaea08b73ef27091c60c8d83c84f7216cad",
           "importsFiles": [
             "src/adapters/local/index.ts",
@@ -3748,6 +3827,27 @@
           "path": "test/sqlite-driver-presence.test.ts"
         },
         {
+          "hash": "9f76fc0d6337509cdc8ded7ee24703a1541d39f7198f9cc0f57657db5e4478f4",
+          "importsFiles": [
+            "scripts/stryker-exclusions.mjs"
+          ],
+          "path": "test/stryker-exclusions.test.ts"
+        },
+        {
+          "hash": "c3163af2ad1635d0330fa38571faf55fcce3ba0f669657fb3042e000249daf45",
+          "importsFiles": [
+            "scripts/stryker-trust-check.mjs"
+          ],
+          "path": "test/stryker-trust-check.test.ts"
+        },
+        {
+          "exports": [
+            "sourceText"
+          ],
+          "hash": "10d239630874758a4cb79e12d435e69bc4925e9ce48f5240adf3191fe0c8e699",
+          "path": "test/support/source-text.ts"
+        },
+        {
           "hash": "af320e41415b2ecf8d801d90fda784abbf0f8a8746c4865d0ac09de91230c1e8",
           "importsFiles": [
             "src/adapters/local/errors.ts",
@@ -3856,7 +3956,7 @@
           "path": "test/wave-a3-tests-regression.test.ts"
         },
         {
-          "hash": "7d97c64d8471b3704485a94d0efc03ca09bc7bc45fe112da8c7d42403845a7bd",
+          "hash": "a91e68cec1f00a4beba03593f28fda6565e6af84f82b3e0517aee6aa2961b682",
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/index.ts",
@@ -3868,7 +3968,8 @@
             "src/ops/errors.ts",
             "src/resolver/cluster-resolver.ts",
             "src/sdk/cluster-sdk.ts",
-            "src/uri/cluster-uri.ts"
+            "src/uri/cluster-uri.ts",
+            "test/support/source-text.ts"
           ],
           "path": "test/wave-a4-fixup-regression.test.ts"
         },
@@ -3883,14 +3984,15 @@
           "path": "test/wave-a4-kernel-regression.test.ts"
         },
         {
-          "hash": "656b74c2fa48b50fbf68bd154e457830ed7fb6fc689300b1c0b32abc5e7e18f3",
+          "hash": "c20a6c8e0529ad431ca6d6a9d527f1285c19daa570f94ecd6de4ccb7d9cc45d3",
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/local-artifact-store.ts",
             "src/adapters/local/local-canonical-store.ts",
             "src/adapters/local/local-index-store.ts",
             "src/adapters/local/local-ledger-store.ts",
-            "src/types/provenance-event.ts"
+            "src/types/provenance-event.ts",
+            "test/support/source-text.ts"
           ],
           "path": "test/wave-a4-stores-regression.test.ts"
         },
@@ -3918,7 +4020,7 @@
           "path": "test/wave-b1-cidocs-regression.test.ts"
         },
         {
-          "hash": "20fc3f0a86fceea227cd5d9d7a84092d95e7c74f96b4bba5eab272e7970dc769",
+          "hash": "12b76c49ac0ba798b6376c732e55e6c1bf7c6026c00a128e6e692a65ca4bd90a",
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/index.ts",
@@ -3926,7 +4028,8 @@
             "src/kernel/policy-enforced-kernel.ts",
             "src/mcp/config-validator.ts",
             "src/mcp/sanitize.ts",
-            "src/util/tmp-paths.ts"
+            "src/util/tmp-paths.ts",
+            "test/support/source-text.ts"
           ],
           "path": "test/wave-b1-fixup-regression.test.ts"
         },
@@ -4008,7 +4111,7 @@
           "path": "test/wave-c1-kernel-regression.test.ts"
         },
         {
-          "hash": "813eae922dddea8d1d1258682c8db3db4b6e1f943d187fb895a86df8bcac1965",
+          "hash": "3e860f1a35489b8290f85ec3555f67c36bf080b9ab588b469c264ee331d781fd",
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/index.ts",
@@ -4017,7 +4120,8 @@
             "src/ops/doctor.ts",
             "src/ops/errors.ts",
             "src/ops/rebuild.ts",
-            "src/ops/verify.ts"
+            "src/ops/verify.ts",
+            "test/support/source-text.ts"
           ],
           "path": "test/wave-c1-stores-regression.test.ts"
         },
@@ -4065,7 +4169,10 @@
           "path": "test/wave-c1-tests-exit-codes.test.ts"
         },
         {
-          "hash": "9358784b0a1778161965e50636a2d01b506a43852856027dbc7725b54891c9ad",
+          "hash": "00e488b46356a2afc5a801d5a77ca409c27c43e2a45d51db423afc92ddec1294",
+          "importsFiles": [
+            "test/support/source-text.ts"
+          ],
           "path": "test/wave-c1-tests-jsdoc-examples.test.ts"
         },
         {
@@ -4209,7 +4316,7 @@
           "path": "test/wave-s2a2-gating-regression.test.ts"
         },
         {
-          "hash": "4dc4bbdcec558b5656c01e92af86f110e32719c036d6aaa18671b44cb27cbd14",
+          "hash": "3469b67f9966cd5b30f83088d59e4a0cc43cdcc264c931423bba434058bc90f1",
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/policy-enforced-kernel.ts",
@@ -4218,7 +4325,8 @@
             "src/types/policy.ts",
             "src/types/provenance-event.ts",
             "src/types/receipt.ts",
-            "src/uri/cluster-uri.ts"
+            "src/uri/cluster-uri.ts",
+            "test/support/source-text.ts"
           ],
           "path": "test/wave-s2a2-policy-regression.test.ts"
         },
@@ -4541,7 +4649,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 123
+          "files": 128
         },
         {
           "boundary": "dashboard",
@@ -4559,7 +4667,7 @@
             "file": "scripts/dashboard-snapshot.ts",
             "from": "test/dashboard-snapshot.test.ts"
           },
-          "files": 4
+          "files": 6
         }
       ],
       "readers": [],
@@ -4758,6 +4866,13 @@
         {
           "job": "test",
           "matched": true,
+          "path": "test/kernel-errors-contract.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "test",
+          "matched": true,
           "path": "test/kernel.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -4857,6 +4972,13 @@
           "job": "test",
           "matched": true,
           "path": "test/policy-engine.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "test",
+          "matched": true,
+          "path": "test/policy-kernel-scoping.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -4976,6 +5098,20 @@
           "job": "test",
           "matched": true,
           "path": "test/sqlite-driver-presence.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "test",
+          "matched": true,
+          "path": "test/stryker-exclusions.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "test",
+          "matched": true,
+          "path": "test/stryker-trust-check.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -5442,7 +5578,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 125,
+      "runsCount": 129,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -5725,6 +5861,11 @@
           "job": "gate",
           "step": "4",
           "text": "node scripts/release-gate.mjs"
+        },
+        {
+          "job": "gate",
+          "step": "Stryker dry run (the mutation setup still runs)",
+          "text": "npx stryker run --dryRunOnly"
         }
       ],
       "elsewhere": [],
@@ -5740,7 +5881,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 10
+          "files": 12
         },
         {
           "boundary": "src",
@@ -5750,7 +5891,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 123
+          "files": 128
         },
         {
           "boundary": "dashboard",
@@ -5979,6 +6120,13 @@
         {
           "job": "gate",
           "matched": true,
+          "path": "test/kernel-errors-contract.test.ts",
+          "runKind": "executes",
+          "via": "scripts/release-gate.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "gate",
+          "matched": true,
           "path": "test/kernel.test.ts",
           "runKind": "executes",
           "via": "scripts/release-gate.mjs → vitest vitest.config.ts"
@@ -6078,6 +6226,13 @@
           "job": "gate",
           "matched": true,
           "path": "test/policy-engine.test.ts",
+          "runKind": "executes",
+          "via": "scripts/release-gate.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "gate",
+          "matched": true,
+          "path": "test/policy-kernel-scoping.test.ts",
           "runKind": "executes",
           "via": "scripts/release-gate.mjs → vitest vitest.config.ts"
         },
@@ -6197,6 +6352,20 @@
           "job": "gate",
           "matched": true,
           "path": "test/sqlite-driver-presence.test.ts",
+          "runKind": "executes",
+          "via": "scripts/release-gate.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "gate",
+          "matched": true,
+          "path": "test/stryker-exclusions.test.ts",
+          "runKind": "executes",
+          "via": "scripts/release-gate.mjs → vitest vitest.config.ts"
+        },
+        {
+          "job": "gate",
+          "matched": true,
+          "path": "test/stryker-trust-check.test.ts",
           "runKind": "executes",
           "via": "scripts/release-gate.mjs → vitest vitest.config.ts"
         },
@@ -6663,7 +6832,7 @@
           "via": "scripts/release-gate.mjs → vitest vitest.config.ts"
         }
       ],
-      "runsCount": 129,
+      "runsCount": 133,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -6782,7 +6951,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 123
+          "files": 128
         },
         {
           "boundary": "dashboard",
@@ -6800,7 +6969,7 @@
             "file": "scripts/dashboard-snapshot.ts",
             "from": "test/dashboard-snapshot.test.ts"
           },
-          "files": 4
+          "files": 6
         }
       ],
       "readers": [],
@@ -6999,6 +7168,13 @@
         {
           "job": "release",
           "matched": true,
+          "path": "test/kernel-errors-contract.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
           "path": "test/kernel.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -7098,6 +7274,13 @@
           "job": "release",
           "matched": true,
           "path": "test/policy-engine.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "test/policy-kernel-scoping.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -7217,6 +7400,20 @@
           "job": "release",
           "matched": true,
           "path": "test/sqlite-driver-presence.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "test/stryker-exclusions.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "test/stryker-trust-check.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -7683,7 +7880,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 125,
+      "runsCount": 129,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -7968,6 +8165,11 @@
   ],
   "edges": [
     {
+      "from": "root",
+      "kind": "file",
+      "to": "scripts"
+    },
+    {
       "from": "scripts",
       "kind": "file",
       "to": "src"
@@ -7997,8 +8199,8 @@
     }
   ],
   "generatedFrom": {
-    "commit": "f1d79e07fa601bb910a9042bdbe200599d46e303",
-    "tracked": 436
+    "commit": "fe9bf666d4daa3f214126dd3b29d711e718995e8",
+    "tracked": 452
   },
   "landings": [
     {
@@ -9587,6 +9789,12 @@
           "fromTests": true
         },
         {
+          "by": "test/stryker-trust-check.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "test/wave-b1-cidocs-regression.test.ts",
           "call": "readFileSync",
           "confidence": "ast",
@@ -10516,7 +10724,7 @@
         },
         {
           "by": "test/wave-a4-fixup-regression.test.ts",
-          "call": "readFileSync",
+          "call": "literal",
           "confidence": "ast",
           "fromTests": true
         }
@@ -10540,6 +10748,11 @@
         {
           "by": ".verifier-outputs/v2-cross-boundary.json",
           "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/release-readiness.md",
+          "call": "--mutate",
           "confidence": "text"
         },
         {
@@ -10804,12 +11017,6 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
-        },
-        {
-          "by": "test/wave-c1-stores-regression.test.ts",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "fromTests": true
         }
       ],
       "target": "src/ops/rebuild.ts",
@@ -10864,12 +11071,6 @@
         {
           "by": "test/wave-c1-stores-regression.test.ts",
           "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "test/wave-c1-stores-regression.test.ts",
-          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -11089,7 +11290,7 @@
         },
         {
           "by": "test/wave-c1-tests-jsdoc-examples.test.ts",
-          "call": "readFileSync",
+          "call": "literal",
           "confidence": "ast",
           "fromTests": true
         }
@@ -11186,6 +11387,39 @@
     {
       "readers": [
         {
+          "by": "scripts/stryker-exclusions.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "test/stryker-exclusions.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/stryker-trust-check.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "stryker.conf.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/stryker-exclusions.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/stryker-exclusions.mjs",
+          "call": "readdirSync",
+          "confidence": "ast"
+        },
+        {
           "by": "test/wave-a4-tests-regression.test.ts",
           "call": "readdirSync",
           "confidence": "ast",
@@ -11210,12 +11444,13 @@
     {
       "readers": [
         {
-          "by": "vitest.stryker.config.ts",
+          "by": "test/stryker-exclusions.test.ts",
           "call": "literal",
-          "confidence": "ast"
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
-      "target": "test/cli-docs.test.ts",
+      "target": "test/backend-env-surfaces.test.ts",
       "writers": []
     },
     {
@@ -11225,11 +11460,6 @@
           "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
-        },
-        {
-          "by": "vitest.stryker.config.ts",
-          "call": "literal",
-          "confidence": "ast"
         }
       ],
       "target": "test/cli.test.ts",
@@ -11353,12 +11583,25 @@
     {
       "readers": [
         {
-          "by": "vitest.stryker.config.ts",
-          "call": "literal",
-          "confidence": "ast"
+          "by": "test/stryker-exclusions.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
-      "target": "test/install-smoke.test.ts",
+      "target": "test/fixtures/stryker-rule",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "test/stryker-exclusions.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "test/fixtures/stryker-rule/imports-dist.txt",
       "writers": []
     },
     {
@@ -11371,17 +11614,6 @@
         }
       ],
       "target": "test/kernel.test.ts",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "vitest.stryker.config.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "test/phase10-proof.test.ts",
       "writers": []
     },
     {
@@ -11406,17 +11638,6 @@
         }
       ],
       "target": "test/phase14-proof.test.ts",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "vitest.stryker.config.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "test/phase15-proof.test.ts",
       "writers": []
     },
     {
@@ -11482,17 +11703,6 @@
     {
       "readers": [
         {
-          "by": "vitest.stryker.config.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "test/policy-surface.test.ts",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": "test/wave-a4-tests-regression.test.ts",
           "call": "readFileSync",
           "confidence": "ast",
@@ -11547,11 +11757,6 @@
           "by": ".verifier-outputs/v3-invariant-test-completeness.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "vitest.stryker.config.ts",
-          "call": "literal",
-          "confidence": "ast"
         }
       ],
       "target": "test/wave-a3-stores-regression.test.ts",
@@ -11563,11 +11768,6 @@
           "by": ".verifier-outputs/v3-invariant-test-completeness.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "vitest.stryker.config.ts",
-          "call": "literal",
-          "confidence": "ast"
         }
       ],
       "target": "test/wave-a3-surface-regression.test.ts",
@@ -11579,11 +11779,6 @@
           "by": ".verifier-outputs/v3-invariant-test-completeness.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "vitest.stryker.config.ts",
-          "call": "literal",
-          "confidence": "ast"
         }
       ],
       "target": "test/wave-a3-tests-regression.test.ts",
@@ -11647,6 +11842,18 @@
     {
       "readers": [
         {
+          "by": "test/stryker-exclusions.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "test/wave-s2a2-surfaces-regression.test.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "test/wave-a4-tests-regression.test.ts",
           "call": "readFileSync",
           "confidence": "ast",
@@ -11662,11 +11869,6 @@
           "by": ".verifier-outputs/v1-wave-a4-contract-completeness.json",
           "call": "literal",
           "confidence": "text"
-        },
-        {
-          "by": "vitest.stryker.config.ts",
-          "call": "literal",
-          "confidence": "ast"
         }
       ],
       "target": "test/wave6-proof.test.ts",
@@ -11757,6 +11959,18 @@
           "by": "stryker.conf.json",
           "call": "configuration",
           "confidence": "config"
+        },
+        {
+          "by": "test/stryker-exclusions.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "test/stryker-exclusions.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "vitest.stryker.config.ts",
@@ -11766,6 +11980,6 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 128,
+  "testFiles": 142,
   "unassigned": []
 }

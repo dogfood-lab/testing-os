@@ -390,7 +390,7 @@
       "outsideReads": 3,
       "role": "code",
       "testedBy": 8,
-      "unresolvedSites": 8
+      "unresolvedSites": 9
     },
     {
       "dynamicReads": 1,
@@ -8229,7 +8229,7 @@
   ],
   "doors": [
     {
-      "checksCount": 8,
+      "checksCount": 16,
       "commands": [
         {
           "job": "build-and-test",
@@ -8403,7 +8403,63 @@
           "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "dogfood/",
+          "path": "dogfood/__tests__/",
+          "runKind": "executes",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "dogfood/chapel-threshold-unreal.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "dogfood/chapel-threshold.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "dogfood/export-stage-fixture.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "dogfood/godot-smoke-verdict.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "dogfood/multi-target-export-proof.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "dogfood/run-ai-rpg-smoke.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "dogfood/run-godot-smoke.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "dogfood/run-unreal-smoke.ts",
           "runKind": "checks",
           "via": "tsc tsconfig.dogfood.json"
         },
@@ -8411,9 +8467,9 @@
           "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "dogfood/__tests__/",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "dogfood/worlds/",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
         },
         {
           "directory": true,
@@ -8961,7 +9017,7 @@
           "via": "astro build"
         }
       ],
-      "runsCount": 71,
+      "runsCount": 79,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -9124,7 +9180,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 8,
+      "checksCount": 16,
       "commands": [
         {
           "job": "publish",
@@ -9279,7 +9335,63 @@
           "directory": true,
           "job": "publish",
           "matched": true,
-          "path": "dogfood/",
+          "path": "dogfood/__tests__/",
+          "runKind": "executes",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "dogfood/chapel-threshold-unreal.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "dogfood/chapel-threshold.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "dogfood/export-stage-fixture.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "dogfood/godot-smoke-verdict.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "dogfood/multi-target-export-proof.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "dogfood/run-ai-rpg-smoke.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "dogfood/run-godot-smoke.ts",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "dogfood/run-unreal-smoke.ts",
           "runKind": "checks",
           "via": "tsc tsconfig.dogfood.json"
         },
@@ -9287,9 +9399,9 @@
           "directory": true,
           "job": "publish",
           "matched": true,
-          "path": "dogfood/__tests__/",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
+          "path": "dogfood/worlds/",
+          "runKind": "checks",
+          "via": "tsc tsconfig.dogfood.json"
         },
         {
           "directory": true,
@@ -9764,7 +9876,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 68,
+      "runsCount": 76,
       "secrets": [],
       "sends": {
         "deploysPages": false,

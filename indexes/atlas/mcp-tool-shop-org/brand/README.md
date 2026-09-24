@@ -1,10 +1,10 @@
 # brand: how it works
 
-Mapped at 2026-09-24 from commit 49c1e9d.
+Mapped at 2026-09-24 from commit 8110f52.
 
 ## What this is
 
-11 parts, mostly images (251 files); code in TypeScript (40) and JavaScript (8). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. People run brand.
+11 parts, mostly images (252 files); code in TypeScript (40) and JavaScript (8). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. People run brand.
 
 ## What changed since 2026-09-23 (82d3e54)
 
@@ -15,10 +15,10 @@ Mapped at 2026-09-24 from commit 49c1e9d.
 - README.ja.md is now read by tests/migrate.test.ts.
 - README.md is now also read by tests/audit.test.ts, tests/json-output.test.ts, tests/migrate-journal.test.ts and tests/migrate.test.ts.
 - README.zh.md is now read by tests/migrate.test.ts.
-- And 239 more new writers and readers of places.
+- And 240 more new writers and readers of places.
 - logos was generated and is now authored.
 - src/cli.ts now starts at main; it started at with globals.
-- 100 files changed content, across 8 parts.
+- 1 file added and 100 changed content, across 9 parts.
 
 ## What comes in
 

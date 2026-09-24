@@ -59,7 +59,9 @@
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
-      "entryPoints": [],
+      "entryPoints": [
+        "apps/desktop/src-tauri/src/main.rs"
+      ],
       "externals": 0,
       "files": [
         {
@@ -255,8 +257,11 @@
           "path": "apps/desktop/src-tauri/icons/icon.png"
         },
         {
+          "entry": "main",
+          "entryRule": 1,
           "hash": "c3ebe69c4aad17ff60bdcca25f538003482429a69518aa67cf10012e35228be8",
-          "path": "apps/desktop/src-tauri/src/main.rs"
+          "path": "apps/desktop/src-tauri/src/main.rs",
+          "sequences": []
         },
         {
           "hash": "90b4352c0cfa4465fd31ef97372bdb3f6b8c860770b7f1e82401ece844117288",
@@ -1156,6 +1161,49 @@
         "actions/upload-pages-artifact"
       ],
       "usesWorkflowToken": false
+    },
+    {
+      "app": "desktop",
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "apps/desktop/src-tauri/Cargo.toml",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "stillpoint",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "desktop",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "apps/desktop/src-tauri/src/main.rs",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
     }
   ],
   "edges": [
@@ -1538,13 +1586,5 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 6,
-  "unassigned": [],
-  "unseen": [
-    {
-      "built": false,
-      "dir": "apps/desktop",
-      "kind": "tauri",
-      "rust": 2
-    }
-  ]
+  "unassigned": []
 }
