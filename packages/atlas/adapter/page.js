@@ -2448,9 +2448,27 @@ function unseenLines(ctx) {
       ];
       const them = files.length === 1 ? 'it' : 'them';
       lines.push(`There is ${list(named)} that no workflow runs; what deploys from ${them} does so from outside this repository, and is not on this page.`);
+    } else if (entry.kind === 'shipped') {
+      const items = entry.items ?? [];
+      const images = items.filter((item) => item.kind === 'image');
+      const named = [
+        ...(images.length === 1 ? [`${images[0].path.includes('/') ? `a Dockerfile at ${images[0].path}` : 'a Dockerfile'} that a workflow builds and none pushes`] : images.length > 1 ? [`${count(images.length, 'Dockerfile')} that workflows build and none pushes`] : []),
+        ...shippedAt(items, 'space', 'a Hugging Face Space under', 'Hugging Face Spaces under', (path) => (path ? `${path}/` : 'the repository root')),
+        ...shippedAt(items, 'catalog', 'a Docker MCP Catalog entry at', 'Docker MCP Catalog entries at', (path) => path),
+      ];
+      const them = items.length === 1 ? 'it' : 'them';
+      lines.push(`There is ${list(named)}; what ships from ${them} goes from outside this repository, and is not on this page.`);
     }
   }
   return lines;
+}
+
+// "a Docker MCP Catalog entry at catalog/server.yaml", or the entries
+// together when there are more.
+function shippedAt(items, kind, one, many, place) {
+  const paths = items.filter((item) => item.kind === kind).map((item) => place(item.path));
+  if (paths.length === 0) return [];
+  return [`${paths.length === 1 ? one : many} ${list(paths)}`];
 }
 
 /**

@@ -10,11 +10,18 @@ import { isTestMaterial } from './landings.js';
  * or checks a file of it, names the file, or runs the tool that builds or
  * deploys it.
  *
+ * And what goes out by hand, `shipped`: a Dockerfile a workflow builds whose
+ * image no workflow pushes, a Hugging Face Space (an app.py beside a README
+ * whose front matter names an sdk) no workflow uploads, and a Docker MCP
+ * Catalog entry (a server.yaml naming an image and type: server) no workflow
+ * submits to the registry, though one may check it.
+ *
  * @param {Set<string>} tracked
  * @param {object[]} doors every door of the map
- * @returns {Array<{ kind: 'tauri'|'crate', dir: string, rust: number, built: boolean } | { kind: 'deploy', files: string[] }>}
+ * @param {(path: string) => string|null} [read] a tracked file's text
+ * @returns {Array<{ kind: 'tauri'|'crate', dir: string, rust: number, built: boolean } | { kind: 'deploy', files: string[] } | { kind: 'shipped', items: Array<{ kind: 'image'|'space'|'catalog', path: string }> }>}
  */
-export function unseenParts(tracked, doors) {
+export function unseenParts(tracked, doors, read = () => null) {
   const workflows = doors.filter((door) => !door.kind && !door.parseError);
   const texts = workflows.flatMap((door) => [...(door.commands ?? []).map((command) => command.text), ...(door.uses ?? [])]);
   const says = (pattern) => texts.some((text) => pattern.test(text));
@@ -48,8 +55,31 @@ export function unseenParts(tracked, doors) {
     deploys.push(path);
   }
   if (deploys.length > 0) out.push({ kind: 'deploy', files: deploys });
+  const pushed = workflows.some((door) => (door.sends?.publishesTo ?? []).includes('container image')
+    || (door.gated ?? []).some((entry) => (entry.sends ?? []).includes('publishesTo:container image')));
+  const items = [];
+  for (const path of paths) {
+    const base = posix.basename(path);
+    if (DEPLOY_FILES[0][0].test(base) && !deploys.includes(path) && !pushed) items.push({ kind: 'image', path });
+    if (base === 'app.py' && !says(HUB_SPACE)) {
+      const readme = posix.join(dirOf(path), 'README.md');
+      if (tracked.has(readme) && FRONT_SDK.test(read(readme) ?? '')) items.push({ kind: 'space', path: dirOf(path) });
+    }
+    if (/^server(\.[\w-]+)?\.ya?ml$/.test(base) && !says(CATALOG_SUBMIT)) {
+      const text = read(path) ?? '';
+      if (/^image:\s*\S/m.test(text) && /^type:\s*server\s*$/m.test(text)) items.push({ kind: 'catalog', path });
+    }
+  }
+  if (items.length > 0) out.push({ kind: 'shipped', items });
   return out;
 }
+
+// A Space is uploaded as a repository of type space, or pushed to its git remote.
+const HUB_SPACE = /repo_type\s*=\s*["']space["']|--repo-type[= ]space\b|huggingface\.co\/spaces\//;
+// An entry reaches the Docker MCP Catalog as a pull request to its registry.
+const CATALOG_SUBMIT = /docker\/mcp-registry/;
+// The front matter a Space's README opens with names the sdk it runs on.
+const FRONT_SDK = /^---\r?\n(?:[^\n]*\n)*?sdk:\s*\S+[^\n]*\n(?:[^\n]*\n)*?---/;
 
 const CARGO = /\bcargo\s+(build|test|check|clippy|run|publish|install|nextest)\b|dtolnay\/rust-toolchain|actions-rs\//;
 

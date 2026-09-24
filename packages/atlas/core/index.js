@@ -194,7 +194,8 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   for (const script of scripts) if (script.fn && !entryFunctions.has(script.path)) entryFunctions.set(script.path, script.fn);
   attachSequences({ files: graph.files, facts, doors, entryPoints, entryFunctions });
   attachExports(graph.files, facts);
-  const unseen = unseenParts(trackedSet, doors);
+  const unseenView = repositoryView({ repoPath, tracked: trackedSet });
+  const unseen = unseenParts(trackedSet, doors, (path) => unseenView.text(path));
 
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },

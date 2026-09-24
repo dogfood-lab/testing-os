@@ -194,7 +194,7 @@ export function buildArtifact(mapped, commit) {
     symlinks: mapped.symlinks.filter((link) => !inAtlas(link.path)).map((link) => ({ path: link.path, target: link.target })).sort(byPath),
     testFiles: tested.testFiles,
     unassigned,
-    ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map((entry) => (entry.kind === 'deploy' ? { files: [...entry.files], kind: entry.kind } : { built: entry.built, dir: entry.dir, kind: entry.kind, rust: entry.rust })) } : {}),
+    ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map(carryUnseen) } : {}),
   };
 }
 
@@ -301,6 +301,12 @@ function carryReader(entry) {
   }
   if (entry.fromTests) out.fromTests = true;
   return out;
+}
+
+function carryUnseen(entry) {
+  if (entry.kind === 'deploy') return { files: [...entry.files], kind: entry.kind };
+  if (entry.kind === 'shipped') return { items: entry.items.map((item) => ({ kind: item.kind, path: item.path })), kind: entry.kind };
+  return { built: entry.built, dir: entry.dir, kind: entry.kind, rust: entry.rust };
 }
 
 // A run always says whether the door runs the file or only checks it; it
