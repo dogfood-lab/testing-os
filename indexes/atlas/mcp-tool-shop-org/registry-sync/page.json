@@ -1,0 +1,581 @@
+{
+  "authored": [
+    ".claude/",
+    ".github/",
+    "root",
+    "site/",
+    "templates/"
+  ],
+  "breaks": [
+    {
+      "doors": 4,
+      "importedBy": [],
+      "importedByTests": [
+        "test"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "test",
+      "partLabel": "test"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 80,
+      "moved": 0,
+      "parts": 7,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `atlas/**`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `atlas/**`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI now also runs src/cli.ts.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "src/cli.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "CHANGELOG.md is now read by test/version.test.ts.",
+        "subjects": [
+          "CHANGELOG.md",
+          "test/version.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "README.md is now read by test/providers/github.test.ts.",
+        "subjects": [
+          "README.md",
+          "test/providers/github.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "package.json is now also read by test/version.test.ts.",
+        "subjects": [
+          "package.json",
+          "test/version.test.ts"
+        ]
+      },
+      {
+        "kind": "counts",
+        "sentence": "80 files changed content, across 7 parts.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "e78b5d024fbc2ce12c2ce9eabf00b9f74b29a487",
+      "generatedAt": "2026-09-23T22:38:01.923Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "bd8e89433728f9b9bf1700379507b46a8c50cdc9",
+  "defaultBranch": "main",
+  "derived": "7 parts, mostly TypeScript (38 files). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run registry-sync. People import @mcptoolshop/registry-sync.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "programs": [
+        "gh"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 18
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 15
+        }
+      ],
+      "runs": [
+        "src/cli.ts",
+        "test/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "changes other repositories through the GitHub API"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 7 paths",
+        "on a push to main touching 7 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/publish.yml",
+      "id": ".github/workflows/publish.yml",
+      "landings": [],
+      "name": "Publish",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 15
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 18
+        }
+      ],
+      "runs": [
+        "test/"
+      ],
+      "runsCount": 1,
+      "sends": [
+        "publishes to npm"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/registry-sync",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/registry-sync",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 15
+        }
+      ],
+      "runs": [
+        "src/index.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#registry-sync",
+      "kind": "command",
+      "landings": [],
+      "name": "registry-sync",
+      "programs": [
+        "gh"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 18
+        }
+      ],
+      "runs": [
+        "src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [
+        "changes other repositories through the GitHub API"
+      ],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "test",
+      "fromTests": true,
+      "to": "src"
+    }
+  ],
+  "generated": [],
+  "generatedAt": "2026-09-24T11:30:03.356Z",
+  "limits": [
+    "4 writes and 6 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".claude": ".claude",
+    ".github": ".github",
+    "root": "the repository root",
+    "site": "the site",
+    "src": "src",
+    "templates": "templates",
+    "test": "test"
+  },
+  "parts": 7,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/registry-sync",
+  "sequences": [
+    {
+      "entry": "main",
+      "file": "src/cli.ts",
+      "inner": [
+        {
+          "file": "src/audit.ts",
+          "name": "audit",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "audit",
+          "steps": [
+            {
+              "name": "listOrgRepos",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "list org repos"
+            },
+            {
+              "name": "pLimit",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "p limit"
+            },
+            {
+              "name": "readPackageJson",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "read package json"
+            },
+            {
+              "name": "hasDockerfile",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "has dockerfile"
+            },
+            {
+              "name": "getNpmPackageInfo",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "get npm package info"
+            },
+            {
+              "name": "compareSemver",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "compare semver"
+            },
+            {
+              "name": "listGhcrPackages",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "list ghcr packages"
+            }
+          ]
+        },
+        {
+          "file": "src/audit.ts",
+          "name": "audit",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "audit",
+          "steps": [
+            {
+              "name": "listOrgRepos",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "list org repos"
+            },
+            {
+              "name": "pLimit",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "p limit"
+            },
+            {
+              "name": "readPackageJson",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "read package json"
+            },
+            {
+              "name": "hasDockerfile",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "has dockerfile"
+            },
+            {
+              "name": "getNpmPackageInfo",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "get npm package info"
+            },
+            {
+              "name": "compareSemver",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "compare semver"
+            },
+            {
+              "name": "listGhcrPackages",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "list ghcr packages"
+            }
+          ]
+        },
+        {
+          "file": "src/audit.ts",
+          "name": "audit",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "audit",
+          "steps": [
+            {
+              "name": "listOrgRepos",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "list org repos"
+            },
+            {
+              "name": "pLimit",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "p limit"
+            },
+            {
+              "name": "readPackageJson",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "read package json"
+            },
+            {
+              "name": "hasDockerfile",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "has dockerfile"
+            },
+            {
+              "name": "getNpmPackageInfo",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "get npm package info"
+            },
+            {
+              "name": "compareSemver",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "compare semver"
+            },
+            {
+              "name": "listGhcrPackages",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "list ghcr packages"
+            }
+          ]
+        }
+      ],
+      "part": "src",
+      "partLabel": "src",
+      "phrase": "main",
+      "steps": [
+        {
+          "name": "loadConfig",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "load config"
+        },
+        {
+          "name": "audit",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "audit"
+        },
+        {
+          "name": "formatAuditJson",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "format audit json"
+        },
+        {
+          "name": "formatAuditMarkdown",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "format audit markdown"
+        },
+        {
+          "name": "formatAuditTable",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "format audit table"
+        },
+        {
+          "name": "loadConfig",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "load config"
+        },
+        {
+          "name": "audit",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "audit"
+        },
+        {
+          "name": "plan",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "plan"
+        },
+        {
+          "name": "formatPlanJson",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "format plan json"
+        },
+        {
+          "name": "formatPlanMarkdown",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "format plan markdown"
+        },
+        {
+          "name": "formatPlanTable",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "format plan table"
+        },
+        {
+          "name": "loadConfig",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "load config"
+        },
+        {
+          "name": "audit",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "audit"
+        },
+        {
+          "name": "plan",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "plan"
+        },
+        {
+          "name": "apply",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "apply"
+        },
+        {
+          "name": "formatApplyJson",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "format apply json"
+        },
+        {
+          "name": "diff",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "diff"
+        },
+        {
+          "count": 3,
+          "name": null,
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "diff"
+        }
+      ]
+    }
+  ],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "src/cli.ts"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 15,
+  "testedBy": {
+    "src": 14
+  },
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [],
+  "written": 0
+}

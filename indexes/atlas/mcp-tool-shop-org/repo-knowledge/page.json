@@ -1,0 +1,515 @@
+{
+  "authored": [
+    ".claude/",
+    ".github/",
+    "assets/",
+    "data/",
+    "research/",
+    "site/",
+    "templates/"
+  ],
+  "breaks": [
+    {
+      "doors": 4,
+      "importedBy": [],
+      "importedByTests": [
+        "test"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "test",
+      "partLabel": "test"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 775,
+      "moved": 0,
+      "parts": 10,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "import-removed",
+        "sentence": "src no longer imports the repository root.",
+        "subjects": [
+          "src",
+          "root"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
+        "subjects": [
+          ".github/workflows/pages.yml",
+          "site/astro.config.mjs",
+          "site/src/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 2 more changes to doors.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": ".github/workflows/ci.yml is now read by test/build-health.test.ts, test/doctor.test.ts, test/feed.test.ts, test/health-commands.test.ts, test/migration-009.test.ts and test/table.test.ts.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "test/build-health.test.ts",
+          "test/doctor.test.ts",
+          "test/feed.test.ts",
+          "test/health-commands.test.ts",
+          "test/migration-009.test.ts",
+          "test/table.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": ".github/workflows/release.yml is now read by test/build-health.test.ts.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "test/build-health.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "CHANGELOG.md is now also read by test/version.test.ts.",
+        "subjects": [
+          "CHANGELOG.md",
+          "test/version.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 9 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "origin",
+        "sentence": "data was generated and is now authored.",
+        "subjects": [
+          "data"
+        ]
+      },
+      {
+        "kind": "counts",
+        "sentence": "775 files changed content, across 10 parts.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "823601731ae25a1d41917a2d0b05b1ee08ad14de",
+      "generatedAt": "2026-09-23T17:32:34.050Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [
+    {
+      "a": "src/mcp/server.ts",
+      "b": "test/mcp-server.test.ts",
+      "either": 7,
+      "partLabels": [
+        "src",
+        "test"
+      ],
+      "parts": [
+        "src",
+        "test"
+      ],
+      "relation": "b-imports-a",
+      "shared": 6
+    },
+    {
+      "a": "src/db/init.ts",
+      "b": "test/migration-sequence.test.ts",
+      "either": 13,
+      "partLabels": [
+        "src",
+        "test"
+      ],
+      "parts": [
+        "src",
+        "test"
+      ],
+      "relation": "b-imports-a",
+      "shared": 10
+    },
+    {
+      "a": "src/index.ts",
+      "b": "test/migration-sequence.test.ts",
+      "either": 10,
+      "partLabels": [
+        "src",
+        "test"
+      ],
+      "parts": [
+        "src",
+        "test"
+      ],
+      "relation": "b-imports-a",
+      "shared": 7
+    },
+    {
+      "a": "src/index.ts",
+      "b": "src/sync/index.ts",
+      "either": 8,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 5
+    },
+    {
+      "a": "test/migration-sequence.test.ts",
+      "b": "test/publish-state.test.ts",
+      "either": 10,
+      "partLabels": [
+        "test",
+        "test"
+      ],
+      "parts": [
+        "test",
+        "test"
+      ],
+      "relation": "inside",
+      "shared": 6
+    }
+  ],
+  "changesTogetherNote": [
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "4435870bbfdf3726b9faa07e235fe5ce501c027d",
+  "defaultBranch": "main",
+  "derived": "11 parts, mostly TypeScript (84 files). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run rk. People import @mcptoolshop/repo-knowledge.",
+  "doors": [
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 32
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 48
+        }
+      ],
+      "runs": [
+        "scripts/postbuild.js",
+        "test/"
+      ],
+      "runsCount": 2,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 14 paths",
+        "on a push to main touching 14 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 32
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 48
+        }
+      ],
+      "runs": [
+        "scripts/gen-audit-report.mjs",
+        "scripts/gen-worklist.mjs",
+        "scripts/postbuild.js",
+        "test/"
+      ],
+      "runsCount": 4,
+      "sends": [
+        "publishes to npm on a tag push",
+        "creates a GitHub release on a tag push"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*.*.*` is pushed",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site on a push to main"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 2 paths",
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/repo-knowledge",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/repo-knowledge",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 29
+        }
+      ],
+      "runs": [
+        "src/index.ts",
+        "src/mcp/server.ts"
+      ],
+      "runsCount": 2,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#rk",
+      "kind": "command",
+      "landings": [],
+      "name": "rk",
+      "programs": [
+        "gh"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 30
+        }
+      ],
+      "runs": [
+        "src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "test",
+      "fromTests": true,
+      "to": "src"
+    }
+  ],
+  "generated": [
+    {
+      "place": "AUDIT-WORKLIST.md",
+      "writers": [
+        "scripts/gen-audit-worklist.mjs"
+      ]
+    },
+    {
+      "place": "ENRICHMENT-WORKLIST.md",
+      "writers": [
+        "scripts/gen-enrichment-worklist.mjs"
+      ]
+    },
+    {
+      "place": "REMEDIATION-CHECKLIST.md",
+      "writers": [
+        "scripts/gen-remediation-checklist.mjs"
+      ]
+    },
+    {
+      "place": "REMEDIATION-WORKLIST.md",
+      "writers": [
+        "scripts/gen-worklist.mjs when run without --selftest"
+      ]
+    },
+    {
+      "place": "audit_report.md",
+      "writers": [
+        "scripts/gen-audit-report.mjs when run without --selftest"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-24T11:30:08.578Z",
+  "limits": [
+    "1 import site could not be resolved.",
+    "3 files use syntax the parser cannot read (src/sync/local.ts, test/fsck.test.ts and test/sync-recursive-local.test.ts), so what they import is not known: 2 in test (`typeof import(…)` as a type argument), 1 in src (an import type followed by `[]`).",
+    "3 writes and 27 reads use paths built at run time and are not named here.",
+    "6 writes and 71 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "11 commands are built at run time and not followed, 9 of them in tests.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".claude": ".claude",
+    ".github": ".github",
+    "assets": "assets",
+    "data": "data",
+    "research": "research",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "site",
+    "src": "src",
+    "templates": "templates",
+    "test": "test"
+  },
+  "parts": 11,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/repo-knowledge",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "src/index.ts"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 55,
+  "testedBy": {
+    "scripts": 0,
+    "src": 45
+  },
+  "unnamedWrites": 3,
+  "unread": [
+    {
+      "place": "AUDIT-WORKLIST.md",
+      "writers": [
+        "scripts/gen-audit-worklist.mjs"
+      ]
+    },
+    {
+      "place": "ENRICHMENT-WORKLIST.md",
+      "writers": [
+        "scripts/gen-enrichment-worklist.mjs"
+      ]
+    },
+    {
+      "place": "REMEDIATION-CHECKLIST.md",
+      "writers": [
+        "scripts/gen-remediation-checklist.mjs"
+      ]
+    },
+    {
+      "place": "REMEDIATION-WORKLIST.md",
+      "writers": [
+        "scripts/gen-worklist.mjs when run without --selftest"
+      ]
+    },
+    {
+      "place": "audit_report.md",
+      "writers": [
+        "scripts/gen-audit-report.mjs when run without --selftest"
+      ]
+    }
+  ],
+  "unreadFiles": 3,
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "scripts",
+      "partLabel": "scripts",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 5
+}
