@@ -95,9 +95,10 @@ test('the sentences are the ones the committed markdown carries', () => {
   const text = plain(html);
   const markdown = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8').replace(/\*\*|`/g, '');
   for (const sentence of [
-    // CI reaches further, but the ingest door is the one that commits into the
-    // repository, so the page follows it and says why.
-    `Work enters through ${page.doors.length} doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (CI reaches 11 but commits nothing).`,
+    // Release reaches further (it also reads the Dockerfile its image is built
+    // from), but the ingest door is the one that commits into the repository,
+    // so the page follows it and says why.
+    `Work enters through ${page.doors.length} doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing).`,
     'People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.',
     'That reaches dogfood-swarm (1 file), findings (2 files) and verify (10 files).',
     'It commits indexes/ and records/, then pushes.',
@@ -302,8 +303,9 @@ test('the three derived views say what the committed markdown says, in the same 
     assert.ok(shown.length > 0, heading);
     assert.deepEqual(shown, written, heading);
   }
+  // The portfolio's tests read what it writes, and a test is a reader.
   const unread = sectionTexts(page, markdown, 'Written but never read').shown;
-  assert.ok(unread.includes('reports/dogfood-portfolio.json is written by packages/portfolio/generate.js and read by nothing else in this repository.'));
+  assert.deepEqual(unread, ['Every written place has a reader.']);
   const alike = sectionTexts(page, markdown, 'Helpers that look duplicated').shown;
   assert.equal(alike[0], 'These are candidates from names and call order, not a judgement.');
 });
@@ -498,7 +500,7 @@ test('file paths link to the blob at the mapped commit, places to the tree', () 
   for (const path of page.doors[0].runs.slice(0, 3)) assert.ok(html.includes(`href="${path.endsWith('/') ? tree : blob}${path}"`), path);
   for (const path of page.startHere.filter((entry) => !entry.endsWith('/'))) assert.ok(html.includes(`href="${blob}${path}"`), path);
   assert.ok(html.includes(`href="${tree}indexes"`), 'a place opens as a tree');
-  assert.ok(html.includes(`href="${blob}packages/portfolio/README.md"><code>packages/portfolio/README.md</code></a> (found by text)`), 'a found-by-text reader links its path only');
+  assert.ok(html.includes(`href="${blob}site/public/dashboard/index.html"><code>site/public/dashboard/index.html</code></a> (found by text)`), 'a found-by-text reader links its path only');
   assert.ok(!html.includes(`${blob}root`), 'a part name is not a path');
   assert.ok(html.includes('href="https://github.com/dogfood-lab/testing-os/blob/atlas-render/indexes/atlas/dogfood-lab/testing-os/README.md"'), 'the markdown twin on the render branch');
   assert.ok(html.includes('href="./"'), 'a link back to the fleet');
@@ -558,7 +560,12 @@ test('the flow picture draws the columns page.json states, and bands between par
   assert.deepEqual(columns.map((column) => column.kind), ['door', ...[...depths].map(() => 'parts'), 'landings', 'readers']);
   const readers = columns.at(-1);
   assert.ok(readers.nodes.length <= 7, 'six readers, then one "+n more"');
-  assert.equal(readers.nodes.at(-1).lines[0], `+${readers.total - 6} more`);
+  assert.equal(readers.nodes.length, Math.min(readers.total, 6) + (readers.total > 6 ? 1 : 0));
+  // Eight readers of one place draw six and count the rest.
+  const crowded = { ...page, readers: [{ target: main.landings[0], readers: Array.from({ length: 8 }, (_, index) => `tools/read-${index}.js`) }] };
+  const drawn = render.flowColumns(crowded).at(-1);
+  assert.equal(drawn.nodes.length, 7);
+  assert.equal(drawn.nodes.at(-1).lines[0], '+2 more');
   const svg = render.renderFlow(page);
   assert.equal((svg.match(/<g class="band">/g) ?? []).length, depths.size, 'one band per step after the door');
   assert.equal((svg.match(/>reaches</g) ?? []).length, depths.size - 1);
