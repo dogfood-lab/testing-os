@@ -818,12 +818,14 @@ describe('files the parser cannot read', () => {
     cpSync(join(FIXTURES, 'root-part'), root, { recursive: true });
     // The three constructs tree-sitter-typescript 0.23.2 fails on in
     // ai-rpg-engine, written as that repository writes them, and one error
-    // that is none of them.
+    // that is none of them. The map now reads the two import types by
+    // rewriting them (core/index.js repairSource); a line of syntax nothing
+    // reads after each keeps them unread, named by the first construct.
     const files = {
-      'lib/inspect.ts': "export class Engine {\n  getPanels(): import('./core.js').Panel[] {\n    return [];\n  }\n}\n",
+      'lib/inspect.ts': "export class Engine {\n  getPanels(): import('./core.js').Panel[] {\n    return [];\n  }\n}\nexport const = ;\n",
       'lib/key.ts': 'export function key(a: string, b: string): string {\n  return `${a}\0${b}`;\n}\n',
       'lib/wire.ts': "export function wire(a: string, b: string): string {\n  return `${a}\0${b}`;\n}\n",
-      'lib/mocked.test.ts': "const actual = await importOriginal<typeof import('./core.js')>();\nexport { actual };\n",
+      'lib/mocked.test.ts': "const actual = await importOriginal<typeof import('./core.js')>();\nexport { actual };\nexport const = ;\n",
       'lib/broken.ts': 'export const = ;\n',
     };
     for (const [path, text] of Object.entries(files)) writeFileSync(join(root, path), text);

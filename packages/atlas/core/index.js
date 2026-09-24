@@ -410,16 +410,25 @@ function describeFile(repoPath, path, places, facts, spawned) {
 // order of the calls it makes and the commands it hands a child process.
 function parseFile(language, path, source, places) {
   let tree;
+  let typeSites = [];
   try {
     parser.setLanguage(languages[language]);
     tree = parser.parse(source);
+    if (tree != null && tree.rootNode.hasError && language !== 'python') {
+      const repaired = repairSource(source, (text) => parser.parse(text));
+      if (repaired) {
+        tree.delete();
+        tree = repaired.tree;
+        typeSites = repaired.sites;
+      }
+    }
   } catch {
     return { parseError: true, imports: [] };
   }
   if (tree == null) return { parseError: true, imports: [] };
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [], unreadSyntax: unreadSyntax(tree.rootNode, source) };
-    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : collectScript(tree.rootNode);
+    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode), ...typeSites];
     return {
       imports,
       landings: astLandings(language, tree.rootNode, path, places),
@@ -433,6 +442,89 @@ function parseFile(language, path, source, places) {
   } finally {
     tree.delete();
   }
+}
+
+// typeof import(…) in a type, and import(…).T[], which the vendored grammar
+// rejects in a type argument and before [] (found on
+// xrpl-creator-capsule's mocks and forkctl's Dirent[]). The import(...) is
+// rewritten to an identifier of the same length, which a type reads as a
+// name, and its specifier kept as the import site a file that parses
+// records for it.
+// Spaces within a line only: an identifier holds no line break, so a
+// construct spread over lines is left as it is.
+const TYPEOF_IMPORT = /(\btypeof[ \t]+)(import[ \t]*\([ \t]*(['"`])([^'"`\n]*)\3[ \t]*\))/g;
+const IMPORT_ARRAY = /\bimport[ \t]*\([ \t]*(['"`])([^'"`\n]*)\1[ \t]*\)(?=(?:[ \t]*\.[ \t]*[A-Za-z_$][\w$]*)+[ \t]*\[[ \t]*\])/g;
+// A bare & in JSX text is rewritten one error at a time, this many at most.
+const REPAIR_ROUNDS = 16;
+
+/**
+ * A file the vendored grammar cannot read for a construct TypeScript
+ * accepts, read again with each such construct rewritten to a form the
+ * grammar reads, of the same length, so every byte offset, line and column
+ * the readings record is the original's: typeof import(…) as a type
+ * argument, import(…).T[], and a bare & in JSX text, which becomes a space.
+ * Returns the tree and the import sites the rewrite took out of the text,
+ * or null when the file still does not parse, and the original's error
+ * stands, named as before.
+ *
+ * @param {string} source
+ * @param {(text: string) => object} parse
+ * @returns {null | { tree: object, sites: Array<{ specifier: string, kind: string, line: number }> }}
+ */
+function repairSource(source, parse) {
+  const sites = [];
+  const lineAt = (offset) => source.slice(0, offset).split('\n').length;
+  let text = source.replace(TYPEOF_IMPORT, (match, lead, call, quote, specifier, offset) => {
+    sites.push({ specifier, kind: 'dynamic-literal', line: lineAt(offset) });
+    return `${lead}${'_'.repeat(call.length)}`;
+  });
+  text = text.replace(IMPORT_ARRAY, (call, quote, specifier, offset) => {
+    sites.push({ specifier, kind: 'dynamic-literal', line: lineAt(offset) });
+    return '_'.repeat(call.length);
+  });
+  let tree = parse(text);
+  for (let round = 0; round < REPAIR_ROUNDS && tree != null && tree.rootNode.hasError; round += 1) {
+    const at = jsxAmpersands(text, tree.rootNode);
+    if (at.length === 0) break;
+    for (const index of at) text = `${text.slice(0, index)} ${text.slice(index + 1)}`;
+    tree.delete();
+    tree = parse(text);
+  }
+  if (tree == null) return null;
+  if (tree.rootNode.hasError) {
+    tree.delete();
+    return null;
+  }
+  return { tree, sites };
+}
+
+// The offsets of each bare & in JSX text on a line where the parse stops:
+// one that starts the error, or one between a tag's > and the next <. A &&
+// and a character reference are left alone.
+function jsxAmpersands(text, root) {
+  const lines = text.split('\n');
+  const starts = [];
+  for (let i = 0, at = 0; i < lines.length; i += 1) {
+    starts.push(at);
+    at += lines[i].length + 1;
+  }
+  const out = new Set();
+  const stack = [root];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (node.type === 'ERROR' && !node.isMissing) {
+      const row = node.startPosition.row;
+      const line = lines[row] ?? '';
+      for (let column = line.indexOf('&'); column !== -1; column = line.indexOf('&', column + 1)) {
+        if (line[column + 1] === '&' || line[column - 1] === '&' || ENTITY.test(line.slice(column))) continue;
+        const between = /^[^<>{}]*$/.test(line.slice(line.lastIndexOf('>', column) + 1, column)) && line.lastIndexOf('>', column) !== -1;
+        if (column === node.startPosition.column || between || /^\s*[^<>{}=();]*$/.test(line.slice(0, column))) out.add(starts[row] + column);
+      }
+      continue;
+    }
+    for (const child of node.children) stack.push(child);
+  }
+  return [...out].sort((a, b) => a - b);
 }
 
 // A module with nothing but comments, or a Python docstring, runs nothing.
