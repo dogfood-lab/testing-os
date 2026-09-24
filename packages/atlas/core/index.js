@@ -426,7 +426,13 @@ const UNREAD = [
   ['nul-character', (line) => line.includes('\0')],
   ['import-type-array', (line) => /\bimport\(\s*(['"`])[^'"`]*\1\s*\)(\s*\.\s*[A-Za-z_$][\w$]*)+\s*\[\s*\]/.test(line)],
   ['typeof-import-argument', (line) => /<\s*typeof\s+import\(/.test(line)],
+  // Rasterize & Edit in JSX text: the grammar reads & there as the start of
+  // a character reference, found on glyphstudio. At the error, or failing
+  // that (a column counted past a wide character), between a tag's > and <.
+  ['jsx-ampersand', (line, column) => (line[column] === '&' && !ENTITY.test(line.slice(column)))
+    || />[^<>{}]*&(?![A-Za-z][A-Za-z0-9]*;|#[0-9]+;|#x[0-9A-Fa-f]+;)[^<>{}]*</.test(line)],
 ];
+const ENTITY = /^&(?:[A-Za-z][A-Za-z0-9]*|#[0-9]+|#x[0-9A-Fa-f]+);/;
 
 function unreadSyntax(root, source) {
   let first = null;
@@ -441,7 +447,7 @@ function unreadSyntax(root, source) {
   }
   if (first == null) return null;
   const line = source.split('\n')[first.startPosition.row] ?? '';
-  return UNREAD.find(([, test]) => test(line))?.[0] ?? null;
+  return UNREAD.find(([, test]) => test(line, first.startPosition.column))?.[0] ?? null;
 }
 
 // A string literal passed to import() or require() names its module as surely

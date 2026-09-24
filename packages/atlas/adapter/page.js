@@ -1132,10 +1132,40 @@ function readerGroups(ctx, main) {
   return out;
 }
 
+/**
+ * A sentence that says nothing does something holds only for the files the
+ * parser read, so when some could not be read it says which it covers and
+ * how many it does not: "CI writes nothing in the files this map could read;
+ * 2 files could not be."
+ *
+ * @param {'writes'|'breaks'|'unread'|'duplicates'|'generated'|'authored'} kind
+ * @param {number} unread how many files the parser could not read
+ * @param {string} [subject] the door, or the places people write
+ * @returns {string}
+ */
+export function absence(kind, unread, subject = '') {
+  const not = unread > 0 ? `; ${count(unread, 'file')} could not be` : '';
+  const within = unread > 0 ? ' in the files this map could read' : '';
+  switch (kind) {
+    case 'writes': return unread > 0 ? `${subject} writes nothing${within}${not}.` : `${subject} writes nothing this map can see.`;
+    case 'breaks': return `No part is imported by another part${within}, and no part sits on the path of two doors${not}.`;
+    case 'unread': return unread > 0 ? `No place is written by the files this map could read, so none goes unread${not}.` : 'No place this map can see is written, so none goes unread.';
+    case 'duplicates': return `No two parts export a helper that looks alike${within}${not}.`;
+    case 'generated': return unread > 0 ? `Nothing${within} writes to a tracked place${not}.` : 'Nothing in this repository writes to a tracked place this map can see.';
+    default: return unread > 0 ? `${subject}. Nothing${within} writes to them${not}.` : `${subject}. Nothing in this repository writes to them.`;
+  }
+}
+
+// The files the parser could not read, which every absence the page states
+// is qualified by.
+function unreadCount(ctx) {
+  return ctx.boundaries.reduce((sum, boundary) => sum + (boundary.files ?? []).filter((file) => file.parseError).length, 0);
+}
+
 function readsSection(ctx, main, groups) {
   const lines = ['## Who reads the results'];
   if ((main.landings ?? []).length === 0) {
-    lines.push(`${main.name} writes nothing this map can see.`);
+    lines.push(absence('writes', unreadCount(ctx), main.name));
     return lines.join('\n\n');
   }
   const bullets = groups.map((group) => {
@@ -1395,7 +1425,7 @@ export function testsClause(production, tests) {
 function breaksSection(ctx, entries) {
   const body = entries.length > 0
     ? entries.map((entry) => breakLine(ctx, entry)).join('\n')
-    : 'No part is imported by another part, and no part sits on the path of two doors.';
+    : absence('breaks', unreadCount(ctx));
   return ['## What breaks what', body].join('\n\n');
 }
 
@@ -1552,7 +1582,7 @@ function unreadSection(ctx, found) {
       const comma = item.writers.length > 1 ? ',' : '';
       return `- **${item.place}** is written by ${list(worded(item.writers, ctx.shown))}${comma} and read by nothing else in this repository.`;
     }).join('\n')
-    : (found.written === 0 ? 'No place this map can see is written, so none goes unread.' : 'Every written place has a reader.');
+    : (found.written === 0 ? absence('unread', unreadCount(ctx)) : 'Every written place has a reader.');
   return ['## Written but never read', body, ...found.note].join('\n\n');
 }
 
@@ -1628,7 +1658,7 @@ function duplicatesSection(found) {
     ? found.items.map((item) => (item.contract
       ? `- ${contractLine(item.name, item.partLabels)}`
       : `- **${item.name}** is exported by ${item.files[0]} (${item.partLabels[0]}) and ${item.files[1]} (${item.partLabels[1]}); the two look alike.`)).join('\n')
-    : 'No two parts export a helper that looks alike.';
+    : absence('duplicates', found.unread ?? 0);
   return ['## Helpers that look duplicated', ...(found.lead ? [found.lead] : []), body, ...found.note].join('\n\n');
 }
 
@@ -1684,7 +1714,7 @@ function generatedSection(ctx, items) {
       const by = list(worded(item.writers, ctx.shown));
       return item.block ? `- **${item.shown}** has a block written by ${by}.` : `- **${item.shown}** is written by ${by}.`;
     }).join('\n')
-    : 'Nothing in this repository writes to a tracked place this map can see.';
+    : absence('generated', unreadCount(ctx));
   return ['## Generated, never hand-edited', body].join('\n\n');
 }
 
@@ -1721,7 +1751,7 @@ function authoredSection(ctx, boundaries, shared) {
   const people = `People write ${list(boundaries.map((boundary) => shownPlace(ctx, boundary)))}`;
   const caveat = unnamed > 0
     ? `${people}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`
-    : `${people}. Nothing in this repository writes to them.`;
+    : absence('authored', unreadCount(ctx), people);
   const body = boundaries.length > 0 ? caveat : 'No configuration or documentation part is left to people alone.';
   const lines = shared.map((item) => `- **${item.place}** is written by ${list(worded(item.writers, ctx.shown))}, and by people: ${item.byPeople} of its ${count(item.commits, 'commit')} in the window ${item.byPeople === 1 ? 'is' : 'are'} theirs.`);
   return ['## Hand-authored', body, ...(lines.length > 0 ? [lines.join('\n')] : [])].join('\n\n');
@@ -1997,6 +2027,7 @@ export function externalsLine(sites, names) {
 // counted, so a reader can open the one that stopped it.
 const UNREAD_NAMED = 3;
 const UNREAD_SYNTAX = {
+  'jsx-ampersand': 'a bare `&` in JSX text',
   'import-type-array': 'an import type followed by `[]`',
   'nul-character': 'a NUL character inside a string',
   'typeof-import-argument': '`typeof import(…)` as a type argument',
@@ -2318,7 +2349,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   const pairNote = togetherNote(ctx, pairs, withTests);
   const untestedParts = untested(ctx);
   const unreadPlaces = unread(ctx);
-  const duplicated = duplicates(ctx);
+  const duplicated = { ...duplicates(ctx), unread: unreadCount(ctx) };
   const generatedItems = generated(ctx);
   const authoredBoundaries = authored(ctx);
   const sharedPlaces = writtenByPeople(ctx);
@@ -2398,6 +2429,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     summaryFrom: summary ? 'person' : null,
     testedBy: untestedParts.testedBy,
     testFiles: untestedParts.testFiles,
+    unreadFiles: unreadCount(ctx),
     unread: unreadPlaces.items.map((item) => ({ place: item.place, writers: worded(item.writers, id) })),
     unreadNote: unreadPlaces.note,
     written: unreadPlaces.written,

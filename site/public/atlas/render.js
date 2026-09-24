@@ -522,9 +522,28 @@ function happens(ctx) {
   return section(`What happens through ${str(ctx.main.name)}`, ol(steps));
 }
 
+// page.js absence(): a sentence that says nothing does something covers only
+// the files the parser read, and says so when some could not be read.
+function absence(kind, unread, subject = '') {
+  const not = unread > 0 ? `; ${count(unread, 'file')} could not be` : '';
+  const within = unread > 0 ? ' in the files this map could read' : '';
+  switch (kind) {
+    case 'writes': return unread > 0 ? `${subject} writes nothing${within}${not}.` : `${subject} writes nothing this map can see.`;
+    case 'breaks': return `No part is imported by another part${within}, and no part sits on the path of two doors${not}.`;
+    case 'unread': return unread > 0 ? `No place is written by the files this map could read, so none goes unread${not}.` : 'No place this map can see is written, so none goes unread.';
+    case 'duplicates': return `No two parts export a helper that looks alike${within}${not}.`;
+    case 'generated': return unread > 0 ? `Nothing${within} writes to a tracked place${not}.` : 'Nothing in this repository writes to a tracked place this map can see.';
+    default: return unread > 0 ? `${subject}. Nothing${within} writes to them${not}.` : `${subject}. Nothing in this repository writes to them.`;
+  }
+}
+
+function unreadFiles(ctx) {
+  return Number(ctx.page.unreadFiles) || 0;
+}
+
 function readsSection(ctx) {
   const name = esc(ctx.main.name);
-  if (arr(ctx.main.landings).length === 0) return section('Who reads the results', p(`${name} writes nothing this map can see.`));
+  if (arr(ctx.main.landings).length === 0) return section('Who reads the results', p(absence('writes', unreadFiles(ctx), name)));
   const groups = arr(ctx.page.readers);
   if (groups.length === 0) return section('Who reads the results', p(`Only ${name} itself reads what it writes.`));
   const bullets = groups.map((group) => {
@@ -610,7 +629,7 @@ function breaksSection(ctx) {
   const entries = arr(ctx.page.breaks);
   const body = entries.length > 0
     ? ul(entries.map((entry) => breakLine(ctx, entry)))
-    : p('No part is imported by another part, and no part sits on the path of two doors.');
+    : p(absence('breaks', unreadFiles(ctx)));
   const figure = renderBreaksFigure(ctx.page);
   return section('What breaks what', figure ? `${body}\n${figure}` : body);
 }
@@ -671,7 +690,7 @@ function unreadSection(ctx) {
       const comma = writers.length > 1 ? ',' : '';
       return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))))}${comma} and read by nothing else in this repository.`;
     }))
-    : p(ctx.page.written === 0 ? 'No place this map can see is written, so none goes unread.' : 'Every written place has a reader.');
+    : p(ctx.page.written === 0 ? absence('unread', unreadFiles(ctx)) : 'Every written place has a reader.');
   const note = arr(ctx.page.unreadNote).map((line) => p(esc(line)));
   return section('Written but never read', [body, ...note].join('\n'));
 }
@@ -691,7 +710,7 @@ function duplicatesSection(ctx) {
       const [partA, partB] = arr(item.partLabels).map((label) => esc(label));
       return `<strong>${esc(item.name)}</strong> is exported by ${pathHtml(ctx, fileA)} (${partA}) and ${pathHtml(ctx, fileB)} (${partB}); the two look alike.`;
     }))
-    : p('No two parts export a helper that looks alike.');
+    : p(absence('duplicates', unreadFiles(ctx)));
   const note = arr(ctx.page.duplicatesNote).map((line) => p(esc(line)));
   return section('Helpers that look duplicated', [...lead, body, ...note].join('\n'));
 }
@@ -709,7 +728,7 @@ function generatedSection(ctx) {
       // A stamped file is written by people, with one block a script keeps.
       return item.block ? `${place} has a block written by ${by}.` : `${place} is written by ${by}.`;
     }))
-    : p('Nothing in this repository writes to a tracked place this map can see.');
+    : p(absence('generated', unreadFiles(ctx)));
   return section('Generated, never hand-edited', body);
 }
 
@@ -724,7 +743,7 @@ function authoredSection(ctx) {
   const people = `People write ${list(places.map(shown))}`;
   const caveat = unnamed > 0
     ? `${people}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`
-    : `${people}. Nothing in this repository writes to them.`;
+    : absence('authored', unreadFiles(ctx), people);
   const body = places.length > 0 ? p(caveat) : p('No configuration or documentation part is left to people alone.');
   // A place a script writes and people keep, with the count that says so.
   const shared = arr(ctx.page.authoredWritten).filter((item) => item && typeof item === 'object').map((item) => {
