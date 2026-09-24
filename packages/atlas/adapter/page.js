@@ -2676,6 +2676,9 @@ function doorData(ctx, door) {
     ...(door.unpublished ? { unpublished: true } : {}),
     ...(door.extension ? { extension: true } : {}),
     ...(door.publishedTo ? { publishedTo: registryList(door.publishedTo) } : {}),
+    ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
+    ...(door.runsCommand != null ? { runsCommand: door.runsCommand } : {}),
+    ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
   };
 }
 
