@@ -97,7 +97,12 @@ const HELPER = 'helper:';
 const PY_SCOPES = new Set(['function_definition', 'lambda']);
 const PY_NESTED = new Set(['function_definition', 'class_definition', 'lambda']);
 
-const TEXT_SCANNED = new Set(['.html', '.htm', '.yml', '.yaml', '.md', '.json', '.sh', '.bash']);
+const TEXT_SCANNED = new Set(['.html', '.htm', '.yml', '.yaml', '.md', '.json', '.sh', '.bash', '.xml', '.toml', '.ps1']);
+// A file whose name says it configures something, or a TOML or XML file,
+// names the files it configures (an app's icons, a package's logos, a
+// project's readme): each tracked path it names is one it is read with.
+const CONFIG_NAME = /(^|[._-])(conf|config|configuration|manifest|settings)$/i;
+const CONFIG_EXTENSIONS = new Set(['.json', '.jsonc', '.json5', '.yml', '.yaml', '.xml', '.toml', '.plist']);
 const MARKDOWN = new Set(['.md']);
 // A link or an embed in a page points a person at a place; the page reads
 // nothing. [text](path), ![alt](url) and an href or src attribute.
@@ -228,6 +233,12 @@ export function textLandings(path, bytes, places) {
     for (const link of PAGE_LINKS) source = source.replace(link, ' ');
     return { writes: [], dynamicWrites: 0, reads: sortEntries(markdownReads(source, places)), dynamicReads: 0 };
   }
+  if (configurationFile(path)) return { writes: [], dynamicWrites: 0, reads: sortEntries(configurationReads(source, path, places)), dynamicReads: 0 };
+  if (extname(path).toLowerCase() === '.ps1') {
+    const found = powershellLandings(source, path, places);
+    return { writes: sortEntries(found.writes), dynamicWrites: 0, reads: sortEntries(found.reads), dynamicReads: 0 };
+  }
+  if (extname(path).toLowerCase() === '.xml' || extname(path).toLowerCase() === '.toml') return noLandings();
   const reads = [];
   for (const pattern of [/"([^"\r\n]*)"/g, /'([^'\r\n]*)'/g]) {
     for (const match of source.matchAll(pattern)) {
@@ -239,6 +250,199 @@ export function textLandings(path, bytes, places) {
   const shell = SHELL.has(extname(path).toLowerCase()) ? shellLandings(source, places) : { writes: [], reads: [] };
   reads.push(...shell.reads);
   return { writes: sortEntries(shell.writes), dynamicWrites: 0, reads: sortEntries(reads), dynamicReads: 0 };
+}
+
+function configurationFile(path) {
+  const ext = extname(path).toLowerCase();
+  const base = posix.basename(path);
+  if (!CONFIG_EXTENSIONS.has(ext) || base === 'package.json' || isTestMaterial(path)) return false;
+  if (ext === '.xml' || ext === '.toml' || ext === '.plist') return true;
+  return CONFIG_NAME.test(base.slice(0, base.length - ext.length));
+}
+
+/**
+ * The tracked files and directories a configuration names: each value it
+ * quotes, each unquoted YAML value, and each XML element's text, read from
+ * the configuration's own directory first, as the tool it configures reads
+ * it (tauri.conf.json's icons/32x32.png is src-tauri/icons/32x32.png), and
+ * then from the repository root. A backslash is a path separator. Marked
+ * call configuration, confidence config: a use, not a quotation.
+ */
+function configurationReads(source, path, places) {
+  const dir = posix.dirname(path) === '.' ? '' : posix.dirname(path);
+  const values = [];
+  for (const pattern of [/"([^"\r\n]*)"/g, /'([^'\r\n]*)'/g, />([^<>\r\n]+)</g, /^\s*(?:-\s+|[\w.-]+:\s+)([^\s#'"{[][^#\r\n]*?)\s*$/gm]) {
+    for (const match of source.matchAll(pattern)) values.push(match[1].trim());
+  }
+  const reads = [];
+  const seen = new Set();
+  for (const value of values) {
+    if (value === '' || value.includes('://')) continue;
+    const text = value.replaceAll('\\', '/');
+    const local = dir ? posix.normalize(`${dir}/${text}`) : text;
+    const target = (local.startsWith('../') ? null : literalPlace(local, places)) ?? literalPlace(text, places);
+    // A directory holding the configuration is where it lives, not a place
+    // it configures.
+    if (target == null || target === path || path.startsWith(`${target}/`) || seen.has(target)) continue;
+    seen.add(target);
+    reads.push({ target, call: 'configuration', confidence: 'config' });
+  }
+  return reads;
+}
+
+const PS_COPIERS = new Set(['copy-item', 'cp', 'copy', 'cpi', 'move-item', 'mv', 'move', 'mi']);
+const PS_READERS = new Set(['get-content', 'gc', 'cat', 'type', 'import-csv', 'import-clixml']);
+const PS_WRITERS = new Set(['set-content', 'sc', 'add-content', 'ac', 'out-file', 'export-csv']);
+const PS_CHILDREN = /^(?:Get-ChildItem|gci|ls|dir)\s+(.+?)\s*\|\s*(?:ForEach-Object|foreach|%)\s*\{\s*$/i;
+
+/**
+ * What a PowerShell script reads and writes: Copy-Item and Move-Item read
+ * their source and write their destination, Get-Content reads, Set-Content,
+ * Add-Content and Out-File write. A path is read through the script's own
+ * variables, each assigned once from $PSScriptRoot, a string, Join-Path or
+ * Split-Path -Parent, and through $_ in a ForEach-Object block that
+ * Get-ChildItem hands a path. A path built any other way names nothing. By
+ * text, as a shell script is read.
+ */
+function powershellLandings(source, path, places) {
+  const vars = new Map([['psscriptroot', posix.dirname(path) === '.' ? '' : posix.dirname(path)]]);
+  const reads = [];
+  const writes = [];
+  let piped = null;
+  const place = (value) => {
+    if (value == null) return null;
+    const glob = value.search(/[*?[]/);
+    const spelled = glob === -1 ? value : value.slice(0, Math.max(value.lastIndexOf('/', glob), 0));
+    return spelled === '' ? null : literalPlace(spelled, places) ?? (places.dirs.has(spelled) ? spelled : null);
+  };
+  for (const raw of source.replace(/<#[\s\S]*?#>/g, ' ').split(/\r?\n/)) {
+    const line = raw.replace(/^\s*#.*$/, '').trim();
+    if (line === '') continue;
+    const assign = /^\$(\w+)\s*=\s*(.+)$/.exec(line);
+    if (assign) {
+      vars.set(assign[1].toLowerCase(), psValue(assign[2], vars, piped));
+      continue;
+    }
+    const children = PS_CHILDREN.exec(line);
+    if (children) {
+      piped = psValue(psWords(children[1])[0] ?? '', vars, null);
+      continue;
+    }
+    if (line.startsWith('}')) {
+      piped = null;
+      continue;
+    }
+    const words = psWords(line);
+    const command = words[0]?.toLowerCase();
+    if (command == null) continue;
+    const named = new Map();
+    const positional = [];
+    for (let i = 1; i < words.length; i += 1) {
+      if (/^-[A-Za-z]+$/.test(words[i])) {
+        const flag = words[i].toLowerCase();
+        if (['-path', '-literalpath', '-destination', '-filepath', '-value'].includes(flag) && i + 1 < words.length) named.set(flag, words[++i]);
+      } else positional.push(words[i]);
+    }
+    const value = (word) => (word == null ? null : psValue(word, vars, piped));
+    if (PS_COPIERS.has(command)) {
+      const from = place(value(named.get('-path') ?? named.get('-literalpath') ?? positional[0]));
+      const to = place(value(named.get('-destination') ?? positional[named.has('-path') || named.has('-literalpath') ? 0 : 1]));
+      if (from != null) reads.push({ target: from, call: 'Copy-Item', confidence: 'text' });
+      if (to != null) writes.push({ target: to, call: 'Copy-Item', confidence: 'text' });
+    } else if (PS_READERS.has(command)) {
+      const from = place(value(named.get('-path') ?? named.get('-literalpath') ?? positional[0]));
+      if (from != null) reads.push({ target: from, call: 'Get-Content', confidence: 'text' });
+    } else if (PS_WRITERS.has(command)) {
+      const to = place(value(named.get('-path') ?? named.get('-filepath') ?? named.get('-literalpath') ?? positional[0]));
+      if (to != null) writes.push({ target: to, call: words[0], confidence: 'text' });
+    }
+  }
+  return { reads, writes };
+}
+
+// One PowerShell line's words: a quoted string, a parenthesized expression
+// and a bare word each count as one.
+function psWords(text) {
+  const words = [];
+  let i = 0;
+  while (i < text.length) {
+    const ch = text[i];
+    if (/\s/.test(ch)) {
+      i += 1;
+      continue;
+    }
+    if (ch === '|' || ch === ';' || ch === '{' || ch === '}') break;
+    let end = i;
+    if (ch === '"' || ch === "'") {
+      end = text.indexOf(ch, i + 1);
+      end = end === -1 ? text.length : end + 1;
+    } else if (ch === '(') {
+      let depth = 0;
+      for (end = i; end < text.length; end += 1) {
+        if (text[end] === '(') depth += 1;
+        else if (text[end] === ')') {
+          depth -= 1;
+          if (depth === 0) {
+            end += 1;
+            break;
+          }
+        }
+      }
+    } else {
+      while (end < text.length && !/[\s|;{}()]/.test(text[end])) end += 1;
+      // A closing parenthesis with no opening one is punctuation, not a word.
+      if (end === i) {
+        i += 1;
+        continue;
+      }
+    }
+    words.push(text.slice(i, end));
+    i = end;
+  }
+  return words;
+}
+
+// The repository path a PowerShell expression names, or null: a string, a
+// variable the script assigned, $PSScriptRoot, $_ in a block Get-ChildItem
+// feeds, Join-Path and Split-Path -Parent of those.
+function psValue(expression, vars, piped) {
+  let text = expression.trim();
+  while (text.startsWith('(') && text.endsWith(')')) text = text.slice(1, -1).trim();
+  const words = psWords(text);
+  if (words.length === 0) return null;
+  const head = words[0].toLowerCase();
+  const norm = (value) => {
+    if (value == null) return null;
+    const out = posix.normalize(value.replaceAll('\\', '/') || '.').replace(/\/+$/, '');
+    return out === '.' ? '' : out.startsWith('../') || out === '..' || out.startsWith('/') || /^[A-Za-z]:/.test(out) ? null : out;
+  };
+  if (head === 'join-path') {
+    const parts = words.slice(1).filter((word) => !word.startsWith('-')).map((word) => psValue(word, vars, piped));
+    if (parts.length < 2 || parts.some((part) => part == null)) return null;
+    return norm(parts.filter((part) => part !== '').join('/'));
+  }
+  if (head === 'split-path') {
+    const target = words.slice(1).find((word) => !word.startsWith('-'));
+    if (!words.slice(1).some((word) => word.toLowerCase() === '-parent') && words.slice(1).some((word) => word.startsWith('-'))) return null;
+    const inner = target == null ? null : psValue(target, vars, piped);
+    if (inner == null || inner === '') return null;
+    return inner.includes('/') ? inner.slice(0, inner.lastIndexOf('/')) : '';
+  }
+  if (words.length !== 1) return null;
+  const word = words[0];
+  if (word.startsWith("'")) return norm(word.slice(1, -1));
+  if (word.startsWith('"')) {
+    let failed = false;
+    const spelled = word.slice(1, -1).replace(/\$(\w+)/g, (_, name) => {
+      const known = vars.get(name.toLowerCase());
+      if (known == null) failed = true;
+      return known ?? '';
+    });
+    return failed ? null : norm(spelled);
+  }
+  if (/^\$_(?:\.FullName)?$/i.test(word)) return piped;
+  if (word.startsWith('$')) return vars.get(word.slice(1).toLowerCase()) ?? null;
+  return null;
 }
 
 /**

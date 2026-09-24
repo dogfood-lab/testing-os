@@ -1051,23 +1051,32 @@ function worded(items, name) {
 // test is a reader from tests.
 function readerFiles(entries) {
   const byPath = new Map();
+  const config = new Map();
   const tests = new Set();
   for (const entry of entries) {
     const text = entry.confidence === 'text';
+    const configures = entry.confidence === 'config';
     byPath.set(entry.by, byPath.has(entry.by) ? byPath.get(entry.by) && text : text);
+    config.set(entry.by, config.has(entry.by) ? config.get(entry.by) && configures : configures);
     if (entry.fromTests) tests.add(entry.by);
   }
-  return [...byPath.entries()].sort((a, b) => cmp(a[0], b[0])).map(([path, text]) => ({ path, text, ...(tests.has(path) ? { fromTests: true } : {}) }));
+  return [...byPath.entries()].sort((a, b) => cmp(a[0], b[0])).map(([path, text]) => ({
+    path,
+    text,
+    ...(config.get(path) ? { config: true } : {}),
+    ...(tests.has(path) ? { fromTests: true } : {}),
+  }));
 }
 
 /**
- * A reader as the page names it: "(found by text)" when every read is, and
+ * A reader as the page names it: "(found by text)" when every read is,
+ * "(from configuration)" for a configuration that names the place, and
  * "(from tests)" for a test.
  *
- * @param {{ path: string, text: boolean, fromTests?: boolean }} reader
+ * @param {{ path: string, text: boolean, config?: boolean, fromTests?: boolean }} reader
  */
 export function readerItem(reader) {
-  const mark = reader.text ? ' (found by text)' : reader.fromTests ? ' (from tests)' : '';
+  const mark = reader.text ? ' (found by text)' : reader.config ? ' (from configuration)' : reader.fromTests ? ' (from tests)' : '';
   return { path: reader.path, text: `${reader.path}${mark}`, ...(reader.fromTests ? { fromTests: true } : {}) };
 }
 
