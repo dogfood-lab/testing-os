@@ -1,0 +1,536 @@
+{
+  "authored": [
+    ".github/",
+    "docs/",
+    "site/",
+    "synergies/"
+  ],
+  "authoredWritten": [
+    {
+      "byPeople": 7,
+      "commits": 7,
+      "place": "products/",
+      "writers": [
+        ".github/workflows/sync.yml"
+      ]
+    }
+  ],
+  "breaks": [
+    {
+      "doors": 6,
+      "importedBy": [],
+      "importedByTests": [
+        "test"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "test",
+      "partLabel": "test"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "scripts"
+      ],
+      "target": "dataset/changelog-actions/v1/entries/",
+      "writers": [
+        "scripts"
+      ]
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "scripts"
+      ],
+      "target": "dataset/changelog-actions/v1/holdout.jsonl",
+      "writers": [
+        "scripts"
+      ]
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 1701,
+      "moved": 0,
+      "parts": 9,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-24; 1701 files changed content.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "fb90b80c2a5dbd4e51646bf8642a81f63c4c92b9",
+      "generatedAt": "2026-09-24T09:07:24.868Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [
+    {
+      "a": "src/fetch.ts",
+      "b": "src/mcp-server.ts",
+      "either": 6,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 4
+    },
+    {
+      "a": "src/cli.ts",
+      "b": "src/fetch.ts",
+      "either": 7,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 4
+    },
+    {
+      "a": "src/fetch.ts",
+      "b": "test/regression/bugs.test.ts",
+      "either": 7,
+      "partLabels": [
+        "src",
+        "test"
+      ],
+      "parts": [
+        "src",
+        "test"
+      ],
+      "relation": "b-imports-a",
+      "shared": 4
+    },
+    {
+      "a": "src/mcp-server.ts",
+      "b": "test/regression/bugs.test.ts",
+      "either": 7,
+      "partLabels": [
+        "src",
+        "test"
+      ],
+      "parts": [
+        "src",
+        "test"
+      ],
+      "relation": "b-imports-a",
+      "shared": 4
+    }
+  ],
+  "changesTogetherNote": [
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "6d91d8cceb43d7acbbcd994ba718ee17ef9bf483",
+  "defaultBranch": "main",
+  "derived": "10 parts, mostly TypeScript (83 files). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk. People import @mcptoolshop/claude-synergy.",
+  "doors": [
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/test.yml",
+      "id": ".github/workflows/test.yml",
+      "landings": [],
+      "name": "Tests",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 30
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 49
+        }
+      ],
+      "runs": [
+        "test/integration/",
+        "test/regression/",
+        "test/unit/"
+      ],
+      "runsCount": 3,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request",
+        "on a push to main",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/cli.ts",
+        "src/mcp-server.ts"
+      ],
+      "checksCount": 2,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 30
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 49
+        }
+      ],
+      "runs": [
+        "test/integration/",
+        "test/regression/",
+        "test/unit/"
+      ],
+      "runsCount": 3,
+      "sends": [
+        "publishes to npm",
+        "creates a GitHub release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*` is pushed",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/mcp-server.ts"
+      ],
+      "checksCount": 1,
+      "file": ".github/workflows/sync.yml",
+      "id": ".github/workflows/sync.yml",
+      "landings": [
+        "SOURCES.md",
+        "URGENT_FINDINGS.md",
+        "products/"
+      ],
+      "name": "Daily sync",
+      "programs": [
+        "gh"
+      ],
+      "pushes": true,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 29
+        }
+      ],
+      "runs": [
+        "src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [
+        "LATEST.txt",
+        "PRODUCTS.txt",
+        "SOURCES.md",
+        "URGENT_FINDINGS.md",
+        "data/",
+        "products/"
+      ],
+      "triggers": [
+        "on a schedule (`0 12 * * *`)",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/claude-synergy",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/claude-synergy",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 29
+        }
+      ],
+      "runs": [
+        "src/cli.ts",
+        "src/mcp-server.ts"
+      ],
+      "runsCount": 2,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#claude-synergy-mcp",
+      "kind": "command",
+      "landings": [],
+      "name": "claude-synergy-mcp",
+      "programs": [
+        "gh"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 28
+        }
+      ],
+      "runs": [
+        "src/mcp-server.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#hk",
+      "kind": "command",
+      "landings": [],
+      "name": "hk",
+      "programs": [
+        "gh"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 28
+        }
+      ],
+      "runs": [
+        "src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "test",
+      "fromTests": true,
+      "to": "src"
+    }
+  ],
+  "generated": [
+    {
+      "place": "SOURCES.md",
+      "writers": [
+        ".github/workflows/sync.yml"
+      ]
+    },
+    {
+      "place": "URGENT_FINDINGS.md",
+      "writers": [
+        ".github/workflows/sync.yml"
+      ]
+    },
+    {
+      "place": "dataset/changelog-actions/v1/entries/",
+      "writers": [
+        "scripts/apply-a3c-review.mjs"
+      ]
+    },
+    {
+      "place": "dataset/changelog-actions/v1/eval-report-run1.json",
+      "writers": [
+        "scripts/eval-cs-actions.mjs"
+      ]
+    },
+    {
+      "place": "dataset/changelog-actions/v1/eval-report.v1.json",
+      "writers": [
+        "scripts/eval-cs-actions.mjs"
+      ]
+    },
+    {
+      "place": "dataset/changelog-actions/v1/holdout.jsonl",
+      "writers": [
+        "scripts/build-dataset.mjs"
+      ]
+    },
+    {
+      "place": "dataset/changelog-actions/v1/judge-report.json",
+      "writers": [
+        "scripts/judge-dataset.mjs"
+      ]
+    },
+    {
+      "place": "dataset/changelog-actions/v1/manifest.json",
+      "writers": [
+        "scripts/build-dataset.mjs"
+      ]
+    },
+    {
+      "place": "dataset/changelog-actions/v1/training.jsonl",
+      "writers": [
+        "scripts/build-dataset.mjs"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-24T09:44:19.278Z",
+  "limits": [
+    "5 reads use paths built at run time and are not named here.",
+    "10 writes and 45 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "5 commands are built at run time and not followed, 4 of them in tests.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/sync.yml",
+  "partLabels": {
+    ".github": ".github",
+    "dataset": "dataset",
+    "docs": "docs",
+    "products": "products",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "the site",
+    "src": "src",
+    "synergies": "synergies",
+    "test": "test"
+  },
+  "parts": 10,
+  "readers": [
+    {
+      "readers": [
+        "scripts/verify-citations-sample.mjs"
+      ],
+      "target": "products/",
+      "tests": 1
+    }
+  ],
+  "repo": "mcp-tool-shop-org/claude-synergy",
+  "sequences": [],
+  "startDoor": ".github/workflows/test.yml",
+  "startHere": [
+    ".github/workflows/test.yml",
+    "src/cli.ts"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 77,
+  "testedBy": {
+    "scripts": 0,
+    "src": 44
+  },
+  "unnamedWrites": 0,
+  "unread": [
+    {
+      "place": "SOURCES.md",
+      "writers": [
+        ".github/workflows/sync.yml"
+      ]
+    },
+    {
+      "place": "URGENT_FINDINGS.md",
+      "writers": [
+        ".github/workflows/sync.yml"
+      ]
+    },
+    {
+      "place": "dataset/changelog-actions/v1/eval-report-run1.json",
+      "writers": [
+        "scripts/eval-cs-actions.mjs"
+      ]
+    },
+    {
+      "place": "dataset/changelog-actions/v1/eval-report.v1.json",
+      "writers": [
+        "scripts/eval-cs-actions.mjs"
+      ]
+    },
+    {
+      "place": "dataset/changelog-actions/v1/judge-report.json",
+      "writers": [
+        "scripts/judge-dataset.mjs"
+      ]
+    },
+    {
+      "place": "dataset/changelog-actions/v1/manifest.json",
+      "writers": [
+        "scripts/build-dataset.mjs"
+      ]
+    }
+  ],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "scripts",
+      "partLabel": "scripts",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 10
+}
