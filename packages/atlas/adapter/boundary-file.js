@@ -4,7 +4,7 @@ import { parse } from 'yaml';
 
 const TOP_LEVEL = new Set(['summary', 'window', 'thresholds', 'boundaries']);
 const BOUNDARY_FIELDS = new Set(['name', 'globs', 'role', 'rebaseline']);
-const ROLES = new Set(['code', 'test', 'docs', 'config', 'site']);
+const ROLES = new Set(['code', 'test', 'docs', 'config', 'site', 'data']);
 
 // Fields an older boundary file carried for the acceptance ladder. The page is
 // written from the recorded facts now, so these are read past, not rejected:
@@ -92,7 +92,7 @@ function validate(doc) {
     if (!Array.isArray(boundary.globs) || boundary.globs.some((glob) => typeof glob !== 'string')) {
       return `${where}.globs must be an array of strings`;
     }
-    if (boundary.role != null && !ROLES.has(boundary.role)) return `${where}.role must be code, test, docs, config, or site`;
+    if (boundary.role != null && !ROLES.has(boundary.role)) return `${where}.role must be code, test, docs, config, site, or data`;
     if (boundary.rebaseline != null && typeof boundary.rebaseline !== 'string') return `${where}.rebaseline must be a string`;
   }
   return null;

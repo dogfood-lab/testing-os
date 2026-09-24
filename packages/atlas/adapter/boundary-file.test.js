@@ -90,12 +90,12 @@ describe('atlas boundary file', () => {
     assert.equal(ignoredNotice(doc), '');
   });
 
-  it('still rejects a field it never knew and a role outside the five', () => {
+  it('still rejects a field it never knew and a role outside the six', () => {
     const unknown = readBoundaryFile(repoWith('boundaries:\n  - name: pkg\n    globs: [pkg/**]\n    colour: blue\n'));
     assert.equal(unknown.ok, false);
     assert.deepEqual(unknown.details, ['boundaries[0].colour is not a boundary field']);
     const role = readBoundaryFile(repoWith('boundaries:\n  - name: pkg\n    globs: [pkg/**]\n    role: library\n'));
     assert.equal(role.ok, false);
-    assert.deepEqual(role.details, ['boundaries[0].role must be code, test, docs, config, or site']);
+    assert.deepEqual(role.details, ['boundaries[0].role must be code, test, docs, config, site, or data']);
   });
 });

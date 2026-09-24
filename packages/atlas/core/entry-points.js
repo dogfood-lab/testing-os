@@ -4,7 +4,7 @@ import picomatch from 'picomatch';
 import { workspaceGlobs } from './commands.js';
 import { isTestFile, isTestMaterial } from './landings.js';
 import { declaredScripts } from './python-manifest.js';
-import { resolveDeclaredPath, resolvePythonModule } from './resolve.js';
+import { resolveDeclaredPath, resolvePythonModule, unplacedBuildOutput } from './resolve.js';
 
 const FALLBACKS = [
   (name) => name.startsWith('index.'),
@@ -33,7 +33,7 @@ export function deriveEntryPoints({ repoPath, globs, tracked, scripts = [], comm
   const inside = picomatch(globs, { dot: true });
   const root = boundaryRoot(globs);
   const manifest = root ? `${root}/package.json` : 'package.json';
-  const declared = [...scripts, ...commands].map((entry) => entry.path).filter((path) => inside(path));
+  const declared = [...scripts, ...commands].map((entry) => entry.path).filter((path) => path != null && inside(path));
   let found;
   if (tracked.has(manifest)) found = [...fromPackage(repoPath, root, manifest, tracked), ...declared];
   else found = declared.length > 0 ? declared : fromNames(root, tracked);
@@ -67,14 +67,18 @@ export function pythonScripts(repoPath, tracked) {
  * every bin of the root package.json and of each npm workspace member's,
  * every script a pyproject.toml declares, and, when the root package is
  * published (it has a name and is not private), the file its exports["."] or
- * main loads. A manifest inside test material is a copy a test works on, not
+ * main loads, with in `paths` every file an exports subpath names (types
+ * and the manifest itself aside), which an import of the package can load. A manifest inside test material is a copy a test works on, not
  * one of this repository's, and a declared file that is not tracked names
- * nothing to follow.
+ * nothing to follow. A declared file that is a build's output (dist/cli.js)
+ * is traced to its source through the tracked build configs; when none places
+ * it, the command is still installed, so it is kept with path null and the
+ * declared path as unplaced.
  *
  * @param {string} repoPath
  * @param {Set<string>} tracked
  * @param {Array<{ path: string, name: string, manifest: string }>} scripts pythonScripts()
- * @returns {Array<{ kind: 'command'|'package', name: string, manifest: string, path: string }>}
+ * @returns {Array<{ kind: 'command'|'package', name: string, manifest: string, path: string|null, unplaced?: string }>}
  *   sorted by manifest, then name
  */
 export function manifestCommands(repoPath, tracked, scripts = []) {
@@ -88,11 +92,17 @@ export function manifestCommands(repoPath, tracked, scripts = []) {
     if (!pkg) continue;
     for (const [name, spec] of binEntries(pkg)) {
       const path = declaredFile(repoPath, dir, spec, tracked);
+      const unplaced = path ? null : unplacedFile(repoPath, dir, spec, tracked);
       if (path) out.push({ kind: 'command', name, manifest, path });
+      else if (unplaced) out.push({ kind: 'command', name, manifest, path: null, unplaced });
     }
     if (dir !== '' || typeof pkg.name !== 'string' || pkg.name === '' || pkg.private === true) continue;
-    const loaded = mainSpecs(pkg).map((spec) => declaredFile(repoPath, dir, spec, tracked)).find(Boolean);
-    if (loaded) out.push({ kind: 'package', name: pkg.name, manifest, path: loaded });
+    const specs = mainSpecs(pkg);
+    const loaded = specs.map((spec) => declaredFile(repoPath, dir, spec, tracked)).find(Boolean);
+    const unplaced = loaded ? null : specs.map((spec) => unplacedFile(repoPath, dir, spec, tracked)).find(Boolean);
+    const exported = exportSpecs(pkg).map((spec) => declaredFile(repoPath, dir, spec, tracked)).filter(Boolean);
+    if (loaded) out.push({ kind: 'package', name: pkg.name, manifest, path: loaded, paths: [...new Set([loaded, ...exported])].sort(compare) });
+    else if (unplaced) out.push({ kind: 'package', name: pkg.name, manifest, path: null, unplaced });
   }
   for (const script of scripts) {
     if (!isTestMaterial(script.manifest)) out.push({ kind: 'command', name: script.name, manifest: script.manifest, path: script.path });
@@ -146,9 +156,34 @@ function mainSpecs(pkg) {
   return specs;
 }
 
+// Every file an exports map names, under every subpath and condition but a
+// types one; ./package.json is the manifest, not code the package loads.
+function exportSpecs(pkg) {
+  const { exports } = pkg;
+  if (typeof exports === 'string') return [exports];
+  if (exports == null || typeof exports !== 'object' || Array.isArray(exports)) return [];
+  const subpaths = Object.keys(exports).some((key) => key.startsWith('.'));
+  const specs = [];
+  const collect = (value) => {
+    if (typeof value === 'string') {
+      if (!/\.d\.[cm]?ts$/.test(value)) specs.push(value);
+    } else if (value && typeof value === 'object' && !Array.isArray(value)) {
+      for (const [key, child] of Object.entries(value)) if (key !== 'types' && key !== 'typings') collect(child);
+    }
+  };
+  if (!subpaths) collect(exports);
+  else for (const [key, value] of Object.entries(exports)) if (key !== './package.json' && !key.includes('*')) collect(value);
+  return specs;
+}
+
 function declaredFile(repoPath, dir, spec, tracked) {
   const rel = joinRelative(dir, spec);
   return rel ? resolveDeclaredPath(repoPath, rel, tracked) : null;
+}
+
+function unplacedFile(repoPath, dir, spec, tracked) {
+  const rel = joinRelative(dir, spec);
+  return rel && unplacedBuildOutput(repoPath, rel, tracked) ? rel : null;
 }
 
 function compare(a, b) {

@@ -137,7 +137,9 @@ describe('doors in a Python repository', () => {
   it('spells out a staged variable from the step, the job and the workflow, and keeps one set at run time', () => {
     const baseline = door(py, 'Baseline');
     assert.deepEqual(baseline.stages, ['$RUNTIME_PATH', 'reports/baseline.txt', 'reports/run.log', 'reports/summary.md']);
-    assert.equal(baseline.pushes, true);
+    // It pushes HEAD to the baseline branch and opens a pull request for it.
+    assert.equal(baseline.pushes, false);
+    assert.equal(baseline.pushesForReview, true);
   });
 
   it('keeps tag and branch filters on one push trigger, and a release trigger its types', () => {

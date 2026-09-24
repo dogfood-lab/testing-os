@@ -9,4 +9,5 @@ jobs:
       - run: |
           python -m pip install pyinstaller
           pyinstaller --onefile --name record --paths tools tools/record.py
+          gzip -k tools/NOTES.txt
       - run: /tmp/verify/bin/cf-index --help

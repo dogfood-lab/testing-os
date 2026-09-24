@@ -84,7 +84,7 @@ describe('a file a linter checks is not a file the door runs', () => {
   });
 
   it('starts the reading path at a file the door runs', () => {
-    assert.equal(section('## Where to start')[2], '.github/workflows/ci.yml → scripts/gate.mjs');
+    assert.equal(section('## Where to start')[2], '.github/workflows/ci.yml → scripts/gate.mjs → lib/check.js');
   });
 
   it('names five parts a suite runs in, the one the commands name first, and counts the rest', () => {

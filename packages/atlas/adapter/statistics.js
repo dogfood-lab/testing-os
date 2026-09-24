@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { SOURCE_EXTENSIONS, SOURCE_FILE_REACH, SOURCE_FILE_RISE, isSourcePath, loadHistory } from '../core/history.js';
+import { SOURCE_EXTENSIONS, SOURCE_FILE_REACH, SOURCE_FILE_RISE, isBotIdentity, isSourcePath, loadHistory, readAuthorship } from '../core/history.js';
 
 const CHURN_DEFINITION = 'commits is how many commits in the window touch the file, including merges and commits dropped from coupling. lines is added plus deleted in those commits.';
 const STRENGTH_DEFINITION = 'strength is the shared qualifying commits divided by either. either is the number of qualifying commits that touch either file.';
@@ -209,11 +209,46 @@ export function buildStatistics({ repo, commit, document, artifact, generatedAt,
       headDate: history?.headDate ?? null,
     },
     confidence: { level: confidence, reason },
+    authorship: authorshipOf(repo, artifact, { since: history?.since ?? null, start: parameters.pinnedStart }, parameters.revisions),
     churn: { definition: CHURN_DEFINITION, files: measured.churn },
     strengthDefinition: STRENGTH_DEFINITION,
     pairs: measured.pairs,
     boundaries: applyMarks(rows, previous, measured.floor === 'fallen').sort((a, b) => (a.name < b.name ? -1 : 1)),
   };
+}
+
+/**
+ * Who commits to what the map says is written, so the page can tell a place
+ * people keep from one only its writer makes. A workflow that commits a place
+ * commits as a bot, so when people make most of the commits to a place a
+ * workflow commits, the workflow is the smaller writer: each such place is
+ * listed with how many commits in the window touch it and how many are by
+ * people, once it has as many commits as a file needs revisions to count. A
+ * place only a script writes is left out: a person running the generator
+ * commits its output under their own name, so the count cannot tell the two
+ * apart. And each part every one of whose files one bot added, with that bot.
+ *
+ * @returns {{ places: Array<{ target: string, commits: number, byPeople: number }>, parts: Array<{ name: string, addedBy: string }> }}
+ */
+function authorshipOf(repo, artifact, window, minimum) {
+  const read = readAuthorship(repo, window);
+  if (!read) return { places: [], parts: [] };
+  const committers = new Set((artifact.doors ?? []).filter((door) => !door.kind && (door.stages ?? []).length > 0).map((door) => door.file));
+  const targets = [...new Set((artifact.landings ?? [])
+    .filter((landing) => landing.tracked !== false && !landing.spans && (landing.writers ?? []).some((entry) => committers.has(entry.by)))
+    .map((landing) => landing.target))].sort();
+  const places = targets.map((target) => {
+    const touching = read.commits.filter((commit) => commit.paths.some((path) => path === target || path.startsWith(`${target}/`)));
+    return { target, commits: touching.length, byPeople: touching.filter((commit) => !isBotIdentity(commit.author)).length };
+  }).filter((place) => place.commits >= minimum && place.byPeople * 2 > place.commits);
+  const parts = [];
+  for (const boundary of artifact.boundaries) {
+    const adders = new Set(boundary.files.map((file) => read.addedBy.get(file.path)).map((author) => (author ? `${author.name} <${author.email}>` : '')));
+    if (boundary.files.length === 0 || adders.size !== 1) continue;
+    const author = read.addedBy.get(boundary.files[0].path);
+    if (author && isBotIdentity(author)) parts.push({ name: boundary.name, addedBy: author.name });
+  }
+  return { places, parts };
 }
 
 export function statisticsProblem(text) {

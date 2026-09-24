@@ -11,6 +11,7 @@ describe('derived roles', () => {
     assert.equal(roleFor(['tests/check.js', 'tests/more.js']), 'test');
     assert.equal(roleFor(['docs/guide.md']), 'docs');
     assert.equal(roleFor(['config/a.json', 'config/b.yaml']), 'config');
+    assert.equal(roleFor(['world/north.yaml', 'world/map.json']), 'data');
     assert.equal(roleFor(['pkg/index.js', 'pkg/package.json', 'pkg/one.test.js']), 'code');
     assert.equal(fileKind('.github/CODEOWNERS'), 'config');
     assert.equal(fileKind('indexes/chain.jsonl'), 'config');
@@ -18,7 +19,8 @@ describe('derived roles', () => {
     assert.equal(fileKind('records/.gitkeep'), 'other');
     assert.equal(fileKind('assets/logo.png'), 'other');
     assert.equal(roleFor(['.github/CODEOWNERS', '.github/workflows/ci.yml']), 'config');
-    assert.equal(roleFor(['assets/logo.png', 'records/.gitkeep']), 'config');
+    assert.equal(roleFor(['assets/logo.png', 'records/.gitkeep']), 'data');
+    assert.equal(roleFor(['records/.gitkeep']), 'config');
     assert.equal(roleFor(['swarms/notes.md', 'swarms/plan.md']), 'docs');
     assert.equal(roleFor(['dogfood/a.yaml', 'dogfood/validate.test.mjs']), 'config');
   });

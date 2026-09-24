@@ -247,12 +247,72 @@ function readTsconfig(repo, path, seen = new Set()) {
   return own;
 }
 
-function projectFile(repo, dir, value) {
+export function projectFile(repo, dir, value) {
   const path = join(dir, value);
   if (path == null) return null;
   if (path.endsWith('.json') && repo.tracked.has(path)) return path;
   const inside = path === '' ? 'tsconfig.json' : `${path}/tsconfig.json`;
   return repo.tracked.has(inside) ? inside : null;
+}
+
+/**
+ * Where a tsconfig emits and what it emits from, as the compiler resolves
+ * them: outDir and rootDir, each relative to the file that wrote it and
+ * inherited through a relative extends. Without a rootDir the compiler takes
+ * the deepest directory holding every source it compiles, which is read from
+ * the tracked files the config selects. A config with no outDir emits beside
+ * its sources, so it names no output directory and is null.
+ *
+ * @returns {{ config: string, outDir: string, rootDir: string } | null}
+ */
+export function tscOutput(repo, path) {
+  const options = compilerPaths(repo, path);
+  if (options == null || !options.outDir) return null;
+  let rootDir = options.rootDir;
+  if (rootDir == null) {
+    const found = tscTargets(repo, '', path, { build: false });
+    const files = [
+      ...[...found.directories].flatMap((dir) => repo.filesUnder(dir)),
+      ...found.patterns.flatMap((pattern) => repo.filesMatching('', pattern.globs, pattern.exclude)),
+    ];
+    const typed = files.filter((file) => TS_EXTENSIONS.some((ext) => file.endsWith(ext)) && !/\.d\.[cm]?ts$/.test(file));
+    const sources = typed.length > 0 || !options.allowJs ? typed : files.filter((file) => /\.[cm]?jsx?$/.test(file));
+    rootDir = sources.length > 0 ? commonDirectory(sources) : posix.dirname(path) === '.' ? '' : posix.dirname(path);
+  }
+  return { config: path, outDir: options.outDir, rootDir };
+}
+
+function compilerPaths(repo, path, seen = new Set()) {
+  if (seen.has(path) || seen.size > 8) return null;
+  seen.add(path);
+  const json = parseJsonc(repo.text(path));
+  if (json == null || typeof json !== 'object') return null;
+  const dir = posix.dirname(path) === '.' ? '' : posix.dirname(path);
+  const options = json.compilerOptions != null && typeof json.compilerOptions === 'object' ? json.compilerOptions : {};
+  // A directory outside the repository is no place a tracked source can be
+  // mapped from, so it is read as unset rather than as the root.
+  const own = {
+    outDir: typeof options.outDir === 'string' ? join(dir, options.outDir) : undefined,
+    rootDir: typeof options.rootDir === 'string' ? join(dir, options.rootDir) : undefined,
+    allowJs: typeof options.allowJs === 'boolean' ? options.allowJs : undefined,
+  };
+  const bases = (Array.isArray(json.extends) ? json.extends : [json.extends]).filter((item) => typeof item === 'string' && item.startsWith('.'));
+  for (const base of bases) {
+    let target = join(dir, base);
+    if (target == null) continue;
+    if (!target.endsWith('.json')) target = repo.tracked.has(`${target}.json`) ? `${target}.json` : `${target}/tsconfig.json`;
+    const inherited = compilerPaths(repo, target, seen);
+    if (!inherited) continue;
+    for (const field of ['outDir', 'rootDir', 'allowJs']) if (own[field] === undefined) own[field] = inherited[field];
+  }
+  return own;
+}
+
+function commonDirectory(files) {
+  const split = files.map((file) => file.split('/').slice(0, -1));
+  let length = 0;
+  while (split.every((parts) => parts.length > length && parts[length] === split[0][length])) length += 1;
+  return split[0].slice(0, length).join('/');
 }
 
 /**

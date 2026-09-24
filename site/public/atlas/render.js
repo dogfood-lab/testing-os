@@ -21,6 +21,7 @@ const COMMIT = /^[0-9a-f]{7,40}$/i;
 const BRANCH = /^[A-Za-z0-9._@+-]+(?:\/[A-Za-z0-9._@+-]+)*$/;
 const PATH = /^[A-Za-z0-9._@+-]+(?:\/[A-Za-z0-9._@+-]+)*\/?$/;
 const FOUND_BY_TEXT = ' (found by text)';
+const FROM_TESTS = ' (from tests)';
 const REGENERATE = 'Regenerate with `npx --yes @dogfood-lab/atlas map`.';
 
 const ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
@@ -103,11 +104,13 @@ function pathHtml(ctx, text) {
   return href ? `<a href="${esc(href)}">${code}</a>` : esc(value);
 }
 
-// A reader string is a path, a path marked found by text, or a part with a
-// file count; only the path part becomes a link.
+// A reader string is a path, a path marked found by text or from tests, or
+// a part with a file count; only the path part becomes a link.
 function readerHtml(ctx, text) {
   const value = str(text);
-  if (value.endsWith(FOUND_BY_TEXT)) return `${pathHtml(ctx, value.slice(0, -FOUND_BY_TEXT.length))}${esc(FOUND_BY_TEXT)}`;
+  for (const mark of [FOUND_BY_TEXT, FROM_TESTS]) {
+    if (value.endsWith(mark)) return `${pathHtml(ctx, value.slice(0, -mark.length))}${esc(mark)}`;
+  }
   return pathHtml(ctx, value);
 }
 
@@ -179,7 +182,7 @@ export function partLabel(labels, id, fallback = null) {
 // named as the page names it and the count kept.
 function wordedName(ctx, text) {
   const value = str(text);
-  const match = /^(.+) \((\d+ (?:\S+ )?files)\)$/.exec(value);
+  const match = /^(.+) \((\d+ (?:\S+ )?files(?:, from tests)?)\)$/.exec(value);
   if (!match || !Object.hasOwn(ctx.labels, match[1])) return value;
   return `${ctx.name(match[1])} (${match[2]})`;
 }
@@ -191,7 +194,7 @@ function installed(door) {
 }
 
 function installedAs(door) {
-  const what = door.kind === 'package' ? 'the package people import' : 'a command people run';
+  const what = door.kind !== 'package' ? 'a command people run' : door.unpublished ? 'the package&#39;s entry, not published from here' : 'the package people import';
   return door.sharedName ? `${what}, from ${esc(door.file)}` : what;
 }
 
@@ -262,10 +265,22 @@ function placesHtml(ctx, places) {
   return list(arr(places).map((place) => pathHtml(ctx, place)));
 }
 
+// A push to another branch than main is said as page.js pushWords says it.
+function pushWords(door) {
+  if (door.pushes) return 'pushes';
+  if (door.pushesForReview) return 'pushes to a branch for review, never to main';
+  const to = arr(door.pushesTo).map(str);
+  if (to.length === 0) return null;
+  const named = to.filter((branch) => !branch.includes('$'));
+  const branches = [...named.map((branch) => `the ${esc(branch)} branch`), ...(named.length < to.length ? ['a branch set at run time'] : [])];
+  return `pushes to ${list(branches).replace(/ and /g, ' or ')}, not to main`;
+}
+
 function commitsClause(ctx, door) {
   const stages = arr(door.stages).map((place) => pathHtml(ctx, place));
-  if (!door.pushes) return list(stages);
-  return stages.length > 1 ? `${list(stages)}, then pushes` : `${list(stages)} and pushes`;
+  const push = pushWords(door);
+  if (!push) return list(stages);
+  return stages.length > 1 ? `${list(stages)}, then ${push}` : `${list(stages)} and ${push}`;
 }
 
 function section(heading, body) {
@@ -366,6 +381,12 @@ function changesSection(ctx) {
   return withStrip(changes.unchanged ? p(sentences.join(' ')) : ul(sentences));
 }
 
+// A command whose manifest points at a build's output that no tracked config
+// traces to a source names that path, as page.js does.
+function unplacedClause(door) {
+  return `${startVerb(door)} ${esc(door.unplaced)}, built from a source this map cannot place`;
+}
+
 function comesIn(ctx) {
   const items = ctx.doors.map((door) => {
     const name = `<strong>${esc(door.name)}.</strong>`;
@@ -373,7 +394,8 @@ function comesIn(ctx) {
     const paths = runs(ctx, door);
     const checked = checks(ctx, door);
     const clauses = [];
-    if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths))}`);
+    if (door.unplaced) clauses.push(unplacedClause(door));
+    else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths))}`);
     if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked))}`);
     const ran = capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`);
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
@@ -475,10 +497,12 @@ function readsSection(ctx) {
   if (groups.length === 0) return section('Who reads the results', p(`Only ${name} itself reads what it writes.`));
   const bullets = groups.map((group) => {
     const target = `<strong>${pathHtml(ctx, group.target)}</strong>`;
-    const readers = arr(group.readers);
-    return readers.length === 0
-      ? `${target} has no reader in this repository.`
-      : `${target} is read by ${list(readers.map((reader) => readerHtml(ctx, wordedName(ctx, reader))))}.`;
+    const readers = arr(group.readers).map((reader) => readerHtml(ctx, wordedName(ctx, reader)));
+    // The tests that read the place are counted after its code readers.
+    const tests = Number(group.tests) || 0;
+    if (readers.length === 0 && tests === 0) return `${target} has no reader in this repository.`;
+    const by = tests === 0 ? list(readers) : readers.length === 0 ? count(tests, 'test') : `${list(readers)}, and by ${count(tests, 'test')}`;
+    return `${target} is read by ${by}.`;
   });
   return section('Who reads the results', ul(bullets));
 }
@@ -492,7 +516,8 @@ function otherDoors(ctx) {
     const paths = runs(ctx, door);
     const checked = checks(ctx, door);
     const verb = startVerb(door);
-    if (paths.length > 0 || checked.length === 0) {
+    if (door.unplaced) clauses.push({ html: unplacedClause(door), text: `${verb} ${str(door.unplaced)}, built from a source this map cannot place` });
+    else if (paths.length > 0 || checked.length === 0) {
       clauses.push(paths.length > 0
         ? { html: `${verb} ${runsShown(paths, runTotal(door, paths))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths))}` }
         : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
@@ -506,7 +531,8 @@ function otherDoors(ctx) {
     if (landings.length > 0) clauses.push({ html: `writes to ${placesHtml(ctx, landings)}`, text: `writes to ${list(landings)}` });
     const stages = arr(door.stages).map(str);
     if (stages.length > 0) {
-      const text = door.pushes ? (stages.length > 1 ? `${list(stages)}, then pushes` : `${list(stages)} and pushes`) : list(stages);
+      const push = pushWords(door);
+      const text = push ? (stages.length > 1 ? `${list(stages)}, then ${push}` : `${list(stages)} and ${push}`) : list(stages);
       clauses.push({ html: `commits ${commitsClause(ctx, door)}`, text: `commits ${text}` });
     }
     for (const send of arr(door.sends)) clauses.push({ html: inline(send), text: str(send) });
@@ -640,6 +666,8 @@ function generatedSection(ctx) {
     ? ul(items.map((item) => {
       const place = `<strong>${pathHtml(ctx, item.place)}</strong>`;
       const writers = arr(item.writers);
+      // A part one bot added every file of is that bot's.
+      if (item.addedBy) return `${place} is written by ${esc(item.addedBy)}, which added every file in it.`;
       if (writers.length === 0) return `${place} is written by code this map cannot name.`;
       const by = list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
       // A stamped file is written by people, with one block a script keeps.
@@ -662,7 +690,13 @@ function authoredSection(ctx) {
     ? `${people}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`
     : `${people}. Nothing in this repository writes to them.`;
   const body = places.length > 0 ? p(caveat) : p('No configuration or documentation part is left to people alone.');
-  return section('Hand-authored', body);
+  // A place a script writes and people keep, with the count that says so.
+  const shared = arr(ctx.page.authoredWritten).filter((item) => item && typeof item === 'object').map((item) => {
+    const writers = list(arr(item.writers).map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
+    const people = Number(item.byPeople) || 0;
+    return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${writers}, and by people: ${people} of its ${count(Number(item.commits) || 0, 'commit')} in the window ${people === 1 ? 'is' : 'are'} theirs.`;
+  });
+  return section('Hand-authored', shared.length > 0 ? `${body}\n${ul(shared)}` : body);
 }
 
 // page.json keeps the trigger as the sentence page.js wrote, so the noun for

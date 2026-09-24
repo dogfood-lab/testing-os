@@ -1,0 +1,13 @@
+name: goldens
+on:
+  workflow_dispatch:
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/gen.mjs
+      - run: |
+          git add fixtures/golden.json fixtures/other.json
+          git commit -m "regenerate goldens"
+          git push

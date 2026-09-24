@@ -1,3 +1,4 @@
+import { loadsManifest } from '../core/languages.js';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
 import { roleFor } from './templates.js';
 
@@ -76,7 +77,8 @@ function resolvedFiles(file) {
   const files = [];
   const boundaries = [];
   for (const site of file.imports) {
-    if (site.resolved?.outcome === 'file') files.push(site.resolved.path);
+    // A test that loads package.json for the version tests no part by it.
+    if (site.resolved?.outcome === 'file' && !loadsManifest(site)) files.push(site.resolved.path);
     else if (site.resolved?.outcome === 'boundary') boundaries.push(site.resolved.boundary);
   }
   return { files, boundaries };
@@ -196,6 +198,7 @@ function carryFile(file) {
   // the same as importing nothing; it is marked so a reader is not told so,
   // with the construct the parser stopped on when it is one of the known ones.
   if (file.parseError) out.parseError = true;
+  if (file.noStatements) out.noStatements = true;
   if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
   const imported = importTargets(file);
   if (imported.files.length > 0) out.importsFiles = imported.files;
@@ -281,6 +284,7 @@ function carryReader(entry) {
   for (const field of ['call', 'confidence', 'ref', 'repo', 'target']) {
     if (entry[field] != null) out[field] = entry[field];
   }
+  if (entry.fromTests) out.fromTests = true;
   return out;
 }
 
@@ -304,16 +308,20 @@ function carryDoor(door) {
   return {
     ...(door.kind ? { kind: door.kind } : {}),
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
+    ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),
     elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
+    ...(door.entry ? { entry: door.entry } : {}),
     file: door.file,
     ...(door.gated?.length > 0
-      ? { gated: door.gated.map((entry) => ({ jobs: [...entry.jobs], pushes: entry.pushes, sends: [...entry.sends], stages: [...entry.stages], when: { ...entry.when } })) }
+      ? { gated: door.gated.map((entry) => ({ jobs: [...entry.jobs], pushes: entry.pushes, ...(entry.pushesForReview ? { pushesForReview: true } : {}), ...(entry.pushesTo ? { pushesTo: [...entry.pushesTo] } : {}), sends: [...entry.sends], stages: [...entry.stages], when: { ...entry.when } })) }
       : {}),
     landings: door.landings.filter((target) => !inAtlas(target)),
     mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),
     name: door.name,
     permissions: [...door.permissions],
     pushes: door.pushes,
+    ...(door.pushesForReview ? { pushesForReview: true } : {}),
+    ...(door.pushesTo ? { pushesTo: [...door.pushesTo] } : {}),
     reach: door.reach.map(carryReach),
     readers: door.readers.filter((entry) => !inAtlas(entry.target) && !inAtlas(entry.by)).map(carryReader),
     runs: door.runs.map(carryRun),
@@ -321,6 +329,7 @@ function carryDoor(door) {
     checksCount: door.checksCount ?? 0,
     secrets: [...door.secrets],
     sends: {
+      ...(door.sends.changesRepositories ? { changesRepositories: true } : {}),
       deploysPages: door.sends.deploysPages,
       dispatchesTo: [...door.sends.dispatchesTo],
       opensIssues: door.sends.opensIssues,
@@ -332,6 +341,8 @@ function carryDoor(door) {
     },
     stages: [...door.stages],
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
+    ...(door.unplaced ? { unplaced: door.unplaced } : {}),
+    ...(door.unpublished ? { unpublished: true } : {}),
     uses: [...door.uses],
     usesWorkflowToken: door.usesWorkflowToken,
   };

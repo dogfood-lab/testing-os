@@ -1,3 +1,5 @@
+import { loadsManifest } from './languages.js';
+
 /**
  * The boundaries a door reaches, in the order it reaches them.
  *
@@ -53,7 +55,8 @@ export function walkReach(starts, graph) {
       if (!Array.isArray(imports)) continue;
       for (const site of imports) {
         const resolved = site.resolved;
-        if (resolved?.outcome === 'file' && graph.files.has(resolved.path)) {
+        // A manifest a file loads is read, and reaches nothing (languages.js).
+        if (resolved?.outcome === 'file' && graph.files.has(resolved.path) && !loadsManifest(site)) {
           const into = graph.boundaryOf.get(resolved.path);
           if (into && into !== boundary && !enters.has(into)) enters.set(into, { file: resolved.path, from: path });
           if (!visited.has(resolved.path)) next.add(resolved.path);

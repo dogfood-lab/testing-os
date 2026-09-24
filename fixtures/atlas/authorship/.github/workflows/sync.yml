@@ -1,0 +1,14 @@
+name: sync
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/sync.mjs
+      - run: |
+          git add logos/
+          git commit -m "sync logos"
+          git push origin main

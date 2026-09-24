@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
 import { isOwnTest, isTestFile } from '../core/landings.js';
 import { formatFailure } from './errors.js';
-import { collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, testsClause, under, worded } from './page.js';
+import { collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, readerItem, testsClause, under, worded } from './page.js';
 
 /**
  * atlas explain: what one file, or one directory, is in the system, read from
@@ -269,10 +269,7 @@ function readFacts(ctx, members, written, within) {
 
 function writeLine(ctx, write) {
   if (write.readers.length === 0) return `Writes to ${write.place}; nothing in this repository reads it.`;
-  const items = collapse(ctx, write.readers.map((reader) => ({
-    path: reader.path,
-    text: reader.text ? `${reader.path} (found by text)` : reader.path,
-  })));
+  const items = collapse(ctx, write.readers.map(readerItem));
   return `Writes to ${write.place}; read by ${list(worded(items, ctx.shown))}.`;
 }
 

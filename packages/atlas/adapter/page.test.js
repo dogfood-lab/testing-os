@@ -136,10 +136,10 @@ describe('atlas page', () => {
       '## Written but never read': '- **cache/state.json** is written by tools/cache.js and read by nothing else in this repository.',
       '## Helpers that look duplicated': '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.',
       '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
-      '## Hand-authored': 'People write .github/, policies/, the repository root and site/; 2 writes with paths built at run time may land here.',
-      // tools/ingest.js imports lib/policy.js first; lib names no entry point,
-      // and the file the door's code opens is named instead of lib/.
-      '## Where to start': '.github/workflows/ingest.yml → tools/ingest.js → lib/policy.js → indexes/latest.json → site/index.html',
+      '## Hand-authored': 'People write .github/, policies/, the repository root and site/; 1 write with a path built at run time may land here.',
+      // tools/ingest.js writes indexes/latest.json itself, which the site
+      // reads, so every arrow is an edge the map recorded.
+      '## Where to start': '.github/workflows/ingest.yml → tools/ingest.js → indexes/latest.json → site/index.html',
       '## What this map cannot see': REGENERATE,
     };
     for (const [heading, sentence] of Object.entries(exact)) {
@@ -181,7 +181,7 @@ describe('atlas page', () => {
     assert.equal(reads.includes('tools/ingest.js'), false);
     assert.match(reads, /^- \*\*indexes\/\*\* is read by site\/index\.html \(found by text\), tools\/render\.js and tools\/report\.py\.$/m);
     assert.match(reads, /^- \*\*records\/\*\* has no reader in this repository\.$/m);
-    assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → lib\/policy\.js → indexes\/latest\.json → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);
+    assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → indexes\/latest\.json → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);
     assert.match(section(markdown, '## What this map cannot see'), /^- Readers marked \(found by text\) come from scanning unparsed files\.$/m);
     // site/index.html is found by text, and a page runs what it names, so it
     // is a reader a hand edit reaches.
@@ -323,7 +323,7 @@ describe('atlas page', () => {
     const clear = buildPage({
       structure: {
         ...withoutIngest(doors.structure),
-        boundaries: doors.structure.boundaries.map((boundary) => ({ ...boundary, dynamicReads: 0, dynamicWrites: 0, unresolvedSites: 0 })),
+        boundaries: doors.structure.boundaries.map((boundary) => ({ ...boundary, dynamicReads: 0, dynamicWrites: 0, outsideReads: 0, outsideWrites: 0, unresolvedSites: 0 })),
       },
       statistics: { ...doors.statistics, confidence: { level: 'high' } },
       document: doors.document,
@@ -347,7 +347,7 @@ describe('atlas page', () => {
     const plain = page(doors);
     assert.equal(
       section(plain.markdown, '## Hand-authored').split('\n')[2],
-      'People write .github/, policies/, the repository root and site/; 2 writes with paths built at run time may land here.',
+      'People write .github/, policies/, the repository root and site/; 1 write with a path built at run time may land here.',
     );
     assert.deepEqual(JSON.parse(plain.json).authored, ['.github/', 'policies/', 'root', 'site/']);
 
@@ -459,7 +459,7 @@ describe('atlas page', () => {
     // it is the one the page follows, and the page says why.
     // The file count moves with every fixture added, so it is matched, not pinned.
     const derived = section(own.markdown, '## What this is').split('\n').find((line) => line.startsWith('23 parts'));
-    assert.match(derived ?? '', /^23 parts, mostly JavaScript \(\d+ files\)\. Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository \(CI reaches 11 but commits nothing\)\. It publishes to npm and a container image\. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm\.$/);
+    assert.match(derived ?? '', /^23 parts, mostly JavaScript \(\d+ files\)\. Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository \(Release reaches 12 but commits nothing\)\. It publishes to npm and a container image\. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm\.$/);
     const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
     assert.ok(followed.length <= 5);
@@ -501,7 +501,7 @@ describe('atlas page', () => {
     assert.match(together, /\n\nWindow: \d+ days; a pair counts from \d+ shared commits(, since [^\n]+)?\.\n$/);
   });
 
-  it('finds the portfolio report written and never read in this repository, and every code part under a test', () => {
+  it('finds the portfolio report read only by tests in this repository, and every code part under a test', () => {
     const atlas = join(REPO_ROOT, 'atlas');
     const structure = JSON.parse(readFileSync(join(atlas, 'structure.json'), 'utf8'));
     const own = buildPage({
@@ -511,11 +511,13 @@ describe('atlas page', () => {
       repoName: 'dogfood-lab/testing-os',
     });
     // generate.js checks reports/ exists before writing the report into it; a
-    // writer reading back its own place is not a reader of it.
-    assert.ok(section(own.markdown, '## Written but never read').split('\n')
-      .includes('- **reports/dogfood-portfolio.json** is written by packages/portfolio/generate.js and read by nothing else in this repository.'));
+    // writer reading back its own place is not a reader of it, and the tests
+    // that read the report are, so it is not unread and they are counted.
     const data = JSON.parse(own.json);
-    assert.ok(data.unread.some((item) => item.place === 'reports/dogfood-portfolio.json'));
+    assert.ok(!data.unread.some((item) => item.place === 'reports/dogfood-portfolio.json'), JSON.stringify(data.unread));
+    const report = data.readers.find((group) => group.target === 'reports/dogfood-portfolio.json');
+    assert.deepEqual(report.readers, []);
+    assert.ok(report.tests > 0);
     // fixtures is a code part made only of test material, so it is not counted.
     assert.ok(structure.testFiles > 0);
     const code = structure.boundaries.filter((boundary) => boundary.role === 'code' && boundary.name !== 'fixtures').map((boundary) => boundary.name);
@@ -604,7 +606,7 @@ describe('atlas page', () => {
     assert.deepEqual(data.doors.map((door) => door.name), ['Checks', 'Ingest', 'weekly', 'Manual', 'broken']);
     assert.deepEqual(data.doors[2].triggers, ['on a push touching 1 path', 'on a schedule (`0 6 * * 1`), Monday at 06:00 UTC']);
     assert.deepEqual(data.doors[2].sends, ['sends a dispatch to acme/hub']);
-    assert.deepEqual(data.startHere, ['.github/workflows/ingest.yml', 'tools/ingest.js', 'lib/policy.js', 'indexes/latest.json', 'site/index.html']);
+    assert.deepEqual(data.startHere, ['.github/workflows/ingest.yml', 'tools/ingest.js', 'indexes/latest.json', 'site/index.html']);
     assert.deepEqual(data.authored, ['.github/', 'policies/', 'root', 'site/']);
     assert.deepEqual(data.readers, [
       { readers: ['site/index.html (found by text)', 'tools/render.js', 'tools/report.py'], target: 'indexes/' },
@@ -840,7 +842,7 @@ describe('files the parser cannot read', () => {
       'lib/wire.ts': 'nul-character',
     });
     // All five are in lib, so the part is named once.
-    const line = '5 files in lib use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (2), an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
+    const line = '5 files in lib use syntax the parser cannot read (lib/broken.ts, lib/inspect.ts, lib/key.ts and 2 more), so what they import is not known: a NUL character inside a string (2), an import type followed by `[]` (1), `typeof import(…)` as a type argument (1) and other syntax (1).';
     assert.ok(JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits.includes(line));
     assert.ok(readFileSync(join(root, 'atlas', 'README.md'), 'utf8').includes(`\n- ${line}\n`));
   });

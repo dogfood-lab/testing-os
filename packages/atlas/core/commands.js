@@ -1,7 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { join as joinFs, posix } from 'node:path';
 import picomatch from 'picomatch';
+import { parse as parseYaml } from 'yaml';
 import { isCodePath } from './languages.js';
+import { wheelPackages } from './python-manifest.js';
 import {
   eslintTargets,
   jestTargets,
@@ -58,6 +60,8 @@ const PY_TOOLS = new Set(['pytest', 'py.test', 'mypy', 'black', 'flake8', 'pylin
 // door (core/index.js walks landings from executed runs alone). tsc is one
 // whether or not it emits, since a compiler runs none of the code it builds.
 const CHECKERS = new Set(['ruff', 'mypy', 'checker', 'tsc', 'eslint']);
+// Python modules that only compile what they are handed.
+const PY_COMPILERS = new Set(['py_compile', 'compileall']);
 
 // The flags each tool takes a value after, written apart ("-c pyproject.toml").
 // A value is never a path the tool runs, even when it names a tracked file.
@@ -94,18 +98,25 @@ const VALUES = {
   sudo: ['-u', '--user', '-g', '--group', '-C', '-D', '--chdir', '-h', '--host', '-p', '--prompt'],
   xargs: ['-n', '-I', '-P', '-d', '-L', '-s', '-E', '-a', '--max-args', '--max-procs', '--delimiter', '--arg-file', '--replace'],
   nice: ['-n', '--adjustment'],
+  pyinstaller: ['--name', '-n', '--distpath', '--workpath', '--specpath', '-p', '--paths', '--hidden-import', '--collect-submodules', '--collect-data', '--collect-binaries', '--collect-all', '--copy-metadata', '--add-data', '--add-binary', '--exclude-module', '--runtime-hook', '--additional-hooks-dir', '--icon', '-i', '--upx-dir', '--target-arch', '--version-file', '--splash', '--log-level', '--key', '--runtime-tmpdir', '--contents-directory'],
+  build: ['-o', '--outdir', '-C', '--config-setting', '--installer'],
+  docker: ['-f', '--file', '-t', '--tag', '--target', '--build-arg', '--platform', '--label', '--cache-from', '--cache-to', '--secret', '--ssh', '--output', '-o', '--network', '--progress', '--iidfile', '--metadata-file', '--build-context', '--builder', '--provenance', '--sbom', '--shm-size', '--ulimit', '--add-host', '--cgroup-parent', '--isolation', '--memory', '-m', '--cpu-shares', '--annotation', '--attest', '--allow', '--call', '--format'],
 };
 const VALUE_SETS = Object.fromEntries(Object.entries(VALUES).map(([tool, flags]) => [tool, new Set(flags)]));
 
 /**
  * The tracked files and directories a repository holds, the files each
  * directory holds, and the package manifests, read once per map.
+ *
+ * builtFrom, when given, is the tracked source a path a build emits is
+ * compiled from (core/resolve.js resolveDeclaredPath), or null: a command
+ * that runs dist/cli.js runs the CLI src/cli.ts is built into.
  */
-export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [] }) {
+export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null }) {
   const dirs = new Set(['']);
   // The commands the repository installs, by the name a step types.
   const installed = new Map();
-  for (const command of commands) if (command.kind === 'command' && !installed.has(command.name)) installed.set(command.name, command.path);
+  for (const command of commands) if (command.kind === 'command' && command.path != null && !installed.has(command.name)) installed.set(command.name, command.path);
   for (const path of tracked) {
     for (let at = path.indexOf('/'); at !== -1; at = path.indexOf('/', at + 1)) dirs.add(path.slice(0, at));
   }
@@ -119,6 +130,7 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
     dirs,
     spawned,
     installed,
+    builtFrom,
     text(path) {
       if (!tracked.has(path)) return null;
       if (!texts.has(path)) {
@@ -310,6 +322,7 @@ function makeReader(repo, runs, mentions) {
       return;
     }
     if (interpret(argv, dir, frame)) return;
+    if (containerBuild(argv, dir, frame)) return;
     if (NON_EXECUTING.has(argv[0])) return;
     // A command the repository installs, typed by its name or by a path to
     // where it was installed (.venv/bin/facet-index), runs its module.
@@ -357,8 +370,10 @@ function makeReader(repo, runs, mentions) {
   // A tracked file the command executes; a directory when the tool accepts
   // one. Returns the path when it was a run.
   function file(token, dir, frame, { directories = false, script = false, args = [] } = {}) {
-    const path = pathFrom(dir, token);
-    if (path == null) return null;
+    const named = pathFrom(dir, token);
+    if (named == null) return null;
+    // A build output is not tracked; what runs when it runs is its source.
+    const path = repo.tracked.has(named) ? named : repo.builtFrom(named) ?? named;
     if (repo.tracked.has(path)) {
       const passes = script ? flagsOf(args) : [];
       record(stamp({ path, ...(passes.length > 0 ? { passes } : {}) }, frame));
@@ -429,7 +444,7 @@ function makeReader(repo, runs, mentions) {
     const tool = toolOf(argv[0]);
     if (tool == null) {
       const path = pathFrom(dir, argv[0]);
-      if (path != null && repo.tracked.has(path)) file(argv[0], dir, frame, { script: true, args: argv.slice(1) });
+      if (path != null && (repo.tracked.has(path) || repo.builtFrom(path) != null)) file(argv[0], dir, frame, { script: true, args: argv.slice(1) });
       return false;
     }
     handlers[tool](argv, dir, CHECKERS.has(tool) ? { ...frame, runKind: 'checks' } : frame);
@@ -469,6 +484,15 @@ function makeReader(repo, runs, mentions) {
   }
 
   function pythonModule(name, rest, dir, frame) {
+    if (name === 'build' && !['build.py', 'build/__main__.py', 'build/__init__.py'].some((file) => repo.tracked.has(pathFrom(dir, file) ?? ''))) {
+      const parsed = split(['build', ...rest], 1, VALUE_SETS.build);
+      pythonBuild(parsed.positional[0] ?? '.', dir, frame);
+      return;
+    }
+    if (PY_COMPILERS.has(name)) {
+      for (const token of rest.filter((arg) => !arg.startsWith('-'))) file(token, dir, { ...frame, runKind: 'checks' }, { directories: true });
+      return;
+    }
     const parts = name.split('.');
     if (parts.some((part) => !/^[A-Za-z_][A-Za-z0-9_]*$/.test(part))) return;
     const stem = parts.join('/');
@@ -509,10 +533,81 @@ function makeReader(repo, runs, mentions) {
     reparse(argv.slice(i), cwd, frame);
   }
 
+  // A wheel or sdist packs the files of the package the project names; the
+  // build reads them and runs none.
+  function pythonBuild(srcdir, dir, frame) {
+    const root = pathFrom(dir, srcdir);
+    if (root == null) return;
+    const manifest = root ? `${root}/pyproject.toml` : 'pyproject.toml';
+    if (!repo.tracked.has(manifest)) return;
+    const at = (path) => (root ? `${root}/${path}` : path);
+    const chain = via(frame, `build ${manifest}`);
+    for (const found of wheelPackages(repo.text(manifest), (path) => repo.dirs.has(at(path)))) {
+      record(stamp({ path: `${at(found)}/`, directory: true }, { ...frame, runKind: 'checks' }, chain));
+    }
+  }
+
+  /**
+   * docker build, docker buildx build and podman build of a context: the
+   * Dockerfile's COPY and ADD sources the image is built from are checked,
+   * its RUN lines are read as commands from the context, and the program its
+   * ENTRYPOINT (or, without one, its CMD) starts is run, found through the
+   * file a COPY put there, a command the repository installs, or a path in
+   * the context. Returns true when the words are a build.
+   */
+  function containerBuild(argv, dir, frame) {
+    if (argv[0] !== 'docker' && argv[0] !== 'podman') return false;
+    const start = argv[1] === 'buildx' ? 2 : 1;
+    if (argv[start] !== 'build' && argv[start] !== 'image') return false;
+    const from = argv[start] === 'image' ? (argv[start + 1] === 'build' ? start + 2 : -1) : start + 1;
+    if (from === -1) return false;
+    const parsed = split(argv, from, VALUE_SETS.docker);
+    readContainer(parsed.positional[0] ?? '.', valueOf(parsed, '-f', '--file'), dir, frame);
+    return true;
+  }
+
+  function readContainer(contextArg, fileArg, dir, frame) {
+    const context = pathFrom(dir, contextArg);
+    if (context == null || (context !== '' && !repo.dirs.has(context))) return;
+    const dockerfile = fileArg != null ? pathFrom(dir, fileArg) : context ? `${context}/Dockerfile` : 'Dockerfile';
+    if (dockerfile == null || !repo.tracked.has(dockerfile)) return;
+    const chain = via(frame, `docker build ${dockerfile}`);
+    const checks = { ...frame, runKind: 'checks' };
+    const copied = new Map();
+    let entry = null;
+    let cmd = null;
+    for (const { op, args } of dockerInstructions(repo.text(dockerfile) ?? '')) {
+      if (op === 'COPY' || op === 'ADD') {
+        const words = instructionWords(args);
+        if (words.some((word) => word.startsWith('--from'))) continue;
+        const paths = words.filter((word) => !word.startsWith('--'));
+        if (paths.length < 2) continue;
+        const dest = paths[paths.length - 1];
+        for (const source of paths.slice(0, -1)) {
+          const path = pathFrom(context, source);
+          if (path == null || path === '') continue;
+          if (repo.tracked.has(path)) {
+            record(stamp({ path }, checks, chain));
+            copied.set(dest.endsWith('/') ? baseName(path) : baseName(dest), path);
+          } else if (repo.dirs.has(path)) record(stamp({ path: `${path}/`, directory: true }, checks, chain));
+        }
+      } else if (op === 'RUN' && frame.level === 0) {
+        read(args.startsWith('[') ? instructionWords(args).join(' ') : args, context, { level: 1, via: chain, active: frame.active });
+      } else if (op === 'ENTRYPOINT') entry = instructionWords(args)[0] ?? null;
+      else if (op === 'CMD') cmd = instructionWords(args)[0] ?? null;
+    }
+    const program = entry ?? cmd;
+    if (program == null) return;
+    const started = copied.get(baseName(program)) ?? repo.installed.get(baseName(program))
+      ?? (repo.tracked.has(pathFrom(context, program) ?? '') ? pathFrom(context, program) : null);
+    if (started != null) record(stamp({ path: started }, frame, chain));
+  }
+
   const handlers = {
     node(argv, dir, frame) {
       const parsed = [];
       let test = false;
+      let check = false;
       let i = 1;
       for (; i < argv.length; i += 1) {
         const token = argv[i];
@@ -521,11 +616,20 @@ function makeReader(repo, runs, mentions) {
           test = true;
           continue;
         }
+        // node -c parses the script and runs none of it.
+        if (token === '-c' || token === '--check') {
+          check = true;
+          continue;
+        }
         if (!token.startsWith('-')) break;
         const eq = token.indexOf('=');
         const name = eq === -1 ? token : token.slice(0, eq);
         const value = eq !== -1 ? token.slice(eq + 1) : VALUE_SETS.node.has(name) ? argv[++i] : null;
         if (value != null && ['--import', '--loader', '--experimental-loader', '--require', '-r'].includes(name)) file(value, dir, frame);
+      }
+      if (check) {
+        if (i < argv.length) file(argv[i], dir, { ...frame, runKind: 'checks' });
+        return;
       }
       if (!test) {
         if (i < argv.length) file(argv[i], dir, frame, { script: true, args: argv.slice(i + 1) });
@@ -565,17 +669,21 @@ function makeReader(repo, runs, mentions) {
       }
     },
     shell(argv, dir, frame) {
+      let parseOnly = false;
       for (let i = 1; i < argv.length; i += 1) {
         const token = argv[i];
         if (token === '-c') {
-          if (i + 1 < argv.length) read(argv[i + 1], dir, { ...frame });
+          if (i + 1 < argv.length && !parseOnly) read(argv[i + 1], dir, { ...frame });
           return;
         }
         if (token.startsWith('-') || token.startsWith('+')) {
+          // sh -n reads the script's commands and runs none of them.
+          if (/^-[A-Za-z]*n[A-Za-z]*$/.test(token)) parseOnly = true;
           if (VALUE_SETS.shell.has(token)) i += 1;
           continue;
         }
-        file(token, dir, frame, { script: true, args: argv.slice(i + 1) });
+        if (parseOnly) file(token, dir, { ...frame, runKind: 'checks' });
+        else file(token, dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
     },
@@ -664,19 +772,32 @@ function makeReader(repo, runs, mentions) {
       }
     },
     uv(argv, dir, frame) {
-      if (argv[1] === 'run') wrapped(argv, 2, dir, frame, VALUE_SETS['uv run'], { chdir: ['--directory'] });
+      if (argv[1] === 'build') pythonBuild(split(argv, 2, VALUE_SETS.build).positional[0] ?? '.', dir, frame);
+      else if (argv[1] === 'run') wrapped(argv, 2, dir, frame, VALUE_SETS['uv run'], { chdir: ['--directory'] });
       else if (argv[1] === 'tool' && argv[2] === 'run') wrapped(argv, 3, dir, frame, VALUE_SETS.uvx);
     },
     uvx(argv, dir, frame) {
       wrapped(argv, 1, dir, frame, VALUE_SETS.uvx);
     },
     poetry(argv, dir, frame) {
-      if (argv[1] === 'run') wrapped(argv, 2, dir, frame, VALUE_SETS['poetry run'], { chdir: ['-C', '--directory'] });
+      if (argv[1] === 'build') pythonBuild('.', dir, frame);
+      else if (argv[1] === 'run') wrapped(argv, 2, dir, frame, VALUE_SETS['poetry run'], { chdir: ['-C', '--directory'] });
     },
     pipx(argv, dir, frame) {
       if (argv[1] === 'run') wrapped(argv, 2, dir, frame, VALUE_SETS['pipx run']);
     },
+    pybuild(argv, dir, frame) {
+      if (argv[1] === 'build') pythonBuild('.', dir, frame);
+    },
+    // pyinstaller bundles the script it is handed into a program that runs it.
+    pyinstaller(argv, dir, frame) {
+      for (const token of split(argv, 1, VALUE_SETS.pyinstaller).positional) file(token, dir, frame);
+    },
     hatch(argv, dir, frame) {
+      if (argv[1] === 'build') {
+        pythonBuild('.', dir, frame);
+        return;
+      }
       // hatch run env:script names a script of the project's own, not a command.
       if (argv[1] === 'run' && !(argv[2] ?? '').includes(':')) wrapped(argv, 2, dir, frame, VALUE_SETS['hatch run']);
     },
@@ -835,7 +956,57 @@ function makeReader(repo, runs, mentions) {
     none() {},
   };
 
-  return { read, program: (path, frame) => file(path, '', frame, { script: true }) };
+  return {
+    read,
+    program: (path, frame) => file(path, '', frame, { script: true }),
+    container: (context, dockerfile, dir, frame) => readContainer(context, dockerfile, dir, frame),
+  };
+}
+
+/**
+ * What building a container image from a context runs: the Dockerfile's
+ * copies, commands and entrypoint, as a docker build step reads them
+ * (docker/build-push-action names the context and the file as inputs).
+ */
+export function readContainer(context, dockerfile, dir, repo) {
+  const runs = new Map();
+  const reader = makeReader(repo, runs, new Set());
+  reader.container(context ?? '.', dockerfile ?? null, dir, { level: 0, via: null, active: new Set() });
+  return runs;
+}
+
+// A Dockerfile's instructions with their continuation lines joined, comments
+// and parser directives left out.
+function dockerInstructions(text) {
+  const out = [];
+  let current = '';
+  for (const raw of text.split(/\r?\n/)) {
+    if (/^\s*#/.test(raw)) continue;
+    const line = raw.replace(/\s+$/, '');
+    if (line.endsWith('\\')) {
+      current += `${line.slice(0, -1)} `;
+      continue;
+    }
+    current += line;
+    const match = /^\s*([A-Za-z]+)\s+([\s\S]*)$/.exec(current);
+    if (match) out.push({ op: match[1].toUpperCase(), args: match[2].trim() });
+    current = '';
+  }
+  return out;
+}
+
+// An instruction's words: its JSON array when it is written as one, else its
+// words as the shell splits them.
+function instructionWords(args) {
+  if (args.startsWith('[')) {
+    try {
+      const list = JSON.parse(args);
+      if (Array.isArray(list)) return list.filter((word) => typeof word === 'string');
+    } catch {
+      // Not JSON, so the shell form.
+    }
+  }
+  return commandLines(args)[0] ?? [];
 }
 
 function baseName(word) {
@@ -865,6 +1036,8 @@ function toolOf(word) {
   if (['black', 'flake8', 'pylint', 'bandit'].includes(name)) return 'checker';
   if (['timeout', 'env', 'sudo', 'xargs', 'nice', 'nohup'].includes(name)) return 'wrapper';
   if (name === 'bunx') return 'npx';
+  if (name === 'pyinstaller') return 'pyinstaller';
+  if (name === 'poetry' || name === 'flit' || name === 'pdm') return name === 'poetry' ? 'poetry' : 'pybuild';
   if (name === 'gmake') return 'make';
   if (['tox', 'cargo'].includes(name)) return 'none';
   const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro'];
@@ -1054,24 +1227,32 @@ function withoutHeredocBodies(text) {
 }
 
 // One shell command, already split into tokens. Returns the package
-// directories and script names npm would run for it, or nothing when the
-// command is not an npm script invocation.
+// directories and script names npm, pnpm or yarn would run for it, or nothing
+// when the command is not a package script invocation. The first manager word
+// on the line is the one that runs, so `cross-env X=1 pnpm test` is pnpm's.
 function npmTargets(tokens, dir, repo) {
-  const start = tokens.indexOf('npm');
+  const start = tokens.findIndex((token) => PACKAGE_RUNNERS.has(token));
   if (start === -1) return [];
+  const manager = tokens[start];
+  if (manager === 'pnpm') return pnpmTargets(tokens.slice(start + 1), dir, repo);
+  if (manager === 'yarn') return yarnTargets(tokens.slice(start + 1), dir, repo);
+  return npmCommandTargets(tokens.slice(start + 1), dir, repo);
+}
+
+function npmCommandTargets(args, dir, repo) {
   let prefix = dir;
   let command = null;
   let script = null;
   let allWorkspaces = false;
   let includeRoot = false;
   const named = [];
-  for (let i = start + 1; i < tokens.length; i += 1) {
-    const token = tokens[i];
+  for (let i = 0; i < args.length; i += 1) {
+    const token = args[i];
     if (token === '--') break;
     const eq = token.indexOf('=');
     const flag = token.startsWith('-') && eq !== -1 ? token.slice(0, eq) : token;
     if (NPM_VALUE_FLAGS.has(flag)) {
-      const value = eq !== -1 && token.startsWith('-') ? token.slice(eq + 1) : tokens[++i];
+      const value = eq !== -1 && token.startsWith('-') ? token.slice(eq + 1) : args[++i];
       if (value == null) break;
       if (flag === '--prefix') {
         const cleaned = cleanDir(posix.join(dir || '.', value));
@@ -1098,23 +1279,162 @@ function npmTargets(tokens, dir, repo) {
   return [...new Set(dirs)].map((target) => ({ dir: target, script }));
 }
 
+// pnpm's own commands. Any other first word is a script of the package, which
+// pnpm runs as it runs `pnpm run` (pnpm audit is pnpm's, even beside a script
+// named audit).
+const PNPM_COMMANDS = new Set([
+  'add', 'approve-builds', 'audit', 'bin', 'cat-file', 'cat-index', 'config', 'create', 'dedupe', 'deploy', 'dlx', 'doctor',
+  'env', 'exec', 'fetch', 'find-hash', 'i', 'import', 'init', 'install', 'install-test', 'it', 'licenses', 'link', 'list', 'ln',
+  'login', 'logout', 'ls', 'outdated', 'pack', 'patch', 'patch-commit', 'patch-remove', 'prune', 'publish', 'rb', 'rebuild',
+  'remove', 'rm', 'root', 'self-update', 'server', 'setup', 'store', 'un', 'uninstall', 'unlink', 'up', 'update', 'upgrade',
+  'why', 'x',
+]);
+const PNPM_VALUE_FLAGS = new Set(['--filter', '-F', '--filter-prod', '-C', '--dir', '--workspace-concurrency', '--reporter', '--changed-files-ignore-pattern', '--test-pattern', '--loglevel']);
+
+/**
+ * pnpm [flags] [run] <script>: -r and --recursive run it in every workspace
+ * member, --filter (and -F) in the members a selector names, -C and --dir
+ * from another directory, and -w at the workspace root. A selector is a
+ * member's name or a glob over names, a ./path or {path} to a member, and a
+ * name with ... around it, whose dependents and dependencies this map does
+ * not follow, so it stands for the member it names.
+ */
+function pnpmTargets(args, dir, repo) {
+  let prefix = dir;
+  let command = null;
+  let script = null;
+  let recursive = false;
+  const filters = [];
+  for (let i = 0; i < args.length && script == null; i += 1) {
+    const token = args[i];
+    if (token === '--') break;
+    const eq = token.indexOf('=');
+    const flag = token.startsWith('-') && eq !== -1 ? token.slice(0, eq) : token;
+    if (PNPM_VALUE_FLAGS.has(flag)) {
+      const value = eq !== -1 && token.startsWith('-') ? token.slice(eq + 1) : args[++i];
+      if (value == null) break;
+      if (flag === '-C' || flag === '--dir') {
+        const cleaned = cleanDir(posix.join(dir || '.', value));
+        if (cleaned == null) return [];
+        prefix = cleaned;
+      } else if (flag === '--filter' || flag === '-F' || flag === '--filter-prod') filters.push(value);
+      continue;
+    }
+    if (token === '-r' || token === '--recursive') recursive = true;
+    else if (token.startsWith('-')) continue;
+    else if (command == null) command = token;
+    else if (RUN_ALIASES.has(command)) script = token;
+  }
+  if (command == null) return [];
+  if (TEST_ALIASES.has(command)) script = 'test';
+  else if (!RUN_ALIASES.has(command)) {
+    if (PNPM_COMMANDS.has(command)) return [];
+    script = command;
+  }
+  if (script == null) return [];
+  let dirs = [prefix];
+  if (filters.length > 0) dirs = filters.flatMap((selector) => pnpmSelected(repo, selector, prefix));
+  else if (recursive) dirs = workspaceDirs(repo);
+  return [...new Set(dirs)].map((target) => ({ dir: target, script }));
+}
+
+function pnpmSelected(repo, selector, prefix) {
+  const bare = selector.replace(/^!/, '').replace(/^\.\.\./, '').replace(/\.\.\.$/, '').replace(/^\^/, '');
+  if (selector.startsWith('!') || bare === '') return [];
+  const path = /^\{(.+)\}$/.exec(bare)?.[1] ?? (bare.startsWith('.') ? bare : null);
+  if (path != null) {
+    const found = cleanDir(posix.join(prefix || '.', path));
+    return found != null && (workspaceMembers(repo).has(found) || found === '') ? [found] : [];
+  }
+  const isMatch = picomatch(bare);
+  return [...workspaceMembers(repo)].filter(([, name]) => name != null && isMatch(name)).map(([found]) => found);
+}
+
+// yarn's own commands, across v1 and berry; any other first word is a script.
+const YARN_COMMANDS = new Set([
+  'add', 'audit', 'autoclean', 'bin', 'cache', 'check', 'config', 'constraints', 'create', 'dedupe', 'dlx', 'exec', 'explain',
+  'generate-lock-entry', 'global', 'import', 'info', 'init', 'install', 'licenses', 'link', 'list', 'login', 'logout', 'node',
+  'npm', 'outdated', 'owner', 'pack', 'patch', 'patch-commit', 'plugin', 'policies', 'publish', 'rebuild', 'remove', 'search',
+  'set', 'stage', 'tag', 'team', 'unlink', 'unplug', 'up', 'upgrade', 'upgrade-interactive', 'version', 'versions', 'why',
+]);
+
+/**
+ * yarn [run] <script>, yarn workspace <name> <script> in the member it
+ * names, and yarn workspaces run <script> (v1) or yarn workspaces foreach
+ * run <script> (berry) in every member. --cwd moves the command.
+ */
+function yarnTargets(args, dir, repo) {
+  let prefix = dir;
+  const words = [];
+  for (let i = 0; i < args.length; i += 1) {
+    const token = args[i];
+    if (token === '--') break;
+    if (token === '--cwd') {
+      const cleaned = cleanDir(posix.join(dir || '.', args[++i] ?? ''));
+      if (cleaned == null) return [];
+      prefix = cleaned;
+      continue;
+    }
+    if (token.startsWith('--cwd=')) {
+      const cleaned = cleanDir(posix.join(dir || '.', token.slice('--cwd='.length)));
+      if (cleaned == null) return [];
+      prefix = cleaned;
+      continue;
+    }
+    if (words.length === 0 && token.startsWith('-')) continue;
+    words.push(token);
+  }
+  const [command, ...rest] = words;
+  if (command == null) return [];
+  if (command === 'workspace') {
+    const member = rest[0] == null ? null : workspaceDir(repo, rest[0], prefix);
+    return member == null ? [] : yarnTargets(rest.slice(1), member, repo);
+  }
+  if (command === 'workspaces') {
+    const at = rest.indexOf('run');
+    const script = at === -1 ? null : rest.slice(at + 1).find((token) => !token.startsWith('-'));
+    return script == null ? [] : workspaceDirs(repo).map((target) => ({ dir: target, script }));
+  }
+  let script = command;
+  if (RUN_ALIASES.has(command)) script = rest.find((token) => !token.startsWith('-')) ?? null;
+  else if (TEST_ALIASES.has(command)) script = 'test';
+  else if (YARN_COMMANDS.has(command)) return [];
+  return script == null ? [] : [{ dir: prefix, script }];
+}
+
 function workspaceMembers(repo) {
   return repo.workspaces();
 }
 
 function readWorkspaces(repo) {
   const members = new Map();
-  const globs = workspaceGlobs(repo.manifest(''));
+  const globs = [...workspaceGlobs(repo.manifest('')), ...pnpmWorkspaceGlobs(repo.text('pnpm-workspace.yaml'))];
   if (globs.length === 0) return members;
-  const isMatch = picomatch(globs, { dot: true });
+  const included = globs.filter((glob) => !glob.startsWith('!'));
+  const excluded = globs.filter((glob) => glob.startsWith('!')).map((glob) => glob.slice(1));
+  const isMatch = picomatch(included, { dot: true });
+  const isExcluded = excluded.length > 0 ? picomatch(excluded, { dot: true }) : () => false;
   for (const path of [...repo.tracked].sort()) {
     if (!path.endsWith('/package.json')) continue;
     const dir = path.slice(0, -'/package.json'.length);
-    if (!isMatch(dir)) continue;
+    if (!isMatch(dir) || isExcluded(dir)) continue;
     const pkg = repo.manifest(dir);
     members.set(dir, pkg && typeof pkg.name === 'string' ? pkg.name : null);
   }
   return members;
+}
+
+// The members pnpm-workspace.yaml lists, with a ! glob excluding.
+function pnpmWorkspaceGlobs(text) {
+  if (typeof text !== 'string') return [];
+  let doc;
+  try {
+    doc = parseYaml(text);
+  } catch {
+    return [];
+  }
+  const list = Array.isArray(doc?.packages) ? doc.packages : [];
+  return list.filter((glob) => typeof glob === 'string').map((glob) => glob.replace(/^(!?)\.\//, '$1').replace(/\/+$/, ''));
 }
 
 function workspaceDirs(repo) {

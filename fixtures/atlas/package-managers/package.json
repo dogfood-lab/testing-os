@@ -1,0 +1,14 @@
+{
+  "name": "package-managers",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/",
+    "verify": "pnpm build && pnpm test",
+    "pack-smoke": "node scripts/pack-smoke.mjs",
+    "audit": "node scripts/audit.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "bun-task": "node scripts/bun-task.mjs"
+  }
+}

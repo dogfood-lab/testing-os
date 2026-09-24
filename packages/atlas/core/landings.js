@@ -3,6 +3,7 @@ import picomatch from 'picomatch';
 import { boundaryRoot } from './entry-points.js';
 import { isWorkflow } from './doors.js';
 import { writeGuards } from './guards.js';
+import { loadsManifest } from './languages.js';
 
 // The destination argument of each write call. A rename or copy lands on its
 // second argument; the first is where the bytes came from.
@@ -83,6 +84,16 @@ const PY_ABSOLUTE = new Set(['os.path.abspath', 'os.path.realpath', 'abspath', '
 const PY_CWD = new Set(['os.getcwd', 'getcwd', 'Path.cwd', 'pathlib.Path.cwd']);
 const PY_HOME = new Set(['Path.home', 'pathlib.Path.home']);
 const HOME_VARIABLES = new Set(['HOME', 'USERPROFILE']);
+// The checkout a workflow runs in: a path under it is this repository, which
+// the map cannot place from the variable alone, so it names no caller's place.
+const WORKSPACE_VARIABLES = new Set(['GITHUB_WORKSPACE']);
+// The names a command-line parse is conventionally bound to. A path read from
+// one (args.out, opts.logos) is whatever the person running the command
+// passed, so it is theirs, as a path relative to their directory is.
+const CLI_BAGS = new Set(['args', 'argv', 'opts', 'options', 'flags', 'cliArgs', 'parsedArgs', 'cli']);
+// A value returned by a function imported from another file of the
+// repository: whose place it is is settled once imports resolve.
+const HELPER = 'helper:';
 const PY_SCOPES = new Set(['function_definition', 'lambda']);
 const PY_NESTED = new Set(['function_definition', 'class_definition', 'lambda']);
 
@@ -96,6 +107,9 @@ const SHELL = new Set(['.sh', '.bash']);
 const SHELL_WRITERS = new Set(['tee']);
 const SHELL_MOVERS = new Set(['mv', 'cp']);
 const SHELL_READERS = new Set(['cat', 'source', '.']);
+// The commands a page's code shows that read the paths they are handed. cp
+// reads all but its last argument; a fetch reads the URL it is handed.
+const PAGE_READERS = new Set(['cat', 'cp', 'head', 'tail', 'less', 'more', 'diff', 'source', '.', 'curl', 'wget']);
 const RAW_URL = /raw\.githubusercontent\.com\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)\/([^/\s'"`<>]+)\/([^\s'"`<>?#)]*)/g;
 const TEST_FILE = /(\.(test|spec)\.[cm]?[jt]sx?|^test_[^/]*\.py|_test\.py)$/;
 const TEST_DIRS = new Set(['test', 'tests', '__tests__', 'fixtures', '__fixtures__', 'testdata']);
@@ -210,7 +224,10 @@ export function textLandings(path, bytes, places) {
   // the commands it runs, which doors read as commands; it reads nothing.
   if (posix.basename(path) === 'package.json') return noLandings();
   let source = bytes.toString('utf8');
-  if (MARKDOWN.has(extname(path).toLowerCase())) for (const link of PAGE_LINKS) source = source.replace(link, ' ');
+  if (MARKDOWN.has(extname(path).toLowerCase())) {
+    for (const link of PAGE_LINKS) source = source.replace(link, ' ');
+    return { writes: [], dynamicWrites: 0, reads: sortEntries(markdownReads(source, places)), dynamicReads: 0 };
+  }
   const reads = [];
   for (const pattern of [/"([^"\r\n]*)"/g, /'([^'\r\n]*)'/g]) {
     for (const match of source.matchAll(pattern)) {
@@ -222,6 +239,90 @@ export function textLandings(path, bytes, places) {
   const shell = SHELL.has(extname(path).toLowerCase()) ? shellLandings(source, places) : { writes: [], reads: [] };
   reads.push(...shell.reads);
   return { writes: sortEntries(shell.writes), dynamicWrites: 0, reads: sortEntries(reads), dynamicReads: 0 };
+}
+
+/**
+ * What a Markdown page reads. Prose that names a place points a person at it
+ * and reads nothing, so only the page's code counts: a code span or a fenced
+ * block, read as the shell reads it, and in it only a command that reads what
+ * it is handed (cat, cp's sources, a fetch of a raw URL), a path handed to a
+ * --flag, or a < redirection. A $ or > prompt before the command is the page's.
+ */
+function markdownReads(source, places) {
+  const reads = [];
+  const add = (word, call) => {
+    if (!word?.fixed) return;
+    for (const entry of rawUrls(word.text, places)) reads.push({ ...entry, confidence: 'text' });
+    const target = argumentPlace(word.text, places);
+    if (target != null) reads.push({ target, call, confidence: 'text' });
+  };
+  for (const line of codeLines(source)) {
+    for (const command of shellCommands(shellTokens(line))) {
+      const words = [];
+      for (let i = 0; i < command.length; i += 1) {
+        if (command[i].type === 'word') words.push(command[i]);
+        else if (command[i].text === '<' && command[i + 1]?.type === 'word') add(command[++i], '<');
+        else i += 1;
+      }
+      let start = 0;
+      while (start < words.length && (words[start].text === '$' || words[start].text === '>' || /^[A-Za-z_][A-Za-z0-9_]*=/.test(words[start].text))) start += 1;
+      const name = words[start]?.text;
+      const args = words.slice(start + 1);
+      for (let i = 0; i < args.length; i += 1) {
+        const text = args[i].text;
+        if (!text.startsWith('--')) continue;
+        const eq = text.indexOf('=');
+        if (eq !== -1) add({ text: text.slice(eq + 1), fixed: args[i].fixed }, text.slice(0, eq));
+        else if (args[i + 1] && !args[i + 1].text.startsWith('-')) add(args[i + 1], text);
+      }
+      if (!PAGE_READERS.has(name)) continue;
+      const positional = args.filter((word) => !word.text.startsWith('-'));
+      for (const word of name === 'cp' ? positional.slice(0, -1) : positional) add(word, name);
+    }
+  }
+  return reads;
+}
+
+// Every line of the page's code: each line of a fenced block, of a block
+// indented four spaces after a blank line, and the text of each code span
+// outside them.
+function codeLines(source) {
+  const lines = [];
+  let fence = null;
+  let indented = false;
+  let blank = true;
+  for (const line of source.split(/\r?\n/)) {
+    const marker = /^\s*(`{3,}|~{3,})/.exec(line);
+    if (fence != null) {
+      if (marker && marker[1][0] === fence[0] && marker[1].length >= fence.length) fence = null;
+      else lines.push(line);
+      continue;
+    }
+    if (marker) {
+      fence = marker[1];
+      continue;
+    }
+    const code = /^(?: {4}|\t)/.test(line) && line.trim() !== '';
+    indented = code && (indented || blank);
+    blank = line.trim() === '';
+    if (indented) {
+      lines.push(line);
+      continue;
+    }
+    for (const match of line.matchAll(/(`+)([^`]+?)\1(?!`)/g)) lines.push(match[2]);
+  }
+  return lines;
+}
+
+// A path a command is handed names a tracked file, or a tracked directory
+// with or without its slash: the command is what makes the word a path.
+function argumentPlace(raw, places) {
+  if (raw.includes('://')) return null;
+  let text = raw.replaceAll('\\', '/');
+  while (text.startsWith('./')) text = text.slice(2);
+  if (places.files.has(text)) return text;
+  const bare = text.replace(/\/+$/, '');
+  return bare !== '' && places.dirs.has(bare) ? bare : null;
 }
 
 /**
@@ -394,18 +495,23 @@ export function astLandings(language, root, path, places) {
     visiting: new Set(),
     assignments: new Map(),
   };
-  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0 };
+  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, pendingWrites: [], pendingReads: [] };
   const evaluate = ctx.python ? evalPy : evalJs;
   const site = (kind, call, node, countDynamic = true) => {
     if (!node) return;
-    const values = evaluate(node, ctx, 0);
+    const all = evaluate(node, ctx, 0);
     const unless = kind === 'write' ? writeGuards(node, ctx.python) : [];
-    if (values.length === 0) {
+    if (all.length === 0) {
       if (countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
       return;
     }
+    const helpers = [...new Set(all.filter(isHelper).map((value) => value.anchor.slice(HELPER.length)))].sort();
+    // Until the imported function is read, its return is a root the engine
+    // cannot read, as join(root, 'records') has.
+    const values = all.map((value) => (isHelper(value) ? asRoot(value) : value));
     const list = kind === 'write' ? found.writes : found.reads;
-    if (values.some(outside)) found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
+    const theirs = values.some(outside);
+    if (theirs) found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
     const before = list.length;
     let unplaced = false;
     for (const value of values) {
@@ -418,6 +524,17 @@ export function astLandings(language, root, path, places) {
       const target = landingOf(value, places);
       if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}) });
       else if (value.open) unplaced = true;
+    }
+    // A root another file's function returns is settled once that file is
+    // known: the caller's place when every such function returns one, and
+    // otherwise the unreadable root it was read as, landings and all. A path
+    // that is nothing but the function's return names no place until then.
+    if (helpers.length > 0 && !theirs) {
+      const entries = list.splice(before);
+      const whole = all.every((value) => isHelper(value) && value.text === '' && !value.open);
+      const dynamic = countDynamic && (whole || (unplaced && entries.length === 0)) ? 1 : 0;
+      found[kind === 'write' ? 'pendingWrites' : 'pendingReads'].push({ helpers, entries, dynamic });
+      return;
     }
     // A name built at run time beside nothing tracked (README.${lang}.md at
     // the root) is a path the map cannot name, as a whole-path variable is.
@@ -446,13 +563,15 @@ export function astLandings(language, root, path, places) {
     }
     if (ctx.seen.has(key(node))) return;
     if (!isStringNode(node, ctx.python) && !isPathConstructor(node, ctx.python)) return;
-    for (const value of evaluate(node, ctx, 0)) {
+    for (const raw of evaluate(node, ctx, 0)) {
+      const value = isHelper(raw) ? asRoot(raw) : raw;
       if (value.open || outside(value) || namesItself(value, ctx)) continue;
       const target = literalPlace(value.text, places);
       if (target != null) found.reads.push(landingEntry(target, 'literal', value, places));
     }
   });
 
+  const rooted = callerRootedFunctions(root, ctx);
   return {
     writes: sortEntries(withoutRedundantDirectories(found.writes, places)),
     dynamicWrites: found.dynamicWrites,
@@ -460,7 +579,91 @@ export function astLandings(language, root, path, places) {
     dynamicReads: found.dynamicReads,
     ...(found.outsideWrites > 0 ? { outsideWrites: found.outsideWrites } : {}),
     ...(found.outsideReads > 0 ? { outsideReads: found.outsideReads } : {}),
+    ...(found.pendingWrites.length > 0 ? { pendingWrites: found.pendingWrites } : {}),
+    ...(found.pendingReads.length > 0 ? { pendingReads: found.pendingReads } : {}),
+    ...(Object.keys(rooted).length > 0 ? { callerRooted: rooted } : {}),
   };
+}
+
+/**
+ * The module-level functions of a file whose every returned path is the
+ * caller's (the home directory, the working directory, an environment
+ * variable or a command-line argument), by name: getGuardianDataPath()
+ * returning join(homedir(), '.claude-guardian'). Read with a scratch context,
+ * so evaluating them marks nothing seen for the file's own literal reads. A
+ * function returning another file's function is two calls away, and is not
+ * followed.
+ */
+function callerRootedFunctions(root, ctx) {
+  const scratch = { ...ctx, seen: new Set(), visiting: new Set() };
+  const out = {};
+  for (const [name, fn] of moduleFunctions(root, ctx.python)) {
+    const body = fn.childForFieldName('body');
+    const values = ctx.python
+      ? union(returnExpressions(body, 'return_statement', PY_NESTED).map((expr) => evalPy(expr, scratch, 0)))
+      : body && body.type !== 'statement_block'
+        ? evalJs(body, scratch, 0)
+        : union(returnExpressions(body, 'return_statement', JS_FUNCTIONS).map((expr) => evalJs(expr, scratch, 0)));
+    if (values.length > 0 && values.every(outside)) out[name] = values.some((value) => value.anchor === 'home') ? 'home' : values[0].anchor;
+  }
+  return out;
+}
+
+function moduleFunctions(root, python) {
+  const out = [];
+  for (const child of root.namedChildren) {
+    if (python) {
+      const fn = child.type === 'decorated_definition' ? child.childForFieldName('definition') : child;
+      if (fn?.type === 'function_definition') out.push([fn.childForFieldName('name')?.text, fn]);
+      continue;
+    }
+    const declaration = child.type === 'export_statement' ? child.childForFieldName('declaration') : child;
+    if (declaration?.type === 'function_declaration') out.push([declaration.childForFieldName('name')?.text, declaration]);
+    if (declaration?.type !== 'lexical_declaration' && declaration?.type !== 'variable_declaration') continue;
+    for (const declarator of declaration.namedChildren) {
+      const value = declarator.type === 'variable_declarator' ? declarator.childForFieldName('value') : null;
+      if (value && JS_FUNCTIONS.has(value.type)) out.push([declarator.childForFieldName('name')?.text, value]);
+    }
+  }
+  return out.filter(([name]) => typeof name === 'string' && name !== '');
+}
+
+/**
+ * The writes and reads whose root another file's function returns, settled
+ * now that imports resolve: outside when every such function, followed one
+ * call into the file its import names, returns the caller's place; otherwise
+ * what the site read with that root unreadable, its landings kept and a path
+ * that was only the return counted as built at run time. The functions'
+ * names are dropped once used.
+ *
+ * @param {Iterable<object>} files every file of the map
+ */
+export function settleHelperPaths(files) {
+  const byPath = new Map();
+  for (const file of files) byPath.set(file.path, file);
+  for (const file of byPath.values()) {
+    for (const [pending, kind, outsideCount, dynamicCount] of [['pendingWrites', 'writes', 'outsideWrites', 'dynamicWrites'], ['pendingReads', 'reads', 'outsideReads', 'dynamicReads']]) {
+      if (!file[pending]) continue;
+      const kept = [];
+      for (const { helpers, entries, dynamic } of file[pending]) {
+        const theirs = helpers.every((key) => {
+          const at = key.lastIndexOf('#');
+          const specifier = key.slice(0, at);
+          const name = key.slice(at + 1);
+          const site = Array.isArray(file.imports) ? file.imports.find((item) => item.specifier === specifier && item.resolved?.outcome === 'file') : null;
+          return site != null && byPath.get(site.resolved.path)?.callerRooted?.[name] != null;
+        });
+        if (theirs) file[outsideCount] = (file[outsideCount] ?? 0) + 1;
+        else {
+          kept.push(...entries);
+          file[dynamicCount] = (file[dynamicCount] ?? 0) + dynamic;
+        }
+      }
+      if (kept.length > 0) file[kind] = sortEntries([...(file[kind] ?? []), ...kept]);
+      delete file[pending];
+    }
+  }
+  for (const file of byPath.values()) delete file.callerRooted;
 }
 
 function withoutRedundantDirectories(writes, places) {
@@ -502,6 +705,78 @@ export function pythonPathValues(node, path) {
     out.push(text.replace(/^(\.\/)+/, ''));
   }
   return out;
+}
+
+/**
+ * The one repository path a JavaScript expression names, read the way a
+ * landing's path is (literals, joins, __dirname, import.meta.url and
+ * same-file bindings), or null when it names none or more than one, or a
+ * place that is the caller's. A path with a root the engine cannot read is
+ * not one.
+ *
+ * @param {object} node tree-sitter node
+ * @param {string} path the tracked path of the file the node is in
+ * @returns {string | null}
+ */
+export function scriptPath(node, path) {
+  const dir = posix.dirname(path);
+  const ctx = { python: false, file: path, dir: dir === '.' ? '' : dir, seen: new Set(), visiting: new Set(), assignments: new Map() };
+  const values = evalJs(node, ctx, 0);
+  if (values.length !== 1) return null;
+  const [value] = values;
+  if (value.open || value.rooted || outside(value) || isHelper(value) || value.text.includes('://')) return null;
+  const text = posix.normalize(value.text.replaceAll('\\', '/') || '.');
+  if (text.startsWith('/') || text === '..' || text.startsWith('../')) return null;
+  return text === '.' ? '' : text.replace(/^\.\//, '');
+}
+
+const API_WRITES = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+// The Octokit methods that change what they are called on; a get or a list
+// reads.
+const API_VERBS = /^(create|update|delete|remove|add|set|merge|replace|upload|lock|unlock|transfer|dismiss|submit|approve|cancel|rerun)/;
+// The names an Octokit client is bound to: octokit, github-script's github.
+const API_CLIENT = /^(?:octokit|github|gh|client|api)$/i;
+// Where a call targets the repository it runs in, which is not another one.
+const OWN_REPOSITORY = /\bcontext\.repo\b|\bGITHUB_REPOSITORY\b|context\.issue\b/;
+
+/**
+ * How many calls in a JavaScript or TypeScript file change repositories
+ * other than the one the code runs in through the GitHub API: fetch of an
+ * api.github.com URL with a POST, PUT, PATCH or DELETE method, an Octokit
+ * method that creates, updates or deletes (octokit.rest.pulls.create), and
+ * octokit.request('POST /repos/…'). A call aimed at context.repo or
+ * GITHUB_REPOSITORY is the repository's own, and a read changes nothing.
+ *
+ * @param {object} root tree-sitter root node
+ * @returns {number}
+ */
+export function githubChanges(root) {
+  let found = 0;
+  walk(root, (node) => {
+    if (node.type !== 'call_expression') return;
+    const fn = node.childForFieldName('function');
+    const args = argumentNodes(node);
+    const text = node.childForFieldName('arguments')?.text ?? '';
+    if (OWN_REPOSITORY.test(text)) return;
+    if (finalName(fn) === 'fetch') {
+      if (!/api\.github\.com/.test(args[0]?.text ?? '')) return;
+      const method = args[1]?.type === 'object' ? args[1].namedChildren.find((pair) => pair.type === 'pair' && pair.childForFieldName('key')?.text === 'method') : null;
+      const value = method?.childForFieldName('value');
+      if (value?.type === 'string' && API_WRITES.has(jsStringText(value).toUpperCase())) found += 1;
+      return;
+    }
+    if (fn?.type !== 'member_expression') return;
+    const chain = fn.text.split('.').map((part) => part.trim());
+    if (!API_CLIENT.test(chain[0]) || chain.length < 2) return;
+    const verb = chain[chain.length - 1];
+    if (verb === 'request') {
+      const route = args[0]?.type === 'string' ? jsStringText(args[0]) : '';
+      if (API_WRITES.has(route.split(/\s+/)[0]?.toUpperCase())) found += 1;
+      return;
+    }
+    if (chain.length >= 3 && API_VERBS.test(verb)) found += 1;
+  });
+  return found;
 }
 
 function scriptSite(node, site) {
@@ -598,10 +873,18 @@ function evalJs(node, ctx, depth) {
       const property = node.childForFieldName('property')?.text;
       // new URL('./x.json', import.meta.url).pathname is the path the URL names.
       if (object?.type === 'new_expression' && (property === 'pathname' || property === 'href')) return evalJs(object, ctx, next);
-      if (object?.text === 'process.env' && HOME_VARIABLES.has(property)) return [atCaller('', 'home')];
+      if (object?.text === 'process.env') return environment(property);
+      if (object?.type === 'identifier' && CLI_BAGS.has(object.text)) return [atCaller('', 'argument')];
       if (object?.type !== 'meta_property') return [];
       if (property === 'url' || property === 'filename') return [anchored(ctx.file)];
       if (property === 'dirname') return [anchored(ctx.dir)];
+      return [];
+    }
+    case 'subscript_expression': {
+      const object = node.childForFieldName('object');
+      const index = node.childForFieldName('index');
+      if (object?.text === 'process.argv' || (object?.type === 'identifier' && CLI_BAGS.has(object.text))) return [atCaller('', 'argument')];
+      if (object?.text === 'process.env' && index?.type === 'string') return environment(jsStringText(index));
       return [];
     }
     case 'new_expression': {
@@ -628,7 +911,10 @@ function evalJs(node, ctx, depth) {
       if (jsPathCall(fn, name) && name === 'dirname') return dirnameValues(evalJs(args[0], ctx, next));
       if (jsPathCall(fn, name) && name === 'normalize') return evalJs(args[0], ctx, next);
       if (fn?.type === 'identifier' && (name === 'fileURLToPath' || name === 'String')) return evalJs(args[0], ctx, next);
-      if (fn?.type === 'identifier') return returnsJs(fn.text, node, ctx, next);
+      if (fn?.type === 'identifier') {
+        const values = returnsJs(fn.text, node, ctx, next);
+        return values.length > 0 ? values : imported(fn.text, node, ctx);
+      }
       return [];
     }
     default:
@@ -665,16 +951,22 @@ function evalPy(node, ctx, depth) {
     case 'boolean_operator':
       if (node.childForFieldName('operator')?.text !== 'or') return [];
       return fallback(evalPy(node.childForFieldName('left'), ctx, next), evalPy(node.childForFieldName('right'), ctx, next));
-    case 'subscript':
-      return pyEnvironment(node.childForFieldName('value'), node.childForFieldName('subscript'));
+    case 'subscript': {
+      const value = node.childForFieldName('value');
+      if (value?.text === 'sys.argv' || (value?.type === 'identifier' && CLI_BAGS.has(value.text))) return [atCaller('', 'argument')];
+      return pyEnvironment(value, node.childForFieldName('subscript'));
+    }
     case 'conditional_expression':
       return union([evalPy(node.namedChildren[0], ctx, next), evalPy(node.namedChildren[2], ctx, next)]);
     case 'identifier':
       if (node.text === '__file__') return [anchored(ctx.file)];
       return bindingPy(node.text, node, ctx, next);
-    case 'attribute':
+    case 'attribute': {
       if (node.childForFieldName('attribute')?.text === 'parent') return dirnameValues(evalPy(node.childForFieldName('object'), ctx, next));
+      const object = node.childForFieldName('object');
+      if (object?.type === 'identifier' && CLI_BAGS.has(object.text) && !isPythonModule(object.text, node, ctx)) return [atCaller('', 'argument')];
       return [];
+    }
     case 'call': {
       const fn = node.childForFieldName('function');
       const args = argumentNodes(node);
@@ -700,12 +992,82 @@ function evalPy(node, ctx, depth) {
         }
         return [];
       }
-      if (fn?.type === 'identifier') return returnsPy(fn.text, node, ctx, next);
+      if (fn?.type === 'identifier') {
+        const values = returnsPy(fn.text, node, ctx, next);
+        return values.length > 0 ? values : imported(fn.text, node, ctx);
+      }
       return [];
     }
     default:
       return [];
   }
+}
+
+// A call to a function this file imports from a module of its own
+// repository, by the specifier the import names, for settleHelperPaths.
+function imported(name, from, ctx) {
+  ctx.imports ??= ctx.python ? pythonImports(from) : scriptImports(from);
+  const found = ctx.imports.get(name);
+  return found ? [{ text: '', open: false, anchor: `${HELPER}${found.specifier}#${found.name}` }] : [];
+}
+
+function programOf(node) {
+  let root = node;
+  while (root.parent) root = root.parent;
+  return root;
+}
+
+// import { a as b } from './x.js': b is x's a. Only a relative specifier is
+// a file of this repository; a package's function is not followed.
+function scriptImports(node) {
+  const out = new Map();
+  for (const statement of programOf(node).namedChildren) {
+    if (statement.type !== 'import_statement') continue;
+    const source = statement.childForFieldName('source');
+    const specifier = source?.type === 'string' ? jsStringText(source) : null;
+    if (specifier == null || !specifier.startsWith('.')) continue;
+    const clause = statement.namedChildren.find((child) => child.type === 'import_clause');
+    for (const part of clause?.namedChildren ?? []) {
+      if (part.type === 'identifier') out.set(part.text, { specifier, name: 'default' });
+      if (part.type !== 'named_imports') continue;
+      for (const spec of part.namedChildren) {
+        if (spec.type !== 'import_specifier') continue;
+        const name = spec.childForFieldName('name')?.text;
+        const alias = spec.childForFieldName('alias')?.text ?? name;
+        if (name && alias) out.set(alias, { specifier, name });
+      }
+    }
+  }
+  return out;
+}
+
+// from .paths import data_dir as home: home is that module's data_dir. The
+// resolver decides whether the module is this repository's.
+function pythonImports(node) {
+  const out = new Map();
+  for (const statement of programOf(node).namedChildren) {
+    if (statement.type !== 'import_from_statement') continue;
+    const specifier = statement.childForFieldName('module_name')?.text;
+    if (!specifier) continue;
+    for (const child of statement.namedChildren) {
+      if (child === statement.childForFieldName('module_name')) continue;
+      if (child.type === 'dotted_name') out.set(child.text, { specifier, name: child.text });
+      if (child.type === 'aliased_import') {
+        const name = child.childForFieldName('name')?.text;
+        const alias = child.childForFieldName('alias')?.text;
+        if (name && alias) out.set(alias, { specifier, name });
+      }
+    }
+  }
+  return out;
+}
+
+// `import args` would make args a module, whose attributes are not a parse.
+function isPythonModule(name, from, ctx) {
+  ctx.modules ??= new Set(programOf(from).namedChildren
+    .filter((statement) => statement.type === 'import_statement')
+    .flatMap((statement) => statement.namedChildren.map((child) => (child.type === 'aliased_import' ? child.childForFieldName('alias')?.text : child.text))));
+  return ctx.modules.has(name);
 }
 
 // A name resolves to the nearest enclosing declaration of it. Every value
@@ -949,7 +1311,26 @@ function atCaller(text, anchor) {
 }
 
 function outside(value) {
-  return value.anchor === 'cwd' || value.anchor === 'home';
+  return value.anchor === 'cwd' || value.anchor === 'home' || value.anchor === 'argument' || value.anchor === 'env';
+}
+
+function isHelper(value) {
+  return typeof value.anchor === 'string' && value.anchor.startsWith(HELPER);
+}
+
+function asRoot(value) {
+  return { text: value.text, open: value.open, rooted: true };
+}
+
+// What an environment variable names as a path: the home directory, the
+// working directory, the checkout (which names no place of its own), or a
+// place whoever runs the code sets.
+function environment(name) {
+  if (typeof name !== 'string' || name === '') return [];
+  if (HOME_VARIABLES.has(name)) return [atCaller('', 'home')];
+  if (name === 'PWD') return [atCaller('', 'cwd')];
+  if (WORKSPACE_VARIABLES.has(name)) return [];
+  return [atCaller('', 'env')];
 }
 
 // A literal that starts at ~ is in the home directory.
@@ -964,17 +1345,25 @@ function fromCaller(values) {
   return values.map((value) => (value.anchor == null && !value.rooted && !value.text.startsWith('/') ? { ...value, anchor: 'cwd' } : value));
 }
 
-// dir || '.' is a place the caller passes, or the one they are standing in.
+// dir || '.' is a place the caller passes, or the one they are standing in;
+// Path('.') reads as the empty path, and is the same place. A command-line
+// argument's default is resolved where the argument would have been, from
+// the directory the command runs in: args.out ?? 'report.json' is the
+// caller's either way.
 function fallback(left, right) {
+  if (left.length > 0 && left.every((value) => value.anchor === 'argument')) {
+    return union([left, right.map((value) => (value.anchor == null && !value.rooted && !value.text.includes('://') ? { ...value, anchor: 'argument' } : value))]);
+  }
   if (left.length > 0) return union([left, right]);
-  return right.map((value) => (value.anchor == null && !value.open && (value.text === '.' || value.text === './') ? atCaller('', 'cwd') : value));
+  return right.map((value) => (value.anchor == null && !value.open && !value.rooted && (value.text === '.' || value.text === './' || value.text === '') ? atCaller('', 'cwd') : value));
 }
 
-// os.environ['HOME'] and os.getenv('HOME') are the home directory.
+// os.environ['HOME'] and os.getenv('HOME') are the home directory; any other
+// variable is a place whoever runs the code sets.
 function pyEnvironment(object, name) {
   if (object != null && object.text !== 'os.environ') return [];
   if (name?.type !== 'string') return [];
-  return HOME_VARIABLES.has(stringTexts(name, true).join('')) ? [atCaller('', 'home')] : [];
+  return environment(stringTexts(name, true).join(''));
 }
 
 // A value that is only the file's own path, or a directory holding it, names
@@ -1030,7 +1419,9 @@ function joinValues(segments, absoluteResets) {
   const anchored = segments[0].length === 0;
   if (anchored && segments.slice(1).every((values) => values.length === 0)) return [];
   let acc = anchored ? [{ ...closed(''), rooted: true }] : segments[0];
-  for (const values of segments.slice(1)) {
+  // Another file's return is only ever read as a root; past the first segment
+  // it is a part the engine cannot read.
+  for (const values of segments.slice(1).map((list) => list.filter((value) => !isHelper(value)))) {
     const next = [];
     for (const value of acc) {
       if (value.open) next.push(value);
@@ -1052,12 +1443,14 @@ function normalizeValue(value, anchored) {
   let text = value.text.replaceAll('\\', '/');
   if (anchored) text = text.replace(/^\/+/, '');
   if (text.startsWith('/')) return null;
-  if (text === '') return value.open ? null : { ...closed(''), rooted: value.rooted, anchor: value.anchor };
+  // The caller's directory with a name built at run time is still theirs.
+  const kept = outside(value) || isHelper(value);
+  if (text === '') return value.open && !kept ? null : { text: '', open: value.open, rooted: value.rooted, anchor: value.anchor };
   text = posix.normalize(text);
   if (text === '.' || text === './') text = '';
   if (text === '..' || text.startsWith('../')) return null;
   if (text.startsWith('./')) text = text.slice(2);
-  if (value.open && text === '') return null;
+  if (value.open && text === '' && !kept) return null;
   return { text, open: value.open, rooted: value.rooted, anchor: value.anchor };
 }
 
@@ -1096,7 +1489,7 @@ function concat(parts) {
   let rooted = false;
   for (let i = 0; i < parts.length; i += 1) {
     if (acc.every((value) => value.open)) break;
-    const values = parts[i];
+    const values = i === 0 ? parts[i] : parts[i].filter((value) => !isHelper(value));
     if (values.length === 0) {
       const next = parts[i + 1];
       if (i === 0 && next && next.length > 0 && next.every((value) => value.text.startsWith('/'))) {
@@ -1119,7 +1512,7 @@ function concat(parts) {
     }
     acc = cap(joined);
   }
-  return acc.filter((value) => !(value.open && value.text === ''));
+  return acc.filter((value) => !(value.open && value.text === '') || outside(value) || isHelper(value));
 }
 
 function union(lists) {
@@ -1355,7 +1748,18 @@ export function attachLandings({ files, doors, boundaries, places }) {
     .filter((file) => file.writes.length > 0)
     .sort((a, b) => compare(a.path, b.path));
   const byPath = new Map([...own, ...tests].map((file) => [file.path, file]));
-  for (const file of files) if (isTestMaterial(file.path)) file.writes = (file.writes ?? []).map(({ fixed, ...rest }) => rest);
+  // A test reads a place when it names it from the repository root, from its
+  // own file, or by raw URL; one built on a root it was handed is its
+  // temporary copy's.
+  const testReads = files.filter((file) => isTestFile(file.path))
+    .map((file) => ({ path: file.path, reads: (file.reads ?? []).filter((read) => read.fixed || read.relative || read.call === 'raw-url') }))
+    .filter((file) => file.reads.length > 0)
+    .sort((a, b) => compare(a.path, b.path));
+  for (const file of files) {
+    if (!isTestMaterial(file.path)) continue;
+    file.writes = (file.writes ?? []).map(({ fixed, relative, ...rest }) => rest);
+    file.reads = (file.reads ?? []).map(({ fixed, relative, ...rest }) => rest);
+  }
 
   const writers = new Map();
   const readers = new Map();
@@ -1403,11 +1807,18 @@ export function attachLandings({ files, doors, boundaries, places }) {
       add(readers, read.target, readerEntry(file.path, read));
     }
   }
-  // Code that imports a module something writes reads that module.
+  // A test that reads a place depends on what is there, as one that imports a
+  // module does: it is a reader, marked fromTests, the way a part imported
+  // only from tests is counted apart.
+  for (const file of testReads) {
+    for (const read of file.reads) add(readers, read.target, { ...readerEntry(file.path, read), fromTests: true });
+  }
+  // Code that imports a module something writes reads that module, and code
+  // that loads a manifest reads the manifest.
   for (const file of own) {
     for (const site of Array.isArray(file.imports) ? file.imports : []) {
       const path = site.resolved?.outcome === 'file' ? site.resolved.path : null;
-      if (path == null || path === file.path || !output(path)) continue;
+      if (path == null || path === file.path || (!output(path) && !loadsManifest(site))) continue;
       add(readers, path, { by: file.path, call: 'import', confidence: 'ast' });
     }
   }
@@ -1479,7 +1890,8 @@ function settleRelativePaths(files, doors) {
       for (const entry of file[kind]) {
         const { relative, fixed, ...rest } = entry;
         if (theirs && relative) file[count] = (file[count] ?? 0) + 1;
-        else kept.push(isTestMaterial(file.path) && fixed ? { ...rest, fixed } : rest);
+        else if (isTestMaterial(file.path)) kept.push({ ...rest, ...(fixed ? { fixed } : {}), ...(relative ? { relative } : {}) });
+        else kept.push(rest);
       }
       file[kind] = sortEntries(kept);
     }

@@ -77,10 +77,11 @@ describe('landings per file', () => {
     assert.deepEqual(file('tools/report.py').reads, [{ target: 'indexes/latest.json', call: 'read_text', confidence: 'ast' }]);
   });
 
-  it('counts a write to a variable path without naming it', () => {
+  it('counts a write to a path the command line names as outside, without naming it', () => {
     const prepare = file('tools/prepare.js');
     assert.deepEqual(prepare.writes, []);
-    assert.equal(prepare.dynamicWrites, 1);
+    assert.equal(prepare.dynamicWrites, 0);
+    assert.equal(prepare.outsideWrites, 1);
     assert.deepEqual(prepare.reads, []);
     assert.equal(prepare.dynamicReads, 0);
   });

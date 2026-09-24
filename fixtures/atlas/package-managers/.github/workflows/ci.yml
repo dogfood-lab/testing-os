@@ -1,0 +1,25 @@
+name: ci
+on: [push]
+jobs:
+  pnpm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm verify
+      - run: pnpm run pack-smoke
+      - run: pnpm audit --prod
+      - run: pnpm -r test
+      - run: pnpm --filter @fixture/b run lint
+  yarn:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: yarn install
+      - run: yarn smoke
+      - run: yarn workspace @fixture/a start
+  bun:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bun run bun-task

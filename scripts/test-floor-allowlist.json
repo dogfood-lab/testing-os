@@ -72,6 +72,38 @@
     {
       "path": "fixtures/swarm-atlas/unmapped-repo/tests/server.test.js",
       "reason": "Swarm fixture, not a test. It sits inside the unmapped fixture repository that packages/dogfood-swarm/atlas-domain-map.test.js drafts from the hand template, whose tests bucket must claim it by exactly this name so the template map is the one a real repository without a boundary file gets. It is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/package-managers/packages/a/test/a.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the package-managers fixture repository that packages/atlas/core/package-managers.test.js maps, where `pnpm -r test` must reach packages/a/test/ through the member's own test script. It holds one empty test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/package-managers/packages/b/test/b.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the package-managers fixture repository that packages/atlas/core/package-managers.test.js maps, where `pnpm -r test` must reach packages/b/test/ through the member's own test script. It holds one empty test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/package-managers/test/root.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the package-managers fixture repository that packages/atlas/core/package-managers.test.js maps, where `pnpm verify` must reach test/ through the root test script it calls. It holds one empty test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/test-readers/test/golden.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the test-readers fixture repository that packages/atlas/adapter/page-test-readers.test.js maps, where it must be read as a test, by exactly this name, that reads fixtures/golden.json by its path, so the map records it as a reader from tests. It is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/spawn-helpers/test/unit.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the spawn-helpers fixture repository that packages/atlas/core/spawn-helpers.test.js maps, where the release gate's `node --test test/` stage, handed to a helper, must reach test/ as a run. It holds one empty test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-edges/e2e/big.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-edges fixture repository that packages/atlas/adapter/page-start-edges.test.js maps, where CI's e2e job, held to a path filter's needs.changes output, runs it and reaches further than the test job, so the map must not start Where to start there. It is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-edges/test/run.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-edges fixture repository that packages/atlas/adapter/page-start-edges.test.js maps, where it must be the first file of Where to start, past the empty test/a-setup.js, and pass over itself to the src/run.js it imports. It is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/exports-and-api/test/apply.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the exports-and-api fixture repository that packages/atlas/adapter/page-exports-and-api.test.js maps, where CI's suite imports the file that changes other repositories through the GitHub API and runs it against a stand-in, so the map must not say CI changes other repositories. It is never meant to run."
     }
   ]
 }
