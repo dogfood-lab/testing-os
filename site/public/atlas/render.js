@@ -664,6 +664,8 @@ function generatedSection(ctx) {
     ? ul(items.map((item) => {
       const place = `<strong>${pathHtml(ctx, item.place)}</strong>`;
       const writers = arr(item.writers);
+      // A part one bot added every file of is that bot's.
+      if (item.addedBy) return `${place} is written by ${esc(item.addedBy)}, which added every file in it.`;
       if (writers.length === 0) return `${place} is written by code this map cannot name.`;
       const by = list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
       // A stamped file is written by people, with one block a script keeps.
@@ -686,7 +688,13 @@ function authoredSection(ctx) {
     ? `${people}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`
     : `${people}. Nothing in this repository writes to them.`;
   const body = places.length > 0 ? p(caveat) : p('No configuration or documentation part is left to people alone.');
-  return section('Hand-authored', body);
+  // A place a script writes and people keep, with the count that says so.
+  const shared = arr(ctx.page.authoredWritten).filter((item) => item && typeof item === 'object').map((item) => {
+    const writers = list(arr(item.writers).map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
+    const people = Number(item.byPeople) || 0;
+    return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${writers}, and by people: ${people} of its ${count(Number(item.commits) || 0, 'commit')} in the window ${people === 1 ? 'is' : 'are'} theirs.`;
+  });
+  return section('Hand-authored', shared.length > 0 ? `${body}\n${ul(shared)}` : body);
 }
 
 // page.json keeps the trigger as the sentence page.js wrote, so the noun for

@@ -220,6 +220,56 @@ export function analyzeHistory(commits, options) {
   };
 }
 
+// The identities a workflow or an app commits as: GitHub's own bots and
+// the actions-user a checkout's default config writes.
+const BOT_EMAILS = new Set(['action@github.com', 'actions@github.com', 'noreply@github.com']);
+
+/**
+ * Whether a commit's author is a program: a GitHub app ("[bot]"), the
+ * identity a workflow commits as, or a name that says it is one
+ * (dogfood-bot). An agent that commits under a person's own name is that
+ * person, as far as git can tell.
+ *
+ * @param {{ name: string, email: string }} author
+ */
+export function isBotIdentity(author) {
+  const name = String(author?.name ?? '');
+  const email = String(author?.email ?? '').toLowerCase();
+  return /\[bot\]$/i.test(name) || /\[bot\]@users\.noreply\.github\.com$/.test(email) || BOT_EMAILS.has(email)
+    || /^(github-actions|actions-user)$/i.test(name) || /(^|[-_ ])bot$/i.test(name);
+}
+
+function parseAuthored(text) {
+  const out = [];
+  for (const block of String(text ?? '').split('@@@\n').slice(1)) {
+    const [name = '', email = '', ...paths] = block.split('\n');
+    out.push({ author: { name: name.trim(), email: email.trim() }, paths: paths.map((path) => path.trim()).filter(Boolean) });
+  }
+  return out;
+}
+
+/**
+ * Who changes what: every commit in the window that is not a merge, with its
+ * author and the paths it touches, and for every file the author of the
+ * commit that added it, over the whole history.
+ *
+ * @param {string} repo
+ * @param {{ since?: string | null, start?: string | null }} window
+ * @returns {{ commits: Array<{ author: { name: string, email: string }, paths: string[] }>, addedBy: Map<string, { name: string, email: string }> } | null}
+ */
+export function readAuthorship(repo, { since = null, start = null } = {}) {
+  const args = ['log', '--no-merges', '--no-renames', '--name-only', '--format=@@@%n%an%n%ae'];
+  if (since) args.push(`--since=${since}`);
+  args.push(start ? `${start}..HEAD` : 'HEAD');
+  const window = git(repo, args);
+  const adds = git(repo, ['log', '--diff-filter=A', '--no-renames', '--name-only', '--format=@@@%n%an%n%ae', 'HEAD']);
+  if (window == null || adds == null) return null;
+  const addedBy = new Map();
+  // git log lists newest first, so the last add of a path is its first.
+  for (const commit of parseAuthored(adds)) for (const path of commit.paths) addedBy.set(path, commit.author);
+  return { commits: parseAuthored(window), addedBy };
+}
+
 export function loadHistory(repo, parameters) {
   const when = headCommitter(repo);
   const since = parameters.pinnedStart ? null : windowStart(when, parameters.windowDays);

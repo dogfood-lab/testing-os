@@ -1468,11 +1468,24 @@ function duplicatesSection(found) {
   return ['## Helpers that look duplicated', ...(found.lead ? [found.lead] : []), body, ...found.note].join('\n\n');
 }
 
+// A written place people make most of the commits to (the statistics decide
+// which, adapter/statistics.js authorshipOf) is theirs, which a workflow also
+// writes; statistics written before authorship was counted list none, and
+// every written place reads as generated.
+function peopleCommits(ctx, target) {
+  return (ctx.statistics.authorship?.places ?? []).find((item) => item.target === target) ?? null;
+}
+
+// A part one bot added every file of, by the bot's name.
+function botAdded(ctx, name) {
+  return (ctx.statistics.authorship?.parts ?? []).find((item) => item.name === name)?.addedBy ?? null;
+}
+
 function generated(ctx) {
   const items = [];
   const claimed = [];
-  const written = writtenPlaces(ctx);
-  for (const boundary of ctx.boundaries.filter((item) => item.origin === 'generated')) {
+  const written = writtenPlaces(ctx).filter((place) => !peopleCommits(ctx, place.target));
+  for (const boundary of ctx.boundaries.filter((item) => item.origin === 'generated' && !peopleCommits(ctx, boundaryRoot(item) ?? ''))) {
     const root = boundaryRoot(boundary);
     const paths = (boundary.files ?? []).map((file) => file.path);
     const inside = (target) => (root ? under(target, root) : paths.some((path) => under(path, target)));
@@ -1490,6 +1503,10 @@ function generated(ctx) {
     const target = ctx.place(place.target);
     items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}) });
   }
+  for (const boundary of ctx.boundaries.filter((item) => item.origin !== 'generated')) {
+    const bot = botAdded(ctx, boundary.name);
+    if (bot) items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers: [], guards: new Map(), addedBy: bot });
+  }
   return items
     .sort((a, b) => cmp(a.place, b.place))
     .map(({ guards, ...item }) => ({ ...item, writers: writerItems(ctx, item.writers, guards) }));
@@ -1498,6 +1515,7 @@ function generated(ctx) {
 function generatedSection(ctx, items) {
   const body = items.length > 0
     ? items.map((item) => {
+      if (item.addedBy) return `- **${item.shown}** is written by ${item.addedBy}, which added every file in it.`;
       if (item.writers.length === 0) return `- **${item.shown}** is written by code this map cannot name.`;
       const by = list(worded(item.writers, ctx.shown));
       return item.block ? `- **${item.shown}** has a block written by ${by}.` : `- **${item.shown}** is written by ${by}.`;
@@ -1509,7 +1527,22 @@ function generatedSection(ctx, items) {
 function authored(ctx) {
   return ctx.boundaries
     .filter((boundary) => boundary.origin === 'authored' && (boundary.role === 'config' || boundary.role === 'docs' || boundary.role === 'site'))
+    .filter((boundary) => !botAdded(ctx, boundary.name))
     .sort((a, b) => cmp(boundaryPlace(a), boundaryPlace(b)));
+}
+
+// The written places people make most of the commits to, each with its
+// writers and the count that says so.
+function writtenByPeople(ctx) {
+  return writtenPlaces(ctx)
+    .map((place) => ({ place, people: peopleCommits(ctx, place.target) }))
+    .filter((item) => item.people)
+    .map(({ place, people }) => ({
+      byPeople: people.byPeople,
+      commits: people.commits,
+      place: ctx.place(place.target),
+      writers: writerItems(ctx, place.writers, place.guards),
+    }));
 }
 
 // Nothing the map names writes to these parts, but a write whose path is
@@ -1519,14 +1552,15 @@ function unnamedWrites(ctx) {
   return ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);
 }
 
-function authoredSection(ctx, boundaries) {
+function authoredSection(ctx, boundaries, shared) {
   const unnamed = unnamedWrites(ctx);
   const people = `People write ${list(boundaries.map((boundary) => shownPlace(ctx, boundary)))}`;
   const caveat = unnamed > 0
     ? `${people}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`
     : `${people}. Nothing in this repository writes to them.`;
   const body = boundaries.length > 0 ? caveat : 'No configuration or documentation part is left to people alone.';
-  return ['## Hand-authored', body].join('\n\n');
+  const lines = shared.map((item) => `- **${item.place}** is written by ${list(worded(item.writers, ctx.shown))}, and by people: ${item.byPeople} of its ${count(item.commits, 'commit')} in the window ${item.byPeople === 1 ? 'is' : 'are'} theirs.`);
+  return ['## Hand-authored', body, ...(lines.length > 0 ? [lines.join('\n')] : [])].join('\n\n');
 }
 
 function entryFile(boundary) {
@@ -1996,6 +2030,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   const duplicated = duplicates(ctx);
   const generatedItems = generated(ctx);
   const authoredBoundaries = authored(ctx);
+  const sharedPlaces = writtenByPeople(ctx);
   const starting = startDoor(ctx, main);
   const start = starting ? startHere(ctx, starting, starting === main ? groups : readerGroups(ctx, starting)) : { chain: [], words: [] };
   const found = main ? sequences(ctx, main) : [];
@@ -2025,7 +2060,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     unreadSection(ctx, unreadPlaces),
     duplicatesSection(duplicated),
     generatedSection(ctx, generatedItems),
-    authoredSection(ctx, authoredBoundaries),
+    authoredSection(ctx, authoredBoundaries, sharedPlaces),
     startSection(start.words, starting, ctx.doors.some((door) => !door.parseError)),
     limitsSection(limitLines),
   );
@@ -2033,6 +2068,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
 
   const data = {
     authored: authoredBoundaries.map(boundaryPlace),
+    ...(sharedPlaces.length > 0 ? { authoredWritten: sharedPlaces.map((item) => ({ ...item, writers: worded(item.writers, id) })) } : {}),
     breaks: breakEntries,
     ...(changes ? { changes } : {}),
     changesTogether: pairs,
@@ -2046,7 +2082,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesLead: duplicated.lead,
     duplicatesNote: duplicated.note,
     edges: breakEdges(ctx, breakEntries),
-    generated: generatedItems.map((item) => ({ ...(item.block ? { block: true } : {}), place: item.place, writers: worded(item.writers, id) })),
+    generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), place: item.place, writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
     mainDoor: main ? doorKey(main) : null,
