@@ -17,7 +17,7 @@ import { attachResolution, emittedFiles, registerBuilds, resolveDeclaredPath } f
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
 import { storedBytes, textAttributes } from './text.js';
-import { rustImports, rustPaths, settleRustPaths } from './rust.js';
+import { rustImports, rustPaths, rustSequence, settleRustPaths } from './rust.js';
 import { cargoProject, owningCrate } from './cargo.js';
 import { unseenParts } from './unseen.js';
 
@@ -489,7 +489,7 @@ function nativeReadings(language, root) {
     imports: rust ? rust.imports : [],
     ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}), ...(rust.paths.length > 0 ? { rustPaths: rust.paths } : {}), ...(rust.tests ? { testsInside: true } : {}) } } : {}),
     landings: noLandings(),
-    sequence: { functions: [], topLevel: [], reexports: [] },
+    sequence: rust ? rustSequence(root, rust.imports) : { functions: [], topLevel: [], reexports: [] },
     spawned: { commands: [], built: 0 },
     githubChanges: 0,
     noStatements: statementless(root),

@@ -489,6 +489,117 @@ export function stringText(node) {
   return out;
 }
 
+const CONDITION_SHOWN = 60;
+
+/**
+ * The first pass of the order of work (core/sequence.js), for Rust: each
+ * function of the file's own module, with the calls its body makes as the
+ * binding each goes through. A call to a function of this module is local;
+ * one through a name a use brings in (draw(), Engine::new(),
+ * engine::run()), a module the file declares (config::load()) or a path
+ * spelled from a crate (crate::telemetry::record()) goes through that import
+ * site. A method on a value names nothing the reader can follow. fn main is
+ * what the program runs, so it is the one invoked; a library's entry is
+ * chosen from what it exports, as for the other languages. Test code is
+ * left out, and so is what a macro's arguments call, which the grammar
+ * leaves as tokens.
+ *
+ * @param {object} root tree-sitter root node
+ * @param {object[]} imports the sites rustImports read from the same tree
+ */
+export function rustSequence(root, imports) {
+  const top = imports.filter((site) => site.rust && site.rust.scope.length === 0);
+  const bound = new Map();
+  for (const site of top) {
+    if (!site.rust.use || site.rust.expression || site.rust.crate || site.rust.glob) continue;
+    const name = site.rust.alias ?? site.rust.use[site.rust.use.length - 1];
+    if (!bound.has(name)) bound.set(name, site);
+  }
+  const mods = new Map(top.filter((site) => site.rust.mod).map((site) => [site.rust.mod, site]));
+  const expressions = new Map(top.filter((site) => site.rust.expression).map((site) => [site.specifier, site]));
+  const moduleFunctions = root.namedChildren.filter((child) => child.type === 'function_item' && !hasTestAttribute(child) && child.childForFieldName('name'));
+  const byName = new Map(moduleFunctions.map((fn) => [fn.childForFieldName('name').text, fn]));
+  const siteOf = (module) => {
+    const spelled = expressions.get(module.join('::'));
+    if (module.length > 1) return spelled ?? bound.get(module[0]) ?? null;
+    return bound.get(module[0]) ?? spelled ?? mods.get(module[0]) ?? null;
+  };
+  const classify = (call) => {
+    const fn = call.childForFieldName('function');
+    const line = call.startPosition.row + 1;
+    if (fn?.type === 'identifier') {
+      if (byName.has(fn.text)) return { kind: 'local', node: byName.get(fn.text), name: fn.text, line };
+      const site = bound.get(fn.text);
+      return site ? { kind: 'import', name: fn.text, site: { specifier: site.specifier, line: site.line }, line } : null;
+    }
+    if (fn?.type !== 'scoped_identifier') return null;
+    const segments = pathSegments(fn);
+    if (segments == null || segments.length < 2 || segments.includes('Self') || segments[0] === '') return null;
+    const module = segments.slice(0, -1);
+    const site = siteOf(module);
+    if (!site) return null;
+    // Engine::new() is work in the file that defines the type.
+    const receiver = module.length === 1 && bound.has(module[0]) && /^[A-Z]/.test(module[0]) ? { receiver: module[0] } : {};
+    return { kind: 'import', name: segments[segments.length - 1], site: { specifier: site.specifier, line: site.line }, line, ...receiver };
+  };
+  const visit = (node, steps) => {
+    if (!node) return;
+    if (['function_item', 'mod_item', 'impl_item', 'trait_item', 'macro_invocation'].includes(node.type)) return;
+    if (node.type === 'if_expression' && earlyReturn(node)) {
+      const condition = node.childForFieldName('condition');
+      visit(condition, steps);
+      const inner = [];
+      visit(node.childForFieldName('consequence'), inner);
+      for (const step of inner) steps.push({ ...step, branch: step.branch ?? conditionText(condition) });
+      return;
+    }
+    if (node.type === 'call_expression') {
+      const fn = node.childForFieldName('function');
+      if (fn && fn.type !== 'identifier' && fn.type !== 'scoped_identifier') visit(fn, steps);
+      for (const arg of node.childForFieldName('arguments')?.namedChildren ?? []) if (arg.type !== 'closure_expression') visit(arg, steps);
+      const step = classify(node);
+      if (step) steps.push(step);
+      for (const arg of node.childForFieldName('arguments')?.namedChildren ?? []) if (arg.type === 'closure_expression') visit(arg.childForFieldName('body'), steps);
+      return;
+    }
+    for (const child of node.namedChildren) visit(child, steps);
+  };
+  const plain = (step) => {
+    const branch = step.branch ? { branch: step.branch } : {};
+    if (step.kind === 'local') return { kind: 'local', fn: step.node.startIndex, line: step.line, ...branch };
+    return { kind: step.kind, name: step.name, line: step.line, site: step.site, ...(step.receiver ? { receiver: step.receiver } : {}), ...branch };
+  };
+  const functions = moduleFunctions.map((fn) => {
+    const steps = [];
+    visit(fn.childForFieldName('body'), steps);
+    return {
+      id: fn.startIndex,
+      name: fn.childForFieldName('name').text,
+      line: fn.startPosition.row + 1,
+      moduleLevel: true,
+      exported: fn.namedChildren.some((child) => child.type === 'visibility_modifier'),
+      isDefaultExport: false,
+      steps: steps.map(plain),
+    };
+  });
+  const main = moduleFunctions.find((fn) => fn.childForFieldName('name').text === 'main');
+  return { functions, topLevel: main ? [main.startIndex] : [], reexports: [] };
+}
+
+// if cond { ...; return; } with no else: the other way the function goes.
+function earlyReturn(node) {
+  if (node.childForFieldName('alternative')) return false;
+  const block = node.childForFieldName('consequence');
+  const last = block?.namedChildren.filter((child) => !/comment$/.test(child.type)).at(-1);
+  const expression = last?.type === 'expression_statement' ? last.namedChildren[0] : last;
+  return expression?.type === 'return_expression';
+}
+
+function conditionText(node) {
+  const text = (node?.text ?? '').replace(/\s+/g, ' ').trim();
+  return text.length > CONDITION_SHOWN ? `${text.slice(0, CONDITION_SHOWN - 1)}…` : text;
+}
+
 // The places a caller decides, which a write or read under them names.
 const CALLER_PLACES = new Set(['cwd', 'home', 'temp', 'env', 'argument', 'param']);
 
