@@ -198,6 +198,7 @@ function carryFile(file) {
   // the same as importing nothing; it is marked so a reader is not told so,
   // with the construct the parser stopped on when it is one of the known ones.
   if (file.parseError) out.parseError = true;
+  if (file.noStatements) out.noStatements = true;
   if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
   const imported = importTargets(file);
   if (imported.files.length > 0) out.importsFiles = imported.files;
@@ -307,6 +308,7 @@ function carryDoor(door) {
   return {
     ...(door.kind ? { kind: door.kind } : {}),
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
+    ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),
     elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
     file: door.file,
     ...(door.gated?.length > 0

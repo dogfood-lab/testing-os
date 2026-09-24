@@ -1,5 +1,5 @@
 import { isSourcePath } from '../core/history.js';
-import { isTestMaterial, ownTestPair } from '../core/landings.js';
+import { isTestFile, isTestMaterial, ownTestPair } from '../core/landings.js';
 import { isCodePath, languageOf } from '../core/languages.js';
 
 /**
@@ -1610,10 +1610,11 @@ function startDoor(ctx, main) {
   return reaching(ctx.doors).find((door) => !installed(door) && pullRequested(door)) ?? main;
 }
 
-// The runs a pull request reaches: a job held to another trigger is left
-// out, unless every run is in one.
+// The runs a pull request reaches: a job held to another trigger, or to what
+// an earlier job's output says (a path filter's needs.changes), is left out,
+// unless every run is in one.
 function startRuns(door) {
-  const gated = new Set((door.gated ?? []).flatMap((entry) => entry.jobs ?? []));
+  const gated = new Set([...(door.gated ?? []).flatMap((entry) => entry.jobs ?? []), ...(door.conditional ?? [])]);
   const runs = (door.runs ?? []).filter((run) => !gated.has(run.job));
   return runs.length > 0 ? runs : door.runs ?? [];
 }
@@ -1627,27 +1628,33 @@ function fileInRun(ctx, door, dir) {
   const next = deeper(door)[0]?.entries.map((entry) => entry.enters?.from).filter((path) => path?.startsWith(dir)) ?? [];
   if (next.length > 0) return [...next].sort(cmp)[0];
   const entry = entryFile(ctx.boundaries.find((boundary) => boundary.name === runPart(ctx, dir)));
-  if (entry?.startsWith(dir)) return entry;
-  return [...ctx.fileOf.keys()].filter((path) => path.startsWith(dir) && isCodePath(path)).sort(cmp)[0] ?? null;
+  if (entry?.startsWith(dir) && !ctx.fileOf.get(entry)?.noStatements) return entry;
+  return [...ctx.fileOf.keys()].filter((path) => path.startsWith(dir) && isCodePath(path) && !ctx.fileOf.get(path)?.noStatements).sort(cmp)[0] ?? null;
 }
 
-// The structure records reach per part, so the chain is walked at part grain:
-// the run in the part the door reaches most files of, then at each depth the
-// widest part imported by the part before it, named by the first file the
-// walk imports in it. A package index that only hands a name on is followed
-// to the file the entry's call reaches through it, since that is where the
-// work is. The part's entry point is named only when no import into it was
-// recorded. Every step is a file that runs: a directory is named by a file in
-// it, and a manifest or a data file imported on the way is passed over. The
-// chain ends at a place the door writes only when code reads it, at the file
-// that reader names, and the reader is the first one outside the door's own
-// reach, so it ends at whoever uses the result rather than whoever makes it.
-function startHere(ctx, main, groups) {
+// A chain names this many files after the door at most, so it stays a path
+// a person reads in one sitting.
+const START_STEPS = 6;
+
+/**
+ * The files to read to follow one pass through the door, each joined to the
+ * one before by an edge the map recorded: the door runs the first, a file
+ * imports the next, a file writes the place, and the code that reads that
+ * place ends it. The chain starts at a file the door runs (see startRuns for
+ * which jobs), past any file with no statements (an empty __init__.py). From
+ * each file it goes to the file it imports that writes a place the door lands
+ * on and code outside reads, and otherwise into another part, the one the
+ * door reaches most files of; a test is passed over for the production file
+ * it imports, and a package index to the file the entry's call reaches
+ * through it. It ends at the place a file writes and the first reader
+ * outside the door's own reach, so it ends at whoever uses the result rather
+ * than whoever makes it.
+ */
+function startHere(ctx, main) {
   const chain = installed(main) ? [] : [main.file];
   const add = (path) => {
     if (path != null && !chain.includes(path)) chain.push(path);
   };
-  const byName = new Map(ctx.boundaries.map((boundary) => [boundary.name, boundary]));
   const depthZero = (main.reach ?? []).filter((entry) => entry.depth === 0);
   // The path starts at a file the door runs; a file it only lints is read,
   // not followed, so it starts there only when nothing is run. Of the files
@@ -1660,47 +1667,65 @@ function startHere(ctx, main, groups) {
   const spelled = ran.filter((path) => named.has(path));
   const paths = (spelled.length > 0 ? spelled : ran).filter((path) => path.endsWith('/') || runsAsCode(path));
   const filesIn = (path) => depthZero.find((entry) => entry.boundary === runPart(ctx, path))?.files ?? 0;
-  const first = [...paths].sort((a, b) => filesIn(b) - filesIn(a) || cmp(a, b))[0];
-  const firstFile = first?.endsWith('/') ? fileInRun(ctx, main, first) : first;
-  add(firstFile);
-  const from = importers(ctx);
-  let previous = first ? runPart(ctx, first) : null;
-  let previousFile = firstFile ?? null;
-  for (const level of deeper(main)) {
-    const linked = level.entries.filter((entry) => previous && from.get(entry.boundary)?.has(previous));
-    const pool = linked.length > 0 ? linked : level.entries;
-    const widest = [...pool].sort((a, b) => b.files - a.files || cmp(a.boundary, b.boundary))[0];
-    const entered = widest.enters?.file ?? null;
-    const file = entered ?? entryFile(byName.get(widest.boundary));
-    if (file == null || !runsAsCode(file)) continue;
-    add(file);
-    let reached = file;
-    if (entered && isIndex(entered) && previousFile) {
-      const through = firstCallInto(ctx, previousFile, widest.boundary);
-      if (through) {
+  const readable = (path) => runsAsCode(path) && !ctx.fileOf.get(path)?.noStatements;
+  let current = null;
+  for (const path of [...paths].sort((a, b) => filesIn(b) - filesIn(a) || cmp(a, b))) {
+    const file = path.endsWith('/') ? fileInRun(ctx, main, path) : path;
+    if (file != null && readable(file)) {
+      current = file;
+      break;
+    }
+  }
+  if (current == null) return { chain: [], words: [] };
+  add(current);
+  const reached = new Set((main.reach ?? []).map((entry) => entry.boundary));
+  const breadth = new Map((main.reach ?? []).map((entry) => [entry.boundary, entry.files]));
+  const lands = main.landings ?? [];
+  // The place a file writes that the door lands on, with the code outside the
+  // chain that reads it, the reader outside the door's reach first.
+  const ending = (path) => {
+    for (const landing of ctx.landings) {
+      if (!landing.writers.some((entry) => entry.by === path)) continue;
+      if (!lands.some((target) => under(landing.target, target) || under(target, landing.target))) continue;
+      const readers = ctx.landings
+        .filter((other) => under(other.target, landing.target) || under(landing.target, other.target))
+        .flatMap((other) => other.readers)
+        .filter((entry) => entry.by !== path && !chain.includes(entry.by) && runsAsCode(entry.by) && !entry.fromTests && !quotedOnly(entry))
+        .sort((a, b) => Number(reached.has(ctx.boundaryOf.get(a.by))) - Number(reached.has(ctx.boundaryOf.get(b.by)))
+          || Number(a.confidence === 'text') - Number(b.confidence === 'text') || cmp(a.by, b.by));
+      if (readers.length > 0) return { place: ctx.place(landing.target), reader: readers[0].by };
+    }
+    return null;
+  };
+  const next = (path) => {
+    const part = ctx.boundaryOf.get(path) ?? null;
+    const options = (ctx.fileOf.get(path)?.importsFiles ?? [])
+      .filter((target) => ctx.fileOf.has(target) && readable(target) && !chain.includes(target) && !isTestFile(target));
+    const writer = options.find((target) => ending(target));
+    if (writer) return writer;
+    const width = (target) => breadth.get(ctx.boundaryOf.get(target)) ?? 0;
+    return options.filter((target) => (ctx.boundaryOf.get(target) ?? null) !== part).sort((a, b) => width(b) - width(a) || cmp(a, b))[0] ?? null;
+  };
+  for (let step = 0; step < START_STEPS; step += 1) {
+    const end = ending(current);
+    if (end) {
+      add(end.place);
+      add(end.reader);
+      break;
+    }
+    let following = next(current);
+    if (following == null) break;
+    add(following);
+    if (isIndex(following)) {
+      // A package index that only hands a name on is followed to the file the
+      // entry's call reaches through it, since that is where the work is.
+      const through = firstCallInto(ctx, current, ctx.boundaryOf.get(following));
+      if (through && (ctx.fileOf.get(following)?.importsFiles ?? []).includes(through) && readable(through) && !chain.includes(through)) {
         add(through);
-        reached = through;
+        following = through;
       }
     }
-    previous = widest.boundary;
-    previousFile = reached;
-  }
-  if (!chain.some(runsAsCode)) return { chain: [], words: [] };
-  const reached = new Set((main.reach ?? []).map((entry) => entry.boundary));
-  for (const group of groups) {
-    const readers = group.files.filter((reader) => runsAsCode(reader.path) && !reader.fromTests).sort((a, b) => (
-      Number(reached.has(ctx.boundaryOf.get(a.path))) - Number(reached.has(ctx.boundaryOf.get(b.path)))
-      || Number(a.text) - Number(b.text)
-      || cmp(a.path, b.path)
-    ));
-    const reader = readers[0];
-    if (!reader) continue;
-    const named = (group.entries ?? []).filter((entry) => entry.by === reader.path).map((entry) => ctx.place(entry.target)).sort((a, b) => (
-      Number(a.endsWith('/')) - Number(b.endsWith('/')) || cmp(a, b)
-    ));
-    add(named[0] ?? group.target);
-    add(reader.path);
-    break;
+    current = following;
   }
   return { chain, words: [...chain] };
 }
@@ -2040,7 +2065,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   const authoredBoundaries = authored(ctx);
   const sharedPlaces = writtenByPeople(ctx);
   const starting = startDoor(ctx, main);
-  const start = starting ? startHere(ctx, starting, starting === main ? groups : readerGroups(ctx, starting)) : { chain: [], words: [] };
+  const start = starting ? startHere(ctx, starting) : { chain: [], words: [] };
   const found = main ? sequences(ctx, main) : [];
   const shownText = groups.some((group) => group.readers.some((reader) => reader.text?.endsWith(' (found by text)')));
   const limitLines = limits(ctx, shownText);

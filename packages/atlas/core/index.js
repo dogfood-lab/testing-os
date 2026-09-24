@@ -355,11 +355,12 @@ function describeFile(repoPath, path, places, facts, spawned) {
   facts.set(path, extracted.sequence);
   if (extracted.spawned.commands.length > 0) spawned.set(path, extracted.spawned.commands);
   const built = extracted.spawned.built > 0 ? { dynamicSpawns: extracted.spawned.built } : {};
+  const empty = extracted.noStatements ? { noStatements: true } : {};
   const api = extracted.githubChanges > 0 && !isTestFile(path) ? { githubChanges: extracted.githubChanges } : {};
   // Read once imports resolve, then dropped (core/spawned.js settleSpawnHelpers).
   const helpers = Object.keys(extracted.spawned.helpers ?? {}).length > 0 ? { spawnHelpers: extracted.spawned.helpers } : {};
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...helpers, ...pending, ...api };
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...helpers, ...pending, ...api, ...empty };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -382,10 +383,18 @@ function parseFile(language, path, source, places) {
       sequence: sequenceFacts(language, tree.rootNode),
       spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
       githubChanges: language === 'python' ? 0 : githubChanges(tree.rootNode),
+      noStatements: statementless(tree.rootNode),
     };
   } finally {
     tree.delete();
   }
+}
+
+// A module with nothing but comments, or a Python docstring, runs nothing.
+function statementless(root) {
+  const statements = root.namedChildren.filter((child) => child.type !== 'comment');
+  if (statements.length === 0) return true;
+  return statements.length === 1 && statements[0].type === 'expression_statement' && statements[0].namedChildren[0]?.type === 'string';
 }
 
 function walkNamed(root, visit) {

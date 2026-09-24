@@ -137,9 +137,9 @@ describe('atlas page', () => {
       '## Helpers that look duplicated': '- **normalize** is exported by lib/store.js (lib) and tools/prepare.js (tools); the two look alike.',
       '## Generated, never hand-edited': '- **records/** is written by .github/workflows/ingest.yml, tools/ingest.js and tools/scratch.js.',
       '## Hand-authored': 'People write .github/, policies/, the repository root and site/; 1 write with a path built at run time may land here.',
-      // tools/ingest.js imports lib/policy.js first; lib names no entry point,
-      // and the file the door's code opens is named instead of lib/.
-      '## Where to start': '.github/workflows/ingest.yml → tools/ingest.js → lib/policy.js → indexes/latest.json → site/index.html',
+      // tools/ingest.js writes indexes/latest.json itself, which the site
+      // reads, so every arrow is an edge the map recorded.
+      '## Where to start': '.github/workflows/ingest.yml → tools/ingest.js → indexes/latest.json → site/index.html',
       '## What this map cannot see': REGENERATE,
     };
     for (const [heading, sentence] of Object.entries(exact)) {
@@ -181,7 +181,7 @@ describe('atlas page', () => {
     assert.equal(reads.includes('tools/ingest.js'), false);
     assert.match(reads, /^- \*\*indexes\/\*\* is read by site\/index\.html \(found by text\), tools\/render\.js and tools\/report\.py\.$/m);
     assert.match(reads, /^- \*\*records\/\*\* has no reader in this repository\.$/m);
-    assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → lib\/policy\.js → indexes\/latest\.json → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);
+    assert.match(section(markdown, '## Where to start'), /^\.github\/workflows\/ingest\.yml → tools\/ingest\.js → indexes\/latest\.json → site\/index\.html\n\nRead those in order to follow one submission end to end\.$/m);
     assert.match(section(markdown, '## What this map cannot see'), /^- Readers marked \(found by text\) come from scanning unparsed files\.$/m);
     // site/index.html is found by text, and a page runs what it names, so it
     // is a reader a hand edit reaches.
@@ -604,7 +604,7 @@ describe('atlas page', () => {
     assert.deepEqual(data.doors.map((door) => door.name), ['Checks', 'Ingest', 'weekly', 'Manual', 'broken']);
     assert.deepEqual(data.doors[2].triggers, ['on a push touching 1 path', 'on a schedule (`0 6 * * 1`), Monday at 06:00 UTC']);
     assert.deepEqual(data.doors[2].sends, ['sends a dispatch to acme/hub']);
-    assert.deepEqual(data.startHere, ['.github/workflows/ingest.yml', 'tools/ingest.js', 'lib/policy.js', 'indexes/latest.json', 'site/index.html']);
+    assert.deepEqual(data.startHere, ['.github/workflows/ingest.yml', 'tools/ingest.js', 'indexes/latest.json', 'site/index.html']);
     assert.deepEqual(data.authored, ['.github/', 'policies/', 'root', 'site/']);
     assert.deepEqual(data.readers, [
       { readers: ['site/index.html (found by text)', 'tools/render.js', 'tools/report.py'], target: 'indexes/' },

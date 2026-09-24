@@ -154,12 +154,15 @@ function readDoor(repoPath, file, repo) {
   const texts = [];
   // What a job gated to one trigger does is kept apart, by its gate.
   const gates = new Map();
+  // The jobs that run only when an earlier job's output says so.
+  const conditional = [];
   const triggers = triggerList(doc.on);
   const workflowDir = workingDirectory(doc.defaults);
   const workflowEnv = envOf(doc.env);
   for (const [job, body] of Object.entries(isMapping(doc.jobs) ? doc.jobs : {})) {
     if (!isMapping(body)) continue;
     const gate = jobGate(body.if, triggers);
+    if (typeof body.if === 'string' && /\bneeds\.[\w-]+\.outputs\b/.test(body.if)) conditional.push(job);
     if (gate && !gates.has(canonical(gate))) gates.set(canonical(gate), { when: gate, jobs: [], sends: emptySends(), issues: [], texts: [], stages: new Set(), pushes: false, sidePushes: [] });
     if (gate) gates.get(canonical(gate)).jobs.push(job);
     const scope = gate ? gates.get(canonical(gate)) : { sends, issues, texts, stages, pushes: false, sidePushes: [] };
@@ -268,6 +271,7 @@ function readDoor(repoPath, file, repo) {
       .sort((a, b) => compare(a.dir, b.dir) || compare(a.clone ?? '', b.clone ?? '')),
     sends: finishSends(sends, issues, texts),
     ...(gated.length > 0 ? { gated } : {}),
+    ...(conditional.length > 0 ? { conditional: [...conditional].sort() } : {}),
     uses: [...uses].sort(),
   };
 }

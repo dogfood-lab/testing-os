@@ -92,6 +92,14 @@
     {
       "path": "fixtures/atlas/spawn-helpers/test/unit.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the spawn-helpers fixture repository that packages/atlas/core/spawn-helpers.test.js maps, where the release gate's `node --test test/` stage, handed to a helper, must reach test/ as a run. It holds one empty test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-edges/e2e/big.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-edges fixture repository that packages/atlas/adapter/page-start-edges.test.js maps, where CI's e2e job, held to a path filter's needs.changes output, runs it and reaches further than the test job, so the map must not start Where to start there. It is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-edges/test/run.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-edges fixture repository that packages/atlas/adapter/page-start-edges.test.js maps, where it must be the first file of Where to start, past the empty test/a-setup.js, and pass over itself to the src/run.js it imports. It is never meant to run."
     }
   ]
 }
