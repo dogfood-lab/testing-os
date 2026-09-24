@@ -1686,14 +1686,28 @@ function untested(ctx) {
   const parts = ctx.boundaries.filter((boundary) => boundary.role === 'code'
     && (boundary.files ?? []).some((file) => isSourcePath(file.path) && !isTestMaterial(file.path)));
   const testedBy = Object.fromEntries(parts.map((boundary) => [boundary.name, boundary.testedBy ?? 0]));
-  if (testFiles === 0) return { items: [], note: ['No test files were found by name.'], testedBy, testFiles, spawned: [] };
+  if (testFiles === 0) return { items: [], note: ['No test files were found by name.'], testedBy, testFiles, spawned: [], inside: [] };
   const all = parts.filter((boundary) => (boundary.testedBy ?? 0) === 0)
     .map((boundary) => ({ part: boundary.name, partLabel: ctx.shown(boundary.name), testedBy: 0 }));
   // A part a test runs as a child process and none imports is touched, but
   // only by running it, so the page says how.
   const spawned = parts.filter((boundary) => boundary.testedThroughSpawn && (boundary.testedBy ?? 0) > 0).map((boundary) => boundary.name);
   const through = spawned.map((name) => spawnedLine(ctx.shown(name)));
-  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned };
+  // A part only the unit tests in its own files test is touched from inside.
+  const inside = parts.filter((boundary) => boundary.testedInside && (boundary.testedBy ?? 0) > 0).map((boundary) => boundary.name);
+  const within = inside.map((name) => insideLine(ctx.shown(name)));
+  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside };
+}
+
+/**
+ * What the page says of a part only the unit tests inside its own files test
+ * (a Rust #[cfg(test)] module).
+ *
+ * @param {string} partLabel
+ * @returns {string}
+ */
+export function insideLine(partLabel) {
+  return `${partLabel} is tested only by the unit tests in its own files.`;
 }
 
 /**
@@ -1707,7 +1721,7 @@ export function spawnedLine(partLabel) {
 }
 
 function untestedSection(found) {
-  const every = found.spawned.length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.';
+  const every = found.spawned.length > 0 || found.inside.length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.';
   const body = found.items.length > 0
     ? found.items.map((item) => `- **${item.partLabel}** is imported by no test.`).join('\n')
     : (found.testFiles === 0 ? null : every);
@@ -2798,6 +2812,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     summary,
     summaryFrom: summary ? 'person' : null,
     ...(untestedParts.spawned.length > 0 ? { spawnTested: untestedParts.spawned } : {}),
+    ...(untestedParts.inside.length > 0 ? { testedInside: untestedParts.inside } : {}),
     testedBy: untestedParts.testedBy,
     testFiles: untestedParts.testFiles,
     unreadFiles: unreadCount(ctx),

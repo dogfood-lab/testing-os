@@ -136,10 +136,21 @@ function testReach(mapped) {
     for (const part of byImport) imported.add(part);
     for (const part of new Set([...byImport, ...bySpawn])) testedBy.set(part, (testedBy.get(part) ?? 0) + 1);
   }
+  // A file that holds its own unit tests (a Rust #[cfg(test)] module) is a
+  // test of the part it is in, and a test file, though not one by name.
+  const inside = all.filter((file) => file.testsInside && !isTestFile(file.path) && boundaryOf.has(file.path));
+  const insideParts = new Set();
+  for (const file of inside) {
+    const part = boundaryOf.get(file.path);
+    insideParts.add(part);
+    testedBy.set(part, (testedBy.get(part) ?? 0) + 1);
+  }
   // A part no test imports that a test runs as a child process is touched
-  // only through that spawn, which the page says.
-  const throughSpawn = new Set([...testedBy.keys()].filter((part) => !imported.has(part)));
-  return { testFiles: tests.length, testedBy, throughSpawn };
+  // only through that spawn, which the page says, and so is one only the
+  // unit tests in its own files test.
+  const throughSpawn = new Set([...testedBy.keys()].filter((part) => !imported.has(part) && !insideParts.has(part)));
+  const testedInside = new Set([...insideParts].filter((part) => !imported.has(part)));
+  return { testFiles: tests.length + inside.length, testedBy, throughSpawn, testedInside };
 }
 
 // A boundary file may leave a role out; the role is then derived from the
@@ -172,6 +183,7 @@ export function buildArtifact(mapped, commit) {
       origin: boundary.origin,
       role: boundary.role ?? roleFor(files.map((file) => file.path), { manifest: boundary.holdsManifest === true }),
       testedBy: tested.testedBy.get(boundary.name) ?? 0,
+      ...(tested.testedInside.has(boundary.name) ? { testedInside: true } : {}),
       ...(tested.throughSpawn.has(boundary.name) ? { testedThroughSpawn: true } : {}),
       unresolvedSites: sites.unresolved,
     };
@@ -210,6 +222,7 @@ function carryFile(file) {
   // with the construct the parser stopped on when it is one of the known ones.
   if (file.parseError) out.parseError = true;
   if (file.noStatements) out.noStatements = true;
+  if (file.testsInside) out.testsInside = true;
   if (file.reexportsOnly) out.reexportsOnly = true;
   if (file.constantOnly) out.constantOnly = true;
   if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
