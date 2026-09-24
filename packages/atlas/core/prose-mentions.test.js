@@ -32,6 +32,6 @@ describe('a Markdown page that names a place', () => {
   });
 
   it('leaves what a JSON file quotes as evidence', () => {
-    assert.deepEqual(reads('settings.json'), ['logos literal']);
+    assert.deepEqual(reads('quotes.json'), ['logos literal']);
   });
 });

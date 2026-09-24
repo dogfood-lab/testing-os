@@ -112,6 +112,102 @@
     {
       "path": "fixtures/atlas/exports-and-api/test/apply.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the exports-and-api fixture repository that packages/atlas/adapter/page-exports-and-api.test.js maps, where CI's suite imports the file that changes other repositories through the GitHub API and runs it against a stand-in, so the map must not say CI changes other repositories. It is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-tests/command/tests/run.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-tests fixture repository that packages/atlas/adapter/page-start-tests.test.js maps, where the pull request's door runs it and nothing else, so Where to start must leave it for the command the manifest installs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-tests/package/tests/parse.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-tests fixture repository that packages/atlas/adapter/page-start-tests.test.js maps, where the pull request's door runs only this test, so Where to start follows the package's entry instead. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-tests/constant/tests/work.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-tests fixture repository that packages/atlas/adapter/page-start-tests.test.js maps, where it imports a file holding one constant before the file doing the work, and Where to start must pass over the constant to the work. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/spawned-scripts/tests/smoke.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the spawned-scripts fixture repository that packages/atlas/adapter/page-spawned-scripts.test.js maps, where the tests either run scripts/ as a child process or import src/, so the map counts scripts as touched only through a spawn. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/spawned-scripts/tests/run-gate.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the spawned-scripts fixture repository that packages/atlas/adapter/page-spawned-scripts.test.js maps, where the tests either run scripts/ as a child process or import src/, so the map counts scripts as touched only through a spawn. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/spawned-scripts/tests/add.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the spawned-scripts fixture repository that packages/atlas/adapter/page-spawned-scripts.test.js maps, where the tests either run scripts/ as a child process or import src/, so the map counts scripts as touched only through a spawn. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/src/a.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/src/d.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/src/deep/b.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/src/deep/deeper/c.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/tools/lib/e.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/shell-globs/tools/lib/inner/f.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/built-tests/src/tests/total.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the built-tests fixture repository that packages/atlas/core/built-tests.test.js maps, where node --test is handed a glob over dist/ and must run this source by the name its build output takes. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/built-tests/src/tests/unit/sum.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the built-tests fixture repository that packages/atlas/core/built-tests.test.js maps, where node --test is handed a glob over dist/ and must run this source by the name its build output takes. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/grammar-shapes/src/mint.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the grammar-shapes fixture repository that packages/atlas/core/grammar-shapes.test.js maps, where it holds typeof import(...) as a type argument, the shape vitest's importOriginal mocks take, which the map must read by rewriting it. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/run-counts/tests/a.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the run-counts fixture repository that packages/atlas/adapter/page-run-counts.test.js maps, where node --test runs it by name or through a glob, and the page must count it among the files its door runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/run-counts/tests/b.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the run-counts fixture repository that packages/atlas/adapter/page-run-counts.test.js maps, where node --test runs it by name or through a glob, and the page must count it among the files its door runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/run-counts/tests/c.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the run-counts fixture repository that packages/atlas/adapter/page-run-counts.test.js maps, where node --test runs it by name or through a glob, and the page must count it among the files its door runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/run-counts/tests/d.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the run-counts fixture repository that packages/atlas/adapter/page-run-counts.test.js maps, where node --test runs it by name or through a glob, and the page must count it among the files its door runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/run-counts/tests/deep/e.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the run-counts fixture repository that packages/atlas/adapter/page-run-counts.test.js maps, where node --test runs it by name or through a glob, and the page must count it among the files its door runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/run-counts/tests/deep/f.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the run-counts fixture repository that packages/atlas/adapter/page-run-counts.test.js maps, where node --test runs it by name or through a glob, and the page must count it among the files its door runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/run-counts/tests/deep/g.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the run-counts fixture repository that packages/atlas/adapter/page-run-counts.test.js maps, where node --test runs it by name or through a glob, and the page must count it among the files its door runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/run-counts/tests/deep/h.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the run-counts fixture repository that packages/atlas/adapter/page-run-counts.test.js maps, where node --test runs it by name or through a glob, and the page must count it among the files its door runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/run-counts/tests/deep/i.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the run-counts fixture repository that packages/atlas/adapter/page-run-counts.test.js maps, where node --test runs it by name or through a glob, and the page must count it among the files its door runs. It holds no test and is never meant to run."
     }
   ]
 }

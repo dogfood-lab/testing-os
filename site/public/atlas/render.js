@@ -234,16 +234,25 @@ function checkTotal(door, items) {
   return Math.max(Number(door?.checksCount) || 0, items.length);
 }
 
-function runsShown(items, total = items.length) {
+// "and N more" is how many files the rest stand for, which page.json
+// carries as runsMore and checksMore, a directory counting every file under
+// it; a page.json written before them counted the paths.
+function runsShown(items, total = items.length, more = null) {
+  if (Number.isInteger(more)) return more === 0 ? list(items.map((item) => item.html)) : `${items.slice(0, RUNS_SHOWN).map((item) => item.html).join(', ')} and ${more} more`;
   if (total <= RUNS_SHOWN) return list(items.map((item) => item.html));
   const shown = items.slice(0, RUNS_SHOWN);
   return `${shown.map((item) => item.html).join(', ')} and ${total - shown.length} more`;
 }
 
-function runsShownText(items, total = items.length) {
+function runsShownText(items, total = items.length, more = null) {
+  if (Number.isInteger(more)) return more === 0 ? list(items.map((item) => item.text)) : `${items.slice(0, RUNS_SHOWN).map((item) => item.text).join(', ')} and ${more} more`;
   if (total <= RUNS_SHOWN) return list(items.map((item) => item.text));
   const shown = items.slice(0, RUNS_SHOWN);
   return `${shown.map((item) => item.text).join(', ')} and ${total - shown.length} more`;
+}
+
+function moreOf(value) {
+  return Number.isInteger(value) ? value : null;
 }
 
 function deeper(door) {
@@ -398,14 +407,16 @@ function held(ctx, door) {
     when: str(group.when),
     runs: arr(group.runs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
     checks: arr(group.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+    runsMore: moreOf(group.runsMore),
+    checksMore: moreOf(group.checksMore),
   }));
 }
 
 function heldClause(group, verb, joiner, field) {
   const clauses = [];
-  const shown = (items) => (field === 'html' ? runsShown(items) : runsShownText(items));
-  if (group.runs.length > 0) clauses.push(`${verb} ${shown(group.runs)}`);
-  if (group.checks.length > 0) clauses.push(`checks ${shown(group.checks)}`);
+  const shown = (items, more) => (field === 'html' ? runsShown(items, items.length, more) : runsShownText(items, items.length, more));
+  if (group.runs.length > 0) clauses.push(`${verb} ${shown(group.runs, group.runsMore)}`);
+  if (group.checks.length > 0) clauses.push(`checks ${shown(group.checks, group.checksMore)}`);
   return clauses.length > 0 ? clauses.join(joiner) : null;
 }
 
@@ -424,8 +435,8 @@ function comesIn(ctx) {
     const checked = checks(ctx, door);
     const clauses = [];
     if (door.unplaced) clauses.push(unplacedClause(door));
-    else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths))}`);
-    if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked))}`);
+    else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
+    if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
     const heldText = heldSentences(ctx, door, startVerb(door), clauses.length > 0);
     const ran = [...(clauses.length > 0 || heldText.length === 0 ? [capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`)] : []), ...heldText].join(' ');
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
@@ -445,8 +456,8 @@ function doorSteps(ctx, door) {
   const checked = checks(ctx, door);
   const subject = installed(door) ? `The ${door.extension ? 'extension' : door.kind} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
-  if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths))}`);
-  if (checked.length > 0) clauses.push(`${paths.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked))}`);
+  if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
+  if (checked.length > 0) clauses.push(`${paths.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
   const heldText = heldSentences(ctx, door, 'runs', clauses.length > 0);
   if (clauses.length > 0 || heldText.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   steps.push(...heldText);
@@ -578,11 +589,11 @@ function otherDoors(ctx) {
     if (door.unplaced) clauses.push({ html: unplacedClause(door), text: `${verb} ${str(door.unplaced)}, built from a source this map cannot place` });
     else if (paths.length > 0 || (checked.length === 0 && arr(door.held).length === 0)) {
       clauses.push(paths.length > 0
-        ? { html: `${verb} ${runsShown(paths, runTotal(door, paths))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths))}` }
+        ? { html: `${verb} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths), moreOf(door.runsMore))}` }
         : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
     }
     if (checked.length > 0) {
-      clauses.push({ html: `checks ${runsShown(checked, checkTotal(door, checked))}`, text: `checks ${runsShownText(checked, checkTotal(door, checked))}` });
+      clauses.push({ html: `checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`, text: `checks ${runsShownText(checked, checkTotal(door, checked), moreOf(door.checksMore))}` });
     }
     for (const group of held(ctx, door)) {
       const html = heldClause(group, verb, ' and ', 'html');
@@ -626,13 +637,16 @@ function breakLine(ctx, entry) {
   const doors = Number(entry?.doors) || 0;
   const path = doors === 0 ? 'no door' : count(doors, 'door');
   const fromTests = arr(entry?.importedByTests).map((part) => ctx.name(part));
-  // A part another part runs as a child process, as page.js says it.
+  // A part another part runs as a child process, or calls over HTTP, as
+  // page.js says it.
   const spawned = arr(entry?.spawnedBy).map((part) => ctx.name(part));
-  if (spawned.length > 0) {
+  const called = arr(entry?.calledBy).map((part) => ctx.name(part));
+  if (spawned.length > 0 || called.length > 0) {
     const clauses = [];
     if (importedBy.length > 0) clauses.push(`is imported by ${count(importedBy.length, 'part')} (${esc(importedBy.join(', '))})`);
     if (importedBy.length > 0 && fromTests.length > 0) clauses.push(`and by ${fromTests.length} more only from tests`);
-    clauses.push(`is run as a child process by ${count(spawned.length, 'part')} (${esc(spawned.join(', '))})`);
+    if (spawned.length > 0) clauses.push(`is run as a child process by ${count(spawned.length, 'part')} (${esc(spawned.join(', '))})`);
+    if (called.length > 0) clauses.push(`is called over HTTP by ${count(called.length, 'part')} (${esc(called.join(', '))})`);
     const joined = clauses.length > 1 ? `${clauses.join(', ')},` : clauses[0];
     return `<strong>${esc(breakLabel(ctx, entry))}</strong> ${joined} and sits on the path of ${path}.`;
   }
@@ -668,6 +682,8 @@ function relationClause(pair) {
     case 'a-imports-b': return `, and ${a} imports ${b}.`;
     case 'b-imports-a': return `, and ${b} imports ${a}.`;
     case 'both': return `, and ${a} and ${b} import each other.`;
+    case 'a-calls-b': return `, and ${a} calls ${b} over HTTP.`;
+    case 'b-calls-a': return `, and ${b} calls ${a} over HTTP.`;
     case 'none': return ', though neither part imports the other.';
     default: return '.';
   }
@@ -697,7 +713,7 @@ function untestedSection(ctx) {
   const note = arr(ctx.page.untestedNote).map((line) => p(esc(line)));
   const body = items.length > 0
     ? [ul(items.map((item) => `<strong>${esc(partName(ctx, item) ?? '')}</strong> is imported by no test.`))]
-    : (Number(ctx.page.testFiles) === 0 ? [] : [p('Every code part is imported by at least one test.')]);
+    : (Number(ctx.page.testFiles) === 0 ? [] : [p(arr(ctx.page.spawnTested).length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.')]);
   return section('What no test touches', [...body, ...note].join('\n'));
 }
 
@@ -746,6 +762,8 @@ function generatedSection(ctx) {
       if (writers.length === 0) return `${place} is written by code this map cannot name.`;
       const by = list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
       // A stamped file is written by people, with one block a script keeps.
+      if (item.once) return `${place} is written once by ${by}.`;
+      if (item.fromRoot) return `${place} is written by ${by} when run from the repository root, and committed.`;
       return item.block ? `${place} has a block written by ${by}.` : `${place} is written by ${by}.`;
     }))
     : p(absence('generated', unreadFiles(ctx)));
@@ -777,7 +795,7 @@ function authoredSection(ctx) {
 // page.json keeps the trigger as the sentence page.js wrote, so the noun for
 // "follow one ... end to end" is read back from that sentence's fixed forms.
 export function triggerNoun(door) {
-  if (installed(door)) return door.kind === 'package' ? `import of ${str(door.name)}` : `run of ${str(door.name)}`;
+  if (installed(door)) return door.kind !== 'package' ? `run of ${str(door.name)}` : door.extension ? `activation of ${str(door.name)}` : `import of ${str(door.name)}`;
   const phrases = arr(door?.triggers).map(str);
   const first = phrases.find((phrase) => phrase !== 'by hand' && phrase !== 'or by hand') ?? phrases[0];
   if (!first) return 'run';
@@ -802,7 +820,7 @@ function startSection(ctx) {
   if (chain.length === 0 && ctx.page.startNote) return section('Where to start', p(esc(ctx.page.startNote)));
   const body = [
     `<p class="chain">${chain.join(' <span aria-hidden="true">→</span><span class="sr">, then</span> ')}</p>`,
-    p(`Read those in order to follow one ${esc(triggerNoun(ctx.start))} end to end.`),
+    p(`Read those in order to follow one ${esc(triggerNoun(ctx.start))} end to end.${ctx.page.startReason ? ` ${esc(str(ctx.page.startReason))}` : ''}`),
   ];
   return section('Where to start', body.join('\n'));
 }

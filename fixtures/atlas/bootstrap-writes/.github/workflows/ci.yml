@@ -1,0 +1,10 @@
+name: CI
+on: [pull_request]
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/bench-gate.mjs
+      - run: node scripts/seed.mjs
+      - run: python tools/prime.py

@@ -7,13 +7,15 @@ import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
+import { httpEdges, httpFacts } from './http.js';
 import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
-import { astLandings, attachLandings, githubChanges, isTestFile, noLandings, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
+import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
-import { attachResolution, resolveDeclaredPath } from './resolve.js';
+import { attachResolution, emittedFiles, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
+import { unseenParts } from './unseen.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
 
@@ -133,15 +135,17 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   settleSpawnHelpers([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], spawned);
 
   const builtFrom = (path) => (trackedSet.has(path) ? null : resolveDeclaredPath(repoPath, path, trackedSet));
+  const emitted = () => emittedFiles(repoPath, trackedSet);
   const doors = [
-    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom }),
-    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom }),
+    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
+    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
   ];
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
-  attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom }));
-  const edges = [...resolution.edges, ...spawnEdges(graph)]
+  attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }));
+  const edges = [...resolution.edges, ...spawnEdges(graph), ...httpEdges(graph.files, graph.boundaryOf, isTestMaterial)]
     .sort((a, b) => a.from.localeCompare(b.from) || a.to.localeCompare(b.to) || a.kind.localeCompare(b.kind));
+  for (const file of graph.files.values()) delete file.http;
   for (const door of doors) {
     if (door.parseError) continue;
     // A checker reaches the code it reads, so the reach is walked from every
@@ -177,6 +181,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   for (const script of scripts) if (script.fn && !entryFunctions.has(script.path)) entryFunctions.set(script.path, script.fn);
   attachSequences({ files: graph.files, facts, doors, entryPoints, entryFunctions });
   attachExports(graph.files, facts);
+  const unseen = unseenParts(trackedSet, doors);
 
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },
@@ -189,6 +194,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     importConfidence: resolution.importConfidence,
     doors,
     landings,
+    ...(unseen.length > 0 ? { unseen } : {}),
   };
 }
 
@@ -390,27 +396,39 @@ function describeFile(repoPath, path, places, facts, spawned) {
   const built = extracted.spawned.built > 0 ? { dynamicSpawns: extracted.spawned.built } : {};
   const programs = extracted.spawned.programs?.length > 0 && !isTestFile(path) ? { programs: extracted.spawned.programs } : {};
   const empty = extracted.noStatements ? { noStatements: true } : {};
+  const holds = extracted.holds === 'reexports' ? { reexportsOnly: true } : extracted.holds === 'constant' ? { constantOnly: true } : {};
+  // Read once the parts are known, then dropped (core/http.js httpEdges).
+  const http = extracted.http ? { http: extracted.http } : {};
   const api = extracted.githubChanges > 0 && !isTestFile(path) ? { githubChanges: extracted.githubChanges } : {};
   // Read once imports resolve, then dropped (core/spawned.js settleSpawnHelpers).
   const helpers = Object.keys(extracted.spawned.helpers ?? {}).length > 0 ? { spawnHelpers: extracted.spawned.helpers } : {};
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty };
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
 // order of the calls it makes and the commands it hands a child process.
 function parseFile(language, path, source, places) {
   let tree;
+  let typeSites = [];
   try {
     parser.setLanguage(languages[language]);
     tree = parser.parse(source);
+    if (tree != null && tree.rootNode.hasError && language !== 'python') {
+      const repaired = repairSource(source, (text) => parser.parse(text));
+      if (repaired) {
+        tree.delete();
+        tree = repaired.tree;
+        typeSites = repaired.sites;
+      }
+    }
   } catch {
     return { parseError: true, imports: [] };
   }
   if (tree == null) return { parseError: true, imports: [] };
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [], unreadSyntax: unreadSyntax(tree.rootNode, source) };
-    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : collectScript(tree.rootNode);
+    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode), ...typeSites];
     return {
       imports,
       landings: astLandings(language, tree.rootNode, path, places),
@@ -418,10 +436,95 @@ function parseFile(language, path, source, places) {
       spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
       githubChanges: language === 'python' ? 0 : githubChanges(tree.rootNode),
       noStatements: statementless(tree.rootNode),
+      holds: language === 'python' ? null : onlyHolds(tree.rootNode),
+      http: language === 'python' ? null : httpFacts(tree.rootNode),
     };
   } finally {
     tree.delete();
   }
+}
+
+// typeof import(…) in a type, and import(…).T[], which the vendored grammar
+// rejects in a type argument and before [] (found on
+// xrpl-creator-capsule's mocks and forkctl's Dirent[]). The import(...) is
+// rewritten to an identifier of the same length, which a type reads as a
+// name, and its specifier kept as the import site a file that parses
+// records for it.
+// Spaces within a line only: an identifier holds no line break, so a
+// construct spread over lines is left as it is.
+const TYPEOF_IMPORT = /(\btypeof[ \t]+)(import[ \t]*\([ \t]*(['"`])([^'"`\n]*)\3[ \t]*\))/g;
+const IMPORT_ARRAY = /\bimport[ \t]*\([ \t]*(['"`])([^'"`\n]*)\1[ \t]*\)(?=(?:[ \t]*\.[ \t]*[A-Za-z_$][\w$]*)+[ \t]*\[[ \t]*\])/g;
+// A bare & in JSX text is rewritten one error at a time, this many at most.
+const REPAIR_ROUNDS = 16;
+
+/**
+ * A file the vendored grammar cannot read for a construct TypeScript
+ * accepts, read again with each such construct rewritten to a form the
+ * grammar reads, of the same length, so every byte offset, line and column
+ * the readings record is the original's: typeof import(…) as a type
+ * argument, import(…).T[], and a bare & in JSX text, which becomes a space.
+ * Returns the tree and the import sites the rewrite took out of the text,
+ * or null when the file still does not parse, and the original's error
+ * stands, named as before.
+ *
+ * @param {string} source
+ * @param {(text: string) => object} parse
+ * @returns {null | { tree: object, sites: Array<{ specifier: string, kind: string, line: number }> }}
+ */
+function repairSource(source, parse) {
+  const sites = [];
+  const lineAt = (offset) => source.slice(0, offset).split('\n').length;
+  let text = source.replace(TYPEOF_IMPORT, (match, lead, call, quote, specifier, offset) => {
+    sites.push({ specifier, kind: 'dynamic-literal', line: lineAt(offset) });
+    return `${lead}${'_'.repeat(call.length)}`;
+  });
+  text = text.replace(IMPORT_ARRAY, (call, quote, specifier, offset) => {
+    sites.push({ specifier, kind: 'dynamic-literal', line: lineAt(offset) });
+    return '_'.repeat(call.length);
+  });
+  let tree = parse(text);
+  for (let round = 0; round < REPAIR_ROUNDS && tree != null && tree.rootNode.hasError; round += 1) {
+    const at = jsxAmpersands(text, tree.rootNode);
+    if (at.length === 0) break;
+    for (const index of at) text = `${text.slice(0, index)} ${text.slice(index + 1)}`;
+    tree.delete();
+    tree = parse(text);
+  }
+  if (tree == null) return null;
+  if (tree.rootNode.hasError) {
+    tree.delete();
+    return null;
+  }
+  return { tree, sites };
+}
+
+// The offsets of each bare & in JSX text on a line where the parse stops:
+// one that starts the error, or one between a tag's > and the next <. A &&
+// and a character reference are left alone.
+function jsxAmpersands(text, root) {
+  const lines = text.split('\n');
+  const starts = [];
+  for (let i = 0, at = 0; i < lines.length; i += 1) {
+    starts.push(at);
+    at += lines[i].length + 1;
+  }
+  const out = new Set();
+  const stack = [root];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (node.type === 'ERROR' && !node.isMissing) {
+      const row = node.startPosition.row;
+      const line = lines[row] ?? '';
+      for (let column = line.indexOf('&'); column !== -1; column = line.indexOf('&', column + 1)) {
+        if (line[column + 1] === '&' || line[column - 1] === '&' || ENTITY.test(line.slice(column))) continue;
+        const between = /^[^<>{}]*$/.test(line.slice(line.lastIndexOf('>', column) + 1, column)) && line.lastIndexOf('>', column) !== -1;
+        if (column === node.startPosition.column || between || /^\s*[^<>{}=();]*$/.test(line.slice(0, column))) out.add(starts[row] + column);
+      }
+      continue;
+    }
+    for (const child of node.children) stack.push(child);
+  }
+  return [...out].sort((a, b) => a - b);
 }
 
 // A module with nothing but comments, or a Python docstring, runs nothing.
@@ -429,6 +532,27 @@ function statementless(root) {
   const statements = root.namedChildren.filter((child) => child.type !== 'comment');
   if (statements.length === 0) return true;
   return statements.length === 1 && statements[0].type === 'expression_statement' && statements[0].namedChildren[0]?.type === 'string';
+}
+
+/**
+ * A module that does no work of its own: a barrel whose every statement hands
+ * on what another file exports ('reexports'), or one that holds a single
+ * constant ('constant'), such as a version string. A reader following the
+ * work passes over both, to what the barrel hands on.
+ */
+function onlyHolds(root) {
+  const statements = root.namedChildren.filter((child) => child.type !== 'comment');
+  if (statements.length === 0) return null;
+  if (statements.every((statement) => statement.type === 'export_statement' && statement.childForFieldName('source') != null)) return 'reexports';
+  if (statements.length !== 1) return null;
+  const declaration = statements[0].type === 'export_statement' ? statements[0].childForFieldName('declaration') : statements[0];
+  if (declaration?.type !== 'lexical_declaration' && declaration?.type !== 'variable_declaration') return null;
+  const declarators = declaration.namedChildren.filter((child) => child.type === 'variable_declarator');
+  if (declarators.length !== 1) return null;
+  const value = declarators[0].childForFieldName('value');
+  const literal = ['string', 'number', 'true', 'false', 'null'].includes(value?.type)
+    || (value?.type === 'template_string' && !value.namedChildren.some((child) => child.type === 'template_substitution'));
+  return literal ? 'constant' : null;
 }
 
 function walkNamed(root, visit) {

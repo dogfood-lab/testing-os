@@ -192,15 +192,18 @@ function checksOnly(door) {
   return (door.runs ?? []).length > 0 && (door.runs ?? []).every((run) => run.runKind === 'checks');
 }
 
-// Between two doors that reach as far, one that runs code comes before one
-// that only checks it, and the one a pull request goes through first: it is
-// the path a change takes into the repository.
+// Between two doors that reach as far, the one a pull request goes through
+// comes first, whatever it runs: it is the path a change takes into the
+// repository. Then one that runs code comes before one that only checks it,
+// one a change starts before one only the clock does, and a workflow before
+// a command or package people install.
 function byReach(doors) {
   return [...doors].sort((a, b) => (
     reachSize(b) - reachSize(a)
-    || Number(checksOnly(a)) - Number(checksOnly(b))
     || Number(!pullRequested(a)) - Number(!pullRequested(b))
+    || Number(checksOnly(a)) - Number(checksOnly(b))
     || Number(scheduleOnly(a)) - Number(scheduleOnly(b))
+    || Number(installed(a)) - Number(installed(b))
     || cmp(a.name, b.name)
     || cmp(a.file, b.file)
   ));
@@ -351,20 +354,20 @@ function gatedRuns(door) {
 }
 
 // "runs X; checks Y" for the paths of one gated group, or null.
-function heldClause(door, group, verb, joiner = '; ') {
+function heldClause(ctx, door, group, verb, joiner = '; ') {
   const clauses = [];
   const ran = shownRuns(door, 'executes', group.paths);
   const checked = shownRuns(door, 'checks', group.paths);
-  if (ran.length > 0) clauses.push(`${verb} ${runsShown(ran)}`);
-  if (checked.length > 0) clauses.push(`checks ${runsShown(checked)}`);
+  if (ran.length > 0) clauses.push(`${verb} ${filesShown(ctx, ran)}`);
+  if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked)}`);
   return clauses.length > 0 ? clauses.join(joiner) : null;
 }
 
 // The sentence that says what a door does on one trigger only: "On a pull
 // request, it also runs scripts/comment.mjs."
-function heldSentences(door, verb, alsoRuns) {
+function heldSentences(ctx, door, verb, alsoRuns) {
   return gatedRuns(door).map((group) => {
-    const clause = heldClause(door, group, verb);
+    const clause = heldClause(ctx, door, group, verb);
     return clause ? `${capitalize(gateLead(group.when))}, it ${alsoRuns ? 'also ' : ''}${clause}.` : null;
   }).filter(Boolean);
 }
@@ -469,7 +472,7 @@ export function triggerPhrases(door) {
 
 // What the page calls one pass through the main door, for "follow one ... end to end".
 function triggerNoun(door) {
-  if (installed(door)) return door.kind === 'package' ? `import of ${door.name}` : `run of ${door.name}`;
+  if (installed(door)) return door.kind !== 'package' ? `run of ${door.name}` : door.extension ? `activation of ${door.name}` : `import of ${door.name}`;
   const first = (door.triggers ?? []).find((trigger) => trigger.event !== 'workflow_dispatch') ?? door.triggers?.[0];
   if (!first) return 'run';
   if (first.event === 'repository_dispatch' && first.types?.length > 0) return first.types[0].replace(/[_-]+/g, ' ');
@@ -697,6 +700,29 @@ function runTotal(door, kind = null) {
   return shownRuns(door, kind).length + Math.max(0, counted - held - recorded);
 }
 
+/**
+ * Up to three paths by name, and how many files the rest stand for: a
+ * directory run counts every code file under it, so "and 37 more" adds up
+ * with "50 files in tests". `unrecorded` is how many runs the artifact
+ * counted past the ones it recorded, each one more.
+ */
+function filesShown(ctx, paths, unrecorded = 0) {
+  const more = moreFiles(ctx, paths, unrecorded);
+  if (more === 0) return list(paths);
+  return `${paths.slice(0, RUNS_SHOWN).join(', ')} and ${more} more`;
+}
+
+// The files past the first three paths, and the unrecorded runs.
+function moreFiles(ctx, paths, unrecorded = 0) {
+  const files = (path) => (path.endsWith('/') ? Math.max(1, [...ctx.fileOf.keys()].filter((file) => file.startsWith(path) && isCodePath(file)).length) : 1);
+  return paths.slice(RUNS_SHOWN).reduce((sum, path) => sum + files(path), 0) + Math.max(0, unrecorded);
+}
+
+// The runs of a kind the artifact counted but did not record.
+function unrecordedRuns(door, kind) {
+  return Math.max(0, runTotal(door, kind) - shownRuns(door, kind).length);
+}
+
 // What an installed door runs when its manifest points at a build's output
 // that no tracked config traces to a source: the path, said as that.
 export function unplacedClause(verb, path) {
@@ -704,13 +730,13 @@ export function unplacedClause(verb, path) {
 }
 
 // "runs X; checks Y", or null when the door names no file at all.
-function runsAndChecks(door, verb) {
+function runsAndChecks(ctx, door, verb) {
   if (door.unplaced) return unplacedClause(verb, door.unplaced);
   const clauses = [];
   const ran = shownRuns(door, 'executes');
   const checked = shownRuns(door, 'checks');
-  if (ran.length > 0) clauses.push(`${verb} ${runsShown(ran, runTotal(door, 'executes'))}`);
-  if (checked.length > 0) clauses.push(`checks ${runsShown(checked, runTotal(door, 'checks'))}`);
+  if (ran.length > 0) clauses.push(`${verb} ${filesShown(ctx, ran, unrecordedRuns(door, 'executes'))}`);
+  if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked, unrecordedRuns(door, 'checks'))}`);
   return clauses.length > 0 ? clauses.join('; ') : null;
 }
 
@@ -718,8 +744,8 @@ function comesIn(ctx) {
   const lines = ['## What comes in'];
   const items = ctx.doors.map((door, index) => {
     if (door.parseError) return `${index + 1}. **${door.name}.** This workflow could not be read.`;
-    const named = runsAndChecks(door, startVerb(door));
-    const held = heldSentences(door, startVerb(door), named != null);
+    const named = runsAndChecks(ctx, door, startVerb(door));
+    const held = heldSentences(ctx, door, startVerb(door), named != null);
     const runs = [...(named || held.length === 0 ? [capitalize(named ? `${named}.` : `${startVerb(door)} no file this map can see.`)] : []), ...held].join(' ');
     if (installed(door)) return `${index + 1}. **${door.name}** (${installedAs(door)}). ${runs}`;
     const when = capitalize(triggerPhrases(door).join('; ')) || 'Nothing this map can read starts it';
@@ -827,7 +853,7 @@ function doorSteps(ctx, door) {
   const clauses = [];
   if (ran.length > 0) clauses.push(`${subject} ${runGroups(ctx, door, ran)}`);
   if (checked.length > 0) clauses.push(`${ran.length > 0 ? 'it' : 'The workflow'} checks ${runGroups(ctx, door, checked)}`);
-  const held = heldSentences(door, 'runs', clauses.length > 0);
+  const held = heldSentences(ctx, door, 'runs', clauses.length > 0);
   if (clauses.length > 0 || held.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   steps.push(...held);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
@@ -1048,23 +1074,32 @@ function worded(items, name) {
 // test is a reader from tests.
 function readerFiles(entries) {
   const byPath = new Map();
+  const config = new Map();
   const tests = new Set();
   for (const entry of entries) {
     const text = entry.confidence === 'text';
+    const configures = entry.confidence === 'config';
     byPath.set(entry.by, byPath.has(entry.by) ? byPath.get(entry.by) && text : text);
+    config.set(entry.by, config.has(entry.by) ? config.get(entry.by) && configures : configures);
     if (entry.fromTests) tests.add(entry.by);
   }
-  return [...byPath.entries()].sort((a, b) => cmp(a[0], b[0])).map(([path, text]) => ({ path, text, ...(tests.has(path) ? { fromTests: true } : {}) }));
+  return [...byPath.entries()].sort((a, b) => cmp(a[0], b[0])).map(([path, text]) => ({
+    path,
+    text,
+    ...(config.get(path) ? { config: true } : {}),
+    ...(tests.has(path) ? { fromTests: true } : {}),
+  }));
 }
 
 /**
- * A reader as the page names it: "(found by text)" when every read is, and
+ * A reader as the page names it: "(found by text)" when every read is,
+ * "(from configuration)" for a configuration that names the place, and
  * "(from tests)" for a test.
  *
- * @param {{ path: string, text: boolean, fromTests?: boolean }} reader
+ * @param {{ path: string, text: boolean, config?: boolean, fromTests?: boolean }} reader
  */
 export function readerItem(reader) {
-  const mark = reader.text ? ' (found by text)' : reader.fromTests ? ' (from tests)' : '';
+  const mark = reader.text ? ' (found by text)' : reader.config ? ' (from configuration)' : reader.fromTests ? ' (from tests)' : '';
   return { path: reader.path, text: `${reader.path}${mark}`, ...(reader.fromTests ? { fromTests: true } : {}) };
 }
 
@@ -1227,11 +1262,11 @@ function otherDoors(ctx, main) {
     const groups = gatedRuns(door);
     if (door.unplaced) clauses.push(unplacedClause(verb, door.unplaced));
     else if (ran.length > 0 || (checked.length === 0 && groups.length === 0)) {
-      clauses.push(ran.length > 0 ? `${verb} ${runsShown(ran, runTotal(door, 'executes'))}` : `${verb} no file this map can see`);
+      clauses.push(ran.length > 0 ? `${verb} ${filesShown(ctx, ran, unrecordedRuns(door, 'executes'))}` : `${verb} no file this map can see`);
     }
-    if (checked.length > 0) clauses.push(`checks ${runsShown(checked, runTotal(door, 'checks'))}`);
+    if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked, unrecordedRuns(door, 'checks'))}`);
     for (const group of groups) {
-      const clause = heldClause(door, group, verb, ' and ');
+      const clause = heldClause(ctx, door, group, verb, ' and ');
       if (clause) clauses.push(`${clause} ${gatePhrase(group.when)}`);
     }
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => entry.boundary)))].sort(cmp);
@@ -1256,6 +1291,17 @@ function importers(ctx, { tests = false } = {}) {
   for (const edge of ctx.structure.edges ?? []) {
     if (edge.kind !== 'file' && edge.kind !== 'chunk') continue;
     if (edge.from === edge.to || Boolean(edge.fromTests) !== tests) continue;
+    if (!from.has(edge.to)) from.set(edge.to, new Set());
+    from.get(edge.to).add(edge.from);
+  }
+  return from;
+}
+
+// The parts whose code calls each part over HTTP.
+function callers(ctx) {
+  const from = new Map();
+  for (const edge of ctx.structure.edges ?? []) {
+    if (edge.kind !== 'http' || edge.from === edge.to) continue;
     if (!from.has(edge.to)) from.set(edge.to, new Set());
     from.get(edge.to).add(edge.from);
   }
@@ -1328,7 +1374,13 @@ function writtenPlaces(ctx) {
     // Every writer reading the file first is a script stamping a block of a
     // file people write, not a generator of the file.
     const stamped = inside.length > 0 && inside.every((landing) => landing.writers.length > 0 && landing.writers.every((entry) => entry.stamps));
-    return { target, writers, readers, guards: guardsOf(inside), ...(stamped ? { stamped: true } : {}) };
+    // A writer that only bootstraps the file, once when it is absent, reads
+    // the committed file every other time: its reads are a use of it.
+    const once = [...new Set(inside.flatMap((landing) => landing.writers.filter((entry) => (entry.unless ?? []).includes('exists')).map((entry) => entry.by)))];
+    // A writer every write of which here is under the directory it is run
+    // in writes the place when run from the repository root.
+    const fromRoot = writers.filter((by) => inside.every((landing) => landing.writers.every((entry) => entry.by !== by || entry.fromCwd)));
+    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}) };
   });
 }
 
@@ -1353,11 +1405,12 @@ function guardsOf(landings) {
  * @returns {string}
  */
 export function guardClause(guards) {
-  const flags = (guards ?? []).filter((guard) => guard !== 'ci');
+  const flags = (guards ?? []).filter((guard) => guard !== 'ci' && guard !== 'exists');
   const parts = [];
   if ((guards ?? []).includes('ci')) parts.push('outside CI');
   if (flags.length > 0) parts.push(`without ${list(flags).replace(/ and /g, ' or ')}`);
-  return parts.length > 0 ? ` when run ${parts.join(' and ')}` : '';
+  const run = parts.length > 0 ? ` when run ${parts.join(' and ')}` : '';
+  return (guards ?? []).includes('exists') ? `${run} when absent` : run;
 }
 
 // A test that writes a tracked place is said to be one: the place changes
@@ -1380,6 +1433,7 @@ function breaks(ctx) {
   const from = importers(ctx);
   const fromTests = testImporters(ctx);
   const spawnedBy = spawners(ctx);
+  const calledBy = callers(ctx);
   const on = doorsThrough(ctx);
   // A stamped file is written by people; a hand edit is how it changes.
   // A test reading a place is how it is checked, not what it breaks.
@@ -1404,10 +1458,12 @@ function breaks(ctx) {
       importedBy: [...(from.get(boundary.name) ?? [])].sort(cmp),
       importedByTests: [...(fromTests.get(boundary.name) ?? [])].sort(cmp),
       ...(spawnedBy.has(boundary.name) ? { spawnedBy: [...spawnedBy.get(boundary.name)].sort(cmp) } : {}),
+      ...(calledBy.has(boundary.name) ? { calledBy: [...calledBy.get(boundary.name)].sort(cmp) } : {}),
       doors: on.get(boundary.name) ?? 0,
     }))
-    .filter((part) => part.importedBy.length > 0 || part.importedByTests.length > 0 || (part.spawnedBy?.length ?? 0) > 0 || part.doors >= 2)
-    .sort((a, b) => b.importedBy.length - a.importedBy.length || (b.spawnedBy?.length ?? 0) - (a.spawnedBy?.length ?? 0) || b.doors - a.doors
+    .filter((part) => part.importedBy.length > 0 || part.importedByTests.length > 0 || (part.spawnedBy?.length ?? 0) > 0 || (part.calledBy?.length ?? 0) > 0 || part.doors >= 2)
+    .sort((a, b) => b.importedBy.length - a.importedBy.length || (b.spawnedBy?.length ?? 0) - (a.spawnedBy?.length ?? 0)
+      || (b.calledBy?.length ?? 0) - (a.calledBy?.length ?? 0) || b.doors - a.doors
       || b.importedByTests.length - a.importedByTests.length || cmp(a.name, b.name))
     .slice(0, BREAK_LINES - places.length);
   return [...parts, ...places];
@@ -1440,14 +1496,17 @@ function breakLine(ctx, entry) {
   }
   const fromTests = entry.importedByTests ?? [];
   const path = entry.doors === 0 ? 'no door' : count(entry.doors, 'door');
-  // A part another part runs as a child process breaks it as an import does.
+  // A part another part runs as a child process, or calls over HTTP, breaks
+  // it as an import does.
   const spawned = entry.spawnedBy ?? [];
-  if (spawned.length > 0) {
+  const called = entry.calledBy ?? [];
+  if (spawned.length > 0 || called.length > 0) {
     const clauses = [];
     if (entry.importedBy.length > 0) clauses.push(`is imported by ${count(entry.importedBy.length, 'part')} (${entry.importedBy.map(ctx.shown).join(', ')})`);
     const tests = testsClause(entry.importedBy.length, fromTests.length);
     if (tests) clauses.push(tests);
-    clauses.push(`is run as a child process by ${count(spawned.length, 'part')} (${spawned.map(ctx.shown).join(', ')})`);
+    if (spawned.length > 0) clauses.push(`is run as a child process by ${count(spawned.length, 'part')} (${spawned.map(ctx.shown).join(', ')})`);
+    if (called.length > 0) clauses.push(`is called over HTTP by ${count(called.length, 'part')} (${called.map(ctx.shown).join(', ')})`);
     const joined = clauses.length > 1 ? `${clauses.join(', ')},` : clauses[0];
     return `- **${ctx.shown(entry.name)}** ${joined} and sits on the path of ${path}.`;
   }
@@ -1490,7 +1549,13 @@ function importsBetween(ctx) {
   return (from, to) => edges.has(`${from}\0${to}`);
 }
 
-function relationOf(imports, partA, partB) {
+// Whether one part calls another over HTTP (core/http.js).
+function callsBetween(ctx) {
+  const edges = new Set((ctx.structure.edges ?? []).filter((edge) => edge.kind === 'http' && edge.from !== edge.to).map((edge) => `${edge.from}\0${edge.to}`));
+  return (from, to) => edges.has(`${from}\0${to}`);
+}
+
+function relationOf(imports, partA, partB, calls = () => false) {
   if (partA == null || partB == null) return 'unassigned';
   if (partA === partB) return 'inside';
   const ab = imports(partA, partB);
@@ -1498,6 +1563,10 @@ function relationOf(imports, partA, partB) {
   if (ab && ba) return 'both';
   if (ab) return 'a-imports-b';
   if (ba) return 'b-imports-a';
+  // Two parts no import joins may still be one change: a UI and the server
+  // it calls.
+  if (calls(partA, partB)) return 'a-calls-b';
+  if (calls(partB, partA)) return 'b-calls-a';
   return 'none';
 }
 
@@ -1507,6 +1576,7 @@ function relationOf(imports, partA, partB) {
 // nothing, so those pairs are counted and kept out of the ranking.
 function together(ctx) {
   const imports = importsBetween(ctx);
+  const calls = callsBetween(ctx);
   const source = (ctx.statistics.pairs ?? []).filter((pair) => isSourcePath(pair.a) && isSourcePath(pair.b));
   const pairs = source
     .filter((pair) => !ownTestPair(pair.a, pair.b))
@@ -1515,7 +1585,7 @@ function together(ctx) {
     .map((pair) => {
       const parts = [ctx.boundaryOf.get(pair.a) ?? null, ctx.boundaryOf.get(pair.b) ?? null];
       const partLabels = parts.map((part) => label(ctx, part));
-      return { a: pair.a, b: pair.b, either: pair.either, partLabels, parts, relation: relationOf(imports, parts[0], parts[1]), shared: pair.shared };
+      return { a: pair.a, b: pair.b, either: pair.either, partLabels, parts, relation: relationOf(imports, parts[0], parts[1], calls), shared: pair.shared };
     });
   return { pairs, withTests: source.filter((pair) => ownTestPair(pair.a, pair.b)).length };
 }
@@ -1534,6 +1604,8 @@ function relationClause(pair) {
     case 'a-imports-b': return `, and ${a} imports ${b}.`;
     case 'b-imports-a': return `, and ${b} imports ${a}.`;
     case 'both': return `, and ${a} and ${b} import each other.`;
+    case 'a-calls-b': return `, and ${a} calls ${b} over HTTP.`;
+    case 'b-calls-a': return `, and ${b} calls ${a} over HTTP.`;
     case 'none': return ', though neither part imports the other.';
     default: return '.';
   }
@@ -1600,16 +1672,31 @@ function untested(ctx) {
   const parts = ctx.boundaries.filter((boundary) => boundary.role === 'code'
     && (boundary.files ?? []).some((file) => isSourcePath(file.path) && !isTestMaterial(file.path)));
   const testedBy = Object.fromEntries(parts.map((boundary) => [boundary.name, boundary.testedBy ?? 0]));
-  if (testFiles === 0) return { items: [], note: ['No test files were found by name.'], testedBy, testFiles };
+  if (testFiles === 0) return { items: [], note: ['No test files were found by name.'], testedBy, testFiles, spawned: [] };
   const all = parts.filter((boundary) => (boundary.testedBy ?? 0) === 0)
     .map((boundary) => ({ part: boundary.name, partLabel: ctx.shown(boundary.name), testedBy: 0 }));
-  return { items: all.slice(0, UNTESTED_SHOWN), note: more(all.length, UNTESTED_SHOWN, 'part'), testedBy, testFiles };
+  // A part a test runs as a child process and none imports is touched, but
+  // only by running it, so the page says how.
+  const spawned = parts.filter((boundary) => boundary.testedThroughSpawn && (boundary.testedBy ?? 0) > 0).map((boundary) => boundary.name);
+  const through = spawned.map((name) => spawnedLine(ctx.shown(name)));
+  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned };
+}
+
+/**
+ * What the page says of a part tests touch only by running its files.
+ *
+ * @param {string} partLabel
+ * @returns {string}
+ */
+export function spawnedLine(partLabel) {
+  return `${partLabel} is touched by tests only through a spawn: a test runs its files as a child process.`;
 }
 
 function untestedSection(found) {
+  const every = found.spawned.length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.';
   const body = found.items.length > 0
     ? found.items.map((item) => `- **${item.partLabel}** is imported by no test.`).join('\n')
-    : (found.testFiles === 0 ? null : 'Every code part is imported by at least one test.');
+    : (found.testFiles === 0 ? null : every);
   return ['## What no test touches', ...(body ? [body] : []), ...found.note].join('\n\n');
 }
 
@@ -1618,7 +1705,7 @@ function untestedSection(found) {
 function unread(ctx) {
   const written = writtenPlaces(ctx);
   const all = written
-    .filter((place) => !place.stamped && place.readers.every((reader) => place.writers.includes(reader.path)))
+    .filter((place) => !place.stamped && place.readers.every((reader) => place.writers.includes(reader.path) && !place.once.includes(reader.path)))
     .map((place) => ({
       place: ctx.place(place.target),
       writers: writerItems(ctx, place.writers, place.guards),
@@ -1742,12 +1829,16 @@ function generated(ctx) {
       for (const [by, list] of place.guards) guards.set(by, guards.has(by) ? guards.get(by).filter((guard) => list.includes(guard)) : list);
     }
     claimed.push(inside);
-    items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers, guards });
+    const once = writers.length > 0 && writers.every((by) => (guards.get(by) ?? []).includes('exists'));
+    const fromRoot = writers.length > 0 && writers.every((by) => held.every((place) => !place.writers.includes(by) || place.fromRoot.includes(by)));
+    items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers, guards, ...(once ? { once: true } : {}), ...(fromRoot ? { fromRoot: true } : {}) });
   }
   for (const place of written) {
     if (claimed.some((inside) => inside(place.target))) continue;
     const target = ctx.place(place.target);
-    items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}) });
+    const once = place.writers.length > 0 && place.writers.every((by) => (place.guards.get(by) ?? []).includes('exists'));
+    const fromRoot = place.writers.length > 0 && place.writers.every((by) => place.fromRoot.includes(by));
+    items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}), ...(once ? { once: true } : {}), ...(fromRoot ? { fromRoot: true } : {}) });
   }
   for (const boundary of ctx.boundaries.filter((item) => item.origin !== 'generated')) {
     const bot = botAdded(ctx, boundary.name);
@@ -1764,6 +1855,9 @@ function generatedSection(ctx, items) {
       if (item.addedBy) return `- **${item.shown}** is written by ${item.addedBy}, which added every file in it.`;
       if (item.writers.length === 0) return `- **${item.shown}** is written by code this map cannot name.`;
       const by = list(worded(item.writers, ctx.shown));
+      if (item.once) return `- **${item.shown}** is written once by ${by}.`;
+      // Output of a run from the root that the repository checks in.
+      if (item.fromRoot) return `- **${item.shown}** is written by ${by} when run from the repository root, and committed.`;
       return item.block ? `- **${item.shown}** has a block written by ${by}.` : `- **${item.shown}** is written by ${by}.`;
     }).join('\n')
     : absence('generated', unreadCount(ctx));
@@ -1961,26 +2055,36 @@ function startHere(ctx, main) {
   // a test is passed over for the production file it imports. Every arrow is
   // an edge the map recorded: a run, an import, the door's reach into a
   // part. A package is read from what an import of its name loads.
+  // A barrel is passed through to the file it hands on, and a file holding
+  // one constant is never where a reader starts.
   const firstOf = (path) => {
     const file = path.endsWith('/') ? fileInRun(ctx, main, path) : path;
     if (file == null) return null;
-    if (!isTestFile(file)) return readable(file) ? file : null;
-    return (ctx.fileOf.get(file)?.importsFiles ?? []).find((target) => ctx.fileOf.has(target) && readable(target) && !isTestFile(target)) ?? null;
+    if (!isTestFile(file)) return readable(file) ? working(ctx, file, null) : null;
+    for (const target of ctx.fileOf.get(file)?.importsFiles ?? []) {
+      if (!ctx.fileOf.has(target) || !readable(target) || isTestFile(target)) continue;
+      const found = working(ctx, target, null);
+      if (found != null) return found;
+    }
+    return null;
   };
   const imported = new Set(filesOfRuns(ctx, ran).flatMap((path) => ctx.fileOf.get(path)?.importsFiles ?? []));
-  // Only the parts the files it runs reach by import: a part a linter only
-  // reads is read, not followed.
-  const executedParts = partsReached(ctx, filesOfRuns(ctx, ran));
+  // Only the parts the production files it runs reach by import: a part a
+  // linter only reads is read, not followed, and a part a test reaches is
+  // reached through the test (firstOf), never as the door's own entry.
+  const executedParts = partsReached(ctx, filesOfRuns(ctx, ran).filter((path) => !isTestFile(path)));
   const partEntries = (main.reach ?? [])
     .filter((entry) => executedParts.has(entry.boundary))
     .map((entry) => entryFile(ctx.boundaries.find((boundary) => boundary.name === entry.boundary)))
     .filter((path) => path != null && readable(path) && !isTestFile(path));
   const drives = (path) => !path.endsWith('/') && !isTestFile(path) && (ctx.fileOf.get(path)?.importsFiles ?? []).length > 0;
+  const helper = (path) => !path.endsWith('/') && !isTestFile(path) && (ctx.fileOf.get(path)?.importsFiles ?? []).length === 0;
   const candidates = [
     ...ran.filter((path) => entries.has(path) && !isTestFile(path)).sort(byWidth),
     ...spelled.filter(drives).sort(byWidth),
     ...[...new Set(partEntries)].sort((a, b) => Number(!imported.has(a)) - Number(!imported.has(b)) || byWidth(a, b)),
-    ...[...paths].sort(byWidth),
+    // A helper that imports nothing comes after a test's way into the code.
+    ...[...paths].sort((a, b) => Number(helper(a)) - Number(helper(b)) || byWidth(a, b)),
   ];
   let current = null;
   for (const path of candidates) {
@@ -2014,7 +2118,7 @@ function startHere(ctx, main) {
   const next = (path) => {
     const part = ctx.boundaryOf.get(path) ?? null;
     const options = (ctx.fileOf.get(path)?.importsFiles ?? [])
-      .filter((target) => ctx.fileOf.has(target) && readable(target) && !chain.includes(target) && !isTestFile(target));
+      .filter((target) => ctx.fileOf.has(target) && readable(target) && !chain.includes(target) && !isTestFile(target) && !ctx.fileOf.get(target)?.constantOnly);
     const writer = options.find((target) => ending(target));
     if (writer) return writer;
     const width = (target) => breadth.get(ctx.boundaryOf.get(target)) ?? 0;
@@ -2029,6 +2133,10 @@ function startHere(ctx, main) {
     }
     let following = next(current);
     if (following == null) break;
+    if (ctx.fileOf.get(following)?.reexportsOnly) {
+      following = working(ctx, following, current);
+      if (following == null || chain.includes(following)) break;
+    }
     add(following);
     if (isIndex(following)) {
       // A package index that only hands a name on is followed to the file the
@@ -2044,6 +2152,72 @@ function startHere(ctx, main) {
   return { chain, words: [...chain] };
 }
 
+// A barrel is followed through as many hops as a package's index usually
+// takes to reach the file that holds the code.
+const BARREL_HOPS = 4;
+
+/**
+ * The file a reader goes on to from a file the chain reaches: the file
+ * itself when it does work; for a barrel, whose every statement hands on what
+ * another file exports, the file it hands on that the call from `from`
+ * reaches, else the first one it hands on that does work; and nothing for a
+ * file that holds one constant, which is never where a reader starts or
+ * stops.
+ */
+function working(ctx, path, from, hops = 0) {
+  const file = ctx.fileOf.get(path);
+  if (file?.constantOnly) return null;
+  if (!file?.reexportsOnly) return path;
+  if (hops >= BARREL_HOPS) return null;
+  const handed = (file.importsFiles ?? []).filter((target) => ctx.fileOf.has(target) && !isTestFile(target));
+  const called = from == null ? null : firstCallInto(ctx, from, ctx.boundaryOf.get(path));
+  const ordered = called != null && handed.includes(called) ? [called, ...handed.filter((target) => target !== called)] : handed;
+  for (const target of ordered) {
+    const found = working(ctx, target, from, hops + 1);
+    if (found != null && found !== path) return found;
+  }
+  return null;
+}
+
+// A door that only checks code, or whose production runs all go nowhere (a
+// gate script that imports nothing beside a suite of tests), runs none of the
+// code as a person uses it: its one way into the code is a test's import, or
+// none at all. Null when it runs code of its own; otherwise what it runs,
+// which the page says.
+function testsOnly(ctx, door) {
+  if (!door || installed(door)) return null;
+  const executed = new Set(startRuns(door).filter((run) => run.runKind !== 'checks').map((run) => run.path));
+  const files = filesOfRuns(ctx, shownRuns(door, 'executes').filter((path) => executed.has(path))).filter(runsAsCode);
+  if (files.length === 0) return (door.runs ?? []).length > 0 ? { checks: true } : null;
+  if (!files.some(isTestFile)) return null;
+  const helpers = files.filter((path) => !isTestFile(path));
+  if (helpers.some((path) => (ctx.fileOf.get(path)?.importsFiles ?? []).length > 0)) return null;
+  return { helpers: helpers.length > 0 };
+}
+
+/**
+ * The installed doors "Where to start" may follow when the pull request's
+ * door runs only tests, in the order it tries them: each command the
+ * manifest installs, one whose file goes on into the code before a launcher
+ * that imports nothing here, the one named for the package first, then the
+ * widest; then the package's own entry.
+ */
+function installedStart(ctx) {
+  const pkg = ctx.doors.find((door) => door.kind === 'package' && !door.parseError) ?? null;
+  const own = pkg ? String(pkg.name).replace(/^@[^/]+\//, '') : null;
+  const launcher = (door) => !(door.runs ?? []).some((run) => (ctx.fileOf.get(run.path)?.importsFiles ?? []).length > 0);
+  const commands = ctx.doors.filter((door) => door.kind === 'command' && !door.parseError && (door.runs ?? []).length > 0)
+    .sort((a, b) => Number(launcher(a)) - Number(launcher(b)) || Number(a.name !== own) - Number(b.name !== own) || reachSize(b) - reachSize(a) || cmp(a.name, b.name));
+  return [...commands, ...(pkg && (pkg.runs ?? []).length > 0 ? [pkg] : [])];
+}
+
+// Why the path follows an installed door rather than the pull request's. The
+// door's name is not put first, since it may be spelled in lower case.
+function startReason(from, door, found) {
+  const runs = found.checks ? 'only checks code' : found.helpers ? 'runs only tests and scripts that import no code here' : 'runs only tests';
+  return `This path follows ${door.name} (${installedAs(door)}) from its entry, since ${from.name} ${runs}.`;
+}
+
 // What "Where to start" says of a door that runs no code the map can follow.
 function noPath(door) {
   const checks = shownRuns(door, 'checks').some((path) => path.endsWith('/') || isCodePath(path));
@@ -2051,13 +2225,14 @@ function noPath(door) {
   return `${why}, so there is no path of files to read in order.`;
 }
 
-function startSection(words, main, readable) {
+function startSection(words, main, readable, reason = null) {
   if (!main) {
     const why = readable ? 'No door runs a file this map can see' : 'No door was found';
     return ['## Where to start', `${why}, so there is no path through this repository to follow.`].join('\n\n');
   }
   if (words.length === 0) return ['## Where to start', noPath(main)].join('\n\n');
-  return ['## Where to start', words.join(' → '), `Read those in order to follow one ${triggerNoun(main)} end to end.`].join('\n\n');
+  const read = `Read those in order to follow one ${triggerNoun(main)} end to end.`;
+  return ['## Where to start', words.join(' → '), reason ? `${read} ${reason}` : read].join('\n\n');
 }
 
 /**
@@ -2203,6 +2378,8 @@ function limits(ctx, shownText) {
     const share = inTests === 0 ? '' : inTests === dynamicSpawns ? (dynamicSpawns === 1 ? ', and it is in tests' : ', all of them in tests') : `, ${inTests} of them in tests`;
     lines.push(`${count(dynamicSpawns, 'command')} ${dynamicSpawns === 1 ? 'is' : 'are'} built at run time and not followed${share}.`);
   }
+  lines.push(...shellLines(ctx));
+  lines.push(...httpLines(ctx), ...unseenLines(ctx));
   if (shownText) lines.push('Readers marked (found by text) come from scanning unparsed files.');
   for (const door of ctx.doors) {
     if (door.parseError) continue;
@@ -2217,6 +2394,75 @@ function limits(ctx, shownText) {
     lines.push(reason ? `Statistics confidence is low: ${reason}.` : 'Statistics confidence is low.');
   }
   return lines;
+}
+
+const PLATFORM_NAMES = { linux: 'Linux', macos: 'macOS', windows: 'Windows' };
+
+// A call over HTTP is drawn as an edge, but no door's reach crosses it, so
+// the page says each one.
+function httpLines(ctx) {
+  return (ctx.structure.edges ?? [])
+    .filter((edge) => edge.kind === 'http' && edge.from !== edge.to)
+    .map((edge) => `${ctx.shown(edge.from)} calls ${ctx.shown(edge.to)} over HTTP at ${count(edge.routes ?? 1, 'route')}, a link no import shows: the map draws it, and no door's reach follows it.`);
+}
+
+/**
+ * The apps the map reads none of and the deployments no workflow reaches
+ * (core/unseen.js), each said as what the page cannot show.
+ */
+function unseenLines(ctx) {
+  const lines = [];
+  for (const entry of ctx.structure.unseen ?? []) {
+    const where = entry.dir ? `under ${entry.dir}/` : 'at the repository root';
+    const what = entry.kind === 'tauri' ? 'a Tauri app' : 'a Rust crate';
+    // A workflow may build the Rust; the map still reads none of it.
+    if (entry.kind === 'tauri' || entry.kind === 'crate') {
+      lines.push(entry.built
+        ? `There is ${what} ${where} (${count(entry.rust, 'Rust file')}) that a workflow builds; the map reads no Rust, so what its Rust code does is not on this page.`
+        : `There is ${what} ${where} (${count(entry.rust, 'Rust file')}) that no workflow builds; the map reads no Rust, so what it does is not on this page.`);
+    } else if (entry.kind === 'deploy') {
+      const files = entry.files ?? [];
+      const dockerfiles = files.filter((path) => /(^|\/)(Dockerfile[^/]*|[^/]+\.Dockerfile)$/.test(path));
+      const others = files.filter((path) => !dockerfiles.includes(path));
+      const named = [
+        ...(dockerfiles.length === 1 ? [dockerfiles[0].includes('/') ? `a Dockerfile at ${dockerfiles[0]}` : 'a Dockerfile'] : dockerfiles.length > 1 ? [count(dockerfiles.length, 'Dockerfile')] : []),
+        ...others.map((path) => `a ${path}`),
+      ];
+      const them = files.length === 1 ? 'it' : 'them';
+      lines.push(`There is ${list(named)} that no workflow runs; what deploys from ${them} does so from outside this repository, and is not on this page.`);
+    }
+  }
+  return lines;
+}
+
+/**
+ * The files a door's shell leaves out of a glob its commands hand a tool:
+ * "3 test files under `src/` are not run by CI on Linux, where the shell
+ * expands `**` as one directory level." Doors that leave out the same files
+ * are named together. This is the repository's own gap, said as found; the
+ * map does not read the glob as the tool would have.
+ *
+ * @param {object} ctx
+ * @returns {string[]}
+ */
+function shellLines(ctx) {
+  const groups = new Map();
+  for (const door of ctx.doors) {
+    for (const entry of door.parseError ? [] : door.shellMissed ?? []) {
+      const key = JSON.stringify([entry.base, entry.files, entry.platform, Boolean(entry.tests), Boolean(entry.twoStars)]);
+      if (!groups.has(key)) groups.set(key, { entry, doors: [] });
+      groups.get(key).doors.push(door.name);
+    }
+  }
+  return [...groups.values()].map(({ entry, doors }) => shellLine(entry, doors));
+}
+
+function shellLine(entry, doors) {
+  const what = count(entry.files, entry.tests ? 'test file' : 'file');
+  const where = entry.base === '' ? 'at the repository root' : `under \`${entry.base}\``;
+  const verb = entry.files === 1 ? 'is' : 'are';
+  const why = entry.twoStars ? 'where the shell expands `**` as one directory level' : 'where the shell expands the glob before the tool sees it';
+  return `${what} ${where} ${verb} not run by ${list(doors)} on ${PLATFORM_NAMES[entry.platform] ?? entry.platform}, ${why}.`;
 }
 
 // One fact per bullet: GitHub joins bare consecutive lines into one paragraph.
@@ -2300,18 +2546,21 @@ function doorsSentence(ctx, main) {
     const but = wider.pushesForReview ? 'commits only to a branch for review' : wider.pushesTo?.length > 0 ? 'commits only to another branch' : 'commits nothing';
     return `Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach} and commits into the repository (${wider.name} reaches ${reachSize(wider)} but ${but}).`;
   }
-  // Workflows that reach as far as the one followed are named with it, and
-  // the reason it is the one followed is said.
-  const tied = reaching(ctx.doors).filter((door) => !installed(door) && reachSize(door) === reachSize(main));
+  // The doors that reach as far as the one followed, the commands and the
+  // package a manifest installs among them, are named with it, and the
+  // reason it is the one followed is said.
+  const tied = reaching(ctx.doors).filter((door) => reachSize(door) === reachSize(main));
   if (tied.length > 1 && tied.includes(main)) {
     const others = tied.filter((door) => door !== main);
     // The reason is the first way byReach (and mainDoor's preference for a
     // door that commits) tells the followed door from the rest.
-    const alike = others.filter((door) => checksOnly(door) === checksOnly(main));
+    const alike = others.filter((door) => pullRequested(door) === pullRequested(main));
+    const running = alike.filter((door) => checksOnly(door) === checksOnly(main) && scheduleOnly(door) === scheduleOnly(main));
     const why = commits(main) && !others.every(commits) ? 'it commits into the repository'
-      : alike.length === 0 ? 'it runs code, where the others only check it'
-        : pullRequested(main) && !alike.some(pullRequested) ? 'a pull request goes through it'
-          : 'it comes first by name';
+      : pullRequested(main) && alike.length === 0 ? 'a pull request goes through it'
+        : !checksOnly(main) && alike.every(checksOnly) ? 'it runs code, where the others only check it'
+          : !installed(main) && running.length > 0 && running.every(installed) ? 'it is a workflow, where the others are installed for people to use'
+            : 'it comes first by name';
     return `Work enters through ${doors}; ${list([main, ...others].map((door) => door.name))} each reach ${reach}, and ${main.name} is followed because ${why}.`;
   }
   return `Work enters through ${doors}; the busiest is ${main.name}, which reaches ${reach}.`;
@@ -2376,11 +2625,13 @@ function doorData(ctx, door) {
     reach: (door.reach ?? []).map((entry) => ({ boundary: entry.boundary, depth: entry.depth, files: entry.files })),
     checks: shownRuns(door, 'checks'),
     checksCount: runTotal(door, 'checks'),
+    checksMore: moreFiles(ctx, shownRuns(door, 'checks'), unrecordedRuns(door, 'checks')),
     ...(gatedRuns(door).length > 0
-      ? { held: gatedRuns(door).map((group) => ({ checks: shownRuns(door, 'checks', group.paths), lead: gateLead(group.when), runs: shownRuns(door, 'executes', group.paths), when: gatePhrase(group.when) })) }
+      ? { held: gatedRuns(door).map((group) => ({ checks: shownRuns(door, 'checks', group.paths), checksMore: moreFiles(ctx, shownRuns(door, 'checks', group.paths)), lead: gateLead(group.when), runs: shownRuns(door, 'executes', group.paths), runsMore: moreFiles(ctx, shownRuns(door, 'executes', group.paths)), when: gatePhrase(group.when) })) }
       : {}),
     runs: shownRuns(door, 'executes'),
     runsCount: runTotal(door, 'executes'),
+    runsMore: moreFiles(ctx, shownRuns(door, 'executes'), unrecordedRuns(door, 'executes')),
     sends: sendPhrases(door),
     stages: stagedShown(door.stages),
     triggers: triggerPhrases(door),
@@ -2419,7 +2670,23 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   // A pull request's door that runs no code the map can follow leaves the
   // path to the busiest door, as before a pull request's door was preferred.
   let starting = startDoor(ctx, main);
-  let start = starting ? startHere(ctx, starting) : { chain: [], words: [] };
+  let start = { chain: [], words: [] };
+  let reason = null;
+  // A pull request that runs only tests enters the code through what the
+  // tests import, which is no way a person uses it; the path follows the
+  // command or package the manifest installs instead, from its entry.
+  const tested = testsOnly(ctx, starting);
+  if (tested) {
+    for (const door of installedStart(ctx)) {
+      const found = startHere(ctx, door);
+      if (found.chain.length === 0) continue;
+      reason = startReason(starting, door, tested);
+      starting = door;
+      start = found;
+      break;
+    }
+  }
+  if (start.chain.length === 0 && starting) start = startHere(ctx, starting);
   if (start.chain.length === 0 && starting !== main && main) {
     const fallback = startHere(ctx, main);
     if (fallback.chain.length > 0) {
@@ -2455,7 +2722,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesSection(duplicated),
     generatedSection(ctx, generatedItems),
     authoredSection(ctx, authoredBoundaries, sharedPlaces),
-    startSection(start.words, starting, ctx.doors.some((door) => !door.parseError)),
+    startSection(start.words, starting, ctx.doors.some((door) => !door.parseError), reason),
     limitsSection(limitLines),
   );
   const markdown = `${sections.join('\n\n')}\n`;
@@ -2476,7 +2743,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesLead: duplicated.lead,
     duplicatesNote: duplicated.note,
     edges: breakEdges(ctx, breakEntries),
-    generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), place: item.place, writers: worded(item.writers, id) })),
+    generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), ...(item.fromRoot ? { fromRoot: true } : {}), ...(item.once ? { once: true } : {}), place: item.place, writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
     mainDoor: main ? doorKey(main) : null,
@@ -2487,9 +2754,11 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     sequences: found,
     startDoor: starting ? doorKey(starting) : null,
     startHere: start.chain,
+    ...(reason ? { startReason: reason } : {}),
     ...(starting && start.chain.length === 0 ? { startNote: noPath(starting) } : {}),
     summary,
     summaryFrom: summary ? 'person' : null,
+    ...(untestedParts.spawned.length > 0 ? { spawnTested: untestedParts.spawned } : {}),
     testedBy: untestedParts.testedBy,
     testFiles: untestedParts.testFiles,
     unreadFiles: unreadCount(ctx),

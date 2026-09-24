@@ -54,3 +54,17 @@ describe('where to start', () => {
     assert.ok(section(markdown, 'Where to start').includes('.github/workflows/ci.yml → src/cli.js\n'), markdown);
   });
 });
+
+describe('a tie the pull request only checks', () => {
+  it('names every tied door, installed ones too, and breaks the tie toward the pull request, the doors named in the order they rank', () => {
+    const root = makeRepo(resolve(import.meta.dirname, '../../../fixtures/atlas/start-tie'));
+    roots.push(root);
+    const structure = buildArtifact(mapRepository({ repoPath: root, boundaries: [{ name: 'src', globs: ['src/**'], role: 'code' }] }), '0'.repeat(40));
+    const { markdown, json } = buildPage({ structure, statistics: {}, document: {}, repoName: 'fixture/start-tie' });
+    const data = JSON.parse(json);
+    assert.match(markdown, /Work enters through 4 doors; CI, @s\/tie, tie and Publish each reach 1 part, and CI is followed because a pull request goes through it\./);
+    assert.equal(data.mainDoor, '.github/workflows/ci.yml');
+    assert.deepEqual(data.startHere, ['src/cli.js']);
+    assert.match(section(markdown, 'Where to start'), /Read those in order to follow one run of tie end to end\. This path follows tie \(a command people run\) from its entry, since CI only checks code\./);
+  });
+});

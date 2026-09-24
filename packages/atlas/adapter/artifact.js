@@ -112,9 +112,9 @@ function testReach(mapped) {
     byStem.get(stem).push(file.path);
   }
   const testedBy = new Map();
-  for (const test of tests) {
-    const direct = resolvedFiles(test);
-    direct.files.push(...(test.spawns ?? []));
+  const imported = new Set();
+  // The parts a test reaches from the given files, one hop past each.
+  const partsFrom = (test, direct) => {
     const parts = new Set(direct.boundaries);
     const reached = new Set(direct.files);
     for (const path of direct.files) {
@@ -127,10 +127,19 @@ function testReach(mapped) {
     for (const path of reached) {
       if (path !== test.path && !isTestFile(path) && boundaryOf.has(path)) parts.add(boundaryOf.get(path));
     }
-    for (const path of byStem.get(testedStem(test.path)) ?? []) if (isOwnTest(test.path, path)) parts.add(boundaryOf.get(path));
-    for (const part of parts) testedBy.set(part, (testedBy.get(part) ?? 0) + 1);
+    return parts;
+  };
+  for (const test of tests) {
+    const byImport = partsFrom(test, resolvedFiles(test));
+    for (const path of byStem.get(testedStem(test.path)) ?? []) if (isOwnTest(test.path, path)) byImport.add(boundaryOf.get(path));
+    const bySpawn = partsFrom(test, { files: [...(test.spawns ?? [])], boundaries: [] });
+    for (const part of byImport) imported.add(part);
+    for (const part of new Set([...byImport, ...bySpawn])) testedBy.set(part, (testedBy.get(part) ?? 0) + 1);
   }
-  return { testFiles: tests.length, testedBy };
+  // A part no test imports that a test runs as a child process is touched
+  // only through that spawn, which the page says.
+  const throughSpawn = new Set([...testedBy.keys()].filter((part) => !imported.has(part)));
+  return { testFiles: tests.length, testedBy, throughSpawn };
 }
 
 // A boundary file may leave a role out; the role is then derived from the
@@ -163,6 +172,7 @@ export function buildArtifact(mapped, commit) {
       origin: boundary.origin,
       role: boundary.role ?? roleFor(files.map((file) => file.path), { manifest: boundary.holdsManifest === true }),
       testedBy: tested.testedBy.get(boundary.name) ?? 0,
+      ...(tested.throughSpawn.has(boundary.name) ? { testedThroughSpawn: true } : {}),
       unresolvedSites: sites.unresolved,
     };
   });
@@ -176,7 +186,7 @@ export function buildArtifact(mapped, commit) {
     // One manifest can declare several commands, so a door sorts by its file
     // and then its name.
     doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => cmp(a.file, b.file) || cmp(a.name, b.name) || cmp(a.kind ?? '', b.kind ?? '')),
-    edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to, ...(edge.fromTests ? { fromTests: true } : {}) })),
+    edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to, ...(edge.fromTests ? { fromTests: true } : {}), ...(edge.routes ? { routes: edge.routes } : {}) })),
     generatedFrom: { commit, tracked },
     landings: carryLandings(mapped.landings ?? []),
     overlaps,
@@ -184,6 +194,7 @@ export function buildArtifact(mapped, commit) {
     symlinks: mapped.symlinks.filter((link) => !inAtlas(link.path)).map((link) => ({ path: link.path, target: link.target })).sort(byPath),
     testFiles: tested.testFiles,
     unassigned,
+    ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map((entry) => (entry.kind === 'deploy' ? { files: [...entry.files], kind: entry.kind } : { built: entry.built, dir: entry.dir, kind: entry.kind, rust: entry.rust })) } : {}),
   };
 }
 
@@ -199,6 +210,8 @@ function carryFile(file) {
   // with the construct the parser stopped on when it is one of the known ones.
   if (file.parseError) out.parseError = true;
   if (file.noStatements) out.noStatements = true;
+  if (file.reexportsOnly) out.reexportsOnly = true;
+  if (file.constantOnly) out.constantOnly = true;
   if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
   const imported = importTargets(file);
   if (imported.files.length > 0) out.importsFiles = imported.files;
@@ -275,6 +288,7 @@ function carryLandings(landings) {
 function carryWriter(entry) {
   const out = { by: entry.by };
   if (entry.confidence != null) out.confidence = entry.confidence;
+  if (entry.fromCwd) out.fromCwd = true;
   if (entry.stamps) out.stamps = true;
   if (entry.unless) out.unless = [...entry.unless];
   return out;
@@ -345,6 +359,7 @@ function carryDoor(door) {
       publishesTo: [...door.sends.publishesTo],
       releases: door.sends.releases,
     },
+    ...(door.shellMissed?.length > 0 ? { shellMissed: door.shellMissed.map((entry) => ({ ...entry })) } : {}),
     stages: [...door.stages],
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),

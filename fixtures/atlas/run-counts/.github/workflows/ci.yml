@@ -1,0 +1,8 @@
+name: CI
+on: [pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node --test tests/a.test.js tests/b.test.js tests/c.test.js tests/d.test.js "tests/deep/*.test.js"

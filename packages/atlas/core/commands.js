@@ -110,9 +110,11 @@ const VALUE_SETS = Object.fromEntries(Object.entries(VALUES).map(([tool, flags])
  *
  * builtFrom, when given, is the tracked source a path a build emits is
  * compiled from (core/resolve.js resolveDeclaredPath), or null: a command
- * that runs dist/cli.js runs the CLI src/cli.ts is built into.
+ * that runs dist/cli.js runs the CLI src/cli.ts is built into. emitted is
+ * every path the build emits, with its source (core/resolve.js
+ * emittedFiles), which a glob over the build's output is matched against.
  */
-export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null }) {
+export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null, emitted = () => new Map() }) {
   const dirs = new Set(['']);
   // The commands the repository installs, by the name a step types.
   const installed = new Map();
@@ -171,6 +173,18 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
       const isMatch = picomatch(pattern);
       return [...dirs].filter((dir) => dir !== '' && isMatch(dir)).sort();
     },
+    // The sources of the built files under base whose path relative to base
+    // matches a glob: what a glob over dist/ runs, since dist/ is not tracked.
+    builtMatching(base, globs) {
+      if (globs.length === 0) return [];
+      const isMatch = picomatch(globs.map(stripDot), { dot: false });
+      const out = [];
+      for (const [path, source] of emitted()) {
+        if (base !== '' && !path.startsWith(`${base}/`)) continue;
+        if (isMatch(base ? path.slice(base.length + 1) : path)) out.push(source);
+      }
+      return [...new Set(out)].sort();
+    },
     // Tracked files under base whose path relative to base matches a glob and
     // no ignore pattern. An ignore pattern also ignores what is under it.
     filesMatching(base, globs, ignore = []) {
@@ -184,6 +198,34 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
         if (isMatch(rel) && !(ignored && ignored(rel))) out.push(path);
       }
       return out;
+    },
+    /**
+     * What sh hands a program for an unquoted glob run from `dir`: the
+     * tracked files and directories whose path, segment by segment, matches
+     * the glob's, where ** is one segment as * is and a name starting with a
+     * dot is matched only by a segment that does. Relative to `dir`, sorted
+     * as sh sorts them; empty when nothing matches, and then sh hands the
+     * glob on as written. A glob holding a brace is left to the program,
+     * since sh on a runner (dash) expands none.
+     */
+    shellGlob(dir, pattern) {
+      if (pattern.includes('{') || pattern.startsWith('-')) return [];
+      const absolute = pattern.startsWith('/');
+      if (absolute) return [];
+      const segments = pattern.replace(/^\.\//, '').split('/').filter((segment, index, all) => segment !== '' || index === all.length - 1);
+      if (segments.length === 0) return [];
+      const tests = segments.map(shellSegment);
+      const out = [];
+      const consider = (rel) => {
+        const parts = rel.split('/');
+        if (parts.length === tests.length && parts.every((part, index) => tests[index](part))) out.push(rel);
+      };
+      for (const path of view.filesUnder(dir)) consider(dir ? path.slice(dir.length + 1) : path);
+      for (const found of dirs) if (found !== '' && (dir === '' || found.startsWith(`${dir}/`))) consider(dir ? found.slice(dir.length + 1) : found);
+      // A build's output is there when the command runs, though not tracked;
+      // each built file is handed on by its path and runs its source.
+      for (const path of emitted().keys()) if (dir === '' || path.startsWith(`${dir}/`)) consider(dir ? path.slice(dir.length + 1) : path);
+      return [...new Set(out)].sort();
     },
     // A matched set written as few runs as it can be without changing what
     // they stand for: a directory whose every code file is in the set stands
@@ -225,6 +267,33 @@ function stripDot(pattern) {
   return pattern.replace(/^\.\//, '');
 }
 
+// One segment of an sh glob as a test of one name: * and ** match any run of
+// characters but a slash, ? one, [...] a class, and a leading dot only a
+// leading dot.
+function shellSegment(segment) {
+  if (!/[*?[]/.test(segment)) return (name) => name === segment;
+  let source = '';
+  for (let i = 0; i < segment.length; i += 1) {
+    const ch = segment[i];
+    if (ch === '*') {
+      while (segment[i + 1] === '*') i += 1;
+      source += '[^/]*';
+    } else if (ch === '?') source += '[^/]';
+    else if (ch === '[') {
+      const end = segment.indexOf(']', i + 2);
+      if (end === -1) source += '\\[';
+      else {
+        const body = segment.slice(i + 1, end).replace(/^!/, '^').replace(/\\/g, '\\\\');
+        source += `[${body}]`;
+        i = end;
+      }
+    } else source += ch.replace(/[.+^${}()|\\]/g, '\\$&');
+  }
+  const re = new RegExp(`^${source}$`);
+  const dotted = segment.startsWith('.');
+  return (name) => (dotted || !name.startsWith('.')) && re.test(name);
+}
+
 const PACKAGING = new WeakMap();
 
 // The directories a Python packaging file sits in, and their src/, by path.
@@ -243,15 +312,27 @@ function packagingRoots(repo) {
 
 /**
  * Read one piece of level-0 command text run from `dir`.
- * Returns the runs keyed by path, and the tracked files it mentions.
+ * Returns the runs keyed by path, the tracked files it mentions, and the
+ * files a shell's expansion of an unquoted glob leaves out that the tool
+ * would have run had it expanded the glob itself (shellMissed).
+ *
+ * `platforms`, when given, are the systems the job runs on (linux, macos,
+ * windows). A package script the text starts is handed to sh on Linux and
+ * macOS, which expands an unquoted glob before the program sees it, and to
+ * cmd on Windows, which expands nothing. A package script is one command
+ * line, so its globs are read as sh reads them; a step's own text and a
+ * shell script are not, since a bare * there is as often a case pattern or
+ * a loop's list as an argument. Without platforms nothing is expanded.
  */
-export function readCommands(text, dir, repo) {
+export function readCommands(text, dir, repo, platforms = null) {
   const runs = new Map();
   const mentions = new Set();
-  const reader = makeReader(repo, runs, mentions);
-  reader.read(text, dir, { level: 0, via: null, active: new Set() });
+  const missed = new Map();
+  const reader = makeReader(repo, runs, mentions, missed);
+  const where = platforms ? { platforms: [...platforms] } : {};
+  reader.read(text, dir, { level: 0, via: null, active: new Set(), ...where });
   for (const path of runs.keys()) mentions.delete(path);
-  return { runs, mentions };
+  return { runs, mentions, shellMissed: [...missed.values()] };
 }
 
 /**
@@ -297,10 +378,13 @@ function flagsOf(args) {
   return [...new Set(args.filter((arg) => /^--?[A-Za-z]/.test(arg)).map((arg) => arg.replace(/=.*$/, '')))].sort();
 }
 
-function makeReader(repo, runs, mentions) {
+function makeReader(repo, runs, mentions, missed = new Map()) {
+  // Where runs are recorded: the runs, or a scratch map while one reading of
+  // a line is compared with another (shellLine).
+  let sink = runs;
   const record = (entry) => {
-    const existing = runs.get(entry.path);
-    runs.set(entry.path, existing ? better(existing, entry) : entry);
+    const existing = sink.get(entry.path);
+    sink.set(entry.path, existing ? better(existing, entry) : entry);
   };
 
   function read(text, dir, frame) {
@@ -313,11 +397,90 @@ function makeReader(repo, runs, mentions) {
     // cd moves the rest of the text; a directory this repository does not
     // track, or one set at run time, names nowhere its files can be read from.
     let here = dir;
-    for (const tokens of commandLines(text)) {
+    const globs = new Set();
+    const lines = commandLines(text, globs);
+    const inner = (frame.expanding ?? []).length > 0 && globs.size > 0 ? { ...frame, globs } : { ...frame, globs: null };
+    for (const tokens of lines) {
       if (tokens[0] === 'cd' || tokens[0] === 'pushd') here = movedTo(here, tokens.slice(1));
       else if (tokens[0] === 'popd') here = dir;
-      else if (here != null) line(tokens, here, frame);
+      else if (here != null) shellLine(tokens, here, inner);
     }
+  }
+
+  // The runs one reading of a line records, kept apart from the rest.
+  function scratch(read) {
+    const saved = sink;
+    sink = new Map();
+    try {
+      read();
+      return sink;
+    } finally {
+      sink = saved;
+    }
+  }
+
+  // The code files a set of runs stands for, a directory for its own.
+  function codeFiles(found) {
+    const out = new Set();
+    for (const entry of found.values()) {
+      if (entry.directory) for (const path of repo.filesUnder(entry.path.replace(/\/$/, ''))) {
+        if (isCodePath(path)) out.add(path);
+      }
+      else if (isCodePath(entry.path)) out.add(entry.path);
+    }
+    return out;
+  }
+
+  /**
+   * A line whose unquoted globs the shell expands before the program runs:
+   * on a platform whose shell expands them the program is handed what sh
+   * selects, where ** is one directory level as * is, and a glob that
+   * selects nothing is handed on as written, for the program to expand. On
+   * a platform whose shell expands nothing the program is handed the glob.
+   * Each reading's runs are recorded, and the files the program would have
+   * run from the glob that the shell's selection leaves out are kept, by
+   * the directory they share, so the page can say what CI does not run.
+   */
+  function shellLine(tokens, dir, frame) {
+    if (!frame.globs || !tokens.some((token) => frame.globs.has(token))) {
+      line(tokens, dir, frame);
+      return;
+    }
+    const expanded = [];
+    let changed = false;
+    const twoStars = tokens.some((token) => frame.globs.has(token) && token.includes('**'));
+    for (const token of tokens) {
+      const selected = frame.globs.has(token) ? repo.shellGlob(dir, token) : [];
+      if (selected.length === 0) expanded.push(token);
+      else {
+        expanded.push(...selected);
+        changed = true;
+      }
+    }
+    const plain = { ...frame, globs: null };
+    if (!changed) {
+      line(tokens, dir, plain);
+      return;
+    }
+    const literal = scratch(() => line(tokens, dir, plain));
+    const shell = scratch(() => line(expanded, dir, plain));
+    const ran = codeFiles(shell);
+    const left = [...codeFiles(literal)].filter((path) => !ran.has(path)).sort();
+    // Where the two readings run the same files the glob's own reading is
+    // kept, a directory standing for its files as before; otherwise each
+    // platform's is: what sh selects, and on a platform whose shell expands
+    // nothing, the glob.
+    const unexpanded = (frame.platforms ?? []).some((os) => !frame.expanding.includes(os));
+    if (left.length === 0 || unexpanded) for (const entry of literal.values()) record(entry);
+    if (left.length === 0) return;
+    for (const entry of shell.values()) record(entry);
+    const platform = frame.expanding.includes('linux') ? 'linux' : frame.expanding[0];
+    const base = commonDirectory(left);
+    const key = `${base}\0${platform}`;
+    const entry = missed.get(key) ?? { base, files: new Set(), platform, twoStars: false };
+    for (const path of left) entry.files.add(path);
+    entry.twoStars ||= twoStars;
+    missed.set(key, entry);
   }
 
   function movedTo(from, args) {
@@ -377,8 +540,11 @@ function makeReader(repo, runs, mentions) {
     const scripts = pkg && typeof pkg.scripts === 'object' && pkg.scripts != null ? pkg.scripts : null;
     if (!scripts) return;
     frame.active.add(key);
+    // A package script runs in the manager's shell, sh or cmd, whatever
+    // shell the step that started it names.
+    const next = frame.platforms ? { ...frame, expanding: frame.platforms.filter((os) => os !== 'windows') } : frame;
     for (const name of [`pre${script}`, script, `post${script}`]) {
-      if (typeof scripts[name] === 'string') read(scripts[name], target, frame);
+      if (typeof scripts[name] === 'string') read(scripts[name], target, next);
     }
     frame.active.delete(key);
   }
@@ -406,7 +572,8 @@ function makeReader(repo, runs, mentions) {
   }
 
   function readFile(path, dir, frame) {
-    const next = { level: 1, via: via(frame, path), active: frame.active, installed: frame.installed };
+    const where = frame.platforms ? { platforms: frame.platforms } : {};
+    const next = { level: 1, via: via(frame, path), active: frame.active, installed: frame.installed, ...where };
     if (isShellScript(path, repo)) {
       read(repo.text(path) ?? '', dir, next);
     } else {
@@ -736,7 +903,9 @@ function makeReader(repo, runs, mentions) {
         return;
       }
       if (!test) {
-        if (i < argv.length) file(argv[i], dir, frame, { script: true, args: argv.slice(i + 1) });
+        const tool = i < argv.length ? nodeModulesTool(argv[i]) : null;
+        if (tool != null) interpret([tool, ...argv.slice(i + 1)], dir, frame);
+        else if (i < argv.length) file(argv[i], dir, frame, { script: true, args: argv.slice(i + 1) });
         return;
       }
       for (; i < argv.length; i += 1) parsed.push(argv[i]);
@@ -747,8 +916,9 @@ function makeReader(repo, runs, mentions) {
       }
       for (const pattern of patterns) {
         if (/[*?[{]/.test(pattern)) {
-          const base = dir;
-          matched(repo.compact(repo.filesMatching(base, [pattern])), frame, null);
+          // A glob over a build's output runs the sources it is built from.
+          const found = repo.filesMatching(dir, [pattern]);
+          matched(repo.compact(found.length > 0 ? found : repo.builtMatching(dir, [pattern])), frame, null);
         } else file(pattern, dir, frame, { directories: true });
       }
     },
@@ -1163,6 +1333,21 @@ function toolOf(word) {
 }
 
 /**
+ * The tool a script under node_modules is, named by its file or its package:
+ * node node_modules/tsx/dist/cli.mjs x.ts is tsx running x.ts, and node
+ * node_modules/vitest/vitest.mjs run is vitest. Null for any other script.
+ */
+function nodeModulesTool(token) {
+  const at = token.lastIndexOf('node_modules/');
+  if (at === -1) return null;
+  const rest = token.slice(at + 'node_modules/'.length).split('/');
+  const pkg = rest[0]?.startsWith('@') ? rest[1] : rest[0];
+  const base = rest[rest.length - 1].replace(/\.[cm]?js$/, '');
+  if (pkg === 'typescript' && base === 'tsc') return 'tsc';
+  return [base, pkg].find((name) => name && toolOf(name) != null && toolOf(name) !== 'none') ?? null;
+}
+
+/**
  * The tracked file a package binary name starts, through the bin field of the
  * manifest in the command's directory, the root manifest, or a workspace's.
  */
@@ -1192,6 +1377,19 @@ function patternOf(pattern) {
   }
 }
 
+// The deepest directory every path is under, with its trailing slash, or ''
+// for the repository root.
+function commonDirectory(paths) {
+  let common = paths[0].split('/').slice(0, -1);
+  for (const path of paths.slice(1)) {
+    const parts = path.split('/').slice(0, -1);
+    let i = 0;
+    while (i < common.length && i < parts.length && common[i] === parts[i]) i += 1;
+    common = common.slice(0, i);
+  }
+  return common.length > 0 ? `${common.join('/')}/` : '';
+}
+
 function isShellScript(path, repo) {
   if (/\.(?:sh|bash)$/.test(path)) return true;
   if (/\.[A-Za-z0-9]+$/.test(path.slice(path.lastIndexOf('/') + 1))) return false;
@@ -1210,17 +1408,24 @@ function addValue(values, name, value) {
  * node -p "require('./package.json')" are JavaScript, and splitting there
  * would make ./package.json look like a command. A here-document body is
  * input to its command, not shell, so it is skipped.
+ *
+ * Given a set, each word holding a glob character outside quotes (*, ? or
+ * [), which a shell would expand, is added to it; a glob in quotes reaches
+ * the program as written, and is not.
  */
-export function commandLines(text) {
+export function commandLines(text, globs = null) {
   const lines = [];
   let words = [];
   let word = '';
   let inWord = false;
   let quote = null;
+  let globbed = false;
   const endWord = () => {
     if (inWord) words.push(word);
+    if (inWord && globbed && globs) globs.add(word);
     word = '';
     inWord = false;
+    globbed = false;
   };
   const endLine = () => {
     endWord();
@@ -1274,6 +1479,7 @@ export function commandLines(text) {
     } else if (';&|()`{}'.includes(ch)) {
       endLine();
     } else {
+      if (ch === '*' || ch === '?' || ch === '[') globbed = true;
       word += ch;
       inWord = true;
     }

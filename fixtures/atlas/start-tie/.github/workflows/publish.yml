@@ -1,0 +1,11 @@
+name: Publish
+on:
+  release:
+    types: [published]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npx tsc -p tsconfig.json
+      - run: npm publish

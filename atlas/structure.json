@@ -80,8 +80,8 @@
     },
     {
       "dynamicReads": 1,
-      "dynamicSpawns": 53,
-      "dynamicSpawnsInTests": 52,
+      "dynamicSpawns": 3,
+      "dynamicSpawnsInTests": 2,
       "dynamicWrites": 2,
       "entryPoints": [
         "packages/atlas/bin/atlas-fleet.js",
@@ -95,7 +95,7 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "3f8ac791c7fc7956e920c0819de8ad792a28a041ffe27680772c85b758a999ae",
+          "hash": "620d98e348ade54e30da4333e1d6c07d448fb3ca7c056e40a649c663751b6545",
           "path": "packages/atlas/README.md"
         },
         {
@@ -103,7 +103,7 @@
             "buildArtifact",
             "serializeArtifact"
           ],
-          "hash": "144d5c4f2a4e86b4d053bfd21467f1a16464f1b7b6e70d3cd33fd2a7e0ba145f",
+          "hash": "ae97745f90ee9ea90f5d73e2f5104768af0b6a86dc58e0663e21947a03234b81",
           "importsFiles": [
             "packages/atlas/adapter/templates.js",
             "packages/atlas/core/landings.js",
@@ -465,6 +465,16 @@
           "path": "packages/atlas/adapter/page-authorship.test.js"
         },
         {
+          "hash": "99951cb53061c6421a4824b862054ace1d9f2cdfd7fc0ef36abb49291d51a91c",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/adapter/page.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/adapter/page-bootstrap-writes.test.js"
+        },
+        {
           "hash": "73c6f1e532f1ec0721f5ba7ee946362a02abc79632cace436b0f7576eb704f2d",
           "path": "packages/atlas/adapter/page-caller-paths.test.js"
         },
@@ -480,14 +490,34 @@
           "path": "packages/atlas/adapter/page-clone-commits.test.js"
         },
         {
-          "hash": "99ec9aa90929e9076ad1a4126e038a737edeabbec0dabdb8fcf1b60c84f98f1e",
+          "hash": "030a7417d27cb9a3a2ce85c71d8d0b7a8a224d804f742cfcf11320f03fe8a853",
           "importsFiles": [
             "packages/atlas/adapter/page.js"
           ],
           "path": "packages/atlas/adapter/page-commands.test.js"
         },
         {
-          "hash": "efb8caeb01380d14ed4772c3a56039fcbd28e22110a095d037039fe9be5714de",
+          "hash": "84834f98380efb4c63af70963f37231ed3b5e2f00f3b47309c16f1ea8d41bf88",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/adapter/page.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/adapter/page-config-readers.test.js"
+        },
+        {
+          "hash": "ce8b2b69d1efb7e7f63b7c61af231e3ba21d830deb79e8107b9b2a6c7e02f6e7",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/adapter/page.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/adapter/page-cwd-output.test.js"
+        },
+        {
+          "hash": "8c034dc533dda6dba0d040013a0883d2952fa218fa69610b63a182800d4cacdf",
           "importsFiles": [
             "packages/atlas/adapter/boundary-file.js",
             "packages/atlas/adapter/page.js"
@@ -572,11 +602,41 @@
           "path": "packages/atlas/adapter/page-review-pushes.test.js"
         },
         {
+          "hash": "c4b016333766e8d2ed08f6dd5e858686d915dd84a29691ef2fe7d4dba6595101",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/adapter/page.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/adapter/page-run-counts.test.js"
+        },
+        {
+          "hash": "9c0748f8ef617e30ac3f10ba2552c6dc7cd271155e3100020665bc9fdbeb42b9",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/adapter/page.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/adapter/page-shell-globs.test.js"
+        },
+        {
+          "hash": "d09e52ccc83f9d80d52124607f4a3adecae4b9c7e73c5fa984261573b4bdb5c3",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/adapter/page.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/adapter/page-spawned-scripts.test.js"
+        },
+        {
           "hash": "542a17966a0ad46a3fdc64cde8087de9d00593f2c9ac7e719a40d8c3b6139dc2",
           "path": "packages/atlas/adapter/page-start-chain.test.js"
         },
         {
-          "hash": "5288d8018f0d2e046364d948775faa6a2daee9335ac55b2f57d6c1ebf24588a4",
+          "hash": "7826017ea116b1580a8be7fda51639024d8661e7a7b2be5d771cfa62854750cb",
           "importsFiles": [
             "packages/atlas/adapter/artifact.js",
             "packages/atlas/adapter/page.js",
@@ -588,6 +648,16 @@
         {
           "hash": "1e984404ff7b46dbf4a1ec9494661945f6f955c4d4eda5de9bab828ddefacac5",
           "path": "packages/atlas/adapter/page-start-edges.test.js"
+        },
+        {
+          "hash": "8ae9ab46c7d731dbc2f1af5fd691101eb90e04de6276ee33fc44aac4c7dd1769",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/adapter/page.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/adapter/page-start-tests.test.js"
         },
         {
           "hash": "c5243998fd7944db964307bea6f8fe05ea3326f8fbeda37585c7f9f283f78d31",
@@ -608,6 +678,16 @@
             "packages/atlas/core/index.js"
           ],
           "path": "packages/atlas/adapter/page-unread-claims.test.js"
+        },
+        {
+          "hash": "416616e6b07cf9d42454bfcf322e38b3bcf99425bdf2e548fd6267f0d0dada23",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/adapter/page.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/adapter/page-unseen-apps.test.js"
         },
         {
           "hash": "111b30e93e90b91a7c3de0f5ac297c157d42e265a8680c2c9b776d83b09a5e06",
@@ -647,6 +727,7 @@
             "registryList",
             "runsShown",
             "sendPhrases",
+            "spawnedLine",
             "stagedShown",
             "testsClause",
             "triggerPhrases",
@@ -656,7 +737,7 @@
             "worded",
             "words"
           ],
-          "hash": "53bcc45f8f9c38601291ff94a4e1885bd9498277fd925ea483719a283f4e5358",
+          "hash": "1184b9894198c63cd9746cc25833c4632e645d07b908ae54c16ddc11efa33604",
           "importsFiles": [
             "packages/atlas/adapter/templates.js",
             "packages/atlas/core/history.js",
@@ -666,7 +747,7 @@
           "path": "packages/atlas/adapter/page.js"
         },
         {
-          "hash": "2ffe46d98186bd2061ffbec9174cd0d49dd02c57496a607b8cb0ad54435eda26",
+          "hash": "69521bacc6241f3189cf39cc4348c6df1cad6f8e502b46055b3b1281ba426537",
           "importsFiles": [
             "packages/atlas/adapter/boundary-file.js",
             "packages/atlas/adapter/page.js",
@@ -793,6 +874,14 @@
           "path": "packages/atlas/core/built-runs.test.js"
         },
         {
+          "hash": "e28356bc0c298becdb4b10ace0e68c34681f5c5dc192eeb0a2952ace61fb51ca",
+          "importsFiles": [
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/core/built-tests.test.js"
+        },
+        {
           "hash": "d6500fb5078cd304cc48f6a007ed883855ae0ad727d7f8ab760db2a549792f7b",
           "importsFiles": [
             "packages/atlas/adapter/artifact.js",
@@ -811,6 +900,14 @@
             "packages/atlas/core/index.js"
           ],
           "path": "packages/atlas/core/caller-roots.test.js"
+        },
+        {
+          "hash": "a2b14b674cda15a1a1a309100909e3e856294126777158c32d2224bb2a3f3a9c",
+          "importsFiles": [
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/core/closure-roots.test.js"
         },
         {
           "hash": "1d333cd1eeb368ed200932594b6d5cb2afacc674ae021f760ffd396e24c4c776",
@@ -839,7 +936,7 @@
             "repositoryView",
             "workspaceGlobs"
           ],
-          "hash": "6dae1e7b2d127d3e13d7d547365c32f271968506a7d85877e50e040b274cd9de",
+          "hash": "a6d9f397bdc8a9d794af4433381d150ff46a8e74765b3429e8f7fd33642ff7a9",
           "importsFiles": [
             "packages/atlas/core/languages.js",
             "packages/atlas/core/python-manifest.js",
@@ -895,9 +992,10 @@
             "markUnpublished",
             "onlyOnFailure"
           ],
-          "hash": "30fdbf84d50b86c7a31d4449c440024b070f1e760929fcaf1fa4a4f5b5d55d17",
+          "hash": "d0e8ca4407641def4ff091e72c44a1bffaf304e5cf6f09a9840caf380f804fe6",
           "importsFiles": [
-            "packages/atlas/core/commands.js"
+            "packages/atlas/core/commands.js",
+            "packages/atlas/core/landings.js"
           ],
           "path": "packages/atlas/core/doors.js"
         },
@@ -961,10 +1059,18 @@
           "path": "packages/atlas/core/grammar-manifest.test.js"
         },
         {
+          "hash": "0bfa895fee67f5abfc9e118fe6af42166c87d73f341de8efb87e13ec6bfb8590",
+          "importsFiles": [
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/core/grammar-shapes.test.js"
+        },
+        {
           "exports": [
             "writeGuards"
           ],
-          "hash": "3588fc6de72861101d3232e5ec87181c36c4cded72857fbc43889c9c8693fa93",
+          "hash": "058ee09184bc3fd0d77ea1fe342b6e3f4283b7cfec0bcb0f2225319a4fc4bf0b",
           "path": "packages/atlas/core/guards.js"
         },
         {
@@ -992,19 +1098,29 @@
         },
         {
           "exports": [
+            "httpEdges",
+            "httpFacts"
+          ],
+          "hash": "eecf3dd1106f45f471b39677c46b7eed49db22e6ae29053827f5527b4d1eab0d",
+          "path": "packages/atlas/core/http.js"
+        },
+        {
+          "exports": [
             "mapRepository"
           ],
-          "hash": "074610cc557eb7a8f77102ec53a44a552b729a880f0e603984bb6178b0ec0586",
+          "hash": "8826afc2c55a3a5eeba31c9cebdac66c1078330b734ebc501bd54041a194d215",
           "importsFiles": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/doors.js",
             "packages/atlas/core/entry-points.js",
+            "packages/atlas/core/http.js",
             "packages/atlas/core/landings.js",
             "packages/atlas/core/languages.js",
             "packages/atlas/core/reach.js",
             "packages/atlas/core/resolve.js",
             "packages/atlas/core/sequence.js",
-            "packages/atlas/core/spawned.js"
+            "packages/atlas/core/spawned.js",
+            "packages/atlas/core/unseen.js"
           ],
           "path": "packages/atlas/core/index.js"
         },
@@ -1034,7 +1150,7 @@
             "textLandings",
             "trackedPlaces"
           ],
-          "hash": "f74f7df70268d006a72e2f2d76d9fc96ec819f05457b7190ba2b36ec8559bba9",
+          "hash": "820bfb57f74ad4caba5d5cb4e3f0ea0e84e1385852c63bce8f17e4e71dea572f",
           "importsFiles": [
             "packages/atlas/core/doors.js",
             "packages/atlas/core/entry-points.js",
@@ -1099,7 +1215,7 @@
           "path": "packages/atlas/core/package-managers.test.js"
         },
         {
-          "hash": "01ffa132becdebaba38e05e574d8cb095a0dfb15a32c734557e89f15674b4a1f",
+          "hash": "511bce4816be09c4054548f8b7b1aea41f14e65627ba8b658d102075325f5aa7",
           "importsFiles": [
             "packages/atlas/core/fixture-repo.js",
             "packages/atlas/core/index.js"
@@ -1162,11 +1278,12 @@
         {
           "exports": [
             "attachResolution",
+            "emittedFiles",
             "resolveDeclaredPath",
             "resolvePythonModule",
             "unplacedBuildOutput"
           ],
-          "hash": "bb4a4fb982636f5782d81266669e8c3e28125ef1c9150fccf86945cc61ec1997",
+          "hash": "b3563832656192c80552f89b8d39d8a4bbc2fe4d38069250f8cef2737d54b4d0",
           "importsFiles": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/landings.js",
@@ -1226,7 +1343,7 @@
             "settleSpawnHelpers",
             "spawnedCommands"
           ],
-          "hash": "16db986837dbd295546c61b4521ffa81fe6c81b961c2e72a7d720065e7b196d7",
+          "hash": "b9f9bdb6e2946dd1082922c4d5d564b9a8f178c74b01d4552dfb3c553a0e3022",
           "path": "packages/atlas/core/spawned.js"
         },
         {
@@ -1262,6 +1379,16 @@
           ],
           "hash": "52f76b87f6061dc6e2123a22525f72fada8d2777ee77014f445c35401ba3ea83",
           "path": "packages/atlas/core/tool-configs.js"
+        },
+        {
+          "exports": [
+            "unseenParts"
+          ],
+          "hash": "7dcb54828405ee82089f010e5d670394205ecc159db623bca5cab9a3cea3fee2",
+          "importsFiles": [
+            "packages/atlas/core/landings.js"
+          ],
+          "path": "packages/atlas/core/unseen.js"
         },
         {
           "hash": "7f97844af124b0763c6a9e6a1a00b96af560e82b85974142a35ff61e01b2cce7",
@@ -1303,10 +1430,11 @@
           "importsFiles": [
             "packages/atlas/core/index.js"
           ],
-          "path": "packages/atlas/index.js"
+          "path": "packages/atlas/index.js",
+          "reexportsOnly": true
         },
         {
-          "hash": "ffa402dadb37d9e9b40de8e836400d5759b27bf7d359d08348776db432d22fa8",
+          "hash": "d59936175d17f0fa3ee2fe245b521e76833131e6bbb735f7f95c2145da676b15",
           "path": "packages/atlas/package.json"
         },
         {
@@ -1320,10 +1448,10 @@
       "importConfidence": "full",
       "name": "atlas",
       "origin": "authored",
-      "outsideReads": 137,
+      "outsideReads": 139,
       "outsideWrites": 6,
       "role": "code",
-      "testedBy": 64,
+      "testedBy": 98,
       "unresolvedSites": 2
     },
     {
@@ -1335,7 +1463,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "febae39006ccbf497956eddbe8887246598b9c115b596b743b34c11d9d5920d8",
+          "hash": "0edcc32b3864eae47d6bfce54c5d3c5d4059d071878129b5d9ab2383a1f26903",
           "path": "docker/Dockerfile"
         },
         {
@@ -1366,7 +1494,8 @@
       "name": "docker",
       "origin": "mixed",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedThroughSpawn": true,
       "unresolvedSites": 0
     },
     {
@@ -1559,9 +1688,9 @@
       "unresolvedSites": 1
     },
     {
-      "dynamicReads": 15,
-      "dynamicSpawns": 87,
-      "dynamicSpawnsInTests": 80,
+      "dynamicReads": 19,
+      "dynamicSpawns": 12,
+      "dynamicSpawnsInTests": 7,
       "dynamicWrites": 2,
       "entryPoints": [
         "packages/dogfood-swarm/cli.js"
@@ -11196,7 +11325,7 @@
           "path": "packages/dogfood-swarm/output-schema-null-element.test.js"
         },
         {
-          "hash": "0053007e3c9d67e062fe2292a79fc5acbae1767266f5902eb0da953d99c6a24e",
+          "hash": "a985bbdc31c29acd70626f814e7ad6278a377b35ff3412282131bb128619f051",
           "path": "packages/dogfood-swarm/package.json"
         },
         {
@@ -11990,10 +12119,10 @@
       "importConfidence": "full",
       "name": "dogfood-swarm",
       "origin": "authored",
-      "outsideReads": 192,
+      "outsideReads": 183,
       "outsideWrites": 29,
       "role": "code",
-      "testedBy": 284,
+      "testedBy": 295,
       "unresolvedSites": 5
     },
     {
@@ -12037,8 +12166,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 11,
-      "dynamicSpawnsInTests": 11,
+      "dynamicSpawns": 1,
+      "dynamicSpawnsInTests": 1,
       "dynamicWrites": 2,
       "entryPoints": [
         "packages/findings/cli.js",
@@ -12093,7 +12222,8 @@
             "packages/findings/advise/advice-bundle.js",
             "packages/findings/advise/query.js"
           ],
-          "path": "packages/findings/advise/index.js"
+          "path": "packages/findings/advise/index.js",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -12458,7 +12588,8 @@
             "packages/findings/derive/rules.js",
             "packages/findings/derive/write-findings.js"
           ],
-          "path": "packages/findings/derive/index.js"
+          "path": "packages/findings/derive/index.js",
+          "reexportsOnly": true
         },
         {
           "hash": "7b02239ff64ea2cbc841a62f0d6712e15a8ff4c4bda1a634621c60ac2c85a4c4",
@@ -12673,7 +12804,8 @@
             "packages/findings/reader.js",
             "packages/findings/validate.js"
           ],
-          "path": "packages/findings/index.js"
+          "path": "packages/findings/index.js",
+          "reexportsOnly": true
         },
         {
           "entry": "atomicWriteFileSync",
@@ -12778,7 +12910,7 @@
           "path": "packages/findings/lib/safe-yaml-load.test.js"
         },
         {
-          "hash": "109be18ce47cfcf8be771a942131c2a227e453ea1b643d79ef0d7a2267ba2a47",
+          "hash": "c7eee402ed75c719e3de6721ff7c464f394b0129e0f598434eba5a7367b05138",
           "path": "packages/findings/package.json"
         },
         {
@@ -12873,7 +13005,8 @@
             "packages/findings/review/review-engine.js",
             "packages/findings/review/transitions.js"
           ],
-          "path": "packages/findings/review/index.js"
+          "path": "packages/findings/review/index.js",
+          "reexportsOnly": true
         },
         {
           "hash": "9f2a122e9a080c5673df891743ed0b64651a92ecc61e7858255efa6dece6b80b",
@@ -13103,7 +13236,8 @@
             "packages/findings/synthesis/validate-artifacts.js",
             "packages/findings/synthesis/write-artifacts.js"
           ],
-          "path": "packages/findings/synthesis/index.js"
+          "path": "packages/findings/synthesis/index.js",
+          "reexportsOnly": true
         },
         {
           "hash": "9f10f14ce9448c9daf40a20c5490447d292390f0df641fcc881ede8198c7114c",
@@ -13214,7 +13348,7 @@
       "outsideReads": 35,
       "outsideWrites": 17,
       "role": "code",
-      "testedBy": 121,
+      "testedBy": 134,
       "unresolvedSites": 0
     },
     {
@@ -13288,6 +13422,7 @@
           "path": "fixtures/atlas/artifact-builds/scripts/build.mjs"
         },
         {
+          "constantOnly": true,
           "hash": "f615240bdf4b9ae589da60e1a702728dc65b34ae174ed23a9f07e61732232ec5",
           "path": "fixtures/atlas/artifact-builds/src/index.js"
         },
@@ -13367,28 +13502,81 @@
           "path": "fixtures/atlas/basic/README.md"
         },
         {
+          "constantOnly": true,
           "hash": "2f2d8ab6453896290e40a007f1df961cc6004062c86a0a1e6480e8ce201a58aa",
           "path": "fixtures/atlas/basic/packages/alpha/index.js"
         },
         {
+          "constantOnly": true,
           "hash": "da892e4e82bcf839d96015d7782564f860296b3312b1e18d6b2f3622185d2cbf",
           "path": "fixtures/atlas/basic/packages/alpha/lib/one.js"
         },
         {
+          "constantOnly": true,
           "hash": "7398bf0a4c176396ef1afac812a4006ac78418a340d385fe03f8ea8e910eb2bc",
           "path": "fixtures/atlas/basic/packages/beta/beta.test.js"
         },
         {
+          "constantOnly": true,
           "hash": "ee32ba5ac75e00d1059bc26c7573cbe41c73bd494b70ddcb701dd78a36968d0f",
           "path": "fixtures/atlas/basic/packages/beta/index.js"
         },
         {
+          "constantOnly": true,
           "hash": "5db1323c93cd69daede1bbefd7e403ff9f49c1f8efa38d300c7fdb5c9d9bfcdf",
           "path": "fixtures/atlas/basic/scripts/legacy.mjs"
         },
         {
+          "constantOnly": true,
           "hash": "89a5926f199a40ed3649c6903b0867124e9e37baeb2136ad37bbdc8f3aea3f03",
           "path": "fixtures/atlas/basic/shared/util.js"
+        },
+        {
+          "hash": "b0bf3408af9480f3eb7740b309344ae50bf76d95c28cf3503bda5a93c91039dc",
+          "path": "fixtures/atlas/bootstrap-writes/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "0b4ec317991ce4d6ef328ff97b690c256fce8d7715dfb7261a52504c4ffc21bf",
+          "path": "fixtures/atlas/bootstrap-writes/README.md"
+        },
+        {
+          "hash": "4c1f6dd68434e66e9844b91f94be05cb7957068ced35909d52981dc0bc55cb6c",
+          "path": "fixtures/atlas/bootstrap-writes/data/README.md"
+        },
+        {
+          "hash": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "path": "fixtures/atlas/bootstrap-writes/data/prime.json"
+        },
+        {
+          "hash": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "path": "fixtures/atlas/bootstrap-writes/data/seed.json"
+        },
+        {
+          "hash": "6263ee809209b5c14976a76a5cdb7dd997b57687a50e6693b97d9a88c0f862b2",
+          "path": "fixtures/atlas/bootstrap-writes/package.json"
+        },
+        {
+          "hash": "a96c81f6bebdce993ba4fc10c447ad660534a48a4862e8f31a79dd176442ee23",
+          "path": "fixtures/atlas/bootstrap-writes/scripts/bench-gate.mjs"
+        },
+        {
+          "hash": "65088208015a642c174519adf467e4faa88ebbd5b809e99889188e851bb9b2fd",
+          "path": "fixtures/atlas/bootstrap-writes/scripts/seed.mjs"
+        },
+        {
+          "hash": "b70696704f5a84244f9f92010f4345c068dfe71366ec27280a3e4b17c001a55f",
+          "path": "fixtures/atlas/bootstrap-writes/tests/__bench__/README.md"
+        },
+        {
+          "hash": "afd76d813826231e86ce4f4d950d41d5b9d1eb32f712e762409d435d88f13f44",
+          "path": "fixtures/atlas/bootstrap-writes/tests/__bench__/baseline.json"
+        },
+        {
+          "exports": [
+            "main"
+          ],
+          "hash": "078961956b198c643daa0b8ccd1882b1566ae8927b8ee9fabcaf6c9debbeeadf",
+          "path": "fixtures/atlas/bootstrap-writes/tools/prime.py"
         },
         {
           "hash": "5ba8bfc9c04f4dd20148d63fae0412f5041ce5375610404e2596edc9566e7b84",
@@ -13425,6 +13613,7 @@
           "path": "fixtures/atlas/build-config/src/index.ts"
         },
         {
+          "constantOnly": true,
           "hash": "061e591c3129b0aefbb193d47dc5fec865788afb516d118414c4b40271d0bf9d",
           "path": "fixtures/atlas/build-config/src/other.ts"
         },
@@ -13441,6 +13630,7 @@
           "path": "fixtures/atlas/build-output/app/use.js"
         },
         {
+          "constantOnly": true,
           "hash": "482996c211d7b6fd772985cd3e7fa1dc736a6d88073f40a8eae26c67078fd479",
           "path": "fixtures/atlas/build-output/bundle/dist/bundle.js"
         },
@@ -13453,14 +13643,17 @@
           "path": "fixtures/atlas/build-output/bundle/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "037ecd1db38c230c248787e60fd7bfc0cb0101b187b59535b6e7483be762d350",
           "path": "fixtures/atlas/build-output/bundle/src/a.ts"
         },
         {
+          "constantOnly": true,
           "hash": "4d6c305aa3866c1d56beb6a3b2394fe9dc4b3ce5f3756a2357139efefbd969d0",
           "path": "fixtures/atlas/build-output/bundle/src/b.ts"
         },
         {
+          "constantOnly": true,
           "hash": "da892e4e82bcf839d96015d7782564f860296b3312b1e18d6b2f3622185d2cbf",
           "path": "fixtures/atlas/build-output/one/dist/index.js"
         },
@@ -13473,6 +13666,7 @@
           "path": "fixtures/atlas/build-output/one/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "da892e4e82bcf839d96015d7782564f860296b3312b1e18d6b2f3622185d2cbf",
           "path": "fixtures/atlas/build-output/one/src/index.ts"
         },
@@ -13485,6 +13679,7 @@
           "path": "fixtures/atlas/build-output/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "385b0313dd8e351bb6202e64cbf6f55d257b30ec8daf84cd7e7ec481eb4f2054",
           "path": "fixtures/atlas/build-output/plain/dist/plain.js"
         },
@@ -13493,6 +13688,7 @@
           "path": "fixtures/atlas/build-output/plain/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "385b0313dd8e351bb6202e64cbf6f55d257b30ec8daf84cd7e7ec481eb4f2054",
           "path": "fixtures/atlas/build-output/plain/src/plain.ts"
         },
@@ -13501,6 +13697,7 @@
           "path": "fixtures/atlas/build-output/plain/tsconfig.json"
         },
         {
+          "constantOnly": true,
           "hash": "3ca4e786d8e1dfdb754bda7cec9d61f7b006be8d83816547a7441aaf191c0095",
           "path": "fixtures/atlas/build-output/span/dist/chunk.js"
         },
@@ -13509,6 +13706,7 @@
           "path": "fixtures/atlas/build-output/span/dist/chunk.js.map"
         },
         {
+          "constantOnly": true,
           "hash": "e28a7be764bf7a1d0b001f83a4e03950e619b6e2c5c9410aa5e471f48dedfca5",
           "path": "fixtures/atlas/build-output/span/left/a.ts"
         },
@@ -13517,6 +13715,7 @@
           "path": "fixtures/atlas/build-output/span/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "7dd3bc760bd05f77342145ac0bf5091720522bc78d42287740557185d0b1b4a0",
           "path": "fixtures/atlas/build-output/span/right/b.ts"
         },
@@ -13553,6 +13752,51 @@
         {
           "hash": "0687edfbb63c4a96073e7aa6a36611ed400a96e922256401c5609dbfc226e4e1",
           "path": "fixtures/atlas/built-runs/tsconfig.json"
+        },
+        {
+          "hash": "00ece143ce78021f01a80d571a28e8b42bd733527206880e337f173d8e83abe4",
+          "path": "fixtures/atlas/built-tests/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "4adc7fff84fc86dc53e19dc8d825ec24e2f0813617332b14d7bce0daf8be33c9",
+          "path": "fixtures/atlas/built-tests/.github/workflows/windows.yml"
+        },
+        {
+          "hash": "ed19d3c9c8a5e34d0179e0b1a9c2907d2e657738733e4a432a8cf81c76ce56f1",
+          "path": "fixtures/atlas/built-tests/.gitignore"
+        },
+        {
+          "hash": "51d6e006e8e520fb3c946aa22562d9314eb471862281bbc1ea0f4f151f0cbb06",
+          "path": "fixtures/atlas/built-tests/README.md"
+        },
+        {
+          "hash": "5333fa50d340b84c6dc8e6181254660637ae535cc874b8fa4515c67ce461315a",
+          "path": "fixtures/atlas/built-tests/package.json"
+        },
+        {
+          "exports": [
+            "total"
+          ],
+          "hash": "8a8b02c9c1509e0ee7dd3c6c1cd48bccb2ada462b4df8bd859af6d2312f4e9d4",
+          "path": "fixtures/atlas/built-tests/src/index.ts"
+        },
+        {
+          "hash": "0f71f48bde84f3ac48d729d43ea92b9482de8b152d068cf73a3509e3cd8f8a91",
+          "importsFiles": [
+            "fixtures/atlas/built-tests/src/index.ts"
+          ],
+          "path": "fixtures/atlas/built-tests/src/tests/total.test.ts"
+        },
+        {
+          "hash": "e30f742fc5da778516c7c22a28422f9e7073c9ff4875c3e05d462627888ee8d6",
+          "importsFiles": [
+            "fixtures/atlas/built-tests/src/index.ts"
+          ],
+          "path": "fixtures/atlas/built-tests/src/tests/unit/sum.test.ts"
+        },
+        {
+          "hash": "13ec295783eca827188aae0fa5fb97cbd4bce056f86afbdf33568ebb80b15713",
+          "path": "fixtures/atlas/built-tests/tsconfig.json"
         },
         {
           "hash": "cb9867a08f7257e81351d4e7f3b1864374fa5f46c6f4fa406ef5f4a06acf24fe",
@@ -13822,12 +14066,63 @@
           "path": "fixtures/atlas/clone-commits/packages/app/build.json"
         },
         {
+          "constantOnly": true,
           "hash": "f615240bdf4b9ae589da60e1a702728dc65b34ae174ed23a9f07e61732232ec5",
           "path": "fixtures/atlas/clone-commits/packages/app/index.js"
         },
         {
           "hash": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
           "path": "fixtures/atlas/clone-commits/records/latest.json"
+        },
+        {
+          "hash": "0de3d862c7c88b794fb0c835ad85e8547097bd6db4f2568006231605fe0b5256",
+          "path": "fixtures/atlas/closure-roots/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "b2344a164bf536555af4f1b478babd0c915af4f5720246b8d0ce6d746d524706",
+          "path": "fixtures/atlas/closure-roots/README.md"
+        },
+        {
+          "hash": "58eaf5a78d580f5dbd49d31a5b733094169b31bfdf49055b74bcac2877d8f58c",
+          "path": "fixtures/atlas/closure-roots/assets/default.f32"
+        },
+        {
+          "hash": "1c385d91019268c2cb6393725545d4eac3bf2659eb9742a5129ed23ec1712c95",
+          "path": "fixtures/atlas/closure-roots/out/stamp.txt"
+        },
+        {
+          "hash": "d5a06def091c5132ef1898d2b5c7198cea7d3f83ef0d9f3bf4160079fecc2108",
+          "path": "fixtures/atlas/closure-roots/package.json"
+        },
+        {
+          "exports": [
+            "exportTo"
+          ],
+          "hash": "926298838d87b0e7c656a92bf0f8d51d01eab3f16528ae952613d826938a2c37",
+          "path": "fixtures/atlas/closure-roots/src/export.js"
+        },
+        {
+          "exports": [
+            "parseFlags"
+          ],
+          "hash": "c227773a207913504f2123486ec45cf3b6f2c01ca3a6136beb5c02102abcb964",
+          "path": "fixtures/atlas/closure-roots/src/flags.js"
+        },
+        {
+          "hash": "915f3b63f1bac04c139e82d417d9a4f01eb730ad6b8cde290653baf228e233d7",
+          "importsFiles": [
+            "fixtures/atlas/closure-roots/src/export.js",
+            "fixtures/atlas/closure-roots/src/flags.js",
+            "fixtures/atlas/closure-roots/src/stamp.js"
+          ],
+          "path": "fixtures/atlas/closure-roots/src/pack.js"
+        },
+        {
+          "exports": [
+            "stamp"
+          ],
+          "hash": "514b588f0082c2b3040c0040c38989b81098157606582581f65e3220a8cf0829",
+          "path": "fixtures/atlas/closure-roots/src/stamp.js"
         },
         {
           "hash": "0935034b6fba61fe6e33a0aa0e82735aa32303d67b37c08d4acb7309da2378ff",
@@ -13873,6 +14168,7 @@
           "path": "fixtures/atlas/command-files/site/src/content/docs/index.md"
         },
         {
+          "constantOnly": true,
           "hash": "aaa4d5fb84bb308a900f18d195f39a7d71284b56f99a17e0b0ecaf31236a7b4d",
           "path": "fixtures/atlas/command-files/site/src/site-config.ts"
         },
@@ -13926,7 +14222,8 @@
           "importsFiles": [
             "fixtures/atlas/commands/lib/run.js"
           ],
-          "path": "fixtures/atlas/commands/lib/api.js"
+          "path": "fixtures/atlas/commands/lib/api.js",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -13979,6 +14276,70 @@
             "fixtures/atlas/commands/lib/run.js"
           ],
           "path": "fixtures/atlas/commands/tests/tool.test.mjs"
+        },
+        {
+          "hash": "f4ef32b661da11b3bd8c1cda1f48f4672b75f015e1a354d217b9f6d0f93a5866",
+          "path": "fixtures/atlas/config-readers/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "6f3a8548c95947fc9f4e64aa409a333014f971e3a0ec07a646f3a1d79e2b8534",
+          "path": "fixtures/atlas/config-readers/README.md"
+        },
+        {
+          "hash": "2f0f179b038d9839fa311a86ea53880af2ec5cd809fba98821db85e400fba4ff",
+          "path": "fixtures/atlas/config-readers/app/gen-icons.mjs"
+        },
+        {
+          "hash": "33d8344a7135c42aa3876706b908f95b702d83ff53e05e4aaff17c07bf67a98e",
+          "path": "fixtures/atlas/config-readers/app/icons/32x32.png"
+        },
+        {
+          "hash": "b2ef032bc9fa4ce5191afa1a4497b9fd8589dcc450723499beee6efde3e6f20e",
+          "path": "fixtures/atlas/config-readers/app/icons/icon.ico"
+        },
+        {
+          "hash": "df4aed6aa02949c9936c2989ba53764490d0a68e9d59ec6783faf785d109666b",
+          "path": "fixtures/atlas/config-readers/app/tauri.conf.json"
+        },
+        {
+          "hash": "ea2fdf806a38836ed15556083d3e3fabb982d74fd65445c96a97c376ce6e4224",
+          "path": "fixtures/atlas/config-readers/data/notes.json"
+        },
+        {
+          "hash": "a94d4f350d1a7263700798089d483a4409c7de076c7de2dfb9f4373b1dd85786",
+          "path": "fixtures/atlas/config-readers/msix/AppxManifest.xml"
+        },
+        {
+          "hash": "33d8344a7135c42aa3876706b908f95b702d83ff53e05e4aaff17c07bf67a98e",
+          "path": "fixtures/atlas/config-readers/msix/Assets/Square44x44Logo.png"
+        },
+        {
+          "hash": "33d8344a7135c42aa3876706b908f95b702d83ff53e05e4aaff17c07bf67a98e",
+          "path": "fixtures/atlas/config-readers/msix/Assets/StoreLogo.png"
+        },
+        {
+          "hash": "90b2fd58234b2585183597567068d543a39b67b890e400444817ddc2e20134b2",
+          "path": "fixtures/atlas/config-readers/msix/build-msix.ps1"
+        },
+        {
+          "hash": "6b2d6a8760d885fcca9efd88e7da96cc4d43f461e55f7226faa5f7d05679ad2e",
+          "path": "fixtures/atlas/config-readers/msix/gen-assets.mjs"
+        },
+        {
+          "hash": "a94d4f350d1a7263700798089d483a4409c7de076c7de2dfb9f4373b1dd85786",
+          "path": "fixtures/atlas/config-readers/msix/layout/AppxManifest.xml"
+        },
+        {
+          "hash": "33d8344a7135c42aa3876706b908f95b702d83ff53e05e4aaff17c07bf67a98e",
+          "path": "fixtures/atlas/config-readers/msix/layout/Assets/Square44x44Logo.png"
+        },
+        {
+          "hash": "33d8344a7135c42aa3876706b908f95b702d83ff53e05e4aaff17c07bf67a98e",
+          "path": "fixtures/atlas/config-readers/msix/layout/Assets/StoreLogo.png"
+        },
+        {
+          "hash": "3091fcc5fd140a53dc78c9fc7fdb1760dec366e324aa66044a0239107ef5becc",
+          "path": "fixtures/atlas/config-readers/package.json"
         },
         {
           "hash": "50157472937c6ad8f4b171e3a43a427b8a5b1c9a95ba4bc2f8c2ee636ea4002b",
@@ -14063,6 +14424,34 @@
           "path": "fixtures/atlas/container-starts/worker/run.py"
         },
         {
+          "hash": "6ae46e0bf4944f31973e084764c85722a7f28fd35cec0ce7ae0a340e767ef537",
+          "path": "fixtures/atlas/cwd-output/.multi-claude/drill/attempt-1/prompt.md"
+        },
+        {
+          "hash": "72fd67ff9e91d2a1b77a9b970863d0b52a0dbea29b8879f5610521ab739dda1d",
+          "path": "fixtures/atlas/cwd-output/.multi-claude/drill/drill-report.json"
+        },
+        {
+          "hash": "8a2bb065b97f7dcc338b57b4bb312f053d88457189c14ca0bed22458018376c6",
+          "path": "fixtures/atlas/cwd-output/.multi-claude/drill/logs/run-1.log"
+        },
+        {
+          "hash": "f7453a07702ef25d40e7c5310b5bf03988ebf32d3965c6b20e7aa85746fa8269",
+          "path": "fixtures/atlas/cwd-output/README.md"
+        },
+        {
+          "hash": "ab76861c3e4e40e8c2c3eab5ae6c256ed445aabfa6e45889f405e499a23ff577",
+          "path": "fixtures/atlas/cwd-output/package.json"
+        },
+        {
+          "hash": "97b32299a8bd1294c6f14c5d1f74dfd254bbf27836344402e16713a775856c37",
+          "path": "fixtures/atlas/cwd-output/scripts/scratch.mjs"
+        },
+        {
+          "hash": "b9d5a65a42eb46307366219dbc416c7868e275b41cb0bfa03715fcb07f8b8f12",
+          "path": "fixtures/atlas/cwd-output/test/drill/stop-drill.ts"
+        },
+        {
           "hash": "3bdc0c84ae3cee14abf84a7b6b7f34be68bf1320b103b162e7073c18a5891623",
           "path": "fixtures/atlas/data-roles/README.md"
         },
@@ -14123,6 +14512,7 @@
           "path": "fixtures/atlas/data-roles/scripts/release.sh"
         },
         {
+          "constantOnly": true,
           "hash": "b40dedde60828bf61d1fadbfc3bb7ea2e0421e9511d22f1b5fb44ae5ba07dbb3",
           "path": "fixtures/atlas/data-roles/src/index.js"
         },
@@ -14324,10 +14714,12 @@
           "path": "fixtures/atlas/doors-ts/packages/core/tsconfig.json"
         },
         {
+          "constantOnly": true,
           "hash": "f5cc3bde86c2242cc46ada80eee712dc17f5150ab1ad9c5f02e9944048789551",
           "path": "fixtures/atlas/doors-ts/scripts/bun-task.ts"
         },
         {
+          "constantOnly": true,
           "hash": "894ce5832a97f66abd201edd8167c178569ee2916e9599ecd8855eff974aeec6",
           "path": "fixtures/atlas/doors-ts/scripts/deno-task.ts"
         },
@@ -14340,6 +14732,7 @@
           "path": "fixtures/atlas/doors-ts/scripts/helper.mjs"
         },
         {
+          "constantOnly": true,
           "hash": "c0683354b2a4c3065724a79f542307b1d30c8c66970c79e6f2f57e719428ed82",
           "path": "fixtures/atlas/doors-ts/scripts/loaded.ts"
         },
@@ -14355,10 +14748,12 @@
           "path": "fixtures/atlas/doors-ts/scripts/proof.tsconfig.json"
         },
         {
+          "constantOnly": true,
           "hash": "8e0269e37593670134978a68469392c888dd341d243015d5d75350d3b753d67d",
           "path": "fixtures/atlas/doors-ts/scripts/register.mjs"
         },
         {
+          "constantOnly": true,
           "hash": "2c8bb8a8e21c3dc5c661e2e6b5b20b8c65feffe323a8b9b937c001cd5833e2a1",
           "path": "fixtures/atlas/doors-ts/scripts/task.ts"
         },
@@ -14367,6 +14762,7 @@
           "path": "fixtures/atlas/doors-ts/site/build.js"
         },
         {
+          "constantOnly": true,
           "hash": "acc556f4cac9a1f23fd76811ff82d003bbc410ef58950b57202618d1673f7c9a",
           "path": "fixtures/atlas/doors-ts/site/index.ts"
         },
@@ -14379,14 +14775,17 @@
           "path": "fixtures/atlas/doors-ts/test/fixture.json"
         },
         {
+          "constantOnly": true,
           "hash": "b074d398632e89b3fe1c467147a1210211afefd8b045a2c0a7db22472a805d4e",
           "path": "fixtures/atlas/doors-ts/test/unit.spec.js"
         },
         {
+          "constantOnly": true,
           "hash": "b383915f3bbaff980bc478ac22ba7abaa798a5a4202c4a7ae390cf2e55da26fc",
           "path": "fixtures/atlas/doors-ts/tools/check.test.js"
         },
         {
+          "constantOnly": true,
           "hash": "969a5498f0d3727682e17d0ed5ed8b18bfb6382a339f3afe042a2642b19c1df6",
           "path": "fixtures/atlas/doors-ts/tools/helper.js"
         },
@@ -14607,6 +15006,7 @@
           "path": "fixtures/atlas/exports-and-api/schema.json"
         },
         {
+          "constantOnly": true,
           "hash": "3c852153d376b84eea97b6e546cffe4e66842a2af4d480a3484518e56e3ba8bf",
           "path": "fixtures/atlas/exports-and-api/src/a.js"
         },
@@ -14620,10 +15020,12 @@
           "path": "fixtures/atlas/exports-and-api/src/apply.js"
         },
         {
+          "constantOnly": true,
           "hash": "608a3ea7f0b957dc4cfb971111b0b6045eef4e86673634ec930eb1f62cc1bec6",
           "path": "fixtures/atlas/exports-and-api/src/b.js"
         },
         {
+          "constantOnly": true,
           "hash": "303280c8f0a8b89d050d214038ff4a3daf64bf20efd8e9339bc89884d3eebee8",
           "path": "fixtures/atlas/exports-and-api/src/c.js"
         },
@@ -14701,10 +15103,12 @@
           "path": "fixtures/atlas/flat/docs/guide.md"
         },
         {
+          "constantOnly": true,
           "hash": "5d8f65d2774e206bc9f7a7a4ad39ca2dc563b5c31e46ab57ef4874961237ce29",
           "path": "fixtures/atlas/flat/src/main.js"
         },
         {
+          "constantOnly": true,
           "hash": "69555aaf875a800622333f659c6188cb2b41c55ccb2f4eeef3ed455e6e1e12f5",
           "path": "fixtures/atlas/flat/tests/check.js"
         },
@@ -14725,6 +15129,7 @@
           "path": "fixtures/atlas/gated-jobs/atlas/boundaries.yaml"
         },
         {
+          "constantOnly": true,
           "hash": "a2098bd92b10bf8b816d24b7556b1ce8c49a879d130489065ef1051c17e042f6",
           "path": "fixtures/atlas/gated-jobs/src/index.js"
         },
@@ -14761,8 +15166,56 @@
           "path": "fixtures/atlas/gated-runs/scripts/comment.mjs"
         },
         {
+          "constantOnly": true,
           "hash": "4c9a2a851c102d1e1fe2ebb20defb6a0332b9b5c431a0fd644fe21712c412c6a",
           "path": "fixtures/atlas/gated-runs/src/index.js"
+        },
+        {
+          "hash": "8fe0662d5373b6b2ba9b376f82e6554fb8c3b68de12c39693ff4d78bcc1eaa03",
+          "path": "fixtures/atlas/grammar-shapes/README.md"
+        },
+        {
+          "hash": "313f04b8ad449a3c1f6eb483b18c2987c2381bd8a03e0476ac0602e1726e5b89",
+          "path": "fixtures/atlas/grammar-shapes/package.json"
+        },
+        {
+          "hash": "4d5d38ecc649718aefc8e9f00d8172f8563d41a394ab25fa7f1be28771384dd5",
+          "parseError": true,
+          "path": "fixtures/atlas/grammar-shapes/src/broken.ts"
+        },
+        {
+          "hash": "0d18d1699032ff8af381ee90344c7fb22f36efc2365e5d9a8fa583b8e00396d9",
+          "importsFiles": [
+            "fixtures/atlas/grammar-shapes/src/mint.ts"
+          ],
+          "path": "fixtures/atlas/grammar-shapes/src/mint.test.ts"
+        },
+        {
+          "exports": [
+            "mint"
+          ],
+          "hash": "2960d362e3ad7e22a92d778027571cbc3196668e6e83afcb87feec532abfb4fb",
+          "path": "fixtures/atlas/grammar-shapes/src/mint.ts"
+        },
+        {
+          "exports": [
+            "Panel"
+          ],
+          "hash": "b53c9d8e73bc6264a4e258be7ae220c71eb58afecc021756d69e10f1be89cbe6",
+          "importsFiles": [
+            "fixtures/atlas/grammar-shapes/src/walk.ts"
+          ],
+          "path": "fixtures/atlas/grammar-shapes/src/panel.tsx"
+        },
+        {
+          "exports": [
+            "walk"
+          ],
+          "hash": "0c4140317f9bc5b8d7a8e7732361b6e84674a12d84a89836502ce972d1f9e1b2",
+          "importsFiles": [
+            "fixtures/atlas/grammar-shapes/src/mint.ts"
+          ],
+          "path": "fixtures/atlas/grammar-shapes/src/walk.ts"
         },
         {
           "hash": "ca0fb8378ed4f060e04ed66761071b06505a90bac3e5726c89945bd4bf9039f7",
@@ -14777,10 +15230,12 @@
           "path": "fixtures/atlas/host/notes/unowned-small.txt"
         },
         {
+          "constantOnly": true,
           "hash": "5c6a543b986b25fc7789dba2d70d6bb89657e16dde01a59bb5da69d0da5829fc",
           "path": "fixtures/atlas/host/pkg/alpha/cli.js"
         },
         {
+          "constantOnly": true,
           "hash": "2a8cb6d0179e8dd0edad1ce28ed41d95c3b2ce17c8ae2c695c3fd7644619e5da",
           "path": "fixtures/atlas/host/pkg/alpha/heavy.js"
         },
@@ -14796,10 +15251,12 @@
           "path": "fixtures/atlas/host/pkg/alpha/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "89a5926f199a40ed3649c6903b0867124e9e37baeb2136ad37bbdc8f3aea3f03",
           "path": "fixtures/atlas/host/pkg/alpha/util.js"
         },
         {
+          "constantOnly": true,
           "hash": "ee32ba5ac75e00d1059bc26c7573cbe41c73bd494b70ddcb701dd78a36968d0f",
           "path": "fixtures/atlas/host/pkg/beta/index.js"
         },
@@ -14863,10 +15320,12 @@
           "path": "fixtures/atlas/image-pack/scripts/previews.py"
         },
         {
+          "constantOnly": true,
           "hash": "037ecd1db38c230c248787e60fd7bfc0cb0101b187b59535b6e7483be762d350",
           "path": "fixtures/atlas/image-pack/src/a.js"
         },
         {
+          "constantOnly": true,
           "hash": "43412dc0798be080a02fdb368ee47e0696f1e15bf3d2acb147b7291c53327ffe",
           "path": "fixtures/atlas/image-pack/src/b.ts"
         },
@@ -14883,14 +15342,17 @@
           "path": "fixtures/atlas/init-fixture-manifest/spec/__fixtures__/app/pyproject.toml"
         },
         {
+          "constantOnly": true,
           "hash": "39754fe7e662e43a03f681ccdbcb24106c874196ac45c4e4d8bfacbc2093d55c",
           "path": "fixtures/atlas/init-fixture-manifest/spec/run.js"
         },
         {
+          "constantOnly": true,
           "hash": "1a104c95f33b97cbc71bb771fd74fea7e137ab32134d82a5272f61294eb09d5c",
           "path": "fixtures/atlas/init-fixture-manifest/src/index.js"
         },
         {
+          "constantOnly": true,
           "hash": "a4118f86dceeb85e0ecec434544d134b0650119f4e09a837ad2d9b3831e2a4b5",
           "path": "fixtures/atlas/init-fixture-manifest/test/fixtures/sample-repo/index.js"
         },
@@ -15006,6 +15468,7 @@
           "path": "fixtures/atlas/init-roles/packages/kernel/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "80a84a3af307cfd91a069a2145c3d561321ac3652d052c31420c88d47baa949c",
           "path": "fixtures/atlas/init-roles/packages/kernel/src/index.ts"
         },
@@ -15042,6 +15505,7 @@
           "path": "fixtures/atlas/init-roles/site/src/content/docs/f.md"
         },
         {
+          "constantOnly": true,
           "hash": "ff93e32d79ae3436dd6f8e2d633a46dac721617f26d08f2ddf1a3fc0d459357d",
           "path": "fixtures/atlas/init-roles/site/src/site-config.ts"
         },
@@ -15349,6 +15813,7 @@
           "path": "fixtures/atlas/package-publishers/chosen/packages/gamma/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "8ce1a8bdebf7ea8932799dafc1ec2c02ec6083c02429b7651eeac875e832c440",
           "path": "fixtures/atlas/package-publishers/chosen/src/index.js"
         },
@@ -15365,6 +15830,7 @@
           "path": "fixtures/atlas/package-publishers/declared/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "340b7e6f3bdcdf0e841c519da016f02eacbda3686576c1af86a47d50519d5c41",
           "path": "fixtures/atlas/package-publishers/declared/src/index.js"
         },
@@ -15400,6 +15866,7 @@
           "path": "fixtures/atlas/package-publishers/member/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "92bd26693e22cc2e7c4ca5dc8412e805cf9e0bf7848d9af71d57921ba6b000a5",
           "path": "fixtures/atlas/package-publishers/member/packages/core/index.js"
         },
@@ -15408,6 +15875,7 @@
           "path": "fixtures/atlas/package-publishers/member/packages/core/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "7735a7af722361bf5d0b5517ab0a2b869b0a613c1ef8b1e07add03971db12391",
           "path": "fixtures/atlas/package-publishers/member/packages/extra/index.js"
         },
@@ -15416,6 +15884,7 @@
           "path": "fixtures/atlas/package-publishers/member/packages/extra/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "2bcb4c456bf7d160e8c0970e9f6f311197fa52b9636af1d669993475b2d66101",
           "path": "fixtures/atlas/package-publishers/member/src/index.js"
         },
@@ -15432,6 +15901,7 @@
           "path": "fixtures/atlas/package-publishers/published/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "37f72e4651dd50622d5ee5fc9997ca39d292ce81b6fcbc6ebb8c999e537f2356",
           "path": "fixtures/atlas/package-publishers/published/src/index.js"
         },
@@ -15444,6 +15914,7 @@
           "path": "fixtures/atlas/package-publishers/unpublished/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "5e05e7c0fc0c42b3d55ad01c618b04bb4463fd9ac8759e4d40dd91227231df7c",
           "path": "fixtures/atlas/package-publishers/unpublished/src/index.js"
         },
@@ -15487,6 +15958,7 @@
           "path": "fixtures/atlas/pnpm-workspace/packages/ignored/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "39957f2b0ca5515fff7d6325350ee2b693ab1b320c0b7abb9c9d434216789c4a",
           "path": "fixtures/atlas/pnpm-workspace/packages/ignored/src/index.ts"
         },
@@ -15510,7 +15982,7 @@
           "path": "fixtures/atlas/pnpm-workspace/pnpm-workspace.yaml"
         },
         {
-          "hash": "69970247a042974bd1d7445a8e09cef911891a92a290d5476f9e074d104c92ea",
+          "hash": "92c53929ba13724bd308faa7814be14bb74c9a4b94a564c12a16b742883503cb",
           "path": "fixtures/atlas/prose-mentions/README.md"
         },
         {
@@ -15531,7 +16003,7 @@
         },
         {
           "hash": "170dccce0d53c5ab1ba19ee508e15cff66dc567f7d62866658104002cd6c1c68",
-          "path": "fixtures/atlas/prose-mentions/settings.json"
+          "path": "fixtures/atlas/prose-mentions/quotes.json"
         },
         {
           "hash": "0d1cae4f0c8bf92e279d7073dee0ee33329c185e2eb681339341554179f22d02",
@@ -15632,6 +16104,7 @@
           "path": "fixtures/atlas/python-pkg/atlas/boundaries.yaml"
         },
         {
+          "constantOnly": true,
           "hash": "67387b52097a7de082963db0b327b2b2355d2548310311f9a249c555d61815cf",
           "path": "fixtures/atlas/python-pkg/bin/trainkit.js"
         },
@@ -15909,10 +16382,12 @@
           "path": "fixtures/atlas/resolve-js/app/a.ts"
         },
         {
+          "constantOnly": true,
           "hash": "8054a9ca136f29b24dd7bc58ce9c795986b5f8986855001b7f73cbd5da11aa9a",
           "path": "fixtures/atlas/resolve-js/app/alias-target.js"
         },
         {
+          "constantOnly": true,
           "hash": "4d6c305aa3866c1d56beb6a3b2394fe9dc4b3ce5f3756a2357139efefbd969d0",
           "path": "fixtures/atlas/resolve-js/app/b.ts"
         },
@@ -15924,14 +16399,17 @@
           "path": "fixtures/atlas/resolve-js/app/c.ts"
         },
         {
+          "constantOnly": true,
           "hash": "0f8f0cbd0eee44719a1b780893185f3ee4681043e8363a8ca80edb5ded8ab46e",
           "path": "fixtures/atlas/resolve-js/app/d.js"
         },
         {
+          "constantOnly": true,
           "hash": "24c7e436b292f5b49951b64934cdf918def9fbc98b30c5e5a144a848cf868e1f",
           "path": "fixtures/atlas/resolve-js/app/d.ts"
         },
         {
+          "constantOnly": true,
           "hash": "a9e0de59cf593fe1017600bcf5614db1a908846d0d66a7eb39d4c6b82c3cbdfa",
           "path": "fixtures/atlas/resolve-js/app/dir/index.js"
         },
@@ -15945,6 +16423,7 @@
           "path": "fixtures/atlas/resolve-js/app/main.js"
         },
         {
+          "constantOnly": true,
           "hash": "385b0313dd8e351bb6202e64cbf6f55d257b30ec8daf84cd7e7ec481eb4f2054",
           "path": "fixtures/atlas/resolve-js/app/plain.js"
         },
@@ -15953,10 +16432,12 @@
           "path": "fixtures/atlas/resolve-js/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "bdabf7ccc963c224988d9940e01f45f15c7f4df2b6c2a199f08adb26c8aced1c",
           "path": "fixtures/atlas/resolve-js/pkg/index.js"
         },
         {
+          "constantOnly": true,
           "hash": "89a5926f199a40ed3649c6903b0867124e9e37baeb2136ad37bbdc8f3aea3f03",
           "path": "fixtures/atlas/resolve-js/pkg/lib/util.js"
         },
@@ -16178,6 +16659,61 @@
           "path": "fixtures/atlas/root-part/tools/run.js"
         },
         {
+          "hash": "db0b89144d37aa7953f25a0883243260749d145acea0440c677bcdefa9c815e3",
+          "path": "fixtures/atlas/run-counts/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "92e72db8d8afa51d3c379838c10c33dc152a9be34477cb37676cf6ade523d1b8",
+          "path": "fixtures/atlas/run-counts/README.md"
+        },
+        {
+          "hash": "49e3000f14b600014b3cbb26cf7f6ca35d2e1b26b72a933f35a34b74647cb354",
+          "path": "fixtures/atlas/run-counts/package.json"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/run-counts/tests/a.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/run-counts/tests/b.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/run-counts/tests/c.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/run-counts/tests/d.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/run-counts/tests/deep/e.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/run-counts/tests/deep/f.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/run-counts/tests/deep/g.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/run-counts/tests/deep/h.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/run-counts/tests/deep/i.test.js"
+        },
+        {
+          "exports": [
+            "help"
+          ],
+          "hash": "a7f078aec8088b43fe2b59d116a0d5123098b2753733a248609c207839200f8e",
+          "path": "fixtures/atlas/run-counts/tests/helpers.js"
+        },
+        {
           "hash": "91fcc8e77a7b307f37c98719ad42ff10615f62d20545ec213f54ed4a8c352f06",
           "path": "fixtures/atlas/runtime-roots/.github/workflows/ci.yml"
         },
@@ -16377,6 +16913,50 @@
           "path": "fixtures/atlas/sequence/rules/widest.js"
         },
         {
+          "hash": "f50d3e1febe7fabca877d37ec103bf629f72042b63192af0ffe05aa447b60d40",
+          "path": "fixtures/atlas/shell-globs/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "9baaf82c3b0bcfe28547c19d1f9d67438005d67042683171cf00343aed0ffe9c",
+          "path": "fixtures/atlas/shell-globs/.github/workflows/matrix.yml"
+        },
+        {
+          "hash": "67b32f9a35632e6c65e58f54627cdc95e4fedd6069cfdb52f5acc44298b784d9",
+          "path": "fixtures/atlas/shell-globs/README.md"
+        },
+        {
+          "hash": "a2e3af4e43c41d3cb23a8d9a197e8830f7083eae77d507845c9337e99e8b3eea",
+          "path": "fixtures/atlas/shell-globs/package.json"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/shell-globs/src/a.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/shell-globs/src/d.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/shell-globs/src/deep/b.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/shell-globs/src/deep/deeper/c.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/shell-globs/tools/lib/e.test.js"
+        },
+        {
+          "hash": "849dc9b7107f88404e124b0e9197cecba302d0014b6ec15893f79b7c5726fc9b",
+          "path": "fixtures/atlas/shell-globs/tools/lib/inner/f.test.js"
+        },
+        {
+          "hash": "0a3c7b551726b9614a270add08622fe351820943863659a313397c70b9b1008a",
+          "path": "fixtures/atlas/shell-globs/tools/package.json"
+        },
+        {
           "hash": "cf224f18cf2a1f06ab0abe87108af75fcece27485cc4fa4020659ec288204836",
           "path": "fixtures/atlas/spawn-helpers/.github/workflows/release.yml"
         },
@@ -16464,6 +17044,48 @@
           ],
           "hash": "10f330814d1350f25dbf070ff594c84e100e33db1cc0a78fbaf2f3289c9262b5",
           "path": "fixtures/atlas/spawned-parts/src/runner.js"
+        },
+        {
+          "hash": "5d02396a27430458ec0f9de28dd2ff9cc7fe289c2917331d9f256ccf1a41ddf0",
+          "path": "fixtures/atlas/spawned-scripts/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "25747801c71f09b43daa5a4986e2f669f512bb93301d3e8833d93cbe88f94b4a",
+          "path": "fixtures/atlas/spawned-scripts/README.md"
+        },
+        {
+          "hash": "6c267150eac15570982273f4fef962f846189442378b78ebdf70cc48cd3a7a19",
+          "path": "fixtures/atlas/spawned-scripts/package.json"
+        },
+        {
+          "hash": "3438489cb8f90e8f7858b483d74b65a0fb866d6a01d9cdeb354a5f67ab56a4be",
+          "path": "fixtures/atlas/spawned-scripts/scripts/gate.mjs"
+        },
+        {
+          "hash": "11a7b936790f956a402f39611e5f51c6042ada4a98a0f6c731fcec6db157fc16",
+          "path": "fixtures/atlas/spawned-scripts/scripts/label.ts"
+        },
+        {
+          "exports": [
+            "add"
+          ],
+          "hash": "5b63136552577a64d788dc3cd4552739d0d60f9e1adb63ec4dfb6932d56fc75d",
+          "path": "fixtures/atlas/spawned-scripts/src/add.js"
+        },
+        {
+          "hash": "f06b5888cc6450123aa40da4df07100fd5e84238fa8ae248b460c5af954226d4",
+          "importsFiles": [
+            "fixtures/atlas/spawned-scripts/src/add.js"
+          ],
+          "path": "fixtures/atlas/spawned-scripts/tests/add.test.js"
+        },
+        {
+          "hash": "6a6e0dc0697728d41d145c134e154ede5e9128d486adbfa8333759086a39ce98",
+          "path": "fixtures/atlas/spawned-scripts/tests/run-gate.test.js"
+        },
+        {
+          "hash": "646d3921bb5f9f2c8b35a6d1656ad4a3f6fd66528c5653c5cb771bd4b0b07b33",
+          "path": "fixtures/atlas/spawned-scripts/tests/smoke.test.js"
         },
         {
           "hash": "7c767c200ab57744f24a95f64bc822fe6062a114df91ca245edf86e90a76aede",
@@ -16697,6 +17319,179 @@
           "path": "fixtures/atlas/start-edges/test/run.test.js"
         },
         {
+          "hash": "dbddea213103601be2724cf753a8fb99db774ba7fcd2899328eb1b8051d63813",
+          "path": "fixtures/atlas/start-tests/README.md"
+        },
+        {
+          "hash": "b4db5ff94c144a9a3289b00789e26f0818cc83be2d065b989e8b7a82359f00d4",
+          "path": "fixtures/atlas/start-tests/command/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "4fce36e33cbec1c16ec82dc22968217a9a1eb89444599cdfcd3b6acc8087c3dd",
+          "importsFiles": [
+            "fixtures/atlas/start-tests/command/engine/run.js",
+            "fixtures/atlas/start-tests/command/engine/serve.js"
+          ],
+          "path": "fixtures/atlas/start-tests/command/engine/index.js",
+          "reexportsOnly": true
+        },
+        {
+          "exports": [
+            "run"
+          ],
+          "hash": "edf88afcce084039b37ebd20f8a4f6c0e28533dda7c5de1991ff4d9e7d4f704c",
+          "path": "fixtures/atlas/start-tests/command/engine/run.js"
+        },
+        {
+          "exports": [
+            "serve"
+          ],
+          "hash": "bc34eadf60f2793adde09c1d5b94240a74d571131545d12cdd4ad88df3bcb6d3",
+          "path": "fixtures/atlas/start-tests/command/engine/serve.js"
+        },
+        {
+          "hash": "37c8fe176e3cf41fd07627efd05cacea99ad2c85a66635f4275b2e88cd426655",
+          "path": "fixtures/atlas/start-tests/command/package.json"
+        },
+        {
+          "exports": [
+            "main"
+          ],
+          "hash": "485d4746f5ca9d94a0092a7beb7ec09eed887a38ccccc0f5c60940fa55ca1fc7",
+          "importsFiles": [
+            "fixtures/atlas/start-tests/command/engine/index.js"
+          ],
+          "path": "fixtures/atlas/start-tests/command/src/cli.js"
+        },
+        {
+          "constantOnly": true,
+          "hash": "f8448a246bc6ef6717d714e05727c35197845a1869c92c398df972273a06f3a1",
+          "path": "fixtures/atlas/start-tests/command/src/index.js"
+        },
+        {
+          "hash": "a8ddad8db8cc92dff8269afd517b644a626b0390d4b92a2e26f87a80e23430e2",
+          "importsFiles": [
+            "fixtures/atlas/start-tests/command/engine/index.js"
+          ],
+          "path": "fixtures/atlas/start-tests/command/src/server.js"
+        },
+        {
+          "hash": "c0fbca7768d08092dec6822c9964ee77c937636c3d7048fccdec42c1d91bd807",
+          "importsFiles": [
+            "fixtures/atlas/start-tests/command/engine/run.js"
+          ],
+          "path": "fixtures/atlas/start-tests/command/tests/run.test.js"
+        },
+        {
+          "hash": "a8f44dd95065836d4b18d0da1a07b31a05c05e70114594c2f0c04cd5fd4292de",
+          "path": "fixtures/atlas/start-tests/constant/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "a377017076e735812b048a90425624b38416fe7e22fed6f94cdb21c76dd41b4a",
+          "path": "fixtures/atlas/start-tests/constant/package.json"
+        },
+        {
+          "constantOnly": true,
+          "hash": "0a51bc3e685a31f3907f121ad78d31e644332be2c8ee073ea070ee5836499062",
+          "path": "fixtures/atlas/start-tests/constant/src/limit.js"
+        },
+        {
+          "exports": [
+            "work"
+          ],
+          "hash": "4102fb1d51a458de21faa882a2c7879f5b1aa39bcb3146e515f543b36de99af1",
+          "path": "fixtures/atlas/start-tests/constant/src/work.js"
+        },
+        {
+          "hash": "6ca9a1006f82799ef6ea32e7d3109afc04768afd2844a6549676a046fcd05442",
+          "importsFiles": [
+            "fixtures/atlas/start-tests/constant/src/limit.js",
+            "fixtures/atlas/start-tests/constant/src/work.js"
+          ],
+          "path": "fixtures/atlas/start-tests/constant/tests/work.test.js"
+        },
+        {
+          "hash": "03421225a034e39c3f731e30fd729798a60aa9cf4eb31476d45291144377fd32",
+          "path": "fixtures/atlas/start-tests/package/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "d2e806e327a493bbe8d7cbeb74d292bf01ea1b6080b86ec3f92f01e14ec7924d",
+          "path": "fixtures/atlas/start-tests/package/package.json"
+        },
+        {
+          "hash": "438049817c125095cf70b9e7546a8fd9d4f2383bfff91dc774cd47c6376070c4",
+          "importsFiles": [
+            "fixtures/atlas/start-tests/package/src/parse.js"
+          ],
+          "path": "fixtures/atlas/start-tests/package/src/index.js",
+          "reexportsOnly": true
+        },
+        {
+          "exports": [
+            "parse"
+          ],
+          "hash": "b50eec2b463667dff8cd2e966a201f6e7fa183bb8c709466a00d62923f65a095",
+          "importsFiles": [
+            "fixtures/atlas/start-tests/package/text/token.js"
+          ],
+          "path": "fixtures/atlas/start-tests/package/src/parse.js"
+        },
+        {
+          "hash": "a999314be5b2145d357c810782980842ac2dc25c41b3bbd1c686e3900f95db5f",
+          "importsFiles": [
+            "fixtures/atlas/start-tests/package/src/index.js"
+          ],
+          "path": "fixtures/atlas/start-tests/package/tests/parse.test.js"
+        },
+        {
+          "exports": [
+            "token"
+          ],
+          "hash": "360d0b805c148f422677c8bc7dd18b0b0f1b95083677703d71b527d373983fa4",
+          "path": "fixtures/atlas/start-tests/package/text/token.js"
+        },
+        {
+          "hash": "6d1379cdb285dd3a692aa6bdd3c0d93fb4c9963b657900cea585f56582ad9db5",
+          "path": "fixtures/atlas/start-tie/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "7172b758c3b6189d78bc9b8c6940b0d86722112bbb35a34f3ce49371544bb5e0",
+          "path": "fixtures/atlas/start-tie/.github/workflows/publish.yml"
+        },
+        {
+          "hash": "f521cdf1c14c04f705eb2dcba21a223c684fe039688cf39fef8b9d3bfab1333a",
+          "path": "fixtures/atlas/start-tie/README.md"
+        },
+        {
+          "hash": "cda9cffca69b94630204d5074cc9fab647536baeaf9eae95e1ef941d0fed8013",
+          "path": "fixtures/atlas/start-tie/package.json"
+        },
+        {
+          "hash": "3a94ea9a21e3f5f9ae7cd2cdd564688b66c8cc55a7c92d7b15e53cd475ec260f",
+          "importsFiles": [
+            "fixtures/atlas/start-tie/src/tie.js"
+          ],
+          "path": "fixtures/atlas/start-tie/src/cli.js"
+        },
+        {
+          "hash": "afa9df5261723a950f19c16800ca3c39abb1614d1997a613a02d5672c1ec426a",
+          "importsFiles": [
+            "fixtures/atlas/start-tie/src/tie.js"
+          ],
+          "path": "fixtures/atlas/start-tie/src/index.js"
+        },
+        {
+          "exports": [
+            "tie"
+          ],
+          "hash": "bd6dbde159b48a83f596d1d1dcbc5424403a0d2628812ba31f41b3790f47df6b",
+          "path": "fixtures/atlas/start-tie/src/tie.js"
+        },
+        {
+          "hash": "f97964d7e1bdfcbb691f4d773e68af09f4d09328fffa2c21e279569824a8bc0c",
+          "path": "fixtures/atlas/start-tie/tsconfig.json"
+        },
+        {
           "hash": "378b1677cda5eb374614b0e1890f5949dd06681b756671bb993e578504bae03c",
           "path": "fixtures/atlas/syntax-checks/.github/workflows/ci.yml"
         },
@@ -16890,7 +17685,8 @@
           "path": "fixtures/atlas/ts-probe/packages/core/src/index.ts",
           "reexportsAll": [
             "fixtures/atlas/ts-probe/packages/core/src/engine.ts"
-          ]
+          ],
+          "reexportsOnly": true
         },
         {
           "hash": "3d4dd42763ea881be7c9d0efb60ada1e6e3c06eeec26bac306d9efaf8330cc29",
@@ -16936,7 +17732,8 @@
           "importsFiles": [
             "fixtures/atlas/ts-probe/packages/starter-a/src/setup.ts"
           ],
-          "path": "fixtures/atlas/ts-probe/packages/starter-a/src/index.ts"
+          "path": "fixtures/atlas/ts-probe/packages/starter-a/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -16954,7 +17751,8 @@
           "importsFiles": [
             "fixtures/atlas/ts-probe/packages/starter-b/src/setup.ts"
           ],
-          "path": "fixtures/atlas/ts-probe/packages/starter-b/src/index.ts"
+          "path": "fixtures/atlas/ts-probe/packages/starter-b/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -16972,7 +17770,8 @@
           "importsFiles": [
             "fixtures/atlas/ts-probe/packages/starter-c/src/setup.ts"
           ],
-          "path": "fixtures/atlas/ts-probe/packages/starter-c/src/index.ts"
+          "path": "fixtures/atlas/ts-probe/packages/starter-c/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -16997,6 +17796,7 @@
           "path": "fixtures/atlas/tsconfig-extends/src/a.js"
         },
         {
+          "constantOnly": true,
           "hash": "4d6c305aa3866c1d56beb6a3b2394fe9dc4b3ce5f3756a2357139efefbd969d0",
           "path": "fixtures/atlas/tsconfig-extends/src/b.js"
         },
@@ -17009,7 +17809,7 @@
           "path": "fixtures/atlas/unread-claims/.github/workflows/ci.yml"
         },
         {
-          "hash": "776bc0a91635b8fc96a3621a62309df400c4e85757793821246e3f401e5e8924",
+          "hash": "dfa9d571250f92c0843d9dc92272501cdd7f23afb4f3270706625603efbb7a7a",
           "path": "fixtures/atlas/unread-claims/README.md"
         },
         {
@@ -17023,14 +17823,84 @@
           "unreadSyntax": "nul-character"
         },
         {
+          "constantOnly": true,
           "hash": "531622a1f94fbebb641f543909ea8f4ad631177947028f0cfbd4e23f9360155a",
           "path": "fixtures/atlas/unread-claims/src/app.ts"
         },
         {
-          "hash": "3598b4c333abdc1eb7fdb9e142bd486b08c8a874cae18f88b76bbfc701575d74",
+          "hash": "66eed707136fa57fdb09ac37d260d975607de1876e570bf0c4021554937cd8d1",
           "parseError": true,
           "path": "fixtures/atlas/unread-claims/src/panel.tsx",
           "unreadSyntax": "jsx-ampersand"
+        },
+        {
+          "hash": "1b0c47ffab022149124bcef16243c26ccb2229914e366e5eba0b33fbc6de581c",
+          "path": "fixtures/atlas/unseen-apps/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "745635bad66400821043b42c2b2d923e65e9df82035ac3a11cea5122a3b4017a",
+          "path": "fixtures/atlas/unseen-apps/Dockerfile"
+        },
+        {
+          "hash": "218765d26f923800117b2ac51da354f57b9b2a4f364352ff38a9d4a9ab2943dd",
+          "path": "fixtures/atlas/unseen-apps/README.md"
+        },
+        {
+          "hash": "f168d5884868a858206914e169087463c621dc12ccc3381c14ea210379fccc00",
+          "path": "fixtures/atlas/unseen-apps/apps/desktop/src-tauri/Cargo.toml"
+        },
+        {
+          "hash": "487059eaf8a947b80f20a9aacac038a5047b2ad69d2401b827376c67d6fe847f",
+          "path": "fixtures/atlas/unseen-apps/apps/desktop/src-tauri/build.rs"
+        },
+        {
+          "hash": "190f9d1014687af5f7ca3e32768a0633befa38cedaf7a2faee58f5fc659c89ea",
+          "path": "fixtures/atlas/unseen-apps/apps/desktop/src-tauri/src/main.rs"
+        },
+        {
+          "hash": "2dbc6469cf3685f917b22d8b250166ca0adf22ca4922cd4beb437edae72703fd",
+          "path": "fixtures/atlas/unseen-apps/apps/desktop/src-tauri/tauri.conf.json"
+        },
+        {
+          "hash": "257079561ace64e411a027e1b65d12983cf48ec8ff056d163472cdb4da1cb39a",
+          "path": "fixtures/atlas/unseen-apps/fly.toml"
+        },
+        {
+          "hash": "744ff1756506d64a0e937f8ba41383b921beac2dfaeeb9be38d967c81f81ccf1",
+          "path": "fixtures/atlas/unseen-apps/package.json"
+        },
+        {
+          "hash": "c3544d0012963cfb1402f20c448b2ba47fbf0c7fdd1801ede20cb0edd5c4ab89",
+          "importsFiles": [
+            "fixtures/atlas/unseen-apps/packages/server/src/server.js"
+          ],
+          "path": "fixtures/atlas/unseen-apps/packages/server/src/main.js"
+        },
+        {
+          "exports": [
+            "createServer"
+          ],
+          "hash": "e77bd9bc642f8a29b72e33e64649a7ee49c08637bc5101c861118d8d32f0d26e",
+          "path": "fixtures/atlas/unseen-apps/packages/server/src/server.js"
+        },
+        {
+          "exports": [
+            "addLayer",
+            "readState"
+          ],
+          "hash": "c0e54f7bec471d905897408cfe1b30bffe10cbc2b945324fe0283e04c82e1b3f",
+          "path": "fixtures/atlas/unseen-apps/packages/ui/src/api.js"
+        },
+        {
+          "exports": [
+            "listen"
+          ],
+          "hash": "60aee9bfbf821e1851e3b002ba3ff0e84ef3706838da4d1a5d5b00c8f0236b8e",
+          "path": "fixtures/atlas/unseen-apps/packages/ui/src/events.js"
+        },
+        {
+          "hash": "ce0b3b73f709b74b15cc70add1979d202e86c07a62bc6fc4ef45e6af477ab59c",
+          "path": "fixtures/atlas/unseen-apps/render.yaml"
         },
         {
           "hash": "417cc8cb5f8999165b4e1e19c88adaeae507da2822b8e29f8401d1fff0d9525b",
@@ -17396,7 +18266,8 @@
           "importsFiles": [
             "fixtures/swarm-atlas/mapped-repo/src/core/engine.js"
           ],
-          "path": "fixtures/swarm-atlas/mapped-repo/src/core/index.js"
+          "path": "fixtures/swarm-atlas/mapped-repo/src/core/index.js",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -17444,8 +18315,8 @@
       "origin": "authored",
       "outsideImports": 3,
       "role": "code",
-      "testedBy": 26,
-      "unresolvedSites": 48
+      "testedBy": 39,
+      "unresolvedSites": 49
     },
     {
       "dynamicReads": 0,
@@ -17528,19 +18399,19 @@
           "path": "indexes/failing.json"
         },
         {
-          "hash": "30b3c3730b9df6d4b42016ee3b466354dea6c504e7c98c7c00bbb360824cf08b",
+          "hash": "14ceddcca57a40627f559f9a4be367f657528ff9c0196c6b88423c853061169c",
           "path": "indexes/integrity/chain.jsonl"
         },
         {
-          "hash": "9659b832a8b65d676fc2fc525c5edb0be03364946c8e4da2205ead644a5466c7",
+          "hash": "e9b318201b526d308d6a2a0bfd4e51c38f33098b0295d9f6c55b5e2d4863f824",
           "path": "indexes/latest-by-repo.json"
         },
         {
-          "hash": "a38644bd8e3f2582cf73c144a0f662ca54aab312f2d0cf2d2ba742061865e89c",
+          "hash": "fb82ee11eb51ac93fe1949f71a8fb61dcb72b1c45aa47c0140e33e50e84e0284",
           "path": "indexes/stale.json"
         },
         {
-          "hash": "0bf1e8294c26cd1869e275fd1f2e7ca80a3b7693cf4357fbed6312b0c5d4f010",
+          "hash": "42d000d5f2012f5e12fb6aeaccfd7ed2fcf1a8e164e90d144a77db5e057053ad",
           "path": "indexes/trends.json"
         }
       ],
@@ -17556,8 +18427,8 @@
     },
     {
       "dynamicReads": 1,
-      "dynamicSpawns": 17,
-      "dynamicSpawnsInTests": 17,
+      "dynamicSpawns": 1,
+      "dynamicSpawnsInTests": 1,
       "dynamicWrites": 1,
       "entryPoints": [
         "packages/ingest/run.js"
@@ -18133,7 +19004,7 @@
           ]
         },
         {
-          "hash": "5c920f02dbe3616fd7e46dc4751fe205f7fe26ffd29367facb34aea3ced90def",
+          "hash": "d0aa8e5ac46aea2b2f06ee8381208b0da7c2ad5d1e2c59db3e3513f1dc640964",
           "path": "packages/ingest/package.json"
         },
         {
@@ -18985,7 +19856,7 @@
       "outsideReads": 32,
       "outsideWrites": 14,
       "role": "code",
-      "testedBy": 61,
+      "testedBy": 72,
       "unresolvedSites": 1
     },
     {
@@ -19069,8 +19940,8 @@
     },
     {
       "dynamicReads": 4,
-      "dynamicSpawns": 8,
-      "dynamicSpawnsInTests": 8,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
         "packages/portfolio/generate.js"
@@ -19301,7 +20172,7 @@
           "path": "packages/portfolio/lib/tracked-files.js"
         },
         {
-          "hash": "5d87e528b0f83a8c56787b5c4e6c2b1efd1cfabbc31f4b5b7f717ecab0232e0a",
+          "hash": "b2f2c51ad5a59b6228a05fdc248559ad95d929482c15b4ad6bd1a785b506c301",
           "path": "packages/portfolio/package.json"
         },
         {
@@ -19344,7 +20215,7 @@
       "outsideReads": 17,
       "outsideWrites": 6,
       "role": "code",
-      "testedBy": 19,
+      "testedBy": 22,
       "unresolvedSites": 4
     },
     {
@@ -19680,6 +20551,14 @@
           "path": "records/dogfood-lab/testing-os/2026/09/24/run-00muevqg81-IieQHz3KKnk-Xg.json"
         },
         {
+          "hash": "f37d177cf39bb3b41562faf43f34de9e4afb7ce9e48d3c8571662d712cb847f5",
+          "path": "records/dogfood-lab/testing-os/2026/09/24/run-00muf9359r-QD1o4k9cq4MpmA.json"
+        },
+        {
+          "hash": "c4f66faa3cb867bda7b1ff1d11f664c2e1a25c55726020a3d18c88d41d03f78f",
+          "path": "records/dogfood-lab/testing-os/2026/09/24/run-00muf9oimx-28gQqxKJKS8nbg.json"
+        },
+        {
           "hash": "d80bd628d70f1275786c79da48bfb6da79ef0eb303eceed6fe87960e8c7a308c",
           "path": "records/mcp-tool-shop-org/a11y-demo-site/2026/03/20/run-a11y-demo-site-23329256169-1.json"
         },
@@ -19896,8 +20775,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 10,
-      "dynamicSpawnsInTests": 10,
+      "dynamicSpawns": 2,
+      "dynamicSpawnsInTests": 2,
       "dynamicWrites": 0,
       "entryPoints": [
         "packages/report/build-submission.js",
@@ -20194,7 +21073,7 @@
           "path": "packages/report/init.test.js"
         },
         {
-          "hash": "3b5be7dcd3bcddb29972fc00c8022f8b7fa46efad775e50e137efed464c3c13e",
+          "hash": "27270be86733be2bbcc7c9bfb262c2723813e57c80f4ae762412ecab5c990721",
           "path": "packages/report/package.json"
         },
         {
@@ -20258,7 +21137,7 @@
       "outsideReads": 10,
       "outsideWrites": 3,
       "role": "code",
-      "testedBy": 23,
+      "testedBy": 28,
       "unresolvedSites": 0
     },
     {
@@ -20301,11 +21180,11 @@
           "path": ".gitignore"
         },
         {
-          "hash": "2c0d30d13475c349cd3a3078abf99cd956e778cd0e2718183984986fea103776",
+          "hash": "3dc218a92b06858074273bbdda57d08e71b0890de8b660a422104594b45d43e9",
           "path": "CHANGELOG.md"
         },
         {
-          "hash": "074d700bde986f78bfb59b6f06986081c44adc2a03727142dbdfb16c83323eb2",
+          "hash": "c66d189757d5fc26fbd9d8b7033e2dc05986c906dbadb354c63f111cfaa334b4",
           "path": "CLAUDE.md"
         },
         {
@@ -20313,7 +21192,7 @@
           "path": "CONTRIBUTING.md"
         },
         {
-          "hash": "c02dd50374a787f37f6658cbe64142a12af6fd8dd762b0fd681a751001127e79",
+          "hash": "af7e54b445bff63423b28f028346a6ab54ad45df768d3f44bac69d1adaa0571d",
           "path": "HANDOFF.md"
         },
         {
@@ -20321,39 +21200,39 @@
           "path": "LICENSE"
         },
         {
-          "hash": "8d6f310790cda68f52dca42d40ae8f0d6269324b6b8ca2d02e03ea8348d14480",
+          "hash": "f9405283aa0a7f9cd1ce031f51665b6c965970032193417606bde01af33250cb",
           "path": "README.es.md"
         },
         {
-          "hash": "b88c82d02cbc2cd2db46d9f2003662e796852d24593e7364a8383a461847db04",
+          "hash": "162b7398f18bcb2aba981d84f6edc5fe55dbf1ffb3261d7a85e7c0fd83c328e2",
           "path": "README.fr.md"
         },
         {
-          "hash": "4d676913c94fdb413bed72adf25669328d1ad71cdab339349172357385fa4cdb",
+          "hash": "062ab355ef9b1abb43f919be1ef1d59f59f87b450aedd2ddf6c45aabe5f7c91c",
           "path": "README.hi.md"
         },
         {
-          "hash": "bc34f36440361bba4489e53a644da78d4544248ce4b87dab9fe24fc0f898b969",
+          "hash": "32346d4110cdc37a03b0bf7de87cc9a45901f0173006aa99245e287f48ccf7f6",
           "path": "README.it.md"
         },
         {
-          "hash": "f8f1eb196a3aeb2c465b939d6f1dc17b214900664f7112a14919127abe9fcf98",
+          "hash": "389ab700543d1963d9816c7bf9383f16dbbc565794292b2a6e4fd8990ebc1803",
           "path": "README.ja.md"
         },
         {
-          "hash": "6963292af5f98778d99de61b2329694742433542f3676bf048d0b5d8ea69461b",
+          "hash": "4ea1230abaeed59914a1c10d72fe6b4a334932eb7cdfd42ea3eb4c09fa71e1d5",
           "path": "README.md"
         },
         {
-          "hash": "adeb7ab0055b05c4a3849fa8265f9f03cf41fcd319303fceb9d9918ecf593add",
+          "hash": "ae3a1aad846e35a40593cc0ceacba79493e76a21e98035795aef4da8cc6f6943",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "2dea18048a3890c9eb85e103fd678ae971cbb0ca95a089775ce9c5f74acef705",
+          "hash": "c7bebeb143b9c4f0ebafe234e2200f16cc8e284263f236d56a0f380b54c3fcb6",
           "path": "README.zh.md"
         },
         {
-          "hash": "730a6cedae074aea6c3f7ae9b1d6084606103673c1a2dae22670a369d7c1d61e",
+          "hash": "deaadf9c73c9f33874f6c6cdd7fedb41aa9140f40d0fef9e38be19215527b936",
           "path": "SCORECARD.md"
         },
         {
@@ -20361,15 +21240,15 @@
           "path": "SECURITY.md"
         },
         {
-          "hash": "5d004255379b8e303deb3c9f815c6735b4ad238817a743e30822f73020e156aa",
+          "hash": "190ab8017bb5c5ac8dbdc954340dd3364b36447b56d6bcece618ed6139093d3c",
           "path": "SHIP_GATE.md"
         },
         {
-          "hash": "87a71d1ddb21fc706988dfe20684f4085677714e9fcd50c198da6c3251c5f2a0",
+          "hash": "4d7c89dd7fd1a12bfd01b1385218a8bc2aa70a45ded374f91ab1846d8bafdaf0",
           "path": "package-lock.json"
         },
         {
-          "hash": "25c89bff9f55164a364a13f7564d0ec75da95eb1a07df2d5477a524ac1802ca1",
+          "hash": "b621fb7b339c4d88ea27441cda2aa4f252c993c0540494f0a9409fbf1b494689",
           "path": "package.json"
         },
         {
@@ -20410,7 +21289,7 @@
           "path": "packages/schemas/README.md"
         },
         {
-          "hash": "96b096972c5cfd307b0fccaea08cf39c8e45d15366ec515a5638ac5d5216163f",
+          "hash": "58f168d263383e9fa46bbbdf9848778ddd832e6a954c7be5c446d892d0455332",
           "path": "packages/schemas/package.json"
         },
         {
@@ -20634,13 +21513,13 @@
       "origin": "authored",
       "outsideReads": 2,
       "role": "code",
-      "testedBy": 106,
+      "testedBy": 113,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 11,
-      "dynamicSpawns": 30,
-      "dynamicSpawnsInTests": 30,
+      "dynamicReads": 12,
+      "dynamicSpawns": 7,
+      "dynamicSpawnsInTests": 7,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -21644,7 +22523,7 @@
           "path": "scripts/sync-version.test.mjs"
         },
         {
-          "hash": "a61fc08832845af5bc52c27aed47da01be4aa35c562dbec040a8947dbc63c121",
+          "hash": "0b8f81bbfcd9760289627f3ab709541162305c6f173ccaff2cdbdc52760919ef",
           "path": "scripts/test-floor-allowlist.json"
         }
       ],
@@ -21654,7 +22533,7 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
-      "outsideReads": 47,
+      "outsideReads": 45,
       "outsideWrites": 3,
       "role": "code",
       "testedBy": 16,
@@ -21662,8 +22541,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 1,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -21714,7 +22593,7 @@
             "summaryEditUrl",
             "triggerNoun"
           ],
-          "hash": "6137296c8711e5e9459dbd1763153400b116eb5d8225ac7d8e7a88778c16b313",
+          "hash": "864ec56b7a3d75c01ce013b6c3a2c540aa47c8013388514f40f4e9ed209c7b63",
           "path": "site/public/atlas/render.js"
         },
         {
@@ -21730,7 +22609,7 @@
           "path": "site/public/logo.png"
         },
         {
-          "hash": "472a0ec812b44974c1bb88704838298889f5a31d586ddbb15af987f17d6b5696",
+          "hash": "c51573f32490f188d4de0617aa48962b397dbbccdf757e99d71d6f496d195108",
           "path": "site/public/screenshots/verify-output.svg"
         },
         {
@@ -21742,7 +22621,7 @@
           "path": "site/src/components/BaseLayout.test.mjs"
         },
         {
-          "hash": "b2ae2a58ab6eb30afdf4e3a2cd6cc42a842bdd66eef8c68110ac1e187dab23d7",
+          "hash": "2f78fa3e637b7cae1fe357fa8a89df252a3b9f6bbb642334a0d1f2945ca08010",
           "importsFiles": [
             "site/public/atlas/render.js"
           ],
@@ -21761,7 +22640,7 @@
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "5fc9c4846b088999827ca58e520820c17a1e4aa90e111926fbb8f990c3139f9e",
+          "hash": "afd6f442fb08607b6c2cd2080dce992385db76499378944e8bd511ac66426164",
           "path": "site/src/content/docs/handbook/atlas.md"
         },
         {
@@ -22519,7 +23398,7 @@
           "path": "packages/verify/lint-scenario.test.js"
         },
         {
-          "hash": "fef9aa9e08e5e9cfa3396d3b6de4464483d0cf162e4265e63c0243bf3ff79725",
+          "hash": "839f4eb09632232838ef1e85460a188a8219fa4378a3fa2facea3302657f8ca0",
           "path": "packages/verify/package.json"
         },
         {
@@ -22800,7 +23679,7 @@
       "origin": "authored",
       "outsideReads": 9,
       "role": "code",
-      "testedBy": 72,
+      "testedBy": 83,
       "unresolvedSites": 0
     }
   ],
@@ -22996,7 +23875,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 63
+          "files": 65
         },
         {
           "boundary": "dogfood",
@@ -24063,6 +24942,12 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/core/built-tests.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/core/callbacks.test.js",
           "runKind": "executes"
         },
@@ -24070,6 +24955,12 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/atlas/core/caller-roots.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/atlas/core/closure-roots.test.js",
           "runKind": "executes"
         },
         {
@@ -24118,18 +25009,6 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/atlas/core/edges.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/core/entry-points.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/core/extract-imports.test.js",
           "runKind": "executes"
         },
         {
@@ -25266,7 +26145,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 567,
+      "runsCount": 578,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -26532,7 +27411,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 63
+          "files": 65
         },
         {
           "boundary": "docker",
@@ -27610,6 +28489,12 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/core/built-tests.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/core/callbacks.test.js",
           "runKind": "executes"
         },
@@ -27617,6 +28502,12 @@
           "job": "publish",
           "matched": true,
           "path": "packages/atlas/core/caller-roots.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "packages/atlas/core/closure-roots.test.js",
           "runKind": "executes"
         },
         {
@@ -27665,18 +28556,6 @@
           "job": "publish",
           "matched": true,
           "path": "packages/atlas/core/edges.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/core/entry-points.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/core/extract-imports.test.js",
           "runKind": "executes"
         },
         {
@@ -28797,7 +29676,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 571,
+      "runsCount": 582,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -29212,7 +30091,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 31
+          "files": 33
         }
       ],
       "readers": [],
@@ -29290,7 +30169,12 @@
       "landings": [
         "dogfood/roadmap",
         "dogfood/roadmap/latest.json",
-        "policies/repos"
+        "indexes",
+        "indexes/integrity/anchors",
+        "indexes/integrity/chain.jsonl",
+        "policies/repos",
+        "records",
+        "records/_rejected"
       ],
       "mentions": [],
       "name": "swarm",
@@ -29315,6 +30199,15 @@
           "files": 2
         },
         {
+          "boundary": "ingest",
+          "depth": 2,
+          "enters": {
+            "file": "packages/ingest/run.js",
+            "from": "packages/dogfood-swarm/commands/persist.js"
+          },
+          "files": 18
+        },
+        {
           "boundary": "report",
           "depth": 3,
           "enters": {
@@ -29330,7 +30223,16 @@
             "file": "packages/schemas/src/json/dogfood-roadmap.schema.json",
             "from": "packages/dogfood-swarm/commands/lib/roadmap-seed.js"
           },
-          "files": 8
+          "files": 9
+        },
+        {
+          "boundary": "verify",
+          "depth": 3,
+          "enters": {
+            "file": "packages/verify/index.js",
+            "from": "packages/ingest/run.js"
+          },
+          "files": 10
         }
       ],
       "readers": [
@@ -29449,6 +30351,197 @@
           "target": "dogfood/roadmap/latest.json"
         },
         {
+          "by": ".github/workflows/ingest.yml",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/atlas/adapter/page.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "indexes"
+        },
+        {
+          "by": "packages/atlas/core/doors.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "indexes"
+        },
+        {
+          "by": "packages/atlas/core/landings.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "indexes"
+        },
+        {
+          "by": "packages/ingest/anchor/compute-root.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/ingest/anchor/compute-root.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/ingest/anchor/compute-root.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/ingest/f-ingest-003-flag-value-not-flag.test.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "indexes"
+        },
+        {
+          "by": "packages/ingest/lib/chain-manifest.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/ingest/lib/chain-manifest.js",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/ingest/lib/chain-manifest.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/ingest/rebuild-indexes.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/ingest/rebuild-indexes.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/ingest/rebuild-indexes.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/portfolio/generate.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/portfolio/generate.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "packages/report/f-d433f8a4-status-path-traversal.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "indexes"
+        },
+        {
+          "by": "packages/report/status.js",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "scripts/atlas-render.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "scripts/atlas-render.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "scripts/atlas-render.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "scripts/atlas-render.mjs",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "indexes"
+        },
+        {
+          "by": "site/public/dashboard/index.html",
+          "call": "literal",
+          "confidence": "text",
+          "target": "indexes"
+        },
+        {
+          "by": "site/src/components/atlas-page.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "indexes"
+        },
+        {
+          "by": "packages/ingest/anchor/compute-root.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "indexes/integrity/anchors"
+        },
+        {
+          "by": "packages/ingest/anchor/compute-root.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "indexes/integrity/anchors"
+        },
+        {
+          "by": "packages/ingest/anchor/compute-root.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "indexes/integrity/anchors"
+        },
+        {
+          "by": "packages/ingest/f-ingest-003-flag-value-not-flag.test.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "indexes/integrity/anchors"
+        },
+        {
+          "by": "packages/ingest/lib/chain-manifest.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "indexes/integrity/chain.jsonl"
+        },
+        {
+          "by": "packages/ingest/lib/chain-manifest.js",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "indexes/integrity/chain.jsonl"
+        },
+        {
+          "by": "packages/ingest/lib/chain-manifest.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "indexes/integrity/chain.jsonl"
+        },
+        {
           "by": "packages/findings/synthesis/apply-recommendation.js",
           "call": "existsSync",
           "confidence": "ast",
@@ -29563,6 +30656,198 @@
           "confidence": "ast",
           "fromTests": true,
           "target": "policies/repos"
+        },
+        {
+          "by": "packages/atlas/adapter/explain.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records"
+        },
+        {
+          "by": "packages/atlas/adapter/page-clone-commits.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records"
+        },
+        {
+          "by": "packages/atlas/adapter/page-doors.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records"
+        },
+        {
+          "by": "packages/atlas/adapter/page.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records"
+        },
+        {
+          "by": "packages/atlas/adapter/templates.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records"
+        },
+        {
+          "by": "packages/atlas/core/doors.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records"
+        },
+        {
+          "by": "packages/atlas/core/landings.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records"
+        },
+        {
+          "by": "packages/dogfood-swarm/wave17-display-layer.test.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records"
+        },
+        {
+          "by": "packages/findings/README.md",
+          "call": "--records-dir",
+          "confidence": "text",
+          "target": "records"
+        },
+        {
+          "by": "packages/findings/derive/load-records.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "records"
+        },
+        {
+          "by": "packages/findings/derive/load-records.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "records"
+        },
+        {
+          "by": "packages/findings/derive/load-records.js",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "records"
+        },
+        {
+          "by": "packages/ingest/persist.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "records"
+        },
+        {
+          "by": "packages/ingest/persist.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "records"
+        },
+        {
+          "by": "packages/ingest/rebuild-indexes.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "records"
+        },
+        {
+          "by": "packages/ingest/rebuild-indexes.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "records"
+        },
+        {
+          "by": "packages/portfolio/lib/compute-trends.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "records"
+        },
+        {
+          "by": "packages/portfolio/lib/compute-trends.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "records"
+        },
+        {
+          "by": "packages/portfolio/lib/compute-trends.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records"
+        },
+        {
+          "by": "packages/report/status.js",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "records"
+        },
+        {
+          "by": "packages/schemas/test/stageC-supported-versions-lockstep-seal.test.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records"
+        },
+        {
+          "by": "site/src/components/atlas-page.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records"
+        },
+        {
+          "by": "packages/dogfood-swarm/wave17-display-layer.test.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "records/_rejected"
+        },
+        {
+          "by": "packages/findings/derive/load-records.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "records/_rejected"
+        },
+        {
+          "by": "packages/findings/derive/load-records.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "records/_rejected"
+        },
+        {
+          "by": "packages/findings/derive/load-records.js",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "records/_rejected"
+        },
+        {
+          "by": "packages/ingest/persist.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "records/_rejected"
+        },
+        {
+          "by": "packages/ingest/persist.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "records/_rejected"
+        },
+        {
+          "by": "packages/ingest/rebuild-indexes.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "records/_rejected"
+        },
+        {
+          "by": "packages/ingest/rebuild-indexes.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "records/_rejected"
         }
       ],
       "runs": [
@@ -30223,6 +31508,11 @@
     },
     {
       "from": "dogfood-swarm",
+      "kind": "spawns",
+      "to": "ingest"
+    },
+    {
+      "from": "dogfood-swarm",
       "kind": "file",
       "to": "report"
     },
@@ -30332,8 +31622,8 @@
     }
   ],
   "generatedFrom": {
-    "commit": "451e329a455ccb63e0e682d3093379164e133954",
-    "tracked": 2041
+    "commit": "330577ce1afa8bd09e657c160fc3a1af2a1e22cb",
+    "tracked": 2191
   },
   "landings": [
     {
@@ -30416,6 +31706,12 @@
           "fromTests": true
         },
         {
+          "by": "packages/atlas/adapter/page-bootstrap-writes.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/atlas/adapter/page-checked-runs.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -30446,6 +31742,18 @@
           "fromTests": true
         },
         {
+          "by": "packages/atlas/adapter/page-run-counts.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/adapter/page-shell-globs.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/atlas/adapter/page-start-chain.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -30464,6 +31772,12 @@
           "fromTests": true
         },
         {
+          "by": "packages/atlas/adapter/page-start-tests.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/atlas/adapter/page-untracked-outputs.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -30477,6 +31791,18 @@
         },
         {
           "by": "packages/atlas/core/built-runs.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/core/built-tests.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/core/closure-roots.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -30764,6 +32090,13 @@
           "by": "packages/dogfood-swarm/lib/worktree.js",
           "confidence": "weak",
           "stamps": true
+        },
+        {
+          "by": "packages/dogfood-swarm/lib/worktree.js",
+          "confidence": "weak",
+          "unless": [
+            "exists"
+          ]
         }
       ]
     },
@@ -31650,6 +32983,18 @@
     {
       "readers": [
         {
+          "by": "packages/atlas/adapter/page-bootstrap-writes.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/bootstrap-writes",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/atlas/core/build-config.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -31710,6 +33055,40 @@
         }
       ],
       "target": "fixtures/atlas/built-runs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/core/built-tests.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/built-tests",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/built-tests/src/tests/total.test.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/built-tests/src/tests/unit/sum.test.ts",
       "writers": []
     },
     {
@@ -31786,6 +33165,18 @@
     {
       "readers": [
         {
+          "by": "packages/atlas/core/closure-roots.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/closure-roots",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/atlas/core/command-files.test.js",
           "call": "readFileSync",
           "confidence": "ast",
@@ -31833,6 +33224,18 @@
     {
       "readers": [
         {
+          "by": "packages/atlas/adapter/page-config-readers.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/config-readers",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/atlas/core/container-starts.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -31840,6 +33243,18 @@
         }
       ],
       "target": "fixtures/atlas/container-starts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/adapter/page-cwd-output.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/cwd-output",
       "writers": []
     },
     {
@@ -32006,6 +33421,29 @@
         }
       ],
       "target": "fixtures/atlas/gated-runs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/core/grammar-shapes.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/grammar-shapes",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/grammar-shapes/src/mint.test.ts",
       "writers": []
     },
     {
@@ -32386,6 +33824,117 @@
     {
       "readers": [
         {
+          "by": "packages/atlas/adapter/page-run-counts.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/run-counts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/run-counts/tests/a.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/run-counts/tests/b.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/run-counts/tests/c.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/run-counts/tests/d.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/run-counts/tests/deep/e.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/run-counts/tests/deep/f.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/run-counts/tests/deep/g.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/run-counts/tests/deep/h.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/run-counts/tests/deep/i.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/atlas/core/runtime-roots.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -32404,6 +33953,84 @@
         }
       ],
       "target": "fixtures/atlas/sequence",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/adapter/page-shell-globs.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/shell-globs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/shell-globs/src/a.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/shell-globs/src/d.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/shell-globs/src/deep/b.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/shell-globs/src/deep/deeper/c.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/shell-globs/tools/lib/e.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/shell-globs/tools/lib/inner/f.test.js",
       "writers": []
     },
     {
@@ -32439,6 +34066,75 @@
         }
       ],
       "target": "fixtures/atlas/spawned-parts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/adapter/page-spawned-scripts.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/spawned-scripts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "fixtures/atlas/spawned-scripts/tests/run-gate.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/spawned-scripts/scripts/gate.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "fixtures/atlas/spawned-scripts/tests/smoke.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/spawned-scripts/scripts/label.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/spawned-scripts/tests/add.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/spawned-scripts/tests/run-gate.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/spawned-scripts/tests/smoke.test.js",
       "writers": []
     },
     {
@@ -32507,6 +34203,63 @@
         }
       ],
       "target": "fixtures/atlas/start-edges/test/run.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/adapter/page-start-tests.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/start-tests",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/start-tests/command/tests/run.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/start-tests/constant/tests/work.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/start-tests/package/tests/parse.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/adapter/page-start-door.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/start-tie",
       "writers": []
     },
     {
@@ -32645,6 +34398,18 @@
         }
       ],
       "target": "fixtures/atlas/unread-claims",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/adapter/page-unseen-apps.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/unseen-apps",
       "writers": []
     },
     {
@@ -33655,6 +35420,18 @@
           "fromTests": true
         },
         {
+          "by": "packages/ingest/wave22-log-stage-discipline.test.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/ingest/wave28-unsafe-segment-discipline.test.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "scripts/build.mjs",
           "call": "existsSync",
           "confidence": "ast"
@@ -33677,6 +35454,12 @@
         {
           "by": "scripts/check-lockfile-drift.test.mjs",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "scripts/check-validator-cache-singleton.test.mjs",
+          "call": "readdirSync",
           "confidence": "ast",
           "fromTests": true
         },
@@ -33787,6 +35570,50 @@
     {
       "readers": [
         {
+          "by": "packages/atlas/grammars/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/atlas/grammars/tree-sitter-javascript.wasm",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/grammars/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/atlas/grammars/tree-sitter-python.wasm",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/grammars/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/atlas/grammars/tree-sitter-tsx.wasm",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/grammars/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/atlas/grammars/tree-sitter-typescript.wasm",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/atlas/adapter/fleet.js",
           "call": "readFileSync",
           "confidence": "ast"
@@ -33840,6 +35667,12 @@
           "fromTests": true
         },
         {
+          "by": "packages/dogfood-swarm/meta-amendA-readme-contract.test.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/dogfood-swarm/meta-portable-fixture-paths.test.js",
           "call": "readdirSync",
           "confidence": "ast",
@@ -33859,6 +35692,12 @@
         },
         {
           "by": "packages/dogfood-swarm/test-discovery-completeness.test.js",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/dogfood-swarm/wave2-swarm-cp-pins.test.js",
           "call": "readdirSync",
           "confidence": "ast",
           "fromTests": true
@@ -38914,7 +40753,7 @@
       "target": null
     }
   ],
-  "testFiles": 623,
+  "testFiles": 662,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",

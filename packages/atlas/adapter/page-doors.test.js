@@ -93,8 +93,9 @@ describe('doors on the page, by the conventions of their tools', () => {
     // eslint and tsc check bin/, scripts/, tools/ and packages/, but the
     // workflow runs bin/tool.js and the scripts by name, so they lead, and a
     // directory that is only checked never stands for a file a test runner
-    // runs, so the tests vitest, jest and node --test run stay named.
-    has(ts.markdown, '## What comes in', '1. **CI.** On a pull request touching 2 paths; on a push touching 2 paths; or by hand. Runs bin/tool.js, scripts/bun-task.ts, scripts/deno-task.ts and 9 more; checks bin/, eslint.config.js, packages/ and 3 more.');
+    // runs, so the tests vitest, jest and node --test run stay named. "and
+    // 11 more" counts the files scripts/ and tools/ stand for, not the paths.
+    has(ts.markdown, '## What comes in', '1. **CI.** On a pull request touching 2 paths; on a push touching 2 paths; or by hand. Runs bin/tool.js, scripts/bun-task.ts, scripts/deno-task.ts and 9 more; checks bin/, eslint.config.js, packages/ and 11 more.');
     has(ts.markdown, '## What happens through CI', '1. The workflow runs packages/app/src/app.jest.ts in app, bin/tool.js in bin, packages/core/src/core.test.ts in core, 7 files in scripts, test/ in test, and tools/check.test.js in tools; it checks bin/ in bin, eslint.config.js and vitest.config.ts in the repository root, scripts/ in scripts, tools/ in tools, and packages/ (2 parts).');
     const ci = ts.json.doors.find((item) => item.name === 'CI');
     assert.deepEqual(ci.runs, [

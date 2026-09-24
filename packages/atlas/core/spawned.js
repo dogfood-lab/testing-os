@@ -123,13 +123,13 @@ function commandOf(node, pathText, helpers) {
   // spawn(process.execPath, [...]) runs Node.
   const program = args[0]?.text === 'process.execPath' ? 'node' : text(args[0], pathText);
   const list = ARGUMENT_LISTS.has(name) ? arrayOf(args[1]) : null;
-  const words = list?.type === 'array' ? list.namedChildren.map((word) => text(word, pathText)) : null;
+  const words = list?.type === 'array' ? argumentWords(list, pathText) : null;
   // spawn(pythonPath, ['-m', 'jobs']) runs the module whatever interpreter
   // is handed in: -m is Python's, and the module is the program.
   if (program == null && words && words[0] === '-m' && words[1] != null) {
     const known = [];
     for (const word of words) {
-      if (word == null) break;
+      if (word == null || word === UNREAD_WORD) break;
       known.push(word);
     }
     return { command: ['python', ...known].map(quoted).join(' ') };
@@ -140,8 +140,32 @@ function commandOf(node, pathText, helpers) {
   if (list == null || list.type === 'object') return { command: program };
   const outside = OUTSIDE_PROGRAMS.has(program.trim());
   if (list.type !== 'array') return outside ? { program: program.trim() } : { built: true };
-  if (words.some((word) => word == null)) return outside ? { program: program.trim() } : { built: true };
-  return { command: [program, ...words].map(quoted).join(' ') };
+  // An argument read at run time after the file the program runs (a spread
+  // of the caller's flags) leaves the file named; one before it does not.
+  const unread = (word) => word == null || word === UNREAD_WORD;
+  if (outside && words.some(unread)) return { program: program.trim() };
+  const script = words.findIndex((word) => word !== UNREAD_WORD && !(word ?? '').startsWith('-'));
+  const lead = script === -1 ? words : words.slice(0, script + 1);
+  if (lead.some(unread)) return { built: true };
+  return { command: [quoted(program), ...words.map((word) => (unread(word) ? UNREAD : quoted(word)))].join(' ') };
+}
+
+// Marks an argument read at run time in an argument list, apart from null,
+// one that is not an argument at all.
+const UNREAD_WORD = Symbol('unread');
+
+// The words of an argument list: a literal as it is written, a path the
+// file's own location fixes (join(repoRoot, 'scripts', 'x.ts')) as that
+// path, and anything else, a spread of the caller's arguments included, as
+// read at run time.
+function argumentWords(list, pathText) {
+  return list.namedChildren.filter((word) => word.type !== 'comment').map((word) => {
+    if (word.type === 'spread_element') return UNREAD_WORD;
+    const plain = text(word, pathText);
+    if (plain != null) return plain;
+    const path = word.type === 'string' || word.type === 'template_string' ? null : pathText(word);
+    return path == null || path === '' ? null : path;
+  });
 }
 
 /**

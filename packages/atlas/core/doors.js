@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join, posix } from 'node:path';
 import { parse } from 'yaml';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
+import { isTestFile } from './landings.js';
 
 const WORKFLOW = /^\.github\/workflows\/[^/]+\.ya?ml$/;
 const TRIGGER_LISTS = ['paths', 'branches', 'tags', 'types', 'workflows'];
@@ -37,8 +38,8 @@ const ACTION_SENDS = [
  *   hands to a child process (core/spawned.js); builtFrom is the source a
  *   build output is compiled from
  */
-export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom });
+export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom, emitted }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted });
   return [...tracked]
     .filter(isWorkflow)
     .sort()
@@ -58,8 +59,8 @@ export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom 
  *
  * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, commands: Array<{ kind: string, name: string, manifest: string, path: string }> }} input
  */
-export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom });
+export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom, emitted }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted });
   return commands.map((command) => {
     const programs = command.path == null ? [] : (command.paths ?? [command.path]);
     const read = new Map();
@@ -177,6 +178,9 @@ function readDoor(repoPath, file, repo) {
   const stages = new Set();
   let pushes = false;
   const sidePushes = [];
+  // What a shell's expansion of an unquoted glob leaves out, by directory
+  // and platform, across the door's steps.
+  const missed = new Map();
   const elsewhere = new Map();
   const sends = emptySends();
   const issues = [];
@@ -210,6 +214,7 @@ function readDoor(repoPath, file, repo) {
     for (const permission of permissionList(body.permissions)) permissions.add(permission);
     const jobDir = workingDirectory(body.defaults) ?? workflowDir ?? '';
     const jobEnv = envOf(body.env);
+    const platforms = jobPlatforms(body);
     const steps = Array.isArray(body.steps) ? body.steps : [];
     // The clones a job makes, by the directory they are made in: another
     // repository's checkout, read from actions/checkout, and what a step
@@ -272,7 +277,14 @@ function readDoor(repoPath, file, repo) {
       const dir = step['working-directory'] === undefined ? jobDir : cleanDir(step['working-directory']);
       if (dir == null) return;
       // Actions spells ${{ env.X }} out before the shell sees the step.
-      const named = readCommands(expandEnv(step.run, lookup), dir, repo);
+      const named = readCommands(expandEnv(step.run, lookup), dir, repo, platforms);
+      for (const entry of named.shellMissed) {
+        const key = `${entry.base}\0${entry.platform}`;
+        const found = missed.get(key) ?? { base: entry.base, files: new Set(), platform: entry.platform, twoStars: false };
+        for (const path of entry.files) found.files.add(path);
+        found.twoStars ||= entry.twoStars;
+        missed.set(key, found);
+      }
       for (const entry of named.runs.values()) {
         const key = `${entry.path}\0${job}`;
         const run = { ...entry, job, ...held };
@@ -322,9 +334,54 @@ function readDoor(repoPath, file, repo) {
     sends: finishSends(sends, issues, texts),
     ...(gated.length > 0 ? { gated } : {}),
     ...(conditional.length > 0 ? { conditional: [...conditional].sort() } : {}),
+    ...(missed.size > 0 ? { shellMissed: shellMissed(missed) } : {}),
     uses: [...uses].sort(),
   };
 }
+
+// The files a door's shell leaves out, a directory and platform at a time:
+// how many, whether all are tests, and whether ** was the cause.
+function shellMissed(missed) {
+  return [...missed.values()]
+    .map((entry) => ({
+      base: entry.base,
+      files: entry.files.size,
+      platform: entry.platform,
+      tests: [...entry.files].every(isTestFile),
+      twoStars: entry.twoStars,
+    }))
+    .sort((a, b) => compare(a.base, b.base) || compare(a.platform, b.platform));
+}
+
+/**
+ * The operating systems a job runs on, read from runs-on: a label, a list of
+ * a self-hosted runner's labels, or a matrix axis the label names, whose
+ * values and include entries are read. A label naming Windows or macOS is
+ * that system; any other, ubuntu or a self-hosted one, is Linux, and so is a
+ * runs-on this reader cannot resolve.
+ */
+function jobPlatforms(body) {
+  const runsOn = body['runs-on'];
+  const osOf = (label) => (/windows/i.test(label) ? 'windows' : /macos|mac-|osx/i.test(label) ? 'macos' : 'linux');
+  const labels = [];
+  if (typeof runsOn === 'string') {
+    const axis = /\$\{\{\s*matrix\.([\w-]+)\s*\}\}/.exec(runsOn);
+    if (axis) {
+      const matrix = isMapping(body.strategy) && isMapping(body.strategy.matrix) ? body.strategy.matrix : {};
+      const values = Array.isArray(matrix[axis[1]]) ? matrix[axis[1]] : [];
+      for (const value of values) if (typeof value === 'string') labels.push(value);
+      for (const entry of Array.isArray(matrix.include) ? matrix.include : []) {
+        if (isMapping(entry) && typeof entry[axis[1]] === 'string') labels.push(entry[axis[1]]);
+      }
+    } else labels.push(runsOn);
+  } else if (Array.isArray(runsOn)) {
+    const all = runsOn.filter((label) => typeof label === 'string').join(' ');
+    if (all !== '') labels.push(all);
+  }
+  const found = [...new Set(labels.map(osOf))].sort();
+  return found.length > 0 ? found : ['linux'];
+}
+
 
 function emptySends() {
   return { publishesTo: new Set(), packages: new Map(), releases: false, deploysPages: false, opensPullRequests: false };

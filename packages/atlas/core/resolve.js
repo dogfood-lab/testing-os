@@ -576,6 +576,37 @@ function rewriteOutDir(ctx, absPath, rel) {
 }
 
 const OUTPUTS = new WeakMap();
+const EMITTED = new WeakMap();
+const EMITS = /\.(?:[cm]?tsx?|[cm]?jsx?)$/;
+
+/**
+ * Every path a tracked build config compiles a tracked source to, with that
+ * source: dist/tests/a.test.js for src/tests/a.test.ts, under outDir dist
+ * and rootDir src. A command handed a glob over the build's output runs the
+ * built files the glob selects, which are these sources. The first config
+ * that emits a path is the one it comes from, as buildOutputs orders them.
+ *
+ * @param {string} repoPath
+ * @param {Set<string>} tracked
+ * @returns {Map<string, string>} emitted path to its source
+ */
+export function emittedFiles(repoPath, tracked) {
+  if (EMITTED.has(tracked)) return EMITTED.get(tracked);
+  const out = new Map();
+  const sorted = [...tracked].sort();
+  for (const output of buildOutputs(repoPath, tracked)) {
+    const root = output.rootDir;
+    for (const path of sorted) {
+      if (root !== '' && !path.startsWith(`${root}/`)) continue;
+      if (!EMITS.test(path) || /\.d\.[cm]?ts$/.test(path) || path.split('/').includes('node_modules')) continue;
+      const rel = root === '' ? path : path.slice(root.length + 1);
+      const emitted = `${output.outDir}/${rel}`.replace(/\.tsx?$|\.jsx$/, '.js').replace(/\.mts$/, '.mjs').replace(/\.cts$/, '.cjs');
+      if (!out.has(emitted) && !tracked.has(emitted)) out.set(emitted, path);
+    }
+  }
+  EMITTED.set(tracked, out);
+  return out;
+}
 
 /**
  * Every tracked tsconfig that emits into a directory, with the directory its
