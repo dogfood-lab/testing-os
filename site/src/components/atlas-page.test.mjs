@@ -105,7 +105,9 @@ test('the sentences are the ones the committed markdown carries', () => {
     // The schemas build is tsc, which checks what it compiles and runs none of
     // it; the build's prebuild step stamps the version blocks.
     'self-dogfood runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs, checks packages/schemas/src/, writes to README.md, docker/Dockerfile and package-lock.json, and sends a dispatch to dogfood-lab/testing-os.',
-    'swarm (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, report and schemas, writes to dogfood/roadmap/ and policies/repos/, and runs git.',
+    // The swarm runs the ingest runner as a child process, so it reaches what
+    // the runner does and writes where the runner writes.
+    'swarm (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, ingest, report, schemas and verify, writes to dogfood/roadmap/, indexes/, policies/repos/ and records/, and runs git.',
     'Read those in order to follow one dogfood submission end to end.',
     'Regenerate with npx --yes @dogfood-lab/atlas map.',
     'Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.',
