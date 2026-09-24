@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const ROOT = resolve(__dirname, '..', '..', '..');
@@ -8,7 +8,8 @@ function writeGlyph(filePath: string, json: string) {
   writeFileSync(filePath, json, 'utf-8');
 }
 
-for (const slug of ['one']) {
+// The slugs are the examples on disk, read at run time.
+for (const slug of readdirSync(EXAMPLES)) {
   const dir = resolve(EXAMPLES, slug);
   mkdirSync(dir, { recursive: true });
   writeGlyph(resolve(dir, `${slug}.glyph`), '{}\n');

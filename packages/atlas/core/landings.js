@@ -743,6 +743,9 @@ export function astLandings(language, root, path, places) {
     const all = ctx.python ? evaluate(node, ctx, 0) : throughClosure(node, ctx);
     for (const value of all) named(value);
     const unless = kind === 'write' ? writeGuards(node, ctx.python) : [];
+    // A read only compared with what is about to be written is a drift check,
+    // not the content a stamp keeps (stamps).
+    const compared = kind === 'read' && !ctx.python && comparedOnly(node.parent?.parent) ? { compared: true } : {};
     if (all.length === 0) {
       if (countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
       return;
@@ -797,7 +800,7 @@ export function astLandings(language, root, path, places) {
       // A root read at run time is never a placeholder's: canon/ holding only
       // a .gitkeep marks where a user's files go, not where this code writes.
       if (target != null && value.rooted && placeholder(target, places)) unplaced = true;
-      else if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}) });
+      else if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}), ...compared });
       else if (value.open) unplaced = true;
     }
     // A root another file's function returns is settled once that file is
@@ -1943,7 +1946,7 @@ function bindingJs(name, from, ctx, depth) {
     // say otherwise (paramValue).
     if (JS_FUNCTIONS.has(scope.type) && declaresParameter(scope, name)) return [paramValue(scope, name)];
     if (scope.type === 'catch_clause' && scope.childForFieldName('parameter')?.text === name) return [];
-    if ((scope.type === 'for_in_statement' || scope.type === 'for_of_statement') && scope.childForFieldName('left')?.text === name) return [];
+    if ((scope.type === 'for_in_statement' || scope.type === 'for_of_statement') && loopBinds(scope, name)) return loopValues(scope, name, ctx, depth);
     const declarator = JS_BLOCKS.has(scope.type) || scope.type === 'for_statement' ? findDeclarator(scope, name) : null;
     if (!declarator) continue;
     const id = `binding:${key(declarator)}`;
@@ -1964,6 +1967,81 @@ function bindingJs(name, from, ctx, depth) {
     return union(lists);
   }
   return [];
+}
+
+// Whether a for loop's head binds the name: for (const x of ...), and a
+// name destructured there, for (const { file } of ...).
+function loopBinds(loop, name) {
+  const left = loop.childForFieldName('left');
+  if (!left) return false;
+  return left.type === 'identifier' ? left.text === name : (left.type === 'object_pattern' || left.type === 'array_pattern') && patternBinds(left, name);
+}
+
+/**
+ * What a for-of binds a name to when it walks an array the file writes out:
+ * each element for a plain name, and for a name destructured from each
+ * object, what that object's property is (for (const { file } of [{ file:
+ * join(out, 'a.json') }, ...])). The array may be written in the loop's head
+ * or bound to a const. A for-in, or an array or element the file does not
+ * spell out, binds a value this map cannot read.
+ */
+function loopValues(loop, name, ctx, depth) {
+  if (loop.childForFieldName('operator')?.text !== 'of') return [];
+  const left = loop.childForFieldName('left');
+  const elements = literalArray(loop.childForFieldName('right'));
+  if (elements == null) return [];
+  const field = left.type === 'object_pattern' ? patternField(left, name) : null;
+  if (left.type !== 'identifier' && field == null) return [];
+  const id = `loop:${key(loop)}`;
+  if (ctx.visiting.has(id)) return [];
+  ctx.visiting.add(id);
+  try {
+    return union(elementValues(elements, field, ctx, depth));
+  } finally {
+    ctx.visiting.delete(id);
+  }
+}
+
+// Each element's value, or the one property of it: when any element reads as
+// nothing, the name is a value this map cannot read, as before.
+function elementValues(elements, field, ctx, depth) {
+  const lists = [];
+  for (const element of elements) {
+    let values = [];
+    if (field == null) values = evalJs(element, ctx, depth);
+    else if (element.type === 'object') {
+      const pair = element.namedChildren.find((child) => child.type === 'pair' && propertyName(child.childForFieldName('key')) === field);
+      const shorthand = element.namedChildren.find((child) => child.type === 'shorthand_property_identifier' && child.text === field);
+      if (pair) values = evalJs(pair.childForFieldName('value'), ctx, depth);
+      else if (shorthand) values = bindingJs(field, shorthand, ctx, depth);
+    }
+    if (values.length === 0) return [];
+    lists.push(values);
+  }
+  return lists;
+}
+
+// The elements of an array written out, in place or in the const it is bound
+// to; null for anything else, a spread among them included.
+function literalArray(node) {
+  let array = node;
+  if (array?.type === 'identifier') {
+    let declarator = null;
+    for (let scope = array.parent; scope && declarator == null; scope = scope.parent) {
+      if (JS_BLOCKS.has(scope.type)) declarator = findDeclarator(scope, array.text);
+    }
+    array = declarator?.childForFieldName('name')?.type === 'identifier' ? declarator.childForFieldName('value') : null;
+  }
+  while (array && (array.type === 'as_expression' || array.type === 'satisfies_expression' || array.type === 'parenthesized_expression')) array = array.namedChildren[0];
+  if (array?.type !== 'array') return null;
+  const elements = array.namedChildren.filter((child) => child.type !== 'comment');
+  return elements.some((child) => child.type === 'spread_element') ? null : elements;
+}
+
+function propertyName(key) {
+  if (key?.type === 'property_identifier') return key.text;
+  if (key?.type === 'string') return jsStringText(key);
+  return null;
 }
 
 function assignedIn(scope, name, ctx) {
@@ -2630,7 +2708,7 @@ function rawUrls(text, places) {
 function sortEntries(entries) {
   const unique = new Map();
   for (const entry of entries) {
-    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}\0${entry.relative ? 1 : 0}\0${(entry.unless ?? []).join(',')}\0${entry.defaultOf ? defaultKey(entry.defaultOf) : ''}`, entry);
+    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}\0${entry.relative ? 1 : 0}\0${(entry.unless ?? []).join(',')}\0${entry.defaultOf ? defaultKey(entry.defaultOf) : ''}\0${entry.compared ? 1 : 0}`, entry);
   }
   return [...unique.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
 }
@@ -2914,8 +2992,11 @@ export function attachLandings({ files, doors, boundaries, places }) {
   for (const door of mapped) {
     const found = new Map();
     for (const target of door.landings) {
+      // A reader of the directory a written file is in (Get-ChildItem
+      // Assets\*.png) reads the file, as one of what it holds.
+      const holding = places.files.has(target) ? posix.dirname(target) : null;
       for (const [place, entries] of readers) {
-        if (place !== target && !place.startsWith(`${target}/`)) continue;
+        if (place !== target && !place.startsWith(`${target}/`) && place !== holding) continue;
         for (const entry of entries.values()) {
           found.set(`${target}\0${canonicalEntry(entry)}`, { ...entry, target });
         }
@@ -2966,8 +3047,10 @@ function settleRelativePaths(files, doors) {
       for (const entry of file[kind]) {
         const { relative, fixed, ...rest } = entry;
         // Under the working directory is under the person's, for a command
-        // people run from wherever they are.
-        if (theirs && (relative || entry.fromCwd)) file[count] = (file[count] ?? 0) + 1;
+        // people run from wherever they are, whatever else a workflow has
+        // the file do from the root: shipcheck init writes SHIP_GATE.md into
+        // the repository it is run in, not this one's committed copy.
+        if ((theirs && relative) || (byInstall.has(file.path) && entry.fromCwd)) file[count] = (file[count] ?? 0) + 1;
         else if (isTestMaterial(file.path)) kept.push({ ...rest, ...(fixed ? { fixed } : {}), ...(relative ? { relative } : {}) });
         else kept.push(rest);
       }
@@ -3073,10 +3156,48 @@ function bootstraps(write, places) {
   return (write.unless ?? []).includes('exists') && places.files.has(write.target);
 }
 
-// The writer reads the tracked file's content before it writes the file.
+// The writer reads the tracked file's content before it writes the file, to
+// keep what it does not write; a read it only compares is not that.
 function stamps(file, target, places) {
   if (!places.files.has(target)) return false;
-  return (file.reads ?? []).some((read) => read.target === target && CONTENT_READS.has(read.call));
+  return (file.reads ?? []).some((read) => read.target === target && CONTENT_READS.has(read.call) && !read.compared);
+}
+
+const COMPARISONS = new Set(['===', '!==', '==', '!=']);
+
+/**
+ * Whether what a read call returns is only ever compared: the call itself an
+ * operand of === or !==, or the value of a const every use of which is one
+ * (const current = existsSync(f) ? readFileSync(f) : null; if (current ===
+ * next) ...).
+ */
+function comparedOnly(call) {
+  if (call?.type !== 'call_expression') return false;
+  let node = call;
+  while (node.parent && ['parenthesized_expression', 'await_expression', 'as_expression', 'ternary_expression'].includes(node.parent.type)) {
+    if (node.parent.type === 'ternary_expression' && node.parent.childForFieldName('condition')?.startIndex === node.startIndex) return false;
+    node = node.parent;
+  }
+  if (comparison(node.parent)) return true;
+  const declarator = node.parent;
+  const name = declarator?.type === 'variable_declarator' && declarator.childForFieldName('value')?.startIndex === node.startIndex ? declarator.childForFieldName('name') : null;
+  if (name?.type !== 'identifier') return false;
+  let scope = declarator.parent?.parent;
+  while (scope && !JS_BLOCKS.has(scope.type)) scope = scope.parent;
+  if (!scope) return false;
+  const uses = [];
+  walk(scope, (child) => {
+    if (child.type === 'identifier' && child.text === name.text && child.startIndex !== name.startIndex) uses.push(child);
+  });
+  return uses.length > 0 && uses.every((use) => {
+    let at = use;
+    while (at.parent?.type === 'parenthesized_expression') at = at.parent;
+    return comparison(at.parent);
+  });
+}
+
+function comparison(node) {
+  return node?.type === 'binary_expression' && COMPARISONS.has(node.childForFieldName('operator')?.text);
 }
 
 // What follows git add, normalised as a path: a glob stops the path where the

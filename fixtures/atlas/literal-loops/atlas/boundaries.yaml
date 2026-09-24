@@ -1,0 +1,22 @@
+summary: ""
+boundaries:
+  - name: root
+    globs:
+      - "*"
+    role: config
+  - name: data
+    globs:
+      - data/**
+    role: data
+  - name: docs
+    globs:
+      - docs/**
+    role: docs
+  - name: kb
+    globs:
+      - src/kb/**
+    role: data
+  - name: scripts
+    globs:
+      - scripts/**
+    role: code
