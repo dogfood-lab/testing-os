@@ -7,13 +7,15 @@ import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
+import { httpEdges, httpFacts } from './http.js';
 import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
-import { astLandings, attachLandings, githubChanges, isTestFile, noLandings, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
+import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
 import { attachResolution, emittedFiles, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
+import { unseenParts } from './unseen.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
 
@@ -141,8 +143,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }));
-  const edges = [...resolution.edges, ...spawnEdges(graph)]
+  const edges = [...resolution.edges, ...spawnEdges(graph), ...httpEdges(graph.files, graph.boundaryOf, isTestMaterial)]
     .sort((a, b) => a.from.localeCompare(b.from) || a.to.localeCompare(b.to) || a.kind.localeCompare(b.kind));
+  for (const file of graph.files.values()) delete file.http;
   for (const door of doors) {
     if (door.parseError) continue;
     // A checker reaches the code it reads, so the reach is walked from every
@@ -178,6 +181,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   for (const script of scripts) if (script.fn && !entryFunctions.has(script.path)) entryFunctions.set(script.path, script.fn);
   attachSequences({ files: graph.files, facts, doors, entryPoints, entryFunctions });
   attachExports(graph.files, facts);
+  const unseen = unseenParts(trackedSet, doors);
 
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },
@@ -190,6 +194,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     importConfidence: resolution.importConfidence,
     doors,
     landings,
+    ...(unseen.length > 0 ? { unseen } : {}),
   };
 }
 
@@ -392,11 +397,13 @@ function describeFile(repoPath, path, places, facts, spawned) {
   const programs = extracted.spawned.programs?.length > 0 && !isTestFile(path) ? { programs: extracted.spawned.programs } : {};
   const empty = extracted.noStatements ? { noStatements: true } : {};
   const holds = extracted.holds === 'reexports' ? { reexportsOnly: true } : extracted.holds === 'constant' ? { constantOnly: true } : {};
+  // Read once the parts are known, then dropped (core/http.js httpEdges).
+  const http = extracted.http ? { http: extracted.http } : {};
   const api = extracted.githubChanges > 0 && !isTestFile(path) ? { githubChanges: extracted.githubChanges } : {};
   // Read once imports resolve, then dropped (core/spawned.js settleSpawnHelpers).
   const helpers = Object.keys(extracted.spawned.helpers ?? {}).length > 0 ? { spawnHelpers: extracted.spawned.helpers } : {};
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds };
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -421,6 +428,7 @@ function parseFile(language, path, source, places) {
       githubChanges: language === 'python' ? 0 : githubChanges(tree.rootNode),
       noStatements: statementless(tree.rootNode),
       holds: language === 'python' ? null : onlyHolds(tree.rootNode),
+      http: language === 'python' ? null : httpFacts(tree.rootNode),
     };
   } finally {
     tree.delete();

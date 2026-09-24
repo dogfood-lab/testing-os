@@ -186,7 +186,7 @@ export function buildArtifact(mapped, commit) {
     // One manifest can declare several commands, so a door sorts by its file
     // and then its name.
     doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => cmp(a.file, b.file) || cmp(a.name, b.name) || cmp(a.kind ?? '', b.kind ?? '')),
-    edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to, ...(edge.fromTests ? { fromTests: true } : {}) })),
+    edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to, ...(edge.fromTests ? { fromTests: true } : {}), ...(edge.routes ? { routes: edge.routes } : {}) })),
     generatedFrom: { commit, tracked },
     landings: carryLandings(mapped.landings ?? []),
     overlaps,
@@ -194,6 +194,7 @@ export function buildArtifact(mapped, commit) {
     symlinks: mapped.symlinks.filter((link) => !inAtlas(link.path)).map((link) => ({ path: link.path, target: link.target })).sort(byPath),
     testFiles: tested.testFiles,
     unassigned,
+    ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map((entry) => (entry.kind === 'deploy' ? { files: [...entry.files], kind: entry.kind } : { built: entry.built, dir: entry.dir, kind: entry.kind, rust: entry.rust })) } : {}),
   };
 }
 

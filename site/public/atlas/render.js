@@ -626,13 +626,16 @@ function breakLine(ctx, entry) {
   const doors = Number(entry?.doors) || 0;
   const path = doors === 0 ? 'no door' : count(doors, 'door');
   const fromTests = arr(entry?.importedByTests).map((part) => ctx.name(part));
-  // A part another part runs as a child process, as page.js says it.
+  // A part another part runs as a child process, or calls over HTTP, as
+  // page.js says it.
   const spawned = arr(entry?.spawnedBy).map((part) => ctx.name(part));
-  if (spawned.length > 0) {
+  const called = arr(entry?.calledBy).map((part) => ctx.name(part));
+  if (spawned.length > 0 || called.length > 0) {
     const clauses = [];
     if (importedBy.length > 0) clauses.push(`is imported by ${count(importedBy.length, 'part')} (${esc(importedBy.join(', '))})`);
     if (importedBy.length > 0 && fromTests.length > 0) clauses.push(`and by ${fromTests.length} more only from tests`);
-    clauses.push(`is run as a child process by ${count(spawned.length, 'part')} (${esc(spawned.join(', '))})`);
+    if (spawned.length > 0) clauses.push(`is run as a child process by ${count(spawned.length, 'part')} (${esc(spawned.join(', '))})`);
+    if (called.length > 0) clauses.push(`is called over HTTP by ${count(called.length, 'part')} (${esc(called.join(', '))})`);
     const joined = clauses.length > 1 ? `${clauses.join(', ')},` : clauses[0];
     return `<strong>${esc(breakLabel(ctx, entry))}</strong> ${joined} and sits on the path of ${path}.`;
   }
@@ -668,6 +671,8 @@ function relationClause(pair) {
     case 'a-imports-b': return `, and ${a} imports ${b}.`;
     case 'b-imports-a': return `, and ${b} imports ${a}.`;
     case 'both': return `, and ${a} and ${b} import each other.`;
+    case 'a-calls-b': return `, and ${a} calls ${b} over HTTP.`;
+    case 'b-calls-a': return `, and ${b} calls ${a} over HTTP.`;
     case 'none': return ', though neither part imports the other.';
     default: return '.';
   }

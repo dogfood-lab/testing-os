@@ -1274,6 +1274,17 @@ function importers(ctx, { tests = false } = {}) {
   return from;
 }
 
+// The parts whose code calls each part over HTTP.
+function callers(ctx) {
+  const from = new Map();
+  for (const edge of ctx.structure.edges ?? []) {
+    if (edge.kind !== 'http' || edge.from === edge.to) continue;
+    if (!from.has(edge.to)) from.set(edge.to, new Set());
+    from.get(edge.to).add(edge.from);
+  }
+  return from;
+}
+
 // The parts whose production code runs each part's files as a child process.
 function spawners(ctx) {
   const from = new Map();
@@ -1396,6 +1407,7 @@ function breaks(ctx) {
   const from = importers(ctx);
   const fromTests = testImporters(ctx);
   const spawnedBy = spawners(ctx);
+  const calledBy = callers(ctx);
   const on = doorsThrough(ctx);
   // A stamped file is written by people; a hand edit is how it changes.
   // A test reading a place is how it is checked, not what it breaks.
@@ -1420,10 +1432,12 @@ function breaks(ctx) {
       importedBy: [...(from.get(boundary.name) ?? [])].sort(cmp),
       importedByTests: [...(fromTests.get(boundary.name) ?? [])].sort(cmp),
       ...(spawnedBy.has(boundary.name) ? { spawnedBy: [...spawnedBy.get(boundary.name)].sort(cmp) } : {}),
+      ...(calledBy.has(boundary.name) ? { calledBy: [...calledBy.get(boundary.name)].sort(cmp) } : {}),
       doors: on.get(boundary.name) ?? 0,
     }))
-    .filter((part) => part.importedBy.length > 0 || part.importedByTests.length > 0 || (part.spawnedBy?.length ?? 0) > 0 || part.doors >= 2)
-    .sort((a, b) => b.importedBy.length - a.importedBy.length || (b.spawnedBy?.length ?? 0) - (a.spawnedBy?.length ?? 0) || b.doors - a.doors
+    .filter((part) => part.importedBy.length > 0 || part.importedByTests.length > 0 || (part.spawnedBy?.length ?? 0) > 0 || (part.calledBy?.length ?? 0) > 0 || part.doors >= 2)
+    .sort((a, b) => b.importedBy.length - a.importedBy.length || (b.spawnedBy?.length ?? 0) - (a.spawnedBy?.length ?? 0)
+      || (b.calledBy?.length ?? 0) - (a.calledBy?.length ?? 0) || b.doors - a.doors
       || b.importedByTests.length - a.importedByTests.length || cmp(a.name, b.name))
     .slice(0, BREAK_LINES - places.length);
   return [...parts, ...places];
@@ -1456,14 +1470,17 @@ function breakLine(ctx, entry) {
   }
   const fromTests = entry.importedByTests ?? [];
   const path = entry.doors === 0 ? 'no door' : count(entry.doors, 'door');
-  // A part another part runs as a child process breaks it as an import does.
+  // A part another part runs as a child process, or calls over HTTP, breaks
+  // it as an import does.
   const spawned = entry.spawnedBy ?? [];
-  if (spawned.length > 0) {
+  const called = entry.calledBy ?? [];
+  if (spawned.length > 0 || called.length > 0) {
     const clauses = [];
     if (entry.importedBy.length > 0) clauses.push(`is imported by ${count(entry.importedBy.length, 'part')} (${entry.importedBy.map(ctx.shown).join(', ')})`);
     const tests = testsClause(entry.importedBy.length, fromTests.length);
     if (tests) clauses.push(tests);
-    clauses.push(`is run as a child process by ${count(spawned.length, 'part')} (${spawned.map(ctx.shown).join(', ')})`);
+    if (spawned.length > 0) clauses.push(`is run as a child process by ${count(spawned.length, 'part')} (${spawned.map(ctx.shown).join(', ')})`);
+    if (called.length > 0) clauses.push(`is called over HTTP by ${count(called.length, 'part')} (${called.map(ctx.shown).join(', ')})`);
     const joined = clauses.length > 1 ? `${clauses.join(', ')},` : clauses[0];
     return `- **${ctx.shown(entry.name)}** ${joined} and sits on the path of ${path}.`;
   }
@@ -1506,7 +1523,13 @@ function importsBetween(ctx) {
   return (from, to) => edges.has(`${from}\0${to}`);
 }
 
-function relationOf(imports, partA, partB) {
+// Whether one part calls another over HTTP (core/http.js).
+function callsBetween(ctx) {
+  const edges = new Set((ctx.structure.edges ?? []).filter((edge) => edge.kind === 'http' && edge.from !== edge.to).map((edge) => `${edge.from}\0${edge.to}`));
+  return (from, to) => edges.has(`${from}\0${to}`);
+}
+
+function relationOf(imports, partA, partB, calls = () => false) {
   if (partA == null || partB == null) return 'unassigned';
   if (partA === partB) return 'inside';
   const ab = imports(partA, partB);
@@ -1514,6 +1537,10 @@ function relationOf(imports, partA, partB) {
   if (ab && ba) return 'both';
   if (ab) return 'a-imports-b';
   if (ba) return 'b-imports-a';
+  // Two parts no import joins may still be one change: a UI and the server
+  // it calls.
+  if (calls(partA, partB)) return 'a-calls-b';
+  if (calls(partB, partA)) return 'b-calls-a';
   return 'none';
 }
 
@@ -1523,6 +1550,7 @@ function relationOf(imports, partA, partB) {
 // nothing, so those pairs are counted and kept out of the ranking.
 function together(ctx) {
   const imports = importsBetween(ctx);
+  const calls = callsBetween(ctx);
   const source = (ctx.statistics.pairs ?? []).filter((pair) => isSourcePath(pair.a) && isSourcePath(pair.b));
   const pairs = source
     .filter((pair) => !ownTestPair(pair.a, pair.b))
@@ -1531,7 +1559,7 @@ function together(ctx) {
     .map((pair) => {
       const parts = [ctx.boundaryOf.get(pair.a) ?? null, ctx.boundaryOf.get(pair.b) ?? null];
       const partLabels = parts.map((part) => label(ctx, part));
-      return { a: pair.a, b: pair.b, either: pair.either, partLabels, parts, relation: relationOf(imports, parts[0], parts[1]), shared: pair.shared };
+      return { a: pair.a, b: pair.b, either: pair.either, partLabels, parts, relation: relationOf(imports, parts[0], parts[1], calls), shared: pair.shared };
     });
   return { pairs, withTests: source.filter((pair) => ownTestPair(pair.a, pair.b)).length };
 }
@@ -1550,6 +1578,8 @@ function relationClause(pair) {
     case 'a-imports-b': return `, and ${a} imports ${b}.`;
     case 'b-imports-a': return `, and ${b} imports ${a}.`;
     case 'both': return `, and ${a} and ${b} import each other.`;
+    case 'a-calls-b': return `, and ${a} calls ${b} over HTTP.`;
+    case 'b-calls-a': return `, and ${b} calls ${a} over HTTP.`;
     case 'none': return ', though neither part imports the other.';
     default: return '.';
   }
@@ -2319,6 +2349,7 @@ function limits(ctx, shownText) {
     lines.push(`${count(dynamicSpawns, 'command')} ${dynamicSpawns === 1 ? 'is' : 'are'} built at run time and not followed${share}.`);
   }
   lines.push(...shellLines(ctx));
+  lines.push(...httpLines(ctx), ...unseenLines(ctx));
   if (shownText) lines.push('Readers marked (found by text) come from scanning unparsed files.');
   for (const door of ctx.doors) {
     if (door.parseError) continue;
@@ -2336,6 +2367,43 @@ function limits(ctx, shownText) {
 }
 
 const PLATFORM_NAMES = { linux: 'Linux', macos: 'macOS', windows: 'Windows' };
+
+// A call over HTTP is drawn as an edge, but no door's reach crosses it, so
+// the page says each one.
+function httpLines(ctx) {
+  return (ctx.structure.edges ?? [])
+    .filter((edge) => edge.kind === 'http' && edge.from !== edge.to)
+    .map((edge) => `${ctx.shown(edge.from)} calls ${ctx.shown(edge.to)} over HTTP at ${count(edge.routes ?? 1, 'route')}, a link no import shows: the map draws it, and no door's reach follows it.`);
+}
+
+/**
+ * The apps the map reads none of and the deployments no workflow reaches
+ * (core/unseen.js), each said as what the page cannot show.
+ */
+function unseenLines(ctx) {
+  const lines = [];
+  for (const entry of ctx.structure.unseen ?? []) {
+    const where = entry.dir ? `under ${entry.dir}/` : 'at the repository root';
+    const what = entry.kind === 'tauri' ? 'a Tauri app' : 'a Rust crate';
+    // A workflow may build the Rust; the map still reads none of it.
+    if (entry.kind === 'tauri' || entry.kind === 'crate') {
+      lines.push(entry.built
+        ? `There is ${what} ${where} (${count(entry.rust, 'Rust file')}) that a workflow builds; the map reads no Rust, so what its Rust code does is not on this page.`
+        : `There is ${what} ${where} (${count(entry.rust, 'Rust file')}) that no workflow builds; the map reads no Rust, so what it does is not on this page.`);
+    } else if (entry.kind === 'deploy') {
+      const files = entry.files ?? [];
+      const dockerfiles = files.filter((path) => /(^|\/)(Dockerfile[^/]*|[^/]+\.Dockerfile)$/.test(path));
+      const others = files.filter((path) => !dockerfiles.includes(path));
+      const named = [
+        ...(dockerfiles.length === 1 ? [dockerfiles[0].includes('/') ? `a Dockerfile at ${dockerfiles[0]}` : 'a Dockerfile'] : dockerfiles.length > 1 ? [count(dockerfiles.length, 'Dockerfile')] : []),
+        ...others.map((path) => `a ${path}`),
+      ];
+      const them = files.length === 1 ? 'it' : 'them';
+      lines.push(`There is ${list(named)} that no workflow runs; what deploys from ${them} does so from outside this repository, and is not on this page.`);
+    }
+  }
+  return lines;
+}
 
 /**
  * The files a door's shell leaves out of a glob its commands hand a tool:
