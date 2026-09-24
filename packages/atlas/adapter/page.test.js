@@ -459,7 +459,7 @@ describe('atlas page', () => {
     // it is the one the page follows, and the page says why.
     // The file count moves with every fixture added, so it is matched, not pinned.
     const derived = section(own.markdown, '## What this is').split('\n').find((line) => line.startsWith('23 parts'));
-    assert.match(derived ?? '', /^23 parts, mostly JavaScript \(\d+ files\)\. Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository \(Release reaches 12 but commits nothing\)\. It publishes to npm and a container image\. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm\.$/);
+    assert.match(derived ?? '', /^23 parts, mostly JavaScript \(\d+ files\)\. Work enters through 15 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository \(Release reaches 12 but commits nothing\)\. It publishes workspace packages to npm and a container image\. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm\.$/);
     const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
     assert.ok(followed.length <= 5);
@@ -542,14 +542,16 @@ describe('atlas page', () => {
       document: readBoundaryFile(REPO_ROOT),
       repoName: 'dogfood-lab/testing-os',
     });
+    // The root is hand-authored or mixed as its stamped blocks come and go,
+    // so the sentence that names it is checked when the root is in it.
+    const data = JSON.parse(own.json);
+    assert.equal(data.partLabels.root, 'the repository root');
     const authoredLine = section(own.markdown, '## Hand-authored').split('\n')[2];
-    assert.match(authoredLine, /\bthe repository root\b/);
+    if (data.authored.includes('root')) assert.match(authoredLine, /\bthe repository root\b/);
     assert.doesNotMatch(authoredLine.replaceAll('the repository root', ''), /\broot\b/);
     for (const line of own.markdown.split('\n')) {
       assert.doesNotMatch(line.replaceAll('the repository root', ''), /(^|[\s(,*])root\b/, line);
     }
-    const data = JSON.parse(own.json);
-    assert.ok(data.authored.includes('root'));
     // Only the label fields carry the page's wording; every id stays an id.
     const ids = JSON.stringify(data, (key, value) => (key === 'partLabel' || key === 'partLabels' ? undefined : value));
     assert.equal(ids.includes('the repository root'), false);
@@ -850,6 +852,8 @@ describe('files the parser cannot read', () => {
 
 describe('commands built at run time', () => {
   it('counts each spawn whose program or arguments are computed, tests included, and follows the spelled ones', () => {
+    // A const array the file spells out, and process.execPath for node, are
+    // spelled: only the template indexing into the array is built at run time.
     const root = mkdtempSync(join(tmpdir(), 'atlas-spawns-'));
     roots.push(root);
     cpSync(join(FIXTURES, 'root-part'), root, { recursive: true });
@@ -874,11 +878,11 @@ describe('commands built at run time', () => {
     assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
     const structure = JSON.parse(readFileSync(join(root, 'atlas', 'structure.json'), 'utf8'));
     const tools = structure.boundaries.find((boundary) => boundary.name === 'tools');
-    assert.equal(tools.dynamicSpawns, 3);
+    assert.equal(tools.dynamicSpawns, 1);
     assert.equal(structure.boundaries.find((boundary) => boundary.name === 'lib').dynamicSpawns, 0);
     // The spelled-out commands are still followed: the test reaches run.js.
     assert.equal(tools.testedBy, 1);
     const limits = JSON.parse(readFileSync(join(root, 'atlas', 'page.json'), 'utf8')).limits;
-    assert.ok(limits.includes('3 commands are built at run time and not followed, all of them in tests.'), limits.join('\n'));
+    assert.ok(limits.includes('1 command is built at run time and not followed, and it is in tests.'), limits.join('\n'));
   });
 });

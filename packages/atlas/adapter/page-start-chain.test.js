@@ -44,14 +44,14 @@ after(() => {
 });
 
 describe('where to start', () => {
-  it('follows the pull-request door through files that run, never a directory or a manifest, and ends in code', () => {
+  it('follows the pull-request door through files that run, past its test, never a directory or a manifest, and ends in code', () => {
     const { page, section } = map('start-chain');
     // src/store.js is the file that writes data/out.json, which app.js reaches by import.
-    assert.deepEqual(page.startHere, ['.github/workflows/ci.yml', 'test/app.test.js', 'src/app.js', 'src/store.js', 'data/out.json', 'site/view.js']);
+    assert.deepEqual(page.startHere, ['.github/workflows/ci.yml', 'src/app.js', 'src/store.js', 'data/out.json', 'site/view.js']);
     assert.deepEqual(section, [
       '## Where to start',
       '',
-      '.github/workflows/ci.yml → test/app.test.js → src/app.js → src/store.js → data/out.json → site/view.js',
+      '.github/workflows/ci.yml → src/app.js → src/store.js → data/out.json → site/view.js',
       '',
       'Read those in order to follow one pull request end to end.',
     ]);

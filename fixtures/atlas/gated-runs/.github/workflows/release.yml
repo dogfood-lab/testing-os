@@ -1,0 +1,24 @@
+name: Release
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        type: boolean
+        default: true
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/check.mjs
+      - name: Publish to npm (dry-run)
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run
+        run: npm publish --provenance --access public --dry-run
+      - name: Publish to npm
+        if: github.ref_type == 'tag' || (github.event_name == 'workflow_dispatch' && !inputs.dry_run)
+        run: npm publish --provenance --access public
+      - name: Create GitHub release
+        if: github.ref_type == 'tag'
+        run: gh release create "$GITHUB_REF_NAME" --generate-notes

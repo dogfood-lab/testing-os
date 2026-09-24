@@ -1,0 +1,18 @@
+name: Release
+on:
+  push:
+    tags: ['*-v*']
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve tag -> package
+        run: |
+          TAG="${{ github.ref_name }}"
+          SLUG="${TAG%-v*}"
+          PKG_DIR="packages/$SLUG"
+          echo "PKG_DIR=$PKG_DIR" >> "$GITHUB_ENV"
+      - name: Publish
+        working-directory: ${{ env.PKG_DIR }}
+        run: npm publish --access public

@@ -130,6 +130,7 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
     dirs,
     spawned,
     installed,
+    commands,
     builtFrom,
     text(path) {
       if (!tracked.has(path)) return null;
@@ -222,6 +223,22 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
 
 function stripDot(pattern) {
   return pattern.replace(/^\.\//, '');
+}
+
+const PACKAGING = new WeakMap();
+
+// The directories a Python packaging file sits in, and their src/, by path.
+function packagingRoots(repo) {
+  if (PACKAGING.has(repo)) return PACKAGING.get(repo);
+  const roots = [];
+  for (const path of [...repo.tracked].sort()) {
+    const base = path.slice(path.lastIndexOf('/') + 1);
+    if (base !== 'pyproject.toml' && base !== 'setup.py' && base !== 'setup.cfg') continue;
+    const dir = path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '';
+    for (const root of [dir, dir ? `${dir}/src` : 'src']) if (!roots.includes(root)) roots.push(root);
+  }
+  PACKAGING.set(repo, roots);
+  return roots;
 }
 
 /**
@@ -325,8 +342,9 @@ function makeReader(repo, runs, mentions) {
     if (containerBuild(argv, dir, frame)) return;
     if (NON_EXECUTING.has(argv[0])) return;
     // A command the repository installs, typed by its name or by a path to
-    // where it was installed (.venv/bin/facet-index), runs its module.
-    const command = repo.installed.get(baseName(argv[0]));
+    // where it was installed (.venv/bin/facet-index), runs its module. Inside
+    // an image only the manifests copied into it have installed anything.
+    const command = (frame.installed ?? repo.installed).get(baseName(argv[0]));
     if (command != null && !repo.tracked.has(pathFrom(dir, argv[0]) ?? '')) {
       const passes = flagsOf(argv.slice(1));
       record(stamp({ path: command, ...(passes.length > 0 ? { passes } : {}) }, frame));
@@ -388,7 +406,7 @@ function makeReader(repo, runs, mentions) {
   }
 
   function readFile(path, dir, frame) {
-    const next = { level: 1, via: via(frame, path), active: frame.active };
+    const next = { level: 1, via: via(frame, path), active: frame.active, installed: frame.installed };
     if (isShellScript(path, repo)) {
       read(repo.text(path) ?? '', dir, next);
     } else {
@@ -496,7 +514,10 @@ function makeReader(repo, runs, mentions) {
     const parts = name.split('.');
     if (parts.some((part) => !/^[A-Za-z_][A-Za-z0-9_]*$/.test(part))) return;
     const stem = parts.join('/');
-    for (const base of [dir, dir ? `${dir}/src` : 'src']) {
+    // From the directory it runs in first; then from each directory a
+    // pyproject.toml, setup.py or setup.cfg packages, where an installed
+    // package's modules are found wherever the command runs.
+    for (const base of [dir, dir ? `${dir}/src` : 'src', ...packagingRoots(repo)]) {
       for (const candidate of [`${stem}.py`, `${stem}/__main__.py`, `${stem}/__init__.py`]) {
         const path = pathFrom(base, candidate);
         if (path != null && repo.tracked.has(path)) {
@@ -505,7 +526,14 @@ function makeReader(repo, runs, mentions) {
         }
       }
     }
-    if (PY_TOOLS.has(name)) interpret([name, ...rest], dir, frame);
+    if (PY_TOOLS.has(name)) {
+      interpret([name, ...rest], dir, frame);
+      return;
+    }
+    // A package whose __main__.py the repository holds in one place only is
+    // the one -m names, wherever the command sets its working directory.
+    const mains = repo.filesUnder('').filter((path) => path === `${stem}/__main__.py` || path.endsWith(`/${stem}/__main__.py`));
+    if (mains.length === 1) record(stamp({ path: mains[0] }, frame));
   }
 
   function reparse(argv, dir, frame) {
@@ -550,10 +578,9 @@ function makeReader(repo, runs, mentions) {
   /**
    * docker build, docker buildx build and podman build of a context: the
    * Dockerfile's COPY and ADD sources the image is built from are checked,
-   * its RUN lines are read as commands from the context, and the program its
-   * ENTRYPOINT (or, without one, its CMD) starts is run, found through the
-   * file a COPY put there, a command the repository installs, or a path in
-   * the context. Returns true when the words are a build.
+   * its RUN lines are read as commands from the context, and the command line
+   * its ENTRYPOINT and CMD start is read as a command the image runs. Returns
+   * true when the words are a build.
    */
   function containerBuild(argv, dir, frame) {
     if (argv[0] !== 'docker' && argv[0] !== 'podman') return false;
@@ -573,34 +600,111 @@ function makeReader(repo, runs, mentions) {
     if (dockerfile == null || !repo.tracked.has(dockerfile)) return;
     const chain = via(frame, `docker build ${dockerfile}`);
     const checks = { ...frame, runKind: 'checks' };
-    const copied = new Map();
-    let entry = null;
-    let cmd = null;
+    const stages = [];
+    let stage = null;
     for (const { op, args } of dockerInstructions(repo.text(dockerfile) ?? '')) {
-      if (op === 'COPY' || op === 'ADD') {
+      if (op === 'FROM') {
+        stage = imageStage(instructionWords(args), stages);
+        stages.push(stage);
+        continue;
+      }
+      stage ??= imageStage([], stages);
+      if (op === 'WORKDIR') stage.workdir = posix.resolve(stage.workdir, instructionWords(args)[0] ?? '.');
+      else if (op === 'COPY' || op === 'ADD') {
         const words = instructionWords(args);
-        if (words.some((word) => word.startsWith('--from'))) continue;
+        const fromFlag = words.find((word) => word.startsWith('--from='));
         const paths = words.filter((word) => !word.startsWith('--'));
         if (paths.length < 2) continue;
-        const dest = paths[paths.length - 1];
+        const dest = posix.resolve(stage.workdir, paths[paths.length - 1]);
+        const into = paths[paths.length - 1].endsWith('/') || paths.length > 2;
+        if (fromFlag) {
+          const source = stages.find((earlier) => earlier.name === fromFlag.slice('--from='.length).toLowerCase());
+          if (!source) continue;
+          for (const word of paths.slice(0, -1)) {
+            const at = posix.resolve(source.workdir, word);
+            const file = into && /\.[^/]+$/.test(baseName(at));
+            stage.copies.push({ image: file ? posix.join(dest, baseName(at)) : dest, stage: source, path: at });
+          }
+          continue;
+        }
         for (const source of paths.slice(0, -1)) {
           const path = pathFrom(context, source);
-          if (path == null || path === '') continue;
-          if (repo.tracked.has(path)) {
+          if (path == null) continue;
+          if (path !== '' && repo.tracked.has(path)) {
             record(stamp({ path }, checks, chain));
-            copied.set(dest.endsWith('/') ? baseName(path) : baseName(dest), path);
-          } else if (repo.dirs.has(path)) record(stamp({ path: `${path}/`, directory: true }, checks, chain));
+            stage.copies.push({ image: into ? posix.join(dest, baseName(path)) : dest, path });
+          } else if (path === '' || repo.dirs.has(path)) {
+            if (path !== '') record(stamp({ path: `${path}/`, directory: true }, checks, chain));
+            stage.copies.push({ image: dest, path });
+          }
         }
       } else if (op === 'RUN' && frame.level === 0) {
-        read(args.startsWith('[') ? instructionWords(args).join(' ') : args, context, { level: 1, via: chain, active: frame.active });
-      } else if (op === 'ENTRYPOINT') entry = instructionWords(args)[0] ?? null;
-      else if (op === 'CMD') cmd = instructionWords(args)[0] ?? null;
+        read(args.startsWith('[') ? instructionWords(args).join(' ') : args, context, { level: 1, via: chain, active: frame.active, installed: imageInstalled(stage) });
+      } else if (op === 'ENTRYPOINT') stage.entry = { words: instructionWords(args), shell: !args.startsWith('[') };
+      else if (op === 'CMD') stage.cmd = instructionWords(args);
     }
-    const program = entry ?? cmd;
-    if (program == null) return;
-    const started = copied.get(baseName(program)) ?? repo.installed.get(baseName(program))
-      ?? (repo.tracked.has(pathFrom(context, program) ?? '') ? pathFrom(context, program) : null);
-    if (started != null) record(stamp({ path: started }, frame, chain));
+    if (stage == null) return;
+    // An exec-form ENTRYPOINT is handed the CMD as its arguments; a shell-form
+    // one ignores it, as docker does.
+    const words = stage.entry ? (stage.entry.shell ? stage.entry.words : [...stage.entry.words, ...(stage.cmd ?? [])]) : stage.cmd ?? [];
+    if (words.length === 0) return;
+    const placed = words.map((word, index) => (word.startsWith('-') ? word : imageFile(stage, word, index === 0, context) ?? word));
+    read(placed.map(shellWord).join(' '), '', { level: frame.level, via: chain, active: frame.active, runKind: frame.runKind, installed: imageInstalled(stage) });
+  }
+
+  // The commands the manifests an image holds install, by name: xrpl-camp in
+  // a Python image is the console script its pyproject.toml declares, not the
+  // bin a package.json beside it declares for npm.
+  function imageInstalled(stage) {
+    const found = new Map();
+    for (const command of repo.commands) {
+      if (command.kind !== 'command' || command.path == null || found.has(command.name)) continue;
+      if (imageHolds(stage, command.manifest)) found.set(command.name, command.path);
+    }
+    return found;
+  }
+
+  // A manifest a stage copies from the context, or one a stage it copies from
+  // holds: a build stage installs the package and the image takes its
+  // environment (COPY --from=builder /opt/venv /opt/venv).
+  function imageHolds(stage, path, depth = 0) {
+    if (depth > 16) return false;
+    return stage.copies.some((copy) => {
+      if (copy.stage) return imageHolds(copy.stage, path, depth + 1);
+      return copy.path === '' || copy.path === path || path.startsWith(`${copy.path}/`);
+    });
+  }
+
+  // The file a path in the image is, in this repository: through the COPY
+  // that put it there, and the stage that COPY took it from, back to the
+  // context. A bare program word is looked up by the name a COPY gave it,
+  // which is how a script copied onto PATH is started. A relative path no
+  // COPY placed is read from the context, where a checkout-shaped image keeps
+  // it. Null when the word names no place in the repository.
+  function imageFile(stage, word, program, context) {
+    if (program && !word.includes('/')) {
+      for (let i = stage.copies.length - 1; i >= 0; i -= 1) {
+        const copy = stage.copies[i];
+        if (copy.stage == null && baseName(copy.image) === word && repo.tracked.has(copy.path)) return copy.path;
+      }
+      return null;
+    }
+    if (!word.includes('/') && !/\.[A-Za-z0-9]+$/.test(word)) return null;
+    const found = fromImage(stage, posix.resolve(stage.workdir, word), 0);
+    if (found != null) return found;
+    return word.startsWith('/') ? null : pathFrom(context, word);
+  }
+
+  function fromImage(stage, at, depth) {
+    if (depth > 16) return null;
+    for (let i = stage.copies.length - 1; i >= 0; i -= 1) {
+      const copy = stage.copies[i];
+      if (at !== copy.image && !at.startsWith(`${copy.image === '/' ? '' : copy.image}/`)) continue;
+      const rest = at.slice(copy.image.length).replace(/^\//, '');
+      if (copy.stage) return fromImage(copy.stage, rest ? posix.join(copy.path, rest) : copy.path, depth + 1);
+      return rest ? (copy.path ? `${copy.path}/${rest}` : rest) : copy.path;
+    }
+    return null;
   }
 
   const handlers = {
@@ -933,7 +1037,7 @@ function makeReader(repo, runs, mentions) {
       if (makefile == null || !repo.tracked.has(makefile)) return;
       // make -j 4 takes its count apart from the flag; a target is never a number.
       const targets = parsed.positional.filter((token) => !/^[A-Za-z_][A-Za-z0-9_]*=/.test(token) && !/^\d+$/.test(token));
-      read(makeRecipes(repo.text(makefile) ?? '', targets), cwd, { level: 1, via: via(frame, makefile), active: frame.active });
+      read(makeRecipes(repo.text(makefile) ?? '', targets), cwd, { level: 1, via: via(frame, makefile), active: frame.active, installed: frame.installed });
     },
     // astro build and its kin run the site's config and the code under its
     // src/, from the site's own directory; astro check only reads them.
@@ -1013,6 +1117,20 @@ function baseName(word) {
   return word.slice(word.lastIndexOf('/') + 1);
 }
 
+// A FROM starts a stage. One built FROM an earlier stage starts from what that
+// stage holds: its WORKDIR, its copies and what it starts.
+function imageStage(words, stages) {
+  const plain = words.filter((word) => !word.startsWith('--'));
+  const base = plain[0] != null ? stages.find((earlier) => earlier.name === plain[0].toLowerCase()) : null;
+  const name = plain.length >= 3 && plain[1].toLowerCase() === 'as' ? plain[2].toLowerCase() : null;
+  return { name, workdir: base?.workdir ?? '/', copies: [...(base?.copies ?? [])], entry: base?.entry ?? null, cmd: base?.cmd ?? null };
+}
+
+// A word as the shell would read it back as one word.
+function shellWord(word) {
+  return /^[\w@%+=:,./-]+$/.test(word) ? word : `'${word.replaceAll("'", "'\\''")}'`;
+}
+
 // A run carries the chain that reached it, and whether the tool that reached
 // it runs the file or only reads it to check it.
 function stamp(entry, frame, via = frame.via) {
@@ -1049,15 +1167,7 @@ function toolOf(word) {
  * manifest in the command's directory, the root manifest, or a workspace's.
  */
 function binTarget(repo, dir, name) {
-  const dirs = [dir, ''];
-  const root = repo.manifest('');
-  const globs = workspaceGlobs(root);
-  if (globs.length > 0) {
-    const isMatch = picomatch(globs, { dot: true });
-    for (const path of [...repo.tracked].sort()) {
-      if (path.endsWith('/package.json') && isMatch(path.slice(0, -'/package.json'.length))) dirs.push(path.slice(0, -'/package.json'.length));
-    }
-  }
+  const dirs = [dir, '', ...workspaceDirs(repo)];
   for (const found of [...new Set(dirs)]) {
     const pkg = repo.manifest(found);
     if (!pkg) continue;

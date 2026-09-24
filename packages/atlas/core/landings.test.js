@@ -138,8 +138,9 @@ describe('landings across the map', () => {
 
   it('marks a bare root file name under an unread root weak, and keeps a bare directory name full', () => {
     // tools/scratch.js writes join(dir, '.gitignore') and join(dir, 'records', ...),
-    // with dir a parameter. The first matches the tracked root .gitignore only
-    // by name; the second names the tracked records/ directory.
+    // with dir a root the engine cannot read. The first matches the tracked
+    // root .gitignore only by name; the second names the tracked records/
+    // directory.
     assert.deepEqual(landing('.gitignore').writers, [{ by: 'tools/scratch.js', confidence: 'weak' }]);
     assert.ok(landing('records').writers.some((entry) => entry.by === 'tools/scratch.js' && entry.confidence === 'ast'));
     const scratch = file('tools/scratch.js');

@@ -1,0 +1,21 @@
+boundaries:
+  - name: desktop
+    globs:
+      - apps/desktop/**
+    role: code
+  - name: domain
+    globs:
+      - packages/domain/**
+    role: code
+  - name: ignored
+    globs:
+      - packages/ignored/**
+    role: code
+  - name: root
+    globs:
+      - "*"
+    role: config
+  - name: state
+    globs:
+      - packages/state/**
+    role: code

@@ -193,8 +193,11 @@ function installed(door) {
   return door?.kind === 'command' || door?.kind === 'package';
 }
 
+// page.json carries where an extension is installed from as the page words it.
 function installedAs(door) {
-  const what = door.kind !== 'package' ? 'a command people run' : door.unpublished ? 'the package&#39;s entry, not published from here' : 'the package people import';
+  const what = door.kind !== 'package' ? 'a command people run'
+    : door.extension ? (door.unpublished ? 'the extension&#39;s entry, not published from here' : `the extension people install from ${esc(str(door.publishedTo))}`)
+      : door.unpublished ? 'the package&#39;s entry, not published from here' : 'the package people import';
   return door.sharedName ? `${what}, from ${esc(door.file)}` : what;
 }
 
@@ -387,6 +390,32 @@ function unplacedClause(door) {
   return `${startVerb(door)} ${esc(door.unplaced)}, built from a source this map cannot place`;
 }
 
+// What a door runs on one trigger only, a group per trigger, as page.js
+// words it: the lead of the sentence and the trigger as a phrase.
+function held(ctx, door) {
+  return arr(door.held).map((group) => ({
+    lead: str(group.lead),
+    when: str(group.when),
+    runs: arr(group.runs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+    checks: arr(group.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+  }));
+}
+
+function heldClause(group, verb, joiner, field) {
+  const clauses = [];
+  const shown = (items) => (field === 'html' ? runsShown(items) : runsShownText(items));
+  if (group.runs.length > 0) clauses.push(`${verb} ${shown(group.runs)}`);
+  if (group.checks.length > 0) clauses.push(`checks ${shown(group.checks)}`);
+  return clauses.length > 0 ? clauses.join(joiner) : null;
+}
+
+function heldSentences(ctx, door, verb, also) {
+  return held(ctx, door).map((group) => {
+    const clause = heldClause(group, verb, '; ', 'html');
+    return clause ? `${capitalize(esc(group.lead))}, it ${also ? 'also ' : ''}${clause}.` : null;
+  }).filter(Boolean);
+}
+
 function comesIn(ctx) {
   const items = ctx.doors.map((door) => {
     const name = `<strong>${esc(door.name)}.</strong>`;
@@ -397,7 +426,8 @@ function comesIn(ctx) {
     if (door.unplaced) clauses.push(unplacedClause(door));
     else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths))}`);
     if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked))}`);
-    const ran = capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`);
+    const heldText = heldSentences(ctx, door, startVerb(door), clauses.length > 0);
+    const ran = [...(clauses.length > 0 || heldText.length === 0 ? [capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`)] : []), ...heldText].join(' ');
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
     const when = capitalize(arr(door.triggers).map(str).join('; ')) || 'Nothing this map can read starts it';
     return `${name} ${inline(when)}. ${ran}`;
@@ -413,14 +443,17 @@ function doorSteps(ctx, door) {
   const steps = [];
   const paths = runs(ctx, door);
   const checked = checks(ctx, door);
-  const subject = installed(door) ? `The ${door.kind} ${startVerb(door)}` : 'The workflow runs';
+  const subject = installed(door) ? `The ${door.extension ? 'extension' : door.kind} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
   if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths))}`);
   if (checked.length > 0) clauses.push(`${paths.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked))}`);
-  steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
+  const heldText = heldSentences(ctx, door, 'runs', clauses.length > 0);
+  if (clauses.length > 0 || heldText.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
+  steps.push(...heldText);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
   if (arr(door.stages).length > 0) steps.push(`It commits ${commitsClause(ctx, door)}.`);
+  if (arr(door.programs).length > 0) steps.push(`It runs ${esc(list(arr(door.programs).map(str)))}.`);
   for (const send of arr(door.sends)) steps.push(`It ${inline(send)}.`);
   return steps;
 }
@@ -465,6 +498,13 @@ function sequenceItems(ctx) {
     if (!sequence || typeof sequence !== 'object') continue;
     const own = sequence.part == null ? null : str(sequence.part);
     items.push(inOrder(`Inside ${pathHtml(ctx, sequence.file)}, ${esc(sequence.phrase)} does, in order:`, stepTexts(ctx, sequence.steps, own)));
+    // An early return's branch is the other way the entry goes, said once,
+    // three at most, as page.js says them.
+    const alternatives = arr(sequence.alternatives).filter((alternative) => alternative && typeof alternative === 'object');
+    for (const alternative of alternatives.slice(0, 3)) {
+      items.push(`Or, when <code>${esc(alternative.when)}</code>, ${esc(sequence.phrase)} does ${list(stepTexts(ctx, alternative.steps, own))} instead.`);
+    }
+    if (alternatives.length > 3) items.push(`${esc(capitalize(str(sequence.phrase)))} returns early ${count(alternatives.length - 3, 'more way')}.`);
     // page.json holds only the called functions the markdown shows, in the
     // order the entry calls them. A part is named only when it is not the
     // entry file's own.
@@ -490,9 +530,28 @@ function happens(ctx) {
   return section(`What happens through ${str(ctx.main.name)}`, ol(steps));
 }
 
+// page.js absence(): a sentence that says nothing does something covers only
+// the files the parser read, and says so when some could not be read.
+function absence(kind, unread, subject = '') {
+  const not = unread > 0 ? `; ${count(unread, 'file')} could not be` : '';
+  const within = unread > 0 ? ' in the files this map could read' : '';
+  switch (kind) {
+    case 'writes': return unread > 0 ? `${subject} writes nothing${within}${not}.` : `${subject} writes nothing this map can see.`;
+    case 'breaks': return `No part is imported by another part${within}, and no part sits on the path of two doors${not}.`;
+    case 'unread': return unread > 0 ? `No place is written by the files this map could read, so none goes unread${not}.` : 'No place this map can see is written, so none goes unread.';
+    case 'duplicates': return `No two parts export a helper that looks alike${within}${not}.`;
+    case 'generated': return unread > 0 ? `Nothing${within} writes to a tracked place${not}.` : 'Nothing in this repository writes to a tracked place this map can see.';
+    default: return unread > 0 ? `${subject}. Nothing${within} writes to them${not}.` : `${subject}. Nothing in this repository writes to them.`;
+  }
+}
+
+function unreadFiles(ctx) {
+  return Number(ctx.page.unreadFiles) || 0;
+}
+
 function readsSection(ctx) {
   const name = esc(ctx.main.name);
-  if (arr(ctx.main.landings).length === 0) return section('Who reads the results', p(`${name} writes nothing this map can see.`));
+  if (arr(ctx.main.landings).length === 0) return section('Who reads the results', p(absence('writes', unreadFiles(ctx), name)));
   const groups = arr(ctx.page.readers);
   if (groups.length === 0) return section('Who reads the results', p(`Only ${name} itself reads what it writes.`));
   const bullets = groups.map((group) => {
@@ -517,13 +576,17 @@ function otherDoors(ctx) {
     const checked = checks(ctx, door);
     const verb = startVerb(door);
     if (door.unplaced) clauses.push({ html: unplacedClause(door), text: `${verb} ${str(door.unplaced)}, built from a source this map cannot place` });
-    else if (paths.length > 0 || checked.length === 0) {
+    else if (paths.length > 0 || (checked.length === 0 && arr(door.held).length === 0)) {
       clauses.push(paths.length > 0
         ? { html: `${verb} ${runsShown(paths, runTotal(door, paths))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths))}` }
         : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
     }
     if (checked.length > 0) {
       clauses.push({ html: `checks ${runsShown(checked, checkTotal(door, checked))}`, text: `checks ${runsShownText(checked, checkTotal(door, checked))}` });
+    }
+    for (const group of held(ctx, door)) {
+      const html = heldClause(group, verb, ' and ', 'html');
+      if (html) clauses.push({ html: `${html} ${esc(group.when)}`, text: `${heldClause(group, verb, ' and ', 'text')} ${group.when}` });
     }
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => str(entry.boundary))))].sort(cmp).map((part) => ctx.name(part));
     if (reached.length > 0) clauses.push({ html: `reaches ${list(reached.map(esc))}`, text: `reaches ${list(reached)}` });
@@ -535,6 +598,8 @@ function otherDoors(ctx) {
       const text = push ? (stages.length > 1 ? `${list(stages)}, then ${push}` : `${list(stages)} and ${push}`) : list(stages);
       clauses.push({ html: `commits ${commitsClause(ctx, door)}`, text: `commits ${text}` });
     }
+    const programs = arr(door.programs).map(str);
+    if (programs.length > 0) clauses.push({ html: `runs ${esc(list(programs))}`, text: `runs ${list(programs)}` });
     for (const send of arr(door.sends)) clauses.push({ html: inline(send), text: str(send) });
     const named = installed(door) ? `<strong>${esc(door.name)}</strong> (${installedAs(door)})` : `<strong>${esc(door.name)}</strong>`;
     return p(`${named} ${clauseList(clauses)}.`);
@@ -561,6 +626,16 @@ function breakLine(ctx, entry) {
   const doors = Number(entry?.doors) || 0;
   const path = doors === 0 ? 'no door' : count(doors, 'door');
   const fromTests = arr(entry?.importedByTests).map((part) => ctx.name(part));
+  // A part another part runs as a child process, as page.js says it.
+  const spawned = arr(entry?.spawnedBy).map((part) => ctx.name(part));
+  if (spawned.length > 0) {
+    const clauses = [];
+    if (importedBy.length > 0) clauses.push(`is imported by ${count(importedBy.length, 'part')} (${esc(importedBy.join(', '))})`);
+    if (importedBy.length > 0 && fromTests.length > 0) clauses.push(`and by ${fromTests.length} more only from tests`);
+    clauses.push(`is run as a child process by ${count(spawned.length, 'part')} (${esc(spawned.join(', '))})`);
+    const joined = clauses.length > 1 ? `${clauses.join(', ')},` : clauses[0];
+    return `<strong>${esc(breakLabel(ctx, entry))}</strong> ${joined} and sits on the path of ${path}.`;
+  }
   if (importedBy.length === 0 && fromTests.length > 0) {
     return `<strong>${esc(breakLabel(ctx, entry))}</strong> is imported only from tests, by ${count(fromTests.length, 'part')} (${esc(fromTests.join(', '))}), and sits on the path of ${path}.`;
   }
@@ -574,7 +649,7 @@ function breaksSection(ctx) {
   const entries = arr(ctx.page.breaks);
   const body = entries.length > 0
     ? ul(entries.map((entry) => breakLine(ctx, entry)))
-    : p('No part is imported by another part, and no part sits on the path of two doors.');
+    : p(absence('breaks', unreadFiles(ctx)));
   const figure = renderBreaksFigure(ctx.page);
   return section('What breaks what', figure ? `${body}\n${figure}` : body);
 }
@@ -635,7 +710,7 @@ function unreadSection(ctx) {
       const comma = writers.length > 1 ? ',' : '';
       return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))))}${comma} and read by nothing else in this repository.`;
     }))
-    : p(ctx.page.written === 0 ? 'No place this map can see is written, so none goes unread.' : 'Every written place has a reader.');
+    : p(ctx.page.written === 0 ? absence('unread', unreadFiles(ctx)) : 'Every written place has a reader.');
   const note = arr(ctx.page.unreadNote).map((line) => p(esc(line)));
   return section('Written but never read', [body, ...note].join('\n'));
 }
@@ -655,7 +730,7 @@ function duplicatesSection(ctx) {
       const [partA, partB] = arr(item.partLabels).map((label) => esc(label));
       return `<strong>${esc(item.name)}</strong> is exported by ${pathHtml(ctx, fileA)} (${partA}) and ${pathHtml(ctx, fileB)} (${partB}); the two look alike.`;
     }))
-    : p('No two parts export a helper that looks alike.');
+    : p(absence('duplicates', unreadFiles(ctx)));
   const note = arr(ctx.page.duplicatesNote).map((line) => p(esc(line)));
   return section('Helpers that look duplicated', [...lead, body, ...note].join('\n'));
 }
@@ -673,7 +748,7 @@ function generatedSection(ctx) {
       // A stamped file is written by people, with one block a script keeps.
       return item.block ? `${place} has a block written by ${by}.` : `${place} is written by ${by}.`;
     }))
-    : p('Nothing in this repository writes to a tracked place this map can see.');
+    : p(absence('generated', unreadFiles(ctx)));
   return section('Generated, never hand-edited', body);
 }
 
@@ -688,7 +763,7 @@ function authoredSection(ctx) {
   const people = `People write ${list(places.map(shown))}`;
   const caveat = unnamed > 0
     ? `${people}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`
-    : `${people}. Nothing in this repository writes to them.`;
+    : absence('authored', unreadFiles(ctx), people);
   const body = places.length > 0 ? p(caveat) : p('No configuration or documentation part is left to people alone.');
   // A place a script writes and people keep, with the count that says so.
   const shared = arr(ctx.page.authoredWritten).filter((item) => item && typeof item === 'object').map((item) => {

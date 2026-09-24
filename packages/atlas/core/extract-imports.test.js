@@ -109,7 +109,7 @@ describe('import extraction', () => {
       assert.deepEqual(file.imports, [], path);
     }
 
-    for (const path of ['notes.md', 'data.json']) {
+    for (const path of ['notes.md', 'data.json', 'package.json']) {
       const file = byPath.get(path);
       assert.equal(file.language, null, path);
       assert.equal(file.imports, 'unavailable', path);
@@ -119,6 +119,6 @@ describe('import extraction', () => {
     assert.equal(boundary.parseErrors, 4);
     assert.equal(boundary.unresolvedSites, 11);
     assert.equal(boundary.importConfidence, 'full');
-    assert.equal(boundary.files.length, Object.keys(EXPECTED).length + 4 + 2);
+    assert.equal(boundary.files.length, Object.keys(EXPECTED).length + 4 + 3);
   });
 });

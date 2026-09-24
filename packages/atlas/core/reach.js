@@ -1,3 +1,4 @@
+import { isTestFile } from './landings.js';
 import { loadsManifest } from './languages.js';
 
 /**
@@ -15,6 +16,10 @@ import { loadsManifest } from './languages.js';
  * The walk also returns the files it visited, sorted: every tracked file the
  * door runs or imports. Landing places are read from these files, not from
  * the boundary names they add up to.
+ *
+ * A file a production file runs as a child process (python -m jobs) is
+ * reached as an import is; a test's child processes are the runs it checks,
+ * counted for what tests reach, not for the door.
  *
  * A boundary reached past depth 0 records `enters`: the first import into it,
  * as the file imported and the file importing it, in walk order (files by
@@ -50,6 +55,14 @@ export function walkReach(starts, graph) {
       if (boundary) {
         reached(boundary, depth);
         filesOf.get(boundary).add(path);
+      }
+      if (!isTestFile(path)) {
+        for (const target of graph.files.get(path).spawns ?? []) {
+          if (!graph.files.has(target)) continue;
+          const into = graph.boundaryOf.get(target);
+          if (into && into !== boundary && !enters.has(into)) enters.set(into, { file: target, from: path });
+          if (!visited.has(target)) next.add(target);
+        }
       }
       const imports = graph.files.get(path).imports;
       if (!Array.isArray(imports)) continue;
