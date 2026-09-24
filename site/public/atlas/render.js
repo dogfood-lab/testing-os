@@ -497,6 +497,13 @@ function sequenceItems(ctx) {
     if (!sequence || typeof sequence !== 'object') continue;
     const own = sequence.part == null ? null : str(sequence.part);
     items.push(inOrder(`Inside ${pathHtml(ctx, sequence.file)}, ${esc(sequence.phrase)} does, in order:`, stepTexts(ctx, sequence.steps, own)));
+    // An early return's branch is the other way the entry goes, said once,
+    // three at most, as page.js says them.
+    const alternatives = arr(sequence.alternatives).filter((alternative) => alternative && typeof alternative === 'object');
+    for (const alternative of alternatives.slice(0, 3)) {
+      items.push(`Or, when <code>${esc(alternative.when)}</code>, ${esc(sequence.phrase)} does ${list(stepTexts(ctx, alternative.steps, own))} instead.`);
+    }
+    if (alternatives.length > 3) items.push(`${esc(capitalize(str(sequence.phrase)))} returns early ${count(alternatives.length - 3, 'more way')}.`);
     // page.json holds only the called functions the markdown shows, in the
     // order the entry calls them. A part is named only when it is not the
     // entry file's own.

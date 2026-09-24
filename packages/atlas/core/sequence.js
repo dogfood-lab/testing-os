@@ -15,7 +15,8 @@ import { posix } from 'node:path';
 const MAX_CALLS = 24;
 const MAX_INNER = 12;
 const MAX_ALIAS_DEPTH = 8;
-const ENTRY_NAMES = ['main', 'run', 'cli'];
+// A VS Code extension's activate is its main.
+const ENTRY_NAMES = ['main', 'run', 'cli', 'activate'];
 
 const JS_FUNCTIONS = new Set([
   'function_declaration',
@@ -29,6 +30,17 @@ const JS_FUNCTIONS = new Set([
 const JS_STATEMENT_LISTS = new Set(['program', 'statement_block', 'class_static_block', 'switch_case', 'switch_default']);
 const JS_WRAPPERS = new Set(['parenthesized_expression', 'await_expression', 'as_expression', 'satisfies_expression', 'non_null_expression']);
 const PY_FUNCTIONS = new Set(['function_definition', 'lambda']);
+// Methods that register a callback rather than call it: server.tool(name,
+// handler), emitter.on(event, handler), program.command(...).action(handler).
+// The handler runs when the event comes, not as a step of the function that
+// registers it.
+const REGISTRARS = new Set([
+  'on', 'once', 'off', 'addListener', 'addEventListener', 'prependListener', 'prependOnceListener',
+  'tool', 'resource', 'prompt', 'setRequestHandler', 'setNotificationHandler', 'action', 'hook', 'use',
+  'subscribe', 'register', 'handle',
+]);
+// A condition shown in a sentence is cut at this many characters.
+const CONDITION_SHOWN = 60;
 
 // A method with a built-in collection, string, promise or logger name on a
 // receiver the engine cannot follow is almost always that built-in:
@@ -90,8 +102,9 @@ export function sequenceFacts(language, root) {
   }
 
   const plain = (step) => {
-    if (step.kind === 'local') return { kind: 'local', fn: step.node.startIndex, line: step.line };
-    const out = { kind: step.kind, name: step.name, line: step.line };
+    const branch = step.branch ? { branch: step.branch } : {};
+    if (step.kind === 'local') return { kind: 'local', fn: step.node.startIndex, line: step.line, ...branch };
+    const out = { kind: step.kind, name: step.name, line: step.line, ...branch };
     if (step.site) out.site = step.site;
     if (step.passed) out.passed = true;
     if (step.receiver) out.receiver = step.receiver;
@@ -216,8 +229,11 @@ function fileSequences(path, files, allFacts, entryFunction) {
   const spliced = (fn) => {
     const calls = [];
     const visited = new Set([fn.id]);
-    const expand = (current, via) => {
+    // A call inside an early return's branch keeps that branch, and so does
+    // everything a function it splices does.
+    const expand = (current, via, branch) => {
       for (const step of current.steps) {
+        const on = branch ?? step.branch ?? null;
         if (step.kind === 'local') {
           // A function is spliced at its first call only. Each later call adds
           // nothing, so a helper called at every stage is read once, and a
@@ -225,7 +241,7 @@ function fileSequences(path, files, allFacts, entryFunction) {
           if (visited.has(step.fn) || !byId.has(step.fn)) continue;
           visited.add(step.fn);
           const callee = byId.get(step.fn);
-          expand(callee, callee.name);
+          expand(callee, callee.name, on);
           continue;
         }
         const target = step.kind === 'unknown' ? null : targetOf(step);
@@ -234,13 +250,14 @@ function fileSequences(path, files, allFacts, entryFunction) {
         if (step.passed) call.passed = true;
         if (step.receiver) call.receiver = step.receiver;
         if (via != null) call.via = via;
+        if (on != null) call.branch = on;
         const last = calls[calls.length - 1];
         if (last && last.name === call.name && sameTarget(last.target, call.target) && last.passed === call.passed
-          && last.receiver === call.receiver) continue;
+          && last.receiver === call.receiver && last.branch === call.branch) continue;
         calls.push(call);
       }
     };
-    expand(fn, null);
+    expand(fn, null, null);
     return calls;
   };
 
@@ -283,8 +300,11 @@ function entryOf(path, facts, size, entryFunction) {
   const moduleLevel = facts.functions.filter((fn) => fn.moduleLevel);
   const declared = entryFunction == null ? null : moduleLevel.find((fn) => fn.name === entryFunction);
   if (declared) return { name: declared.name, rule: 0 };
+  // Of the functions the top-level code invokes, one named as an entry (main)
+  // is the one a reader starts from, whichever does more.
   const invoked = moduleLevel.filter((fn) => facts.topLevel.includes(fn.id));
-  if (invoked.length > 0) return { name: widest(invoked, size).name, rule: 1 };
+  const conventional = invoked.filter((fn) => ENTRY_NAMES.includes(fn.name));
+  if (invoked.length > 0) return { name: widest(conventional.length > 0 ? conventional : invoked, size).name, rule: 1 };
   const byDefault = moduleLevel.find((fn) => fn.isDefaultExport);
   if (byDefault) return { name: byDefault.name, rule: 2 };
   const exported = moduleLevel.filter((fn) => fn.exported);
@@ -407,6 +427,17 @@ function argumentNodes(call) {
 function visitJs(node, ctx, steps) {
   if (!node) return;
   if (JS_FUNCTIONS.has(node.type) || node.type === 'class_declaration' || node.type === 'class') return;
+  // if (asked for the version) { printVersion(); return; } is the other way
+  // the function goes, not its first step: the calls it holds are marked
+  // with the condition, which is read every time.
+  if (node.type === 'if_statement' && exitsEarly(node.childForFieldName('consequence'), node.childForFieldName('alternative'), 'js')) {
+    const condition = node.childForFieldName('condition');
+    visitJs(condition, ctx, steps);
+    const inner = [];
+    visitJs(node.childForFieldName('consequence'), ctx, inner);
+    for (const step of inner) steps.push({ ...step, branch: step.branch ?? conditionText(condition) });
+    return;
+  }
   if (node.type === 'call_expression' || node.type === 'new_expression') {
     const fn = node.childForFieldName(node.type === 'call_expression' ? 'function' : 'constructor');
     const args = argumentNodes(node);
@@ -416,8 +447,10 @@ function visitJs(node, ctx, steps) {
       const step = classifyJs(node, fn, ctx);
       if (step) steps.push(step);
     }
+    const registers = node.type === 'call_expression' && registration(fn);
     for (const arg of args) {
       if (JS_FUNCTIONS.has(arg.type)) {
+        if (registers) continue;
         const body = arg.childForFieldName('body');
         if (body && JS_FUNCTIONS.has(body.type)) continue;
         visitJs(body, ctx, steps);
@@ -429,6 +462,35 @@ function visitJs(node, ctx, steps) {
     return;
   }
   for (const child of node.namedChildren) visitJs(child, ctx, steps);
+}
+
+// A call that hands a callback to be run later: a method named for
+// registering (server.tool, emitter.on), or a function named register* or
+// on*.
+function registration(fn) {
+  if (fn?.type === 'member_expression') {
+    const property = fn.childForFieldName('property')?.text ?? '';
+    return REGISTRARS.has(property) || /^(register|on)[A-Z]/.test(property);
+  }
+  if (fn?.type === 'identifier') return /^(register|on)[A-Z]/.test(fn.text) || fn.text === 'register';
+  return false;
+}
+
+// A branch with no else that ends in a return or a throw.
+function exitsEarly(consequence, alternative, language) {
+  if (!consequence || alternative) return false;
+  const exits = language === 'js' ? ['return_statement', 'throw_statement'] : ['return_statement', 'raise_statement'];
+  if (exits.includes(consequence.type)) return true;
+  const statements = consequence.namedChildren.filter((child) => child.type !== 'comment');
+  return statements.length > 0 && exits.includes(statements[statements.length - 1].type);
+}
+
+// A condition as the page shows it: its source on one line, its outer
+// parentheses dropped, cut when long.
+function conditionText(node) {
+  let text = (node?.text ?? '').replace(/\s+/g, ' ').trim();
+  while (text.startsWith('(') && text.endsWith(')')) text = text.slice(1, -1).trim();
+  return text.length > CONDITION_SHOWN ? `${text.slice(0, CONDITION_SHOWN - 1)}…` : text;
 }
 
 function classifyJs(call, fn, ctx) {
@@ -667,6 +729,14 @@ function pythonContext(root) {
 function visitPy(node, ctx, steps) {
   if (!node) return;
   if (PY_FUNCTIONS.has(node.type) || node.type === 'class_definition' || node.type === 'decorated_definition') return;
+  if (node.type === 'if_statement' && exitsEarly(node.childForFieldName('consequence'), node.childForFieldName('alternative') ?? node.namedChildren.find((child) => child.type === 'elif_clause' || child.type === 'else_clause'), 'py')) {
+    const condition = node.childForFieldName('condition');
+    visitPy(condition, ctx, steps);
+    const inner = [];
+    visitPy(node.childForFieldName('consequence'), ctx, inner);
+    for (const step of inner) steps.push({ ...step, branch: step.branch ?? conditionText(condition) });
+    return;
+  }
   if (node.type === 'call') {
     const fn = node.childForFieldName('function');
     const args = pythonArguments(node);

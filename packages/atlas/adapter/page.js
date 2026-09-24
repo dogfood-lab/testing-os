@@ -26,6 +26,8 @@ const SUB_INDENT = '   ';
 // One file's entry is followed into at most five of the functions it calls,
 // the ones with the most work to put in order.
 const INNER_SHOWN = 5;
+// An entry's early returns are said this many at a time, the rest counted.
+const ALTERNATIVES_SHOWN = 3;
 const INNER_STEPS = 3;
 // A step names the runs of at most this many parts, the rest counted.
 const GROUPS_SHOWN = 6;
@@ -869,7 +871,7 @@ function partOf(ctx, target) {
 // The steps a sequence shows. A function only handed to another call is not
 // known to run there, so it is kept in the artifact and left off the page.
 function stepUnits(ctx, calls) {
-  const shown = calls.filter((call) => !call.passed);
+  const shown = calls.filter((call) => !call.passed && call.branch == null);
   const units = [];
   for (let i = 0; i < shown.length;) {
     const file = shown[i].target?.file ?? null;
@@ -905,6 +907,20 @@ function unitTexts(ctx, units, ownPart) {
     if (unit.count) notes.push(`${unit.count} steps`);
     return notes.length > 0 ? `${unit.phrase} (${notes.join(', ')})` : unit.phrase;
   });
+}
+
+// The other ways a function goes, each an early return's branch with the
+// calls it makes, in the order the branches come.
+function alternativesOf(ctx, calls) {
+  const byCondition = new Map();
+  for (const call of calls) {
+    if (call.branch == null || call.passed) continue;
+    if (!byCondition.has(call.branch)) byCondition.set(call.branch, []);
+    byCondition.get(call.branch).push({ ...call, branch: undefined });
+  }
+  return [...byCondition.entries()]
+    .map(([when, list]) => ({ when, steps: stepUnits(ctx, list).units }))
+    .filter((alternative) => alternative.steps.length > 0);
 }
 
 function inOrder(lead, texts, indent) {
@@ -955,7 +971,8 @@ function sequences(ctx, door) {
       .slice(0, INNER_SHOWN)
       .map(({ item }) => item));
     const inner = candidates.filter((item) => kept.has(item));
-    out.push({ entry: file.entry, file: path, inner, part, partLabel: label(ctx, part), phrase: words(file.entry), steps: steps.units });
+    const alternatives = alternativesOf(ctx, root.calls);
+    out.push({ ...(alternatives.length > 0 ? { alternatives } : {}), entry: file.entry, file: path, inner, part, partLabel: label(ctx, part), phrase: words(file.entry), steps: steps.units });
   }
   return out;
 }
@@ -964,6 +981,11 @@ function sequenceLines(ctx, found) {
   const lines = [];
   for (const sequence of found) {
     lines.push(inOrder(`Inside ${sequence.file}, ${sequence.phrase} does, in order:`, unitTexts(ctx, sequence.steps, sequence.part), SUB_INDENT));
+    const alternatives = sequence.alternatives ?? [];
+    for (const alternative of alternatives.slice(0, ALTERNATIVES_SHOWN)) {
+      lines.push(`Or, when \`${alternative.when}\`, ${sequence.phrase} does ${list(unitTexts(ctx, alternative.steps, sequence.part))} instead.`);
+    }
+    if (alternatives.length > ALTERNATIVES_SHOWN) lines.push(`${capitalize(sequence.phrase)} returns early ${count(alternatives.length - ALTERNATIVES_SHOWN, 'more way')}.`);
     for (const inner of sequence.inner) {
       const where = inner.part != null ? (inner.part === sequence.part ? null : ctx.shown(inner.part)) : inner.file;
       const lead = `**${capitalize(inner.phrase)}**${where ? ` (${where})` : ''} runs, in order:`;

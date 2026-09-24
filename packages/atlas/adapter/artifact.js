@@ -247,6 +247,7 @@ function carrySequence(sequence) {
 
 function carryCall(call) {
   const out = { line: call.line, name: call.name, target: call.target == null ? null : { ...call.target } };
+  if (call.branch != null) out.branch = call.branch;
   if (call.passed) out.passed = true;
   if (call.receiver != null) out.receiver = call.receiver;
   if (call.via != null) out.via = call.via;
