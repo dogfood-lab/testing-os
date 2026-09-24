@@ -491,11 +491,12 @@ export function astLandings(language, root, path, places) {
     python: language === 'python',
     file: path,
     dir: dir === '.' ? '' : dir,
+    places,
     seen: new Set(),
     visiting: new Set(),
     assignments: new Map(),
   };
-  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, pendingWrites: [], pendingReads: [] };
+  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, pendingWrites: [], pendingReads: [], pendingParams: [] };
   const evaluate = ctx.python ? evalPy : evalJs;
   const site = (kind, call, node, countDynamic = true) => {
     if (!node) return;
@@ -505,10 +506,27 @@ export function astLandings(language, root, path, places) {
       if (countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
       return;
     }
+    // A path rooted at a parameter of a module-level function is settled
+    // from the calls that function is given (settleParamPaths).
+    // The other alternatives of the same path are read here, and a site is
+    // counted once: settled, it adds only what they did not.
+    const bound = all.filter(boundParam);
+    if (bound.length > 0) {
+      const rest = all.filter((value) => !boundParam(value));
+      found.pendingParams.push({
+        kind,
+        call,
+        countDynamic: countDynamic && rest.length === 0,
+        counted: rest.some(outside),
+        values: bound.map((value) => ({ param: { ...value.param }, open: value.open, text: value.text, ...(value.open && value.tail != null ? { tail: value.tail } : {}) })),
+        ...(unless.length > 0 ? { unless } : {}),
+      });
+      if (rest.length === 0) return;
+    }
     const helpers = [...new Set(all.filter(isHelper).map((value) => value.anchor.slice(HELPER.length)))].sort();
     // Until the imported function is read, its return is a root the engine
     // cannot read, as join(root, 'records') has.
-    const values = all.map((value) => (isHelper(value) ? asRoot(value) : value));
+    const values = all.filter((value) => !boundParam(value)).map((value) => (isHelper(value) ? asRoot(value) : value));
     const list = kind === 'write' ? found.writes : found.reads;
     const theirs = values.some(outside);
     if (theirs) found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
@@ -521,8 +539,13 @@ export function astLandings(language, root, path, places) {
         for (const entry of rawUrls(value.text, places)) list.push({ ...entry, call, confidence: 'ast' });
         continue;
       }
-      const target = landingOf(value, places);
-      if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}) });
+      // A path built at run time shaped like no tracked file makes files this
+      // repository does not keep, under the place it is built in.
+      const target = shapedLikeNothing(value, call, places) ? shapedTarget(value) : kind === 'write' ? writtenPlace(value, places) : landingOf(value, places);
+      // A root read at run time is never a placeholder's: canon/ holding only
+      // a .gitkeep marks where a user's files go, not where this code writes.
+      if (target != null && value.rooted && placeholder(target, places)) unplaced = true;
+      else if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}) });
       else if (value.open) unplaced = true;
     }
     // A root another file's function returns is settled once that file is
@@ -572,6 +595,7 @@ export function astLandings(language, root, path, places) {
   });
 
   const rooted = callerRootedFunctions(root, ctx);
+  const paramCalls = recordedCalls(root, calls, ctx);
   return {
     writes: sortEntries(withoutRedundantDirectories(found.writes, places)),
     dynamicWrites: found.dynamicWrites,
@@ -582,7 +606,165 @@ export function astLandings(language, root, path, places) {
     ...(found.pendingWrites.length > 0 ? { pendingWrites: found.pendingWrites } : {}),
     ...(found.pendingReads.length > 0 ? { pendingReads: found.pendingReads } : {}),
     ...(Object.keys(rooted).length > 0 ? { callerRooted: rooted } : {}),
+    ...(found.pendingParams.length > 0 ? { pendingParams: found.pendingParams } : {}),
+    ...(paramCalls.length > 0 ? { paramCalls } : {}),
   };
+}
+
+// A parameter of a named module-level function, which the calls to it bind.
+function boundParam(value) {
+  return value.anchor === 'param' && value.param != null;
+}
+
+/**
+ * The calls a file makes to a module-level function of its own or to one it
+ * imports from a file of this repository, with what each argument reads as,
+ * for settleParamPaths. The arguments are read in a scratch context, so a
+ * literal handed over is still found as the literal read it is. A call no
+ * argument of which reads as anything is left out.
+ */
+function recordedCalls(root, calls, ctx) {
+  if (ctx.python) return [];
+  const local = new Set(moduleFunctions(root, false).map(([name]) => name));
+  const imports = scriptImports(root);
+  const scratch = { ...ctx, seen: new Set(), visiting: new Set() };
+  const out = [];
+  for (const node of calls) {
+    const fn = node.childForFieldName('function');
+    if (fn?.type !== 'identifier') continue;
+    const target = local.has(fn.text) ? { local: fn.text } : imports.has(fn.text) ? { specifier: imports.get(fn.text).specifier, name: imports.get(fn.text).name } : null;
+    if (target == null) continue;
+    const nodes = argumentNodes(node);
+    const args = nodes.map((_, index) => {
+      const passed = passedAt(nodes, index, scratch, 0);
+      const fields = passed.fields ? Object.fromEntries(Object.entries(passed.fields).map(([name, values]) => [name, values.map(compactValue)])) : null;
+      return { values: passed.values.map(compactValue), ...(fields ? { fields } : {}) };
+    });
+    if (args.some((arg) => arg.values.length > 0 || Object.values(arg.fields ?? {}).some((values) => values.length > 0))) out.push({ ...target, args });
+  }
+  return out;
+}
+
+function compactValue(value) {
+  return {
+    text: value.text,
+    open: value.open,
+    ...(value.rooted ? { rooted: true } : {}),
+    ...(value.anchor != null ? { anchor: value.anchor } : {}),
+    ...(value.param ? { param: { ...value.param } } : {}),
+    ...(value.open && value.tail != null ? { tail: value.tail } : {}),
+  };
+}
+
+// A parameter's root is followed back through at most this many calls.
+const PARAM_HOPS = 3;
+
+/**
+ * The writes and reads rooted at a parameter of a module-level function,
+ * settled from the calls this repository makes to that function: each
+ * argument a call passes is the root. One that is a place of this repository
+ * (a literal, a path built from a file's own location) lands there; one that
+ * is the caller's place (the working directory, the home directory, a
+ * command-line argument) is counted outside, and so is a function nothing but
+ * tests call, since it is called from outside the repository. An argument
+ * that is another function's parameter is followed to that function's calls,
+ * a few calls deep. An argument the engine cannot read leaves the root
+ * unread, as it was before calls were read: the place the rest of the path
+ * names is kept. A placeholder directory is never landed on from a root read
+ * at run time. The recorded calls are dropped once used.
+ *
+ * @param {Iterable<object>} files every file of the map
+ * @param {{ files: Set<string>, dirs: Set<string> }} places
+ */
+export function settleParamPaths(files, places) {
+  const byPath = new Map();
+  for (const file of files) byPath.set(file.path, file);
+  const callers = new Map();
+  for (const file of byPath.values()) {
+    if (!file.paramCalls || isTestMaterial(file.path)) continue;
+    for (const call of file.paramCalls) {
+      let target = null;
+      if (call.local != null) target = `${file.path}#${call.local}`;
+      else {
+        const site = Array.isArray(file.imports) ? file.imports.find((item) => item.specifier === call.specifier && item.resolved?.outcome === 'file') : null;
+        if (site) target = `${site.resolved.path}#${call.name}`;
+      }
+      if (target == null) continue;
+      if (!callers.has(target)) callers.set(target, []);
+      callers.get(target).push({ path: file.path, args: call.args });
+    }
+  }
+  const roots = (path, fn, param, rest, depth) => {
+    const out = { places: [], outside: false, unread: false };
+    const calls = callers.get(`${path}#${fn}`) ?? [];
+    if (calls.length === 0) {
+      out.outside = true;
+      return out;
+    }
+    for (const call of calls) {
+      const values = passedFor(call.args[param.index], param);
+      if (values.length === 0) out.unread = true;
+      for (const value of values) {
+        if (boundParam(value)) {
+          if (depth + 1 >= PARAM_HOPS) {
+            out.unread = true;
+            continue;
+          }
+          const joined = appendRest(value, rest);
+          const deeper = roots(call.path, value.param.fn, value.param, { text: joined.text, open: joined.open, ...(joined.tail != null ? { tail: joined.tail } : {}) }, depth + 1);
+          out.places.push(...deeper.places);
+          out.outside ||= deeper.outside;
+          out.unread ||= deeper.unread;
+        } else if (isHelper(value)) out.unread = true;
+        else if (outside(value)) out.outside = true;
+        else out.places.push(appendRest(value, rest));
+      }
+    }
+    return out;
+  };
+  for (const file of byPath.values()) {
+    for (const pending of file.pendingParams ?? []) {
+      const [kind, outsideCount, dynamicCount] = pending.kind === 'write' ? ['writes', 'outsideWrites', 'dynamicWrites'] : ['reads', 'outsideReads', 'dynamicReads'];
+      const entries = [];
+      let theirs = false;
+      for (const bound of pending.values) {
+        const rest = { text: bound.text, open: bound.open, ...(bound.tail != null ? { tail: bound.tail } : {}) };
+        const found = roots(file.path, bound.param.fn, bound.param, rest, 0);
+        theirs ||= found.outside;
+        const before = entries.length;
+        const land = (value) => {
+          const target = shapedLikeNothing(value, pending.call, places) ? shapedTarget(value) : pending.kind === 'write' ? writtenPlace(value, places) : landingOf(value, places);
+          if (target == null || (value.rooted && placeholder(target, places))) return;
+          entries.push({ ...landingEntry(target, pending.call, value, places), ...(pending.unless ? { unless: [...pending.unless] } : {}) });
+        };
+        for (const value of found.places) land(value);
+        // An argument read as nothing is still what the caller passes: the
+        // place the rest of the path names is kept when it names one, and
+        // otherwise the write is theirs.
+        if (found.unread) {
+          const kept = entries.length;
+          land({ ...rest, rooted: true });
+          if (entries.length === kept && entries.length === before) theirs = true;
+        }
+      }
+      if (theirs && !pending.counted) file[outsideCount] = (file[outsideCount] ?? 0) + 1;
+      // A directory made where the file also writes inside it is only
+      // evidence of that write, as astLandings has it.
+      if (entries.length > 0) file[kind] = sortEntries(kind === 'writes' ? withoutRedundantDirectories([...(file[kind] ?? []), ...entries], places) : [...(file[kind] ?? []), ...entries]);
+      else if (!theirs && pending.countDynamic) file[dynamicCount] = (file[dynamicCount] ?? 0) + 1;
+    }
+    delete file.pendingParams;
+    delete file.paramCalls;
+  }
+}
+
+// A root with the rest of a path under it.
+function appendRest(value, rest) {
+  const restShape = `${globText(rest.text)}${tailOf(rest)}`;
+  if (value.open) return restShape === '' ? value : { ...value, tail: `${tailOf(value)}/${restShape}` };
+  if (rest.text === '') return rest.open ? { ...value, text: value.text === '' ? '' : `${value.text}/`, open: true, tail: tailOf(rest) } : value;
+  const joined = { ...value, text: value.text === '' ? rest.text : `${value.text}/${rest.text}`, open: rest.open, ...(rest.open ? { tail: tailOf(rest) } : {}) };
+  return normalizeValue(joined, false) ?? joined;
 }
 
 /**
@@ -599,12 +781,13 @@ function callerRootedFunctions(root, ctx) {
   const out = {};
   for (const [name, fn] of moduleFunctions(root, ctx.python)) {
     const body = fn.childForFieldName('body');
-    const values = ctx.python
+    const values = (ctx.python
       ? union(returnExpressions(body, 'return_statement', PY_NESTED).map((expr) => evalPy(expr, scratch, 0)))
       : body && body.type !== 'statement_block'
         ? evalJs(body, scratch, 0)
-        : union(returnExpressions(body, 'return_statement', JS_FUNCTIONS).map((expr) => evalJs(expr, scratch, 0)));
-    if (values.length > 0 && values.every(outside)) out[name] = values.some((value) => value.anchor === 'home') ? 'home' : values[0].anchor;
+        : union(returnExpressions(body, 'return_statement', JS_FUNCTIONS).map((expr) => evalJs(expr, scratch, 0))));
+    // A path under the function's own parameter is the calls' to decide.
+    if (values.length > 0 && values.every((value) => outside(value) && !boundParam(value))) out[name] = values.some((value) => value.anchor === 'home') ? 'home' : values[0].anchor;
   }
   return out;
 }
@@ -666,10 +849,14 @@ export function settleHelperPaths(files) {
   for (const file of byPath.values()) delete file.callerRooted;
 }
 
+// A write shaped like no tracked file (a temporary file) places nothing in
+// the directory, so a tracked directory made for it stays the evidence; a
+// directory made under it with a name built at run time (child) is the
+// untracked place those writes go, and goes with them.
 function withoutRedundantDirectories(writes, places) {
   return writes.filter((write) => !(
     DIRECTORY_MAKERS.has(write.call) && places.dirs.has(write.target)
-    && writes.some((other) => other !== write && other.target.startsWith(`${write.target}/`))
+    && writes.some((other) => other !== write && other.target.startsWith(`${write.target}/`) && (write.child || !other.target.includes('*')))
   ));
 }
 
@@ -677,6 +864,7 @@ function withoutRedundantDirectories(writes, places) {
 // whoever runs the code; attachLandings decides whose directory that is.
 function landingEntry(target, call, value, places) {
   const entry = { target, call, confidence: confidenceOf(value, target, places) };
+  if (DIRECTORY_MAKERS.has(call) && value.open && value.tail != null) entry.child = true;
   if (value.anchor == null && !value.rooted) entry.relative = true;
   if (value.anchor === 'file' && !value.open) entry.fixed = true;
   return entry;
@@ -875,6 +1063,9 @@ function evalJs(node, ctx, depth) {
       if (object?.type === 'new_expression' && (property === 'pathname' || property === 'href')) return evalJs(object, ctx, next);
       if (object?.text === 'process.env') return environment(property);
       if (object?.type === 'identifier' && CLI_BAGS.has(object.text)) return [atCaller('', 'argument')];
+      // input.savePath: a field of what the caller passes is theirs as well.
+      if (object?.type === 'identifier' && parameterJs(object.text, node)) return fieldOf(evalJs(object, ctx, next), property ?? null);
+      if (object?.type === 'this' && property) return classField(node, property, ctx, next);
       if (object?.type !== 'meta_property') return [];
       if (property === 'url' || property === 'filename') return [anchored(ctx.file)];
       if (property === 'dirname') return [anchored(ctx.dir)];
@@ -912,14 +1103,222 @@ function evalJs(node, ctx, depth) {
       if (jsPathCall(fn, name) && name === 'normalize') return evalJs(args[0], ctx, next);
       if (fn?.type === 'identifier' && (name === 'fileURLToPath' || name === 'String')) return evalJs(args[0], ctx, next);
       if (fn?.type === 'identifier') {
-        const values = returnsJs(fn.text, node, ctx, next);
-        return values.length > 0 ? values : imported(fn.text, node, ctx);
+        const values = bindArguments(returnsJs(fn.text, node, ctx, next), fn.text, args, ctx, next);
+        if (values.length > 0) return values;
+        const handed = callerHanded(args, ctx, next, evalJs);
+        return handed ? [atCaller('', handed)] : imported(fn.text, node, ctx);
       }
       return [];
     }
     default:
       return [];
   }
+}
+
+// A function of this repository whose return this file cannot read, handed
+// the caller's place (repoRoot(args.cwd)), returns a place of theirs. The
+// arguments are read in a scratch context, so a literal handed over is still
+// found as the literal read it is.
+function callerHanded(args, ctx, depth, evaluate) {
+  const scratch = { ...ctx, seen: new Set(), visiting: new Set(ctx.visiting) };
+  for (const arg of args) {
+    const values = evaluate(arg, scratch, depth);
+    if (values.length > 0 && values.every((value) => outside(value) && !boundParam(value))) return values.some((value) => value.anchor === 'home') ? 'home' : values[0].anchor;
+  }
+  return null;
+}
+
+// A call to a function of this file binds its parameters: what the function
+// returns under a parameter is under the argument the call passes there. An
+// argument the engine cannot read leaves that root unread.
+function bindArguments(values, name, args, ctx, depth) {
+  if (!values.some((value) => boundParam(value) && value.param.fn === name)) return values;
+  const scratch = { ...ctx, seen: new Set(), visiting: new Set(ctx.visiting) };
+  const out = [];
+  for (const value of values) {
+    if (!boundParam(value) || value.param.fn !== name) {
+      out.push(value);
+      continue;
+    }
+    const passed = passedFor(passedAt(args, value.param.index, scratch, depth), value.param);
+    const rest = { text: value.text, open: value.open, ...(value.open && value.tail != null ? { tail: value.tail } : {}) };
+    if (passed.length === 0) out.push({ ...rest, rooted: true });
+    for (const root of passed) out.push(appendRest(root, rest));
+  }
+  return cap(out);
+}
+
+/**
+ * What a parameter reads as: the caller's place, bound to its function and
+ * position when that function is a named one at the top of the module, so
+ * the calls to it can settle the place (settleParamPaths). A parameter of a
+ * callback or a method, or one destructured from an argument object, has no
+ * call this map reads, and stays the caller's.
+ */
+function paramValue(fn, name) {
+  const at = parameterIndex(fn, name);
+  const owner = moduleFunctionName(fn);
+  const param = owner != null && at != null ? { fn: owner, index: at.index, ...(at.field != null ? { field: at.field } : {}) } : null;
+  return { text: '', open: false, anchor: 'param', ...(param ? { param } : {}) };
+}
+
+// The position of the parameter a name is, and the field when it is
+// destructured from an object one level deep: function f(dir) is 0,
+// function f({ repoRoot }) is 0 and repoRoot. Null when it is neither.
+function parameterIndex(fn, name) {
+  const single = fn.childForFieldName('parameter');
+  if (single) return single.text === name ? { index: 0 } : null;
+  const params = fn.childForFieldName('parameters')?.namedChildren.filter((param) => param.type !== 'comment') ?? [];
+  for (let i = 0; i < params.length; i += 1) {
+    let param = params[i];
+    if (param.type === 'required_parameter' || param.type === 'optional_parameter') param = param.childForFieldName('pattern') ?? param;
+    if (param.type === 'assignment_pattern') param = param.childForFieldName('left') ?? param;
+    if (param.type === 'identifier' && param.text === name) return { index: i };
+    const field = patternField(param, name);
+    if (field != null) return { index: i, field };
+  }
+  return null;
+}
+
+// What a call passes at a position: the argument's values, and when it is an
+// object literal, what each field it spells out reads as.
+function passedAt(args, index, ctx, depth) {
+  const node = args[index];
+  if (!node) return { values: [] };
+  const values = evalJs(node, ctx, depth);
+  if (node.type !== 'object') return { values };
+  const fields = {};
+  for (const child of node.namedChildren) {
+    if (child.type === 'shorthand_property_identifier') fields[child.text] = bindingJs(child.text, child, ctx, depth);
+    else if (child.type === 'pair') {
+      const key = child.childForFieldName('key');
+      const name = key?.type === 'property_identifier' ? key.text : key?.type === 'string' ? jsStringText(key) : null;
+      if (name != null) fields[name] = evalJs(child.childForFieldName('value'), ctx, depth);
+    }
+  }
+  return { values, fields };
+}
+
+// The values a call passes for a parameter, or for the field of it.
+function passedFor(arg, param) {
+  if (arg == null) return [];
+  if (param.field != null) return arg.fields?.[param.field] ?? [];
+  return arg.values ?? [];
+}
+
+function moduleFunctionName(fn) {
+  const atTop = (node) => node?.type === 'program' || (node?.type === 'export_statement' && node.parent?.type === 'program');
+  if (fn.type === 'function_declaration') return atTop(fn.parent) ? fn.childForFieldName('name')?.text ?? null : null;
+  const declarator = fn.parent;
+  if (declarator?.type !== 'variable_declarator' || declarator.childForFieldName('name')?.type !== 'identifier') return null;
+  return atTop(declarator.parent?.parent) ? declarator.childForFieldName('name').text : null;
+}
+
+const PLACEHOLDER_NAMES = new Set(['.gitkeep', '.keep', '.gitignore']);
+const PLACEHOLDERS = new WeakMap();
+
+// A tracked directory every tracked file of which is a placeholder name.
+function placeholder(target, places) {
+  if (!places.dirs.has(target)) return false;
+  let cache = PLACEHOLDERS.get(places);
+  if (!cache) {
+    cache = new Map();
+    PLACEHOLDERS.set(places, cache);
+  }
+  if (!cache.has(target)) {
+    let any = false;
+    let only = true;
+    for (const path of places.files) {
+      if (!path.startsWith(`${target}/`)) continue;
+      any = true;
+      if (!PLACEHOLDER_NAMES.has(path.slice(path.lastIndexOf('/') + 1))) {
+        only = false;
+        break;
+      }
+    }
+    cache.set(target, any && only);
+  }
+  return cache.get(target);
+}
+
+// The field of a place: of a parameter the calls bind, that field of what
+// they pass; of any other caller's place, still the caller's.
+function fieldOf(values, field) {
+  if (!(values.length > 0 && values.every(outside))) return [];
+  if (field != null && values.length === 1 && boundParam(values[0]) && values[0].param.field == null && values[0].text === '') {
+    return [{ ...values[0], param: { ...values[0].param, field } }];
+  }
+  return [atCaller('', values[0].anchor)];
+}
+
+// The property a name is destructured from, in an object pattern one level
+// deep: { repoRoot } is repoRoot, { root: repoRoot } is root. Null otherwise.
+function patternField(pattern, name) {
+  if (pattern?.type !== 'object_pattern') return null;
+  for (const child of pattern.namedChildren) {
+    if (child.type === 'shorthand_property_identifier_pattern' && child.text === name) return name;
+    if (child.type === 'object_assignment_pattern' && child.childForFieldName('left')?.text === name) return name;
+    if (child.type === 'pair_pattern') {
+      const value = child.childForFieldName('value');
+      const target = value?.type === 'assignment_pattern' ? value.childForFieldName('left') : value;
+      if (target?.type === 'identifier' && target.text === name) return child.childForFieldName('key')?.text ?? null;
+    }
+  }
+  return null;
+}
+
+/**
+ * this.path inside a class: what the class gives the field, read from a
+ * constructor parameter property's default (constructor(private path =
+ * DEFAULT_LOG_PATH)), the field's initializer, and every this.path = ...
+ * in the class. A parameter the caller passes without a default is theirs.
+ */
+function classField(node, name, ctx, depth) {
+  let body = null;
+  for (let scope = node.parent; scope; scope = scope.parent) {
+    if (scope.type === 'class_body') {
+      body = scope;
+      break;
+    }
+  }
+  if (!body) return [];
+  const id = `field:${key(body)}:${name}`;
+  if (ctx.visiting.has(id)) return [];
+  ctx.visiting.add(id);
+  const lists = [];
+  for (const member of body.namedChildren) {
+    if ((member.type === 'public_field_definition' || member.type === 'field_definition') && member.childForFieldName('name')?.text === name) {
+      const value = member.childForFieldName('value');
+      if (value) lists.push(evalJs(value, ctx, depth));
+    }
+    if (member.type === 'method_definition' && member.childForFieldName('name')?.text === 'constructor') {
+      for (const param of member.childForFieldName('parameters')?.namedChildren ?? []) {
+        const pattern = param.childForFieldName('pattern');
+        const modified = param.namedChildren.some((child) => child.type === 'accessibility_modifier' || child.type === 'readonly' || child.text === 'readonly');
+        if (!modified || pattern?.text !== name) continue;
+        const value = param.childForFieldName('value');
+        lists.push(value ? union([[atCaller('', 'param')], evalJs(value, ctx, depth)]) : [atCaller('', 'param')]);
+      }
+    }
+  }
+  walk(body, (child) => {
+    if (child.type !== 'assignment_expression') return;
+    const left = child.childForFieldName('left');
+    if (left?.type === 'member_expression' && left.childForFieldName('object')?.type === 'this' && left.childForFieldName('property')?.text === name) {
+      lists.push(evalJs(child.childForFieldName('right'), ctx, depth));
+    }
+  });
+  ctx.visiting.delete(id);
+  return union(lists);
+}
+
+// Whether a name is bound as a parameter of the function around a node.
+function parameterJs(name, from) {
+  for (let scope = from.parent; scope; scope = scope.parent) {
+    if (JS_FUNCTIONS.has(scope.type)) return declaresParameter(scope, name);
+    if (JS_BLOCKS.has(scope.type) && findDeclarator(scope, name)) return false;
+  }
+  return false;
 }
 
 function evalPy(node, ctx, depth) {
@@ -994,7 +1393,9 @@ function evalPy(node, ctx, depth) {
       }
       if (fn?.type === 'identifier') {
         const values = returnsPy(fn.text, node, ctx, next);
-        return values.length > 0 ? values : imported(fn.text, node, ctx);
+        if (values.length > 0) return values;
+        const handed = callerHanded(args, ctx, next, evalPy);
+        return handed ? [atCaller('', handed)] : imported(fn.text, node, ctx);
       }
       return [];
     }
@@ -1075,13 +1476,24 @@ function isPythonModule(name, from, ctx) {
 // from an argument keeps the literal default it started with.
 function bindingJs(name, from, ctx, depth) {
   for (let scope = from.parent; scope; scope = scope.parent) {
-    if (JS_FUNCTIONS.has(scope.type) && declaresParameter(scope, name)) return [];
+    // What a function is handed is the caller's place, until the calls to it
+    // say otherwise (paramValue).
+    if (JS_FUNCTIONS.has(scope.type) && declaresParameter(scope, name)) return [paramValue(scope, name)];
     if (scope.type === 'catch_clause' && scope.childForFieldName('parameter')?.text === name) return [];
     if ((scope.type === 'for_in_statement' || scope.type === 'for_of_statement') && scope.childForFieldName('left')?.text === name) return [];
     const declarator = JS_BLOCKS.has(scope.type) || scope.type === 'for_statement' ? findDeclarator(scope, name) : null;
     if (!declarator) continue;
     const id = `binding:${key(declarator)}`;
     if (ctx.visiting.has(id)) return [];
+    // const { savePath } = input: a field of the caller's place is theirs,
+    // bound to that field of the argument when the place is a parameter the
+    // calls bind; a field of anything else is a value this map cannot read.
+    if (declarator.childForFieldName('name')?.type !== 'identifier') {
+      ctx.visiting.add(id);
+      const whole = evalJs(declarator.childForFieldName('value'), ctx, depth);
+      ctx.visiting.delete(id);
+      return fieldOf(whole, patternField(declarator.childForFieldName('name'), name));
+    }
     ctx.visiting.add(id);
     const lists = [evalJs(declarator.childForFieldName('value'), ctx, depth)];
     for (const right of assignedIn(scope, name, ctx)) lists.push(evalJs(right, ctx, depth));
@@ -1123,9 +1535,26 @@ function findDeclarator(scope, name) {
       if (declarator.type !== 'variable_declarator') continue;
       const id = declarator.childForFieldName('name');
       if (id?.type === 'identifier' && id.text === name) return declarator;
+      if ((id?.type === 'object_pattern' || id?.type === 'array_pattern') && patternBinds(id, name)) return declarator;
     }
   }
   return null;
+}
+
+function patternBinds(pattern, name) {
+  let hit = false;
+  const visit = (node) => {
+    if (hit || !node) return;
+    if (node.type === 'identifier' || node.type === 'shorthand_property_identifier_pattern') {
+      if (node.text === name) hit = true;
+      return;
+    }
+    if (node.type === 'pair_pattern') return visit(node.childForFieldName('value'));
+    if (node.type === 'assignment_pattern' || node.type === 'object_assignment_pattern') return visit(node.childForFieldName('left'));
+    for (const child of node.namedChildren) visit(child);
+  };
+  visit(pattern);
+  return hit;
 }
 
 function declaresParameter(fn, name) {
@@ -1238,6 +1667,7 @@ function bindingPy(name, from, ctx, depth) {
   return [];
 }
 
+
 function declaresPythonParameter(fn, name) {
   const params = fn.childForFieldName('parameters');
   if (!params) return false;
@@ -1311,7 +1741,7 @@ function atCaller(text, anchor) {
 }
 
 function outside(value) {
-  return value.anchor === 'cwd' || value.anchor === 'home' || value.anchor === 'argument' || value.anchor === 'env';
+  return value.anchor === 'cwd' || value.anchor === 'home' || value.anchor === 'argument' || value.anchor === 'env' || value.anchor === 'param';
 }
 
 function isHelper(value) {
@@ -1351,8 +1781,11 @@ function fromCaller(values) {
 // the directory the command runs in: args.out ?? 'report.json' is the
 // caller's either way.
 function fallback(left, right) {
-  if (left.length > 0 && left.every((value) => value.anchor === 'argument')) {
-    return union([left, right.map((value) => (value.anchor == null && !value.rooted && !value.text.includes('://') ? { ...value, anchor: 'argument' } : value))]);
+  // A parameter's default (dir || '.') is resolved where the parameter would
+  // have been, in the same way.
+  const passed = left.length > 0 ? left[0].anchor : null;
+  if ((passed === 'argument' || passed === 'param') && left.every((value) => value.anchor === passed)) {
+    return union([left, right.map((value) => (value.anchor == null && !value.rooted && !value.text.includes('://') ? { ...value, anchor: passed } : value))]);
   }
   if (left.length > 0) return union([left, right]);
   return right.map((value) => (value.anchor == null && !value.open && !value.rooted && (value.text === '.' || value.text === './' || value.text === '') ? atCaller('', 'cwd') : value));
@@ -1419,23 +1852,92 @@ function joinValues(segments, absoluteResets) {
   const anchored = segments[0].length === 0;
   if (anchored && segments.slice(1).every((values) => values.length === 0)) return [];
   let acc = anchored ? [{ ...closed(''), rooted: true }] : segments[0];
-  // Another file's return is only ever read as a root; past the first segment
-  // it is a part the engine cannot read.
-  for (const values of segments.slice(1).map((list) => list.filter((value) => !isHelper(value)))) {
+  // Another file's return, and a place the caller decides, is only ever read
+  // as a root; past the first segment it is a part the engine cannot read.
+  for (const values of segments.slice(1).map((list) => list.filter((value) => !isHelper(value) && !outside(value)))) {
     const next = [];
     for (const value of acc) {
-      if (value.open) next.push(value);
-      else if (values.length === 0) next.push({ text: value.text === '' ? '' : `${value.text}/`, open: true, rooted: value.rooted, anchor: value.anchor });
+      // The path past the part the engine could not read is kept as its
+      // shape (see tailOf), which says whether it names tracked files.
+      if (value.open) next.push({ ...value, tail: `${tailOf(value)}/${shapeOf(values)}` });
+      else if (values.length === 0) next.push({ text: value.text === '' ? '' : `${value.text}/`, open: true, tail: '*', rooted: value.rooted, anchor: value.anchor, ...carried(value) });
       else {
         for (const segment of values) {
           if (absoluteResets && segment.text.startsWith('/')) continue;
-          next.push({ text: value.text === '' ? segment.text : `${value.text}/${segment.text}`, open: segment.open, rooted: value.rooted, anchor: value.anchor });
+          next.push({ text: value.text === '' ? segment.text : `${value.text}/${segment.text}`, open: segment.open, ...(segment.open ? { tail: tailOf(segment) } : {}), rooted: value.rooted, anchor: value.anchor, ...carried(value) });
         }
       }
     }
     acc = cap(next);
   }
   return cap(acc.map((value) => normalizeValue(value, anchored)).filter(Boolean));
+}
+
+/**
+ * The shape of the path past the first part the engine could not read, as a
+ * glob: records/${org}/run-${id}.json is records/, then one unread segment,
+ * then run-, an unread part and .json. An open value made before shapes were
+ * kept ends in one unread part.
+ */
+function tailOf(value) {
+  return value.open ? (value.tail ?? '*') : '';
+}
+
+// One segment's shape: the one value it reads as, or an unread part.
+function shapeOf(values) {
+  if (values.length !== 1) return '*';
+  return `${globText(values[0].text)}${tailOf(values[0])}`;
+}
+
+function globText(text) {
+  return text.replace(/[*?[\]{}()!+@]/g, '\\$&');
+}
+
+const SHAPES = new WeakMap();
+
+/**
+ * Whether a path built at run time is shaped like no tracked file: its
+ * readable head, the unread parts as wildcards and the names it spells after
+ * them (a wave receipt under swarms/<run>/). Such a write makes files this
+ * repository does not keep. A shape that spells no name after its unread
+ * parts could be any file, and says nothing.
+ */
+function shapedLikeNothing(value, call, places) {
+  if (!value.open || value.tail == null || value.text.includes('://') || landingOf(value, places) == null) return false;
+  // A directory a maker names at run time is a new one unless tracked
+  // directories have its shape; a file needs a name after the unread part.
+  const directory = DIRECTORY_MAKERS.has(call);
+  if (!directory && value.tail.replace(/[*/\\]/g, '') === '') return false;
+  let text = value.text.replaceAll('\\', '/');
+  while (text.startsWith('./')) text = text.slice(2);
+  const pattern = `${globText(text)}${value.tail}`;
+  let cache = SHAPES.get(places);
+  if (!cache) {
+    cache = new Map();
+    SHAPES.set(places, cache);
+  }
+  const key = `${directory ? 'dir' : 'file'}\0${pattern}`;
+  if (!cache.has(key)) {
+    const isMatch = picomatch(pattern, { dot: true });
+    const head = text.includes('/') ? text.slice(0, text.lastIndexOf('/') + 1) : '';
+    let found = false;
+    for (const path of directory ? places.dirs : places.files) {
+      if (path.startsWith(head) && isMatch(path)) {
+        found = true;
+        break;
+      }
+    }
+    cache.set(key, !found);
+  }
+  return cache.get(key);
+}
+
+// Where a write shaped like no tracked file goes: the readable head and the
+// first unread segment (swarms/*), a place no one tracks.
+function shapedTarget(value) {
+  const text = value.text.replaceAll('\\', '/').replace(/^(\.\/)+/, '');
+  const firstSegment = value.tail.split('/')[0];
+  return `${text}${firstSegment}`;
 }
 
 function normalizeValue(value, anchored) {
@@ -1445,22 +1947,38 @@ function normalizeValue(value, anchored) {
   if (text.startsWith('/')) return null;
   // The caller's directory with a name built at run time is still theirs.
   const kept = outside(value) || isHelper(value);
-  if (text === '') return value.open && !kept ? null : { text: '', open: value.open, rooted: value.rooted, anchor: value.anchor };
+  const tail = value.open && value.tail != null ? { tail: value.tail } : {};
+  if (text === '') return value.open && !kept ? null : { text: '', open: value.open, ...tail, rooted: value.rooted, anchor: value.anchor, ...carried(value) };
+  // A trailing slash says the unread part is a segment of its own, which
+  // normalize would drop.
+  const slash = value.open && text.endsWith('/');
   text = posix.normalize(text);
   if (text === '.' || text === './') text = '';
   if (text === '..' || text.startsWith('../')) return null;
   if (text.startsWith('./')) text = text.slice(2);
+  if (slash && text !== '' && !text.endsWith('/')) text += '/';
   if (value.open && text === '' && !kept) return null;
-  return { text, open: value.open, rooted: value.rooted, anchor: value.anchor };
+  return { text, open: value.open, ...tail, rooted: value.rooted, anchor: value.anchor, ...carried(value) };
 }
 
 function dirnameValues(values) {
   return values
     .map((value) => {
+      // Of a path whose tail is built at run time, the directory drops the
+      // tail's last segment, or when the tail is all one segment, is the
+      // directory the readable head ends in.
+      if (value.open && value.tail != null && value.tail.includes('/')) return { ...value, tail: value.tail.slice(0, value.tail.lastIndexOf('/')) };
+      if (value.open && value.tail != null && !value.text.includes('://')) {
+        const head = value.text.replaceAll('\\', '/');
+        const dir = head.includes('/') ? head.slice(0, head.lastIndexOf('/')) : '';
+        return { ...closed(dir), rooted: value.rooted, anchor: value.anchor, ...carried(value) };
+      }
       if (value.open) return value;
-      if (value.text === '' || value.text.includes('://')) return null;
+      // The directory of a place the caller decides is theirs too.
+      if (value.text === '') return outside(value) ? value : null;
+      if (value.text.includes('://')) return null;
       const dir = posix.dirname(value.text);
-      return { ...closed(dir === '.' ? '' : dir), rooted: value.rooted, anchor: value.anchor };
+      return { ...closed(dir === '.' ? '' : dir), rooted: value.rooted, anchor: value.anchor, ...carried(value) };
     })
     .filter(Boolean);
 }
@@ -1488,26 +2006,28 @@ function concat(parts) {
   let acc = [closed('')];
   let rooted = false;
   for (let i = 0; i < parts.length; i += 1) {
-    if (acc.every((value) => value.open)) break;
-    const values = i === 0 ? parts[i] : parts[i].filter((value) => !isHelper(value));
+    // A caller's place with no path of its own (an id a helper derives from
+    // an argument) is a part the engine cannot read; one with a path, as in
+    // `node ${join(process.cwd(), 'dist/cli.js')}`, spells out that path.
+    const values = i === 0 ? parts[i] : parts[i].filter((value) => !isHelper(value) && !(outside(value) && value.text === ''));
     if (values.length === 0) {
       const next = parts[i + 1];
       if (i === 0 && next && next.length > 0 && next.every((value) => value.text.startsWith('/'))) {
         rooted = true;
         continue;
       }
-      acc = acc.map((value) => (value.open ? value : { text: value.text, open: true, rooted: value.rooted, anchor: value.anchor }));
+      acc = acc.map((value) => (value.open ? { ...value, tail: `${tailOf(value)}*` } : { text: value.text, open: true, tail: '*', rooted: value.rooted, anchor: value.anchor, ...carried(value) }));
       continue;
     }
     const joined = [];
     for (const value of acc) {
       if (value.open) {
-        joined.push(value);
+        joined.push({ ...value, tail: `${tailOf(value)}${shapeOf(values)}` });
         continue;
       }
       for (const part of values) {
         const text = value.text === '' && (rooted || i > 0) && part.text.startsWith('/') && !part.text.startsWith('//') ? part.text.slice(1) : part.text;
-        joined.push({ text: value.text + text, open: part.open, rooted: rooted || value.rooted, anchor: i === 0 ? part.anchor : value.anchor });
+        joined.push({ text: value.text + text, open: part.open, ...(part.open ? { tail: tailOf(part) } : {}), rooted: rooted || value.rooted, anchor: i === 0 ? part.anchor : value.anchor, ...carried(i === 0 ? part : value) });
       }
     }
     acc = cap(joined);
@@ -1519,11 +2039,16 @@ function union(lists) {
   return cap(lists.flat());
 }
 
+// The parameter a value is rooted at goes with it through every join.
+function carried(value) {
+  return value.param ? { param: value.param } : {};
+}
+
 function cap(values) {
   const seen = new Set();
   const out = [];
   for (const value of values) {
-    const id = `${value.open ? 1 : 0}${value.rooted ? 1 : 0}${value.anchor ?? ''}:${value.text}`;
+    const id = `${value.open ? 1 : 0}${value.rooted ? 1 : 0}${value.anchor ?? ''}${value.param ? `#${value.param.fn}@${value.param.index}.${value.param.field ?? ''}` : ''}:${value.text}`;
     if (seen.has(id)) continue;
     seen.add(id);
     out.push(value);
@@ -1559,6 +2084,20 @@ function landingOf(value, places) {
   if (places.files.has(spelled) || places.dirs.has(spelled)) return spelled;
   if (spelled.split('/').some((part) => part === 'node_modules' || part === 'dist')) return holdingDirectory(text, places);
   return holdingDirectory(spelled, places) != null ? spelled : null;
+}
+
+// Where a write lands. One through a build or dependency directory (a copy
+// into packages/cli/dist/) makes that output, which the repository does not
+// keep, so it lands there and not on the package above, as a read of it does.
+function writtenPlace(value, places) {
+  const target = landingOf(value, places);
+  if (target == null) return null;
+  let text = value.text.replaceAll('\\', '/');
+  while (text.startsWith('./')) text = text.slice(2);
+  const spelled = value.open ? text.slice(0, Math.max(text.lastIndexOf('/'), 0)) : text.replace(/\/+$/, '');
+  const parts = spelled.split('/');
+  const at = parts.findIndex((part) => part === 'node_modules' || part === 'dist');
+  return at === -1 ? target : parts.slice(0, at + 1).join('/');
 }
 
 function holdingDirectory(text, places) {
@@ -1784,8 +2323,10 @@ export function attachLandings({ files, doors, boundaries, places }) {
   // ignored directory, a file made at run time), unless a door commits it or
   // it lands in a directory the repository tracks only through a placeholder,
   // which is kept for exactly that output (reports/.gitkeep).
+  // A place named by its shape (swarms/*, a temporary file beside a record)
+  // is one no tracked file has, so no commit keeps it either.
   const committed = mapped.flatMap((door) => door.stagedTargets);
-  const untracked = new Set([...writers.keys(), ...readers.keys()].filter((target) => (
+  const untracked = new Set([...writers.keys(), ...readers.keys()].filter((target) => target.includes('*') || (
     !places.files.has(target) && !places.dirs.has(target) && !keptForOutput(target, places)
     && !committed.some((staged) => target === staged || target.startsWith(`${staged}/`))
   )));
