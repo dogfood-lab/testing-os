@@ -2,7 +2,7 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.17.0] — 2026-09-24
 
 ### Fixed
 - **Workspace members resolve without `node_modules`.** Members declared in `pnpm-workspace.yaml` or `package.json` `workspaces` resolve from their manifests, so a clean clone, an installed tree and a built tree map to the same bytes; glyphstudio (8 workspace edges) and attestia (52) had mapped with no edges when clean and failed `atlas check` after `pnpm install`. An import that resolves to nothing is always counted, never dropped, with its reason: an undeclared package, a `workspace:` spec with no member, a missing `file:` or `link:` spec.
