@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import picomatch from 'picomatch';
-import { workspaceGlobs } from './commands.js';
+import { repositoryView } from './commands.js';
 import { isTestFile, isTestMaterial } from './landings.js';
 import { declaredScripts } from './python-manifest.js';
 import { resolveDeclaredPath, resolvePythonModule, unplacedBuildOutput } from './resolve.js';
@@ -84,7 +84,7 @@ export function pythonScripts(repoPath, tracked) {
 export function manifestCommands(repoPath, tracked, scripts = []) {
   const out = [];
   const root = readManifest(repoPath, 'package.json', tracked);
-  const dirs = root ? ['', ...workspaceDirs(root, tracked)] : [];
+  const dirs = root ? ['', ...workspaceDirs(repoPath, tracked)] : [];
   for (const dir of dirs) {
     const manifest = dir ? `${dir}/package.json` : 'package.json';
     if (isTestMaterial(manifest)) continue;
@@ -121,15 +121,10 @@ function readManifest(repoPath, path, tracked) {
   }
 }
 
-function workspaceDirs(root, tracked) {
-  const globs = workspaceGlobs(root);
-  if (globs.length === 0) return [];
-  const isMatch = picomatch(globs, { dot: true });
-  return [...tracked]
-    .filter((path) => path.endsWith('/package.json'))
-    .map((path) => path.slice(0, -'/package.json'.length))
-    .filter((dir) => isMatch(dir))
-    .sort(compare);
+// The members package.json and pnpm-workspace.yaml list, read by the reader
+// the commands and the resolver use.
+function workspaceDirs(repoPath, tracked) {
+  return [...repositoryView({ repoPath, tracked }).workspaces().keys()].sort(compare);
 }
 
 // A string bin is the package's one command, named for the package without

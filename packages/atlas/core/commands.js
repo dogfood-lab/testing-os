@@ -1049,15 +1049,7 @@ function toolOf(word) {
  * manifest in the command's directory, the root manifest, or a workspace's.
  */
 function binTarget(repo, dir, name) {
-  const dirs = [dir, ''];
-  const root = repo.manifest('');
-  const globs = workspaceGlobs(root);
-  if (globs.length > 0) {
-    const isMatch = picomatch(globs, { dot: true });
-    for (const path of [...repo.tracked].sort()) {
-      if (path.endsWith('/package.json') && isMatch(path.slice(0, -'/package.json'.length))) dirs.push(path.slice(0, -'/package.json'.length));
-    }
-  }
+  const dirs = [dir, '', ...workspaceDirs(repo)];
   for (const found of [...new Set(dirs)]) {
     const pkg = repo.manifest(found);
     if (!pkg) continue;

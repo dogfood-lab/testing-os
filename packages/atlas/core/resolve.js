@@ -1,8 +1,8 @@
 import { builtinModules } from 'node:module';
-import { readFileSync, realpathSync } from 'node:fs';
+import fs, { readFileSync, realpathSync } from 'node:fs';
 import { dirname, isAbsolute, join, posix, relative, resolve, sep } from 'node:path';
 import enhancedResolve from 'enhanced-resolve';
-import picomatch from 'picomatch';
+
 import { commandLines, repositoryView } from './commands.js';
 import { isTestFile, isTestMaterial } from './landings.js';
 import { declaredDependencies, importName } from './python-manifest.js';
@@ -159,9 +159,14 @@ function resolveLocation(ctx, path) {
 
 function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
   const repo = resolve(repoPath);
-  const workspaces = workspaceMap(repo, tracked);
+  const view = repositoryView({ repoPath: repo, tracked });
+  const workspaces = workspaceMap(repo, view);
   const plugin = workspacePlugin(workspaces);
+  // enhanced-resolve's default cache is one per process, kept four seconds, so
+  // a map drawn right after another would be told what the disk held then.
+  const fileSystem = new enhancedResolve.CachedInputFileSystem(fs, 4000);
   const resolvers = new Map();
+  const declared = new Map();
   let python = null;
   return {
     repo,
@@ -169,6 +174,7 @@ function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
     trackedLower,
     boundaryByFile,
     workspaces,
+    declared: (dir) => declaredPackages(view, dir, declared),
     outputs: () => buildOutputs(repo, tracked),
     // Read once per map, on the first Python site: the roots imports are
     // looked up from and the names the project declares it depends on.
@@ -185,7 +191,10 @@ function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
           extensions: EXTENSIONS,
           extensionAlias: EXTENSION_ALIAS,
           conditionNames: ['import', 'require', 'default'],
-          symlinks: true,
+          // A link is followed by locate(), after the path it was reached by
+          // says whether an install put it there.
+          symlinks: false,
+          fileSystem,
           tsconfig: config ?? false,
           plugins: [plugin],
         });
@@ -198,12 +207,15 @@ function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
 
 // The node_modules walk is what feeds ExportsFieldPlugin. Pointing that step
 // at the workspace package directory lets the library apply the exports map,
-// including wildcard subpaths, whether or not the package is installed.
+// including wildcard subpaths, whether or not the package is installed. It
+// runs ahead of the walk, so a member is always read from its own directory
+// and never through a link an install left, which reaches a build that a
+// clean clone does not have.
 function workspacePlugin(workspaces) {
   return {
     apply(resolver) {
       const target = resolver.ensureHook('resolve-as-module');
-      resolver.getHook('raw-module').tapAsync('AtlasWorkspacePackages', (request, resolveContext, callback) => {
+      resolver.getHook('raw-module').tapAsync({ name: 'AtlasWorkspacePackages', stage: -10 }, (request, resolveContext, callback) => {
         const parsed = splitBare(request.request || '');
         if (!parsed) return callback();
         const dir = workspaces.get(parsed.name);
@@ -235,38 +247,40 @@ function splitBare(specifier) {
   return { name, inner: rest ? `./${rest}` : '.' };
 }
 
-function workspaceMap(repo, tracked) {
-  const globs = workspaceGlobs(repo);
+// The members npm, yarn and bun list in package.json and pnpm lists in
+// pnpm-workspace.yaml, read by the reader the commands use (core/commands.js),
+// by package name. An unnamed or unreadable manifest is not a member an
+// import can name.
+function workspaceMap(repo, view) {
   const map = new Map();
-  if (globs.length === 0) return map;
-  const isMatch = picomatch(globs, { dot: true });
-  for (const file of tracked) {
-    if (!file.endsWith('/package.json')) continue;
-    const dir = file.slice(0, -'/package.json'.length);
-    if (!isMatch(dir)) continue;
-    try {
-      const pkg = JSON.parse(readFileSync(join(repo, file), 'utf8'));
-      if (typeof pkg.name === 'string' && pkg.name && !map.has(pkg.name)) map.set(pkg.name, join(repo, dir));
-    } catch {
-      // An unreadable manifest is not a member the resolver can enter.
-    }
+  for (const [dir, name] of view.workspaces()) {
+    if (typeof name === 'string' && name !== '' && !map.has(name)) map.set(name, join(repo, dir));
   }
   return map;
 }
 
-function workspaceGlobs(repo) {
-  let pkg;
-  try {
-    pkg = JSON.parse(readFileSync(join(repo, 'package.json'), 'utf8'));
-  } catch {
-    return [];
+const DEPENDENCY_FIELDS = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'];
+
+// The packages a file may import by name: those every manifest from its own
+// directory up to the root declares, with the version each is asked at, and
+// each manifest's own name. Node looks a bare name up the same way, so a root
+// devDependency serves every member. Read from the tracked manifests alone,
+// which a clean clone and an installed one share.
+function declaredPackages(view, dir, cache) {
+  if (cache.has(dir)) return cache.get(dir);
+  const parent = dir === '' ? null : dir.includes('/') ? dir.slice(0, dir.lastIndexOf('/')) : '';
+  const names = new Map(parent == null ? [] : declaredPackages(view, parent, cache));
+  const pkg = view.manifest(dir);
+  if (pkg) {
+    for (const field of DEPENDENCY_FIELDS) {
+      const deps = pkg[field];
+      if (deps == null || typeof deps !== 'object' || Array.isArray(deps)) continue;
+      for (const [name, spec] of Object.entries(deps)) names.set(name, typeof spec === 'string' ? spec : '');
+    }
+    if (typeof pkg.name === 'string' && pkg.name !== '') names.set(pkg.name, 'workspace:');
   }
-  const workspaces = pkg.workspaces;
-  if (Array.isArray(workspaces)) return workspaces.filter((glob) => typeof glob === 'string');
-  if (workspaces && Array.isArray(workspaces.packages)) {
-    return workspaces.packages.filter((glob) => typeof glob === 'string');
-  }
-  return [];
+  cache.set(dir, names);
+  return names;
 }
 
 // enhanced-resolve loads a tsconfig's extends chain from disk and throws when
@@ -331,6 +345,9 @@ function resolveJavaScript(ctx, fromAbs, specifier) {
   if (outsideRepository(ctx, fromAbs, specifier)) return { outcome: 'external', outside: true };
   const parsed = splitBare(specifier);
   if (specifier.startsWith('node:') || isBuiltin(specifier, parsed)) return { outcome: 'external' };
+  // astro:content, bun:test, virtual:pwa-register, npm:x, https://...: a
+  // module the runtime or the bundler provides, never a package on disk.
+  if (parsed && /^[A-Za-z][\w+.-]*:/.test(parsed.name)) return { outcome: 'external' };
   // Missing export targets are recorded here. A workspace package whose
   // export points at a build directory can still name its source from the
   // tracked tsconfig when that file has not been emitted.
@@ -348,9 +365,38 @@ function resolveJavaScript(ctx, fromAbs, specifier) {
       return { outcome: 'unresolved', reason: 'workspace-export-unresolved' };
     }
     if (!parsed) return { outcome: 'unresolved', reason: 'module-not-found' };
-    return { outcome: 'external' };
+    return byDeclaration(ctx, fromAbs, parsed.name);
   }
+  // What an install put under node_modules is one machine's disk: a link to a
+  // package that is not a member, or a package no manifest declares, got there
+  // through something else. The declarations decide, as on a clean clone.
+  if (parsed && !ctx.workspaces.has(parsed.name) && installedPath(ctx, abs)) return byDeclaration(ctx, fromAbs, parsed.name);
   return classifyAbsolute(ctx, abs);
+}
+
+function installedPath(ctx, absPath) {
+  const rel = relative(ctx.repo, absPath).replaceAll('\\', '/');
+  return rel.startsWith('../') || isAbsolute(rel) || rel.split('/').includes('node_modules');
+}
+
+// A bare name that names no file here is a dependency when a manifest above
+// the file declares it. It resolves to nothing when none does, or when the
+// declaration says the package is local (workspace:, file:, link:) and no
+// member carries the name; either way it is counted as unresolved.
+function byDeclaration(ctx, fromAbs, name) {
+  const dir = relative(ctx.repo, dirname(fromAbs)).replaceAll('\\', '/');
+  const declared = ctx.declared(dir);
+  const spec = declared.get(name) ?? declared.get(typesPackage(name));
+  if (spec == null) return { outcome: 'unresolved', reason: 'undeclared-package' };
+  if (spec.startsWith('workspace:')) return { outcome: 'unresolved', reason: 'workspace-member-not-found' };
+  if (/^(?:file|link|portal):/.test(spec)) return { outcome: 'unresolved', reason: 'local-package-not-found' };
+  return { outcome: 'external' };
+}
+
+// A package whose types alone are installed (@types/estree for estree,
+// @types/babel__core for @babel/core) is declared for an import of its types.
+function typesPackage(name) {
+  return name.startsWith('@') ? `@types/${name.slice(1).replace('/', '__')}` : `@types/${name}`;
 }
 
 function recoverAbsentBuildOutput(ctx, missing) {
