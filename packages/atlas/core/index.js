@@ -11,7 +11,7 @@ import { httpEdges, httpFacts } from './http.js';
 import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
-import { languageOf } from './languages.js';
+import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
 import { walkReach } from './reach.js';
 import { attachResolution, emittedFiles, registerBuilds, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
@@ -26,6 +26,8 @@ const GRAMMAR_FILE = {
   typescript: 'tree-sitter-typescript.wasm',
   tsx: 'tree-sitter-tsx.wasm',
   python: 'tree-sitter-python.wasm',
+  rust: 'tree-sitter-rust.wasm',
+  gdscript: 'tree-sitter-gdscript.wasm',
 };
 
 // Grammars load when this module evaluates, once per process, and every
@@ -436,7 +438,7 @@ function parseFile(language, path, original, places) {
   try {
     parser.setLanguage(languages[language]);
     tree = parser.parse(source);
-    if (tree != null && tree.rootNode.hasError && language !== 'python') {
+    if (tree != null && tree.rootNode.hasError && SCRIPT_LANGUAGES.has(language)) {
       const repaired = repairSource(source, (text) => parser.parse(text));
       if (repaired) {
         tree.delete();
@@ -450,6 +452,7 @@ function parseFile(language, path, original, places) {
   if (tree == null) return { parseError: true, imports: [] };
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [], unreadSyntax: unreadSyntax(tree.rootNode, source) };
+    if (!SCRIPT_LANGUAGES.has(language) && language !== 'python') return nativeReadings(tree.rootNode);
     const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode), ...typeSites];
     return {
       imports,
@@ -466,6 +469,23 @@ function parseFile(language, path, original, places) {
   } finally {
     tree.delete();
   }
+}
+
+// What a file of a language compiled or run by its own engine (Rust,
+// GDScript) holds, read from its tree.
+function nativeReadings(root) {
+  return {
+    imports: [],
+    landings: noLandings(),
+    sequence: { functions: [], topLevel: [], reexports: [] },
+    spawned: { commands: [], built: 0 },
+    githubChanges: 0,
+    noStatements: statementless(root),
+    startsOnLoad: false,
+    holds: null,
+    http: null,
+    builds: [],
+  };
 }
 
 // typeof import(…) in a type, and import(…).T[], which the vendored grammar
@@ -692,8 +712,9 @@ function comparisons(text, root) {
 }
 
 // A module with nothing but comments, or a Python docstring, runs nothing.
+// Rust names its comments line_comment and block_comment.
 function statementless(root) {
-  const statements = root.namedChildren.filter((child) => child.type !== 'comment');
+  const statements = root.namedChildren.filter((child) => !/comment$/.test(child.type));
   if (statements.length === 0) return true;
   return statements.length === 1 && statements[0].type === 'expression_statement' && statements[0].namedChildren[0]?.type === 'string';
 }

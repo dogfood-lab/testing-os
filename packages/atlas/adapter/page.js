@@ -2541,7 +2541,7 @@ function summaryOf(document) {
   return text || null;
 }
 
-const LANGUAGE_NAMES = { javascript: 'JavaScript', python: 'Python', tsx: 'TypeScript', typescript: 'TypeScript' };
+const LANGUAGE_NAMES = { gdscript: 'GDScript', javascript: 'JavaScript', python: 'Python', rust: 'Rust', tsx: 'TypeScript', typescript: 'TypeScript' };
 // A command's name is what a reader types, so up to twelve are all named;
 // past that, ten are and the rest counted.
 const INSTALLED_ALL = 12;

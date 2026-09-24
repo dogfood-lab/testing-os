@@ -14,7 +14,7 @@ export function isTestPath(path) {
   return false;
 }
 
-const CODE_EXT = new Set(['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'mts', 'cts', 'py', 'pyi']);
+const CODE_EXT = new Set(['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'mts', 'cts', 'py', 'pyi', 'rs', 'gd']);
 // Shell scripts are code a part runs, though Atlas does not parse them.
 const SCRIPT_EXT = new Set(['sh', 'bash', 'zsh', 'ps1']);
 // What a part holds as data: records, schemas, tables and images a program
