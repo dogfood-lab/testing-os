@@ -1,0 +1,27 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      run_generate:
+        type: boolean
+        default: false
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/check.mjs
+      - name: Comment on the pull request
+        if: ${{ github.event_name == 'pull_request' }}
+        run: node scripts/comment.mjs
+  cloud-smoke:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/cloud-smoke.mjs
+      - if: ${{ inputs.run_generate }}
+        run: node scripts/cloud-generate.mjs

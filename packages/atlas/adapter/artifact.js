@@ -295,6 +295,7 @@ function carryRun(run) {
   if (run.directory) out.directory = true;
   if (run.matched) out.matched = true;
   if (run.via) out.via = run.via;
+  if (run.when) out.when = { ...run.when, ...(run.when.inputs ? { inputs: { ...run.when.inputs } } : {}) };
   return out;
 }
 

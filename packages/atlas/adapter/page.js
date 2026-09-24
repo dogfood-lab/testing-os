@@ -296,8 +296,64 @@ function cover(targets) {
   return unique.filter((target) => !unique.some((other) => other !== target && under(target, other)));
 }
 
-function runPaths(door) {
-  return [...new Set((door.runs ?? []).map((run) => run.path))].sort(cmp);
+// The paths the door runs on every trigger, or given `only`, those of one set.
+// A path every job and step of which is held to one trigger is said with that
+// trigger (gatedRuns), never in the sentence of another.
+function runPaths(door, only = null) {
+  const held = heldRuns(door);
+  return [...new Set((door.runs ?? []).map((run) => run.path))]
+    .filter((path) => (only ? only.has(path) : !held.has(path)))
+    .sort(cmp);
+}
+
+const HELD = new WeakMap();
+
+// Each path held to one trigger, by the gate's key. A path run from work held
+// to two triggers, or to none, runs on each and is held to neither.
+function heldRuns(door) {
+  if (HELD.has(door)) return HELD.get(door);
+  const byPath = new Map();
+  for (const run of door.runs ?? []) {
+    const key = run.when ? JSON.stringify(sortKeys(run.when)) : null;
+    byPath.set(run.path, byPath.has(run.path) && byPath.get(run.path) !== key ? null : key);
+  }
+  const held = new Map([...byPath].filter(([, key]) => key != null));
+  HELD.set(door, held);
+  return held;
+}
+
+/**
+ * The runs a door holds to one trigger, a group per trigger: the gate, the
+ * paths and what the page says of them.
+ *
+ * @returns {Array<{ when: object, paths: Set<string> }>}
+ */
+function gatedRuns(door) {
+  const groups = new Map();
+  for (const [path, key] of heldRuns(door)) {
+    if (!groups.has(key)) groups.set(key, { when: JSON.parse(key), paths: new Set() });
+    groups.get(key).paths.add(path);
+  }
+  return [...groups.entries()].sort(([a], [b]) => cmp(a, b)).map(([, group]) => group);
+}
+
+// "runs X; checks Y" for the paths of one gated group, or null.
+function heldClause(door, group, verb, joiner = '; ') {
+  const clauses = [];
+  const ran = shownRuns(door, 'executes', group.paths);
+  const checked = shownRuns(door, 'checks', group.paths);
+  if (ran.length > 0) clauses.push(`${verb} ${runsShown(ran)}`);
+  if (checked.length > 0) clauses.push(`checks ${runsShown(checked)}`);
+  return clauses.length > 0 ? clauses.join(joiner) : null;
+}
+
+// The sentence that says what a door does on one trigger only: "On a pull
+// request, it also runs scripts/comment.mjs."
+function heldSentences(door, verb, alsoRuns) {
+  return gatedRuns(door).map((group) => {
+    const clause = heldClause(door, group, verb);
+    return clause ? `${capitalize(gateLead(group.when))}, it ${alsoRuns ? 'also ' : ''}${clause}.` : null;
+  }).filter(Boolean);
 }
 
 // Whether the door runs each path or only checks it. A path any of its tools
@@ -319,8 +375,8 @@ function runKinds(door) {
 // a door that runs a script and a test suite leads with the script. A
 // package names its entry first, then the code it loads before the data it
 // exports. Given a kind, only the paths of that kind are named.
-function shownRuns(door, kind = null) {
-  const paths = runPaths(door);
+function shownRuns(door, kind = null, only = null) {
+  const paths = runPaths(door, only);
   const kinds = runKinds(door);
   const dirs = paths.filter((path) => path.endsWith('/'));
   const named = new Set((door.runs ?? []).filter((run) => !run.matched).map((run) => run.path));
@@ -549,6 +605,13 @@ export function sendPhrases(door) {
  * @returns {string}
  */
 export function gatePhrase(when) {
+  const inputs = inputWords(when.inputs);
+  if (inputs) {
+    // Inputs hold only a run by hand; on its own an input's condition leaves
+    // every other trigger, which is said once, in parentheses.
+    if (when.event === 'workflow_dispatch') return `when run by hand with ${inputs}`;
+    if (!when.event && !when.tags && !(when.branches?.length > 0) && !(when.except?.length > 0)) return `(on a run by hand, only with ${inputs})`;
+  }
   const branches = when.branches?.length > 0 ? list(when.branches).replace(/ and /g, ' or ') : null;
   if (when.tags) return 'on a tag push';
   if (when.event === 'push') return branches ? `on a push to ${branches}` : 'on a push';
@@ -559,6 +622,20 @@ export function gatePhrase(when) {
   }
   if (!when.event) return `on ${branches}`;
   return branches ? `${phrase(when.event)} to ${branches}` : phrase(when.event);
+}
+
+// The trigger a gated run is said under, as the lead of its sentence.
+function gateLead(when) {
+  const phrase = gatePhrase(when);
+  return phrase.startsWith('(') ? `on a run by hand with ${inputWords(when.inputs)}` : phrase;
+}
+
+// The inputs a run by hand needs: "dry_run false", "mode full".
+export function inputWords(inputs) {
+  if (inputs == null || typeof inputs !== 'object') return null;
+  const names = Object.keys(inputs).sort(cmp);
+  if (names.length === 0) return null;
+  return list(names.map((name) => `${name} ${inputs[name]}`));
 }
 
 const GATE_EVENTS = {
@@ -599,11 +676,12 @@ export function runsShown(paths, total = paths.length) {
 function runTotal(door, kind = null) {
   const kinds = runKinds(door);
   const recorded = runPaths(door).filter((path) => kind == null || kinds.get(path) === kind).length;
+  const held = [...heldRuns(door).keys()].filter((path) => kind == null || kinds.get(path) === kind).length;
   const checks = door.checksCount ?? 0;
   let counted = door.runsCount ?? recorded;
   if (door.runsCount != null && kind === 'checks') counted = checks;
   else if (door.runsCount != null && kind === 'executes') counted = door.runsCount - checks;
-  return shownRuns(door, kind).length + Math.max(0, counted - recorded);
+  return shownRuns(door, kind).length + Math.max(0, counted - held - recorded);
 }
 
 // What an installed door runs when its manifest points at a build's output
@@ -628,7 +706,8 @@ function comesIn(ctx) {
   const items = ctx.doors.map((door, index) => {
     if (door.parseError) return `${index + 1}. **${door.name}.** This workflow could not be read.`;
     const named = runsAndChecks(door, startVerb(door));
-    const runs = capitalize(named ? `${named}.` : `${startVerb(door)} no file this map can see.`);
+    const held = heldSentences(door, startVerb(door), named != null);
+    const runs = [...(named || held.length === 0 ? [capitalize(named ? `${named}.` : `${startVerb(door)} no file this map can see.`)] : []), ...held].join(' ');
     if (installed(door)) return `${index + 1}. **${door.name}** (${installedAs(door)}). ${runs}`;
     const when = capitalize(triggerPhrases(door).join('; ')) || 'Nothing this map can read starts it';
     return `${index + 1}. **${door.name}.** ${when}. ${runs}`;
@@ -735,7 +814,9 @@ function doorSteps(ctx, door) {
   const clauses = [];
   if (ran.length > 0) clauses.push(`${subject} ${runGroups(ctx, door, ran)}`);
   if (checked.length > 0) clauses.push(`${ran.length > 0 ? 'it' : 'The workflow'} checks ${runGroups(ctx, door, checked)}`);
-  steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
+  const held = heldSentences(door, 'runs', clauses.length > 0);
+  if (clauses.length > 0 || held.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
+  steps.push(...held);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   const places = writes(ctx, door);
   if (places.length > 0) steps.push(`It writes to ${list(places)}.`);
@@ -833,7 +914,8 @@ function inOrder(lead, texts, indent) {
  */
 function sequences(ctx, door) {
   const out = [];
-  const named = [...new Set((door.runs ?? []).filter((run) => !run.matched && run.runKind !== 'checks').map((run) => run.path))].sort(cmp);
+  const held = heldRuns(door);
+  const named = [...new Set((door.runs ?? []).filter((run) => !run.matched && run.runKind !== 'checks' && !held.has(run.path)).map((run) => run.path))].sort(cmp);
   for (const path of named) {
     const file = ctx.fileOf.get(path);
     const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
@@ -1077,11 +1159,16 @@ function otherDoors(ctx, main) {
     const verb = startVerb(door);
     const ran = shownRuns(door, 'executes');
     const checked = shownRuns(door, 'checks');
+    const groups = gatedRuns(door);
     if (door.unplaced) clauses.push(unplacedClause(verb, door.unplaced));
-    else if (ran.length > 0 || checked.length === 0) {
+    else if (ran.length > 0 || (checked.length === 0 && groups.length === 0)) {
       clauses.push(ran.length > 0 ? `${verb} ${runsShown(ran, runTotal(door, 'executes'))}` : `${verb} no file this map can see`);
     }
     if (checked.length > 0) clauses.push(`checks ${runsShown(checked, runTotal(door, 'checks'))}`);
+    for (const group of groups) {
+      const clause = heldClause(door, group, verb, ' and ');
+      if (clause) clauses.push(`${clause} ${gatePhrase(group.when)}`);
+    }
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => entry.boundary)))].sort(cmp);
     if (reached.length > 0) clauses.push(`reaches ${list(reached.map(ctx.shown))}`);
     const places = writes(ctx, door);
@@ -1957,7 +2044,7 @@ function limits(ctx, shownText) {
   if (shownText) lines.push('Readers marked (found by text) come from scanning unparsed files.');
   for (const door of ctx.doors) {
     if (door.parseError) continue;
-    const recorded = runPaths(door).length;
+    const recorded = new Set((door.runs ?? []).map((run) => run.path)).size;
     if ((door.runsCount ?? 0) <= recorded) continue;
     const verb = (door.checksCount ?? 0) > 0 ? 'runs or checks' : 'runs';
     lines.push(`${door.name} ${verb} ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from those.`);
@@ -2104,6 +2191,9 @@ function doorData(ctx, door) {
     reach: (door.reach ?? []).map((entry) => ({ boundary: entry.boundary, depth: entry.depth, files: entry.files })),
     checks: shownRuns(door, 'checks'),
     checksCount: runTotal(door, 'checks'),
+    ...(gatedRuns(door).length > 0
+      ? { held: gatedRuns(door).map((group) => ({ checks: shownRuns(door, 'checks', group.paths), lead: gateLead(group.when), runs: shownRuns(door, 'executes', group.paths), when: gatePhrase(group.when) })) }
+      : {}),
     runs: shownRuns(door, 'executes'),
     runsCount: runTotal(door, 'executes'),
     sends: sendPhrases(door),

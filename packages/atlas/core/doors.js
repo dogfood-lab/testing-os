@@ -194,7 +194,17 @@ function readDoor(repoPath, file, repo) {
     if (typeof body.if === 'string' && /\bneeds\.[\w-]+\.outputs\b/.test(body.if)) conditional.push(job);
     if (gate && !gates.has(canonical(gate))) gates.set(canonical(gate), { when: gate, jobs: [], sends: emptySends(), issues: [], texts: [], stages: new Set(), pushes: false, sidePushes: [] });
     if (gate) gates.get(canonical(gate)).jobs.push(job);
-    const scope = gate ? gates.get(canonical(gate)) : { sends, issues, texts, stages, pushes: false, sidePushes: [] };
+    const jobScope = gate ? gates.get(canonical(gate)) : { sends, issues, texts, stages, pushes: false, sidePushes: [] };
+    // A step held to a trigger of its own (if: github.ref_type == 'tag') is
+    // kept apart the way a gated job is, under the gate the two make together.
+    const scopeFor = (when) => {
+      if (when === gate) return jobScope;
+      const key = canonical(when);
+      if (!gates.has(key)) gates.set(key, { when, jobs: [], sends: emptySends(), issues: [], texts: [], stages: new Set(), pushes: false, sidePushes: [] });
+      const entry = gates.get(key);
+      if (!entry.jobs.includes(job)) entry.jobs.push(job);
+      return entry;
+    };
     // The branch a job has moved onto, which later steps push.
     const branch = { made: false, name: null };
     for (const permission of permissionList(body.permissions)) permissions.add(permission);
@@ -211,10 +221,16 @@ function readDoor(repoPath, file, repo) {
     const jobTexts = [];
     steps.forEach((step, index) => {
       if (!isMapping(step)) return;
+      const when = joinGates(gate, jobGate(step.if, triggers));
+      const scope = scopeFor(when);
+      const held = when ? { when } : {};
       if (typeof step.uses === 'string') {
         const action = step.uses.replace(/@.*$/, '');
         uses.add(action);
-        for (const [name, apply] of ACTION_SENDS) if (action === name || action.startsWith(`${name}/`)) apply(scope.sends, step);
+        // An action whose push input is an expression pushes on the runs the
+        // expression holds on, read as an if: is.
+        const pushWhen = typeof step.with?.push === 'string' && step.with.push.includes('${{') ? joinGates(when, jobGate(step.with.push, triggers)) : when;
+        for (const [name, apply] of ACTION_SENDS) if (action === name || action.startsWith(`${name}/`)) apply(scopeFor(pushWhen).sends, step);
         const checkout = otherCheckout(action, step.with);
         if (checkout) clones.set(checkout.dir, checkout.repository);
         // The action builds the image from the context and file it is handed.
@@ -224,8 +240,8 @@ function readDoor(repoPath, file, repo) {
           const dir = workingDirectory(body.defaults) ?? workflowDir ?? '';
           for (const entry of readContainer(context, dockerfile, dir, repo).values()) {
             const key = `${entry.path}\0${job}`;
-            const run = { ...entry, job };
-            runs.set(key, runs.has(key) ? better(runs.get(key), run) : run);
+            const run = { ...entry, job, ...held };
+            runs.set(key, runs.has(key) ? mergeRun(runs.get(key), run) : run);
           }
         }
       }
@@ -259,13 +275,13 @@ function readDoor(repoPath, file, repo) {
       const named = readCommands(expandEnv(step.run, lookup), dir, repo);
       for (const entry of named.runs.values()) {
         const key = `${entry.path}\0${job}`;
-        const run = { ...entry, job };
-        runs.set(key, runs.has(key) ? better(runs.get(key), run) : run);
+        const run = { ...entry, job, ...held };
+        runs.set(key, runs.has(key) ? mergeRun(runs.get(key), run) : run);
       }
       for (const path of named.mentions) mentions.set(`${path}\0${job}`, { path, job });
     });
-    if (!gate && scope.pushes) pushes = true;
-    if (!gate) sidePushes.push(...scope.sidePushes);
+    if (!gate && jobScope.pushes) pushes = true;
+    if (!gate) sidePushes.push(...jobScope.sidePushes);
   }
 
   const recorded = recordedRuns([...runs.values()]);
@@ -345,23 +361,42 @@ function sendKeys(sends) {
 }
 
 /**
- * The trigger a job-level if: holds the job to, when it names the event or
- * the ref: github.event_name == 'push', github.ref == 'refs/heads/main',
- * startsWith(github.ref, 'refs/tags/'), joined by &&. An event it is held
- * off, github.event_name != 'pull_request' or !(github.event_name ==
- * 'pull_request'), leaves every other trigger of the workflow: when those are
- * one event (a run by hand aside), the gate is that trigger, a push to main,
- * and otherwise it is the events it excepts. Anything else in the condition
- * narrows the job further without changing which trigger it runs on; a
- * condition with || at its top, or one every trigger of the workflow already
- * meets, gates nothing.
+ * The trigger a job-level or step-level if: holds work to, when it names the
+ * event, the ref or an input a run by hand is given: github.event_name ==
+ * 'push', github.ref == 'refs/heads/main', startsWith(github.ref,
+ * 'refs/tags/'), github.ref_type == 'tag', inputs.dry_run, !inputs.dry_run,
+ * joined by &&. An event it is held off, github.event_name != 'pull_request'
+ * or !(github.event_name == 'pull_request'), leaves every other trigger of the
+ * workflow: when those are one event (a run by hand aside), the gate is that
+ * trigger, a push to main, and otherwise it is the events it excepts. An
+ * input is set only on a run by hand, so one that must be true holds the work
+ * to that run, and one that must be false holds only that run to it. Anything
+ * else in a condition narrows the work further without changing which
+ * trigger it runs on. A condition with || at its top is read one alternative
+ * at a time, when every alternative is one of those shapes (see eitherGate);
+ * one every trigger of the workflow already meets gates nothing.
  */
 function jobGate(condition, triggers) {
   if (typeof condition !== 'string') return null;
   const expression = condition.trim().replace(/^\$\{\{([\s\S]*)\}\}$/, '$1').trim();
-  if (topLevel(expression, '||').length > 1) return null;
+  const alternatives = topLevel(expression, '||');
+  if (alternatives.length > 1) return eitherGate(alternatives, triggers);
+  const gate = conjunctionGate(expression, triggers, false);
+  if (Object.keys(gate).length === 0) return null;
+  if (gate.inputs) return gate;
+  return triggers.length > 0 && triggers.every((trigger) => meets(trigger, gate)) ? null : gate;
+}
+
+const UNREAD_PART = Symbol('unread');
+
+// One conjunction's gate. Read strictly, a part that is not an event, a ref
+// or an input makes the whole alternative unreadable, since in an || it may
+// hold on any trigger.
+function conjunctionGate(expression, triggers, strict) {
   const gate = {};
-  for (const raw of topLevel(expression, '&&')) {
+  let whole = expression.trim();
+  while (whole.startsWith('(') && whole.endsWith(')') && balanced(whole.slice(1, -1))) whole = whole.slice(1, -1).trim();
+  for (const raw of topLevel(whole, '&&')) {
     let part = raw;
     while (part.startsWith('(') && part.endsWith(')') && balanced(part.slice(1, -1))) part = part.slice(1, -1).trim();
     const event = /^github\.event_name\s*==\s*'([\w-]+)'$/.exec(part) ?? /^'([\w-]+)'\s*==\s*github\.event_name$/.exec(part);
@@ -371,16 +406,111 @@ function jobGate(condition, triggers) {
       continue;
     }
     const branch = /^github\.ref\s*==\s*'refs\/heads\/([^']+)'$/.exec(part) ?? /^'refs\/heads\/([^']+)'\s*==\s*github\.ref$/.exec(part);
+    const input = inputPart(part);
     if (event) gate.event = event[1];
     else if (branch) gate.branches = [...new Set([...(gate.branches ?? []), branch[1]])].sort();
     else if (/^startsWith\(\s*github\.ref\s*,\s*'refs\/tags\/[^']*'\s*\)$/.test(part) || /^github\.ref_type\s*==\s*'tag'$/.test(part)) {
       gate.event = 'push';
       gate.tags = true;
-    }
+    } else if (input) gate.inputs = { ...(gate.inputs ?? {}), [input.name]: input.value };
+    else if (strict) return UNREAD_PART;
   }
   if (gate.except) settleExcept(gate, triggers);
-  if (Object.keys(gate).length === 0) return null;
-  return triggers.length > 0 && triggers.every((trigger) => meets(trigger, gate)) ? null : gate;
+  return settleInputs(gate, triggers);
+}
+
+// inputs.x, github.event.inputs.x, their negation, and a comparison with a
+// literal: the input and the value the work needs it to have.
+function inputPart(part) {
+  const name = '(?:github\\.event\\.)?inputs\\.([A-Za-z_][\\w-]*)';
+  const bare = new RegExp(`^(!\\s*)?${name}$`).exec(part);
+  if (bare) return { name: bare[2], value: !bare[1] };
+  const compared = new RegExp(`^${name}\\s*==\\s*('[^']*'|true|false)$`).exec(part);
+  if (!compared) return null;
+  const literal = compared[2].replace(/^'|'$/g, '');
+  return { name: compared[1], value: literal === 'true' ? true : literal === 'false' ? false : literal };
+}
+
+// Only a run by hand is given inputs, so one that must be set holds the work
+// to that run. A workflow nothing runs by hand is given them some other way
+// (workflow_call), which this map does not follow, so they gate nothing there.
+function settleInputs(gate, triggers) {
+  if (!gate.inputs) return gate;
+  if (!triggers.some((trigger) => trigger.event === 'workflow_dispatch')) {
+    delete gate.inputs;
+    return gate;
+  }
+  if (Object.values(gate.inputs).some((value) => value !== false) && !gate.event) gate.event = 'workflow_dispatch';
+  return gate;
+}
+
+/**
+ * An || of alternatives, each an event, a ref or an input: the work runs on a
+ * trigger any alternative holds on. A run by hand is dispatched from any
+ * branch or tag, so an alternative that names a ref alone holds on it; one
+ * that needs an input holds on it only with that input, which is the gate's
+ * inputs. Every trigger held on without condition is no gate at all; one
+ * alternative that is none of those shapes may hold on any trigger, so it
+ * gates nothing either.
+ */
+function eitherGate(alternatives, triggers) {
+  const gates = alternatives.map((alternative) => conjunctionGate(alternative, triggers, true));
+  if (gates.some((gate) => gate === UNREAD_PART) || triggers.length === 0) return null;
+  let inputs = null;
+  const held = triggers.map((trigger) => {
+    let status = 'never';
+    for (const gate of gates) {
+      const byHand = trigger.event === 'workflow_dispatch';
+      const reached = byHand ? (!gate.event || gate.event === 'workflow_dispatch') && !(gate.except ?? []).includes('workflow_dispatch') : meets(trigger, gate);
+      if (!reached) continue;
+      const needs = Object.values(gate.inputs ?? {});
+      if (!byHand && needs.some((value) => value !== false)) continue;
+      if (!byHand || needs.length === 0) return 'always';
+      if (status === 'never') {
+        status = 'inputs';
+        inputs = gate.inputs;
+      }
+    }
+    return status;
+  });
+  if (held.every((status) => status === 'always')) return null;
+  const covered = triggers.filter((_, index) => held[index] !== 'never');
+  const gate = coveredGate(covered, triggers);
+  if (inputs && held.includes('inputs')) gate.inputs = inputs;
+  return Object.keys(gate).length > 0 ? gate : null;
+}
+
+// The gate that holds to a set of a workflow's triggers: none when it is all
+// of them, the one event when they share one, and otherwise the events left out.
+function coveredGate(covered, triggers) {
+  if (covered.length === triggers.length) return {};
+  const events = [...new Set(covered.map((trigger) => trigger.event))];
+  if (events.length === 1) {
+    const gate = { event: events[0] };
+    if (events[0] === 'push' && covered.every((trigger) => (trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0))) gate.tags = true;
+    return gate;
+  }
+  return { except: [...new Set(triggers.filter((trigger) => !events.includes(trigger.event)).map((trigger) => trigger.event))].sort() };
+}
+
+// A step's gate inside a job's: the step's narrows the job's.
+function joinGates(job, step) {
+  if (!step) return job;
+  if (!job) return step;
+  const inputs = { ...(job.inputs ?? {}), ...(step.inputs ?? {}) };
+  const joined = { ...job, ...step };
+  if (Object.keys(inputs).length > 0) joined.inputs = inputs;
+  return canonical(joined) === canonical(job) ? job : joined;
+}
+
+// A path a job runs from steps held to different triggers, or from one held
+// to none, runs on each of them; only a path every step of holds to one
+// trigger is held to it.
+function mergeRun(a, b) {
+  const out = better(a, b);
+  if (a.when && b.when && canonical(a.when) === canonical(b.when)) out.when = a.when;
+  else delete out.when;
+  return out;
 }
 
 // github.event_name != 'x', 'x' != github.event_name, or !(github.event_name == 'x').
@@ -560,9 +690,10 @@ function publishedPackages(words, cwd, place) {
     if (flag !== '-w' && flag !== '--workspace') continue;
     const value = args[i].includes('=') ? args[i].slice(args[i].indexOf('=') + 1) : args[i + 1];
     if (value == null) continue;
-    // A member named at run time, as a loop over packages/* does.
+    // A member named at run time, as a loop over the workspace does: which
+    // ones, the loop decides.
     if (value.includes('$')) {
-      members.push({ key: 'workspace', value: { chosenBy: chosen, registry: 'npm', workspace: true } });
+      members.push({ key: 'workspace', value: { registry: 'npm', workspace: true } });
       continue;
     }
     for (const [dir, name] of place.repo.workspaces()) {

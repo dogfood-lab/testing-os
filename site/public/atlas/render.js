@@ -390,6 +390,32 @@ function unplacedClause(door) {
   return `${startVerb(door)} ${esc(door.unplaced)}, built from a source this map cannot place`;
 }
 
+// What a door runs on one trigger only, a group per trigger, as page.js
+// words it: the lead of the sentence and the trigger as a phrase.
+function held(ctx, door) {
+  return arr(door.held).map((group) => ({
+    lead: str(group.lead),
+    when: str(group.when),
+    runs: arr(group.runs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+    checks: arr(group.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+  }));
+}
+
+function heldClause(group, verb, joiner, field) {
+  const clauses = [];
+  const shown = (items) => (field === 'html' ? runsShown(items) : runsShownText(items));
+  if (group.runs.length > 0) clauses.push(`${verb} ${shown(group.runs)}`);
+  if (group.checks.length > 0) clauses.push(`checks ${shown(group.checks)}`);
+  return clauses.length > 0 ? clauses.join(joiner) : null;
+}
+
+function heldSentences(ctx, door, verb, also) {
+  return held(ctx, door).map((group) => {
+    const clause = heldClause(group, verb, '; ', 'html');
+    return clause ? `${capitalize(esc(group.lead))}, it ${also ? 'also ' : ''}${clause}.` : null;
+  }).filter(Boolean);
+}
+
 function comesIn(ctx) {
   const items = ctx.doors.map((door) => {
     const name = `<strong>${esc(door.name)}.</strong>`;
@@ -400,7 +426,8 @@ function comesIn(ctx) {
     if (door.unplaced) clauses.push(unplacedClause(door));
     else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths))}`);
     if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked))}`);
-    const ran = capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`);
+    const heldText = heldSentences(ctx, door, startVerb(door), clauses.length > 0);
+    const ran = [...(clauses.length > 0 || heldText.length === 0 ? [capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`)] : []), ...heldText].join(' ');
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
     const when = capitalize(arr(door.triggers).map(str).join('; ')) || 'Nothing this map can read starts it';
     return `${name} ${inline(when)}. ${ran}`;
@@ -420,7 +447,9 @@ function doorSteps(ctx, door) {
   const clauses = [];
   if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths))}`);
   if (checked.length > 0) clauses.push(`${paths.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked))}`);
-  steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
+  const heldText = heldSentences(ctx, door, 'runs', clauses.length > 0);
+  if (clauses.length > 0 || heldText.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
+  steps.push(...heldText);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
   if (arr(door.stages).length > 0) steps.push(`It commits ${commitsClause(ctx, door)}.`);
@@ -520,13 +549,17 @@ function otherDoors(ctx) {
     const checked = checks(ctx, door);
     const verb = startVerb(door);
     if (door.unplaced) clauses.push({ html: unplacedClause(door), text: `${verb} ${str(door.unplaced)}, built from a source this map cannot place` });
-    else if (paths.length > 0 || checked.length === 0) {
+    else if (paths.length > 0 || (checked.length === 0 && arr(door.held).length === 0)) {
       clauses.push(paths.length > 0
         ? { html: `${verb} ${runsShown(paths, runTotal(door, paths))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths))}` }
         : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
     }
     if (checked.length > 0) {
       clauses.push({ html: `checks ${runsShown(checked, checkTotal(door, checked))}`, text: `checks ${runsShownText(checked, checkTotal(door, checked))}` });
+    }
+    for (const group of held(ctx, door)) {
+      const html = heldClause(group, verb, ' and ', 'html');
+      if (html) clauses.push({ html: `${html} ${esc(group.when)}`, text: `${heldClause(group, verb, ' and ', 'text')} ${group.when}` });
     }
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => str(entry.boundary))))].sort(cmp).map((part) => ctx.name(part));
     if (reached.length > 0) clauses.push({ html: `reaches ${list(reached.map(esc))}`, text: `reaches ${list(reached)}` });
