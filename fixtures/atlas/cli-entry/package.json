@@ -1,0 +1,14 @@
+{
+  "name": "@acme/tool",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": { ".": "./dist/cli.js" },
+  "bin": { "acme": "dist/cli.js" },
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "build": "esbuild src/cli.ts --bundle --platform=node --outfile=dist/cli.js",
+    "pack:server": "node scripts/pack.mjs"
+  },
+  "dependencies": { "commander": "^12.0.0" },
+  "devDependencies": { "esbuild": "^0.25.0" }
+}

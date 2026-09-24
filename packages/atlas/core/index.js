@@ -9,12 +9,14 @@ import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
 import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
-import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
+import { buildCalls } from './bundles.js';
+import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
-import { attachResolution, emittedFiles, resolveDeclaredPath } from './resolve.js';
+import { attachResolution, emittedFiles, registerBuilds, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
+import { storedBytes, textAttributes } from './text.js';
 import { unseenParts } from './unseen.js';
 
 const GRAMMAR_DIR = fileURLToPath(new URL('../grammars/', import.meta.url));
@@ -68,6 +70,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
 
   const tracked = listTracked(repoPath);
   const places = trackedPlaces(tracked.regular);
+  const attributes = textAttributes(repoPath, tracked.regular);
   const matchers = ordered.map((boundary) => ({
     name: boundary.name,
     isMatch: picomatch(boundary.globs, { dot: true }),
@@ -95,8 +98,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   // once imports resolve, so the first reading waits here, keyed by path.
   const facts = new Map();
   const spawned = new Map();
+  const builds = new Map();
   for (const path of tracked.regular) {
-    const file = describeFile(repoPath, path, places, facts, spawned);
+    const file = describeFile(repoPath, path, places, facts, spawned, attributes.get(path), builds);
     const hits = [];
     for (const matcher of matchers) {
       if (matcher.isMatch(path)) hits.push(matcher.name);
@@ -108,6 +112,11 @@ export function mapRepository({ repoPath, boundaries } = {}) {
 
   const byPath = (a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
   const trackedSet = new Set(tracked.regular);
+  // A bin a bundler writes is traced to its entry before tsconfig is read,
+  // and the esbuild calls that say so are read only while each tree lives.
+  registerBuilds(repoPath, builds, new Map([...byName.values()].flatMap((boundary) => boundary.files).concat(unassigned, overlaps)
+    .filter((file) => builds.size > 0 && Array.isArray(file.imports))
+    .map((file) => [file.path, file.imports.map((site) => site.specifier)])));
   const boundaryList = [...byName.values()];
   const scripts = pythonScripts(repoPath, trackedSet);
   const commands = manifestCommands(repoPath, trackedSet, scripts);
@@ -136,10 +145,10 @@ export function mapRepository({ repoPath, boundaries } = {}) {
 
   const builtFrom = (path) => (trackedSet.has(path) ? null : resolveDeclaredPath(repoPath, path, trackedSet));
   const emitted = () => emittedFiles(repoPath, trackedSet);
-  const doors = [
+  const doors = settleInstalled([
     ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
     ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
-  ];
+  ], [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], repoPath, trackedSet);
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }));
@@ -152,7 +161,10 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     // run; what the door writes is read only from the files it runs.
     const walked = walkReach(door.runs.map((run) => run.path), graph);
     door.reach = walked.reach;
-    door.reachFiles = walkReach(door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path), graph).files;
+    const ran = walkReach(door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path), graph);
+    door.reachFiles = ran.files;
+    // A package is imported, never run as a program.
+    door.executed = door.kind === 'package' ? [] : ran.executed;
     // A file the door runs that changes other repositories through the API
     // sends out of this one, as a dispatch does. A test that imports that
     // file runs it against its own stand-ins, and a package only loaded
@@ -172,6 +184,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   // the door is credited with, which attachLandings has now decided.
   for (const door of doors) {
     delete door.reachFiles;
+    delete door.executed;
     for (const run of door.runs ?? []) delete run.passes;
   }
   const entryPoints = new Map(boundaryList.map((boundary) => [boundary.name, [...boundary.entryPoints].sort()]));
@@ -181,7 +194,8 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   for (const script of scripts) if (script.fn && !entryFunctions.has(script.path)) entryFunctions.set(script.path, script.fn);
   attachSequences({ files: graph.files, facts, doors, entryPoints, entryFunctions });
   attachExports(graph.files, facts);
-  const unseen = unseenParts(trackedSet, doors);
+  const unseenView = repositoryView({ repoPath, tracked: trackedSet });
+  const unseen = unseenParts(trackedSet, doors, (path) => unseenView.text(path));
 
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },
@@ -381,8 +395,10 @@ function symlinkTarget(repoPath, path) {
   }
 }
 
-function describeFile(repoPath, path, places, facts, spawned) {
-  const bytes = readFileSync(join(repoPath, path));
+// A file is read as git stores it (text.js), so what is hashed and parsed is
+// the same on a checkout with either line ending.
+function describeFile(repoPath, path, places, facts, spawned, attributes, builds) {
+  const bytes = storedBytes(readFileSync(join(repoPath, path)), attributes);
   const hash = createHash('sha256').update(bytes).digest('hex');
   const language = languageOf(path);
   if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };
@@ -392,10 +408,13 @@ function describeFile(repoPath, path, places, facts, spawned) {
     return { path, hash, language, parseError: true, ...syntax, imports: [], ...noLandings() };
   }
   facts.set(path, extracted.sequence);
+  if (extracted.builds.length > 0) builds.set(path, extracted.builds);
   if (extracted.spawned.commands.length > 0) spawned.set(path, extracted.spawned.commands);
   const built = extracted.spawned.built > 0 ? { dynamicSpawns: extracted.spawned.built } : {};
   const programs = extracted.spawned.programs?.length > 0 && !isTestFile(path) ? { programs: extracted.spawned.programs } : {};
   const empty = extracted.noStatements ? { noStatements: true } : {};
+  // Read by settleInstalled, then dropped.
+  const starts = extracted.startsOnLoad ? { startsOnLoad: true } : {};
   const holds = extracted.holds === 'reexports' ? { reexportsOnly: true } : extracted.holds === 'constant' ? { constantOnly: true } : {};
   // Read once the parts are known, then dropped (core/http.js httpEdges).
   const http = extracted.http ? { http: extracted.http } : {};
@@ -403,14 +422,17 @@ function describeFile(repoPath, path, places, facts, spawned) {
   // Read once imports resolve, then dropped (core/spawned.js settleSpawnHelpers).
   const helpers = Object.keys(extracted.spawned.helpers ?? {}).length > 0 ? { spawnHelpers: extracted.spawned.helpers } : {};
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http };
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
 // order of the calls it makes and the commands it hands a child process.
-function parseFile(language, path, source, places) {
+function parseFile(language, path, original, places) {
   let tree;
   let typeSites = [];
+  // The grammar stops at a raw NUL byte wherever it is, a comment or a
+  // string; a space in its place reads the same, every offset unmoved.
+  const source = original.includes('\0') ? original.replaceAll('\0', ' ') : original;
   try {
     parser.setLanguage(languages[language]);
     tree = parser.parse(source);
@@ -436,8 +458,10 @@ function parseFile(language, path, source, places) {
       spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
       githubChanges: language === 'python' ? 0 : githubChanges(tree.rootNode),
       noStatements: statementless(tree.rootNode),
+      startsOnLoad: language !== 'python' && startsOnLoad(tree.rootNode),
       holds: language === 'python' ? null : onlyHolds(tree.rootNode),
       http: language === 'python' ? null : httpFacts(tree.rootNode),
+      builds: language === 'python' || isTestFile(path) ? [] : buildCalls(tree.rootNode, (node) => pathShape(node, path)),
     };
   } finally {
     tree.delete();
@@ -454,7 +478,15 @@ function parseFile(language, path, source, places) {
 // construct spread over lines is left as it is.
 const TYPEOF_IMPORT = /(\btypeof[ \t]+)(import[ \t]*\([ \t]*(['"`])([^'"`\n]*)\3[ \t]*\))/g;
 const IMPORT_ARRAY = /\bimport[ \t]*\([ \t]*(['"`])([^'"`\n]*)\1[ \t]*\)(?=(?:[ \t]*\.[ \t]*[A-Za-z_$][\w$]*)+[ \t]*\[[ \t]*\])/g;
-// A bare & in JSX text is rewritten one error at a time, this many at most.
+// abstract read as a name (let abstract: string; abstract = ...), which the
+// grammar takes for the modifier at the start of a statement; the modifier
+// itself is followed by what it modifies.
+const ABSTRACT_NAME = /\babstract\b(?!\s+[A-Za-z_$])/g;
+// A decimal character reference past five digits (&#128274;, a padlock),
+// which the grammar does not read, though HTML and JSX do.
+const LONG_REFERENCE = /&#[0-9]{6,};/g;
+// A bare & in JSX text, and a comparison the grammar reads as the start of a
+// type argument list, are rewritten one error at a time, this many at most.
 const REPAIR_ROUNDS = 16;
 
 /**
@@ -462,7 +494,12 @@ const REPAIR_ROUNDS = 16;
  * accepts, read again with each such construct rewritten to a form the
  * grammar reads, of the same length, so every byte offset, line and column
  * the readings record is the original's: typeof import(…) as a type
- * argument, import(…).T[], and a bare & in JSX text, which becomes a space.
+ * argument, import(…).T[], abstract as a name, which becomes abstrac$; a
+ * decimal character reference past five digits and a bare & in JSX text,
+ * which become spaces; and a comparison < with a space
+ * after it on a line that stops the parse, which becomes <= so that
+ * { left: dx < -3, right: dx > 3 } reads as two comparisons, not a call with
+ * type arguments.
  * Returns the tree and the import sites the rewrite took out of the text,
  * or null when the file still does not parse, and the original's error
  * stands, named as before.
@@ -482,11 +519,15 @@ function repairSource(source, parse) {
     sites.push({ specifier, kind: 'dynamic-literal', line: lineAt(offset) });
     return '_'.repeat(call.length);
   });
+  text = text.replace(ABSTRACT_NAME, () => 'abstrac$');
+  text = text.replace(LONG_REFERENCE, (reference) => ' '.repeat(reference.length));
   let tree = parse(text);
   for (let round = 0; round < REPAIR_ROUNDS && tree != null && tree.rootNode.hasError; round += 1) {
     const at = jsxAmpersands(text, tree.rootNode);
-    if (at.length === 0) break;
+    const compared = at.length > 0 ? [] : comparisons(text, tree.rootNode);
+    if (at.length === 0 && compared.length === 0) break;
     for (const index of at) text = `${text.slice(0, index)} ${text.slice(index + 1)}`;
+    for (const index of compared) text = `${text.slice(0, index)}<=${text.slice(index + 2)}`;
     tree.delete();
     tree = parse(text);
   }
@@ -525,6 +566,129 @@ function jsxAmpersands(text, root) {
     for (const child of node.children) stack.push(child);
   }
   return [...out].sort((a, b) => a - b);
+}
+
+// Names a top-level call starts a program by: main().catch(...), run(); and
+// what a server does to start: await server.connect(transport), app.listen().
+const STARTERS = new Set(['main', 'run', 'cli', 'start']);
+const SERVES = new Set(['connect', 'listen']);
+
+/**
+ * Whether a module runs a program the moment it loads: a statement at its
+ * top, behind no condition, that parses the command line (program.parse(
+ * process.argv), yargs(hideBin(process.argv)).parse()), calls the module's
+ * own main(), or starts a server (await server.connect(transport)).
+ */
+function startsOnLoad(root) {
+  const local = new Set();
+  for (const child of root.namedChildren) {
+    const declaration = child.type === 'export_statement' ? child.childForFieldName('declaration') : child;
+    if (declaration?.type === 'function_declaration') local.add(declaration.childForFieldName('name')?.text);
+  }
+  const starts = (node) => {
+    if (!node) return false;
+    if (node.type === 'await_expression' || node.type === 'parenthesized_expression') return starts(node.namedChildren[0]);
+    if (node.type === 'unary_expression' && node.childForFieldName('operator')?.text === 'void') return starts(node.childForFieldName('argument'));
+    if (node.type !== 'call_expression') return false;
+    const fn = node.childForFieldName('function');
+    if (fn?.type === 'identifier') return STARTERS.has(fn.text) && local.has(fn.text);
+    if (fn?.type !== 'member_expression') return false;
+    const property = fn.childForFieldName('property')?.text;
+    if ((property === 'parse' || property === 'parseAsync') && node.text.replace(/\s+/g, '').includes('process.argv')) return true;
+    if (SERVES.has(property)) return true;
+    // main().catch(...) and main().then(...) start main.
+    return (property === 'catch' || property === 'then' || property === 'finally') && starts(fn.childForFieldName('object'));
+  };
+  return root.namedChildren.some((child) => child.type === 'expression_statement' && starts(child.namedChildren[0]));
+}
+
+/**
+ * What the commands and packages a manifest installs are, past the files
+ * they run. A package every file of which it exports runs a program as it
+ * loads is no library: an import runs the program. runsCommand names the
+ * command its entry is, when one of its manifest's commands runs that file,
+ * and is true otherwise. A package that also exports modules that start
+ * nothing (a server beside the functions it serves) is a library still. A
+ * command a private workspace member declares is installed by no one: when
+ * a file of a package that publishes names the command's built file by its
+ * path, the command is bundled into that package (bundledInto), and
+ * otherwise it is no door.
+ * Mutates the doors it keeps.
+ */
+function settleInstalled(doors, files, repoPath, tracked) {
+  const byPath = new Map(files.map((file) => [file.path, file]));
+  const manifests = new Map();
+  const manifestOf = (dir) => {
+    if (!manifests.has(dir)) {
+      let pkg = null;
+      try {
+        const path = dir ? `${dir}/package.json` : 'package.json';
+        pkg = tracked.has(path) ? JSON.parse(readFileSync(join(repoPath, path), 'utf8')) : null;
+      } catch {
+        pkg = null;
+      }
+      manifests.set(dir, pkg && typeof pkg === 'object' ? pkg : null);
+    }
+    return manifests.get(dir);
+  };
+  // The package a file belongs to: the nearest directory above it with a manifest.
+  const ownerOf = (path) => {
+    for (let at = path.lastIndexOf('/'); ; at = path.lastIndexOf('/', at - 1)) {
+      const dir = at <= 0 ? '' : path.slice(0, at);
+      if (tracked.has(dir ? `${dir}/package.json` : 'package.json')) return manifestOf(dir);
+      if (at <= 0) return null;
+    }
+  };
+  const kept = [];
+  for (const door of doors) {
+    if (door.kind === 'package' && door.entry != null && (door.exported ?? []).every((path) => byPath.get(path)?.startsOnLoad)) {
+      const command = doors.find((other) => other.kind === 'command' && other.file === door.file && !other.privateMember && (other.runs ?? []).some((run) => run.path === door.entry));
+      door.runsCommand = command ? command.name : true;
+    }
+    delete door.exported;
+    if (door.privateMember) {
+      const into = new Set();
+      for (const file of files) {
+        if (isTestMaterial(file.path) || !(file.builtNames ?? []).includes(door.declared)) continue;
+        const owner = ownerOf(file.path);
+        if (owner && owner.private !== true && typeof owner.name === 'string' && owner.name !== '') into.add(owner.name);
+      }
+      delete door.privateMember;
+      delete door.declared;
+      if (into.size === 0) continue;
+      door.bundledInto = [...into].sort();
+    }
+    kept.push(door);
+  }
+  for (const file of files) {
+    delete file.builtNames;
+    delete file.startsOnLoad;
+  }
+  return kept;
+}
+
+// The offsets of each < on a line where the parse stops that has a space on
+// both sides, as a comparison is written and a type argument list is not.
+function comparisons(text, root) {
+  const lines = text.split('\n');
+  const starts = [];
+  for (let i = 0, at = 0; i < lines.length; i += 1) {
+    starts.push(at);
+    at += lines[i].length + 1;
+  }
+  const rows = new Set();
+  const stack = [root];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (node.type === 'ERROR' || node.isMissing) rows.add(node.startPosition.row);
+    else for (const child of node.children) stack.push(child);
+  }
+  const out = [];
+  for (const row of [...rows].sort((a, b) => a - b)) {
+    const line = lines[row] ?? '';
+    for (let column = line.indexOf(' < '); column !== -1; column = line.indexOf(' < ', column + 1)) out.push(starts[row] + column + 1);
+  }
+  return out;
 }
 
 // A module with nothing but comments, or a Python docstring, runs nothing.
@@ -575,7 +739,6 @@ function lineOf(node) {
 // the line its first error starts on; one that matches none is counted
 // without a name.
 const UNREAD = [
-  ['nul-character', (line) => line.includes('\0')],
   ['import-type-array', (line) => /\bimport\(\s*(['"`])[^'"`]*\1\s*\)(\s*\.\s*[A-Za-z_$][\w$]*)+\s*\[\s*\]/.test(line)],
   ['typeof-import-argument', (line) => /<\s*typeof\s+import\(/.test(line)],
   // Rasterize & Edit in JSX text: the grammar reads & there as the start of

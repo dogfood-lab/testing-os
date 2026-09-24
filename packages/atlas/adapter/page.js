@@ -239,8 +239,11 @@ export function orderDoors(doors) {
 }
 
 // What the page calls an installed door, and the verb for what it starts.
+// A package whose entry is a command runs it on import, so it is no library;
+// a private member's command is installed only inside the package bundling it.
 function installedAs(door) {
-  const what = door.kind !== 'package' ? 'a command people run'
+  const what = door.kind !== 'package' ? (door.bundledInto?.length > 0 ? `a command bundled into ${list(door.bundledInto)}` : 'a command people run')
+    : door.runsCommand != null ? `the package's entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${door.runsCommand}` : 'runs a program as it loads'}; it is not a library`
     : door.extension ? (door.unpublished ? "the extension's entry, not published from here" : `the extension people install from ${registryList(door.publishedTo ?? [])}`)
       : door.unpublished ? "the package's entry, not published from here" : 'the package people import';
   return door.sharedName ? `${what}, from ${door.file}` : what;
@@ -496,8 +499,11 @@ export function stagedShown(stages) {
 }
 
 // Two staged places already hold an "and", so the push is joined with "then".
+// A staged place nothing the door runs writes is one people write; the
+// commit only carries their edits along.
 export function commitsClause(door) {
-  const stages = stagedShown(door.stages);
+  const unwritten = new Set(door.unwrittenStages ?? []);
+  const stages = stagedShown(door.stages).map((stage) => (unwritten.has(stage.replace(/^\.\//, '').replace(/\/+$/, '')) ? `${stage} (written by people)` : stage));
   const push = pushWords(door);
   if (!push) return list(stages);
   return stages.length > 1 ? `${list(stages)}, then ${push}` : `${list(stages)} and ${push}`;
@@ -522,6 +528,7 @@ export function pushWords(door) {
 
 const REGISTRIES = {
   'crates.io': 'crates.io',
+  huggingface: 'the Hugging Face Hub',
   npm: 'npm',
   'open-vsx': 'Open VSX',
   pypi: 'PyPI',
@@ -529,6 +536,8 @@ const REGISTRIES = {
   'vscode-marketplace': 'the VS Code Marketplace',
 };
 const IMAGE = 'container image';
+// A deposit on Zenodo mints a record, which is what it publishes.
+const RECORD = 'zenodo';
 
 export function registryList(names) {
   return list(names.map((name) => REGISTRIES[name] ?? name));
@@ -558,10 +567,10 @@ function chosenBy(entry) {
 function publishPhrase(sends) {
   const to = Array.isArray(sends.publishesTo) ? sends.publishesTo : sends.publishes ? ['npm'] : [];
   const packages = (Array.isArray(sends.packages) ? sends.packages : []).filter((entry) => entry.name == null || entry.dir !== '');
-  const bare = to.filter((name) => name !== IMAGE && !packages.some((entry) => entry.registry === name));
+  const bare = to.filter((name) => name !== IMAGE && name !== RECORD && !packages.some((entry) => entry.registry === name));
   const items = [];
   if (bare.length > 0) items.push({ text: `to ${registryList(bare)}`, compound: bare.length > 1 });
-  for (const name of to.filter((registry) => registry !== IMAGE && !bare.includes(registry))) {
+  for (const name of to.filter((registry) => registry !== IMAGE && registry !== RECORD && !bare.includes(registry))) {
     const where = REGISTRIES[name] ?? name;
     const entries = packages.filter((entry) => entry.registry === name);
     const named = entries.filter((entry) => entry.name != null);
@@ -569,6 +578,7 @@ function publishPhrase(sends) {
     for (const entry of entries.filter((item) => item.name == null)) items.push({ text: `${chosenPackage(entry)} to ${where}${chosenBy(entry)}`, compound: entry.chosenBy != null });
   }
   if (to.includes(IMAGE)) items.push({ text: 'a container image', compound: false });
+  if (to.includes(RECORD)) items.push({ text: 'a record on Zenodo', compound: false });
   if (items.length === 0) return null;
   if (items.length === 1) return `publishes ${items[0].text}`;
   const plain = items.length === 2 && !items.some((item) => item.compound);
@@ -1405,7 +1415,9 @@ function guardsOf(landings) {
  * @returns {string}
  */
 export function guardClause(guards) {
-  const flags = (guards ?? []).filter((guard) => guard !== 'ci' && guard !== 'exists');
+  // A write made only when the file is the program is what running it does,
+  // which "written by X" already says.
+  const flags = (guards ?? []).filter((guard) => guard !== 'ci' && guard !== 'exists' && guard !== 'main');
   const parts = [];
   if ((guards ?? []).includes('ci')) parts.push('outside CI');
   if (flags.length > 0) parts.push(`without ${list(flags).replace(/ and /g, ' or ')}`);
@@ -2253,10 +2265,11 @@ export function externalsLine(sites, names) {
 // A line names this many of the files the parser could not read, the rest
 // counted, so a reader can open the one that stopped it.
 const UNREAD_NAMED = 3;
+// A directory of scripts a person runs by hand, named after the production files.
+const SCRIPT_HOMES = /(^|\/)(scripts?|tools|bin)\//;
 const UNREAD_SYNTAX = {
   'jsx-ampersand': 'a bare `&` in JSX text',
   'import-type-array': 'an import type followed by `[]`',
-  'nul-character': 'a NUL character inside a string',
   'typeof-import-argument': '`typeof import(…)` as a type argument',
 };
 
@@ -2300,14 +2313,18 @@ function unreadGroup(group) {
  * part holds more than one such file the count is given by part, since five
  * fixtures broken on purpose and one schema the parser trips on are not the
  * same finding; with every file in one part, that part is named once. Up to
- * three files are named by path, the rest counted.
+ * three files are named by path, the rest counted: entry points first, then
+ * the other production files, then tests and scripts, since a reader opens
+ * the file that runs before the one that checks it.
  *
- * @param {Array<{ path?: string, unreadSyntax?: string, part?: string|null, partLabel?: string|null }>} files
+ * @param {Array<{ path?: string, unreadSyntax?: string, part?: string|null, partLabel?: string|null, entry?: boolean }>} files
  * @returns {string|null}
  */
 export function unreadLine(files) {
   if (files.length === 0) return null;
-  const paths = files.map((file) => file.path).filter((path) => typeof path === 'string' && path !== '').sort(cmp);
+  const rank = (file) => (isTestMaterial(file.path) || SCRIPT_HOMES.test(file.path) ? 2 : file.entry ? 0 : 1);
+  const paths = files.filter((file) => typeof file.path === 'string' && file.path !== '')
+    .sort((a, b) => rank(a) - rank(b) || cmp(a.path, b.path)).map((file) => file.path);
   const named = paths.length === 0 ? '' : paths.length > UNREAD_NAMED
     ? ` (${paths.slice(0, UNREAD_NAMED).join(', ')} and ${paths.length - UNREAD_NAMED} more)`
     : ` (${list(paths)})`;
@@ -2346,9 +2363,10 @@ function limits(ctx, shownText) {
   if (outside > 0) {
     lines.push(`${count(outside, 'import site')} ${outside === 1 ? 'names' : 'name'} a path outside this repository, so what ${outside === 1 ? 'it loads' : 'they load'} is not followed.`);
   }
+  const entries = new Set([...ctx.boundaries.flatMap((boundary) => boundary.entryPoints ?? []), ...ctx.doors.flatMap((door) => (door.runs ?? []).map((run) => run.path))]);
   const unparsed = unreadLine([...ctx.fileOf.values()].filter((file) => file.parseError).map((file) => {
     const part = ctx.boundaryOf.get(file.path) ?? null;
-    return { part, partLabel: part == null ? null : ctx.shown(part), path: file.path, unreadSyntax: file.unreadSyntax };
+    return { part, partLabel: part == null ? null : ctx.shown(part), path: file.path, unreadSyntax: file.unreadSyntax, ...(entries.has(file.path) ? { entry: true } : {}) };
   }));
   if (unparsed) lines.push(unparsed);
   const dynamicWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);
@@ -2366,7 +2384,7 @@ function limits(ctx, shownText) {
   if (outsideWrites + outsideReads > 0) {
     const what = [outsideWrites > 0 ? count(outsideWrites, 'write') : null, outsideReads > 0 ? count(outsideReads, 'read') : null].filter(Boolean);
     const verb = outsideWrites + outsideReads === 1 ? 'goes' : 'go';
-    lines.push(`${list(what)} ${verb} to the directory the command is run in, the home directory or a path its caller passes, not to this repository.`);
+    lines.push(`${list(what)} ${verb} to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.`);
   }
   // Most such commands are a test spawning the command it tests, which is
   // not a gap in what the repository does; the share in tests is said.
@@ -2430,9 +2448,27 @@ function unseenLines(ctx) {
       ];
       const them = files.length === 1 ? 'it' : 'them';
       lines.push(`There is ${list(named)} that no workflow runs; what deploys from ${them} does so from outside this repository, and is not on this page.`);
+    } else if (entry.kind === 'shipped') {
+      const items = entry.items ?? [];
+      const images = items.filter((item) => item.kind === 'image');
+      const named = [
+        ...(images.length === 1 ? [`${images[0].path.includes('/') ? `a Dockerfile at ${images[0].path}` : 'a Dockerfile'} that a workflow builds and none pushes`] : images.length > 1 ? [`${count(images.length, 'Dockerfile')} that workflows build and none pushes`] : []),
+        ...shippedAt(items, 'space', 'a Hugging Face Space under', 'Hugging Face Spaces under', (path) => (path ? `${path}/` : 'the repository root')),
+        ...shippedAt(items, 'catalog', 'a Docker MCP Catalog entry at', 'Docker MCP Catalog entries at', (path) => path),
+      ];
+      const them = items.length === 1 ? 'it' : 'them';
+      lines.push(`There is ${list(named)}; what ships from ${them} goes from outside this repository, and is not on this page.`);
     }
   }
   return lines;
+}
+
+// "a Docker MCP Catalog entry at catalog/server.yaml", or the entries
+// together when there are more.
+function shippedAt(items, kind, one, many, place) {
+  const paths = items.filter((item) => item.kind === kind).map((item) => place(item.path));
+  if (paths.length === 0) return [];
+  return [`${paths.length === 1 ? one : many} ${list(paths)}`];
 }
 
 /**
@@ -2586,7 +2622,8 @@ function publishesSentence(ctx) {
 // A package nothing here publishes is no package people import, and an
 // extension is installed, not imported.
 function installedNames(ctx, kind, { extension = false } = {}) {
-  const names = [...new Set(ctx.doors.filter((door) => door.kind === kind && !door.unpublished && Boolean(door.extension) === extension).map((door) => door.name))].sort(cmp);
+  const names = [...new Set(ctx.doors.filter((door) => door.kind === kind && !door.unpublished && Boolean(door.extension) === extension
+    && door.runsCommand == null && !(door.bundledInto?.length > 0)).map((door) => door.name))].sort(cmp);
   if (names.length <= INSTALLED_ALL) return list(names);
   return `${names.slice(0, INSTALLED_NAMED).join(', ')} and ${names.length - INSTALLED_NAMED} more`;
 }
@@ -2639,6 +2676,9 @@ function doorData(ctx, door) {
     ...(door.unpublished ? { unpublished: true } : {}),
     ...(door.extension ? { extension: true } : {}),
     ...(door.publishedTo ? { publishedTo: registryList(door.publishedTo) } : {}),
+    ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
+    ...(door.runsCommand != null ? { runsCommand: door.runsCommand } : {}),
+    ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
   };
 }
 

@@ -193,9 +193,13 @@ function installed(door) {
   return door?.kind === 'command' || door?.kind === 'package';
 }
 
-// page.json carries where an extension is installed from as the page words it.
+// page.json carries where an extension is installed from as the page words it,
+// the command a package's entry is, and the package a private member's
+// command is bundled into.
 function installedAs(door) {
-  const what = door.kind !== 'package' ? 'a command people run'
+  const bundled = arr(door.bundledInto).map(str);
+  const what = door.kind !== 'package' ? (bundled.length > 0 ? `a command bundled into ${esc(list(bundled))}` : 'a command people run')
+    : door.runsCommand != null ? `the package&#39;s entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${esc(door.runsCommand)}` : 'runs a program as it loads'}; it is not a library`
     : door.extension ? (door.unpublished ? 'the extension&#39;s entry, not published from here' : `the extension people install from ${esc(str(door.publishedTo))}`)
       : door.unpublished ? 'the package&#39;s entry, not published from here' : 'the package people import';
   return door.sharedName ? `${what}, from ${esc(door.file)}` : what;
@@ -288,8 +292,14 @@ function pushWords(door) {
   return `pushes to ${list(branches).replace(/ and /g, ' or ')}, not to main`;
 }
 
+// A staged place nothing the door runs writes is one people write, as
+// page.js marks it.
+function peopleWrite(door, place) {
+  return arr(door.unwrittenStages).map(str).includes(str(place).replace(/^\.\//, '').replace(/\/+$/, ''));
+}
+
 function commitsClause(ctx, door) {
-  const stages = arr(door.stages).map((place) => pathHtml(ctx, place));
+  const stages = arr(door.stages).map((place) => `${pathHtml(ctx, place)}${peopleWrite(door, place) ? ' (written by people)' : ''}`);
   const push = pushWords(door);
   if (!push) return list(stages);
   return stages.length > 1 ? `${list(stages)}, then ${push}` : `${list(stages)} and ${push}`;
@@ -603,7 +613,7 @@ function otherDoors(ctx) {
     if (reached.length > 0) clauses.push({ html: `reaches ${list(reached.map(esc))}`, text: `reaches ${list(reached)}` });
     const landings = arr(door.landings).map(str);
     if (landings.length > 0) clauses.push({ html: `writes to ${placesHtml(ctx, landings)}`, text: `writes to ${list(landings)}` });
-    const stages = arr(door.stages).map(str);
+    const stages = arr(door.stages).map((place) => `${str(place)}${peopleWrite(door, place) ? ' (written by people)' : ''}`);
     if (stages.length > 0) {
       const push = pushWords(door);
       const text = push ? (stages.length > 1 ? `${list(stages)}, then ${push}` : `${list(stages)} and ${push}`) : list(stages);

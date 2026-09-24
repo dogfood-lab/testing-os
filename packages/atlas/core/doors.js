@@ -3,6 +3,7 @@ import { join, posix } from 'node:path';
 import { parse } from 'yaml';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 import { isTestFile } from './landings.js';
+import { storedText } from './text.js';
 
 const WORKFLOW = /^\.github\/workflows\/[^/]+\.ya?ml$/;
 const TRIGGER_LISTS = ['paths', 'branches', 'tags', 'types', 'workflows'];
@@ -70,6 +71,9 @@ export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFro
     const recorded = recordedRuns([...read.values()]);
     return {
       ...(command.unplaced ? { unplaced: command.unplaced } : {}),
+      // Read by index.js settleInstalled, then dropped.
+      ...(command.privateMember ? { privateMember: true, declared: command.declared } : {}),
+      ...(command.kind === 'package' ? { exported: programs } : {}),
       // What an import of the bare name loads, among every file it exports.
       ...(command.kind === 'package' && command.path != null ? { entry: command.path } : {}),
       kind: command.kind,
@@ -163,7 +167,7 @@ function readDoor(repoPath, file, repo) {
   let text;
   let doc;
   try {
-    text = readFileSync(join(repoPath, file), 'utf8');
+    text = storedText(readFileSync(join(repoPath, file), 'utf8'));
     doc = parse(text);
   } catch {
     return { file, name: fallback, parseError: true };
@@ -252,11 +256,13 @@ function readDoor(repoPath, file, repo) {
       }
       if (typeof step.run !== 'string') return;
       const name = typeof step.name === 'string' && step.name.trim() !== '' ? step.name : String(index);
-      commands.push({ job, step: name, text: step.run });
       scope.texts.push(step.run);
       const stepEnv = envOf(step.env);
       const lookup = (variable) => [stepEnv, jobEnv, workflowEnv].find((env) => env.has(variable))?.get(variable) ?? null;
       const start = placeOf({ here: true, dir: '' }, step['working-directory'] ?? rawJobDir, clones, repo, lookup);
+      // The directory the step's shell starts in, when it is this repository's,
+      // for the files its own redirects write (landings.js attachLandings).
+      commands.push({ job, step: name, text: step.run, ...(start.here ? { dir: start.dir } : {}) });
       const work = gitWork(step.run, lookup, start, clones, repo, branch);
       for (const staged of work.stages) scope.stages.add(staged);
       if (work.pushes) scope.pushes = true;
@@ -661,7 +667,19 @@ function recordedRuns(entries) {
  */
 function commandSends(run, sends, place) {
   let cwd = place.raw;
-  for (const tokens of commandLines(run)) {
+  let loopBase = cwd;
+  // Code a step hands an interpreter (python - <<'PY', python -c) sends as
+  // its calls do; a comment sends nothing.
+  const said = run.split('\n').filter((line) => !line.trim().startsWith('#')).join('\n');
+  if (HUB_UPLOAD.test(said) && said.includes('huggingface_hub')) sends.publishesTo.add('huggingface');
+  // A Zenodo deposit is a draft until actions/publish mints its DOI.
+  if (ZENODO_DEPOSIT.test(said) && ZENODO_PUBLISH.test(said)) sends.publishesTo.add('zenodo');
+  for (const tokens of unrolled(commandLines(run))) {
+    if (tokens[0] === LOOP_TURN) {
+      if (tokens[1] === 0) loopBase = cwd;
+      else cwd = loopBase;
+      continue;
+    }
     if (tokens[0] === 'cd' && tokens.length <= 2) {
       cwd = tokens[1] == null ? '' : joinDir(cwd, tokens[1]);
       continue;
@@ -679,10 +697,56 @@ function commandSends(run, sends, place) {
   }
 }
 
+const HUB_UPLOAD = /\b(?:upload_folder|upload_file|upload_large_folder|create_commit|push_to_hub)\s*\(/;
+const ZENODO_DEPOSIT = /zenodo\.org\/api\/deposit/;
+const ZENODO_PUBLISH = /\/actions\/publish\b/;
+// Marks the start of one pass through an unrolled loop, with the directory
+// the loop began in: a (cd "$dir" && ...) subshell leaves it there.
+const LOOP_TURN = '\0turn';
+
+/**
+ * A shell for over literal words, unrolled: the body once per word, with the
+ * loop's variable spelled out, so for dir in packages/a packages/b; do (cd
+ * "$dir" && npm publish); done publishes both packages by name. A loop over
+ * a glob or a variable is left as it is.
+ */
+function unrolled(lines, depth = 0) {
+  const out = [];
+  for (let i = 0; i < lines.length; i += 1) {
+    const tokens = lines[i];
+    const words = tokens.slice(3);
+    if (tokens[0] !== 'for' || tokens[2] !== 'in' || depth > 2 || words.length === 0 || words.some((word) => /[$*?[{`]/.test(word))) {
+      out.push(tokens);
+      continue;
+    }
+    let level = 0;
+    let end = i + 1;
+    for (; end < lines.length; end += 1) {
+      if (lines[end][0] === 'for') level += 1;
+      if (lines[end][0] === 'done') {
+        if (level === 0) break;
+        level -= 1;
+      }
+    }
+    const body = lines.slice(i + 1, end)
+      .map((line) => (line[0] === 'do' ? line.slice(1) : line))
+      .filter((line) => line.length > 0);
+    const name = tokens[1];
+    const spelled = (word, value) => word.replaceAll(`\${${name}}`, value).replace(new RegExp(`\\$${name}(?![A-Za-z0-9_])`, 'g'), value);
+    for (const value of words) {
+      out.push([LOOP_TURN, words.indexOf(value)]);
+      out.push(...unrolled(body.map((line) => line.map((word) => spelled(word, value))), depth + 1));
+    }
+    i = end;
+  }
+  return out;
+}
+
 // The registry a command line publishes to, from its program and subcommand.
 // A registry is named the way its users name it.
 function publishRegistry(words) {
   const [program, sub, next] = words;
+  if ((program === 'huggingface-cli' || program === 'hf') && sub === 'upload') return 'huggingface';
   if ((program === 'npm' || program === 'pnpm' || program === 'bun') && sub === 'publish') return 'npm';
   if (program === 'yarn' && (sub === 'publish' || (sub === 'npm' && next === 'publish'))) return 'npm';
   if (program === 'twine' && sub === 'upload') return 'pypi';

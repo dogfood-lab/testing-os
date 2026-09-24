@@ -3,6 +3,7 @@ import fs, { readFileSync, realpathSync } from 'node:fs';
 import { dirname, isAbsolute, join, posix, relative, resolve, sep } from 'node:path';
 import enhancedResolve from 'enhanced-resolve';
 
+import { bundledSource, bundleIndex } from './bundles.js';
 import { commandLines, repositoryView } from './commands.js';
 import { isTestFile, isTestMaterial } from './landings.js';
 import { declaredDependencies, importName } from './python-manifest.js';
@@ -409,7 +410,7 @@ function recoverAbsentBuildOutput(ctx, missing) {
     if (located.outside || !located.rel) continue;
     if (!isBuildOutput(ctx, normalized, located.rel)) continue;
     sawBuildTarget = true;
-    const rewritten = rewriteOutDir(ctx, normalized, located.rel);
+    const rewritten = bundledSource(bundlesOf(ctx.repo, ctx.tracked), located.rel, ctx.tracked) ?? rewriteOutDir(ctx, normalized, located.rel);
     if (rewritten) hits.add(rewritten);
   }
   if (hits.size === 1) return { outcome: 'file', path: [...hits][0] };
@@ -488,6 +489,8 @@ function mapBuildOutput(ctx, absPath, rel) {
     if (boundaries.size === 1) return { outcome: 'boundary', boundary: [...boundaries][0] };
     return { outcome: 'unresolved', reason: 'chunk-spans-boundaries' };
   }
+  const bundled = bundledSource(bundlesOf(ctx.repo, ctx.tracked), rel, ctx.tracked);
+  if (bundled) return { outcome: 'file', path: bundled };
   const rewritten = rewriteOutDir(ctx, absPath, rel);
   if (rewritten) return { outcome: 'file', path: rewritten };
   return { outcome: 'unresolved', reason: 'build-output-without-source' };
@@ -527,10 +530,46 @@ function trackedSources(ctx, absPath) {
   return found;
 }
 
+const BUILDS = new Map();
+const BUNDLES = new WeakMap();
+
+/**
+ * The esbuild API calls read from the files of the repository being mapped,
+ * with each file's import specifiers, for the bundles that declared paths
+ * and imports of build output are traced through. Each map registers its
+ * own, so a repository mapped again reads what it holds now.
+ *
+ * @param {string} repoPath
+ * @param {Map<string, object[]>} calls core/bundles.js buildCalls() by file
+ * @param {Map<string, string[]>} imports
+ */
+export function registerBuilds(repoPath, calls, imports) {
+  BUILDS.set(resolve(repoPath), { calls, imports });
+}
+
+// The bundles of a tracked set: its package scripts' bundlers, and the
+// esbuild calls registered for it.
+function bundlesOf(repoPath, tracked) {
+  if (BUNDLES.has(tracked)) return BUNDLES.get(tracked);
+  const repo = repositoryView({ repoPath, tracked });
+  const manifests = [...tracked].filter((path) => (path === 'package.json' || path.endsWith('/package.json')) && !isTestMaterial(path)
+    && !path.split('/').includes('node_modules')).sort()
+    .map((manifest) => {
+      const dir = manifest.includes('/') ? manifest.slice(0, manifest.lastIndexOf('/')) : '';
+      return [dir, repo.manifest(dir)?.scripts];
+    })
+    .filter(([, scripts]) => scripts != null && typeof scripts === 'object');
+  const registered = BUILDS.get(resolve(repoPath)) ?? { calls: new Map(), imports: new Map() };
+  const index = bundleIndex({ tracked, manifests, calls: registered.calls, imports: registered.imports });
+  BUNDLES.set(tracked, index);
+  return index;
+}
+
 /**
  * A declared entry that is not itself tracked. A source map naming one
- * tracked file wins; otherwise the tsconfig outDir is rewritten onto rootDir
- * and a single tracked stem is accepted. The same two steps resolution uses.
+ * tracked file wins; then a bundler's entry for the output (core/bundles.js);
+ * otherwise the tsconfig outDir is rewritten onto rootDir and a single
+ * tracked stem is accepted.
  */
 export function resolveDeclaredPath(repoPath, rel, tracked) {
   if (!rel) return null;
@@ -544,6 +583,8 @@ export function resolveDeclaredPath(repoPath, rel, tracked) {
   if (isBuildOutput(ctx, abs, rel)) {
     const sources = trackedSources(ctx, abs);
     if (sources && sources.length === 1) return sources[0];
+    const bundled = tracked.has(rel) ? null : bundledSource(bundlesOf(repoPath, tracked), rel, tracked);
+    if (bundled) return bundled;
     const rewritten = rewriteOutDir(ctx, abs, rel);
     if (rewritten) return rewritten;
   }

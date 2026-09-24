@@ -4,6 +4,7 @@ import picomatch from 'picomatch';
 import { parse as parseYaml } from 'yaml';
 import { isCodePath } from './languages.js';
 import { wheelPackages } from './python-manifest.js';
+import { storedText } from './text.js';
 import {
   eslintTargets,
   jestTargets,
@@ -88,6 +89,7 @@ const VALUES = {
   pylint: ['--rcfile', '--disable', '-d', '--enable', '-e', '-j', '--jobs', '--output-format', '-f', '--ignore', '--ignore-paths', '--ignore-patterns', '--load-plugins', '--output', '--fail-under', '--max-line-length', '--init-hook'],
   bandit: ['-c', '--configfile', '-f', '--format', '-o', '--output', '-x', '--exclude', '-p', '--profile', '-t', '--tests', '-s', '--skip', '-b', '--baseline', '--ini', '--msg-template', '-a', '--aggregate', '--severity-level', '--confidence-level'],
   tsc: ['-p', '--project', '--outDir', '--rootDir', '--target', '-t', '--module', '-m', '--lib', '--jsx', '--declarationDir', '--tsBuildInfoFile', '--moduleResolution', '--types', '--baseUrl', '--outFile', '--generateTrace', '--locale'],
+  vite: ['-c', '--config', '--base', '-m', '--mode', '--outDir', '--assetsDir', '-l', '--logLevel', '--ssr', '--target', '--port'],
   vitest: ['-c', '--config', '-r', '--root', '--dir', '--project', '-t', '--testNamePattern', '--reporter', '--outputFile', '--environment', '--pool', '--shard', '--mode', '--exclude', '--silent', '--maxWorkers', '--minWorkers', '--testTimeout', '--hookTimeout', '--bail', '--retry', '--changed'],
   jest: ['-c', '--config', '--rootDir', '--roots', '-t', '--testNamePattern', '--testPathPattern', '--testPathIgnorePatterns', '--reporters', '--outputFile', '-w', '--maxWorkers', '--selectProjects', '--shard', '--coverageDirectory', '--testMatch', '--testRegex', '--testEnvironment', '--testTimeout', '--env', '--changedSince'],
   mocha: ['--config', '--package', '-r', '--require', '-R', '--reporter', '-O', '--reporter-option', '--reporter-options', '-t', '--timeout', '-g', '--grep', '-f', '--fgrep', '-u', '--ui', '--spec', '--extension', '--file', '--ignore', '--exclude', '-j', '--jobs', '-s', '--slow', '--retries'],
@@ -102,6 +104,8 @@ const VALUES = {
   build: ['-o', '--outdir', '-C', '--config-setting', '--installer'],
   docker: ['-f', '--file', '-t', '--tag', '--target', '--build-arg', '--platform', '--label', '--cache-from', '--cache-to', '--secret', '--ssh', '--output', '-o', '--network', '--progress', '--iidfile', '--metadata-file', '--build-context', '--builder', '--provenance', '--sbom', '--shm-size', '--ulimit', '--add-host', '--cgroup-parent', '--isolation', '--memory', '-m', '--cpu-shares', '--annotation', '--attest', '--allow', '--call', '--format'],
 };
+// The configs vite reads from the root it builds, first found first.
+const VITE_CONFIGS = ['vite.config.js', 'vite.config.mjs', 'vite.config.cjs', 'vite.config.ts', 'vite.config.mts', 'vite.config.cts'];
 const VALUE_SETS = Object.fromEntries(Object.entries(VALUES).map(([tool, flags]) => [tool, new Set(flags)]));
 
 /**
@@ -139,7 +143,7 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
       if (!texts.has(path)) {
         let text = null;
         try {
-          text = readFileSync(joinFs(repoPath, path), 'utf8');
+          text = storedText(readFileSync(joinFs(repoPath, path), 'utf8'));
         } catch {
           text = null;
         }
@@ -389,7 +393,10 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
 
   function read(text, dir, frame) {
     if (frame.level === 0) {
-      for (const piece of text.split(/[\s"'`()[\]{}<>|;&,=:]+/)) {
+      // What git add names is what a commit carries, not a file the step
+      // reads (landings.js has staging as neither a write nor a read).
+      const said = text.split('\n').filter((line) => !/^\s*git\s+(?:-C\s+\S+\s+)?add\b/.test(line)).join('\n');
+      for (const piece of said.split(/[\s"'`()[\]{}<>|;&,=:]+/)) {
         const path = pathFrom(dir, piece.replace(/\.+$/, ''));
         if (path != null && repo.tracked.has(path)) mentions.add(path);
       }
@@ -1223,6 +1230,23 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const src = pathFrom(dir, 'src');
       if (src != null && repo.dirs.has(src)) record(stamp({ path: `${src}/`, directory: true, matched: true }, next, chain));
     },
+    // vite build, and vite and vite dev, run the app's config and the code
+    // under its src/: the config --config names, or vite.config.* at the root
+    // the command is handed, from the directory it runs in. vite preview
+    // only serves what a build made.
+    vite(argv, dir, frame) {
+      const parsed = split(argv, 1, VALUE_SETS.vite);
+      const [sub, root] = ['build', 'dev', 'serve'].includes(parsed.positional[0]) ? [parsed.positional[0], parsed.positional[1]] : parsed.positional[0] === 'preview' ? ['preview', null] : ['dev', parsed.positional[0]];
+      if (sub === 'preview') return;
+      const at = root != null ? pathFrom(dir, root) : dir;
+      if (at == null) return;
+      const chain = via(frame, `vite ${sub}`);
+      const named = valueOf(parsed, '-c', '--config');
+      const configs = named != null ? [pathFrom(dir, named)] : VITE_CONFIGS.map((name) => pathFrom(at, name));
+      for (const path of configs) if (path != null && repo.tracked.has(path)) record(stamp({ path, matched: true }, frame, chain));
+      const src = pathFrom(at, 'src');
+      if (src != null && repo.dirs.has(src)) record(stamp({ path: `${src}/`, directory: true, matched: true }, frame, chain));
+    },
     wrapper(argv, dir, frame) {
       const name = baseName(argv[0]);
       wrapped(argv, 1, dir, frame, VALUE_SETS[name] ?? new Set(), { assignments: name === 'env', count: name === 'timeout', chdir: name === 'env' ? ['-C', '--chdir'] : [] });
@@ -1328,7 +1352,7 @@ function toolOf(word) {
   if (name === 'poetry' || name === 'flit' || name === 'pdm') return name === 'poetry' ? 'poetry' : 'pybuild';
   if (name === 'gmake') return 'make';
   if (['tox', 'cargo'].includes(name)) return 'none';
-  const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro'];
+  const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro', 'vite'];
   return known.includes(name) ? name : null;
 }
 

@@ -1,0 +1,14 @@
+name: Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build the cockpit
+        working-directory: apps/cockpit
+        run: pnpm exec vite build --base=/hand-deploys/cockpit/
+      - name: Build the panel
+        run: npx vite build apps/panel --config apps/panel/vite.panel.config.ts

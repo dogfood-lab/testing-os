@@ -76,7 +76,7 @@ describe('a path relative to the caller or the home directory', () => {
     assert.equal(part('bin').outsideReads, 1);
     assert.equal(part('tools').outsideWrites, 3);
     assert.ok(
-      page.limits.includes('9 writes and 1 read go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.'),
+      page.limits.includes('9 writes and 1 read go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.'),
       page.limits.join('\n'),
     );
   });

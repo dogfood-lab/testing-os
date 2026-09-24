@@ -2,7 +2,7 @@ import { extname, posix } from 'node:path';
 import picomatch from 'picomatch';
 import { boundaryRoot } from './entry-points.js';
 import { isWorkflow } from './doors.js';
-import { writeGuards } from './guards.js';
+import { mainOnly, writeGuards } from './guards.js';
 import { loadsManifest } from './languages.js';
 
 // The destination argument of each write call. A rename or copy lands on its
@@ -83,6 +83,10 @@ const PY_IDENTITY = new Set([
 const PY_ABSOLUTE = new Set(['os.path.abspath', 'os.path.realpath', 'abspath', 'realpath']);
 const PY_CWD = new Set(['os.getcwd', 'getcwd', 'Path.cwd', 'pathlib.Path.cwd']);
 const PY_HOME = new Set(['Path.home', 'pathlib.Path.home']);
+// A directory made or named for scratch, which is the system's, not this
+// repository's: mkdtemp(), tmpdir(), tempfile.gettempdir().
+const JS_TEMP = new Set(['tmpdir', 'mkdtempSync', 'mkdtemp', 'mkdtempDisposableSync']);
+const PY_TEMP = new Set(['tempfile.mkdtemp', 'mkdtemp', 'tempfile.gettempdir', 'gettempdir', 'tempfile.mktemp']);
 const HOME_VARIABLES = new Set(['HOME', 'USERPROFILE']);
 // The checkout a workflow runs in: a path under it is this repository, which
 // the map cannot place from the variable alone, so it names no caller's place.
@@ -94,6 +98,7 @@ const CLI_BAGS = new Set(['args', 'argv', 'opts', 'options', 'flags', 'cliArgs',
 // A value returned by a function imported from another file of the
 // repository: whose place it is is settled once imports resolve.
 const HELPER = 'helper:';
+const BUILD_OUTPUTS = new Set(['dist', 'build', 'out']);
 const PY_SCOPES = new Set(['function_definition', 'lambda']);
 const PY_NESTED = new Set(['function_definition', 'class_definition', 'lambda']);
 
@@ -539,12 +544,25 @@ function argumentPlace(raw, places) {
  * fixed place and is skipped; a here-document's body is another program's
  * text and is not read as commands. Everything found is text confidence.
  */
-function shellLandings(source, places) {
+// A workflow step's shell is read from the directory it starts in, and cd,
+// pushd and popd move it: a write after cd "$SANDBOX" goes where the
+// variable points, not into this repository, and is not read as a place.
+function shellLandings(source, places, { dir = '', follow = false } = {}) {
   const writes = [];
   const reads = [];
+  let here = dir;
+  const stack = [];
+  const moved = (target) => {
+    if (!target?.fixed || target.text.startsWith('/') || target.text.startsWith('~')) return null;
+    const next = posix.normalize(here === '' ? target.text : `${here}/${target.text}`).replace(/\/+$/, '');
+    if (next === '..' || next.startsWith('../')) return null;
+    return next === '.' ? '' : next;
+  };
   const write = (word, call) => {
-    if (!word?.fixed) return;
-    const target = landingOf(closed(word.text), places);
+    if (!word?.fixed || here == null) return;
+    // Output under a build directory (cp -r out/. site/dist/) is that
+    // directory's, which the repository does not track, never the tracked one above.
+    const target = writtenPlace(closed(here === '' || word.text.startsWith('/') ? word.text : `${here}/${word.text}`), places);
     if (target != null) writes.push({ target, call, confidence: 'text' });
   };
   const read = (word, call) => {
@@ -580,6 +598,15 @@ function shellLandings(source, places) {
       while (start < words.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(words[start].text)) start += 1;
       const name = words[start]?.text;
       const args = words.slice(start + 1).filter((word) => !word.text.startsWith('-'));
+      if (follow && (name === 'cd' || name === 'pushd')) {
+        if (name === 'pushd') stack.push(here);
+        here = here == null ? null : moved(args[0]);
+        continue;
+      }
+      if (follow && name === 'popd') {
+        here = stack.length > 0 ? stack.pop() : dir;
+        continue;
+      }
       if (SHELL_WRITERS.has(name)) {
         for (const arg of args) write(arg, name);
         continue;
@@ -701,11 +728,24 @@ export function astLandings(language, root, path, places) {
     assignments: new Map(),
   };
   const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, pendingWrites: [], pendingReads: [], pendingParams: [] };
+  // The build outputs the file names by a path this repository does not
+  // track (packages/server/dist/server.js), for the commands a build bundles
+  // (index.js bundledCommands).
+  const builtNames = new Set();
+  const named = (value) => {
+    if (value.open || value.rooted || outside(value) || isHelper(value) || value.text.includes('://')) return;
+    const text = posix.normalize(value.text.replaceAll('\\', '/'));
+    if (!text.startsWith('../') && !places.files.has(text) && text.split('/').some((part) => BUILD_OUTPUTS.has(part))) builtNames.add(text);
+  };
   const evaluate = ctx.python ? evalPy : evalJs;
   const site = (kind, call, node, countDynamic = true) => {
     if (!node) return;
     const all = ctx.python ? evaluate(node, ctx, 0) : throughClosure(node, ctx);
+    for (const value of all) named(value);
     const unless = kind === 'write' ? writeGuards(node, ctx.python) : [];
+    // A read only compared with what is about to be written is a drift check,
+    // not the content a stamp keeps (stamps).
+    const compared = kind === 'read' && !ctx.python && comparedOnly(node.parent?.parent) ? { compared: true } : {};
     if (all.length === 0) {
       if (countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
       return;
@@ -760,7 +800,7 @@ export function astLandings(language, root, path, places) {
       // A root read at run time is never a placeholder's: canon/ holding only
       // a .gitkeep marks where a user's files go, not where this code writes.
       if (target != null && value.rooted && placeholder(target, places)) unplaced = true;
-      else if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}) });
+      else if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}), ...compared });
       else if (value.open) unplaced = true;
     }
     // A root another file's function returns is settled once that file is
@@ -803,6 +843,7 @@ export function astLandings(language, root, path, places) {
     if (ctx.seen.has(key(node))) return;
     if (!isStringNode(node, ctx.python) && !isPathConstructor(node, ctx.python)) return;
     for (const raw of evaluate(node, ctx, 0)) {
+      named(raw);
       const value = isHelper(raw) ? asRoot(raw) : raw;
       if (value.open || outside(value) || namesItself(value, ctx)) continue;
       const target = literalPlace(value.text, places);
@@ -812,6 +853,7 @@ export function astLandings(language, root, path, places) {
 
   const rooted = callerRootedFunctions(root, ctx);
   const paramCalls = recordedCalls(root, calls, ctx);
+  const defaultCalls = leftOutCalls(root, calls, ctx);
   return {
     writes: sortEntries(withoutRedundantDirectories(found.writes, places)),
     dynamicWrites: found.dynamicWrites,
@@ -824,6 +866,8 @@ export function astLandings(language, root, path, places) {
     ...(Object.keys(rooted).length > 0 ? { callerRooted: rooted } : {}),
     ...(found.pendingParams.length > 0 ? { pendingParams: found.pendingParams } : {}),
     ...(paramCalls.length > 0 ? { paramCalls } : {}),
+    ...(defaultCalls.length > 0 ? { defaultCalls } : {}),
+    ...(builtNames.size > 0 ? { builtNames: [...builtNames].sort() } : {}),
   };
 }
 
@@ -856,7 +900,30 @@ function recordedCalls(root, calls, ctx) {
       const fields = passed.fields ? Object.fromEntries(Object.entries(passed.fields).map(([name, values]) => [name, values.map(compactValue)])) : null;
       return { values: passed.values.map(compactValue), ...(fields ? { fields } : {}) };
     });
-    if (args.some((arg) => arg.values.length > 0 || Object.values(arg.fields ?? {}).some((values) => values.length > 0))) out.push({ ...target, args });
+    if (args.some((arg) => arg.values.length > 0 || Object.values(arg.fields ?? {}).some((values) => values.length > 0))) out.push({ ...target, args, ...(mainOnly(node, false) ? { main: true } : {}) });
+  }
+  return out;
+}
+
+/**
+ * The calls a file makes to a module-level function of its own or to one it
+ * imports, with the positions each leaves out (past its last argument, or
+ * passed undefined) and whether it runs only when the file is the program,
+ * for the defaults settleParamPaths settles.
+ */
+function leftOutCalls(root, calls, ctx) {
+  if (ctx.python) return [];
+  const local = new Set(moduleFunctions(root, false).map(([name]) => name));
+  const imports = scriptImports(root);
+  const out = [];
+  for (const node of calls) {
+    const fn = node.childForFieldName('function');
+    if (fn?.type !== 'identifier') continue;
+    const target = local.has(fn.text) ? { local: fn.text } : imports.has(fn.text) ? { specifier: imports.get(fn.text).specifier, name: imports.get(fn.text).name } : null;
+    if (target == null) continue;
+    const nodes = argumentNodes(node);
+    const unset = nodes.flatMap((arg, index) => (arg.type === 'undefined' || (arg.type === 'identifier' && arg.text === 'undefined') ? [index] : []));
+    out.push({ ...target, count: nodes.length, ...(unset.length > 0 ? { unset } : {}), ...(mainOnly(node, false) ? { main: true } : {}) });
   }
   return out;
 }
@@ -869,6 +936,7 @@ function compactValue(value) {
     ...(value.anchor != null ? { anchor: value.anchor } : {}),
     ...(value.param ? { param: { ...value.param } } : {}),
     ...(value.open && value.tail != null ? { tail: value.tail } : {}),
+    ...(value.defaultOf ? { defaultOf: { ...value.defaultOf } } : {}),
   };
 }
 
@@ -899,22 +967,28 @@ export function settleParamPaths(files, places) {
   for (const file of byPath.values()) {
     if (!file.paramCalls) continue;
     for (const call of file.paramCalls) {
-      let target = null;
-      if (call.local != null) target = `${file.path}#${call.local}`;
-      else {
-        const site = Array.isArray(file.imports) ? file.imports.find((item) => item.specifier === call.specifier && item.resolved?.outcome === 'file') : null;
-        if (site) target = `${site.resolved.path}#${call.name}`;
-      }
+      const target = calleeKey(file, call);
       if (target == null) continue;
       if (!callers.has(target)) callers.set(target, []);
-      callers.get(target).push({ path: file.path, args: call.args });
+      callers.get(target).push({ path: file.path, args: call.args, ...(call.main ? { main: true } : {}) });
+    }
+  }
+  const leaving = new Map();
+  for (const file of byPath.values()) {
+    for (const call of file.defaultCalls ?? []) {
+      const target = calleeKey(file, call);
+      if (target == null) continue;
+      if (!leaving.has(target)) leaving.set(target, []);
+      leaving.get(target).push({ path: file.path, ...call });
     }
   }
   // A test's calls hand the functions it calls temporary copies, so they
   // settle nothing, except the test's calls to its own functions: the test
-  // decides where those write.
-  const roots = (path, fn, param, rest, depth) => {
-    const out = { places: [], outside: false, unread: false };
+  // decides where those write. A place a call hands down from behind the
+  // writer's own main guard is written only when that file is the program,
+  // and is marked so (guards.js).
+  const roots = (path, fn, param, rest, depth, writer, guarded = false) => {
+    const out = { places: [], outside: false, unread: false, unreadFree: false };
     const calls = (callers.get(`${path}#${fn}`) ?? []).filter((call) => !isTestMaterial(call.path) || call.path === path);
     if (calls.length === 0) {
       out.outside = true;
@@ -922,21 +996,32 @@ export function settleParamPaths(files, places) {
     }
     for (const call of calls) {
       const values = passedFor(call.args[param.index], param);
-      if (values.length === 0) out.unread = true;
+      const main = guarded || (call.main === true && call.path === writer);
+      const unread = () => {
+        out.unread = true;
+        if (!main) out.unreadFree = true;
+      };
+      if (values.length === 0) unread();
       for (const value of values) {
         if (boundParam(value)) {
           if (depth + 1 >= PARAM_HOPS) {
-            out.unread = true;
+            unread();
             continue;
           }
           const joined = appendRest(value, rest);
-          const deeper = roots(call.path, value.param.fn, value.param, { text: joined.text, open: joined.open, ...(joined.tail != null ? { tail: joined.tail } : {}) }, depth + 1);
+          const deeper = roots(call.path, value.param.fn, value.param, { text: joined.text, open: joined.open, ...(joined.tail != null ? { tail: joined.tail } : {}) }, depth + 1, writer, main);
           out.places.push(...deeper.places);
           out.outside ||= deeper.outside;
           out.unread ||= deeper.unread;
-        } else if (isHelper(value)) out.unread = true;
-        else if (outside(value)) out.outside = true;
-        else out.places.push(appendRest(value, rest));
+          out.unreadFree ||= deeper.unreadFree;
+        } else if (isHelper(value)) {
+          // A root another file's function returns from the home directory
+          // or the environment is the caller's through every call it is
+          // handed down; any other such root stays unread.
+          if (helperRooted(byPath, call.path, value)) out.outside = true;
+          else unread();
+        } else if (outside(value)) out.outside = true;
+        else out.places.push({ ...appendRest(value, rest), ...(main ? { main: true } : {}) });
       }
     }
     return out;
@@ -948,13 +1033,14 @@ export function settleParamPaths(files, places) {
       let theirs = false;
       for (const bound of pending.values) {
         const rest = { text: bound.text, open: bound.open, ...(bound.tail != null ? { tail: bound.tail } : {}) };
-        const found = roots(file.path, bound.param.fn, bound.param, rest, 0);
+        const found = roots(file.path, bound.param.fn, bound.param, rest, 0, file.path);
         theirs ||= found.outside;
         const before = entries.length;
         const land = (value) => {
           const target = shapedLikeNothing(value, pending.call, places) ? shapedTarget(value) : pending.kind === 'write' ? writtenPlace(value, places) : landingOf(value, places);
           if (target == null || (value.rooted && placeholder(target, places))) return;
-          entries.push({ ...landingEntry(target, pending.call, value, places), ...(pending.unless ? { unless: [...pending.unless] } : {}) });
+          const unless = [...new Set([...(pending.unless ?? []), ...(value.main && pending.kind === 'write' ? ['main'] : [])])].sort();
+          entries.push({ ...landingEntry(target, pending.call, value, places), ...(unless.length > 0 ? { unless } : {}) });
         };
         for (const value of found.places) land(value);
         // An argument read as nothing is still what the caller passes: the
@@ -962,7 +1048,7 @@ export function settleParamPaths(files, places) {
         // otherwise the write is theirs.
         if (found.unread) {
           const kept = entries.length;
-          land({ ...rest, rooted: true });
+          land({ ...rest, rooted: true, ...(found.unreadFree ? {} : { main: true }) });
           if (entries.length === kept && entries.length === before) theirs = true;
         }
       }
@@ -975,6 +1061,50 @@ export function settleParamPaths(files, places) {
     delete file.pendingParams;
     delete file.paramCalls;
   }
+  for (const file of byPath.values()) {
+    for (const kind of ['writes', 'reads']) {
+      if (!Array.isArray(file[kind]) || !file[kind].some((entry) => entry.defaultOf)) continue;
+      file[kind] = sortEntries(file[kind].map((entry) => {
+        if (!entry.defaultOf) return entry;
+        const { defaultOf, ...rest } = entry;
+        return kind === 'writes' && defaultRunsAsProgram(defaultOf, file.path, leaving) ? { ...rest, unless: [...new Set([...(rest.unless ?? []), 'main'])].sort() } : rest;
+      }));
+    }
+  }
+  for (const file of byPath.values()) {
+    delete file.defaultCalls;
+    delete file.callerRooted;
+  }
+}
+
+// Whether a value is the return of a function another file exports whose
+// every return is the caller's place (callerRootedFunctions).
+function helperRooted(byPath, path, value) {
+  const helper = value.anchor.slice(HELPER.length);
+  const at = helper.lastIndexOf('#');
+  const specifier = helper.slice(0, at);
+  const imports = byPath.get(path)?.imports;
+  const site = Array.isArray(imports) ? imports.find((item) => item.specifier === specifier && item.resolved?.outcome === 'file') : null;
+  return site != null && byPath.get(site.resolved.path)?.callerRooted?.[helper.slice(at + 1)] != null;
+}
+
+// The function a recorded call names, as path#name.
+function calleeKey(file, call) {
+  if (call.local != null) return `${file.path}#${call.local}`;
+  const site = Array.isArray(file.imports) ? file.imports.find((item) => item.specifier === call.specifier && item.resolved?.outcome === 'file') : null;
+  return site ? `${site.resolved.path}#${call.name}` : null;
+}
+
+/**
+ * Whether a parameter's default is taken only when the writer's file runs as
+ * a program: every call this repository makes that leaves the parameter out,
+ * tests aside, is behind the writer's own main guard. With no such call the
+ * default is taken by callers outside the repository, and is left as it was.
+ */
+function defaultRunsAsProgram(of, writer, leaving) {
+  const calls = (leaving.get(`${of.path}#${of.fn}`) ?? [])
+    .filter((call) => !isTestMaterial(call.path) && (call.count <= of.index || (call.unset ?? []).includes(of.index)));
+  return calls.length > 0 && calls.every((call) => call.main && call.path === writer);
 }
 
 // A root with the rest of a path under it.
@@ -1035,8 +1165,7 @@ function moduleFunctions(root, python) {
  * now that imports resolve: outside when every such function, followed one
  * call into the file its import names, returns the caller's place; otherwise
  * what the site read with that root unreadable, its landings kept and a path
- * that was only the return counted as built at run time. The functions'
- * names are dropped once used.
+ * that was only the return counted as built at run time.
  *
  * @param {Iterable<object>} files every file of the map
  */
@@ -1065,7 +1194,8 @@ export function settleHelperPaths(files) {
       delete file[pending];
     }
   }
-  for (const file of byPath.values()) delete file.callerRooted;
+  // settleParamPaths reads callerRooted for the roots calls hand down, and
+  // drops it.
 }
 
 // A write shaped like no tracked file (a temporary file) places nothing in
@@ -1083,6 +1213,7 @@ function withoutRedundantDirectories(writes, places) {
 // whoever runs the code; attachLandings decides whose directory that is.
 function landingEntry(target, call, value, places) {
   const entry = { target, call, confidence: confidenceOf(value, target, places) };
+  if (value.defaultOf) entry.defaultOf = value.defaultOf;
   // A path built from the file's own location with its tail read at run
   // time, which attachLandings keeps for a test when tracked files have its shape.
   if (value.anchor === 'file' && value.open && value.tail != null) entry.fixedHead = true;
@@ -1128,6 +1259,35 @@ export function pythonPathValues(node, path) {
  * @param {string} path the tracked path of the file the node is in
  * @returns {string | null}
  */
+/**
+ * What a path expression in a build script reads as: `{ path }` when it names
+ * one repository path from the file's own location, `{ tail }` when only its
+ * end is known, under a root read at run time or the directory the script is
+ * run in (core/bundles.js), or null.
+ *
+ * @param {object} node tree-sitter node
+ * @param {string} path the tracked path of the file the node is in
+ */
+export function pathShape(node, path) {
+  if (!node) return null;
+  const dir = posix.dirname(path);
+  const ctx = { python: false, file: path, dir: dir === '.' ? '' : dir, seen: new Set(), visiting: new Set(), assignments: new Map() };
+  const shapes = evalJs(node, ctx, 0).map((value) => {
+    if (value.text.includes('://') || isHelper(value)) return null;
+    if (!value.open && value.anchor === 'file') {
+      const text = posix.normalize(value.text.replaceAll('\\', '/') || '.');
+      return text.startsWith('/') || text === '..' || text.startsWith('../') ? null : { path: text.replace(/^\.\//, '') };
+    }
+    if (!value.open) return value.text === '' ? null : { tail: posix.normalize(value.text.replaceAll('\\', '/')).replace(/^\.\//, '') };
+    // The part past the last segment read at run time, when it is whole.
+    const known = /(?:^|\/)\*\/([^*?[\]{}]+)$/.exec(`${value.text}${tailOf(value)}`);
+    return known ? { tail: known[1] } : null;
+  });
+  if (shapes.length === 0 || shapes.some((shape) => shape == null)) return null;
+  const keys = new Set(shapes.map((shape) => shape.path ?? `*/${shape.tail}`));
+  return keys.size === 1 ? shapes[0] : null;
+}
+
 export function scriptPath(node, path) {
   const dir = posix.dirname(path);
   const ctx = { python: false, file: path, dir: dir === '.' ? '' : dir, seen: new Set(), visiting: new Set(), assignments: new Map() };
@@ -1278,7 +1438,7 @@ function evalJs(node, ctx, depth) {
       const left = node.childForFieldName('left');
       const right = node.childForFieldName('right');
       if (operator === '+') return concat([evalJs(left, ctx, next), evalJs(right, ctx, next)]);
-      if (operator === '||' || operator === '??') return fallback(evalJs(left, ctx, next), evalJs(right, ctx, next));
+      if (operator === '||' || operator === '??') return fallback(evalJs(left, ctx, next), evalJs(right, ctx, next), ctx.file);
       return [];
     }
     case 'ternary_expression':
@@ -1324,6 +1484,7 @@ function evalJs(node, ctx, depth) {
       // command line, and so is whatever is destructured from that.
       if (fn?.type === 'member_expression' && (fn.childForFieldName('object')?.text === 'process.argv' || (fn.childForFieldName('object')?.type === 'identifier' && CLI_BAGS.has(fn.childForFieldName('object').text)))) return [atCaller('', 'argument')];
       if (name === 'homedir' && (fn?.type === 'identifier' || fn?.childForFieldName('object')?.text === 'os')) return [atCaller('', 'home')];
+      if (JS_TEMP.has(name) && (fn?.type === 'identifier' || fn?.type === 'member_expression')) return [atCaller('', 'temp')];
       if (jsPathCall(fn, name) && name === 'resolve') {
         // resolve() starts from the directory the process runs in unless a
         // segment is absolute, so a relative first segment is the caller's.
@@ -1673,6 +1834,7 @@ function evalPy(node, ctx, depth) {
       const name = dottedName(fn);
       if (PY_CWD.has(name)) return [atCaller('', 'cwd')];
       if (PY_HOME.has(name)) return [atCaller('', 'home')];
+      if (PY_TEMP.has(name)) return [atCaller('', 'temp')];
       if (name === 'os.environ.get' || name === 'os.getenv' || name === 'getenv') return pyEnvironment(null, args[0]);
       if (PY_ABSOLUTE.has(name)) return fromCaller(evalPy(args[0], ctx, next));
       if (PY_JOIN.has(name) || PY_PATH.has(name)) {
@@ -1784,7 +1946,7 @@ function bindingJs(name, from, ctx, depth) {
     // say otherwise (paramValue).
     if (JS_FUNCTIONS.has(scope.type) && declaresParameter(scope, name)) return [paramValue(scope, name)];
     if (scope.type === 'catch_clause' && scope.childForFieldName('parameter')?.text === name) return [];
-    if ((scope.type === 'for_in_statement' || scope.type === 'for_of_statement') && scope.childForFieldName('left')?.text === name) return [];
+    if ((scope.type === 'for_in_statement' || scope.type === 'for_of_statement') && loopBinds(scope, name)) return loopValues(scope, name, ctx, depth);
     const declarator = JS_BLOCKS.has(scope.type) || scope.type === 'for_statement' ? findDeclarator(scope, name) : null;
     if (!declarator) continue;
     const id = `binding:${key(declarator)}`;
@@ -1805,6 +1967,81 @@ function bindingJs(name, from, ctx, depth) {
     return union(lists);
   }
   return [];
+}
+
+// Whether a for loop's head binds the name: for (const x of ...), and a
+// name destructured there, for (const { file } of ...).
+function loopBinds(loop, name) {
+  const left = loop.childForFieldName('left');
+  if (!left) return false;
+  return left.type === 'identifier' ? left.text === name : (left.type === 'object_pattern' || left.type === 'array_pattern') && patternBinds(left, name);
+}
+
+/**
+ * What a for-of binds a name to when it walks an array the file writes out:
+ * each element for a plain name, and for a name destructured from each
+ * object, what that object's property is (for (const { file } of [{ file:
+ * join(out, 'a.json') }, ...])). The array may be written in the loop's head
+ * or bound to a const. A for-in, or an array or element the file does not
+ * spell out, binds a value this map cannot read.
+ */
+function loopValues(loop, name, ctx, depth) {
+  if (loop.childForFieldName('operator')?.text !== 'of') return [];
+  const left = loop.childForFieldName('left');
+  const elements = literalArray(loop.childForFieldName('right'));
+  if (elements == null) return [];
+  const field = left.type === 'object_pattern' ? patternField(left, name) : null;
+  if (left.type !== 'identifier' && field == null) return [];
+  const id = `loop:${key(loop)}`;
+  if (ctx.visiting.has(id)) return [];
+  ctx.visiting.add(id);
+  try {
+    return union(elementValues(elements, field, ctx, depth));
+  } finally {
+    ctx.visiting.delete(id);
+  }
+}
+
+// Each element's value, or the one property of it: when any element reads as
+// nothing, the name is a value this map cannot read, as before.
+function elementValues(elements, field, ctx, depth) {
+  const lists = [];
+  for (const element of elements) {
+    let values = [];
+    if (field == null) values = evalJs(element, ctx, depth);
+    else if (element.type === 'object') {
+      const pair = element.namedChildren.find((child) => child.type === 'pair' && propertyName(child.childForFieldName('key')) === field);
+      const shorthand = element.namedChildren.find((child) => child.type === 'shorthand_property_identifier' && child.text === field);
+      if (pair) values = evalJs(pair.childForFieldName('value'), ctx, depth);
+      else if (shorthand) values = bindingJs(field, shorthand, ctx, depth);
+    }
+    if (values.length === 0) return [];
+    lists.push(values);
+  }
+  return lists;
+}
+
+// The elements of an array written out, in place or in the const it is bound
+// to; null for anything else, a spread among them included.
+function literalArray(node) {
+  let array = node;
+  if (array?.type === 'identifier') {
+    let declarator = null;
+    for (let scope = array.parent; scope && declarator == null; scope = scope.parent) {
+      if (JS_BLOCKS.has(scope.type)) declarator = findDeclarator(scope, array.text);
+    }
+    array = declarator?.childForFieldName('name')?.type === 'identifier' ? declarator.childForFieldName('value') : null;
+  }
+  while (array && (array.type === 'as_expression' || array.type === 'satisfies_expression' || array.type === 'parenthesized_expression')) array = array.namedChildren[0];
+  if (array?.type !== 'array') return null;
+  const elements = array.namedChildren.filter((child) => child.type !== 'comment');
+  return elements.some((child) => child.type === 'spread_element') ? null : elements;
+}
+
+function propertyName(key) {
+  if (key?.type === 'property_identifier') return key.text;
+  if (key?.type === 'string') return jsStringText(key);
+  return null;
 }
 
 function assignedIn(scope, name, ctx) {
@@ -2037,15 +2274,16 @@ function starlightReads(root, ctx, places) {
   return reads;
 }
 
-// A value relative to where the code is run from ('cwd') or to the home
-// directory ('home') is the caller's place, not the repository's: the same
-// line writes somewhere else for every person who runs it.
+// A value relative to where the code is run from ('cwd'), to the home
+// directory ('home') or to a temporary directory ('temp') is the caller's
+// place, not the repository's: the same line writes somewhere else for every
+// person who runs it, and every time.
 function atCaller(text, anchor) {
   return { text, open: false, anchor };
 }
 
 function outside(value) {
-  return value.anchor === 'cwd' || value.anchor === 'home' || value.anchor === 'argument' || value.anchor === 'env' || value.anchor === 'param';
+  return value.anchor === 'cwd' || value.anchor === 'home' || value.anchor === 'temp' || value.anchor === 'argument' || value.anchor === 'env' || value.anchor === 'param';
 }
 
 function isHelper(value) {
@@ -2084,12 +2322,18 @@ function fromCaller(values) {
 // argument's default is resolved where the argument would have been, from
 // the directory the command runs in: args.out ?? 'report.json' is the
 // caller's either way.
-function fallback(left, right) {
+function fallback(left, right, file = null) {
   // A parameter's default (dir || '.') is resolved where the parameter would
-  // have been, in the same way.
+  // have been, in the same way. A default that is a place of its own (outDir
+  // ?? join(here, 'corpus')) is taken only by the calls that leave the
+  // parameter out, so it carries the parameter to settleParamPaths.
   const passed = left.length > 0 ? left[0].anchor : null;
   if ((passed === 'argument' || passed === 'param') && left.every((value) => value.anchor === passed)) {
-    return union([left, right.map((value) => (value.anchor == null && !value.rooted && !value.text.includes('://') ? { ...value, anchor: passed } : value))]);
+    const param = passed === 'param' && file != null && left.length === 1 && boundParam(left[0]) ? left[0].param : null;
+    return union([left, right.map((value) => {
+      if (value.anchor == null && !value.rooted && !value.text.includes('://')) return { ...value, anchor: passed };
+      return param && !outside(value) && !isHelper(value) ? { ...value, defaultOf: { path: file, fn: param.fn, index: param.index } } : value;
+    })]);
   }
   if (left.length > 0) return union([left, right]);
   return right.map((value) => (value.anchor == null && !value.open && !value.rooted && (value.text === '.' || value.text === './' || value.text === '') ? atCaller('', 'cwd') : value));
@@ -2358,20 +2602,25 @@ function concat(parts) {
   return acc.filter((value) => !(value.open && value.text === '') || outside(value) || isHelper(value));
 }
 
+function defaultKey(of) {
+  return `${of.path}#${of.fn}@${of.index}`;
+}
+
 function union(lists) {
   return cap(lists.flat());
 }
 
-// The parameter a value is rooted at goes with it through every join.
+// The parameter a value is rooted at goes with it through every join, and so
+// does the parameter whose default it is.
 function carried(value) {
-  return value.param ? { param: value.param } : {};
+  return { ...(value.param ? { param: value.param } : {}), ...(value.defaultOf ? { defaultOf: value.defaultOf } : {}) };
 }
 
 function cap(values) {
   const seen = new Set();
   const out = [];
   for (const value of values) {
-    const id = `${value.open ? 1 : 0}${value.rooted ? 1 : 0}${value.anchor ?? ''}${value.param ? `#${value.param.fn}@${value.param.index}.${value.param.field ?? ''}` : ''}:${value.text}`;
+    const id = `${value.open ? 1 : 0}${value.rooted ? 1 : 0}${value.anchor ?? ''}${value.param ? `#${value.param.fn}@${value.param.index}.${value.param.field ?? ''}` : ''}${value.defaultOf ? `=${defaultKey(value.defaultOf)}` : ''}:${value.text}`;
     if (seen.has(id)) continue;
     seen.add(id);
     out.push(value);
@@ -2459,7 +2708,7 @@ function rawUrls(text, places) {
 function sortEntries(entries) {
   const unique = new Map();
   for (const entry of entries) {
-    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}\0${entry.relative ? 1 : 0}\0${(entry.unless ?? []).join(',')}`, entry);
+    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}\0${entry.relative ? 1 : 0}\0${(entry.unless ?? []).join(',')}\0${entry.defaultOf ? defaultKey(entry.defaultOf) : ''}\0${entry.compared ? 1 : 0}`, entry);
   }
   return [...unique.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
 }
@@ -2647,10 +2896,24 @@ export function attachLandings({ files, doors, boundaries, places }) {
       add(writers, write.target, entry);
     }
   }
+  // What git add stages is what a commit may carry, not a write: a place is
+  // written by the code a door runs, and a staged place nothing it runs
+  // writes is one people write, which the commit carries along.
+  // A door writes what its steps' own shell writes, by a redirect or tee
+  // (echo 0 > .github/mutmut-baseline.txt), and a staged place its steps
+  // name outside git add, as a command handed the path it writes to
+  // (check-freshness.sh --out .github/freshness-report.md). A staged place
+  // named nowhere else is one people write.
   for (const door of mapped) {
     // A job that commits only on one trigger still commits what it stages.
     door.stagedTargets = stagedTargets([...door.stages, ...(door.gated ?? []).flatMap((entry) => entry.stages)], places);
-    for (const target of door.stagedTargets) add(writers, target, { by: door.file });
+    const named = new Set(door.mentions.map((mention) => mention.path));
+    door.ownWrites = [...new Set([
+      ...(door.commands ?? []).filter((command) => command.dir != null)
+        .flatMap((command) => shellLandings(command.text, places, { dir: command.dir, follow: true }).writes.map((write) => write.target)),
+      ...door.stagedTargets.filter((place) => named.has(place)),
+    ])].sort(compare);
+    for (const target of door.ownWrites) add(writers, target, { by: door.file });
     for (const mention of door.mentions) add(readers, mention.path, { by: door.file });
   }
   // A place that is not tracked is output the repository does not keep (an
@@ -2700,7 +2963,8 @@ export function attachLandings({ files, doors, boundaries, places }) {
 
   const skipped = new Map();
   for (const door of mapped) {
-    const targets = new Set(door.stagedTargets);
+    const targets = new Set(door.ownWrites);
+    delete door.ownWrites;
     for (const path of door.reachFiles ?? []) {
       for (const write of byPath.get(path)?.writes ?? []) {
         if (write.confidence === 'weak') continue;
@@ -2710,17 +2974,35 @@ export function attachLandings({ files, doors, boundaries, places }) {
       }
     }
     door.landings = [...targets].filter((target) => !spans.has(target) && !untracked.has(target)).sort(compare);
-    const found = new Map();
+    const written = (place) => door.landings.some((target) => target === place || target.startsWith(`${place}/`) || place.startsWith(`${target}/`));
+    door.unwrittenStages = door.stagedTargets.filter((place) => (places.files.has(place) || places.dirs.has(place)) && !written(place));
+    delete door.stagedTargets;
+  }
+  // A workflow that names a place its own run writes (echo refreshed
+  // indexes/latest.json) is describing its output, not reading it.
+  for (const door of mapped) {
     for (const target of door.landings) {
       for (const [place, entries] of readers) {
         if (place !== target && !place.startsWith(`${target}/`)) continue;
+        entries.delete(canonicalEntry({ by: door.file }));
+        if (entries.size === 0 && !writers.has(place)) readers.delete(place);
+      }
+    }
+  }
+  for (const door of mapped) {
+    const found = new Map();
+    for (const target of door.landings) {
+      // A reader of the directory a written file is in (Get-ChildItem
+      // Assets\*.png) reads the file, as one of what it holds.
+      const holding = places.files.has(target) ? posix.dirname(target) : null;
+      for (const [place, entries] of readers) {
+        if (place !== target && !place.startsWith(`${target}/`) && place !== holding) continue;
         for (const entry of entries.values()) {
           found.set(`${target}\0${canonicalEntry(entry)}`, { ...entry, target });
         }
       }
     }
     door.readers = [...found.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
-    delete door.stagedTargets;
   }
 
   // A write a door skips for one of the writer's own guards stays on the
@@ -2765,8 +3047,10 @@ function settleRelativePaths(files, doors) {
       for (const entry of file[kind]) {
         const { relative, fixed, ...rest } = entry;
         // Under the working directory is under the person's, for a command
-        // people run from wherever they are.
-        if (theirs && (relative || entry.fromCwd)) file[count] = (file[count] ?? 0) + 1;
+        // people run from wherever they are, whatever else a workflow has
+        // the file do from the root: shipcheck init writes SHIP_GATE.md into
+        // the repository it is run in, not this one's committed copy.
+        if ((theirs && relative) || (byInstall.has(file.path) && entry.fromCwd)) file[count] = (file[count] ?? 0) + 1;
         else if (isTestMaterial(file.path)) kept.push({ ...rest, ...(fixed ? { fixed } : {}), ...(relative ? { relative } : {}) });
         else kept.push(rest);
       }
@@ -2834,9 +3118,13 @@ function keptForOutput(target, places) {
   return false;
 }
 
+// The guards that are not a flag a run passes (guards.js).
+const GUARD_KINDS = new Set(['ci', 'exists', 'main']);
+
 /**
  * The writer's own guards that keep this door's run of the file from a write:
- * a workflow runs with CI set, and a flag every run of the file passes. A
+ * a workflow runs with CI set, a file the door only imports is not the
+ * program, and a flag every run of the file passes. A
  * file the door only imports carries no flags of its own run, so a flag guard
  * holds only for a file the door runs by name.
  */
@@ -2847,8 +3135,11 @@ function guardsHit(door, path, write, places) {
   if (!door.kind && unless.includes('ci')) hit.push('ci');
   // A checkout holds the committed file, so no door's run makes it.
   if (bootstraps(write, places)) hit.push('exists');
+  // A write behind a main guard is the file's as a program: made by a door
+  // that runs the file, or a file it reaches starts as a child process.
+  if (unless.includes('main') && !(door.executed ?? []).includes(path)) hit.push('main');
   const runs = (door.runs ?? []).filter((run) => run.path === path && run.runKind !== 'checks');
-  const flags = unless.filter((guard) => guard !== 'ci' && guard !== 'exists');
+  const flags = unless.filter((guard) => !GUARD_KINDS.has(guard));
   if (runs.length > 0 && flags.length > 0 && runs.every((run) => (run.passes ?? []).some((flag) => flags.includes(flag)))) {
     for (const run of runs) for (const flag of run.passes) if (flags.includes(flag)) hit.push(flag);
   }
@@ -2865,10 +3156,48 @@ function bootstraps(write, places) {
   return (write.unless ?? []).includes('exists') && places.files.has(write.target);
 }
 
-// The writer reads the tracked file's content before it writes the file.
+// The writer reads the tracked file's content before it writes the file, to
+// keep what it does not write; a read it only compares is not that.
 function stamps(file, target, places) {
   if (!places.files.has(target)) return false;
-  return (file.reads ?? []).some((read) => read.target === target && CONTENT_READS.has(read.call));
+  return (file.reads ?? []).some((read) => read.target === target && CONTENT_READS.has(read.call) && !read.compared);
+}
+
+const COMPARISONS = new Set(['===', '!==', '==', '!=']);
+
+/**
+ * Whether what a read call returns is only ever compared: the call itself an
+ * operand of === or !==, or the value of a const every use of which is one
+ * (const current = existsSync(f) ? readFileSync(f) : null; if (current ===
+ * next) ...).
+ */
+function comparedOnly(call) {
+  if (call?.type !== 'call_expression') return false;
+  let node = call;
+  while (node.parent && ['parenthesized_expression', 'await_expression', 'as_expression', 'ternary_expression'].includes(node.parent.type)) {
+    if (node.parent.type === 'ternary_expression' && node.parent.childForFieldName('condition')?.startIndex === node.startIndex) return false;
+    node = node.parent;
+  }
+  if (comparison(node.parent)) return true;
+  const declarator = node.parent;
+  const name = declarator?.type === 'variable_declarator' && declarator.childForFieldName('value')?.startIndex === node.startIndex ? declarator.childForFieldName('name') : null;
+  if (name?.type !== 'identifier') return false;
+  let scope = declarator.parent?.parent;
+  while (scope && !JS_BLOCKS.has(scope.type)) scope = scope.parent;
+  if (!scope) return false;
+  const uses = [];
+  walk(scope, (child) => {
+    if (child.type === 'identifier' && child.text === name.text && child.startIndex !== name.startIndex) uses.push(child);
+  });
+  return uses.length > 0 && uses.every((use) => {
+    let at = use;
+    while (at.parent?.type === 'parenthesized_expression') at = at.parent;
+    return comparison(at.parent);
+  });
+}
+
+function comparison(node) {
+  return node?.type === 'binary_expression' && COMPARISONS.has(node.childForFieldName('operator')?.text);
 }
 
 // What follows git add, normalised as a path: a glob stops the path where the

@@ -194,7 +194,7 @@ export function buildArtifact(mapped, commit) {
     symlinks: mapped.symlinks.filter((link) => !inAtlas(link.path)).map((link) => ({ path: link.path, target: link.target })).sort(byPath),
     testFiles: tested.testFiles,
     unassigned,
-    ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map((entry) => (entry.kind === 'deploy' ? { files: [...entry.files], kind: entry.kind } : { built: entry.built, dir: entry.dir, kind: entry.kind, rust: entry.rust })) } : {}),
+    ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map(carryUnseen) } : {}),
   };
 }
 
@@ -303,6 +303,12 @@ function carryReader(entry) {
   return out;
 }
 
+function carryUnseen(entry) {
+  if (entry.kind === 'deploy') return { files: [...entry.files], kind: entry.kind };
+  if (entry.kind === 'shipped') return { items: entry.items.map((item) => ({ kind: item.kind, path: item.path })), kind: entry.kind };
+  return { built: entry.built, dir: entry.dir, kind: entry.kind, rust: entry.rust };
+}
+
 // A run always says whether the door runs the file or only checks it; it
 // carries directory, matched and via only when they say something.
 function carryRun(run) {
@@ -323,6 +329,7 @@ function carryDoor(door) {
   if (door.parseError) return { file: door.file, name: door.name, parseError: true };
   return {
     ...(door.kind ? { kind: door.kind } : {}),
+    ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
     ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),
     elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
@@ -344,6 +351,7 @@ function carryDoor(door) {
     reach: door.reach.map(carryReach),
     readers: door.readers.filter((entry) => !inAtlas(entry.target) && !inAtlas(entry.by)).map(carryReader),
     runs: door.runs.map(carryRun),
+    ...(door.runsCommand != null ? { runsCommand: door.runsCommand } : {}),
     runsCount: door.runsCount,
     checksCount: door.checksCount ?? 0,
     secrets: [...door.secrets],
@@ -361,6 +369,7 @@ function carryDoor(door) {
     },
     ...(door.shellMissed?.length > 0 ? { shellMissed: door.shellMissed.map((entry) => ({ ...entry })) } : {}),
     stages: [...door.stages],
+    ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
     ...(door.unpublished ? { unpublished: true } : {}),

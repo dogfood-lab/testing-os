@@ -51,7 +51,7 @@ describe('a push to a branch for review', () => {
 
   it('is said as never to main, and does not make the door the busiest', () => {
     assert.match(markdown, /the busiest is release, which reaches 1 part and commits into the repository \(sync logos reaches 2 but commits only to a branch for review\)\./);
-    assert.match(markdown, /\*\*sync logos\*\* runs scripts\/sync\.mjs, reaches lib, writes to logos\/, commits logos\/ and pushes to a branch for review, never to main, and opens a pull request\./);
+    assert.match(markdown, /\*\*sync logos\*\* runs scripts\/sync\.mjs, reaches lib, writes to logos\/org\.svg, commits logos\/ and pushes to a branch for review, never to main, and opens a pull request\./);
     assert.match(markdown, /\*\*freshness\*\* runs scripts\/changelog\.mjs, writes to CHANGELOG\.md, and commits CHANGELOG\.md and pushes to a branch for review, never to main\./);
   });
 });

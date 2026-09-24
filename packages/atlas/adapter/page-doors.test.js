@@ -83,7 +83,7 @@ describe('doors on the page, by the conventions of their tools', () => {
   });
 
   it('never prints a staged variable: a path set at run time is said to be one, last', () => {
-    has(py.markdown, '## The other doors', '**Baseline** runs no file this map can see, writes to reports/baseline.txt, reports/run.log and reports/summary.md, commits reports/baseline.txt, reports/run.log, reports/summary.md and a path set at run time, then pushes to a branch for review, never to main, and opens a pull request.');
+    has(py.markdown, '## The other doors', '**Baseline** runs no file this map can see, commits reports/baseline.txt, reports/run.log, reports/summary.md and a path set at run time, then pushes to a branch for review, never to main, and opens a pull request.');
     assert.equal(py.markdown.includes('$RUNTIME_PATH'), false);
     const baseline = py.json.doors.find((item) => item.name === 'Baseline');
     assert.deepEqual(baseline.stages, ['reports/baseline.txt', 'reports/run.log', 'reports/summary.md', 'a path set at run time']);

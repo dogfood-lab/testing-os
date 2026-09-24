@@ -9,7 +9,7 @@ import { unreadLine } from './page.js';
 
 // fixtures/atlas/limits-split: a tool that builds one command at run time
 // and a test that builds two, two fixtures broken on purpose, and one schema
-// the parser stops on at a NUL character.
+// the parser stops on.
 
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const FIXTURE = resolve(import.meta.dirname, '../../../fixtures/atlas/limits-split');
@@ -50,18 +50,18 @@ describe('what the map cannot see, told apart by where it lives', () => {
     assert.ok(limits.includes('3 commands are built at run time and not followed, 2 of them in tests.'), limits.join('\n'));
   });
 
-  it('groups the files the parser cannot read by part when a part holds more than one, and names them', () => {
+  it('groups the files the parser cannot read by part when a part holds more than one, and names them, production first', () => {
     assert.ok(
-      limits.includes('3 files use syntax the parser cannot read (fixtures/broken/a.ts, fixtures/broken/b.ts and schemas/key.ts), so what they import is not known: 2 in fixtures, 1 in schemas (a NUL character inside a string).'),
+      limits.includes('3 files use syntax the parser cannot read (schemas/key.ts, fixtures/broken/a.ts and fixtures/broken/b.ts), so what they import is not known: 2 in fixtures, 1 in schemas.'),
       limits.join('\n'),
     );
   });
 
   it('names three of the files it cannot read and counts the rest', () => {
-    const five = ['e.ts', 'a.ts', 'd.ts', 'b.ts', 'c.ts'].map((path) => ({ path, part: 'lib', unreadSyntax: 'nul-character' }));
+    const five = ['e.ts', 'a.ts', 'd.ts', 'b.ts', 'c.ts'].map((path) => ({ path, part: 'lib', unreadSyntax: 'jsx-ampersand' }));
     assert.equal(
       unreadLine(five),
-      '5 files in lib use syntax the parser cannot read (a.ts, b.ts, c.ts and 2 more), so what they import is not known: a NUL character inside a string (5).',
+      '5 files in lib use syntax the parser cannot read (a.ts, b.ts, c.ts and 2 more), so what they import is not known: a bare `&` in JSX text (5).',
     );
     assert.equal(
       unreadLine([{ path: 'src/kernel.ts', part: 'src' }]),
@@ -69,16 +69,29 @@ describe('what the map cannot see, told apart by where it lives', () => {
     );
   });
 
+  it('names entry points, then production files, then tests and scripts', () => {
+    const files = [
+      { path: 'scripts/gen.mjs', part: 'scripts' },
+      { path: 'test/unit.test.ts', part: 'test' },
+      { path: 'src/util.ts', part: 'src' },
+      { path: 'src/cli.ts', part: 'src', entry: true },
+    ];
+    assert.equal(
+      unreadLine(files),
+      '4 files use syntax the parser cannot read (src/cli.ts, src/util.ts, scripts/gen.mjs and 1 more), so what they import is not known: 2 in src, 1 in scripts, 1 in test.',
+    );
+  });
+
   it('names the part once when every such file is in it, and keeps the construct counts when no part holds two', () => {
-    const inLib = [{ part: 'lib', unreadSyntax: 'nul-character' }, { part: 'lib', unreadSyntax: 'nul-character' }, { part: 'lib' }];
+    const inLib = [{ part: 'lib', unreadSyntax: 'jsx-ampersand' }, { part: 'lib', unreadSyntax: 'jsx-ampersand' }, { part: 'lib' }];
     assert.equal(
       unreadLine(inLib),
-      '3 files in lib use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (2) and other syntax (1).',
+      '3 files in lib use syntax the parser cannot read, so what they import is not known: a bare `&` in JSX text (2) and other syntax (1).',
     );
-    const apart = [{ part: 'a', unreadSyntax: 'nul-character' }, { part: 'b' }];
+    const apart = [{ part: 'a', unreadSyntax: 'jsx-ampersand' }, { part: 'b' }];
     assert.equal(
       unreadLine(apart),
-      '2 files use syntax the parser cannot read, so what they import is not known: a NUL character inside a string (1) and other syntax (1).',
+      '2 files use syntax the parser cannot read, so what they import is not known: a bare `&` in JSX text (1) and other syntax (1).',
     );
   });
 });

@@ -87,11 +87,11 @@ describe('doors', () => {
     assert.equal(door('weekly.yml').usesWorkflowToken, false);
   });
 
-  it('keeps every run step in file order, named or numbered', () => {
+  it('keeps every run step in file order, named or numbered, with the directory its shell starts in', () => {
     assert.deepEqual(door('ingest.yml').commands, [
-      { job: 'ingest', step: '1', text: 'npm ci' },
-      { job: 'ingest', step: 'Ingest the submission', text: 'npm run ingest' },
-      { job: 'ingest', step: 'Commit', text: 'git add records/ indexes/\ngit push\necho refreshed indexes/latest.json\n' },
+      { dir: '', job: 'ingest', step: '1', text: 'npm ci' },
+      { dir: '', job: 'ingest', step: 'Ingest the submission', text: 'npm run ingest' },
+      { dir: '', job: 'ingest', step: 'Commit', text: 'git add records/ indexes/\ngit push\necho refreshed indexes/latest.json\n' },
     ]);
     assert.deepEqual(
       door('checks.yml').commands.map((command) => [command.job, command.step]),

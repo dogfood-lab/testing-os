@@ -1,3 +1,4 @@
 import { writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 
-writeFileSync('logos/a.svg', '<svg/>\n');
+writeFileSync(join('logos', `${Date.now()}.svg`), '<svg/>\n');

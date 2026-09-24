@@ -22,6 +22,16 @@
  * exists, or a write in the catch of a try that reads it first). Such a write
  * bootstraps the file once; a checkout holds it, so no door makes it. The
  * file is the one the write names, compared by the text of the path.
+ *
+ * A fourth kind decides which doors a write belongs to: `main`, a write the
+ * file makes only when it is the program being run, behind a main guard
+ * (import.meta.url or a path compared with process.argv[1], require.main ===
+ * module, import.meta.main, Python's __name__ == "__main__"). An import of
+ * the file never reaches it. A module-level function the file never exports,
+ * every mention of which is behind that guard, is the file's command as well:
+ * const table = { fetch: cmdFetch } inside the guard, or main() under
+ * __name__. A module-level Python function cannot be told apart from one
+ * another module imports, so there only the mentions in the file decide.
  */
 
 const CI_VARIABLES = new Set(['CI', 'GITHUB_ACTIONS']);
@@ -39,6 +49,12 @@ const PY_FUNCTIONS = new Set(['function_definition', 'lambda']);
 const PY_BLOCKS = new Set(['module', 'block']);
 const PY_EXITS = new Set(['sys.exit', 'exit', 'quit', 'os._exit']);
 const MAX_DEPTH = 8;
+// A function mentioned only from inside other such functions is followed
+// this many functions out before it is read as reachable by an import.
+const MAIN_HOPS = 4;
+const MENTIONS = new Set(['identifier', 'shorthand_property_identifier']);
+const OWN_RUN = 'process.argv[1]';
+const TESTED_BY = new Set(['includes', 'endsWith', 'startsWith', 'match', 'test']);
 const JS_EXISTS = new Set(['existsSync', 'pathExistsSync', 'pathExists']);
 const JS_READS = new Set(['readFileSync', 'readFile', 'statSync', 'stat', 'accessSync', 'access', 'openSync', 'readJsonSync', 'readJSONSync']);
 const PY_EXISTS = new Set(['os.path.exists', 'os.path.isfile', 'path.exists', 'path.isfile', 'exists', 'isfile']);
@@ -51,16 +67,35 @@ const PY_RECEIVER_READS = new Set(['read_text', 'read_bytes', 'open', 'stat']);
  * @returns {string[]} sorted guards, `ci` and flags such as `--check`
  */
 export function writeGuards(node, python) {
-  const lang = python ? PYTHON : SCRIPT;
+  return guardsAt(node, python ? PYTHON : SCRIPT, pathText(node), 0);
+}
+
+/**
+ * Whether a node runs only when its file is the program being run: behind a
+ * main guard in its own function, or in a function that is the file's
+ * command (see above). A call behind one is how a parameter's default is
+ * reached only by a run of the file (landings.js settleParamPaths).
+ *
+ * @param {object} node a tree-sitter node
+ * @param {boolean} python
+ * @returns {boolean}
+ */
+export function mainOnly(node, python) {
+  return guardsAt(node, python ? PYTHON : SCRIPT, null, 0).includes('main');
+}
+
+function guardsAt(node, lang, target, hops) {
   const guards = new Set();
-  const target = pathText(node);
-  const candidates = (condition) => ['ci', ...(target ? ['exists'] : []), ...flagsIn(condition, lang, 0, new Set())];
+  const candidates = (condition) => ['ci', 'main', ...(target ? ['exists'] : []), ...flagsIn(condition, lang, 0, new Set())];
   const record = (condition, value) => {
     for (const guard of candidates(condition)) if (forced(condition, guard, value, lang, 0, new Set(), target)) guards.add(guard);
   };
   let child = node;
   for (let scope = node.parent; scope; child = scope, scope = scope.parent) {
-    if (lang.functions.has(scope.type)) break;
+    if (lang.functions.has(scope.type)) {
+      if (commandFunction(scope, lang, hops)) guards.add('main');
+      break;
+    }
     // A write in the catch of a try that reads the same file runs only when
     // that read failed: the file was not there.
     if (target && scope.type === lang.catchType && lang.readsFirst(scope.parent, target)) guards.add('exists');
@@ -80,6 +115,27 @@ export function writeGuards(node, python) {
     }
   }
   return [...guards].sort();
+}
+
+// A module-level function the file does not export, mentioned at least once
+// and only where the file runs as a program.
+function commandFunction(fn, lang, hops) {
+  if (hops >= MAIN_HOPS) return false;
+  const named = lang.moduleFunction(fn);
+  if (named == null || named.exported) return false;
+  let program = fn;
+  while (program.parent) program = program.parent;
+  // An export clause, module.exports = { fn } and a recursive call are
+  // mentions too; only the first two are ever outside the guard.
+  const mentions = [];
+  const stack = [program];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    const inside = current.startIndex >= fn.startIndex && current.endIndex <= fn.endIndex;
+    if (MENTIONS.has(current.type) && current.text === named.name && !inside) mentions.push(current);
+    stack.push(...current.namedChildren);
+  }
+  return mentions.length > 0 && mentions.every((mention) => guardsAt(mention, lang, null, hops + 1).includes('main'));
 }
 
 function within(node, container) {
@@ -113,6 +169,11 @@ function forced(node, guard, value, lang, depth, visiting, target) {
     return result;
   }
   if (guard === 'exists') return value === true && lang.exists(node, target);
+  // Imported, the file is not the program: a test that it is reads false.
+  if (guard === 'main') {
+    const test = lang.mainTest(node, visiting);
+    return test === 'is' ? value === false : test === 'not' ? value === true : false;
+  }
   return value === true && lang.atom(node, guard);
 }
 
@@ -264,6 +325,67 @@ function scriptExits(statement) {
   return call?.type === 'call_expression' && call.childForFieldName('function')?.text === 'process.exit';
 }
 
+// Whether a node tests that this file is the program being run: is, not, or
+// neither. process.argv[1] compared with anything, or tested for a name
+// (process.argv[1]?.includes('format-sft')), through the names it is bound
+// to; require.main === module; import.meta.main.
+function scriptMainTest(node, visiting) {
+  if (node.type === 'member_expression' && node.text.replace(/\s+/g, '') === 'import.meta.main') return 'is';
+  if (node.type === 'binary_expression') {
+    const operator = node.childForFieldName('operator')?.text;
+    const sense = operator === '===' || operator === '==' ? 'is' : operator === '!==' || operator === '!=' ? 'not' : null;
+    if (sense == null) return null;
+    const left = node.childForFieldName('left');
+    const right = node.childForFieldName('right');
+    const pair = [left?.text, right?.text].sort().join(' ');
+    if (pair === 'module require.main') return sense;
+    return runPathIn(left, visiting) || runPathIn(right, visiting) ? sense : null;
+  }
+  if (node.type === 'call_expression') {
+    const fn = node.childForFieldName('function');
+    if (fn?.type !== 'member_expression' || !TESTED_BY.has(fn.childForFieldName('property')?.text)) return null;
+    return runPathIn(node, visiting) ? 'is' : null;
+  }
+  return null;
+}
+
+// process.argv[1], written out or through a name bound to it once.
+function runPathIn(node, visiting) {
+  if (!node) return false;
+  if (node.text.replace(/\s+/g, '').includes(OWN_RUN)) return true;
+  const stack = [node];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    if (current.type === 'identifier') {
+      const bound = scriptBinding(current, visiting);
+      if (bound && bound.value.text.replace(/\s+/g, '').includes(OWN_RUN)) return true;
+    }
+    stack.push(...current.namedChildren);
+  }
+  return false;
+}
+
+// A function declared at the top of the module, by name, and whether the
+// declaration exports it.
+function scriptModuleFunction(fn) {
+  const top = (node) => node?.type === 'program';
+  if (fn.type === 'function_declaration' || fn.type === 'generator_function_declaration') {
+    const id = fn.childForFieldName('name');
+    if (!id) return null;
+    if (top(fn.parent)) return { name: id.text, id, exported: false };
+    if (fn.parent?.type === 'export_statement' && top(fn.parent.parent)) return { name: id.text, id, exported: true };
+    return null;
+  }
+  const declarator = fn.parent;
+  if (declarator?.type !== 'variable_declarator' || declarator.childForFieldName('value')?.startIndex !== fn.startIndex) return null;
+  const id = declarator.childForFieldName('name');
+  if (id?.type !== 'identifier') return null;
+  const declaration = declarator.parent;
+  if (top(declaration?.parent)) return { name: id.text, id, exported: false };
+  if (declaration?.parent?.type === 'export_statement' && top(declaration.parent.parent)) return { name: id.text, id, exported: true };
+  return null;
+}
+
 const SCRIPT = {
   ifType: 'if_statement',
   catchType: 'catch_clause',
@@ -273,7 +395,13 @@ const SCRIPT = {
   blocks: JS_BLOCKS,
   functions: JS_FUNCTIONS,
   hasElse: (statement) => statement.childForFieldName('alternative') != null,
-  unwrap: (node) => (node.type === 'parenthesized_expression' ? node.namedChildren[0] : node),
+  // Boolean(x) is x, as a condition.
+  unwrap: (node) => (node.type === 'parenthesized_expression' ? node.namedChildren[0]
+    : node.type === 'call_expression' && node.childForFieldName('function')?.text === 'Boolean' && node.childForFieldName('arguments')?.namedChildren.length === 1
+      ? node.childForFieldName('arguments').namedChildren[0]
+      : node),
+  mainTest: scriptMainTest,
+  moduleFunction: scriptModuleFunction,
   negated: (node) => (node.type === 'unary_expression' && node.childForFieldName('operator')?.text === '!' ? node.childForFieldName('argument') : null),
   logical(node) {
     if (node.type !== 'binary_expression') return null;
@@ -345,6 +473,24 @@ function pythonExits(statement) {
   return call?.type === 'call' && PY_EXITS.has(call.childForFieldName('function')?.text);
 }
 
+// __name__ == "__main__", either way round.
+function pythonMainTest(node) {
+  if (node.type !== 'comparison_operator') return null;
+  const sense = node.children.some((child) => child.type === '==') ? 'is' : node.children.some((child) => child.type === '!=') ? 'not' : null;
+  if (sense == null) return null;
+  const [left, right] = node.namedChildren;
+  const named = (a, b) => a?.type === 'identifier' && a.text === '__name__' && stringText(b) === '__main__';
+  return named(left, right) || named(right, left) ? sense : null;
+}
+
+// Every function defined at the top of a module can be imported by name.
+function pythonModuleFunction(fn) {
+  if (fn.type !== 'function_definition') return null;
+  const holder = fn.parent?.type === 'decorated_definition' ? fn.parent.parent : fn.parent;
+  const id = fn.childForFieldName('name');
+  return holder?.type === 'module' && id ? { name: id.text, id, exported: false } : null;
+}
+
 const PYTHON = {
   ifType: 'if_statement',
   catchType: 'except_clause',
@@ -355,6 +501,8 @@ const PYTHON = {
   functions: PY_FUNCTIONS,
   hasElse: (statement) => statement.childForFieldName('alternative') != null,
   unwrap: (node) => (node.type === 'parenthesized_expression' ? node.namedChildren[0] : node),
+  mainTest: pythonMainTest,
+  moduleFunction: pythonModuleFunction,
   negated: (node) => (node.type === 'not_operator' ? node.childForFieldName('argument') : null),
   logical(node) {
     if (node.type !== 'boolean_operator') return null;

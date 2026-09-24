@@ -7,8 +7,8 @@ import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 
 // fixtures/atlas/authorship, committed on by people and by a bot: people make
-// four of the five commits to logos/, which a workflow also writes, and the
-// bot alone adds every file in records/.
+// four of the five commits to logos/, which a script the workflow runs also
+// writes, and the bot alone adds every file in records/.
 
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const FIXTURE = resolve(import.meta.dirname, '../../../fixtures/atlas/authorship');
@@ -61,7 +61,7 @@ function section(heading) {
 describe('who commits to a place', () => {
   it('keeps a place people mostly commit to out of Generated, and says a writer writes it too', () => {
     assert.ok(!page.generated.some((item) => item.place === 'logos/'), JSON.stringify(page.generated));
-    assert.match(section('Hand-authored'), /- \*\*logos\/\*\* is written by \.github\/workflows\/sync\.yml and scripts\/sync\.mjs, and by people: 4 of its 5 commits in the window are theirs\./);
+    assert.match(section('Hand-authored'), /- \*\*logos\/\*\* is written by scripts\/sync\.mjs, and by people: 4 of its 5 commits in the window are theirs\./);
   });
 
   it('calls a part whose every file one bot added written by that bot, not hand-authored', () => {

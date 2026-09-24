@@ -99,7 +99,9 @@ test('the sentences are the ones the committed markdown carries', () => {
     // from), but the ingest door is the one that commits into the repository,
     // so the page follows it and says why.
     `Work enters through ${page.doors.length} doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing).`,
-    'People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.',
+    // portfolio's bin is in a private workspace member nothing bundles, so
+    // no one installs it.
+    'People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.',
     'That reaches dogfood-swarm (1 file), findings (2 files) and verify (10 files).',
     'It commits indexes/ and records/, then pushes.',
     // The schemas build is tsc, which checks what it compiles and runs none of
@@ -471,6 +473,16 @@ test('a command a manifest installs reads as one people run, and is followed by 
   assert.ok(followed.includes('What happens through tool'), 'the command is the main door by its id');
   assert.ok(followed.includes('The command runs bin/tool.mjs.'));
   assert.ok(followed.includes('Read those in order to follow one run of tool end to end.'));
+});
+
+test('a package whose entry is a command, a bundled command and a place people write read as page.js words them', () => {
+  const pkg = { file: 'package.json', id: 'package.json#@acme/tool', kind: 'package', landings: [], name: '@acme/tool', pushes: false, reach: [], runs: ['src/cli.ts'], runsCount: 1, runsCommand: 'acme', sends: [], stages: [], triggers: [] };
+  const bundled = { file: 'packages/server/package.json', id: 'packages/server/package.json#acme-server', kind: 'command', bundledInto: ['@acme/tool'], landings: [], name: 'acme-server', pushes: false, reach: [], runs: ['packages/server/src/server.ts'], runsCount: 1, sends: [], stages: [], triggers: [] };
+  const sync = { file: '.github/workflows/sync.yml', id: '.github/workflows/sync.yml', landings: ['data/feed.json'], name: 'Sync', pushes: true, reach: [], runs: ['scripts/sync.mjs'], runsCount: 1, sends: [], stages: ['NOTES.md', 'data/'], unwrittenStages: ['NOTES.md'], triggers: ['by hand'] };
+  const text = plain(render.renderPage({ ...page, doors: [...page.doors, pkg, bundled, sync] }, { repo: page.repo }));
+  assert.ok(text.includes("@acme/tool (the package's entry, which runs the command acme; it is not a library). Loads src/cli.ts."), 'a command entry');
+  assert.ok(text.includes('acme-server (a command bundled into @acme/tool). Runs packages/server/src/server.ts.'), 'a bundled command');
+  assert.ok(text.includes('commits NOTES.md (written by people) and data/, then pushes'), 'a staged place people write');
 });
 
 test('what this is says the line page.js derived, and words an older page.json from its fields', () => {

@@ -100,9 +100,9 @@ describe('landings per file', () => {
 });
 
 describe('landings per door', () => {
-  it('lands the ingest door on what it stages and on what its reach writes', () => {
+  it('lands the ingest door on what its reach writes, never on what it only stages', () => {
     assert.deepEqual(door('ingest.yml').stages, ['indexes/', 'records/']);
-    assert.deepEqual(door('ingest.yml').landings, ['indexes', 'indexes/latest.json', 'records']);
+    assert.deepEqual(door('ingest.yml').landings, ['indexes/latest.json', 'records']);
   });
 
   it('lands a door only on what its own reach writes', () => {
@@ -111,24 +111,23 @@ describe('landings per door', () => {
     assert.equal(door('broken.yml').landings, undefined);
   });
 
-  it('names the readers of a door landing and of the paths under it', () => {
-    const readers = door('ingest.yml').readers.filter((entry) => entry.target === 'indexes');
+  it('names the readers of a door landing and of the paths under it, and not the door naming its own output', () => {
+    const readers = door('ingest.yml').readers.filter((entry) => entry.target === 'indexes/latest.json');
     assert.deepEqual(
       readers.map((entry) => entry.by),
-      ['.github/workflows/ingest.yml', 'site/index.html', 'site/index.html', 'tools/ingest.js', 'tools/render.js', 'tools/report.py'],
+      ['site/index.html', 'site/index.html', 'tools/ingest.js', 'tools/render.js', 'tools/report.py'],
     );
     assert.deepEqual(door('ingest.yml').readers.filter((entry) => entry.target === 'records'), []);
   });
 });
 
 describe('landings across the map', () => {
-  it('lists the writers of each place, files and doors alike', () => {
+  it('lists the writers of each place, and no door for what git add stages', () => {
     assert.deepEqual(landing('records').writers, [
-      { by: '.github/workflows/ingest.yml' },
       { by: 'tools/ingest.js', confidence: 'ast' },
       { by: 'tools/scratch.js', confidence: 'ast' },
     ]);
-    assert.deepEqual(landing('indexes').writers, [{ by: '.github/workflows/ingest.yml' }]);
+    assert.equal(landing('indexes'), undefined);
     assert.deepEqual(landing('indexes/latest.json').writers, [{ by: 'tools/ingest.js', confidence: 'ast' }]);
     assert.deepEqual(landing('reports/out.md').writers, [{ by: 'tools/render.js', confidence: 'ast' }]);
     assert.deepEqual(landing('reports/out.json').writers, [{ by: 'tools/report.py', confidence: 'ast' }]);
@@ -149,9 +148,8 @@ describe('landings across the map', () => {
     assert.equal(origin.tools, 'authored');
   });
 
-  it('lists every reader of indexes/latest.json: code, script, page and door', () => {
+  it('lists every reader of indexes/latest.json: code, script and page, and not the door whose run writes it', () => {
     assert.deepEqual(landing('indexes/latest.json').readers, [
-      { by: '.github/workflows/ingest.yml' },
       { by: 'site/index.html', call: 'literal', confidence: 'text' },
       { by: 'site/index.html', call: 'raw-url', confidence: 'text', ref: 'main', repo: 'acme/hub' },
       { by: 'tools/ingest.js', call: 'existsSync', confidence: 'ast' },
@@ -182,10 +180,9 @@ describe('landings across the map', () => {
     const artifact = JSON.parse(first);
     assert.deepEqual(
       artifact.landings.map((item) => item.target),
-      ['.gitignore', 'cache/state.json', 'indexes', 'indexes/latest.json', 'package.json', 'policies/global.yaml', 'records', 'reports/out.json', 'reports/out.md'],
+      ['.gitignore', 'cache/state.json', 'indexes/latest.json', 'package.json', 'policies/global.yaml', 'records', 'reports/out.json', 'reports/out.md'],
     );
     assert.deepEqual(artifact.doors.find((item) => item.file === '.github/workflows/ingest.yml').landings, [
-      'indexes',
       'indexes/latest.json',
       'records',
     ]);

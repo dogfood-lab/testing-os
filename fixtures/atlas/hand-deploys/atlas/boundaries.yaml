@@ -1,0 +1,26 @@
+summary: ""
+boundaries:
+  - name: .github
+    globs:
+      - .github/**
+    role: config
+  - name: root
+    globs:
+      - "*"
+    role: config
+  - name: catalog
+    globs:
+      - catalog/**
+    role: config
+  - name: cockpit
+    globs:
+      - apps/cockpit/**
+    role: code
+  - name: panel
+    globs:
+      - apps/panel/**
+    role: code
+  - name: spaces
+    globs:
+      - spaces/**
+    role: code

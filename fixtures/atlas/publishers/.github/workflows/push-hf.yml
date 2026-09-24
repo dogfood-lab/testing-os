@@ -1,0 +1,17 @@
+name: Push dataset to Hugging Face
+on:
+  workflow_dispatch:
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pip install huggingface_hub
+      - name: Upload
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'PY'
+          from huggingface_hub import HfApi
+          api = HfApi()
+          api.upload_folder(folder_path="data", repo_id="acme/set", repo_type="dataset")
+          PY

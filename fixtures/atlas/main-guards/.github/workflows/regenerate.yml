@@ -1,0 +1,9 @@
+name: Regenerate
+on:
+  workflow_dispatch:
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/gen-data.mjs
+      - run: python tools/report.py

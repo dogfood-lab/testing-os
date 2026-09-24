@@ -66,6 +66,6 @@ describe('a write whose root is decided at run time', () => {
     assert.doesNotMatch(generated, /canon/);
     assert.doesNotMatch(markdown, /writes to canon/);
     assert.doesNotMatch(markdown, /may land here/);
-    assert.match(markdown, /- 7 writes go to the directory the command is run in, the home directory or a path its caller passes, not to this repository\./);
+    assert.match(markdown, /- 7 writes go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository\./);
   });
 });

@@ -5,7 +5,7 @@ import { after, before, describe, it } from 'node:test';
 import { mapRepository } from './index.js';
 import { makeRepo } from './fixture-repo.js';
 
-// fixtures/atlas/grammar-shapes: the three constructs the vendored grammar
+// fixtures/atlas/grammar-shapes: the constructs the vendored grammar
 // rejects though TypeScript accepts them (see the fixture's README).
 
 const FIXTURE = resolve(import.meta.dirname, '../../../fixtures/atlas/grammar-shapes');
@@ -41,6 +41,31 @@ describe('a construct the grammar rejects that TypeScript accepts', () => {
   it('reads a bare & in JSX text, on a tag\'s line and on its own', () => {
     assert.equal(files.get('src/panel.tsx').parseError, undefined);
     assert.deepEqual(imported('src/panel.tsx'), ['./walk.js static 1']);
+  });
+
+  it('reads typeof import(...) on a line of its own with a trailing comma', () => {
+    assert.equal(files.get('src/trailing.test.ts').parseError, undefined);
+    assert.deepEqual(imported('src/trailing.test.ts'), ['./walk.js dynamic-literal 5', 'vitest static 1']);
+  });
+
+  it('reads two comparisons in one object literal as comparisons, not type arguments', () => {
+    assert.equal(files.get('src/steer.ts').parseError, undefined);
+    assert.deepEqual(imported('src/steer.ts'), ['./mint.js static 1']);
+  });
+
+  it('reads abstract as a variable name, and as the modifier it also is', () => {
+    assert.equal(files.get('src/card.ts').parseError, undefined);
+    assert.deepEqual(imported('src/card.ts'), ['node:fs static 1']);
+  });
+
+  it('reads a decimal character reference past five digits in JSX text', () => {
+    assert.equal(files.get('src/lock.tsx').parseError, undefined);
+    assert.deepEqual(imported('src/lock.tsx'), ['./card.js static 1']);
+  });
+
+  it('reads a file holding a raw NUL byte, in a comment and in a string', () => {
+    assert.equal(files.get('src/raw-byte.ts').parseError, undefined);
+    assert.deepEqual(imported('src/raw-byte.ts'), ['./card.js static 1']);
   });
 
   it('leaves any other syntax unread, as before', () => {

@@ -1,0 +1,11 @@
+name: Release
+on:
+  release:
+    types: [published]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm ci
+      - run: npm run build && npm run pack:server
+      - run: npm publish --access public
