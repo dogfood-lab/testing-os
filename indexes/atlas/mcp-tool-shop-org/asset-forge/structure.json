@@ -1,0 +1,1067 @@
+{
+  "boundaries": [
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "eb20f1201aa2a08296d6c09d6cb57ab82b2c8bb61a26535192d9761237f3489a",
+          "path": ".github/workflows/ci.yml"
+        }
+      ],
+      "globs": [
+        ".github/**"
+      ],
+      "importConfidence": "full",
+      "name": ".github",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "13c37f9e4d182c7f710f9ca5748c95ba52f41b616fd95e0c28f4fa2d7e4a7b81",
+          "path": ".gitignore"
+        },
+        {
+          "hash": "51863c453540ddf31c6fda3050420a351bd6eb380e6bf37a605dd953bda5fac2",
+          "path": "CHANGELOG.md"
+        },
+        {
+          "hash": "f841ffcb69eebf76678427f8a60f7e4713e3f822433640ada20a44f7f27101a0",
+          "path": "Cargo.lock"
+        },
+        {
+          "hash": "51eb31725d9976f7b5dfc841190719cf9bf791a7a02dcea9f18e1ff3bde69240",
+          "path": "Cargo.toml"
+        },
+        {
+          "hash": "367e5141e4f5884e5791c4021f33a9faa958840a5decf44e1b273a87aad1c459",
+          "path": "LICENSE"
+        },
+        {
+          "hash": "6437cc1168bb255c5dd38c16c9557e03e209c53a387ebee53d6c4f32e915a2fa",
+          "path": "README.md"
+        },
+        {
+          "hash": "101584ffafe28c9b63219188b01fba089c467f577082981cfc0bce022eaabc04",
+          "path": "SECURITY.md"
+        }
+      ],
+      "globs": [
+        "*"
+      ],
+      "importConfidence": "full",
+      "name": "root",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 3,
+      "entryPoints": [
+        "crates/ship-export/src/lib.rs"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "5228df92b856843a18ab81ea94e2cff5ed565aefa3d9cd57884f834000f142ce",
+          "path": "crates/ship-export/Cargo.toml"
+        },
+        {
+          "hash": "b7fea578da4c20f494b2ad2799edbd01a450d2c75de90b2593408c770a0e9827",
+          "importsFiles": [
+            "crates/ship-export/src/lib.rs",
+            "crates/ship-hull/src/generate.rs",
+            "crates/ship-schema/src/spec.rs"
+          ],
+          "path": "crates/ship-export/examples/export_all.rs"
+        },
+        {
+          "exports": [
+            "export_glb"
+          ],
+          "hash": "267e39cf1b5b8c217fdac3a64c93c3f0d81deb2d296ca0c31fc4134710e0974a",
+          "importsFiles": [
+            "crates/ship-export/src/groups.rs",
+            "crates/ship-export/src/manifest.rs",
+            "crates/ship-hull/src/generate.rs",
+            "crates/ship-hull/src/mesh.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs"
+          ],
+          "path": "crates/ship-export/src/gltf.rs",
+          "testsInside": true
+        },
+        {
+          "exports": [
+            "material_for_group",
+            "resolve_material_color"
+          ],
+          "hash": "c827fec18ad2f529cadb0776f63807444343ff5afeb1ec514a61f22c276d7dbb",
+          "importsFiles": [
+            "crates/ship-hull/src/mesh.rs",
+            "crates/ship-schema/src/spec.rs"
+          ],
+          "path": "crates/ship-export/src/groups.rs"
+        },
+        {
+          "hash": "eb24323b87afa55882055d5cb8c280a4d048de850fb05620cb6995cc72663adf",
+          "importsFiles": [
+            "crates/ship-export/src/gltf.rs",
+            "crates/ship-export/src/groups.rs",
+            "crates/ship-export/src/manifest.rs"
+          ],
+          "path": "crates/ship-export/src/lib.rs"
+        },
+        {
+          "hash": "be050b18a1961ee98af0afa9b6789511ac3e84273e158e2913566c5e7744c9bf",
+          "path": "crates/ship-export/src/manifest.rs"
+        }
+      ],
+      "globs": [
+        "crates/ship-export/**"
+      ],
+      "importConfidence": "full",
+      "name": "ship-export",
+      "origin": "authored",
+      "role": "code",
+      "testedBy": 2,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "crates/ship-hull/src/lib.rs"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "2375fd2bf92c2ccf04f2c87d64c874016012064f8da3a7c33dd0d614fe819b83",
+          "path": "crates/ship-hull/Cargo.toml"
+        },
+        {
+          "exports": [
+            "bow_cap",
+            "stern_cap"
+          ],
+          "hash": "7b4eccc834803536916f1f354ff688a9e58d62846e0df5e28a382f78f54541f4",
+          "importsFiles": [
+            "crates/ship-hull/src/longitudinal.rs",
+            "crates/ship-hull/src/mesh.rs",
+            "crates/ship-hull/src/section.rs",
+            "crates/ship-hull/src/station.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/style.rs"
+          ],
+          "path": "crates/ship-hull/src/caps.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "61a090e0ba473510f2547c7b08a1337c1ef3e795901260ee35223d0c8f03f1e3",
+          "path": "crates/ship-hull/src/curves.rs",
+          "testsInside": true
+        },
+        {
+          "exports": [
+            "extract_deck_rim",
+            "generate_deck_surface"
+          ],
+          "hash": "eda08ef559bb0d357399d73f9f92cfc57f0350dacd5a3c93c72113e38e84f437",
+          "importsFiles": [
+            "crates/ship-hull/src/longitudinal.rs",
+            "crates/ship-hull/src/mesh.rs",
+            "crates/ship-hull/src/station.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-schema/src/style.rs"
+          ],
+          "path": "crates/ship-hull/src/deck.rs",
+          "testsInside": true
+        },
+        {
+          "exports": [
+            "generate_hull",
+            "generate_ship"
+          ],
+          "hash": "e2de23662cef15f31360e8142a942f8b48c2e540cd78df0b07362554e2237819",
+          "importsFiles": [
+            "crates/ship-hull/src/caps.rs",
+            "crates/ship-hull/src/deck.rs",
+            "crates/ship-hull/src/loft.rs",
+            "crates/ship-hull/src/longitudinal.rs",
+            "crates/ship-hull/src/mesh.rs",
+            "crates/ship-hull/src/rail.rs",
+            "crates/ship-hull/src/rig.rs",
+            "crates/ship-hull/src/sails.rs",
+            "crates/ship-hull/src/section.rs",
+            "crates/ship-hull/src/station.rs",
+            "crates/ship-hull/src/superstructure.rs",
+            "crates/ship-hull/src/validate.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-schema/src/style.rs",
+            "crates/ship-schema/src/validate.rs"
+          ],
+          "path": "crates/ship-hull/src/generate.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "f57e64dfa60f192829346ffacfb5025f1b84c6b674a04c4b6451907740c8f459",
+          "importsFiles": [
+            "crates/ship-hull/src/caps.rs",
+            "crates/ship-hull/src/curves.rs",
+            "crates/ship-hull/src/deck.rs",
+            "crates/ship-hull/src/generate.rs",
+            "crates/ship-hull/src/loft.rs",
+            "crates/ship-hull/src/longitudinal.rs",
+            "crates/ship-hull/src/mesh.rs",
+            "crates/ship-hull/src/rail.rs",
+            "crates/ship-hull/src/rig.rs",
+            "crates/ship-hull/src/sails.rs",
+            "crates/ship-hull/src/section.rs",
+            "crates/ship-hull/src/station.rs",
+            "crates/ship-hull/src/superstructure.rs",
+            "crates/ship-hull/src/validate.rs"
+          ],
+          "path": "crates/ship-hull/src/lib.rs"
+        },
+        {
+          "exports": [
+            "loft_hull"
+          ],
+          "hash": "43090f05514f26f06a7730c169833c3d9874b99b662b733030a59a08b3ccfe47",
+          "importsFiles": [
+            "crates/ship-hull/src/longitudinal.rs",
+            "crates/ship-hull/src/mesh.rs",
+            "crates/ship-hull/src/section.rs",
+            "crates/ship-hull/src/station.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-schema/src/style.rs"
+          ],
+          "path": "crates/ship-hull/src/loft.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "f1f443a38e95957900110a12a8ab4e2f4bc67e9fba3cc61cfd86e8e6a031eb11",
+          "importsFiles": [
+            "crates/ship-hull/src/curves.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-schema/src/style.rs"
+          ],
+          "path": "crates/ship-hull/src/longitudinal.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "b67467f19f6cb7ae321ea9808cfb2bde847b679b471ccd8e340c8630653b0ad3",
+          "path": "crates/ship-hull/src/mesh.rs"
+        },
+        {
+          "exports": [
+            "generate_quarterdeck",
+            "generate_rail"
+          ],
+          "hash": "7daaf04cd26972e9b2aee52d27b3f9c22344398fd22e756fe5a19259b6b0a326",
+          "importsFiles": [
+            "crates/ship-hull/src/deck.rs",
+            "crates/ship-hull/src/longitudinal.rs",
+            "crates/ship-hull/src/mesh.rs",
+            "crates/ship-hull/src/station.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-schema/src/style.rs"
+          ],
+          "path": "crates/ship-hull/src/rail.rs",
+          "testsInside": true
+        },
+        {
+          "exports": [
+            "compute_rig_anchors",
+            "generate_boom",
+            "generate_bowsprit",
+            "generate_gaff",
+            "generate_mast",
+            "generate_rigging"
+          ],
+          "hash": "1d795807972de001dd6f5c947621295c56ad41f8f5dfa1ee79cb84bb42f44947",
+          "importsFiles": [
+            "crates/ship-hull/src/deck.rs",
+            "crates/ship-hull/src/longitudinal.rs",
+            "crates/ship-hull/src/mesh.rs",
+            "crates/ship-hull/src/station.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-schema/src/style.rs"
+          ],
+          "path": "crates/ship-hull/src/rig.rs",
+          "testsInside": true
+        },
+        {
+          "exports": [
+            "compute_sail_anchors",
+            "generate_jib",
+            "generate_mainsail"
+          ],
+          "hash": "d65c4a25caa9f7e58314b1ab4affe7e3305176f884ae546cd69d4a0f97d9c67c",
+          "importsFiles": [
+            "crates/ship-hull/src/longitudinal.rs",
+            "crates/ship-hull/src/mesh.rs",
+            "crates/ship-hull/src/rig.rs",
+            "crates/ship-hull/src/station.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-schema/src/style.rs"
+          ],
+          "path": "crates/ship-hull/src/sails.rs",
+          "testsInside": true
+        },
+        {
+          "exports": [
+            "config_from_style",
+            "sample_section"
+          ],
+          "hash": "4271547382215679e8c3527437da9082df8a4d9cace13a0d56cafb7369875489",
+          "importsFiles": [
+            "crates/ship-hull/src/longitudinal.rs",
+            "crates/ship-hull/src/station.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-schema/src/style.rs"
+          ],
+          "path": "crates/ship-hull/src/section.rs",
+          "testsInside": true
+        },
+        {
+          "exports": [
+            "compute_single_station",
+            "compute_stations"
+          ],
+          "hash": "d9187b4cf8171a194e321e0c0563f7369f7f58d690490f6266aa181995263f50",
+          "importsFiles": [
+            "crates/ship-hull/src/longitudinal.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-schema/src/style.rs"
+          ],
+          "path": "crates/ship-hull/src/station.rs",
+          "testsInside": true
+        },
+        {
+          "exports": [
+            "generate_cabin",
+            "generate_hatches",
+            "generate_helm"
+          ],
+          "hash": "190f990161d4aecbbecfa1c29835439d59a41242e9b50a55ed2fd5431868fa32",
+          "importsFiles": [
+            "crates/ship-hull/src/deck.rs",
+            "crates/ship-hull/src/longitudinal.rs",
+            "crates/ship-hull/src/mesh.rs",
+            "crates/ship-hull/src/station.rs",
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-schema/src/style.rs"
+          ],
+          "path": "crates/ship-hull/src/superstructure.rs",
+          "testsInside": true
+        },
+        {
+          "exports": [
+            "validate_mesh"
+          ],
+          "hash": "f0bfd4a59c74c83fca74e5178ac4e6b6e8a0d9d9d72f693e6f428d4246471a0f",
+          "importsFiles": [
+            "crates/ship-hull/src/mesh.rs"
+          ],
+          "path": "crates/ship-hull/src/validate.rs"
+        }
+      ],
+      "globs": [
+        "crates/ship-hull/**"
+      ],
+      "importConfidence": "full",
+      "name": "ship-hull",
+      "origin": "authored",
+      "role": "code",
+      "testedBy": 13,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "crates/ship-schema/src/lib.rs"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "ca91ceb6efde3cf2159b99fc2a053f20c36ebb0920227f864cbdf33b04ee2e5a",
+          "path": "crates/ship-schema/Cargo.toml"
+        },
+        {
+          "exports": [
+            "classic_runner",
+            "courier",
+            "fishing",
+            "merchant_light",
+            "patrol",
+            "smuggler"
+          ],
+          "hash": "f37511cd2a308b7c6db797c55b907ae4c0bac4a4f22553ec8f726dd2bf9dbcbb",
+          "importsFiles": [
+            "crates/ship-schema/src/spec.rs"
+          ],
+          "path": "crates/ship-schema/src/defaults.rs"
+        },
+        {
+          "hash": "f3d3644e39fb6487b84783de9f60ce79336cf150f27d46f17033acb9d0657550",
+          "importsFiles": [
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/migrate.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-schema/src/style.rs",
+            "crates/ship-schema/src/validate.rs",
+            "crates/ship-schema/src/variant.rs"
+          ],
+          "path": "crates/ship-schema/src/lib.rs"
+        },
+        {
+          "exports": [
+            "migrate_to_current"
+          ],
+          "hash": "b4b9628ad5a06e176f9b765375ea3246774ce63c91d9dbecf8b91acd31f286ab",
+          "importsFiles": [
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs"
+          ],
+          "path": "crates/ship-schema/src/migrate.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "5201f0886fb517ee39cfd8d438aa587fff642894722d513117a7fe1bc75bc099",
+          "path": "crates/ship-schema/src/spec.rs"
+        },
+        {
+          "hash": "7b67b822fae3a55e120e73c330acffcf96ca2a3d68686e29570970e1040d4c7e",
+          "importsFiles": [
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs"
+          ],
+          "path": "crates/ship-schema/src/style.rs",
+          "testsInside": true
+        },
+        {
+          "exports": [
+            "validate_spec"
+          ],
+          "hash": "71562fe76a5dcb74561d2bd9c0c88c2c62bc09811d1f444194269e815af6a878",
+          "importsFiles": [
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs"
+          ],
+          "path": "crates/ship-schema/src/validate.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "fe9061b63ebd124fcc76e920eb66d2d8c31c4ddf34ac6d47e04c2de2711b173f",
+          "importsFiles": [
+            "crates/ship-schema/src/spec.rs"
+          ],
+          "path": "crates/ship-schema/src/variant.rs",
+          "testsInside": true
+        }
+      ],
+      "globs": [
+        "crates/ship-schema/**"
+      ],
+      "importConfidence": "full",
+      "name": "ship-schema",
+      "origin": "authored",
+      "role": "code",
+      "testedBy": 5,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "crates/ship-testkit/src/lib.rs"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "0cbf210f15d3dc5b2b2dc8ef80e7b4dd6b7a51e29efaa066624d01c6b1f5bda2",
+          "path": "crates/ship-testkit/Cargo.toml"
+        },
+        {
+          "exports": [
+            "all_fixtures",
+            "fixture",
+            "reference_ship"
+          ],
+          "hash": "0ac8624a9e3e3c46c5d55995539984426f1d17e116df138ab484b5c8d1db3b69",
+          "importsFiles": [
+            "crates/ship-schema/src/defaults.rs",
+            "crates/ship-schema/src/spec.rs"
+          ],
+          "path": "crates/ship-testkit/src/fixtures.rs"
+        },
+        {
+          "exports": [
+            "check_mesh_invariants"
+          ],
+          "hash": "17e7ad0ca3cc3fbd99ed526d896817ffcabc26265ba6f5eb0b820c7bf9c5b577",
+          "importsFiles": [
+            "crates/ship-hull/src/mesh.rs"
+          ],
+          "path": "crates/ship-testkit/src/invariants.rs"
+        },
+        {
+          "hash": "595c072ff02c056b690d74e0eb51662366371c4f2f739e3f09c3724fd3944b42",
+          "importsFiles": [
+            "crates/ship-testkit/src/fixtures.rs",
+            "crates/ship-testkit/src/invariants.rs",
+            "crates/ship-testkit/src/metrics.rs"
+          ],
+          "path": "crates/ship-testkit/src/lib.rs"
+        },
+        {
+          "exports": [
+            "aggregate_metrics"
+          ],
+          "hash": "08a1d5723b666add6b8eb2ea4e6c69c99926d96307cb16ff62b5a92298794280",
+          "importsFiles": [
+            "crates/ship-hull/src/mesh.rs"
+          ],
+          "path": "crates/ship-testkit/src/metrics.rs"
+        },
+        {
+          "hash": "55d864fdafafb37e66e3cb467e66e5d94e945b619731bfab00cfcebdb1d4bbc1",
+          "importsFiles": [
+            "crates/ship-export/src/lib.rs",
+            "crates/ship-hull/src/generate.rs",
+            "crates/ship-schema/src/lib.rs",
+            "crates/ship-schema/src/spec.rs",
+            "crates/ship-testkit/src/fixtures.rs",
+            "crates/ship-testkit/src/invariants.rs",
+            "crates/ship-testkit/src/metrics.rs"
+          ],
+          "path": "crates/ship-testkit/tests/golden_family.rs",
+          "testsInside": true
+        }
+      ],
+      "globs": [
+        "crates/ship-testkit/**"
+      ],
+      "importConfidence": "full",
+      "name": "ship-testkit",
+      "origin": "authored",
+      "role": "code",
+      "testedBy": 1,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "a567e70c322837a61b9e6e379c4f9ec27f09fadfbf0be4bf069d6cb1955d4ccb",
+          "path": "site/astro.config.mjs"
+        },
+        {
+          "hash": "9983bcc891905762ce6bd167781635d21ce1e64004394cd6b8a197a9ff5467c5",
+          "path": "site/package-lock.json"
+        },
+        {
+          "hash": "6f509ecb558570046950cbc460c596a6b8958024f18513c424006aaf3cbf2b29",
+          "path": "site/package.json"
+        },
+        {
+          "hash": "34b036603793e4eb4bfad87e1fd7f851a84fef6a762257a3b2dc1411983d26df",
+          "path": "site/src/content.config.ts"
+        },
+        {
+          "hash": "9fd92d5e45c11deb513862b019f5a8146239f2e20e6973deffc845d46b4a49ac",
+          "path": "site/src/content/docs/handbook/beginners.md"
+        },
+        {
+          "hash": "7443b63524ba06d3128b4513f3f861b0c58d8e6b637311c7c51d6708e2b51be7",
+          "path": "site/src/content/docs/handbook/getting-started.md"
+        },
+        {
+          "hash": "065b0b0b86ee2392e677d11189efd83cfb272291d2b8821b98b8aec82e0650e6",
+          "path": "site/src/content/docs/handbook/index.md"
+        },
+        {
+          "hash": "3a7b3701dfdeaa2af1364db0e0445b5c8240dd6805438f56874690c69f212c60",
+          "path": "site/src/content/docs/handbook/reference.md"
+        },
+        {
+          "hash": "e71929be4c6d9faa255d0cc879051045d1664e8d69160b870a622443c6902c60",
+          "path": "site/src/pages/index.astro"
+        },
+        {
+          "hash": "6ca4ecd61fbdd27648ea38952aafb316af95ae3a2f26b24c6efc5ac16bc084a8",
+          "path": "site/src/site-config.ts"
+        },
+        {
+          "hash": "71e19700938a5e684ad890d40225eabde6c884130eed8b5fec0022cc55ac45fa",
+          "path": "site/src/styles/global.css"
+        },
+        {
+          "hash": "2c6bb780671abe93b5c8517079beb38046532601e6f2246c024c3831d85a67ae",
+          "path": "site/src/styles/starlight-custom.css"
+        }
+      ],
+      "globs": [
+        "site/**"
+      ],
+      "importConfidence": "full",
+      "name": "site",
+      "origin": "authored",
+      "role": "site",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    }
+  ],
+  "doors": [
+    {
+      "checksCount": 4,
+      "commands": [
+        {
+          "job": "build-and-test",
+          "step": "Atlas check",
+          "text": "npx --yes @dogfood-lab/atlas@1.19.0 check"
+        },
+        {
+          "job": "build-and-test",
+          "step": "Check",
+          "text": "cargo check --workspace"
+        },
+        {
+          "job": "build-and-test",
+          "step": "Clippy",
+          "text": "cargo clippy --workspace -- -D warnings"
+        },
+        {
+          "job": "build-and-test",
+          "step": "Test",
+          "text": "cargo test --workspace"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/ci.yml",
+      "landings": [],
+      "mentions": [],
+      "name": "CI",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "ship-export",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "ship-hull",
+          "depth": 0,
+          "files": 15
+        },
+        {
+          "boundary": "ship-schema",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "ship-testkit",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-export/src/gltf.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-export/src/lib.rs",
+          "runKind": "checks",
+          "via": "cargo check"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/caps.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/curves.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/deck.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/generate.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/lib.rs",
+          "runKind": "checks",
+          "via": "cargo check"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/loft.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/longitudinal.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/rail.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/rig.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/sails.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/section.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/station.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-hull/src/superstructure.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-schema/src/lib.rs",
+          "runKind": "checks",
+          "via": "cargo check"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-schema/src/migrate.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-schema/src/style.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-schema/src/validate.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-schema/src/variant.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-testkit/src/lib.rs",
+          "runKind": "checks",
+          "via": "cargo check"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "crates/ship-testkit/tests/",
+          "runKind": "executes",
+          "via": "cargo test"
+        }
+      ],
+      "runsCount": 22,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "pull_request",
+          "paths": [
+            ".github/workflows/**",
+            "Cargo.lock",
+            "Cargo.toml",
+            "atlas/**",
+            "crates/**",
+            "site/astro.config.mjs",
+            "site/package-lock.json",
+            "site/package.json"
+          ]
+        },
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "push",
+          "paths": [
+            ".github/workflows/**",
+            "Cargo.lock",
+            "Cargo.toml",
+            "atlas/**",
+            "crates/**",
+            "site/astro.config.mjs",
+            "site/package-lock.json",
+            "site/package.json"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/cache",
+        "actions/checkout",
+        "actions/setup-node",
+        "dtolnay/rust-toolchain"
+      ],
+      "usesWorkflowToken": false
+    }
+  ],
+  "edges": [
+    {
+      "from": "ship-export",
+      "kind": "file",
+      "to": "ship-hull"
+    },
+    {
+      "from": "ship-export",
+      "kind": "file",
+      "to": "ship-schema"
+    },
+    {
+      "from": "ship-hull",
+      "kind": "file",
+      "to": "ship-schema"
+    },
+    {
+      "from": "ship-testkit",
+      "fromTests": true,
+      "kind": "file",
+      "to": "ship-export"
+    },
+    {
+      "from": "ship-testkit",
+      "kind": "file",
+      "to": "ship-hull"
+    },
+    {
+      "from": "ship-testkit",
+      "kind": "file",
+      "to": "ship-schema"
+    }
+  ],
+  "generatedFrom": {
+    "commit": "2de16f4047c997265d57ffd59c02e3725a8a472f",
+    "tracked": 56
+  },
+  "landings": [
+    {
+      "readers": [
+        {
+          "by": "Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "crates/ship-testkit/Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "crates/ship-export",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "crates/ship-export/Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "crates/ship-testkit/Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "crates/ship-hull",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "crates/ship-export/Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "crates/ship-hull/Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "crates/ship-testkit/Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "crates/ship-schema",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "crates/ship-testkit",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook",
+      "writers": []
+    }
+  ],
+  "overlaps": [],
+  "submodules": [],
+  "symlinks": [],
+  "testFiles": 18,
+  "unassigned": []
+}

@@ -1,0 +1,201 @@
+{
+  "authored": [
+    ".github/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 1,
+      "importedBy": [
+        "ship-export",
+        "ship-hull",
+        "ship-testkit"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "ship-schema",
+      "partLabel": "ship-schema"
+    },
+    {
+      "doors": 1,
+      "importedBy": [
+        "ship-export",
+        "ship-testkit"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "ship-hull",
+      "partLabel": "ship-hull"
+    },
+    {
+      "doors": 1,
+      "importedBy": [],
+      "importedByTests": [
+        "ship-testkit"
+      ],
+      "kind": "part",
+      "name": "ship-export",
+      "partLabel": "ship-export"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-24; no file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "2b8956a28e5aab28a09a61df32ff824f9bcc3b5c",
+      "generatedAt": "2026-09-24T21:50:53.324Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "2de16f4047c997265d57ffd59c02e3725a8a472f",
+  "defaultBranch": "main",
+  "derived": "7 parts, mostly Rust (32 files). Work enters through 1 door; the busiest is CI, which reaches 4 parts.",
+  "doors": [
+    {
+      "checks": [
+        "crates/ship-export/src/lib.rs",
+        "crates/ship-hull/src/lib.rs",
+        "crates/ship-schema/src/lib.rs",
+        "crates/ship-testkit/src/lib.rs"
+      ],
+      "checksCount": 4,
+      "checksMore": 1,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "ship-export",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "ship-hull",
+          "depth": 0,
+          "files": 15
+        },
+        {
+          "boundary": "ship-schema",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "ship-testkit",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "crates/ship-export/src/gltf.rs",
+        "crates/ship-hull/src/caps.rs",
+        "crates/ship-hull/src/curves.rs",
+        "crates/ship-hull/src/deck.rs",
+        "crates/ship-hull/src/generate.rs",
+        "crates/ship-hull/src/loft.rs",
+        "crates/ship-hull/src/longitudinal.rs",
+        "crates/ship-hull/src/rail.rs",
+        "crates/ship-hull/src/rig.rs",
+        "crates/ship-hull/src/sails.rs",
+        "crates/ship-hull/src/section.rs",
+        "crates/ship-hull/src/station.rs",
+        "crates/ship-hull/src/superstructure.rs",
+        "crates/ship-schema/src/migrate.rs",
+        "crates/ship-schema/src/style.rs",
+        "crates/ship-schema/src/validate.rs",
+        "crates/ship-schema/src/variant.rs",
+        "crates/ship-testkit/tests/"
+      ],
+      "runsCount": 18,
+      "runsMore": 15,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 8 paths",
+        "on a push to main touching 8 paths",
+        "or by hand"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "ship-export",
+      "fromTests": false,
+      "to": "ship-hull"
+    },
+    {
+      "from": "ship-export",
+      "fromTests": false,
+      "to": "ship-schema"
+    },
+    {
+      "from": "ship-hull",
+      "fromTests": false,
+      "to": "ship-schema"
+    }
+  ],
+  "generated": [],
+  "generatedAt": "2026-09-24T22:02:42.864Z",
+  "limits": [
+    "3 writes use paths built at run time and are not named here.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "root": "the repository root",
+    "ship-export": "ship-export",
+    "ship-hull": "ship-hull",
+    "ship-schema": "ship-schema",
+    "ship-testkit": "ship-testkit",
+    "site": "the site"
+  },
+  "parts": 7,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/asset-forge",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "crates/ship-hull/src/caps.rs",
+    "crates/ship-schema/src/defaults.rs"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 18,
+  "testedBy": {
+    "ship-export": 2,
+    "ship-hull": 13,
+    "ship-schema": 5,
+    "ship-testkit": 1
+  },
+  "unnamedWrites": 3,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [],
+  "written": 0
+}

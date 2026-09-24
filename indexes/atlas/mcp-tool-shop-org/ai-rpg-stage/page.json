@@ -1,0 +1,411 @@
+{
+  "authored": [
+    "audio/",
+    "docs/",
+    "fixtures/",
+    "root",
+    "site/"
+  ],
+  "authoredWritten": [
+    {
+      "byPeople": 5,
+      "commits": 5,
+      "place": ".github/upstream-pins.env",
+      "writers": [
+        ".github/workflows/bump-upstream-pins.yml"
+      ]
+    }
+  ],
+  "breaks": [
+    {
+      "doors": 1,
+      "importedBy": [
+        "stage"
+      ],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "client",
+      "partLabel": "client"
+    },
+    {
+      "doors": 1,
+      "importedBy": [
+        "tools"
+      ],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "stage",
+      "partLabel": "stage"
+    },
+    {
+      "doors": 1,
+      "importedBy": [
+        "stage"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "fixtures",
+      "partLabel": "fixtures"
+    },
+    {
+      "doors": 1,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "tools",
+      "partLabel": "tools"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-24; no file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "ef2f9cb83ad47e0b9f7e2e8b490a7a23219a928d",
+      "generatedAt": "2026-09-24T21:54:02.581Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "5e9e75f945d6fed8b119d8709e20e12a72d11a34",
+  "defaultBranch": "main",
+  "derived": "12 parts, mostly GDScript (36 files). Work enters through 4 doors; the busiest is the game, which reaches 3 parts. People run the game.",
+  "doors": [
+    {
+      "app": "game",
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "project.godot",
+      "id": "project.godot#the game",
+      "kind": "command",
+      "landings": [],
+      "name": "the game",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "stage",
+          "depth": 0,
+          "files": 16
+        },
+        {
+          "boundary": "client",
+          "depth": 2,
+          "files": 5
+        },
+        {
+          "boundary": "fixtures",
+          "depth": 2,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "stage/diorama.tscn"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "ci",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "tools",
+          "depth": 0,
+          "files": 2
+        }
+      ],
+      "runs": [
+        "tools/headless.gd"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 11 paths",
+        "on a push touching 11 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/bump-upstream-pins.yml",
+      "id": ".github/workflows/bump-upstream-pins.yml",
+      "landings": [
+        ".github/upstream-pins.env"
+      ],
+      "name": "Bump upstream pins",
+      "pushes": false,
+      "pushesForReview": true,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [
+        "opens an issue"
+      ],
+      "stages": [
+        ".github/upstream-pins.env"
+      ],
+      "triggers": [
+        "on a schedule (`0 7 * * 1`), Monday at 07:00 UTC",
+        "or by hand"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "stage",
+      "fromTests": false,
+      "to": "client"
+    },
+    {
+      "from": "stage",
+      "fromTests": false,
+      "to": "fixtures"
+    },
+    {
+      "from": "tools",
+      "fromTests": false,
+      "to": "stage"
+    }
+  ],
+  "generated": [
+    {
+      "place": "assets/dimetric/MANIFEST.json",
+      "writers": [
+        "assets/dimetric/andon/build_manifest.py"
+      ]
+    },
+    {
+      "place": "assets/felt/MANIFEST.json",
+      "writers": [
+        "assets/felt/synth_felt_pack.py"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-24T22:02:40.826Z",
+  "limits": [
+    "15 reads use paths built at run time and are not named here.",
+    "5 writes and 2 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "2 commands are built at run time and not followed.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": "project.godot#the game",
+  "partLabels": {
+    ".github": ".github",
+    "assets": "assets",
+    "audio": "audio",
+    "client": "client",
+    "docs": "docs",
+    "entities": "entities",
+    "fixtures": "fixtures",
+    "root": "the repository root",
+    "site": "the site",
+    "stage": "stage",
+    "tests": "tests",
+    "tools": "tools"
+  },
+  "parts": 12,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/ai-rpg-stage",
+  "sequences": [
+    {
+      "entry": "_ready",
+      "file": "stage/diorama.gd",
+      "inner": [],
+      "part": "stage",
+      "partLabel": "stage",
+      "phrase": "ready",
+      "steps": [
+        {
+          "name": "new",
+          "part": "client",
+          "partLabel": "client",
+          "phrase": "new",
+          "receiver": "SceneJoin"
+        },
+        {
+          "name": "new",
+          "part": "stage",
+          "partLabel": "stage",
+          "phrase": "new",
+          "receiver": "LightRig"
+        },
+        {
+          "name": "new",
+          "part": "stage",
+          "partLabel": "stage",
+          "phrase": "new",
+          "receiver": "Dressing"
+        },
+        {
+          "name": "new",
+          "part": "stage",
+          "partLabel": "stage",
+          "phrase": "new",
+          "receiver": "FloorPainter"
+        },
+        {
+          "name": "attach",
+          "part": "stage",
+          "partLabel": "stage",
+          "phrase": "attach",
+          "receiver": "SpriteBinder"
+        },
+        {
+          "name": "zone_extent",
+          "part": "stage",
+          "partLabel": "stage",
+          "phrase": "zone extent",
+          "receiver": "FloorPainter"
+        },
+        {
+          "name": "new",
+          "part": "stage",
+          "partLabel": "stage",
+          "phrase": "new",
+          "receiver": "IsoWorld"
+        }
+      ]
+    },
+    {
+      "entry": "_ready",
+      "file": "stage/playable.gd",
+      "inner": [],
+      "part": "stage",
+      "partLabel": "stage",
+      "phrase": "ready",
+      "steps": [
+        {
+          "name": "new",
+          "part": "client",
+          "partLabel": "client",
+          "phrase": "new",
+          "receiver": "EventBus"
+        },
+        {
+          "name": "new",
+          "part": "client",
+          "partLabel": "client",
+          "phrase": "new",
+          "receiver": "NetworkClient"
+        },
+        {
+          "name": "new",
+          "part": "stage",
+          "partLabel": "stage",
+          "phrase": "new",
+          "receiver": "Session"
+        }
+      ]
+    }
+  ],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "tools/headless.gd"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 22,
+  "testedBy": {
+    "assets": 0,
+    "client": 10,
+    "stage": 13,
+    "tools": 2
+  },
+  "unnamedWrites": 0,
+  "unread": [
+    {
+      "place": ".github/upstream-pins.env",
+      "writers": [
+        ".github/workflows/bump-upstream-pins.yml"
+      ]
+    },
+    {
+      "place": "assets/dimetric/MANIFEST.json",
+      "writers": [
+        "assets/dimetric/andon/build_manifest.py"
+      ]
+    }
+  ],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "assets",
+      "partLabel": "assets",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 3
+}
