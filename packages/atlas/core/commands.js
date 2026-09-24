@@ -110,9 +110,11 @@ const VALUE_SETS = Object.fromEntries(Object.entries(VALUES).map(([tool, flags])
  *
  * builtFrom, when given, is the tracked source a path a build emits is
  * compiled from (core/resolve.js resolveDeclaredPath), or null: a command
- * that runs dist/cli.js runs the CLI src/cli.ts is built into.
+ * that runs dist/cli.js runs the CLI src/cli.ts is built into. emitted is
+ * every path the build emits, with its source (core/resolve.js
+ * emittedFiles), which a glob over the build's output is matched against.
  */
-export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null }) {
+export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null, emitted = () => new Map() }) {
   const dirs = new Set(['']);
   // The commands the repository installs, by the name a step types.
   const installed = new Map();
@@ -171,6 +173,18 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
       const isMatch = picomatch(pattern);
       return [...dirs].filter((dir) => dir !== '' && isMatch(dir)).sort();
     },
+    // The sources of the built files under base whose path relative to base
+    // matches a glob: what a glob over dist/ runs, since dist/ is not tracked.
+    builtMatching(base, globs) {
+      if (globs.length === 0) return [];
+      const isMatch = picomatch(globs.map(stripDot), { dot: false });
+      const out = [];
+      for (const [path, source] of emitted()) {
+        if (base !== '' && !path.startsWith(`${base}/`)) continue;
+        if (isMatch(base ? path.slice(base.length + 1) : path)) out.push(source);
+      }
+      return [...new Set(out)].sort();
+    },
     // Tracked files under base whose path relative to base matches a glob and
     // no ignore pattern. An ignore pattern also ignores what is under it.
     filesMatching(base, globs, ignore = []) {
@@ -208,6 +222,9 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
       };
       for (const path of view.filesUnder(dir)) consider(dir ? path.slice(dir.length + 1) : path);
       for (const found of dirs) if (found !== '' && (dir === '' || found.startsWith(`${dir}/`))) consider(dir ? found.slice(dir.length + 1) : found);
+      // A build's output is there when the command runs, though not tracked;
+      // each built file is handed on by its path and runs its source.
+      for (const path of emitted().keys()) if (dir === '' || path.startsWith(`${dir}/`)) consider(dir ? path.slice(dir.length + 1) : path);
       return [...new Set(out)].sort();
     },
     // A matched set written as few runs as it can be without changing what
@@ -899,8 +916,9 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       }
       for (const pattern of patterns) {
         if (/[*?[{]/.test(pattern)) {
-          const base = dir;
-          matched(repo.compact(repo.filesMatching(base, [pattern])), frame, null);
+          // A glob over a build's output runs the sources it is built from.
+          const found = repo.filesMatching(dir, [pattern]);
+          matched(repo.compact(found.length > 0 ? found : repo.builtMatching(dir, [pattern])), frame, null);
         } else file(pattern, dir, frame, { directories: true });
       }
     },

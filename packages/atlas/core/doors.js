@@ -38,8 +38,8 @@ const ACTION_SENDS = [
  *   hands to a child process (core/spawned.js); builtFrom is the source a
  *   build output is compiled from
  */
-export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom });
+export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom, emitted }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted });
   return [...tracked]
     .filter(isWorkflow)
     .sort()
@@ -59,8 +59,8 @@ export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom 
  *
  * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, commands: Array<{ kind: string, name: string, manifest: string, path: string }> }} input
  */
-export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom });
+export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom, emitted }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted });
   return commands.map((command) => {
     const programs = command.path == null ? [] : (command.paths ?? [command.path]);
     const read = new Map();

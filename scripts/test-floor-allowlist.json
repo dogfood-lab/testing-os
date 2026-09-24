@@ -160,6 +160,14 @@
     {
       "path": "fixtures/atlas/shell-globs/tools/lib/inner/f.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the shell-globs fixture repository that packages/atlas/adapter/page-shell-globs.test.js maps, where a node --test glob selects it by this name, and where it sits decides whether sh's expansion of ** reaches it on Linux. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/built-tests/src/tests/total.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the built-tests fixture repository that packages/atlas/core/built-tests.test.js maps, where node --test is handed a glob over dist/ and must run this source by the name its build output takes. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/built-tests/src/tests/unit/sum.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the built-tests fixture repository that packages/atlas/core/built-tests.test.js maps, where node --test is handed a glob over dist/ and must run this source by the name its build output takes. It holds no test and is never meant to run."
     }
   ]
 }

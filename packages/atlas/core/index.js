@@ -11,7 +11,7 @@ import { deriveEntryPoints, manifestCommands, pythonScripts } from './entry-poin
 import { astLandings, attachLandings, githubChanges, isTestFile, noLandings, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf } from './languages.js';
 import { walkReach } from './reach.js';
-import { attachResolution, resolveDeclaredPath } from './resolve.js';
+import { attachResolution, emittedFiles, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
 
@@ -133,13 +133,14 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   settleSpawnHelpers([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], spawned);
 
   const builtFrom = (path) => (trackedSet.has(path) ? null : resolveDeclaredPath(repoPath, path, trackedSet));
+  const emitted = () => emittedFiles(repoPath, trackedSet);
   const doors = [
-    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom }),
-    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom }),
+    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
+    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
   ];
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
-  attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom }));
+  attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }));
   const edges = [...resolution.edges, ...spawnEdges(graph)]
     .sort((a, b) => a.from.localeCompare(b.from) || a.to.localeCompare(b.to) || a.kind.localeCompare(b.kind));
   for (const door of doors) {
