@@ -1,0 +1,27 @@
+name: ci
+on: [pull_request]
+jobs:
+  headless:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: game
+      - uses: actions/checkout@v4
+        with:
+          repository: example/engine
+          path: engine
+      - name: Build the engine
+        working-directory: engine
+        run: npm ci
+      - name: Headless suite
+        working-directory: game
+        run: ~/godot/godot --headless --path . --script res://tools/headless.gd
+      - name: Unit tests
+        working-directory: game
+        run: godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://test/unit -gexit
+      - name: Lint
+        working-directory: game
+        run: |
+          gdlint scripts/ tools/
+          gdformat --check scripts/

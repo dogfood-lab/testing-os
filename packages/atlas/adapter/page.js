@@ -624,6 +624,8 @@ export function sendPhrases(door) {
   for (const repo of sends.dispatchesTo ?? []) phrases.push(`sends a dispatch to ${repo}`);
   const published = publishPhrase(sends);
   if (published) phrases.push(published);
+  // A Godot export builds the game for a platform, a release's asset.
+  if (sends.exports?.length > 0) phrases.push(`exports the game for ${list(sends.exports)}`);
   if (sends.releases) phrases.push('creates a GitHub release');
   if (sends.deploysPages) phrases.push('deploys the site');
   if (sends.opensIssues) phrases.push(sends.opensIssuesOnFailure ? 'opens an issue when it fails' : 'opens an issue');
@@ -690,7 +692,7 @@ const GATE_EVENTS = {
 
 // A gated job's send keys read back into the shape sendPhrases reads.
 function sendsFrom(keys) {
-  const sends = { dispatchesTo: [], packages: [], publishesTo: [] };
+  const sends = { dispatchesTo: [], exports: [], packages: [], publishesTo: [] };
   for (const key of keys ?? []) {
     const at = key.indexOf(':');
     if (at === -1) sends[key] = true;

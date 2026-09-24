@@ -1,0 +1,10 @@
+name: release
+on:
+  push:
+    tags: ['v*']
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: godot --headless --export-release "Linux" build/harbour.x86_64

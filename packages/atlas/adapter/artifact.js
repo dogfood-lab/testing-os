@@ -371,6 +371,7 @@ function carryDoor(door) {
     sends: {
       ...(door.sends.changesRepositories ? { changesRepositories: true } : {}),
       deploysPages: door.sends.deploysPages,
+      ...(door.sends.exports?.length > 0 ? { exports: [...door.sends.exports] } : {}),
       dispatchesTo: [...door.sends.dispatchesTo],
       ...(door.sends.packages?.length > 0 ? { packages: door.sends.packages.map((entry) => ({ ...entry })) } : {}),
       opensIssues: door.sends.opensIssues,

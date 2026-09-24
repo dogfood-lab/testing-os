@@ -3,6 +3,7 @@ import { join as joinFs, posix } from 'node:path';
 import picomatch from 'picomatch';
 import { parse as parseYaml } from 'yaml';
 import { cargoProject, owningCrate } from './cargo.js';
+import { godotProjects, projectOf, resPath } from './godot.js';
 import { isCodePath } from './languages.js';
 import { wheelPackages } from './python-manifest.js';
 import { storedText } from './text.js';
@@ -1318,6 +1319,42 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const roots = [...app.crate.bins.map((bin) => bin.path), ...(sub === 'build' && app.crate.lib ? [app.crate.lib.path] : [])];
       for (const path of roots) record(stamp({ path, matched: true }, kind, chain));
     },
+    /**
+     * Godot, from the project --path names or the directory it runs in: a
+     * script --script (or -s) names runs, one GUT's runner (-gdir, -gtest)
+     * or gdUnit4's (-a) is handed runs its tests; a scene named on the line,
+     * or with nothing else asked of it the project's main scene, runs as the
+     * game does. --check-only parses the script and runs none of it, and
+     * --import and an export run no script (an export is a send,
+     * core/doors.js).
+     */
+    godot(argv, dir, frame) {
+      const parsed = split(argv, 1, GODOT_VALUE_FLAGS);
+      const at = valueOf(parsed, '--path') != null ? pathFrom(dir, valueOf(parsed, '--path')) : dir;
+      if (at == null) return;
+      const projects = godotProjects(repo.repoPath, repo.tracked);
+      const project = projects.find((entry) => entry.dir === at) ?? projectOf(projects, at ? `${at}/x` : 'x');
+      const place = (text) => (text.startsWith('res://') ? resPath(project, text, repo.tracked) : [pathFrom(at, text), pathFrom(dir, text)].find((path) => path != null && repo.tracked.has(path)) ?? null);
+      const script = valueOf(parsed, '--script', '-s');
+      const exporting = ['--export-release', '--export-debug', '--export-pack'].some((flag) => parsed.values.has(flag));
+      if (exporting || parsed.flags.has('--import') || parsed.flags.has('--editor') || parsed.flags.has('-e') || parsed.flags.has('--version') || parsed.flags.has('--help')) return;
+      const checks = parsed.flags.has('--check-only') ? { ...frame, runKind: 'checks' } : frame;
+      if (script != null) {
+        const path = place(script);
+        if (path) record(stamp({ path }, checks));
+        const base = path ? posix.basename(path) : posix.basename(script);
+        const runner = base === 'gut_cmdln.gd' ? 'gut' : /^GdUnitCmdTool\.gd$/i.test(base) ? 'gdUnit4' : null;
+        if (runner) matched(repo.compact(godotTests(repo, project, runner, argv, place)), frame, runner);
+        return;
+      }
+      const scene = parsed.positional.map(place).find((path) => path != null && /\.t?scn$/.test(path)) ?? project?.mainScene ?? null;
+      if (scene) record(stamp({ path: scene }, frame));
+    },
+    // gdlint and gdformat read the scripts they are handed and run none.
+    gdtoolkit(argv, dir, frame) {
+      const checks = { ...frame, runKind: 'checks' };
+      for (const token of argv.slice(1)) if (!token.startsWith('-')) file(token, dir, checks, { directories: true });
+    },
     none() {},
   };
 
@@ -1328,6 +1365,11 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
   };
 }
 
+const GODOT_BINARY = /^godot(?:[\d.]*|_v[\w.-]+)(?:\.exe)?$/i;
+// The flags Godot takes a value after, written apart; GUT and gdUnit4 read
+// their own after the script.
+const GODOT_VALUE_FLAGS = new Set(['--path', '--script', '-s', '--main-pack', '--render-thread', '--remote-debug', '--position', '--resolution', '--screen', '--display-driver', '--rendering-driver', '--audio-driver', '--xr-mode', '--log-file', '--quit-after', '--export-release', '--export-debug', '--export-pack', '--frame-delay', '--time-scale', '--fixed-fps', '--write-movie', '-a', '--add', '-i', '--ignore', '-c', '--config']);
+
 // The flags cargo and its subcommands take a value after, written apart.
 const CARGO_VALUE_FLAGS = new Set([
   '-C', '-Z', '--config', '--color', '-p', '--package', '--manifest-path', '--bin', '--test', '--example', '--bench', '--target',
@@ -1336,6 +1378,50 @@ const CARGO_VALUE_FLAGS = new Set([
 const CARGO_ALIASES = { b: 'build', c: 'check', t: 'test', r: 'run', d: 'doc' };
 // The subcommands that compile what they select and run none of it.
 const CARGO_CHECKS = new Set(['build', 'check', 'clippy', 'doc', 'fmt', 'install']);
+
+/**
+ * The test files a Godot test runner is handed: GUT's -gdir directories
+ * (test_*.gd in each, and under it with -ginclude_subdirs) and -gtest files,
+ * and gdUnit4's -a paths, a suite being a script that extends
+ * GdUnitTestSuite.
+ */
+function godotTests(repo, project, runner, argv, place) {
+  const out = [];
+  const under = (dir, deep) => repo.filesUnder(dir).filter((path) => path.endsWith('.gd') && (deep || posix.dirname(path) === dir));
+  const directory = (value) => {
+    if (project == null) return null;
+    const rest = posix.normalize(value.replace(/^res:\/\//, '').replace(/\/+$/, '') || '.');
+    if (rest === '..' || rest.startsWith('../')) return null;
+    const path = project.dir ? (rest === '.' ? project.dir : `${project.dir}/${rest}`) : rest === '.' ? '' : rest;
+    return path === '' || repo.dirs.has(path) ? path : null;
+  };
+  if (runner === 'gut') {
+    const deep = argv.includes('-ginclude_subdirs');
+    for (const arg of argv) {
+      const option = /^-(gdir|gtest)=(.*)$/.exec(arg);
+      if (!option) continue;
+      for (const value of option[2].split(',').filter(Boolean)) {
+        if (option[1] === 'gtest') {
+          const found = place(value);
+          if (found) out.push(found);
+          continue;
+        }
+        const dir = directory(value);
+        if (dir != null) out.push(...under(dir, deep).filter((path) => posix.basename(path).startsWith('test_')));
+      }
+    }
+    return out;
+  }
+  for (let i = 0; i < argv.length; i += 1) {
+    if (argv[i] !== '-a' && argv[i] !== '--add') continue;
+    const value = argv[i + 1] ?? '';
+    const found = place(value);
+    const dir = found ? null : directory(value);
+    const candidates = found ? [found] : dir != null ? under(dir, true) : [];
+    out.push(...candidates.filter((path) => /\bextends\s+GdUnitTestSuite\b/.test(repo.text(path) ?? '')));
+  }
+  return out;
+}
 
 /**
  * The crates a cargo command works on, as cargo selects them: those -p
@@ -1510,6 +1596,9 @@ function stamp(entry, frame, via = frame.via) {
 function toolOf(word) {
   if (typeof word !== 'string' || word === '') return null;
   const name = word.includes('/') ? word.slice(word.lastIndexOf('/') + 1) : word;
+  // Godot is a binary a job downloads and runs by its path, ~/godot/godot or
+  // Godot_v4.7-stable_linux.x86_64; it is never a file of the repository.
+  if (GODOT_BINARY.test(name)) return 'godot';
   // A path to a tool's binary is the tool; a path to a tracked file is not.
   if (word.includes('/') && !word.includes('node_modules/.bin/')) return null;
   if (name === 'node' || name === 'nodejs') return 'node';
@@ -1524,6 +1613,7 @@ function toolOf(word) {
   if (name === 'poetry' || name === 'flit' || name === 'pdm') return name === 'poetry' ? 'poetry' : 'pybuild';
   if (name === 'gmake') return 'make';
   if (name === 'tox') return 'none';
+  if (name === 'gdlint' || name === 'gdformat') return 'gdtoolkit';
   if (name === 'cargo') return 'cargo';
   if (name === 'tauri') return 'tauri';
   const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro', 'vite'];
