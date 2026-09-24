@@ -1,0 +1,598 @@
+{
+  "authored": [
+    ".github/",
+    "assets/",
+    "audit/",
+    "dogfood/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 1,
+      "importedBy": [
+        "api-contract",
+        "desktop",
+        "mcp-sprite-server",
+        "state"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "domain",
+      "partLabel": "domain"
+    },
+    {
+      "doors": 1,
+      "importedBy": [
+        "desktop",
+        "state"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "api-contract",
+      "partLabel": "api-contract"
+    },
+    {
+      "doors": 1,
+      "importedBy": [
+        "desktop",
+        "mcp-sprite-server"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "state",
+      "partLabel": "state"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "mcp-sprite-server"
+      ],
+      "target": "packages/mcp-sprite-server/fixtures/golden/",
+      "writers": [
+        "mcp-sprite-server"
+      ]
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 652,
+      "moved": 0,
+      "parts": 14,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-24; 652 files changed content.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "cfb891743d975536ee393631177f9419c82f9768",
+      "generatedAt": "2026-09-24T08:27:41.404Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "67678351f3646a253815501776980898dc612ef6",
+  "defaultBranch": "main",
+  "derived": "15 parts, mostly TypeScript (424 files). Work enters through 3 doors; the busiest is CI, which reaches 4 parts.",
+  "doors": [
+    {
+      "checks": [
+        "packages/domain/src/",
+        "packages/mcp-sprite-server/src/",
+        "packages/state/src/"
+      ],
+      "checksCount": 3,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [
+        "docs/benchmark-assets/",
+        "examples/benchmark-assets/",
+        "packages/mcp-sprite-server/fixtures/golden/"
+      ],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "domain",
+          "depth": 0,
+          "files": 33
+        },
+        {
+          "boundary": "mcp-sprite-server",
+          "depth": 0,
+          "files": 56
+        },
+        {
+          "boundary": "state",
+          "depth": 0,
+          "files": 173
+        },
+        {
+          "boundary": "api-contract",
+          "depth": 1,
+          "files": 4
+        }
+      ],
+      "runs": [
+        "packages/domain/src/ciGates.test.ts",
+        "packages/domain/src/shortcutManifest.test.ts",
+        "packages/domain/src/sizeProfile.test.ts",
+        "packages/domain/src/sprite.test.ts",
+        "packages/domain/src/vector.test.ts",
+        "packages/mcp-sprite-server/src/adapters/storeAdapter.drawing.test.ts",
+        "packages/mcp-sprite-server/src/adapters/storeAdapter.history.test.ts",
+        "packages/mcp-sprite-server/src/adapters/storeAdapter.mcp4.test.ts",
+        "packages/mcp-sprite-server/src/adapters/storeAdapter.playback.test.ts",
+        "packages/mcp-sprite-server/src/adapters/storeAdapter.render.test.ts",
+        "packages/mcp-sprite-server/src/adapters/storeAdapter.selection.test.ts",
+        "packages/mcp-sprite-server/src/adapters/storeAdapter.state.test.ts",
+        "packages/mcp-sprite-server/src/adapters/storeAdapter.test.ts",
+        "packages/mcp-sprite-server/src/adapters/storeAdapter.toolSettings.test.ts",
+        "packages/mcp-sprite-server/src/dogfood/",
+        "packages/mcp-sprite-server/src/resources/catalogResource.test.ts",
+        "packages/mcp-sprite-server/src/server.test.ts",
+        "packages/mcp-sprite-server/src/session/sessionManager.test.ts",
+        "packages/mcp-sprite-server/src/tools/conformance.test.ts",
+        "packages/mcp-sprite-server/src/tools/shared.test.ts",
+        "packages/mcp-sprite-server/src/tools/structuredErrors.test.ts",
+        "packages/mcp-sprite-server/src/version.test.ts",
+        "packages/mcp-sprite-server/src/workflows/cleanupSheet.test.ts",
+        "packages/mcp-sprite-server/src/workflows/generateGoldens.test.ts",
+        "packages/mcp-sprite-server/src/workflows/runner.test.ts",
+        "packages/mcp-sprite-server/src/workflows/stressTest.test.ts",
+        "packages/mcp-sprite-server/src/workflows/walkCycle.test.ts",
+        "packages/state/src/aiStore.test.ts",
+        "packages/state/src/anchorStore.test.ts",
+        "packages/state/src/brushSettingsStore.test.ts",
+        "packages/state/src/bundleExport.test.ts",
+        "packages/state/src/cameraTimelineHelpers.test.ts",
+        "packages/state/src/canvasViewStore.test.ts",
+        "packages/state/src/characterBuildLibrary.test.ts",
+        "packages/state/src/characterBuildStorage.test.ts",
+        "packages/state/src/characterHelpers.test.ts",
+        "packages/state/src/characterPresetHelpers.test.ts",
+        "packages/state/src/characterSceneBridge.test.ts",
+        "packages/state/src/characterStore.test.ts",
+        "packages/state/src/collapseOverlay.test.ts",
+        "packages/state/src/contextualShortcuts.test.ts",
+        "packages/state/src/contractParity.test.ts",
+        "packages/state/src/coordination.test.ts",
+        "packages/state/src/copilotAnalysis.test.ts",
+        "packages/state/src/copilotContext.test.ts",
+        "packages/state/src/copilotVision.test.ts",
+        "packages/state/src/exportSettings.test.ts",
+        "packages/state/src/hintStore.test.ts",
+        "packages/state/src/integration.test.ts",
+        "packages/state/src/interchange.test.ts",
+        "packages/state/src/layerStore.test.ts",
+        "packages/state/src/libraryIndex.test.ts",
+        "packages/state/src/libraryStore.test.ts",
+        "packages/state/src/locomotionStore.test.ts",
+        "packages/state/src/motionStore.test.ts",
+        "packages/state/src/ollamaGenerate.test.ts",
+        "packages/state/src/packLibrary.test.ts",
+        "packages/state/src/packagingSettings.test.ts",
+        "packages/state/src/paletteRemap.test.ts",
+        "packages/state/src/paletteStore.test.ts",
+        "packages/state/src/partLibrary.test.ts",
+        "packages/state/src/partPromotion.test.ts",
+        "packages/state/src/persistenceHardening.test.ts",
+        "packages/state/src/projectStore.test.ts",
+        "packages/state/src/proposalApply.test.ts",
+        "packages/state/src/proposalGenerate.test.ts",
+        "packages/state/src/proposalModel.test.ts",
+        "packages/state/src/provenanceStore.test.ts",
+        "packages/state/src/referenceStore.test.ts",
+        "packages/state/src/resolveCameraAtTick.test.ts",
+        "packages/state/src/sampleContent.test.ts",
+        "packages/state/src/sandboxStore.test.ts",
+        "packages/state/src/sceneComparison.test.ts",
+        "packages/state/src/sceneEditorStore.test.ts",
+        "packages/state/src/sceneHistory.test.ts",
+        "packages/state/src/sceneHistoryEngine.test.ts",
+        "packages/state/src/scenePlaybackStore.test.ts",
+        "packages/state/src/sceneProvenance.test.ts",
+        "packages/state/src/sceneProvenanceDrilldown.test.ts",
+        "packages/state/src/sceneProvenancePersistence.test.ts",
+        "packages/state/src/sceneRestore.test.ts",
+        "packages/state/src/seedingHardening.test.ts",
+        "packages/state/src/selectionStore.test.ts",
+        "packages/state/src/showcase.test.ts",
+        "packages/state/src/silhouette.test.ts",
+        "packages/state/src/sizeProfileStore.test.ts",
+        "packages/state/src/sketchDab.test.ts",
+        "packages/state/src/sketchIntegration.test.ts",
+        "packages/state/src/sketchLayer.test.ts",
+        "packages/state/src/sketchTool.test.ts",
+        "packages/state/src/sliceStore.test.ts",
+        "packages/state/src/snapshotStore.test.ts",
+        "packages/state/src/spriteAnalysis.test.ts",
+        "packages/state/src/spriteEditorStore.test.ts",
+        "packages/state/src/spriteExport.test.ts",
+        "packages/state/src/spriteHistoryEngine.test.ts",
+        "packages/state/src/spriteImportExport.test.ts",
+        "packages/state/src/spritePersistence.test.ts",
+        "packages/state/src/spriteRaster.removeCorners.test.ts",
+        "packages/state/src/spriteRaster.test.ts",
+        "packages/state/src/spriteTransform.test.ts",
+        "packages/state/src/spriteValidation.test.ts",
+        "packages/state/src/starterRecipes.test.ts",
+        "packages/state/src/structuredValueSummary.test.ts",
+        "packages/state/src/syncLayers.test.ts",
+        "packages/state/src/templateLibrary.test.ts",
+        "packages/state/src/timelineStore.test.ts",
+        "packages/state/src/toolStore.test.ts",
+        "packages/state/src/translationComparison.test.ts",
+        "packages/state/src/translationStore.test.ts",
+        "packages/state/src/validationExportStore.test.ts",
+        "packages/state/src/vectorComparison.test.ts",
+        "packages/state/src/vectorHandoff.test.ts",
+        "packages/state/src/vectorMasterStore.test.ts",
+        "packages/state/src/vectorRasterize.test.ts",
+        "packages/state/src/vectorRegenerate.test.ts",
+        "packages/state/src/workflowHints.test.ts",
+        "packages/state/src/workflowRegression.test.ts",
+        "packages/state/src/workflowStore.test.ts",
+        "packages/state/src/workspaceStore.test.ts"
+      ],
+      "runsCount": 120,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 8 paths",
+        "on a push to main touching 8 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/dogfood.yml",
+      "id": ".github/workflows/dogfood.yml",
+      "landings": [],
+      "name": "Dogfood",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [
+        "sends a dispatch to dogfood-lab/testing-os"
+      ],
+      "stages": [],
+      "triggers": [
+        "by hand"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "api-contract",
+      "fromTests": false,
+      "to": "domain"
+    },
+    {
+      "from": "state",
+      "fromTests": false,
+      "to": "api-contract"
+    },
+    {
+      "from": "state",
+      "fromTests": false,
+      "to": "domain"
+    }
+  ],
+  "generated": [
+    {
+      "place": "docs/benchmark-assets/",
+      "writers": [
+        "packages/mcp-sprite-server/src/dogfood/materialize.test.ts (a test)"
+      ]
+    },
+    {
+      "place": "docs/dogfood/character-concept/",
+      "writers": [
+        "scripts/dogfood-character.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/character-sprite/",
+      "writers": [
+        "scripts/translate-character.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/prop-concept/",
+      "writers": [
+        "scripts/dogfood-prop.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/prop-sprite/",
+      "writers": [
+        "scripts/translate-prop.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage43-creature/",
+      "writers": [
+        "scripts/dogfood-43-creature.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage43-humanoid/",
+      "writers": [
+        "scripts/dogfood-43-humanoid.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage43-prop/",
+      "writers": [
+        "scripts/dogfood-43-prop.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage44-curves/",
+      "writers": [
+        "scripts/dogfood-44-curves.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage44-quality/",
+      "writers": [
+        "scripts/dogfood-44-quality.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage45-feedback/dogfood-log.md",
+      "writers": [
+        "scripts/dogfood-45-feedback.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/vector-master/",
+      "writers": [
+        "scripts/dogfood-vector-master.mjs"
+      ]
+    },
+    {
+      "place": "docs/showcase/stage46/",
+      "writers": [
+        "scripts/showcase-46.mjs"
+      ]
+    },
+    {
+      "place": "docs/showcase/stage47-ollama/",
+      "writers": [
+        "scripts/dogfood-47-ollama.mjs"
+      ]
+    },
+    {
+      "place": "docs/showcase/stage47a-test/",
+      "writers": [
+        "scripts/test-47a-prompt.mjs"
+      ]
+    },
+    {
+      "place": "docs/showcase/stage47b-critique/",
+      "writers": [
+        "scripts/test-47b-critique-loop.mjs"
+      ]
+    },
+    {
+      "place": "docs/visual-recovery/critiques/",
+      "writers": [
+        "scripts/critique-sprite.mjs"
+      ]
+    },
+    {
+      "place": "docs/visual-recovery/hero-sprite/hero-500.png",
+      "writers": [
+        "scripts/hero-sprite.mjs"
+      ]
+    },
+    {
+      "place": "docs/visual-recovery/hero-sprite/hero-silhouette-500.png",
+      "writers": [
+        "scripts/hero-sprite.mjs"
+      ]
+    },
+    {
+      "place": "examples/benchmark-assets/",
+      "writers": [
+        "packages/mcp-sprite-server/src/dogfood/materialize.test.ts (a test)"
+      ]
+    },
+    {
+      "place": "packages/mcp-sprite-server/fixtures/golden/",
+      "writers": [
+        "packages/mcp-sprite-server/src/workflows/verify.ts"
+      ]
+    },
+    {
+      "place": "showcase/",
+      "writers": [
+        "showcase/generate.mjs"
+      ]
+    },
+    {
+      "place": "showcase/previews/",
+      "writers": [
+        "showcase/render-previews.mjs"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-24T08:35:48.481Z",
+  "limits": [
+    "17 import sites could not be resolved.",
+    "1 file uses syntax the parser cannot read (apps/desktop/src/components/VectorReductionPanel.tsx), so what it imports is not known: a bare `&` in JSX text (1).",
+    "2 reads use paths built at run time and are not named here.",
+    "4 writes and 24 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "api-contract": "api-contract",
+    "assets": "assets",
+    "audit": "audit",
+    "desktop": "desktop",
+    "docs": "docs",
+    "dogfood": "dogfood",
+    "domain": "domain",
+    "examples": "examples",
+    "mcp-sprite-server": "mcp-sprite-server",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "showcase": "showcase",
+    "site": "the site",
+    "state": "state"
+  },
+  "parts": 15,
+  "readers": [
+    {
+      "readers": [],
+      "target": "docs/benchmark-assets/"
+    },
+    {
+      "readers": [],
+      "target": "examples/benchmark-assets/"
+    },
+    {
+      "readers": [
+        "packages/mcp-sprite-server/examples/run-workflows.ts"
+      ],
+      "target": "packages/mcp-sprite-server/fixtures/golden/",
+      "tests": 1
+    }
+  ],
+  "repo": "mcp-tool-shop-org/glyphstudio",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "packages/state/src/index.ts",
+    "packages/domain/src/index.ts"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 187,
+  "testedBy": {
+    "api-contract": 5,
+    "desktop": 63,
+    "domain": 140,
+    "mcp-sprite-server": 23,
+    "scripts": 0,
+    "showcase": 0,
+    "state": 145
+  },
+  "unnamedWrites": 0,
+  "unread": [
+    {
+      "place": "docs/benchmark-assets/",
+      "writers": [
+        "packages/mcp-sprite-server/src/dogfood/materialize.test.ts (a test)"
+      ]
+    },
+    {
+      "place": "docs/dogfood/character-sprite/",
+      "writers": [
+        "scripts/translate-character.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/prop-sprite/",
+      "writers": [
+        "scripts/translate-prop.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage43-creature/",
+      "writers": [
+        "scripts/dogfood-43-creature.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage43-humanoid/",
+      "writers": [
+        "scripts/dogfood-43-humanoid.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage43-prop/",
+      "writers": [
+        "scripts/dogfood-43-prop.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage44-curves/",
+      "writers": [
+        "scripts/dogfood-44-curves.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage44-quality/",
+      "writers": [
+        "scripts/dogfood-44-quality.mjs"
+      ]
+    }
+  ],
+  "unreadFiles": 1,
+  "unreadNote": [
+    "And 12 more places."
+  ],
+  "untested": [
+    {
+      "part": "scripts",
+      "partLabel": "scripts",
+      "testedBy": 0
+    },
+    {
+      "part": "showcase",
+      "partLabel": "showcase",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 23
+}
