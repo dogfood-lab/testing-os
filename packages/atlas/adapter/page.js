@@ -1,6 +1,7 @@
 import { isSourcePath } from '../core/history.js';
 import { isTestFile, isTestMaterial, ownTestPair } from '../core/landings.js';
 import { isCodePath, languageOf } from '../core/languages.js';
+import { isImagePath } from './templates.js';
 
 /**
  * The page: how a repository works, written from the recorded facts.
@@ -2263,19 +2264,27 @@ const INSTALLED_ALL = 12;
 const INSTALLED_NAMED = 10;
 
 // "mostly TypeScript (412 files)" when one language holds most of the code
-// files, the two largest otherwise, and nothing when there is no code.
+// files, every language otherwise, and nothing when there is no code. When
+// images are most of the tracked files, the images come first and the code
+// after them: a sprite pack's four scripts are not what it is.
 function languageClause(ctx) {
   const counts = new Map();
+  let images = 0;
   for (const path of ctx.fileOf.keys()) {
+    if (isImagePath(path)) images += 1;
     const language = LANGUAGE_NAMES[languageOf(path)];
     if (language) counts.set(language, (counts.get(language) ?? 0) + 1);
   }
   const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1] || cmp(a[0], b[0]));
+  if (images * 2 > ctx.fileOf.size) {
+    const lead = `, mostly images (${count(images, 'file')})`;
+    return ranked.length === 0 ? lead : `${lead}; code in ${list(ranked.map(([name, n]) => `${name} (${n})`))}`;
+  }
   if (ranked.length === 0) return '';
   const total = ranked.reduce((sum, [, n]) => sum + n, 0);
   const [name, n] = ranked[0];
   if (n * 2 > total) return `, mostly ${name} (${count(n, 'file')})`;
-  return `, in ${list(ranked.slice(0, 2).map(([other, m]) => `${other} (${count(m, 'file')})`))}`;
+  return `, in ${list(ranked.map(([other, m]) => `${other} (${count(m, 'file')})`))}`;
 }
 
 function doorsSentence(ctx, main) {

@@ -94,18 +94,27 @@ function roleByFiles(paths, kinds) {
   return source ? 'code' : null;
 }
 
+export function isImagePath(path) {
+  return IMAGE_EXT.has(extensionOf(baseName(path)));
+}
+
 /**
  * A part that is mostly data (images, JSON, JSON Lines, YAML, CSV) and holds
  * no manifest and no code: logos, fixtures, schemas, a game's world. A tool's
  * settings are configuration however they are written, so they are not data,
  * and neither is a directory named for them (config/, settings/). A .gitkeep
  * holds a directory open and counts for nothing.
+ *
+ * A manifest does not make a part of mostly images configuration: a sprite
+ * pack published as a package is its images, with a package.json beside them
+ * that says how to install them.
  */
 function isData(paths) {
   const kept = paths.filter((path) => baseName(path) !== '.gitkeep');
   if (kept.length === 0) return false;
   const bases = kept.map(baseName);
-  if (bases.some((base) => MANIFEST_NAME.has(base) || CODE_EXT.has(extensionOf(base)) || SCRIPT_EXT.has(extensionOf(base)))) return false;
+  if (bases.some((base) => CODE_EXT.has(extensionOf(base)) || SCRIPT_EXT.has(extensionOf(base)))) return false;
+  if (bases.some((base) => MANIFEST_NAME.has(base))) return bases.filter((base) => IMAGE_EXT.has(extensionOf(base))).length * 2 > kept.length;
   const home = commonDirectory(kept).replace(/\/$/, '');
   if (SETTINGS_DIRS.has(home.slice(home.lastIndexOf('/') + 1).toLowerCase())) return false;
   const data = bases.filter((base) => !SETTINGS_NAME.test(base) && (DATA_EXT.has(extensionOf(base)) || IMAGE_EXT.has(extensionOf(base))));
@@ -128,7 +137,8 @@ function isData(paths) {
  * so it is config unless code, tests included, is a third of its voting files.
  *
  * A part of mostly data with no manifest and no code is data, a role that
- * reads as data and is expected to have no test (isData).
+ * reads as data and is expected to have no test (isData), and so is a part of
+ * mostly images with no code, manifest or not.
  *
  * @param {string[]} paths
  * @param {{ manifest?: boolean }} [options] manifest: the part holds the
