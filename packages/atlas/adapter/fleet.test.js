@@ -62,6 +62,11 @@ function checkoutOf(fixture, origin, env = {}) {
   cpSync(join(FIXTURES, fixture), root, { recursive: true });
   git(root, ['init', '-q']);
   git(root, ['config', 'core.autocrlf', 'false']);
+  // A commit launches `git maintenance run --auto --detach`, which repacks the
+  // fixture's objects moments later; the test that asserts the checkout was
+  // never touched must not race git's own housekeeping.
+  git(root, ['config', 'maintenance.auto', 'false']);
+  git(root, ['config', 'gc.auto', '0']);
   if (origin) git(root, ['remote', 'add', 'origin', origin]);
   commit(root, 'fixture', env);
   return root;
