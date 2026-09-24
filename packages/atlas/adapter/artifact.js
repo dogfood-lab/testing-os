@@ -1,3 +1,4 @@
+import { loadsManifest } from '../core/languages.js';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
 import { roleFor } from './templates.js';
 
@@ -76,7 +77,8 @@ function resolvedFiles(file) {
   const files = [];
   const boundaries = [];
   for (const site of file.imports) {
-    if (site.resolved?.outcome === 'file') files.push(site.resolved.path);
+    // A test that loads package.json for the version tests no part by it.
+    if (site.resolved?.outcome === 'file' && !loadsManifest(site)) files.push(site.resolved.path);
     else if (site.resolved?.outcome === 'boundary') boundaries.push(site.resolved.boundary);
   }
   return { files, boundaries };

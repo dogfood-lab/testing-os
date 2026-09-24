@@ -7,6 +7,7 @@ import { commandLines, repositoryView } from './commands.js';
 import { isTestFile, isTestMaterial } from './landings.js';
 import { declaredDependencies, importName } from './python-manifest.js';
 import { projectFile, tscOutput } from './tool-configs.js';
+import { loadsManifest } from './languages.js';
 
 const EXTENSIONS = ['.ts', '.tsx', '.mts', '.cts', '.js', '.mjs', '.cjs', '.jsx'];
 // node16/nodenext TypeScript imports the emitted .js name. The source is the
@@ -114,6 +115,7 @@ function collectEdges(boundaries, boundaryByFile) {
         let to = null;
         let kind = null;
         if (resolved.outcome === 'file') {
+          if (loadsManifest(site)) continue;
           to = boundaryByFile.get(resolved.path) ?? null;
           kind = 'file';
         } else if (resolved.outcome === 'boundary') {

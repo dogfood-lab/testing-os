@@ -434,7 +434,7 @@ function collectScript(root) {
     if (!fn) return;
     if (isResolveCall(fn)) {
       const literal = jsString(node.childForFieldName('arguments')?.namedChildren[0] ?? null);
-      if (literal != null) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node) });
+      if (literal != null) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node), locates: true });
       return;
     }
     const isImport = fn.type === 'import';

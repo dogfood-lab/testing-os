@@ -3,6 +3,7 @@ import picomatch from 'picomatch';
 import { boundaryRoot } from './entry-points.js';
 import { isWorkflow } from './doors.js';
 import { writeGuards } from './guards.js';
+import { loadsManifest } from './languages.js';
 
 // The destination argument of each write call. A rename or copy lands on its
 // second argument; the first is where the bytes came from.
@@ -1763,11 +1764,12 @@ export function attachLandings({ files, doors, boundaries, places }) {
   for (const file of testReads) {
     for (const read of file.reads) add(readers, read.target, { ...readerEntry(file.path, read), fromTests: true });
   }
-  // Code that imports a module something writes reads that module.
+  // Code that imports a module something writes reads that module, and code
+  // that loads a manifest reads the manifest.
   for (const file of own) {
     for (const site of Array.isArray(file.imports) ? file.imports : []) {
       const path = site.resolved?.outcome === 'file' ? site.resolved.path : null;
-      if (path == null || path === file.path || !output(path)) continue;
+      if (path == null || path === file.path || (!output(path) && !loadsManifest(site))) continue;
       add(readers, path, { by: file.path, call: 'import', confidence: 'ast' });
     }
   }
