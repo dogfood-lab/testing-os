@@ -2,6 +2,22 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **Workspace members resolve without `node_modules`.** Members declared in `pnpm-workspace.yaml` or `package.json` `workspaces` resolve from their manifests, so a clean clone, an installed tree and a built tree map to the same bytes; glyphstudio (8 workspace edges) and attestia (52) had mapped with no edges when clean and failed `atlas check` after `pnpm install`. An import that resolves to nothing is always counted, never dropped, with its reason: an undeclared package, a `workspace:` spec with no member, a missing `file:` or `link:` spec.
+- **A Dockerfile's `ENTRYPOINT` or `CMD` is the run.** Traced through stages, `WORKDIR` and `COPY` (including `--from=`) to the tracked or built-output file it starts; attestia's image door had "checked packages/" while starting its node's HTTP server.
+- **A publish names what it sends.** `vsce publish` sends to the VS Code Marketplace and `ovsx publish` to Open VSX, making the extension a published door; `npm publish` under `working-directory`, `cd`, `-w` or `--workspaces` names the package at that directory, and one chosen at run time is said as chosen by the tag; `--dry-run` sends nothing. runforge-vscode had read "not published from here" and attestia's bundle had no name.
+- **Job-level and step-level gates on the event, ref, ref type and inputs.** A run inside a job gated to one trigger is never credited to another's sentence; `ref_type == 'tag'` gates to the tag; an `inputs.dry_run` default is said ("when run by hand with dry_run false, it also publishes"); `||` is read one alternative at a time. ollama-intern-mcp's hand-only cloud smoke had been listed under the pull-request door.
+- **A write rooted at a function parameter is settled from its calls.** Up to three hops, in JavaScript and TypeScript; a placeholder directory (`.gitkeep`) never receives one, and `dist/` and `node_modules/` count as untracked output. taste-engine's backup helper, given an `--output`, had been said to write this repository's `canon/`.
+- **"Where to start" begins at the pull-request door's entry.** Whenever the busiest door is not the one a pull request goes through (release, deploy and schedule triggers included) the chain starts there, at the door's entry point rather than the first helper it names, and passes over tests to the code they import; a tie for busiest is stated and broken toward the pull-request door. attestia's chain had given up, glyphstudio's ended in a test, claude-rpg's started at a coverage script.
+- **Parse failures name their construct, and absence claims are qualified.** A bare `&` in JSX text is named; "nothing writes to a tracked place", "no part is imported by another" and the like carry the count of files the parser could not read, since ollama-intern-mcp's two unparsed generators had turned "cannot read" into "nothing writes".
+- **A callback handed to a registrar is not a step, and an early return is an alternative.** ollama-intern-mcp's tool handlers had been listed as steps of `main`, and an empty-query return spliced ahead of the search it replaces; the page now says "Or, when the query is empty, X does … instead." once.
+- **A child process connects parts.** A spawn that starts a module of this repository (`python -m <package>`, `node <file>`, `process.execPath`) is an edge of kind `spawns` shown under "What breaks what" and in reach; `git` and `gh` are said as "runs git". runforge-vscode's extension had no path to the `python/` runner it starts.
+- **A test that rewrites tracked files is their writer.** Listed under Generated as "(a test)" and credited to the door that runs the test; Pillow's `img.save` is a write. glyphstudio's materialize test rewrites ten tracked files on every run and sprite-foundry-packs' preview script writes its banners.
+- **The first line names every language, and image packs are data.** "19 parts, mostly images (6651 files); code in JavaScript (2), TypeScript (2) and Python (1)"; Python files outside any manifest are counted; a part of mostly images with no code is proposed as `data` even when it holds a manifest (committed boundary files keep their role).
+- **Prose.** A single command built at run time reads "…, and it is in tests".
+
 ## [1.16.0] — 2026-09-24
 
 ### Added
