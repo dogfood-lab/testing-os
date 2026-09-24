@@ -102,9 +102,10 @@ test('the sentences are the ones the committed markdown carries', () => {
     'People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, portfolio, report and swarm.',
     'That reaches dogfood-swarm (1 file), findings (2 files) and verify (10 files).',
     'It commits indexes/ and records/, then pushes.',
-    // The schemas build is tsc, which checks what it compiles and runs none of it.
-    'self-dogfood runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs, checks packages/schemas/src/, and sends a dispatch to dogfood-lab/testing-os.',
-    'swarm (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, report and schemas, and writes to dogfood/roadmap/.',
+    // The schemas build is tsc, which checks what it compiles and runs none of
+    // it; the build's prebuild step stamps the version blocks.
+    'self-dogfood runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs, checks packages/schemas/src/, writes to README.md, docker/Dockerfile and package-lock.json, and sends a dispatch to dogfood-lab/testing-os.',
+    'swarm (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, report and schemas, writes to dogfood/roadmap/ and policies/repos/, and runs git.',
     'Read those in order to follow one dogfood submission end to end.',
     'Regenerate with npx --yes @dogfood-lab/atlas map.',
     'Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.',
@@ -337,10 +338,14 @@ test('the derived views render their lists, caps and empty cases from page.json 
   assert.ok(html.indexOf('<h2>What tends to change together</h2>') < html.indexOf('<h2>What no test touches</h2>'));
   assert.ok(html.indexOf('<h2>Helpers that look duplicated</h2>') < html.indexOf('<h2>Generated, never hand-edited</h2>'));
 
-  const empty = render.renderPage({ ...page, testFiles: 0, untested: [], untestedNote: ['No test files were found by name.'], unread: [], unreadNote: [], duplicates: [], duplicatesLead: null, duplicatesNote: [] }, { repo: page.repo });
+  const nothing = { ...page, testFiles: 0, untested: [], untestedNote: ['No test files were found by name.'], unread: [], unreadNote: [], duplicates: [], duplicatesLead: null, duplicatesNote: [] };
+  const empty = render.renderPage({ ...nothing, unreadFiles: 0 }, { repo: page.repo });
   assert.ok(empty.includes('<h2>What no test touches</h2>\n<p>No test files were found by name.</p></section>'));
   assert.ok(empty.includes('<h2>Written but never read</h2>\n<p>Every written place has a reader.</p></section>'));
   assert.ok(empty.includes('<h2>Helpers that look duplicated</h2>\n<p>No two parts export a helper that looks alike.</p></section>'));
+  // A claim that nothing looks alike covers only the files the parser read.
+  const qualified = render.renderPage({ ...nothing, unreadFiles: 2 }, { repo: page.repo });
+  assert.ok(qualified.includes('<h2>Helpers that look duplicated</h2>\n<p>No two parts export a helper that looks alike in the files this map could read; 2 files could not be.</p></section>'));
   const reached = render.renderPage({ ...page, testFiles: 5, untested: [], untestedNote: [] }, { repo: page.repo });
   assert.ok(reached.includes('<h2>What no test touches</h2>\n<p>Every code part is imported by at least one test.</p></section>'));
 
@@ -395,9 +400,11 @@ test('a method is named with the class it is called on, and parts read as "the t
 });
 
 test('the hand-authored sentence names a root-level part as the markdown does', () => {
-  const fixture = { ...page, authored: ['docs/', 'root'], partLabels: { ...page.partLabels, root: 'the repository root' }, unnamedWrites: 0 };
+  const fixture = { ...page, authored: ['docs/', 'root'], partLabels: { ...page.partLabels, root: 'the repository root' }, unnamedWrites: 0, unreadFiles: 0 };
   const text = plain(render.renderPage(fixture, { repo: page.repo }));
   assert.ok(text.includes('People write docs/ and the repository root. Nothing in this repository writes to them.'), text.slice(text.indexOf('People write'), text.indexOf('People write') + 120));
+  const unread = plain(render.renderPage({ ...fixture, unreadFiles: 1 }, { repo: page.repo }));
+  assert.ok(unread.includes('People write docs/ and the repository root. Nothing in the files this map could read writes to them; 1 file could not be.'), unread.slice(unread.indexOf('People write'), unread.indexOf('People write') + 160));
   // A write whose path is built at run time could land in them, and the page says so.
   const caveat = plain(render.renderPage({ ...fixture, unnamedWrites: 1 }, { repo: page.repo }));
   assert.ok(caveat.includes('People write docs/ and the repository root; 1 write with a path built at run time may land here.'), caveat.slice(caveat.indexOf('People write'), caveat.indexOf('People write') + 120));
@@ -419,8 +426,10 @@ test('a stamped block, the door a reading starts at, and a door with no path rea
 });
 
 test('with nothing written, the never-read section says so rather than that every place is read', () => {
-  const html = render.renderPage({ ...page, unread: [], unreadNote: [], written: 0 }, { repo: page.repo });
+  const html = render.renderPage({ ...page, unread: [], unreadNote: [], written: 0, unreadFiles: 0 }, { repo: page.repo });
   assert.ok(html.includes('<h2>Written but never read</h2>\n<p>No place this map can see is written, so none goes unread.</p></section>'));
+  const unread = render.renderPage({ ...page, unread: [], unreadNote: [], written: 0, unreadFiles: 3 }, { repo: page.repo });
+  assert.ok(unread.includes('<h2>Written but never read</h2>\n<p>No place is written by the files this map could read, so none goes unread; 3 files could not be.</p></section>'));
 });
 
 test('a page.json without sequences renders the section as before', () => {
