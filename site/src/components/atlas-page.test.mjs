@@ -933,3 +933,26 @@ test('the link to write or correct the line opens the boundary file on the branc
     assert.equal(render.summaryEditUrl('o/n', hostile), 'https://github.com/o/n/edit/main/atlas/boundaries.yaml', String(hostile));
   }
 });
+
+// A Tauri binary and a Godot project's main scene, as page.js words them:
+// fixtures/atlas/cargo-manifests and fixtures/atlas/godot-project give these
+// sentences in the markdown (packages/atlas/adapter/page-cargo-apps.test.js,
+// packages/atlas/core/godot-project.test.js).
+test('a desktop app and a game read as the markdown words them', () => {
+  const door = (fields) => ({ checks: [], checksCount: 0, checksMore: 0, kind: 'command', landings: [], pushes: false, reach: [], runsCount: 1, runsMore: 0, sends: [], stages: [], triggers: [], ...fields });
+  const desktop = door({ app: 'desktop', file: 'apps/desktop/src-tauri/Cargo.toml', id: 'apps/desktop/src-tauri/Cargo.toml#forge-desktop', name: 'forge-desktop', runs: ['apps/desktop/src-tauri/src/main.rs'] });
+  const game = door({ app: 'game', file: 'project.godot', id: 'project.godot#the game', name: 'the game', runs: ['scenes/main.tscn'], reach: [{ boundary: 'scenes', depth: 0, files: 1 }] });
+  const text = plain(render.renderPage({ ...page, doors: [game, desktop], mainDoor: game.id, readers: [], unreadFiles: 0 }, { repo: page.repo }));
+  assert.ok(text.includes('forge-desktop (the desktop app people install). Runs apps/desktop/src-tauri/src/main.rs.'), 'what comes in, the desktop app');
+  assert.ok(text.includes('the game (what Godot runs). Starts scenes/main.tscn.'), 'what comes in, the game');
+  assert.ok(text.includes('The game starts scenes/main.tscn.'), 'what happens through the game');
+  assert.ok(text.includes('The game writes nothing this map can see.'), 'who reads the results');
+  assert.ok(text.includes('forge-desktop (the desktop app people install) runs apps/desktop/src-tauri/src/main.rs.'), 'the other doors');
+});
+
+test('a part only its own unit tests touch reads as touched, as the markdown says it', () => {
+  const note = ['inline is tested only by the unit tests in its own files.'];
+  const text = plain(render.renderPage({ ...page, testFiles: 2, untested: [], untestedNote: note, testedInside: ['inline'], spawnTested: undefined }, { repo: page.repo }));
+  assert.ok(text.includes('Every code part is touched by at least one test.'));
+  assert.ok(text.includes(note[0]));
+});

@@ -2236,8 +2236,11 @@ function testsOnly(ctx, door) {
   const executed = new Set(startRuns(door).filter((run) => run.runKind !== 'checks').map((run) => run.path));
   const files = filesOfRuns(ctx, shownRuns(door, 'executes').filter((path) => executed.has(path))).filter(runsAsCode);
   if (files.length === 0) return (door.runs ?? []).length > 0 ? { checks: true } : null;
-  if (!files.some(isTestFile)) return null;
-  const helpers = files.filter((path) => !isTestFile(path));
+  // cargo test runs a file holding its own unit tests for those tests, and
+  // a GDScript suite is a test by what it extends.
+  const isTest = (path) => isTestFile(path) || ctx.fileOf.get(path)?.testsInside === true || ctx.fileOf.get(path)?.testSuite === true;
+  if (!files.some(isTest)) return null;
+  const helpers = files.filter((path) => !isTest(path));
   if (helpers.some((path) => (ctx.fileOf.get(path)?.importsFiles ?? []).length > 0)) return null;
   return { helpers: helpers.length > 0 };
 }

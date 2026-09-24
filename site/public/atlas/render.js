@@ -194,11 +194,13 @@ function installed(door) {
 }
 
 // page.json carries where an extension is installed from as the page words it,
-// the command a package's entry is, and the package a private member's
-// command is bundled into.
+// the command a package's entry is, the package a private member's command
+// is bundled into, and the app a Tauri binary or a Godot project is.
 function installedAs(door) {
   const bundled = arr(door.bundledInto).map(str);
-  const what = door.kind !== 'package' ? (bundled.length > 0 ? `a command bundled into ${esc(list(bundled))}` : 'a command people run')
+  const what = door.app === 'desktop' ? 'the desktop app people install'
+    : door.app === 'game' ? 'what Godot runs'
+    : door.kind !== 'package' ? (bundled.length > 0 ? `a command bundled into ${esc(list(bundled))}` : 'a command people run')
     : door.runsCommand != null ? `the package&#39;s entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${esc(door.runsCommand)}` : 'runs a program as it loads'}; it is not a library`
     : door.extension ? (door.unpublished ? 'the extension&#39;s entry, not published from here' : `the extension people install from ${esc(str(door.publishedTo))}`)
       : door.unpublished ? 'the package&#39;s entry, not published from here' : 'the package people import';
@@ -213,8 +215,15 @@ function sharedNames(doors) {
   return doors.map((door) => (installed(door) && counts.get(str(door.name)) > 1 ? { ...door, sharedName: true } : door));
 }
 
+// A game starts its main scene, as page.js words it.
 function startVerb(door) {
-  return door?.kind === 'package' ? 'loads' : 'runs';
+  return door?.kind === 'package' ? 'loads' : door?.app === 'game' ? 'starts' : 'runs';
+}
+
+// The game is named as a noun, so it is capitalized where a sentence starts.
+function leadName(door) {
+  const name = str(door?.name);
+  return door?.app === 'game' ? capitalize(name) : name;
 }
 
 function runs(ctx, door) {
@@ -464,7 +473,8 @@ function doorSteps(ctx, door) {
   const steps = [];
   const paths = runs(ctx, door);
   const checked = checks(ctx, door);
-  const subject = installed(door) ? `The ${door.extension ? 'extension' : door.kind} ${startVerb(door)}` : 'The workflow runs';
+  const noun = door.extension ? 'extension' : door.app === 'desktop' ? 'desktop app' : door.app === 'game' ? 'game' : door.kind;
+  const subject = installed(door) ? `The ${noun} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
   if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
   if (checked.length > 0) clauses.push(`${paths.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
@@ -572,7 +582,7 @@ function unreadFiles(ctx) {
 
 function readsSection(ctx) {
   const name = esc(ctx.main.name);
-  if (arr(ctx.main.landings).length === 0) return section('Who reads the results', p(absence('writes', unreadFiles(ctx), name)));
+  if (arr(ctx.main.landings).length === 0) return section('Who reads the results', p(absence('writes', unreadFiles(ctx), esc(leadName(ctx.main)))));
   const groups = arr(ctx.page.readers);
   if (groups.length === 0) return section('Who reads the results', p(`Only ${name} itself reads what it writes.`));
   const bullets = groups.map((group) => {
@@ -723,7 +733,7 @@ function untestedSection(ctx) {
   const note = arr(ctx.page.untestedNote).map((line) => p(esc(line)));
   const body = items.length > 0
     ? [ul(items.map((item) => `<strong>${esc(partName(ctx, item) ?? '')}</strong> is imported by no test.`))]
-    : (Number(ctx.page.testFiles) === 0 ? [] : [p(arr(ctx.page.spawnTested).length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.')]);
+    : (Number(ctx.page.testFiles) === 0 ? [] : [p(arr(ctx.page.spawnTested).length > 0 || arr(ctx.page.testedInside).length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.')]);
   return section('What no test touches', [...body, ...note].join('\n'));
 }
 
