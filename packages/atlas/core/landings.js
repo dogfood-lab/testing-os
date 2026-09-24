@@ -2,7 +2,7 @@ import { extname, posix } from 'node:path';
 import picomatch from 'picomatch';
 import { boundaryRoot } from './entry-points.js';
 import { isWorkflow } from './doors.js';
-import { writeGuards } from './guards.js';
+import { mainOnly, writeGuards } from './guards.js';
 import { loadsManifest } from './languages.js';
 
 // The destination argument of each write call. A rename or copy lands on its
@@ -812,6 +812,7 @@ export function astLandings(language, root, path, places) {
 
   const rooted = callerRootedFunctions(root, ctx);
   const paramCalls = recordedCalls(root, calls, ctx);
+  const defaultCalls = leftOutCalls(root, calls, ctx);
   return {
     writes: sortEntries(withoutRedundantDirectories(found.writes, places)),
     dynamicWrites: found.dynamicWrites,
@@ -824,6 +825,7 @@ export function astLandings(language, root, path, places) {
     ...(Object.keys(rooted).length > 0 ? { callerRooted: rooted } : {}),
     ...(found.pendingParams.length > 0 ? { pendingParams: found.pendingParams } : {}),
     ...(paramCalls.length > 0 ? { paramCalls } : {}),
+    ...(defaultCalls.length > 0 ? { defaultCalls } : {}),
   };
 }
 
@@ -856,7 +858,30 @@ function recordedCalls(root, calls, ctx) {
       const fields = passed.fields ? Object.fromEntries(Object.entries(passed.fields).map(([name, values]) => [name, values.map(compactValue)])) : null;
       return { values: passed.values.map(compactValue), ...(fields ? { fields } : {}) };
     });
-    if (args.some((arg) => arg.values.length > 0 || Object.values(arg.fields ?? {}).some((values) => values.length > 0))) out.push({ ...target, args });
+    if (args.some((arg) => arg.values.length > 0 || Object.values(arg.fields ?? {}).some((values) => values.length > 0))) out.push({ ...target, args, ...(mainOnly(node, false) ? { main: true } : {}) });
+  }
+  return out;
+}
+
+/**
+ * The calls a file makes to a module-level function of its own or to one it
+ * imports, with the positions each leaves out (past its last argument, or
+ * passed undefined) and whether it runs only when the file is the program,
+ * for the defaults settleParamPaths settles.
+ */
+function leftOutCalls(root, calls, ctx) {
+  if (ctx.python) return [];
+  const local = new Set(moduleFunctions(root, false).map(([name]) => name));
+  const imports = scriptImports(root);
+  const out = [];
+  for (const node of calls) {
+    const fn = node.childForFieldName('function');
+    if (fn?.type !== 'identifier') continue;
+    const target = local.has(fn.text) ? { local: fn.text } : imports.has(fn.text) ? { specifier: imports.get(fn.text).specifier, name: imports.get(fn.text).name } : null;
+    if (target == null) continue;
+    const nodes = argumentNodes(node);
+    const unset = nodes.flatMap((arg, index) => (arg.type === 'undefined' || (arg.type === 'identifier' && arg.text === 'undefined') ? [index] : []));
+    out.push({ ...target, count: nodes.length, ...(unset.length > 0 ? { unset } : {}), ...(mainOnly(node, false) ? { main: true } : {}) });
   }
   return out;
 }
@@ -869,6 +894,7 @@ function compactValue(value) {
     ...(value.anchor != null ? { anchor: value.anchor } : {}),
     ...(value.param ? { param: { ...value.param } } : {}),
     ...(value.open && value.tail != null ? { tail: value.tail } : {}),
+    ...(value.defaultOf ? { defaultOf: { ...value.defaultOf } } : {}),
   };
 }
 
@@ -899,22 +925,28 @@ export function settleParamPaths(files, places) {
   for (const file of byPath.values()) {
     if (!file.paramCalls) continue;
     for (const call of file.paramCalls) {
-      let target = null;
-      if (call.local != null) target = `${file.path}#${call.local}`;
-      else {
-        const site = Array.isArray(file.imports) ? file.imports.find((item) => item.specifier === call.specifier && item.resolved?.outcome === 'file') : null;
-        if (site) target = `${site.resolved.path}#${call.name}`;
-      }
+      const target = calleeKey(file, call);
       if (target == null) continue;
       if (!callers.has(target)) callers.set(target, []);
-      callers.get(target).push({ path: file.path, args: call.args });
+      callers.get(target).push({ path: file.path, args: call.args, ...(call.main ? { main: true } : {}) });
+    }
+  }
+  const leaving = new Map();
+  for (const file of byPath.values()) {
+    for (const call of file.defaultCalls ?? []) {
+      const target = calleeKey(file, call);
+      if (target == null) continue;
+      if (!leaving.has(target)) leaving.set(target, []);
+      leaving.get(target).push({ path: file.path, ...call });
     }
   }
   // A test's calls hand the functions it calls temporary copies, so they
   // settle nothing, except the test's calls to its own functions: the test
-  // decides where those write.
-  const roots = (path, fn, param, rest, depth) => {
-    const out = { places: [], outside: false, unread: false };
+  // decides where those write. A place a call hands down from behind the
+  // writer's own main guard is written only when that file is the program,
+  // and is marked so (guards.js).
+  const roots = (path, fn, param, rest, depth, writer, guarded = false) => {
+    const out = { places: [], outside: false, unread: false, unreadFree: false };
     const calls = (callers.get(`${path}#${fn}`) ?? []).filter((call) => !isTestMaterial(call.path) || call.path === path);
     if (calls.length === 0) {
       out.outside = true;
@@ -922,21 +954,27 @@ export function settleParamPaths(files, places) {
     }
     for (const call of calls) {
       const values = passedFor(call.args[param.index], param);
-      if (values.length === 0) out.unread = true;
+      const main = guarded || (call.main === true && call.path === writer);
+      const unread = () => {
+        out.unread = true;
+        if (!main) out.unreadFree = true;
+      };
+      if (values.length === 0) unread();
       for (const value of values) {
         if (boundParam(value)) {
           if (depth + 1 >= PARAM_HOPS) {
-            out.unread = true;
+            unread();
             continue;
           }
           const joined = appendRest(value, rest);
-          const deeper = roots(call.path, value.param.fn, value.param, { text: joined.text, open: joined.open, ...(joined.tail != null ? { tail: joined.tail } : {}) }, depth + 1);
+          const deeper = roots(call.path, value.param.fn, value.param, { text: joined.text, open: joined.open, ...(joined.tail != null ? { tail: joined.tail } : {}) }, depth + 1, writer, main);
           out.places.push(...deeper.places);
           out.outside ||= deeper.outside;
           out.unread ||= deeper.unread;
-        } else if (isHelper(value)) out.unread = true;
+          out.unreadFree ||= deeper.unreadFree;
+        } else if (isHelper(value)) unread();
         else if (outside(value)) out.outside = true;
-        else out.places.push(appendRest(value, rest));
+        else out.places.push({ ...appendRest(value, rest), ...(main ? { main: true } : {}) });
       }
     }
     return out;
@@ -948,13 +986,14 @@ export function settleParamPaths(files, places) {
       let theirs = false;
       for (const bound of pending.values) {
         const rest = { text: bound.text, open: bound.open, ...(bound.tail != null ? { tail: bound.tail } : {}) };
-        const found = roots(file.path, bound.param.fn, bound.param, rest, 0);
+        const found = roots(file.path, bound.param.fn, bound.param, rest, 0, file.path);
         theirs ||= found.outside;
         const before = entries.length;
         const land = (value) => {
           const target = shapedLikeNothing(value, pending.call, places) ? shapedTarget(value) : pending.kind === 'write' ? writtenPlace(value, places) : landingOf(value, places);
           if (target == null || (value.rooted && placeholder(target, places))) return;
-          entries.push({ ...landingEntry(target, pending.call, value, places), ...(pending.unless ? { unless: [...pending.unless] } : {}) });
+          const unless = [...new Set([...(pending.unless ?? []), ...(value.main && pending.kind === 'write' ? ['main'] : [])])].sort();
+          entries.push({ ...landingEntry(target, pending.call, value, places), ...(unless.length > 0 ? { unless } : {}) });
         };
         for (const value of found.places) land(value);
         // An argument read as nothing is still what the caller passes: the
@@ -962,7 +1001,7 @@ export function settleParamPaths(files, places) {
         // otherwise the write is theirs.
         if (found.unread) {
           const kept = entries.length;
-          land({ ...rest, rooted: true });
+          land({ ...rest, rooted: true, ...(found.unreadFree ? {} : { main: true }) });
           if (entries.length === kept && entries.length === before) theirs = true;
         }
       }
@@ -975,6 +1014,36 @@ export function settleParamPaths(files, places) {
     delete file.pendingParams;
     delete file.paramCalls;
   }
+  for (const file of byPath.values()) {
+    for (const kind of ['writes', 'reads']) {
+      if (!Array.isArray(file[kind]) || !file[kind].some((entry) => entry.defaultOf)) continue;
+      file[kind] = sortEntries(file[kind].map((entry) => {
+        if (!entry.defaultOf) return entry;
+        const { defaultOf, ...rest } = entry;
+        return kind === 'writes' && defaultRunsAsProgram(defaultOf, file.path, leaving) ? { ...rest, unless: [...new Set([...(rest.unless ?? []), 'main'])].sort() } : rest;
+      }));
+    }
+  }
+  for (const file of byPath.values()) delete file.defaultCalls;
+}
+
+// The function a recorded call names, as path#name.
+function calleeKey(file, call) {
+  if (call.local != null) return `${file.path}#${call.local}`;
+  const site = Array.isArray(file.imports) ? file.imports.find((item) => item.specifier === call.specifier && item.resolved?.outcome === 'file') : null;
+  return site ? `${site.resolved.path}#${call.name}` : null;
+}
+
+/**
+ * Whether a parameter's default is taken only when the writer's file runs as
+ * a program: every call this repository makes that leaves the parameter out,
+ * tests aside, is behind the writer's own main guard. With no such call the
+ * default is taken by callers outside the repository, and is left as it was.
+ */
+function defaultRunsAsProgram(of, writer, leaving) {
+  const calls = (leaving.get(`${of.path}#${of.fn}`) ?? [])
+    .filter((call) => !isTestMaterial(call.path) && (call.count <= of.index || (call.unset ?? []).includes(of.index)));
+  return calls.length > 0 && calls.every((call) => call.main && call.path === writer);
 }
 
 // A root with the rest of a path under it.
@@ -1083,6 +1152,7 @@ function withoutRedundantDirectories(writes, places) {
 // whoever runs the code; attachLandings decides whose directory that is.
 function landingEntry(target, call, value, places) {
   const entry = { target, call, confidence: confidenceOf(value, target, places) };
+  if (value.defaultOf) entry.defaultOf = value.defaultOf;
   // A path built from the file's own location with its tail read at run
   // time, which attachLandings keeps for a test when tracked files have its shape.
   if (value.anchor === 'file' && value.open && value.tail != null) entry.fixedHead = true;
@@ -1278,7 +1348,7 @@ function evalJs(node, ctx, depth) {
       const left = node.childForFieldName('left');
       const right = node.childForFieldName('right');
       if (operator === '+') return concat([evalJs(left, ctx, next), evalJs(right, ctx, next)]);
-      if (operator === '||' || operator === '??') return fallback(evalJs(left, ctx, next), evalJs(right, ctx, next));
+      if (operator === '||' || operator === '??') return fallback(evalJs(left, ctx, next), evalJs(right, ctx, next), ctx.file);
       return [];
     }
     case 'ternary_expression':
@@ -2084,12 +2154,18 @@ function fromCaller(values) {
 // argument's default is resolved where the argument would have been, from
 // the directory the command runs in: args.out ?? 'report.json' is the
 // caller's either way.
-function fallback(left, right) {
+function fallback(left, right, file = null) {
   // A parameter's default (dir || '.') is resolved where the parameter would
-  // have been, in the same way.
+  // have been, in the same way. A default that is a place of its own (outDir
+  // ?? join(here, 'corpus')) is taken only by the calls that leave the
+  // parameter out, so it carries the parameter to settleParamPaths.
   const passed = left.length > 0 ? left[0].anchor : null;
   if ((passed === 'argument' || passed === 'param') && left.every((value) => value.anchor === passed)) {
-    return union([left, right.map((value) => (value.anchor == null && !value.rooted && !value.text.includes('://') ? { ...value, anchor: passed } : value))]);
+    const param = passed === 'param' && file != null && left.length === 1 && boundParam(left[0]) ? left[0].param : null;
+    return union([left, right.map((value) => {
+      if (value.anchor == null && !value.rooted && !value.text.includes('://')) return { ...value, anchor: passed };
+      return param && !outside(value) && !isHelper(value) ? { ...value, defaultOf: { path: file, fn: param.fn, index: param.index } } : value;
+    })]);
   }
   if (left.length > 0) return union([left, right]);
   return right.map((value) => (value.anchor == null && !value.open && !value.rooted && (value.text === '.' || value.text === './' || value.text === '') ? atCaller('', 'cwd') : value));
@@ -2358,20 +2434,25 @@ function concat(parts) {
   return acc.filter((value) => !(value.open && value.text === '') || outside(value) || isHelper(value));
 }
 
+function defaultKey(of) {
+  return `${of.path}#${of.fn}@${of.index}`;
+}
+
 function union(lists) {
   return cap(lists.flat());
 }
 
-// The parameter a value is rooted at goes with it through every join.
+// The parameter a value is rooted at goes with it through every join, and so
+// does the parameter whose default it is.
 function carried(value) {
-  return value.param ? { param: value.param } : {};
+  return { ...(value.param ? { param: value.param } : {}), ...(value.defaultOf ? { defaultOf: value.defaultOf } : {}) };
 }
 
 function cap(values) {
   const seen = new Set();
   const out = [];
   for (const value of values) {
-    const id = `${value.open ? 1 : 0}${value.rooted ? 1 : 0}${value.anchor ?? ''}${value.param ? `#${value.param.fn}@${value.param.index}.${value.param.field ?? ''}` : ''}:${value.text}`;
+    const id = `${value.open ? 1 : 0}${value.rooted ? 1 : 0}${value.anchor ?? ''}${value.param ? `#${value.param.fn}@${value.param.index}.${value.param.field ?? ''}` : ''}${value.defaultOf ? `=${defaultKey(value.defaultOf)}` : ''}:${value.text}`;
     if (seen.has(id)) continue;
     seen.add(id);
     out.push(value);
@@ -2459,7 +2540,7 @@ function rawUrls(text, places) {
 function sortEntries(entries) {
   const unique = new Map();
   for (const entry of entries) {
-    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}\0${entry.relative ? 1 : 0}\0${(entry.unless ?? []).join(',')}`, entry);
+    unique.set(`${entry.target}\0${entry.call}\0${entry.ref ?? ''}\0${entry.repo ?? ''}\0${entry.confidence}\0${entry.relative ? 1 : 0}\0${(entry.unless ?? []).join(',')}\0${entry.defaultOf ? defaultKey(entry.defaultOf) : ''}`, entry);
   }
   return [...unique.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
 }
@@ -2834,9 +2915,13 @@ function keptForOutput(target, places) {
   return false;
 }
 
+// The guards that are not a flag a run passes (guards.js).
+const GUARD_KINDS = new Set(['ci', 'exists', 'main']);
+
 /**
  * The writer's own guards that keep this door's run of the file from a write:
- * a workflow runs with CI set, and a flag every run of the file passes. A
+ * a workflow runs with CI set, a file the door only imports is not the
+ * program, and a flag every run of the file passes. A
  * file the door only imports carries no flags of its own run, so a flag guard
  * holds only for a file the door runs by name.
  */
@@ -2847,8 +2932,11 @@ function guardsHit(door, path, write, places) {
   if (!door.kind && unless.includes('ci')) hit.push('ci');
   // A checkout holds the committed file, so no door's run makes it.
   if (bootstraps(write, places)) hit.push('exists');
+  // A write behind a main guard is the file's as a program: made by a door
+  // that runs the file, or a file it reaches starts as a child process.
+  if (unless.includes('main') && !(door.executed ?? []).includes(path)) hit.push('main');
   const runs = (door.runs ?? []).filter((run) => run.path === path && run.runKind !== 'checks');
-  const flags = unless.filter((guard) => guard !== 'ci' && guard !== 'exists');
+  const flags = unless.filter((guard) => !GUARD_KINDS.has(guard));
   if (runs.length > 0 && flags.length > 0 && runs.every((run) => (run.passes ?? []).some((flag) => flags.includes(flag)))) {
     for (const run of runs) for (const flag of run.passes) if (flags.includes(flag)) hit.push(flag);
   }

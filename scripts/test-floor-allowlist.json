@@ -208,6 +208,10 @@
     {
       "path": "fixtures/atlas/run-counts/tests/deep/i.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the run-counts fixture repository that packages/atlas/adapter/page-run-counts.test.js maps, where node --test runs it by name or through a glob, and the page must count it among the files its door runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/main-guards/test/generators.test.mjs",
+      "reason": "Atlas fixture, not a test. It sits inside the main-guards fixture repository that packages/atlas/adapter/page-main-guards.test.js maps, where CI's node --test runs it and it imports the generators' pure functions, so the page must credit CI with none of the writes behind their main guards. It is never meant to run."
     }
   ]
 }

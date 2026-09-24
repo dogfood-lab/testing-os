@@ -1405,7 +1405,9 @@ function guardsOf(landings) {
  * @returns {string}
  */
 export function guardClause(guards) {
-  const flags = (guards ?? []).filter((guard) => guard !== 'ci' && guard !== 'exists');
+  // A write made only when the file is the program is what running it does,
+  // which "written by X" already says.
+  const flags = (guards ?? []).filter((guard) => guard !== 'ci' && guard !== 'exists' && guard !== 'main');
   const parts = [];
   if ((guards ?? []).includes('ci')) parts.push('outside CI');
   if (flags.length > 0) parts.push(`without ${list(flags).replace(/ and /g, ' or ')}`);

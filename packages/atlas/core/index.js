@@ -152,7 +152,10 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     // run; what the door writes is read only from the files it runs.
     const walked = walkReach(door.runs.map((run) => run.path), graph);
     door.reach = walked.reach;
-    door.reachFiles = walkReach(door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path), graph).files;
+    const ran = walkReach(door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path), graph);
+    door.reachFiles = ran.files;
+    // A package is imported, never run as a program.
+    door.executed = door.kind === 'package' ? [] : ran.executed;
     // A file the door runs that changes other repositories through the API
     // sends out of this one, as a dispatch does. A test that imports that
     // file runs it against its own stand-ins, and a package only loaded
@@ -172,6 +175,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   // the door is credited with, which attachLandings has now decided.
   for (const door of doors) {
     delete door.reachFiles;
+    delete door.executed;
     for (const run of door.runs ?? []) delete run.passes;
   }
   const entryPoints = new Map(boundaryList.map((boundary) => [boundary.name, [...boundary.entryPoints].sort()]));

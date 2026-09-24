@@ -15,7 +15,9 @@ import { loadsManifest } from './languages.js';
  *
  * The walk also returns the files it visited, sorted: every tracked file the
  * door runs or imports. Landing places are read from these files, not from
- * the boundary names they add up to.
+ * the boundary names they add up to. Of those, `executed` are the ones run as
+ * a program: the starts and what a production file starts as a child
+ * process. A file only imported runs none of what its main guard holds.
  *
  * A file a production file runs as a child process (python -m jobs) is
  * reached as an import is; a test's child processes are the runs it checks,
@@ -38,6 +40,7 @@ export function walkReach(starts, graph) {
     if (!filesOf.has(boundary)) filesOf.set(boundary, new Set());
   };
   const visited = new Set();
+  const executed = new Set();
   const expanded = new Set();
   const directories = starts.filter((path) => path.endsWith('/'));
   for (const path of starts) if (!path.endsWith('/')) expanded.add(path);
@@ -47,6 +50,7 @@ export function walkReach(starts, graph) {
     }
   }
   let frontier = [...expanded].filter((path) => graph.files.has(path)).sort();
+  for (const path of frontier) executed.add(path);
   for (let depth = 0; frontier.length > 0; depth += 1) {
     const next = new Set();
     for (const path of frontier) visited.add(path);
@@ -61,6 +65,7 @@ export function walkReach(starts, graph) {
           if (!graph.files.has(target)) continue;
           const into = graph.boundaryOf.get(target);
           if (into && into !== boundary && !enters.has(into)) enters.set(into, { file: target, from: path });
+          executed.add(target);
           if (!visited.has(target)) next.add(target);
         }
       }
@@ -87,5 +92,5 @@ export function walkReach(starts, graph) {
       return entry;
     })
     .sort((a, b) => a.depth - b.depth || (a.boundary < b.boundary ? -1 : a.boundary > b.boundary ? 1 : 0));
-  return { reach, files: [...visited].sort() };
+  return { reach, files: [...visited].sort(), executed: [...executed].sort() };
 }
