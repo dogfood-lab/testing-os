@@ -149,9 +149,10 @@ export function mapRepository({ repoPath, boundaries } = {}) {
 
   const builtFrom = (path) => (trackedSet.has(path) ? null : resolveDeclaredPath(repoPath, path, trackedSet));
   const emitted = () => emittedFiles(repoPath, trackedSet);
+  const unitTests = new Set([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps].filter((file) => file.testsInside).map((file) => file.path));
   const doors = settleInstalled([
-    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
-    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }),
+    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests }),
+    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests }),
   ], [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], repoPath, trackedSet);
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
@@ -476,13 +477,14 @@ function parseFile(language, path, original, places) {
 }
 
 // What a file of a language compiled or run by its own engine (Rust,
-// GDScript) holds, read from its tree. `native` is what resolution reads
-// once every file is known, and drops.
+// GDScript) holds, read from its tree. `native` is what the file carries
+// past its imports: testsInside, for a file holding its own unit tests, and
+// what resolution reads once every file is known and then drops.
 function nativeReadings(language, root) {
   const rust = language === 'rust' ? rustImports(root) : null;
   return {
     imports: rust ? rust.imports : [],
-    ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}) } } : {}),
+    ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}), ...(rust.tests ? { testsInside: true } : {}) } } : {}),
     landings: noLandings(),
     sequence: { functions: [], topLevel: [], reexports: [] },
     spawned: { commands: [], built: 0 },

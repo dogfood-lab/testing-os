@@ -171,6 +171,7 @@ function crateOf(manifest, doc, tracked, workspaces) {
     name,
     lib,
     bins: bins.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0)),
+    defaultRun: typeof pkg['default-run'] === 'string' ? pkg['default-run'] : null,
     tests: targets('test', 'tests', 'autotests'),
     examples: targets('example', 'examples', 'autoexamples'),
     benches: targets('bench', 'benches', 'autobenches'),

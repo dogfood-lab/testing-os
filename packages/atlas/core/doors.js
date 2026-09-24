@@ -34,13 +34,14 @@ const ACTION_SENDS = [
  * A workflow that does not parse is still a door; it is recorded as such and
  * the rest of the map is unaffected.
  *
- * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, builtFrom?: (path: string) => string|null }} input
+ * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, builtFrom?: (path: string) => string|null, unitTests?: Set<string> }} input
  *   spawned holds, per JavaScript or TypeScript file, the command lines it
  *   hands to a child process (core/spawned.js); builtFrom is the source a
- *   build output is compiled from
+ *   build output is compiled from; unitTests is every Rust file holding its
+ *   own unit tests, which cargo test runs
  */
-export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom, emitted }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted });
+export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom, emitted, unitTests }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests });
   return [...tracked]
     .filter(isWorkflow)
     .sort()
@@ -60,8 +61,8 @@ export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom,
  *
  * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, commands: Array<{ kind: string, name: string, manifest: string, path: string }> }} input
  */
-export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom, emitted }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted });
+export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests });
   return commands.map((command) => {
     const programs = command.path == null ? [] : (command.paths ?? [command.path]);
     const read = new Map();

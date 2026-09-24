@@ -24,7 +24,8 @@ const INCLUDES = new Set(['include', 'include_str', 'include_bytes']);
 
 /**
  * @param {object} root tree-sitter root node
- * @returns {{ imports: object[], module: { inline: string[][], names: string[] }, includes: Array<{ call: string, text: string, anchor: 'file'|'crate', line: number }> }}
+ * @returns {{ imports: object[], module: { inline: string[][], names: string[] }, includes: Array<{ call: string, text: string, anchor: 'file'|'crate', line: number }>, tests: boolean }}
+ *   tests is whether the file holds a #[test] function or a #[cfg(test)] module
  */
 export function rustImports(root) {
   const imports = [];
@@ -32,12 +33,15 @@ export function rustImports(root) {
   const names = new Set();
   const includes = [];
   const expressions = new Map();
+  let tests = false;
   const visit = (node, scope) => {
+    if (node.type === 'attribute_item' && testAttribute(node)) tests = true;
     if (node.type === 'mod_item') {
       const name = node.childForFieldName('name')?.text;
       const body = node.childForFieldName('body');
       if (!name) return;
       if (body) {
+        if (attributesOf(node).test) tests = true;
         inline.push([...scope, name]);
         for (const child of body.namedChildren) visit(child, [...scope, name]);
         return;
@@ -94,7 +98,14 @@ export function rustImports(root) {
   };
   for (const child of root.namedChildren) visit(child, []);
   imports.push(...expressions.values());
-  return { imports, module: { inline, names: [...names].sort() }, includes };
+  return { imports, module: { inline, names: [...names].sort() }, includes, tests };
+}
+
+// #[test], and a test attribute a runtime provides (#[tokio::test]): the
+// function is one cargo test runs.
+function testAttribute(node) {
+  const name = node.namedChildren.find((child) => child.type === 'attribute')?.namedChildren[0];
+  return name != null && (name.text === 'test' || name.text.endsWith('::test'));
 }
 
 // A path spelled in code names the module it goes through: every segment
