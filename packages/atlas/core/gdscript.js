@@ -48,6 +48,7 @@ export function gdscriptReadings(root) {
     if ((statement.type === 'const_statement' || statement.type === 'variable_statement') && name && value?.type === 'string') consts.set(name, value);
   }
   const consumed = new Set();
+  const files = [];
   const bound = new Map();
   const names = new Map();
   let extendsName = null;
@@ -101,6 +102,10 @@ export function gdscriptReadings(root) {
         }
       }
     }
+    if (node.type === 'attribute') {
+      const access = fileAccess(node, literal);
+      if (access) files.push(access);
+    }
     if (node.type === 'identifier' && /^[A-Z]/.test(node.text) && !declared.has(node.text) && !names.has(node.text)) names.set(node.text, lineOf(node));
     for (const child of node.namedChildren) visit(child);
   };
@@ -116,6 +121,7 @@ export function gdscriptReadings(root) {
     imports,
     godot: {
       loads,
+      files,
       dynamicReads,
       names: [...names.entries()].map(([name, line]) => ({ name, line })),
       ...(extendsName ? { extendsName } : {}),
@@ -201,7 +207,7 @@ export function settleGodotPaths({ repoPath, tracked, files, places }) {
     const sites = [];
     for (const load of file.godot.loads ?? []) {
       if (load.text.startsWith('user://')) {
-        file.outsideReads = (file.outsideReads ?? 0) + 1;
+        file.userDataReads = (file.userDataReads ?? 0) + 1;
         continue;
       }
       const path = godotPath(project, file.path, load.text, tracked);
@@ -209,15 +215,95 @@ export function settleGodotPaths({ repoPath, tracked, files, places }) {
       if (path == null && load.call === 'literal') continue;
       sites.push({ kind: 'read', call: load.call, values: path ? [{ text: path, open: false, anchor: 'file' }] : [] });
     }
+    for (const access of file.godot.files ?? []) {
+      if (access.values.some((value) => value.text.startsWith('user://'))) {
+        const count = access.kind === 'write' ? 'userDataWrites' : 'userDataReads';
+        file[count] = (file[count] ?? 0) + 1;
+        continue;
+      }
+      const values = access.values.map((value) => {
+        const text = resText(project, file.path, value.text);
+        return text == null ? null : { text, open: value.open, anchor: 'file' };
+      }).filter(Boolean);
+      sites.push({ kind: access.kind, call: access.call, values });
+    }
     if (sites.length > 0) {
       const placed = placeLandings(file, sites, places);
       file.writes = placed.writes;
       file.reads = placed.reads;
+      file.dynamicWrites = (file.dynamicWrites ?? 0) + placed.dynamicWrites;
       file.dynamicReads = (file.dynamicReads ?? 0) + placed.dynamicReads;
     }
     if (file.godot.dynamicReads) file.dynamicReads = (file.dynamicReads ?? 0) + file.godot.dynamicReads;
     delete file.godot;
   }
+}
+
+/**
+ * What a FileAccess, DirAccess or ResourceSaver call, or a save to a path of
+ * the project or the player's data, opens: FileAccess.open(path, mode)
+ * writes when the mode is WRITE, READ_WRITE or WRITE_READ and reads
+ * otherwise; ResourceSaver.save(resource, path), make_dir_recursive_absolute
+ * and a save method handed a res:// or user:// path (ConfigFile.save,
+ * Image.save_png) write; file_exists and DirAccess.open read. The path is a
+ * literal, a const holding one, or a literal with the rest added at run time
+ * ("user://" + name, "res://levels/%s.tres" % id).
+ */
+function fileAccess(node, literal) {
+  const base = node.namedChildren[0];
+  const call = node.namedChildren[1];
+  if (call?.type !== 'attribute_call') return null;
+  const method = call.namedChildren[0]?.text;
+  const args = call.childForFieldName('arguments')?.namedChildren ?? [];
+  const owner = base?.type === 'identifier' ? base.text : null;
+  let kind = null;
+  let arg = null;
+  if (owner === 'FileAccess' && /^open(?:_compressed|_encrypted(?:_with_pass)?)?$/.test(method)) {
+    kind = /\b(?:WRITE|READ_WRITE|WRITE_READ)\b/.test(args[1]?.text ?? '') ? 'write' : 'read';
+    arg = args[0];
+  } else if (owner === 'FileAccess' && method === 'file_exists') [kind, arg] = ['read', args[0]];
+  else if (owner === 'DirAccess' && /^make_dir(?:_recursive)?_absolute$/.test(method)) [kind, arg] = ['write', args[0]];
+  else if (owner === 'DirAccess' && (method === 'open' || method === 'dir_exists_absolute')) [kind, arg] = ['read', args[0]];
+  else if (owner === 'ResourceSaver' && method === 'save') [kind, arg] = ['write', args[1]];
+  else if (/^save(?:_png|_jpg|_webp|_exr)?$/.test(method ?? '') && owner !== 'ResourceSaver') {
+    const values = pathValues(args[0], literal);
+    if (!values.some((value) => value.text.startsWith('user://') || value.text.startsWith('res://'))) return null;
+    return { kind: 'write', call: method, values };
+  } else return null;
+  return { kind, call: method, values: pathValues(arg, literal) };
+}
+
+// What a path argument reads as: a literal, a const holding one, or one
+// with the rest added at run time.
+function pathValues(node, literal) {
+  if (!node) return [];
+  const text = literal(node);
+  if (text != null) return [{ text, open: false }];
+  if (node.type === 'binary_operator') {
+    const left = node.childForFieldName('left');
+    const operator = node.childForFieldName('operator')?.text ?? node.children.find((child) => !child.isNamed)?.text;
+    const head = literal(left);
+    if (head == null) return [];
+    if (operator === '+') return [{ text: head, open: true }];
+    if (operator === '%') {
+      const at = head.indexOf('%');
+      return at <= 0 ? [] : [{ text: head.slice(0, at), open: true }];
+    }
+  }
+  return [];
+}
+
+// The repository path a res:// or relative path names, tracked or not; a
+// write may make the file it names.
+function resText(project, from, text) {
+  if (text.startsWith('res://')) {
+    if (project == null) return null;
+    const rest = text.slice('res://'.length);
+    return project.dir ? `${project.dir}/${rest}` : rest;
+  }
+  if (text.includes('://')) return null;
+  const dir = posix.dirname(from) === '.' ? '' : posix.dirname(from);
+  return dir ? `${dir}/${text}` : text;
 }
 
 // A res:// path from the project's root, or a path relative to the file.

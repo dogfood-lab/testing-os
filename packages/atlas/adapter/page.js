@@ -2421,6 +2421,14 @@ function limits(ctx, shownText) {
     const verb = outsideWrites + outsideReads === 1 ? 'goes' : 'go';
     lines.push(`${list(what)} ${verb} to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.`);
   }
+  // A Godot game's user:// is the player's own data directory, on their
+  // machine, never this repository.
+  const userWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.userDataWrites ?? 0), 0);
+  const userReads = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.userDataReads ?? 0), 0);
+  if (userWrites + userReads > 0) {
+    const what = [userWrites > 0 ? count(userWrites, 'write') : null, userReads > 0 ? count(userReads, 'read') : null].filter(Boolean);
+    lines.push(`${list(what)} ${userWrites + userReads === 1 ? 'goes' : 'go'} to the player's data directory (user://), not to this repository.`);
+  }
   // Most such commands are a test spawning the command it tests, which is
   // not a gap in what the repository does; the share in tests is said.
   const dynamicSpawns = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicSpawns ?? 0), 0);

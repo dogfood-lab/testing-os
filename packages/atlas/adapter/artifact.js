@@ -60,6 +60,8 @@ function dynamicCounts(files) {
   let spawnsInTests = 0;
   let outsideReads = 0;
   let outsideWrites = 0;
+  let userDataReads = 0;
+  let userDataWrites = 0;
   for (const file of files) {
     spawns += file.dynamicSpawns ?? 0;
     if (isTestFile(file.path)) spawnsInTests += file.dynamicSpawns ?? 0;
@@ -68,8 +70,10 @@ function dynamicCounts(files) {
     writes += file.dynamicWrites ?? 0;
     outsideReads += file.outsideReads ?? 0;
     outsideWrites += file.outsideWrites ?? 0;
+    userDataReads += file.userDataReads ?? 0;
+    userDataWrites += file.userDataWrites ?? 0;
   }
-  return { outsideReads, outsideWrites, reads, spawns, spawnsInTests, writes };
+  return { outsideReads, outsideWrites, reads, spawns, spawnsInTests, userDataReads, userDataWrites, writes };
 }
 
 function resolvedFiles(file) {
@@ -166,6 +170,8 @@ export function buildArtifact(mapped, commit) {
       ...(sites.outside > 0 ? { outsideImports: sites.outside } : {}),
       ...(dynamic.outsideReads > 0 ? { outsideReads: dynamic.outsideReads } : {}),
       ...(dynamic.outsideWrites > 0 ? { outsideWrites: dynamic.outsideWrites } : {}),
+      ...(dynamic.userDataReads > 0 ? { userDataReads: dynamic.userDataReads } : {}),
+      ...(dynamic.userDataWrites > 0 ? { userDataWrites: dynamic.userDataWrites } : {}),
     };
     return {
       ...named,
