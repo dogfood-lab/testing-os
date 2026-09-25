@@ -1,10 +1,10 @@
 # runforge-vscode: how it works
 
-Mapped at 2026-09-24 from commit da77f7a.
+Mapped at 2026-09-25 from commit da77f7a.
 
 ## What this is
 
-10 parts, mostly TypeScript (71 files). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the runforge extension.
+10 parts, mostly TypeScript (71 files), Python (45) and JavaScript (3). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the runforge extension.
 
 ## What changed since 2026-09-24 (d4f816a)
 
@@ -32,7 +32,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Build and Release** runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more, checks src/extension.ts, reaches python, creates a GitHub release on a tag push, and publishes to the VS Code Marketplace when run by hand.
+**Build and Release** runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more, checks src/extension.ts, reaches python, creates a GitHub release on a tag push, uploads SHA256SUMS.txt and files named at run time to the release on a tag push, and publishes to the VS Code Marketplace when run by hand.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -82,7 +82,7 @@ Read those in order to follow one activation of runforge end to end. This path f
 
 - 83 import sites could not be resolved.
 - 2 writes and 16 reads use paths built at run time and are not named here.
-- 9 writes and 20 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 9 writes and 20 reads go to a path their caller passes, not to this repository.
 - 8 commands are built at run time and not followed, 5 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

@@ -1,19 +1,22 @@
 # saints-mile: how it works
 
-Mapped at 2026-09-24 from commit 18fa475.
+Mapped at 2026-09-25 from commit 18fa475.
 
 ## What this is
 
-6 parts, mostly Rust (109 files). Work enters through 4 doors; CI and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to crates.io. People run saints-mile.
+6 parts, mostly Rust (109 files), JavaScript (3) and TypeScript (2). Work enters through 4 doors; CI and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to crates.io. People run saints-mile.
 
 ## What changed since 2026-09-24 (49f5266)
 
-Nothing structural changed since 2026-09-24; no file changed.
+- In src/ui/screens/combat.rs, render combat gained a step, locked style, before lock reason style.
+- In src/ui/screens/combat.rs, render combat gained a step, lock reason style, before dim style.
+- In src/ui/screens/status.rs, render status gained a step, ammo color, before echo style.
+- No file changed.
 
 ## What comes in
 
 1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs src/combat/convoy.rs, src/combat/crowd.rs, src/combat/engine.rs and 43 more; checks src/lib.rs and src/main.rs.
-2. **Release Binaries.** When a release is published; or by hand. Runs msix/gen-assets.mjs; checks src/lib.rs and src/main.rs.
+2. **Release Binaries.** When a release is published; or by hand. Runs msix/gen-assets.mjs; builds src/main.rs; checks src/lib.rs.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **saints-mile** (a command people run). Runs src/main.rs.
 
@@ -27,7 +30,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release Binaries** runs msix/gen-assets.mjs, checks src/lib.rs and src/main.rs, writes to msix/Assets/, publishes to crates.io on a release event, and creates a GitHub release on a release event.
+**Release Binaries** runs msix/gen-assets.mjs, checks src/lib.rs, writes to msix/Assets/, builds src/main.rs into an MSIX package and binaries for darwin-arm64, linux-x64 and win-x64, and uploads them to the release, and publishes to crates.io on a release event.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -62,19 +65,20 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, the repository root and site/; 4 writes with paths built at run time may land here.
+People write .github/, the repository root and site/. Nothing in this repository writes to them.
 
 ## Where to start
 
-src/main.rs
+src/main.rs → src/lib.rs
 
 Read those in order to follow one run of saints-mile end to end. This path follows saints-mile (a command people run) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 
 - 1 import site could not be resolved.
-- 4 writes use paths built at run time and are not named here.
-- 6 writes and 3 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 6 writes and 1 read go to a path their caller passes, not to this repository.
+- 4 writes go to the directory the command is run in (saves/) or a path their caller passes, not to this repository.
+- 2 reads go to the directory the command is run in (saves/), not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

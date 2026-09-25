@@ -127,31 +127,31 @@
       },
       {
         "kind": "landing",
-        "sentence": "examples/dogfood-project-memory/.db-cluster is now written by src/adapters/local/index.ts.",
+        "sentence": ".demo-rk-ops/sources is now written by scripts/repo-knowledge-ops.ts.",
         "subjects": [
-          "examples/dogfood-project-memory/.db-cluster",
-          "src/adapters/local/index.ts"
+          ".demo-rk-ops/sources",
+          "scripts/repo-knowledge-ops.ts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": ".github/workflows/ci.yml is now read by test/wave-b1-cidocs-regression.test.ts.",
+        "sentence": ".demo-rk-update/sources is now written by scripts/repo-knowledge-update-demo.ts.",
         "subjects": [
-          ".github/workflows/ci.yml",
-          "test/wave-b1-cidocs-regression.test.ts"
+          ".demo-rk-update/sources",
+          "scripts/repo-knowledge-update-demo.ts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": ".github/workflows/release-gate.yml is now read by test/wave-b1-cidocs-regression.test.ts.",
+        "sentence": ".doc-drift-extract is now written by scripts/doc-drift.mjs.",
         "subjects": [
-          ".github/workflows/release-gate.yml",
-          "test/wave-b1-cidocs-regression.test.ts"
+          ".doc-drift-extract",
+          "scripts/doc-drift.mjs"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "And 138 more new writers and readers of places.",
+        "sentence": "And 142 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -235,7 +235,7 @@
   "changesTogetherWithTests": 0,
   "commit": "fe9bf666d4daa3f214126dd3b29d711e718995e8",
   "defaultBranch": "main",
-  "derived": "13 parts, mostly TypeScript (258 files). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.",
+  "derived": "13 parts, mostly TypeScript (258 files) and JavaScript (16). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.",
   "doors": [
     {
       "checks": [
@@ -413,7 +413,8 @@
         "on a pull request",
         "on a push",
         "or by hand"
-      ]
+      ],
+      "untracked": "examples/dogfood-project-memory/.db-cluster, which is not tracked"
     },
     {
       "checks": [
@@ -592,7 +593,8 @@
       "stages": [],
       "triggers": [
         "when a tag matching `v*` is pushed"
-      ]
+      ],
+      "untracked": "examples/dogfood-project-memory/.db-cluster, which is not tracked"
     },
     {
       "checks": [
@@ -769,7 +771,8 @@
         "on a push to main",
         "when a tag matching `v*` is pushed",
         "or by hand"
-      ]
+      ],
+      "untracked": ".doc-drift-extract/, .release-gate-output/ and examples/dogfood-project-memory/.db-cluster, which are not tracked"
     },
     {
       "checks": [
@@ -848,7 +851,8 @@
       "triggers": [
         "when a tag matching `v*` is pushed",
         "or by hand"
-      ]
+      ],
+      "untracked": "examples/dogfood-project-memory/.db-cluster, which is not tracked"
     },
     {
       "checks": [],
@@ -911,7 +915,8 @@
       "runsMore": 3,
       "sends": [],
       "stages": [],
-      "triggers": []
+      "triggers": [],
+      "untracked": "examples/dogfood-project-memory/.db-cluster, which is not tracked"
     },
     {
       "checks": [],
@@ -937,7 +942,8 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": []
+      "triggers": [],
+      "untracked": "examples/dogfood-project-memory/.db-cluster, which is not tracked"
     },
     {
       "checks": [],
@@ -963,7 +969,8 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": []
+      "triggers": [],
+      "untracked": "examples/dogfood-project-memory/.db-cluster, which is not tracked"
     }
   ],
   "duplicates": [],
@@ -992,12 +999,16 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T21:44:56.654Z",
+  "generatedAt": "2026-09-25T01:35:21.751Z",
   "limits": [
     "17 import sites could not be resolved.",
-    "7 writes and 14 reads use paths built at run time and are not named here.",
-    "3 writes go to places this repository does not track, so they are not listed as generated.",
-    "54 writes and 107 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "5 writes and 14 reads use paths built at run time and are not named here.",
+    "7 writes go to places this repository does not track, so they are not listed as generated.",
+    "47 writes and 101 reads go to a path their caller passes, not to this repository.",
+    "6 writes and 3 reads go to a temporary directory, not to this repository.",
+    "2 reads go to the directory the command is run in, not to this repository.",
+    "1 read goes to the directory the command is run in (.db-cluster) or a path its caller passes, not to this repository.",
+    "1 write goes to a temporary directory or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed, and it is in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -1035,7 +1046,7 @@
     "scripts": 16,
     "src": 122
   },
-  "unnamedWrites": 7,
+  "unnamedWrites": 5,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],

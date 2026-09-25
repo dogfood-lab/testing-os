@@ -1,10 +1,10 @@
 # knowledge-core: how it works
 
-Mapped at 2026-09-24 from commit f7dfb2e.
+Mapped at 2026-09-25 from commit f7dfb2e.
 
 ## What this is
 
-6 parts, mostly TypeScript (17 files). Work enters through 3 doors; the busiest is CI, which reaches 2 parts.
+6 parts, mostly TypeScript (17 files) and JavaScript (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts.
 
 ## What changed since 2026-09-23 (274af45)
 
@@ -74,7 +74,7 @@ Read those in order to follow one import of @roleos/knowledge-core end to end. T
 
 ## What this map cannot see
 
-- 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 6 reads go to a path their caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

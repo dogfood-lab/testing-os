@@ -317,6 +317,54 @@
       "importConfidence": "full",
       "name": "cli",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 15,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "home:.ai-loadout"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 6,
+          "where": [
+            "caller",
+            "home:.ai-loadout/"
+          ],
+          "writes": 4
+        },
+        {
+          "reads": 3,
+          "where": [
+            "caller",
+            "home:.claude/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:.claude/",
+            "cwd:MEMORY.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "temp"
+          ],
+          "writes": 3
+        }
+      ],
       "outsideReads": 26,
       "outsideWrites": 8,
       "role": "code",
@@ -359,6 +407,22 @@
       "importConfidence": "full",
       "name": "hook",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "home:.ai-loadout"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "home:.ai-loadout/"
+          ],
+          "writes": 2
+        }
+      ],
       "outsideReads": 3,
       "outsideWrites": 2,
       "role": "code",
@@ -1297,6 +1361,23 @@
       "importConfidence": "full",
       "name": "kernel",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 4,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 2,
+          "where": [
+            "caller",
+            "home:.ai-loadout/"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 6,
       "outsideWrites": 1,
       "role": "docs",
@@ -2246,6 +2327,55 @@
       "importConfidence": "full",
       "name": "memories",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "caller",
+            "cwd:.claude/",
+            "cwd:MEMORY.md/",
+            "home:.claude/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:.claude/",
+            "cwd:memory/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:.claude/",
+            "cwd:memory/",
+            "home:.claude/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 4,
+          "where": [
+            "cwd:.claude/",
+            "cwd:MEMORY.md",
+            "home:.claude/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:.claude/",
+            "cwd:MEMORY.md/",
+            "home:.claude/"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 7,
       "outsideWrites": 2,
       "role": "docs",
@@ -3976,6 +4106,54 @@
       "importConfidence": "full",
       "name": "rules",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 10,
+          "where": [
+            "cwd"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 5,
+          "where": [
+            "cwd:.claude/"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 8,
+          "where": [
+            "cwd:.claude/",
+            "cwd:CLAUDE.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:.claude/",
+            "cwd:CLAUDE.md",
+            "cwd:MEMORY.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:.claude/",
+            "cwd:MEMORY.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "temp"
+          ],
+          "writes": 1
+        }
+      ],
       "outsideReads": 25,
       "outsideWrites": 3,
       "role": "docs",

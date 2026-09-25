@@ -1,10 +1,10 @@
 # bytefit: how it works
 
-Mapped at 2026-09-24 from commit 0f920ec.
+Mapped at 2026-09-25 from commit 0f920ec.
 
 ## What this is
 
-6 parts, mostly TypeScript (49 files). Work enters through 5 doors; ci, Deploy site to GitHub Pages, Release, @mcptoolshop/bytefit and bytefit each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. People run bytefit. People import @mcptoolshop/bytefit.
+6 parts, mostly TypeScript (49 files) and JavaScript (1). Work enters through 5 doors; ci, Deploy site to GitHub Pages, Release, @mcptoolshop/bytefit and bytefit each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. People run bytefit. People import @mcptoolshop/bytefit.
 
 ## What changed since 2026-09-24 (1941e05)
 
@@ -82,7 +82,9 @@ Read those in order to follow one run of bytefit end to end. This path follows b
 
 ## What this map cannot see
 
-- 1 write and 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 4 reads go to a path their caller passes, not to this repository.
+- 1 write and 1 read go to a temporary directory or a path their caller passes, not to this repository.
+- 1 read goes to the home directory (.ollama/) or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

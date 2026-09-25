@@ -104,7 +104,7 @@
   "changesTogetherWithTests": 0,
   "commit": "743f657647f787f7b6fcbf46772f961c04089a8c",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly Python (207 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI. People run starfreight.",
+  "derived": "8 parts, mostly Python (207 files), TypeScript (2) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI. People run starfreight.",
   "doors": [
     {
       "checks": [],
@@ -172,6 +172,9 @@
       ]
     },
     {
+      "builds": [
+        "src/portlight/__main__.py"
+      ],
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
@@ -187,13 +190,11 @@
           "files": 88
         }
       ],
-      "runs": [
-        "src/portlight/__main__.py"
-      ],
-      "runsCount": 1,
+      "runs": [],
+      "runsCount": 0,
       "runsMore": 0,
       "sends": [
-        "creates a GitHub release"
+        "builds src/portlight/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release"
       ],
       "stages": [],
       "triggers": [
@@ -282,11 +283,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T21:51:07.202Z",
+  "generatedAt": "2026-09-25T01:40:52.610Z",
   "limits": [
     "2 import sites could not be resolved.",
     "5 writes and 2 reads use paths built at run time and are not named here.",
-    "1 write and 3 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "1 write and 3 reads go to the directory the command is run in, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",

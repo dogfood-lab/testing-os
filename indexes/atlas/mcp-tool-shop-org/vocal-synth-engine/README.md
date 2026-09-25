@@ -1,10 +1,10 @@
 # vocal-synth-engine: how it works
 
-Mapped at 2026-09-24 from commit a2738c5.
+Mapped at 2026-09-25 from commit a2738c5.
 
 ## What this is
 
-10 parts, mostly TypeScript (99 files). Work enters through 15 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run vocal-synth-engine-mcp, vse-analyze, vse-build-preset, vse-compare, vse-gen-vowel-wav, vse-inspect, vse-phonemize, vse-play-score, vse-resynth and vse-score-from-midi. People import @mcptoolshop/vocal-synth-engine.
+10 parts, mostly TypeScript (99 files), JavaScript (3) and Python (1). Work enters through 15 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run vocal-synth-engine-mcp, vse-analyze, vse-build-preset, vse-compare, vse-gen-vowel-wav, vse-inspect, vse-phonemize, vse-play-score, vse-resynth and vse-score-from-midi. People import @mcptoolshop/vocal-synth-engine.
 
 ## What changed since 2026-09-24 (f8fe895)
 
@@ -110,7 +110,9 @@ Read those in order to follow one run of vocal-synth-engine-mcp end to end. This
 ## What this map cannot see
 
 - 1 write and 4 reads use paths built at run time and are not named here.
-- 38 writes and 55 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 28 writes and 33 reads go to the directory the command is run in (.vscockpit/, assets/, calib/ and 2 more places) or a path their caller passes, not to this repository.
+- 7 writes and 21 reads go to a path their caller passes, not to this repository.
+- 3 writes and 1 read go to the directory the command is run in (apps/ and test-preset/), not to this repository.
 - 1 command is built at run time and not followed, and it is in tests.
 - cockpit calls src over HTTP at 11 routes, a link no import shows: the map draws it, and no door's reach follows it.
 - scripts calls src over HTTP at 1 route, a link no import shows: the map draws it, and no door's reach follows it.

@@ -1544,6 +1544,19 @@
       "gated": [
         {
           "jobs": [
+            "release-assets"
+          ],
+          "pushes": false,
+          "sends": [
+            "assets:file:dist/*"
+          ],
+          "stages": [],
+          "when": {
+            "event": "release"
+          }
+        },
+        {
+          "jobs": [
             "docker"
           ],
           "pushes": false,

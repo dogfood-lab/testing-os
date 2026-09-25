@@ -387,6 +387,15 @@
       "importConfidence": "full",
       "name": "dogfood",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 3,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 3,
       "role": "code",
       "testedBy": 8,
@@ -3297,6 +3306,15 @@
       "importConfidence": "full",
       "name": "editor",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 32,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 32,
       "role": "code",
       "testedBy": 110,
@@ -5207,6 +5225,22 @@
       "importConfidence": "full",
       "name": "export-ai-rpg",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 7,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd:export/"
+          ],
+          "writes": 2
+        }
+      ],
       "outsideReads": 7,
       "outsideWrites": 4,
       "role": "code",
@@ -6241,6 +6275,23 @@
       "importConfidence": "full",
       "name": "export-godot",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 4,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:GodotPack/"
+          ],
+          "writes": 9
+        }
+      ],
       "outsideReads": 4,
       "outsideWrites": 9,
       "role": "code",
@@ -7109,6 +7160,23 @@
       "importConfidence": "full",
       "name": "export-unreal",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 8,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:UnrealPack/"
+          ],
+          "writes": 17
+        }
+      ],
       "outsideReads": 8,
       "outsideWrites": 17,
       "role": "code",
@@ -7471,6 +7539,15 @@
       "importConfidence": "full",
       "name": "root",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 1,
       "role": "docs",
       "testedBy": 1,
@@ -8038,6 +8115,15 @@
       "importConfidence": "full",
       "name": "schema",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 1,
       "role": "code",
       "testedBy": 199,
@@ -8198,9 +8284,6 @@
         },
         {
           "hash": "19d697fb01e238bc9a84198e34b27e7d2e9afe037bf78bc7ba5a48a66614b962",
-          "importsFiles": [
-            "package.json"
-          ],
           "path": "site/src/site-config.ts"
         },
         {
@@ -9879,6 +9962,9 @@
       "runsCount": 76,
       "secrets": [],
       "sends": {
+        "assets": [
+          "file:dist-tarballs/*.tgz"
+        ],
         "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,

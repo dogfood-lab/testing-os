@@ -4694,6 +4694,38 @@
       "importConfidence": "full",
       "name": "backpropagate",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 3,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "home:AppData/",
+            "home:Library/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "home:.cache/"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 5,
       "outsideWrites": 2,
       "role": "code",
@@ -5213,6 +5245,15 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 4,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        }
+      ],
       "outsideReads": 4,
       "outsideWrites": 1,
       "role": "code",
@@ -7272,6 +7313,10 @@
         "GITHUB_TOKEN"
       ],
       "sends": {
+        "assets": [
+          "file:backpropagate-npm-sbom.cdx.json",
+          "file:backpropagate-sbom.cdx.json"
+        ],
         "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,

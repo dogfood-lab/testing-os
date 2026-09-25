@@ -213,6 +213,7 @@
           "path": "apps/desktop/src-tauri/Cargo.toml"
         },
         {
+          "buildScript": true,
           "hash": "6aeeab41bc35efde4e3c2b644a6248f7fc06d24ae30b75c0d33491cbb0c1fa31",
           "path": "apps/desktop/src-tauri/build.rs"
         },
@@ -663,6 +664,15 @@
       "importConfidence": "full",
       "name": "server",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 9,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        }
+      ],
       "outsideReads": 9,
       "outsideWrites": 2,
       "role": "code",
@@ -896,6 +906,15 @@
       "importConfidence": "full",
       "name": "ui",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 3,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 3,
       "role": "code",
       "testedBy": 0,
@@ -1202,6 +1221,7 @@
       },
       "stages": [],
       "triggers": [],
+      "unshipped": true,
       "uses": [],
       "usesWorkflowToken": false
     }
@@ -1443,6 +1463,16 @@
       ],
       "target": "apps/desktop/package.json",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": "apps/desktop/src-tauri/gen/schemas",
+      "writers": [
+        {
+          "by": "apps/desktop/src-tauri/build.rs",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [],

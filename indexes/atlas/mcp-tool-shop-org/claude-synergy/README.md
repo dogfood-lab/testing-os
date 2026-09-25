@@ -1,10 +1,10 @@
 # claude-synergy: how it works
 
-Mapped at 2026-09-24 from commit 6d91d8c.
+Mapped at 2026-09-25 from commit 6d91d8c.
 
 ## What this is
 
-10 parts, mostly TypeScript (83 files). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk.
+10 parts, mostly TypeScript (83 files), JavaScript (9) and Python (2). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk.
 
 ## What changed since 2026-09-24 (fb90b80)
 
@@ -102,7 +102,9 @@ Read those in order to follow one run of claude-synergy-mcp end to end. This pat
 
 ## What this map cannot see
 
-- 10 writes and 48 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 9 writes and 32 reads go to a path their caller passes, not to this repository.
+- 1 write and 8 reads go to the directory the command is run in (data/ and synergies/) or a path their caller passes, not to this repository.
+- 8 reads go to the directory the command is run in (products.yaml, schema-vec.sql, schema.sql and 1 more place), not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

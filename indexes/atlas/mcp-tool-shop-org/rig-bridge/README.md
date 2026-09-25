@@ -1,10 +1,10 @@
 # rig-bridge: how it works
 
-Mapped at 2026-09-24 from commit 204828b.
+Mapped at 2026-09-25 from commit 204828b.
 
 ## What this is
 
-6 parts, mostly TypeScript (48 files). Work enters through 4 doors; ci, Deploy site to GitHub Pages, Release and rig-bridge each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. People run rig-bridge.
+6 parts, mostly TypeScript (48 files) and JavaScript (1). Work enters through 4 doors; ci, Deploy site to GitHub Pages, Release and rig-bridge each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. People run rig-bridge.
 
 ## What changed since 2026-09-24 (e91f65b)
 
@@ -115,7 +115,7 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 9 writes and 46 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 9 writes and 46 reads go to a path their caller passes, not to this repository.
 - 2 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

@@ -315,6 +315,120 @@
       "importConfidence": "full",
       "name": "bin",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 18,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd",
+            "cwd:package.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 10,
+          "where": [
+            "cwd"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd",
+            "cwd:package.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd",
+            "cwd:pnpm-workspace.yaml"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd:CHANGELOG.md"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:CHANGELOG.md",
+            "cwd:SCORECARD.md",
+            "cwd:SECURITY.md",
+            "cwd:SHIP_GATE.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:Dockerfile"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd:SCORECARD.md"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd:SECURITY.md"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:SHIP_GATE.md"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:docker-compose.yml"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 5,
+          "where": [
+            "cwd:package.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:pyproject.toml"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:setup.py"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 44,
       "outsideWrites": 4,
       "role": "code",
@@ -1128,6 +1242,10 @@
         "REPOMESH_SIGNING_KEY"
       ],
       "sends": {
+        "assets": [
+          "file:provenance.json",
+          "file:sbom.json"
+        ],
         "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,

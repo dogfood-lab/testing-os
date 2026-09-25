@@ -1,10 +1,10 @@
 # sensor-humor: how it works
 
-Mapped at 2026-09-24 from commit 53be69f.
+Mapped at 2026-09-25 from commit 53be69f.
 
 ## What this is
 
-8 parts, mostly TypeScript (86 files). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. People run sensor-humor.
+8 parts, mostly TypeScript (86 files), JavaScript (3) and Python (1). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. People run sensor-humor.
 
 ## What changed since 2026-09-24 (6e8ea9a)
 
@@ -92,7 +92,8 @@ Read those in order to follow one run of sensor-humor end to end. This path foll
 
 - 1 import site could not be resolved.
 - 2 writes use paths built at run time and are not named here.
-- 8 writes and 21 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 5 writes and 19 reads go to a path their caller passes, not to this repository.
+- 3 writes and 2 reads go to the home directory (.sensor-humor/) or a path their caller passes, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

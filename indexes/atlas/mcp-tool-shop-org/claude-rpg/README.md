@@ -1,10 +1,10 @@
 # claude-rpg: how it works
 
-Mapped at 2026-09-24 from commit 55ff274.
+Mapped at 2026-09-25 from commit 55ff274.
 
 ## What this is
 
-8 parts, mostly TypeScript (218 files). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-rpg. People import @mcptoolshop/claude-rpg.
+8 parts, mostly TypeScript (218 files) and JavaScript (3). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-rpg. People import @mcptoolshop/claude-rpg.
 
 ## What changed since 2026-09-24 (d22db12)
 
@@ -85,7 +85,9 @@ Read those in order to follow one run of claude-rpg end to end. This path follow
 ## What this map cannot see
 
 - 2 import sites could not be resolved.
-- 7 writes and 18 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 5 writes and 15 reads go to a path their caller passes, not to this repository.
+- 3 reads go to the home directory (.claude-rpg/), not to this repository.
+- 2 writes go to the directory the command is run in (.claude-rpg/), not to this repository.
 - 1 command is built at run time and not followed, and it is in tests.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

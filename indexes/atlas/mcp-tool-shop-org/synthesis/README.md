@@ -1,10 +1,10 @@
 # synthesis: how it works
 
-Mapped at 2026-09-24 from commit dd0e1de.
+Mapped at 2026-09-25 from commit dd0e1de.
 
 ## What this is
 
-12 parts, mostly TypeScript (36 files). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.
+12 parts, mostly TypeScript (36 files) and JavaScript (6). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.
 
 ## What changed since 2026-09-23 (0128f11)
 
@@ -94,7 +94,7 @@ Read those in order to follow one pull request end to end.
 
 - 1 import site could not be resolved.
 - 1 import site names a path outside this repository, so what it loads is not followed.
-- 3 writes and 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 3 writes and 6 reads go to a path their caller passes, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

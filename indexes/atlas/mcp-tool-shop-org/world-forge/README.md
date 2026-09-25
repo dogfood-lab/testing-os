@@ -1,10 +1,10 @@
 # world-forge: how it works
 
-Mapped at 2026-09-24 from commit 333532b.
+Mapped at 2026-09-25 from commit 333532b.
 
 ## What this is
 
-15 parts, mostly TypeScript (497 files). Work enters through 6 doors; the busiest is CI, which reaches 11 parts. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.
+15 parts, mostly TypeScript (497 files), JavaScript (4) and GDScript (1). Work enters through 6 doors; the busiest is CI, which reaches 11 parts. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.
 
 ## What changed since 2026-09-23 (b6fa56a)
 
@@ -41,7 +41,7 @@ Mapped at 2026-09-24 from commit 333532b.
 
 ## The other doors
 
-**Release** runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 117 more, checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 475 more, reaches the repository root, and writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json.
+**Release** runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 117 more, checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 475 more, reaches the repository root, writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json, and uploads dist-tarballs/*.tgz to the release.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/ except on a release event, and deploys the site except on a release event.
 
@@ -115,16 +115,18 @@ People write .claude/, .github/, assets/ and site/; 3 writes with paths built at
 
 ## Where to start
 
-.github/workflows/ci.yml → scripts/check-pack.mjs
+packages/export-ai-rpg/src/cli.ts → packages/schema/src/advisory.ts
 
-Read those in order to follow one pull request end to end.
+Read those in order to follow one run of world-forge-export end to end. This path follows world-forge-export (a command people run) from its entry, since CI runs only tests and scripts that import no code here.
 
 ## What this map cannot see
 
 - 9 import sites could not be resolved.
 - 3 writes and 3 reads use paths built at run time and are not named here.
 - 40 writes go to places this repository does not track, so they are not listed as generated.
-- 30 writes and 56 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 2 writes and 56 reads go to a path their caller passes, not to this repository.
+- 26 writes go to the directory the command is run in (GodotPack/ and UnrealPack/) or a path their caller passes, not to this repository.
+- 2 writes go to the directory the command is run in (export/), not to this repository.
 - 3 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

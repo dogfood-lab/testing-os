@@ -117,6 +117,14 @@
       },
       {
         "kind": "landing",
+        "sentence": ".eval-checkpoints is now written by scripts/run-jam-actions-corpus-eval.ts.",
+        "subjects": [
+          ".eval-checkpoints",
+          "scripts/run-jam-actions-corpus-eval.ts"
+        ]
+      },
+      {
+        "kind": "landing",
         "sentence": "datasets/jam-actions-v0-public/ is now also written by scripts/run-jam-actions-corpus-eval.ts.",
         "subjects": [
           "datasets/jam-actions-v0-public/",
@@ -133,15 +141,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "site/dist is now written by .github/workflows/pages.yml.",
-        "subjects": [
-          "site/dist",
-          ".github/workflows/pages.yml"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 115 more new writers and readers of places.",
+        "sentence": "And 120 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -171,7 +171,7 @@
   "changesTogetherWithTests": 2,
   "commit": "5139ec7d5d8050437f20c821ad1770526d58ac6d",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly TypeScript (555 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
+  "derived": "14 parts, mostly TypeScript (555 files), Python (47) and JavaScript (32). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
     {
       "checks": [
@@ -523,7 +523,8 @@
       "triggers": [
         "on a push to main touching 3 paths",
         "or by hand"
-      ]
+      ],
+      "untracked": "site/dist, which is not tracked"
     },
     {
       "checks": [],
@@ -1480,13 +1481,19 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T21:41:50.172Z",
+  "generatedAt": "2026-09-25T01:32:20.448Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "11 import sites could not be resolved.",
-    "52 writes and 134 reads use paths built at run time and are not named here.",
-    "16 writes go to places this repository does not track, so they are not listed as generated.",
-    "109 writes and 360 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "47 writes and 134 reads use paths built at run time and are not named here.",
+    "21 writes go to places this repository does not track, so they are not listed as generated.",
+    "95 writes and 329 reads go to a path their caller passes, not to this repository.",
+    "2 writes and 16 reads go to the directory the command is run in, not to this repository.",
+    "3 writes and 11 reads go to the home directory (.ssh/), not to this repository.",
+    "7 writes and 2 reads go to a temporary directory, not to this repository.",
+    "1 write and 1 read go to the home directory (.ai-jam-sessions/) or a path their caller passes, not to this repository.",
+    "1 read goes to the directory the command is run in (tmp/) or a path its caller passes, not to this repository.",
+    "1 write goes to a temporary directory or a path its caller passes, not to this repository.",
     "10 commands are built at run time and not followed, 1 of them in tests.",
     "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.",
@@ -1584,7 +1591,7 @@
     "spaces": 0,
     "src": 168
   },
-  "unnamedWrites": 52,
+  "unnamedWrites": 47,
   "unread": [
     {
       "place": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json",

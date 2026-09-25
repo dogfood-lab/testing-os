@@ -6378,6 +6378,15 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 0,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        }
+      ],
       "outsideWrites": 1,
       "role": "code",
       "testedBy": 0,
@@ -7888,6 +7897,67 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 32,
+          "where": [
+            "caller"
+          ],
+          "writes": 8
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:data/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 4,
+          "where": [
+            "caller",
+            "cwd:synergies"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 3,
+          "where": [
+            "caller",
+            "cwd:synergies/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 3,
+          "where": [
+            "cwd:products.yaml"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:schema-vec.sql"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:schema.sql"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:synergies"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 48,
       "outsideWrites": 9,
       "role": "code",

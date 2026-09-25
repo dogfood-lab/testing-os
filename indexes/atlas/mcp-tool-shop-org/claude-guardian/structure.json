@@ -513,7 +513,6 @@
         {
           "hash": "603926050b2045bb67c9fff6af8d5118f5f89a84209709366d1fd624049a2129",
           "importsFiles": [
-            "package.json",
             "src/budget-store.ts",
             "src/budget.ts",
             "src/defaults.ts",
@@ -771,6 +770,52 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 9,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "home:.claude-guardian"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 3,
+          "where": [
+            "caller",
+            "home:.claude/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 10,
+          "where": [
+            "home:.claude-guardian"
+          ],
+          "writes": 9
+        },
+        {
+          "reads": 3,
+          "where": [
+            "home:.claude-guardian/"
+          ],
+          "writes": 5
+        },
+        {
+          "reads": 4,
+          "where": [
+            "home:.claude/"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 29,
       "outsideWrites": 17,
       "role": "code",

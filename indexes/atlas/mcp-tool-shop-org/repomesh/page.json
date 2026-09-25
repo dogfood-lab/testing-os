@@ -249,7 +249,7 @@
   "changesTogetherWithTests": 0,
   "commit": "8843b8894a8ccae1569bce0ad24618ed0ce208e7",
   "defaultBranch": "main",
-  "derived": "18 parts, mostly JavaScript (175 files). Work enters through 9 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image. People run repomesh.",
+  "derived": "18 parts, mostly JavaScript (175 files) and TypeScript (2). Work enters through 9 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image. People run repomesh.",
   "doors": [
     {
       "checks": [
@@ -323,7 +323,8 @@
       "triggers": [
         "when a release is published",
         "or by hand"
-      ]
+      ],
+      "untracked": "packages/repomesh-cli/dist/, which is not tracked"
     },
     {
       "checks": [
@@ -410,7 +411,8 @@
       "triggers": [
         "on a schedule (`0 0 * * *`)",
         "or by hand"
-      ]
+      ],
+      "untracked": "anchor/xrpl/partition-root.json and packages/repomesh-cli/dist/, which are not tracked"
     },
     {
       "checks": [],
@@ -478,7 +480,8 @@
       "triggers": [
         "on a push to main touching 6 paths",
         "or by hand"
-      ]
+      ],
+      "untracked": "pages/out/, registry/metrics.json, registry/timeline.json and 2 more places, which are not tracked"
     },
     {
       "checks": [
@@ -698,13 +701,15 @@
       "runsMore": 0,
       "sends": [
         "commits into a clone of mcp-tool-shop-org/repomesh and pushes there",
+        "uploads provenance.json and sbom.json to the release",
         "opens a pull request"
       ],
       "stages": [],
       "triggers": [
         "when a release is published",
         "or by hand"
-      ]
+      ],
+      "untracked": "packages/repomesh-cli/dist/, which is not tracked"
     },
     {
       "checks": [],
@@ -924,12 +929,15 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-24T21:49:43.346Z",
+  "generatedAt": "2026-09-25T01:39:33.187Z",
   "limits": [
     "114 import sites could not be resolved.",
     "6 reads use paths built at run time and are not named here.",
     "25 writes go to places this repository does not track, so they are not listed as generated.",
-    "45 writes and 167 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "38 writes and 141 reads go to a path their caller passes, not to this repository.",
+    "7 writes and 13 reads go to the directory the command is run in (.repomesh-tmp/, anchor/ and ledger/) or a path their caller passes, not to this repository.",
+    "12 reads go to the directory the command is run in (anchor/, ledger/ and verifiers/), not to this repository.",
+    "1 read goes to a temporary directory, not to this repository.",
     "10 commands are built at run time and not followed, 9 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],

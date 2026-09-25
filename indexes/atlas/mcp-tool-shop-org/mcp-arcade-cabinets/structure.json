@@ -1130,6 +1130,15 @@
       "importConfidence": "full",
       "name": "cabinet-server",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 2,
       "role": "code",
       "testedBy": 22,
@@ -2097,6 +2106,15 @@
       "importConfidence": "full",
       "name": "cabinets",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 15,
+          "where": [
+            "caller"
+          ],
+          "writes": 4
+        }
+      ],
       "outsideReads": 15,
       "outsideWrites": 4,
       "role": "code",
@@ -4005,6 +4023,15 @@
       "importConfidence": "full",
       "name": "ghost-on-the-menu",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 26,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 26,
       "role": "code",
       "testedBy": 31,
@@ -4716,6 +4743,15 @@
       "importConfidence": "full",
       "name": "launcher",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 2,
       "role": "code",
       "testedBy": 9,
@@ -5448,6 +5484,68 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 4,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:film"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:film/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 3,
+          "where": [
+            "caller",
+            "cwd:fixtures/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:packages/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:.venv/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd:film/"
+          ],
+          "writes": 5
+        },
+        {
+          "reads": 7,
+          "where": [
+            "cwd:fixtures/"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 16,
       "outsideWrites": 9,
       "role": "code",
@@ -5667,6 +5765,15 @@
       "importConfidence": "full",
       "name": "tape-core",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 1,
       "role": "code",
       "testedBy": 27,
@@ -6469,6 +6576,22 @@
       "importConfidence": "full",
       "name": "vibe-typer",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 47,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "temp"
+          ],
+          "writes": 4
+        }
+      ],
       "outsideReads": 47,
       "outsideWrites": 4,
       "role": "code",

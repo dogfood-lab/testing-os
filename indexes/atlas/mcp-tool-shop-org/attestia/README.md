@@ -1,10 +1,10 @@
 # attestia: how it works
 
-Mapped at 2026-09-24 from commit 47e1a45.
+Mapped at 2026-09-25 from commit 47e1a45.
 
 ## What this is
 
-23 parts, mostly TypeScript (407 files). Work enters through 4 doors; the busiest is Publish to GHCR, which reaches 16 parts. It publishes @mcptoolshop/attestia (packages/attestia) to npm and a container image.
+23 parts, mostly TypeScript (407 files) and JavaScript (2). Work enters through 4 doors; the busiest is Publish to GHCR, which reaches 16 parts. It publishes @mcptoolshop/attestia (packages/attestia) to npm and a container image.
 
 ## What changed since 2026-09-24 (245af30)
 
@@ -97,7 +97,7 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 5 writes and 7 reads use paths built at run time and are not named here.
-- 6 writes and 66 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 6 writes and 66 reads go to a path their caller passes, not to this repository.
 - There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

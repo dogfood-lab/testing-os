@@ -1,10 +1,10 @@
 # shipcheck: how it works
 
-Mapped at 2026-09-24 from commit 838720f.
+Mapped at 2026-09-25 from commit 838720f.
 
 ## What this is
 
-10 parts, mostly JavaScript (5 files). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run shipcheck.
+10 parts, mostly JavaScript (5 files) and TypeScript (2). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run shipcheck.
 
 ## What changed since 2026-09-23 (875a8ae)
 
@@ -41,7 +41,7 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**repomesh-broadcast** checks package.json, commits into a clone of mcp-tool-shop-org/repomesh and pushes there, and opens a pull request.
+**repomesh-broadcast** checks package.json, commits into a clone of mcp-tool-shop-org/repomesh and pushes there, uploads provenance.json and sbom.json to the release, and opens a pull request.
 
 **shipcheck** (a command people run) runs bin/shipcheck.mjs and runs git.
 
@@ -86,7 +86,9 @@ Read those in order to follow one run of shipcheck end to end. This path follows
 
 - 1 import site could not be resolved.
 - 2 reads use paths built at run time and are not named here.
-- 4 writes and 44 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 4 writes and 25 reads go to the directory the command is run in, not to this repository.
+- 18 reads go to a path their caller passes, not to this repository.
+- 1 read goes to the directory the command is run in or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

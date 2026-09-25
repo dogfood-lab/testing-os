@@ -1,10 +1,10 @@
 # star-freight: how it works
 
-Mapped at 2026-09-24 from commit 743f657.
+Mapped at 2026-09-25 from commit 743f657.
 
 ## What this is
 
-8 parts, mostly Python (207 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI. People run starfreight.
+8 parts, mostly Python (207 files), TypeScript (2) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI. People run starfreight.
 
 ## What changed since 2026-09-23 (fd07312)
 
@@ -22,7 +22,7 @@ Mapped at 2026-09-24 from commit 743f657.
 
 1. **CI.** On a pull request touching 8 paths; on a push touching 8 paths; or by hand. Runs tests/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **Release Binaries.** When a release is published; or by hand. Runs src/portlight/__main__.py.
+3. **Release Binaries.** When a release is published; or by hand. Builds src/portlight/__main__.py.
 4. **Publish to PyPI.** When a release is published; or by hand. Checks src/portlight/.
 5. **starfreight** (a command people run). Runs src/portlight/app/cli.py.
 
@@ -39,7 +39,7 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Release Binaries** runs src/portlight/__main__.py and creates a GitHub release.
+**Release Binaries** builds src/portlight/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release.
 
 **Publish to PyPI** checks src/portlight/ and publishes to PyPI.
 
@@ -89,7 +89,7 @@ Read those in order to follow one run of starfreight end to end. This path follo
 
 - 2 import sites could not be resolved.
 - 5 writes and 2 reads use paths built at run time and are not named here.
-- 1 write and 3 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 1 write and 3 reads go to the directory the command is run in, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

@@ -101,7 +101,7 @@
   "changesTogetherWithTests": 0,
   "commit": "4198db586f87a4bb9d69a087dd0ce57bbd0c9a52",
   "defaultBranch": "main",
-  "derived": "5 parts, mostly TypeScript (78 files). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run repo-dataset. People import @mcptoolshop/repo-dataset.",
+  "derived": "5 parts, mostly TypeScript (78 files) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run repo-dataset. People import @mcptoolshop/repo-dataset.",
   "doors": [
     {
       "checks": [
@@ -283,10 +283,11 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-24T21:49:20.316Z",
+  "generatedAt": "2026-09-25T01:39:10.562Z",
   "limits": [
     "8 reads use paths built at run time and are not named here.",
-    "9 writes and 15 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "9 writes and 12 reads go to a path their caller passes, not to this repository.",
+    "3 reads go to the directory the command is run in (.github/, package.json and tsconfig.json), not to this repository.",
     "1 command is built at run time and not followed.",
     "19 test files under `src/tests/` are not run by CI and Publish on Linux, where the shell expands `**` as one directory level.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."

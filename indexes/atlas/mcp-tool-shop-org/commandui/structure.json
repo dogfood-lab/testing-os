@@ -580,7 +580,7 @@
       "dynamicReads": 1,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [
         "apps/desktop/src-tauri/src/lib.rs",
         "apps/desktop/src-tauri/src/main.rs"
@@ -604,6 +604,7 @@
           "path": "apps/desktop/src-tauri/Cargo.toml"
         },
         {
+          "buildScript": true,
           "hash": "487059eaf8a947b80f20a9aacac038a5047b2ad69d2401b827376c67d6fe847f",
           "path": "apps/desktop/src-tauri/build.rs"
         },
@@ -830,6 +831,7 @@
             "apps/desktop/src-tauri/src/events/mod.rs",
             "apps/desktop/src-tauri/src/state.rs"
           ],
+          "library": "apps/desktop/src-tauri/src/lib.rs",
           "path": "apps/desktop/src-tauri/src/main.rs",
           "sequences": [
             {
@@ -1267,7 +1269,17 @@
       ],
       "importConfidence": "full",
       "name": "desktop",
-      "origin": "authored",
+      "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 0,
+          "where": [
+            "home"
+          ],
+          "writes": 1
+        }
+      ],
+      "outsideWrites": 1,
       "role": "code",
       "testedBy": 4,
       "unresolvedSites": 0
@@ -2536,7 +2548,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 2,
+      "checksCount": 1,
       "commands": [
         {
           "job": "build-windows",
@@ -2558,7 +2570,8 @@
           ],
           "pushes": false,
           "sends": [
-            "releases"
+            "assets:msi",
+            "assets:nsis"
           ],
           "stages": [],
           "when": {
@@ -2566,7 +2579,9 @@
           }
         }
       ],
-      "landings": [],
+      "landings": [
+        "apps/desktop/src-tauri/gen/schemas"
+      ],
       "mentions": [],
       "name": "Release Desktop",
       "permissions": [
@@ -2577,7 +2592,7 @@
         {
           "boundary": "desktop",
           "depth": 0,
-          "files": 54
+          "files": 55
         },
         {
           "boundary": "api-contract",
@@ -2639,15 +2654,23 @@
         {
           "job": "build-windows",
           "matched": true,
-          "path": "apps/desktop/src-tauri/src/lib.rs",
-          "runKind": "checks",
+          "path": "apps/desktop/src-tauri/build.rs",
+          "runKind": "executes",
           "via": "tauri build"
         },
         {
           "job": "build-windows",
           "matched": true,
-          "path": "apps/desktop/src-tauri/src/main.rs",
+          "path": "apps/desktop/src-tauri/src/lib.rs",
           "runKind": "checks",
+          "via": "tauri build"
+        },
+        {
+          "built": true,
+          "job": "build-windows",
+          "matched": true,
+          "path": "apps/desktop/src-tauri/src/main.rs",
+          "runKind": "executes",
           "via": "tauri build"
         },
         {
@@ -2666,7 +2689,7 @@
           "via": "tauri build → vite build"
         }
       ],
-      "runsCount": 4,
+      "runsCount": 5,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -2757,6 +2780,7 @@
       },
       "stages": [],
       "triggers": [],
+      "unshipped": true,
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -2925,6 +2949,16 @@
       ],
       "target": "apps/desktop/src-tauri",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": "apps/desktop/src-tauri/gen/schemas",
+      "writers": [
+        {
+          "by": "apps/desktop/src-tauri/build.rs",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [

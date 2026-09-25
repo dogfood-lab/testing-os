@@ -227,6 +227,7 @@
           "path": "apps/desktop/src-tauri/Cargo.toml"
         },
         {
+          "buildScript": true,
           "hash": "487059eaf8a947b80f20a9aacac038a5047b2ad69d2401b827376c67d6fe847f",
           "path": "apps/desktop/src-tauri/build.rs"
         },
@@ -942,6 +943,7 @@
           "importsFiles": [
             "apps/desktop/src-tauri/src/lib.rs"
           ],
+          "library": "apps/desktop/src-tauri/src/lib.rs",
           "path": "apps/desktop/src-tauri/src/main.rs",
           "sequences": [
             {
@@ -2741,7 +2743,16 @@
       ],
       "importConfidence": "full",
       "name": "desktop",
-      "origin": "authored",
+      "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 15,
+          "where": [
+            "caller"
+          ],
+          "writes": 9
+        }
+      ],
       "outsideReads": 15,
       "outsideWrites": 9,
       "role": "code",
@@ -4823,6 +4834,15 @@
       "importConfidence": "full",
       "name": "mcp-sprite-server",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 4
+        }
+      ],
       "outsideReads": 1,
       "outsideWrites": 4,
       "role": "code",
@@ -5023,6 +5043,15 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 5,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 5,
       "role": "code",
       "testedBy": 0,
@@ -6947,6 +6976,15 @@
       "importConfidence": "full",
       "name": "state",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 10,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 10,
       "role": "code",
       "testedBy": 145,
@@ -8137,6 +8175,7 @@
       },
       "stages": [],
       "triggers": [],
+      "unshipped": true,
       "uses": [],
       "usesWorkflowToken": false
     }
@@ -8203,6 +8242,16 @@
       ],
       "target": "apps/desktop/src",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": "apps/desktop/src-tauri/gen/schemas",
+      "writers": [
+        {
+          "by": "apps/desktop/src-tauri/build.rs",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [

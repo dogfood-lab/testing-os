@@ -1,10 +1,10 @@
 # repo-dataset: how it works
 
-Mapped at 2026-09-24 from commit 4198db5.
+Mapped at 2026-09-25 from commit 4198db5.
 
 ## What this is
 
-5 parts, mostly TypeScript (78 files). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run repo-dataset. People import @mcptoolshop/repo-dataset.
+5 parts, mostly TypeScript (78 files) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run repo-dataset. People import @mcptoolshop/repo-dataset.
 
 ## What changed since 2026-09-24 (3665fc1)
 
@@ -79,7 +79,8 @@ Read those in order to follow one run of repo-dataset end to end. This path foll
 ## What this map cannot see
 
 - 8 reads use paths built at run time and are not named here.
-- 9 writes and 15 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 9 writes and 12 reads go to a path their caller passes, not to this repository.
+- 3 reads go to the directory the command is run in (.github/, package.json and tsconfig.json), not to this repository.
 - 1 command is built at run time and not followed.
 - 19 test files under `src/tests/` are not run by CI and Publish on Linux, where the shell expands `**` as one directory level.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.

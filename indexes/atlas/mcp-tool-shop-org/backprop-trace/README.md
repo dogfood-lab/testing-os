@@ -1,10 +1,10 @@
 # backprop-trace: how it works
 
-Mapped at 2026-09-24 from commit 8b16ae0.
+Mapped at 2026-09-25 from commit 8b16ae0.
 
 ## What this is
 
-10 parts, mostly TypeScript (148 files). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.
+10 parts, mostly TypeScript (148 files), Python (5) and JavaScript (4). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.
 
 ## What changed since 2026-09-24 (5611f68)
 
@@ -144,7 +144,9 @@ Read those in order to follow one run of bp end to end. This path follows bp (a 
 - 3 import sites could not be resolved.
 - 16 writes and 11 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 2 writes and 24 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 11 reads go to a path their caller passes, not to this repository.
+- 10 reads go to the directory the command is run in (fixtures/ and scripts/), not to this repository.
+- 2 writes and 3 reads go to a temporary directory, not to this repository.
 - 7 commands are built at run time and not followed, 6 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

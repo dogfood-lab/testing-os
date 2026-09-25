@@ -87,33 +87,41 @@
     "items": [
       {
         "kind": "door",
-        "sentence": "CI now also runs app/src-tauri/src/commands.rs.",
+        "sentence": "CI now also runs app/src-tauri/build.rs and app/src-tauri/src/commands.rs.",
         "subjects": [
           ".github/workflows/ci.yml",
+          "app/src-tauri/build.rs",
           "app/src-tauri/src/commands.rs"
         ]
       },
       {
         "kind": "door",
-        "sentence": "CI now also checks app/src-tauri/src/lib.rs and app/src-tauri/src/main.rs.",
+        "sentence": "CI now also builds app/src-tauri/src/main.rs.",
         "subjects": [
           ".github/workflows/ci.yml",
-          "app/src-tauri/src/lib.rs",
           "app/src-tauri/src/main.rs"
         ]
       },
       {
         "kind": "door",
-        "sentence": "capsule-desktop (app/src-tauri/Cargo.toml) is a new desktop app. It runs app/src-tauri/src/main.rs.",
+        "sentence": "CI now also checks app/src-tauri/src/lib.rs.",
         "subjects": [
-          "app/src-tauri/Cargo.toml",
-          "app/src-tauri/src/main.rs"
+          ".github/workflows/ci.yml",
+          "app/src-tauri/src/lib.rs"
         ]
       },
       {
         "kind": "door",
-        "sentence": "And 1 more change to a door.",
+        "sentence": "And 2 more changes to doors.",
         "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": "app/src-tauri/gen/schemas/ is now written by app/src-tauri/build.rs.",
+        "subjects": [
+          "app/src-tauri/gen/schemas/",
+          "app/src-tauri/build.rs"
+        ]
       },
       {
         "kind": "landing",
@@ -133,16 +141,15 @@
       },
       {
         "kind": "landing",
-        "sentence": "app/src-tauri/icons/32x32.png is now read by app/src-tauri/tauri.conf.json.",
-        "subjects": [
-          "app/src-tauri/icons/32x32.png",
-          "app/src-tauri/tauri.conf.json"
-        ]
+        "sentence": "And 8 more new writers and readers of places.",
+        "subjects": []
       },
       {
-        "kind": "landing",
-        "sentence": "And 7 more new writers and readers of places.",
-        "subjects": []
+        "kind": "origin",
+        "sentence": "app was authored and is now mixed.",
+        "subjects": [
+          "app"
+        ]
       },
       {
         "kind": "counts",
@@ -240,14 +247,16 @@
   "changesTogetherWithTests": 0,
   "commit": "e2ce19a5099a1e2fba8c13c8bac76019e0db761a",
   "defaultBranch": "main",
-  "derived": "12 parts, mostly TypeScript (183 files). Work enters through 3 doors; the busiest is CI, which reaches 8 parts. People install the capsule-desktop desktop app.",
+  "derived": "12 parts, mostly TypeScript (183 files), Rust (4) and JavaScript (2). Work enters through 3 doors; the busiest is CI, which reaches 8 parts. People install the capsule-desktop desktop app.",
   "doors": [
     {
+      "builds": [
+        "app/src-tauri/src/main.rs"
+      ],
       "checks": [
         "app/bridge-worker-commands.ts",
         "app/bridge-worker.ts",
         "app/src-tauri/src/lib.rs",
-        "app/src-tauri/src/main.rs",
         "artifacts/",
         "packages/cli/src/",
         "packages/core/src/",
@@ -255,18 +264,20 @@
         "packages/xaman/src/",
         "packages/xrpl/src/"
       ],
-      "checksCount": 10,
-      "checksMore": 116,
+      "checksCount": 9,
+      "checksMore": 115,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "app/src-tauri/gen/schemas/"
+      ],
       "name": "CI",
       "pushes": false,
       "reach": [
         {
           "boundary": "app",
           "depth": 0,
-          "files": 70
+          "files": 71
         },
         {
           "boundary": "artifacts",
@@ -315,6 +326,7 @@
         "app/bridge-worker-stdout-flush.test.ts",
         "app/bridge-worker-verify-release.test.ts",
         "app/bridge-worker.test.ts",
+        "app/src-tauri/build.rs",
         "app/src-tauri/src/commands.rs",
         "app/src/",
         "app/vite.config.ts",
@@ -367,10 +379,10 @@
         "packages/xrpl/src/verify-minter.test.ts",
         "packages/xrpl/src/wallet.test.ts"
       ],
-      "runsCount": 61,
-      "runsMore": 110,
+      "runsCount": 62,
+      "runsMore": 111,
       "sends": [
-        "creates a GitHub release on a release event"
+        "builds app/src-tauri/src/main.rs into MSI and NSIS installers and uploads them to the release on a release event"
       ],
       "stages": [],
       "triggers": [
@@ -378,7 +390,8 @@
         "on a push touching 13 paths",
         "when a release is published",
         "or by hand"
-      ]
+      ],
+      "untracked": "app/src-tauri/resources/, which is not tracked"
     },
     {
       "checks": [],
@@ -494,13 +507,20 @@
       "to": "storage"
     }
   ],
-  "generated": [],
-  "generatedAt": "2026-09-24T21:52:10.788Z",
+  "generated": [
+    {
+      "place": "app/src-tauri/gen/schemas/",
+      "writers": [
+        "app/src-tauri/build.rs (a build script)"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-25T01:41:51.292Z",
   "limits": [
     "4 import sites could not be resolved.",
     "6 writes and 15 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "23 writes and 37 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "23 writes and 37 reads go to a path their caller passes, not to this repository.",
     "1 command is built at run time and not followed, and it is in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -520,7 +540,12 @@
     "xrpl": "xrpl"
   },
   "parts": 12,
-  "readers": [],
+  "readers": [
+    {
+      "readers": [],
+      "target": "app/src-tauri/gen/schemas/"
+    }
+  ],
   "repo": "mcp-tool-shop-org/xrpl-creator-capsule",
   "sequences": [],
   "startDoor": ".github/workflows/ci.yml",
@@ -540,10 +565,17 @@
     "xrpl": 28
   },
   "unnamedWrites": 6,
-  "unread": [],
+  "unread": [
+    {
+      "place": "app/src-tauri/gen/schemas/",
+      "writers": [
+        "app/src-tauri/build.rs (a build script)"
+      ]
+    }
+  ],
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],
-  "written": 0
+  "written": 1
 }

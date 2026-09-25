@@ -581,6 +581,23 @@
       "importConfidence": "full",
       "name": "attestor",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 7,
+          "where": [
+            "caller"
+          ],
+          "writes": 3
+        },
+        {
+          "reads": 5,
+          "where": [
+            "caller",
+            "cwd:ledger/"
+          ],
+          "writes": 1
+        }
+      ],
       "outsideReads": 12,
       "outsideWrites": 4,
       "role": "code",
@@ -873,6 +890,15 @@
       "importConfidence": "full",
       "name": "ledger",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 14,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 14,
       "role": "code",
       "testedBy": 18,
@@ -1067,6 +1093,15 @@
       "importConfidence": "full",
       "name": "policy",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 4,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        }
+      ],
       "outsideReads": 4,
       "outsideWrites": 2,
       "role": "code",
@@ -1621,6 +1656,15 @@
       "importConfidence": "full",
       "name": "registry",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 22,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 22,
       "role": "code",
       "testedBy": 15,
@@ -2105,6 +2149,38 @@
       "importConfidence": "full",
       "name": "repomesh-cli",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 44,
+          "where": [
+            "caller"
+          ],
+          "writes": 16
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:anchor/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 5,
+          "where": [
+            "caller",
+            "cwd:ledger/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:anchor/"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 51,
       "outsideWrites": 17,
       "role": "code",
@@ -2536,6 +2612,39 @@
       "importConfidence": "full",
       "name": "tools",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 41,
+          "where": [
+            "caller"
+          ],
+          "writes": 12
+        },
+        {
+          "reads": 2,
+          "where": [
+            "caller",
+            "cwd:.repomesh-tmp"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:.repomesh-tmp/"
+          ],
+          "writes": 4
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:ledger/"
+          ],
+          "writes": 1
+        }
+      ],
       "outsideReads": 43,
       "outsideWrites": 17,
       "role": "code",
@@ -4799,6 +4908,36 @@
       "importConfidence": "full",
       "name": "verifiers",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 9,
+          "where": [
+            "caller"
+          ],
+          "writes": 5
+        },
+        {
+          "reads": 8,
+          "where": [
+            "cwd:ledger/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 3,
+          "where": [
+            "cwd:verifiers/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "temp"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 21,
       "outsideWrites": 5,
       "role": "code",
@@ -5578,6 +5717,10 @@
         {
           "event": "workflow_dispatch"
         }
+      ],
+      "untrackedLandings": [
+        "anchor/xrpl/partition-root.json",
+        "packages/repomesh-cli/dist/"
       ],
       "uses": [
         "actions/checkout",
@@ -6698,6 +6841,25 @@
           "event": "workflow_dispatch"
         }
       ],
+      "untrackedLandings": [
+        "pages/out/",
+        "pages/out/.nojekyll",
+        "pages/out/anchors/",
+        "pages/out/anchors/index.html",
+        "pages/out/assets/",
+        "pages/out/docs/",
+        "pages/out/docs/verification.html",
+        "pages/out/health/",
+        "pages/out/health/index.html",
+        "pages/out/index.html",
+        "pages/out/repos/",
+        "pages/out/repos/index.html",
+        "pages/out/status.json",
+        "registry/metrics.json",
+        "registry/timeline.json",
+        "site/public",
+        "site/src/stats.json"
+      ],
       "uses": [
         "actions/checkout",
         "actions/deploy-pages",
@@ -7371,6 +7533,9 @@
           "event": "workflow_dispatch"
         }
       ],
+      "untrackedLandings": [
+        "packages/repomesh-cli/dist/"
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node"
@@ -7469,6 +7634,10 @@
         "REPOMESH_SIGNING_KEY"
       ],
       "sends": {
+        "assets": [
+          "file:provenance.json",
+          "file:sbom.json"
+        ],
         "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,
@@ -7489,6 +7658,9 @@
         {
           "event": "workflow_dispatch"
         }
+      ],
+      "untrackedLandings": [
+        "packages/repomesh-cli/dist/"
       ],
       "uses": [
         "actions/checkout",

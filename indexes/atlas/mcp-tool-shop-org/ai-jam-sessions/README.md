@@ -1,20 +1,20 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-09-24 from commit 5139ec7.
+Mapped at 2026-09-25 from commit 5139ec7.
 
 ## What this is
 
-14 parts, mostly TypeScript (555 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
+14 parts, mostly TypeScript (555 files), Python (47) and JavaScript (32). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
 ## What changed since 2026-09-24 (8734514)
 
 - CI now also runs files in apps/cockpit/.
 - CI runs 1 more file than before.
 - Deploy site to GitHub Pages now also runs apps/cockpit/src/ and apps/cockpit/vite.config.ts.
+- .eval-checkpoints is now written by scripts/run-jam-actions-corpus-eval.ts.
 - datasets/jam-actions-v0-public/ is now also written by scripts/run-jam-actions-corpus-eval.ts.
 - datasets/jam-actions-v0-public/evals/ is now written by scripts/run-jam-actions-corpus-eval.ts.
-- site/dist is now written by .github/workflows/pages.yml.
-- And 115 more new writers and readers of places.
+- And 120 more new writers and readers of places.
 - songs was generated and is now mixed.
 - 1961 files changed content, across 13 parts.
 
@@ -45,7 +45,7 @@ CI writes nothing this map can see.
 
 **Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more, checks LICENSE, README.md, logo.png and 481 more, and publishes to npm and a container image.
 
-**Deploy site to GitHub Pages** runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more, reaches src, and deploys the site.
+**Deploy site to GitHub Pages** runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more, reaches src, writes to site/dist, which is not tracked, and deploys the site.
 
 **Publish jam-actions-v0** runs scripts/check-release-gate.ts and scripts/verify-public-package-checksums.ts, reaches src, publishes to the Hugging Face Hub when run by hand with confirm_irreversible yes-mint-doi and mode publish, and publishes a record on Zenodo when run by hand with confirm_irreversible yes-mint-doi.
 
@@ -222,7 +222,7 @@ And 2 more pairs.
 
 ## Hand-authored
 
-People write .github/, the repository root and site/; 52 writes with paths built at run time may land here.
+People write .github/, the repository root and site/; 47 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -234,9 +234,15 @@ Read those in order to follow one pull request end to end.
 
 - 5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.
 - 11 import sites could not be resolved.
-- 52 writes and 134 reads use paths built at run time and are not named here.
-- 16 writes go to places this repository does not track, so they are not listed as generated.
-- 109 writes and 360 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 47 writes and 134 reads use paths built at run time and are not named here.
+- 21 writes go to places this repository does not track, so they are not listed as generated.
+- 95 writes and 329 reads go to a path their caller passes, not to this repository.
+- 2 writes and 16 reads go to the directory the command is run in, not to this repository.
+- 3 writes and 11 reads go to the home directory (.ssh/), not to this repository.
+- 7 writes and 2 reads go to a temporary directory, not to this repository.
+- 1 write and 1 read go to the home directory (.ai-jam-sessions/) or a path their caller passes, not to this repository.
+- 1 read goes to the directory the command is run in (tmp/) or a path its caller passes, not to this repository.
+- 1 write goes to a temporary directory or a path its caller passes, not to this repository.
 - 10 commands are built at run time and not followed, 1 of them in tests.
 - There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 - There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.

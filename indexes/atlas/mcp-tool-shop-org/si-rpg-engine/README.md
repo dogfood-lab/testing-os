@@ -1,20 +1,20 @@
 # si-rpg-engine: how it works
 
-Mapped at 2026-09-24 from commit 1126282.
+Mapped at 2026-09-25 from commit a097f44.
 
 ## What this is
 
 Deterministic 3D RPG tick: the model proposes, a checker admits, and the host draws committed frames. (written by a person)
 
-12 parts, mostly JavaScript (36 files). Work enters through 7 doors; the busiest is CI, which reaches 7 parts. People run host, load, play, propose, replay and write-golden.
+14 parts, mostly JavaScript (41 files), Rust (2) and TypeScript (1). Work enters through 7 doors; the busiest is CI, which reaches 8 parts. People run host, load, play, propose, replay and write-golden.
 
-## What changed since 2026-09-24 (5f47e58)
+## What changed since 2026-09-25 (a6479da)
 
-Nothing structural changed since 2026-09-24; 2 files added and 1 changed content.
+Nothing structural changed since 2026-09-25; 98 files changed content.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 9 paths; on a push to main touching 9 paths; or by hand. Runs harness/product.test.js, packages/host/host.test.js, packages/load/load.test.js and 2 more; checks fixtures/golden-arith.txt, fixtures/golden.txt, harness/arith.mjs and 35 more.
+1. **CI.** On a pull request touching 10 paths; on a push to main touching 10 paths; or by hand. Runs harness/product.test.js, harness/solver.test.js, packages/host/host.test.js and 5 more; checks fixtures/golden-arith.txt, fixtures/golden.txt, harness/arith.mjs and 38 more.
 2. **host** (a command people run). Runs packages/host/bin/host.js.
 3. **load** (a command people run). Runs packages/load/bin/load.js.
 4. **propose** (a command people run). Runs packages/propose/bin/propose.js.
@@ -24,14 +24,16 @@ Nothing structural changed since 2026-09-24; 2 files added and 1 changed content
 
 ## What happens through CI
 
-1. The workflow runs harness/product.test.js in harness, packages/host/host.test.js in host, packages/load/load.test.js in load, packages/propose/propose.test.js in propose and packages/tick/tick.test.js in tick; it checks fixtures/golden-arith.txt and fixtures/golden.txt in fixtures, 5 files in harness, packages/frame/frame.js, packages/frame/hash.js and packages/frame/types.d.ts in frame, packages/host/ in host, packages/load/ in load, and 18 files in 2 more parts.
+1. The workflow runs harness/product.test.js and harness/solver.test.js in harness, packages/host/host.test.js in host, packages/load/load.test.js in load, packages/propose/propose.test.js in propose, solver/build.mjs in solver, and packages/tick/scene.test.js and packages/tick/tick.test.js in tick; it checks fixtures/golden-arith.txt and fixtures/golden.txt in fixtures, 6 files in harness, packages/frame/frame.js, packages/frame/hash.js and packages/frame/types.d.ts in frame, packages/host/ in host, packages/load/ in load, and 20 files in 2 more parts.
    1. Inside packages/propose/propose.test.js, fresh does, in order: load intent rules (tick), fixture world, create world, create memory and create tick.
-   2. **Create tick** (tick) runs, in order: create hasher (frame) and commit frame.
+   2. **Create tick** (tick) runs, in order: create hasher (frame), mix load, snapshot, u 32 and commit frame.
    3. Inside packages/tick/tick.test.js, fresh does, in order: fixture world, create world, load intent rules, create memory and create tick.
+   4. **Create tick** runs, in order: create hasher (frame), mix load, snapshot, u 32 and commit frame.
+2. It writes to solver/dist/, which is not tracked.
 
 ## Who reads the results
 
-CI writes nothing this map can see.
+CI writes only to solver/dist/, which is not tracked.
 
 ## The other doors
 
@@ -64,13 +66,13 @@ CI writes nothing this map can see.
 - **packages/propose/bin/propose.js** and **packages/propose/seat.js** changed together in 5 of 6 commits, inside the propose part.
 - **packages/propose/prompt.js** and **packages/propose/seat.js** changed together in 5 of 6 commits, inside the propose part.
 
-Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
+Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
-Every code part is imported by at least one test.
+- **solver** is imported by no test.
 
 ## Written but never read
 
@@ -78,27 +80,33 @@ Every written place has a reader.
 
 ## Helpers that look duplicated
 
-No two parts export a helper that looks alike.
+These are candidates from names and call order, not a judgement.
+
+- **reachedGoal** is exported by packages/propose/scene.js (propose) and packages/tick/scene.js (tick); the two look alike.
 
 ## Generated, never hand-edited
 
 - **fixtures/golden.txt** is written by harness/write-golden.js.
+- **fixtures/solver.sha256** has a block written by solver/build.mjs when run without --check.
 
 ## Hand-authored
 
-People write .github/, docs/, predicates/hazards/, predicates/intents/ and the repository root. Nothing in this repository writes to them.
+People write .github/, docs/, predicates/hazards/, predicates/intents/, the repository root and scenes/. Nothing in this repository writes to them.
 
 ## Where to start
 
-packages/host/bin/host.js
+packages/host/bin/host.js → packages/tick/scene.js
 
-Read those in order to follow one run of host end to end. This path follows host (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one run of host end to end. This path follows host (a command people run) from its entry, since CI runs only tests and scripts that import no code here.
 
 ## What this map cannot see
 
+- 4 import sites could not be resolved.
 - 1 read uses a path built at run time and is not named here.
-- 4 writes and 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
-- 1 command is built at run time and not followed.
-- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+- 1 write goes to places this repository does not track, so it is not listed as generated.
+- 3 writes and 6 reads go to a path their caller passes, not to this repository.
+- 2 writes and 2 reads go to the directory the command is run in (harness/ and predicates/), not to this repository.
+- 2 commands are built at run time and not followed.
+- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

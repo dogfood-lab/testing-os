@@ -218,6 +218,15 @@
       "importConfidence": "full",
       "name": "asset-registry",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 10,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 10,
       "role": "code",
       "testedBy": 6,
@@ -333,6 +342,15 @@
       "importConfidence": "full",
       "name": "audio-director",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 2,
       "role": "code",
       "testedBy": 3,
@@ -526,6 +544,15 @@
       "importConfidence": "full",
       "name": "campaign-memory",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 1,
       "role": "code",
       "testedBy": 7,
@@ -1018,7 +1045,7 @@
       "dynamicReads": 16,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 9,
+      "dynamicWrites": 6,
       "entryPoints": [
         "packages/cli/src/bin.ts",
         "packages/cli/src/index.ts"
@@ -1154,7 +1181,6 @@
           "hash": "481ca46d3cac5e04418411ef876e03d0f044296ebba878c912e11420abae0bf7",
           "importsFiles": [
             "packages/character-creation/src/index.ts",
-            "packages/cli/package.json",
             "packages/cli/src/audit-content.ts",
             "packages/cli/src/character-builder.ts",
             "packages/cli/src/create-starter.ts",
@@ -3163,9 +3189,6 @@
         },
         {
           "hash": "09cae4ae7099f531b2c70105cc459669c6b34683f988ff345d723e31969e1b20",
-          "importsFiles": [
-            "packages/cli/package.json"
-          ],
           "path": "packages/cli/src/cli.test.ts"
         },
         {
@@ -5017,6 +5040,45 @@
       "importConfidence": "full",
       "name": "cli",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 21,
+          "where": [
+            "caller"
+          ],
+          "writes": 3
+        },
+        {
+          "reads": 2,
+          "where": [
+            "caller",
+            "cwd:node_modules/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 9,
+          "where": [
+            "caller",
+            "cwd:packages/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:node_modules/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd:packages"
+          ],
+          "writes": 1
+        }
+      ],
       "outsideReads": 33,
       "outsideWrites": 5,
       "role": "code",
@@ -5371,6 +5433,15 @@
       "importConfidence": "full",
       "name": "content-schema",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 1,
       "role": "code",
       "testedBy": 190,
@@ -5747,6 +5818,15 @@
       "importConfidence": "full",
       "name": "core",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 10,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 10,
       "role": "code",
       "testedBy": 280,
@@ -6291,6 +6371,15 @@
       "importConfidence": "full",
       "name": "docs",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 2,
       "role": "docs",
       "testedBy": 1,
@@ -6588,6 +6677,15 @@
       "importConfidence": "full",
       "name": "equipment",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 2,
       "role": "code",
       "testedBy": 159,
@@ -6824,6 +6922,15 @@
       "importConfidence": "full",
       "name": "image-gen",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 4,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 4,
       "role": "code",
       "testedBy": 6,
@@ -7336,6 +7443,15 @@
       "importConfidence": "full",
       "name": "ledger-adapter",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 18,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        }
+      ],
       "outsideReads": 18,
       "outsideWrites": 2,
       "role": "code",
@@ -10163,6 +10279,15 @@
       "importConfidence": "full",
       "name": "modules",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 19,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 19,
       "role": "code",
       "testedBy": 236,
@@ -12160,6 +12285,86 @@
       "importConfidence": "full",
       "name": "ollama",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 5,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd"
+          ],
+          "writes": 4
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:.ai-session.json"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:.ai-session.json",
+            "cwd:.ai-sessions/"
+          ],
+          "writes": 3
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:.ai-session.json/",
+            "cwd:.ai-sessions/"
+          ],
+          "writes": 4
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:.ai-sessions"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:.ai-sessions/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 3,
+          "where": [
+            "cwd"
+          ],
+          "writes": 3
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:.ai-session.json"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd:.ai-sessions/"
+          ],
+          "writes": 2
+        }
+      ],
       "outsideReads": 11,
       "outsideWrites": 23,
       "role": "code",
@@ -12351,6 +12556,15 @@
       "importConfidence": "full",
       "name": "pack-registry",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 1,
       "role": "code",
       "testedBy": 105,
@@ -12735,6 +12949,15 @@
       "importConfidence": "full",
       "name": "rumor-system",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 8,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 8,
       "role": "code",
       "testedBy": 3,
@@ -12787,6 +13010,15 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 3,
+          "where": [
+            "temp"
+          ],
+          "writes": 6
+        }
+      ],
       "outsideReads": 3,
       "outsideWrites": 6,
       "role": "code",
@@ -13061,6 +13293,15 @@
       "importConfidence": "full",
       "name": "sidecar",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 4,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 4,
       "role": "code",
       "testedBy": 15,
@@ -13621,6 +13862,15 @@
       "importConfidence": "full",
       "name": "soundpack-core",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 4,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 4,
       "role": "code",
       "testedBy": 8,
@@ -17983,6 +18233,9 @@
           "event": "workflow_dispatch"
         }
       ],
+      "untrackedLandings": [
+        ".ai-rpg-engine/"
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node",
@@ -19949,6 +20202,9 @@
           "event": "workflow_dispatch"
         }
       ],
+      "untrackedLandings": [
+        ".ai-rpg-engine/"
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node",
@@ -20225,6 +20481,9 @@
       },
       "stages": [],
       "triggers": [],
+      "untrackedLandings": [
+        ".ai-rpg-engine/"
+      ],
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -21363,6 +21622,21 @@
     "tracked": 1385
   },
   "landings": [
+    {
+      "readers": [],
+      "target": ".ai-rpg-engine",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "packages/cli/src/bin.ts",
+          "confidence": "ast"
+        },
+        {
+          "by": "packages/cli/src/history.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
     {
       "readers": [
         {

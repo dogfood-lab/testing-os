@@ -1,10 +1,10 @@
 # taste-engine: how it works
 
-Mapped at 2026-09-24 from commit c87c284.
+Mapped at 2026-09-25 from commit c87c284.
 
 ## What this is
 
-11 parts, mostly TypeScript (142 files). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. People run taste.
+11 parts, mostly TypeScript (142 files) and JavaScript (3). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. People run taste.
 
 ## What changed since 2026-09-24 (ac181ee)
 
@@ -71,7 +71,8 @@ Read those in order to follow one run of taste end to end. This path follows tas
 ## What this map cannot see
 
 - 7 reads use paths built at run time and are not named here.
-- 19 writes and 86 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 15 writes and 73 reads go to a path their caller passes, not to this repository.
+- 4 writes and 13 reads go to the directory the command is run in or a path their caller passes, not to this repository.
 - 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

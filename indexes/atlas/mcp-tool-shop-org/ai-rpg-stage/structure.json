@@ -2281,6 +2281,15 @@
       "importConfidence": "full",
       "name": "assets",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 0,
+          "where": [
+            "caller"
+          ],
+          "writes": 5
+        }
+      ],
       "outsideWrites": 5,
       "role": "code",
       "testedBy": 0,
@@ -2660,7 +2669,7 @@
       ],
       "importConfidence": "full",
       "name": "fixtures",
-      "origin": "authored",
+      "origin": "generated",
       "role": "data",
       "testedBy": 2,
       "unresolvedSites": 0
@@ -4130,7 +4139,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 1,
       "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -4266,6 +4275,15 @@
       "importConfidence": "full",
       "name": "tools",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 2,
       "role": "code",
       "testedBy": 2,
@@ -4307,7 +4325,12 @@
       "pushes": false,
       "pushesForReview": true,
       "reach": [],
-      "readers": [],
+      "readers": [
+        {
+          "by": ".github/workflows/ci.yml",
+          "target": ".github/upstream-pins.env"
+        }
+      ],
       "runs": [],
       "runsCount": 0,
       "secrets": [],
@@ -4394,8 +4417,19 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "landings": [],
-      "mentions": [],
+      "landings": [
+        "fixtures"
+      ],
+      "mentions": [
+        {
+          "job": "headless",
+          "path": ".github/upstream-pins.env"
+        },
+        {
+          "job": "headless",
+          "path": "fixtures/world.tscn"
+        }
+      ],
       "name": "ci",
       "permissions": [
         "contents:read"
@@ -4403,20 +4437,294 @@
       "pushes": false,
       "reach": [
         {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 11
+        },
+        {
           "boundary": "tools",
           "depth": 0,
-          "files": 2
+          "files": 3
+        },
+        {
+          "boundary": "client",
+          "depth": 1,
+          "enters": {
+            "file": "client/framing.gd",
+            "from": "tests/test_framing.gd"
+          },
+          "files": 5
+        },
+        {
+          "boundary": "stage",
+          "depth": 1,
+          "enters": {
+            "file": "stage/diorama.gd",
+            "from": "tests/test_diorama.gd"
+          },
+          "files": 14
+        },
+        {
+          "boundary": "fixtures",
+          "depth": 2,
+          "enters": {
+            "file": "fixtures/world.tscn",
+            "from": "stage/diorama.gd"
+          },
+          "files": 1
         }
       ],
-      "readers": [],
+      "readers": [
+        {
+          "by": "stage/diorama.gd",
+          "call": "import",
+          "confidence": "ast",
+          "target": "fixtures"
+        },
+        {
+          "by": "stage/diorama.gd",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "fixtures"
+        },
+        {
+          "by": "stage/iso/iso_world.gd",
+          "call": "file_exists",
+          "confidence": "ast",
+          "target": "fixtures"
+        },
+        {
+          "by": "tests/test_iso_world.gd",
+          "call": "file_exists",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "fixtures"
+        },
+        {
+          "by": "tests/test_iso_world.gd",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "fixtures"
+        },
+        {
+          "by": "tests/test_scene_join.gd",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "fixtures"
+        },
+        {
+          "by": "tools/play.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "fixtures"
+        }
+      ],
       "runs": [
+        {
+          "foundBy": "tools/headless.gd",
+          "job": "headless",
+          "matched": true,
+          "path": "tests/test_diorama.gd",
+          "runKind": "executes",
+          "via": "tools/headless.gd",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
+        },
+        {
+          "foundBy": "tools/headless.gd",
+          "job": "headless",
+          "matched": true,
+          "path": "tests/test_felt_juice.gd",
+          "runKind": "executes",
+          "via": "tools/headless.gd",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
+        },
+        {
+          "foundBy": "tools/headless.gd",
+          "job": "headless",
+          "matched": true,
+          "path": "tests/test_felt_mixer.gd",
+          "runKind": "executes",
+          "via": "tools/headless.gd",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
+        },
+        {
+          "foundBy": "tools/headless.gd",
+          "job": "headless",
+          "matched": true,
+          "path": "tests/test_felt_voice.gd",
+          "runKind": "executes",
+          "via": "tools/headless.gd",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
+        },
+        {
+          "foundBy": "tools/headless.gd",
+          "job": "headless",
+          "matched": true,
+          "path": "tests/test_framing.gd",
+          "runKind": "executes",
+          "via": "tools/headless.gd",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
+        },
+        {
+          "foundBy": "tools/headless.gd",
+          "job": "headless",
+          "matched": true,
+          "path": "tests/test_iso_math.gd",
+          "runKind": "executes",
+          "via": "tools/headless.gd",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
+        },
+        {
+          "foundBy": "tools/headless.gd",
+          "job": "headless",
+          "matched": true,
+          "path": "tests/test_iso_world.gd",
+          "runKind": "executes",
+          "via": "tools/headless.gd",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
+        },
+        {
+          "foundBy": "tools/headless.gd",
+          "job": "headless",
+          "matched": true,
+          "path": "tests/test_live_session.gd",
+          "runKind": "executes",
+          "via": "tools/headless.gd",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
+        },
+        {
+          "foundBy": "tools/headless.gd",
+          "job": "headless",
+          "matched": true,
+          "path": "tests/test_scene_join.gd",
+          "runKind": "executes",
+          "via": "tools/headless.gd",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
+        },
+        {
+          "foundBy": "tools/headless.gd",
+          "job": "headless",
+          "matched": true,
+          "path": "tests/test_tick_queue.gd",
+          "runKind": "executes",
+          "via": "tools/headless.gd",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
+        },
+        {
+          "foundBy": "tools/headless.gd",
+          "job": "headless",
+          "matched": true,
+          "path": "tests/test_wire_session.gd",
+          "runKind": "executes",
+          "via": "tools/headless.gd",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
+        },
         {
           "job": "headless",
           "path": "tools/headless.gd",
-          "runKind": "executes"
+          "runKind": "executes",
+          "when": {
+            "also": [
+              "push"
+            ],
+            "except": [
+              "workflow_dispatch"
+            ],
+            "fork": true
+          }
         }
       ],
-      "runsCount": 1,
+      "runsCount": 12,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -4668,7 +4976,11 @@
   },
   "landings": [
     {
-      "readers": [],
+      "readers": [
+        {
+          "by": ".github/workflows/ci.yml"
+        }
+      ],
       "target": ".github/upstream-pins.env",
       "writers": [
         {
@@ -7836,6 +8148,15 @@
       "writers": []
     },
     {
+      "readers": [],
+      "target": "fixtures",
+      "writers": [
+        {
+          "by": ".github/workflows/ci.yml"
+        }
+      ]
+    },
+    {
       "readers": [
         {
           "by": "stage/iso/iso_world.gd",
@@ -7905,6 +8226,11 @@
     },
     {
       "readers": [
+        {
+          "by": "stage/diorama.gd",
+          "call": "import",
+          "confidence": "ast"
+        },
         {
           "by": "tests/test_scene_join.gd",
           "call": "literal",

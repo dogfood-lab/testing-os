@@ -1,10 +1,10 @@
 # ai-rpg-engine: how it works
 
-Mapped at 2026-09-24 from commit f7e56e6.
+Mapped at 2026-09-25 from commit f7e56e6.
 
 ## What this is
 
-39 parts, mostly TypeScript (797 files). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. People run ai and ai-rpg-engine.
+39 parts, mostly TypeScript (797 files), JavaScript (13) and GDScript (2). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. People run ai and ai-rpg-engine.
 
 ## What changed since 2026-09-23 (7ff40cd)
 
@@ -12,10 +12,10 @@ Mapped at 2026-09-24 from commit f7e56e6.
 - CI runs 424 more files than before.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - And 4 more changes to doors.
+- .ai-rpg-engine is now written by packages/cli/src/bin.ts and packages/cli/src/history.ts.
 - docs/c0-alignment/intake-table.json is now written by packages/cli/src/c0-intake-table.test.ts.
 - docs/c0-alignment/reverse-table.json is now written by packages/cli/src/c0-reverse-table.test.ts.
-- docs/c0-alignment/version-skew.json is now written by packages/cli/src/c0-version-skew.test.ts.
-- And 87 more new writers and readers of places.
+- And 88 more new writers and readers of places.
 - docs was authored and is now mixed.
 - scripts/verify-isolated-consumer.mjs now starts at run; it started at publishable workspaces.
 - No file changed.
@@ -49,6 +49,7 @@ Mapped at 2026-09-24 from commit f7e56e6.
    5. Main returns early 5 more ways.
    6. **Restore session from save** runs, in order: create game, deserialize (core) and migrate module states.
 2. It writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json.
+3. It also writes to .ai-rpg-engine/, which is not tracked.
 
 ## Who reads the results
 
@@ -56,13 +57,13 @@ Mapped at 2026-09-24 from commit f7e56e6.
 
 ## The other doors
 
-**Release** runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more, checks package-lock.json, package.json, packages/ and 21 more, writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json, and publishes workspace packages to npm and a container image (on a run by hand, only with dry_run false).
+**Release** runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more, checks package-lock.json, package.json, packages/ and 21 more, writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json, and to .ai-rpg-engine/, which is not tracked, and publishes workspace packages to npm and a container image (on a run by hand, only with dry_run false).
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on main.
 
 **Docs Integrity** runs docs/check-docs-integrity.mjs and runs git.
 
-**ai-rpg-engine** (a command people run) runs packages/cli/src/bin.ts and reaches audio-director, campaign-memory, character-creation, character-profile, content-schema, core, equipment, modules, pack-registry, presentation, sidecar, soundpack-core, starter-bounty-hunter, starter-colony, starter-cyberpunk, starter-detective, starter-fantasy, starter-gladiator, starter-merchant, starter-pirate, starter-ronin, starter-vampire, starter-weird-west, starter-zombie and terminal-ui.
+**ai-rpg-engine** (a command people run) runs packages/cli/src/bin.ts, reaches audio-director, campaign-memory, character-creation, character-profile, content-schema, core, equipment, modules, pack-registry, presentation, sidecar, soundpack-core, starter-bounty-hunter, starter-colony, starter-cyberpunk, starter-detective, starter-fantasy, starter-gladiator, starter-merchant, starter-pirate, starter-ronin, starter-vampire, starter-weird-west, starter-zombie and terminal-ui, and writes to .ai-rpg-engine/, which is not tracked.
 
 **ai** (a command people run) runs packages/ollama/src/bin.ts and reaches character-creation, character-profile, content-schema, core, equipment and modules.
 
@@ -124,7 +125,7 @@ These are candidates from names and call order, not a judgement.
 
 ## Hand-authored
 
-People write .claude/, .github/, dogfood/, the repository root and site/; 26 writes with paths built at run time may land here.
+People write .claude/, .github/, dogfood/, the repository root and site/; 23 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -135,9 +136,12 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 3 import sites could not be resolved.
-- 26 writes and 35 reads use paths built at run time and are not named here.
-- 1 write goes to places this repository does not track, so it is not listed as generated.
-- 36 writes and 133 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 23 writes and 35 reads use paths built at run time and are not named here.
+- 3 writes go to places this repository does not track, so they are not listed as generated.
+- 7 writes and 112 reads go to a path their caller passes, not to this repository.
+- 16 writes and 13 reads go to the directory the command is run in or a path their caller passes, not to this repository.
+- 7 writes and 5 reads go to the directory the command is run in, not to this repository.
+- 6 writes and 3 reads go to a temporary directory, not to this repository.
 - 2 commands are built at run time and not followed, 1 of them in tests.
 - CI runs or checks 433 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 - Release runs or checks 432 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.

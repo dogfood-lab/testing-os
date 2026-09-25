@@ -1,10 +1,10 @@
 # ollama-intern-mcp: how it works
 
-Mapped at 2026-09-24 from commit 1249f83.
+Mapped at 2026-09-25 from commit 1249f83.
 
 ## What this is
 
-11 parts, mostly TypeScript (196 files). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. People run ollama-intern-mcp. People import ollama-intern-mcp.
+11 parts, mostly TypeScript (196 files), JavaScript (10) and Python (2). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. People run ollama-intern-mcp. People import ollama-intern-mcp.
 
 ## What changed since 2026-09-24 (5e48e36)
 
@@ -115,7 +115,10 @@ Read those in order to follow one pull request end to end.
 - 1 import site could not be resolved.
 - 3 writes and 9 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 19 writes and 32 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 9 writes and 18 reads go to the home directory (.claude/ and .ollama-intern/) or a path their caller passes, not to this repository.
+- 8 writes and 13 reads go to a path their caller passes, not to this repository.
+- 1 write and 1 read go to the directory the command is run in, not to this repository.
+- 1 write goes to a temporary directory, not to this repository.
 - 3 commands are built at run time and not followed, 1 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

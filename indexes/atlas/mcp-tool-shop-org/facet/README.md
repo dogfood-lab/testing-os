@@ -1,10 +1,10 @@
 # facet: how it works
 
-Mapped at 2026-09-24 from commit 8d2fa34.
+Mapped at 2026-09-25 from commit 8d2fa34.
 
 ## What this is
 
-10 parts, mostly Python (292 files). Work enters through 6 doors; the busiest is ci, which reaches 2 parts. It publishes to npm and PyPI. People run facet, facet-index and facet-mcp.
+10 parts, mostly Python (292 files), JavaScript (2) and TypeScript (2). Work enters through 6 doors; the busiest is ci, which reaches 2 parts. It publishes to npm and PyPI. People run facet, facet-index and facet-mcp.
 
 ## What changed since 2026-09-23 (7c06851)
 
@@ -96,7 +96,8 @@ Read those in order to follow one run of facet end to end. This path follows fac
 - 205 import sites could not be resolved.
 - 126 writes and 99 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 396 writes and 92 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 392 writes and 92 reads go to a path their caller passes, not to this repository.
+- 4 writes go to the directory the command is run in, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

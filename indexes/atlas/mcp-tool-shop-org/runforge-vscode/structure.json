@@ -2381,6 +2381,15 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 20,
+          "where": [
+            "caller"
+          ],
+          "writes": 9
+        }
+      ],
       "outsideReads": 20,
       "outsideWrites": 9,
       "role": "code",
@@ -3306,6 +3315,8 @@
           ],
           "pushes": false,
           "sends": [
+            "assets:file:SHA256SUMS.txt",
+            "assets:files",
             "releases"
           ],
           "stages": [],

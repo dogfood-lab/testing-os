@@ -162,7 +162,7 @@
   "changesTogetherWithTests": 2,
   "commit": "fd35bebd05dc7bfe0e01a0fc6508b5864100e5ad",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly Python (125 files). Work enters through 12 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. People run backprop and backpropagate.",
+  "derived": "11 parts, mostly Python (125 files), JavaScript (2) and TypeScript (2). Work enters through 12 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. People run backprop and backpropagate.",
   "doors": [
     {
       "checks": [
@@ -438,7 +438,8 @@
       "runsMore": 0,
       "sends": [
         "publishes to npm",
-        "creates a GitHub release"
+        "creates a GitHub release",
+        "uploads backpropagate-npm-sbom.cdx.json and backpropagate-sbom.cdx.json to the release"
       ],
       "stages": [],
       "triggers": [
@@ -543,12 +544,15 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T21:43:59.934Z",
+  "generatedAt": "2026-09-25T01:34:26.870Z",
   "limits": [
     "40 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "6 import sites could not be resolved.",
     "13 writes and 33 reads use paths built at run time and are not named here.",
-    "3 writes and 9 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "2 writes and 7 reads go to a path their caller passes, not to this repository.",
+    "1 write goes to the home directory (AppData/ and Library/) or a path its caller passes, not to this repository.",
+    "1 read goes to the directory the command is run in, not to this repository.",
+    "1 read goes to the home directory (.cache/), not to this repository.",
     "There is a compose.yaml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page."
   ],
   "mainDoor": ".github/workflows/ci.yml",

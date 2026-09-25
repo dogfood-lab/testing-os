@@ -2276,6 +2276,15 @@
       "importConfidence": "full",
       "name": "docs",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        }
+      ],
       "outsideReads": 1,
       "outsideWrites": 2,
       "role": "docs",
@@ -6202,6 +6211,22 @@
       "importConfidence": "full",
       "name": "tools",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 91,
+          "where": [
+            "caller"
+          ],
+          "writes": 390
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd"
+          ],
+          "writes": 4
+        }
+      ],
       "outsideReads": 91,
       "outsideWrites": 394,
       "role": "code",

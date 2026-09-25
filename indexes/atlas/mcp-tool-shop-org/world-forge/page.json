@@ -337,7 +337,7 @@
   "changesTogetherWithTests": 5,
   "commit": "333532bd00696c0ef2b1f500c404102a05483773",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly TypeScript (497 files). Work enters through 6 doors; the busiest is CI, which reaches 11 parts. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.",
+  "derived": "15 parts, mostly TypeScript (497 files), JavaScript (4) and GDScript (1). Work enters through 6 doors; the busiest is CI, which reaches 11 parts. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.",
   "doors": [
     {
       "checks": [
@@ -649,7 +649,9 @@
       ],
       "runsCount": 60,
       "runsMore": 117,
-      "sends": [],
+      "sends": [
+        "uploads dist-tarballs/*.tgz to the release"
+      ],
       "stages": [],
       "triggers": [
         "when a release is published"
@@ -986,12 +988,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T21:51:58.961Z",
+  "generatedAt": "2026-09-25T01:41:40.327Z",
   "limits": [
     "9 import sites could not be resolved.",
     "3 writes and 3 reads use paths built at run time and are not named here.",
     "40 writes go to places this repository does not track, so they are not listed as generated.",
-    "30 writes and 56 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "2 writes and 56 reads go to a path their caller passes, not to this repository.",
+    "26 writes go to the directory the command is run in (GodotPack/ and UnrealPack/) or a path their caller passes, not to this repository.",
+    "2 writes go to the directory the command is run in (export/), not to this repository.",
     "3 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -1022,11 +1026,12 @@
   ],
   "repo": "mcp-tool-shop-org/world-forge",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "packages/export-ai-rpg/package.json#world-forge-export",
   "startHere": [
-    ".github/workflows/ci.yml",
-    "scripts/check-pack.mjs"
+    "packages/export-ai-rpg/src/cli.ts",
+    "packages/schema/src/advisory.ts"
   ],
+  "startReason": "This path follows world-forge-export (a command people run) from its entry, since CI runs only tests and scripts that import no code here.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 231,

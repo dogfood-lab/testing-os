@@ -1,10 +1,10 @@
 # multi-claude: how it works
 
-Mapped at 2026-09-24 from commit 7e09d24.
+Mapped at 2026-09-25 from commit 7e09d24.
 
 ## What this is
 
-11 parts, mostly TypeScript (328 files). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. People run multi-claude.
+11 parts, mostly TypeScript (328 files) and JavaScript (3). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. People run multi-claude.
 
 ## What changed since 2026-09-24 (9d36a21)
 
@@ -74,7 +74,7 @@ Read those in order to follow one run of multi-claude end to end. This path foll
 
 - 3 writes and 5 reads use paths built at run time and are not named here.
 - 2 writes go to places this repository does not track, so they are not listed as generated.
-- 3 writes and 129 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 3 writes and 129 reads go to a path their caller passes, not to this repository.
 - 1 command is built at run time and not followed.
 - control-plane-monitor calls src over HTTP at 6 routes, a link no import shows: the map draws it, and no door's reach follows it.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.

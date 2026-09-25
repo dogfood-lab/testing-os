@@ -8757,6 +8757,22 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "cwd"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:saves/"
+          ],
+          "writes": 1
+        }
+      ],
       "outsideReads": 3,
       "outsideWrites": 1,
       "role": "code",
@@ -10324,6 +10340,7 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "job": "build",
           "path": "src/portlight/__main__.py",
           "runKind": "executes"
@@ -10332,6 +10349,11 @@
       "runsCount": 1,
       "secrets": [],
       "sends": {
+        "assets": [
+          "binary:darwin-arm64",
+          "binary:linux-x64",
+          "binary:win-x64"
+        ],
         "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,
@@ -10339,7 +10361,7 @@
         "opensPullRequests": false,
         "publishes": false,
         "publishesTo": [],
-        "releases": true
+        "releases": false
       },
       "stages": [],
       "triggers": [

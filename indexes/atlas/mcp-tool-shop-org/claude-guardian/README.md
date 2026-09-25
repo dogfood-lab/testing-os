@@ -1,10 +1,10 @@
 # claude-guardian: how it works
 
-Mapped at 2026-09-24 from commit 65dce69.
+Mapped at 2026-09-25 from commit 65dce69.
 
 ## What this is
 
-7 parts, mostly TypeScript (38 files). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-guardian.
+7 parts, mostly TypeScript (38 files) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-guardian.
 
 ## What changed since 2026-09-23 (628c46f)
 
@@ -87,7 +87,9 @@ Read those in order to follow one run of claude-guardian end to end. This path f
 
 - 1 import site could not be resolved.
 - 1 write and 3 reads use paths built at run time and are not named here.
-- 17 writes and 29 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 14 writes and 17 reads go to the home directory (.claude-guardian/ and .claude/), not to this repository.
+- 2 writes and 9 reads go to a path their caller passes, not to this repository.
+- 1 write and 3 reads go to the home directory (.claude-guardian/ and .claude/) or a path their caller passes, not to this repository.
 - 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

@@ -1421,6 +1421,36 @@
       "importConfidence": "full",
       "name": "site",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 11,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 3,
+          "where": [
+            "cwd:logos"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 3,
+          "where": [
+            "cwd:logos/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:manifest.json"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 18,
       "outsideWrites": 1,
       "role": "site",
@@ -1652,6 +1682,15 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 55,
+          "where": [
+            "caller"
+          ],
+          "writes": 23
+        }
+      ],
       "outsideReads": 55,
       "outsideWrites": 23,
       "role": "code",

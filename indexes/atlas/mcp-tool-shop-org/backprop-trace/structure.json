@@ -1455,6 +1455,15 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 3,
+          "where": [
+            "temp"
+          ],
+          "writes": 2
+        }
+      ],
       "outsideReads": 3,
       "outsideWrites": 2,
       "role": "code",
@@ -1574,7 +1583,6 @@
           "entryRule": 1,
           "hash": "76373c4947f1954959305bdb6a40a954ae11ae0c88ffc880489d4b5a387ca054",
           "importsFiles": [
-            "package.json",
             "src/index.ts"
           ],
           "path": "src/bin/bp.ts",
@@ -4227,6 +4235,29 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 11,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 8,
+          "where": [
+            "cwd:fixtures/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:scripts/"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 21,
       "role": "code",
       "testedBy": 99,

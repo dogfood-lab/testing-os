@@ -2,7 +2,6 @@
   "authored": [
     "audio/",
     "docs/",
-    "fixtures/",
     "root",
     "site/"
   ],
@@ -18,7 +17,7 @@
   ],
   "breaks": [
     {
-      "doors": 1,
+      "doors": 2,
       "importedBy": [
         "stage"
       ],
@@ -30,7 +29,7 @@
       "partLabel": "client"
     },
     {
-      "doors": 1,
+      "doors": 2,
       "importedBy": [
         "tools"
       ],
@@ -42,7 +41,7 @@
       "partLabel": "stage"
     },
     {
-      "doors": 1,
+      "doors": 2,
       "importedBy": [
         "stage"
       ],
@@ -60,6 +59,17 @@
       "kind": "part",
       "name": "tools",
       "partLabel": "tools"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "stage",
+        "tools"
+      ],
+      "target": "fixtures/",
+      "writers": [
+        ".github"
+      ]
     }
   ],
   "changes": {
@@ -72,8 +82,57 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "ci now also runs tests/test_diorama.gd, tests/test_felt_juice.gd, tests/test_felt_mixer.gd and 8 more.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "tests/test_diorama.gd",
+          "tests/test_felt_juice.gd",
+          "tests/test_felt_mixer.gd",
+          "tests/test_felt_voice.gd",
+          "tests/test_framing.gd",
+          "tests/test_iso_math.gd",
+          "tests/test_iso_world.gd",
+          "tests/test_live_session.gd",
+          "tests/test_scene_join.gd",
+          "tests/test_tick_queue.gd",
+          "tests/test_wire_session.gd"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "fixtures/ is now written by .github/workflows/ci.yml.",
+        "subjects": [
+          "fixtures/",
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": ".github/upstream-pins.env is now read by .github/workflows/ci.yml.",
+        "subjects": [
+          ".github/upstream-pins.env",
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "fixtures/world.tscn is now also read by stage/diorama.gd.",
+        "subjects": [
+          "fixtures/world.tscn",
+          "stage/diorama.gd"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "fixtures was authored and is now generated.",
+        "subjects": [
+          "fixtures"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -81,7 +140,7 @@
       "commit": "ef2f9cb83ad47e0b9f7e2e8b490a7a23219a928d",
       "generatedAt": "2026-09-24T21:54:02.581Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -90,29 +149,57 @@
   "changesTogetherWithTests": 0,
   "commit": "5e9e75f945d6fed8b119d8709e20e12a72d11a34",
   "defaultBranch": "main",
-  "derived": "12 parts, mostly GDScript (36 files). Work enters through 4 doors; the busiest is the game, which reaches 3 parts. People run the game.",
+  "derived": "12 parts, mostly GDScript (36 files), Python (8), JavaScript (2) and TypeScript (2). Work enters through 4 doors; the busiest is ci, which reaches 5 parts. People run the game.",
   "doors": [
     {
-      "app": "game",
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
-      "file": "project.godot",
-      "id": "project.godot#the game",
-      "kind": "command",
-      "landings": [],
-      "name": "the game",
+      "file": ".github/workflows/ci.yml",
+      "found": [
+        {
+          "by": "tools/headless.gd",
+          "what": "the 11 test suites under tests/"
+        }
+      ],
+      "held": [
+        {
+          "checks": [],
+          "checksMore": 0,
+          "lead": "on a push, or a pull request from a fork",
+          "runs": [
+            "tools/headless.gd"
+          ],
+          "runsMore": 0,
+          "when": "on a push, or a pull request from a fork"
+        }
+      ],
+      "id": ".github/workflows/ci.yml",
+      "landings": [
+        "fixtures/"
+      ],
+      "name": "ci",
       "pushes": false,
       "reach": [
         {
-          "boundary": "stage",
+          "boundary": "tests",
           "depth": 0,
-          "files": 16
+          "files": 11
+        },
+        {
+          "boundary": "tools",
+          "depth": 0,
+          "files": 3
         },
         {
           "boundary": "client",
-          "depth": 2,
+          "depth": 1,
           "files": 5
+        },
+        {
+          "boundary": "stage",
+          "depth": 1,
+          "files": 14
         },
         {
           "boundary": "fixtures",
@@ -120,35 +207,8 @@
           "files": 1
         }
       ],
-      "runs": [
-        "stage/diorama.tscn"
-      ],
-      "runsCount": 1,
-      "runsMore": 0,
-      "sends": [],
-      "stages": [],
-      "triggers": []
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "checksMore": 0,
-      "file": ".github/workflows/ci.yml",
-      "id": ".github/workflows/ci.yml",
-      "landings": [],
-      "name": "ci",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "tools",
-          "depth": 0,
-          "files": 2
-        }
-      ],
-      "runs": [
-        "tools/headless.gd"
-      ],
-      "runsCount": 1,
+      "runs": [],
+      "runsCount": 0,
       "runsMore": 0,
       "sends": [],
       "stages": [],
@@ -215,6 +275,43 @@
         "on a schedule (`0 7 * * 1`), Monday at 07:00 UTC",
         "or by hand"
       ]
+    },
+    {
+      "app": "game",
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "project.godot",
+      "id": "project.godot#the game",
+      "kind": "command",
+      "landings": [],
+      "name": "the game",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "stage",
+          "depth": 0,
+          "files": 16
+        },
+        {
+          "boundary": "client",
+          "depth": 2,
+          "files": 5
+        },
+        {
+          "boundary": "fixtures",
+          "depth": 2,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "stage/diorama.tscn"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
     }
   ],
   "duplicates": [],
@@ -249,16 +346,22 @@
       "writers": [
         "assets/felt/synth_felt_pack.py"
       ]
+    },
+    {
+      "place": "fixtures/",
+      "writers": [
+        ".github/workflows/ci.yml"
+      ]
     }
   ],
-  "generatedAt": "2026-09-24T22:02:40.826Z",
+  "generatedAt": "2026-09-25T01:33:35.284Z",
   "limits": [
-    "15 reads use paths built at run time and are not named here.",
-    "5 writes and 2 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "14 reads use paths built at run time and are not named here.",
+    "5 writes and 2 reads go to a path their caller passes, not to this repository.",
     "2 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
-  "mainDoor": "project.godot#the game",
+  "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
     ".github": ".github",
     "assets": "assets",
@@ -274,100 +377,19 @@
     "tools": "tools"
   },
   "parts": 12,
-  "readers": [],
-  "repo": "mcp-tool-shop-org/ai-rpg-stage",
-  "sequences": [
+  "readers": [
     {
-      "entry": "_ready",
-      "file": "stage/diorama.gd",
-      "inner": [],
-      "part": "stage",
-      "partLabel": "stage",
-      "phrase": "ready",
-      "steps": [
-        {
-          "name": "new",
-          "part": "client",
-          "partLabel": "client",
-          "phrase": "new",
-          "receiver": "SceneJoin"
-        },
-        {
-          "name": "new",
-          "part": "stage",
-          "partLabel": "stage",
-          "phrase": "new",
-          "receiver": "LightRig"
-        },
-        {
-          "name": "new",
-          "part": "stage",
-          "partLabel": "stage",
-          "phrase": "new",
-          "receiver": "Dressing"
-        },
-        {
-          "name": "new",
-          "part": "stage",
-          "partLabel": "stage",
-          "phrase": "new",
-          "receiver": "FloorPainter"
-        },
-        {
-          "name": "attach",
-          "part": "stage",
-          "partLabel": "stage",
-          "phrase": "attach",
-          "receiver": "SpriteBinder"
-        },
-        {
-          "name": "zone_extent",
-          "part": "stage",
-          "partLabel": "stage",
-          "phrase": "zone extent",
-          "receiver": "FloorPainter"
-        },
-        {
-          "name": "new",
-          "part": "stage",
-          "partLabel": "stage",
-          "phrase": "new",
-          "receiver": "IsoWorld"
-        }
-      ]
-    },
-    {
-      "entry": "_ready",
-      "file": "stage/playable.gd",
-      "inner": [],
-      "part": "stage",
-      "partLabel": "stage",
-      "phrase": "ready",
-      "steps": [
-        {
-          "name": "new",
-          "part": "client",
-          "partLabel": "client",
-          "phrase": "new",
-          "receiver": "EventBus"
-        },
-        {
-          "name": "new",
-          "part": "client",
-          "partLabel": "client",
-          "phrase": "new",
-          "receiver": "NetworkClient"
-        },
-        {
-          "name": "new",
-          "part": "stage",
-          "partLabel": "stage",
-          "phrase": "new",
-          "receiver": "Session"
-        }
-      ]
+      "readers": [
+        "stage/diorama.gd",
+        "stage/iso/iso_world.gd",
+        "tools/play.mjs"
+      ],
+      "target": "fixtures/",
+      "tests": 2
     }
   ],
+  "repo": "mcp-tool-shop-org/ai-rpg-stage",
+  "sequences": [],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
@@ -385,12 +407,6 @@
   "unnamedWrites": 0,
   "unread": [
     {
-      "place": ".github/upstream-pins.env",
-      "writers": [
-        ".github/workflows/bump-upstream-pins.yml"
-      ]
-    },
-    {
       "place": "assets/dimetric/MANIFEST.json",
       "writers": [
         "assets/dimetric/andon/build_manifest.py"
@@ -407,5 +423,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 3
+  "written": 4
 }

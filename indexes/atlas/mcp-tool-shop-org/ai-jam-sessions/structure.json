@@ -889,6 +889,22 @@
       "importConfidence": "full",
       "name": "cockpit",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 12,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 13,
       "role": "code",
       "testedBy": 13,
@@ -6555,7 +6571,7 @@
       "dynamicReads": 70,
       "dynamicSpawns": 4,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 12,
+      "dynamicWrites": 9,
       "entryPoints": [],
       "externalNames": [
         "datasets"
@@ -11210,6 +11226,36 @@
       "importConfidence": "full",
       "name": "experiments",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 156,
+          "where": [
+            "caller"
+          ],
+          "writes": 43
+        },
+        {
+          "reads": 4,
+          "where": [
+            "cwd"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 11,
+          "where": [
+            "home:.ssh/"
+          ],
+          "writes": 3
+        },
+        {
+          "reads": 1,
+          "where": [
+            "temp"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 172,
       "outsideWrites": 46,
       "role": "code",
@@ -11736,7 +11782,7 @@
       "dynamicReads": 25,
       "dynamicSpawns": 3,
       "dynamicSpawnsInTests": 1,
-      "dynamicWrites": 25,
+      "dynamicWrites": 23,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -12625,6 +12671,22 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 50,
+          "where": [
+            "caller"
+          ],
+          "writes": 26
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd"
+          ],
+          "writes": 2
+        }
+      ],
       "outsideReads": 50,
       "outsideWrites": 28,
       "role": "code",
@@ -20264,6 +20326,91 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 111,
+          "where": [
+            "caller"
+          ],
+          "writes": 26
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:tmp/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "home:.ai-jam-sessions"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "home:.ai-jam-sessions/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "temp"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 5,
+          "where": [
+            "cwd:node_modules/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:node_modules/",
+            "cwd:presets"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:node_modules/",
+            "cwd:presets/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:presets"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:tmp/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "temp"
+          ],
+          "writes": 7
+        }
+      ],
       "outsideReads": 125,
       "outsideWrites": 35,
       "role": "code",
@@ -23358,6 +23505,9 @@
           "event": "workflow_dispatch"
         }
       ],
+      "untrackedLandings": [
+        "site/dist"
+      ],
       "uses": [
         "actions/checkout",
         "actions/deploy-pages",
@@ -25490,6 +25640,17 @@
     "tracked": 3273
   },
   "landings": [
+    {
+      "readers": [],
+      "target": ".eval-checkpoints",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "scripts/run-jam-actions-corpus-eval.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
     {
       "readers": [
         {
@@ -32038,6 +32199,50 @@
       ],
       "target": "src/test-sound.ts",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": "tmp/kokoro-lock",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "scripts/cast-kokoro-lock.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "tmp/p2-drill/art",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "experiments/rollout-arc/p2/scripts/compensator-drill.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "tmp/p2-drill/remote/artifacts",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "experiments/rollout-arc/p2/scripts/compensator-drill.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "tmp/p2-drill/state",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "experiments/rollout-arc/p2/scripts/compensator-drill.mjs",
+          "confidence": "ast"
+        }
+      ]
     }
   ],
   "overlaps": [],

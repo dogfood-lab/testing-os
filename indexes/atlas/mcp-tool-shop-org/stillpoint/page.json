@@ -82,15 +82,15 @@
       },
       {
         "kind": "landing",
-        "sentence": "apps/desktop/msix/AppxManifest.xml is now read by apps/desktop/msix/build-msix.ps1.",
+        "sentence": "apps/desktop/src-tauri/gen/schemas/ is now written by apps/desktop/src-tauri/build.rs.",
         "subjects": [
-          "apps/desktop/msix/AppxManifest.xml",
-          "apps/desktop/msix/build-msix.ps1"
+          "apps/desktop/src-tauri/gen/schemas/",
+          "apps/desktop/src-tauri/build.rs"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "And 17 more new writers and readers of places.",
+        "sentence": "And 18 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -190,7 +190,7 @@
   "changesTogetherWithTests": 1,
   "commit": "c7fbc277057214aea33336843166518ea69f7d9d",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly TypeScript (26 files). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. People install the stillpoint desktop app.",
+  "derived": "7 parts, mostly TypeScript (26 files), JavaScript (3) and Rust (2). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. stillpoint is a desktop app built from apps/desktop/src-tauri (nothing ships it).",
   "doors": [
     {
       "checks": [],
@@ -263,6 +263,7 @@
     },
     {
       "app": "desktop",
+      "builtFrom": "apps/desktop/src-tauri",
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
@@ -286,7 +287,8 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": []
+      "triggers": [],
+      "unshipped": true
     }
   ],
   "duplicates": [],
@@ -307,15 +309,21 @@
       ]
     },
     {
+      "place": "apps/desktop/src-tauri/gen/schemas/",
+      "writers": [
+        "apps/desktop/src-tauri/build.rs (a build script)"
+      ]
+    },
+    {
       "place": "apps/desktop/src-tauri/icons/",
       "writers": [
         "apps/desktop/src-tauri/gen-icons.mjs"
       ]
     }
   ],
-  "generatedAt": "2026-09-24T21:51:10.348Z",
+  "generatedAt": "2026-09-25T01:40:55.218Z",
   "limits": [
-    "2 writes and 12 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "2 writes and 12 reads go to a path their caller passes, not to this repository.",
     "4 test files under `packages/server/src/` are not run by CI on Linux, where the shell expands `**` as one directory level.",
     "ui calls server over HTTP at 13 routes, a link no import shows: the map draws it, and no door's reach follows it.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
@@ -353,6 +361,12 @@
       "writers": [
         "apps/desktop/msix/build-msix.ps1"
       ]
+    },
+    {
+      "place": "apps/desktop/src-tauri/gen/schemas/",
+      "writers": [
+        "apps/desktop/src-tauri/build.rs (a build script)"
+      ]
     }
   ],
   "unreadFiles": 0,
@@ -365,5 +379,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 3
+  "written": 4
 }

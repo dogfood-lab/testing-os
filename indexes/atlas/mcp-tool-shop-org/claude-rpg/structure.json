@@ -1264,7 +1264,6 @@
           "entryRule": 1,
           "hash": "e6f4d796216b73bfaf4007ddac86b2ce338cb6b8ee201205f655d4553930e9fc",
           "importsFiles": [
-            "package.json",
             "src/character/builder.ts",
             "src/character/packs.ts",
             "src/character/recap-delta.ts",
@@ -2970,7 +2969,6 @@
         {
           "hash": "98698e6944223545df9cb794d9712d7b0402d95dd3ce155ecfa9375af8a2db42",
           "importsFiles": [
-            "package.json",
             "src/character/packs.ts",
             "src/prompts/finale-prompt.ts"
           ],
@@ -3939,9 +3937,6 @@
         },
         {
           "hash": "9500d8e0b7a5c68c8e413af43545386432d81361aa952b69b878760956eed52a",
-          "importsFiles": [
-            "package.json"
-          ],
           "path": "src/cli/terminal-ui-audit.test.ts"
         },
         {
@@ -6137,6 +6132,29 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 15,
+          "where": [
+            "caller"
+          ],
+          "writes": 5
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd:.claude-rpg/"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 3,
+          "where": [
+            "home:.claude-rpg/"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 18,
       "outsideWrites": 7,
       "role": "code",

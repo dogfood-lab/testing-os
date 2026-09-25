@@ -55,9 +55,6 @@
       "files": [
         {
           "hash": "186b4dbafcdbc0070465b82b528c327e22a2000bedce197af9c9e3dbd81945fc",
-          "importsFiles": [
-            "package.json"
-          ],
           "path": "bin/xrpl-camp.js"
         }
       ],
@@ -6762,6 +6759,15 @@
       "importConfidence": "full",
       "name": "xrpl_camp",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 0,
+          "where": [
+            "temp"
+          ],
+          "writes": 1
+        }
+      ],
       "outsideWrites": 1,
       "role": "code",
       "testedBy": 19,
@@ -7190,6 +7196,9 @@
           "sends": [
             "publishesTo:container image",
             "publishesTo:pypi",
+            "assets:binary:darwin-arm64",
+            "assets:binary:linux-x64",
+            "assets:binary:win-x64",
             "releases"
           ],
           "stages": [],
@@ -7300,6 +7309,7 @@
           }
         },
         {
+          "built": true,
           "job": "build-binaries",
           "path": "xrpl_camp/__main__.py",
           "runKind": "executes",

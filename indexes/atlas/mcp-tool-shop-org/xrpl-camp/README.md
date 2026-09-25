@@ -1,18 +1,18 @@
 # xrpl-camp: how it works
 
-Mapped at 2026-09-24 from commit 8af7371.
+Mapped at 2026-09-25 from commit 8af7371.
 
 ## What this is
 
-7 parts, mostly Python (31 files). Work enters through 7 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. People run xrpl-camp.
+7 parts, mostly Python (31 files), JavaScript (2) and TypeScript (2). Work enters through 7 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. People run xrpl-camp.
 
 ## What changed since 2026-09-23 (d3e4b7d)
 
 - bin no longer imports the repository root.
 - CI's pull request trigger now also names `atlas/**`.
 - CI's push trigger now also names `atlas/**`.
-- Publish now also runs docker-entrypoint.sh, xrpl_camp/__main__.py and xrpl_camp/cli.py.
-- And 1 more change to a door.
+- Publish now also runs docker-entrypoint.sh and xrpl_camp/cli.py.
+- And 2 more changes to doors.
 - CHANGELOG.md is now read by tests/test_version.py.
 - README.md is now read by pyproject.toml.
 - bin/xrpl-camp.js is now read by tests/test_version.py.
@@ -22,7 +22,7 @@ Mapped at 2026-09-24 from commit 8af7371.
 ## What comes in
 
 1. **CI.** On a pull request touching 11 paths; on a push touching 11 paths; or by hand. Runs scripts/check-versions.sh, scripts/verify.sh and tests/; checks bin/xrpl-camp.js and xrpl_camp/.
-2. **Publish.** When a tag matching `v*` is pushed; or by hand. On a tag push, it runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh, xrpl_camp/__main__.py and 1 more; checks LICENSE, README.md, pyproject.toml and 10 more.
+2. **Publish.** When a tag matching `v*` is pushed; or by hand. On a tag push, it runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh and xrpl_camp/cli.py; builds xrpl_camp/__main__.py; checks LICENSE, README.md, pyproject.toml and 10 more.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Release (npm).** When a tag matching `v*` is pushed; or by hand. Runs scripts/check-versions.sh.
 5. **Freshness Check.** On a schedule (`0 8 * * 1`), Monday at 08:00 UTC; or by hand. Runs scripts/check-freshness.sh.
@@ -39,7 +39,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Publish** runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh, xrpl_camp/__main__.py and 1 more and checks LICENSE, README.md, pyproject.toml and 10 more on a tag push, publishes to PyPI and a container image on a tag push, and creates a GitHub release on a tag push.
+**Publish** runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh and xrpl_camp/cli.py and checks LICENSE, README.md, pyproject.toml and 10 more on a tag push, publishes to PyPI and a container image on a tag push, creates a GitHub release on a tag push, and builds xrpl_camp/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release on a tag push.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -88,15 +88,15 @@ People write the repository root, scripts/ and site/; 4 writes with paths built 
 
 ## Where to start
 
-bin/xrpl-camp.js
+xrpl_camp/cli.py
 
-Read those in order to follow one run of xrpl-camp end to end. This path follows xrpl-camp (a command people run, from package.json) from its entry, since CI runs only tests.
+Read those in order to follow one run of xrpl-camp end to end. This path follows xrpl-camp (a command people run, from pyproject.toml) from its entry, since CI runs only tests.
 
 ## What this map cannot see
 
 - 1 import site could not be resolved.
 - 4 writes and 11 reads use paths built at run time and are not named here.
-- 1 write goes to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 1 write goes to a temporary directory, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

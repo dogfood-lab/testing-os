@@ -1,10 +1,10 @@
 # db-cluster: how it works
 
-Mapped at 2026-09-24 from commit fe9bf66.
+Mapped at 2026-09-25 from commit fe9bf66.
 
 ## What this is
 
-13 parts, mostly TypeScript (258 files). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.
+13 parts, mostly TypeScript (258 files) and JavaScript (16). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.
 
 ## What changed since 2026-09-24 (1374860)
 
@@ -14,10 +14,10 @@ Mapped at 2026-09-24 from commit fe9bf66.
 - Docker Publish now also runs src/cli.ts.
 - Docker Publish now also checks LICENSE, README.md, docs/ and 4 more.
 - And 3 more changes to doors.
-- examples/dogfood-project-memory/.db-cluster is now written by src/adapters/local/index.ts.
-- .github/workflows/ci.yml is now read by test/wave-b1-cidocs-regression.test.ts.
-- .github/workflows/release-gate.yml is now read by test/wave-b1-cidocs-regression.test.ts.
-- And 138 more new writers and readers of places.
+- .demo-rk-ops/sources is now written by scripts/repo-knowledge-ops.ts.
+- .demo-rk-update/sources is now written by scripts/repo-knowledge-update-demo.ts.
+- .doc-drift-extract is now written by scripts/doc-drift.mjs.
+- And 142 more new writers and readers of places.
 - 2 files added and 275 changed content, across 9 parts.
 
 ## What comes in
@@ -36,28 +36,29 @@ Mapped at 2026-09-24 from commit fe9bf66.
 
 1. The workflow runs 127 files in test; it checks examples/ in examples and src/ in src.
 2. That reaches dashboard (1 file) and scripts (6 files).
+3. It writes to examples/dogfood-project-memory/.db-cluster, which is not tracked.
 
 ## Who reads the results
 
-CI writes nothing this map can see.
+CI writes only to examples/dogfood-project-memory/.db-cluster, which is not tracked.
 
 ## The other doors
 
-**Release** runs test/actor-required-regression.test.ts, test/adapters.test.ts, test/backend-env-surfaces.test.ts and 124 more, checks examples/ and src/, reaches dashboard and scripts, publishes to npm, and creates a GitHub release.
+**Release** runs test/actor-required-regression.test.ts, test/adapters.test.ts, test/backend-env-surfaces.test.ts and 124 more, checks examples/ and src/, reaches dashboard and scripts, writes to examples/dogfood-project-memory/.db-cluster, which is not tracked, publishes to npm, and creates a GitHub release.
 
-**Release Gate** runs scripts/completeness-checks.mjs, scripts/doc-drift.mjs, scripts/jsdoc-gate.mjs and 129 more, checks src/, and reaches dashboard.
+**Release Gate** runs scripts/completeness-checks.mjs, scripts/doc-drift.mjs, scripts/jsdoc-gate.mjs and 129 more, checks src/, reaches dashboard, and writes to .doc-drift-extract/, .release-gate-output/ and examples/dogfood-project-memory/.db-cluster, which are not tracked.
 
 **Smoke Install** runs scripts/smoke-install.mjs and checks src/.
 
-**Docker Publish** runs src/cli.ts, checks LICENSE, README.md, docs/ and 102 more, and publishes a container image.
+**Docker Publish** runs src/cli.ts, checks LICENSE, README.md, docs/ and 102 more, writes to examples/dogfood-project-memory/.db-cluster, which is not tracked, and publishes a container image.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on a push to main.
 
-**@mcptoolshop/db-cluster** (the package people import) loads src/index.ts, src/mcp/index.ts, src/policy/index.ts and 3 more.
+**@mcptoolshop/db-cluster** (the package people import) loads src/index.ts, src/mcp/index.ts, src/policy/index.ts and 3 more, and writes to examples/dogfood-project-memory/.db-cluster, which is not tracked.
 
-**db-cluster** (a command people run) runs src/cli.ts.
+**db-cluster** (a command people run) runs src/cli.ts and writes to examples/dogfood-project-memory/.db-cluster, which is not tracked.
 
-**db-cluster-mcp** (a command people run) runs src/mcp/server.ts.
+**db-cluster-mcp** (a command people run) runs src/mcp/server.ts and writes to examples/dogfood-project-memory/.db-cluster, which is not tracked.
 
 ## What breaks what
 
@@ -96,7 +97,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, .stage-b-amend/, .stage-b-audit/, .verifier-outputs-b1/, .verifier-outputs/, docs/, the repository root and site/; 7 writes with paths built at run time may land here.
+People write .github/, .stage-b-amend/, .stage-b-audit/, .verifier-outputs-b1/, .verifier-outputs/, docs/, the repository root and site/; 5 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -107,9 +108,13 @@ Read those in order to follow one run of db-cluster end to end. This path follow
 ## What this map cannot see
 
 - 17 import sites could not be resolved.
-- 7 writes and 14 reads use paths built at run time and are not named here.
-- 3 writes go to places this repository does not track, so they are not listed as generated.
-- 54 writes and 107 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 5 writes and 14 reads use paths built at run time and are not named here.
+- 7 writes go to places this repository does not track, so they are not listed as generated.
+- 47 writes and 101 reads go to a path their caller passes, not to this repository.
+- 6 writes and 3 reads go to a temporary directory, not to this repository.
+- 2 reads go to the directory the command is run in, not to this repository.
+- 1 read goes to the directory the command is run in (.db-cluster) or a path its caller passes, not to this repository.
+- 1 write goes to a temporary directory or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed, and it is in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

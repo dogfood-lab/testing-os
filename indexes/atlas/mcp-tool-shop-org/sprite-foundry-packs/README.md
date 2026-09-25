@@ -1,6 +1,6 @@
 # sprite-foundry-packs: how it works
 
-Mapped at 2026-09-24 from commit aae7ad5.
+Mapped at 2026-09-25 from commit aae7ad5.
 
 ## What this is
 

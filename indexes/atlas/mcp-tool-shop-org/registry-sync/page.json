@@ -101,7 +101,7 @@
   "changesTogetherWithTests": 0,
   "commit": "b7d57d35f9141242642e60ff20069ab04e443ac4",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly TypeScript (40 files). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run registry-sync. People import @mcptoolshop/registry-sync.",
+  "derived": "7 parts, mostly TypeScript (40 files) and JavaScript (1). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run registry-sync. People import @mcptoolshop/registry-sync.",
   "doors": [
     {
       "checks": [],
@@ -278,9 +278,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T21:49:12.058Z",
+  "generatedAt": "2026-09-25T01:39:02.698Z",
   "limits": [
-    "4 writes and 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "4 writes and 4 reads go to a path their caller passes, not to this repository.",
+    "1 read goes to the directory the command is run in (registry-sync.config.json) or a path its caller passes, not to this repository.",
+    "1 read goes to the directory the command is run in (registry-sync.config.json), not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",

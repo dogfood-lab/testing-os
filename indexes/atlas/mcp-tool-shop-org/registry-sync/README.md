@@ -1,10 +1,10 @@
 # registry-sync: how it works
 
-Mapped at 2026-09-24 from commit b7d57d3.
+Mapped at 2026-09-25 from commit b7d57d3.
 
 ## What this is
 
-7 parts, mostly TypeScript (40 files). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run registry-sync. People import @mcptoolshop/registry-sync.
+7 parts, mostly TypeScript (40 files) and JavaScript (1). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run registry-sync. People import @mcptoolshop/registry-sync.
 
 ## What changed since 2026-09-23 (e78b5d0)
 
@@ -99,7 +99,9 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 4 writes and 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 4 writes and 4 reads go to a path their caller passes, not to this repository.
+- 1 read goes to the directory the command is run in (registry-sync.config.json) or a path its caller passes, not to this repository.
+- 1 read goes to the directory the command is run in (registry-sync.config.json), not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

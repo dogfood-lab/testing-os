@@ -1,10 +1,10 @@
 # repo-knowledge: how it works
 
-Mapped at 2026-09-24 from commit 4435870.
+Mapped at 2026-09-25 from commit 4435870.
 
 ## What this is
 
-11 parts, mostly TypeScript (84 files). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run rk. People import @mcptoolshop/repo-knowledge.
+11 parts, mostly TypeScript (84 files) and JavaScript (10). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run rk. People import @mcptoolshop/repo-knowledge.
 
 ## What changed since 2026-09-23 (8236017)
 
@@ -13,10 +13,10 @@ Mapped at 2026-09-24 from commit 4435870.
 - CI's push trigger now also names `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
 - And 2 more changes to doors.
+- dist is now written by scripts/postbuild.js.
 - .github/workflows/ci.yml is now read by test/build-health.test.ts, test/doctor.test.ts, test/feed.test.ts, test/health-commands.test.ts, test/migration-009.test.ts and test/table.test.ts.
 - .github/workflows/release.yml is now read by test/build-health.test.ts.
-- CHANGELOG.md is now also read by src/sync/local.ts and test/version.test.ts.
-- And 14 more new writers and readers of places.
+- And 15 more new writers and readers of places.
 - data was generated and is now authored.
 - 775 files changed content, across 10 parts.
 
@@ -31,14 +31,15 @@ Mapped at 2026-09-24 from commit 4435870.
 ## What happens through CI
 
 1. The workflow runs scripts/postbuild.js in scripts and test/ in test; it checks src/ in src.
+2. It writes to dist/, which is not tracked.
 
 ## Who reads the results
 
-CI writes nothing this map can see.
+CI writes only to dist/, which is not tracked.
 
 ## The other doors
 
-**Release** runs scripts/gen-audit-report.mjs, scripts/gen-worklist.mjs, scripts/postbuild.js and 48 more, checks src/, publishes to npm on a tag push, and creates a GitHub release on a tag push.
+**Release** runs scripts/gen-audit-report.mjs, scripts/gen-worklist.mjs, scripts/postbuild.js and 48 more, checks src/, writes to dist/, which is not tracked, publishes to npm on a tag push, creates a GitHub release on a tag push, and uploads sbom.json to the release on a tag push.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on a push to main.
 
@@ -102,7 +103,9 @@ Read those in order to follow one run of rk end to end. This path follows rk (a 
 
 - 1 import site could not be resolved.
 - 3 writes and 15 reads use paths built at run time and are not named here.
-- 6 writes and 85 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 1 write goes to places this repository does not track, so it is not listed as generated.
+- 2 writes and 77 reads go to a path their caller passes, not to this repository.
+- 4 writes and 8 reads go to the directory the command is run in (data/, rk.config.json and rk.config.json.tmp), not to this repository.
 - 2 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

@@ -311,6 +311,15 @@
       },
       {
         "kind": "landing",
+        "sentence": ".ai-rpg-engine is now written by packages/cli/src/bin.ts and packages/cli/src/history.ts.",
+        "subjects": [
+          ".ai-rpg-engine",
+          "packages/cli/src/bin.ts",
+          "packages/cli/src/history.ts"
+        ]
+      },
+      {
+        "kind": "landing",
         "sentence": "docs/c0-alignment/intake-table.json is now written by packages/cli/src/c0-intake-table.test.ts.",
         "subjects": [
           "docs/c0-alignment/intake-table.json",
@@ -327,15 +336,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "docs/c0-alignment/version-skew.json is now written by packages/cli/src/c0-version-skew.test.ts.",
-        "subjects": [
-          "docs/c0-alignment/version-skew.json",
-          "packages/cli/src/c0-version-skew.test.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 87 more new writers and readers of places.",
+        "sentence": "And 88 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -448,7 +449,7 @@
   "changesTogetherWithTests": 11,
   "commit": "f7e56e65779e14e3b061a5e581fd13783abe2e98",
   "defaultBranch": "main",
-  "derived": "39 parts, mostly TypeScript (797 files). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. People run ai and ai-rpg-engine.",
+  "derived": "39 parts, mostly TypeScript (797 files), JavaScript (13) and GDScript (2). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. People run ai and ai-rpg-engine.",
   "doors": [
     {
       "checks": [
@@ -820,7 +821,8 @@
         "on a pull request touching 15 paths",
         "on a push touching 15 paths",
         "or by hand"
-      ]
+      ],
+      "untracked": ".ai-rpg-engine/, which is not tracked"
     },
     {
       "checks": [
@@ -1193,7 +1195,8 @@
       "triggers": [
         "when a release is published",
         "or by hand"
-      ]
+      ],
+      "untracked": ".ai-rpg-engine/, which is not tracked"
     },
     {
       "checks": [],
@@ -1408,7 +1411,8 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": []
+      "triggers": [],
+      "untracked": ".ai-rpg-engine/, which is not tracked"
     },
     {
       "checks": [],
@@ -1682,12 +1686,15 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T21:43:03.971Z",
+  "generatedAt": "2026-09-25T01:33:31.017Z",
   "limits": [
     "3 import sites could not be resolved.",
-    "26 writes and 35 reads use paths built at run time and are not named here.",
-    "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "36 writes and 133 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "23 writes and 35 reads use paths built at run time and are not named here.",
+    "3 writes go to places this repository does not track, so they are not listed as generated.",
+    "7 writes and 112 reads go to a path their caller passes, not to this repository.",
+    "16 writes and 13 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
+    "7 writes and 5 reads go to the directory the command is run in, not to this repository.",
+    "6 writes and 3 reads go to a temporary directory, not to this repository.",
     "2 commands are built at run time and not followed, 1 of them in tests.",
     "CI runs or checks 433 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
     "Release runs or checks 432 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
@@ -2002,7 +2009,7 @@
     "starter-zombie": 42,
     "terminal-ui": 28
   },
-  "unnamedWrites": 26,
+  "unnamedWrites": 23,
   "unread": [
     {
       "place": "docs/c0-alignment/intake-table.json",

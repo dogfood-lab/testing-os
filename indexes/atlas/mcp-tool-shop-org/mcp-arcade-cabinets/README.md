@@ -1,10 +1,10 @@
 # mcp-arcade-cabinets: how it works
 
-Mapped at 2026-09-24 from commit 745115c.
+Mapped at 2026-09-25 from commit 745115c.
 
 ## What this is
 
-15 parts, mostly TypeScript (156 files). Work enters through 6 doors; CI and Site each reach 10 parts, and CI is followed because it comes first by name. It publishes @mcptoolshop/ghost-on-the-menu (packages/launcher) and @mcptoolshop/vibe-typer (packages/launcher-vibe-typer) to npm. People run ghost-on-the-menu and vibe-typer.
+15 parts, mostly TypeScript (156 files), JavaScript (23) and Python (6). Work enters through 6 doors; CI and Site each reach 10 parts, and CI is followed because it comes first by name. It publishes @mcptoolshop/ghost-on-the-menu (packages/launcher) and @mcptoolshop/vibe-typer (packages/launcher-vibe-typer) to npm. People run ghost-on-the-menu and vibe-typer.
 
 ## What changed since 2026-09-24 (8ebb997)
 
@@ -121,7 +121,10 @@ Read those in order to follow one pull request end to end.
 
 - 17 import sites could not be resolved.
 - 7 writes and 14 reads use paths built at run time and are not named here.
-- 17 writes and 109 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 6 writes and 97 reads go to a path their caller passes, not to this repository.
+- 5 writes and 8 reads go to the directory the command is run in (.venv/, film/ and fixtures/), not to this repository.
+- 2 writes and 4 reads go to the directory the command is run in (film/, fixtures/ and packages/) or a path their caller passes, not to this repository.
+- 4 writes go to a temporary directory, not to this repository.
 - 6 commands are built at run time and not followed, 3 of them in tests.
 - There is a Dockerfile that a workflow builds and none pushes and Docker MCP Catalog entries at catalog/server.vibe.yaml and catalog/server.yaml; what ships from them goes from outside this repository, and is not on this page.
 

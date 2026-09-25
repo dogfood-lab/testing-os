@@ -184,7 +184,7 @@
   "changesTogetherWithTests": 0,
   "commit": "93df7e1bb9d6c2cf9580b625ecd8454f19be8507",
   "defaultBranch": "main",
-  "derived": "9 parts, mostly TypeScript (50 files). Work enters through 4 doors; CI and Build and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the codecomfy-vscode extension.",
+  "derived": "9 parts, mostly TypeScript (50 files) and JavaScript (5). Work enters through 4 doors; CI and Build and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the codecomfy-vscode extension.",
   "doors": [
     {
       "checks": [
@@ -290,6 +290,7 @@
       "runsMore": 0,
       "sends": [
         "creates a GitHub release on a tag push",
+        "uploads SHA256SUMS.txt and files named at run time to the release on a tag push",
         "publishes to the VS Code Marketplace when run by hand"
       ],
       "stages": [],
@@ -382,11 +383,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T21:44:43.869Z",
+  "generatedAt": "2026-09-25T01:35:08.051Z",
   "limits": [
     "1 import site could not be resolved.",
     "2 writes and 6 reads use paths built at run time and are not named here.",
-    "16 writes and 39 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "16 writes and 39 reads go to a path their caller passes, not to this repository.",
     "3 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],

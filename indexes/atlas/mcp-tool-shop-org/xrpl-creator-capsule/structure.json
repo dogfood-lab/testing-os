@@ -165,6 +165,7 @@
           "path": "app/src-tauri/Cargo.toml"
         },
         {
+          "buildScript": true,
           "hash": "487059eaf8a947b80f20a9aacac038a5047b2ad69d2401b827376c67d6fe847f",
           "path": "app/src-tauri/build.rs"
         },
@@ -448,6 +449,7 @@
           "importsFiles": [
             "app/src-tauri/src/lib.rs"
           ],
+          "library": "app/src-tauri/src/lib.rs",
           "path": "app/src-tauri/src/main.rs",
           "sequences": [
             {
@@ -1058,7 +1060,6 @@
           ],
           "hash": "b52a97f3d2353f9ab502b3d2f66a85f27a9a03f35588d305e92e49032be0cb0a",
           "importsFiles": [
-            "app/package.json",
             "app/src/bridge/engine.ts",
             "app/src/state/release.tsx",
             "app/src/state/session.ts"
@@ -1087,7 +1088,16 @@
       ],
       "importConfidence": "full",
       "name": "app",
-      "origin": "authored",
+      "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 31,
+          "where": [
+            "caller"
+          ],
+          "writes": 14
+        }
+      ],
       "outsideReads": 31,
       "outsideWrites": 14,
       "role": "code",
@@ -1687,6 +1697,15 @@
       "importConfidence": "full",
       "name": "cli",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 3,
+          "where": [
+            "caller"
+          ],
+          "writes": 8
+        }
+      ],
       "outsideReads": 3,
       "outsideWrites": 8,
       "role": "code",
@@ -2442,6 +2461,15 @@
       "importConfidence": "full",
       "name": "storage",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        }
+      ],
       "outsideReads": 2,
       "outsideWrites": 1,
       "role": "code",
@@ -2542,6 +2570,15 @@
       "importConfidence": "full",
       "name": "xaman",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 1,
       "role": "code",
       "testedBy": 4,
@@ -2744,7 +2781,7 @@
   ],
   "doors": [
     {
-      "checksCount": 10,
+      "checksCount": 9,
       "commands": [
         {
           "job": "test",
@@ -2806,7 +2843,8 @@
           ],
           "pushes": false,
           "sends": [
-            "releases"
+            "assets:msi",
+            "assets:nsis"
           ],
           "stages": [],
           "when": {
@@ -2814,7 +2852,9 @@
           }
         }
       ],
-      "landings": [],
+      "landings": [
+        "app/src-tauri/gen/schemas"
+      ],
       "mentions": [],
       "name": "CI",
       "permissions": [
@@ -2826,7 +2866,7 @@
         {
           "boundary": "app",
           "depth": 0,
-          "files": 70
+          "files": 71
         },
         {
           "boundary": "artifacts",
@@ -3001,6 +3041,23 @@
           "runKind": "executes"
         },
         {
+          "job": "build-desktop",
+          "matched": true,
+          "path": "app/src-tauri/build.rs",
+          "runKind": "executes",
+          "via": "tauri build",
+          "when": {
+            "event": "release"
+          }
+        },
+        {
+          "job": "cargo-check",
+          "matched": true,
+          "path": "app/src-tauri/build.rs",
+          "runKind": "executes",
+          "via": "cargo check"
+        },
+        {
           "job": "cargo-check",
           "matched": true,
           "path": "app/src-tauri/src/commands.rs",
@@ -3025,10 +3082,11 @@
           "via": "cargo check"
         },
         {
+          "built": true,
           "job": "build-desktop",
           "matched": true,
           "path": "app/src-tauri/src/main.rs",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tauri build",
           "when": {
             "event": "release"
@@ -3622,7 +3680,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 91,
+      "runsCount": 92,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -3681,6 +3739,9 @@
         {
           "event": "workflow_dispatch"
         }
+      ],
+      "untrackedLandings": [
+        "app/src-tauri/resources/"
       ],
       "uses": [
         "Swatinem/rust-cache",
@@ -3952,6 +4013,16 @@
       ],
       "target": "app/src-tauri/capabilities/default.json",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": "app/src-tauri/gen/schemas",
+      "writers": [
+        {
+          "by": "app/src-tauri/build.rs",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [

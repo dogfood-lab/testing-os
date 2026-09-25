@@ -1232,6 +1232,22 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd:test-preset/"
+          ],
+          "writes": 3
+        }
+      ],
       "outsideReads": 1,
       "outsideWrites": 5,
       "role": "code",
@@ -2459,6 +2475,70 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 20,
+          "where": [
+            "caller"
+          ],
+          "writes": 5
+        },
+        {
+          "reads": 24,
+          "where": [
+            "caller",
+            "cwd:.vscockpit/"
+          ],
+          "writes": 23
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:assets/"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:calib/"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 2,
+          "where": [
+            "caller",
+            "cwd:presets"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 7,
+          "where": [
+            "caller",
+            "cwd:presets/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:voicepreset.json"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:apps/"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 54,
       "outsideWrites": 33,
       "role": "code",

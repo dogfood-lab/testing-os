@@ -1185,6 +1185,30 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 4,
+          "where": [
+            "caller"
+          ],
+          "writes": 4
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:registry-sync.config.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:registry-sync.config.json"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 6,
       "outsideWrites": 4,
       "role": "code",

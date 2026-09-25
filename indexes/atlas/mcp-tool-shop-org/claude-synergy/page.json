@@ -162,7 +162,7 @@
   "changesTogetherWithTests": 0,
   "commit": "6d91d8cceb43d7acbbcd994ba718ee17ef9bf483",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly TypeScript (83 files). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk.",
+  "derived": "10 parts, mostly TypeScript (83 files), JavaScript (9) and Python (2). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk.",
   "doors": [
     {
       "checks": [
@@ -460,9 +460,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T21:44:39.818Z",
+  "generatedAt": "2026-09-25T01:35:04.431Z",
   "limits": [
-    "10 writes and 48 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "9 writes and 32 reads go to a path their caller passes, not to this repository.",
+    "1 write and 8 reads go to the directory the command is run in (data/ and synergies/) or a path their caller passes, not to this repository.",
+    "8 reads go to the directory the command is run in (products.yaml, schema-vec.sql, schema.sql and 1 more place), not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/sync.yml",

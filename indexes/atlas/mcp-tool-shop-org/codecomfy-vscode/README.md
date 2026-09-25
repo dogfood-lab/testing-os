@@ -1,10 +1,10 @@
 # codecomfy-vscode: how it works
 
-Mapped at 2026-09-24 from commit 93df7e1.
+Mapped at 2026-09-25 from commit 93df7e1.
 
 ## What this is
 
-9 parts, mostly TypeScript (50 files). Work enters through 4 doors; CI and Build and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the codecomfy-vscode extension.
+9 parts, mostly TypeScript (50 files) and JavaScript (5). Work enters through 4 doors; CI and Build and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the codecomfy-vscode extension.
 
 ## What changed since 2026-09-24 (e196fbe)
 
@@ -32,7 +32,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Build and Release** runs test/register-vscode-stub.js, checks eslint.config.mjs, scripts/, site/ and 49 more, creates a GitHub release on a tag push, and publishes to the VS Code Marketplace when run by hand.
+**Build and Release** runs test/register-vscode-stub.js, checks eslint.config.mjs, scripts/, site/ and 49 more, creates a GitHub release on a tag push, uploads SHA256SUMS.txt and files named at run time to the release on a tag push, and publishes to the VS Code Marketplace when run by hand.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -89,7 +89,7 @@ Read those in order to follow one activation of codecomfy-vscode end to end. Thi
 
 - 1 import site could not be resolved.
 - 2 writes and 6 reads use paths built at run time and are not named here.
-- 16 writes and 39 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 16 writes and 39 reads go to a path their caller passes, not to this repository.
 - 3 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

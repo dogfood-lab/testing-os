@@ -347,7 +347,7 @@
       "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 4,
+      "dynamicWrites": 0,
       "entryPoints": [
         "src/lib.rs",
         "src/main.rs"
@@ -968,6 +968,7 @@
             "src/ui/screens/title.rs",
             "src/ui/theme.rs"
           ],
+          "library": "src/lib.rs",
           "path": "src/main.rs",
           "sequences": [
             {
@@ -989,6 +990,15 @@
                   }
                 },
                 {
+                  "inner": [
+                    {
+                      "line": 23,
+                      "name": "title_style",
+                      "target": {
+                        "file": "src/ui/theme.rs"
+                      }
+                    }
+                  ],
                   "line": 145,
                   "name": "render_title",
                   "target": {
@@ -1180,7 +1190,7 @@
                       "via": "render_combatant_card"
                     },
                     {
-                      "line": 318,
+                      "line": 305,
                       "name": "dim_style",
                       "target": {
                         "file": "src/ui/theme.rs"
@@ -1198,6 +1208,24 @@
                     {
                       "line": 382,
                       "name": "age_menu_title",
+                      "target": {
+                        "file": "src/ui/theme.rs"
+                      },
+                      "via": "render_action_menu"
+                    },
+                    {
+                      "branch": "!action.available",
+                      "line": 396,
+                      "name": "locked_style",
+                      "target": {
+                        "file": "src/ui/theme.rs"
+                      },
+                      "via": "render_action_menu"
+                    },
+                    {
+                      "branch": "!action.available",
+                      "line": 397,
+                      "name": "lock_reason_style",
                       "target": {
                         "file": "src/ui/theme.rs"
                       },
@@ -1277,6 +1305,15 @@
                   "via": "render_confirm_quit"
                 },
                 {
+                  "inner": [
+                    {
+                      "line": 26,
+                      "name": "dim_style",
+                      "target": {
+                        "file": "src/ui/theme.rs"
+                      }
+                    }
+                  ],
                   "line": 198,
                   "name": "render_error",
                   "target": {
@@ -1311,6 +1348,13 @@
                 },
                 {
                   "inner": [
+                    {
+                      "line": 64,
+                      "name": "ammo_color",
+                      "target": {
+                        "file": "src/ui/theme.rs"
+                      }
+                    },
                     {
                       "line": 88,
                       "name": "echo_style",
@@ -2566,7 +2610,7 @@
                   "via": "render_combatant_card"
                 },
                 {
-                  "line": 318,
+                  "line": 305,
                   "name": "dim_style",
                   "target": {
                     "file": "src/ui/theme.rs"
@@ -2584,6 +2628,24 @@
                 {
                   "line": 382,
                   "name": "age_menu_title",
+                  "target": {
+                    "file": "src/ui/theme.rs"
+                  },
+                  "via": "render_action_menu"
+                },
+                {
+                  "branch": "!action.available",
+                  "line": 396,
+                  "name": "locked_style",
+                  "target": {
+                    "file": "src/ui/theme.rs"
+                  },
+                  "via": "render_action_menu"
+                },
+                {
+                  "branch": "!action.available",
+                  "line": 397,
+                  "name": "lock_reason_style",
                   "target": {
                     "file": "src/ui/theme.rs"
                   },
@@ -2645,7 +2707,7 @@
                   "via": "render_combatant_card"
                 },
                 {
-                  "line": 318,
+                  "line": 305,
                   "name": "dim_style",
                   "target": {
                     "file": "src/ui/theme.rs"
@@ -2677,7 +2739,7 @@
                   "via": "render_combatant_card"
                 },
                 {
-                  "line": 318,
+                  "line": 305,
                   "name": "dim_style",
                   "target": {
                     "file": "src/ui/theme.rs"
@@ -2707,7 +2769,7 @@
                   }
                 },
                 {
-                  "line": 318,
+                  "line": 305,
                   "name": "dim_style",
                   "target": {
                     "file": "src/ui/theme.rs"
@@ -2731,6 +2793,22 @@
                 {
                   "line": 382,
                   "name": "age_menu_title",
+                  "target": {
+                    "file": "src/ui/theme.rs"
+                  }
+                },
+                {
+                  "branch": "!action.available",
+                  "line": 396,
+                  "name": "locked_style",
+                  "target": {
+                    "file": "src/ui/theme.rs"
+                  }
+                },
+                {
+                  "branch": "!action.available",
+                  "line": 397,
+                  "name": "lock_reason_style",
                   "target": {
                     "file": "src/ui/theme.rs"
                   }
@@ -2793,6 +2871,8 @@
           "path": "src/ui/screens/crowd.rs"
         },
         {
+          "entry": "render_error",
+          "entryRule": 4,
           "exports": [
             "render_error"
           ],
@@ -2800,7 +2880,24 @@
           "importsFiles": [
             "src/ui/theme.rs"
           ],
-          "path": "src/ui/screens/error.rs"
+          "path": "src/ui/screens/error.rs",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 26,
+                  "name": "dim_style",
+                  "target": {
+                    "file": "src/ui/theme.rs"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "render_error"
+            }
+          ]
         },
         {
           "exports": [
@@ -3211,6 +3308,13 @@
             {
               "calls": [
                 {
+                  "line": 64,
+                  "name": "ammo_color",
+                  "target": {
+                    "file": "src/ui/theme.rs"
+                  }
+                },
+                {
                   "line": 88,
                   "name": "echo_style",
                   "target": {
@@ -3233,6 +3337,8 @@
           ]
         },
         {
+          "entry": "render_title",
+          "entryRule": 4,
           "exports": [
             "render_title"
           ],
@@ -3240,7 +3346,24 @@
           "importsFiles": [
             "src/ui/theme.rs"
           ],
-          "path": "src/ui/screens/title.rs"
+          "path": "src/ui/screens/title.rs",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 23,
+                  "name": "title_style",
+                  "target": {
+                    "file": "src/ui/theme.rs"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "render_title"
+            }
+          ]
         },
         {
           "exports": [
@@ -3353,8 +3476,32 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 6
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:saves/"
+          ],
+          "writes": 4
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:saves/"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 3,
-      "outsideWrites": 6,
+      "outsideWrites": 10,
       "role": "code",
       "testedBy": 46,
       "unresolvedSites": 0
@@ -3380,6 +3527,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/adult_act_end.rs",
           "testsInside": true
         },
@@ -3396,6 +3544,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/black_willow.rs",
           "testsInside": true
         },
@@ -3408,6 +3557,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/breakwater_junction.rs",
           "testsInside": true
         },
@@ -3424,6 +3574,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/burned_mission.rs",
           "testsInside": true
         },
@@ -3440,6 +3591,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/cedar_wake.rs",
           "testsInside": true
         },
@@ -3449,6 +3601,7 @@
             "src/combat/party_defs.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/combat_party_defs.rs",
           "testsInside": true
         },
@@ -3457,6 +3610,7 @@
           "importsFiles": [
             "src/combat/wounds.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/combat_wounds.rs",
           "testsInside": true
         },
@@ -3475,6 +3629,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/common/mod.rs"
         },
         {
@@ -3482,6 +3637,7 @@
           "importsFiles": [
             "src/content/mod.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/content_lookup.rs",
           "testsInside": true
         },
@@ -3495,6 +3651,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/deadwater_trial.rs",
           "testsInside": true
         },
@@ -3507,6 +3664,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/dev_infrastructure.rs",
           "testsInside": true
         },
@@ -3523,6 +3681,7 @@
             "src/types.rs",
             "tests/common/mod.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/dust_revival.rs",
           "testsInside": true
         },
@@ -3538,6 +3697,7 @@
             "src/ui/mod.rs",
             "tests/common/mod.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/feature_wave1.rs",
           "testsInside": true
         },
@@ -3559,6 +3719,7 @@
             "src/types.rs",
             "tests/common/mod.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/feature_wave2.rs",
           "testsInside": true
         },
@@ -3576,6 +3737,7 @@
             "src/ui/mod.rs",
             "tests/common/mod.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/feature_wave3.rs",
           "testsInside": true
         },
@@ -3594,6 +3756,7 @@
             "src/ui/mod.rs",
             "tests/common/mod.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/feature_wave4.rs",
           "testsInside": true
         },
@@ -3607,6 +3770,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/fifteen_years_gone.rs",
           "testsInside": true
         },
@@ -3623,6 +3787,7 @@
             "src/types.rs",
             "tests/common/mod.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/full_playthrough.rs",
           "testsInside": true
         },
@@ -3639,6 +3804,7 @@
             "src/types.rs",
             "tests/common/mod.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/fuse_country.rs",
           "testsInside": true
         },
@@ -3655,6 +3821,7 @@
             "src/types.rs",
             "tests/common/mod.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/iron_ledger.rs",
           "testsInside": true
         },
@@ -3668,6 +3835,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/long_wire.rs",
           "testsInside": true
         },
@@ -3682,6 +3850,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/morrow_crossing.rs",
           "testsInside": true
         },
@@ -3693,6 +3862,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/names_in_dust.rs",
           "testsInside": true
         },
@@ -3705,6 +3875,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/old_friends.rs",
           "testsInside": true
         },
@@ -3715,6 +3886,7 @@
             "src/scene/types.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/pressure_encounters.rs",
           "testsInside": true
         },
@@ -3729,6 +3901,7 @@
             "src/types.rs",
             "tests/common/mod.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/prologue.rs",
           "testsInside": true
         },
@@ -3738,6 +3911,7 @@
             "src/state/reassembly.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/reassembly.rs",
           "testsInside": true
         },
@@ -3754,6 +3928,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/ropehouse_blood.rs",
           "testsInside": true
         },
@@ -3766,6 +3941,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/saints_mile_again.rs",
           "testsInside": true
         },
@@ -3780,6 +3956,7 @@
             "src/state/store.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/saints_mile_convoy.rs",
           "testsInside": true
         },
@@ -3793,6 +3970,7 @@
             "src/types.rs",
             "tests/common/mod.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/scene_system.rs",
           "testsInside": true
         },
@@ -3802,6 +3980,7 @@
             "src/combat/split_party.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/split_party.rs",
           "testsInside": true
         },
@@ -3813,6 +3992,7 @@
             "src/state/investigation.rs",
             "src/types.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/state_systems.rs",
           "testsInside": true
         },
@@ -3824,6 +4004,7 @@
             "src/ui/text_reveal.rs",
             "src/ui/theme.rs"
           ],
+          "library": "src/lib.rs",
           "path": "tests/ui_logic.rs",
           "testsInside": true
         },
@@ -4366,7 +4547,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 2,
+      "checksCount": 1,
       "commands": [
         {
           "job": "validate",
@@ -4435,8 +4616,7 @@
           ],
           "pushes": false,
           "sends": [
-            "publishesTo:crates.io",
-            "releases"
+            "publishesTo:crates.io"
           ],
           "stages": [],
           "when": {
@@ -4509,17 +4689,19 @@
           "via": "cargo build"
         },
         {
+          "built": true,
           "job": "build",
           "matched": true,
           "path": "src/main.rs",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "cargo build"
         },
         {
+          "built": true,
           "job": "msix",
           "matched": true,
           "path": "src/main.rs",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "cargo build"
         }
       ],
@@ -4529,6 +4711,12 @@
         "GITHUB_TOKEN"
       ],
       "sends": {
+        "assets": [
+          "binary:darwin-arm64",
+          "binary:linux-x64",
+          "binary:win-x64",
+          "msix"
+        ],
         "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,

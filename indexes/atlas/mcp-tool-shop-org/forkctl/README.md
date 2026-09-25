@@ -1,10 +1,10 @@
 # forkctl: how it works
 
-Mapped at 2026-09-24 from commit 72e9d21.
+Mapped at 2026-09-25 from commit 72e9d21.
 
 ## What this is
 
-7 parts, mostly TypeScript (128 files). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. People run forkctl and forkctl-mcp.
+7 parts, mostly TypeScript (128 files) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. People run forkctl and forkctl-mcp.
 
 ## What changed since 2026-09-24 (31ad2f4)
 
@@ -80,7 +80,7 @@ Read those in order to follow one run of forkctl end to end. This path follows f
 
 - 1 import site could not be resolved.
 - 8 writes and 8 reads use paths built at run time and are not named here.
-- 26 writes and 22 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 26 writes and 22 reads go to a path their caller passes, not to this repository.
 - 3 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

@@ -1,10 +1,10 @@
 # repomesh: how it works
 
-Mapped at 2026-09-24 from commit 8843b88.
+Mapped at 2026-09-25 from commit 8843b88.
 
 ## What this is
 
-18 parts, mostly JavaScript (175 files). Work enters through 9 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image. People run repomesh.
+18 parts, mostly JavaScript (175 files) and TypeScript (2). Work enters through 9 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image. People run repomesh.
 
 ## What changed since 2026-09-23 (f13ad8e)
 
@@ -39,17 +39,18 @@ Mapped at 2026-09-24 from commit 8843b88.
 1. The workflow runs packages/repomesh-cli/scripts/build.mjs and packages/repomesh-cli/tests/ in repomesh-cli; it checks 10 files in anchor, packages/repomesh-cli/ in repomesh-cli, and package-lock.json and package.json in the repository root.
 2. That reaches pages (2 files), registry (4 files), tools (5 files) and verifiers (4 files).
 3. That reaches ledger (1 file).
-4. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image.
+4. It writes to packages/repomesh-cli/dist/, which is not tracked.
+5. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image.
 
 ## Who reads the results
 
-Release writes nothing this map can see.
+Release writes only to packages/repomesh-cli/dist/, which is not tracked.
 
 ## The other doors
 
-**anchor-xrpl** runs anchor/xrpl/scripts/compute-root.mjs, anchor/xrpl/scripts/emit-anchor-event.mjs, packages/repomesh-cli/scripts/build.mjs and 1 more, checks anchor/xrpl/config.json, anchor/xrpl/package-lock.json, anchor/xrpl/package.json and 66 more, reaches ledger, pages, tools and verifiers, writes to anchor/xrpl/manifests/, ledger/events/events.jsonl, registry/anchors.json and registry/trust.json, commits anchor/xrpl/manifests/*.json, ledger/events/events.jsonl and registry/anchors.json, then pushes to a branch for review, never to main, opens an issue when it fails, and opens a pull request.
+**anchor-xrpl** runs anchor/xrpl/scripts/compute-root.mjs, anchor/xrpl/scripts/emit-anchor-event.mjs, packages/repomesh-cli/scripts/build.mjs and 1 more, checks anchor/xrpl/config.json, anchor/xrpl/package-lock.json, anchor/xrpl/package.json and 66 more, reaches ledger, pages, tools and verifiers, writes to anchor/xrpl/manifests/, ledger/events/events.jsonl, registry/anchors.json and registry/trust.json, and to anchor/xrpl/partition-root.json and packages/repomesh-cli/dist/, which are not tracked, commits anchor/xrpl/manifests/*.json, ledger/events/events.jsonl and registry/anchors.json, then pushes to a branch for review, never to main, opens an issue when it fails, and opens a pull request.
 
-**pages-ci** runs pages/build-metrics.mjs, pages/build-pages.mjs, pages/build-stats.mjs and 7 more, reaches anchor, ledger and verifiers, writes to registry/anchors.json, registry/badges/, registry/snippets/ and registry/trust.json, and deploys the site.
+**pages-ci** runs pages/build-metrics.mjs, pages/build-pages.mjs, pages/build-stats.mjs and 7 more, reaches anchor, ledger and verifiers, writes to registry/anchors.json, registry/badges/, registry/snippets/ and registry/trust.json, and to pages/out/, registry/metrics.json, registry/timeline.json and 2 more places, which are not tracked, and deploys the site.
 
 **attestor-ci** runs attestor/scripts/attest-release.mjs, policy/scripts/check-policy.mjs, verifiers/license/scripts/verify-license.mjs and 2 more, checks LICENSE, writes to ledger/events/events.jsonl, registry/anchors.json and registry/trust.json, commits ledger/events/events.jsonl and pushes to a branch for review, never to main, runs git, opens an issue when it fails, and opens a pull request.
 
@@ -59,7 +60,7 @@ Release writes nothing this map can see.
 
 **xrpl-watch** runs anchor/xrpl/scripts/watch.mjs, reaches repomesh-cli, and opens an issue.
 
-**repomesh-broadcast** runs packages/repomesh-cli/scripts/build.mjs, commits into a clone of mcp-tool-shop-org/repomesh and pushes there, and opens a pull request.
+**repomesh-broadcast** runs packages/repomesh-cli/scripts/build.mjs, writes to packages/repomesh-cli/dist/, which is not tracked, commits into a clone of mcp-tool-shop-org/repomesh and pushes there, uploads provenance.json and sbom.json to the release, and opens a pull request.
 
 **repomesh** (a command people run) runs packages/repomesh-cli/dist/cli.mjs, built from a source this map cannot place.
 
@@ -136,7 +137,10 @@ Read those in order to follow one pull request end to end.
 - 114 import sites could not be resolved.
 - 6 reads use paths built at run time and are not named here.
 - 25 writes go to places this repository does not track, so they are not listed as generated.
-- 45 writes and 167 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 38 writes and 141 reads go to a path their caller passes, not to this repository.
+- 7 writes and 13 reads go to the directory the command is run in (.repomesh-tmp/, anchor/ and ledger/) or a path their caller passes, not to this repository.
+- 12 reads go to the directory the command is run in (anchor/, ledger/ and verifiers/), not to this repository.
+- 1 read goes to a temporary directory, not to this repository.
 - 10 commands are built at run time and not followed, 9 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

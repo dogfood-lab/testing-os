@@ -1,6 +1,6 @@
 # brand: how it works
 
-Mapped at 2026-09-24 from commit 8110f52.
+Mapped at 2026-09-25 from commit 8110f52.
 
 ## What this is
 
@@ -95,7 +95,8 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 6 reads use paths built at run time and are not named here.
-- 24 writes and 73 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 24 writes and 66 reads go to a path their caller passes, not to this repository.
+- 7 reads go to the directory the command is run in (logos/ and manifest.json), not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

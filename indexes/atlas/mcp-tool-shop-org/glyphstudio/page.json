@@ -73,10 +73,25 @@
       },
       {
         "kind": "landing",
+        "sentence": "apps/desktop/src-tauri/gen/schemas/ is now written by apps/desktop/src-tauri/build.rs.",
+        "subjects": [
+          "apps/desktop/src-tauri/gen/schemas/",
+          "apps/desktop/src-tauri/build.rs"
+        ]
+      },
+      {
+        "kind": "landing",
         "sentence": "apps/desktop/src-tauri/src/main.rs is now read by apps/desktop/src-tauri/Cargo.toml.",
         "subjects": [
           "apps/desktop/src-tauri/src/main.rs",
           "apps/desktop/src-tauri/Cargo.toml"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "desktop was authored and is now mixed.",
+        "subjects": [
+          "desktop"
         ]
       },
       {
@@ -98,7 +113,7 @@
   "changesTogetherWithTests": 0,
   "commit": "67678351f3646a253815501776980898dc612ef6",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly TypeScript (424 files). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. People install the glyphstudio desktop app.",
+  "derived": "15 parts, mostly TypeScript (424 files), Rust (46) and JavaScript (20). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).",
   "doors": [
     {
       "checks": [
@@ -325,6 +340,7 @@
     },
     {
       "app": "desktop",
+      "builtFrom": "apps/desktop/src-tauri",
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
@@ -348,7 +364,8 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": []
+      "triggers": [],
+      "unshipped": true
     }
   ],
   "duplicates": [],
@@ -372,6 +389,12 @@
     }
   ],
   "generated": [
+    {
+      "place": "apps/desktop/src-tauri/gen/schemas/",
+      "writers": [
+        "apps/desktop/src-tauri/build.rs (a build script)"
+      ]
+    },
     {
       "place": "docs/benchmark-assets/",
       "writers": [
@@ -511,11 +534,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T21:46:33.863Z",
+  "generatedAt": "2026-09-25T01:36:55.934Z",
   "limits": [
     "17 import sites could not be resolved.",
     "59 writes and 10 reads use paths built at run time and are not named here.",
-    "13 writes and 31 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "13 writes and 31 reads go to a path their caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -558,9 +581,10 @@
   "sequences": [],
   "startDoor": "apps/desktop/src-tauri/Cargo.toml#glyphstudio",
   "startHere": [
-    "apps/desktop/src-tauri/src/main.rs"
+    "apps/desktop/src-tauri/src/main.rs",
+    "apps/desktop/src-tauri/src/lib.rs"
   ],
-  "startReason": "This path follows glyphstudio (the desktop app people install) from its entry, since CI runs only tests.",
+  "startReason": "This path follows glyphstudio (a desktop app built from apps/desktop/src-tauri, which nothing ships) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 202,
@@ -575,6 +599,12 @@
   },
   "unnamedWrites": 59,
   "unread": [
+    {
+      "place": "apps/desktop/src-tauri/gen/schemas/",
+      "writers": [
+        "apps/desktop/src-tauri/build.rs (a build script)"
+      ]
+    },
     {
       "place": "docs/benchmark-assets/",
       "writers": [
@@ -616,17 +646,11 @@
       "writers": [
         "scripts/dogfood-44-curves.mjs"
       ]
-    },
-    {
-      "place": "docs/dogfood/stage44-quality/",
-      "writers": [
-        "scripts/dogfood-44-quality.mjs"
-      ]
     }
   ],
   "unreadFiles": 0,
   "unreadNote": [
-    "And 12 more places."
+    "And 13 more places."
   ],
   "untested": [
     {
@@ -641,5 +665,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 23
+  "written": 24
 }

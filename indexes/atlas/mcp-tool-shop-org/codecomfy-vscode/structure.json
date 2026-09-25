@@ -264,6 +264,15 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 4,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 4,
       "role": "code",
       "testedBy": 0,
@@ -1314,6 +1323,15 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 35,
+          "where": [
+            "caller"
+          ],
+          "writes": 16
+        }
+      ],
       "outsideReads": 35,
       "outsideWrites": 16,
       "role": "code",
@@ -1907,6 +1925,8 @@
           ],
           "pushes": false,
           "sends": [
+            "assets:file:SHA256SUMS.txt",
+            "assets:files",
             "releases"
           ],
           "stages": [],

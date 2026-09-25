@@ -3108,7 +3108,6 @@
           "entryRule": 1,
           "hash": "c4dd68d458799dc0247017b2144ad46836cf5ccd4ea8d89db0f26fcede36204e",
           "importsFiles": [
-            "package.json",
             "src/audit/controls.ts",
             "src/audit/import.ts",
             "src/audit/queries.ts",
@@ -3740,7 +3739,6 @@
           "entryRule": 1,
           "hash": "a91d18ec4af529a55ebacc8303870d99659edfa56b6cd18927fa13f51cb3737a",
           "importsFiles": [
-            "package.json",
             "src/audit/controls.ts",
             "src/audit/import.ts",
             "src/audit/queries.ts",
@@ -4060,6 +4058,43 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 77,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:data"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd:data/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 7,
+          "where": [
+            "cwd:rk.config.json"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 0,
+          "where": [
+            "cwd:rk.config.json.tmp"
+          ],
+          "writes": 1
+        }
+      ],
       "outsideReads": 85,
       "outsideWrites": 6,
       "role": "code",
@@ -4666,6 +4701,9 @@
           "event": "workflow_dispatch"
         }
       ],
+      "untrackedLandings": [
+        "dist/"
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node"
@@ -4847,6 +4885,7 @@
           "sends": [
             "publishesTo:npm",
             "packages:{\"dir\":\"\",\"name\":\"@mcptoolshop/repo-knowledge\",\"registry\":\"npm\"}",
+            "assets:file:sbom.json",
             "releases"
           ],
           "stages": [],
@@ -4953,6 +4992,9 @@
         {
           "event": "workflow_dispatch"
         }
+      ],
+      "untrackedLandings": [
+        "dist/"
       ],
       "uses": [
         "actions/checkout",
@@ -5301,6 +5343,17 @@
           "unless": [
             "--selftest"
           ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "dist",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "scripts/postbuild.js",
+          "confidence": "ast"
         }
       ]
     },

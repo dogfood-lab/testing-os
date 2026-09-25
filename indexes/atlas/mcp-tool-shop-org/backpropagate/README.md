@@ -1,10 +1,10 @@
 # backpropagate: how it works
 
-Mapped at 2026-09-24 from commit fd35beb.
+Mapped at 2026-09-25 from commit fd35beb.
 
 ## What this is
 
-11 parts, mostly Python (125 files). Work enters through 12 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. People run backprop and backpropagate.
+11 parts, mostly Python (125 files), JavaScript (2) and TypeScript (2). Work enters through 12 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. People run backprop and backpropagate.
 
 ## What changed since 2026-09-23 (34a7862)
 
@@ -59,7 +59,7 @@ CI writes nothing this map can see.
 
 **OpenSSF Scorecard** runs no file this map can see.
 
-**Release** runs no file this map can see, publishes to npm, and creates a GitHub release.
+**Release** runs no file this map can see, publishes to npm, creates a GitHub release, and uploads backpropagate-npm-sbom.cdx.json and backpropagate-sbom.cdx.json to the release.
 
 **backprop** (a command people run) runs backpropagate/cli.py.
 
@@ -113,7 +113,10 @@ Read those in order to follow one run of backprop end to end. This path follows 
 - 40 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.
 - 6 import sites could not be resolved.
 - 13 writes and 33 reads use paths built at run time and are not named here.
-- 3 writes and 9 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 2 writes and 7 reads go to a path their caller passes, not to this repository.
+- 1 write goes to the home directory (AppData/ and Library/) or a path its caller passes, not to this repository.
+- 1 read goes to the directory the command is run in, not to this repository.
+- 1 read goes to the home directory (.cache/), not to this repository.
 - There is a compose.yaml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

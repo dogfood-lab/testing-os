@@ -813,7 +813,7 @@
       "dynamicReads": 4,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 2,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -1106,6 +1106,22 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 6,
+          "where": [
+            "caller"
+          ],
+          "writes": 3
+        },
+        {
+          "reads": 3,
+          "where": [
+            "temp"
+          ],
+          "writes": 6
+        }
+      ],
       "outsideReads": 9,
       "outsideWrites": 9,
       "role": "code",
@@ -3138,6 +3154,38 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 95,
+          "where": [
+            "caller"
+          ],
+          "writes": 44
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:.db-cluster"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "temp"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 98,
       "outsideWrites": 45,
       "role": "code",
@@ -5602,6 +5650,9 @@
           "event": "workflow_dispatch"
         }
       ],
+      "untrackedLandings": [
+        "examples/dogfood-project-memory/.db-cluster"
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node"
@@ -5719,6 +5770,9 @@
         {
           "event": "workflow_dispatch"
         }
+      ],
+      "untrackedLandings": [
+        "examples/dogfood-project-memory/.db-cluster"
       ],
       "uses": [
         "actions/checkout",
@@ -6859,6 +6913,11 @@
           "event": "workflow_dispatch"
         }
       ],
+      "untrackedLandings": [
+        ".doc-drift-extract/",
+        ".release-gate-output/",
+        "examples/dogfood-project-memory/.db-cluster"
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node"
@@ -7912,6 +7971,9 @@
           ]
         }
       ],
+      "untrackedLandings": [
+        "examples/dogfood-project-memory/.db-cluster"
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node"
@@ -8075,6 +8137,9 @@
       },
       "stages": [],
       "triggers": [],
+      "untrackedLandings": [
+        "examples/dogfood-project-memory/.db-cluster"
+      ],
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -8117,6 +8182,9 @@
       },
       "stages": [],
       "triggers": [],
+      "untrackedLandings": [
+        "examples/dogfood-project-memory/.db-cluster"
+      ],
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -8159,6 +8227,9 @@
       },
       "stages": [],
       "triggers": [],
+      "untrackedLandings": [
+        "examples/dogfood-project-memory/.db-cluster"
+      ],
       "uses": [],
       "usesWorkflowToken": false
     }
@@ -8204,6 +8275,39 @@
   },
   "landings": [
     {
+      "readers": [],
+      "target": ".demo-rk-ops/sources",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "scripts/repo-knowledge-ops.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": ".demo-rk-update/sources",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "scripts/repo-knowledge-update-demo.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": ".doc-drift-extract",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "scripts/doc-drift.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
       "readers": [
         {
           "by": "test/wave-b1-cidocs-regression.test.ts",
@@ -8238,6 +8342,17 @@
       ],
       "target": ".gitignore",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": ".release-gate-output",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "scripts/release-gate.mjs",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [

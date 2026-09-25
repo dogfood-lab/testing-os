@@ -167,7 +167,7 @@
   "changesTogetherWithTests": 0,
   "commit": "0f920ecd9b8ffb02f94c9e064759dc09a08c7ae4",
   "defaultBranch": "main",
-  "derived": "6 parts, mostly TypeScript (49 files). Work enters through 5 doors; ci, Deploy site to GitHub Pages, Release, @mcptoolshop/bytefit and bytefit each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. People run bytefit. People import @mcptoolshop/bytefit.",
+  "derived": "6 parts, mostly TypeScript (49 files) and JavaScript (1). Work enters through 5 doors; ci, Deploy site to GitHub Pages, Release, @mcptoolshop/bytefit and bytefit each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. People run bytefit. People import @mcptoolshop/bytefit.",
   "doors": [
     {
       "checks": [
@@ -351,9 +351,11 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-24T21:44:15.725Z",
+  "generatedAt": "2026-09-25T01:34:41.666Z",
   "limits": [
-    "1 write and 6 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "4 reads go to a path their caller passes, not to this repository.",
+    "1 write and 1 read go to a temporary directory or a path their caller passes, not to this repository.",
+    "1 read goes to the home directory (.ollama/) or a path its caller passes, not to this repository.",
     "1 command is built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],

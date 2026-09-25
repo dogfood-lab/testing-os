@@ -83,6 +83,14 @@
       },
       {
         "kind": "landing",
+        "sentence": "dist is now written by scripts/postbuild.js.",
+        "subjects": [
+          "dist",
+          "scripts/postbuild.js"
+        ]
+      },
+      {
+        "kind": "landing",
         "sentence": ".github/workflows/ci.yml is now read by test/build-health.test.ts, test/doctor.test.ts, test/feed.test.ts, test/health-commands.test.ts, test/migration-009.test.ts and test/table.test.ts.",
         "subjects": [
           ".github/workflows/ci.yml",
@@ -104,16 +112,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "CHANGELOG.md is now also read by src/sync/local.ts and test/version.test.ts.",
-        "subjects": [
-          "CHANGELOG.md",
-          "src/sync/local.ts",
-          "test/version.test.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 14 more new writers and readers of places.",
+        "sentence": "And 15 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -219,7 +218,7 @@
   "changesTogetherWithTests": 0,
   "commit": "4435870bbfdf3726b9faa07e235fe5ce501c027d",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly TypeScript (84 files). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run rk. People import @mcptoolshop/repo-knowledge.",
+  "derived": "11 parts, mostly TypeScript (84 files) and JavaScript (10). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run rk. People import @mcptoolshop/repo-knowledge.",
   "doors": [
     {
       "checks": [
@@ -261,7 +260,8 @@
         "on a pull request touching 14 paths",
         "on a push to main touching 14 paths",
         "or by hand"
-      ]
+      ],
+      "untracked": "dist/, which is not tracked"
     },
     {
       "checks": [
@@ -301,13 +301,15 @@
       "runsMore": 48,
       "sends": [
         "publishes to npm on a tag push",
-        "creates a GitHub release on a tag push"
+        "creates a GitHub release on a tag push",
+        "uploads sbom.json to the release on a tag push"
       ],
       "stages": [],
       "triggers": [
         "when a tag matching `v*.*.*` is pushed",
         "or by hand"
-      ]
+      ],
+      "untracked": "dist/, which is not tracked"
     },
     {
       "checks": [],
@@ -441,11 +443,13 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T21:49:27.195Z",
+  "generatedAt": "2026-09-25T01:39:17.593Z",
   "limits": [
     "1 import site could not be resolved.",
     "3 writes and 15 reads use paths built at run time and are not named here.",
-    "6 writes and 85 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "1 write goes to places this repository does not track, so it is not listed as generated.",
+    "2 writes and 77 reads go to a path their caller passes, not to this repository.",
+    "4 writes and 8 reads go to the directory the command is run in (data/, rk.config.json and rk.config.json.tmp), not to this repository.",
     "2 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],

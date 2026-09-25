@@ -109,7 +109,7 @@
   "changesTogetherWithTests": 0,
   "commit": "da77f7a248e0f423f301ca3889d98de40845ee2f",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly TypeScript (71 files). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the runforge extension.",
+  "derived": "10 parts, mostly TypeScript (71 files), Python (45) and JavaScript (3). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the runforge extension.",
   "doors": [
     {
       "checks": [
@@ -254,6 +254,7 @@
       "runsMore": 31,
       "sends": [
         "creates a GitHub release on a tag push",
+        "uploads SHA256SUMS.txt and files named at run time to the release on a tag push",
         "publishes to the VS Code Marketplace when run by hand"
       ],
       "stages": [],
@@ -338,11 +339,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-24T21:50:02.941Z",
+  "generatedAt": "2026-09-25T01:39:51.283Z",
   "limits": [
     "83 import sites could not be resolved.",
     "2 writes and 16 reads use paths built at run time and are not named here.",
-    "9 writes and 20 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.",
+    "9 writes and 20 reads go to a path their caller passes, not to this repository.",
     "8 commands are built at run time and not followed, 5 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],

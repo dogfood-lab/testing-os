@@ -1,10 +1,10 @@
 # loadout-os: how it works
 
-Mapped at 2026-09-24 from commit 61d98b6.
+Mapped at 2026-09-25 from commit 61d98b6.
 
 ## What this is
 
-9 parts, mostly TypeScript (84 files). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os (packages/cli) to npm. People run ai-loadout, claude-memories, claude-rules and loadout-os.
+9 parts, mostly TypeScript (84 files) and JavaScript (7). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os (packages/cli) to npm. People run ai-loadout, claude-memories, claude-rules and loadout-os.
 
 ## What changed since 2026-09-23 (741a092)
 
@@ -101,7 +101,14 @@ Read those in order to follow one run of claude-memories end to end. This path f
 ## What this map cannot see
 
 - 6 writes and 10 reads use paths built at run time and are not named here.
-- 16 writes and 67 reads go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.
+- 2 writes and 26 reads go to the directory the command is run in, not to this repository.
+- 1 write and 19 reads go to a path their caller passes, not to this repository.
+- 5 writes and 12 reads go to the home directory (.ai-loadout/ and .claude/) or a path their caller passes, not to this repository.
+- 5 reads go to the directory the command is run in (.claude/ and MEMORY.md/) or the home directory (.claude/), not to this repository.
+- 2 writes and 3 reads go to the home directory (.ai-loadout/), not to this repository.
+- 4 writes go to a temporary directory, not to this repository.
+- 1 write and 2 reads go to the directory the command is run in (.claude/, MEMORY.md/ and memory/), the home directory (.claude/) or a path their caller passes, not to this repository.
+- 1 write goes to the directory the command is run in (.claude/ and memory/) or a path its caller passes, not to this repository.
 - 3 commands are built at run time and not followed, 2 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

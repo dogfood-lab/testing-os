@@ -870,6 +870,16 @@
       "importConfidence": "full",
       "name": "smoke",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "home:.claude/"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 1,
       "role": "code",
       "testedBy": 1,
@@ -2742,9 +2752,6 @@
         },
         {
           "hash": "6319a77a3468a2f5809030dc5333e97eacc5fb7879806a0886aa29219822e9b9",
-          "importsFiles": [
-            "package.json"
-          ],
           "path": "src/version.ts"
         }
       ],
@@ -2754,6 +2761,37 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 13,
+          "where": [
+            "caller"
+          ],
+          "writes": 8
+        },
+        {
+          "reads": 17,
+          "where": [
+            "caller",
+            "home:.ollama-intern/"
+          ],
+          "writes": 9
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 0,
+          "where": [
+            "temp"
+          ],
+          "writes": 1
+        }
+      ],
       "outsideReads": 31,
       "outsideWrites": 19,
       "role": "code",
@@ -3825,7 +3863,6 @@
         {
           "hash": "cb55ae17dfc18f0e01e96abf27b6b5939f67e7d5d6a66d928d223894c670f456",
           "importsFiles": [
-            "package.json",
             "src/version.ts"
           ],
           "path": "tests/version.test.ts"

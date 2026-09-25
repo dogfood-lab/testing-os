@@ -1,10 +1,10 @@
 # mcp-stress-test: how it works
 
-Mapped at 2026-09-24 from commit a8a79e8.
+Mapped at 2026-09-25 from commit a8a79e8.
 
 ## What this is
 
-6 parts, mostly Python (76 files). Work enters through 4 doors; the busiest is Publish, which reaches 3 parts. It publishes to PyPI and a container image. People run mcp-stress.
+6 parts, mostly Python (76 files), TypeScript (2) and JavaScript (1). Work enters through 4 doors; the busiest is Publish, which reaches 3 parts. It publishes to PyPI and a container image. People run mcp-stress.
 
 ## What changed since 2026-09-23 (be7da06)
 
@@ -29,8 +29,9 @@ Mapped at 2026-09-24 from commit a8a79e8.
 
 1. The workflow runs src/mcp_stress_test/cli/__init__.py in src and tests/ in tests; it checks src/mcp_stress_test/ in src.
 2. On a run by hand with publish_docker true, it also checks README.md, pyproject.toml and src/.
-3. It publishes a container image (on a run by hand, only with publish_docker true).
-4. It publishes to PyPI (on a run by hand, only with publish_pypi true).
+3. It uploads dist/* to the release on a release event.
+4. It publishes a container image (on a run by hand, only with publish_docker true).
+5. It publishes to PyPI (on a run by hand, only with publish_pypi true).
 
 ## Who reads the results
 
