@@ -1,0 +1,560 @@
+{
+  "authored": [
+    ".github/",
+    "docs/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 3,
+      "importedBy": [
+        "assets",
+        "sov_cli",
+        "sov_daemon"
+      ],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "sov_engine",
+      "partLabel": "sov_engine"
+    },
+    {
+      "doors": 3,
+      "importedBy": [
+        "sov_cli",
+        "sov_daemon",
+        "sov_engine"
+      ],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "sov_transport",
+      "partLabel": "sov_transport"
+    },
+    {
+      "doors": 3,
+      "importedBy": [
+        "sov_daemon",
+        "sov_engine"
+      ],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "sov_cli",
+      "partLabel": "sov_cli"
+    },
+    {
+      "doors": 3,
+      "importedBy": [
+        "sov_cli"
+      ],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "sov_daemon",
+      "partLabel": "sov_daemon"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": ".github",
+      "partLabel": ".github"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "app",
+      "partLabel": "app"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 2,
+      "moved": 0,
+      "parts": 2,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-25; 2 files changed content.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "41fa408b1f2902e4a85293abc44782f76ec8f68e",
+      "generatedAt": "2026-09-25T02:37:23.878Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [
+    {
+      "a": "sov_engine/hashing.py",
+      "b": "tests/test_proofs.py",
+      "either": 8,
+      "partLabels": [
+        "sov_engine",
+        "tests"
+      ],
+      "parts": [
+        "sov_engine",
+        "tests"
+      ],
+      "relation": "b-imports-a",
+      "shared": 6
+    },
+    {
+      "a": "sov_transport/base.py",
+      "b": "sov_transport/xrpl_testnet.py",
+      "either": 6,
+      "partLabels": [
+        "sov_transport",
+        "sov_transport"
+      ],
+      "parts": [
+        "sov_transport",
+        "sov_transport"
+      ],
+      "relation": "inside",
+      "shared": 4
+    },
+    {
+      "a": "sov_cli/errors.py",
+      "b": "sov_cli/main.py",
+      "either": 19,
+      "partLabels": [
+        "sov_cli",
+        "sov_cli"
+      ],
+      "parts": [
+        "sov_cli",
+        "sov_cli"
+      ],
+      "relation": "inside",
+      "shared": 10
+    },
+    {
+      "a": "sov_cli/errors.py",
+      "b": "sov_transport/xrpl_testnet.py",
+      "either": 10,
+      "partLabels": [
+        "sov_cli",
+        "sov_transport"
+      ],
+      "parts": [
+        "sov_cli",
+        "sov_transport"
+      ],
+      "relation": "a-imports-b",
+      "shared": 5
+    }
+  ],
+  "changesTogetherNote": [
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "8bed6b624294b05e8ec37d74ba9cff50a47d4229",
+  "defaultBranch": "main",
+  "derived": "12 parts, mostly Python (109 files), TypeScript (60), JavaScript (19) and Rust (6). Work enters through 5 doors; the busiest is CI, which reaches 10 parts. It publishes to PyPI. People run sov. sov-tauri-shell is a desktop app built from app/src-tauri (nothing ships it).",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "held": [
+        {
+          "checks": [
+            ".pip-audit-ignore",
+            "sov_cli/",
+            "sov_daemon/",
+            "sov_engine/",
+            "sov_transport/",
+            ".github/",
+            "app/src-tauri/src/main.rs",
+            "assets/print/source/check-deck-parity.py",
+            "assets/print/source/check-pdf-fonts.py",
+            "assets/print/source/inline-fonts.py"
+          ],
+          "checksMore": 28,
+          "lead": "except on a schedule",
+          "runs": [
+            ".github/scripts/check-publish-yml.py",
+            "scripts/check-theme-tokens.sh",
+            "scripts/check-voice.sh",
+            "tests/",
+            "app/src-tauri/build.rs",
+            "app/src-tauri/src/commands.rs",
+            "app/src-tauri/src/config.rs",
+            "app/src-tauri/src/daemon.rs",
+            "app/src-tauri/src/lib.rs",
+            "app/src/",
+            "app/vite.config.ts"
+          ],
+          "runsMore": 134,
+          "when": "except on a schedule"
+        }
+      ],
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": ".github",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "app",
+          "depth": 0,
+          "files": 80
+        },
+        {
+          "boundary": "assets",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "sov_cli",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "sov_daemon",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "sov_engine",
+          "depth": 0,
+          "files": 15
+        },
+        {
+          "boundary": "sov_transport",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 71
+        }
+      ],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request",
+        "on a push touching 12 paths",
+        "on a schedule (`0 14 * * *`)",
+        "or by hand"
+      ],
+      "untracked": ".sov/games/ and app/src-tauri/gen/schemas, which are not tracked"
+    },
+    {
+      "builds": [
+        "sov_cli/__main__.py"
+      ],
+      "checks": [
+        "sov_cli/",
+        "sov_engine/",
+        "sov_transport/"
+      ],
+      "checksCount": 3,
+      "checksMore": 0,
+      "file": ".github/workflows/publish.yml",
+      "id": ".github/workflows/publish.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": ".github",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "sov_cli",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "sov_engine",
+          "depth": 0,
+          "files": 15
+        },
+        {
+          "boundary": "sov_transport",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "sov_daemon",
+          "depth": 1,
+          "files": 6
+        }
+      ],
+      "runs": [
+        ".github/scripts/generate-latest-json.py",
+        ".github/scripts/stage-tauri-artifacts.sh",
+        "sov_cli/main.py"
+      ],
+      "runsCount": 3,
+      "runsMore": 0,
+      "sends": [
+        "publishes to PyPI",
+        "builds sov_cli/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ],
+      "untracked": ".sov/games/, which is not tracked"
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site except on a pull request"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 2 paths",
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "pyproject.toml",
+      "id": "pyproject.toml#sov",
+      "kind": "command",
+      "landings": [],
+      "name": "sov",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "sov_cli",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "sov_daemon",
+          "depth": 1,
+          "files": 6
+        },
+        {
+          "boundary": "sov_engine",
+          "depth": 1,
+          "files": 13
+        },
+        {
+          "boundary": "sov_transport",
+          "depth": 1,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "sov_cli/main.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [],
+      "untracked": ".sov/games/, which is not tracked"
+    },
+    {
+      "app": "desktop",
+      "builtFrom": "app/src-tauri",
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "app/src-tauri/Cargo.toml",
+      "id": "app/src-tauri/Cargo.toml#sov-tauri-shell",
+      "kind": "command",
+      "landings": [],
+      "name": "sov-tauri-shell",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "app",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "app/src-tauri/src/main.rs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [],
+      "unshipped": true
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "sov_cli",
+      "fromTests": false,
+      "to": "sov_daemon"
+    },
+    {
+      "from": "sov_cli",
+      "fromTests": false,
+      "to": "sov_engine"
+    },
+    {
+      "from": "sov_cli",
+      "fromTests": false,
+      "to": "sov_transport"
+    },
+    {
+      "from": "sov_daemon",
+      "fromTests": false,
+      "to": "sov_cli"
+    },
+    {
+      "from": "sov_daemon",
+      "fromTests": false,
+      "to": "sov_engine"
+    },
+    {
+      "from": "sov_daemon",
+      "fromTests": false,
+      "to": "sov_transport"
+    },
+    {
+      "from": "sov_engine",
+      "fromTests": false,
+      "to": "sov_cli"
+    },
+    {
+      "from": "sov_engine",
+      "fromTests": false,
+      "to": "sov_transport"
+    }
+  ],
+  "generated": [
+    {
+      "place": "assets/print/source/print-bundle.js",
+      "writers": [
+        "assets/print/source/compile-jsx.mjs"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-25T08:05:57.387Z",
+  "limits": [
+    "27 import sites could not be resolved.",
+    "3 writes and 49 reads use paths built at run time and are not named here.",
+    "2 writes go to places this repository does not track, so they are not listed as generated.",
+    "7 reads go to a path their caller passes, not to this repository.",
+    "1 command is built at run time and not followed.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "app": "app",
+    "assets": "assets",
+    "docs": "docs",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "the site",
+    "sov_cli": "sov_cli",
+    "sov_daemon": "sov_daemon",
+    "sov_engine": "sov_engine",
+    "sov_transport": "sov_transport",
+    "tests": "tests"
+  },
+  "parts": 12,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/sovereignty",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    ".github/scripts/check-publish-yml.py"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 106,
+  "testedBy": {
+    "app": 32,
+    "assets": 0,
+    "sov_cli": 37,
+    "sov_daemon": 32,
+    "sov_engine": 51,
+    "sov_transport": 45
+  },
+  "unnamedWrites": 3,
+  "unread": [
+    {
+      "place": "assets/print/source/print-bundle.js",
+      "writers": [
+        "assets/print/source/compile-jsx.mjs"
+      ]
+    }
+  ],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "assets",
+      "partLabel": "assets",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 1
+}

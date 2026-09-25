@@ -1,0 +1,254 @@
+{
+  "authored": [
+    ".github/",
+    "assets/",
+    "examples/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 3,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "bin",
+      "partLabel": "bin",
+      "spawnedBy": [
+        "scripts"
+      ]
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "d537ad29d4c7842401ff2b6acf93a6591c82cc45",
+      "generatedAt": "2026-09-25T07:22:06.018Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [
+    {
+      "a": "bin/study-swarm.mjs",
+      "b": "scripts/smoke.mjs",
+      "either": 11,
+      "partLabels": [
+        "bin",
+        "scripts"
+      ],
+      "parts": [
+        "bin",
+        "scripts"
+      ],
+      "relation": "none",
+      "shared": 9
+    }
+  ],
+  "changesTogetherNote": [
+    "Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.",
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "ab907f069a04bc66c55783a0127c8a693963ebb9",
+  "defaultBranch": "main",
+  "derived": "7 parts, mostly JavaScript (3 files) and TypeScript (2). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run study-swarm.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "bin/study-swarm.mjs",
+        "scripts/smoke.mjs"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 7 paths",
+        "on a push to main touching 7 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "bin/study-swarm.mjs",
+        "scripts/smoke.mjs"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "publishes to npm"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*` is pushed"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#study-swarm",
+      "kind": "command",
+      "landings": [],
+      "name": "study-swarm",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "bin/study-swarm.mjs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "generated": [],
+  "generatedAt": "2026-09-25T08:03:54.994Z",
+  "limits": [
+    "6 writes and 31 reads use paths built at run time and are not named here.",
+    "110 writes and 20 reads go to a temporary directory, not to this repository.",
+    "1 write and 12 reads go to a path their caller passes, not to this repository.",
+    "2 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
+    "2 reads go to the directory the command is run in, not to this repository.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "assets": "assets",
+    "bin": "bin",
+    "examples": "examples",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "the site"
+  },
+  "parts": 7,
+  "readers": [],
+  "repo": "dogfood-lab/study-swarm",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "bin/study-swarm.mjs"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 0,
+  "testedBy": {
+    "bin": 0,
+    "scripts": 0
+  },
+  "unnamedWrites": 6,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [
+    "No test files were found by name."
+  ],
+  "written": 0
+}

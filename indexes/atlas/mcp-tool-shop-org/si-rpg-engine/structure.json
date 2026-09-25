@@ -13,7 +13,7 @@
           "path": "docs/PHASE-0.md"
         },
         {
-          "hash": "d4fb979dec78fce7631c180d2032c0f292eda32ce0b19341fd52252abfc42933",
+          "hash": "fe6ec48fd5f92c0ef666e70925c5fb45f01f0f525b44c9325e64de3a860e2b2d",
           "path": "docs/PHASE-1.md"
         },
         {
@@ -89,6 +89,18 @@
           "path": "docs/dispatch-e2b-rotation.md"
         },
         {
+          "hash": "683b5de8b634e54c52a4a4e5bd0de143c83d2c77500ac7b34a999ae463c54d78",
+          "path": "docs/dispatch-e3-world-file.md"
+        },
+        {
+          "hash": "12d1bd32750c6f8a86da0c68d71976094f09cb548605fa37d488815bd749d5e9",
+          "path": "docs/dispatch-e4-verbs.md"
+        },
+        {
+          "hash": "b91311e8b2d4a674c2ea85f542a777b0fdacb9a6c85169901f07b425f0768c3e",
+          "path": "docs/dispatch-e5-minds.md"
+        },
+        {
           "hash": "559febb00fdd9bb10ceafdb69bd3b7c67ee013c3fdb149aaa6b77a352e659863",
           "path": "docs/study-swarm/consult-02.dispatch.citation-receipt.json"
         },
@@ -140,8 +152,28 @@
           "path": "fixtures/behavior-3d.json"
         },
         {
+          "hash": "8e6b64332d4b1a93c4831dcf75c1a8846657b827bc76f0c85342ec5454754774",
+          "path": "fixtures/behavior-ramp.json"
+        },
+        {
+          "hash": "2802739b5abb97553879eaa9d7e7072ecd16670e71711329eb5285342d2fa006",
+          "path": "fixtures/behavior-rotation.json"
+        },
+        {
           "hash": "4475c44a023c9169f92807bdb79bac77253584abf9090d751eb55497bd2c3155",
           "path": "fixtures/behavior-solver.json"
+        },
+        {
+          "hash": "0ebcd344ae75a22b569887d3e171fb003ea516518fb51395a11fb172305a174d",
+          "path": "fixtures/behavior-verbs.json"
+        },
+        {
+          "hash": "ab7de65917369f1ccce49f5eb707beb93454f3962a0ae82b89b3b893d6af3741",
+          "path": "fixtures/climb-draft.json"
+        },
+        {
+          "hash": "e64ff7d0dff5ece9216e9ebb5297863025ce15e50667e12aa210e03bf2721a8c",
+          "path": "fixtures/drop-draft.json"
         },
         {
           "hash": "5555470b3450b02cd6575387e288d301024b400ecab04a9cef452b2e3ddddf91",
@@ -152,12 +184,16 @@
           "path": "fixtures/golden-arith.txt"
         },
         {
-          "hash": "197f4cd6e2b48694db47b72d21a97f70b8f9741b751e8945bf41c8d40c4a2b6e",
+          "hash": "394dcf280ddb3ea230bbde43d14939ae15e531d31fe2eff8d9250e7ef22754a2",
           "path": "fixtures/golden.txt"
         },
         {
           "hash": "c45b54f694fb41219439ad7bf3a6abb94b2c419e9dafc9c1dae94beefad13de9",
           "path": "fixtures/legacy-play-log.json"
+        },
+        {
+          "hash": "5a5888194f3e106548822370f693b2e68f24428d8b05dd9502f72fd909a17930",
+          "path": "fixtures/pick-up-draft.json"
         },
         {
           "hash": "4f870c605d4a529655dec02d9635bbd9cc2b06421a5aa169b5e6bf91ad14af3f",
@@ -172,8 +208,16 @@
           "path": "fixtures/push-play-log.json"
         },
         {
-          "hash": "c712318f97076235825db0ecbb8f35e2616cf8d024bedc764bdfd5d9542e065d",
+          "hash": "a8f3917d987ebbae56bd3fc5e93c71a87da53352308fce3f4c0be1f9b133d282",
+          "path": "fixtures/shape-traversal.json"
+        },
+        {
+          "hash": "57dab4644c179d988ad90dc8f7884a25572ed13b83d0dc85d34bb30987bf4d33",
           "path": "fixtures/solver.sha256"
+        },
+        {
+          "hash": "7f11c7e6a10ab8d4c33c43ee5e48c55e66c115f82ac45bd0ef7ce10827bc5607",
+          "path": "fixtures/use-draft.json"
         }
       ],
       "globs": [
@@ -198,7 +242,7 @@
           "exports": [
             "commitFrame"
           ],
-          "hash": "979c6ca8e497e690a79bcf4094eb2e17514241a321ede194bd18c0bd8c1af155",
+          "hash": "7466ba910dd037c0d5912d014f2dfb14c7d78c798d9a27d0d007602a68f6522b",
           "path": "packages/frame/frame.js"
         },
         {
@@ -210,7 +254,7 @@
           "path": "packages/frame/hash.js"
         },
         {
-          "hash": "bb16a1d7ba915731e7fbdf9f3b7fc4a2f59a51441a189922ca541233ad8c1934",
+          "hash": "a93926f41e45ba082a7e6984d7f8eae79ae2a1325c88bb032fd4ceb8b192e815",
           "path": "packages/frame/types.d.ts"
         }
       ],
@@ -221,7 +265,7 @@
       "name": "frame",
       "origin": "authored",
       "role": "code",
-      "testedBy": 5,
+      "testedBy": 6,
       "unresolvedSites": 0
     },
     {
@@ -247,10 +291,11 @@
         },
         {
           "exports": [
+            "applyProductAct",
             "createBoxProductWorld",
             "createProductWorld"
           ],
-          "hash": "4e87bb88e0f510e7194e5564e27f6f70fdc671f434a56bdb6a8548abef22cb33",
+          "hash": "7b7a7020621f4b9c91c29bceed1db17179c5e1d5a5f6ded6a23f8b147d7eee18",
           "importsFiles": [
             "packages/tick/world.js"
           ],
@@ -267,7 +312,7 @@
         {
           "entry": "out",
           "entryRule": 1,
-          "hash": "f8cbbbdc0b91cd085d7f465d078a2d6b3129a4b22373e92d4d2c798920de993d",
+          "hash": "5e1d61417dd47e659b52bcefa2b8812d6f665ca83188ea4fcac67376dc280d3b",
           "importsFiles": [
             "harness/product-scene.mjs",
             "packages/frame/hash.js"
@@ -279,7 +324,7 @@
           "exports": [
             "play"
           ],
-          "hash": "930e20039556875b6d82019a114ecedc8fcf07b68294b10898045b0e4f9678e8",
+          "hash": "c54ccfec347dcb3df8f1f07e8fccc9bb2e6516f9736f5864364706aee9d6d5b3",
           "importsFiles": [
             "packages/frame/hash.js",
             "packages/tick/world.js"
@@ -287,13 +332,25 @@
           "path": "harness/solver-scene.mjs"
         },
         {
-          "hash": "c39c88fd4026c60e2baabe8999b0ec86ed0f082c3644e19233a0138a5bbaed69",
+          "hash": "519ede47c160c5c6617c11f1ed03f3367b5f56af1542a1a7855cafff7ab5aaea",
           "importsFiles": [
             "harness/solver-scene.mjs",
             "packages/frame/hash.js",
             "packages/tick/world.js"
           ],
           "path": "harness/solver.test.js"
+        },
+        {
+          "exports": [
+            "playVerbs"
+          ],
+          "hash": "ac1f92e46a98570e1756280516d7f984ccfe91641b5de75c895eadf997b84c94",
+          "importsFiles": [
+            "packages/tick/memory.js",
+            "packages/tick/tick.js",
+            "packages/tick/world.js"
+          ],
+          "path": "harness/verbs-scene.mjs"
         },
         {
           "hash": "1ec6d383b57ca874bcd74399ce878ac01b6a9ebd0edf71be825d9d95232b0408",
@@ -317,7 +374,7 @@
       ],
       "outsideReads": 1,
       "role": "test",
-      "testedBy": 2,
+      "testedBy": 3,
       "unresolvedSites": 2
     },
     {
@@ -335,20 +392,84 @@
           "path": "predicates/hazards/beyond-wall.json"
         },
         {
+          "hash": "95f39915a8e73ce747ffe711238e9308aacf4642df1d1b0c7ca59c3e8b7899f2",
+          "path": "predicates/hazards/carry-awake.json"
+        },
+        {
+          "hash": "a667a4781675783786169b446853bb330efa9ccabb0d7366a0da7ab730a22f01",
+          "path": "predicates/hazards/carry-rest.json"
+        },
+        {
+          "hash": "a3b15653fec32117857371b649d8acc9a5e6c9e64d22b1dc0d7f3e376d789119",
+          "path": "predicates/hazards/carry-size.json"
+        },
+        {
+          "hash": "b8b23b121c0179a82a6d7e0a3ae7ecee097c622dc3cb49d16b2bd4a3194c4ccc",
+          "path": "predicates/hazards/carry-wall.json"
+        },
+        {
           "hash": "6519ff0003db187b5fa7ddebc18e33218f2c17846157a97b8fdb6b9d72fed25e",
           "path": "predicates/hazards/clear-step.json"
+        },
+        {
+          "hash": "9f31b600324c77fb2155b984f68db8ed4e9731bf71131d7078530edbd73ef131",
+          "path": "predicates/hazards/climb-blocked.json"
+        },
+        {
+          "hash": "90aae800a7effbac25c78bb48ca47ccfa1bea4fbff3e6621f6e490caca7bf3ea",
+          "path": "predicates/hazards/climb-ledge.json"
+        },
+        {
+          "hash": "06397188d6867c9a78920f105f7b24046a7d0b4364bbeed6447ba95e14021387",
+          "path": "predicates/hazards/climb-rise.json"
+        },
+        {
+          "hash": "5f2a8ee6a85b940b1bfd3bb4929ca966db5310378283347acbc8c28b5d0a4d35",
+          "path": "predicates/hazards/climb-step.json"
         },
         {
           "hash": "d702e1243ea1b37436d24426abda957ab3659c3eca57dc26fdbca3b28c303dca",
           "path": "predicates/hazards/corner-clip.json"
         },
         {
-          "hash": "d3a3aa8263719c094cb0ecee68bc7c7163c9d5b402511ae595f8721b893fcfab",
+          "hash": "c3ff61a27ac626fdf9cb25d7ed5db892a8c34e11df5916b738b381ab11ebbde6",
           "path": "predicates/hazards/index.json"
+        },
+        {
+          "hash": "327e35c17bf570ae69332754b128b5874f5dc5812c3cb9fcbe518d495c21d557",
+          "path": "predicates/hazards/release-blocked.json"
+        },
+        {
+          "hash": "b99e6b96ba27896c83931ad5ef6a9c57fa6e0fc2b882ebca976e6a60caf8a98b",
+          "path": "predicates/hazards/release-clear.json"
+        },
+        {
+          "hash": "1abbf14250f2b230cf1f708bc7b34098fa5124652a81ca1796a1e3c9d0f56a24",
+          "path": "predicates/hazards/release-empty.json"
+        },
+        {
+          "hash": "b250130d7ef1d64a9bdc5ddcd3f0046efcf6fbc700e5955e9ababfb4e9ac916d",
+          "path": "predicates/hazards/release-near.json"
         },
         {
           "hash": "0cbff1a7b96b322fd3b6366375e15a51c5f3f39169a76e9cd0734723a7db88ae",
           "path": "predicates/hazards/through-collider.json"
+        },
+        {
+          "hash": "ba6a769f9fbd1bfaa6c4c517b66d6ebc4c5405163306f63ea97370eb50efe7cb",
+          "path": "predicates/hazards/use-body.json"
+        },
+        {
+          "hash": "5e0862867ec0b46cd251200cceb33e61307693f8c7e5f24d56f840654ebab219",
+          "path": "predicates/hazards/use-far.json"
+        },
+        {
+          "hash": "9c52043b540e495d975ddfd1a57226b9136b823343cdb5183bbcfb7c35e714e9",
+          "path": "predicates/hazards/use-other-zone.json"
+        },
+        {
+          "hash": "c349d747902abbdf76f9f924e1fbe83eb2dcdd1c3a7fca5dbff6022b27e7424d",
+          "path": "predicates/hazards/use-zone.json"
         }
       ],
       "globs": [
@@ -374,17 +495,18 @@
         {
           "entry": "saveLog",
           "entryRule": 1,
-          "hash": "d71f73de5fe15ed322b41d34a7e9d97bffaccd27389ee233cb977c054bb64ed2",
+          "hash": "f85968e807ff76abc62aa83580463ddd8117cbed0946e10b52a50e3012785037",
           "importsFiles": [
             "packages/host/server.js",
             "packages/host/session.js",
+            "packages/tick/admit-world.js",
             "packages/tick/scene.js"
           ],
           "path": "packages/host/bin/host.js",
           "sequences": []
         },
         {
-          "hash": "b409b2d877432499ef2eb9bb1f8dc10b177a3c9ab9d125390fcd3df6977e6132",
+          "hash": "843373ca03a49b7d52591a0d277fc65d76e1c419214518879b168ffa8edb381e",
           "importsFiles": [
             "packages/host/server.js",
             "packages/host/session.js",
@@ -394,7 +516,7 @@
           "path": "packages/host/host.test.js"
         },
         {
-          "hash": "4d80eceae0bcd75397be47acfdea0c801ac4566815c1e653e3e5dc6923a117df",
+          "hash": "5210b6226cb91e490cfd00ba5f3caef13156ce28c27a27086d9a89037d03a68f",
           "path": "packages/host/page.html"
         },
         {
@@ -409,7 +531,7 @@
             "createSession",
             "startPump"
           ],
-          "hash": "b222526ab70af371350c5a4e9a305211b1972958101f5f41567e66b2aff45653",
+          "hash": "d8fa0abdf710f8de950554d8d5b29ce44c106ede7e454b897ce2b91df02605f7",
           "importsFiles": [
             "packages/tick/fixture.js",
             "packages/tick/memory.js",
@@ -426,11 +548,12 @@
             "canvasToWorld",
             "fit",
             "groundTarget",
+            "projectedOutline",
             "projectedSpan",
             "projectionAxes",
             "worldToCanvas"
           ],
-          "hash": "041fd8b35a2034cd6067ee1dcde5e516e2db751fdde26bef34f49fba78ce336a",
+          "hash": "026ef4f2eedd1031db0e806e1ddc977304bc9b63f1f2b9842c02c06dd4af3d86",
           "path": "packages/host/view.js"
         }
       ],
@@ -447,8 +570,16 @@
             "caller"
           ],
           "writes": 1
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:worlds/"
+          ],
+          "writes": 0
         }
       ],
+      "outsideReads": 1,
       "outsideWrites": 1,
       "role": "code",
       "testedBy": 1,
@@ -465,7 +596,15 @@
       "externals": 0,
       "files": [
         {
-          "hash": "96604b01a16e59d35b265fb9bc605febffe6c3f79e7807fe131844b78c004af5",
+          "hash": "fffec7f511dcbd7c3301016deabd720eee57ccd1b421fcb45627f39005128bda",
+          "path": "predicates/intents/climb.json"
+        },
+        {
+          "hash": "6272ddfe93f5300e053503741e77a225f94bbc50a25503a6723cde4dc32a7cf0",
+          "path": "predicates/intents/drop.json"
+        },
+        {
+          "hash": "9605fcc81e8c841d0b8ceb99dadfaccf0a33a212007a16575abf7a0512f7528c",
           "path": "predicates/intents/index.json"
         },
         {
@@ -473,8 +612,16 @@
           "path": "predicates/intents/move.json"
         },
         {
+          "hash": "f49a888f061c705c197fc5633c233f471dc4793a6f6989a4b602ca167ed9df35",
+          "path": "predicates/intents/pick-up.json"
+        },
+        {
           "hash": "d29b011a57e082827c6d1ed53145d903ae2abdbcdd97a0d994eb7253d6acd619",
           "path": "predicates/intents/push.json"
+        },
+        {
+          "hash": "6de287e624088ad97de6a3c9f6f6191e70a38856fc3aa250dce4530136241e55",
+          "path": "predicates/intents/use.json"
         }
       ],
       "globs": [
@@ -512,10 +659,12 @@
         {
           "entry": "readIndex",
           "entryRule": 1,
-          "hash": "4bf9a16c0b40fbc8405a2a9df89685f3580bf41c9426d5cf4791b599008925fd",
+          "hash": "c95ca023105ac321da47442e5db5cf7ec281ed046e5cb29b8e8bd276cfcdcfa7",
           "importsFiles": [
             "packages/load/admit.js",
-            "packages/load/suite.js"
+            "packages/load/suite.js",
+            "packages/tick/admit-world.js",
+            "packages/tick/scene.js"
           ],
           "path": "packages/load/bin/load.js",
           "sequences": []
@@ -524,11 +673,11 @@
           "exports": [
             "compileVerb"
           ],
-          "hash": "813c27c5da49479bd5dd576e0d5233c883118250a085e31bc1278843ae090816",
+          "hash": "f8786b4e08814d2d3871f1f21837a60431f80898f104066b4c2cf9e06db2b7d5",
           "path": "packages/load/compile.js"
         },
         {
-          "hash": "a1db206177dfc316754f0fc1289a968d3d15532592434a939cb4a03bc0e8f892",
+          "hash": "f39bdbd80bb9f5a361a9a5de76e4bf329874b408aa4af9c49184053d069fcfb2",
           "importsFiles": [
             "packages/load/admit.js",
             "packages/load/compile.js",
@@ -546,7 +695,7 @@
             "loadHazards",
             "runHazards"
           ],
-          "hash": "ebc8a7c8abacf1c66a817138373d1846fb1841a8c1b31742bf9f34cb7832ea56",
+          "hash": "e586503dd7963f23141cfdc19850b597ac3a37a82318a3360ba648910e9c30ec",
           "importsFiles": [
             "packages/tick/memory.js",
             "packages/tick/tick.js",
@@ -575,12 +724,19 @@
             "cwd:predicates/"
           ],
           "writes": 2
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:worlds/"
+          ],
+          "writes": 1
         }
       ],
-      "outsideReads": 2,
-      "outsideWrites": 2,
+      "outsideReads": 3,
+      "outsideWrites": 3,
       "role": "code",
-      "testedBy": 1,
+      "testedBy": 2,
       "unresolvedSites": 0
     },
     {
@@ -683,24 +839,24 @@
                       }
                     },
                     {
-                      "line": 58,
+                      "line": 59,
                       "name": "mixLoad",
                       "target": null
                     },
                     {
-                      "line": 73,
+                      "line": 74,
                       "name": "snapshot",
                       "target": null,
                       "via": "mixSnapshot"
                     },
                     {
-                      "line": 77,
+                      "line": 78,
                       "name": "u32",
                       "target": null,
                       "via": "mixSnapshot"
                     },
                     {
-                      "line": 63,
+                      "line": 64,
                       "name": "commitFrame",
                       "target": {
                         "file": "packages/frame/frame.js"
@@ -869,7 +1025,7 @@
           "exports": [
             "proposalPrompt"
           ],
-          "hash": "4f2a02ecc733a1016c5f38b778444d32ff1038de043d4248f4230a7799b042d8",
+          "hash": "98776c638af551b7f4a82f4ec5a462a4ede71f3d6741f64a6e9190957f18bdd3",
           "path": "packages/propose/prompt.js"
         },
         {
@@ -941,24 +1097,24 @@
                       }
                     },
                     {
-                      "line": 58,
+                      "line": 59,
                       "name": "mixLoad",
                       "target": null
                     },
                     {
-                      "line": 73,
+                      "line": 74,
                       "name": "snapshot",
                       "target": null,
                       "via": "mixSnapshot"
                     },
                     {
-                      "line": 77,
+                      "line": 78,
                       "name": "u32",
                       "target": null,
                       "via": "mixSnapshot"
                     },
                     {
-                      "line": 63,
+                      "line": 64,
                       "name": "commitFrame",
                       "target": {
                         "file": "packages/frame/frame.js"
@@ -994,7 +1150,7 @@
           "exports": [
             "proposalSchema"
           ],
-          "hash": "de205bd0924bbc35880f2ae1b56043c82861539d748c2807ad70226895ffbbc4",
+          "hash": "29ba953d93f8f2f09c1c09fcb799930e57d61ca43634534b5abb3fc0b3f2150c",
           "path": "packages/propose/schema.js"
         },
         {
@@ -1108,7 +1264,7 @@
           "path": "LICENSE"
         },
         {
-          "hash": "486ae3b1986b76900df94cea557db3183869d1b37a8b3e8ca152088fba68df65",
+          "hash": "4bc8434caf82ff3f108dc5f17ab33929880d5d3daf99e913faf05199056c0c5b",
           "path": "README.md"
         },
         {
@@ -1116,7 +1272,7 @@
           "path": "package-lock.json"
         },
         {
-          "hash": "200cf23d711b5706ee39f41fc7249608f95996e65b7ae1d0f4daa03de556fc8b",
+          "hash": "089f2cce6022ac0ba567c60ce2cffdf6f60b7bad57bb0c4af9afc5e051263312",
           "path": "package.json"
         },
         {
@@ -1131,29 +1287,6 @@
       "name": "root",
       "origin": "authored",
       "role": "docs",
-      "testedBy": 0,
-      "unresolvedSites": 0
-    },
-    {
-      "dynamicReads": 0,
-      "dynamicSpawns": 0,
-      "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 0,
-      "entryPoints": [],
-      "externals": 0,
-      "files": [
-        {
-          "hash": "8454420e0523faf99c62f574f11fb0ca72c69e595dab5069c67c598f8b7cd619",
-          "path": "scenes/crate-and-door.json"
-        }
-      ],
-      "globs": [
-        "scenes/**"
-      ],
-      "importConfidence": "full",
-      "name": "scenes",
-      "origin": "authored",
-      "role": "data",
       "testedBy": 0,
       "unresolvedSites": 0
     },
@@ -1184,7 +1317,7 @@
           "path": "solver/FLAGS.md"
         },
         {
-          "hash": "d6e0ef9c2fdf39cbd479c7091adfbf74c0a645cbd756e3427e2fca7481264193",
+          "hash": "db09657f8fb46e7e195feddb516624638a25ae6a4a943362feb22d55973bf7df",
           "path": "solver/build.mjs"
         },
         {
@@ -1197,7 +1330,7 @@
             "colliders_ptr",
             "step"
           ],
-          "hash": "5e3b105ac5832de3f8edf3f9637d0fd6fb3916a0b348c26591c2ba36400de4cf",
+          "hash": "5c7e79a92346bf060b66bdb5a51d11c278aac6072e67d2a91577792dae700cc2",
           "importsFiles": [
             "solver/src/rapier_law.rs"
           ],
@@ -1213,7 +1346,7 @@
             "solver_load",
             "solver_step"
           ],
-          "hash": "52e81f9e264eaca54f6753be1a82236dcc7f5c20d78739c46e3088b15315e740",
+          "hash": "6a2ece3d859f6b0862c812bb6344c7369f72413cbf7a670cc87089c3298719cc",
           "importsFiles": [
             "solver/src/lib.rs"
           ],
@@ -1241,6 +1374,19 @@
       ],
       "externals": 0,
       "files": [
+        {
+          "exports": [
+            "indexReason",
+            "loadHash",
+            "settles"
+          ],
+          "hash": "ad7b8992fcda3927dbc7fdb8345a38b9d8bc7506e385a6c3aefc759675b7cecc",
+          "importsFiles": [
+            "packages/frame/hash.js",
+            "packages/tick/world.js"
+          ],
+          "path": "packages/tick/admit-world.js"
+        },
         {
           "hash": "0d3fdf9f9c4a636af96ab2a47bf5b092c621f2bac9dcc714cbd2789bf0e21ca4",
           "importsFiles": [
@@ -1307,7 +1453,7 @@
             "admitIntent",
             "loadIntentRules"
           ],
-          "hash": "e5b6e5e8566f5b3d33254779d412f5798d24e2cc5eb7d30860aba25414832646",
+          "hash": "7f020089c3f1a23ed2081c77d0795d723595cf6873d86143ac761901247597e4",
           "importsFiles": [
             "packages/tick/world.js"
           ],
@@ -1316,12 +1462,274 @@
             {
               "calls": [
                 {
-                  "line": 97,
+                  "line": 100,
+                  "name": "carriedByOf",
+                  "target": null
+                },
+                {
+                  "line": 107,
+                  "name": "overlaps",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "volumeClear"
+            },
+            {
+              "calls": [
+                {
+                  "line": 138,
+                  "name": "supportAt",
+                  "target": null
+                },
+                {
+                  "line": 100,
+                  "name": "carriedByOf",
+                  "target": null,
+                  "via": "volumeClear"
+                },
+                {
+                  "line": 107,
+                  "name": "overlaps",
+                  "target": null,
+                  "via": "volumeClear"
+                },
+                {
+                  "line": 154,
+                  "name": "segmentHits",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "admitClimb"
+            },
+            {
+              "calls": [
+                {
+                  "line": 180,
+                  "name": "carryingOf",
+                  "target": null
+                },
+                {
+                  "line": 187,
                   "name": "body",
                   "target": null
                 },
                 {
-                  "line": 128,
+                  "line": 197,
+                  "name": "carriedByOf",
+                  "target": null
+                },
+                {
+                  "line": 204,
+                  "name": "sleeping",
+                  "target": null
+                },
+                {
+                  "line": 218,
+                  "name": "segmentHits",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "admitCarry"
+            },
+            {
+              "calls": [
+                {
+                  "line": 234,
+                  "name": "carryingOf",
+                  "target": null
+                },
+                {
+                  "line": 238,
+                  "name": "body",
+                  "target": null
+                },
+                {
+                  "line": 252,
+                  "name": "supportAt",
+                  "target": null
+                },
+                {
+                  "line": 100,
+                  "name": "carriedByOf",
+                  "target": null,
+                  "via": "volumeClear"
+                },
+                {
+                  "line": 107,
+                  "name": "overlaps",
+                  "target": null,
+                  "via": "volumeClear"
+                },
+                {
+                  "line": 262,
+                  "name": "segmentHits",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "admitRelease"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "typeof target.zone === 'string'",
+                  "line": 281,
+                  "name": "zoneOf",
+                  "target": null
+                },
+                {
+                  "line": 290,
+                  "name": "body",
+                  "target": null
+                },
+                {
+                  "line": 308,
+                  "name": "segmentHits",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "admitEpisode"
+            },
+            {
+              "calls": [
+                {
+                  "line": 332,
+                  "name": "body",
+                  "target": null
+                },
+                {
+                  "branch": "effect === 'climb'",
+                  "line": 138,
+                  "name": "supportAt",
+                  "target": null,
+                  "via": "admitClimb"
+                },
+                {
+                  "branch": "effect === 'climb'",
+                  "line": 100,
+                  "name": "carriedByOf",
+                  "target": null,
+                  "via": "volumeClear"
+                },
+                {
+                  "branch": "effect === 'climb'",
+                  "line": 107,
+                  "name": "overlaps",
+                  "target": null,
+                  "via": "volumeClear"
+                },
+                {
+                  "branch": "effect === 'climb'",
+                  "line": 154,
+                  "name": "segmentHits",
+                  "target": null,
+                  "via": "admitClimb"
+                },
+                {
+                  "branch": "effect === 'carry'",
+                  "line": 180,
+                  "name": "carryingOf",
+                  "target": null,
+                  "via": "admitCarry"
+                },
+                {
+                  "branch": "effect === 'carry'",
+                  "line": 187,
+                  "name": "body",
+                  "target": null,
+                  "via": "admitCarry"
+                },
+                {
+                  "branch": "effect === 'carry'",
+                  "line": 197,
+                  "name": "carriedByOf",
+                  "target": null,
+                  "via": "admitCarry"
+                },
+                {
+                  "branch": "effect === 'carry'",
+                  "line": 204,
+                  "name": "sleeping",
+                  "target": null,
+                  "via": "admitCarry"
+                },
+                {
+                  "branch": "effect === 'carry'",
+                  "line": 218,
+                  "name": "segmentHits",
+                  "target": null,
+                  "via": "admitCarry"
+                },
+                {
+                  "branch": "effect === 'release'",
+                  "line": 234,
+                  "name": "carryingOf",
+                  "target": null,
+                  "via": "admitRelease"
+                },
+                {
+                  "branch": "effect === 'release'",
+                  "line": 238,
+                  "name": "body",
+                  "target": null,
+                  "via": "admitRelease"
+                },
+                {
+                  "branch": "effect === 'release'",
+                  "line": 252,
+                  "name": "supportAt",
+                  "target": null,
+                  "via": "admitRelease"
+                },
+                {
+                  "branch": "effect === 'release'",
+                  "line": 262,
+                  "name": "segmentHits",
+                  "target": null,
+                  "via": "admitRelease"
+                },
+                {
+                  "branch": "effect === 'episode'",
+                  "line": 281,
+                  "name": "zoneOf",
+                  "target": null,
+                  "via": "admitEpisode"
+                },
+                {
+                  "branch": "effect === 'episode'",
+                  "line": 290,
+                  "name": "body",
+                  "target": null,
+                  "via": "admitEpisode"
+                },
+                {
+                  "branch": "effect === 'episode'",
+                  "line": 308,
+                  "name": "segmentHits",
+                  "target": null,
+                  "via": "admitEpisode"
+                },
+                {
+                  "line": 358,
+                  "name": "body",
+                  "target": null
+                },
+                {
+                  "line": 376,
                   "name": "segmentHits",
                   "target": null
                 }
@@ -1394,7 +1802,7 @@
             "validateHeightfield",
             "validateScene"
           ],
-          "hash": "bbfb75446ba597c4425acac0a222e8e0ad036b05b9577e914c03b446a0870cee",
+          "hash": "c86e3836207c51b0c655a2aea653371b75d69791b104fb64323ee5ff170ad244",
           "importsFiles": [
             "packages/tick/world.js"
           ],
@@ -1403,7 +1811,7 @@
             {
               "calls": [
                 {
-                  "line": 163,
+                  "line": 235,
                   "name": "createWorld",
                   "target": {
                     "file": "packages/tick/world.js"
@@ -1418,7 +1826,7 @@
             {
               "calls": [
                 {
-                  "line": 163,
+                  "line": 235,
                   "name": "createWorld",
                   "target": {
                     "file": "packages/tick/world.js"
@@ -1436,8 +1844,10 @@
         {
           "entry": "broken",
           "entryRule": 1,
-          "hash": "cfb36594872d7056ef5c3e10f699a9a46232a4d010911555a08c7b0b52f62f28",
+          "hash": "063dc9466ee92d738868fd1720fa317b97eef01c3252007b22a7ccb5a3c8d018",
           "importsFiles": [
+            "packages/frame/hash.js",
+            "packages/tick/admit-world.js",
             "packages/tick/memory.js",
             "packages/tick/predicates.js",
             "packages/tick/scene.js",
@@ -1451,14 +1861,14 @@
                 {
                   "inner": [
                     {
-                      "line": 163,
+                      "line": 235,
                       "name": "createWorld",
                       "target": {
                         "file": "packages/tick/world.js"
                       }
                     }
                   ],
-                  "line": 16,
+                  "line": 18,
                   "name": "validateScene",
                   "target": {
                     "file": "packages/tick/scene.js"
@@ -1479,7 +1889,7 @@
             "createTick",
             "settle"
           ],
-          "hash": "a527dd29b72629f7062d027287fa8a3886a2aa010177179340db5fc95956ba74",
+          "hash": "db23553dfa356872f0b8f47d15067e4bbd076653880d925b9a3835e2ffd21ed0",
           "importsFiles": [
             "packages/frame/frame.js",
             "packages/frame/hash.js",
@@ -1497,24 +1907,24 @@
                   }
                 },
                 {
-                  "line": 58,
+                  "line": 59,
                   "name": "mixLoad",
                   "target": null
                 },
                 {
-                  "line": 73,
+                  "line": 74,
                   "name": "snapshot",
                   "target": null,
                   "via": "mixSnapshot"
                 },
                 {
-                  "line": 77,
+                  "line": 78,
                   "name": "u32",
                   "target": null,
                   "via": "mixSnapshot"
                 },
                 {
-                  "line": 63,
+                  "line": 64,
                   "name": "commitFrame",
                   "target": {
                     "file": "packages/frame/frame.js"
@@ -1529,12 +1939,12 @@
             {
               "calls": [
                 {
-                  "line": 300,
+                  "line": 410,
                   "name": "idle",
                   "target": null
                 },
                 {
-                  "line": 301,
+                  "line": 411,
                   "name": "advance",
                   "target": null
                 }
@@ -1549,7 +1959,7 @@
         {
           "entry": "fresh",
           "entryRule": 1,
-          "hash": "3e62e66c3df9df83a2cfd2f7cb2558b4292b9597a531ea93ccb9c45d462a8ac0",
+          "hash": "1c8587b027960c91f77b77826951ccfc59b888bcd5521c17df909403fdfc3e9a",
           "importsFiles": [
             "packages/tick/fixture.js",
             "packages/tick/memory.js",
@@ -1610,24 +2020,24 @@
                       }
                     },
                     {
-                      "line": 58,
+                      "line": 59,
                       "name": "mixLoad",
                       "target": null
                     },
                     {
-                      "line": 73,
+                      "line": 74,
                       "name": "snapshot",
                       "target": null,
                       "via": "mixSnapshot"
                     },
                     {
-                      "line": 77,
+                      "line": 78,
                       "name": "u32",
                       "target": null,
                       "via": "mixSnapshot"
                     },
                     {
-                      "line": 63,
+                      "line": 64,
                       "name": "commitFrame",
                       "target": {
                         "file": "packages/frame/frame.js"
@@ -1682,11 +2092,25 @@
           ]
         },
         {
+          "hash": "8c002c06ac8c21e731f80e90f825ba3058400aa53654ab94a2c9dcf9344cc4c8",
+          "importsFiles": [
+            "harness/verbs-scene.mjs",
+            "packages/load/admit.js",
+            "packages/load/compile.js",
+            "packages/load/suite.js",
+            "packages/tick/memory.js",
+            "packages/tick/predicates.js",
+            "packages/tick/tick.js",
+            "packages/tick/world.js"
+          ],
+          "path": "packages/tick/verbs.test.js"
+        },
+        {
           "exports": [
             "createWorld",
             "fixtureColliders"
           ],
-          "hash": "44e6f96eaf40946d2b4ea3ceeddc047d546bfc93eac08cba018ca04d9c5696b6",
+          "hash": "508b2a099d2b71bbd97a5144e1c0b8296ee068fbffa8610110e8b11df58bcd31",
           "path": "packages/tick/world.js"
         }
       ],
@@ -1698,17 +2122,17 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 5,
+          "reads": 8,
           "where": [
             "caller"
           ],
           "writes": 1
         }
       ],
-      "outsideReads": 5,
+      "outsideReads": 8,
       "outsideWrites": 1,
       "role": "code",
-      "testedBy": 7,
+      "testedBy": 8,
       "unresolvedSites": 1
     },
     {
@@ -1733,11 +2157,40 @@
       "role": "config",
       "testedBy": 0,
       "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "worlds/index.json"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "aad097ee53481cf7251486906ac441a6c1a0b1233db3de94b5c80906b8ae9683",
+          "path": "worlds/crate-and-door.json"
+        },
+        {
+          "hash": "440b03c89cdad1925528dbc02ec578ce4e56217a0085ee229690586d0d9f7e17",
+          "path": "worlds/index.json"
+        }
+      ],
+      "globs": [
+        "worlds/**"
+      ],
+      "importConfidence": "full",
+      "name": "worlds",
+      "origin": "authored",
+      "role": "data",
+      "testedBy": 0,
+      "unresolvedSites": 0
     }
   ],
   "doors": [
     {
-      "checksCount": 15,
+      "checksCount": 16,
       "commands": [
         {
           "job": "engines",
@@ -1801,7 +2254,7 @@
         {
           "boundary": "harness",
           "depth": 0,
-          "files": 8
+          "files": 9
         },
         {
           "boundary": "host",
@@ -1826,7 +2279,7 @@
         {
           "boundary": "tick",
           "depth": 0,
-          "files": 11
+          "files": 13
         }
       ],
       "readers": [],
@@ -1881,6 +2334,13 @@
           "job": "engines",
           "path": "harness/solver.test.js",
           "runKind": "executes"
+        },
+        {
+          "job": "engines",
+          "matched": true,
+          "path": "harness/verbs-scene.mjs",
+          "runKind": "checks",
+          "via": "tsc tsconfig.json"
         },
         {
           "job": "engines",
@@ -1969,11 +2429,16 @@
         },
         {
           "job": "engines",
+          "path": "packages/tick/verbs.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "engines",
           "path": "solver/build.mjs",
           "runKind": "executes"
         }
       ],
-      "runsCount": 23,
+      "runsCount": 25,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -2059,14 +2524,14 @@
             "file": "packages/tick/scene.js",
             "from": "packages/host/bin/host.js"
           },
-          "files": 6
+          "files": 7
         },
         {
           "boundary": "frame",
-          "depth": 3,
+          "depth": 2,
           "enters": {
             "file": "packages/frame/hash.js",
-            "from": "packages/tick/tick.js"
+            "from": "packages/tick/admit-world.js"
           },
           "files": 2
         }
@@ -2114,19 +2579,19 @@
         },
         {
           "boundary": "tick",
-          "depth": 2,
+          "depth": 1,
           "enters": {
-            "file": "packages/tick/tick.js",
-            "from": "packages/load/suite.js"
+            "file": "packages/tick/scene.js",
+            "from": "packages/load/bin/load.js"
           },
-          "files": 4
+          "files": 6
         },
         {
           "boundary": "frame",
-          "depth": 3,
+          "depth": 2,
           "enters": {
             "file": "packages/frame/hash.js",
-            "from": "packages/tick/tick.js"
+            "from": "packages/tick/admit-world.js"
           },
           "files": 2
         }
@@ -2422,11 +2887,23 @@
       "from": "tick",
       "kind": "file",
       "to": "frame"
+    },
+    {
+      "from": "tick",
+      "fromTests": true,
+      "kind": "file",
+      "to": "harness"
+    },
+    {
+      "from": "tick",
+      "fromTests": true,
+      "kind": "file",
+      "to": "load"
     }
   ],
   "generatedFrom": {
-    "commit": "aad8a8c03d654dd14ead908b84ccc0af8776a1e0",
-    "tracked": 104
+    "commit": "7122b6c1b795ef66b1b1585da8b08f8d35ec7429",
+    "tracked": 139
   },
   "landings": [
     {
@@ -2462,7 +2939,67 @@
           "fromTests": true
         }
       ],
+      "target": "fixtures/behavior-ramp.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "harness/solver.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/behavior-rotation.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "harness/solver.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
       "target": "fixtures/behavior-solver.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/tick/verbs.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/behavior-verbs.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/tick/verbs.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/climb-draft.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/tick/verbs.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/drop-draft.json",
       "writers": []
     },
     {
@@ -2525,6 +3062,18 @@
     {
       "readers": [
         {
+          "by": "packages/tick/verbs.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/pick-up-draft.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/tick/tick.test.js",
           "call": "readFileSync",
           "confidence": "ast",
@@ -2532,6 +3081,18 @@
         }
       ],
       "target": "fixtures/push-play-log.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "harness/solver.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/shape-traversal.json",
       "writers": []
     },
     {
@@ -2553,6 +3114,18 @@
           ]
         }
       ]
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/tick/verbs.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/use-draft.json",
+      "writers": []
     },
     {
       "readers": [
@@ -2770,6 +3343,12 @@
           "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "packages/tick/verbs.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "predicates/intents/move.json",
@@ -2782,49 +3361,15 @@
           "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "packages/tick/verbs.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "predicates/intents/push.json",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "README.md",
-          "call": "--scene",
-          "confidence": "text"
-        },
-        {
-          "by": "docs/dispatch-1d-the-scene-played.md",
-          "call": "--scene",
-          "confidence": "text"
-        },
-        {
-          "by": "packages/host/host.test.js",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/tick/scene.test.js",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/tick/scene.test.js",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/tick/tick.test.js",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "scenes/crate-and-door.json",
       "writers": []
     },
     {
@@ -2857,11 +3402,46 @@
       ],
       "target": "tsconfig.json",
       "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "README.md",
+          "call": "--world",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/host/host.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/tick/scene.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/tick/scene.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/tick/tick.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "worlds/crate-and-door.json",
+      "writers": []
     }
   ],
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 7,
+  "testFiles": 8,
   "unassigned": []
 }
