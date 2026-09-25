@@ -8,7 +8,7 @@ import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
-import { declaredEntries, deriveEntryPoints, manifestCommands, memberPackage, pythonScripts } from './entry-points.js';
+import { declaredEntries, deriveEntryPoints, manifestCommands, memberCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
@@ -178,9 +178,23 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   // a publish, it is published.
   const members = publishedMembers(doors).map((dir) => memberPackage(repoPath, dir, trackedSet))
     .filter((entry) => entry != null && !doors.some((door) => door.kind === 'package' && door.file === entry.manifest));
+  // The commands of a manifest no workspace names are doors when a workflow
+  // publishes it or works in its directory: examples/<tool>/package.json a
+  // dispatch publishes, a package a CI matrix tests in src/<project>.
+  const installed = new Set(doors.filter((door) => door.kind === 'command').map((door) => door.file));
+  const binDirs = [...new Set([...publishedMembers(doors), ...doors.flatMap((door) => door.workedIn ?? [])])].sort()
+    .filter((dir) => !installed.has(`${dir}/package.json`));
+  for (const door of doors) delete door.workedIn;
+  members.push(...binDirs.flatMap((dir) => memberCommands(repoPath, dir, trackedSet)));
   const memberDoors = members.length > 0 ? mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands: members, builtFrom, emitted, unitTests, discovered }) : [];
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
   markPrivateCommands(doors, rootManifest(repoPath, trackedSet));
+  // A private manifest's command is installed by no one.
+  for (const door of memberDoors) {
+    if (door.kind !== 'command' || !members.some((entry) => entry.kind === 'command' && entry.privateMember && entry.manifest === door.file && entry.name === door.name)) continue;
+    door.unshipped = true;
+    door.privatePackage = true;
+  }
   doors.push(...memberDoors);
   markUnshipped(doors, cargoProject(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);

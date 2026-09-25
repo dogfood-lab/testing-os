@@ -142,6 +142,28 @@ export function memberPackage(repoPath, dir, tracked) {
   return pkg ? packageEntry(repoPath, dir, pkg, tracked) : null;
 }
 
+/**
+ * The commands a manifest below the root installs, as manifestCommands reads
+ * a workspace member's: each bin, marked privateMember when the manifest is
+ * private. index.js asks for them for a manifest no workspace names that a
+ * workflow publishes or works in.
+ */
+export function memberCommands(repoPath, dir, tracked) {
+  const manifest = `${dir}/package.json`;
+  if (isTestMaterial(manifest)) return [];
+  const pkg = readManifest(repoPath, manifest, tracked);
+  if (!pkg) return [];
+  const out = [];
+  for (const [name, spec] of binEntries(pkg)) {
+    const path = declaredFile(repoPath, dir, spec, tracked);
+    const unplaced = path ? null : unplacedFile(repoPath, dir, spec, tracked);
+    const privately = pkg.private === true ? { privateMember: true, declared: joinRelative(dir, spec) } : {};
+    if (path) out.push({ kind: 'command', name, manifest, path, ...privately });
+    else if (unplaced) out.push({ kind: 'command', name, manifest, path: null, unplaced, ...privately });
+  }
+  return out.sort((a, b) => compare(a.name, b.name));
+}
+
 function packageEntry(repoPath, dir, pkg, tracked) {
   if (typeof pkg.name !== 'string' || pkg.name === '' || pkg.private === true) return null;
   const manifest = dir ? `${dir}/package.json` : 'package.json';

@@ -253,6 +253,9 @@ function readDoor(repoPath, file, repo) {
   // Places of this repository a command run from another checkout is handed
   // to write, by an output flag (index.js attachLandings).
   const handed = new Set();
+  // The directories below the root holding a package.json that a step works
+  // in, whose commands index.js makes doors when no workspace does.
+  const workedIn = new Set();
   const stages = new Set();
   let pushes = false;
   const sidePushes = [];
@@ -401,6 +404,7 @@ function readDoor(repoPath, file, repo) {
         // names nothing Atlas can place, so its tokens are left unresolved.
         const dir = selfPath != null ? ownDir : expanded ? cleanDir(rawDir) : step['working-directory'] === undefined ? jobDir : cleanDir(step['working-directory']);
         if (dir == null) continue;
+        if (dir !== '' && repo.tracked.has(`${dir}/package.json`)) workedIn.add(dir);
         // Actions spells ${{ env.X }} out before the shell sees the step.
         const named = readCommands(expandEnv(step.run, lookup), dir, repo, platforms);
         for (const entry of named.shellMissed) {
@@ -472,6 +476,7 @@ function readDoor(repoPath, file, repo) {
     ...(missed.size > 0 ? { shellMissed: shellMissed(missed) } : {}),
     uses: [...uses].sort(),
     ...(handed.size > 0 ? { handedWrites: [...handed].sort() } : {}),
+    ...(workedIn.size > 0 ? { workedIn: [...workedIn].sort() } : {}),
     // Read by index.js markUnshipped, then dropped.
     publishedCrates: [sends, ...[...gates.values()].map((entry) => entry.sends)].flatMap((scope) => scope.crates),
   };
