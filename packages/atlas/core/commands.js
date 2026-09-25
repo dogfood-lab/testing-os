@@ -438,6 +438,10 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       if (tokens[0] === 'cd' || tokens[0] === 'pushd') here = movedTo(here, tokens.slice(1));
       else if (tokens[0] === 'popd') here = dir;
       else if (here != null) shellLine(tokens, here, inner);
+      // Outside the checkout, only a path spelled from its root names a file
+      // of it (node $GITHUB_WORKSPACE/cli/init.mjs after cd /tmp/site); any
+      // other path is read from a directory no tracked file is in.
+      else if (tokens.some((token) => WORKSPACE_ROOT.test(token))) shellLine(tokens, OUTSIDE, inner);
     }
   }
 
@@ -2299,7 +2303,16 @@ export function cleanDir(dir) {
   return normalized;
 }
 
+// The checkout's root as a workflow's shell spells it: $GITHUB_WORKSPACE,
+// ${GITHUB_WORKSPACE} or ${{ github.workspace }}. A path under it is this
+// repository's from its root, wherever the step has moved to.
+const WORKSPACE_ROOT = /^(?:\$GITHUB_WORKSPACE|\$\{GITHUB_WORKSPACE\}|\$\{\{\s*github\.workspace\s*\}\})\//;
+
+// The directory a step works in once it has left the checkout.
+const OUTSIDE = '\u0000outside';
+
 function pathFrom(dir, token) {
+  if (token && WORKSPACE_ROOT.test(token)) return pathFrom('', token.replace(WORKSPACE_ROOT, ''));
   if (!token || token.startsWith('/') || token.includes('://')) return null;
   const path = posix.normalize(dir ? `${dir}/${token}` : token).replace(/\/+$/, '');
   if (path === '..' || path.startsWith('../')) return null;
