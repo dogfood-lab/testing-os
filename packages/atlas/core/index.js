@@ -1289,7 +1289,14 @@ function collectPython(root, path, places) {
       const first = args?.namedChildren[0] ?? null;
       const literal = pythonLiteral(first);
       if (literal) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node) });
-      else imports.push({ specifier: pythonDynamicSpecifier(first), kind: 'dynamic', line: lineOf(node) });
+      else {
+        // import_module(module, __package__) with module taken from a
+        // module-level table of literal names (_LAZY = {"X": ("ai",
+        // ".intelligence")}): every name the table holds is one it may load.
+        const table = first?.type === 'identifier' ? pythonTableModules(root, node, first.text) : [];
+        if (table.length > 0) for (const specifier of table) imports.push({ specifier, kind: 'dynamic-literal', line: lineOf(node), table: true });
+        else imports.push({ specifier: pythonDynamicSpecifier(first), kind: 'dynamic', line: lineOf(node) });
+      }
       return;
     }
     if (!PYTHON_LOCATION_CALLS.has(name)) return;
@@ -1299,6 +1306,40 @@ function collectPython(root, path, places) {
     else imports.push({ specifier: location ? location.text : '', kind: 'dynamic', line: lineOf(node) });
   });
   return imports.map(stamp);
+}
+
+// The module names a name holds when the enclosing function binds it from a
+// subscript of a module-level dict literal, by itself (module = T[name]) or
+// unpacked from a tuple (feature, module = T[name]).
+function pythonTableModules(root, from, name) {
+  let scope = from.parent;
+  while (scope && scope.type !== 'function_definition') scope = scope.parent;
+  if (!scope) return [];
+  let found = null;
+  walkNamed(scope, (node) => {
+    if (found || node.type !== 'assignment') return;
+    const left = node.childForFieldName('left');
+    const right = node.childForFieldName('right');
+    if (right?.type !== 'subscript' || right.childForFieldName('value')?.type !== 'identifier') return;
+    const at = left?.type === 'identifier' ? (left.text === name ? -1 : null)
+      : (left?.type === 'pattern_list' || left?.type === 'tuple_pattern') ? left.namedChildren.findIndex((child) => child.text === name) : null;
+    if (at == null || (at < -1)) return;
+    if (at === -1 && left.type !== 'identifier') return;
+    found = { table: right.childForFieldName('value').text, at };
+  });
+  if (!found) return [];
+  const table = root.namedChildren
+    .map((child) => (child.type === 'expression_statement' ? child.namedChildren[0] : null))
+    .find((node) => node?.type === 'assignment' && node.childForFieldName('left')?.text === found.table)?.childForFieldName('right');
+  if (table?.type !== 'dictionary') return [];
+  const out = new Set();
+  for (const pair of table.namedChildren.filter((child) => child.type === 'pair')) {
+    let value = pair.childForFieldName('value');
+    if (found.at >= 0) value = value?.type === 'tuple' ? value.namedChildren.filter((child) => child.type !== 'comment')[found.at] : null;
+    const text = pythonLiteral(value);
+    if (text && /^\.*[A-Za-z_][\w.]*$/.test(text)) out.add(text);
+  }
+  return [...out].sort();
 }
 
 function pythonLiteral(node) {
