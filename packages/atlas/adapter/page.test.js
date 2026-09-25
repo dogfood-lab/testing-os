@@ -626,7 +626,8 @@ describe('atlas page', () => {
 
   it('names what no test touches, what is written but never read, and helpers that look alike', () => {
     const { markdown, json } = page(doors);
-    assert.equal(section(markdown, '## What no test touches'), '## What no test touches\n\n- **tools** is imported by no test.\n');
+    // lib/verify.test.js is a test file no workflow runs, which is said.
+    assert.equal(section(markdown, '## What no test touches'), '## What no test touches\n\n- **tools** is imported by no test.\n\nlib/verify.test.js runs in no workflow.\n');
     // cache/state.json is read only by the file that writes it; records/ and
     // the two reports are read by nothing at all.
     assert.equal(section(markdown, '## Written but never read'), [
@@ -649,7 +650,7 @@ describe('atlas page', () => {
     const data = JSON.parse(json);
     assert.deepEqual(data.testedBy, { lib: 1, tools: 0 });
     assert.deepEqual(data.untested, [{ part: 'tools', partLabel: 'tools', testedBy: 0 }]);
-    assert.deepEqual(data.untestedNote, []);
+    assert.deepEqual(data.untestedNote, ['lib/verify.test.js runs in no workflow.']);
     assert.deepEqual(data.unread.map((item) => item.place), ['cache/state.json', 'records/', 'reports/out.json', 'reports/out.md']);
     assert.deepEqual(data.unread[1].writers, ['tools/ingest.js', 'tools/scratch.js']);
     assert.deepEqual(data.unreadNote, []);
@@ -720,7 +721,7 @@ describe('atlas page', () => {
     assert.equal(bullets[4], '- **pair3** is exported by extra6/a.js (extra6) and extra7/a.js (extra7); the two look alike.');
     assert.ok(alike.endsWith('\n\nAnd 1 more candidate.\n'), alike);
     const data = JSON.parse(json);
-    assert.deepEqual([data.untested.length, data.untestedNote], [8, ['And 2 more parts.']]);
+    assert.deepEqual([data.untested.length, data.untestedNote], [8, ['lib/verify.test.js runs in no workflow.', 'And 2 more parts.']]);
     assert.deepEqual(data.duplicatesNote, ['And 1 more candidate.']);
   });
 

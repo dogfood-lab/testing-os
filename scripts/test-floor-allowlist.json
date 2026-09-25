@@ -268,6 +268,14 @@
     {
       "path": "fixtures/atlas/private-command/test/cli.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the private-command fixture repository that packages/atlas/adapter/page-private-command.test.js maps, where CI's node --test runs it, so the path follows the command a private package declares. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/unrun-tests/test/app.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the unrun-tests fixture repository that packages/atlas/adapter/page-unrun-tests.test.js maps, where CI runs one test by name and not the other, so the page must name the one no workflow runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/unrun-tests/test/version.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the unrun-tests fixture repository that packages/atlas/adapter/page-unrun-tests.test.js maps, where CI runs one test by name and not the other, so the page must name the one no workflow runs. It holds no test and is never meant to run."
     }
   ]
 }

@@ -1934,7 +1934,7 @@ function untested(ctx) {
   // A part only the unit tests in its own files test is touched from inside.
   const inside = parts.filter((boundary) => boundary.testedInside && (boundary.testedBy ?? 0) > 0).map((boundary) => boundary.name);
   const within = inside.map((name) => insideLine(ctx.shown(name)));
-  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside };
+  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...unrunTests(ctx), ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside };
 }
 
 /**
@@ -1954,6 +1954,27 @@ export function insideLine(partLabel) {
  * @param {string} partLabel
  * @returns {string}
  */
+/**
+ * The test files no workflow runs: "test/version.test.js runs in no
+ * workflow." Said only when every workflow's runs were recorded whole, since
+ * a capped list may hold the test.
+ */
+function unrunTests(ctx) {
+  const workflows = ctx.doors.filter((door) => !installed(door) && !door.parseError);
+  if (workflows.length === 0 || workflows.some((door) => (door.runsCount ?? 0) > new Set((door.runs ?? []).map((run) => run.path)).size)) return [];
+  const runs = workflows.flatMap((door) => (door.runs ?? []).map((run) => run.path));
+  const ran = (path) => runs.some((run) => run === path || (run.endsWith('/') && path.startsWith(run)));
+  // A test-shaped file in fixtures is data a test reads, never a test.
+  // A test is a file named as one; a package's __init__.py or a conftest
+  // under tests/ is none.
+  const named = (path) => /(\.(test|spec)\.[cm]?[jt]sx?|(^|\/)test_[^/]*\.py|_test\.py)$/.test(path);
+  const left = [...ctx.fileOf.keys()].filter((path) => named(path) && !/(^|\/)(fixtures|__fixtures__|testdata)\//.test(path) && !ran(path)).sort(cmp);
+  if (left.length === 0) return [];
+  if (left.length === 1) return [`${left[0]} runs in no workflow.`];
+  const shown = left.length > RUNS_SHOWN ? `${left.slice(0, RUNS_SHOWN).join(', ')} and ${count(left.length - RUNS_SHOWN, 'more')}` : list(left);
+  return [`${count(left.length, 'test file')} run in no workflow: ${shown}.`];
+}
+
 export function spawnedLine(partLabel) {
   return `${partLabel} is touched by tests only through a spawn: a test runs its files as a child process.`;
 }

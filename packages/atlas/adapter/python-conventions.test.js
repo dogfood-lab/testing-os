@@ -170,6 +170,8 @@ describe('own tests across directories', () => {
     assert.equal(section(mapped.markdown, '## What no test touches'), [
       '## What no test touches',
       '- **bin** is imported by no test.\n- **web** is imported by no test.',
+      // The Smoke workflow runs the script, never the tests.
+      '2 test files run in no workflow: tests/test_smoke.py and tests/test_trainer.py.',
     ].join('\n\n') + '\n');
   });
 
