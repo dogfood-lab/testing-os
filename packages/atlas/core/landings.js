@@ -865,6 +865,15 @@ export function astLandings(language, root, path, places) {
     else scriptSite(node, site);
   }
   if (!ctx.python && ASTRO_CONFIG.test(path)) found.reads.push(...starlightReads(root, ctx, places));
+  // A path made into a file: URL (pathToFileURL) is one the code loads as a
+  // module or hands on as a URL; the conversion reads nothing, so what it
+  // names is no literal read (core/index.js reads the import).
+  if (!ctx.python) {
+    walk(root, (node) => {
+      if (node.type !== 'call_expression' || finalName(node.childForFieldName('function')) !== 'pathToFileURL') return;
+      walk(node, (inner) => ctx.seen.add(key(inner)));
+    });
+  }
 
   walk(root, (node) => {
     if (isStringNode(node, ctx.python)) {

@@ -602,7 +602,7 @@ function parseFile(language, path, original, places) {
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [], unreadSyntax: unreadSyntax(tree.rootNode, source) };
     if (!SCRIPT_LANGUAGES.has(language) && language !== 'python') return nativeReadings(language, tree.rootNode);
-    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode), ...typeSites];
+    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode, path), ...typeSites];
     return {
       imports,
       landings: astLandings(language, tree.rootNode, path, places),
@@ -977,6 +977,24 @@ export function astroFrontmatter(text) {
   return lines.map((line, index) => (index > first && index < end ? line : '')).join('\n');
 }
 
+// The path a file: URL built from a repository path names, relative to the
+// importing file: pathToFileURL(x).href, pathToFileURL(x), or a const
+// holding either. Null for anything else.
+function fileUrlImport(root, node, path) {
+  let value = node?.type === 'identifier' ? constValue(root, node.text) : node;
+  if (value?.type === 'member_expression' && value.childForFieldName('property')?.text === 'href') value = value.childForFieldName('object');
+  if (value?.type !== 'call_expression') return null;
+  const fn = value.childForFieldName('function');
+  const name = fn?.type === 'identifier' ? fn.text : fn?.type === 'member_expression' ? fn.childForFieldName('property')?.text : null;
+  if (name !== 'pathToFileURL') return null;
+  const argument = firstArgument(value);
+  const target = argument ? scriptPath(argument, path) : null;
+  if (target == null || target === '') return null;
+  const from = posix.dirname(path);
+  const relative = posix.relative(from === '.' ? '' : from, target);
+  return relative.startsWith('.') ? relative : `./${relative}`;
+}
+
 function walkNamed(root, visit) {
   const stack = [root];
   while (stack.length > 0) {
@@ -1026,7 +1044,7 @@ function unreadSyntax(root, source) {
 // A string literal passed to import() or require() names its module as surely
 // as an import statement does, so it resolves as one, kind dynamic-literal.
 // Anything else passed is a dynamic site, left unresolved.
-function collectScript(root) {
+function collectScript(root, path = null) {
   const imports = [];
   walkNamed(root, (node) => {
     if (node.type === 'import_statement' || node.type === 'export_statement') {
@@ -1072,6 +1090,13 @@ function collectScript(root) {
     const table = tableValues(root, first);
     if (table.length > 0) {
       for (const specifier of table) imports.push({ specifier, kind: 'dynamic-literal', line: lineOf(node), table: true });
+      return;
+    }
+    // import(pathToFileURL(resolve(HERE, '../tools/sim.mjs')).href), or the
+    // same held in a const: the file the path names, as a relative import.
+    const located = isImport && path != null ? fileUrlImport(root, first, path) : null;
+    if (located != null) {
+      imports.push({ specifier: located, kind: 'dynamic-literal', line: lineOf(node), ...optional });
       return;
     }
     imports.push({ specifier: first ? first.text : '', kind: 'dynamic', line: lineOf(node) });
