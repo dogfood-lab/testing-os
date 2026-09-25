@@ -169,7 +169,7 @@ function resolveLocation(ctx, path) {
 function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
   const repo = resolve(repoPath);
   const view = repositoryView({ repoPath: repo, tracked });
-  const workspaces = workspaceMap(repo, view);
+  const workspaces = workspaceMap(repo, view, tracked);
   const plugin = workspacePlugin(workspaces);
   // enhanced-resolve's default cache is one per process, kept four seconds, so
   // a map drawn right after another would be told what the disk held then.
@@ -260,10 +260,30 @@ function splitBare(specifier) {
 // pnpm-workspace.yaml, read by the reader the commands use (core/commands.js),
 // by package name. An unnamed or unreadable manifest is not a member an
 // import can name.
-function workspaceMap(repo, view) {
+function workspaceMap(repo, view, tracked) {
   const map = new Map();
   for (const [dir, name] of view.workspaces()) {
     if (typeof name === 'string' && name !== '' && !map.has(name)) map.set(name, join(repo, dir));
+  }
+  // A dependency a tracked manifest takes from a directory of this
+  // repository (site/package.json's "@mcptoolshop/site-theme": "file:..")
+  // is that directory's package, read from its own directory as a member
+  // is, when the manifest there carries the name.
+  for (const path of [...tracked].filter((item) => item === 'package.json' || item.endsWith('/package.json')).sort()) {
+    if (path.split('/').includes('node_modules')) continue;
+    const dir = path === 'package.json' ? '' : path.slice(0, -'/package.json'.length);
+    const pkg = view.manifest(dir);
+    for (const field of DEPENDENCY_FIELDS) {
+      const deps = pkg?.[field];
+      if (deps == null || typeof deps !== 'object' || Array.isArray(deps)) continue;
+      for (const [name, spec] of Object.entries(deps)) {
+        if (map.has(name) || typeof spec !== 'string' || !/^(?:file|link):/.test(spec)) continue;
+        const target = posix.normalize(posix.join(dir || '.', spec.replace(/^(?:file|link):/, ''))).replace(/\/+$/, '');
+        const at = target === '.' ? '' : target;
+        if (at.startsWith('..') || !tracked.has(at === '' ? 'package.json' : `${at}/package.json`)) continue;
+        if (view.manifest(at)?.name === name) map.set(name, join(repo, at));
+      }
+    }
   }
   return map;
 }
