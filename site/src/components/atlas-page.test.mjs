@@ -1055,3 +1055,9 @@ test('an action a repository ships is named as one other repositories use, as th
   const html = plain(render.renderPage({ ...page, doors: [...page.doors, action] }, { repo: page.repo }));
   assert.ok(html.includes('Renderer (an action other repositories use)'), html.slice(html.indexOf('The other doors'), html.indexOf('The other doors') + 3000));
 });
+
+test('a place written from inputs the repository does not keep is people\'s too, as the markdown says', () => {
+  const html = plain(render.renderPage({ ...page, generated: [], authoredWritten: [{ place: 'src/game/data/events.json', untrackedInputs: true, writers: ['scripts/convert.py'] }] }, { repo: page.repo }));
+  assert.ok(html.includes('Every tracked place code writes here is edited by people too; see Hand-authored.'), html);
+  assert.ok(html.includes('src/game/data/events.json is written by scripts/convert.py from inputs this repository does not keep, and by people.'), html);
+});

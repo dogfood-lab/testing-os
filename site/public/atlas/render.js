@@ -831,7 +831,9 @@ function generatedSection(ctx) {
       if (item.fromRoot) return `${place} is written by ${by} when run from the repository root, and committed.`;
       return item.block ? `${place} has a block written by ${by}.` : `${place} is written by ${by}.`;
     }))
-    : p(absence('generated', unreadFiles(ctx)));
+    : arr(ctx.page.authoredWritten).length > 0
+      ? p('Every tracked place code writes here is edited by people too; see Hand-authored.')
+      : p(absence('generated', unreadFiles(ctx)));
   return section('Generated, never hand-edited', body);
 }
 
@@ -852,6 +854,8 @@ function authoredSection(ctx) {
   const shared = arr(ctx.page.authoredWritten).filter((item) => item && typeof item === 'object').map((item) => {
     const writers = list(arr(item.writers).map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
     const people = Number(item.byPeople) || 0;
+    // A writer reading inputs the repository does not keep, as page.js says it.
+    if (item.untrackedInputs) return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${writers} from inputs this repository does not keep, and by people.`;
     return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${writers}, and by people: ${people} of its ${count(Number(item.commits) || 0, 'commit')} in the window ${people === 1 ? 'is' : 'are'} theirs.`;
   });
   return section('Hand-authored', shared.length > 0 ? `${body}\n${ul(shared)}` : body);

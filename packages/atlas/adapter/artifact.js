@@ -370,6 +370,7 @@ function carryWriter(entry) {
   if (entry.confidence != null) out.confidence = entry.confidence;
   if (entry.fromCwd) out.fromCwd = true;
   if (entry.stamps) out.stamps = true;
+  if (entry.untrackedInputs) out.untrackedInputs = true;
   if (entry.unless) out.unless = [...entry.unless];
   return out;
 }

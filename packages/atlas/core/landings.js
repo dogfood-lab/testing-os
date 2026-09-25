@@ -751,7 +751,7 @@ export function astLandings(language, root, path, places) {
     visiting: new Set(),
     assignments: new Map(),
   };
-  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, outsideWhere: [], pendingWrites: [], pendingReads: [], pendingParams: [] };
+  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, outsideWhere: [], pendingWrites: [], pendingReads: [], pendingParams: [], untrackedReads: 0 };
   // The build outputs the file names by a path this repository does not
   // track (packages/server/dist/server.js), for the commands a build bundles
   // (index.js bundledCommands).
@@ -831,6 +831,9 @@ export function astLandings(language, root, path, places) {
       if (target != null && value.rooted && placeholder(target, places)) unplaced = true;
       else if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}), ...compared });
       else if (value.open) unplaced = true;
+      // A file read by a path spelled out in full that this repository does
+      // not keep: an input its output cannot be made again from here.
+      else if (kind === 'read' && CONTENT_READS.has(call) && untrackedInput(value.text)) found.untrackedReads += 1;
     }
     // A root another file's function returns is settled once that file is
     // known: the caller's place when every such function returns one, and
@@ -893,6 +896,7 @@ export function astLandings(language, root, path, places) {
     ...(found.outsideWrites > 0 ? { outsideWrites: found.outsideWrites } : {}),
     ...(found.outsideReads > 0 ? { outsideReads: found.outsideReads } : {}),
     ...(found.outsideWhere.length > 0 ? { outsideWhere: found.outsideWhere } : {}),
+    ...(found.untrackedReads > 0 ? { readsUntracked: true } : {}),
     ...(found.pendingWrites.length > 0 ? { pendingWrites: found.pendingWrites } : {}),
     ...(found.pendingReads.length > 0 ? { pendingReads: found.pendingReads } : {}),
     ...(Object.keys(rooted).length > 0 ? { callerRooted: rooted, callerRootedWhere: rootedWhere } : {}),
@@ -1341,6 +1345,15 @@ function withoutRedundantDirectories(writes, places) {
 
 // A bare relative path, with nothing fixing where it starts, is relative to
 // whoever runs the code; attachLandings decides whose directory that is.
+// A path inside the repository that names a file, not a dependency's or a
+// tool's own directory.
+function untrackedInput(text) {
+  const path = posix.normalize(String(text ?? '').replaceAll('\\', '/'));
+  if (path === '' || path === '.' || path.startsWith('../') || path.startsWith('/') || path.includes('://')) return false;
+  if (path.split('/').some((part) => part === 'node_modules' || part.startsWith('.venv') || part === '__pycache__' || BUILD_OUTPUTS.has(part))) return false;
+  return /\.[A-Za-z0-9]+$/.test(path);
+}
+
 function landingEntry(target, call, value, places, { settled = false } = {}) {
   const entry = { target, call, confidence: confidenceOf(value, target, places) };
   if (value.defaultOf) entry.defaultOf = value.defaultOf;
@@ -2367,7 +2380,14 @@ function bindingPy(name, from, ctx, depth) {
           const right = node.childForFieldName('right');
           if (right) rights.push(right);
         }
-      } else if ((node.type === 'for_statement' && node.childForFieldName('left')?.text === name) || (node.type === 'as_pattern_target' && node.text === name)) {
+      } else if (node.type === 'for_statement' && node.childForFieldName('left')?.text === name) {
+        bound = true;
+      } else if (node.type === 'for_statement' && pyUnpacks(node.childForFieldName('left'), name) !== -1) {
+        // for prefix, path in files: the path of each tuple a literal list
+        // holds, the list spelled there or bound to a name once.
+        bound = true;
+        rights.push(...pyLoopItems(node, name, scope));
+      } else if (node.type === 'as_pattern_target' && node.text === name) {
         bound = true;
       }
       stack.push(...node.namedChildren);
@@ -2383,6 +2403,30 @@ function bindingPy(name, from, ctx, depth) {
   return [];
 }
 
+
+// Where a name sits in a loop's unpacked target, for prefix, path in ...:
+// its index, or -1.
+function pyUnpacks(left, name) {
+  if (left?.type !== 'pattern_list' && left?.type !== 'tuple_pattern') return -1;
+  return left.namedChildren.findIndex((child) => child.type === 'identifier' && child.text === name);
+}
+
+// The items a loop's unpacked name takes from a literal list of tuples.
+function pyLoopItems(loop, name, scope) {
+  const at = pyUnpacks(loop.childForFieldName('left'), name);
+  let right = loop.childForFieldName('right');
+  if (right?.type === 'identifier') {
+    const body = scope.type === 'module' ? scope : scope.childForFieldName('body');
+    const assigned = (body?.namedChildren ?? [])
+      .map((child) => (child.type === 'expression_statement' ? child.namedChildren[0] : null))
+      .filter((node) => node?.type === 'assignment' && node.childForFieldName('left')?.text === right.text);
+    right = assigned.length === 1 ? assigned[0].childForFieldName('right') : null;
+  }
+  if (right?.type !== 'list' && right?.type !== 'tuple') return [];
+  return right.namedChildren
+    .filter((item) => item.type === 'tuple' && item.namedChildren.length > at)
+    .map((item) => item.namedChildren[at]);
+}
 
 function declaresPythonParameter(fn, name) {
   const params = fn.childForFieldName('parameters');
@@ -3185,7 +3229,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
   };
   for (const file of [...own, ...tests]) {
     for (const write of file.writes) {
-      const entry = { by: file.path, confidence: write.confidence, ...(write.fromCwd ? { fromCwd: true } : {}) };
+      const entry = { by: file.path, confidence: write.confidence, ...(write.fromCwd ? { fromCwd: true } : {}), ...(file.readsUntracked ? { untrackedInputs: true } : {}) };
       // A write made only when a committed file is absent bootstraps it:
       // it happens once, before the commit, and stamps nothing.
       if (bootstraps(write, places)) entry.unless = ['exists'];

@@ -1657,7 +1657,10 @@ function writtenPlaces(ctx) {
     // A writer every write of which here is under the directory it is run
     // in writes the place when run from the repository root.
     const fromRoot = writers.filter((by) => inside.every((landing) => landing.writers.every((entry) => entry.by !== by || entry.fromCwd)));
-    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}) };
+    // Every writer reading inputs this repository does not keep cannot make
+    // the file again from here, so what is committed is edited by people.
+    const mixed = inside.length > 0 && inside.every((landing) => landing.writers.length > 0 && landing.writers.every((entry) => entry.untrackedInputs));
+    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}), ...(mixed ? { mixed: true } : {}) };
   });
 }
 
@@ -2133,7 +2136,7 @@ function botAdded(ctx, name) {
 function generated(ctx) {
   const items = [];
   const claimed = [];
-  const written = writtenPlaces(ctx).filter((place) => !peopleCommits(ctx, place.target));
+  const written = writtenPlaces(ctx).filter((place) => !peopleCommits(ctx, place.target) && !place.mixed);
   for (const boundary of ctx.boundaries.filter((item) => item.origin === 'generated' && !peopleCommits(ctx, boundaryRoot(item) ?? ''))) {
     const root = boundaryRoot(boundary);
     const paths = (boundary.files ?? []).map((file) => file.path);
@@ -2165,7 +2168,11 @@ function generated(ctx) {
     .map(({ guards, ...item }) => ({ ...item, writers: writerItems(ctx, item.writers, guards) }));
 }
 
-function generatedSection(ctx, items) {
+// With every written place also edited by people, nothing is generated, and
+// the page says why rather than that nothing is written.
+const ALL_SHARED = 'Every tracked place code writes here is edited by people too; see Hand-authored.';
+
+function generatedSection(ctx, items, shared = []) {
   const body = items.length > 0
     ? items.map((item) => {
       if (item.addedBy) return `- **${item.shown}** is written by ${item.addedBy}, which added every file in it.`;
@@ -2176,7 +2183,7 @@ function generatedSection(ctx, items) {
       if (item.fromRoot) return `- **${item.shown}** is written by ${by} when run from the repository root, and committed.`;
       return item.block ? `- **${item.shown}** has a block written by ${by}.` : `- **${item.shown}** is written by ${by}.`;
     }).join('\n')
-    : absence('generated', unreadCount(ctx));
+    : shared.length > 0 ? ALL_SHARED : absence('generated', unreadCount(ctx));
   return ['## Generated, never hand-edited', body].join('\n\n');
 }
 
@@ -2192,13 +2199,15 @@ function authored(ctx) {
 function writtenByPeople(ctx) {
   return writtenPlaces(ctx)
     .map((place) => ({ place, people: peopleCommits(ctx, place.target) }))
-    .filter((item) => item.people)
-    .map(({ place, people }) => ({
-      byPeople: people.byPeople,
-      commits: people.commits,
-      place: ctx.place(place.target),
-      writers: writerItems(ctx, place.writers, place.guards),
-    }));
+    .filter((item) => item.people || item.place.mixed)
+    .map(({ place, people }) => (people
+      ? {
+        byPeople: people.byPeople,
+        commits: people.commits,
+        place: ctx.place(place.target),
+        writers: writerItems(ctx, place.writers, place.guards),
+      }
+      : { place: ctx.place(place.target), untrackedInputs: true, writers: writerItems(ctx, place.writers, place.guards) }));
 }
 
 // Nothing the map names writes to these parts, but a write whose path is
@@ -2215,7 +2224,9 @@ function authoredSection(ctx, boundaries, shared) {
     ? `${people}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`
     : absence('authored', unreadCount(ctx), people);
   const body = boundaries.length > 0 ? caveat : 'No configuration or documentation part is left to people alone.';
-  const lines = shared.map((item) => `- **${item.place}** is written by ${list(worded(item.writers, ctx.shown))}, and by people: ${item.byPeople} of its ${count(item.commits, 'commit')} in the window ${item.byPeople === 1 ? 'is' : 'are'} theirs.`);
+  const lines = shared.map((item) => (item.untrackedInputs
+    ? `- **${item.place}** is written by ${list(worded(item.writers, ctx.shown))} from inputs this repository does not keep, and by people.`
+    : `- **${item.place}** is written by ${list(worded(item.writers, ctx.shown))}, and by people: ${item.byPeople} of its ${count(item.commits, 'commit')} in the window ${item.byPeople === 1 ? 'is' : 'are'} theirs.`));
   return ['## Hand-authored', body, ...(lines.length > 0 ? [lines.join('\n')] : [])].join('\n\n');
 }
 
@@ -3438,7 +3449,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     untestedSection(untestedParts),
     unreadSection(ctx, unreadPlaces),
     duplicatesSection(duplicated),
-    generatedSection(ctx, generatedItems),
+    generatedSection(ctx, generatedItems, sharedPlaces),
     authoredSection(ctx, authoredBoundaries, sharedPlaces),
     startSection(start.words, starting, ctx.doors.some((door) => !door.parseError), reason),
     limitsSection(limitLines),
