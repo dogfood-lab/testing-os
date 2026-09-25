@@ -72,8 +72,8 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 5,
-      "changed": 159,
+      "added": 4,
+      "changed": 164,
       "moved": 0,
       "parts": 15,
       "removed": 0
@@ -105,13 +105,13 @@
       },
       {
         "kind": "counts",
-        "sentence": "5 files added and 159 changed content, across 15 parts.",
+        "sentence": "4 files added and 164 changed content, across 15 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "2e82fc7f790ba0e8b6beca2d344b204c099e9a0e",
-      "generatedAt": "2026-09-25T08:54:36.141Z"
+      "commit": "cd21fe8af8e7f38585f83c97e18b61570fc0f43e",
+      "generatedAt": "2026-09-25T09:17:26.206Z"
     },
     "unchanged": false
   },
@@ -119,7 +119,7 @@
     {
       "a": "packages/frame/types.d.ts",
       "b": "packages/tick/tick.js",
-      "either": 9,
+      "either": 10,
       "partLabels": [
         "frame",
         "tick"
@@ -129,7 +129,7 @@
         "tick"
       ],
       "relation": "b-imports-a",
-      "shared": 8
+      "shared": 9
     },
     {
       "a": "packages/propose/prompt.js",
@@ -162,45 +162,45 @@
       "shared": 6
     },
     {
-      "a": "packages/propose/bin/propose.js",
-      "b": "packages/propose/propose.test.js",
+      "a": "packages/load/load.test.js",
+      "b": "packages/tick/predicates.js",
       "either": 6,
       "partLabels": [
-        "propose",
-        "propose"
+        "load",
+        "tick"
       ],
       "parts": [
-        "propose",
-        "propose"
+        "load",
+        "tick"
       ],
-      "relation": "inside",
+      "relation": "both",
       "shared": 5
     },
     {
-      "a": "harness/product-scene.mjs",
-      "b": "harness/sim.mjs",
-      "either": 9,
+      "a": "harness/sim.mjs",
+      "b": "packages/tick/world.js",
+      "either": 12,
       "partLabels": [
         "harness",
-        "harness"
+        "tick"
       ],
       "parts": [
         "harness",
-        "harness"
+        "tick"
       ],
-      "relation": "inside",
-      "shared": 7
+      "relation": "both",
+      "shared": 9
     }
   ],
   "changesTogetherNote": [
-    "2 files changed together with their own tests, as expected.",
+    "1 file changed together with its own test, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 6 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
-  "changesTogetherWithTests": 2,
-  "commit": "e5fbcb9765ab2960d566474f38cf75d9fca270d5",
+  "changesTogetherWithTests": 1,
+  "commit": "f84c98b35c6707a10c8ddcb99caf505efc02e6af",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly JavaScript (51 files), TypeScript (3) and Rust (2). Work enters through 8 doors; the busiest is CI, which reaches 8 parts. host, load, play, propose, replay and write-golden are commands of a private package (nothing ships them).",
+  "derived": "15 parts, mostly JavaScript (58 files), TypeScript (3) and Rust (2). Work enters through 8 doors; the busiest is CI, which reaches 8 parts. host, load, play, propose, replay and write-golden are commands of a private package (nothing ships them).",
   "doors": [
     {
       "checks": [
@@ -208,10 +208,12 @@
         "fixtures/golden.txt",
         "harness/arith.mjs",
         "harness/sim.mjs",
-        "harness/check.js",
+        "harness/behaviour.mjs",
         "harness/minds-scene.mjs",
+        "harness/product-run.mjs",
         "harness/product-scene.mjs",
         "harness/solver-scene.mjs",
+        "harness/trace-line.mjs",
         "harness/verbs-scene.mjs",
         "harness/write-golden.js",
         "packages/frame/frame.js",
@@ -223,8 +225,8 @@
         "packages/tick/",
         "packages/tool/"
       ],
-      "checksCount": 18,
-      "checksMore": 47,
+      "checksCount": 20,
+      "checksMore": 49,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -244,7 +246,7 @@
         {
           "boundary": "harness",
           "depth": 0,
-          "files": 10
+          "files": 17
         },
         {
           "boundary": "host",
@@ -273,8 +275,13 @@
         }
       ],
       "runs": [
+        "harness/check.js",
+        "harness/check.test.js",
+        "harness/first-difference.js",
         "harness/product.test.js",
         "harness/solver.test.js",
+        "harness/trace.mjs",
+        "harness/trace.test.js",
         "packages/host/host.test.js",
         "packages/load/load.test.js",
         "packages/propose/propose.test.js",
@@ -284,8 +291,8 @@
         "packages/tick/verbs.test.js",
         "solver/build.mjs"
       ],
-      "runsCount": 10,
-      "runsMore": 7,
+      "runsCount": 15,
+      "runsMore": 12,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -446,6 +453,7 @@
       "id": "package.json#write-golden",
       "kind": "command",
       "landings": [
+        "fixtures/golden-behaviour.json",
         "fixtures/golden.txt"
       ],
       "name": "write-golden",
@@ -455,7 +463,7 @@
         {
           "boundary": "harness",
           "depth": 0,
-          "files": 3
+          "files": 5
         },
         {
           "boundary": "frame",
@@ -611,6 +619,13 @@
   ],
   "generated": [
     {
+      "block": true,
+      "place": "fixtures/golden-behaviour.json",
+      "writers": [
+        "harness/write-golden.js"
+      ]
+    },
+    {
       "place": "fixtures/golden.txt",
       "writers": [
         "harness/write-golden.js"
@@ -624,12 +639,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:21:11.578Z",
+  "generatedAt": "2026-09-25T10:05:43.628Z",
   "limits": [
-    "5 imports could not be resolved: `harness/sim.mjs` imports `../solver/dist/solver.mjs`, which a build generates; `harness/solver.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `packages/host/session.js` imports `../../solver/dist/solver.mjs`, which a build generates; and 2 more.",
+    "6 imports could not be resolved: `harness/product-run.mjs` imports `../solver/dist/solver.mjs`, which a build generates; `harness/sim.mjs` imports `../solver/dist/solver.mjs`, which a build generates; `harness/solver.test.js` imports `../solver/dist/solver.mjs`, which a build generates; and 3 more.",
     "1 read uses a path built at run time and is not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "3 writes and 11 reads go to a path their caller passes, not to this repository.",
+    "3 writes and 13 reads go to a path their caller passes, not to this repository.",
     "3 writes and 9 reads go to the directory the command is run in (harness/, predicates/ and worlds/), not to this repository.",
     "2 commands are built at run time and not followed.",
     "19 files belong to no part: packages/tool/guard.js, site/astro.config.mjs, site/package-lock.json and 16 mores.",
@@ -806,23 +821,22 @@
       ]
     }
   ],
-  "startDoor": "package.json#host",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "packages/host/bin/host.js",
-    "packages/tick/admit-world.js",
-    "packages/frame/hash.js"
+    ".github/workflows/ci.yml",
+    "harness/check.js",
+    "harness/behaviour.mjs"
   ],
-  "startReason": "This path follows host (a command of a private package, which nothing ships) from its entry, since CI runs only tests, scripts that import no code here and checks.",
   "summary": "Deterministic 3D RPG tick: the model proposes, a checker admits, and the host draws committed frames.",
   "summaryFrom": "person",
-  "testFiles": 9,
+  "testFiles": 11,
   "testedBy": {
-    "frame": 7,
+    "frame": 8,
     "host": 1,
     "load": 2,
     "propose": 1,
     "solver": 0,
-    "tick": 9
+    "tick": 10
   },
   "unnamedWrites": 0,
   "unread": [],
@@ -836,5 +850,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 2
+  "written": 3
 }

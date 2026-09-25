@@ -1,0 +1,276 @@
+{
+  "authored": [
+    ".github/",
+    "experiments/",
+    "release/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 4,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "bin",
+      "partLabel": "bin"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "test",
+      "partLabel": "test"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "87de092d1ed79e3e48d145f6a36d767d9786fe61",
+      "generatedAt": "2026-09-25T09:32:10.148Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "b5f1ba51730de2346327de4981d7bc860ad195d5",
+  "defaultBranch": "main",
+  "derived": "8 parts, mostly JavaScript (52 files) and TypeScript (2). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run sovereign. People import @mcptoolshop/sovereign.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 4
+        }
+      ],
+      "runs": [
+        "bin/sovereign.js",
+        "test/determinism.test.mjs",
+        "test/playability.test.mjs",
+        "test/smoke.test.mjs"
+      ],
+      "runsCount": 4,
+      "runsMore": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request to main touching 7 paths",
+        "on a push to main touching 7 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 4
+        }
+      ],
+      "runs": [
+        "bin/sovereign.js",
+        "test/determinism.test.mjs",
+        "test/playability.test.mjs",
+        "test/smoke.test.mjs"
+      ],
+      "runsCount": 4,
+      "runsMore": 1,
+      "sends": [
+        "publishes to npm",
+        "creates a GitHub release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*` is pushed"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main",
+        "or by hand"
+      ],
+      "untracked": "site/dist, which is not tracked"
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/sovereign",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/sovereign",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "bin/sovereign.js"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#sovereign",
+      "kind": "command",
+      "landings": [],
+      "name": "sovereign",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "bin/sovereign.js"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "generated": [],
+  "generatedAt": "2026-09-25T10:06:37.273Z",
+  "limits": [
+    "1 import could not be resolved: `test/determinism.test.mjs` imports a path built at run time.",
+    "10 writes and 9 reads use paths built at run time and are not named here.",
+    "1 write goes to places this repository does not track, so it is not listed as generated.",
+    "1 read goes to a path its caller passes, not to this repository.",
+    "1 command is built at run time and not followed.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "bin": "bin",
+    "experiments": "experiments",
+    "release": "release",
+    "root": "the repository root",
+    "site": "site",
+    "test": "test",
+    "tools": "tools"
+  },
+  "parts": 8,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/sovereign",
+  "sequences": [],
+  "spawnTested": [
+    "bin"
+  ],
+  "startDoor": "package.json#sovereign",
+  "startHere": [
+    "bin/sovereign.js"
+  ],
+  "startReason": "This path follows sovereign (a command people run) from its entry, since CI runs only tests and scripts that import no code here.",
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 6,
+  "testedBy": {
+    "bin": 1,
+    "tools": 0
+  },
+  "unnamedWrites": 10,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "tools",
+      "partLabel": "tools",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [
+    "bin is touched by tests only through a spawn: a test runs its files as a child process."
+  ],
+  "written": 0
+}

@@ -1,47 +1,99 @@
 {
   "repo": "mcp-tool-shop-org/si-rpg-engine",
   "generated_from": {
-    "commit_sha": "e5fbcb9765ab2960d566474f38cf75d9fca270d5"
+    "commit_sha": "f84c98b35c6707a10c8ddcb99caf505efc02e6af"
   },
-  "generated_at": "2026-09-25T09:21:11.578Z",
+  "generated_at": "2026-09-25T10:05:43.628Z",
   "shared_commit_floor": 3,
   "confidence": "low",
   "rows": [
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|frame|packages/frame/types.d.ts",
       "rule": "file-moved",
-      "value": 0.888889,
+      "value": 0.9,
       "threshold": 0.5,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundary": "frame",
       "file": "packages/frame/types.d.ts",
       "partner_boundary": "tick"
     },
     {
-      "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|solver|solver/build.mjs",
+      "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|harness|harness/sim.mjs",
       "rule": "file-moved",
-      "value": 0.5,
+      "value": 0.75,
       "threshold": 0.5,
       "confidence": "low",
-      "state": "cleared",
-      "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T08:05:47.341Z",
+      "state": "open",
+      "first_seen": "2026-09-25T10:05:43.628Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
+      "boundary": "harness",
+      "file": "harness/sim.mjs",
+      "partner_boundary": "tick"
+    },
+    {
+      "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|harness|harness/solver.test.js",
+      "rule": "file-moved",
+      "value": 0.666667,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-25T10:05:43.628Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
+      "boundary": "harness",
+      "file": "harness/solver.test.js",
+      "partner_boundary": "solver"
+    },
+    {
+      "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|load|packages/load/load.test.js",
+      "rule": "file-moved",
+      "value": 0.833333,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-25T10:05:43.628Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
+      "boundary": "load",
+      "file": "packages/load/load.test.js",
+      "partner_boundary": "tick"
+    },
+    {
+      "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|solver|solver/src/rapier_law.rs",
+      "rule": "file-moved",
+      "value": 0.666667,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-25T10:05:43.628Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundary": "solver",
-      "file": "solver/build.mjs",
+      "file": "solver/src/rapier_law.rs",
       "partner_boundary": "harness"
+    },
+    {
+      "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|tick|packages/tick/predicates.js",
+      "rule": "file-moved",
+      "value": 0.833333,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-25T10:05:43.628Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
+      "boundary": "tick",
+      "file": "packages/tick/predicates.js",
+      "partner_boundary": "load"
     },
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|tick|packages/tick/tick.js",
       "rule": "file-moved",
-      "value": 0.888889,
+      "value": 0.9,
       "threshold": 0.5,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundary": "tick",
       "file": "packages/tick/tick.js",
       "partner_boundary": "frame"
@@ -49,12 +101,12 @@
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|tick|packages/tick/world.js",
       "rule": "file-moved",
-      "value": 0.727273,
+      "value": 0.75,
       "threshold": 0.5,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundary": "tick",
       "file": "packages/tick/world.js",
       "partner_boundary": "harness"
@@ -62,81 +114,106 @@
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|leaks|frame",
       "rule": "leaks",
-      "value": 2.434344,
+      "value": 3.077351,
       "threshold": 0,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundary": "frame"
     },
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|leaks|harness",
       "rule": "leaks",
-      "value": 5.179547,
-      "threshold": 1.833334,
+      "value": 4.205129,
+      "threshold": 1.166667,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundary": "harness"
     },
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|leaks|host",
       "rule": "leaks",
-      "value": 2.155556,
-      "threshold": 0.727273,
+      "value": 2.101011,
+      "threshold": 0.666667,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T09:21:11.578Z",
-      "last_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundary": "host"
+    },
+    {
+      "id": "mcp-tool-shop-org/si-rpg-engine|leaks|load",
+      "rule": "leaks",
+      "value": 2.460318,
+      "threshold": 0.666667,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-25T10:05:43.628Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
+      "boundary": "load"
     },
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|leaks|solver",
       "rule": "leaks",
-      "value": 0.5,
-      "threshold": 0,
+      "value": 0.666667,
+      "threshold": 0.571429,
       "confidence": "low",
-      "state": "cleared",
+      "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T08:05:47.341Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundary": "solver"
     },
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|leaks|tick",
       "rule": "leaks",
-      "value": 7.678537,
-      "threshold": 3.010684,
+      "value": 7.899364,
+      "threshold": 1.948718,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundary": "tick"
     },
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|two-may-be-one|frame|harness",
       "rule": "two-may-be-one",
-      "value": 1.045455,
+      "value": 0.583333,
       "threshold": 0,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T09:21:11.578Z",
-      "last_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundaries": [
         "frame",
         "harness"
       ]
     },
     {
+      "id": "mcp-tool-shop-org/si-rpg-engine|two-may-be-one|frame|load",
+      "rule": "two-may-be-one",
+      "value": 0.555556,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-25T10:05:43.628Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
+      "boundaries": [
+        "frame",
+        "load"
+      ]
+    },
+    {
       "id": "mcp-tool-shop-org/si-rpg-engine|two-may-be-one|frame|tick",
       "rule": "two-may-be-one",
-      "value": 1.388889,
+      "value": 1.938462,
       "threshold": 0,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundaries": [
         "frame",
         "tick"
@@ -145,12 +222,12 @@
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|two-may-be-one|harness|solver",
       "rule": "two-may-be-one",
-      "value": 0.5,
-      "threshold": 0,
+      "value": 0.666667,
+      "threshold": 0.571429,
       "confidence": "low",
-      "state": "cleared",
+      "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T08:05:47.341Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundaries": [
         "harness",
         "solver"
@@ -159,12 +236,12 @@
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|two-may-be-one|harness|tick",
       "rule": "two-may-be-one",
-      "value": 4.134092,
-      "threshold": 1.833334,
+      "value": 2.455129,
+      "threshold": 1.166667,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundaries": [
         "harness",
         "tick"
@@ -173,14 +250,28 @@
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|two-may-be-one|host|tick",
       "rule": "two-may-be-one",
-      "value": 2.155556,
-      "threshold": 0.727273,
+      "value": 1.601011,
+      "threshold": 0.666667,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T09:21:11.578Z",
-      "last_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
       "boundaries": [
         "host",
+        "tick"
+      ]
+    },
+    {
+      "id": "mcp-tool-shop-org/si-rpg-engine|two-may-be-one|load|tick",
+      "rule": "two-may-be-one",
+      "value": 1.904762,
+      "threshold": 0.666667,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-25T10:05:43.628Z",
+      "last_seen": "2026-09-25T10:05:43.628Z",
+      "boundaries": [
+        "load",
         "tick"
       ]
     }

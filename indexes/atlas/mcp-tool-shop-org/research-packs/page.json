@@ -1,0 +1,163 @@
+{
+  "authored": [
+    ".github/",
+    "docs/",
+    "packages/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 1,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "82aca6deaa0649984cdf86abd0e368107d60767c",
+      "generatedAt": "2026-09-25T09:25:17.820Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "923a79252e455ddb1b310e2b01938f7bca211d7c",
+  "defaultBranch": "main",
+  "derived": "7 parts, mostly JSON data (1166 files); code in JavaScript (8) and TypeScript (2). Work enters through 2 doors; the busiest is Verify, which reaches 2 parts.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/verify.yml",
+      "id": ".github/workflows/verify.yml",
+      "landings": [],
+      "name": "Verify",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 4
+        }
+      ],
+      "runs": [
+        "scripts/verify-pack.mjs",
+        "tests/manifest-schema.test.mjs",
+        "tests/summarize-pack.test.mjs",
+        "tests/verify-pack.test.mjs"
+      ],
+      "runsCount": 4,
+      "runsMore": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request to main",
+        "on a push to main"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "generated": [],
+  "generatedAt": "2026-09-25T10:05:38.518Z",
+  "limits": [
+    "1 read uses a path built at run time and is not named here.",
+    "1 write and 9 reads go to a path their caller passes, not to this repository.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/verify.yml",
+  "partLabels": {
+    ".github": ".github",
+    "docs": "docs",
+    "packages": "packages",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "the site",
+    "tests": "tests"
+  },
+  "parts": 7,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/research-packs",
+  "sequences": [],
+  "startDoor": ".github/workflows/verify.yml",
+  "startHere": [
+    ".github/workflows/verify.yml",
+    "scripts/verify-pack.mjs",
+    "scripts/manifest-schema.mjs"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 7,
+  "testedBy": {
+    "scripts": 3
+  },
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [],
+  "written": 0
+}
