@@ -2,7 +2,7 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.22.0] — 2026-09-25
 
 ### Fixed
 - **The map no longer republishes workflow script text.** `structure.json` kept each step's `run:` text verbatim, so a repository whose CI greps its tree for secret-like strings (site-theme: `PRIVATE.KEY`, `sk_live_`, `sk_test_`, `aws_secret`) failed on its own committed map. A step is now kept as the job, the step and the programs it runs, never the script; the page's sentences are unchanged. site-theme's scan passes over a map from this engine and failed over one from 1.21.0.
