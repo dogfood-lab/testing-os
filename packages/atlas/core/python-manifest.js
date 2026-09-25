@@ -101,9 +101,26 @@ export function declaredScripts(repoPath, tracked) {
         if (!/^[A-Za-z_][\w.]*$/.test(module)) continue;
         const script = { manifest: path, name, module, fn: fn && /^[A-Za-z_]\w*$/.test(fn) ? fn : null };
         if (root) script.packageDir = root;
+        // package-dir = { fxdub = "tools" }: the package the module is in
+        // installs from that directory, so fxdub.cli is tools/cli.py.
+        const mapped = packageDirs(tables).get(module.split('.')[0]);
+        if (mapped) script.mapped = { name: module.split('.')[0], dir: mapped };
         out.push(script);
       }
     }
+  }
+  return out;
+}
+
+// [tool.setuptools] package-dir = { fxdub = "tools" }: each named package and
+// the directory, beside the manifest, it installs from.
+function packageDirs(tables) {
+  const text = tables.get('tool.setuptools')?.['package-dir'];
+  const out = new Map();
+  if (typeof text !== 'string') return out;
+  for (const match of text.matchAll(/(?:^|[{,\s])["']?([A-Za-z_][\w.]*)["']?\s*=\s*["']([^"']+)["']/g)) {
+    const dir = match[2].replace(/^\.\/|\/+$/g, '');
+    if (dir && !dir.startsWith('/') && !dir.split('/').includes('..')) out.set(match[1], dir);
   }
   return out;
 }

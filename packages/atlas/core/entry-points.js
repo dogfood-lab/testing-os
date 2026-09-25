@@ -60,7 +60,11 @@ export function pythonScripts(repoPath, tracked) {
   for (const script of declaredScripts(repoPath, [...tracked].sort())) {
     const base = script.manifest.includes('/') ? script.manifest.slice(0, script.manifest.lastIndexOf('/')) : '';
     const roots = script.packageDir ? [base ? `${base}/${script.packageDir}` : script.packageDir] : [];
-    const path = resolvePythonModule(script.module, tracked, roots);
+    const mappedDir = script.mapped ? (base ? `${base}/${script.mapped.dir}` : script.mapped.dir) : null;
+    const rest = script.mapped ? script.module.split('.').slice(1).join('.') : '';
+    const path = mappedDir != null
+      ? (rest ? resolvePythonModule(rest, tracked, [mappedDir]) : (tracked.has(`${mappedDir}/__init__.py`) ? `${mappedDir}/__init__.py` : null))
+      : resolvePythonModule(script.module, tracked, roots);
     if (path) out.push({ path, fn: script.fn, name: script.name, manifest: script.manifest });
   }
   return out;
