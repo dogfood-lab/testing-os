@@ -88,7 +88,7 @@ describe('atlas explain on the doors fixture', () => {
       'No other part imports its part.',
       'Writes to indexes/latest.json; read by site/index.html (found by text), tools/render.js and tools/report.py.',
       'Writes to records/; nothing in this repository reads it.',
-      'Inside it, ingest does, in order: prepare, verify (lib), load policy, write record, rebuild index, audit record and seal record.',
+      'Inside it, `ingest` does, in order: `prepare`, `verify` (lib), `loadPolicy`, `writeRecord`, `rebuildIndex`, `auditRecord` and `sealRecord`.',
     ]);
     assert.match(lines.at(-1), MAP_LINE);
   });
@@ -98,7 +98,7 @@ describe('atlas explain on the doors fixture', () => {
     assert.equal(lines[0], 'lib/store.js is in lib (code).');
     assert.equal(lines[1], 'On the path of Checks, Ingest, weekly and Manual through lib.');
     assert.equal(lines[5], 'Its part is imported by 1 part: tools.');
-    assert.equal(lines[6], 'Inside it, seal record does, in order: check schema, check policy, load schema, load policy and schema version.');
+    assert.equal(lines[6], 'Inside it, `sealRecord` does, in order: `checkSchema`, `checkPolicy`, `loadSchema`, `loadPolicy` and `schemaVersion`.');
   });
 
   it('names the files a file imports, the files that import it, and its own test', () => {
@@ -202,7 +202,7 @@ describe('atlas explain on this repository', () => {
     assert.match(lines[1], /^(Run by|On the path of) /);
     assert.ok(lines[1].includes(ingestDoor.name), lines[1]);
     const order = lines.find((line) => line.startsWith('Inside it, '));
-    assert.ok(order?.includes('read chain head'), lines.join('\n'));
+    assert.ok(order?.includes('`readChainHead`'), lines.join('\n'));
     assert.match(lines.at(-1), MAP_LINE);
 
     const facts = JSON.parse(explain(REPO_ROOT, 'packages/ingest/persist.js', '--json').stdout);

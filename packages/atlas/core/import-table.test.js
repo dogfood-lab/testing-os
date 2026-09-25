@@ -32,7 +32,7 @@ describe('a dynamic import through a literal table', () => {
 
   it('says a condition on a loop variable with its loop, never as a value', () => {
     const { markdown } = buildPage({ structure, statistics: {}, document: {}, repoName: 'fixture/import-table' });
-    assert.ok(markdown.includes('Or, for an entry of `namespaces` where `command === head`, main does report (lib) instead.'), markdown);
+    assert.ok(markdown.includes('Or, for an entry of `namespaces` where `command === head`, `main` does `report` (lib) instead.'), markdown);
     assert.ok(!markdown.includes('Or, when `command === head`'), markdown);
   });
 });

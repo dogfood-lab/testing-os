@@ -77,7 +77,7 @@ describe('what GDScript and a scene use', () => {
     const calls = main.sequences.find((sequence) => sequence.name === '_ready').calls.map((call) => [call.name, call.target?.file ?? null, call.receiver ?? null]);
     assert.deepEqual(calls, [['new', 'scripts/stats.gd', 'Stats'], ['announce', 'autoload/event_bus.gd', null], ['add', 'scripts/score.gd', null]]);
     const { markdown } = buildPage({ structure: buildArtifact(mapped, '0'.repeat(40)), statistics: {}, document: {}, repoName: 'fixture/godot-imports' });
-    assert.match(markdown, /Inside scripts\/main\.gd, ready does, in order: new \(Stats\), announce \(autoload\) and add\./);
+    assert.match(markdown, /Inside scripts\/main\.gd, `_ready` does, in order: `new` \(Stats\), `announce` \(autoload\) and `add`\./);
     assert.match(markdown, /\nThe game writes nothing this map can see\./);
   });
 

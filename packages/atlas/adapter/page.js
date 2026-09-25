@@ -1095,22 +1095,15 @@ function doorSteps(ctx, door) {
 
 // An identifier read as words: loadGlobalPolicy is "load global policy".
 export function words(identifier) {
-  return String(identifier)
-    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
-    .replace(/([A-Za-z])([0-9])/g, '$1 $2')
-    .replace(/([0-9])([A-Za-z])/g, '$1 $2')
-    .replace(/[_$.\-\s]+/g, ' ')
-    .trim()
-    .toLowerCase();
+  // An identifier is written as the code spells it, in code style: a reader
+  // searches for `backend_client_simple`, never for "backend client simple".
+  return `\`${String(identifier).trim()}\``;
 }
 
 // A file is named by its stem, or by its directory when the stem is an index.
+// A run of calls into one file is named by the file.
 function filePhrase(path) {
-  const parts = path.split('/');
-  const stem = parts[parts.length - 1].replace(/\.[^.]+$/, '');
-  const named = (stem === 'index' || stem === '__init__') && parts.length > 1 ? parts[parts.length - 2] : stem;
-  return words(named);
+  return `\`${path.slice(path.lastIndexOf('/') + 1)}\``;
 }
 
 // The name the page gives a part, carried in page.json so a reader of the
@@ -1126,8 +1119,13 @@ function partOf(ctx, target) {
 
 // The steps a sequence shows. A function only handed to another call is not
 // known to run there, so it is kept in the artifact and left off the page.
-function stepUnits(ctx, calls) {
-  const shown = calls.filter((call) => !call.passed && call.branch == null);
+function stepUnits(ctx, calls, from = null) {
+  // A step is the project's own work: a call the map traced to a file or a
+  // part here. A method of a builtin or of what a library returns
+  // (splitlines, readouterr) is none, and a test helper is no step of code
+  // that is not a test.
+  const own = (call) => call.target != null && !(from != null && !isTestMaterial(from) && call.target.file != null && isTestMaterial(call.target.file));
+  const shown = calls.filter((call) => !call.passed && call.branch == null && own(call));
   const units = [];
   for (let i = 0; i < shown.length;) {
     const file = shown[i].target?.file ?? null;
@@ -1167,7 +1165,7 @@ function unitTexts(ctx, units, ownPart) {
 
 // The other ways a function goes, each an early return's branch with the
 // calls it makes, in the order the branches come.
-function alternativesOf(ctx, calls) {
+function alternativesOf(ctx, calls, from = null) {
   const byCondition = new Map();
   for (const call of calls) {
     if (call.branch == null || call.passed) continue;
@@ -1178,7 +1176,7 @@ function alternativesOf(ctx, calls) {
   return [...byCondition.entries()]
     .map(([key, list]) => {
       const [when, over] = JSON.parse(key);
-      return { ...(over != null ? { over } : {}), when, steps: stepUnits(ctx, list).units };
+      return { ...(over != null ? { over } : {}), when, steps: stepUnits(ctx, list, from).units };
     })
     .filter((alternative) => alternative.steps.length > 0);
 }
@@ -1216,13 +1214,13 @@ function sequences(ctx, door) {
     const file = ctx.fileOf.get(path);
     const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
     if (!root) continue;
-    const steps = stepUnits(ctx, root.calls);
+    const steps = stepUnits(ctx, root.calls, path);
     if (steps.calls < 2) continue;
     const part = ctx.boundaryOf.get(path) ?? null;
     const candidates = [];
     for (const call of root.calls) {
       if (call.passed || !call.inner) continue;
-      const innerSteps = stepUnits(ctx, call.inner);
+      const innerSteps = stepUnits(ctx, call.inner, path);
       if (innerSteps.calls < 2) continue;
       const target = partOf(ctx, call.target);
       if (innerSteps.units.length < INNER_STEPS && target === part) continue;
@@ -1241,7 +1239,7 @@ function sequences(ctx, door) {
       .slice(0, INNER_SHOWN)
       .map(({ item }) => item));
     const inner = candidates.filter((item) => kept.has(item));
-    const alternatives = alternativesOf(ctx, root.calls);
+    const alternatives = alternativesOf(ctx, root.calls, path);
     out.push({ ...(alternatives.length > 0 ? { alternatives } : {}), entry: file.entry, file: path, inner, part, partLabel: label(ctx, part), phrase: words(file.entry), steps: steps.units });
   }
   return out;
@@ -3454,7 +3452,7 @@ export function entryOrder(ctx, path, lead) {
   const file = ctx.fileOf.get(path);
   const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
   if (!root) return null;
-  const steps = stepUnits(ctx, root.calls);
+  const steps = stepUnits(ctx, root.calls, path);
   if (steps.calls === 0) return null;
   const part = ctx.boundaryOf.get(path) ?? null;
   return {

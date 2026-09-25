@@ -444,6 +444,12 @@ test('a build no release ships is said as a build, in the steps and among the ot
   assert.ok(paragraph.includes('builds packages/schemas/src/index.ts'), paragraph);
 });
 
+test('an identifier in the order of work is code, as the markdown writes it', () => {
+  const sequences = [{ entry: 'main', file: 'bin/tool.js', inner: [], part: null, phrase: '`main`', steps: [{ phrase: '`load_text`' }, { phrase: '`write_report`' }] }];
+  const html = render.renderPage({ ...page, sequences }, { repo: page.repo });
+  assert.ok(html.includes('<code>main</code> does, in order: <code>load_text</code> and <code>write_report</code>.'), 'identifiers render as code');
+});
+
 test('a branch on a loop variable is said with its loop, as the markdown says it', () => {
   const sequences = [{ entry: 'main', file: 'bin/tool.js', inner: [], part: null, phrase: 'main', steps: [{ phrase: 'start' }, { phrase: 'finish' }],
     alternatives: [{ over: 'namespaces', when: 'command === head', steps: [{ phrase: 'report' }] }, { when: '!command', steps: [{ phrase: 'usage' }] }] }];

@@ -1,0 +1,8 @@
+name: CI
+on:
+  pull_request:
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - run: python tool.py

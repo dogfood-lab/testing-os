@@ -541,7 +541,8 @@ function stepTexts(ctx, steps, ownPart) {
     const collapsed = Number(step.count) || 0;
     if (collapsed > 0) notes.push(`${collapsed} steps`);
     const phrase = str(step.phrase);
-    return esc(notes.length > 0 ? `${phrase} (${notes.join(', ')})` : phrase);
+    // An identifier is code, as page.js writes it.
+    return inline(notes.length > 0 ? `${phrase} (${notes.join(', ')})` : phrase);
   });
 }
 
@@ -559,16 +560,16 @@ function sequenceItems(ctx) {
   for (const sequence of arr(ctx.page.sequences)) {
     if (!sequence || typeof sequence !== 'object') continue;
     const own = sequence.part == null ? null : str(sequence.part);
-    items.push(inOrder(`Inside ${pathHtml(ctx, sequence.file)}, ${esc(sequence.phrase)} does, in order:`, stepTexts(ctx, sequence.steps, own)));
+    items.push(inOrder(`Inside ${pathHtml(ctx, sequence.file)}, ${inline(sequence.phrase)} does, in order:`, stepTexts(ctx, sequence.steps, own)));
     // An early return's branch is the other way the entry goes, said once,
     // three at most, as page.js says them.
     const alternatives = arr(sequence.alternatives).filter((alternative) => alternative && typeof alternative === 'object');
     for (const alternative of alternatives.slice(0, 3)) {
       // A condition on a loop's variable is said with the loop, as page.js says it.
       const lead = alternative.over != null ? `for an entry of <code>${esc(alternative.over)}</code> where <code>${esc(alternative.when)}</code>` : `when <code>${esc(alternative.when)}</code>`;
-      items.push(`Or, ${lead}, ${esc(sequence.phrase)} does ${list(stepTexts(ctx, alternative.steps, own))} instead.`);
+      items.push(`Or, ${lead}, ${inline(sequence.phrase)} does ${list(stepTexts(ctx, alternative.steps, own))} instead.`);
     }
-    if (alternatives.length > 3) items.push(`${esc(capitalize(str(sequence.phrase)))} returns early ${count(alternatives.length - 3, 'more way')}.`);
+    if (alternatives.length > 3) items.push(`${inline(capitalize(str(sequence.phrase)))} returns early ${count(alternatives.length - 3, 'more way')}.`);
     // page.json holds only the called functions the markdown shows, in the
     // order the entry calls them. A part is named only when it is not the
     // entry file's own.
@@ -578,7 +579,7 @@ function sequenceItems(ctx) {
       let where = null;
       if (part != null && part !== own) where = esc(partName(ctx, inner));
       else if (part == null && inner.file) where = pathHtml(ctx, inner.file);
-      const lead = `<strong>${esc(capitalize(str(inner.phrase)))}</strong>${where ? ` (${where})` : ''} runs, in order:`;
+      const lead = `<strong>${inline(capitalize(str(inner.phrase)))}</strong>${where ? ` (${where})` : ''} runs, in order:`;
       items.push(inOrder(lead, stepTexts(ctx, inner.steps, part)));
     }
   }

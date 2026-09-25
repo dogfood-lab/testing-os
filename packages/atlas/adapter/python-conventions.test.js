@@ -214,7 +214,7 @@ describe('the page on a Python package', () => {
       '## What happens through Smoke',
       [
         '1. The workflow runs scripts/smoke.py in scripts.',
-        '   1. Inside scripts/smoke.py, main does, in order: trainer (trainkit), train (Trainer) and main.',
+        '   1. Inside scripts/smoke.py, `main` does, in order: `Trainer` (trainkit), `train` (Trainer) and `main`.',
         '2. That reaches trainkit (5 files).',
       ].join('\n'),
     ].join('\n\n') + '\n');
