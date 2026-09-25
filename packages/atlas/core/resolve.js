@@ -153,7 +153,7 @@ function resolveSite(ctx, fromAbs, language, site) {
     return { outcome: 'unresolved', reason: site.kind };
   }
   if (site.location) return resolveLocation(ctx, site.specifier);
-  if (language === 'python') return resolvePython(ctx, fromAbs, site.specifier);
+  if (language === 'python') return resolvePython(ctx, fromAbs, site.specifier, site.roots ?? []);
   return resolveJavaScript(ctx, fromAbs, site.specifier);
 }
 
@@ -744,13 +744,16 @@ function repoRelative(repo, absPath) {
   return rel;
 }
 
-function resolvePython(ctx, fromAbs, specifier) {
+function resolvePython(ctx, fromAbs, specifier, inserted = []) {
   const fromRel = relative(ctx.repo, fromAbs).replaceAll('\\', '/');
   if (specifier.startsWith('.')) {
     const hit = pythonRelative(fromRel, specifier, ctx.tracked);
     if (hit) return { outcome: 'file', path: hit };
     return { outcome: 'unresolved', reason: 'python-module-not-found' };
   }
+  // The directories the file inserts on its import path come first.
+  const added = inserted.length > 0 ? pythonAbsolute(specifier, inserted.map((dir) => dir || '.'), ctx.tracked) : null;
+  if (added) return { outcome: 'file', path: added };
   const python = ctx.python();
   const hit = pythonAbsolute(specifier, python.roots, ctx.tracked);
   if (hit) return { outcome: 'file', path: hit };

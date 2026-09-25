@@ -1166,6 +1166,23 @@ const PYTHON_LOCATION_CALLS = new Set(['importlib.util.spec_from_file_location',
 // one tracked file. Either is kind dynamic-literal and resolves as an import.
 function collectPython(root, path, places) {
   const imports = [];
+  // A directory the file puts on its own import path (sys.path.insert(0,
+  // join(dirname(__file__), "..", "scripts"))) is where its bare imports are
+  // looked up first, as Python does once the line has run.
+  const roots = [];
+  walkNamed(root, (node) => {
+    if (node.type !== 'call') return;
+    const name = pythonCallee(node.childForFieldName('function'));
+    if (name !== 'sys.path.insert' && name !== 'sys.path.append') return;
+    const args = (node.childForFieldName('arguments')?.namedChildren ?? []).filter((child) => child.type !== 'comment' && child.type !== 'keyword_argument');
+    const target = name === 'sys.path.insert' ? args[1] : args[0];
+    if (!target) return;
+    for (const value of pythonPathValues(target, path)) {
+      const dir = value === '.' ? '' : value.replace(/\/+$/, '');
+      if ((dir === '' || places.dirs.has(dir)) && !roots.includes(dir)) roots.push(dir);
+    }
+  });
+  const stamp = (site) => (roots.length > 0 && site.kind !== 'dynamic' ? { ...site, roots: [...roots] } : site);
   walkNamed(root, (node) => {
     if (node.type === 'import_statement') {
       for (const child of node.namedChildren) {
@@ -1202,7 +1219,7 @@ function collectPython(root, path, places) {
     if (named.length === 1) imports.push({ specifier: named[0], kind: 'dynamic-literal', line: lineOf(node), location: true });
     else imports.push({ specifier: location ? location.text : '', kind: 'dynamic', line: lineOf(node) });
   });
-  return imports;
+  return imports.map(stamp);
 }
 
 function pythonLiteral(node) {
