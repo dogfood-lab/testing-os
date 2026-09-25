@@ -1100,6 +1100,12 @@ function godotExport(words, place) {
 // A registry is named the way its users name it.
 function publishRegistry(words) {
   const [program, sub, next] = words;
+  // pnpm --filter <name> publish: its own flags come before the command.
+  if (program === 'pnpm' && sub?.startsWith('-')) {
+    let i = 1;
+    while (i < words.length && words[i].startsWith('-')) i += ['--filter', '-F', '-C', '--dir', '--filter-prod'].includes(words[i]) ? 2 : 1;
+    if (words[i] === 'publish') return 'npm';
+  }
   if ((program === 'huggingface-cli' || program === 'hf') && sub === 'upload') return 'huggingface';
   if ((program === 'npm' || program === 'pnpm' || program === 'bun') && sub === 'publish') return 'npm';
   if (program === 'yarn' && (sub === 'publish' || (sub === 'npm' && next === 'publish'))) return 'npm';
@@ -1173,6 +1179,29 @@ function publishedPackages(words, cwd, place) {
     }
     for (const [dir, name] of place.repo.workspaces()) {
       if (typeof name === 'string' && (name === value || dir === joinDir(cwd, value))) members.push({ key: `named\0${dir}`, value: { dir, name, registry: 'npm' } });
+    }
+  }
+  // pnpm publish --filter <name> (or pnpm --filter <name> publish) sends
+  // the members the selector names: a name, a glob over names, or a path.
+  if (words[0] === 'pnpm') {
+    for (let i = 1; i < words.length; i += 1) {
+      const flag = words[i].split('=')[0];
+      if (flag !== '--filter' && flag !== '-F') continue;
+      const value = words[i].includes('=') ? words[i].slice(words[i].indexOf('=') + 1) : words[i + 1];
+      if (value == null || value.startsWith('!')) continue;
+      if (value.includes('$')) {
+        members.push({ key: 'workspace', value: { registry: 'npm', workspace: true } });
+        continue;
+      }
+      const bare = value.replace(/^\.\.\./, '').replace(/\.\.\.$/, '').replace(/^\{(.+)\}$/, '$1');
+      const isMatch = picomatch(bare);
+      for (const [dir, name] of place.repo.workspaces()) {
+        if (typeof name !== 'string') continue;
+        if (isMatch(name) || dir === joinDir(cwd, bare).replace(/^\.\/?/, '').replace(/\/+$/, '')) {
+          if (place.repo.manifest(dir)?.private === true) continue;
+          members.push({ key: `named\0${dir}`, value: { dir, name, registry: 'npm' } });
+        }
+      }
     }
   }
   if (members.length > 0) return members;

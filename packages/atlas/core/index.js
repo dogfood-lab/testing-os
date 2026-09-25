@@ -8,7 +8,7 @@ import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
-import { declaredEntries, deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
+import { declaredEntries, deriveEntryPoints, manifestCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
@@ -173,7 +173,14 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests, discovered }),
     ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests, discovered }),
   ], [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], repoPath, trackedSet);
+  // A workspace member a workflow publishes by name is a package people
+  // import, with a door of its own, as the root package is; being named by
+  // a publish, it is published.
+  const members = publishedMembers(doors).map((dir) => memberPackage(repoPath, dir, trackedSet))
+    .filter((entry) => entry != null && !doors.some((door) => door.kind === 'package' && door.file === entry.manifest));
+  const memberDoors = members.length > 0 ? mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands: members, builtFrom, emitted, unitTests, discovered }) : [];
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
+  doors.push(...memberDoors);
   markUnshipped(doors, cargoProject(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }));
@@ -260,6 +267,18 @@ function sortedKeys(value) {
   if (Array.isArray(value)) return value.map(sortedKeys);
   if (value && typeof value === 'object') return Object.fromEntries(Object.keys(value).sort().map((key) => [key, sortedKeys(value[key])]));
   return value;
+}
+
+// The workspace members, by directory, a workflow's npm publish names.
+function publishedMembers(doors) {
+  const dirs = new Set();
+  for (const door of doors) {
+    if (door.kind || door.parseError) continue;
+    const entries = [...(door.sends?.packages?.values?.() ?? door.sends?.packages ?? [])];
+    for (const key of (door.gated ?? []).flatMap((entry) => entry.sends ?? [])) if (typeof key === 'string' && key.startsWith('packages:')) entries.push(JSON.parse(key.slice('packages:'.length)));
+    for (const entry of entries) if (entry?.dir && entry.dir !== '' && entry.registry === 'npm') dirs.add(entry.dir);
+  }
+  return [...dirs].sort();
 }
 
 /**
