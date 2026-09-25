@@ -64,6 +64,6 @@ describe('a write whose place the caller decides', () => {
     assert.match(markdown, /- 5 writes go to the home directory \(\.camp and \.guard\/\), not to this repository\./);
     assert.match(markdown, /- 1 write goes to the directory the command is run in, not to this repository\./);
     assert.doesNotMatch(markdown, /may land here/);
-    assert.doesNotMatch(markdown, /0 (writes|reads)/);
+    assert.doesNotMatch(markdown, /\b0 (writes|reads)\b/);
   });
 });
