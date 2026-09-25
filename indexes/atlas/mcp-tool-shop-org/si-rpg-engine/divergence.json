@@ -1,21 +1,21 @@
 {
   "repo": "mcp-tool-shop-org/si-rpg-engine",
   "generated_from": {
-    "commit_sha": "7122b6c1b795ef66b1b1585da8b08f8d35ec7429"
+    "commit_sha": "e5fbcb9765ab2960d566474f38cf75d9fca270d5"
   },
-  "generated_at": "2026-09-25T08:05:47.341Z",
+  "generated_at": "2026-09-25T09:21:11.578Z",
   "shared_commit_floor": 3,
   "confidence": "low",
   "rows": [
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|frame|packages/frame/types.d.ts",
       "rule": "file-moved",
-      "value": 0.857143,
+      "value": 0.888889,
       "threshold": 0.5,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T08:05:47.341Z",
+      "last_seen": "2026-09-25T09:21:11.578Z",
       "boundary": "frame",
       "file": "packages/frame/types.d.ts",
       "partner_boundary": "tick"
@@ -26,7 +26,7 @@
       "value": 0.5,
       "threshold": 0.5,
       "confidence": "low",
-      "state": "open",
+      "state": "cleared",
       "first_seen": "2026-09-25T08:05:47.341Z",
       "last_seen": "2026-09-25T08:05:47.341Z",
       "boundary": "solver",
@@ -36,12 +36,12 @@
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|tick|packages/tick/tick.js",
       "rule": "file-moved",
-      "value": 0.857143,
+      "value": 0.888889,
       "threshold": 0.5,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T08:05:47.341Z",
+      "last_seen": "2026-09-25T09:21:11.578Z",
       "boundary": "tick",
       "file": "packages/tick/tick.js",
       "partner_boundary": "frame"
@@ -49,12 +49,12 @@
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|file-moved|tick|packages/tick/world.js",
       "rule": "file-moved",
-      "value": 0.666667,
+      "value": 0.727273,
       "threshold": 0.5,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T08:05:47.341Z",
+      "last_seen": "2026-09-25T09:21:11.578Z",
       "boundary": "tick",
       "file": "packages/tick/world.js",
       "partner_boundary": "harness"
@@ -62,24 +62,35 @@
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|leaks|frame",
       "rule": "leaks",
-      "value": 0.857143,
+      "value": 2.434344,
       "threshold": 0,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T08:05:47.341Z",
+      "last_seen": "2026-09-25T09:21:11.578Z",
       "boundary": "frame"
     },
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|leaks|harness",
       "rule": "leaks",
-      "value": 2.222223,
-      "threshold": 0.714286,
+      "value": 5.179547,
+      "threshold": 1.833334,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T08:05:47.341Z",
+      "last_seen": "2026-09-25T09:21:11.578Z",
       "boundary": "harness"
+    },
+    {
+      "id": "mcp-tool-shop-org/si-rpg-engine|leaks|host",
+      "rule": "leaks",
+      "value": 2.155556,
+      "threshold": 0.727273,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T09:21:11.578Z",
+      "boundary": "host"
     },
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|leaks|solver",
@@ -87,7 +98,7 @@
       "value": 0.5,
       "threshold": 0,
       "confidence": "low",
-      "state": "open",
+      "state": "cleared",
       "first_seen": "2026-09-25T08:05:47.341Z",
       "last_seen": "2026-09-25T08:05:47.341Z",
       "boundary": "solver"
@@ -95,23 +106,37 @@
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|leaks|tick",
       "rule": "leaks",
-      "value": 2.579366,
-      "threshold": 1.545455,
+      "value": 7.678537,
+      "threshold": 3.010684,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T08:05:47.341Z",
+      "last_seen": "2026-09-25T09:21:11.578Z",
       "boundary": "tick"
+    },
+    {
+      "id": "mcp-tool-shop-org/si-rpg-engine|two-may-be-one|frame|harness",
+      "rule": "two-may-be-one",
+      "value": 1.045455,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T09:21:11.578Z",
+      "boundaries": [
+        "frame",
+        "harness"
+      ]
     },
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|two-may-be-one|frame|tick",
       "rule": "two-may-be-one",
-      "value": 0.857143,
+      "value": 1.388889,
       "threshold": 0,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T08:05:47.341Z",
+      "last_seen": "2026-09-25T09:21:11.578Z",
       "boundaries": [
         "frame",
         "tick"
@@ -123,7 +148,7 @@
       "value": 0.5,
       "threshold": 0,
       "confidence": "low",
-      "state": "open",
+      "state": "cleared",
       "first_seen": "2026-09-25T08:05:47.341Z",
       "last_seen": "2026-09-25T08:05:47.341Z",
       "boundaries": [
@@ -134,14 +159,28 @@
     {
       "id": "mcp-tool-shop-org/si-rpg-engine|two-may-be-one|harness|tick",
       "rule": "two-may-be-one",
-      "value": 1.722223,
-      "threshold": 0.714286,
+      "value": 4.134092,
+      "threshold": 1.833334,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:47.341Z",
-      "last_seen": "2026-09-25T08:05:47.341Z",
+      "last_seen": "2026-09-25T09:21:11.578Z",
       "boundaries": [
         "harness",
+        "tick"
+      ]
+    },
+    {
+      "id": "mcp-tool-shop-org/si-rpg-engine|two-may-be-one|host|tick",
+      "rule": "two-may-be-one",
+      "value": 2.155556,
+      "threshold": 0.727273,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-25T09:21:11.578Z",
+      "last_seen": "2026-09-25T09:21:11.578Z",
+      "boundaries": [
+        "host",
         "tick"
       ]
     }

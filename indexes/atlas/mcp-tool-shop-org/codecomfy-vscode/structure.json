@@ -303,6 +303,7 @@
           "path": "site/src/assets/screenshot-treeview.png"
         },
         {
+          "constantOnly": true,
           "hash": "203a4c1cfc342717e02b2c6652ac3d9ed91677e9ede6350271ab8af5b133165a",
           "path": "site/src/content.config.ts"
         },
@@ -347,6 +348,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "05efbf07534c96cfe692323be822d17b3b52e166af183d59211dfbae7dabf289",
           "path": "site/src/site-config.ts"
         },
@@ -451,6 +453,15 @@
             "composeAvailabilityMessage"
           ],
           "hash": "d01634872067decaadf25ff231a1db9ad3d1d0101e79f605164afe1629815133",
+          "importOrder": [
+            "src/types/index.ts",
+            "src/polling/backoff.ts",
+            "src/engines/comfyValidation.ts",
+            "src/logging/logger.ts",
+            "src/engines/workflowInjection.ts",
+            "src/engines/comfyEvents.ts",
+            "src/engines/retrieval.ts"
+          ],
           "importsFiles": [
             "src/engines/comfyEvents.ts",
             "src/engines/comfyValidation.ts",
@@ -1078,6 +1089,12 @@
             "getPresetRegistry"
           ],
           "hash": "397e91525a86e6f1d3dcf864269a3644a9187194e466137585ac6506551f9c52",
+          "importOrder": [
+            "src/types/index.ts",
+            "src/logging/logger.ts",
+            "src/presets/hq-image.json",
+            "src/presets/hq-video.json"
+          ],
           "importsFiles": [
             "src/logging/logger.ts",
             "src/presets/hq-image.json",
@@ -1243,6 +1260,11 @@
             "toEnginePreset"
           ],
           "hash": "398a6cb3ddf482e107868da079a597510c9ba6f5331ac07cdace7abed051e9f4",
+          "importOrder": [
+            "src/types/index.ts",
+            "src/kb/presets.json",
+            "src/kb/nodes.json"
+          ],
           "importsFiles": [
             "src/kb/nodes.json",
             "src/kb/presets.json",
@@ -1256,6 +1278,10 @@
             "pruneRuns"
           ],
           "hash": "ed23b854cf20afa4c969de29e695e3281a88772fd138ad5da952dee0a65c17c2",
+          "importOrder": [
+            "src/types/index.ts",
+            "src/logging/logger.ts"
+          ],
           "importsFiles": [
             "src/logging/logger.ts",
             "src/types/index.ts"
@@ -1264,6 +1290,13 @@
         },
         {
           "hash": "343a6e34cf19933d252175dc04cc512e0724a06470cd67a9a6719cd26df1a38b",
+          "importOrder": [
+            "src/types/index.ts",
+            "src/engines/ffmpeg.ts",
+            "src/engines/workflowInjection.ts",
+            "src/logging/logger.ts",
+            "src/pruning/pruner.ts"
+          ],
           "importsFiles": [
             "src/engines/ffmpeg.ts",
             "src/engines/workflowInjection.ts",
@@ -1397,6 +1430,14 @@
         },
         {
           "hash": "47f7e2ce2f17e665f782a2c74a2d8c08c708cf73784642f1a977496984e8329e",
+          "importOrder": [
+            "src/engines/comfyServerEngine.ts",
+            "src/types/index.ts",
+            "src/engines/comfyValidation.ts",
+            "src/router/jobRouter.ts",
+            "src/logging/logger.ts",
+            "test/helpers.ts"
+          ],
           "importsFiles": [
             "src/engines/comfyServerEngine.ts",
             "src/engines/comfyValidation.ts",
@@ -1431,6 +1472,10 @@
         },
         {
           "hash": "442c0f7cd6d4237dd408fa41d31315b7d0ddfd92fcc2dd904cd2b2c7c494b6b1",
+          "importOrder": [
+            "test/helpers.ts",
+            "src/extension.ts"
+          ],
           "importsFiles": [
             "src/extension.ts",
             "test/helpers.ts"
@@ -1454,6 +1499,13 @@
         },
         {
           "hash": "bc82cc3bd534857195d719f69a4e760972f6f94c8ebfa3164c65225cf4f299ae",
+          "importOrder": [
+            "src/router/jobRouter.ts",
+            "src/logging/logger.ts",
+            "src/types/index.ts",
+            "test/helpers.ts",
+            "src/engines/comfyServerEngine.ts"
+          ],
           "importsFiles": [
             "src/engines/comfyServerEngine.ts",
             "src/logging/logger.ts",
@@ -1472,6 +1524,10 @@
         },
         {
           "hash": "f29d71864efa0338cdaf1a0f804555e1e4dce74284230425465967c9fee633bd",
+          "importOrder": [
+            "test/helpers.ts",
+            "src/extension.ts"
+          ],
           "importsFiles": [
             "src/extension.ts",
             "test/helpers.ts"
@@ -1480,6 +1536,11 @@
         },
         {
           "hash": "15f565fe2f5f937c16213abaa907320e7c2b801cb826765a909d27ff22003640",
+          "importOrder": [
+            "src/presets/registry.ts",
+            "src/logging/logger.ts",
+            "test/helpers.ts"
+          ],
           "importsFiles": [
             "src/logging/logger.ts",
             "src/presets/registry.ts",
@@ -1489,6 +1550,13 @@
         },
         {
           "hash": "79b0a6e7748fd8422c28beee6c66d355954cae76fe32c91aa63ed69a18f75545",
+          "importOrder": [
+            "src/engines/retrieval.ts",
+            "src/engines/comfyValidation.ts",
+            "src/profiles/registry.ts",
+            "src/engines/preflight.ts",
+            "src/profiles/metadata.ts"
+          ],
           "importsFiles": [
             "src/engines/comfyValidation.ts",
             "src/engines/preflight.ts",
@@ -1580,12 +1648,19 @@
       "origin": "authored",
       "role": "test",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "test/helpers.ts",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 1
     }
   ],
   "doors": [
     {
-      "checksCount": 5,
+      "checksCount": 3,
       "commands": [
         {
           "job": "quality-gates",
@@ -1683,19 +1758,21 @@
           "via": "eslint eslint.config.mjs"
         },
         {
+          "built": true,
           "directory": true,
           "job": "quality-gates",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "eslint eslint.config.mjs"
         },
         {
+          "built": true,
           "directory": true,
           "job": "quality-gates",
           "matched": true,
           "path": "test/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.test.json"
         },
         {
@@ -1853,7 +1930,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 5,
+      "checksCount": 3,
       "commands": [
         {
           "job": "build",
@@ -2022,19 +2099,21 @@
           "via": "eslint eslint.config.mjs"
         },
         {
+          "built": true,
           "directory": true,
           "job": "build",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "eslint eslint.config.mjs"
         },
         {
+          "built": true,
           "directory": true,
           "job": "build",
           "matched": true,
           "path": "test/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.test.json"
         },
         {

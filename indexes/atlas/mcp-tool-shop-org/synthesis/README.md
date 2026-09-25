@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit dd0e1de.
 
 ## What this is
 
-12 parts, mostly TypeScript (36 files) and JavaScript (6). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.
+12 parts, mostly Markdown (83 files); code in TypeScript (36) and JavaScript (6). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.
 
 ## What changed since 2026-09-23 (0128f11)
 
@@ -20,19 +20,19 @@ Mapped at 2026-09-25 from commit dd0e1de.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push to main touching 13 paths; or by hand. Runs scripts/check-report-schema.mjs, scripts/eval-planted.mjs, src/index.ts and 16 more; checks src/.
-2. **Release (npm via Trusted Publishing).** When a release is published; or by hand. Runs scripts/check-report-schema.mjs, src/index.ts and tests/; checks src/.
+1. **CI.** On a pull request to main; on a push to main touching 13 paths; or by hand. Runs scripts/check-report-schema.mjs, scripts/eval-planted.mjs, src/index.ts and 16 more; builds src/.
+2. **Release (npm via Trusted Publishing).** When a release is published; or by hand. Runs scripts/check-report-schema.mjs, src/index.ts and tests/; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/synthesis** (the package people import). Loads src/index.ts.
 5. **synthesis** (a command people run). Runs src/index.ts.
 
 ## What happens through CI
 
-1. The workflow runs scripts/check-report-schema.mjs and scripts/eval-planted.mjs in scripts, src/index.ts in src, and tests/ in tests; it checks src/ in src.
-   1. Inside src/index.ts, main does, in order: load cases, run all cases, write report, has colors, print summary and format artifact.
-   2. Or, when `options.planted`, main does evaluate planted instead.
-   3. Or, when `isJsonOutput()`, main does print summary instead.
-   4. **Run all cases** runs, in order: check agency, check reassurance, check pivot, check performative empathy, check grounded uptake and compute relational posture.
+1. The workflow runs scripts/check-report-schema.mjs and scripts/eval-planted.mjs in scripts, src/index.ts in src, and tests/ in tests; it builds src/ in src.
+   1. Inside src/index.ts, `main` does, in order: `loadCases`, `runAllCases`, `writeReport`, `hasColors`, `printSummary` and `formatArtifact`.
+   2. Or, when `options.planted`, `main` does `evaluatePlanted` instead.
+   3. Or, when `isJsonOutput()`, `main` does `printSummary` instead.
+   4. **`runAllCases`** runs, in order: `checkAgency`, `checkReassurance`, `checkPivot`, `checkPerformativeEmpathy`, `checkGroundedUptake` and `computeRelationalPosture`.
 
 ## Who reads the results
 
@@ -40,7 +40,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release (npm via Trusted Publishing)** runs scripts/check-report-schema.mjs, src/index.ts and tests/, checks src/, and publishes to npm.
+**Release (npm via Trusted Publishing)** runs scripts/check-report-schema.mjs, src/index.ts and tests/, builds src/, and publishes to npm.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -86,15 +86,16 @@ People write .claude/, .github/, assets/, data/, docs/, research/, the repositor
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts
+.github/workflows/ci.yml → src/index.ts → src/load.ts → src/color.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 import site could not be resolved.
+- 1 import could not be resolved: `scripts/eval-planted.mjs` imports a path built at run time.
 - 1 import site names a path outside this repository, so what it loads is not followed.
 - 3 writes and 6 reads go to a path their caller passes, not to this repository.
+- 3 reads go to the directory the command is run in (data/ and schemas/), not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

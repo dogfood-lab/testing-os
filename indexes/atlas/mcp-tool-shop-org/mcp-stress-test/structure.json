@@ -226,6 +226,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -258,6 +259,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "034ab1231a2d2c24ffdc0ca43185b2ea781d49344dd2bbb5619699e2a89ae2fb",
           "path": "site/src/site-config.ts"
         },
@@ -338,6 +340,11 @@
             "list_chains"
           ],
           "hash": "a2d2ec009facab3a6f09c860669f4a10b65297b96fc0e0452ecb2897f35a4924",
+          "importOrder": [
+            "src/mcp_stress_test/chains/base.py",
+            "src/mcp_stress_test/generator/protocol.py",
+            "src/mcp_stress_test/chains/loader.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/chains/base.py",
             "src/mcp_stress_test/chains/loader.py",
@@ -379,6 +386,13 @@
             "chain_show"
           ],
           "hash": "aa00ce2e9d31ed5eda8dd5b37f6a40fa3ecda8f51f62242eb0ff0580e2b39c47",
+          "importOrder": [
+            "src/mcp_stress_test/cli/quality_gate.py",
+            "src/mcp_stress_test/chains/library.py",
+            "src/mcp_stress_test/chains/executor.py",
+            "src/mcp_stress_test/cli/scanner_resolve.py",
+            "src/mcp_stress_test/models.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/chains/executor.py",
             "src/mcp_stress_test/chains/library.py",
@@ -396,6 +410,14 @@
             "fuzz_run"
           ],
           "hash": "afce6530738ccec9a6c1c8e0568fb081e6168a7321642eb1a822601edcaa0d58",
+          "importOrder": [
+            "src/mcp_stress_test/core/config.py",
+            "src/mcp_stress_test/fuzzing/llm_fuzzer.py",
+            "src/mcp_stress_test/cli/scanner_resolve.py",
+            "src/mcp_stress_test/fuzzing/evasion.py",
+            "src/mcp_stress_test/models.py",
+            "src/mcp_stress_test/fuzzing/mutations.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/cli/scanner_resolve.py",
             "src/mcp_stress_test/core/config.py",
@@ -463,6 +485,11 @@
             "report_preview"
           ],
           "hash": "c27c4bde3892e8b6ad0d2d4bc7c81cac207a2c1c1e16a9ef225b21e747cdf27d",
+          "importOrder": [
+            "src/mcp_stress_test/core/protocols.py",
+            "src/mcp_stress_test/reporters/__init__.py",
+            "src/mcp_stress_test/cli/quality_gate.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/cli/quality_gate.py",
             "src/mcp_stress_test/core/protocols.py",
@@ -508,6 +535,13 @@
             "stress_run"
           ],
           "hash": "90f7df767b6fc589ad33bb2f4008d4cee529c1d689a9144544d4ac7af9acde9d",
+          "importOrder": [
+            "src/mcp_stress_test/patterns/__init__.py",
+            "src/mcp_stress_test/scanner/__init__.py",
+            "src/mcp_stress_test/scanner/runner.py",
+            "src/mcp_stress_test/core/data_paths.py",
+            "src/mcp_stress_test/scanner/checkpoint.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/core/data_paths.py",
             "src/mcp_stress_test/patterns/__init__.py",
@@ -607,6 +641,17 @@
             "tools_list"
           ],
           "hash": "a3f933cef7f6d86e482f9f8a3250e8183fde1c267496fb0042688e87d9acc52c",
+          "importOrder": [
+            "src/mcp_stress_test/__init__.py",
+            "src/mcp_stress_test/models.py",
+            "src/mcp_stress_test/patterns/__init__.py",
+            "src/mcp_stress_test/generator/__init__.py",
+            "src/mcp_stress_test/generator/strategies.py",
+            "src/mcp_stress_test/cli/commands/stress.py",
+            "src/mcp_stress_test/scanner/__init__.py",
+            "src/mcp_stress_test/scanner/checkpoint.py",
+            "src/mcp_stress_test/servers/__init__.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/__init__.py",
             "src/mcp_stress_test/cli/commands/stress.py",
@@ -681,6 +726,12 @@
         },
         {
           "hash": "9d4cce144b81e877f0ff6437687d669a772e0ace88b5a10552884fa1d1c0c819",
+          "importOrder": [
+            "src/mcp_stress_test/core/protocols.py",
+            "src/mcp_stress_test/fuzzing/mutations.py",
+            "src/mcp_stress_test/fuzzing/llm_fuzzer.py",
+            "src/mcp_stress_test/models.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/core/protocols.py",
             "src/mcp_stress_test/fuzzing/llm_fuzzer.py",
@@ -818,6 +869,11 @@
         },
         {
           "hash": "23aacf800c6b7ab38513a19e3dc2e83e5ee1dbfb3b50fdc9f1357e7c0a717335",
+          "importOrder": [
+            "src/mcp_stress_test/models.py",
+            "src/mcp_stress_test/patterns/payloads.py",
+            "src/mcp_stress_test/patterns/corpus.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/models.py",
             "src/mcp_stress_test/patterns/corpus.py",
@@ -953,6 +1009,14 @@
         },
         {
           "hash": "61ff0e85685bb0244e7ed9ed3e857fb5b3986df53eafccae9953fae6f1382d3d",
+          "importOrder": [
+            "src/mcp_stress_test/generator/__init__.py",
+            "src/mcp_stress_test/models.py",
+            "src/mcp_stress_test/scanner/adapter.py",
+            "src/mcp_stress_test/scanner/checkpoint.py",
+            "src/mcp_stress_test/scanner/mcp_client.py",
+            "src/mcp_stress_test/scanner/comparative.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/generator/__init__.py",
             "src/mcp_stress_test/models.py",
@@ -1097,6 +1161,13 @@
             "sample_tool"
           ],
           "hash": "b95a0c43e7a56ce354f7a61482f2c628108fdfc76e4979e76e08f944d8688d0e",
+          "importOrder": [
+            "src/mcp_stress_test/generator/__init__.py",
+            "src/mcp_stress_test/generator/mutator.py",
+            "src/mcp_stress_test/generator/strategies.py",
+            "src/mcp_stress_test/models.py",
+            "src/mcp_stress_test/cli_legacy.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/cli_legacy.py",
             "src/mcp_stress_test/generator/__init__.py",
@@ -1115,6 +1186,24 @@
         },
         {
           "hash": "caee3dfe2da4a0106357455fa2b187ca63b46b1ad3bac0a47feaf749b72e948e",
+          "importOrder": [
+            "src/mcp_stress_test/__init__.py",
+            "src/mcp_stress_test/models.py",
+            "src/mcp_stress_test/core/protocols.py",
+            "src/mcp_stress_test/core/registry.py",
+            "src/mcp_stress_test/scanners/mock.py",
+            "src/mcp_stress_test/core/config.py",
+            "src/mcp_stress_test/fuzzing/llm_fuzzer.py",
+            "src/mcp_stress_test/fuzzing/mutations.py",
+            "src/mcp_stress_test/fuzzing/evasion.py",
+            "src/mcp_stress_test/chains/library.py",
+            "src/mcp_stress_test/chains/executor.py",
+            "src/mcp_stress_test/reporters/json_reporter.py",
+            "src/mcp_stress_test/reporters/markdown_reporter.py",
+            "src/mcp_stress_test/reporters/sarif_reporter.py",
+            "src/mcp_stress_test/reporters/html_reporter.py",
+            "src/mcp_stress_test/cli/main.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/__init__.py",
             "src/mcp_stress_test/chains/executor.py",
@@ -1140,6 +1229,21 @@
             "ollama_absent"
           ],
           "hash": "877f33e7d55bbca6fd237cd6ca87a02c2e90a0ac0cf36235bfe177e4297dff49",
+          "importOrder": [
+            "src/mcp_stress_test/cli/__init__.py",
+            "src/mcp_stress_test/cli/main.py",
+            "src/mcp_stress_test/core/protocols.py",
+            "src/mcp_stress_test/models.py",
+            "src/mcp_stress_test/fuzzing/__init__.py",
+            "src/mcp_stress_test/cli_legacy.py",
+            "src/mcp_stress_test/cli/commands/report.py",
+            "src/mcp_stress_test/reporters/json_reporter.py",
+            "src/mcp_stress_test/chains/__init__.py",
+            "src/mcp_stress_test/chains/library.py",
+            "src/mcp_stress_test/generator/__init__.py",
+            "src/mcp_stress_test/patterns/__init__.py",
+            "src/mcp_stress_test/scanners/mock.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/chains/__init__.py",
             "src/mcp_stress_test/chains/library.py",
@@ -1174,6 +1278,17 @@
             "temp_storage_dir"
           ],
           "hash": "6a14a8ea5a4a8172fcf35e46cf06582f050c1244c20a629cc441c6e3a3562c3b",
+          "importOrder": [
+            "src/mcp_stress_test/generator/__init__.py",
+            "src/mcp_stress_test/generator/strategies.py",
+            "src/mcp_stress_test/models.py",
+            "src/mcp_stress_test/scanner/__init__.py",
+            "src/mcp_stress_test/scanner/adapter.py",
+            "src/mcp_stress_test/scanner/checkpoint.py",
+            "src/mcp_stress_test/scanner/runner.py",
+            "src/mcp_stress_test/core/config.py",
+            "src/mcp_stress_test/cli_legacy.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/cli_legacy.py",
             "src/mcp_stress_test/core/config.py",
@@ -1204,6 +1319,13 @@
         },
         {
           "hash": "f192581e27a341ce75d7f079a02242acb255ed9185ba96b00191451d7d09a28d",
+          "importOrder": [
+            "src/mcp_stress_test/models.py",
+            "src/mcp_stress_test/servers/base.py",
+            "src/mcp_stress_test/servers/domains.py",
+            "src/mcp_stress_test/servers/farm.py",
+            "src/mcp_stress_test/cli_legacy.py"
+          ],
           "importsFiles": [
             "src/mcp_stress_test/cli_legacy.py",
             "src/mcp_stress_test/models.py",
@@ -1222,6 +1344,18 @@
       "origin": "authored",
       "role": "test",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "tests/test_operator_contract.py",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "tests/test_operator_contract.py",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 2
     }
   ],

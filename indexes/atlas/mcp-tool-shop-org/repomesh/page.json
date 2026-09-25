@@ -1,23 +1,14 @@
 {
   "authored": [
     ".github/",
+    "assets/",
     "docs/",
+    "profiles/",
     "root",
     "schemas/",
-    "site/"
-  ],
-  "authoredWritten": [
-    {
-      "byPeople": 14,
-      "commits": 27,
-      "place": "ledger/events/events.jsonl",
-      "writers": [
-        ".github/workflows/anchor-xrpl.yml",
-        ".github/workflows/attestor-ci.yml",
-        "attestor/scripts/emit-key-event.mjs",
-        "packages/repomesh-cli/src/key/rotate-revoke.mjs"
-      ]
-    }
+    "scripts/",
+    "site/",
+    "templates/"
   ],
   "breaks": [
     {
@@ -117,16 +108,15 @@
     {
       "kind": "place",
       "readers": [
-        "attestor",
-        "ledger",
-        "policy",
+        "pages",
         "registry",
-        "tools"
+        "repomesh-cli",
+        "scripts",
+        "verifiers"
       ],
-      "target": "ledger/nodes/",
+      "target": "registry/trust.json",
       "writers": [
-        "attestor",
-        "tools"
+        "verifiers"
       ]
     }
   ],
@@ -172,7 +162,7 @@
       },
       {
         "kind": "door",
-        "sentence": "And 3 more changes to doors.",
+        "sentence": "And 4 more changes to doors.",
         "subjects": []
       },
       {
@@ -201,7 +191,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 106 more new writers and readers of places.",
+        "sentence": "And 103 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -249,7 +239,7 @@
   "changesTogetherWithTests": 0,
   "commit": "8843b8894a8ccae1569bce0ad24618ed0ce208e7",
   "defaultBranch": "main",
-  "derived": "18 parts, mostly JavaScript (175 files) and TypeScript (2). Work enters through 9 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image. People run repomesh.",
+  "derived": "18 parts, mostly JavaScript (175 files) and TypeScript (2). Work enters through 10 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh to npm and a container image. People run repomesh. People import @mcptoolshop/repomesh.",
   "doors": [
     {
       "checks": [
@@ -317,7 +307,7 @@
       "runsCount": 2,
       "runsMore": 0,
       "sends": [
-        "publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image"
+        "publishes @mcptoolshop/repomesh to npm and a container image"
       ],
       "stages": [],
       "triggers": [
@@ -716,6 +706,25 @@
       "checksCount": 0,
       "checksMore": 0,
       "file": "packages/repomesh-cli/package.json",
+      "id": "packages/repomesh-cli/package.json#@mcptoolshop/repomesh",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/repomesh",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [],
+      "unplaced": "packages/repomesh-cli/dist/index.mjs"
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "packages/repomesh-cli/package.json",
       "id": "packages/repomesh-cli/package.json#repomesh",
       "kind": "command",
       "landings": [],
@@ -852,9 +861,13 @@
       ]
     },
     {
-      "addedBy": "repomesh-bot",
-      "place": "assets/",
-      "writers": []
+      "place": "ledger/events/events.jsonl",
+      "writers": [
+        ".github/workflows/anchor-xrpl.yml",
+        ".github/workflows/attestor-ci.yml",
+        "attestor/scripts/emit-key-event.mjs",
+        "packages/repomesh-cli/src/key/rotate-revoke.mjs"
+      ]
     },
     {
       "place": "ledger/nodes/",
@@ -863,11 +876,6 @@
         "tools/join-node.mjs",
         "tools/register-node.mjs"
       ]
-    },
-    {
-      "addedBy": "repomesh-bot",
-      "place": "profiles/",
-      "writers": []
     },
     {
       "place": "registry/anchors.json",
@@ -917,23 +925,13 @@
       "writers": [
         "registry/scripts/build-verifiers.mjs"
       ]
-    },
-    {
-      "addedBy": "repomesh-bot",
-      "place": "scripts/",
-      "writers": []
-    },
-    {
-      "addedBy": "repomesh-bot",
-      "place": "templates/",
-      "writers": []
     }
   ],
-  "generatedAt": "2026-09-25T02:13:06.841Z",
+  "generatedAt": "2026-09-25T09:20:12.588Z",
   "limits": [
-    "114 import sites could not be resolved.",
+    "114 imports could not be resolved: `attestor/tests/emit-key-event.test.mjs` imports a path built at run time; `attestor/tests/emit-key-event.test.mjs` imports a path built at run time; `packages/repomesh-cli/tests/anchor-leaf-window.test.mjs` imports a path built at run time; and 111 more.",
     "6 reads use paths built at run time and are not named here.",
-    "25 writes go to places this repository does not track, so they are not listed as generated.",
+    "23 writes go to places this repository does not track, so they are not listed as generated.",
     "38 writes and 141 reads go to a path their caller passes, not to this repository.",
     "7 writes and 13 reads go to the directory the command is run in (.repomesh-tmp/, anchor/ and ledger/) or a path their caller passes, not to this repository.",
     "12 reads go to the directory the command is run in (anchor/, ledger/ and verifiers/), not to this repository.",
@@ -970,7 +968,7 @@
   "startHere": [
     ".github/workflows/ledger-ci.yml",
     "ledger/scripts/validate-ledger.mjs",
-    "verifiers/lib/anchor-notes.mjs"
+    "verifiers/lib/key-window.mjs"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -1010,6 +1008,8 @@
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
-  "untestedNote": [],
+  "untestedNote": [
+    "72 test files run in no workflow: anchor/xrpl/tests/anchor-writepath-stagec.test.mjs, anchor/xrpl/tests/docker-image.test.mjs, anchor/xrpl/tests/idle-epoch.test.mjs and 69 mores."
+  ],
   "written": 11
 }

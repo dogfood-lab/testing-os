@@ -230,7 +230,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 98 more new writers and readers of places.",
+        "sentence": "And 94 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -337,7 +337,7 @@
   "changesTogetherWithTests": 5,
   "commit": "333532bd00696c0ef2b1f500c404102a05483773",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly TypeScript (497 files), JavaScript (4) and GDScript (1). Work enters through 6 doors; the busiest is CI, which reaches 11 parts. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.",
+  "derived": "15 parts, mostly TypeScript (497 files), JavaScript (4) and GDScript (1). Work enters through 6 doors; the busiest is CI, which reaches 11 parts. It publishes a package to npm, chosen at run time. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.",
   "doors": [
     {
       "checks": [
@@ -650,6 +650,7 @@
       "runsCount": 60,
       "runsMore": 117,
       "sends": [
+        "publishes a package to npm, chosen at run time",
         "uploads dist-tarballs/*.tgz to the release"
       ],
       "stages": [],
@@ -666,13 +667,13 @@
         {
           "checks": [],
           "checksMore": 0,
-          "lead": "except on a release event",
+          "lead": "on a push to main or by hand",
           "runs": [
             "site/astro.config.mjs",
             "site/src/"
           ],
           "runsMore": 0,
-          "when": "except on a release event"
+          "when": "on a push to main or by hand"
         }
       ],
       "id": ".github/workflows/pages.yml",
@@ -690,7 +691,7 @@
       "runsCount": 0,
       "runsMore": 0,
       "sends": [
-        "deploys the site except on a release event"
+        "deploys the site on a push to main or by hand"
       ],
       "stages": [],
       "triggers": [
@@ -988,11 +989,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:15:24.378Z",
+  "generatedAt": "2026-09-25T09:23:36.698Z",
   "limits": [
-    "9 import sites could not be resolved.",
+    "9 imports could not be resolved: `dogfood/__tests__/dogfood-runner-exit-codes.test.ts` loads `@ai-rpg-engine/content-schema` when it is installed, which is not declared; `dogfood/godot-smoke/smoke_load_world.gd` imports `res://world.tscn`; `dogfood/run-ai-rpg-smoke.ts` imports `@ai-rpg-engine/content-schema`, which is not declared; and 6 more.",
     "3 writes and 3 reads use paths built at run time and are not named here.",
-    "40 writes go to places this repository does not track, so they are not listed as generated.",
+    "37 writes go to places this repository does not track, so they are not listed as generated.",
     "2 writes and 56 reads go to a path their caller passes, not to this repository.",
     "26 writes go to the directory the command is run in (GodotPack/ and UnrealPack/) or a path their caller passes, not to this repository.",
     "2 writes go to the directory the command is run in (export/), not to this repository.",
@@ -1029,9 +1030,13 @@
   "startDoor": "packages/export-ai-rpg/package.json#world-forge-export",
   "startHere": [
     "packages/export-ai-rpg/src/cli.ts",
-    "packages/schema/src/advisory.ts"
+    "packages/schema/src/advisory.ts",
+    "packages/schema/src/project.ts",
+    "packages/schema/src/authoring-mode.ts",
+    "packages/schema/src/districts.ts",
+    "packages/schema/src/flavor.ts"
   ],
-  "startReason": "This path follows world-forge-export (a command people run) from its entry, since CI runs only tests and scripts that import no code here.",
+  "startReason": "This path follows world-forge-export (a command people run) from its entry, since CI runs only tests, scripts that import no code here and checks.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 231,

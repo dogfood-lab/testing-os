@@ -81,7 +81,7 @@ People write audio/, docs/, the repository root and site/. Nothing in this repos
 
 ## Where to start
 
-.github/workflows/ci.yml → tools/headless.gd
+.github/workflows/ci.yml → tools/headless.gd → tools/test_case.gd
 
 Read those in order to follow one push, or pull request from a fork, end to end.
 

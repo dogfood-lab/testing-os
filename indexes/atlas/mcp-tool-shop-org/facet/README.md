@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 8d2fa34.
 
 ## What this is
 
-10 parts, mostly Python (292 files), JavaScript (2) and TypeScript (2). Work enters through 6 doors; the busiest is ci, which reaches 2 parts. It publishes to npm and PyPI. People run facet, facet-index and facet-mcp.
+10 parts, mostly Markdown (489 files); code in Python (292), JavaScript (2) and TypeScript (2). Work enters through 6 doors; the busiest is ci, which reaches 2 parts. It publishes to npm and PyPI. People run facet, facet-index and facet-mcp.
 
 ## What changed since 2026-09-23 (7c06851)
 
@@ -30,7 +30,7 @@ Mapped at 2026-09-25 from commit 8d2fa34.
 ## What happens through ci
 
 1. The workflow runs tests/ in tests.
-2. That reaches tools (3 files).
+2. That reaches tools (29 files).
 
 ## Who reads the results
 
@@ -87,17 +87,17 @@ People write .claude/, .github/, canon/, profiles/ and the repository root; 126 
 
 ## Where to start
 
-bin/facet.js
+tools/record_mcp.py → tools/facet_index.py
 
-Read those in order to follow one run of facet end to end. This path follows facet (a command people run) from its entry, since ci runs only tests.
+Read those in order to follow one run of facet-mcp end to end. This path follows facet-mcp (a command people run) from its entry, since ci runs only tests.
 
 ## What this map cannot see
 
-- 205 import sites could not be resolved.
-- 126 writes and 99 reads use paths built at run time and are not named here.
+- 7 imports could not be resolved: `tests/conftest.py` imports a path built at run time; `tests/test_t25_mask_geometry.py` imports a path built at run time; `tests/test_t27_packaging_shape.py` imports a path built at run time; and 4 more.
+- 126 writes and 100 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 392 writes and 92 reads go to a path their caller passes, not to this repository.
-- 4 writes go to the directory the command is run in, not to this repository.
+- 391 writes and 91 reads go to a path their caller passes, not to this repository.
+- 4 writes and 2 reads go to the directory the command is run in, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

@@ -8,7 +8,7 @@
   ],
   "breaks": [
     {
-      "doors": 4,
+      "doors": 5,
       "importedBy": [
         "agents",
         "scripts"
@@ -21,7 +21,7 @@
       "partLabel": "src"
     },
     {
-      "doors": 1,
+      "doors": 2,
       "importedBy": [
         "scripts"
       ],
@@ -39,6 +39,14 @@
       "kind": "part",
       "name": "bin",
       "partLabel": "bin"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "tests",
+      "partLabel": "tests"
     }
   ],
   "changes": {
@@ -51,8 +59,24 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "Release now also runs tests/.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "tests/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release now also checks src/.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "src/"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -60,7 +84,7 @@
       "commit": "fa2660c9bab9c9d2828b88caa5677f10197511e8",
       "generatedAt": "2026-09-25T02:21:33.371Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -147,7 +171,7 @@
   "changesTogetherWithTests": 8,
   "commit": "25c0ecc42a1c8d1ab9de580a944993f01094ca4e",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly Python (61 files), JavaScript (2) and TypeScript (2). Work enters through 8 doors; the busiest is CI, which reaches 3 parts. It publishes to npm and PyPI. People run escape-the-valley and trail.",
+  "derived": "10 parts, mostly Python (61 files), JavaScript (2) and TypeScript (2). Work enters through 8 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. People run escape-the-valley and trail.",
   "doors": [
     {
       "checks": [
@@ -188,6 +212,49 @@
         "on a pull request touching 8 paths",
         "on a push touching 8 paths",
         "on a `workflow_call` event",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 27
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 26
+        },
+        {
+          "boundary": "agents",
+          "depth": 1,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "tests/"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [
+        "publishes to npm",
+        "creates a GitHub release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*` is pushed",
         "or by hand"
       ]
     },
@@ -297,29 +364,6 @@
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
-      "file": ".github/workflows/release.yml",
-      "id": ".github/workflows/release.yml",
-      "landings": [],
-      "name": "Release",
-      "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
-      "runsMore": 0,
-      "sends": [
-        "publishes to npm",
-        "creates a GitHub release"
-      ],
-      "stages": [],
-      "triggers": [
-        "when a tag matching `v*` is pushed",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#escape-the-valley",
       "kind": "command",
@@ -403,6 +447,16 @@
       "from": "agents",
       "fromTests": false,
       "to": "src"
+    },
+    {
+      "from": "tests",
+      "fromTests": true,
+      "to": "agents"
+    },
+    {
+      "from": "tests",
+      "fromTests": true,
+      "to": "src"
     }
   ],
   "generated": [
@@ -413,7 +467,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T03:19:13.865Z",
+  "generatedAt": "2026-09-25T09:15:40.889Z",
   "limits": [
     "2 writes and 1 read use paths built at run time and are not named here.",
     "3 writes and 2 reads go to a path their caller passes, not to this repository.",
@@ -439,9 +493,15 @@
   "sequences": [],
   "startDoor": "pyproject.toml#trail",
   "startHere": [
-    "src/escape_the_valley/cli.py"
+    "src/escape_the_valley/cli.py",
+    "src/escape_the_valley/save.py",
+    "src/escape_the_valley/models.py",
+    "src/escape_the_valley/worldgen.py",
+    "src/escape_the_valley/gm.py",
+    "src/escape_the_valley/voice.py",
+    "src/escape_the_valley/step_engine.py"
   ],
-  "startReason": "This path follows trail (a command people run, from pyproject.toml) from its entry, since CI runs only tests.",
+  "startReason": "This path follows trail (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 26,

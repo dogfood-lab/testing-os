@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 333532b.
 
 ## What this is
 
-15 parts, mostly TypeScript (497 files), JavaScript (4) and GDScript (1). Work enters through 6 doors; the busiest is CI, which reaches 11 parts. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.
+15 parts, mostly TypeScript (497 files), JavaScript (4) and GDScript (1). Work enters through 6 doors; the busiest is CI, which reaches 11 parts. It publishes a package to npm, chosen at run time. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal.
 
 ## What changed since 2026-09-23 (b6fa56a)
 
@@ -16,7 +16,7 @@ Mapped at 2026-09-25 from commit 333532b.
 - docs/c0-alignment/export-table.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
 - docs/c0-alignment/export-table.md is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
 - docs/c0-alignment/fixture-manifest.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
-- And 98 more new writers and readers of places.
+- And 94 more new writers and readers of places.
 - docs was authored and is now mixed.
 - 633 files changed content, across 14 parts.
 
@@ -24,7 +24,7 @@ Mapped at 2026-09-25 from commit 333532b.
 
 1. **CI.** On a pull request; on a push; or by hand. Runs scripts/check-pack.mjs, scripts/sync-version.mjs, dogfood/__tests__/ and 211 more; checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 475 more.
 2. **Release.** When a release is published. Runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 117 more; checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 475 more.
-3. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; when a release is published; or by hand. Except on a release event, it runs site/astro.config.mjs and site/src/.
+3. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; when a release is published; or by hand. On a push to main or by hand, it runs site/astro.config.mjs and site/src/.
 4. **world-forge-export** (a command people run). Runs packages/export-ai-rpg/src/cli.ts.
 5. **world-forge-export-godot** (a command people run). Runs packages/export-godot/src/cli.ts.
 6. **world-forge-export-unreal** (a command people run). Runs packages/export-unreal/src/cli.ts.
@@ -41,9 +41,9 @@ Mapped at 2026-09-25 from commit 333532b.
 
 ## The other doors
 
-**Release** runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 117 more, checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 475 more, reaches the repository root, writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json, and uploads dist-tarballs/*.tgz to the release.
+**Release** runs scripts/sync-version.mjs, dogfood/__tests__/, packages/editor/src/__tests__/ and 117 more, checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 475 more, reaches the repository root, writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json, publishes a package to npm, chosen at run time, and uploads dist-tarballs/*.tgz to the release.
 
-**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/ except on a release event, and deploys the site except on a release event.
+**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/ on a push to main or by hand, and deploys the site on a push to main or by hand.
 
 **world-forge-export** (a command people run) runs packages/export-ai-rpg/src/cli.ts and reaches schema.
 
@@ -115,15 +115,15 @@ People write .claude/, .github/, assets/ and site/; 3 writes with paths built at
 
 ## Where to start
 
-packages/export-ai-rpg/src/cli.ts → packages/schema/src/advisory.ts
+packages/export-ai-rpg/src/cli.ts → packages/schema/src/advisory.ts → packages/schema/src/project.ts → packages/schema/src/authoring-mode.ts → packages/schema/src/districts.ts → packages/schema/src/flavor.ts
 
-Read those in order to follow one run of world-forge-export end to end. This path follows world-forge-export (a command people run) from its entry, since CI runs only tests and scripts that import no code here.
+Read those in order to follow one run of world-forge-export end to end. This path follows world-forge-export (a command people run) from its entry, since CI runs only tests, scripts that import no code here and checks.
 
 ## What this map cannot see
 
-- 9 import sites could not be resolved.
+- 9 imports could not be resolved: `dogfood/__tests__/dogfood-runner-exit-codes.test.ts` loads `@ai-rpg-engine/content-schema` when it is installed, which is not declared; `dogfood/godot-smoke/smoke_load_world.gd` imports `res://world.tscn`; `dogfood/run-ai-rpg-smoke.ts` imports `@ai-rpg-engine/content-schema`, which is not declared; and 6 more.
 - 3 writes and 3 reads use paths built at run time and are not named here.
-- 40 writes go to places this repository does not track, so they are not listed as generated.
+- 37 writes go to places this repository does not track, so they are not listed as generated.
 - 2 writes and 56 reads go to a path their caller passes, not to this repository.
 - 26 writes go to the directory the command is run in (GodotPack/ and UnrealPack/) or a path their caller passes, not to this repository.
 - 2 writes go to the directory the command is run in (export/), not to this repository.

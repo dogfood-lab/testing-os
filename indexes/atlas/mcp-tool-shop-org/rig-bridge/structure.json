@@ -209,6 +209,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -237,6 +238,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "cfe86356a4cdd1d9ceaed3e51cf96e91c045d7267436b1ba283f55ce6225ae08",
           "path": "site/src/site-config.ts"
         },
@@ -733,6 +735,12 @@
         },
         {
           "hash": "0011d60c8e3639ffc1ad7ce025216dae87d0a4b89bc9cf3beec359325a359517",
+          "importOrder": [
+            "src/commands/init.ts",
+            "src/commands/new.ts",
+            "src/commands/send.ts",
+            "src/commands/close.ts"
+          ],
           "importsFiles": [
             "src/commands/close.ts",
             "src/commands/init.ts",
@@ -962,6 +970,13 @@
         },
         {
           "hash": "b23189c6f7aa13e8e554170b127c9523dd85f82204371ede6d35a517fd834b44",
+          "importOrder": [
+            "src/commands/init.ts",
+            "src/commands/new.ts",
+            "src/commands/relay.ts",
+            "src/engine/envelope.ts",
+            "src/engine/body-hash.ts"
+          ],
           "importsFiles": [
             "src/commands/init.ts",
             "src/commands/new.ts",
@@ -1250,6 +1265,13 @@
         },
         {
           "hash": "405782512edeb361cd499e18fbd2605d82d71f998982d243c59b78db0695dde1",
+          "importOrder": [
+            "src/commands/init.ts",
+            "src/commands/new.ts",
+            "src/commands/send.ts",
+            "src/commands/close.ts",
+            "src/commands/status.ts"
+          ],
           "importsFiles": [
             "src/commands/close.ts",
             "src/commands/init.ts",
@@ -1336,6 +1358,11 @@
         },
         {
           "hash": "eb7e8f30c7738cd550c36392beaddbb523b36cfd22b0a78355a3ade1439207e3",
+          "importOrder": [
+            "src/engine/git.ts",
+            "src/commands/init.ts",
+            "src/commands/sync.ts"
+          ],
           "importsFiles": [
             "src/commands/init.ts",
             "src/commands/sync.ts",
@@ -1390,6 +1417,13 @@
         },
         {
           "hash": "22798c4e80958242c486db0eb0b9205880187c0ed6847f748490e3e69abd0f03",
+          "importOrder": [
+            "src/commands/init.ts",
+            "src/commands/new.ts",
+            "src/commands/send.ts",
+            "src/commands/close.ts",
+            "src/commands/thread.ts"
+          ],
           "importsFiles": [
             "src/commands/close.ts",
             "src/commands/init.ts",
@@ -1455,6 +1489,13 @@
         },
         {
           "hash": "3d2d95a473b17a62eeacaca70676af6323f00392e1c1489eeb995c06bec8d6a4",
+          "importOrder": [
+            "src/commands/init.ts",
+            "src/commands/new.ts",
+            "src/commands/send.ts",
+            "src/engine/envelope.ts",
+            "src/engine/body-hash.ts"
+          ],
           "importsFiles": [
             "src/commands/init.ts",
             "src/commands/new.ts",
@@ -1556,6 +1597,19 @@
         },
         {
           "hash": "c1ff4d740b661a99916575f36c1128e90a386899057a1fbc01d3453c0ab3776a",
+          "importOrder": [
+            "src/engine/body-hash.ts",
+            "src/engine/envelope.ts",
+            "src/engine/rig-id.ts",
+            "src/engine/status.ts",
+            "src/engine/schema-validator.ts",
+            "src/engine/config.ts",
+            "src/engine/threads.ts",
+            "src/engine/peer-rigs.ts",
+            "src/engine/git-diff.ts",
+            "src/engine/verify-hash.ts",
+            "src/engine/validate-file.ts"
+          ],
           "importsFiles": [
             "src/engine/body-hash.ts",
             "src/engine/config.ts",
@@ -1697,6 +1751,15 @@
         },
         {
           "hash": "f3fab312af23d2883b5c217eea0d961a73cc6243bbd7a37ddab425ef05a0b123",
+          "importOrder": [
+            "src/commands/init.ts",
+            "src/commands/new.ts",
+            "src/commands/send.ts",
+            "src/commands/close.ts",
+            "src/engine/envelope.ts",
+            "src/engine/schema-validator.ts",
+            "src/engine/body-hash.ts"
+          ],
           "importsFiles": [
             "src/commands/close.ts",
             "src/commands/init.ts",
@@ -1733,7 +1796,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "build-and-test",
@@ -1807,11 +1870,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "build-and-test",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.build.json"
         },
         {
@@ -2132,7 +2196,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "release",
@@ -2202,11 +2266,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "release",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.build.json"
         },
         {

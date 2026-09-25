@@ -27,8 +27,18 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI now also runs src/ai_eyes_mcp/__init__.py, src/ai_eyes_mcp/engine.py and src/ai_eyes_mcp/server.py.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "src/ai_eyes_mcp/__init__.py",
+          "src/ai_eyes_mcp/engine.py",
+          "src/ai_eyes_mcp/server.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -36,7 +46,7 @@
       "commit": "f8d83a6835d008cddddd79ee5c1f976a5b23cb97",
       "generatedAt": "2026-09-25T02:40:43.685Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -58,21 +68,24 @@
       "pushes": false,
       "reach": [
         {
+          "boundary": "src",
+          "depth": 0,
+          "files": 3
+        },
+        {
           "boundary": "tests",
           "depth": 0,
           "files": 7
-        },
-        {
-          "boundary": "src",
-          "depth": 1,
-          "files": 3
         }
       ],
       "runs": [
+        "src/ai_eyes_mcp/__init__.py",
+        "src/ai_eyes_mcp/engine.py",
+        "src/ai_eyes_mcp/server.py",
         "tests/"
       ],
-      "runsCount": 1,
-      "runsMore": 0,
+      "runsCount": 4,
+      "runsMore": 7,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -144,7 +157,7 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-25T03:17:38.562Z",
+  "generatedAt": "2026-09-25T09:10:20.781Z",
   "limits": [
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -161,11 +174,12 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/ai-eyes-mcp",
   "sequences": [],
-  "startDoor": "pyproject.toml#ai-eyes-mcp",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "src/ai_eyes_mcp/server.py"
+    ".github/workflows/ci.yml",
+    "src/ai_eyes_mcp/server.py",
+    "src/ai_eyes_mcp/engine.py"
   ],
-  "startReason": "This path follows ai-eyes-mcp (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 18,

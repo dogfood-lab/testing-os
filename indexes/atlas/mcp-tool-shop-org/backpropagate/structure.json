@@ -140,6 +140,23 @@
         },
         {
           "hash": "4630c0e2ff185be6949da720164a0ffb990e297bd2c64586b9d7e143e673b260",
+          "importOrder": [
+            "backpropagate/exceptions.py",
+            "backpropagate/security.py",
+            "backpropagate/ui_security.py",
+            "backpropagate/checkpoints.py",
+            "backpropagate/config.py",
+            "backpropagate/dataset_report.py",
+            "backpropagate/datasets.py",
+            "backpropagate/eval.py",
+            "backpropagate/export.py",
+            "backpropagate/feature_flags.py",
+            "backpropagate/gpu_safety.py",
+            "backpropagate/model_card.py",
+            "backpropagate/multi_run.py",
+            "backpropagate/slao.py",
+            "backpropagate/trainer.py"
+          ],
           "importsFiles": [
             "backpropagate/checkpoints.py",
             "backpropagate/config.py",
@@ -1689,6 +1706,10 @@
             "unapply_windows_fixes"
           ],
           "hash": "ee1fc2bc3265e0134133370ad22a24aa9b7eb4f2f92d2e3c3c65b581ea1df93e",
+          "importOrder": [
+            "backpropagate/logging_config.py",
+            "backpropagate/exceptions.py"
+          ],
           "importsFiles": [
             "backpropagate/exceptions.py",
             "backpropagate/logging_config.py"
@@ -2200,6 +2221,7 @@
                   "branch": "not isinstance(item, dict)",
                   "line": 477,
                   "name": "UserInputError",
+                  "over": "enumerate(references)",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   }
@@ -2507,6 +2529,7 @@
                   "branch": "m not in TASK_METRICS",
                   "line": 1017,
                   "name": "UserInputError",
+                  "over": "metric_names",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   }
@@ -2515,6 +2538,7 @@
                   "branch": "not (isinstance(item, dict) and item.get(\"prompt\"))",
                   "line": 1031,
                   "name": "UserInputError",
+                  "over": "enumerate(reference_items)",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   }
@@ -2543,6 +2567,7 @@
                   "branch": "not isinstance(item, dict)",
                   "line": 477,
                   "name": "UserInputError",
+                  "over": "enumerate(references)",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   },
@@ -3291,6 +3316,7 @@
                   "branch": "ord(ch) < 0x20 and ch != \"\\t\"",
                   "line": 1777,
                   "name": "ExportError",
+                  "over": "value",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   },
@@ -3374,6 +3400,7 @@
                   "branch": "ord(ch) < 0x20 and ch != \"\\t\"",
                   "line": 1777,
                   "name": "ExportError",
+                  "over": "value",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   },
@@ -3561,6 +3588,7 @@
                   "branch": "ord(ch) < 0x20 and ch != \"\\t\"",
                   "line": 2315,
                   "name": "ExportError",
+                  "over": "value",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   },
@@ -3673,6 +3701,7 @@
                   "branch": "ord(ch) < 0x20 and ch != \"\\t\"",
                   "line": 2315,
                   "name": "ExportError",
+                  "over": "value",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   },
@@ -3797,6 +3826,12 @@
             "resolve_backend"
           ],
           "hash": "24ff8657833235b5d46dd02dfc4153b1a29902f18caf9a35930a326429b3a493",
+          "importOrder": [
+            "backpropagate/feature_flags.py",
+            "backpropagate/datasets.py",
+            "backpropagate/exceptions.py",
+            "backpropagate/export.py"
+          ],
           "importsFiles": [
             "backpropagate/datasets.py",
             "backpropagate/exceptions.py",
@@ -4129,6 +4164,18 @@
         },
         {
           "hash": "f4bbfffbbc09194f5908784d20d35c96166f0c41e8a7a6e08fa242ac86c4aa89",
+          "importOrder": [
+            "backpropagate/ui_theme.py",
+            "backpropagate/ui_app/auth.py",
+            "backpropagate/ui_app/middleware/__init__.py",
+            "backpropagate/ui_app/pages/dataset.py",
+            "backpropagate/ui_app/pages/export.py",
+            "backpropagate/ui_app/pages/models.py",
+            "backpropagate/ui_app/pages/multi_run.py",
+            "backpropagate/ui_app/pages/run_detail.py",
+            "backpropagate/ui_app/pages/runs.py",
+            "backpropagate/ui_app/pages/train.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/auth.py",
             "backpropagate/ui_app/middleware/__init__.py",
@@ -4161,6 +4208,17 @@
             "BpSideRail"
           ],
           "hash": "80ef8aac6379754fc3faac141dca8bd3b22160ba17b4002c31404b82b8f701f6",
+          "importOrder": [
+            "backpropagate/__init__.py",
+            "backpropagate/ui_state.py",
+            "backpropagate/ui_app/components/auth_badge.py",
+            "backpropagate/ui_app/components/event_log.py",
+            "backpropagate/ui_app/components/gpu_ring.py",
+            "backpropagate/ui_app/components/loss_chart.py",
+            "backpropagate/ui_app/components/sparkline.py",
+            "backpropagate/ui_app/components/status_pill.py",
+            "backpropagate/ui_app/components/vram_bar.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/ui_app/components/auth_badge.py",
@@ -4267,6 +4325,10 @@
             "healthz_middleware"
           ],
           "hash": "0018fb40e4741d778d4c545375ba2e449a8ef1e2e50305d5e1fd98d9485293e3",
+          "importOrder": [
+            "backpropagate/ui_app/auth.py",
+            "backpropagate/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/ui_app/auth.py"
@@ -4311,6 +4373,11 @@
             "dataset_page"
           ],
           "hash": "0c39145241df315922011bff04ba44615981b70ad310625ba1f969f72995441a",
+          "importOrder": [
+            "backpropagate/ui_state.py",
+            "backpropagate/ui_app/chrome.py",
+            "backpropagate/ui_app/components/group.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/chrome.py",
             "backpropagate/ui_app/components/group.py",
@@ -4323,6 +4390,11 @@
             "export_page"
           ],
           "hash": "9acf92c5946dbd82842c56b831ceb5c7807f5fa7e9d8a731ba810fad3ae89382",
+          "importOrder": [
+            "backpropagate/ui_state.py",
+            "backpropagate/ui_app/chrome.py",
+            "backpropagate/ui_app/components/group.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/chrome.py",
             "backpropagate/ui_app/components/group.py",
@@ -4335,6 +4407,11 @@
             "models_page"
           ],
           "hash": "3c0006b493de7d316dee5b7c77c0235cc220e0716eafb755ee65c2eef9a6efd2",
+          "importOrder": [
+            "backpropagate/ui_state.py",
+            "backpropagate/ui_app/chrome.py",
+            "backpropagate/ui_app/components/error_callout.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/chrome.py",
             "backpropagate/ui_app/components/error_callout.py",
@@ -4347,6 +4424,11 @@
             "multi_run_page"
           ],
           "hash": "65805abe6776f2ebcb1cb1ee53c4c9e4d4f9ce264b656530359b432bfb4e8677",
+          "importOrder": [
+            "backpropagate/ui_state.py",
+            "backpropagate/ui_app/chrome.py",
+            "backpropagate/ui_app/components/group.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/chrome.py",
             "backpropagate/ui_app/components/group.py",
@@ -4359,6 +4441,12 @@
             "run_detail_page"
           ],
           "hash": "72970ab7ab6af6d9ae59e23b89bb0bc5b4b32a6859e368e7923e62e7a9776f3e",
+          "importOrder": [
+            "backpropagate/ui_state.py",
+            "backpropagate/ui_app/chrome.py",
+            "backpropagate/ui_app/components/error_callout.py",
+            "backpropagate/ui_app/components/loss_chart.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/chrome.py",
             "backpropagate/ui_app/components/error_callout.py",
@@ -4372,6 +4460,11 @@
             "runs_page"
           ],
           "hash": "d965cab824430eeb6a1f33cfcb796eba2be949979ccefa14f75d34d8be6d7d0c",
+          "importOrder": [
+            "backpropagate/ui_state.py",
+            "backpropagate/ui_app/chrome.py",
+            "backpropagate/ui_app/components/error_callout.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/chrome.py",
             "backpropagate/ui_app/components/error_callout.py",
@@ -4384,6 +4477,12 @@
             "train_page"
           ],
           "hash": "a502afeb5787348faa77564c71481cca357fd2d6e551471ecf4b339f29022075",
+          "importOrder": [
+            "backpropagate/ui_state.py",
+            "backpropagate/ui_app/chrome.py",
+            "backpropagate/ui_app/components/group.py",
+            "backpropagate/ui_app/components/recovery_banner.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/chrome.py",
             "backpropagate/ui_app/components/group.py",
@@ -4418,6 +4517,11 @@
             "validate_string_input"
           ],
           "hash": "bb2f093d59dc5bd32cbfbd2a2477b0f32c023e8e3822b61648680af05ea24e65",
+          "importOrder": [
+            "backpropagate/exceptions.py",
+            "backpropagate/__init__.py",
+            "backpropagate/gpu_safety.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/exceptions.py",
@@ -4652,6 +4756,7 @@
                   "branch": "not _is_credential_pair(entry)",
                   "line": 3020,
                   "name": "BackpropagateError",
+                  "over": "enumerate(auth)",
                   "target": {
                     "file": "backpropagate/exceptions.py"
                   }
@@ -4673,6 +4778,14 @@
         },
         {
           "hash": "72738b5cda1f24079351e39a75c282bd739aa835955d8e1cc63316004e8835fb",
+          "importOrder": [
+            "backpropagate/security.py",
+            "backpropagate/ui_security.py",
+            "backpropagate/export.py",
+            "backpropagate/cli.py",
+            "backpropagate/datasets.py",
+            "backpropagate/checkpoints.py"
+          ],
           "importsFiles": [
             "backpropagate/checkpoints.py",
             "backpropagate/cli.py",
@@ -4707,7 +4820,8 @@
           "where": [
             "caller",
             "home:AppData/",
-            "home:Library/"
+            "home:Library/",
+            "home:backpropagate/"
           ],
           "writes": 1
         },
@@ -4730,6 +4844,18 @@
       "outsideWrites": 2,
       "role": "code",
       "testedBy": 63,
+      "unresolvedNamed": [
+        {
+          "path": "backpropagate/rxconfig.py",
+          "specifier": "ui_app.auth",
+          "why": "unplaced"
+        },
+        {
+          "path": "backpropagate/trainer.py",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 2
     },
     {
@@ -5281,6 +5407,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -5361,6 +5488,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "a6ab51c3ec26b258b0edef51592e7bbd5404391c27349afa2cdcb70a0ad856f8",
           "path": "site/src/site-config.ts"
         },
@@ -5460,6 +5588,15 @@
             "training_dataset_file"
           ],
           "hash": "ba1d7b2a4fc325009f90364bbc94c76ee0259fbfa4612e175d55aa8406c2ece7",
+          "importOrder": [
+            "backpropagate/config.py",
+            "backpropagate/gpu_safety.py",
+            "backpropagate/slao.py",
+            "backpropagate/multi_run.py",
+            "backpropagate/cli.py",
+            "backpropagate/trainer.py",
+            "tests/helpers/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/cli.py",
             "backpropagate/config.py",
@@ -5528,6 +5665,12 @@
             "test_chrome_footer_constructs_with_badge"
           ],
           "hash": "1c97635991884c20d554042af0cb132f1d949c83a17a6cd9a212d248fac131dc",
+          "importOrder": [
+            "backpropagate/ui_security.py",
+            "backpropagate/ui_app/components/auth_badge.py",
+            "backpropagate/ui_app/chrome.py",
+            "backpropagate/ui_app/components/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/chrome.py",
             "backpropagate/ui_app/components/__init__.py",
@@ -5572,6 +5715,12 @@
             "test_ws_tampered_cookie_signature_closes_pre_accept"
           ],
           "hash": "8a7c598e6b47412c707219f0718f24bd6ecc91ccd389a05f445d8eb5a4bcb238",
+          "importOrder": [
+            "tests/helpers/asgi.py",
+            "tests/helpers/ws.py",
+            "backpropagate/ui_app/auth.py",
+            "backpropagate/ui_app/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/__init__.py",
             "backpropagate/ui_app/auth.py",
@@ -5594,6 +5743,11 @@
             "test_malformed_basic_b64_never_authenticates"
           ],
           "hash": "57d157596b2a9911c39f6afdb2e7180418465055f4194cc18c259bcbf853e65f",
+          "importOrder": [
+            "tests/helpers/asgi.py",
+            "tests/helpers/ws.py",
+            "backpropagate/ui_app/auth.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/auth.py",
             "tests/helpers/asgi.py",
@@ -5603,6 +5757,11 @@
         },
         {
           "hash": "95dd4555c3bd84f8370e0426df02c03dc2b8faf30dd3f1b6e9e6254f57a453ca",
+          "importOrder": [
+            "backpropagate/trainer.py",
+            "backpropagate/multi_run.py",
+            "backpropagate/gpu_safety.py"
+          ],
           "importsFiles": [
             "backpropagate/gpu_safety.py",
             "backpropagate/multi_run.py",
@@ -5629,6 +5788,10 @@
             "temp_checkpoint_dir"
           ],
           "hash": "b330b014041be6c5b8bb6887d32db620b166a1bef20339b0c83b6e76f613573c",
+          "importOrder": [
+            "backpropagate/checkpoints.py",
+            "backpropagate/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/checkpoints.py"
@@ -5637,6 +5800,12 @@
         },
         {
           "hash": "955a9d78185b5e6c89e03734cca5302721dd354590dc25d293aba3a57d8d95b5",
+          "importOrder": [
+            "backpropagate/cli.py",
+            "backpropagate/exceptions.py",
+            "backpropagate/__init__.py",
+            "backpropagate/checkpoints.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/checkpoints.py",
@@ -5694,6 +5863,10 @@
         },
         {
           "hash": "e22ff17924385a1ff970efcde3f3c2a8eb67ee7385790b53449baf92c1576382",
+          "importOrder": [
+            "backpropagate/config.py",
+            "backpropagate/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/config.py"
@@ -5702,6 +5875,11 @@
         },
         {
           "hash": "6b59cdb02707faf2d748efcb56d0b111e6394feedfe1ceb8e35f73ebe9b53ecf",
+          "importOrder": [
+            "backpropagate/checkpoints.py",
+            "backpropagate/slao.py",
+            "backpropagate/exceptions.py"
+          ],
           "importsFiles": [
             "backpropagate/checkpoints.py",
             "backpropagate/exceptions.py",
@@ -5711,6 +5889,10 @@
         },
         {
           "hash": "b6a59a30460064702bf5d3e21ced431e1ab2e76c50347c300a91ae46438dae73",
+          "importOrder": [
+            "backpropagate/dataset_report.py",
+            "backpropagate/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/dataset_report.py"
@@ -5719,6 +5901,11 @@
         },
         {
           "hash": "4b2d45f93876df280b69afe74bf9cfc619ea2b26929f9c802a1c8e0939c13dc0",
+          "importOrder": [
+            "backpropagate/datasets.py",
+            "backpropagate/__init__.py",
+            "backpropagate/exceptions.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/datasets.py",
@@ -5742,6 +5929,11 @@
         },
         {
           "hash": "2b6f6955336766c49d5fcc286549009058f49517e649ff905a16d8ea2469c6ad",
+          "importOrder": [
+            "backpropagate/export.py",
+            "backpropagate/trainer.py",
+            "backpropagate/checkpoints.py"
+          ],
           "importsFiles": [
             "backpropagate/checkpoints.py",
             "backpropagate/export.py",
@@ -5751,6 +5943,14 @@
         },
         {
           "hash": "a78255dcdbce7b90e81dbcb4893cfda968124b0ee35359b8b8cda1043cb7d428",
+          "importOrder": [
+            "backpropagate/trainer.py",
+            "backpropagate/exceptions.py",
+            "backpropagate/cli.py",
+            "backpropagate/config.py",
+            "backpropagate/feature_flags.py",
+            "backpropagate/mlx_backend.py"
+          ],
           "importsFiles": [
             "backpropagate/cli.py",
             "backpropagate/config.py",
@@ -5821,6 +6021,11 @@
         },
         {
           "hash": "3d24c0b48a00d988f71993f2c028ccea562abc020923cf70bf46b52053a34000",
+          "importOrder": [
+            "backpropagate/checkpoints.py",
+            "backpropagate/multi_run.py",
+            "backpropagate/exceptions.py"
+          ],
           "importsFiles": [
             "backpropagate/checkpoints.py",
             "backpropagate/exceptions.py",
@@ -5838,6 +6043,11 @@
         },
         {
           "hash": "ea62a652da27cf3c3f2080c578d417331d7c2380e0f25120294b11de1bffe4ae",
+          "importOrder": [
+            "backpropagate/trainer.py",
+            "backpropagate/multi_run.py",
+            "backpropagate/gpu_safety.py"
+          ],
           "importsFiles": [
             "backpropagate/gpu_safety.py",
             "backpropagate/multi_run.py",
@@ -5847,6 +6057,10 @@
         },
         {
           "hash": "996f74a2768a0e4d426f1da283ff6ee096da04dc4815d08e19529e53968c8bcc",
+          "importOrder": [
+            "backpropagate/exceptions.py",
+            "backpropagate/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/exceptions.py"
@@ -5855,6 +6069,12 @@
         },
         {
           "hash": "0d0e64d8ebd753e1765798bd3d51c8b2d422308de50d8b69f83e922f2bfe096d",
+          "importOrder": [
+            "backpropagate/export.py",
+            "backpropagate/exceptions.py",
+            "backpropagate/__init__.py",
+            "backpropagate/checkpoints.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/checkpoints.py",
@@ -5865,6 +6085,10 @@
         },
         {
           "hash": "d663cf32dcbe3c3c21f227c9725b16e4a1a872b5dc43caa5aea2c9f60f07a616",
+          "importOrder": [
+            "backpropagate/feature_flags.py",
+            "backpropagate/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/feature_flags.py"
@@ -5873,6 +6097,12 @@
         },
         {
           "hash": "e757caec7847e90bfd954d69441f1541611a1327045cdaec9f77d699764a8cc3",
+          "importOrder": [
+            "backpropagate/trainer.py",
+            "backpropagate/config.py",
+            "backpropagate/__init__.py",
+            "backpropagate/exceptions.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/config.py",
@@ -5929,6 +6159,12 @@
         },
         {
           "hash": "3224122e3dc7d8e9ac284fe5089331f9b09795b80ccc80894463ac30eed820dc",
+          "importOrder": [
+            "backpropagate/__init__.py",
+            "backpropagate/trainer.py",
+            "backpropagate/config.py",
+            "backpropagate/exceptions.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/config.py",
@@ -5939,6 +6175,15 @@
         },
         {
           "hash": "0322cd225f474231e3f025c05f7602905c442f30caf5127cc72595cbba869350",
+          "importOrder": [
+            "backpropagate/trainer.py",
+            "backpropagate/multi_run.py",
+            "backpropagate/checkpoints.py",
+            "backpropagate/export.py",
+            "backpropagate/slao.py",
+            "backpropagate/datasets.py",
+            "backpropagate/gpu_safety.py"
+          ],
           "importsFiles": [
             "backpropagate/checkpoints.py",
             "backpropagate/datasets.py",
@@ -5963,6 +6208,10 @@
         },
         {
           "hash": "b2e2c7584e0a605af7b275455c854719f35bd4336f42ba3c744c1a771be9281e",
+          "importOrder": [
+            "backpropagate/logging_config.py",
+            "backpropagate/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/logging_config.py"
@@ -5971,6 +6220,11 @@
         },
         {
           "hash": "1df4d53f66c2f87d54c355a6f2b1940cf31f5efe1216a2c1faa552fc4c0c7270",
+          "importOrder": [
+            "backpropagate/cli.py",
+            "backpropagate/__main__.py",
+            "backpropagate/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/__main__.py",
@@ -5992,6 +6246,11 @@
             "test_mlx_end_to_end_trains_and_saves_adapter"
           ],
           "hash": "ea62f25963e5ec0bf7353e48d163ea2582177118535991451b4c21703d83bce7",
+          "importOrder": [
+            "backpropagate/feature_flags.py",
+            "backpropagate/checkpoints.py",
+            "backpropagate/trainer.py"
+          ],
           "importsFiles": [
             "backpropagate/checkpoints.py",
             "backpropagate/feature_flags.py",
@@ -6001,6 +6260,11 @@
         },
         {
           "hash": "7e1cff9951a923e5d5ef83452ad339ed6c22a1e9b1f34b77a322e9fc90a332e6",
+          "importOrder": [
+            "backpropagate/model_card.py",
+            "backpropagate/checkpoints.py",
+            "backpropagate/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/checkpoints.py",
@@ -6010,6 +6274,16 @@
         },
         {
           "hash": "78d91656bacb7a382b3819e84c299f2e88b6e6e5fe2e7a9da7d3cd4da9a50c32",
+          "importOrder": [
+            "backpropagate/exceptions.py",
+            "backpropagate/gpu_safety.py",
+            "backpropagate/multi_run.py",
+            "backpropagate/checkpoints.py",
+            "backpropagate/__init__.py",
+            "backpropagate/trainer.py",
+            "backpropagate/slao.py",
+            "backpropagate/eval.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/checkpoints.py",
@@ -6031,6 +6305,13 @@
         },
         {
           "hash": "e6ba5d1db3490f4d7e2c2bd9ca4bc77413333f75c1d3e225469cda2861cfc3fe",
+          "importOrder": [
+            "backpropagate/__init__.py",
+            "backpropagate/trainer.py",
+            "backpropagate/config.py",
+            "backpropagate/exceptions.py",
+            "backpropagate/checkpoints.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/checkpoints.py",
@@ -6080,6 +6361,10 @@
             "test_ws_cap_separate_from_http_cap"
           ],
           "hash": "ebfad0104f42e8975e19fa380cac736c6a3578ba7d13b52141aa3a3752debf64",
+          "importOrder": [
+            "backpropagate/ui_app/middleware/rate_limit.py",
+            "backpropagate/ui_app/middleware/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/middleware/__init__.py",
             "backpropagate/ui_app/middleware/rate_limit.py"
@@ -6132,6 +6417,11 @@
         },
         {
           "hash": "db74693b98a6dac2f4189a3be9a69914d0f25ba3dd93226c690bc55060bca738",
+          "importOrder": [
+            "backpropagate/cli.py",
+            "backpropagate/ui_state.py",
+            "backpropagate/checkpoints.py"
+          ],
           "importsFiles": [
             "backpropagate/checkpoints.py",
             "backpropagate/cli.py",
@@ -6141,6 +6431,10 @@
         },
         {
           "hash": "3b6fadf44685432a760e1f92a5ec1adfd01a2a8284143b58ad3229546802dc2b",
+          "importOrder": [
+            "backpropagate/security.py",
+            "backpropagate/__init__.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/security.py"
@@ -6171,6 +6465,11 @@
             "test_websocket_upgrade_passes_through_unmodified"
           ],
           "hash": "a182240f45e552ac1968cbade51b1e94dec64eddc41b6676e0a8e4ab707bc7df",
+          "importOrder": [
+            "backpropagate/ui_app/middleware/security_headers.py",
+            "backpropagate/ui_app/auth.py",
+            "tests/helpers/asgi.py"
+          ],
           "importsFiles": [
             "backpropagate/ui_app/auth.py",
             "backpropagate/ui_app/middleware/security_headers.py",
@@ -6202,6 +6501,19 @@
             "temp_dir"
           ],
           "hash": "8933c198cf435798a3731a64bc7f59aad0bd6bca15cacaddb57de52ef0995129",
+          "importOrder": [
+            "backpropagate/trainer.py",
+            "backpropagate/config.py",
+            "backpropagate/cli.py",
+            "backpropagate/exceptions.py",
+            "backpropagate/checkpoints.py",
+            "backpropagate/export.py",
+            "backpropagate/__init__.py",
+            "backpropagate/datasets.py",
+            "backpropagate/feature_flags.py",
+            "backpropagate/slao.py",
+            "backpropagate/logging_config.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/checkpoints.py",
@@ -6222,6 +6534,14 @@
             "temp_dir"
           ],
           "hash": "0009a15c0335a8019a1d9d498b80ff1e38e11b2e96a12738b7ab81b8c0beccde",
+          "importOrder": [
+            "backpropagate/__init__.py",
+            "backpropagate/trainer.py",
+            "backpropagate/config.py",
+            "backpropagate/exceptions.py",
+            "backpropagate/checkpoints.py",
+            "backpropagate/datasets.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/checkpoints.py",
@@ -6234,6 +6554,10 @@
         },
         {
           "hash": "e30383315bd0118080b555dee86552ff59ff504c279a411cd22754eebb12f199",
+          "importOrder": [
+            "backpropagate/ui_security.py",
+            "backpropagate/exceptions.py"
+          ],
           "importsFiles": [
             "backpropagate/exceptions.py",
             "backpropagate/ui_security.py"
@@ -6242,6 +6566,13 @@
         },
         {
           "hash": "93101fe1abe66780c8d32370e1088f44033bbdd858f153ddb9d26fc7589e05d7",
+          "importOrder": [
+            "backpropagate/ui_state.py",
+            "backpropagate/ui_theme.py",
+            "backpropagate/__init__.py",
+            "backpropagate/export.py",
+            "backpropagate/exceptions.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/exceptions.py",
@@ -6261,6 +6592,13 @@
         },
         {
           "hash": "ed36c421ea6fcd4c7bacfc17f3b47b1c48dbdfcc8f9bbcbca3bbd5c5f60aefc5",
+          "importOrder": [
+            "backpropagate/export.py",
+            "backpropagate/exceptions.py",
+            "backpropagate/__init__.py",
+            "backpropagate/cli.py",
+            "backpropagate/checkpoints.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/checkpoints.py",
@@ -6272,6 +6610,15 @@
         },
         {
           "hash": "aa83ea69df35ece2c6e996f1c90f9a8b9a67afb9b8841f6d46c73639348485d3",
+          "importOrder": [
+            "backpropagate/trainer.py",
+            "backpropagate/exceptions.py",
+            "backpropagate/config.py",
+            "backpropagate/__init__.py",
+            "backpropagate/multi_run.py",
+            "backpropagate/gpu_safety.py",
+            "backpropagate/checkpoints.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/checkpoints.py",
@@ -6285,6 +6632,12 @@
         },
         {
           "hash": "27fbe3cedfba535f9e68b95f841c88386d65009c4e49a879b0aa3b3f3146ae94",
+          "importOrder": [
+            "backpropagate/config.py",
+            "backpropagate/cli.py",
+            "backpropagate/checkpoints.py",
+            "backpropagate/trainer.py"
+          ],
           "importsFiles": [
             "backpropagate/checkpoints.py",
             "backpropagate/cli.py",
@@ -6295,6 +6648,15 @@
         },
         {
           "hash": "b68b0af01cbe41284054ac400a52556d23f657cef7045067bc21850832a5a78d",
+          "importOrder": [
+            "backpropagate/config.py",
+            "backpropagate/__init__.py",
+            "backpropagate/trainer.py",
+            "backpropagate/datasets.py",
+            "backpropagate/checkpoints.py",
+            "backpropagate/exceptions.py",
+            "backpropagate/multi_run.py"
+          ],
           "importsFiles": [
             "backpropagate/__init__.py",
             "backpropagate/checkpoints.py",
@@ -6315,6 +6677,23 @@
       "origin": "authored",
       "role": "test",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "tests/test_fp8_smoke.py",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "tests/test_kto_smoke.py",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "tests/test_orpo_smoke.py",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 4
     }
   ],

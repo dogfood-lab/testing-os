@@ -283,6 +283,10 @@
         },
         {
           "hash": "50157353efb20cffc3a05f4d5eb3677388cdd489012807deb603737e2f40817c",
+          "importOrder": [
+            "anchor/xrpl/scripts/post-anchor.mjs",
+            "anchor/xrpl/scripts/merkle.mjs"
+          ],
           "importsFiles": [
             "anchor/xrpl/scripts/merkle.mjs",
             "anchor/xrpl/scripts/post-anchor.mjs"
@@ -309,6 +313,10 @@
         },
         {
           "hash": "befd801d9c5a9d603dfdb8bc01f1db74e912d77a8c3d35ee6add43d9358089dd",
+          "importOrder": [
+            "anchor/xrpl/scripts/verify-anchor.mjs",
+            "anchor/xrpl/scripts/merkle.mjs"
+          ],
           "importsFiles": [
             "anchor/xrpl/scripts/merkle.mjs",
             "anchor/xrpl/scripts/verify-anchor.mjs"
@@ -602,6 +610,18 @@
       "outsideWrites": 4,
       "role": "code",
       "testedBy": 8,
+      "unresolvedNamed": [
+        {
+          "path": "attestor/tests/emit-key-event.test.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "attestor/tests/emit-key-event.test.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 2
     },
     {
@@ -1106,6 +1126,18 @@
       "outsideWrites": 2,
       "role": "code",
       "testedBy": 3,
+      "unresolvedNamed": [
+        {
+          "path": "policy/tests/violation-event-schema.test.mjs",
+          "specifier": "ajv/dist/2020.js",
+          "why": "undeclared"
+        },
+        {
+          "path": "policy/tests/violation-event-schema.test.mjs",
+          "specifier": "ajv-formats",
+          "why": "undeclared"
+        }
+      ],
       "unresolvedSites": 2
     },
     {
@@ -1564,6 +1596,11 @@
         },
         {
           "hash": "1ba5fb52bb9b074b3de4b0d96cc862cec7cd353b9e0efa1d77d50b587dac9ca1",
+          "importOrder": [
+            "ledger/scripts/canonicalize.mjs",
+            "registry/scripts/build-trust.mjs",
+            "registry/scripts/build-badges.mjs"
+          ],
           "importsFiles": [
             "ledger/scripts/canonicalize.mjs",
             "registry/scripts/build-badges.mjs",
@@ -1668,6 +1705,13 @@
       "outsideReads": 22,
       "role": "code",
       "testedBy": 15,
+      "unresolvedNamed": [
+        {
+          "path": "registry/scripts/verify-trust.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 1
     },
     {
@@ -1735,6 +1779,17 @@
         },
         {
           "hash": "6e09e19ce85533cb6ff995d2003485e8c34bba3b3e5e3a7e95dada34449f99b1",
+          "importOrder": [
+            "packages/repomesh-cli/src/mode.mjs",
+            "packages/repomesh-cli/src/remote-defaults.mjs",
+            "packages/repomesh-cli/src/verify/verify-release.mjs",
+            "packages/repomesh-cli/src/verify/verify-all.mjs",
+            "packages/repomesh-cli/src/verify/verify-anchor.mjs",
+            "packages/repomesh-cli/src/init.mjs",
+            "packages/repomesh-cli/src/key/keygen.mjs",
+            "packages/repomesh-cli/src/doctor.mjs",
+            "packages/repomesh-cli/src/key/rotate-revoke.mjs"
+          ],
           "importsFiles": [
             "packages/repomesh-cli/src/doctor.mjs",
             "packages/repomesh-cli/src/init.mjs",
@@ -1765,6 +1820,13 @@
         },
         {
           "hash": "ae53b06ccd2fc9b566e912462d2fe7121162e8340305bab26a0b0065377139f9",
+          "importOrder": [
+            "packages/repomesh-cli/src/verify/verify-release.mjs",
+            "packages/repomesh-cli/src/verify/verify-all.mjs",
+            "packages/repomesh-cli/src/verify/format.mjs",
+            "packages/repomesh-cli/src/verify/key-window.mjs",
+            "packages/repomesh-cli/src/verify/verify-anchor.mjs"
+          ],
           "importsFiles": [
             "packages/repomesh-cli/src/verify/format.mjs",
             "packages/repomesh-cli/src/verify/key-window.mjs",
@@ -1781,6 +1843,10 @@
             "init"
           ],
           "hash": "a7029b3cbccdd3c77391bc063c301a239515659a36f521c73e999deab992859d",
+          "importOrder": [
+            "packages/repomesh-cli/src/log.mjs",
+            "packages/repomesh-cli/src/key/keygen.mjs"
+          ],
           "importsFiles": [
             "packages/repomesh-cli/src/key/keygen.mjs",
             "packages/repomesh-cli/src/log.mjs"
@@ -1927,6 +1993,14 @@
             "verifyAll"
           ],
           "hash": "5dfeb2d3506457dfd274377b9c3617fbf8e83e8e53fb99d773f12a93afd508f5",
+          "importOrder": [
+            "packages/repomesh-cli/src/mode.mjs",
+            "packages/repomesh-cli/src/http.mjs",
+            "packages/repomesh-cli/src/remote-defaults.mjs",
+            "packages/repomesh-cli/src/verify/safe-json.mjs",
+            "packages/repomesh-cli/src/verify/verify-release.mjs",
+            "packages/repomesh-cli/src/verify/format.mjs"
+          ],
           "importsFiles": [
             "packages/repomesh-cli/src/http.mjs",
             "packages/repomesh-cli/src/mode.mjs",
@@ -1943,6 +2017,16 @@
             "verifyAnchorTx"
           ],
           "hash": "646dd8e9eb52608fbe82dc1ba13b3ca316d43c8852a86b88ba01945a58124761",
+          "importOrder": [
+            "packages/repomesh-cli/src/mode.mjs",
+            "packages/repomesh-cli/src/http.mjs",
+            "packages/repomesh-cli/src/remote-defaults.mjs",
+            "packages/repomesh-cli/src/trusted-anchor-accounts.mjs",
+            "packages/repomesh-cli/src/verify/canonicalize.mjs",
+            "packages/repomesh-cli/src/verify/merkle.mjs",
+            "packages/repomesh-cli/src/verify/safe-json.mjs",
+            "packages/repomesh-cli/src/log.mjs"
+          ],
           "importsFiles": [
             "packages/repomesh-cli/src/http.mjs",
             "packages/repomesh-cli/src/log.mjs",
@@ -1962,6 +2046,19 @@
             "verifyRelease"
           ],
           "hash": "cd706bae570e4c826c6dce3e50294393fd4c28294078b84dcf0e78365adc2536",
+          "importOrder": [
+            "packages/repomesh-cli/src/log.mjs",
+            "packages/repomesh-cli/src/mode.mjs",
+            "packages/repomesh-cli/src/http.mjs",
+            "packages/repomesh-cli/src/remote-defaults.mjs",
+            "packages/repomesh-cli/src/verify/canonicalize.mjs",
+            "packages/repomesh-cli/src/verify/merkle.mjs",
+            "packages/repomesh-cli/src/verify/anchor-notes.mjs",
+            "packages/repomesh-cli/src/verify/safe-json.mjs",
+            "packages/repomesh-cli/src/verify/verify-anchor.mjs",
+            "packages/repomesh-cli/src/verify/key-window.mjs",
+            "packages/repomesh-cli/src/verify/format.mjs"
+          ],
           "importsFiles": [
             "packages/repomesh-cli/src/http.mjs",
             "packages/repomesh-cli/src/log.mjs",
@@ -2185,6 +2282,23 @@
       "outsideWrites": 17,
       "role": "code",
       "testedBy": 26,
+      "unresolvedNamed": [
+        {
+          "path": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "packages/repomesh-cli/tests/anchor-notes-drift.test.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "packages/repomesh-cli/tests/anchor-notes-drift.test.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 98
     },
     {
@@ -2369,6 +2483,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -2405,6 +2520,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "2eb5158316842d9357ef3b5c476e38b90736f3b1f9e86f936f5efe6f92664c32",
           "path": "site/src/site-config.ts"
         },
@@ -2429,6 +2545,13 @@
       "origin": "authored",
       "role": "docs",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "site/src/site-config.ts",
+          "specifier": "./stats.json",
+          "why": "missing"
+        }
+      ],
       "unresolvedSites": 1
     },
     {
@@ -2503,6 +2626,12 @@
         },
         {
           "hash": "bdb4ff5615c2951b1fee3da355658323835fa0a7241068573596897d86b32d97",
+          "importOrder": [
+            "tools/init-node.mjs",
+            "tools/register-node.mjs",
+            "tools/keygen.mjs",
+            "tools/verify-release.mjs"
+          ],
           "importsFiles": [
             "tools/init-node.mjs",
             "tools/keygen.mjs",
@@ -2560,6 +2689,12 @@
         },
         {
           "hash": "d3fcbfbb3904c6b2b015e42849b16848ba4f06610af72d67d15c209fe2547a23",
+          "importOrder": [
+            "registry/scripts/build-trust.mjs",
+            "verifiers/lib/common.mjs",
+            "packages/repomesh-cli/src/verify/verify-release.mjs",
+            "verifiers/lib/key-window.mjs"
+          ],
           "importsFiles": [
             "packages/repomesh-cli/src/verify/verify-release.mjs",
             "registry/scripts/build-trust.mjs",
@@ -2570,6 +2705,12 @@
         },
         {
           "hash": "0c891b197210251a6fb8e8a81a47e0b096ff9bc88a228960987642ca0905668b",
+          "importOrder": [
+            "registry/scripts/build-trust.mjs",
+            "verifiers/lib/common.mjs",
+            "packages/repomesh-cli/src/verify/verify-release.mjs",
+            "verifiers/lib/key-window.mjs"
+          ],
           "importsFiles": [
             "packages/repomesh-cli/src/verify/verify-release.mjs",
             "registry/scripts/build-trust.mjs",
@@ -2580,6 +2721,11 @@
         },
         {
           "hash": "33d141a7875df0061af35635b91f760c2c356cac7ec37be0028b2f4a67c47a7c",
+          "importOrder": [
+            "tools/keygen.mjs",
+            "anchor/xrpl/scripts/merkle.mjs",
+            "tools/init-node.mjs"
+          ],
           "importsFiles": [
             "anchor/xrpl/scripts/merkle.mjs",
             "tools/init-node.mjs",
@@ -2596,6 +2742,13 @@
             "verifyRelease"
           ],
           "hash": "a143c8655da0a1c9d2709521173e75fa19309691f056dcee001f8ce0e9c4a7cc",
+          "importOrder": [
+            "anchor/xrpl/scripts/merkle.mjs",
+            "anchor/xrpl/scripts/verify-anchor.mjs",
+            "packages/repomesh-cli/src/trusted-anchor-accounts.mjs",
+            "verifiers/lib/key-window.mjs",
+            "verifiers/lib/anchor-notes.mjs"
+          ],
           "importsFiles": [
             "anchor/xrpl/scripts/merkle.mjs",
             "anchor/xrpl/scripts/verify-anchor.mjs",
@@ -2649,6 +2802,23 @@
       "outsideWrites": 17,
       "role": "code",
       "testedBy": 13,
+      "unresolvedNamed": [
+        {
+          "path": "tools/init-node.mjs",
+          "specifier": "ajv/dist/2020.js",
+          "why": "undeclared"
+        },
+        {
+          "path": "tools/init-node.mjs",
+          "specifier": "ajv-formats",
+          "why": "undeclared"
+        },
+        {
+          "path": "tools/join-node.mjs",
+          "specifier": "ajv/dist/2020.js",
+          "why": "undeclared"
+        }
+      ],
       "unresolvedSites": 10
     },
     {
@@ -4828,6 +4998,10 @@
         },
         {
           "hash": "cc0e9800e2d43f3a95514ab3621ced4bdd1aabb1f8b7c1dd9fa972e97c45301e",
+          "importOrder": [
+            "verifiers/security/scripts/verify-security.mjs",
+            "verifiers/license/scripts/verify-license.mjs"
+          ],
           "importsFiles": [
             "verifiers/license/scripts/verify-license.mjs",
             "verifiers/security/scripts/verify-security.mjs"
@@ -4888,6 +5062,10 @@
         },
         {
           "hash": "d026f863237d25c7f00d8df449eaa7d71038b5ab1a70d0ff858f24c18ba1ab2d",
+          "importOrder": [
+            "verifiers/lib/osv.mjs",
+            "verifiers/lib/osv-cache.mjs"
+          ],
           "importsFiles": [
             "verifiers/lib/osv-cache.mjs",
             "verifiers/lib/osv.mjs"
@@ -7759,6 +7937,38 @@
       "commands": [],
       "elsewhere": [],
       "file": "packages/repomesh-cli/package.json",
+      "kind": "package",
+      "landings": [],
+      "mentions": [],
+      "name": "@mcptoolshop/repomesh",
+      "permissions": [],
+      "pushes": false,
+      "reach": [],
+      "readers": [],
+      "runs": [],
+      "runsCount": 0,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "unplaced": "packages/repomesh-cli/dist/index.mjs",
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "packages/repomesh-cli/package.json",
       "kind": "command",
       "landings": [],
       "mentions": [],
@@ -10095,6 +10305,11 @@
           "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "verifiers/lib/common.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
         }
       ],
       "target": "registry/anchors.json",
@@ -10102,23 +10317,6 @@
         {
           "by": ".github/workflows/anchor-xrpl.yml"
         },
-        {
-          "by": "verifiers/lib/common.mjs",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": "verifiers/lib/common.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": "registry/anchors.json/*.*.*.*.tmp",
-      "tracked": false,
-      "writers": [
         {
           "by": "verifiers/lib/common.mjs",
           "confidence": "ast"
@@ -10429,26 +10627,14 @@
           "by": "scripts/verify.sh",
           "call": "literal",
           "confidence": "text"
-        }
-      ],
-      "target": "registry/trust.json",
-      "writers": [
-        {
-          "by": "verifiers/lib/common.mjs",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [
+        },
         {
           "by": "verifiers/lib/common.mjs",
           "call": "existsSync",
           "confidence": "ast"
         }
       ],
-      "target": "registry/trust.json/*.*.*.*.tmp",
-      "tracked": false,
+      "target": "registry/trust.json",
       "writers": [
         {
           "by": "verifiers/lib/common.mjs",

@@ -1135,6 +1135,7 @@
           "path": "site/public/banner.jpg"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -1191,6 +1192,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "d30207a612abc611f9f0995fda0bfdb649e077eebcd2f4856ee8c9c6a58085d6",
           "path": "site/src/site-config.ts"
         },
@@ -1230,6 +1232,11 @@
       "files": [
         {
           "hash": "4c94e0b248a1c6b7151cdbdd397cc1301de6094052b30b6d7a2c4288965ec6a9",
+          "importOrder": [
+            "src/llm/claude-errors.ts",
+            "src/game/debug-logger.ts",
+            "src/action-interpreter.ts"
+          ],
           "importsFiles": [
             "src/action-interpreter.ts",
             "src/game/debug-logger.ts",
@@ -1243,6 +1250,12 @@
             "interpretAction"
           ],
           "hash": "0033930ee68962e41dbb83ced9df0bf1c0368c9d52a63a6f22ae46c26c3de231",
+          "importOrder": [
+            "src/claude-client.ts",
+            "src/prompts/interpret-action.ts",
+            "src/game/asks.ts",
+            "src/game/debug-logger.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/game/asks.ts",
@@ -2958,6 +2971,12 @@
             "renderChronicle"
           ],
           "hash": "211da3de23a48fe7138b622a454bd609bede55d3294331af2b857f4952d6b30c",
+          "importOrder": [
+            "src/session/chronicle.ts",
+            "src/display/play-renderer.ts",
+            "src/cli/colors.ts",
+            "src/character/prompts.ts"
+          ],
           "importsFiles": [
             "src/character/prompts.ts",
             "src/cli/colors.ts",
@@ -3018,6 +3037,10 @@
             "wrapMenuLine"
           ],
           "hash": "1ec5b37d6b380b2908ede60ae52d2ba4fdb6048c8f763e0604855536c30d0a19",
+          "importOrder": [
+            "src/display/play-renderer.ts",
+            "src/cli/colors.ts"
+          ],
           "importsFiles": [
             "src/cli/colors.ts",
             "src/display/play-renderer.ts"
@@ -3096,6 +3119,11 @@
         },
         {
           "hash": "d51ff0a610a70167f83ea2678c3913c571bf89fc7aa8e755f1e4cd6c94b1bfa7",
+          "importOrder": [
+            "src/character/recap.ts",
+            "src/session/history.ts",
+            "src/narrator/narrator.ts"
+          ],
           "importsFiles": [
             "src/character/recap.ts",
             "src/narrator/narrator.ts",
@@ -3108,6 +3136,13 @@
             "renderRecap"
           ],
           "hash": "fb37e297e8e8e869efaeacd3b75ea16a0e87435e210d0a336ebb722fba77b4c3",
+          "importOrder": [
+            "src/session/history.ts",
+            "src/narrator/narrator.ts",
+            "src/display/play-renderer.ts",
+            "src/cli/colors.ts",
+            "src/character/catalog-names.ts"
+          ],
           "importsFiles": [
             "src/character/catalog-names.ts",
             "src/cli/colors.ts",
@@ -3119,6 +3154,11 @@
         },
         {
           "hash": "e54299fb8d1d73db916f9799157112f534cc26cc60f106d690f50b05306176a8",
+          "importOrder": [
+            "src/character/session-recap.ts",
+            "src/character/recap-delta.ts",
+            "src/character/world-delta.ts"
+          ],
           "importsFiles": [
             "src/character/recap-delta.ts",
             "src/character/session-recap.ts",
@@ -3262,6 +3302,11 @@
             "renderCharacterSheet"
           ],
           "hash": "8a301128e8716a7f9490ff29d186db9191bcd0fd2a4414739f665944152bd9de",
+          "importOrder": [
+            "src/display/play-renderer.ts",
+            "src/cli/colors.ts",
+            "src/character/catalog-names.ts"
+          ],
           "importsFiles": [
             "src/character/catalog-names.ts",
             "src/cli/colors.ts",
@@ -3580,6 +3625,11 @@
         },
         {
           "hash": "2fa035672f97d934d4a60a8a83c5c8b64473423eb8fbe22985cbe88fc00ed00a",
+          "importOrder": [
+            "src/cli/presentation-renderer.ts",
+            "src/runtime/audio-bridge.ts",
+            "src/prompts/narrate-scene.ts"
+          ],
           "importsFiles": [
             "src/cli/presentation-renderer.ts",
             "src/prompts/narrate-scene.ts",
@@ -3809,6 +3859,10 @@
         },
         {
           "hash": "9859f4a7035a004d098258c21bd14d794178f468df17c71231881780526ad877",
+          "importOrder": [
+            "src/session/session.ts",
+            "src/cli/save-listing.ts"
+          ],
           "importsFiles": [
             "src/cli/save-listing.ts",
             "src/session/session.ts"
@@ -3948,6 +4002,10 @@
         },
         {
           "hash": "80f66a22e1b152a636ee0590a07623c44f19d8b51390b94a46e539071fb467b6",
+          "importOrder": [
+            "src/cli/usage.ts",
+            "src/character/packs.ts"
+          ],
           "importsFiles": [
             "src/character/packs.ts",
             "src/cli/usage.ts"
@@ -4134,6 +4192,10 @@
         },
         {
           "hash": "709e347914fcba5ae39e6c229fe915651c6c31f7f345ec9e076243c724ee808c",
+          "importOrder": [
+            "src/cli/world-flag.ts",
+            "src/character/packs.ts"
+          ],
           "importsFiles": [
             "src/character/packs.ts",
             "src/cli/world-flag.ts"
@@ -4242,6 +4304,13 @@
         },
         {
           "hash": "f295d834b310fbd94435164cf2d624cccfb642659470b203280c30c6dac96333",
+          "importOrder": [
+            "src/dialogue/dialogue-mind.ts",
+            "src/claude-client.ts",
+            "src/llm/claude-errors.ts",
+            "src/game/debug-logger.ts",
+            "src/dialogue/npc-context.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/dialogue/dialogue-mind.ts",
@@ -4256,6 +4325,14 @@
             "generateDialogue"
           ],
           "hash": "64d920da929180136a06c76a05799061521d9c0ec04fcbc48b6c07ce534559ed",
+          "importOrder": [
+            "src/claude-client.ts",
+            "src/prompts/dialogue-npc.ts",
+            "src/dialogue/npc-context.ts",
+            "src/llm/claude-errors.ts",
+            "src/llm/claude-adapter.ts",
+            "src/game/debug-logger.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/dialogue/npc-context.ts",
@@ -4279,6 +4356,10 @@
             "deriveNpcPersonality"
           ],
           "hash": "fea7e7ea4ade935b128f68730d55d0146c30edf74c29d74c6b74e5837da2436b",
+          "importOrder": [
+            "src/prompts/dialogue-npc.ts",
+            "src/npc/presence.ts"
+          ],
           "importsFiles": [
             "src/npc/presence.ts",
             "src/prompts/dialogue-npc.ts"
@@ -4392,6 +4473,16 @@
             "renderDirectorHelp"
           ],
           "hash": "0560ba6cc022d36367a48baeecf6d83fe7ab33490cf0e05d26c061cc65b6991d",
+          "importOrder": [
+            "src/session/chronicle.ts",
+            "src/character/chronicle-renderer.ts",
+            "src/display/help-system.ts",
+            "src/display/status-compact.ts",
+            "src/display/play-renderer.ts",
+            "src/character/presence.ts",
+            "src/cli/colors.ts",
+            "src/game/tuning.ts"
+          ],
           "importsFiles": [
             "src/character/chronicle-renderer.ts",
             "src/character/presence.ts",
@@ -4406,6 +4497,12 @@
         },
         {
           "hash": "22eb3facce3e51fda578c713ed261516622ee70b10c4d98b1803185e8cc0e5a5",
+          "importOrder": [
+            "src/display/help-system.ts",
+            "src/display/archive-browser.ts",
+            "src/cli/slash-completer.ts",
+            "src/character/packs.ts"
+          ],
           "importsFiles": [
             "src/character/packs.ts",
             "src/cli/slash-completer.ts",
@@ -4431,6 +4528,11 @@
             "wrapWords"
           ],
           "hash": "a1a6d0ce08ffcf10928c06b079f7e3405e53e273957eacbaa6fffbe9ad5bd608",
+          "importOrder": [
+            "src/display/play-renderer.ts",
+            "src/cli/slash-completer.ts",
+            "src/cli/colors.ts"
+          ],
           "importsFiles": [
             "src/cli/colors.ts",
             "src/cli/slash-completer.ts",
@@ -4759,6 +4861,10 @@
         },
         {
           "hash": "abdd08b9749e4f375eba917508bf84c7fa45c949857d3c79cfc5e84555e03ba6",
+          "importOrder": [
+            "src/display/status-compact.ts",
+            "src/character/presence.ts"
+          ],
           "importsFiles": [
             "src/character/presence.ts",
             "src/display/status-compact.ts"
@@ -4787,6 +4893,11 @@
         },
         {
           "hash": "82013456b5131021b9e229d608d205c083352423df881072e75f9a7ed08debbd",
+          "importOrder": [
+            "src/foundry/world-gen.ts",
+            "src/claude-client.ts",
+            "src/game/debug-logger.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/foundry/world-gen.ts",
@@ -4846,6 +4957,21 @@
         },
         {
           "hash": "b83da37f5c9453922bf66b79c5023c3b8a7410747ff508e62902a77bf1536589",
+          "importOrder": [
+            "src/display/play-renderer.ts",
+            "src/game.ts",
+            "src/game/debug-logger.ts",
+            "src/runtime/audio-bridge.ts",
+            "src/session/session.ts",
+            "src/game/game-state.ts",
+            "src/foundry/world-gen.ts",
+            "test/helpers/fake-claude-client.ts",
+            "src/turn-loop.ts",
+            "test/helpers/game-harness.ts",
+            "src/narrator/narrator.ts",
+            "src/game/tuning.ts",
+            "src/game/round-metrics.ts"
+          ],
           "importsFiles": [
             "src/display/play-renderer.ts",
             "src/foundry/world-gen.ts",
@@ -4865,6 +4991,47 @@
         },
         {
           "hash": "a64af4be741e7d2376a9fd991548fe29acd7acc03ba0e9dfdecd86b8812a7498",
+          "importOrder": [
+            "src/game/world-truth-seed.ts",
+            "src/game/rumor-mirror.ts",
+            "src/game/world-moved.ts",
+            "src/game/game-state.ts",
+            "src/game/reputation-view.ts",
+            "src/game/leverage-view.ts",
+            "src/game/game-narration.ts",
+            "src/game/game-presenter.ts",
+            "src/llm/claude-adapter.ts",
+            "src/claude-client.ts",
+            "src/session/history.ts",
+            "src/turn-loop.ts",
+            "src/prompts/dialogue-npc.ts",
+            "src/display/director-renderer.ts",
+            "src/game/ambush-headline.ts",
+            "src/game/tuning.ts",
+            "src/game/round-metrics.ts",
+            "src/game/condition.ts",
+            "src/game/hostile-turn.ts",
+            "src/game/asks.ts",
+            "src/game/recognition.ts",
+            "src/game/hint-ledger.ts",
+            "src/game/unknown-command.ts",
+            "src/runtime/immersion-runtime.ts",
+            "src/runtime/hooks.ts",
+            "src/runtime/audio-bridge.ts",
+            "src/character/presence.ts",
+            "src/foundry/world-gen.ts",
+            "src/session/chronicle.ts",
+            "src/companion/companion-bridge.ts",
+            "src/action-interpreter.ts",
+            "src/display/help-system.ts",
+            "src/display/status-compact.ts",
+            "src/display/contextual-suggestions.ts",
+            "src/display/archive-browser.ts",
+            "src/session/session.ts",
+            "src/session/chronicle-export.ts",
+            "src/game/debug-logger.ts",
+            "src/game/token-tracker.ts"
+          ],
           "importsFiles": [
             "src/action-interpreter.ts",
             "src/character/presence.ts",
@@ -4994,6 +5161,12 @@
         },
         {
           "hash": "b84461433af6602d10dd11c4b78d29a601d7428e15aeac9772790a5e511d3143",
+          "importOrder": [
+            "src/claude-client.ts",
+            "src/narrator/narrator.ts",
+            "src/game/game-narration.ts",
+            "src/narrator/finale-narrator.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/game/game-narration.ts",
@@ -5008,6 +5181,11 @@
             "generateOpeningNarration"
           ],
           "hash": "c392e189b180be5473e74e7d8b26bb833071881aca58aa3db55af4158c4ad2cd",
+          "importOrder": [
+            "src/claude-client.ts",
+            "src/narrator/narrator.ts",
+            "src/narrator/finale-narrator.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/narrator/finale-narrator.ts",
@@ -5034,6 +5212,14 @@
             "renderWelcomeScreen"
           ],
           "hash": "bf08ac64685c8c3339b694eca0161c172209c468faa5e6cb5a67085b82499fe5",
+          "importOrder": [
+            "src/dialogue/dialogue-mind.ts",
+            "src/display/play-renderer.ts",
+            "src/display/help-system.ts",
+            "src/character/presence.ts",
+            "src/display/contextual-suggestions.ts",
+            "src/game/condition.ts"
+          ],
           "importsFiles": [
             "src/character/presence.ts",
             "src/dialogue/dialogue-mind.ts",
@@ -5046,6 +5232,10 @@
         },
         {
           "hash": "37db4217e302632a89d0f75ffde2238b91c3e5fc3961e977ad5742bc3fe5ccc7",
+          "importOrder": [
+            "src/turn-loop.ts",
+            "src/game/game-state.ts"
+          ],
           "importsFiles": [
             "src/game/game-state.ts",
             "src/turn-loop.ts"
@@ -5085,6 +5275,12 @@
             "simpleHashNum"
           ],
           "hash": "605cad7ae22abcaa6048b465ed10fcf85563ff307be602714f29a7b535b2dc39",
+          "importOrder": [
+            "src/game/reputation-view.ts",
+            "src/character/presence.ts",
+            "src/session/chronicle.ts",
+            "src/turn-loop.ts"
+          ],
           "importsFiles": [
             "src/character/presence.ts",
             "src/game/reputation-view.ts",
@@ -5205,6 +5401,11 @@
         },
         {
           "hash": "7ee8886793e65cbf57c0769eaa6982064b9493b9554bc3e9f6b4835e4a21446b",
+          "importOrder": [
+            "src/game/token-tracker.ts",
+            "src/claude-client.ts",
+            "src/display/play-renderer.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/display/play-renderer.ts",
@@ -5217,6 +5418,12 @@
             "withTokenTracking"
           ],
           "hash": "9ee260943572f77cd991799002abf0c0e18b9c58cb75e73ef8c699896e45823b",
+          "importOrder": [
+            "src/claude-client.ts",
+            "src/cli/colors.ts",
+            "src/display/play-renderer.ts",
+            "src/display/help-system.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/cli/colors.ts",
@@ -5248,6 +5455,11 @@
             "deriveValidNowFromWorld"
           ],
           "hash": "32daaf76b50a8d5705af93d2efa933d65fd6740a6edd7ec447970de5f02a29e7",
+          "importOrder": [
+            "src/display/director-renderer.ts",
+            "src/display/contextual-suggestions.ts",
+            "src/game/condition.ts"
+          ],
           "importsFiles": [
             "src/display/contextual-suggestions.ts",
             "src/display/director-renderer.ts",
@@ -5264,6 +5476,10 @@
             "seedWorldTruthFromSession"
           ],
           "hash": "cb5c37bfcc01a7af3d60e0ad3806ec7e11778b24efd323a4b531f604495ee856",
+          "importOrder": [
+            "src/session/session.ts",
+            "src/game/reputation-view.ts"
+          ],
           "importsFiles": [
             "src/game/reputation-view.ts",
             "src/session/session.ts"
@@ -5272,6 +5488,43 @@
         },
         {
           "hash": "b4c7cc10668badc7c8b93bc92dd0378f68c0052cddf7391f283242e02d20a0f1",
+          "importOrder": [
+            "src/game.ts",
+            "src/claude-client.ts",
+            "src/llm/claude-adapter.ts",
+            "src/llm/claude-errors.ts",
+            "src/turn-loop.ts",
+            "src/action-interpreter.ts",
+            "src/narrator/narrator.ts",
+            "src/narrator/scene-context.ts",
+            "src/dialogue/dialogue-mind.ts",
+            "src/dialogue/npc-context.ts",
+            "src/foundry/world-gen.ts",
+            "src/session/history.ts",
+            "src/session/session.ts",
+            "src/session/migrate.ts",
+            "src/display/play-renderer.ts",
+            "src/display/director-renderer.ts",
+            "src/cli/stream-presenter.ts",
+            "src/runtime/immersion-runtime.ts",
+            "src/runtime/presentation-state.ts",
+            "src/runtime/hooks.ts",
+            "src/runtime/voice-caster.ts",
+            "src/runtime/audio-bridge.ts",
+            "src/character/packs.ts",
+            "src/character/builder.ts",
+            "src/character/presence.ts",
+            "src/character/sheet.ts",
+            "src/character/recap.ts",
+            "src/character/recap-delta.ts",
+            "src/character/world-delta.ts",
+            "src/session/chronicle.ts",
+            "src/character/chronicle-renderer.ts",
+            "src/character/session-recap.ts",
+            "src/npc/agency.ts",
+            "src/npc/presence.ts",
+            "src/game/world-truth-seed.ts"
+          ],
           "importsFiles": [
             "src/action-interpreter.ts",
             "src/character/builder.ts",
@@ -5314,6 +5567,11 @@
         },
         {
           "hash": "4e67e891ae0e600562f1611267a5f7c0149c042acbf78a82316f8051154211c4",
+          "importOrder": [
+            "src/llm/claude-adapter.ts",
+            "src/llm/claude-errors.ts",
+            "src/claude-client.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/llm/claude-adapter.ts",
@@ -5360,6 +5618,12 @@
         },
         {
           "hash": "c7596ac6839eee70fda4e713b98eac61637a389a7027f930668f5d127c28ffdd",
+          "importOrder": [
+            "src/narrator/finale-narrator.ts",
+            "src/claude-client.ts",
+            "src/llm/claude-errors.ts",
+            "src/game/debug-logger.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/game/debug-logger.ts",
@@ -5373,6 +5637,13 @@
             "narrateFinale"
           ],
           "hash": "425583e79d1a45b01d66de11cd177a1d2b911e5b53c91a46537ac7e658c1bfdb",
+          "importOrder": [
+            "src/claude-client.ts",
+            "src/prompts/finale-prompt.ts",
+            "src/llm/claude-errors.ts",
+            "src/llm/claude-adapter.ts",
+            "src/game/debug-logger.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/game/debug-logger.ts",
@@ -5384,6 +5655,13 @@
         },
         {
           "hash": "cb02025dc6551996d6e48ba86e3cb93fe7067a6e23d55236e9f895c7a5f41204",
+          "importOrder": [
+            "src/narrator/narrator.ts",
+            "src/claude-client.ts",
+            "src/prompts/narrate-scene.ts",
+            "src/game/debug-logger.ts",
+            "src/llm/claude-errors.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/game/debug-logger.ts",
@@ -5399,6 +5677,14 @@
             "narrateSceneLegacy"
           ],
           "hash": "544ec51fdd0d4124e338dc15882c1dd1fa77fe23f015589245656d17fefdda26",
+          "importOrder": [
+            "src/claude-client.ts",
+            "src/llm/claude-errors.ts",
+            "src/llm/claude-adapter.ts",
+            "src/prompts/narrate-scene.ts",
+            "src/narrator/scene-context.ts",
+            "src/game/debug-logger.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/game/debug-logger.ts",
@@ -5611,6 +5897,12 @@
         },
         {
           "hash": "4adb99326490832c487df04ab24cc8bb742df2c773390059e0f394fec463b9d9",
+          "importOrder": [
+            "src/runtime/presentation-state.ts",
+            "src/runtime/hooks.ts",
+            "src/runtime/voice-caster.ts",
+            "src/runtime/audio-bridge.ts"
+          ],
           "importsFiles": [
             "src/runtime/audio-bridge.ts",
             "src/runtime/hooks.ts",
@@ -5668,6 +5960,11 @@
         },
         {
           "hash": "83724a624af1dd0765f65355e9e4fa7a7418d52264a2a3db48ffb8e22e528dd9",
+          "importOrder": [
+            "src/session/chronicle.ts",
+            "src/turn-loop.ts",
+            "src/session/session.ts"
+          ],
           "importsFiles": [
             "src/session/chronicle.ts",
             "src/session/session.ts",
@@ -5690,6 +5987,11 @@
         },
         {
           "hash": "5cb1dcc23ccb2376ed6b6c7a105b0c2aaa6f62607e30ac8ad54ae09308a9f514",
+          "importOrder": [
+            "src/session/history.ts",
+            "src/narrator/narrator.ts",
+            "src/turn-loop.ts"
+          ],
           "importsFiles": [
             "src/narrator/narrator.ts",
             "src/session/history.ts",
@@ -5720,6 +6022,10 @@
             "validateVersion"
           ],
           "hash": "ea7096b14983a8cb4f2e1e696433b7bb5c1d06a56da24d16f0eed7a7ffb8f03a",
+          "importOrder": [
+            "src/session/session.ts",
+            "src/game/debug-logger.ts"
+          ],
           "importsFiles": [
             "src/game/debug-logger.ts",
             "src/session/session.ts"
@@ -5728,6 +6034,12 @@
         },
         {
           "hash": "e4a5d18c97c6928210f548a6c08ef57e08bc623863545e590c87cd8b125055d4",
+          "importOrder": [
+            "src/session/session.ts",
+            "src/session/history.ts",
+            "src/session/migrate.ts",
+            "src/foundry/world-gen.ts"
+          ],
           "importsFiles": [
             "src/foundry/world-gen.ts",
             "src/session/history.ts",
@@ -5738,6 +6050,10 @@
         },
         {
           "hash": "e81420ab99e1cbe6f9bc350ce44ebd579db8d2cea0eea8fe01503c11305b30fa",
+          "importOrder": [
+            "src/session/session.ts",
+            "src/session/history.ts"
+          ],
           "importsFiles": [
             "src/session/history.ts",
             "src/session/session.ts"
@@ -5746,6 +6062,11 @@
         },
         {
           "hash": "c6472b5cda907dd026468ac57e9c54c02eec6ed63cfe8320bf5f07d398363735",
+          "importOrder": [
+            "src/session/session.ts",
+            "src/game/game-state.ts",
+            "src/game/world-truth-seed.ts"
+          ],
           "importsFiles": [
             "src/game/game-state.ts",
             "src/game/world-truth-seed.ts",
@@ -5784,6 +6105,15 @@
             "validateSaveShape"
           ],
           "hash": "760feb41d2290546f9df22952b54b5fd4218ee39d41a8ff7bf08b5bffca7f2f7",
+          "importOrder": [
+            "src/session/migrate.ts",
+            "src/game/debug-logger.ts",
+            "src/game/game-state.ts",
+            "src/session/history.ts",
+            "src/prompts/dialogue-npc.ts",
+            "src/foundry/world-gen.ts",
+            "src/game/world-moved.ts"
+          ],
           "importsFiles": [
             "src/foundry/world-gen.ts",
             "src/game/debug-logger.ts",
@@ -6082,6 +6412,19 @@
         },
         {
           "hash": "2a1e63ea9be3c5e77080d35f5193616b4f9da114ae6ba904fc346adc51e83c27",
+          "importOrder": [
+            "src/session/history.ts",
+            "src/claude-client.ts",
+            "src/narrator/narrator.ts",
+            "src/dialogue/dialogue-mind.ts",
+            "src/dialogue/npc-context.ts",
+            "src/turn-loop.ts",
+            "src/npc/ambient-dialogue.ts",
+            "src/llm/claude-errors.ts",
+            "src/game/debug-logger.ts",
+            "src/game/tuning.ts",
+            "test/helpers/game-harness.ts"
+          ],
           "importsFiles": [
             "src/claude-client.ts",
             "src/dialogue/dialogue-mind.ts",
@@ -6105,6 +6448,24 @@
             "getFatalTurnBookkeeping"
           ],
           "hash": "48a964b92a00c9b483c1deda5da59adf5a91dd6e640b6c2a283e9125a510088c",
+          "importOrder": [
+            "src/claude-client.ts",
+            "src/action-interpreter.ts",
+            "src/narrator/narrator.ts",
+            "src/dialogue/dialogue-mind.ts",
+            "src/prompts/dialogue-npc.ts",
+            "src/dialogue/npc-context.ts",
+            "src/npc/ambient-dialogue.ts",
+            "src/session/history.ts",
+            "src/runtime/immersion-runtime.ts",
+            "src/runtime/presentation-state.ts",
+            "src/runtime/audio-bridge.ts",
+            "src/game/token-tracker.ts",
+            "src/game/debug-logger.ts",
+            "src/game/hostile-turn.ts",
+            "src/game/condition.ts",
+            "src/game/tuning.ts"
+          ],
           "importsFiles": [
             "src/action-interpreter.ts",
             "src/claude-client.ts",
@@ -6159,6 +6520,18 @@
       "outsideWrites": 7,
       "role": "code",
       "testedBy": 124,
+      "unresolvedNamed": [
+        {
+          "path": "src/character/packs.test.ts",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "src/cli/terminal-ui-audit.test.ts",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 2
     },
     {
@@ -6301,6 +6674,11 @@
         },
         {
           "hash": "f743bb3556abeccc9eec113c0c82ba561ac083311eeead591bba6f945ad482a1",
+          "importOrder": [
+            "src/session/session.ts",
+            "src/session/history.ts",
+            "test/helpers/game-harness.ts"
+          ],
           "importsFiles": [
             "src/session/history.ts",
             "src/session/session.ts",
@@ -6316,6 +6694,16 @@
             "saveHarness"
           ],
           "hash": "b51ee9bb78a084f1242d1c239725b84baf0184e11700061d703ab625504db4ff",
+          "importOrder": [
+            "src/game.ts",
+            "test/helpers/fake-claude-client.ts",
+            "src/session/session.ts",
+            "src/character/packs.ts",
+            "src/cli/engine-state-validator.ts",
+            "src/session/history.ts",
+            "src/foundry/world-gen.ts",
+            "src/game/world-truth-seed.ts"
+          ],
           "importsFiles": [
             "src/character/packs.ts",
             "src/cli/engine-state-validator.ts",
@@ -6336,6 +6724,14 @@
             "writeMatrixSheet"
           ],
           "hash": "7d7737d6038b98aa3de98c8cd918453b568741deaaa80223fa45d995aabffb81",
+          "importOrder": [
+            "src/game/tuning.ts",
+            "src/game.ts",
+            "src/narrator/narrator.ts",
+            "src/foundry/world-gen.ts",
+            "src/character/packs.ts",
+            "test/helpers/game-harness.ts"
+          ],
           "importsFiles": [
             "src/character/packs.ts",
             "src/foundry/world-gen.ts",
@@ -6366,6 +6762,12 @@
         },
         {
           "hash": "9a6205adca9fe96136e0ca8c79fc634764312edb4fe9e33c347f23427b9789f5",
+          "importOrder": [
+            "src/session/chronicle-export.ts",
+            "src/display/archive-browser.ts",
+            "src/session/session.ts",
+            "test/helpers/chronicle-fixtures.ts"
+          ],
           "importsFiles": [
             "src/display/archive-browser.ts",
             "src/session/chronicle-export.ts",
@@ -6376,6 +6778,12 @@
         },
         {
           "hash": "5fe0317921169d2b1e31dc3b27852eb3e38fe523e5b2436b451e9bc59f1be5f0",
+          "importOrder": [
+            "test/helpers/game-harness.ts",
+            "src/character/packs.ts",
+            "test/helpers/world-gen-fixtures.ts",
+            "test/helpers/living-world-matrix.ts"
+          ],
           "importsFiles": [
             "src/character/packs.ts",
             "test/helpers/game-harness.ts",
@@ -6386,6 +6794,10 @@
         },
         {
           "hash": "7c1439991fad4aa2b3fd0ac6de24a87a53460768c563983c28e3432d9357bcc3",
+          "importOrder": [
+            "test/helpers/bin-cli-harness.ts",
+            "src/session/session.ts"
+          ],
           "importsFiles": [
             "src/session/session.ts",
             "test/helpers/bin-cli-harness.ts"
@@ -6394,6 +6806,14 @@
         },
         {
           "hash": "959db1c724a026e4ac295c0e96002a5ffcb2d1c32cd1a6a47efeb8076196788e",
+          "importOrder": [
+            "src/character/packs.ts",
+            "src/character/recap.ts",
+            "src/character/recap-delta.ts",
+            "src/session/history.ts",
+            "test/helpers/game-harness.ts",
+            "test/helpers/catalog-assertions.ts"
+          ],
           "importsFiles": [
             "src/character/packs.ts",
             "src/character/recap-delta.ts",
@@ -6406,6 +6826,12 @@
         },
         {
           "hash": "a278ac525518ef5f360a9205a24af72bb0c4c907cbc5d4479c7b2c0d666738dc",
+          "importOrder": [
+            "src/character/prompts.ts",
+            "src/character/builder.ts",
+            "src/character/packs.ts",
+            "test/helpers/fake-readline.ts"
+          ],
           "importsFiles": [
             "src/character/builder.ts",
             "src/character/packs.ts",
@@ -6425,6 +6851,11 @@
         },
         {
           "hash": "d29dbc5f08f161bea5d6dbfae0e88171de0c3d106f3a70e7245d251fad0dcba1",
+          "importOrder": [
+            "src/session/session.ts",
+            "test/helpers/game-harness.ts",
+            "src/narrator/narrator.ts"
+          ],
           "importsFiles": [
             "src/narrator/narrator.ts",
             "src/session/session.ts",
@@ -6434,6 +6865,11 @@
         },
         {
           "hash": "cc6b246662796b2f7e24df9500c6a45611019c61796946e8930eddb60e444b48",
+          "importOrder": [
+            "src/session/session.ts",
+            "src/session/history.ts",
+            "test/helpers/game-harness.ts"
+          ],
           "importsFiles": [
             "src/session/history.ts",
             "src/session/session.ts",
@@ -6443,6 +6879,13 @@
         },
         {
           "hash": "95ba99203985e0e8337f6307384c31105fdc0bf17001636ad79c8a34f0504c6c",
+          "importOrder": [
+            "test/helpers/game-harness.ts",
+            "src/foundry/world-gen.ts",
+            "src/game.ts",
+            "test/helpers/fake-claude-client.ts",
+            "test/helpers/world-gen-fixtures.ts"
+          ],
           "importsFiles": [
             "src/foundry/world-gen.ts",
             "src/game.ts",
@@ -6454,6 +6897,14 @@
         },
         {
           "hash": "ac8989d7081d66008a50a6f0573e4aa5896e291559fc2f4faa68fe77abb0ba87",
+          "importOrder": [
+            "test/helpers/game-harness.ts",
+            "src/llm/claude-errors.ts",
+            "src/narrator/narrator.ts",
+            "src/runtime/audio-bridge.ts",
+            "src/character/packs.ts",
+            "src/game/game-presenter.ts"
+          ],
           "importsFiles": [
             "src/character/packs.ts",
             "src/game/game-presenter.ts",
@@ -6466,6 +6917,11 @@
         },
         {
           "hash": "dbafd95b7046f5e5e72bc0930eae90a845d932085d4507fd283b9d0e4d557d89",
+          "importOrder": [
+            "test/helpers/game-harness.ts",
+            "test/helpers/world-gen-fixtures.ts",
+            "src/game/world-truth-seed.ts"
+          ],
           "importsFiles": [
             "src/game/world-truth-seed.ts",
             "test/helpers/game-harness.ts",
@@ -6475,6 +6931,10 @@
         },
         {
           "hash": "73f15e999cfedff011e411e5e1274f80af2388c0ecb3bd50829c662e68345ce3",
+          "importOrder": [
+            "test/helpers/game-harness.ts",
+            "src/game/debug-logger.ts"
+          ],
           "importsFiles": [
             "src/game/debug-logger.ts",
             "test/helpers/game-harness.ts"
@@ -6498,6 +6958,13 @@
         },
         {
           "hash": "e7d36aa0ee06fc0dabe6461d1857f3ce0be865dd65d32a9570dd35ed678cbae5",
+          "importOrder": [
+            "src/runtime/audio-bridge.ts",
+            "test/helpers/game-harness.ts",
+            "test/helpers/world-gen-fixtures.ts",
+            "src/character/session-recap.ts",
+            "src/character/world-delta.ts"
+          ],
           "importsFiles": [
             "src/character/session-recap.ts",
             "src/character/world-delta.ts",
@@ -6533,6 +7000,11 @@
         },
         {
           "hash": "9a23a7311ace4b50c66439a8985577f7f4abaf61866ca95498730eea587d85b0",
+          "importOrder": [
+            "src/character/packs.ts",
+            "test/helpers/world-gen-fixtures.ts",
+            "test/helpers/living-world-matrix.ts"
+          ],
           "importsFiles": [
             "src/character/packs.ts",
             "test/helpers/living-world-matrix.ts",
@@ -6542,6 +7014,10 @@
         },
         {
           "hash": "3967dbe9a08dbede199d41953012dc366d3347ea530fb0313bdfcac09caf9f83",
+          "importOrder": [
+            "test/helpers/game-harness.ts",
+            "src/runtime/audio-bridge.ts"
+          ],
           "importsFiles": [
             "src/runtime/audio-bridge.ts",
             "test/helpers/game-harness.ts"
@@ -6550,6 +7026,13 @@
         },
         {
           "hash": "55e4be5fbf3af3ae17e9bb0eee980a196b3a246fe33d6972b133c117a23d2435",
+          "importOrder": [
+            "test/helpers/game-harness.ts",
+            "src/action-interpreter.ts",
+            "src/game/tuning.ts",
+            "src/game/condition.ts",
+            "src/game/asks.ts"
+          ],
           "importsFiles": [
             "src/action-interpreter.ts",
             "src/game/asks.ts",
@@ -6569,6 +7052,10 @@
         },
         {
           "hash": "eecb7799aec5de2b4455542110cd7599d55420d8474ec38e25f6467004b478ff",
+          "importOrder": [
+            "test/helpers/bin-cli-harness.ts",
+            "src/foundry/world-gen.ts"
+          ],
           "importsFiles": [
             "src/foundry/world-gen.ts",
             "test/helpers/bin-cli-harness.ts"
@@ -6577,6 +7064,16 @@
         },
         {
           "hash": "8d48aa44c281bc8169dd985899fbcadb0fde0fc4b5923bfc2df0ceff2c9a1055",
+          "importOrder": [
+            "src/session/migrate.ts",
+            "src/session/session.ts",
+            "src/game.ts",
+            "src/cli/engine-state-validator.ts",
+            "test/helpers/fake-claude-client.ts",
+            "test/helpers/world-gen-fixtures.ts",
+            "src/foundry/world-gen.ts",
+            "test/helpers/game-harness.ts"
+          ],
           "importsFiles": [
             "src/cli/engine-state-validator.ts",
             "src/foundry/world-gen.ts",
@@ -6606,6 +7103,12 @@
         },
         {
           "hash": "fb44f7652244f5ae3c4cc2a1298a9d584a9df29d090ea838fb9c030725fe4cb7",
+          "importOrder": [
+            "src/session/history.ts",
+            "src/turn-loop.ts",
+            "src/narrator/narrator.ts",
+            "test/helpers/fake-claude-client.ts"
+          ],
           "importsFiles": [
             "src/narrator/narrator.ts",
             "src/session/history.ts",
@@ -6616,6 +7119,10 @@
         },
         {
           "hash": "3d58b78b5fb6f7eda17723c15f63722e5c20472a174c1c28e7bfecda70fa0b2a",
+          "importOrder": [
+            "test/helpers/bin-cli-harness.ts",
+            "src/character/packs.ts"
+          ],
           "importsFiles": [
             "src/character/packs.ts",
             "test/helpers/bin-cli-harness.ts"
@@ -6624,6 +7131,12 @@
         },
         {
           "hash": "4678b283dba407b837746fd99a3124fe7a9bb59608c6af0886f22fb5d45404c7",
+          "importOrder": [
+            "src/foundry/world-gen.ts",
+            "test/helpers/fake-claude-client.ts",
+            "src/game/debug-logger.ts",
+            "test/helpers/world-gen-fixtures.ts"
+          ],
           "importsFiles": [
             "src/foundry/world-gen.ts",
             "src/game/debug-logger.ts",
@@ -6634,6 +7147,16 @@
         },
         {
           "hash": "69c45cfcdfc1ecf4d60f8c5df7dd02c7461cca770d8206bfae0c9d22a9f6582e",
+          "importOrder": [
+            "src/game.ts",
+            "src/session/session.ts",
+            "src/cli/engine-state-validator.ts",
+            "test/helpers/fake-claude-client.ts",
+            "test/helpers/world-gen-fixtures.ts",
+            "test/helpers/game-harness.ts",
+            "src/game/world-truth-seed.ts",
+            "src/foundry/world-gen.ts"
+          ],
           "importsFiles": [
             "src/cli/engine-state-validator.ts",
             "src/foundry/world-gen.ts",
@@ -7530,7 +8053,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "release",
@@ -7623,11 +8146,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "release",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {

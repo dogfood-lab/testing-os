@@ -149,21 +149,21 @@
       },
       {
         "kind": "sequence",
-        "sentence": "In src/index.ts, main lost a step, note prewarm in progress request.",
+        "sentence": "In src/index.ts, `main` lost a step, `notePrewarmInProgressRequest`.",
         "subjects": [
           "src/index.ts"
         ]
       },
       {
         "kind": "sequence",
-        "sentence": "In src/index.ts, main lost a step, mint run id.",
+        "sentence": "In src/index.ts, `main` lost a step, `mintRunId`.",
         "subjects": [
           "src/index.ts"
         ]
       },
       {
         "kind": "sequence",
-        "sentence": "In src/index.ts, main lost a step, with run context.",
+        "sentence": "In src/index.ts, `main` lost a step, `withRunContext`.",
         "subjects": [
           "src/index.ts"
         ]
@@ -273,15 +273,17 @@
   "derived": "11 parts, mostly TypeScript (196 files), JavaScript (10) and Python (2). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. People run ollama-intern-mcp. People import ollama-intern-mcp.",
   "doors": [
     {
+      "builds": [
+        "src/"
+      ],
       "checks": [
         "hermes.config.example.yaml",
         "package-lock.json",
         "package.json",
-        "src/",
         "tsconfig.json"
       ],
-      "checksCount": 5,
-      "checksMore": 93,
+      "checksCount": 4,
+      "checksMore": 1,
       "file": ".github/workflows/ci.yml",
       "held": [
         {
@@ -467,15 +469,17 @@
       ]
     },
     {
+      "builds": [
+        "src/"
+      ],
       "checks": [
         "hermes.config.example.yaml",
         "package-lock.json",
         "package.json",
-        "src/",
         "tsconfig.json"
       ],
-      "checksCount": 5,
-      "checksMore": 93,
+      "checksCount": 4,
+      "checksMore": 1,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -600,7 +604,7 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request",
+        "on a pull request to main",
         "on a push to main",
         "on a schedule (`0 9 * * 0`), Sunday at 09:00 UTC",
         "or by hand"
@@ -622,7 +626,7 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request"
+        "on a pull request to main"
       ]
     },
     {
@@ -702,14 +706,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:12:08.124Z",
+  "generatedAt": "2026-09-25T09:18:57.692Z",
   "limits": [
-    "1 import site could not be resolved.",
+    "1 import could not be resolved: `scripts/gen-tool-docs.mjs` imports a path built at run time.",
     "3 writes and 9 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
     "9 writes and 18 reads go to the home directory (.claude/ and .ollama-intern/) or a path their caller passes, not to this repository.",
     "8 writes and 13 reads go to a path their caller passes, not to this repository.",
-    "1 write and 1 read go to the directory the command is run in, not to this repository.",
+    "1 write and 12 reads go to the directory the command is run in, not to this repository.",
     "1 write goes to a temporary directory, not to this repository.",
     "3 commands are built at run time and not followed, 1 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -749,58 +753,58 @@
           "name": "runPrewarm",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run prewarm",
+          "phrase": "`runPrewarm`",
           "steps": [
             {
               "name": "resolveTier",
               "part": "src",
               "partLabel": "src",
-              "phrase": "resolve tier"
+              "phrase": "`resolveTier`"
             },
             {
               "name": "resolveNumCtx",
               "part": "src",
               "partLabel": "src",
-              "phrase": "resolve num ctx"
+              "phrase": "`resolveNumCtx`"
             },
             {
               "name": "timestamp",
               "part": "src",
               "partLabel": "src",
-              "phrase": "timestamp"
+              "phrase": "`timestamp`"
             }
           ]
         }
       ],
       "part": "src",
       "partLabel": "src",
-      "phrase": "main",
+      "phrase": "`main`",
       "steps": [
         {
           "count": 3,
           "name": null,
           "part": "src",
           "partLabel": "src",
-          "phrase": "profiles"
+          "phrase": "`profiles.ts`"
         },
         {
           "count": 3,
           "name": null,
           "part": "src",
           "partLabel": "src",
-          "phrase": "ollama"
+          "phrase": "`ollama.ts`"
         },
         {
           "name": "timestamp",
           "part": "src",
           "partLabel": "src",
-          "phrase": "timestamp"
+          "phrase": "`timestamp`"
         },
         {
           "name": "runPrewarm",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run prewarm"
+          "phrase": "`runPrewarm`"
         }
       ]
     }
@@ -811,7 +815,10 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "src/index.ts"
+    "src/index.ts",
+    "src/profiles.ts",
+    "src/tiers.ts",
+    "src/errors.ts"
   ],
   "summary": null,
   "summaryFrom": null,

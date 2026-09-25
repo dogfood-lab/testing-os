@@ -193,6 +193,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -245,6 +246,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "bf6128deea8688d7a923a7ccace0bb085a436cfdc53075fe283a39462b4dc910",
           "importsFiles": [
             "site/src/data/counts.json"
@@ -288,6 +290,17 @@
       "files": [
         {
           "hash": "cb97699e72cbf7308ac8f19f7135bfa14fb08d25e875fabf1654a1c8ccc8fdb3",
+          "importOrder": [
+            "src/dispatch.ts",
+            "src/lib/github.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts",
+            "src/tools/registry.ts",
+            "src/tools/types.ts",
+            "src/lib/result.ts",
+            "src/index.ts",
+            "src/server.ts"
+          ],
           "importsFiles": [
             "src/dispatch.ts",
             "src/index.ts",
@@ -563,6 +576,11 @@
             "runDeepTsPass"
           ],
           "hash": "849e1755c55ef57b8ae7c366912f3d6c3004446ca22be15a61bcd2e3259822e2",
+          "importOrder": [
+            "src/schemas/rename.ts",
+            "src/lib/logger.ts",
+            "src/lib/rename/variants.ts"
+          ],
           "importsFiles": [
             "src/lib/logger.ts",
             "src/lib/rename/variants.ts",
@@ -582,6 +600,10 @@
         },
         {
           "hash": "55bbf88f35a862c0d5560d89fac319f7f7ee9a834b965ab9ca90220ca68cf4c9",
+          "importOrder": [
+            "src/schemas/rename.ts",
+            "src/lib/rename/identity/types.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/identity/types.ts",
             "src/schemas/rename.ts"
@@ -593,6 +615,14 @@
             "runIdentityPass"
           ],
           "hash": "34bc7f457441cb665d57ff9faf523060a2586eb535b77fed15b73668a3485cef",
+          "importOrder": [
+            "src/schemas/rename.ts",
+            "src/lib/rename/identity/toml-based.ts",
+            "src/lib/rename/identity/go-mod.ts",
+            "src/lib/rename/identity/package-json.ts",
+            "src/lib/rename/identity/simple-text.ts",
+            "src/lib/rename/identity/types.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/identity/go-mod.ts",
             "src/lib/rename/identity/package-json.ts",
@@ -605,6 +635,10 @@
         },
         {
           "hash": "1346677821cf8632a690a7dcf824f5f00fa5919ae9e81c46d2efe9ad74801b4d",
+          "importOrder": [
+            "src/schemas/rename.ts",
+            "src/lib/rename/identity/types.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/identity/types.ts",
             "src/schemas/rename.ts"
@@ -613,6 +647,10 @@
         },
         {
           "hash": "03edf258f2cf08f2e1aa56ce87acdbdd1234d27ff7635e6ab1ea86184b0e1781",
+          "importOrder": [
+            "src/schemas/rename.ts",
+            "src/lib/rename/identity/types.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/identity/types.ts",
             "src/schemas/rename.ts"
@@ -621,6 +659,10 @@
         },
         {
           "hash": "eb6e8bc6eb8b61f765b6169a56c74fc0d9dd05e3a8927f3380b43922181fac01",
+          "importOrder": [
+            "src/schemas/rename.ts",
+            "src/lib/rename/identity/types.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/identity/types.ts",
             "src/schemas/rename.ts"
@@ -629,6 +671,10 @@
         },
         {
           "hash": "730563787059e78b48becb35fce883247e587764c0d3a521b36b65f10e44dede",
+          "importOrder": [
+            "src/schemas/rename.ts",
+            "src/lib/rename/variants.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/variants.ts",
             "src/schemas/rename.ts"
@@ -641,6 +687,17 @@
             "writePlanArtifacts"
           ],
           "hash": "576b9c0bfde4c11ced848884c8d241398ca65702499b172314c1b2e561aae1cd",
+          "importOrder": [
+            "src/schemas/rename.ts",
+            "src/lib/rename/categories.ts",
+            "src/lib/rename/identity/index.ts",
+            "src/lib/rename/symbols.ts",
+            "src/lib/rename/deep-ts.ts",
+            "src/lib/rename/textual.ts",
+            "src/lib/rename/post.ts",
+            "src/lib/rename/variants.ts",
+            "src/lib/rename/walk.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/categories.ts",
             "src/lib/rename/deep-ts.ts",
@@ -659,6 +716,12 @@
             "runPostPass"
           ],
           "hash": "703f61683af509671d8177d3b6983f3929e520fcfc385496835ba18ee67081f3",
+          "importOrder": [
+            "src/schemas/rename.ts",
+            "src/lib/rename/variants.ts",
+            "src/lib/rename/walk.ts",
+            "src/lib/rename/exclusions.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/exclusions.ts",
             "src/lib/rename/variants.ts",
@@ -684,6 +747,11 @@
             "runSymbolsPass"
           ],
           "hash": "be4d38c72899372ae3cea17b91f8090c9339596beb02a927a5dd4609811a2536",
+          "importOrder": [
+            "src/schemas/rename.ts",
+            "src/lib/rename/variants.ts",
+            "src/lib/rename/walk.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/variants.ts",
             "src/lib/rename/walk.ts",
@@ -696,6 +764,12 @@
             "runTextualPass"
           ],
           "hash": "50eee450eda0ac25c0cb75d340e142a53ae245f90a4c14988a7f2bbab57bf331",
+          "importOrder": [
+            "src/schemas/rename.ts",
+            "src/lib/rename/variants.ts",
+            "src/lib/rename/walk.ts",
+            "src/lib/rename/exclusions.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/exclusions.ts",
             "src/lib/rename/variants.ts",
@@ -947,7 +1021,16 @@
           ]
         },
         {
+          "constantOnly": true,
           "hash": "a746a48f26dce4d88a387ce08b3c1d6fe0ba01562f6adf2f8cc4e98b924e0bdc",
+          "importOrder": [
+            "src/lib/github.ts",
+            "src/lib/snapshot.ts",
+            "src/lib/readiness.ts",
+            "src/lib/result.ts",
+            "src/schemas/assess.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/github.ts",
             "src/lib/readiness.ts",
@@ -980,6 +1063,14 @@
         },
         {
           "hash": "7f6269fb1ffb0a2294c188e59021cb405b4f76d548af3fc6db13bffc6cdb791d",
+          "importOrder": [
+            "src/lib/github.ts",
+            "src/lib/profiles.ts",
+            "src/lib/bootstrap-steps.ts",
+            "src/lib/result.ts",
+            "src/schemas/bootstrap.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/bootstrap-steps.ts",
             "src/lib/github.ts",
@@ -991,6 +1082,7 @@
           "path": "src/tools/bootstrap.ts"
         },
         {
+          "constantOnly": true,
           "hash": "d1f9f42209568a13ced6aeb4bac234ded661cd1a555447edbdbe026574130f87",
           "importsFiles": [
             "src/lib/errors.ts",
@@ -1004,6 +1096,15 @@
         },
         {
           "hash": "40e4f16926cd0ca156f2968231ca1f0536ff06ea30cd198003ea31e49780b9ac",
+          "importOrder": [
+            "src/lib/github.ts",
+            "src/lib/policy.ts",
+            "src/lib/snapshot.ts",
+            "src/lib/result.ts",
+            "src/schemas/assess.ts",
+            "src/schemas/common.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/github.ts",
             "src/lib/policy.ts",
@@ -1017,6 +1118,13 @@
         },
         {
           "hash": "de53b90edafa94dfd7b3d2a50cf1ae511d65a303b99b45ee7bdd0c8930d31e21",
+          "importOrder": [
+            "src/lib/github.ts",
+            "src/lib/bootstrap-steps.ts",
+            "src/lib/result.ts",
+            "src/schemas/bootstrap.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/bootstrap-steps.ts",
             "src/lib/github.ts",
@@ -1028,6 +1136,15 @@
         },
         {
           "hash": "530997b16c9d12fe5b26daa471aa9702d08ac7a2bc4bb4f283b8495747a5f3e1",
+          "importOrder": [
+            "src/lib/errors.ts",
+            "src/lib/github.ts",
+            "src/lib/policy.ts",
+            "src/lib/operations.ts",
+            "src/lib/result.ts",
+            "src/schemas/execution.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/errors.ts",
             "src/lib/github.ts",
@@ -1094,6 +1211,15 @@
         },
         {
           "hash": "85c73b1c7bc355e07d3e386b421417d4369b7dc45248bb5b33dbf6936a0f6c6f",
+          "importOrder": [
+            "src/lib/errors.ts",
+            "src/lib/github.ts",
+            "src/lib/snapshot.ts",
+            "src/lib/readiness.ts",
+            "src/lib/result.ts",
+            "src/schemas/assess.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/errors.ts",
             "src/lib/github.ts",
@@ -1106,6 +1232,7 @@
           "path": "src/tools/make-forkable.ts"
         },
         {
+          "constantOnly": true,
           "hash": "60a752158a35ebc9aeabe8925a51256af22e9749020fecdd85d02fb292913892",
           "importsFiles": [
             "src/lib/github.ts",
@@ -1129,6 +1256,14 @@
         },
         {
           "hash": "db4adcd488a9f7c307aced6dd8bbc4ec5d903f05889e3423d8101ad544ac9220",
+          "importOrder": [
+            "src/lib/errors.ts",
+            "src/lib/operations.ts",
+            "src/lib/audit.ts",
+            "src/lib/result.ts",
+            "src/schemas/receipts.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/audit.ts",
             "src/lib/errors.ts",
@@ -1144,6 +1279,31 @@
             "findTool"
           ],
           "hash": "87a2974cba5b544451133c229d590beb645d6120f57cd6ce22075637af36da9a",
+          "importOrder": [
+            "src/tools/assess.ts",
+            "src/tools/choose-path.ts",
+            "src/tools/make-forkable.ts",
+            "src/tools/preflight-policy.ts",
+            "src/tools/create-fork.ts",
+            "src/tools/create-from-template.ts",
+            "src/tools/check-operation.ts",
+            "src/tools/bootstrap.ts",
+            "src/tools/configure-upstream.ts",
+            "src/tools/scan-drift.ts",
+            "src/tools/emit-handoff.ts",
+            "src/tools/sync.ts",
+            "src/tools/diagnose-divergence.ts",
+            "src/tools/propose-sync-pr.ts",
+            "src/tools/list-forks.ts",
+            "src/tools/fleet-health.ts",
+            "src/tools/batch-sync.ts",
+            "src/tools/receipt.ts",
+            "src/tools/audit-log.ts",
+            "src/tools/rename-plan.ts",
+            "src/tools/rename-apply.ts",
+            "src/tools/rename-rollback.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/tools/assess.ts",
             "src/tools/audit-log.ts",
@@ -1173,6 +1333,22 @@
         },
         {
           "hash": "aeb1eaba273467202f7149711e57e93cfce832be6dc4124bc19703df234e1781",
+          "importOrder": [
+            "src/lib/errors.ts",
+            "src/lib/result.ts",
+            "src/lib/logger.ts",
+            "src/lib/rename/plan.ts",
+            "src/lib/rename/identity/index.ts",
+            "src/lib/rename/symbols.ts",
+            "src/lib/rename/deep-ts.ts",
+            "src/lib/rename/textual.ts",
+            "src/lib/rename/post.ts",
+            "src/lib/rename/snapshot.ts",
+            "src/lib/rename/variants.ts",
+            "src/lib/rename/walk.ts",
+            "src/schemas/rename.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/errors.ts",
             "src/lib/logger.ts",
@@ -1193,6 +1369,15 @@
         },
         {
           "hash": "e8d881b1ea70044d5160da85ce92a7182868abd51d30940603804232fa668f4d",
+          "importOrder": [
+            "src/lib/errors.ts",
+            "src/lib/result.ts",
+            "src/lib/logger.ts",
+            "src/lib/rename/plan.ts",
+            "src/lib/rename/snapshot.ts",
+            "src/schemas/rename.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/errors.ts",
             "src/lib/logger.ts",
@@ -1206,6 +1391,14 @@
         },
         {
           "hash": "03ea11473286c1bae4e35e6152ebf2038c18836bb705f3223f6e9b2ff7984b3a",
+          "importOrder": [
+            "src/lib/errors.ts",
+            "src/lib/result.ts",
+            "src/lib/logger.ts",
+            "src/lib/rename/snapshot.ts",
+            "src/schemas/rename.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/errors.ts",
             "src/lib/logger.ts",
@@ -1218,6 +1411,13 @@
         },
         {
           "hash": "81538db98647869b28c9de471f0dd42e1d0deaa855b57805747351835bd09a4c",
+          "importOrder": [
+            "src/lib/github.ts",
+            "src/lib/drift.ts",
+            "src/lib/result.ts",
+            "src/schemas/bootstrap.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/drift.ts",
             "src/lib/github.ts",
@@ -1240,6 +1440,10 @@
         },
         {
           "hash": "003dbd963a0afcccb69c64fa765c5356a40c213093f7cb60a3cb22d141759ed2",
+          "importOrder": [
+            "src/lib/result.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/result.ts"
@@ -1260,12 +1464,68 @@
             "caller"
           ],
           "writes": 26
+        },
+        {
+          "reads": 3,
+          "where": [
+            "cwd:.env.example"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:.github/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:LICENSE"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 3,
+          "where": [
+            "cwd:README.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:SECURITY.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:package-lock.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:package.json"
+          ],
+          "writes": 0
         }
       ],
-      "outsideReads": 22,
+      "outsideReads": 36,
       "outsideWrites": 26,
       "role": "code",
       "testedBy": 51,
+      "unresolvedNamed": [
+        {
+          "path": "src/lib/rename/symbols.ts",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 1
     },
     {
@@ -1364,6 +1624,12 @@
         },
         {
           "hash": "84622dd7792c722808d1aa14083005d4a51ded0e1fc216ae654f13a82ace32cc",
+          "importOrder": [
+            "src/tools/assess.ts",
+            "tests/_helpers/octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1389,6 +1655,12 @@
         },
         {
           "hash": "bca56fd8243be571234288f582ed5c40f1d5239944bd6df33e7ea6fc3dd2a72a",
+          "importOrder": [
+            "src/tools/batch-sync.ts",
+            "tests/_helpers/fleet-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1399,6 +1671,12 @@
         },
         {
           "hash": "9737e8452a0445060d3e961f25203b9706d214e2ea67e1c98d1ae1317919b463",
+          "importOrder": [
+            "src/tools/bootstrap.ts",
+            "tests/_helpers/bootstrap-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1409,6 +1687,12 @@
         },
         {
           "hash": "fc7b705017ea19afe124ce2a785b94889beaff48090f6e43b70c4f69c2902ab7",
+          "importOrder": [
+            "src/tools/check-operation.ts",
+            "tests/_helpers/exec-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1419,6 +1703,12 @@
         },
         {
           "hash": "966843a1d53192693e56b8b53a81693b57b68d74a08faa3bd2f0a6906786d747",
+          "importOrder": [
+            "src/tools/choose-path.ts",
+            "tests/_helpers/octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1429,6 +1719,12 @@
         },
         {
           "hash": "8fee09fd55550ab456aec17ef5f0e4f4de6f3f97869d32a2f6c4fdcb6fba7fbb",
+          "importOrder": [
+            "src/tools/configure-upstream.ts",
+            "tests/_helpers/bootstrap-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1439,6 +1735,12 @@
         },
         {
           "hash": "70906a92ae66e2ad14efd1249d62e0ca640a17a5548f19d2cb08f867802ef5ec",
+          "importOrder": [
+            "src/tools/create-fork.ts",
+            "tests/_helpers/exec-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1449,6 +1751,12 @@
         },
         {
           "hash": "0060fad71220d2000b06ea8cfaf9edf45d74fc601d322925b8d54db89fc17564",
+          "importOrder": [
+            "src/tools/create-from-template.ts",
+            "tests/_helpers/exec-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1459,6 +1767,12 @@
         },
         {
           "hash": "b754f46c4a016172792657d7a0f59ed098a0294388d8f04d23df80dcd8711c2e",
+          "importOrder": [
+            "src/tools/diagnose-divergence.ts",
+            "tests/_helpers/sync-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1469,6 +1783,16 @@
         },
         {
           "hash": "99e5647d91491d1be70f6aa6b01aca239994f9495a66bc280de231fad2c9b693",
+          "importOrder": [
+            "src/dispatch.ts",
+            "src/lib/audit.ts",
+            "src/lib/errors.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts",
+            "src/lib/result.ts",
+            "tests/_helpers/octokit.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/dispatch.ts",
             "src/lib/audit.ts",
@@ -1483,6 +1807,16 @@
         },
         {
           "hash": "ec0ea0e05cce71013bdf8beef7b871ad7092a2af0f5f29d7e4416879f7d55183",
+          "importOrder": [
+            "src/dispatch.ts",
+            "src/tools/assess.ts",
+            "src/lib/audit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts",
+            "tests/_helpers/octokit.ts",
+            "src/tools/create-fork.ts",
+            "tests/_helpers/exec-octokit.ts"
+          ],
           "importsFiles": [
             "src/dispatch.ts",
             "src/lib/audit.ts",
@@ -1504,6 +1838,12 @@
         },
         {
           "hash": "7fca0d07052e32d6c6d29c4d85323ba9af12dc5dd75685f6c9f4602aa37d8de6",
+          "importOrder": [
+            "src/tools/emit-handoff.ts",
+            "tests/_helpers/bootstrap-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1522,6 +1862,12 @@
         },
         {
           "hash": "c9fd986e3d7b844286f849c21a2190c35669cbd8e9d8517fdaa6f272742bc45e",
+          "importOrder": [
+            "src/tools/fleet-health.ts",
+            "tests/_helpers/fleet-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1532,6 +1878,12 @@
         },
         {
           "hash": "d1bc934a313353044275a4d748bdd9dcae79ae3e4f49133081b3c335ee33f57c",
+          "importOrder": [
+            "tests/_helpers/fleet-octokit.ts",
+            "src/tools/fleet-health.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1542,6 +1894,10 @@
         },
         {
           "hash": "ecc4f4eb894f1c7048fbd606ff264efd15305393247e9aad9a88e8e61dcdc303",
+          "importOrder": [
+            "src/lib/github.ts",
+            "src/lib/errors.ts"
+          ],
           "importsFiles": [
             "src/lib/errors.ts",
             "src/lib/github.ts"
@@ -1550,6 +1906,12 @@
         },
         {
           "hash": "4cce4e0ecf1a8cfb3e21285c2fe8758fb301ff6e56b047970846a56b820908d5",
+          "importOrder": [
+            "src/tools/list-forks.ts",
+            "tests/_helpers/fleet-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1567,6 +1929,14 @@
         },
         {
           "hash": "ce94eadaf4db99aeef6e4f16a506f4b5987273c6b6b423d7dbd6263237a00744",
+          "importOrder": [
+            "src/tools/make-forkable.ts",
+            "tests/_helpers/octokit.ts",
+            "tests/_helpers/make-forkable-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts",
+            "src/schemas/assess.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1586,6 +1956,15 @@
         },
         {
           "hash": "d6cb391a0885f2ecfb42f28333118f2455145b7b23b7feffbc8ca3af54ade518",
+          "importOrder": [
+            "src/tools/assess.ts",
+            "src/tools/scan-drift.ts",
+            "src/tools/diagnose-divergence.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts",
+            "src/lib/github.ts",
+            "tests/_helpers/network-errors.ts"
+          ],
           "importsFiles": [
             "src/lib/github.ts",
             "src/lib/operations.ts",
@@ -1607,6 +1986,12 @@
         },
         {
           "hash": "5fb31028b068845e936a2c028dfa67da1c2edf1687ce9fa3aa0ca3360d4b68ec",
+          "importOrder": [
+            "src/lib/github.ts",
+            "src/tools/diagnose-divergence.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/github.ts",
             "src/lib/operations.ts",
@@ -1617,6 +2002,10 @@
         },
         {
           "hash": "405dc49f20ffb315a24681d11ad00487f20d20a5a0dee6b370f1530a5a246cec",
+          "importOrder": [
+            "src/lib/policy.ts",
+            "src/lib/errors.ts"
+          ],
           "importsFiles": [
             "src/lib/errors.ts",
             "src/lib/policy.ts"
@@ -1625,6 +2014,12 @@
         },
         {
           "hash": "921a5ad9190ee02badb8f3dac3c148fcd816007c8ffcf80d65ac5e22fea7a80d",
+          "importOrder": [
+            "src/tools/preflight-policy.ts",
+            "tests/_helpers/exec-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1642,6 +2037,12 @@
         },
         {
           "hash": "62fec92861cfa1c65a8dcc4abfcd78232781e4cedebc3507de11c403b1f07e51",
+          "importOrder": [
+            "src/tools/propose-sync-pr.ts",
+            "tests/_helpers/sync-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1652,6 +2053,14 @@
         },
         {
           "hash": "2fe57b6b5f16cf393bf629462ee7bf1f5832f54d9e024d898313fd0c6ca1ff4d",
+          "importOrder": [
+            "src/tools/assess.ts",
+            "src/tools/fleet-health.ts",
+            "src/tools/scan-drift.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts",
+            "tests/_helpers/network-errors.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1672,6 +2081,13 @@
         },
         {
           "hash": "2ea10167d0e26e91ff18ff2950404595176c4e076bd9bc8fef4c7a5ee1bb8e24",
+          "importOrder": [
+            "src/tools/receipt.ts",
+            "src/tools/audit-log.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts",
+            "src/lib/audit.ts"
+          ],
           "importsFiles": [
             "src/lib/audit.ts",
             "src/lib/operations.ts",
@@ -1702,6 +2118,18 @@
         },
         {
           "hash": "f780fa7cd18e58ebd656b4b9a6fdd3e803581c076a5824de06fed59360205673",
+          "importOrder": [
+            "tests/_helpers/rename-fixtures.ts",
+            "src/dispatch.ts",
+            "src/lib/audit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts",
+            "tests/_helpers/octokit.ts",
+            "src/tools/registry.ts",
+            "src/tools/rename-plan.ts",
+            "src/tools/rename-apply.ts",
+            "src/tools/rename-rollback.ts"
+          ],
           "importsFiles": [
             "src/dispatch.ts",
             "src/lib/audit.ts",
@@ -1718,6 +2146,15 @@
         },
         {
           "hash": "365c12f85bcbbe3993428d8e17057a6b9dc5dbed50a54df82aa17a4f3516433e",
+          "importOrder": [
+            "tests/_helpers/rename-fixtures.ts",
+            "src/lib/rename/variants.ts",
+            "src/lib/rename/identity/index.ts",
+            "src/lib/rename/identity/package-json.ts",
+            "src/lib/rename/identity/toml-based.ts",
+            "src/lib/rename/identity/go-mod.ts",
+            "src/lib/rename/identity/simple-text.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/identity/go-mod.ts",
             "src/lib/rename/identity/index.ts",
@@ -1731,6 +2168,12 @@
         },
         {
           "hash": "610a8d2269de81f3cae648cf491deda41e0f9df92a931161805a93f8130599cb",
+          "importOrder": [
+            "tests/_helpers/rename-fixtures.ts",
+            "src/lib/rename/variants.ts",
+            "src/lib/rename/post.ts",
+            "src/lib/rename/walk.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/post.ts",
             "src/lib/rename/variants.ts",
@@ -1748,6 +2191,10 @@
         },
         {
           "hash": "b7e56c2763deff24a68ac404aff7f74855da22ec3331a788fc947d0120414935",
+          "importOrder": [
+            "tests/_helpers/rename-fixtures.ts",
+            "src/lib/rename/snapshot.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/snapshot.ts",
             "tests/_helpers/rename-fixtures.ts"
@@ -1756,6 +2203,12 @@
         },
         {
           "hash": "4b293e79d5a1e9540942aeea0be143e5d210da30aebe9d150df3d52a257e228c",
+          "importOrder": [
+            "tests/_helpers/rename-fixtures.ts",
+            "src/lib/rename/variants.ts",
+            "src/lib/rename/symbols.ts",
+            "src/lib/rename/walk.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/symbols.ts",
             "src/lib/rename/variants.ts",
@@ -1766,6 +2219,12 @@
         },
         {
           "hash": "50a8b48c950d935246038fd8f4490f703ddd67a607af09225a04e5ff2d06016c",
+          "importOrder": [
+            "tests/_helpers/rename-fixtures.ts",
+            "src/lib/rename/variants.ts",
+            "src/lib/rename/textual.ts",
+            "src/lib/rename/walk.ts"
+          ],
           "importsFiles": [
             "src/lib/rename/textual.ts",
             "src/lib/rename/variants.ts",
@@ -1776,6 +2235,16 @@
         },
         {
           "hash": "cc782c3c9e3e88337314efafde383c4c8809e20ebf6c111aa707d9511c1cfdec",
+          "importOrder": [
+            "tests/_helpers/rename-fixtures.ts",
+            "src/tools/rename-plan.ts",
+            "src/tools/rename-apply.ts",
+            "src/tools/rename-rollback.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts",
+            "tests/_helpers/octokit.ts",
+            "src/tools/types.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1797,6 +2266,12 @@
         },
         {
           "hash": "7aed4ff355466ddefd0950c0a79b8c1686d882950094861cd06d57ba6c08048e",
+          "importOrder": [
+            "src/tools/scan-drift.ts",
+            "tests/_helpers/bootstrap-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1829,6 +2304,12 @@
         },
         {
           "hash": "698b61f9acb62627e3089d51919836b16161e318b04e248bb149b40c754708ae",
+          "importOrder": [
+            "src/tools/sync.ts",
+            "tests/_helpers/sync-octokit.ts",
+            "src/lib/state.ts",
+            "src/lib/operations.ts"
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts",
@@ -1851,7 +2332,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "verify",
@@ -1956,19 +2437,21 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "package-verify",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
+          "built": true,
           "directory": true,
           "job": "verify",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -2552,21 +3035,6 @@
     {
       "readers": [
         {
-          "by": "src/lib/bootstrap-steps.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/lib/snapshot.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/tools/make-forkable.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "tests/_helpers/rename-fixtures.ts",
           "call": "literal",
           "confidence": "ast",
@@ -2609,17 +3077,6 @@
     {
       "readers": [
         {
-          "by": "src/lib/rename/identity/simple-text.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".github/workflows",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": "tests/_helpers/rename-fixtures.ts",
           "call": "literal",
           "confidence": "ast",
@@ -2656,16 +3113,6 @@
     {
       "readers": [
         {
-          "by": "src/lib/rename/identity/simple-text.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/tools/make-forkable.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "tests/_helpers/rename-fixtures.ts",
           "call": "literal",
           "confidence": "ast",
@@ -2683,21 +3130,6 @@
     },
     {
       "readers": [
-        {
-          "by": "src/lib/rename/identity/simple-text.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/tools/make-forkable.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/tools/scan-drift.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
         {
           "by": "tests/_helpers/rename-fixtures.ts",
           "call": "literal",
@@ -2747,16 +3179,6 @@
     {
       "readers": [
         {
-          "by": "src/lib/snapshot.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/tools/make-forkable.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "tests/assess.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -2780,11 +3202,6 @@
     },
     {
       "readers": [
-        {
-          "by": "src/lib/rename/post.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
         {
           "by": "tests/_helpers/rename-fixtures.ts",
           "call": "literal",
@@ -2811,16 +3228,6 @@
       "readers": [
         {
           "by": ".github/workflows/ci.yml"
-        },
-        {
-          "by": "src/lib/rename/identity/package-json.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/tools/scan-drift.ts",
-          "call": "literal",
-          "confidence": "ast"
         },
         {
           "by": "tests/_helpers/rename-fixtures.ts",

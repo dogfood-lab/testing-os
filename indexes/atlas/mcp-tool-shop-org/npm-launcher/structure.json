@@ -77,7 +77,8 @@
           "reads": 5,
           "where": [
             "caller",
-            "home:.local/"
+            "home:.local/",
+            "home:backpropagate/"
           ],
           "writes": 3
         }
@@ -217,6 +218,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -249,6 +251,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "4df5fd493cab9a5056e96918e75738a934d2b12f6109b815379d7fd05878d847",
           "path": "site/src/site-config.ts"
         },
@@ -729,6 +732,13 @@
       "files": [
         {
           "hash": "5bd157bb575afff59528a0e0c0951c29c4fa6d3eb7a5aea3ee38d0ae355900ae",
+          "importOrder": [
+            "src/verify.js",
+            "src/platform.js",
+            "src/cache.js",
+            "src/lock.js",
+            "src/github.js"
+          ],
           "importsFiles": [
             "src/cache.js",
             "src/github.js",

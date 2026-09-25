@@ -148,6 +148,13 @@
       "origin": "authored",
       "role": "code",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "examples/pytorch/extract_step.py",
+          "specifier": "pytorch",
+          "why": "unplaced"
+        }
+      ],
       "unresolvedSites": 1
     },
     {
@@ -1244,7 +1251,7 @@
       "externalNames": [
         "jax"
       ],
-      "externals": 2,
+      "externals": 1,
       "files": [
         {
           "hash": "01ce73c4b76415ac020014e758e1798197764b386920dbc3267db34bf6a4a955",
@@ -1291,6 +1298,11 @@
         },
         {
           "hash": "5183650e8466554049b57aef461093c7a47bacefa69fc371a3e9371f63688f06",
+          "importOrder": [
+            "src/emit.ts",
+            "src/hash.ts",
+            "src/general-engine.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/general-engine.ts",
@@ -1300,6 +1312,11 @@
         },
         {
           "hash": "e30c5f6bbc045dd52b278917847fbd29fbfec435c840bdfa5ace623cad5973f2",
+          "importOrder": [
+            "src/general-engine.ts",
+            "src/emit.ts",
+            "src/topology.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/general-engine.ts",
@@ -1334,6 +1351,10 @@
         },
         {
           "hash": "1908399e684e270801fc8cef11bb4dd0a77f1eae2a527905ad0348d1e8877cf1",
+          "importOrder": [
+            "src/general-engine.ts",
+            "src/emit.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/general-engine.ts"
@@ -1392,6 +1413,11 @@
         },
         {
           "hash": "8ab75424fa33336cf319fc62ad5c2094efe513466b4a40870bf8515897da750f",
+          "importOrder": [
+            "src/general-engine.ts",
+            "src/mazur.ts",
+            "src/import-pytorch.ts"
+          ],
           "importsFiles": [
             "src/general-engine.ts",
             "src/import-pytorch.ts",
@@ -1434,6 +1460,11 @@
         },
         {
           "hash": "8d38e8f2197ee84170895ba0ce2cda1ecf0c00d3de8f52dad6cf63877a821dda",
+          "importOrder": [
+            "src/general-engine.ts",
+            "src/emit.ts",
+            "src/mazur.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/general-engine.ts",
@@ -1468,6 +1499,18 @@
       "outsideWrites": 2,
       "role": "code",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "scripts/generate-pytorch-coupled-l2-helper-goldens.py",
+          "specifier": "pytorch",
+          "why": "unplaced"
+        },
+        {
+          "path": "scripts/generate-pytorch-helper-goldens.py",
+          "specifier": "pytorch",
+          "why": "unplaced"
+        }
+      ],
       "unresolvedSites": 2
     },
     {
@@ -1491,6 +1534,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -1523,6 +1567,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "85b7201f834b006510bafd0fbc19e4bc2dd8101e8dfec29c23f577c24988a423",
           "path": "site/src/site-config.ts"
         },
@@ -2516,6 +2561,12 @@
             "extractGeneralEngineInput"
           ],
           "hash": "0e4ea6a2394663b600703342aa375f97a09a8dbfd742c2f873d65671d9e027bf",
+          "importOrder": [
+            "src/engine.ts",
+            "src/mazur.ts",
+            "src/general-engine.ts",
+            "src/topology.ts"
+          ],
           "importsFiles": [
             "src/engine.ts",
             "src/general-engine.ts",
@@ -3416,6 +3467,28 @@
         },
         {
           "hash": "d5fb7ab02c76b566bfee4d4301db288555665c3b3145b421fd47d1d8db79eb6e",
+          "importOrder": [
+            "src/reconcile.ts",
+            "src/engine.ts",
+            "src/general-engine.ts",
+            "src/topology.ts",
+            "src/activations.ts",
+            "src/mazur.ts",
+            "src/emit.ts",
+            "src/validate.ts",
+            "src/parse.ts",
+            "src/parse-input.ts",
+            "src/hash.ts",
+            "src/schema-loader.ts",
+            "src/verify-engine.ts",
+            "src/extract.ts",
+            "src/runtime-format.ts",
+            "src/format.ts",
+            "src/import-pytorch.ts",
+            "src/import-jax.ts",
+            "src/import-tensorflow.ts",
+            "src/import-observer.ts"
+          ],
           "importsFiles": [
             "src/activations.ts",
             "src/emit.ts",
@@ -4383,6 +4456,12 @@
         },
         {
           "hash": "7d78f8269abb63b6a7ff30504478efb41c639d526ab71a7f6e8cf0dee59ab302",
+          "importOrder": [
+            "src/emit.ts",
+            "src/format.ts",
+            "src/engine.ts",
+            "src/general-engine.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/engine.ts",
@@ -4393,6 +4472,12 @@
         },
         {
           "hash": "e7e6ebe1cc10e6f2e19faf5de76adcfbb100e30a0f3f94adb14c6c0775182629",
+          "importOrder": [
+            "src/emit.ts",
+            "src/hash.ts",
+            "src/engine.ts",
+            "src/general-engine.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/engine.ts",
@@ -4411,6 +4496,13 @@
         },
         {
           "hash": "11002057d005d874a4d65e6407788fc2b1e21c57a16f946b2de4d628ca2cc304",
+          "importOrder": [
+            "src/format.ts",
+            "src/runtime-format.ts",
+            "src/engine.ts",
+            "src/mazur.ts",
+            "src/index.ts"
+          ],
           "importsFiles": [
             "src/engine.ts",
             "src/format.ts",
@@ -4426,6 +4518,11 @@
         },
         {
           "hash": "fdb79b06b7923c9daac5dee0bc711da4a8659a0f89160f0ae57672e43ca48359",
+          "importOrder": [
+            "src/extract.ts",
+            "src/engine.ts",
+            "src/emit.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/engine.ts",
@@ -4443,6 +4540,10 @@
         },
         {
           "hash": "590f0c3a777b09e0b531fb96a85540795ef1e53818240c117c0e59697be7be0f",
+          "importOrder": [
+            "src/runtime-format.ts",
+            "src/format.ts"
+          ],
           "importsFiles": [
             "src/format.ts",
             "src/runtime-format.ts"
@@ -4460,6 +4561,12 @@
         },
         {
           "hash": "9f528ea035c22bff0025e00ecdf739455e1f15054545b6760c0f63aaf0c1ab76",
+          "importOrder": [
+            "src/hash.ts",
+            "src/emit.ts",
+            "src/general-engine.ts",
+            "src/engine.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/engine.ts",
@@ -4470,6 +4577,10 @@
         },
         {
           "hash": "928d43e9882e2ad40ef055aeb9ddfc3883b42dc62c23ac1beebb6ee523136633",
+          "importOrder": [
+            "src/hash.ts",
+            "src/engine.ts"
+          ],
           "importsFiles": [
             "src/engine.ts",
             "src/hash.ts"
@@ -4478,6 +4589,13 @@
         },
         {
           "hash": "b86a6917951acd56ae7219620c91c728ca7b97bcfd766239283dbb91caed7d2a",
+          "importOrder": [
+            "src/general-engine.ts",
+            "src/topology.ts",
+            "src/emit.ts",
+            "src/reconcile.ts",
+            "src/verify-engine.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/general-engine.ts",
@@ -4507,6 +4625,12 @@
         },
         {
           "hash": "20c8c4df56926319216c643fdb9ca03486849e36272211f126c50e210b1dbc82",
+          "importOrder": [
+            "src/import-jax.ts",
+            "src/import-pytorch.ts",
+            "src/validate.ts",
+            "src/reconcile.ts"
+          ],
           "importsFiles": [
             "src/import-jax.ts",
             "src/import-pytorch.ts",
@@ -4517,6 +4641,12 @@
         },
         {
           "hash": "0caa97cff918d91387a8866d16fdb620e06c0ed708c448210a847bf4043be086",
+          "importOrder": [
+            "src/general-engine.ts",
+            "src/import-pytorch.ts",
+            "src/reconcile.ts",
+            "src/parse.ts"
+          ],
           "importsFiles": [
             "src/general-engine.ts",
             "src/import-pytorch.ts",
@@ -4527,6 +4657,12 @@
         },
         {
           "hash": "cf96e895972d340498a12f86c97608e6a2602e968b9f9db987609558e5c0827c",
+          "importOrder": [
+            "src/import-pytorch.ts",
+            "src/validate.ts",
+            "src/reconcile.ts",
+            "src/general-engine.ts"
+          ],
           "importsFiles": [
             "src/general-engine.ts",
             "src/import-pytorch.ts",
@@ -4557,6 +4693,12 @@
         },
         {
           "hash": "abe95d54e5c70dccb507665eba6dd8486b0cf349130ea2e3fb20914ac9b73084",
+          "importOrder": [
+            "src/general-engine.ts",
+            "src/import-pytorch.ts",
+            "src/reconcile.ts",
+            "src/parse.ts"
+          ],
           "importsFiles": [
             "src/general-engine.ts",
             "src/import-pytorch.ts",
@@ -4567,6 +4709,13 @@
         },
         {
           "hash": "aaebf3022db5ed53f95a9bbb209181496ca804353e12d2164e90788f6188322c",
+          "importOrder": [
+            "src/import-pytorch.ts",
+            "src/import-jax.ts",
+            "src/import-tensorflow.ts",
+            "src/validate.ts",
+            "src/reconcile.ts"
+          ],
           "importsFiles": [
             "src/import-jax.ts",
             "src/import-pytorch.ts",
@@ -4578,6 +4727,11 @@
         },
         {
           "hash": "11ce5ade09db36d2f88853a542f14acc100d3db303b299c6ce5cb2d222f3bf81",
+          "importOrder": [
+            "src/import-pytorch.ts",
+            "src/validate.ts",
+            "src/reconcile.ts"
+          ],
           "importsFiles": [
             "src/import-pytorch.ts",
             "src/reconcile.ts",
@@ -4587,6 +4741,13 @@
         },
         {
           "hash": "e934c6184b323f72684526fadb400640a2d74ac09d6a2a1ca37307479ce8410b",
+          "importOrder": [
+            "src/import-tensorflow.ts",
+            "src/import-jax.ts",
+            "src/import-pytorch.ts",
+            "src/validate.ts",
+            "src/reconcile.ts"
+          ],
           "importsFiles": [
             "src/import-jax.ts",
             "src/import-pytorch.ts",
@@ -4605,6 +4766,12 @@
         },
         {
           "hash": "9cd705e20cdeb5e5f79bac563afb6d4b9426c4dd235923615ebc6794a9d89b91",
+          "importOrder": [
+            "src/import-observer.ts",
+            "src/import-pytorch.ts",
+            "src/import-jax.ts",
+            "src/import-tensorflow.ts"
+          ],
           "importsFiles": [
             "src/import-jax.ts",
             "src/import-observer.ts",
@@ -4615,6 +4782,13 @@
         },
         {
           "hash": "a9d43ce859214a99e7f6d95cc00d8c35813f9d28e97becae8bcaefb834cd9659",
+          "importOrder": [
+            "src/general-engine.ts",
+            "src/mazur.ts",
+            "src/reconcile.ts",
+            "src/validate.ts",
+            "src/emit.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/general-engine.ts",
@@ -4626,6 +4800,12 @@
         },
         {
           "hash": "953618fe67c8d58aa588ed7fe3b11c3e56f3686e3b99bd745208b57805ac5e03",
+          "importOrder": [
+            "src/engine.ts",
+            "src/emit.ts",
+            "src/mazur.ts",
+            "src/reconcile.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/engine.ts",
@@ -4636,6 +4816,11 @@
         },
         {
           "hash": "c3ba1649ef2188fb8e419d2f07fdc005f0bc8ba53954558df3ce916837b49af8",
+          "importOrder": [
+            "src/reconcile.ts",
+            "src/general-engine.ts",
+            "src/mazur.ts"
+          ],
           "importsFiles": [
             "src/general-engine.ts",
             "src/mazur.ts",
@@ -4649,6 +4834,11 @@
         },
         {
           "hash": "b9f1adb16a9b55a4d70566bbb0d02e51c06fe3aaea978a60e0056d25489f2e0d",
+          "importOrder": [
+            "src/parse.ts",
+            "src/parse-input.ts",
+            "src/mazur.ts"
+          ],
           "importsFiles": [
             "src/mazur.ts",
             "src/parse-input.ts",
@@ -4670,6 +4860,11 @@
         },
         {
           "hash": "ba98a894620c32d44156dbfa5d698e178d6dfc51cd95231b675f0abe34e2ac3a",
+          "importOrder": [
+            "src/reconcile.ts",
+            "src/parse.ts",
+            "test/_fixture-utils.ts"
+          ],
           "importsFiles": [
             "src/parse.ts",
             "src/reconcile.ts",
@@ -4817,6 +5012,11 @@
         },
         {
           "hash": "a70361c2c6c2c668787191c4c6e999481b768f414d9ab539336d471119089c4f",
+          "importOrder": [
+            "src/reconcile.ts",
+            "src/parse.ts",
+            "test/_fixture-utils.ts"
+          ],
           "importsFiles": [
             "src/parse.ts",
             "src/reconcile.ts",
@@ -4868,6 +5068,10 @@
         },
         {
           "hash": "d13a189567bb0d1d5fe26c43e7ffe2e4ae678092b1a80870d9e327c555326d5e",
+          "importOrder": [
+            "src/reconcile.ts",
+            "src/import-pytorch.ts"
+          ],
           "importsFiles": [
             "src/import-pytorch.ts",
             "src/reconcile.ts"
@@ -4911,6 +5115,11 @@
         },
         {
           "hash": "610bf0be031dd447a99e419b2186152bf0a274c68d9381330d001a26e91aa9d6",
+          "importOrder": [
+            "src/reconcile.ts",
+            "src/parse.ts",
+            "test/_fixture-utils.ts"
+          ],
           "importsFiles": [
             "src/parse.ts",
             "src/reconcile.ts",
@@ -4938,6 +5147,10 @@
         },
         {
           "hash": "502e3ce9148f61c61724d3b0b931b5dbf50956faa8fb10d98011c34d7a80bda8",
+          "importOrder": [
+            "src/runtime-format.ts",
+            "src/format.ts"
+          ],
           "importsFiles": [
             "src/format.ts",
             "src/runtime-format.ts"
@@ -4946,6 +5159,11 @@
         },
         {
           "hash": "6b8f7209acaeddce66ca485b32247e27214713e0685ac85d65e2ae538d8fb8f8",
+          "importOrder": [
+            "src/engine.ts",
+            "src/emit.ts",
+            "src/mazur.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/engine.ts",
@@ -4962,6 +5180,11 @@
         },
         {
           "hash": "1074c7dff5f898ed2d8e8b15e848ddd5bb82cfce01d761eef71f4ef7d47da7a8",
+          "importOrder": [
+            "src/validate.ts",
+            "src/schema-loader.ts",
+            "src/mazur.ts"
+          ],
           "importsFiles": [
             "src/mazur.ts",
             "src/schema-loader.ts",
@@ -4978,6 +5201,11 @@
         },
         {
           "hash": "765627a13552ee59acecef8acbd3bb756fef699efb2411592690277c8bfa58d3",
+          "importOrder": [
+            "src/general-engine.ts",
+            "src/emit.ts",
+            "src/reconcile.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/general-engine.ts",
@@ -4987,6 +5215,11 @@
         },
         {
           "hash": "e929a7dc67213e459939279df86f595c5d30a3348085b60a3589fe65bed5b10e",
+          "importOrder": [
+            "src/general-engine.ts",
+            "src/emit.ts",
+            "src/mazur.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/general-engine.ts",
@@ -4996,6 +5229,10 @@
         },
         {
           "hash": "3b26a7c3bbf259278cf7b8007b813b86a0ad7d78061548df25722369a95b63df",
+          "importOrder": [
+            "src/topology.ts",
+            "src/mazur.ts"
+          ],
           "importsFiles": [
             "src/mazur.ts",
             "src/topology.ts"
@@ -5004,6 +5241,10 @@
         },
         {
           "hash": "e13f3dba4b6ff74773676623b78b4599f2b91efe38a664638cd2270f21fbf46b",
+          "importOrder": [
+            "src/topology.ts",
+            "src/mazur.ts"
+          ],
           "importsFiles": [
             "src/mazur.ts",
             "src/topology.ts"
@@ -5019,6 +5260,10 @@
         },
         {
           "hash": "848569ac478d9344f45bef98a095ded196bc18eddcf405454586752d259c6de3",
+          "importOrder": [
+            "src/validate.ts",
+            "src/schema-loader.ts"
+          ],
           "importsFiles": [
             "src/schema-loader.ts",
             "src/validate.ts"
@@ -5027,6 +5272,11 @@
         },
         {
           "hash": "5b8385005bdd2e4f92f73841d84c0f9b399ae9a1bb8fd977d4cfc5f2892451b5",
+          "importOrder": [
+            "src/verify-engine.ts",
+            "src/mazur.ts",
+            "src/engine.ts"
+          ],
           "importsFiles": [
             "src/engine.ts",
             "src/mazur.ts",
@@ -5036,6 +5286,13 @@
         },
         {
           "hash": "a303d6fb406974f6f429d3cd00079aa08a3fad92f7abe97aab79ec0d453e9eae",
+          "importOrder": [
+            "src/general-engine.ts",
+            "src/mazur.ts",
+            "src/reconcile.ts",
+            "src/validate.ts",
+            "src/emit.ts"
+          ],
           "importsFiles": [
             "src/emit.ts",
             "src/general-engine.ts",
@@ -5059,7 +5316,7 @@
   ],
   "doors": [
     {
-      "checksCount": 3,
+      "checksCount": 2,
       "commands": [
         {
           "job": "test",
@@ -5223,35 +5480,39 @@
           "runKind": "checks"
         },
         {
+          "built": true,
           "directory": true,
           "job": "byte-equal",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.build.json"
         },
         {
+          "built": true,
           "directory": true,
           "job": "jax-e2e",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.build.json"
         },
         {
+          "built": true,
           "directory": true,
           "job": "test",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.build.json"
         },
         {
+          "built": true,
           "directory": true,
           "job": "torch-e2e",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.build.json"
         },
         {
@@ -6628,7 +6889,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "pack-smoke",
@@ -6678,11 +6939,12 @@
           "runKind": "executes"
         },
         {
+          "built": true,
           "directory": true,
           "job": "pack-smoke",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.build.json"
         }
       ],
@@ -6807,7 +7069,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 2,
+      "checksCount": 1,
       "commands": [
         {
           "job": "verify",
@@ -6913,19 +7175,21 @@
           "runKind": "executes"
         },
         {
+          "built": true,
           "directory": true,
           "job": "ship",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.build.json"
         },
         {
+          "built": true,
           "directory": true,
           "job": "verify",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.build.json"
         },
         {
@@ -7904,10 +8168,6 @@
       "target": "fixtures/bad",
       "writers": [
         {
-          "by": "scripts/build-pytorch-helper-fixtures.mjs",
-          "confidence": "ast"
-        },
-        {
           "by": "scripts/generate-adam-bad-fixtures.ts",
           "confidence": "ast"
         },
@@ -7939,8 +8199,17 @@
     },
     {
       "readers": [],
-      "target": "fixtures/bad/*",
-      "tracked": false,
+      "target": "fixtures/bad/*.jsonl",
+      "writers": [
+        {
+          "by": "scripts/build-pytorch-helper-fixtures.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "fixtures/bad/*.meta.json",
       "writers": [
         {
           "by": "scripts/build-pytorch-helper-fixtures.mjs",

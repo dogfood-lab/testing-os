@@ -178,6 +178,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -206,6 +207,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "b240ba84ab16e72d5307af6d3e563e606201d40e2e351f9c3b49bf0d66986323",
           "path": "site/src/site-config.ts"
         },
@@ -244,6 +246,20 @@
       "files": [
         {
           "hash": "7b67bf8151d3b9db3abbbff5571f3123af63e8a9ba32ce0426506f7467b3aea7",
+          "importOrder": [
+            "src/types.ts",
+            "src/validate.ts",
+            "src/storage/corpus-store.ts",
+            "src/ingest/ingest.ts",
+            "src/retrieve/retrieve.ts",
+            "src/retrieve/build-query.ts",
+            "src/retrieve/lexical-search.ts",
+            "src/retrieve/semantic-search.ts",
+            "src/retrieve/merge-candidates.ts",
+            "src/retrieve/metadata-filter.ts",
+            "src/retrieve/rerank.ts",
+            "src/retrieve/bundle.ts"
+          ],
           "importsFiles": [
             "src/ingest/ingest.ts",
             "src/retrieve/build-query.ts",
@@ -288,6 +304,11 @@
             "assembleBundle"
           ],
           "hash": "7a972f185d66f9e4b204edc7f959d9025fdd4770613200c004f832f20cd86716",
+          "importOrder": [
+            "src/types.ts",
+            "src/retrieve/rerank.ts",
+            "src/retrieve/build-query.ts"
+          ],
           "importsFiles": [
             "src/retrieve/build-query.ts",
             "src/retrieve/rerank.ts",
@@ -310,6 +331,11 @@
             "mergeCandidates"
           ],
           "hash": "4290c94172103278b6b59d22d9560f58d3e60ca0ff95816d63c4953927e002ed",
+          "importOrder": [
+            "src/storage/corpus-store.ts",
+            "src/retrieve/lexical-search.ts",
+            "src/retrieve/semantic-search.ts"
+          ],
           "importsFiles": [
             "src/retrieve/lexical-search.ts",
             "src/retrieve/semantic-search.ts",
@@ -322,6 +348,10 @@
             "metadataFilter"
           ],
           "hash": "3c9e1e04939f6507529c6730d20cbd8d822bb4d6939f6cec3e4437f3683a3e79",
+          "importOrder": [
+            "src/types.ts",
+            "src/retrieve/merge-candidates.ts"
+          ],
           "importsFiles": [
             "src/retrieve/merge-candidates.ts",
             "src/types.ts"
@@ -333,6 +363,10 @@
             "rerank"
           ],
           "hash": "46848c2cbb82bc4b0856d8c31544d734a9c0d2199958093165811684400f5273",
+          "importOrder": [
+            "src/types.ts",
+            "src/retrieve/metadata-filter.ts"
+          ],
           "importsFiles": [
             "src/retrieve/metadata-filter.ts",
             "src/types.ts"
@@ -344,6 +378,17 @@
             "retrieve"
           ],
           "hash": "319b6c4bf750394b897481e63446ea46a91ef7429eeaa49f5f37d2fd6abf55d9",
+          "importOrder": [
+            "src/types.ts",
+            "src/storage/corpus-store.ts",
+            "src/retrieve/build-query.ts",
+            "src/retrieve/lexical-search.ts",
+            "src/retrieve/semantic-search.ts",
+            "src/retrieve/merge-candidates.ts",
+            "src/retrieve/metadata-filter.ts",
+            "src/retrieve/rerank.ts",
+            "src/retrieve/bundle.ts"
+          ],
           "importsFiles": [
             "src/retrieve/build-query.ts",
             "src/retrieve/bundle.ts",
@@ -423,6 +468,10 @@
       "files": [
         {
           "hash": "d69c07112da2c8ede193dea22f64b80da162e54eb5437b10cc5afa694dd6afe9",
+          "importOrder": [
+            "src/validate.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/types.ts",
             "src/validate.ts"
@@ -439,6 +488,13 @@
         },
         {
           "hash": "d0eea456e4e68cac15116f7211363bf2b1466b948a9315095d5b261964ffa1ed",
+          "importOrder": [
+            "src/storage/corpus-store.ts",
+            "src/ingest/ingest.ts",
+            "src/retrieve/retrieve.ts",
+            "src/validate.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/ingest/ingest.ts",
             "src/retrieve/retrieve.ts",

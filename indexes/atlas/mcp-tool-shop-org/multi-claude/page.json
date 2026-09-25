@@ -50,6 +50,15 @@
         ]
       },
       {
+        "kind": "landing",
+        "sentence": ".multi-claude/workers is now written by src/commands/auto.ts and src/runtime/sdk-runtime.ts.",
+        "subjects": [
+          ".multi-claude/workers",
+          "src/commands/auto.ts",
+          "src/runtime/sdk-runtime.ts"
+        ]
+      },
+      {
         "kind": "origin",
         "sentence": ".multi-claude was authored and is now mixed.",
         "subjects": [
@@ -78,11 +87,12 @@
   "derived": "11 parts, mostly TypeScript (328 files) and JavaScript (3). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. People run multi-claude.",
   "doors": [
     {
-      "checks": [
+      "builds": [
         "bin/",
         "src/"
       ],
-      "checksCount": 2,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -223,7 +233,8 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": []
+      "triggers": [],
+      "untracked": ".multi-claude/workers/, which is not tracked"
     }
   ],
   "duplicates": [],
@@ -245,10 +256,10 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:11:58.062Z",
+  "generatedAt": "2026-09-25T09:18:47.245Z",
   "limits": [
     "3 writes and 5 reads use paths built at run time and are not named here.",
-    "2 writes go to places this repository does not track, so they are not listed as generated.",
+    "3 writes go to places this repository does not track, so they are not listed as generated.",
     "3 writes and 129 reads go to a path their caller passes, not to this repository.",
     "1 command is built at run time and not followed.",
     "control-plane-monitor calls src over HTTP at 6 routes, a link no import shows: the map draws it, and no door's reach follows it.",
@@ -272,12 +283,11 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/multi-claude",
   "sequences": [],
-  "startDoor": "package.json#multi-claude",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "bin/multi-claude.ts",
-    "src/commands/approve.ts"
+    ".github/workflows/ci.yml",
+    "bin/multi-claude.ts"
   ],
-  "startReason": "This path follows multi-claude (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 74,

@@ -324,6 +324,13 @@
             "run_inspect_artifact_command"
           ],
           "hash": "9628a0511f69bfecafe536bf3465a7aee2f6ab9d6fd2aeafa54eb6b2776ab978",
+          "importOrder": [
+            "python/ml_runner/runner.py",
+            "python/ml_runner/inspect.py",
+            "python/ml_runner/metadata.py",
+            "python/ml_runner/artifact_inspect.py",
+            "python/ml_runner/params.py"
+          ],
           "importsFiles": [
             "python/ml_runner/artifact_inspect.py",
             "python/ml_runner/inspect.py",
@@ -582,6 +589,20 @@
             "train_model"
           ],
           "hash": "be71e49f521b7a9faf8c7e5fb55679ff9fd498ed5e54e6ef04b91ff1b294f163",
+          "importOrder": [
+            "python/ml_runner/presets.py",
+            "python/ml_runner/inspect.py",
+            "python/ml_runner/metadata.py",
+            "python/ml_runner/provenance.py",
+            "python/ml_runner/contracts/__init__.py",
+            "python/ml_runner/model_factory.py",
+            "python/ml_runner/resolver.py",
+            "python/ml_runner/hyperparams.py",
+            "python/ml_runner/metrics_v1.py",
+            "python/ml_runner/feature_importance.py",
+            "python/ml_runner/linear_coefficients.py",
+            "python/ml_runner/interpretability_index.py"
+          ],
           "importsFiles": [
             "python/ml_runner/contracts/__init__.py",
             "python/ml_runner/feature_importance.py",
@@ -701,6 +722,12 @@
             "sample_csv"
           ],
           "hash": "bc86a315fdd0afe1b00a32445146193f0bb9274c7c061dc7f7359957745e5c2f",
+          "importOrder": [
+            "python/ml_runner/runner.py",
+            "python/ml_runner/inspect.py",
+            "python/ml_runner/metadata.py",
+            "python/ml_runner/provenance.py"
+          ],
           "importsFiles": [
             "python/ml_runner/inspect.py",
             "python/ml_runner/metadata.py",
@@ -727,6 +754,10 @@
             "sample_csv"
           ],
           "hash": "4c6cdd8b08dbd5489ee37fe0cbbce0d662ac70b9005c6747731c32f2b441f209",
+          "importOrder": [
+            "python/ml_runner/runner.py",
+            "python/ml_runner/presets.py"
+          ],
           "importsFiles": [
             "python/ml_runner/presets.py",
             "python/ml_runner/runner.py"
@@ -741,7 +772,24 @@
       "name": "python",
       "origin": "authored",
       "role": "code",
-      "testedBy": 13,
+      "testedBy": 14,
+      "unresolvedNamed": [
+        {
+          "path": "python/ml_runner/test_cancellation_marker.py",
+          "specifier": "ml_runner.contracts",
+          "why": "unplaced"
+        },
+        {
+          "path": "python/ml_runner/test_cancellation_marker.py",
+          "specifier": "ml_runner.provenance",
+          "why": "unplaced"
+        },
+        {
+          "path": "python/ml_runner/test_cancellation_marker.py",
+          "specifier": "ml_runner",
+          "why": "unplaced"
+        }
+      ],
       "unresolvedSites": 83
     },
     {
@@ -907,6 +955,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -935,6 +984,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "2a9e739a5e0da818dc5f857f3d4d7e668fc87dcadfacccd0df1ab09a51919b9e",
           "path": "site/src/site-config.ts"
         },
@@ -1695,6 +1745,10 @@
             "readCancelledMarker"
           ],
           "hash": "2ccfed88b5b0460aa47d875e9293a3215233c31971c01de7ed6a32fedd958f1d",
+          "importOrder": [
+            "src/types.ts",
+            "src/observability/fs-safe.ts"
+          ],
           "importsFiles": [
             "src/observability/fs-safe.ts",
             "src/types.ts"
@@ -1713,6 +1767,12 @@
             "exportLatestRunAsMarkdown"
           ],
           "hash": "3264bbdcb5d544a309325196fc7a3507bd02f3df19b70bfd72b5939e290e12d4",
+          "importOrder": [
+            "src/observability/metadata-command.ts",
+            "src/observability/fs-safe.ts",
+            "src/observability/render/escape.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/observability/fs-safe.ts",
             "src/observability/metadata-command.ts",
@@ -1917,6 +1977,11 @@
             "viewLatestMetricsV1"
           ],
           "hash": "d4526ea12876e1afafc042ec715b36c2f262f9a693ce3cce944a2d7cd698b41b",
+          "importOrder": [
+            "src/types.ts",
+            "src/observability/fs-safe.ts",
+            "src/observability/orphan-markers.ts"
+          ],
           "importsFiles": [
             "src/observability/fs-safe.ts",
             "src/observability/orphan-markers.ts",
@@ -1938,6 +2003,10 @@
             "listOrphanedRuns"
           ],
           "hash": "ca17fa2be061df08c8dd777bf6e5eff02d13af25c48924cf0341eaea56462945",
+          "importOrder": [
+            "src/types.ts",
+            "src/observability/fs-safe.ts"
+          ],
           "importsFiles": [
             "src/observability/fs-safe.ts",
             "src/types.ts"
@@ -1950,6 +2019,10 @@
             "recoverIndexForWorkspace"
           ],
           "hash": "98b3bc9dfb215f0ef8be17b54aac46f15ee158d6876cf568cf8404bd817db9e0",
+          "importOrder": [
+            "src/types.ts",
+            "src/observability/fs-safe.ts"
+          ],
           "importsFiles": [
             "src/observability/fs-safe.ts",
             "src/types.ts"
@@ -1989,6 +2062,10 @@
             "renderRecoveryReport"
           ],
           "hash": "2cae2782d205c8c8a3bd937691df609388733061c3166c37b3797ba6151f8770",
+          "importOrder": [
+            "src/types.ts",
+            "src/observability/render/escape.ts"
+          ],
           "importsFiles": [
             "src/observability/render/escape.ts",
             "src/types.ts"
@@ -2000,6 +2077,10 @@
             "renderRunSummary"
           ],
           "hash": "6bf388d73a3b38f4c0e452a6047c883afe829aafeac870b1b5ac922adca5cb52",
+          "importOrder": [
+            "src/types.ts",
+            "src/observability/render/escape.ts"
+          ],
           "importsFiles": [
             "src/observability/render/escape.ts",
             "src/types.ts"
@@ -2018,6 +2099,11 @@
             "validateRegistry"
           ],
           "hash": "4569952b2fcc8e257b7eb7fc171a276e7cf9d895b04f3f487cf9cd4348c9981d",
+          "importOrder": [
+            "src/types.ts",
+            "src/presets/std-train.json",
+            "src/presets/hq-train.json"
+          ],
           "importsFiles": [
             "src/presets/hq-train.json",
             "src/presets/std-train.json",
@@ -2413,6 +2499,11 @@
         },
         {
           "hash": "ce314e8b7647ddab666a077c2ebce0f737a24ea8cb28b42cd80456b1801ef2c4",
+          "importOrder": [
+            "src/runner/run-manager.ts",
+            "src/types.ts",
+            "src/observability/event-stream-consumer.ts"
+          ],
           "importsFiles": [
             "src/observability/event-stream-consumer.ts",
             "src/runner/run-manager.ts",
@@ -2452,6 +2543,10 @@
         },
         {
           "hash": "3a8aaff12bd75453008a278cd231452e181c05069dc99e460911519c02533b84",
+          "importOrder": [
+            "src/observability/render/escape.ts",
+            "src/observability/export-markdown-command.ts"
+          ],
           "importsFiles": [
             "src/observability/export-markdown-command.ts",
             "src/observability/render/escape.ts"
@@ -2504,6 +2599,14 @@
         },
         {
           "hash": "00320d95f83cf8aff984c685f90fc76b8408d244afcecd9ebbec8d041ec7dbce",
+          "importOrder": [
+            "src/observability/inspect-command.ts",
+            "src/observability/artifact-inspect-command.ts",
+            "src/observability/metrics-v1-command.ts",
+            "src/observability/feature-importance-command.ts",
+            "src/observability/linear-coefficients-command.ts",
+            "src/observability/interpretability-index-command.ts"
+          ],
           "importsFiles": [
             "src/observability/artifact-inspect-command.ts",
             "src/observability/feature-importance-command.ts",
@@ -2530,6 +2633,10 @@
         },
         {
           "hash": "392f69b556a1a95617ca2607a8b4cdd68ad5f4fbb42787e0f35e9cbe529698c3",
+          "importOrder": [
+            "src/workspace/index-manager.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/types.ts",
             "src/workspace/index-manager.ts"
@@ -2538,6 +2645,18 @@
         },
         {
           "hash": "2426f3a099f47c74589fad443921c391e03650e5f28e570fe3d320a2691dec15",
+          "importOrder": [
+            "src/observability/render/run-summary.ts",
+            "src/observability/render/diagnostics-summary.ts",
+            "src/observability/render/artifact-summary.ts",
+            "src/observability/render/recovery-report-summary.ts",
+            "src/observability/metrics-v1-command.ts",
+            "src/observability/feature-importance-command.ts",
+            "src/observability/linear-coefficients-command.ts",
+            "src/observability/interpretability-index-command.ts",
+            "src/observability/artifact-inspect-command.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/observability/artifact-inspect-command.ts",
             "src/observability/feature-importance-command.ts",
@@ -2568,6 +2687,17 @@
         },
         {
           "hash": "edaf28a7db09cd1dab024ad9f8bf646fcb4fe91754f5c5c66cfc6e064d4306fc",
+          "importOrder": [
+            "src/types.ts",
+            "src/observability/orphan-markers.ts",
+            "src/observability/metadata-command.ts",
+            "src/observability/artifact-inspect-command.ts",
+            "src/observability/export-markdown-command.ts",
+            "src/observability/interpretability-index-command.ts",
+            "src/observability/linear-coefficients-command.ts",
+            "src/observability/feature-importance-command.ts",
+            "src/observability/metrics-v1-command.ts"
+          ],
           "importsFiles": [
             "src/observability/artifact-inspect-command.ts",
             "src/observability/export-markdown-command.ts",
@@ -2622,6 +2752,10 @@
         },
         {
           "hash": "7caa1929a88c0ebf9d5dd6584bccba490baec9c88c633d1ccbac046e61243632",
+          "importOrder": [
+            "src/types.ts",
+            "src/runner/python-runner.ts"
+          ],
           "importsFiles": [
             "src/runner/python-runner.ts",
             "src/types.ts"
@@ -2630,6 +2764,12 @@
         },
         {
           "hash": "f8b8ff9a627be7f6afcd6c93016579b88f44e641ff0326b1fc9a6be3471a326e",
+          "importOrder": [
+            "src/types.ts",
+            "src/workspace/run-folder.ts",
+            "src/workspace/index-manager.ts",
+            "src/observability/fs-safe.ts"
+          ],
           "importsFiles": [
             "src/observability/fs-safe.ts",
             "src/types.ts",
@@ -2640,6 +2780,11 @@
         },
         {
           "hash": "1a3fdeb8e2ae476148133f146b3677e9c94b098745ed4a4db10208fe57273119",
+          "importOrder": [
+            "src/types.ts",
+            "src/workspace/index-manager.ts",
+            "src/observability/fs-safe.ts"
+          ],
           "importsFiles": [
             "src/observability/fs-safe.ts",
             "src/types.ts",
@@ -2649,6 +2794,11 @@
         },
         {
           "hash": "5e33eacbeac4bb85dddf684e5ce01549b2b21bbadeff0c5ec95b30a6e36c946f",
+          "importOrder": [
+            "src/runner/python-runner.ts",
+            "src/observability/fs-safe.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/observability/fs-safe.ts",
             "src/runner/python-runner.ts",
@@ -2666,6 +2816,13 @@
         },
         {
           "hash": "870b53c69fac950f4fb75e50a5e56fb12916928c068707fa08fa64b9b2c6ebd3",
+          "importOrder": [
+            "src/observability/render/run-summary.ts",
+            "src/observability/render/diagnostics-summary.ts",
+            "src/observability/render/artifact-summary.ts",
+            "src/observability/artifact-inspect-command.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/observability/artifact-inspect-command.ts",
             "src/observability/render/artifact-summary.ts",
@@ -2702,6 +2859,10 @@
         },
         {
           "hash": "9c05f894869df4914cc163f4559945c800208951367c75de43d106e4f0c7b833",
+          "importOrder": [
+            "src/status-bar.ts",
+            "src/observability/event-stream-consumer.ts"
+          ],
           "importsFiles": [
             "src/observability/event-stream-consumer.ts",
             "src/status-bar.ts"
@@ -2710,6 +2871,12 @@
         },
         {
           "hash": "c61a777cb50cee7732cafd9089af9131d52023072ab0e488823ac95e7d08b2bf",
+          "importOrder": [
+            "src/runner/run-manager.ts",
+            "src/observability/event-stream-consumer.ts",
+            "src/observability/cancelled-marker-reader.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/observability/cancelled-marker-reader.ts",
             "src/observability/event-stream-consumer.ts",
@@ -2743,7 +2910,7 @@
   ],
   "doors": [
     {
-      "checksCount": 2,
+      "checksCount": 1,
       "commands": [
         {
           "job": "quality-gates",
@@ -2903,11 +3070,12 @@
           "via": "vitest vitest.config.ts"
         },
         {
+          "built": true,
           "directory": true,
           "job": "extension-host-smoke",
           "matched": true,
           "path": "test/extension-host/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc test/extension-host/tsconfig.json"
         },
         {

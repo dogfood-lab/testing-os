@@ -47,10 +47,11 @@
   "derived": "6 parts, mostly TypeScript (48 files) and JavaScript (1). Work enters through 4 doors; ci, Deploy site to GitHub Pages, Release and rig-bridge each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. People run rig-bridge.",
   "doors": [
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -136,10 +137,11 @@
       ]
     },
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
@@ -229,7 +231,7 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-25T02:13:15.714Z",
+  "generatedAt": "2026-09-25T09:20:34.108Z",
   "limits": [
     "9 writes and 46 reads go to a path their caller passes, not to this repository.",
     "2 commands are built at run time and not followed.",
@@ -257,43 +259,43 @@
           "name": "runInit",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run init",
+          "phrase": "`runInit`",
           "steps": [
             {
               "name": "normalizeRigId",
               "part": "src",
               "partLabel": "src",
-              "phrase": "normalize rig id"
+              "phrase": "`normalizeRigId`"
             },
             {
               "name": "validateRigId",
               "part": "src",
               "partLabel": "src",
-              "phrase": "validate rig id"
+              "phrase": "`validateRigId`"
             },
             {
               "name": "isGitRepo",
               "part": "src",
               "partLabel": "src",
-              "phrase": "is git repo"
+              "phrase": "`isGitRepo`"
             },
             {
               "name": "repoRoot",
               "part": "src",
               "partLabel": "src",
-              "phrase": "repo root"
+              "phrase": "`repoRoot`"
             },
             {
               "name": "writeConfig",
               "part": "src",
               "partLabel": "src",
-              "phrase": "write config"
+              "phrase": "`writeConfig`"
             },
             {
               "name": "configPath",
               "part": "src",
               "partLabel": "src",
-              "phrase": "config path"
+              "phrase": "`configPath`"
             }
           ]
         },
@@ -302,25 +304,25 @@
           "name": "runNew",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run new",
+          "phrase": "`runNew`",
           "steps": [
             {
               "name": "repoRoot",
               "part": "src",
               "partLabel": "src",
-              "phrase": "repo root"
+              "phrase": "`repoRoot`"
             },
             {
               "name": "readConfig",
               "part": "src",
               "partLabel": "src",
-              "phrase": "read config"
+              "phrase": "`readConfig`"
             },
             {
               "name": "renderEnvelope",
               "part": "src",
               "partLabel": "src",
-              "phrase": "render envelope"
+              "phrase": "`renderEnvelope`"
             }
           ]
         },
@@ -329,61 +331,61 @@
           "name": "runSend",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run send",
+          "phrase": "`runSend`",
           "steps": [
             {
               "name": "validateRigId",
               "part": "src",
               "partLabel": "src",
-              "phrase": "validate rig id"
+              "phrase": "`validateRigId`"
             },
             {
               "name": "repoRoot",
               "part": "src",
               "partLabel": "src",
-              "phrase": "repo root"
+              "phrase": "`repoRoot`"
             },
             {
               "name": "readConfig",
               "part": "src",
               "partLabel": "src",
-              "phrase": "read config"
+              "phrase": "`readConfig`"
             },
             {
               "name": "markerToStatusClass",
               "part": "src",
               "partLabel": "src",
-              "phrase": "marker to status class"
+              "phrase": "`markerToStatusClass`"
             },
             {
               "name": "bodyHash",
               "part": "src",
               "partLabel": "src",
-              "phrase": "body hash"
+              "phrase": "`bodyHash`"
             },
             {
               "name": "validateFrontmatter",
               "part": "src",
               "partLabel": "src",
-              "phrase": "validate frontmatter"
+              "phrase": "`validateFrontmatter`"
             },
             {
               "name": "renderEnvelope",
               "part": "src",
               "partLabel": "src",
-              "phrase": "render envelope"
+              "phrase": "`renderEnvelope`"
             },
             {
               "name": "safeCommit",
               "part": "src",
               "partLabel": "src",
-              "phrase": "safe commit"
+              "phrase": "`safeCommit`"
             },
             {
               "name": "safePush",
               "part": "src",
               "partLabel": "src",
-              "phrase": "safe push"
+              "phrase": "`safePush`"
             }
           ]
         },
@@ -392,61 +394,61 @@
           "name": "runClose",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run close",
+          "phrase": "`runClose`",
           "steps": [
             {
               "name": "repoRoot",
               "part": "src",
               "partLabel": "src",
-              "phrase": "repo root"
+              "phrase": "`repoRoot`"
             },
             {
               "name": "readConfig",
               "part": "src",
               "partLabel": "src",
-              "phrase": "read config"
+              "phrase": "`readConfig`"
             },
             {
               "name": "markerToStatusClass",
               "part": "src",
               "partLabel": "src",
-              "phrase": "marker to status class"
+              "phrase": "`markerToStatusClass`"
             },
             {
               "name": "findPeerRigs",
               "part": "src",
               "partLabel": "src",
-              "phrase": "find peer rigs"
+              "phrase": "`findPeerRigs`"
             },
             {
               "name": "bodyHash",
               "part": "src",
               "partLabel": "src",
-              "phrase": "body hash"
+              "phrase": "`bodyHash`"
             },
             {
               "name": "validateFrontmatter",
               "part": "src",
               "partLabel": "src",
-              "phrase": "validate frontmatter"
+              "phrase": "`validateFrontmatter`"
             },
             {
               "name": "renderEnvelope",
               "part": "src",
               "partLabel": "src",
-              "phrase": "render envelope"
+              "phrase": "`renderEnvelope`"
             },
             {
               "name": "safeCommit",
               "part": "src",
               "partLabel": "src",
-              "phrase": "safe commit"
+              "phrase": "`safeCommit`"
             },
             {
               "name": "safePush",
               "part": "src",
               "partLabel": "src",
-              "phrase": "safe push"
+              "phrase": "`safePush`"
             }
           ]
         },
@@ -455,128 +457,128 @@
           "name": "runRelay",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run relay",
+          "phrase": "`runRelay`",
           "steps": [
             {
               "name": "repoRoot",
               "part": "src",
               "partLabel": "src",
-              "phrase": "repo root"
+              "phrase": "`repoRoot`"
             },
             {
               "name": "readConfig",
               "part": "src",
               "partLabel": "src",
-              "phrase": "read config"
+              "phrase": "`readConfig`"
             },
             {
               "name": "runGit",
               "part": "src",
               "partLabel": "src",
-              "phrase": "run git"
+              "phrase": "`runGit`"
             },
             {
               "name": "validateRigId",
               "part": "src",
               "partLabel": "src",
-              "phrase": "validate rig id"
+              "phrase": "`validateRigId`"
             },
             {
               "name": "parseEnvelope",
               "part": "src",
               "partLabel": "src",
-              "phrase": "parse envelope"
+              "phrase": "`parseEnvelope`"
             },
             {
               "name": "normalizeRigId",
               "part": "src",
               "partLabel": "src",
-              "phrase": "normalize rig id"
+              "phrase": "`normalizeRigId`"
             },
             {
               "name": "validateRigId",
               "part": "src",
               "partLabel": "src",
-              "phrase": "validate rig id"
+              "phrase": "`validateRigId`"
             },
             {
               "name": "bodyHash",
               "part": "src",
               "partLabel": "src",
-              "phrase": "body hash"
+              "phrase": "`bodyHash`"
             },
             {
               "name": "validateFrontmatter",
               "part": "src",
               "partLabel": "src",
-              "phrase": "validate frontmatter"
+              "phrase": "`validateFrontmatter`"
             },
             {
               "name": "renderEnvelope",
               "part": "src",
               "partLabel": "src",
-              "phrase": "render envelope"
+              "phrase": "`renderEnvelope`"
             },
             {
               "name": "runGit",
               "part": "src",
               "partLabel": "src",
-              "phrase": "run git"
+              "phrase": "`runGit`"
             }
           ]
         }
       ],
       "part": "src",
       "partLabel": "src",
-      "phrase": "main",
+      "phrase": "`main`",
       "steps": [
         {
           "name": "runInit",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run init"
+          "phrase": "`runInit`"
         },
         {
           "name": "runNew",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run new"
+          "phrase": "`runNew`"
         },
         {
           "name": "runSend",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run send"
+          "phrase": "`runSend`"
         },
         {
           "name": "runClose",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run close"
+          "phrase": "`runClose`"
         },
         {
           "name": "runStatus",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run status"
+          "phrase": "`runStatus`"
         },
         {
           "name": "runThread",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run thread"
+          "phrase": "`runThread`"
         },
         {
           "name": "runSync",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run sync"
+          "phrase": "`runSync`"
         },
         {
           "name": "runRelay",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run relay"
+          "phrase": "`runRelay`"
         }
       ]
     }
@@ -584,7 +586,13 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "src/cli.ts"
+    "src/cli.ts",
+    "src/commands/init.ts",
+    "src/commands/new.ts",
+    "src/commands/send.ts",
+    "src/commands/close.ts",
+    "src/commands/status.ts",
+    "src/commands/thread.ts"
   ],
   "summary": null,
   "summaryFrom": null,

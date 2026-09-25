@@ -213,6 +213,7 @@
           "path": "site/src/assets/logo.png"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -241,6 +242,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "69226894db1b3cef85fb2fc567157f0fefc9436bf130deaf77836fbe38daef81",
           "path": "site/src/site-config.ts"
         },
@@ -284,6 +286,13 @@
             "quantFromFilename"
           ],
           "hash": "b143c81fcbfce411972565b339ad2ab442b35c2dcb15a1e6e4ffba30b9bd22ca",
+          "importOrder": [
+            "src/gguf/index.ts",
+            "src/catalog/ollama.ts",
+            "src/catalog/to-model-meta.ts",
+            "src/catalog/types.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/catalog/ollama.ts",
             "src/catalog/to-model-meta.ts",
@@ -295,6 +304,13 @@
         },
         {
           "hash": "75b59a63e382bdaa7ac023ddbdacb5be04b273baffe72b2f78f5e600bf6b4b03",
+          "importOrder": [
+            "src/catalog/types.ts",
+            "src/catalog/to-model-meta.ts",
+            "src/catalog/local.ts",
+            "src/catalog/hf.ts",
+            "src/catalog/ollama.ts"
+          ],
           "importsFiles": [
             "src/catalog/hf.ts",
             "src/catalog/local.ts",
@@ -311,6 +327,11 @@
             "catalogFromGgufFile"
           ],
           "hash": "2897f8b84d9798d068f61e492b318b5709a424d252dec70468053bb99e3425a4",
+          "importOrder": [
+            "src/gguf/index.ts",
+            "src/catalog/to-model-meta.ts",
+            "src/catalog/types.ts"
+          ],
           "importsFiles": [
             "src/catalog/to-model-meta.ts",
             "src/catalog/types.ts",
@@ -326,6 +347,13 @@
             "quantFromLabel"
           ],
           "hash": "cd584cca2ece60210d12837ee5fc873bbd81db07981b19c6007e60da6cc92879",
+          "importOrder": [
+            "src/types.ts",
+            "src/constants.ts",
+            "src/gguf/index.ts",
+            "src/catalog/to-model-meta.ts",
+            "src/catalog/types.ts"
+          ],
           "importsFiles": [
             "src/catalog/to-model-meta.ts",
             "src/catalog/types.ts",
@@ -340,6 +368,10 @@
             "toModelMeta"
           ],
           "hash": "460636c39dda075c2ed6f8c838c4d1314ec0179e502c2d9e3d749b688ca8f1e7",
+          "importOrder": [
+            "src/types.ts",
+            "src/gguf/index.ts"
+          ],
           "importsFiles": [
             "src/gguf/index.ts",
             "src/types.ts"
@@ -494,6 +526,10 @@
             "emitOllama"
           ],
           "hash": "4117db938ea52f97fc904bc22d9d399fd80663fa7319113c4dd4a63727218497",
+          "importOrder": [
+            "src/types.ts",
+            "src/emit/types.ts"
+          ],
           "importsFiles": [
             "src/emit/types.ts",
             "src/types.ts"
@@ -502,6 +538,10 @@
         },
         {
           "hash": "069e695b8ca7280476cb8999ce02070a9fd419e7c92fbbf4a50c797f895532a2",
+          "importOrder": [
+            "src/emit/types.ts",
+            "src/emit/emit.ts"
+          ],
           "importsFiles": [
             "src/emit/emit.ts",
             "src/emit/types.ts"
@@ -521,6 +561,11 @@
             "usableBytes"
           ],
           "hash": "3e2fe690d6c844d7188e78bbce4aa6c55591dd3551a40752cf0ed10c3faf421e",
+          "importOrder": [
+            "src/types.ts",
+            "src/constants.ts",
+            "src/quant.ts"
+          ],
           "importsFiles": [
             "src/constants.ts",
             "src/quant.ts",
@@ -530,6 +575,13 @@
         },
         {
           "hash": "89b42d03c19d53fbb33bf6a08d8c8b3bae4dbbe45073001583f088a0f940d8d9",
+          "importOrder": [
+            "src/gguf/types.ts",
+            "src/gguf/parse.ts",
+            "src/gguf/params.ts",
+            "src/gguf/model-meta.ts",
+            "src/gguf/read-file.ts"
+          ],
           "importsFiles": [
             "src/gguf/model-meta.ts",
             "src/gguf/params.ts",
@@ -547,6 +599,11 @@
             "parseSizeLabel"
           ],
           "hash": "dbb1b0edf13571cc6b3f5dba22ed52c484771b7f444957f94141424911a72402",
+          "importOrder": [
+            "src/gguf/types.ts",
+            "src/types.ts",
+            "src/gguf/params.ts"
+          ],
           "importsFiles": [
             "src/gguf/params.ts",
             "src/gguf/types.ts",
@@ -591,6 +648,19 @@
         },
         {
           "hash": "4518fe0abaab43f8f0ab042a39fe30a1d4a2bbb2c97041b775457115c22f7a3e",
+          "importOrder": [
+            "src/types.ts",
+            "src/constants.ts",
+            "src/quant.ts",
+            "src/footprint.ts",
+            "src/roofline.ts",
+            "src/placement.ts",
+            "src/plan.ts",
+            "src/gguf/index.ts",
+            "src/probe/index.ts",
+            "src/catalog/index.ts",
+            "src/emit/index.ts"
+          ],
           "importsFiles": [
             "src/catalog/index.ts",
             "src/constants.ts",
@@ -619,6 +689,11 @@
             "placeAndAdmit"
           ],
           "hash": "c9fc480293e5a0d86b95df2d1651142a8a287e12a05aff26ce2d9fca94ab90bc",
+          "importOrder": [
+            "src/types.ts",
+            "src/constants.ts",
+            "src/footprint.ts"
+          ],
           "importsFiles": [
             "src/constants.ts",
             "src/footprint.ts",
@@ -632,6 +707,14 @@
             "recommend"
           ],
           "hash": "72d64e70c2e7177b4086b790f80e78fa6c774a63b3e7f78ce43e6fb41deb4faf",
+          "importOrder": [
+            "src/types.ts",
+            "src/constants.ts",
+            "src/quant.ts",
+            "src/footprint.ts",
+            "src/placement.ts",
+            "src/roofline.ts"
+          ],
           "importsFiles": [
             "src/constants.ts",
             "src/footprint.ts",
@@ -655,6 +738,12 @@
         },
         {
           "hash": "6d88cbe04bd54b5c7256aa1f433d6bc03a023482cd29ac92315d24986908a6bb",
+          "importOrder": [
+            "src/probe/probe.ts",
+            "src/probe/gpu-tables.ts",
+            "src/probe/parsers.ts",
+            "src/probe/types.ts"
+          ],
           "importsFiles": [
             "src/probe/gpu-tables.ts",
             "src/probe/parsers.ts",
@@ -683,6 +772,13 @@
             "probeRam"
           ],
           "hash": "b461a17fa1e36da9b4b6e7ace41f13b8eec55505bf1a8c4d70b7663bb9a41f0f",
+          "importOrder": [
+            "src/types.ts",
+            "src/constants.ts",
+            "src/probe/types.ts",
+            "src/probe/gpu-tables.ts",
+            "src/probe/parsers.ts"
+          ],
           "importsFiles": [
             "src/constants.ts",
             "src/probe/gpu-tables.ts",
@@ -710,6 +806,10 @@
             "smallestQuant"
           ],
           "hash": "3ebb2cf65ee2ecca679a9f0bf2ca8adb301b46cb51445d3f83329cec1e8ed5ac",
+          "importOrder": [
+            "src/types.ts",
+            "src/constants.ts"
+          ],
           "importsFiles": [
             "src/constants.ts",
             "src/types.ts"
@@ -722,6 +822,10 @@
             "predictTokensPerSec"
           ],
           "hash": "18657db167368977be60f643655c88bf4af326a0b00a9a911fe63e3a5f806e8e",
+          "importOrder": [
+            "src/types.ts",
+            "src/constants.ts"
+          ],
           "importsFiles": [
             "src/constants.ts",
             "src/types.ts"
@@ -780,6 +884,10 @@
         },
         {
           "hash": "81918ce35e075659780e3b467e2f70a656fe3310323b136f81cf5f351832c976",
+          "importOrder": [
+            "src/gguf/parse.ts",
+            "src/gguf/index.ts"
+          ],
           "importsFiles": [
             "src/gguf/index.ts",
             "src/gguf/parse.ts"
@@ -796,6 +904,12 @@
         },
         {
           "hash": "b58e699a8781777dfa36f30188345f400f623b41c1451c320a35eccea2662aec",
+          "importOrder": [
+            "src/gguf/index.ts",
+            "src/catalog/to-model-meta.ts",
+            "src/index.ts",
+            "src/gguf/types.ts"
+          ],
           "importsFiles": [
             "src/catalog/to-model-meta.ts",
             "src/gguf/index.ts",
@@ -877,7 +991,7 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 4,
+          "reads": 3,
           "where": [
             "caller"
           ],
@@ -900,7 +1014,7 @@
           "writes": 1
         }
       ],
-      "outsideReads": 6,
+      "outsideReads": 5,
       "outsideWrites": 1,
       "role": "code",
       "testedBy": 17,
@@ -909,7 +1023,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "build-test",
@@ -944,11 +1058,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "build-test",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -1187,7 +1302,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "release",
@@ -1259,11 +1374,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "release",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {

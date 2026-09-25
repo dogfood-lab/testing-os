@@ -58,6 +58,11 @@
         ]
       },
       {
+        "kind": "door",
+        "sentence": "And 2 more changes to doors.",
+        "subjects": []
+      },
+      {
         "kind": "landing",
         "sentence": "CHANGELOG.md is now read by test/version.test.ts.",
         "subjects": [
@@ -104,6 +109,9 @@
   "derived": "7 parts, mostly TypeScript (40 files) and JavaScript (1). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run registry-sync. People import @mcptoolshop/registry-sync.",
   "doors": [
     {
+      "builds": [
+        "src/index.ts"
+      ],
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
@@ -119,7 +127,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 18
+          "files": 19
         },
         {
           "boundary": "test",
@@ -138,12 +146,15 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 7 paths",
+        "on a pull request to main touching 7 paths",
         "on a push to main touching 7 paths",
         "or by hand"
       ]
     },
     {
+      "builds": [
+        "src/index.ts"
+      ],
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
@@ -154,14 +165,14 @@
       "pushes": false,
       "reach": [
         {
+          "boundary": "src",
+          "depth": 0,
+          "files": 19
+        },
+        {
           "boundary": "test",
           "depth": 0,
           "files": 17
-        },
-        {
-          "boundary": "src",
-          "depth": 1,
-          "files": 18
         }
       ],
       "runs": [
@@ -278,11 +289,11 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T02:12:35.683Z",
+  "generatedAt": "2026-09-25T09:19:44.774Z",
   "limits": [
     "4 writes and 4 reads go to a path their caller passes, not to this repository.",
+    "2 reads go to the directory the command is run in (package.json and registry-sync.config.json), not to this repository.",
     "1 read goes to the directory the command is run in (registry-sync.config.json) or a path its caller passes, not to this repository.",
-    "1 read goes to the directory the command is run in (registry-sync.config.json), not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -308,49 +319,49 @@
           "name": "audit",
           "part": "src",
           "partLabel": "src",
-          "phrase": "audit",
+          "phrase": "`audit`",
           "steps": [
             {
               "name": "listOrgRepos",
               "part": "src",
               "partLabel": "src",
-              "phrase": "list org repos"
+              "phrase": "`listOrgRepos`"
             },
             {
               "name": "pLimit",
               "part": "src",
               "partLabel": "src",
-              "phrase": "p limit"
+              "phrase": "`pLimit`"
             },
             {
               "name": "readPackageJson",
               "part": "src",
               "partLabel": "src",
-              "phrase": "read package json"
+              "phrase": "`readPackageJson`"
             },
             {
               "name": "hasDockerfile",
               "part": "src",
               "partLabel": "src",
-              "phrase": "has dockerfile"
+              "phrase": "`hasDockerfile`"
             },
             {
               "name": "getNpmPackageInfo",
               "part": "src",
               "partLabel": "src",
-              "phrase": "get npm package info"
+              "phrase": "`getNpmPackageInfo`"
             },
             {
               "name": "compareSemver",
               "part": "src",
               "partLabel": "src",
-              "phrase": "compare semver"
+              "phrase": "`compareSemver`"
             },
             {
               "name": "listGhcrPackages",
               "part": "src",
               "partLabel": "src",
-              "phrase": "list ghcr packages"
+              "phrase": "`listGhcrPackages`"
             }
           ]
         },
@@ -359,49 +370,49 @@
           "name": "audit",
           "part": "src",
           "partLabel": "src",
-          "phrase": "audit",
+          "phrase": "`audit`",
           "steps": [
             {
               "name": "listOrgRepos",
               "part": "src",
               "partLabel": "src",
-              "phrase": "list org repos"
+              "phrase": "`listOrgRepos`"
             },
             {
               "name": "pLimit",
               "part": "src",
               "partLabel": "src",
-              "phrase": "p limit"
+              "phrase": "`pLimit`"
             },
             {
               "name": "readPackageJson",
               "part": "src",
               "partLabel": "src",
-              "phrase": "read package json"
+              "phrase": "`readPackageJson`"
             },
             {
               "name": "hasDockerfile",
               "part": "src",
               "partLabel": "src",
-              "phrase": "has dockerfile"
+              "phrase": "`hasDockerfile`"
             },
             {
               "name": "getNpmPackageInfo",
               "part": "src",
               "partLabel": "src",
-              "phrase": "get npm package info"
+              "phrase": "`getNpmPackageInfo`"
             },
             {
               "name": "compareSemver",
               "part": "src",
               "partLabel": "src",
-              "phrase": "compare semver"
+              "phrase": "`compareSemver`"
             },
             {
               "name": "listGhcrPackages",
               "part": "src",
               "partLabel": "src",
-              "phrase": "list ghcr packages"
+              "phrase": "`listGhcrPackages`"
             }
           ]
         },
@@ -410,165 +421,165 @@
           "name": "audit",
           "part": "src",
           "partLabel": "src",
-          "phrase": "audit",
+          "phrase": "`audit`",
           "steps": [
             {
               "name": "listOrgRepos",
               "part": "src",
               "partLabel": "src",
-              "phrase": "list org repos"
+              "phrase": "`listOrgRepos`"
             },
             {
               "name": "pLimit",
               "part": "src",
               "partLabel": "src",
-              "phrase": "p limit"
+              "phrase": "`pLimit`"
             },
             {
               "name": "readPackageJson",
               "part": "src",
               "partLabel": "src",
-              "phrase": "read package json"
+              "phrase": "`readPackageJson`"
             },
             {
               "name": "hasDockerfile",
               "part": "src",
               "partLabel": "src",
-              "phrase": "has dockerfile"
+              "phrase": "`hasDockerfile`"
             },
             {
               "name": "getNpmPackageInfo",
               "part": "src",
               "partLabel": "src",
-              "phrase": "get npm package info"
+              "phrase": "`getNpmPackageInfo`"
             },
             {
               "name": "compareSemver",
               "part": "src",
               "partLabel": "src",
-              "phrase": "compare semver"
+              "phrase": "`compareSemver`"
             },
             {
               "name": "listGhcrPackages",
               "part": "src",
               "partLabel": "src",
-              "phrase": "list ghcr packages"
+              "phrase": "`listGhcrPackages`"
             }
           ]
         }
       ],
       "part": "src",
       "partLabel": "src",
-      "phrase": "main",
+      "phrase": "`main`",
       "steps": [
         {
           "name": "loadConfig",
           "part": "src",
           "partLabel": "src",
-          "phrase": "load config"
+          "phrase": "`loadConfig`"
         },
         {
           "name": "audit",
           "part": "src",
           "partLabel": "src",
-          "phrase": "audit"
+          "phrase": "`audit`"
         },
         {
           "name": "formatAuditJson",
           "part": "src",
           "partLabel": "src",
-          "phrase": "format audit json"
+          "phrase": "`formatAuditJson`"
         },
         {
           "name": "formatAuditMarkdown",
           "part": "src",
           "partLabel": "src",
-          "phrase": "format audit markdown"
+          "phrase": "`formatAuditMarkdown`"
         },
         {
           "name": "formatAuditTable",
           "part": "src",
           "partLabel": "src",
-          "phrase": "format audit table"
+          "phrase": "`formatAuditTable`"
         },
         {
           "name": "loadConfig",
           "part": "src",
           "partLabel": "src",
-          "phrase": "load config"
+          "phrase": "`loadConfig`"
         },
         {
           "name": "audit",
           "part": "src",
           "partLabel": "src",
-          "phrase": "audit"
+          "phrase": "`audit`"
         },
         {
           "name": "plan",
           "part": "src",
           "partLabel": "src",
-          "phrase": "plan"
+          "phrase": "`plan`"
         },
         {
           "name": "formatPlanJson",
           "part": "src",
           "partLabel": "src",
-          "phrase": "format plan json"
+          "phrase": "`formatPlanJson`"
         },
         {
           "name": "formatPlanMarkdown",
           "part": "src",
           "partLabel": "src",
-          "phrase": "format plan markdown"
+          "phrase": "`formatPlanMarkdown`"
         },
         {
           "name": "formatPlanTable",
           "part": "src",
           "partLabel": "src",
-          "phrase": "format plan table"
+          "phrase": "`formatPlanTable`"
         },
         {
           "name": "loadConfig",
           "part": "src",
           "partLabel": "src",
-          "phrase": "load config"
+          "phrase": "`loadConfig`"
         },
         {
           "name": "audit",
           "part": "src",
           "partLabel": "src",
-          "phrase": "audit"
+          "phrase": "`audit`"
         },
         {
           "name": "plan",
           "part": "src",
           "partLabel": "src",
-          "phrase": "plan"
+          "phrase": "`plan`"
         },
         {
           "name": "apply",
           "part": "src",
           "partLabel": "src",
-          "phrase": "apply"
+          "phrase": "`apply`"
         },
         {
           "name": "formatApplyJson",
           "part": "src",
           "partLabel": "src",
-          "phrase": "format apply json"
+          "phrase": "`formatApplyJson`"
         },
         {
           "name": "diff",
           "part": "src",
           "partLabel": "src",
-          "phrase": "diff"
+          "phrase": "`diff`"
         },
         {
           "count": 3,
           "name": null,
           "part": "src",
           "partLabel": "src",
-          "phrase": "diff"
+          "phrase": "`diff.ts`"
         }
       ]
     }
@@ -576,7 +587,13 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "src/cli.ts"
+    "src/cli.ts",
+    "src/config.ts",
+    "src/audit.ts",
+    "src/format/json.ts",
+    "src/format/markdown.ts",
+    "src/format/table.ts",
+    "src/plan.ts"
   ],
   "summary": null,
   "summaryFrom": null,

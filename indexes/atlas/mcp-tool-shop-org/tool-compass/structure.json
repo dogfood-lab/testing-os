@@ -163,7 +163,7 @@
       "role": "code",
       "testedBy": 1,
       "testedThroughSpawn": true,
-      "unresolvedSites": 3
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 6,
@@ -294,6 +294,10 @@
             "make_error_envelope"
           ],
           "hash": "174d98a08e88f51a0291c9ce7d84c15f2021345e310b67f331d8a48134d23be2",
+          "importOrder": [
+            "config.py",
+            "_version.py"
+          ],
           "importsFiles": [
             "_version.py",
             "config.py"
@@ -4057,6 +4061,12 @@
             "get_sync_manager"
           ],
           "hash": "162cce91b4fea27372c2fe38863b80c8c665ba7890c4fcd6ce792b44f181a580",
+          "importOrder": [
+            "config.py",
+            "indexer.py",
+            "backend_client_simple.py",
+            "tool_manifest.py"
+          ],
           "importsFiles": [
             "backend_client_simple.py",
             "config.py",
@@ -4595,6 +4605,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -4631,6 +4642,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "ef9c3d4022772e0c52938b552773cff4f8f33e74b9d384ab51307112640bbea5",
           "path": "site/src/site-config.ts"
         },
@@ -4691,6 +4703,15 @@
             "test_sync_manager"
           ],
           "hash": "bf9b9e35af3c0fa094c4cd4ce21e9d86cecbd5e2640c84aed51b2d3922169503",
+          "importOrder": [
+            "config.py",
+            "tool_manifest.py",
+            "indexer.py",
+            "analytics.py",
+            "chain_indexer.py",
+            "sync_manager.py",
+            "gateway.py"
+          ],
           "importsFiles": [
             "analytics.py",
             "chain_indexer.py",
@@ -4746,6 +4767,13 @@
         },
         {
           "hash": "77ebc9ac92e974730dcd44f6d5d66287ff09792abc3c9b22d984a49df1b48e3a",
+          "importOrder": [
+            "backend_client_simple.py",
+            "config.py",
+            "ui.py",
+            "embedder.py",
+            "_version.py"
+          ],
           "importsFiles": [
             "_version.py",
             "backend_client_simple.py",
@@ -4814,6 +4842,16 @@
             "init_config_path"
           ],
           "hash": "1ff0a475848b8de5d6bb882cf02e03879c4a4e1bf0a9057bb358b42732934721",
+          "importOrder": [
+            "cli.py",
+            "_version.py",
+            "indexer.py",
+            "gateway.py",
+            "config.py",
+            "backend_client_simple.py",
+            "sync_manager.py",
+            "bootstrap.py"
+          ],
           "importsFiles": [
             "_version.py",
             "backend_client_simple.py",
@@ -4828,6 +4866,10 @@
         },
         {
           "hash": "0697a716a627b1db63ebab44a2ab1bbee253d8fe74706d55c33a31be055ba7d7",
+          "importOrder": [
+            "config.py",
+            "analytics.py"
+          ],
           "importsFiles": [
             "analytics.py",
             "config.py"
@@ -4911,6 +4953,15 @@
             "test_ready_returns_503_when_ollama_down"
           ],
           "hash": "4ae42a009d3c7172e6404a24bf60835534bd97c9565b273def460292c82e8d7f",
+          "importOrder": [
+            "backend_client_simple.py",
+            "config.py",
+            "gateway.py",
+            "indexer.py",
+            "tool_manifest.py",
+            "sync_manager.py",
+            "cli.py"
+          ],
           "importsFiles": [
             "backend_client_simple.py",
             "cli.py",
@@ -4924,6 +4975,12 @@
         },
         {
           "hash": "0a0c6882b0664e0845e793813f12442ec2580a7b5a1823ae0621ea752c7a7cf3",
+          "importOrder": [
+            "analytics.py",
+            "tool_manifest.py",
+            "config.py",
+            "indexer.py"
+          ],
           "importsFiles": [
             "analytics.py",
             "config.py",
@@ -4934,6 +4991,12 @@
         },
         {
           "hash": "f7f32c90bb784f4ce6dfddcb58205deb658161f690a69b57bc8a0fc6b84b4247",
+          "importOrder": [
+            "gateway.py",
+            "indexer.py",
+            "sync_manager.py",
+            "chain_indexer.py"
+          ],
           "importsFiles": [
             "chain_indexer.py",
             "gateway.py",
@@ -4944,6 +5007,12 @@
         },
         {
           "hash": "74a77759fca1ea4311990b468add342cf6c8da827dd39b5a7c405b38b3317013",
+          "importOrder": [
+            "gateway.py",
+            "chain_indexer.py",
+            "indexer.py",
+            "config.py"
+          ],
           "importsFiles": [
             "chain_indexer.py",
             "config.py",
@@ -4965,6 +5034,13 @@
             "golden_index"
           ],
           "hash": "3dc815cbab9f4bdd55ca7cb480f94f360e4a861c9666072bb5a03fb40b5d04d5",
+          "importOrder": [
+            "config.py",
+            "indexer.py",
+            "tests/golden_set/deterministic_embedder.py",
+            "tests/golden_set/fixture_corpus.py",
+            "gateway.py"
+          ],
           "importsFiles": [
             "config.py",
             "gateway.py",
@@ -4976,6 +5052,11 @@
         },
         {
           "hash": "b9fc5bfe626ecc62d2fc2b288757b3aef8ebcd7556905c4aa82382ab8063c600",
+          "importOrder": [
+            "indexer.py",
+            "embedder.py",
+            "tool_manifest.py"
+          ],
           "importsFiles": [
             "embedder.py",
             "indexer.py",
@@ -4985,6 +5066,11 @@
         },
         {
           "hash": "604e9e2008878c379ed36e39555604e5e63a647852f4235113a7eec7795a1c5a",
+          "importOrder": [
+            "gateway.py",
+            "indexer.py",
+            "analytics.py"
+          ],
           "importsFiles": [
             "analytics.py",
             "gateway.py",
@@ -5023,6 +5109,12 @@
             "temp_sync_db"
           ],
           "hash": "f76bc0a4462e76bb5b460146a728466d277a83bc772f2a50f22ebb413e8d2132",
+          "importOrder": [
+            "sync_manager.py",
+            "config.py",
+            "backend_client_simple.py",
+            "indexer.py"
+          ],
           "importsFiles": [
             "backend_client_simple.py",
             "config.py",
@@ -5074,6 +5166,15 @@
             "test_stdio_resources_require_connect"
           ],
           "hash": "0cbbe065327440a8786585b4b750afc66a41e16fac25b3d0adcca27ecc8a604f",
+          "importOrder": [
+            "indexer.py",
+            "embedder.py",
+            "tool_manifest.py",
+            "gateway.py",
+            "ui.py",
+            "config.py",
+            "backend_client_simple.py"
+          ],
           "importsFiles": [
             "backend_client_simple.py",
             "config.py",
@@ -5467,10 +5568,8 @@
           "runKind": "executes",
           "via": "pytest pyproject.toml",
           "when": {
-            "except": [
-              "pull_request",
-              "push"
-            ]
+            "byHand": true,
+            "event": "schedule"
           }
         },
         {
@@ -5855,12 +5954,7 @@
       "elsewhere": [],
       "file": ".github/workflows/release-binaries.yml",
       "landings": [],
-      "mentions": [
-        {
-          "job": "build",
-          "path": "ui.py"
-        }
-      ],
+      "mentions": [],
       "name": "Release Binaries",
       "permissions": [
         "attestations:write",
@@ -5883,9 +5977,14 @@
           "job": "build",
           "path": "cli.py",
           "runKind": "executes"
+        },
+        {
+          "job": "build",
+          "path": "ui.py",
+          "runKind": "executes"
         }
       ],
-      "runsCount": 1,
+      "runsCount": 2,
       "secrets": [],
       "sends": {
         "assets": [
@@ -5961,6 +6060,31 @@
           "text": "# Extract the [<version>] section from CHANGELOG.md as the release\n# notes. Falls back to the tag name if the section is missing/empty.\nVERSION=\"${GITHUB_REF_NAME#v}\"\nNOTES_FILE=\"$(mktemp)\"\nawk -v ver=\"${VERSION}\" '\n  $0 ~ \"^## \\\\[\" ver \"\\\\]\" {capture=1; next}\n  capture && /^## \\[/ {exit}\n  capture {print}\n' CHANGELOG.md > \"${NOTES_FILE}\"\n\nif [ ! -s \"${NOTES_FILE}\" ]; then\n  echo \"Tool Compass ${GITHUB_REF_NAME}\" > \"${NOTES_FILE}\"\n  echo \"\" >> \"${NOTES_FILE}\"\n  echo \"See CHANGELOG.md for details.\" >> \"${NOTES_FILE}\"\nfi\n\n# Create the release only if it doesn't already exist. Binaries attach\n# next; npm publish waits until those assets exist. Skipping when it\n# exists makes the step idempotent on workflow_dispatch re-runs /\n# second tag pushes (no HTTP 422 \"tag_name already exists\").\nif gh release view \"${GITHUB_REF_NAME}\" >/dev/null 2>&1; then\n  echo \"Release ${GITHUB_REF_NAME} already exists; skipping create.\"\nelse\n  gh release create \"${GITHUB_REF_NAME}\" \\\n    --title \"Tool Compass ${GITHUB_REF_NAME}\" \\\n    --notes-file \"${NOTES_FILE}\" \\\n    --verify-tag\nfi\n"
         },
         {
+          "job": "binaries/build",
+          "step": "Install package[ui] + PyInstaller",
+          "text": "python -m pip install --upgrade pip\n# [ui] pulls Gradio. A core-only `pip install .` freezes a binary\n# that cannot serve `tool-compass ui` (the npx zero-prerequisite path).\npip install \".[ui]\" \"pyinstaller>=6.9.0\"\npython -c \"import ui, gradio\"\n"
+        },
+        {
+          "job": "binaries/build",
+          "step": "Resolve version",
+          "text": "TAG=\"${{ inputs.tag || github.event.release.tag_name }}\"\nVERSION=\"${TAG#v}\"\necho \"version=${VERSION}\" >> \"$GITHUB_OUTPUT\"\necho \"tag=${TAG}\" >> \"$GITHUB_OUTPUT\"\n"
+        },
+        {
+          "job": "binaries/build",
+          "step": "Build single-file binary",
+          "text": "VERSION=\"${{ steps.version.outputs.version }}\"\n# --collect-submodules covers dynamic imports MCP / Gradio / Rich pull in.\n# --hidden-import ui: cli._cmd_ui imports ui inside try/except ImportError,\n# which PyInstaller treats as optional and would drop from the freeze.\n# --console keeps stdout/stderr behavior identical to `python cli.py`.\npyinstaller --onefile \\\n  --name \"${{ env.TOOL_NAME }}\" \\\n  --console \\\n  --collect-submodules mcp.client \\\n  --collect-submodules mcp.server \\\n  --collect-submodules mcp.types \\\n  --collect-submodules mcp.shared \\\n  --exclude-module mcp.cli \\\n  --exclude-module typer \\\n  --collect-submodules hnswlib \\\n  --collect-submodules numpy \\\n  --collect-submodules httpx \\\n  --hidden-import ui \\\n  --collect-submodules gradio \\\n  \"${{ env.ENTRYPOINT }}\"\nOUTNAME=\"${{ env.TOOL_NAME }}-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\nmv \"dist/${{ env.TOOL_NAME }}${{ matrix.ext }}\" \"dist/${OUTNAME}\"\necho \"Built: dist/${OUTNAME}\"\nls -la \"dist/${OUTNAME}\"\n"
+        },
+        {
+          "job": "binaries/build",
+          "step": "Smoke test binary",
+          "text": "VERSION=\"${{ steps.version.outputs.version }}\"\nBIN=\"dist/${{ env.TOOL_NAME }}-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\n# --version is wired on the root parser as of v2.2.1 (a942a67).\n\"$BIN\" --version\n\"$BIN\" --help\n# Zero-prerequisite `npx … ui` path. argparse prints this without\n# importing ui.py; the freeze still needs [ui] + --hidden-import ui\n# + --collect-submodules gradio or the launched binary cannot serve.\n\"$BIN\" ui --help\n"
+        },
+        {
+          "job": "binaries/attach",
+          "step": "Generate checksums",
+          "text": "TAG=\"${{ inputs.tag || github.event.release.tag_name }}\"\nVERSION=\"${TAG#v}\"\ncd artifacts\nsha256sum * > \"checksums-${VERSION}.txt\"\necho \"--- checksums-${VERSION}.txt ---\"\ncat \"checksums-${VERSION}.txt\"\n"
+        },
+        {
           "job": "publish-npm",
           "step": "Install npm 11.5.2 in sandbox for OIDC trusted-publishing auth",
           "text": "# Node 22 ships npm 10.9, which signs Sigstore provenance fine but\n# cannot negotiate the OIDC auth path for trusted publishing — the\n# PUT returns a misleading 404 \"not in this registry\". npm 11.5+ is\n# required. Pin an exact 11.5.x — never @latest — so a compromised\n# or unexpected latest tarball cannot inherit this job's OIDC identity.\n# Bump via PR / manual review (sandbox is not a Dependabot ecosystem).\n#\n# An in-place `npm install -g npm@latest` races on Node 22's bundled\n# npm 10.9 arborist rebuild and breaks irrecoverably (MODULE_NOT_FOUND:\n# promise-retry). Sandbox install + PATH shadow avoids the race.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@11.5.2\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\nINSTALLED=\"$(\"$SANDBOX/node_modules/.bin/npm\" --version)\"\necho \"sandboxed npm ${INSTALLED}\"\nif [ \"$INSTALLED\" != \"11.5.2\" ]; then\n  echo \"::error::sandboxed npm is ${INSTALLED}, expected 11.5.2 (do not float @latest)\"\n  exit 1\nfi\n"
@@ -5990,6 +6114,10 @@
           "path": "CHANGELOG.md"
         },
         {
+          "job": "binaries/build",
+          "path": "cli.py"
+        },
+        {
           "job": "verify",
           "path": "npm/bin/tool-compass.js"
         },
@@ -6008,21 +6136,35 @@
       ],
       "name": "Release",
       "permissions": [
-        "actions:read",
         "attestations:write",
         "contents:read",
         "contents:write",
         "id-token:write"
       ],
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 11
+        }
+      ],
       "readers": [],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        {
+          "job": "binaries/build",
+          "path": "ui.py",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
       "secrets": [
         "GITHUB_TOKEN"
       ],
       "sends": {
+        "assets": [
+          "file:artifacts/*"
+        ],
         "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,
@@ -6054,9 +6196,13 @@
         }
       ],
       "uses": [
+        "actions/attest-build-provenance",
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
-        "actions/setup-python"
+        "actions/setup-python",
+        "actions/upload-artifact",
+        "softprops/action-gh-release"
       ],
       "usesWorkflowToken": true
     },
@@ -6382,6 +6528,9 @@
     },
     {
       "readers": [
+        {
+          "by": ".github/workflows/release.yml"
+        },
         {
           "by": "pyproject.toml",
           "call": "configuration",
@@ -6742,9 +6891,6 @@
     },
     {
       "readers": [
-        {
-          "by": ".github/workflows/release-binaries.yml"
-        },
         {
           "by": "pyproject.toml",
           "call": "configuration",

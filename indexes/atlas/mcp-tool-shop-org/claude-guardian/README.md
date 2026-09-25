@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 65dce69.
 
 ## What this is
 
-7 parts, mostly TypeScript (38 files) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-guardian.
+7 parts, mostly Markdown (75 files); code in TypeScript (38) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-guardian.
 
 ## What changed since 2026-09-23 (628c46f)
 
@@ -17,15 +17,15 @@ Mapped at 2026-09-25 from commit 65dce69.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 10 paths; on a push to main touching 10 paths; or by hand. Runs tests/; checks src/.
-2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; checks src/.
+1. **CI.** On a pull request touching 10 paths; on a push to main touching 10 paths; or by hand. Runs tests/; builds src/.
+2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-4. **Dogfood.** On a push to main touching 3 paths; or by hand. On main, it runs src/cli.ts; checks src/.
+4. **Dogfood.** On a push to main touching 3 paths; or by hand. On main, it runs src/cli.ts; builds src/.
 5. **claude-guardian** (a command people run). Runs src/cli.ts.
 
 ## What happens through CI
 
-1. The workflow runs tests/ in tests; it checks src/ in src.
+1. The workflow runs tests/ in tests; it builds src/ in src.
 
 ## Who reads the results
 
@@ -33,11 +33,11 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs tests/, checks src/, publishes to npm, and creates a GitHub release.
+**Release** runs tests/, builds src/, publishes to npm, and creates a GitHub release.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Dogfood** runs src/cli.ts and checks src/ on main, and sends a dispatch to dogfood-lab/testing-os on main.
+**Dogfood** runs src/cli.ts on main and sends a dispatch to dogfood-lab/testing-os on main.
 
 **claude-guardian** (a command people run) runs src/cli.ts.
 
@@ -79,17 +79,18 @@ People write .github/; 1 write with a path built at run time may land here.
 
 ## Where to start
 
-src/cli.ts
+.github/workflows/ci.yml → src/cli.ts → src/log-manager.ts → src/doctor.ts → src/watchdog.ts → src/mcp-server.ts → src/watch-daemon.ts → src/process-monitor.ts
 
-Read those in order to follow one run of claude-guardian end to end. This path follows claude-guardian (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 import site could not be resolved.
+- 1 import could not be resolved: `src/mcp-server.ts` imports `zod`, which is not declared.
 - 1 write and 3 reads use paths built at run time and are not named here.
 - 14 writes and 17 reads go to the home directory (.claude-guardian/ and .claude/), not to this repository.
 - 2 writes and 9 reads go to a path their caller passes, not to this repository.
 - 1 write and 3 reads go to the home directory (.claude-guardian/ and .claude/) or a path their caller passes, not to this repository.
+- 1 read goes to the directory the command is run in (package.json), not to this repository.
 - 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

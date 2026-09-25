@@ -14,7 +14,7 @@ Mapped at 2026-09-25 from commit 2de16f4.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs crates/ship-export/src/gltf.rs, crates/ship-hull/src/caps.rs, crates/ship-hull/src/curves.rs and 15 more; checks crates/ship-export/src/lib.rs, crates/ship-hull/src/lib.rs, crates/ship-schema/src/lib.rs and 1 more.
+1. **CI.** On a pull request to main touching 8 paths; on a push to main touching 8 paths; or by hand. Runs crates/ship-export/src/gltf.rs, crates/ship-hull/src/caps.rs, crates/ship-hull/src/curves.rs and 15 more; checks crates/ship-export/src/lib.rs, crates/ship-hull/src/lib.rs, crates/ship-schema/src/lib.rs and 1 more.
 2. **export_all** (a command people run with `cargo run --example export_all`). Runs crates/ship-export/examples/export_all.rs.
 
 ## What happens through CI
@@ -63,7 +63,7 @@ People write .github/, the repository root and site/. Nothing in this repository
 
 ## Where to start
 
-.github/workflows/ci.yml → crates/ship-testkit/tests/golden_family.rs → crates/ship-hull/src/generate.rs → crates/ship-schema/src/defaults.rs
+.github/workflows/ci.yml → crates/ship-testkit/tests/golden_family.rs → crates/ship-hull/src/generate.rs → crates/ship-schema/src/validate.rs → crates/ship-schema/src/spec.rs → crates/ship-schema/src/defaults.rs
 
 Read those in order to follow one pull request end to end. This path starts at crates/ship-testkit/tests/golden_family.rs, the test CI runs that reaches the most parts, since CI runs only tests.
 

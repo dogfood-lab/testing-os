@@ -39,8 +39,28 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "Release Binaries now also runs src/portlight/app/cli.py, src/portlight/balance/runner.py and src/portlight/stress/invariants.py.",
+        "subjects": [
+          ".github/workflows/release-binaries.yml",
+          "src/portlight/app/cli.py",
+          "src/portlight/balance/runner.py",
+          "src/portlight/stress/invariants.py"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release now also runs src/portlight/app/cli.py, src/portlight/balance/runner.py and src/portlight/stress/invariants.py.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "src/portlight/app/cli.py",
+          "src/portlight/balance/runner.py",
+          "src/portlight/stress/invariants.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -48,7 +68,7 @@
       "commit": "7c76f54ff48d66710fb03d4c827a6aab784b1fe4",
       "generatedAt": "2026-09-25T02:27:42.163Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -152,7 +172,7 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request touching 8 paths",
+        "on a pull request to main touching 8 paths",
         "on a push to main touching 8 paths",
         "or by hand"
       ]
@@ -181,10 +201,13 @@
         }
       ],
       "runs": [
+        "src/portlight/app/cli.py",
+        "src/portlight/balance/runner.py",
+        "src/portlight/stress/invariants.py",
         "tests/"
       ],
-      "runsCount": 1,
-      "runsMore": 0,
+      "runsCount": 4,
+      "runsMore": 77,
       "sends": [
         "publishes to npm and PyPI"
       ],
@@ -221,12 +244,15 @@
         }
       ],
       "runs": [
+        "src/portlight/app/cli.py",
+        "src/portlight/balance/runner.py",
+        "src/portlight/stress/invariants.py",
         "tests/"
       ],
-      "runsCount": 1,
-      "runsMore": 0,
+      "runsCount": 4,
+      "runsMore": 77,
       "sends": [
-        "builds src/portlight/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release on a release event"
+        "builds src/portlight/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release, on a release event"
       ],
       "stages": [],
       "triggers": [
@@ -329,9 +355,9 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T03:19:37.351Z",
+  "generatedAt": "2026-09-25T09:19:11.091Z",
   "limits": [
-    "2 import sites could not be resolved.",
+    "2 imports could not be resolved: `src/portlight/app/tui/screens/encounter.py` imports `portlight.content.weapons`, which is no module on its import path and no declared dependency; `src/portlight/app/tui/screens/encounter.py` imports `portlight.content.weapons`, which is no module on its import path and no declared dependency.",
     "5 writes and 1 read use paths built at run time and are not named here.",
     "1 write and 4 reads go to the directory the command is run in, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -357,9 +383,14 @@
   "sequences": [],
   "startDoor": "pyproject.toml#portlight",
   "startHere": [
-    "src/portlight/app/cli.py"
+    "src/portlight/app/cli.py",
+    "src/portlight/app/session.py",
+    "src/portlight/engine/ship_stats.py",
+    "src/portlight/engine/encounter.py",
+    "src/portlight/engine/models.py",
+    "src/portlight/engine/naval.py"
   ],
-  "startReason": "This path follows portlight (a command people run, from pyproject.toml) from its entry, since CI runs only tests.",
+  "startReason": "This path follows portlight (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 78,
@@ -384,6 +415,8 @@
       "testedBy": 0
     }
   ],
-  "untestedNote": [],
+  "untestedNote": [
+    "test/version.test.js runs in no workflow."
+  ],
   "written": 0
 }

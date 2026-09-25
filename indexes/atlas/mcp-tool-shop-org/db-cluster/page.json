@@ -20,7 +20,10 @@
       ],
       "kind": "part",
       "name": "src",
-      "partLabel": "src"
+      "partLabel": "src",
+      "spawnedBy": [
+        "scripts"
+      ]
     },
     {
       "doors": 4,
@@ -108,21 +111,15 @@
       },
       {
         "kind": "door",
-        "sentence": "Docker Publish now also checks LICENSE, README.md, docs/ and 4 more.",
+        "sentence": "Docker Publish now also builds src/.",
         "subjects": [
           ".github/workflows/docker-publish.yml",
-          "LICENSE",
-          "README.md",
-          "docs/",
-          "package-lock.json",
-          "package.json",
-          "src/",
-          "tsconfig.json"
+          "src/"
         ]
       },
       {
         "kind": "door",
-        "sentence": "And 3 more changes to doors.",
+        "sentence": "And 4 more changes to doors.",
         "subjects": []
       },
       {
@@ -151,7 +148,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 142 more new writers and readers of places.",
+        "sentence": "And 143 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -238,11 +235,13 @@
   "derived": "13 parts, mostly TypeScript (258 files) and JavaScript (16). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.",
   "doors": [
     {
-      "checks": [
-        "examples/",
+      "builds": [
         "src/"
       ],
-      "checksCount": 2,
+      "checks": [
+        "examples/"
+      ],
+      "checksCount": 1,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -417,11 +416,13 @@
       "untracked": "examples/dogfood-project-memory/.db-cluster, which is not tracked"
     },
     {
-      "checks": [
-        "examples/",
+      "builds": [
         "src/"
       ],
-      "checksCount": 2,
+      "checks": [
+        "examples/"
+      ],
+      "checksCount": 1,
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
@@ -597,10 +598,11 @@
       "untracked": "examples/dogfood-project-memory/.db-cluster, which is not tracked"
     },
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/release-gate.yml",
       "id": ".github/workflows/release-gate.yml",
@@ -775,10 +777,11 @@
       "untracked": ".doc-drift-extract/, .release-gate-output/ and examples/dogfood-project-memory/.db-cluster, which are not tracked"
     },
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/smoke-install.yml",
       "id": ".github/workflows/smoke-install.yml",
@@ -811,17 +814,19 @@
       ]
     },
     {
+      "builds": [
+        "src/"
+      ],
       "checks": [
         "LICENSE",
         "README.md",
         "docs/",
         "package-lock.json",
         "package.json",
-        "src/",
         "tsconfig.json"
       ],
-      "checksCount": 7,
-      "checksMore": 102,
+      "checksCount": 6,
+      "checksMore": 3,
       "file": ".github/workflows/docker-publish.yml",
       "id": ".github/workflows/docker-publish.yml",
       "landings": [],
@@ -877,11 +882,11 @@
       "runsCount": 2,
       "runsMore": 0,
       "sends": [
-        "deploys the site on a push to main"
+        "deploys the site on a push to main or by hand"
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 2 paths",
+        "on a pull request to main touching 2 paths",
         "on a push to main touching 2 paths",
         "or by hand"
       ]
@@ -999,9 +1004,9 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T02:08:31.211Z",
+  "generatedAt": "2026-09-25T09:15:30.136Z",
   "limits": [
-    "17 import sites could not be resolved.",
+    "17 imports could not be resolved: `dashboard/lib/apply-redaction.d.ts` imports `../../dist/dashboard/dashboard-model.js`, which a build generates; `examples/agent-safe-app-db/index.ts` imports `@mcptoolshop/db-cluster/policy`, which a build generates; `examples/agent-safe-app-db/index.ts` imports `@mcptoolshop/db-cluster/policy`, which a build generates; and 14 more.",
     "5 writes and 14 reads use paths built at run time and are not named here.",
     "7 writes go to places this repository does not track, so they are not listed as generated.",
     "47 writes and 101 reads go to a path their caller passes, not to this repository.",
@@ -1032,11 +1037,12 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/db-cluster",
   "sequences": [],
-  "startDoor": "package.json#db-cluster",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "src/cli.ts"
+    ".github/workflows/ci.yml",
+    "src/index.ts",
+    "src/types/entity.ts"
   ],
-  "startReason": "This path follows db-cluster (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 142,

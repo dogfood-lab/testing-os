@@ -12,14 +12,14 @@ Nothing structural changed since 2026-09-25; 2 files changed content.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push to main touching 6 paths; or by hand. Runs tests/codegen.test.ts, tests/compat.test.ts, tests/diff.test.ts and 25 more; checks src/.
-2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/codegen.test.ts, tests/compat.test.ts, tests/diff.test.ts and 25 more; checks src/.
-3. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+1. **CI.** On a pull request to main; on a push to main touching 6 paths; or by hand. Runs tests/codegen.test.ts, tests/compat.test.ts, tests/diff.test.ts and 25 more; builds src/.
+2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/codegen.test.ts, tests/compat.test.ts, tests/diff.test.ts and 25 more; builds src/.
+3. **Deploy site to GitHub Pages.** On a pull request to main touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/websketch-ir** (the package people import). Loads src/index.ts, src/codegen/index.ts, src/errors.ts and 1 more.
 
 ## What happens through CI
 
-1. The workflow runs 28 files in tests; it checks src/ in src.
+1. The workflow runs 28 files in tests; it builds src/ in src.
 
 ## Who reads the results
 
@@ -27,9 +27,9 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs tests/codegen.test.ts, tests/compat.test.ts, tests/diff.test.ts and 25 more, checks src/, publishes to npm, and creates a GitHub release.
+**Release** runs tests/codegen.test.ts, tests/compat.test.ts, tests/diff.test.ts and 25 more, builds src/, publishes to npm, and creates a GitHub release.
 
-**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on a push to main.
+**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on a push to main or by hand.
 
 **@mcptoolshop/websketch-ir** (the package people import) loads src/index.ts, src/codegen/index.ts, src/errors.ts and 1 more.
 
@@ -66,9 +66,9 @@ People write .github/, the repository root and site/. Nothing in this repository
 
 ## Where to start
 
-src/codegen/index.ts
+.github/workflows/ci.yml → src/index.ts → src/grammar.ts
 
-Read those in order to follow one import of @mcptoolshop/websketch-ir end to end. This path follows @mcptoolshop/websketch-ir (the package people import) from its entry, since CI runs only tests.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 

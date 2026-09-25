@@ -12,57 +12,57 @@ Nothing structural changed since 2026-09-24; 87 files changed content.
 
 ## What comes in
 
-1. **ci.** On a pull request touching 11 paths; on a push touching 11 paths; or by hand. Runs src/cli.ts, src/cli-e2e.test.ts, src/cli.test.ts and 22 more; checks src/.
+1. **ci.** On a pull request touching 11 paths; on a push touching 11 paths; or by hand. Runs src/cli.ts, src/cli-e2e.test.ts, src/cli.test.ts and 22 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **Release.** When a tag matching `v[0-9]+.[0-9]+.[0-9]+` or `v[0-9]+.[0-9]+.[0-9]+-*` is pushed. Runs src/cli.ts, src/cli-e2e.test.ts, src/cli.test.ts and 22 more; checks src/.
+3. **Release.** When a tag matching `v[0-9]+.[0-9]+.[0-9]+` or `v[0-9]+.[0-9]+.[0-9]+-*` is pushed. Runs src/cli.ts, src/cli-e2e.test.ts, src/cli.test.ts and 22 more; builds src/.
 4. **rig-bridge** (a command people run). Runs src/cli.ts.
 
 ## What happens through ci
 
-1. The workflow runs 25 files in src; it checks src/ in src.
-   1. Inside src/cli.ts, main does, in order:
-      1. run init
-      2. run new
-      3. run send
-      4. run close
-      5. run status
-      6. run thread
-      7. run sync
-      8. run relay
-   2. **Run init** runs, in order: normalize rig id, validate rig id, is git repo, repo root, write config and config path.
-   3. **Run new** runs, in order: repo root, read config and render envelope.
-   4. **Run send** runs, in order:
-      1. validate rig id
-      2. repo root
-      3. read config
-      4. marker to status class
-      5. body hash
-      6. validate frontmatter
-      7. render envelope
-      8. safe commit
-      9. safe push
-   5. **Run close** runs, in order:
-      1. repo root
-      2. read config
-      3. marker to status class
-      4. find peer rigs
-      5. body hash
-      6. validate frontmatter
-      7. render envelope
-      8. safe commit
-      9. safe push
-   6. **Run relay** runs, in order:
-      1. repo root
-      2. read config
-      3. run git
-      4. validate rig id
-      5. parse envelope
-      6. normalize rig id
-      7. validate rig id
-      8. body hash
-      9. validate frontmatter
-      10. render envelope
-      11. run git
+1. The workflow runs 25 files in src; it builds src/ in src.
+   1. Inside src/cli.ts, `main` does, in order:
+      1. `runInit`
+      2. `runNew`
+      3. `runSend`
+      4. `runClose`
+      5. `runStatus`
+      6. `runThread`
+      7. `runSync`
+      8. `runRelay`
+   2. **`runInit`** runs, in order: `normalizeRigId`, `validateRigId`, `isGitRepo`, `repoRoot`, `writeConfig` and `configPath`.
+   3. **`runNew`** runs, in order: `repoRoot`, `readConfig` and `renderEnvelope`.
+   4. **`runSend`** runs, in order:
+      1. `validateRigId`
+      2. `repoRoot`
+      3. `readConfig`
+      4. `markerToStatusClass`
+      5. `bodyHash`
+      6. `validateFrontmatter`
+      7. `renderEnvelope`
+      8. `safeCommit`
+      9. `safePush`
+   5. **`runClose`** runs, in order:
+      1. `repoRoot`
+      2. `readConfig`
+      3. `markerToStatusClass`
+      4. `findPeerRigs`
+      5. `bodyHash`
+      6. `validateFrontmatter`
+      7. `renderEnvelope`
+      8. `safeCommit`
+      9. `safePush`
+   6. **`runRelay`** runs, in order:
+      1. `repoRoot`
+      2. `readConfig`
+      3. `runGit`
+      4. `validateRigId`
+      5. `parseEnvelope`
+      6. `normalizeRigId`
+      7. `validateRigId`
+      8. `bodyHash`
+      9. `validateFrontmatter`
+      10. `renderEnvelope`
+      11. `runGit`
 2. It runs git.
 
 ## Who reads the results
@@ -73,7 +73,7 @@ ci writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Release** runs src/cli.ts, src/cli-e2e.test.ts, src/cli.test.ts and 22 more, checks src/, runs git, publishes to npm, and creates a GitHub release.
+**Release** runs src/cli.ts, src/cli-e2e.test.ts, src/cli.test.ts and 22 more, builds src/, runs git, publishes to npm, and creates a GitHub release.
 
 **rig-bridge** (a command people run) runs src/cli.ts and runs git.
 
@@ -109,7 +109,7 @@ People write .github/, docs/, the repository root, schemas/ and site/. Nothing i
 
 ## Where to start
 
-.github/workflows/ci.yml → src/cli.ts
+.github/workflows/ci.yml → src/cli.ts → src/commands/init.ts → src/commands/new.ts → src/commands/send.ts → src/commands/close.ts → src/commands/status.ts → src/commands/thread.ts
 
 Read those in order to follow one pull request end to end.
 

@@ -147,6 +147,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -179,6 +180,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "5106dd6c98ee4192480b0e9cb70ab432dae34b971ef8b718da8f6e5c9c822517",
           "path": "site/src/site-config.ts"
         },
@@ -487,6 +489,12 @@
             "monteCarloDistribution"
           ],
           "hash": "a2d6622bb412821a0a11e75544dee8aa0ddb515680826eba49939bc00daa8e77",
+          "importOrder": [
+            "src/parser/ast.ts",
+            "src/engine/roller.ts",
+            "src/engine/random.ts",
+            "src/analyze/distribution.ts"
+          ],
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/engine/random.ts",
@@ -1922,6 +1930,11 @@
             "runStdio"
           ],
           "hash": "fabaaddffda690c7b2cc382481854118daa93e53534f2f7101ff0c70ffd1a64e",
+          "importOrder": [
+            "src/bridge/handler.ts",
+            "src/entry.ts",
+            "src/bridge/protocol.ts"
+          ],
           "importsFiles": [
             "src/bridge/handler.ts",
             "src/bridge/protocol.ts",
@@ -2995,6 +3008,10 @@
             "stageTotal"
           ],
           "hash": "e515b9ad94b474492196e554f984a2b0e8cd6b71c05283888d6e6675c8e6bb7d",
+          "importOrder": [
+            "src/parser/ast.ts",
+            "src/engine/random.ts"
+          ],
           "importsFiles": [
             "src/engine/random.ts",
             "src/parser/ast.ts"
@@ -3294,6 +3311,21 @@
             "setLogger"
           ],
           "hash": "e514860843aa88a31ea9073ffc5efabeb4c3b91b8cc04baf8ce637060cb66ebd",
+          "importOrder": [
+            "src/entry.ts",
+            "src/mcp/tools.ts",
+            "src/parser/parser.ts",
+            "src/parser/lexer.ts",
+            "src/engine/roller.ts",
+            "src/analyze/distribution.ts",
+            "src/analyze/stats.ts",
+            "src/engine/random.ts",
+            "src/tables/engine.ts",
+            "src/tables/analyze.ts",
+            "src/bridge/handler.ts",
+            "src/tables/schema.ts",
+            "src/bridge/protocol.ts"
+          ],
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/analyze/stats.ts",
@@ -4446,6 +4478,10 @@
             "validateGameTables"
           ],
           "hash": "b2d8960ec358c006b605128585eb6f4b3ab7331af578a5acadcc5c0a6e35d64d",
+          "importOrder": [
+            "src/tables/schema.ts",
+            "src/parser/parser.ts"
+          ],
           "importsFiles": [
             "src/parser/parser.ts",
             "src/tables/schema.ts"
@@ -4483,6 +4519,14 @@
       "files": [
         {
           "hash": "bd53dd46c7f9942ee856b6e8c5fbee1c978dabd4c93064c0d283c61e895ac6f7",
+          "importOrder": [
+            "src/parser/parser.ts",
+            "src/analyze/distribution.ts",
+            "src/analyze/stats.ts",
+            "src/analyze/montecarlo.ts",
+            "src/engine/roller.ts",
+            "src/engine/random.ts"
+          ],
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/analyze/montecarlo.ts",
@@ -4495,6 +4539,11 @@
         },
         {
           "hash": "e9af43db1eb447a6bf20f454d5d446f2819fe119f5497c834e67f1374e57c30b",
+          "importOrder": [
+            "src/parser/parser.ts",
+            "src/analyze/distribution.ts",
+            "src/analyze/stats.ts"
+          ],
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/analyze/stats.ts",
@@ -4504,6 +4553,12 @@
         },
         {
           "hash": "4b6a33bb6eb302076b2796c0f1b9890464a60afa55ae966eca51d28b78fe735c",
+          "importOrder": [
+            "src/index.ts",
+            "src/parser/parser.ts",
+            "src/analyze/distribution.ts",
+            "src/parser/ast.ts"
+          ],
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/index.ts",
@@ -4514,6 +4569,13 @@
         },
         {
           "hash": "09fea5fef3d9862d03337e9fed588ab88c3512da0a5b04ca2531a8cc3c01edf7",
+          "importOrder": [
+            "src/bridge/handler.ts",
+            "src/bridge/server.ts",
+            "src/entry.ts",
+            "src/bridge/protocol.ts",
+            "src/mcp/server.ts"
+          ],
           "importsFiles": [
             "src/bridge/handler.ts",
             "src/bridge/protocol.ts",
@@ -4525,6 +4587,12 @@
         },
         {
           "hash": "d37cc97551e04763c326295226503821867b47e2ab72df69a3d192466e484f22",
+          "importOrder": [
+            "src/bridge/handler.ts",
+            "src/bridge/server.ts",
+            "src/mcp/server.ts",
+            "src/bridge/protocol.ts"
+          ],
           "importsFiles": [
             "src/bridge/handler.ts",
             "src/bridge/protocol.ts",
@@ -4535,6 +4603,12 @@
         },
         {
           "hash": "c4ac4bf5457515b66e0b378cc4693a14e50efd2a8b2972aba585dfe0cf3fe548",
+          "importOrder": [
+            "src/bridge/handler.ts",
+            "src/mcp/server.ts",
+            "src/bridge/server.ts",
+            "src/bridge/protocol.ts"
+          ],
           "importsFiles": [
             "src/bridge/handler.ts",
             "src/bridge/protocol.ts",
@@ -4574,6 +4648,14 @@
         },
         {
           "hash": "ea8fdcf4add13cbecdb5e5361facdf52af4c5c3608d0c5ed44c1c4e57aaaf6c1",
+          "importOrder": [
+            "src/display/box.ts",
+            "src/display/histogram.ts",
+            "src/display/format.ts",
+            "src/analyze/distribution.ts",
+            "src/analyze/stats.ts",
+            "src/engine/roller.ts"
+          ],
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/analyze/stats.ts",
@@ -4586,6 +4668,11 @@
         },
         {
           "hash": "8bb3aae7bca30b910ff3b74e874520e96febb4da9218762b8accd67e79d61166",
+          "importOrder": [
+            "src/parser/parser.ts",
+            "src/analyze/distribution.ts",
+            "src/analyze/stats.ts"
+          ],
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/analyze/stats.ts",
@@ -4595,6 +4682,11 @@
         },
         {
           "hash": "d2263ce9e4cc84bb26361c860b168de286ca46e498054c287373bdbb5e8dbadf",
+          "importOrder": [
+            "src/parser/parser.ts",
+            "src/engine/roller.ts",
+            "src/engine/random.ts"
+          ],
           "importsFiles": [
             "src/engine/random.ts",
             "src/engine/roller.ts",
@@ -4611,6 +4703,14 @@
         },
         {
           "hash": "45182b0dbb5fbfc8da54e4f8c96baeb252e8e0627cd383538a090afbbf1af9f6",
+          "importOrder": [
+            "src/parser/parser.ts",
+            "src/analyze/distribution.ts",
+            "src/analyze/stats.ts",
+            "src/tables/analyze.ts",
+            "src/index.ts",
+            "src/tables/schema.ts"
+          ],
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/analyze/stats.ts",
@@ -4623,6 +4723,11 @@
         },
         {
           "hash": "f5c5da26478794d4b88c047606a219a279aa6dcdf0d050ffd0ee70df4726a935",
+          "importOrder": [
+            "src/bridge/handler.ts",
+            "src/mcp/server.ts",
+            "src/bridge/protocol.ts"
+          ],
           "importsFiles": [
             "src/bridge/handler.ts",
             "src/bridge/protocol.ts",
@@ -4658,6 +4763,10 @@
         },
         {
           "hash": "f1b3fc2936918337f161b5a20e67f30883a34a8fdf30936c33d35263633c7423",
+          "importOrder": [
+            "src/loot/table.ts",
+            "src/engine/random.ts"
+          ],
           "importsFiles": [
             "src/engine/random.ts",
             "src/loot/table.ts"
@@ -4673,6 +4782,10 @@
         },
         {
           "hash": "a8a4c13c434cda2c50eaf515b0149c94d3ad78e1c8da879ae1378fdbf4dbe570",
+          "importOrder": [
+            "src/parser/parser.ts",
+            "src/parser/ast.ts"
+          ],
           "importsFiles": [
             "src/parser/ast.ts",
             "src/parser/parser.ts"
@@ -4681,6 +4794,11 @@
         },
         {
           "hash": "3e2db48d90c9133ac3ea37bbc7768dddfaefe8a78fd8ed47c3e3d88bbdbfbd89",
+          "importOrder": [
+            "src/engine/random.ts",
+            "src/engine/pipeline.ts",
+            "src/parser/ast.ts"
+          ],
           "importsFiles": [
             "src/engine/pipeline.ts",
             "src/engine/random.ts",
@@ -4690,6 +4808,11 @@
         },
         {
           "hash": "ee2b1d84c2eea57fffbccaddd9a6fd091b24606674fea5eec7595a93afc748f2",
+          "importOrder": [
+            "src/parser/parser.ts",
+            "src/engine/roller.ts",
+            "src/engine/random.ts"
+          ],
           "importsFiles": [
             "src/engine/random.ts",
             "src/engine/roller.ts",
@@ -4699,6 +4822,14 @@
         },
         {
           "hash": "19076e7e0b7c992665463c4c3e0cf452c03b96b2e6e26fb5a9bf41c6140709a6",
+          "importOrder": [
+            "src/engine/random.ts",
+            "src/tables/engine.ts",
+            "src/tables/conditions.ts",
+            "src/tables/validate.ts",
+            "src/loot/table.ts",
+            "src/tables/schema.ts"
+          ],
           "importsFiles": [
             "src/engine/random.ts",
             "src/loot/table.ts",
@@ -4711,6 +4842,14 @@
         },
         {
           "hash": "1a663ad63738b2419f1bf58699c90e43eb6d6470e88c76f6e1a7ce080999e7c4",
+          "importOrder": [
+            "src/engine/random.ts",
+            "src/tables/engine.ts",
+            "src/tables/validate.ts",
+            "src/tables/conditions.ts",
+            "src/tables/schema.ts",
+            "src/loot/table.ts"
+          ],
           "importsFiles": [
             "src/engine/random.ts",
             "src/loot/table.ts",
@@ -4735,7 +4874,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "test",
@@ -4790,11 +4929,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "test",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -4952,7 +5092,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "release",
@@ -5038,11 +5178,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "release",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {

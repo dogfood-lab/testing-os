@@ -45,11 +45,11 @@
     {
       "kind": "place",
       "readers": [
-        "src"
+        "dossier"
       ],
-      "target": ".claude/packets/",
+      "target": "dossier/aptitude-tuned.json",
       "writers": [
-        "src"
+        "dossier"
       ]
     },
     {
@@ -57,7 +57,7 @@
       "readers": [
         "dossier"
       ],
-      "target": "dossier/aptitude-tuned.json",
+      "target": "dossier/portraits/briefs/",
       "writers": [
         "dossier"
       ]
@@ -73,8 +73,40 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "dossier/data.js is now read by dossier/dossier.html.",
+        "subjects": [
+          "dossier/data.js",
+          "dossier/dossier.html"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "tools/conformance-dataset/audit.py is now read by tools/conformance-dataset/build_conformance_dataset.py.",
+        "subjects": [
+          "tools/conformance-dataset/audit.py",
+          "tools/conformance-dataset/build_conformance_dataset.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "tools/conformance-dataset/config.py is now read by tools/conformance-dataset/build_conformance_dataset.py, tools/conformance-dataset/certify_conformance.py, tools/conformance-dataset/conformance_puzzles.py and tools/conformance-dataset/dogfood_conformance.py.",
+        "subjects": [
+          "tools/conformance-dataset/config.py",
+          "tools/conformance-dataset/build_conformance_dataset.py",
+          "tools/conformance-dataset/certify_conformance.py",
+          "tools/conformance-dataset/conformance_puzzles.py",
+          "tools/conformance-dataset/dogfood_conformance.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 1 more new writer or reader of a place.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -82,7 +114,7 @@
       "commit": "3877c03762c78f4ec9517b0b6d434c5238bcc62d",
       "generatedAt": "2026-09-25T02:08:55.964Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -131,9 +163,7 @@
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
-      "landings": [
-        ".claude/packets/"
-      ],
+      "landings": [],
       "name": "CI",
       "pushes": false,
       "reach": [
@@ -165,8 +195,7 @@
         "on a pull request touching 13 paths",
         "on a push touching 13 paths",
         "or by hand"
-      ],
-      "untracked": ".claude/status/index.md, .role-os/specialist-events.jsonl, .role-os/specialist-field-log.jsonl and 1 more place, which are not tracked"
+      ]
     },
     {
       "checks": [],
@@ -174,9 +203,7 @@
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
-      "landings": [
-        ".claude/packets/"
-      ],
+      "landings": [],
       "name": "Release",
       "pushes": false,
       "reach": [
@@ -203,8 +230,7 @@
       "triggers": [
         "when a release is published",
         "or by hand"
-      ],
-      "untracked": ".claude/status/index.md, .role-os/specialist-events.jsonl, .role-os/specialist-field-log.jsonl and 1 more place, which are not tracked"
+      ]
     },
     {
       "checks": [],
@@ -244,9 +270,7 @@
       "file": "package.json",
       "id": "package.json#roleos",
       "kind": "command",
-      "landings": [
-        ".claude/packets/"
-      ],
+      "landings": [],
       "name": "roleos",
       "pushes": false,
       "reach": [
@@ -268,8 +292,7 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": [],
-      "untracked": ".claude/status/index.md, .role-os/specialist-events.jsonl, .role-os/specialist-field-log.jsonl and 1 more place, which are not tracked"
+      "triggers": []
     }
   ],
   "duplicates": [],
@@ -288,12 +311,6 @@
     }
   ],
   "generated": [
-    {
-      "place": ".claude/packets/",
-      "writers": [
-        "src/fs-utils.mjs"
-      ]
-    },
     {
       "place": ".claude/role-os/tool-contracts.json",
       "writers": [
@@ -358,12 +375,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T03:20:12.157Z",
+  "generatedAt": "2026-09-25T09:20:43.260Z",
   "limits": [
-    "15 import sites could not be resolved.",
+    "3 imports could not be resolved: `test/knowledge-integration.test.mjs` imports a path built at run time; `test/knowledge-integration.test.mjs` imports a path built at run time; `test/knowledge-integration.test.mjs` imports a path built at run time.",
     "19 writes and 16 reads use paths built at run time and are not named here.",
-    "7 writes go to places this repository does not track, so they are not listed as generated.",
-    "13 writes and 67 reads go to the directory the command is run in, not to this repository.",
+    "1 write goes to places this repository does not track, so it is not listed as generated.",
+    "25 writes and 88 reads go to the directory the command is run in, not to this repository.",
     "35 writes and 34 reads go to a path their caller passes, not to this repository.",
     "23 writes and 23 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
     "7 writes and 1 read go to a temporary directory, not to this repository.",
@@ -389,15 +406,7 @@
     "tools": "tools"
   },
   "parts": 15,
-  "readers": [
-    {
-      "readers": [
-        "src/packet.mjs",
-        "src/status.mjs"
-      ],
-      "target": ".claude/packets/"
-    }
-  ],
+  "readers": [],
   "repo": "mcp-tool-shop-org/role-os",
   "sequences": [],
   "spawnTested": [
@@ -407,7 +416,12 @@
   "startHere": [
     ".github/workflows/ci.yml",
     "bin/roleos.mjs",
-    "src/artifacts-cmd.mjs"
+    "src/swarm-cmd.mjs",
+    "src/swarm/domain-detect.mjs",
+    "src/run.mjs",
+    "src/artifacts.mjs",
+    "src/swarm/exit-condition.mjs",
+    "src/swarm/build-gate.mjs"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -416,17 +430,10 @@
     "bin": 11,
     "dossier": 0,
     "src": 72,
-    "tools": 0
+    "tools": 3
   },
   "unnamedWrites": 19,
-  "unread": [
-    {
-      "place": "dossier/data.js",
-      "writers": [
-        "dossier/build-gallery.mjs"
-      ]
-    }
-  ],
+  "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
@@ -434,15 +441,11 @@
       "part": "dossier",
       "partLabel": "dossier",
       "testedBy": 0
-    },
-    {
-      "part": "tools",
-      "partLabel": "tools",
-      "testedBy": 0
     }
   ],
   "untestedNote": [
-    "bin is touched by tests only through a spawn: a test runs its files as a child process."
+    "bin is touched by tests only through a spawn: a test runs its files as a child process.",
+    "3 test files run in no workflow: tools/conformance-dataset/test_certify_ship_stamp.py, tools/conformance-dataset/test_empty_write_gate.py and tools/token-budget-dataset/test_harvester.py."
   ],
-  "written": 11
+  "written": 10
 }

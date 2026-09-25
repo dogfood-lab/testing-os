@@ -202,6 +202,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -230,6 +231,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "2d3b85aa55b0605fcf4ac2eb3b554b4cc14f2108957eb2e4ae4e32255c70d3f2",
           "path": "site/src/site-config.ts"
         },
@@ -719,6 +721,11 @@
             "scanRepo"
           ],
           "hash": "fc6e00577f53f824c74083dfef7027c40bfae5e62ece7b06c7ac06cc813e1ec8",
+          "importOrder": [
+            "src/discovery/languages.ts",
+            "src/discovery/filters.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/discovery/filters.ts",
             "src/discovery/languages.ts",
@@ -781,6 +788,14 @@
             "isValidExtractor"
           ],
           "hash": "333b6a648510328032483670f13a35ec8987e2345ac1a8fd9aaa086a8fca8991",
+          "importOrder": [
+            "src/extractors/code.ts",
+            "src/extractors/commits.ts",
+            "src/extractors/docs.ts",
+            "src/extractors/tests.ts",
+            "src/extractors/config.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/extractors/code.ts",
             "src/extractors/commits.ts",
@@ -803,6 +818,11 @@
         },
         {
           "hash": "f17e8d192cf005e35cb491c75c51219ef7d6de0e2dd384810d4e89a2de48775f",
+          "importOrder": [
+            "src/pipeline/tokens.ts",
+            "src/extractors/imports.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/extractors/imports.ts",
             "src/pipeline/tokens.ts",
@@ -899,6 +919,20 @@
         },
         {
           "hash": "7c4ad5a775955e9e34e37396ea737ca0c629ee7b72ec6bff6c14f142785c3b39",
+          "importOrder": [
+            "src/types.ts",
+            "src/pipeline/runner.ts",
+            "src/discovery/scanner.ts",
+            "src/extractors/registry.ts",
+            "src/formatters/registry.ts",
+            "src/pipeline/balance.ts",
+            "src/pipeline/tokens.ts",
+            "src/errors.ts",
+            "src/validate/report.ts",
+            "src/visual/scanner.ts",
+            "src/visual/runner.ts",
+            "src/visual/formatters.ts"
+          ],
           "importsFiles": [
             "src/discovery/scanner.ts",
             "src/errors.ts",
@@ -1171,6 +1205,11 @@
           "entry": "collectPairs",
           "entryRule": 1,
           "hash": "d09f9a82ca2caa04d87ddd6b947f937fcb1be2073e0dbe39b244b913305a9949",
+          "importOrder": [
+            "src/extractors/code.ts",
+            "src/discovery/scanner.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/discovery/scanner.ts",
             "src/extractors/code.ts",
@@ -1197,6 +1236,11 @@
           "entry": "collectPairs",
           "entryRule": 1,
           "hash": "5b06bc2aee7ff517e6ac5cc25d180743d512437c666fbb4097597172277c76f2",
+          "importOrder": [
+            "src/extractors/commits.ts",
+            "src/discovery/scanner.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/discovery/scanner.ts",
             "src/extractors/commits.ts",
@@ -1223,6 +1267,11 @@
           "entry": "collectPairs",
           "entryRule": 1,
           "hash": "c7e29cd166e2e1da0511eef1e4326d95aa750cdc7071cafb7ef025fc00b214bd",
+          "importOrder": [
+            "src/extractors/docs.ts",
+            "src/discovery/scanner.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/discovery/scanner.ts",
             "src/extractors/docs.ts",
@@ -1249,6 +1298,11 @@
           "entry": "collectPairs",
           "entryRule": 1,
           "hash": "b6c4a390d64e4072732369d8be23c37e69df6d714545a6c099a80e6208a1044e",
+          "importOrder": [
+            "src/extractors/tests.ts",
+            "src/discovery/scanner.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/discovery/scanner.ts",
             "src/extractors/tests.ts",
@@ -1369,6 +1423,13 @@
         },
         {
           "hash": "ef28a3b5d11324f05c70d67a3f6091acc7ec73501c6549067e6489a53423da12",
+          "importOrder": [
+            "src/formatters/alpaca.ts",
+            "src/formatters/sharegpt.ts",
+            "src/formatters/openai.ts",
+            "src/formatters/raw.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/formatters/alpaca.ts",
             "src/formatters/openai.ts",
@@ -1478,6 +1539,12 @@
           "entry": "makeStructural",
           "entryRule": 1,
           "hash": "890de4789c64c668d78af3933a164520e18589f840cdb9a2b8852d96cfc69337",
+          "importOrder": [
+            "src/validate/scoring.ts",
+            "src/validate/structural.ts",
+            "src/validate/distribution.ts",
+            "src/validate/content.ts"
+          ],
           "importsFiles": [
             "src/validate/content.ts",
             "src/validate/distribution.ts",
@@ -1498,6 +1565,11 @@
           "entry": "collect",
           "entryRule": 1,
           "hash": "da2083b4fa80e08f3b30aca831b52132cc409a040ae6c681fadec5e5b3d49f89",
+          "importOrder": [
+            "src/visual/scanner.ts",
+            "src/visual/extractors.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/types.ts",
             "src/visual/extractors.ts",
@@ -1510,6 +1582,10 @@
           "entry": "makeClassifyUnit",
           "entryRule": 1,
           "hash": "44e472cfb05efc70f1c9d59131736a43d689075de712d9422dd82cf4612888a1",
+          "importOrder": [
+            "src/visual/formatters.ts",
+            "src/visual/extractors.ts"
+          ],
           "importsFiles": [
             "src/visual/extractors.ts",
             "src/visual/formatters.ts"
@@ -1531,6 +1607,10 @@
           "entry": "makeVisualConfig",
           "entryRule": 1,
           "hash": "5257b596ce0675d88e99286eeed8c79ad73a3a6a4abda384639a1d8c0db11fc0",
+          "importOrder": [
+            "src/visual/runner.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/types.ts",
             "src/visual/runner.ts"
@@ -1656,6 +1736,12 @@
             "computeScore"
           ],
           "hash": "bb7622f8803dc418db64f264a547ac0fa4abb6b8795e787d0dac0f8eb5b53b28",
+          "importOrder": [
+            "src/validate/structural.ts",
+            "src/validate/distribution.ts",
+            "src/validate/content.ts",
+            "src/validate/contamination.ts"
+          ],
           "importsFiles": [
             "src/validate/contamination.ts",
             "src/validate/content.ts",
@@ -1872,7 +1958,21 @@
         {
           "reads": 1,
           "where": [
+            "cwd:package-lock.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
             "cwd:package.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:src"
           ],
           "writes": 0
         },
@@ -1884,7 +1984,7 @@
           "writes": 0
         }
       ],
-      "outsideReads": 15,
+      "outsideReads": 17,
       "outsideWrites": 9,
       "role": "code",
       "testedBy": 32,
@@ -1893,7 +1993,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "test",
@@ -1928,11 +2028,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "test",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -2152,7 +2253,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "publish",
@@ -2195,11 +2296,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "publish",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -2442,11 +2544,6 @@
     {
       "readers": [
         {
-          "by": "src/discovery/filters.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "src/tests/filters.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -2502,11 +2599,6 @@
     },
     {
       "readers": [
-        {
-          "by": "src/extractors/imports.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
         {
           "by": "src/tests/scanner.test.ts",
           "call": "literal",

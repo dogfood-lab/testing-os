@@ -27,8 +27,32 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI now also builds src/cli.ts, src/config.ts, src/coverage.ts and 14 more.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "src/cli.ts",
+          "src/config.ts",
+          "src/coverage.ts",
+          "src/critic.ts",
+          "src/driver.ts",
+          "src/index.ts",
+          "src/openrouter.ts",
+          "src/panel.ts",
+          "src/player.ts",
+          "src/pty-driver.ts",
+          "src/report.ts",
+          "src/rpc-driver.ts",
+          "src/run.ts",
+          "src/stats.ts",
+          "src/stdio-driver.ts",
+          "src/stdio-game.ts",
+          "src/verifiers.ts"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -36,7 +60,7 @@
       "commit": "e794ed948b7521688a3f31ab775a8773b8e52880",
       "generatedAt": "2026-09-25T02:12:54.230Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -45,9 +69,28 @@
   "changesTogetherWithTests": 0,
   "commit": "ddf3c8cb774d8bce12e7740520f23468cf7219e4",
   "defaultBranch": "main",
-  "derived": "6 parts, mostly TypeScript (34 files) and JavaScript (4). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. People run ai-playtest.",
+  "derived": "6 parts, mostly TypeScript (34 files) and JavaScript (4). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. ai-playtest is a command of a private package (nothing ships it).",
   "doors": [
     {
+      "builds": [
+        "src/cli.ts",
+        "src/config.ts",
+        "src/coverage.ts",
+        "src/critic.ts",
+        "src/driver.ts",
+        "src/index.ts",
+        "src/openrouter.ts",
+        "src/panel.ts",
+        "src/player.ts",
+        "src/pty-driver.ts",
+        "src/report.ts",
+        "src/rpc-driver.ts",
+        "src/run.ts",
+        "src/stats.ts",
+        "src/stdio-driver.ts",
+        "src/stdio-game.ts",
+        "src/verifiers.ts"
+      ],
       "checks": [
         "CHANGELOG.md",
         "LICENSE",
@@ -135,6 +178,7 @@
       ]
     },
     {
+      "builtFrom": "the repository root",
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
@@ -143,6 +187,7 @@
       "kind": "command",
       "landings": [],
       "name": "ai-playtest",
+      "privatePackage": true,
       "pushes": false,
       "reach": [
         {
@@ -158,7 +203,8 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": []
+      "triggers": [],
+      "unshipped": true
     }
   ],
   "duplicates": [],
@@ -166,9 +212,9 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-25T03:17:43.840Z",
+  "generatedAt": "2026-09-25T09:11:31.221Z",
   "limits": [
-    "1 import site could not be resolved.",
+    "1 import could not be resolved: `vitest.config.ts` probes `@vitest/coverage-v8`, which is not declared.",
     "2 writes and 1 read use paths built at run time and are not named here.",
     "11 writes and 8 reads go to a path their caller passes, not to this repository.",
     "1 command is built at run time and not followed.",
@@ -187,11 +233,16 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/ai-playtest",
   "sequences": [],
-  "startDoor": "package.json#ai-playtest",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "src/cli.ts"
+    ".github/workflows/ci.yml",
+    "src/cli.ts",
+    "src/config.ts",
+    "src/openrouter.ts",
+    "src/stats.ts",
+    "src/run.ts",
+    "src/report.ts"
   ],
-  "startReason": "This path follows ai-playtest (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 18,

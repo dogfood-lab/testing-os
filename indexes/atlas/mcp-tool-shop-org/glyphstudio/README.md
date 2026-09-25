@@ -10,13 +10,15 @@ Mapped at 2026-09-25 from commit 6767835.
 
 - glyphstudio (apps/desktop/src-tauri/Cargo.toml) is a new desktop app. It runs apps/desktop/src-tauri/src/main.rs.
 - apps/desktop/src-tauri/gen/schemas/ is now written by apps/desktop/src-tauri/build.rs.
-- apps/desktop/src-tauri/src/main.rs is now read by apps/desktop/src-tauri/Cargo.toml.
+- docs/dogfood/stage44-quality/*-post-*x*.png is now written by scripts/dogfood-44-quality.mjs.
+- docs/dogfood/stage44-quality/*-pre-*x*.png is now written by scripts/dogfood-44-quality.mjs.
+- And 3 more new writers and readers of places.
 - desktop was authored and is now mixed.
 - 652 files changed content, across 14 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs packages/domain/src/ciGates.test.ts, packages/domain/src/shortcutManifest.test.ts, packages/domain/src/sizeProfile.test.ts and 118 more; checks packages/domain/src/, packages/mcp-sprite-server/src/ and packages/state/src/.
+1. **CI.** On a pull request to main touching 8 paths; on a push to main touching 8 paths; or by hand. Runs packages/domain/src/ciGates.test.ts, packages/domain/src/shortcutManifest.test.ts, packages/domain/src/sizeProfile.test.ts and 118 more; checks packages/domain/src/, packages/mcp-sprite-server/src/ and packages/state/src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Dogfood.** By hand. Runs no file this map can see.
 4. **glyphstudio** (a desktop app built from apps/desktop/src-tauri, which nothing ships). Runs apps/desktop/src-tauri/src/main.rs.
@@ -59,6 +61,8 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 - **scripts** is imported by no test.
 - **showcase** is imported by no test.
 
+64 test files run in no workflow: apps/desktop/src/components/AISettingsPanel.test.tsx, apps/desktop/src/components/AnchorPanel.test.tsx, apps/desktop/src/components/AssetBrowserPanel.test.tsx and 61 mores.
+
 ## Written but never read
 
 - **apps/desktop/src-tauri/gen/schemas/** is written by apps/desktop/src-tauri/build.rs (a build script) and read by nothing else in this repository.
@@ -70,7 +74,7 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 - **docs/dogfood/stage43-prop/** is written by scripts/dogfood-43-prop.mjs and read by nothing else in this repository.
 - **docs/dogfood/stage44-curves/** is written by scripts/dogfood-44-curves.mjs and read by nothing else in this repository.
 
-And 13 more places.
+And 17 more places.
 
 ## Helpers that look duplicated
 
@@ -88,11 +92,15 @@ No two parts export a helper that looks alike.
 - **docs/dogfood/stage43-humanoid/** is written by scripts/dogfood-43-humanoid.mjs.
 - **docs/dogfood/stage43-prop/** is written by scripts/dogfood-43-prop.mjs.
 - **docs/dogfood/stage44-curves/** is written by scripts/dogfood-44-curves.mjs.
-- **docs/dogfood/stage44-quality/** is written by scripts/dogfood-44-quality.mjs.
+- **docs/dogfood/stage44-quality/*-post-*x*.png** is written by scripts/dogfood-44-quality.mjs.
+- **docs/dogfood/stage44-quality/*-pre-*x*.png** is written by scripts/dogfood-44-quality.mjs.
+- **docs/dogfood/stage44-quality/dogfood-log.md** is written by scripts/dogfood-44-quality.mjs.
 - **docs/dogfood/stage45-feedback/dogfood-log.md** is written by scripts/dogfood-45-feedback.mjs.
 - **docs/dogfood/vector-master/** is written by scripts/dogfood-vector-master.mjs.
-- **docs/showcase/stage46/** is written by scripts/showcase-46.mjs.
-- **docs/showcase/stage47-ollama/** is written by scripts/dogfood-47-ollama.mjs.
+- **docs/showcase/stage46/*--*.png** is written by scripts/showcase-46.mjs.
+- **docs/showcase/stage46/showcase-log.md** is written by scripts/showcase-46.mjs.
+- **docs/showcase/stage47-ollama/*---*x*.png** is written by scripts/dogfood-47-ollama.mjs.
+- **docs/showcase/stage47-ollama/dogfood-log.md** is written by scripts/dogfood-47-ollama.mjs.
 - **docs/showcase/stage47a-test/** is written by scripts/test-47a-prompt.mjs.
 - **docs/showcase/stage47b-critique/** is written by scripts/test-47b-critique-loop.mjs.
 - **docs/visual-recovery/critiques/** is written by scripts/critique-sprite.mjs.
@@ -111,11 +119,11 @@ People write .github/, assets/, audit/, dogfood/, the repository root and site/;
 
 apps/desktop/src-tauri/src/main.rs → apps/desktop/src-tauri/src/lib.rs
 
-Read those in order to follow one run of glyphstudio end to end. This path follows glyphstudio (a desktop app built from apps/desktop/src-tauri, which nothing ships) from its entry, since CI runs only tests.
+Read those in order to follow one run of glyphstudio end to end. This path follows glyphstudio (a desktop app built from apps/desktop/src-tauri, which nothing ships) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 
-- 17 import sites could not be resolved.
+- 17 imports could not be resolved: `scripts/critique-sprite.mjs` imports a path built at run time; `scripts/critique-sprite.mjs` loads `fast-png` when it is installed, which is not declared; `scripts/dogfood-43-creature.mjs` imports a path built at run time; and 14 more.
 - 59 writes and 10 reads use paths built at run time and are not named here.
 - 13 writes and 31 reads go to a path their caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.

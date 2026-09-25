@@ -356,7 +356,7 @@
           "writes": 0
         },
         {
-          "reads": 0,
+          "reads": 1,
           "where": [
             "cwd:CHANGELOG.md"
           ],
@@ -380,6 +380,13 @@
           "writes": 0
         },
         {
+          "reads": 1,
+          "where": [
+            "cwd:README.md"
+          ],
+          "writes": 0
+        },
+        {
           "reads": 0,
           "where": [
             "cwd:SCORECARD.md"
@@ -387,14 +394,14 @@
           "writes": 1
         },
         {
-          "reads": 0,
+          "reads": 1,
           "where": [
             "cwd:SECURITY.md"
           ],
           "writes": 1
         },
         {
-          "reads": 2,
+          "reads": 3,
           "where": [
             "cwd:SHIP_GATE.md"
           ],
@@ -408,7 +415,14 @@
           "writes": 0
         },
         {
-          "reads": 5,
+          "reads": 1,
+          "where": [
+            "cwd:package-lock.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 6,
           "where": [
             "cwd:package.json"
           ],
@@ -429,11 +443,11 @@
           "writes": 0
         }
       ],
-      "outsideReads": 44,
+      "outsideReads": 50,
       "outsideWrites": 4,
       "role": "code",
       "testedBy": 3,
-      "unresolvedSites": 1
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -612,6 +626,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -644,6 +659,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "109f37ae26de60b84ee2d631d56d247dc2a7c03960a1b337df1c3e4f514381b7",
           "path": "site/src/site-config.ts"
         },
@@ -1341,11 +1357,6 @@
     {
       "readers": [
         {
-          "by": "bin/shipcheck.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "test/version.test.mjs",
           "call": "readFileSync",
           "confidence": "ast",
@@ -1370,11 +1381,6 @@
     {
       "readers": [
         {
-          "by": "bin/shipcheck.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "test/front-door.test.mjs",
           "call": "literal",
           "confidence": "ast",
@@ -1393,11 +1399,6 @@
     {
       "readers": [
         {
-          "by": "bin/shipcheck.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "test/shipcheck.test.mjs",
           "call": "literal",
           "confidence": "ast",
@@ -1411,11 +1412,6 @@
       "readers": [
         {
           "by": ".github/workflows/ci.yml"
-        },
-        {
-          "by": "bin/shipcheck.mjs",
-          "call": "literal",
-          "confidence": "ast"
         },
         {
           "by": "test/shipcheck.test.mjs",
@@ -1459,11 +1455,6 @@
     {
       "readers": [
         {
-          "by": "bin/shipcheck.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "test/shipcheck.test.mjs",
           "call": "literal",
           "confidence": "ast",
@@ -1477,11 +1468,6 @@
       "readers": [
         {
           "by": ".github/workflows/release.yml"
-        },
-        {
-          "by": "bin/shipcheck.mjs",
-          "call": "literal",
-          "confidence": "ast"
         },
         {
           "by": "bin/shipcheck.mjs",

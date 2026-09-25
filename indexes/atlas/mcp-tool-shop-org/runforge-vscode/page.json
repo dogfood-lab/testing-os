@@ -49,21 +49,21 @@
     "items": [
       {
         "kind": "sequence",
-        "sentence": "In src/extension.ts, activate lost a step, is running.",
+        "sentence": "In src/extension.ts, `activate` lost a step, `isRunning`.",
         "subjects": [
           "src/extension.ts"
         ]
       },
       {
         "kind": "sequence",
-        "sentence": "In src/extension.ts, activate lost a step, execute run.",
+        "sentence": "In src/extension.ts, `activate` lost a step, `executeRun`.",
         "subjects": [
           "src/extension.ts"
         ]
       },
       {
         "kind": "sequence",
-        "sentence": "In src/extension.ts, activate lost a step, show runs picker.",
+        "sentence": "In src/extension.ts, `activate` lost a step, `showRunsPicker`.",
         "subjects": [
           "src/extension.ts"
         ]
@@ -112,11 +112,13 @@
   "derived": "10 parts, mostly TypeScript (71 files), Python (45) and JavaScript (3). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the runforge extension.",
   "doors": [
     {
-      "checks": [
-        "src/extension.ts",
+      "builds": [
         "test/extension-host/"
       ],
-      "checksCount": 2,
+      "checks": [
+        "src/extension.ts"
+      ],
+      "checksCount": 1,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -181,7 +183,7 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request touching 12 paths",
+        "on a pull request to main touching 12 paths",
         "on a push to main touching 12 paths",
         "or by hand"
       ]
@@ -253,8 +255,7 @@
       "runsCount": 34,
       "runsMore": 31,
       "sends": [
-        "creates a GitHub release on a tag push",
-        "uploads SHA256SUMS.txt and files named at run time to the release on a tag push",
+        "creates a GitHub release and uploads SHA256SUMS.txt and files named at run time to the release on a tag push",
         "publishes to the VS Code Marketplace when run by hand"
       ],
       "stages": [],
@@ -339,9 +340,9 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T02:13:27.100Z",
+  "generatedAt": "2026-09-25T09:20:54.427Z",
   "limits": [
-    "83 import sites could not be resolved.",
+    "83 imports could not be resolved: `python/ml_runner/test_cancellation_marker.py` imports `ml_runner`, which is no module on its import path and no declared dependency; `python/ml_runner/test_cancellation_marker.py` imports `ml_runner.contracts`, which is no module on its import path and no declared dependency; `python/ml_runner/test_cancellation_marker.py` imports `ml_runner.provenance`, which is no module on its import path and no declared dependency; and 80 more.",
     "2 writes and 16 reads use paths built at run time and are not named here.",
     "9 writes and 20 reads go to a path their caller passes, not to this repository.",
     "8 commands are built at run time and not followed, 5 of them in tests.",
@@ -366,15 +367,16 @@
   "sequences": [],
   "startDoor": "package.json#runforge",
   "startHere": [
-    "src/extension.ts"
+    "src/extension.ts",
+    "src/runner/run-manager.ts"
   ],
-  "startReason": "This path follows runforge (the extension people install from the VS Code Marketplace) from its entry, since CI runs only tests.",
+  "startReason": "This path follows runforge (the extension people install from the VS Code Marketplace) from its entry, since CI runs only tests and checks, and builds test/extension-host/.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 64,
   "testedBy": {
     "eslint-rules": 0,
-    "python": 13,
+    "python": 14,
     "src": 32
   },
   "unnamedWrites": 2,
@@ -388,6 +390,8 @@
       "testedBy": 0
     }
   ],
-  "untestedNote": [],
+  "untestedNote": [
+    "23 test files run in no workflow: python/ml_runner/test_artifact_inspect.py, python/ml_runner/test_cancellation_marker.py, python/ml_runner/test_csv_actionability.py and 20 mores."
+  ],
   "written": 0
 }

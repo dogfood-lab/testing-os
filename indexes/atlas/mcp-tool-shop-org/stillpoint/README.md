@@ -60,6 +60,8 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 
 - **ui** is imported by no test.
 
+4 test files run in no workflow: packages/server/src/engine-manager.test.ts, packages/server/src/presets.test.ts, packages/server/src/state.test.ts and 1 more.
+
 ## Written but never read
 
 - **apps/desktop/msix/layout/** is written by apps/desktop/msix/build-msix.ps1 and read by nothing else in this repository.
@@ -82,7 +84,7 @@ People write .claude/, .github/, the repository root and site/. Nothing in this 
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/server/src/server.ts
+.github/workflows/ci.yml → packages/server/src/server.ts → packages/server/src/routes/api.ts → packages/server/src/routes/events.ts
 
 Read those in order to follow one pull request end to end.
 

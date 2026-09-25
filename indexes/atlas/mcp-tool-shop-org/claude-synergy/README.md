@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 6d91d8c.
 
 ## What this is
 
-10 parts, mostly TypeScript (83 files), JavaScript (9) and Python (2). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk.
+10 parts, mostly Markdown (1273 files); code in TypeScript (83), JavaScript (9) and Python (2). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk.
 
 ## What changed since 2026-09-24 (fb90b80)
 
@@ -15,17 +15,17 @@ Mapped at 2026-09-25 from commit 6d91d8c.
 
 ## What comes in
 
-1. **Tests.** On a pull request; on a push to main; or by hand. Runs test/integration/, test/regression/ and test/unit/; checks src/.
-2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs test/integration/, test/regression/ and test/unit/; checks src/cli.ts and src/mcp-server.ts.
+1. **Tests.** On a pull request to main; on a push to main; or by hand. Runs test/integration/, test/regression/ and test/unit/; checks src/.
+2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs test/integration/, test/regression/ and test/unit/; builds src/cli.ts and src/mcp-server.ts.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-4. **Daily sync.** On a schedule (`0 12 * * *`); or by hand. Runs src/cli.ts; checks src/mcp-server.ts.
+4. **Daily sync.** On a schedule (`0 12 * * *`); or by hand. Runs src/cli.ts; builds src/mcp-server.ts.
 5. **@mcptoolshop/claude-synergy** (the package's entry, which runs the command hk; it is not a library). Loads src/cli.ts and src/mcp-server.ts.
 6. **claude-synergy-mcp** (a command people run). Runs src/mcp-server.ts.
 7. **hk** (a command people run). Runs src/cli.ts.
 
 ## What happens through Daily sync
 
-1. The workflow runs src/cli.ts in src; it checks src/mcp-server.ts in src.
+1. The workflow runs src/cli.ts in src; it builds src/mcp-server.ts in src.
 2. It commits LATEST.txt, PRODUCTS.txt, SOURCES.md (written by people), URGENT_FINDINGS.md (written by people), data/ and products/ (written by people), then pushes.
 3. It runs gh.
 
@@ -37,7 +37,7 @@ Daily sync writes nothing this map can see.
 
 **Tests** runs test/integration/, test/regression/ and test/unit/, and checks src/.
 
-**Release** runs test/integration/, test/regression/ and test/unit/, checks src/cli.ts and src/mcp-server.ts, publishes to npm, and creates a GitHub release.
+**Release** runs test/integration/, test/regression/ and test/unit/, builds src/cli.ts and src/mcp-server.ts, publishes to npm, and creates a GitHub release.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -69,6 +69,8 @@ Window: 180 days; a pair counts from 3 shared commits, since 0 source files reac
 
 - **scripts** is imported by no test.
 
+test/smoke/full-corpus.test.ts runs in no workflow.
+
 ## Written but never read
 
 - **dataset/changelog-actions/v1/eval-report-run1.json** is written by scripts/eval-cs-actions.mjs and read by nothing else in this repository.
@@ -96,9 +98,9 @@ People write .github/, docs/, products/, the repository root, site/ and synergie
 
 ## Where to start
 
-src/mcp-server.ts
+src/mcp-server.ts → src/db.ts → src/query.ts → src/hybrid.ts → src/fetch.ts → src/ingest.ts → src/embed.ts
 
-Read those in order to follow one run of claude-synergy-mcp end to end. This path follows claude-synergy-mcp (a command people run) from its entry, since Tests runs only tests.
+Read those in order to follow one run of claude-synergy-mcp end to end. This path follows claude-synergy-mcp (a command people run) from its entry, since Tests runs only tests and checks.
 
 ## What this map cannot see
 

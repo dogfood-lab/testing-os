@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 838720f.
 
 ## What this is
 
-10 parts, mostly JavaScript (5 files) and TypeScript (2). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run shipcheck.
+10 parts, mostly Markdown (79 files); code in JavaScript (5) and TypeScript (2). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run shipcheck.
 
 ## What changed since 2026-09-23 (875a8ae)
 
@@ -78,15 +78,12 @@ People write .claude/, .github/, contracts/, docs/, dogfood/, the repository roo
 
 ## Where to start
 
-bin/shipcheck.mjs
-
-Read those in order to follow one run of shipcheck end to end. This path follows shipcheck (a command people run) from its entry, since CI runs only tests and scripts that import no code here.
+Start at bin/shipcheck.mjs to follow one run of shipcheck end to end. This path follows shipcheck (a command people run) from its entry, since CI runs only tests and scripts that import no code here.
 
 ## What this map cannot see
 
-- 1 import site could not be resolved.
 - 2 reads use paths built at run time and are not named here.
-- 4 writes and 25 reads go to the directory the command is run in, not to this repository.
+- 4 writes and 31 reads go to the directory the command is run in, not to this repository.
 - 18 reads go to a path their caller passes, not to this repository.
 - 1 read goes to the directory the command is run in or a path its caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.

@@ -28,37 +28,8 @@
     },
     "items": [
       {
-        "kind": "landing",
-        "sentence": ".github/workflows/ is now read by src/lib/rename/identity/simple-text.ts.",
-        "subjects": [
-          ".github/workflows/",
-          "src/lib/rename/identity/simple-text.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "LICENSE is now also read by src/lib/rename/identity/simple-text.ts.",
-        "subjects": [
-          "LICENSE",
-          "src/lib/rename/identity/simple-text.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "README.md is now also read by src/lib/rename/identity/simple-text.ts.",
-        "subjects": [
-          "README.md",
-          "src/lib/rename/identity/simple-text.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 2 more new writers and readers of places.",
-        "subjects": []
-      },
-      {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "Nothing structural changed since 2026-09-24; no file changed.",
         "subjects": []
       }
     ],
@@ -66,7 +37,7 @@
       "commit": "31ad2f423e60a56a5c82487bc2c371e2f4bd0d7d",
       "generatedAt": "2026-09-24T08:48:55.872Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -78,10 +49,11 @@
   "derived": "7 parts, mostly TypeScript (128 files) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. People run forkctl and forkctl-mcp.",
   "doors": [
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -272,11 +244,12 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-25T02:09:42.384Z",
+  "generatedAt": "2026-09-25T09:16:37.311Z",
   "limits": [
-    "1 import site could not be resolved.",
+    "1 import could not be resolved: `src/lib/rename/symbols.ts` imports a path built at run time.",
     "8 writes and 8 reads use paths built at run time and are not named here.",
     "26 writes and 22 reads go to a path their caller passes, not to this repository.",
+    "14 reads go to the directory the command is run in (.env.example, .github/, LICENSE and 4 more places), not to this repository.",
     "3 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
@@ -294,11 +267,17 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/forkctl",
   "sequences": [],
-  "startDoor": "package.json#forkctl",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "src/cli.ts"
+    ".github/workflows/ci.yml",
+    "src/cli.ts",
+    "src/dispatch.ts",
+    "src/lib/github.ts",
+    "src/lib/state.ts",
+    "src/lib/operations.ts",
+    "src/tools/registry.ts",
+    "src/tools/types.ts"
   ],
-  "startReason": "This path follows forkctl (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 60,

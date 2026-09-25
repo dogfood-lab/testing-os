@@ -187,15 +187,17 @@
   "derived": "9 parts, mostly TypeScript (50 files) and JavaScript (5). Work enters through 4 doors; CI and Build and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the codecomfy-vscode extension.",
   "doors": [
     {
-      "checks": [
-        "eslint.config.mjs",
-        "scripts/",
-        "site/",
+      "builds": [
         "src/",
         "test/"
       ],
-      "checksCount": 5,
-      "checksMore": 49,
+      "checks": [
+        "eslint.config.mjs",
+        "scripts/",
+        "site/"
+      ],
+      "checksCount": 3,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -236,21 +238,23 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request touching 11 paths",
+        "on a pull request to main touching 11 paths",
         "on a push to main touching 11 paths",
         "or by hand"
       ]
     },
     {
-      "checks": [
-        "eslint.config.mjs",
-        "scripts/",
-        "site/",
+      "builds": [
         "src/",
         "test/"
       ],
-      "checksCount": 5,
-      "checksMore": 49,
+      "checks": [
+        "eslint.config.mjs",
+        "scripts/",
+        "site/"
+      ],
+      "checksCount": 3,
+      "checksMore": 0,
       "file": ".github/workflows/publish.yml",
       "id": ".github/workflows/publish.yml",
       "landings": [],
@@ -289,8 +293,7 @@
       "runsCount": 1,
       "runsMore": 0,
       "sends": [
-        "creates a GitHub release on a tag push",
-        "uploads SHA256SUMS.txt and files named at run time to the release on a tag push",
+        "creates a GitHub release and uploads SHA256SUMS.txt and files named at run time to the release on a tag push",
         "publishes to the VS Code Marketplace when run by hand"
       ],
       "stages": [],
@@ -383,9 +386,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:08:17.266Z",
+  "generatedAt": "2026-09-25T09:15:14.073Z",
   "limits": [
-    "1 import site could not be resolved.",
+    "1 import could not be resolved: `test/helpers.ts` imports a path built at run time.",
     "2 writes and 6 reads use paths built at run time and are not named here.",
     "16 writes and 39 reads go to a path their caller passes, not to this repository.",
     "3 commands are built at run time and not followed.",
@@ -407,11 +410,13 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/codecomfy-vscode",
   "sequences": [],
-  "startDoor": "package.json#codecomfy-vscode",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "src/extension.ts"
+    ".github/workflows/ci.yml",
+    "src/extension.ts",
+    "src/logging/logger.ts",
+    "src/presets/registry.ts"
   ],
-  "startReason": "This path follows codecomfy-vscode (the extension people install from the VS Code Marketplace) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 30,

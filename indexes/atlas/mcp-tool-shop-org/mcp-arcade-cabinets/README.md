@@ -12,10 +12,10 @@ Mapped at 2026-09-25 from commit 745115c.
 - Site now also runs apps/cabinets/src/ and apps/cabinets/vite.config.ts.
 - Publish now also runs apps/cabinets/src/ and apps/cabinets/vite.config.ts.
 - And 3 more changes to doors.
+- packages/vibe-typer/authoring/*-*-*-****-edit.json is now written by packages/vibe-typer/scripts/author.mjs.
+- packages/vibe-typer/authoring/*-*-*-****-run.json is now written by packages/vibe-typer/scripts/author.mjs.
 - packages/vibe-typer/patterns/corpus/bash.json is now written by packages/vibe-typer/scripts/port-corpus.mjs.
-- packages/vibe-typer/patterns/corpus/csharp.json is now written by packages/vibe-typer/scripts/port-corpus.mjs.
-- packages/vibe-typer/patterns/corpus/java.json is now written by packages/vibe-typer/scripts/port-corpus.mjs.
-- And 19 more new writers and readers of places.
+- And 21 more new writers and readers of places.
 - 3 files changed content, across 2 parts.
 
 ## What comes in
@@ -74,6 +74,8 @@ Window: 180 days; a pair counts from 10 shared commits, since 33 source files re
 
 Every code part is imported by at least one test.
 
+voice/tests/test_worker.py runs in no workflow.
+
 ## Written but never read
 
 - **docs/vibe-typer.author-sample.md** is written by packages/vibe-typer/scripts/author.mjs and read by nothing else in this repository.
@@ -113,16 +115,16 @@ People write .github/, catalog/, fixtures/, the repository root and site/; 7 wri
 
 ## Where to start
 
-.github/workflows/ci.yml → scripts/play.mjs
+.github/workflows/ci.yml → scripts/play.mjs → scripts/lib/cli.mjs
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 17 import sites could not be resolved.
+- 17 imports could not be resolved: `apps/cabinets/vite.config.ts` imports a path built at run time; `apps/cabinets/vite.config.ts` imports a path built at run time; `packages/ghost-on-the-menu/test/cli.test.ts` imports a path built at run time; and 14 more.
 - 7 writes and 14 reads use paths built at run time and are not named here.
 - 6 writes and 97 reads go to a path their caller passes, not to this repository.
-- 5 writes and 8 reads go to the directory the command is run in (.venv/, film/ and fixtures/), not to this repository.
+- 5 writes and 9 reads go to the directory the command is run in (.venv/, catalog/, film/ and 1 more place), not to this repository.
 - 2 writes and 4 reads go to the directory the command is run in (film/, fixtures/ and packages/) or a path their caller passes, not to this repository.
 - 4 writes go to a temporary directory, not to this repository.
 - 6 commands are built at run time and not followed, 3 of them in tests.

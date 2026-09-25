@@ -66,9 +66,7 @@ People write .github/, packages/fantasy-heroes-48/, packages/fantasy-heroes-hd/,
 
 ## Where to start
 
-.github/workflows/ci.yml → tooling/verify-all.mjs
-
-Read those in order to follow one pull request end to end.
+CI runs no code this map can follow, so there is no path of files to read in order.
 
 ## What this map cannot see
 

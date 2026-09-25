@@ -57,17 +57,17 @@
     "items": [
       {
         "kind": "landing",
-        "sentence": "fixtures/bad/ is now also written by scripts/build-pytorch-helper-fixtures.mjs.",
+        "sentence": "fixtures/bad/*.jsonl is now written by scripts/build-pytorch-helper-fixtures.mjs.",
         "subjects": [
-          "fixtures/bad/",
+          "fixtures/bad/*.jsonl",
           "scripts/build-pytorch-helper-fixtures.mjs"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "fixtures/bad/* is now written by scripts/build-pytorch-helper-fixtures.mjs.",
+        "sentence": "fixtures/bad/*.meta.json is now written by scripts/build-pytorch-helper-fixtures.mjs.",
         "subjects": [
-          "fixtures/bad/*",
+          "fixtures/bad/*.meta.json",
           "scripts/build-pytorch-helper-fixtures.mjs"
         ]
       },
@@ -181,15 +181,17 @@
   "changesTogetherWithTests": 1,
   "commit": "8b16ae0a42ca1d8c0a9f6d9efa8247953dbeab2d",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly TypeScript (148 files), Python (5) and JavaScript (4). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.",
+  "derived": "10 parts, mostly JSON data (242 files); code in TypeScript (148), Python (5) and JavaScript (4). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.",
   "doors": [
     {
+      "builds": [
+        "src/"
+      ],
       "checks": [
         "fixtures/mazur.golden.jsonl",
-        "src/",
         "test/"
       ],
-      "checksCount": 3,
+      "checksCount": 2,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -325,17 +327,19 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request",
+        "on a pull request to main",
         "on a push to main",
         "or by hand"
       ]
     },
     {
+      "builds": [
+        "src/"
+      ],
       "checks": [
-        "src/",
         "test/"
       ],
-      "checksCount": 2,
+      "checksCount": 1,
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
@@ -480,10 +484,11 @@
       ]
     },
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/pack-smoke.yml",
       "id": ".github/workflows/pack-smoke.yml",
@@ -510,7 +515,7 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request",
+        "on a pull request to main",
         "on a push to main"
       ]
     },
@@ -561,7 +566,7 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request",
+        "on a pull request to main",
         "on a push to main",
         "on a schedule (`0 6 * * 1`), Monday at 06:00 UTC"
       ]
@@ -680,7 +685,19 @@
     {
       "place": "fixtures/bad/",
       "writers": [
-        "scripts (8 files)"
+        "scripts (7 files)"
+      ]
+    },
+    {
+      "place": "fixtures/bad/*.jsonl",
+      "writers": [
+        "scripts/build-pytorch-helper-fixtures.mjs"
+      ]
+    },
+    {
+      "place": "fixtures/bad/*.meta.json",
+      "writers": [
+        "scripts/build-pytorch-helper-fixtures.mjs"
       ]
     },
     {
@@ -918,12 +935,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:07:18.394Z",
+  "generatedAt": "2026-09-25T09:14:12.811Z",
   "limits": [
-    "2 import sites name a declared dependency that shares its name with a local module (jax); they are read as the dependency, which is not in this repository.",
-    "3 import sites could not be resolved.",
+    "1 import site names a declared dependency that shares its name with a local module (jax); it is read as the dependency, which is not in this repository.",
+    "3 imports could not be resolved: `examples/pytorch/extract_step.py` imports `pytorch`, which is no module on its import path and no declared dependency; `scripts/generate-pytorch-coupled-l2-helper-goldens.py` imports `pytorch`, which is no module on its import path and no declared dependency; `scripts/generate-pytorch-helper-goldens.py` imports `pytorch`, which is no module on its import path and no declared dependency.",
     "16 writes and 11 reads use paths built at run time and are not named here.",
-    "1 write goes to places this repository does not track, so it is not listed as generated.",
     "11 reads go to a path their caller passes, not to this repository.",
     "10 reads go to the directory the command is run in (fixtures/ and scripts/), not to this repository.",
     "2 writes and 3 reads go to a temporary directory, not to this repository.",
@@ -947,11 +963,15 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/backprop-trace",
   "sequences": [],
-  "startDoor": "package.json#bp",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "src/bin/bp.ts"
+    ".github/workflows/ci.yml",
+    "src/index.ts",
+    "src/reconcile.ts",
+    "src/general-engine.ts",
+    "src/emit.ts",
+    "src/hash.ts"
   ],
-  "startReason": "This path follows bp (a command people run) from its entry, since ci runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 106,
@@ -962,6 +982,18 @@
   },
   "unnamedWrites": 16,
   "unread": [
+    {
+      "place": "fixtures/bad/*.jsonl",
+      "writers": [
+        "scripts/build-pytorch-helper-fixtures.mjs"
+      ]
+    },
+    {
+      "place": "fixtures/bad/*.meta.json",
+      "writers": [
+        "scripts/build-pytorch-helper-fixtures.mjs"
+      ]
+    },
     {
       "place": "fixtures/external/adam.reddi-2018-pathology.note.json",
       "writers": [
@@ -1014,5 +1046,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 40
+  "written": 42
 }

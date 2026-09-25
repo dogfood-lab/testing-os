@@ -12,8 +12,8 @@ Nothing structural changed since 2026-09-24; 92 files changed content.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 10 paths; on a push touching 10 paths; or by hand. Runs src/bin.ts and tests/; checks src/.
-2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; checks src/.
+1. **CI.** On a pull request touching 10 paths; on a push touching 10 paths; or by hand. Runs src/bin.ts and tests/; builds src/.
+2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/roll** (the package people import). Loads src/index.ts, src/bridge/handler.ts and src/tables/engine.ts.
 5. **roll** (a command people run). Runs src/bin.ts.
@@ -22,7 +22,7 @@ Nothing structural changed since 2026-09-24; 92 files changed content.
 
 ## What happens through CI
 
-1. The workflow runs src/bin.ts in src and tests/ in tests; it checks src/ in src.
+1. The workflow runs src/bin.ts in src and tests/ in tests; it builds src/ in src.
 
 ## Who reads the results
 
@@ -30,7 +30,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs tests/, checks src/, publishes to npm, and creates a GitHub release.
+**Release** runs tests/, builds src/, publishes to npm, and creates a GitHub release.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -75,7 +75,7 @@ People write .github/, the repository root and site/. Nothing in this repository
 
 ## Where to start
 
-.github/workflows/ci.yml → src/bin.ts
+.github/workflows/ci.yml → src/bin.ts → src/display/color.ts → src/display/box.ts → src/loot/table.ts
 
 Read those in order to follow one pull request end to end.
 

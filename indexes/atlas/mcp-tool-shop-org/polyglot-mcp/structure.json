@@ -402,6 +402,11 @@
         },
         {
           "hash": "60c746f6f73db2336e72bc6408898d5b68ec9fa5cd93e50a8d20cc8367eeaa02",
+          "importOrder": [
+            "src/translate.ts",
+            "src/languages.ts",
+            "src/cache.ts"
+          ],
           "importsFiles": [
             "src/cache.ts",
             "src/languages.ts",
@@ -448,6 +453,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -480,6 +486,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "7d0abee4c38c83d3ee85aa867eb112cdf8917e543498528b158a0ec725562ea5",
           "path": "site/src/site-config.ts"
         },
@@ -589,6 +596,14 @@
         },
         {
           "hash": "c23e53b4b551d964d414521fe0bcd86587bf2f16331c24d731bbecc36681a1e5",
+          "importOrder": [
+            "src/translate.ts",
+            "src/translateMarkdown.ts",
+            "src/ollama.ts",
+            "src/languages.ts",
+            "src/errors.ts",
+            "src/index.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/index.ts",
@@ -603,6 +618,16 @@
           "entry": "main",
           "entryRule": 1,
           "hash": "185174b72bbd69cdb2b8815e62788046a0d36fe616b18f3e335cc7bc1a178d57",
+          "importOrder": [
+            "src/translate.ts",
+            "src/translateMarkdown.ts",
+            "src/translateAll.ts",
+            "src/translateReadme.ts",
+            "src/languages.ts",
+            "src/ollama.ts",
+            "src/version.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/languages.ts",
@@ -637,6 +662,10 @@
         },
         {
           "hash": "44a32d0009f55cabe246db0a98c61ac5b0a29af8799ba5fbe8bdaf9cfe354414",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/ollama.ts"
@@ -683,6 +712,11 @@
         },
         {
           "hash": "3ad7d392959cfc8891c06a9e7d8f28e7741de7f86c7eaec78697574d485f75d2",
+          "importOrder": [
+            "src/translate.ts",
+            "src/languages.ts",
+            "src/ollama.ts"
+          ],
           "importsFiles": [
             "src/languages.ts",
             "src/ollama.ts",
@@ -1075,6 +1109,10 @@
         },
         {
           "hash": "e36e73781781c1a8ff4f8599f83bee6f1c87a550aa22592eb060a170e1b7f0d3",
+          "importOrder": [
+            "src/translateMarkdown.ts",
+            "src/translate.ts"
+          ],
           "importsFiles": [
             "src/translate.ts",
             "src/translateMarkdown.ts"
@@ -1083,6 +1121,10 @@
         },
         {
           "hash": "8fc1c4e3fb1083c16b16545f21aa92623962e7d9feaa69b4f7b623ba33b20166",
+          "importOrder": [
+            "src/translateMarkdown.ts",
+            "src/translate.ts"
+          ],
           "importsFiles": [
             "src/translate.ts",
             "src/translateMarkdown.ts"
@@ -1355,6 +1397,10 @@
             "translateReadme"
           ],
           "hash": "92f1a9b459109d7e41dc0ab82630c9477b42da5a2326fe5d92c4c92e31830038",
+          "importOrder": [
+            "src/translateAll.ts",
+            "src/translate.ts"
+          ],
           "importsFiles": [
             "src/translate.ts",
             "src/translateAll.ts"
@@ -1415,7 +1461,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "quality-gates",
@@ -1475,11 +1521,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "quality-gates",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -1754,7 +1801,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "publish",
@@ -1802,11 +1849,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "publish",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {

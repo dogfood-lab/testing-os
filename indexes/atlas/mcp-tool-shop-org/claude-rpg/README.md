@@ -16,7 +16,7 @@ Mapped at 2026-09-25 from commit 55ff274.
 ## What comes in
 
 1. **CI.** On a pull request touching 12 paths; on a push touching 12 paths; or by hand. Runs src/action-interpreter.test.ts, src/bin-defenses.test.ts, src/character/builder.test.ts and 118 more; checks src/ and test/. On a pull request, it also runs scripts/check-critical-coverage.mjs.
-2. **Release.** When a tag matching `v*` is pushed. Runs src/action-interpreter.test.ts, src/bin-defenses.test.ts, src/character/builder.test.ts and 118 more; checks src/.
+2. **Release.** When a tag matching `v*` is pushed. Runs src/action-interpreter.test.ts, src/bin-defenses.test.ts, src/character/builder.test.ts and 118 more; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/claude-rpg** (the package people import). Loads src/index.ts.
 5. **claude-rpg** (a command people run). Runs src/bin.ts.
@@ -34,7 +34,7 @@ Mapped at 2026-09-25 from commit 55ff274.
 
 ## The other doors
 
-**Release** runs src/action-interpreter.test.ts, src/bin-defenses.test.ts, src/character/builder.test.ts and 118 more, checks src/, reaches scripts, writes to dogfood/tuning/, publishes to npm, and creates a GitHub release.
+**Release** runs src/action-interpreter.test.ts, src/bin-defenses.test.ts, src/character/builder.test.ts and 118 more, builds src/, reaches scripts, writes to dogfood/tuning/, publishes to npm, and creates a GitHub release.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -78,13 +78,13 @@ People write .github/, docs/, the repository root and site/. Nothing in this rep
 
 ## Where to start
 
-src/bin.ts
+src/bin.ts → src/cli/usage.ts → src/cli/error-presenter.ts → src/cli/world-flag.ts → src/character/builder.ts → src/cli/boot-zone-entry.ts → src/llm/claude-adapter.ts
 
-Read those in order to follow one run of claude-rpg end to end. This path follows claude-rpg (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one run of claude-rpg end to end. This path follows claude-rpg (a command people run) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 
-- 2 import sites could not be resolved.
+- 2 imports could not be resolved: `src/character/packs.test.ts` imports a path built at run time; `src/cli/terminal-ui-audit.test.ts` imports a path built at run time.
 - 5 writes and 15 reads go to a path their caller passes, not to this repository.
 - 3 reads go to the home directory (.claude-rpg/), not to this repository.
 - 2 writes go to the directory the command is run in (.claude-rpg/), not to this repository.

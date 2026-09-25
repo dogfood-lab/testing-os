@@ -82,8 +82,43 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "projects/salt-road/inbox/generated/set-v2-2026-07-30/*.png is now written by projects/salt-road/inputs/prompts/wave-runner.py.",
+        "subjects": [
+          "projects/salt-road/inbox/generated/set-v2-2026-07-30/*.png",
+          "projects/salt-road/inputs/prompts/wave-runner.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "projects/ai-eye-test/compositor/compositor.py is now read by projects/ai-eye-test/compositor/phase1_smoke.py, projects/ai-eye-test/compositor/phase2.py, projects/ai-eye-test/compositor/phase2_build.py, projects/ai-eye-test/compositor/phase2_noshadow_build.py and projects/ai-eye-test/compositor/phase2b_build.py.",
+        "subjects": [
+          "projects/ai-eye-test/compositor/compositor.py",
+          "projects/ai-eye-test/compositor/phase1_smoke.py",
+          "projects/ai-eye-test/compositor/phase2.py",
+          "projects/ai-eye-test/compositor/phase2_build.py",
+          "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
+          "projects/ai-eye-test/compositor/phase2b_build.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "projects/ai-eye-test/compositor/phase2.py is now read by projects/ai-eye-test/compositor/phase2_build.py, projects/ai-eye-test/compositor/phase2_noshadow_build.py and projects/ai-eye-test/compositor/phase2b_build.py.",
+        "subjects": [
+          "projects/ai-eye-test/compositor/phase2.py",
+          "projects/ai-eye-test/compositor/phase2_build.py",
+          "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
+          "projects/ai-eye-test/compositor/phase2b_build.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 1 more new writer or reader of a place.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -91,7 +126,7 @@
       "commit": "b0426acebeb7a9f90efa809b7d54e0aba05ad0c4",
       "generatedAt": "2026-09-25T02:17:10.382Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -100,7 +135,7 @@
   "changesTogetherWithTests": 0,
   "commit": "f4d22102bd41890d912151550f0120bb434a464f",
   "defaultBranch": "main",
-  "derived": "13 parts, mostly JavaScript (233 files), Python (30) and TypeScript (2). Work enters through 4 doors; CI and Publish each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run sdlab.",
+  "derived": "13 parts, mostly JSON data (2616 files); code in JavaScript (233), Python (30) and TypeScript (2). Work enters through 4 doors; CI and Publish each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run sdlab.",
   "doors": [
     {
       "checks": [],
@@ -127,12 +162,12 @@
         {
           "boundary": "lib",
           "depth": 1,
-          "files": 73
+          "files": 74
         },
         {
           "boundary": "scripts",
           "depth": 1,
-          "files": 13
+          "files": 33
         }
       ],
       "runs": [
@@ -203,12 +238,12 @@
         {
           "boundary": "lib",
           "depth": 1,
-          "files": 73
+          "files": 74
         },
         {
           "boundary": "scripts",
           "depth": 1,
-          "files": 13
+          "files": 33
         }
       ],
       "runs": [
@@ -293,7 +328,9 @@
       "file": "package.json",
       "id": "package.json#sdlab",
       "kind": "command",
-      "landings": [],
+      "landings": [
+        "projects/"
+      ],
       "name": "sdlab",
       "pushes": false,
       "reach": [
@@ -305,12 +342,12 @@
         {
           "boundary": "lib",
           "depth": 1,
-          "files": 22
+          "files": 49
         },
         {
           "boundary": "scripts",
           "depth": 1,
-          "files": 3
+          "files": 32
         }
       ],
       "runs": [
@@ -417,13 +454,13 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T03:20:46.152Z",
+  "generatedAt": "2026-09-25T09:22:49.562Z",
   "limits": [
-    "18 import sites could not be resolved.",
+    "6 imports could not be resolved: `bin/sdlab.js` imports a path built at run time; `lib/training-adapters.js` imports a path built at run time; `projects/salt-road/inputs/prompts/build-training-package.mjs` imports a path built at run time; and 3 more.",
     "45 writes and 76 reads use paths built at run time and are not named here.",
-    "2 writes go to places this repository does not track, so they are not listed as generated.",
+    "3 writes go to places this repository does not track, so they are not listed as generated.",
     "108 writes and 216 reads go to a path their caller passes, not to this repository.",
-    "6 reads go to the directory the command is run in, not to this repository.",
+    "7 reads go to the directory the command is run in, not to this repository.",
     "1 write and 2 reads go to a temporary directory, not to this repository.",
     "1 read goes to the directory the command is run in (projects/) or a path its caller passes, not to this repository.",
     "11 commands are built at run time and not followed, 8 of them in tests.",
@@ -460,18 +497,19 @@
     {
       "alternatives": [
         {
+          "over": "namespaces",
           "steps": [
             {
               "name": "findClosest",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "find closest"
+              "phrase": "`findClosest`"
             },
             {
               "name": "inputError",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "input error"
+              "phrase": "`inputError`"
             }
           ],
           "when": "command === head"
@@ -482,7 +520,7 @@
               "name": "run",
               "part": "scripts",
               "partLabel": "scripts",
-              "phrase": "run"
+              "phrase": "`run`"
             }
           ],
           "when": "command === 'critique'"
@@ -493,7 +531,7 @@
               "name": "run",
               "part": "scripts",
               "partLabel": "scripts",
-              "phrase": "run"
+              "phrase": "`run`"
             }
           ],
           "when": "command === 'refine'"
@@ -504,7 +542,7 @@
               "name": "run",
               "part": "scripts",
               "partLabel": "scripts",
-              "phrase": "run"
+              "phrase": "`run`"
             }
           ],
           "when": "command === 'select'"
@@ -515,13 +553,13 @@
               "name": "findClosest",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "find closest"
+              "phrase": "`findClosest`"
             },
             {
               "name": "inputError",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "input error"
+              "phrase": "`inputError`"
             }
           ],
           "when": "!modulePath"
@@ -535,55 +573,55 @@
           "name": "run",
           "part": "scripts",
           "partLabel": "scripts",
-          "phrase": "run",
+          "phrase": "`run`",
           "steps": [
             {
               "name": "parseArgs",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "parse args"
+              "phrase": "`parseArgs`"
             },
             {
               "name": "getProjectName",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "get project name"
+              "phrase": "`getProjectName`"
             },
             {
               "name": "getProjectRoot",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "get project root"
+              "phrase": "`getProjectRoot`"
             },
             {
               "name": "critiqueRun",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "critique run"
+              "phrase": "`critiqueRun`"
             },
             {
               "name": "renderCritiqueMarkdown",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "render critique markdown"
+              "phrase": "`renderCritiqueMarkdown`"
             },
             {
               "name": "saveCritique",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "save critique"
+              "phrase": "`saveCritique`"
             },
             {
               "name": "renderCritiqueText",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "render critique text"
+              "phrase": "`renderCritiqueText`"
             },
             {
               "name": "info",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "info"
+              "phrase": "`info`"
             }
           ]
         },
@@ -592,50 +630,50 @@
           "name": "run",
           "part": "scripts",
           "partLabel": "scripts",
-          "phrase": "run",
+          "phrase": "`run`",
           "steps": [
             {
               "name": "parseArgs",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "parse args"
+              "phrase": "`parseArgs`"
             },
             {
               "name": "getProjectName",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "get project name"
+              "phrase": "`getProjectName`"
             },
             {
               "name": "getProjectRoot",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "get project root"
+              "phrase": "`getProjectRoot`"
             },
             {
               "name": "loadCritique",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "load critique"
+              "phrase": "`loadCritique`"
             },
             {
               "name": "getRunsDir",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "get runs dir"
+              "phrase": "`getRunsDir`"
             },
             {
               "count": 3,
               "name": null,
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "refine briefs"
+              "phrase": "`refine-briefs.js`"
             },
             {
               "name": "info",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "info"
+              "phrase": "`info`"
             }
           ]
         },
@@ -644,57 +682,57 @@
           "name": "run",
           "part": "scripts",
           "partLabel": "scripts",
-          "phrase": "run",
+          "phrase": "`run`",
           "steps": [
             {
               "name": "parseArgs",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "parse args"
+              "phrase": "`parseArgs`"
             },
             {
               "name": "getProjectName",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "get project name"
+              "phrase": "`getProjectName`"
             },
             {
               "name": "getProjectRoot",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "get project root"
+              "phrase": "`getProjectRoot`"
             },
             {
               "count": 3,
               "name": null,
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "selections"
+              "phrase": "`selections.js`"
             },
             {
               "name": "info",
               "part": "lib",
               "partLabel": "lib",
-              "phrase": "info"
+              "phrase": "`info`"
             }
           ]
         }
       ],
       "part": "bin",
       "partLabel": "bin",
-      "phrase": "main",
+      "phrase": "`main`",
       "steps": [
         {
           "name": "enableDebug",
           "part": "lib",
           "partLabel": "lib",
-          "phrase": "enable debug"
+          "phrase": "`enableDebug`"
         },
         {
           "name": "setLogLevel",
           "part": "lib",
           "partLabel": "lib",
-          "phrase": "set log level"
+          "phrase": "`setLogLevel`"
         }
       ]
     }
@@ -706,7 +744,9 @@
   "startHere": [
     ".github/workflows/ci.yml",
     "bin/sdlab.js",
-    "lib/args.js"
+    "scripts/init.js",
+    "projects/",
+    "projects/ai-eye-test/compositor/phase1_smoke.py"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -737,6 +777,12 @@
       ]
     },
     {
+      "place": "projects/salt-road/inbox/generated/set-v2-2026-07-30/",
+      "writers": [
+        "projects/salt-road/inputs/prompts/wave-runner.py"
+      ]
+    },
+    {
       "place": "projects/salt-road/inputs/control-guides/",
       "writers": [
         "projects/salt-road/inputs/control-guides/blockouts.py"
@@ -759,7 +805,8 @@
   "unreadNote": [],
   "untested": [],
   "untestedNote": [
-    "bin is touched by tests only through a spawn: a test runs its files as a child process."
+    "bin is touched by tests only through a spawn: a test runs its files as a child process.",
+    "2 test files run in no workflow: projects/ai-eye-test/compositor/test_compositor.py and projects/ai-eye-test/compositor/test_phase2.py."
   ],
   "written": 10
 }

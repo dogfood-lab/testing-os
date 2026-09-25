@@ -8,13 +8,15 @@ Mapped at 2026-09-25 from commit 3b13579.
 
 ## What changed since 2026-09-25 (7c76f54)
 
-Nothing structural changed since 2026-09-25; no file changed.
+- Release Binaries now also runs src/portlight/app/cli.py, src/portlight/balance/runner.py and src/portlight/stress/invariants.py.
+- Release now also runs src/portlight/app/cli.py, src/portlight/balance/runner.py and src/portlight/stress/invariants.py.
+- No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs tests/; checks src/.
-2. **Release.** When a release is published; or by hand. Runs tests/; checks src/.
-3. **Release Binaries.** When a release is published; or by hand. Runs tests/; builds src/portlight/__main__.py; checks src/.
+1. **CI.** On a pull request to main touching 8 paths; on a push to main touching 8 paths; or by hand. Runs tests/; checks src/.
+2. **Release.** When a release is published; or by hand. Runs src/portlight/app/cli.py, src/portlight/balance/runner.py, src/portlight/stress/invariants.py and 77 more; checks src/.
+3. **Release Binaries.** When a release is published; or by hand. Runs src/portlight/app/cli.py, src/portlight/balance/runner.py, src/portlight/stress/invariants.py and 77 more; builds src/portlight/__main__.py; checks src/.
 4. **Deploy Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 5. **portlight** (a command people run, from package.json). Runs bin/portlight.js.
 6. **portlight** (a command people run, from pyproject.toml). Runs src/portlight/app/cli.py.
@@ -29,9 +31,9 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs tests/, checks src/, and publishes to npm and PyPI.
+**Release** runs src/portlight/app/cli.py, src/portlight/balance/runner.py, src/portlight/stress/invariants.py and 77 more, checks src/, and publishes to npm and PyPI.
 
-**Release Binaries** runs tests/, checks src/, and builds src/portlight/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release on a release event.
+**Release Binaries** runs src/portlight/app/cli.py, src/portlight/balance/runner.py, src/portlight/stress/invariants.py and 77 more, checks src/, and builds src/portlight/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release, on a release event.
 
 **Deploy Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -60,6 +62,8 @@ Window: 180 days; a pair counts from 3 shared commits, since 0 source files reac
 - **bin** is imported by no test.
 - **tools** is imported by no test.
 
+test/version.test.js runs in no workflow.
+
 ## Written but never read
 
 No place this map can see is written, so none goes unread.
@@ -78,13 +82,13 @@ People write .github/, docs/, the repository root, site/, world-map/ and world/;
 
 ## Where to start
 
-src/portlight/app/cli.py
+src/portlight/app/cli.py → src/portlight/app/session.py → src/portlight/engine/ship_stats.py → src/portlight/engine/encounter.py → src/portlight/engine/models.py → src/portlight/engine/naval.py
 
-Read those in order to follow one run of portlight end to end. This path follows portlight (a command people run, from pyproject.toml) from its entry, since CI runs only tests.
+Read those in order to follow one run of portlight end to end. This path follows portlight (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 
-- 2 import sites could not be resolved.
+- 2 imports could not be resolved: `src/portlight/app/tui/screens/encounter.py` imports `portlight.content.weapons`, which is no module on its import path and no declared dependency; `src/portlight/app/tui/screens/encounter.py` imports `portlight.content.weapons`, which is no module on its import path and no declared dependency.
 - 5 writes and 1 read use paths built at run time and are not named here.
 - 1 write and 4 reads go to the directory the command is run in, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.

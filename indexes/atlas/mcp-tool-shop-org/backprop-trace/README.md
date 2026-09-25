@@ -4,29 +4,29 @@ Mapped at 2026-09-25 from commit 8b16ae0.
 
 ## What this is
 
-10 parts, mostly TypeScript (148 files), Python (5) and JavaScript (4). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.
+10 parts, mostly JSON data (242 files); code in TypeScript (148), Python (5) and JavaScript (4). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.
 
 ## What changed since 2026-09-24 (5611f68)
 
-- fixtures/bad/ is now also written by scripts/build-pytorch-helper-fixtures.mjs.
-- fixtures/bad/* is now written by scripts/build-pytorch-helper-fixtures.mjs.
+- fixtures/bad/*.jsonl is now written by scripts/build-pytorch-helper-fixtures.mjs.
+- fixtures/bad/*.meta.json is now written by scripts/build-pytorch-helper-fixtures.mjs.
 - fixtures/bad/multi-step-external.bad-bundle-digest-tampered.jsonl is now read by test/cli.multi-step-import-pipe.test.ts.
 - And 7 more new writers and readers of places.
 - No file changed.
 
 ## What comes in
 
-1. **ci.** On a pull request; on a push to main; or by hand. Runs test/import-jax-helper.jax-e2e.test.ts, test/import-pytorch-helper.torch-e2e.test.ts, test/activations.test.ts and 102 more; checks fixtures/mazur.golden.jsonl, src/ and test/.
-2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs scripts/pack-install-smoke.mjs, test/activations.test.ts, test/bp.cli.help-version.test.ts and 103 more; checks src/ and test/.
-3. **pack-smoke.** On a pull request; on a push to main. Runs scripts/pack-install-smoke.mjs; checks src/.
+1. **ci.** On a pull request to main; on a push to main; or by hand. Runs test/import-jax-helper.jax-e2e.test.ts, test/import-pytorch-helper.torch-e2e.test.ts, test/activations.test.ts and 102 more; builds src/; checks fixtures/mazur.golden.jsonl and test/.
+2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs scripts/pack-install-smoke.mjs, test/activations.test.ts, test/bp.cli.help-version.test.ts and 103 more; builds src/; checks test/.
+3. **pack-smoke.** On a pull request to main; on a push to main. Runs scripts/pack-install-smoke.mjs; builds src/.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-5. **codeql.** On a pull request; on a push to main; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC. Runs no file this map can see.
+5. **codeql.** On a pull request to main; on a push to main; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC. Runs no file this map can see.
 6. **@mcptoolshop/backprop-trace** (the package people import). Loads src/index.ts, src/activations.ts, src/emit.ts and 35 more.
 7. **bp** (a command people run). Runs src/bin/bp.ts.
 
 ## What happens through ci
 
-1. The workflow runs 105 files in test; it checks fixtures/mazur.golden.jsonl in fixtures, src/ in src and test/ in test.
+1. The workflow runs 105 files in test; it builds src/ in src; it checks fixtures/mazur.golden.jsonl in fixtures and test/ in test.
 
 ## Who reads the results
 
@@ -34,9 +34,9 @@ ci writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs scripts/pack-install-smoke.mjs, test/activations.test.ts, test/bp.cli.help-version.test.ts and 103 more, checks src/ and test/, publishes to npm, and creates a GitHub release.
+**Release** runs scripts/pack-install-smoke.mjs, test/activations.test.ts, test/bp.cli.help-version.test.ts and 103 more, builds src/, checks test/, publishes to npm, and creates a GitHub release.
 
-**pack-smoke** runs scripts/pack-install-smoke.mjs and checks src/.
+**pack-smoke** runs scripts/pack-install-smoke.mjs and builds src/.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -74,6 +74,8 @@ Window: 180 days; a pair counts from 3 shared commits, since 8 source files reac
 
 ## Written but never read
 
+- **fixtures/bad/*.jsonl** is written by scripts/build-pytorch-helper-fixtures.mjs and read by nothing else in this repository.
+- **fixtures/bad/*.meta.json** is written by scripts/build-pytorch-helper-fixtures.mjs and read by nothing else in this repository.
 - **fixtures/external/adam.reddi-2018-pathology.note.json** is written by scripts/generate-pytorch-adam-fixtures.ts and read by nothing else in this repository.
 - **fixtures/external/pytorch.adamw.sidecar.jsonl** is written by scripts/generate-pytorch-adam-fixtures.ts and read by nothing else in this repository.
 - **fixtures/external/pytorch.sgd-momentum.nesterov.multi-step.sidecar.jsonl** is written by scripts/generate-pytorch-momentum-fixtures.ts and read by nothing else in this repository.
@@ -87,7 +89,9 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **fixtures/bad/** is written by scripts (8 files).
+- **fixtures/bad/** is written by scripts (7 files).
+- **fixtures/bad/*.jsonl** is written by scripts/build-pytorch-helper-fixtures.mjs.
+- **fixtures/bad/*.meta.json** is written by scripts/build-pytorch-helper-fixtures.mjs.
 - **fixtures/bad/jax.bad-pytree-flatten-order.jsonl** is written by scripts/generate-jax-bad-fixtures.ts.
 - **fixtures/bad/tensorflow.bad-variable-list-order.jsonl** is written by scripts/generate-tensorflow-bad-fixtures.ts.
 - **fixtures/external/adam.reddi-2018-pathology.note.json** is written by scripts/generate-pytorch-adam-fixtures.ts.
@@ -134,16 +138,15 @@ People write .github/, docs/, the repository root, schemas/ and site/; 16 writes
 
 ## Where to start
 
-src/bin/bp.ts
+.github/workflows/ci.yml → src/index.ts → src/reconcile.ts → src/general-engine.ts → src/emit.ts → src/hash.ts
 
-Read those in order to follow one run of bp end to end. This path follows bp (a command people run) from its entry, since ci runs only tests.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 2 import sites name a declared dependency that shares its name with a local module (jax); they are read as the dependency, which is not in this repository.
-- 3 import sites could not be resolved.
+- 1 import site names a declared dependency that shares its name with a local module (jax); it is read as the dependency, which is not in this repository.
+- 3 imports could not be resolved: `examples/pytorch/extract_step.py` imports `pytorch`, which is no module on its import path and no declared dependency; `scripts/generate-pytorch-coupled-l2-helper-goldens.py` imports `pytorch`, which is no module on its import path and no declared dependency; `scripts/generate-pytorch-helper-goldens.py` imports `pytorch`, which is no module on its import path and no declared dependency.
 - 16 writes and 11 reads use paths built at run time and are not named here.
-- 1 write goes to places this repository does not track, so it is not listed as generated.
 - 11 reads go to a path their caller passes, not to this repository.
 - 10 reads go to the directory the command is run in (fixtures/ and scripts/), not to this repository.
 - 2 writes and 3 reads go to a temporary directory, not to this repository.

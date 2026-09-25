@@ -8,18 +8,18 @@ Mapped at 2026-09-25 from commit 4fba7a2.
 
 ## What changed since 2026-09-25 (f8d83a6)
 
-Nothing structural changed since 2026-09-25; no file changed.
+- CI now also runs src/ai_eyes_mcp/__init__.py, src/ai_eyes_mcp/engine.py and src/ai_eyes_mcp/server.py.
+- No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 6 paths; on a push touching 6 paths; or by hand. Runs tests/.
+1. **CI.** On a pull request touching 6 paths; on a push touching 6 paths; or by hand. Runs src/ai_eyes_mcp/__init__.py, src/ai_eyes_mcp/engine.py, src/ai_eyes_mcp/server.py and 7 more.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **ai-eyes-mcp** (a command people run). Runs src/ai_eyes_mcp/server.py.
 
 ## What happens through CI
 
-1. The workflow runs tests/ in tests.
-2. That reaches src (3 files).
+1. The workflow runs src/ai_eyes_mcp/__init__.py, src/ai_eyes_mcp/engine.py and src/ai_eyes_mcp/server.py in src and tests/ in tests.
 
 ## Who reads the results
 
@@ -63,9 +63,9 @@ People write .github/, docs/, the repository root and site/. Nothing in this rep
 
 ## Where to start
 
-src/ai_eyes_mcp/server.py
+.github/workflows/ci.yml → src/ai_eyes_mcp/server.py → src/ai_eyes_mcp/engine.py
 
-Read those in order to follow one run of ai-eyes-mcp end to end. This path follows ai-eyes-mcp (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 

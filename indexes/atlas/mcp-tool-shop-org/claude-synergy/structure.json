@@ -6417,6 +6417,7 @@
           "path": "site/src/assets/logo.png"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -6453,6 +6454,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "cea6f557730da7f7c0cc2dc8ea55f06852eed828d33b78ebe9fe214004bf7610",
           "path": "site/src/site-config.ts"
         },
@@ -6497,6 +6499,15 @@
             "parseRelativeDate"
           ],
           "hash": "601a89dd3a4ee761132574e4b6fbf5ada05ad219e913661bfb61a965bdb6e139",
+          "importOrder": [
+            "src/db.ts",
+            "src/ingest.ts",
+            "src/query.ts",
+            "src/embed.ts",
+            "src/hybrid.ts",
+            "src/fetch.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/db.ts",
             "src/embed.ts",
@@ -7375,6 +7386,14 @@
           "entry": "resolveSynergiesDir",
           "entryRule": 1,
           "hash": "c673731d4f3b8a4fc28f4af6816f358b3d66b139f9a5ba2b961d658b53fccc59",
+          "importOrder": [
+            "src/db.ts",
+            "src/query.ts",
+            "src/hybrid.ts",
+            "src/fetch.ts",
+            "src/ingest.ts",
+            "src/embed.ts"
+          ],
           "importsFiles": [
             "src/db.ts",
             "src/embed.ts",
@@ -7663,6 +7682,10 @@
         },
         {
           "hash": "cb540c4d386d2e8ffbfe8a655bc1dea55e706bedfa9751b9ba9ff7bff2e78f4c",
+          "importOrder": [
+            "src/providers/types.ts",
+            "src/providers/retry.ts"
+          ],
           "importsFiles": [
             "src/providers/retry.ts",
             "src/providers/types.ts"
@@ -7671,6 +7694,10 @@
         },
         {
           "hash": "92c7728a7342f676916da2ed7f532c5b5d6b3f1cfa40553c05ef22b35f9c8ccb",
+          "importOrder": [
+            "src/providers/types.ts",
+            "src/providers/retry.ts"
+          ],
           "importsFiles": [
             "src/providers/retry.ts",
             "src/providers/types.ts"
@@ -7679,6 +7706,10 @@
         },
         {
           "hash": "d675d0c3c32b4e3c36c791888b5e6413632c9829398f0b34d58464459117cb6b",
+          "importOrder": [
+            "src/providers/types.ts",
+            "src/providers/retry.ts"
+          ],
           "importsFiles": [
             "src/providers/retry.ts",
             "src/providers/types.ts"
@@ -7701,6 +7732,10 @@
         },
         {
           "hash": "0c7b30e4702b820cf79f02888718ef3f8dba6500d615d13603fd6a5f1a9701d4",
+          "importOrder": [
+            "src/providers/types.ts",
+            "src/providers/retry.ts"
+          ],
           "importsFiles": [
             "src/providers/retry.ts",
             "src/providers/types.ts"
@@ -8236,6 +8271,10 @@
         },
         {
           "hash": "5d77a2d1bdf9d18eeb6396ff7189ba49619b4824c90c49426b783e6dc68ec68f",
+          "importOrder": [
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts"
+          ],
           "importsFiles": [
             "test/helpers/seed-corpus.ts",
             "test/helpers/temp-db.ts"
@@ -8244,6 +8283,10 @@
         },
         {
           "hash": "836338dd6e6c337ffb4316ae7521f6aaa10b3ecbae4c540a77e9c096a7057b07",
+          "importOrder": [
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts"
+          ],
           "importsFiles": [
             "test/helpers/seed-corpus.ts",
             "test/helpers/temp-db.ts"
@@ -8252,6 +8295,11 @@
         },
         {
           "hash": "39a40262c3fb08a76175be72a05d69055be0391739c592bbbc1ad382bbe99a95",
+          "importOrder": [
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts",
+            "test/helpers/mcp-client.ts"
+          ],
           "importsFiles": [
             "test/helpers/mcp-client.ts",
             "test/helpers/seed-corpus.ts",
@@ -8261,6 +8309,15 @@
         },
         {
           "hash": "8d3da1b6a4e5b9048e7807ed8a571affaeda05548fa0dbf135d80331c41f02bc",
+          "importOrder": [
+            "src/query.ts",
+            "src/embed.ts",
+            "src/hybrid.ts",
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts",
+            "test/helpers/fetch-mock.ts",
+            "test/helpers/golden-vectors.ts"
+          ],
           "importsFiles": [
             "src/embed.ts",
             "src/hybrid.ts",
@@ -8274,6 +8331,11 @@
         },
         {
           "hash": "b6f93bdac552c30ce14f000c493f2c3f22e8423f090535852b7e0d9d6e8ac76e",
+          "importOrder": [
+            "test/helpers/temp-db.ts",
+            "test/helpers/mock-gh-api.ts",
+            "src/fetch.ts"
+          ],
           "importsFiles": [
             "src/fetch.ts",
             "test/helpers/mock-gh-api.ts",
@@ -8283,6 +8345,18 @@
         },
         {
           "hash": "308c9a131a6cde175869a58e79c8c2d05ee3cd30fc3c8588637284615bce5146",
+          "importOrder": [
+            "src/ingest.ts",
+            "src/query.ts",
+            "src/db.ts",
+            "src/providers/context/ollama.ts",
+            "src/providers/rerank/ollama-judge.ts",
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts",
+            "test/helpers/fetch-mock.ts",
+            "src/fetch.ts",
+            "src/fetch-html.ts"
+          ],
           "importsFiles": [
             "src/db.ts",
             "src/fetch-html.ts",
@@ -8323,6 +8397,13 @@
         },
         {
           "hash": "5bfe85d22189c650bb2f57848fb94cfc236c9c02cc5b6ac95ac0be079a72abe3",
+          "importOrder": [
+            "src/embed.ts",
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts",
+            "test/helpers/fetch-mock.ts",
+            "test/helpers/golden-vectors.ts"
+          ],
           "importsFiles": [
             "src/embed.ts",
             "test/helpers/fetch-mock.ts",
@@ -8334,6 +8415,13 @@
         },
         {
           "hash": "25c9661024d399c413c989412a247766ec6ecd6e708e3d8fc5b2a3b8fd9ed414",
+          "importOrder": [
+            "src/embed.ts",
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts",
+            "test/helpers/fetch-mock.ts",
+            "test/helpers/golden-vectors.ts"
+          ],
           "importsFiles": [
             "src/embed.ts",
             "test/helpers/fetch-mock.ts",
@@ -8383,6 +8471,10 @@
         },
         {
           "hash": "dfd86120ec69ea3adf79f1927916b72ea1bcd9714edf5dfb5fb28fd26eb07965",
+          "importOrder": [
+            "test/helpers/playwright-mock.ts",
+            "src/fetch-playwright.ts"
+          ],
           "importsFiles": [
             "src/fetch-playwright.ts",
             "test/helpers/playwright-mock.ts"
@@ -8406,6 +8498,11 @@
         },
         {
           "hash": "40acfd63b203a5caa73e7bc78393051f45b5d43698d13b68b344cce7d532bb32",
+          "importOrder": [
+            "src/fetch.ts",
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts"
+          ],
           "importsFiles": [
             "src/fetch.ts",
             "test/helpers/seed-corpus.ts",
@@ -8415,6 +8512,14 @@
         },
         {
           "hash": "02535aba7c7cb5bb156c7fc0c1acae88db03b67e443b52d1a9b7f08ffdf6d523",
+          "importOrder": [
+            "src/embed.ts",
+            "src/hybrid.ts",
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts",
+            "test/helpers/fetch-mock.ts",
+            "test/helpers/golden-vectors.ts"
+          ],
           "importsFiles": [
             "src/embed.ts",
             "src/hybrid.ts",
@@ -8427,6 +8532,11 @@
         },
         {
           "hash": "d2c9a35781d1dcdd6372ce4d95374b31d13fdb20eeb0b83bf1def710c4a25a96",
+          "importOrder": [
+            "src/ingest.ts",
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts"
+          ],
           "importsFiles": [
             "src/ingest.ts",
             "test/helpers/seed-corpus.ts",
@@ -8436,6 +8546,11 @@
         },
         {
           "hash": "737273a8b254334c9ed3f811d800774c6611768885cc7f7486cdeabadebc3592",
+          "importOrder": [
+            "src/ingest.ts",
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts"
+          ],
           "importsFiles": [
             "src/ingest.ts",
             "test/helpers/seed-corpus.ts",
@@ -8453,6 +8568,11 @@
         },
         {
           "hash": "1ff35be3085a89bfab090f5d3f2933f6cc5928aad46de16da9513e272e111125",
+          "importOrder": [
+            "src/providers/context/claude-haiku.ts",
+            "test/helpers/fetch-mock.ts",
+            "src/providers/types.ts"
+          ],
           "importsFiles": [
             "src/providers/context/claude-haiku.ts",
             "src/providers/types.ts",
@@ -8470,6 +8590,11 @@
         },
         {
           "hash": "dc5f3a71455308360e4b82724104d7d91748931b22b596b3d9a6c87b8c52222e",
+          "importOrder": [
+            "src/providers/context/ollama.ts",
+            "test/helpers/fetch-mock.ts",
+            "src/providers/types.ts"
+          ],
           "importsFiles": [
             "src/providers/context/ollama.ts",
             "src/providers/types.ts",
@@ -8512,6 +8637,12 @@
         },
         {
           "hash": "2db098afd880cceb8595080b3eb3b14c660aa11fe41568f2c22ebe079d6a4ea1",
+          "importOrder": [
+            "src/providers/embedding/ollama.ts",
+            "src/providers/context/ollama.ts",
+            "src/providers/rerank/ollama-judge.ts",
+            "src/providers/types.ts"
+          ],
           "importsFiles": [
             "src/providers/context/ollama.ts",
             "src/providers/embedding/ollama.ts",
@@ -8560,6 +8691,11 @@
         },
         {
           "hash": "06439af67c04ea12dfeba8714e782ffc1d43c18584f53b3368b09deaf6f14e20",
+          "importOrder": [
+            "src/query.ts",
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts"
+          ],
           "importsFiles": [
             "src/query.ts",
             "test/helpers/seed-corpus.ts",
@@ -8569,6 +8705,12 @@
         },
         {
           "hash": "5808345a6524c60335117333c4ef205f18494efdf141e8bf6de1bf0522a25c77",
+          "importOrder": [
+            "src/query.ts",
+            "src/ingest.ts",
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts"
+          ],
           "importsFiles": [
             "src/ingest.ts",
             "src/query.ts",
@@ -8579,6 +8721,11 @@
         },
         {
           "hash": "f1c80d3dfc715316272bdede7e926488613ecf81c15fb6db8dfc49551397ddd5",
+          "importOrder": [
+            "src/query.ts",
+            "test/helpers/temp-db.ts",
+            "test/helpers/seed-corpus.ts"
+          ],
           "importsFiles": [
             "src/query.ts",
             "test/helpers/seed-corpus.ts",
@@ -8588,6 +8735,11 @@
         },
         {
           "hash": "b81aa655594db14589de2d5f1e97f9c1638299aae1c11ee408421b016d6e4468",
+          "importOrder": [
+            "test/helpers/temp-db.ts",
+            "test/helpers/mock-gh-api.ts",
+            "src/fetch.ts"
+          ],
           "importsFiles": [
             "src/fetch.ts",
             "test/helpers/mock-gh-api.ts",
@@ -8597,6 +8749,10 @@
         },
         {
           "hash": "ef235886d3d76d1442b2a549a1ecf1d179b8407fea5eb19bf46e4a9f2e8d45de",
+          "importOrder": [
+            "test/helpers/temp-db.ts",
+            "src/fetch.ts"
+          ],
           "importsFiles": [
             "src/fetch.ts",
             "test/helpers/temp-db.ts"
@@ -8703,7 +8859,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 2,
+      "checksCount": 0,
       "commands": [
         {
           "job": "release",
@@ -8781,14 +8937,16 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "job": "release",
           "path": "src/cli.ts",
-          "runKind": "checks"
+          "runKind": "executes"
         },
         {
+          "built": true,
           "job": "release",
           "path": "src/mcp-server.ts",
-          "runKind": "checks"
+          "runKind": "executes"
         },
         {
           "directory": true,
@@ -8857,7 +9015,7 @@
       "usesWorkflowToken": true
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "sync",
@@ -8907,9 +9065,10 @@
           "runKind": "executes"
         },
         {
+          "built": true,
           "job": "sync",
           "path": "src/mcp-server.ts",
-          "runKind": "checks"
+          "runKind": "executes"
         }
       ],
       "runsCount": 2,

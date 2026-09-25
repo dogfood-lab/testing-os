@@ -311,6 +311,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -351,6 +352,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "3f20b369133168bf7772e005139989b7cb50e71dd797864c6f5310a072ec9880",
           "path": "site/src/site-config.ts"
         },
@@ -790,6 +792,7 @@
                       "branch": "not root.is_dir()",
                       "line": 55,
                       "name": "PromptCraftError",
+                      "over": "roots",
                       "target": {
                         "file": "src/pcraft/errors.py"
                       },
@@ -2180,6 +2183,7 @@
                   "branch": "\"=\" not in raw",
                   "line": 1891,
                   "name": "PromptCraftError",
+                  "over": "pairs",
                   "target": {
                     "file": "src/pcraft/errors.py"
                   }
@@ -2240,6 +2244,7 @@
                   "branch": "\"=\" not in raw",
                   "line": 1891,
                   "name": "PromptCraftError",
+                  "over": "pairs",
                   "target": {
                     "file": "src/pcraft/errors.py"
                   },
@@ -2511,6 +2516,10 @@
             "compile_questions"
           ],
           "hash": "609c52daf590eb1e58687706cb3f31dc166f2fb62ae335313f4158142d857eca",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/schema.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/errors.py"
@@ -2535,6 +2544,10 @@
             "explain_contract"
           ],
           "hash": "7734675d2389abefd82ac73a0881d2828afe34a466d36bdceee2896c663f7dd4",
+          "importOrder": [
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/contract/loader.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/loader.py",
             "src/pcraft/core/contract/schema.py"
@@ -2567,6 +2580,12 @@
             "resolve"
           ],
           "hash": "503e6851785b1e009856c48d361082e3f9db1b856a8db731fe54b3b06cff019a",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/contract/explain.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/explain.py",
@@ -2837,6 +2856,7 @@
                   "branch": "atom.id in seen",
                   "line": 263,
                   "name": "PromptCraftError",
+                  "over": "atoms",
                   "target": {
                     "file": "src/pcraft/errors.py"
                   },
@@ -2846,6 +2866,7 @@
                   "branch": "mn.id in have_ids",
                   "line": 246,
                   "name": "PromptCraftError",
+                  "over": "must_not",
                   "target": {
                     "file": "src/pcraft/errors.py"
                   }
@@ -2862,6 +2883,7 @@
                   "branch": "atom.id in seen",
                   "line": 263,
                   "name": "PromptCraftError",
+                  "over": "atoms",
                   "target": {
                     "file": "src/pcraft/errors.py"
                   }
@@ -2917,6 +2939,15 @@
             "evaluate_batch"
           ],
           "hash": "0ad6a7f20b84a0fb1a48c4a212e78888a09370ba2254708573212b12581ad65a",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/harness.py",
+            "src/pcraft/core/gate/preflight.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/core/gate/verifier_iface.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/gate/exit_contract.py",
@@ -2933,6 +2964,12 @@
             "build_checkpoint"
           ],
           "hash": "198fddd356657c0e9d19e92f3e624ca5a19ed8acf110383af95d6f712072965a",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/gate/harness.py",
+            "src/pcraft/core/gate/thresholds.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/gate/harness.py",
@@ -3065,6 +3102,13 @@
             "verdict_reason"
           ],
           "hash": "801cb4f7b4b51f1502216714788ecc227630ac557af2fdbdf669b636d9d990d2",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/gate/family_guard.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/core/gate/verifier_iface.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/gate/family_guard.py",
@@ -3087,6 +3131,13 @@
             "write_scored"
           ],
           "hash": "82e43a4f9d1237fa5def2bbb7ac9ef929303ac1fa18fb4efce57a0f1c404c2c8",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/receipt/asset_record.py",
+            "src/pcraft/core/gate/regrade.py",
+            "src/pcraft/core/gate/thresholds.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/gate/regrade.py",
@@ -3488,6 +3539,11 @@
             "reachable_band_keys"
           ],
           "hash": "75e947021f63675484e93260ec6649452b86c81f4383ee7481ed7ccd47635b0e",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/gate/thresholds.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/core/gate/thresholds.py",
@@ -3580,6 +3636,10 @@
             "forbid_clipscore"
           ],
           "hash": "d923f2e54c5f34dfe1cfa8edce4b5beafc6e6e99fe688bc32d8670647c2d4333",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/compile_questions.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/errors.py"
@@ -4288,6 +4348,10 @@
             "pin"
           ],
           "hash": "7e0be8a5c4f59e88e9354856e6bb8e795d2ad53e17d84dff1dc0f5ef3c16960d",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/loader.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/loader.py",
             "src/pcraft/errors.py"
@@ -4810,6 +4874,12 @@
             "stale_against"
           ],
           "hash": "2134490eba67b74c1fee832be631b22d2b0e5dbf15aa6864a40b8e71bbff5798",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/core/receipt/asset_record.py",
+            "src/pcraft/core/receipt/disposition.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/core/receipt/asset_record.py",
@@ -4828,6 +4898,10 @@
             "assert_coverage"
           ],
           "hash": "b10515c40a67dc2a8daa6207c7fe96596de8308e459f62b5e54b1589cf630e20",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/schema.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/errors.py"
@@ -4836,6 +4910,13 @@
         },
         {
           "hash": "f8f0bfbfd18b7f2e486ac8d54403c11aa86b785743b084b1213bed8de504d7d1",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/optimize/artifact.py",
+            "src/pcraft/core/synth/synthesizer_iface.py",
+            "src/pcraft/core/synth/visual_inventory.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/core/optimize/artifact.py",
@@ -4860,6 +4941,10 @@
             "parse_render_boilerplate"
           ],
           "hash": "d23acfcb07fa49004c6ff666acb7582af19ef86136738e952cdd6c224822e588",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/schema.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/errors.py"
@@ -4938,6 +5023,13 @@
         },
         {
           "hash": "d9dcac8b34cc7fbebc78cddf1c3934f2083bced7fddee2ead6ef8699c39ea7e9",
+          "importOrder": [
+            "src/pcraft/core/loop/generator_iface.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/_device.py",
+            "src/pcraft/domains/image/generator/reference_lock.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/loop/generator_iface.py",
             "src/pcraft/domains/image/generator/__init__.py",
@@ -4958,6 +5050,11 @@
             "upload_manifest"
           ],
           "hash": "9d00b60dd7ffa79793957ac6e292b98d31ef88ba1e66b66bbbc48d7b284993cd",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/reference_lock.py"
+          ],
           "importsFiles": [
             "src/pcraft/domains/image/generator/__init__.py",
             "src/pcraft/domains/image/generator/reference_lock.py",
@@ -4971,6 +5068,10 @@
             "assemble"
           ],
           "hash": "2a1f3e44a74269defe62bc42989d8d98835fb857b4154f986b2a8b9d7352c779",
+          "importOrder": [
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/generator/__init__.py"
+          ],
           "importsFiles": [
             "src/pcraft/domains/image/generator/__init__.py",
             "src/pcraft/errors.py"
@@ -4982,6 +5083,12 @@
             "ip_adapter_scale"
           ],
           "hash": "717b1b988a364521061c10251a25b2da4124cb38af2f927439dce1f6de614411",
+          "importOrder": [
+            "src/pcraft/core/loop/generator_iface.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/_device.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/loop/generator_iface.py",
             "src/pcraft/domains/image/generator/__init__.py",
@@ -5002,6 +5109,13 @@
             "scaffold_from_reference_sheet"
           ],
           "hash": "0adb1d90ba03071901f48846a60f630ccca3d5ed1e353320b1d5d2d1a7f7ab7b",
+          "importOrder": [
+            "src/pcraft/core/contract/loader.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
+            "src/pcraft/domains/image/verifier/palette_verifier.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/loader.py",
             "src/pcraft/core/contract/schema.py",
@@ -5037,6 +5151,15 @@
             "write_table"
           ],
           "hash": "c38c7f359bebc1913f2b87e3e22785d2abfb88de8ed81d32575b9f75ca9de3f1",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/contract/loader.py",
+            "src/pcraft/core/gate/harness.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/subdomains/sprite/__init__.py",
+            "src/pcraft/sample.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/loader.py",
@@ -5135,6 +5258,13 @@
         },
         {
           "hash": "84cea6f5fb313fe635e09b521391c6b7148eb986747efc8337ccde8b2140ed7e",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/verifier/dsg_expand.py",
+            "src/pcraft/domains/image/verifier/region.py",
+            "src/pcraft/domains/image/verifier/vqascore_verifier.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/domains/image/verifier/dsg_expand.py",
@@ -5151,6 +5281,12 @@
             "load_rgb_sized"
           ],
           "hash": "d2eb8a6e62923070f4f23a463b5fe84c5090cd84547badeff36c3eb6e010bd2b",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/verifier/region.py",
+            "src/pcraft/domains/image/verifier/siglip2_screen.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/domains/image/verifier/region.py",
@@ -5168,6 +5304,11 @@
             "region_window"
           ],
           "hash": "78e5d76e8d6218305a6af7ce91f46c57e559806c7c15a84b6cdf3d3cf783c6b3",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/generator/conditioning.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/domains/image/generator/conditioning.py",
@@ -5177,6 +5318,11 @@
         },
         {
           "hash": "e7588aa14132540ea9d3c3d485de701a56c662d1fe5de0598ab89ac70d6e3562",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/verifier/region.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/domains/image/verifier/region.py",
@@ -5186,6 +5332,11 @@
         },
         {
           "hash": "a9b44069b6bb99fde72ef6b463a830c1df813d1dcef04e96083548b795f9c34e",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/verifier/region.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/domains/image/verifier/region.py",
@@ -5373,6 +5524,7 @@
                   "branch": "not root.is_dir()",
                   "line": 55,
                   "name": "PromptCraftError",
+                  "over": "roots",
                   "target": {
                     "file": "src/pcraft/errors.py"
                   },
@@ -5438,6 +5590,7 @@
                   "branch": "not root.is_dir()",
                   "line": 55,
                   "name": "PromptCraftError",
+                  "over": "roots",
                   "target": {
                     "file": "src/pcraft/errors.py"
                   }
@@ -5477,6 +5630,7 @@
                   "branch": "not root.is_dir()",
                   "line": 55,
                   "name": "PromptCraftError",
+                  "over": "roots",
                   "target": {
                     "file": "src/pcraft/errors.py"
                   },
@@ -5567,6 +5721,7 @@
                   "branch": "not root.is_dir()",
                   "line": 55,
                   "name": "PromptCraftError",
+                  "over": "roots",
                   "target": {
                     "file": "src/pcraft/errors.py"
                   },
@@ -5694,6 +5849,7 @@
                   "branch": "not root.is_dir()",
                   "line": 55,
                   "name": "PromptCraftError",
+                  "over": "roots",
                   "target": {
                     "file": "src/pcraft/errors.py"
                   },
@@ -5841,6 +5997,18 @@
       "origin": "authored",
       "role": "code",
       "testedBy": 37,
+      "unresolvedNamed": [
+        {
+          "path": "src/pcraft/domains/image/scaffold.py",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "src/pcraft/domains/image/subdomains/sprite/calibrate.py",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 2
     },
     {
@@ -5972,6 +6140,23 @@
             "test_version_flag_warns_on_stderr_and_keeps_stdout_a_bare_version"
           ],
           "hash": "112ea7e9a93b33577f22f0f0e3b8fa860007ec0e0c432ad5a07654ef2f023800",
+          "importOrder": [
+            "src/pcraft/cli/__init__.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/gate/harness.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/gate_report.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/core/optimize/compile.py",
+            "src/pcraft/__init__.py",
+            "src/pcraft/domains/image/subdomains/sprite/__init__.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/core/loop/generator_iface.py",
+            "src/pcraft/domains/image/__init__.py",
+            "src/pcraft/domains/image/generator/sdxl_generator.py",
+            "src/pcraft/testing.py"
+          ],
           "importsFiles": [
             "src/pcraft/__init__.py",
             "src/pcraft/cli/__init__.py",
@@ -6120,6 +6305,23 @@
             "test_validate_still_reports_ok_for_an_intact_depends_on_chain"
           ],
           "hash": "ecaf7695c5690d2da2f2ff702a22bdbe9e31fd4765d1d04b913baed4cc04e978",
+          "importOrder": [
+            "src/pcraft/cli/__init__.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/contract/loader.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/core/__init__.py",
+            "src/pcraft/domains/image/__init__.py",
+            "src/pcraft/core/plugin.py",
+            "src/pcraft/__init__.py",
+            "src/pcraft/core/contract/scaffold.py",
+            "src/pcraft/core/contract/diff.py",
+            "src/pcraft/core/contract/hash.py",
+            "src/pcraft/core/contract/lint.py",
+            "src/pcraft/core/contract/__init__.py"
+          ],
           "importsFiles": [
             "src/pcraft/__init__.py",
             "src/pcraft/cli/__init__.py",
@@ -6178,6 +6380,20 @@
             "test_the_why_and_the_claim_hang_at_one_shared_indent"
           ],
           "hash": "88a4d220eb7963e001e136c4c253de95cf836fe80de29671bacb55838867c7f8",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/checkpoint.py",
+            "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/harness.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/core/loop/retry_policy.py",
+            "src/pcraft/__init__.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/gate_report.py"
+          ],
           "importsFiles": [
             "src/pcraft/__init__.py",
             "src/pcraft/core/contract/compile_questions.py",
@@ -6280,6 +6496,28 @@
             "test_without_the_primitive_the_fallback_is_named_not_hidden"
           ],
           "hash": "3d6a970c4063844cfcccf7818a5c5720e4f6bc1a3d61a08c24a3164cfcee61eb",
+          "importOrder": [
+            "src/pcraft/domains/image/__init__.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/domains/image/generator/flux_generator.py",
+            "src/pcraft/domains/image/generator/sdxl_generator.py",
+            "src/pcraft/domains/image/subdomains/sprite/identity_subgate.py",
+            "src/pcraft/domains/image/verifier/dsg_verifier.py",
+            "src/pcraft/domains/image/verifier/palette_verifier.py",
+            "src/pcraft/domains/image/verifier/siglip2_screen.py",
+            "src/pcraft/domains/image/verifier/vqascore_verifier.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/domains/image/verifier/dsg_expand.py",
+            "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/reference_lock.py",
+            "src/pcraft/__init__.py",
+            "src/pcraft/domains/image/scaffold.py",
+            "src/pcraft/core/contract/loader.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
+            "src/pcraft/domains/image/verifier/region.py"
+          ],
           "importsFiles": [
             "src/pcraft/__init__.py",
             "src/pcraft/core/contract/compile_questions.py",
@@ -6353,6 +6591,21 @@
             "test_verdict_from_transcript_requires_a_complete_tier_census"
           ],
           "hash": "932b3e139969f7e70202f0646aebd62dcd9552e631ab1c6dc7d02564bb3286a4",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/gate/harness.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/core/loop/__init__.py",
+            "src/pcraft/core/loop/compensators.py",
+            "src/pcraft/core/loop/orchestrate.py",
+            "src/pcraft/core/loop/retry_policy.py",
+            "src/pcraft/core/synth/signature.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/core/loop/generator_iface.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/schema.py",
@@ -6531,6 +6784,25 @@
             "test_uncertain_score_is_contrastive_not_a_zone_name_only"
           ],
           "hash": "d03485358da813c88e85185b4bf8f6c8787c587b7abed255701693d05cfe0206",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/gate/checkpoint.py",
+            "src/pcraft/core/gate/harness.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/core/receipt/asset_record.py",
+            "src/pcraft/core/receipt/disposition.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/core/loop/__init__.py",
+            "src/pcraft/core/loop/orchestrate.py",
+            "src/pcraft/core/synth/signature.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/core/gate/regrade.py",
+            "src/pcraft/core/loop/compensators.py",
+            "src/pcraft/core/receipt/index.py",
+            "src/pcraft/core/gate/exit_contract.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/schema.py",
@@ -6635,6 +6907,19 @@
             "test_version_prints_the_installed_distribution_and_exits_0"
           ],
           "hash": "8419bbc205a7ad129ab247815b46a51f5d9f7fb8bb8f3240a06fc71a2cfc6094",
+          "importOrder": [
+            "src/pcraft/__init__.py",
+            "src/pcraft/cli/__init__.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/core/loop/generator_iface.py",
+            "src/pcraft/domains/image/__init__.py",
+            "src/pcraft/domains/image/generator/sdxl_generator.py",
+            "src/pcraft/domains/image/subdomains/sprite/__init__.py",
+            "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/contract/__init__.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/core/receipt/__init__.py"
+          ],
           "importsFiles": [
             "src/pcraft/__init__.py",
             "src/pcraft/cli/__init__.py",
@@ -6719,6 +7004,16 @@
             "test_unload_lora_weights_is_the_fallback_when_delete_adapters_is_absent"
           ],
           "hash": "faa83c4c3af4312cbbe27810d235db9fc4ab0bd8687f0c3782ab7edf59e5fddf",
+          "importOrder": [
+            "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/flux_generator.py",
+            "src/pcraft/domains/image/generator/sdxl_generator.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/core/loop/orchestrate.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/domains/image/subdomains/sprite/__init__.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/loop/orchestrate.py",
             "src/pcraft/domains/image/generator/__init__.py",
@@ -6764,6 +7059,18 @@
             "test_unknown_optimizer_refuses"
           ],
           "hash": "851809660680812ffc92e738b1517604b1d30062da353645c2d197326aa6b151",
+          "importOrder": [
+            "src/pcraft/cli/__init__.py",
+            "src/pcraft/core/optimize/artifact.py",
+            "src/pcraft/core/optimize/compile.py",
+            "src/pcraft/core/synth/signature.py",
+            "src/pcraft/core/synth/synthesizer_iface.py",
+            "src/pcraft/core/synth/visual_inventory.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/domains/image/__init__.py",
+            "src/pcraft/__init__.py"
+          ],
           "importsFiles": [
             "src/pcraft/__init__.py",
             "src/pcraft/cli/__init__.py",
@@ -6837,6 +7144,24 @@
             "test_tier0_router_sends_palette_atoms_to_the_histogram"
           ],
           "hash": "c0338ed28c6edb3b598778e013049aadf038ef43a832c6f4154a755f6a974e99",
+          "importOrder": [
+            "src/pcraft/domains/image/__init__.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/plugin.py",
+            "src/pcraft/domains/image/generator/reference_lock.py",
+            "src/pcraft/domains/image/verifier/__init__.py",
+            "src/pcraft/domains/image/verifier/palette_verifier.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/loop/orchestrate.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/domains/image/verifier/siglip2_screen.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
+            "src/pcraft/domains/image/verifier/region.py",
+            "src/pcraft/domains/image/verifier/vqascore_verifier.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/schema.py",
@@ -6911,6 +7236,18 @@
             "test_unknown_image_names_is_the_check_the_silent_drop_needed"
           ],
           "hash": "deed8cc91730114a7c1ceb63ecb8f076ea4363ec8e08bff0d98e419aeb56f061",
+          "importOrder": [
+            "src/pcraft/cli/__init__.py",
+            "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/flux_generator.py",
+            "src/pcraft/domains/image/generator/sdxl_generator.py",
+            "src/pcraft/domains/image/subdomains/__init__.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/domains/image/generator/reference_lock.py",
+            "src/pcraft/core/loop/orchestrate.py",
+            "src/pcraft/sample.py"
+          ],
           "importsFiles": [
             "src/pcraft/cli/__init__.py",
             "src/pcraft/core/loop/orchestrate.py",
@@ -6945,6 +7282,17 @@
             "test_the_gate_fail_exit_code_is_unchanged"
           ],
           "hash": "e7e69054d8b0eca345adae45756a88895f3b878aec4b1046327303a5bdc64e71",
+          "importOrder": [
+            "src/pcraft/cli/__init__.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/preflight.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/core/contract/schema.py"
+          ],
           "importsFiles": [
             "src/pcraft/cli/__init__.py",
             "src/pcraft/core/contract/compile_questions.py",
@@ -7000,6 +7348,19 @@
             "test_two_atoms_on_different_scales_are_now_distinguishable"
           ],
           "hash": "f3b4eef7debbdd412b6942cd35478381d6d3dbf37e9e603004ffb5aa5d84f362",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/batch.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/gate_report.py",
+            "src/pcraft/core/gate/harness.py",
+            "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/regrade.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/schema.py",
@@ -7048,6 +7409,18 @@
             "test_writing_the_table_refuses_the_packaged_v1_path"
           ],
           "hash": "abc3141d2a9947314170aceb7546c2f00213522a821d264583c18128f78f635e",
+          "importOrder": [
+            "src/pcraft/core/gate/family_guard.py",
+            "src/pcraft/domains/image/subdomains/sprite/__init__.py",
+            "src/pcraft/domains/image/subdomains/sprite/identity_subgate.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/core/contract/loader.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/domains/image/subdomains/__init__.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/core/gate/harness.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/loader.py",
             "src/pcraft/core/contract/schema.py",
@@ -7070,6 +7443,12 @@
             "test_real_verifier_skips_gracefully_without_models"
           ],
           "hash": "3ea7f91be098c7cc40ac2606434842f4706c272b9e45f6a9db1f3bd72859d3e3",
+          "importOrder": [
+            "src/pcraft/domains/image/__init__.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/plugin.py",
+            "src/pcraft/sample.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/plugin.py",
@@ -7091,6 +7470,16 @@
             "test_the_scaffold_contracts_declare_their_negations_optional"
           ],
           "hash": "75ddcb04d9407d50b12954a60fb47c055562bc0d6d1054665c0acde7e7b6aa44",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/core/contract/loader.py",
+            "src/pcraft/errors.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/loader.py",
@@ -7215,6 +7604,22 @@
             "test_version_drift_keeps_the_remedy_that_actually_applies"
           ],
           "hash": "37f03616d78adeaaaa3dca947a5d424337dcbd98f469133ce229e70fddd8c96e",
+          "importOrder": [
+            "src/pcraft/cli/__init__.py",
+            "src/pcraft/core/contract/hash.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/core/receipt/asset_record.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/core/loop/__init__.py",
+            "src/pcraft/core/loop/orchestrate.py",
+            "src/pcraft/core/synth/signature.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/core/gate/regrade.py",
+            "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/harness.py",
+            "src/pcraft/core/receipt/index.py"
+          ],
           "importsFiles": [
             "src/pcraft/cli/__init__.py",
             "src/pcraft/core/contract/hash.py",
@@ -7279,6 +7684,18 @@
             "test_the_whole_rendered_error_survives_cp437"
           ],
           "hash": "ad6d09364810004eb56ddc45648022abedafef6bcbbe197eda2d75beb7c49b61",
+          "importOrder": [
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/receipt/asset_record.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/sample.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/__init__.py",
+            "src/pcraft/core/loop/orchestrate.py",
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/harness.py"
+          ],
           "importsFiles": [
             "src/pcraft/__init__.py",
             "src/pcraft/core/contract/compile_questions.py",
@@ -7305,6 +7722,11 @@
             "test_the_identity_subgate_is_still_unwired_as_the_promise_states"
           ],
           "hash": "d1e84d45e4aa234399551c1661ebd825475448a09eff8c2ae283c874d71bdef8",
+          "importOrder": [
+            "src/pcraft/cli/__init__.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/core/loop/__init__.py"
+          ],
           "importsFiles": [
             "src/pcraft/cli/__init__.py",
             "src/pcraft/core/loop/__init__.py",
@@ -7387,6 +7809,17 @@
             "test_unknown_key_uses_default"
           ],
           "hash": "813417f9463e8cfcbdcb50bade8cddb319d48cf4a5fb2259d55bb4866bcc1136",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/subdomains/sprite/__init__.py",
+            "src/pcraft/core/gate/table_tools.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/holdout.py",
+            "src/pcraft/sample.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/schema.py",
@@ -7413,6 +7846,17 @@
             "test_watchdog_is_zero_of_m_when_nothing_scored"
           ],
           "hash": "a46f277acc94aa49b98f75940aa29864b41bb29025a47cf1073fa3dbaa36a6b2",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/testing.py",
+            "src/pcraft/gate_report.py",
+            "src/pcraft/core/gate/harness.py",
+            "src/pcraft/core/gate/checkpoint.py",
+            "src/pcraft/core/contract/schema.py",
+            "src/pcraft/core/gate/exit_contract.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/schema.py",
@@ -7435,6 +7879,12 @@
             "test_wrap_error_wraps_a_bare_exception"
           ],
           "hash": "8d49102e53c3061cc80ac71aae138f13cea8ecd83c800cfd37093b80b6ed76bc",
+          "importOrder": [
+            "src/pcraft/core/loop/retry_policy.py",
+            "src/pcraft/core/plugin.py",
+            "src/pcraft/errors.py",
+            "src/pcraft/domains/image/__init__.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/loop/retry_policy.py",
             "src/pcraft/core/plugin.py",
@@ -7501,6 +7951,11 @@
             "test_version_coherence_rejects_the_stale_install_that_actually_happened"
           ],
           "hash": "45ce89dbc4c552f0a694c05433491a601343fccee60438dcf80cc48cfe682ae9",
+          "importOrder": [
+            "verify.py",
+            "scripts/wheel_smoke.py",
+            "scripts/mutate_predicates.py"
+          ],
           "importsFiles": [
             "scripts/mutate_predicates.py",
             "scripts/wheel_smoke.py",
@@ -7517,12 +7972,29 @@
       "origin": "authored",
       "role": "test",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "tests/test_amend_cli.py",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "tests/test_core_is_gpu_free.py",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "tests/test_stability_surface_names_resolve.py",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 6
     }
   ],
   "doors": [
     {
-      "checksCount": 0,
+      "checksCount": 3,
       "commands": [
         {
           "job": "verify",
@@ -7562,17 +8034,57 @@
           "boundary": "root",
           "depth": 0,
           "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 69
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 38
+        },
+        {
+          "boundary": "scripts",
+          "depth": 1,
+          "enters": {
+            "file": "scripts/sync_rules_from_readouts.py",
+            "from": "src/pcraft/cli/__init__.py"
+          },
+          "files": 3
         }
       ],
       "readers": [],
       "runs": [
+        {
+          "directory": true,
+          "job": "verify",
+          "path": "src/",
+          "runKind": "checks",
+          "via": "verify.py"
+        },
+        {
+          "directory": true,
+          "job": "verify",
+          "path": "src/pcraft/",
+          "runKind": "checks",
+          "via": "verify.py → build pyproject.toml"
+        },
+        {
+          "directory": true,
+          "job": "verify",
+          "path": "tests/",
+          "runKind": "checks",
+          "via": "verify.py"
+        },
         {
           "job": "verify",
           "path": "verify.py",
           "runKind": "executes"
         }
       ],
-      "runsCount": 1,
+      "runsCount": 4,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -7712,7 +8224,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 3,
       "commands": [
         {
           "job": "verify",
@@ -7820,13 +8332,18 @@
           "files": 69
         },
         {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 38
+        },
+        {
           "boundary": "scripts",
           "depth": 1,
           "enters": {
             "file": "scripts/sync_rules_from_readouts.py",
             "from": "src/pcraft/cli/__init__.py"
           },
-          "files": 1
+          "files": 3
         }
       ],
       "readers": [],
@@ -7844,9 +8361,23 @@
         {
           "directory": true,
           "job": "verify",
+          "path": "src/",
+          "runKind": "checks",
+          "via": "verify.py"
+        },
+        {
+          "directory": true,
+          "job": "verify",
           "path": "src/pcraft/",
           "runKind": "checks",
           "via": "build pyproject.toml"
+        },
+        {
+          "directory": true,
+          "job": "verify",
+          "path": "tests/",
+          "runKind": "checks",
+          "via": "verify.py"
         },
         {
           "job": "verify",
@@ -7854,7 +8385,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 3,
+      "runsCount": 5,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -7945,6 +8476,11 @@
       "from": "scripts",
       "kind": "file",
       "to": "src"
+    },
+    {
+      "from": "scripts",
+      "kind": "spawns",
+      "to": "tests"
     },
     {
       "from": "src",

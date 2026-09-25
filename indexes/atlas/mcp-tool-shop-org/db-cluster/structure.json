@@ -281,6 +281,13 @@
       "origin": "authored",
       "role": "code",
       "testedBy": 3,
+      "unresolvedNamed": [
+        {
+          "path": "dashboard/lib/apply-redaction.d.ts",
+          "specifier": "../../dist/dashboard/dashboard-model.js",
+          "why": "generated"
+        }
+      ],
       "unresolvedSites": 1
     },
     {
@@ -605,6 +612,23 @@
       "origin": "authored",
       "role": "code",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "examples/agent-safe-app-db/index.ts",
+          "specifier": "@mcptoolshop/db-cluster/sdk",
+          "why": "generated"
+        },
+        {
+          "path": "examples/agent-safe-app-db/index.ts",
+          "specifier": "@mcptoolshop/db-cluster/policy",
+          "why": "generated"
+        },
+        {
+          "path": "examples/agent-safe-app-db/index.ts",
+          "specifier": "@mcptoolshop/db-cluster/policy",
+          "why": "generated"
+        }
+      ],
       "unresolvedSites": 15
     },
     {
@@ -940,6 +964,14 @@
             "generateSnapshot"
           ],
           "hash": "f1072e31860ebf47048907fda947705e910ceab0b27be14789215c90fdc2976e",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/dashboard/inspector-data.ts",
+            "src/ops/doctor.ts",
+            "src/dashboard/dashboard-model.ts",
+            "src/kernel/command-queue.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/dashboard/dashboard-model.ts",
@@ -970,6 +1002,14 @@
         },
         {
           "hash": "da5ae927e1703b81f8f9f81b901864d02bc2f2d52ff1986d66fd66897f86781b",
+          "importOrder": [
+            "scripts/dogfood-ingest.ts",
+            "src/ops/doctor.ts",
+            "src/ops/verify.ts",
+            "src/ops/rebuild.ts",
+            "src/ops/backup.ts",
+            "src/adapters/local/index.ts"
+          ],
           "importsFiles": [
             "scripts/dogfood-ingest.ts",
             "src/adapters/local/index.ts",
@@ -982,6 +1022,13 @@
         },
         {
           "hash": "575dc707595af945211719c88a0027eb879be41774f54c32b6b4ecea74a291c8",
+          "importOrder": [
+            "scripts/dogfood-ingest.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/policy/default-policies.ts",
+            "src/types/policy.ts",
+            "src/adapters/local/index.ts"
+          ],
           "importsFiles": [
             "scripts/dogfood-ingest.ts",
             "src/adapters/local/index.ts",
@@ -1003,6 +1050,14 @@
             "runDogfoodReplay"
           ],
           "hash": "eabba6e6d676b5b6c6cfc1407f4f354d4f899071694bbab2dff08ec4e889479e",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/command-queue.ts",
+            "src/ops/backup.ts",
+            "src/ops/rebuild.ts",
+            "src/ops/doctor.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -1046,6 +1101,13 @@
             "generateRepoKnowledgeSnapshot"
           ],
           "hash": "f6c96c7f805f2d5749528bc73805995a2d67bc62b0d677cbaf2aff3fd9d855a1",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/dashboard/inspector-data.ts",
+            "src/dashboard/ops-model.ts",
+            "src/dashboard/dashboard-model.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/dashboard/dashboard-model.ts",
@@ -1057,6 +1119,15 @@
         },
         {
           "hash": "3546531b49a7cf59bec8543cc2ca038607929d3325a91a4b43d237f2a2f2ccdf",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/command-queue.ts",
+            "src/integrations/repo-knowledge/ingest.ts",
+            "src/ops/doctor.ts",
+            "src/ops/verify.ts",
+            "src/ops/backup.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/integrations/repo-knowledge/ingest.ts",
@@ -1070,6 +1141,12 @@
         },
         {
           "hash": "6683bb5f1d0e128c3f60fb866210ae0f48089e47d402e98d2c9911ce037379a8",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/integrations/repo-knowledge/ingest.ts",
+            "src/integrations/repo-knowledge/update-workflow.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/integrations/repo-knowledge/ingest.ts",
@@ -1149,6 +1226,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -1189,6 +1267,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "9107b5c968640545985a14b1a34a04fe11647cea5c01c68470ef9205124d457f",
           "path": "site/src/site-config.ts"
         },
@@ -1380,6 +1459,13 @@
             "createLocalCluster"
           ],
           "hash": "2488bb63d7928788862ecaab7e0ecaf77d5f50b52bd070201d65ae2eb3bac16b",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/adapters/local/local-canonical-store.ts",
+            "src/adapters/local/local-artifact-store.ts",
+            "src/adapters/local/local-index-store.ts",
+            "src/adapters/local/local-ledger-store.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/local-artifact-store.ts",
             "src/adapters/local/local-canonical-store.ts",
@@ -1391,6 +1477,12 @@
         },
         {
           "hash": "9c163b0aaa3e4b813aeaed2ea3c0e341b3a508c2ca9ce02c7ed23ed65f91996d",
+          "importOrder": [
+            "src/types/artifact.ts",
+            "src/contracts/artifact-store.ts",
+            "src/adapters/local/errors.ts",
+            "src/adapters/local/tmp-cleanup.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/tmp-cleanup.ts",
@@ -1401,6 +1493,12 @@
         },
         {
           "hash": "f5367d468033f73489a7534c3382dfefbb910746aa7183ef78ec736a29032d6d",
+          "importOrder": [
+            "src/types/entity.ts",
+            "src/contracts/canonical-store.ts",
+            "src/adapters/local/errors.ts",
+            "src/adapters/local/tmp-cleanup.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/tmp-cleanup.ts",
@@ -1411,6 +1509,12 @@
         },
         {
           "hash": "24ad6edd2e9c95e4a8bb80a0b3053a9077e202c6c367d386a9cbfdc62a905f6c",
+          "importOrder": [
+            "src/types/index-record.ts",
+            "src/contracts/index-store.ts",
+            "src/adapters/local/errors.ts",
+            "src/adapters/local/tmp-cleanup.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/tmp-cleanup.ts",
@@ -1421,6 +1525,14 @@
         },
         {
           "hash": "9668e56178e413759ae0e2bba7ed408dd08353b607c5d7d5a8d43fc38be7c172",
+          "importOrder": [
+            "src/types/provenance-event.ts",
+            "src/types/receipt.ts",
+            "src/contracts/ledger-store.ts",
+            "src/adapters/local/errors.ts",
+            "src/adapters/local/tmp-cleanup.ts",
+            "src/types/integrity.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/tmp-cleanup.ts",
@@ -1476,6 +1588,13 @@
         },
         {
           "hash": "cc6c701380b82f7e08a16a74b3bde8e8672bdb5a7e6ecdd74666e732751962e2",
+          "importOrder": [
+            "src/types/entity.ts",
+            "src/contracts/canonical-store.ts",
+            "src/adapters/postgres/schema.ts",
+            "src/adapters/postgres/migrations/001_create_canonical_entities.ts",
+            "src/adapters/postgres/migrations/002_add_entity_version.ts"
+          ],
           "importsFiles": [
             "src/adapters/postgres/migrations/001_create_canonical_entities.ts",
             "src/adapters/postgres/migrations/002_add_entity_version.ts",
@@ -1501,6 +1620,15 @@
         },
         {
           "hash": "dbad4a9abd8279655259b4bbb9e18288e79111f04cdf93834f51d23165be2350",
+          "importOrder": [
+            "src/adapters/sqlite/sqlite-db.ts",
+            "src/adapters/sqlite/sqlite-canonical-store.ts",
+            "src/adapters/sqlite/sqlite-artifact-store.ts",
+            "src/adapters/sqlite/sqlite-index-store.ts",
+            "src/adapters/sqlite/sqlite-ledger-store.ts",
+            "src/adapters/sqlite/schema.ts",
+            "src/adapters/sqlite/errors.ts"
+          ],
           "importsFiles": [
             "src/adapters/sqlite/errors.ts",
             "src/adapters/sqlite/schema.ts",
@@ -1539,6 +1667,13 @@
         },
         {
           "hash": "322497c7fbc3db886f4c476e96b42f352cbec119febec77da738f7b368b106d5",
+          "importOrder": [
+            "src/types/artifact.ts",
+            "src/contracts/artifact-store.ts",
+            "src/adapters/local/errors.ts",
+            "src/adapters/sqlite/sqlite-db.ts",
+            "src/adapters/sqlite/schema.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/sqlite/schema.ts",
@@ -1550,6 +1685,13 @@
         },
         {
           "hash": "475a76a789f25ac413992cafbefbf6af10d49bc5c8ae51d8c962c6ec82b09fd3",
+          "importOrder": [
+            "src/types/entity.ts",
+            "src/contracts/canonical-store.ts",
+            "src/adapters/local/errors.ts",
+            "src/adapters/sqlite/sqlite-db.ts",
+            "src/adapters/sqlite/schema.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/sqlite/schema.ts",
@@ -1570,6 +1712,12 @@
         },
         {
           "hash": "1d6d71addc7828111938e0f7119f778d0da7517e8798f92a517740987d6f906c",
+          "importOrder": [
+            "src/types/index-record.ts",
+            "src/contracts/index-store.ts",
+            "src/adapters/sqlite/sqlite-db.ts",
+            "src/adapters/sqlite/schema.ts"
+          ],
           "importsFiles": [
             "src/adapters/sqlite/schema.ts",
             "src/adapters/sqlite/sqlite-db.ts",
@@ -1580,6 +1728,15 @@
         },
         {
           "hash": "944d4f8a6af0651c913447eac1d0fe8781ea618ee04d3d687aa5c125aefe0aa1",
+          "importOrder": [
+            "src/types/provenance-event.ts",
+            "src/types/receipt.ts",
+            "src/contracts/ledger-store.ts",
+            "src/adapters/local/errors.ts",
+            "src/types/integrity.ts",
+            "src/adapters/sqlite/sqlite-db.ts",
+            "src/adapters/sqlite/schema.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/sqlite/schema.ts",
@@ -1874,6 +2031,12 @@
         },
         {
           "hash": "47d8bd5f9f5178bf40c5013894095ed00ee5ec2b65cb9513cf18289a93dce014",
+          "importOrder": [
+            "src/contracts/canonical-store.ts",
+            "src/contracts/artifact-store.ts",
+            "src/contracts/index-store.ts",
+            "src/contracts/ledger-store.ts"
+          ],
           "importsFiles": [
             "src/contracts/artifact-store.ts",
             "src/contracts/canonical-store.ts",
@@ -1906,6 +2069,13 @@
             "inspectIndexRecord"
           ],
           "hash": "fe4a9901df15067eb7674d7b0389c71925981ad69f285fdc8bdd87b18fbd6376",
+          "importOrder": [
+            "src/kernel/cluster-kernel.ts",
+            "src/types/entity.ts",
+            "src/types/artifact.ts",
+            "src/types/command.ts",
+            "src/dashboard/dashboard-model.ts"
+          ],
           "importsFiles": [
             "src/dashboard/dashboard-model.ts",
             "src/kernel/cluster-kernel.ts",
@@ -1920,6 +2090,12 @@
             "buildOpsModel"
           ],
           "hash": "568f66a90c640097bd1194ac945716cf58b0737cd8304fd42b7fe8889e5b071c",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/command.ts",
+            "src/ops/doctor.ts",
+            "src/kernel/cluster-kernel.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -1930,6 +2106,28 @@
         },
         {
           "hash": "bcd02b9104fd4de2df2b4d9599725a49eedd69e89dd38dfc5f7437b7984f70b1",
+          "importOrder": [
+            "src/types/entity.ts",
+            "src/types/artifact.ts",
+            "src/types/index-record.ts",
+            "src/types/provenance-event.ts",
+            "src/types/command.ts",
+            "src/types/receipt.ts",
+            "src/types/health.ts",
+            "src/types/evidence-bundle.ts",
+            "src/contracts/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/errors.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/adapters/local/errors.ts",
+            "src/types/index.ts",
+            "src/policy/error-formatter.ts",
+            "src/adapters/factory.ts",
+            "src/ops/doctor.ts",
+            "src/ops/verify.ts",
+            "src/ops/backup.ts",
+            "src/uri/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/factory.ts",
             "src/adapters/local/errors.ts",
@@ -1971,6 +2169,11 @@
             "indexArtifactContent"
           ],
           "hash": "e03688459e854b804eb9fd881c2e73b15c79eefa1ca300eda3b73d531f5bfc66",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/artifact.ts",
+            "src/indexing/tokenizer.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/indexing/tokenizer.ts",
@@ -2005,6 +2208,12 @@
             "ingestRepoKnowledge"
           ],
           "hash": "927f82eab0b8a2436849ad77394bf79bf5c666c28f7443479b6419a88ab5de1a",
+          "importOrder": [
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/types/command.ts",
+            "src/integrations/repo-knowledge/mapping.ts"
+          ],
           "importsFiles": [
             "src/integrations/repo-knowledge/mapping.ts",
             "src/kernel/cluster-kernel.ts",
@@ -2044,6 +2253,26 @@
         },
         {
           "hash": "ed8ac04c448340a8d99bfb39383418da4fb6d4e70bc1efb529405c419271f273",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/entity.ts",
+            "src/types/artifact.ts",
+            "src/types/index-record.ts",
+            "src/types/provenance-event.ts",
+            "src/types/command.ts",
+            "src/types/receipt.ts",
+            "src/types/evidence-bundle.ts",
+            "src/types/provenance-graph.ts",
+            "src/kernel/commands.ts",
+            "src/kernel/provenance.ts",
+            "src/kernel/receipts.ts",
+            "src/kernel/errors.ts",
+            "src/policy/redactor.ts",
+            "src/kernel/command-queue.ts",
+            "src/retrieval/retrieval-planner.ts",
+            "src/provenance/trace-builder.ts",
+            "src/kernel/cluster-kernel-interface.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/kernel/cluster-kernel-interface.ts",
@@ -2068,6 +2297,10 @@
         },
         {
           "hash": "4a382112b857ff8db132855d87eece3271f4aa1e984f240e1d8fdd78ba859f18",
+          "importOrder": [
+            "src/types/command.ts",
+            "src/kernel/errors.ts"
+          ],
           "importsFiles": [
             "src/kernel/errors.ts",
             "src/types/command.ts"
@@ -2088,6 +2321,10 @@
             "validateCommand"
           ],
           "hash": "d64a2c9f2bd2c0228a8c929cdf45bdd08e4443291b108b4ee7fda78332adf7bd",
+          "importOrder": [
+            "src/types/command.ts",
+            "src/kernel/errors.ts"
+          ],
           "importsFiles": [
             "src/kernel/errors.ts",
             "src/types/command.ts"
@@ -2103,6 +2340,16 @@
         },
         {
           "hash": "f58e22200aa10bcdc29551fbb8ccb429f4fd1426d46ebe95c1ff7a9eab1c3a12",
+          "importOrder": [
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/command-queue.ts",
+            "src/kernel/commands.ts",
+            "src/kernel/provenance.ts",
+            "src/kernel/receipts.ts",
+            "src/kernel/errors.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/kernel/cluster-kernel-interface.ts"
+          ],
           "importsFiles": [
             "src/kernel/cluster-kernel-interface.ts",
             "src/kernel/cluster-kernel.ts",
@@ -2118,6 +2365,24 @@
         },
         {
           "hash": "da97f28dcb2c276aceab57d828a45115d4268aa53d2c4a9b2403b79d8108c578",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/policy.ts",
+            "src/types/entity.ts",
+            "src/types/artifact.ts",
+            "src/types/index-record.ts",
+            "src/types/provenance-event.ts",
+            "src/types/evidence-bundle.ts",
+            "src/types/provenance-graph.ts",
+            "src/types/receipt.ts",
+            "src/types/command.ts",
+            "src/policy/policy-engine.ts",
+            "src/policy/redactor.ts",
+            "src/provenance/trace-builder.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/cluster-kernel-interface.ts",
+            "src/kernel/errors.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/kernel/cluster-kernel-interface.ts",
@@ -2144,6 +2409,11 @@
             "traceSubjectProvenance"
           ],
           "hash": "9f04b31909f780f50a26bd86e148f2cf3501b102a8d7cbf214dffacce4ccfd62",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/provenance-event.ts",
+            "src/kernel/errors.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/kernel/errors.ts",
@@ -2156,6 +2426,11 @@
             "emitReceipt"
           ],
           "hash": "4b8db4749dbeb494b7790addb9ca4d959d91a0701a77dc07bda7cdc714ac2fbb",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/receipt.ts",
+            "src/types/command.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/types/command.ts",
@@ -2258,6 +2533,17 @@
             "mcpCommitGateActive"
           ],
           "hash": "6b4e5eb084e7e2b411898d3bdddbda2fd3a7ee9c0a849300b4259dc84864e8c4",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/adapters/factory.ts",
+            "src/types/policy.ts",
+            "src/mcp/sanitize.ts",
+            "src/policy/store-output-sanitizers.ts",
+            "src/mcp/config-validator.ts",
+            "src/policy/default-policies.ts",
+            "src/policy/approval-gate-denied-error.ts",
+            "src/types/command.ts"
+          ],
           "importsFiles": [
             "src/adapters/factory.ts",
             "src/mcp/config-validator.ts",
@@ -2528,6 +2814,17 @@
             "restore"
           ],
           "hash": "54556daaeadc5c4c60edbe140871853d6901ea5d3ebc6edc40ba089a0e42cc02",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/entity.ts",
+            "src/types/artifact.ts",
+            "src/types/provenance-event.ts",
+            "src/types/receipt.ts",
+            "src/types/command.ts",
+            "src/ops/errors.ts",
+            "src/adapters/local/errors.ts",
+            "src/ops/rebuild.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/contracts/index.ts",
@@ -2570,6 +2867,16 @@
             "doctor"
           ],
           "hash": "303ba26486097d95bd48cdf2c527d61f645bdbd43d1731505a309b8e952e8c1f",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/health.ts",
+            "src/ops/health.ts",
+            "src/adapters/postgres/schema.ts",
+            "src/types/command.ts",
+            "src/ops/integrity-checks.ts",
+            "src/policy/redactor.ts",
+            "src/policy/default-policies.ts"
+          ],
           "importsFiles": [
             "src/adapters/postgres/schema.ts",
             "src/contracts/index.ts",
@@ -2608,6 +2915,12 @@
             "sha256Hex"
           ],
           "hash": "e67154158b5ea51f35bde76510da356fcd45a65ee6ae8d4f556d8a64e4cc0f7f",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/health.ts",
+            "src/types/command.ts",
+            "src/types/integrity.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/types/command.ts",
@@ -2633,6 +2946,12 @@
             "checkProvenance"
           ],
           "hash": "be2746e5d4fb07cc4b417709b43eb488ed25721495d77c7a75e792e6fa67aa97",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/health.ts",
+            "src/types/provenance-event.ts",
+            "src/types/integrity.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/types/health.ts",
@@ -2647,6 +2966,11 @@
             "rebuildIndex"
           ],
           "hash": "0f0e25437559fbe590dfc6242220aed3c6cbe91e41f5172aeacc0da9718cf765",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/index-record.ts",
+            "src/indexing/content-indexer.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/indexing/content-indexer.ts",
@@ -2659,6 +2983,12 @@
             "checkReceipts"
           ],
           "hash": "ac4f2494dd2aa3c00a731b0a380fea87eeb6e800c00ae741808b68e296c49a6d",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/health.ts",
+            "src/types/receipt.ts",
+            "src/types/integrity.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/types/health.ts",
@@ -2672,6 +3002,13 @@
             "verify"
           ],
           "hash": "a1fe6cf4e12e8b2e632d602eed8ac73d7880b33137af8dcb12087993d14d9304",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/health.ts",
+            "src/ops/health.ts",
+            "src/types/command.ts",
+            "src/ops/integrity-checks.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/ops/health.ts",
@@ -2709,6 +3046,13 @@
         },
         {
           "hash": "80810b115a3599a71bf5edbc5d1e260f7be9492867ae245e1175097ef684ddb4",
+          "importOrder": [
+            "src/policy/policy-engine.ts",
+            "src/policy/default-policies.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/policy/redactor.ts",
+            "src/types/policy.ts"
+          ],
           "importsFiles": [
             "src/kernel/policy-enforced-kernel.ts",
             "src/policy/default-policies.ts",
@@ -2921,6 +3265,13 @@
             "renderProvenanceLabel"
           ],
           "hash": "0cb31475275061a89f5209812b6b3e06292331121b905dba9770c505f92de1b2",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/provenance-graph.ts",
+            "src/uri/cluster-uri.ts",
+            "src/types/policy.ts",
+            "src/types/redaction.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/types/policy.ts",
@@ -2932,6 +3283,15 @@
         },
         {
           "hash": "8641f4df0511f924aa2908d9bc021025b615aa7b6735abd431c4008af45173f5",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/entity.ts",
+            "src/types/artifact.ts",
+            "src/types/index-record.ts",
+            "src/types/provenance-event.ts",
+            "src/types/receipt.ts",
+            "src/uri/cluster-uri.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/types/artifact.ts",
@@ -2961,6 +3321,17 @@
         },
         {
           "hash": "a9cf5dab141dd125bc5b692230d9c5ad9e85dcabc710a4471cfc7c6fbe94af50",
+          "importOrder": [
+            "src/contracts/index.ts",
+            "src/types/entity.ts",
+            "src/types/artifact.ts",
+            "src/types/index-record.ts",
+            "src/types/provenance-event.ts",
+            "src/types/evidence-bundle.ts",
+            "src/uri/cluster-uri.ts",
+            "src/indexing/bm25.ts",
+            "src/indexing/tokenizer.ts"
+          ],
           "importsFiles": [
             "src/contracts/index.ts",
             "src/indexing/bm25.ts",
@@ -2976,6 +3347,27 @@
         },
         {
           "hash": "a47837c3a155891a84c0ddc49df81ad47d4a53b12f421a16989a112151faac54",
+          "importOrder": [
+            "src/kernel/cluster-kernel.ts",
+            "src/resolver/index.ts",
+            "src/adapters/factory.ts",
+            "src/adapters/sqlite/sqlite-db.ts",
+            "src/policy/policy-engine.ts",
+            "src/types/policy.ts",
+            "src/types/evidence-bundle.ts",
+            "src/types/provenance-graph.ts",
+            "src/types/command.ts",
+            "src/types/receipt.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/policy/index.ts",
+            "src/types/artifact.ts",
+            "src/types/entity.ts",
+            "src/types/index-record.ts",
+            "src/types/provenance-event.ts",
+            "src/types/page.ts",
+            "src/mcp/sanitize.ts",
+            "src/policy/store-output-sanitizers.ts"
+          ],
           "importsFiles": [
             "src/adapters/factory.ts",
             "src/adapters/sqlite/sqlite-db.ts",
@@ -3037,6 +3429,12 @@
         },
         {
           "hash": "22e4792b9eb72159d710b9a3cba7bc96fc38ceecdbf82d87e6d55a7d4ef97dc4",
+          "importOrder": [
+            "src/types/entity.ts",
+            "src/types/artifact.ts",
+            "src/types/index-record.ts",
+            "src/types/provenance-event.ts"
+          ],
           "importsFiles": [
             "src/types/artifact.ts",
             "src/types/entity.ts",
@@ -3055,6 +3453,20 @@
         },
         {
           "hash": "2775f4f8535e72af5fb4d5efe6e805734a1b5c5eadc7482152697dd3fd65d66b",
+          "importOrder": [
+            "src/types/entity.ts",
+            "src/types/artifact.ts",
+            "src/types/index-record.ts",
+            "src/types/provenance-event.ts",
+            "src/types/command.ts",
+            "src/types/receipt.ts",
+            "src/types/integrity.ts",
+            "src/types/evidence-bundle.ts",
+            "src/types/provenance-graph.ts",
+            "src/types/redaction.ts",
+            "src/types/ai-envelope.ts",
+            "src/types/component-state.ts"
+          ],
           "importsFiles": [
             "src/types/ai-envelope.ts",
             "src/types/artifact.ts",
@@ -3206,6 +3618,16 @@
         },
         {
           "hash": "7b0ebf894d457d83266533b30cbb48709e2047bc55522dcbdd232d2e11eb6bc5",
+          "importOrder": [
+            "src/adapters/factory.ts",
+            "src/adapters/sqlite/sqlite-db.ts",
+            "src/contracts/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/mcp/server.ts",
+            "src/mcp/sanitize.ts",
+            "src/ops/verify.ts",
+            "src/sdk/cluster-sdk.ts"
+          ],
           "importsFiles": [
             "src/adapters/factory.ts",
             "src/adapters/sqlite/sqlite-db.ts",
@@ -3235,6 +3657,20 @@
         },
         {
           "hash": "64766d2be8e4ad57d89ef276550543a65e154b0d0790b45b3fa7cbd2d3b854a4",
+          "importOrder": [
+            "src/adapters/postgres/postgres-canonical-store.ts",
+            "src/adapters/local/local-canonical-store.ts",
+            "src/adapters/local/local-artifact-store.ts",
+            "src/adapters/local/local-index-store.ts",
+            "src/adapters/local/local-ledger-store.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/adapters/factory.ts",
+            "src/contracts/index.ts",
+            "src/types/entity.ts",
+            "src/types/policy.ts",
+            "src/policy/default-policies.ts"
+          ],
           "importsFiles": [
             "src/adapters/factory.ts",
             "src/adapters/local/local-artifact-store.ts",
@@ -3280,6 +3716,13 @@
         },
         {
           "hash": "9a793054f861bc5ad43423ca7189ef431375dc5bbb1239880cdc69bc9369d342",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/ops/rebuild.ts",
+            "src/indexing/content-indexer.ts",
+            "src/indexing/tokenizer.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/indexing/content-indexer.ts",
@@ -3298,6 +3741,11 @@
         },
         {
           "hash": "0b55883699f79857d951b3453ed20ab4c235645b463e9a451910ab0400962062",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/dashboard/inspector-data.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/dashboard/inspector-data.ts",
@@ -3307,6 +3755,13 @@
         },
         {
           "hash": "ce98f10409e1807f386b87c2aefd84ecbae23f99414168cd710259c8fd282d38",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/dashboard/dashboard-model.ts",
+            "src/dashboard/inspector-data.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3318,6 +3773,11 @@
         },
         {
           "hash": "70b903e7e6bfd671419f2cb07adc53c6876656480f9f577c3c3031875298d250",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/dashboard/ops-model.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/dashboard/ops-model.ts",
@@ -3327,6 +3787,10 @@
         },
         {
           "hash": "1365e6129a7575008387821932d70ba54426a73a22d661344e4629ba3b39ec07",
+          "importOrder": [
+            "src/dashboard/dashboard-model.ts",
+            "dashboard/lib/apply-redaction.js"
+          ],
           "importsFiles": [
             "dashboard/lib/apply-redaction.js",
             "src/dashboard/dashboard-model.ts"
@@ -3335,6 +3799,11 @@
         },
         {
           "hash": "d4df3931e2344d6438107c2eaf17afc3a8b2d32de12140df91ce3d79d99bbdf6",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "scripts/dashboard-snapshot.ts"
+          ],
           "importsFiles": [
             "scripts/dashboard-snapshot.ts",
             "src/adapters/local/index.ts",
@@ -3344,6 +3813,16 @@
         },
         {
           "hash": "bb1f9dd4bb7ec94a2899d6127c56a850e4c121a833c13a00ddfa4e34577f728a",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/command-queue.ts",
+            "src/contracts/index.ts",
+            "src/types/provenance-event.ts",
+            "src/types/health.ts",
+            "src/ops/verify.ts",
+            "src/ops/doctor.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3365,6 +3844,16 @@
         },
         {
           "hash": "0e2f675395538ff3cb2c5ea7901715a571060b2ffa76f8e464b628bcbcbc3468",
+          "importOrder": [
+            "scripts/dogfood-ingest.ts",
+            "src/ops/doctor.ts",
+            "src/ops/rebuild.ts",
+            "src/ops/backup.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/policy/default-policies.ts",
+            "src/types/policy.ts"
+          ],
           "importsFiles": [
             "scripts/dogfood-ingest.ts",
             "src/adapters/local/index.ts",
@@ -3379,6 +3868,13 @@
         },
         {
           "hash": "02923471278e5f7e42b17a7e6c797210d66b6e3f7b52ed37f9c2b8a348ab7511",
+          "importOrder": [
+            "scripts/dogfood-ingest.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/policy/default-policies.ts",
+            "src/adapters/local/index.ts",
+            "src/types/policy.ts"
+          ],
           "importsFiles": [
             "scripts/dogfood-ingest.ts",
             "src/adapters/local/index.ts",
@@ -3415,6 +3911,12 @@
         },
         {
           "hash": "1b75425320c4f7093b22e2e071fa716aa78cdc5fd39fbdabdee9e1557b2db9b3",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/errors.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3489,6 +3991,12 @@
         },
         {
           "hash": "1a300b4016801b628835ba41bd89c6d8e27a44f6ff51da28ae300fde25274636",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/mcp/server.ts",
+            "src/adapters/factory.ts"
+          ],
           "importsFiles": [
             "src/adapters/factory.ts",
             "src/adapters/local/index.ts",
@@ -3499,6 +4007,11 @@
         },
         {
           "hash": "a27acead5c60084d892d052e94615ab31d7f312aaab71dd28c20e45802fd1109",
+          "importOrder": [
+            "src/kernel/errors.ts",
+            "src/policy/error-formatter.ts",
+            "src/cli.ts"
+          ],
           "importsFiles": [
             "src/cli.ts",
             "src/kernel/errors.ts",
@@ -3508,6 +4021,12 @@
         },
         {
           "hash": "ef4a327266f817e3be6130fe20fcb1690e5cd93683e1a0e92f28ce061317f5fb",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/errors.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3518,6 +4037,14 @@
         },
         {
           "hash": "33d88f2fe4a59bc5c4861a028d4212155059b358359bf5b614d4739519c690e5",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/adapters/local/local-artifact-store.ts",
+            "src/ops/backup.ts",
+            "src/adapters/local/errors.ts",
+            "src/types/artifact.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/index.ts",
@@ -3530,6 +4057,10 @@
         },
         {
           "hash": "e85af6f58b68a9fbdcb40a824aef66f45969bf2496d5c5e5b21fe835c707229e",
+          "importOrder": [
+            "src/mcp/index.ts",
+            "src/adapters/factory.ts"
+          ],
           "importsFiles": [
             "src/adapters/factory.ts",
             "src/mcp/index.ts"
@@ -3538,6 +4069,16 @@
         },
         {
           "hash": "29c4493d4f265dc58525422840be0eb0f22684d5c36742f4bb5cfab98f6841b7",
+          "importOrder": [
+            "scripts/dogfood-ingest.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/policy/default-policies.ts",
+            "src/adapters/local/index.ts",
+            "src/ops/doctor.ts",
+            "src/ops/rebuild.ts",
+            "src/ops/backup.ts",
+            "src/types/policy.ts"
+          ],
           "importsFiles": [
             "scripts/dogfood-ingest.ts",
             "src/adapters/local/index.ts",
@@ -3552,6 +4093,20 @@
         },
         {
           "hash": "dd5744368d0f134b2f10d429eb64c10a0cd31be9dc62899748dfdf40e23e39bc",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/command-queue.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/policy/default-policies.ts",
+            "src/ops/backup.ts",
+            "src/ops/rebuild.ts",
+            "src/ops/doctor.ts",
+            "src/ops/verify.ts",
+            "scripts/dogfood-replay.ts",
+            "src/sdk/cluster-sdk.ts",
+            "src/types/policy.ts"
+          ],
           "importsFiles": [
             "scripts/dogfood-replay.ts",
             "src/adapters/local/index.ts",
@@ -3570,6 +4125,14 @@
         },
         {
           "hash": "4408303da22d853502b7d6aa1f0dbfcc8452e7d218438f3141b46e804bf1d51f",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/dashboard/inspector-data.ts",
+            "src/dashboard/ops-model.ts",
+            "scripts/dashboard-snapshot.ts",
+            "src/dashboard/dashboard-model.ts"
+          ],
           "importsFiles": [
             "scripts/dashboard-snapshot.ts",
             "src/adapters/local/index.ts",
@@ -3582,6 +4145,18 @@
         },
         {
           "hash": "6be91be6c5bd25d3335ccaea1516eb5de7c66e14471e99a47244eca7eec40a86",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/command-queue.ts",
+            "src/integrations/repo-knowledge/ingest.ts",
+            "src/integrations/repo-knowledge/compare-retrieval.ts",
+            "src/integrations/repo-knowledge/update-workflow.ts",
+            "src/dashboard/inspector-data.ts",
+            "src/ops/doctor.ts",
+            "src/ops/verify.ts",
+            "src/ops/backup.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/dashboard/inspector-data.ts",
@@ -3598,6 +4173,14 @@
         },
         {
           "hash": "f5a74ab6f53ff7c56ad93d35e06e1cfff660614b8347c2eeeca700cea04bd254",
+          "importOrder": [
+            "src/index.ts",
+            "src/sdk/index.ts",
+            "src/mcp/index.ts",
+            "src/policy/index.ts",
+            "src/types/index.ts",
+            "src/unsafe.ts"
+          ],
           "importsFiles": [
             "src/index.ts",
             "src/mcp/index.ts",
@@ -3610,6 +4193,13 @@
         },
         {
           "hash": "6f9917c21ae9b3831d9c2f25bcd42e7537a71f2c7c44a6fd57493e37e2ce5611",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/resolver/index.ts",
+            "src/uri/index.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3621,6 +4211,12 @@
         },
         {
           "hash": "0de3e5e0f7a4887cfdf66ca4c2975795c04023897cace962a26be9bd539190d4",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/contracts/index.ts",
+            "src/resolver/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3631,6 +4227,13 @@
         },
         {
           "hash": "3f83a8241b3067d3ed0d4325f3f4264e4761b1fea83dfbc717313f2abbefa6da",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/provenance/trace-builder.ts",
+            "src/contracts/index.ts",
+            "src/types/provenance-graph.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3642,6 +4245,11 @@
         },
         {
           "hash": "df4374ef1310586b123655fe4743b1ca251d8d83b4a3c387f7d79ae346cdb4a9",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3651,6 +4259,20 @@
         },
         {
           "hash": "393f4ece989cbce822c9f5a178759b14a17ee01ae497da9e1cb0cf3b84f40295",
+          "importOrder": [
+            "src/adapters/postgres/postgres-canonical-store.ts",
+            "src/adapters/local/local-canonical-store.ts",
+            "src/adapters/local/local-artifact-store.ts",
+            "src/adapters/local/local-index-store.ts",
+            "src/adapters/local/local-ledger-store.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/sdk/cluster-sdk.ts",
+            "src/adapters/factory.ts",
+            "src/contracts/index.ts",
+            "src/types/policy.ts",
+            "src/policy/default-policies.ts"
+          ],
           "importsFiles": [
             "src/adapters/factory.ts",
             "src/adapters/local/local-artifact-store.ts",
@@ -3669,6 +4291,18 @@
         },
         {
           "hash": "975861b2c95232f61b70f0b477b20703f546c285550c9e72b07836f59ec20cfc",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/contracts/index.ts",
+            "src/ops/doctor.ts",
+            "src/ops/verify.ts",
+            "src/ops/rebuild.ts",
+            "src/ops/provenance-check.ts",
+            "src/ops/receipt-check.ts",
+            "src/ops/backup.ts",
+            "src/ops/health.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3693,6 +4327,19 @@
         },
         {
           "hash": "ac36bf59bded3d21478c67fbce5476419d1ee97da87b557d201e82ea012ba8d6",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/errors.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/kernel/provenance.ts",
+            "src/policy/error-formatter.ts",
+            "src/policy/redactor.ts",
+            "src/contracts/index.ts",
+            "src/types/entity.ts",
+            "src/types/artifact.ts",
+            "src/types/policy.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3710,6 +4357,11 @@
         },
         {
           "hash": "1c1507f59eec25b5d33263fd2503cbaea08b73ef27091c60c8d83c84f7216cad",
+          "importOrder": [
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/types/policy.ts",
+            "src/adapters/local/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/policy-enforced-kernel.ts",
@@ -3719,6 +4371,13 @@
         },
         {
           "hash": "5b3c82b752b61bf8804502233941ae7adceed8dce00129ffae210696317dffd5",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/mcp/server.ts",
+            "src/policy/default-policies.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/types/policy.ts"
+          ],
           "importsFiles": [
             "src/kernel/policy-enforced-kernel.ts",
             "src/mcp/server.ts",
@@ -3737,6 +4396,17 @@
         },
         {
           "hash": "e8cf6b90d2ff6e239c53115afd338ab6b0baa683ba6f1112c84b5cad13c29b42",
+          "importOrder": [
+            "src/adapters/postgres/postgres-canonical-store.ts",
+            "src/adapters/local/local-artifact-store.ts",
+            "src/adapters/local/local-index-store.ts",
+            "src/adapters/local/local-ledger-store.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/contracts/index.ts",
+            "src/types/policy.ts",
+            "src/policy/default-policies.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/local-artifact-store.ts",
             "src/adapters/local/local-index-store.ts",
@@ -3752,6 +4422,13 @@
         },
         {
           "hash": "2abaa186cf7554dd0b943405f21d792e7f74740bf4025ad0af209e66f39959c9",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/errors.ts",
+            "src/contracts/index.ts",
+            "src/ops/verify.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3763,6 +4440,11 @@
         },
         {
           "hash": "120ef2ac872238cb4a2f71bfa0677df1378f837bcfc7b5e732b457053e7a3e67",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3772,6 +4454,13 @@
         },
         {
           "hash": "e56eb2f80fe80df163ff6640f37a5d28d9807c06e9cfc1264625afc13e91e149",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/integrations/repo-knowledge/ingest.ts",
+            "scripts/repo-knowledge-dashboard-snapshot.ts",
+            "src/dashboard/inspector-data.ts"
+          ],
           "importsFiles": [
             "scripts/repo-knowledge-dashboard-snapshot.ts",
             "src/adapters/local/index.ts",
@@ -3783,6 +4472,11 @@
         },
         {
           "hash": "5339690df8f97d7e50d3393667da272e48d1a54ada2eb986395c4443a6dcab2b",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/integrations/repo-knowledge/ingest.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/integrations/repo-knowledge/ingest.ts",
@@ -3799,6 +4493,12 @@
         },
         {
           "hash": "0fbdbc74c1cf00f5ccb7260bdc15bbd61d34390b1a271c2c2301dc8961a88b3a",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/integrations/repo-knowledge/ingest.ts",
+            "src/integrations/repo-knowledge/update-workflow.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/integrations/repo-knowledge/ingest.ts",
@@ -3809,6 +4509,15 @@
         },
         {
           "hash": "4e945051b760a63ff93232a2762e071f3c101f1911852bbfa914a193a5e45b9a",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/command-queue.ts",
+            "src/integrations/repo-knowledge/ingest.ts",
+            "src/ops/doctor.ts",
+            "src/ops/verify.ts",
+            "src/ops/backup.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/integrations/repo-knowledge/ingest.ts",
@@ -3822,6 +4531,12 @@
         },
         {
           "hash": "3dba4e33656835a16c31ed11f7e51539b87616b9cba8462150ac06f03ae23579",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/integrations/repo-knowledge/ingest.ts",
+            "src/integrations/repo-knowledge/compare-retrieval.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/integrations/repo-knowledge/compare-retrieval.ts",
@@ -3832,6 +4547,13 @@
         },
         {
           "hash": "08385dd4d84a93e9e76ddc15d5e2877b3ca5f6d91d4dd7bfd48af8cc8bffdd6e",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/resolver/index.ts",
+            "src/uri/index.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3843,6 +4565,11 @@
         },
         {
           "hash": "17098408f922c4f7f07b739375217bb41e69a621dd285b62e0936759dad95048",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/ops/backup.ts",
+            "src/kernel/cluster-kernel.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -3852,6 +4579,11 @@
         },
         {
           "hash": "294cc71953e19266117d2131fdb3c7b8cbc47d27d8b4887c472a024d1f7c0d34",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -3897,6 +4629,19 @@
         },
         {
           "hash": "af320e41415b2ecf8d801d90fda784abbf0f8a8746c4865d0ac09de91230c1e8",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/adapters/local/local-canonical-store.ts",
+            "src/adapters/local/local-index-store.ts",
+            "src/adapters/local/local-ledger-store.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/errors.ts",
+            "src/adapters/local/errors.ts",
+            "src/ops/errors.ts",
+            "src/ops/backup.ts",
+            "src/types/provenance-event.ts",
+            "src/types/receipt.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/index.ts",
@@ -3950,6 +4695,16 @@
         },
         {
           "hash": "667de979d7fb4391f85050d1dbe061570f546fffb7ace7c6d0635f544a57c8cc",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/kernel/errors.ts",
+            "src/policy/redactor.ts",
+            "src/types/policy.ts",
+            "src/types/provenance-event.ts",
+            "src/kernel/provenance.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -3964,6 +4719,14 @@
         },
         {
           "hash": "35d036c9ed48b9ed92ee090c0157f18626db9f51e2fe0f9fbd8a8c2d5abb3374",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/adapters/local/local-artifact-store.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/ops/verify.ts",
+            "src/provenance/trace-builder.ts",
+            "src/ops/doctor.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/adapters/local/local-artifact-store.ts",
@@ -3976,6 +4739,12 @@
         },
         {
           "hash": "ee295120c5d904aa017626c80c95231e5141804b3f10573305da4b586f596d92",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/types/policy.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -3986,6 +4755,21 @@
         },
         {
           "hash": "3cf89e078909d9d55a574608b509fc063e99592d0398c0e1cd3ca08a335bad0d",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/adapters/local/local-canonical-store.ts",
+            "src/adapters/local/local-ledger-store.ts",
+            "src/adapters/local/local-artifact-store.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/errors.ts",
+            "src/adapters/local/errors.ts",
+            "src/sdk/cluster-sdk.ts",
+            "src/mcp/server.ts",
+            "dashboard/lib/apply-redaction.js",
+            "src/types/entity.ts",
+            "src/types/policy.ts",
+            "src/dashboard/dashboard-model.ts"
+          ],
           "importsFiles": [
             "dashboard/lib/apply-redaction.js",
             "src/adapters/local/errors.ts",
@@ -4005,6 +4789,20 @@
         },
         {
           "hash": "a91e68cec1f00a4beba03593f28fda6565e6af84f82b3e0517aee6aa2961b682",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "test/support/source-text.ts",
+            "src/kernel/command-queue.ts",
+            "src/ops/backup.ts",
+            "src/mcp/server.ts",
+            "src/mcp/sanitize.ts",
+            "src/adapters/local/errors.ts",
+            "src/ops/errors.ts",
+            "src/resolver/cluster-resolver.ts",
+            "src/uri/cluster-uri.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/index.ts",
@@ -4033,6 +4831,15 @@
         },
         {
           "hash": "c20a6c8e0529ad431ca6d6a9d527f1285c19daa570f94ecd6de4ccb7d9cc45d3",
+          "importOrder": [
+            "src/adapters/local/local-canonical-store.ts",
+            "test/support/source-text.ts",
+            "src/adapters/local/local-ledger-store.ts",
+            "src/adapters/local/local-index-store.ts",
+            "src/adapters/local/local-artifact-store.ts",
+            "src/adapters/local/errors.ts",
+            "src/types/provenance-event.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/local-artifact-store.ts",
@@ -4046,6 +4853,14 @@
         },
         {
           "hash": "a454a9c6b69a649a7ce236bd4896bc934a53f975b301cc28cca32d49c2e77807",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/mcp/server.ts",
+            "src/mcp/sanitize.ts",
+            "src/kernel/errors.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -4069,6 +4884,16 @@
         },
         {
           "hash": "12b76c49ac0ba798b6376c732e55e6c1bf7c6026c00a128e6e692a65ca4bd90a",
+          "importOrder": [
+            "test/support/source-text.ts",
+            "src/adapters/local/local-ledger-store.ts",
+            "src/adapters/local/errors.ts",
+            "src/util/tmp-paths.ts",
+            "src/mcp/sanitize.ts",
+            "src/mcp/config-validator.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/policy-enforced-kernel.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/index.ts",
@@ -4083,6 +4908,22 @@
         },
         {
           "hash": "3f29fd8171e0d7f76e446594e4443425df6a7dff38463095b24a461ea1be4a0a",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/policy/redactor.ts",
+            "src/provenance/trace-builder.ts",
+            "src/types/redaction.ts",
+            "src/kernel/errors.ts",
+            "src/types/artifact.ts",
+            "src/types/entity.ts",
+            "src/types/command.ts",
+            "src/types/receipt.ts",
+            "src/types/provenance-event.ts",
+            "src/types/index-record.ts",
+            "src/types/policy.ts",
+            "src/kernel/commands.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -4103,6 +4944,20 @@
         },
         {
           "hash": "dd3323e47bd213cdc1e1921d8d667ffaf38e428e197fd2e5f70ecc03425c2e76",
+          "importOrder": [
+            "src/adapters/local/local-ledger-store.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/command-queue.ts",
+            "src/ops/doctor.ts",
+            "src/ops/verify.ts",
+            "src/ops/backup.ts",
+            "src/adapters/postgres/schema.ts",
+            "src/ops/migrations.ts",
+            "src/types/provenance-event.ts",
+            "src/types/receipt.ts",
+            "src/adapters/local/errors.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/index.ts",
@@ -4121,6 +4976,12 @@
         },
         {
           "hash": "b180a45f61289bd0c2cbdb9786eaf75e083ab15cff67539f860db092e93e0ef3",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/dashboard/ops-model.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/dashboard/ops-model.ts",
@@ -4135,6 +4996,13 @@
         },
         {
           "hash": "27043828be48cdb470001b06e7e3a3785d26db5b8f340600a575f5abf5f9e548",
+          "importOrder": [
+            "src/policy/error-formatter.ts",
+            "src/mcp/sanitize.ts",
+            "src/kernel/errors.ts",
+            "src/kernel/commands.ts",
+            "src/types/ai-envelope.ts"
+          ],
           "importsFiles": [
             "src/kernel/commands.ts",
             "src/kernel/errors.ts",
@@ -4146,6 +5014,16 @@
         },
         {
           "hash": "b2aa0e9829da80c8ecfebd7f7dedfa4012484fada4d70510260424d252d64238",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/index.ts",
+            "src/types/redaction.ts",
+            "src/types/component-state.ts",
+            "src/types/ai-envelope.ts",
+            "src/policy/error-formatter.ts",
+            "src/types/policy.ts",
+            "src/types/command.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/index.ts",
@@ -4160,6 +5038,17 @@
         },
         {
           "hash": "3e860f1a35489b8290f85ec3555f67c36bf080b9ab588b469c264ee331d781fd",
+          "importOrder": [
+            "test/support/source-text.ts",
+            "src/adapters/local/index.ts",
+            "src/adapters/local/local-ledger-store.ts",
+            "src/ops/doctor.ts",
+            "src/ops/verify.ts",
+            "src/ops/rebuild.ts",
+            "src/ops/backup.ts",
+            "src/adapters/local/errors.ts",
+            "src/ops/errors.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/index.ts",
@@ -4175,6 +5064,16 @@
         },
         {
           "hash": "2295b56a95afcf33783a598f733a475665ee878ddd3cbd7658f9e7f75e52ece2",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/mcp/sanitize.ts",
+            "src/kernel/errors.ts",
+            "src/dashboard/ops-model.ts",
+            "src/integrations/repo-knowledge/compare-retrieval.ts",
+            "src/mcp/server.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/dashboard/ops-model.ts",
@@ -4189,6 +5088,11 @@
         },
         {
           "hash": "82977db91b8be322ac4662a97d9e240556d0f34d7249a0126693907fa76e2946",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -4198,6 +5102,13 @@
         },
         {
           "hash": "b9665b8d44c8abf5bc741688b69ef81a37709f998599af62f8bf1988f37c0bd3",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/errors.ts",
+            "src/dashboard/inspector-data.ts",
+            "dashboard/lib/apply-redaction.js"
+          ],
           "importsFiles": [
             "dashboard/lib/apply-redaction.js",
             "src/adapters/local/index.ts",
@@ -4209,6 +5120,11 @@
         },
         {
           "hash": "7d798981fe53c95e4fae75b43b6a64b63a50e4a436513a0dcdcf33c61557cdca",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -4225,6 +5141,13 @@
         },
         {
           "hash": "9988d1b3f273b26dd35a4fa59305db977945cea11eb33106b0aa387b14dd46f6",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/mcp/server.ts",
+            "src/mcp/sanitize.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -4243,6 +5166,13 @@
         },
         {
           "hash": "fc45c89e2a9621f5e3c3bb04b01df68146723fe2eed96a2364cc33b800bb4529",
+          "importOrder": [
+            "src/types/integrity.ts",
+            "src/types/entity.ts",
+            "src/types/receipt.ts",
+            "src/types/provenance-event.ts",
+            "src/contracts/canonical-store.ts"
+          ],
           "importsFiles": [
             "src/contracts/canonical-store.ts",
             "src/types/entity.ts",
@@ -4254,6 +5184,19 @@
         },
         {
           "hash": "96d4060e9d42eb30c1ee08d201968833c777706fe56d979421c93d48c235d39a",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/command-queue.ts",
+            "src/contracts/index.ts",
+            "src/types/provenance-event.ts",
+            "src/types/receipt.ts",
+            "src/types/integrity.ts",
+            "src/ops/verify.ts",
+            "src/ops/doctor.ts",
+            "src/ops/backup.ts",
+            "src/types/health.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -4271,6 +5214,11 @@
         },
         {
           "hash": "595ec08130ddd9c3dc86ddcf3d2ec6debcca15f78685365982b312cf7061d263",
+          "importOrder": [
+            "src/index.ts",
+            "src/unsafe.ts",
+            "src/adapters/factory.ts"
+          ],
           "importsFiles": [
             "src/adapters/factory.ts",
             "src/index.ts",
@@ -4291,6 +5239,13 @@
         },
         {
           "hash": "ffb4efdd64f907ba7105968862be2f280cbebb7990e4ecfd294ad9d34324ac31",
+          "importOrder": [
+            "src/adapters/local/local-artifact-store.ts",
+            "src/adapters/local/local-canonical-store.ts",
+            "src/adapters/local/local-ledger-store.ts",
+            "src/adapters/local/errors.ts",
+            "src/types/integrity.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/local-artifact-store.ts",
@@ -4302,6 +5257,21 @@
         },
         {
           "hash": "9e2fc244071abab9ab966cdf20dcea053a75e0261f20ed84b5264c7f8fc2480d",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/command-queue.ts",
+            "src/contracts/index.ts",
+            "src/types/provenance-event.ts",
+            "src/types/receipt.ts",
+            "src/types/integrity.ts",
+            "src/ops/verify.ts",
+            "src/ops/provenance-check.ts",
+            "src/ops/receipt-check.ts",
+            "src/ops/rebuild.ts",
+            "src/indexing/content-indexer.ts",
+            "src/types/health.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -4321,6 +5291,13 @@
         },
         {
           "hash": "e69e03ed252a8b6f264f2c096e9d6d415e2242cc1ab5aa5e7e7f6e0c3eefb871",
+          "importOrder": [
+            "src/index.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/unsafe.ts",
+            "src/adapters/postgres/postgres-canonical-store.ts",
+            "src/adapters/local/local-canonical-store.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/local-canonical-store.ts",
             "src/adapters/postgres/postgres-canonical-store.ts",
@@ -4332,6 +5309,13 @@
         },
         {
           "hash": "813135ab804db5aefee3c21767d57f28862abbd1993ccdab44a10b8355fd8280",
+          "importOrder": [
+            "src/cli.ts",
+            "src/kernel/errors.ts",
+            "src/ops/migrations.ts",
+            "src/ops/doctor.ts",
+            "src/adapters/local/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/cli.ts",
@@ -4347,6 +5331,16 @@
         },
         {
           "hash": "8aab009cc0663ee8709a5bd13736c72f1a3d6b80bb7d3218b43a79c19f3da504",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/adapters/local/index.ts",
+            "src/cli.ts",
+            "src/mcp/config-validator.ts",
+            "src/types/policy.ts",
+            "src/mcp/server.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/cli.ts",
@@ -4365,6 +5359,17 @@
         },
         {
           "hash": "3469b67f9966cd5b30f83088d59e4a0cc43cdcc264c931423bba434058bc90f1",
+          "importOrder": [
+            "test/support/source-text.ts",
+            "src/policy/redactor.ts",
+            "src/uri/cluster-uri.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/types/policy.ts",
+            "src/types/entity.ts",
+            "src/types/receipt.ts",
+            "src/types/provenance-event.ts",
+            "src/adapters/local/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/policy-enforced-kernel.ts",
@@ -4380,6 +5385,13 @@
         },
         {
           "hash": "01ab60b1b0ec3332937b74aa74a7dd15306d4971eeceb61a24965a5c679072a1",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/mcp/server.ts",
+            "src/mcp/sanitize.ts",
+            "src/policy/default-policies.ts",
+            "src/types/policy.ts"
+          ],
           "importsFiles": [
             "src/mcp/sanitize.ts",
             "src/mcp/server.ts",
@@ -4391,6 +5403,13 @@
         },
         {
           "hash": "36a23fdfdc7e2ff4a6a2b299af7c5bb971b2338e01e10fd0ce28ce95fbe56027",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/ops/verify.ts",
+            "src/ops/rebuild.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -4409,6 +5428,12 @@
         },
         {
           "hash": "15beefbae857b8192ee0e5d0b6824eb92ef8571347d5bf66bbaba3173eddfc91",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/retrieval/retrieval-planner.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -4430,6 +5455,11 @@
         },
         {
           "hash": "a9bebfb9da5bee2152fcfa35b31d7664c94d4c0941669d30246e1015a965ead3",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -4439,6 +5469,13 @@
         },
         {
           "hash": "08ebb881f9518e44884fbeb8e8ca61952d57099d384cf9e54e08796bd9a6052c",
+          "importOrder": [
+            "src/mcp/index.ts",
+            "src/sdk/cluster-sdk.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/types/policy.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -4450,6 +5487,12 @@
         },
         {
           "hash": "012007f9807e6840cce8004f88c4206e1c21112d7c7bbb40c0daa611d14b1719",
+          "importOrder": [
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/types/policy.ts",
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts",
@@ -4476,6 +5519,14 @@
         },
         {
           "hash": "8828083d2681f708292d2e04e7670240c178690c80714573703b92a2b3779016",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/adapters/sqlite/index.ts",
+            "src/types/integrity.ts",
+            "src/adapters/local/errors.ts",
+            "src/types/provenance-event.ts",
+            "src/types/receipt.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/index.ts",
@@ -4488,6 +5539,15 @@
         },
         {
           "hash": "895bdf2f740d5c49b9c2b315d26e2e68ccdf574449cf7479efd1c86ae3633faf",
+          "importOrder": [
+            "src/adapters/sqlite/sqlite-db.ts",
+            "src/adapters/sqlite/sqlite-canonical-store.ts",
+            "src/adapters/sqlite/sqlite-artifact-store.ts",
+            "src/adapters/sqlite/schema.ts",
+            "src/adapters/local/errors.ts",
+            "src/types/entity.ts",
+            "src/types/artifact.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/sqlite/schema.ts",
@@ -4501,6 +5561,11 @@
         },
         {
           "hash": "fcda922f96b338f290e8ec57cf893d1c1f551a1432d37624244e8bd8889905f9",
+          "importOrder": [
+            "src/adapters/sqlite/sqlite-db.ts",
+            "src/adapters/sqlite/schema.ts",
+            "src/adapters/sqlite/errors.ts"
+          ],
           "importsFiles": [
             "src/adapters/sqlite/errors.ts",
             "src/adapters/sqlite/schema.ts",
@@ -4510,6 +5575,11 @@
         },
         {
           "hash": "6743041be72e4cb58cceba4d11cceeeacd06711c1af6de96ca7db47ea6fc4d38",
+          "importOrder": [
+            "src/types/entity.ts",
+            "src/adapters/local/index.ts",
+            "src/adapters/sqlite/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/adapters/sqlite/index.ts",
@@ -4519,6 +5589,15 @@
         },
         {
           "hash": "bb7d33eddba78a26999cbf5370297ec682c91755efc0d8c98c17abf5c87120b5",
+          "importOrder": [
+            "src/adapters/sqlite/sqlite-db.ts",
+            "src/adapters/sqlite/sqlite-index-store.ts",
+            "src/adapters/sqlite/sqlite-ledger-store.ts",
+            "src/adapters/sqlite/schema.ts",
+            "src/types/integrity.ts",
+            "src/adapters/local/errors.ts",
+            "src/types/provenance-event.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/sqlite/schema.ts",
@@ -4532,6 +5611,19 @@
         },
         {
           "hash": "8c9b9ca0cd0d843748c9ecd373dc33671c9e476282d7718156aa2e0789ee702b",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/adapters/sqlite/index.ts",
+            "src/adapters/local/errors.ts",
+            "src/types/integrity.ts",
+            "src/contracts/canonical-store.ts",
+            "src/contracts/artifact-store.ts",
+            "src/contracts/index-store.ts",
+            "src/contracts/ledger-store.ts",
+            "src/types/entity.ts",
+            "src/types/artifact.ts",
+            "src/types/provenance-event.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/errors.ts",
             "src/adapters/local/index.ts",
@@ -4557,6 +5649,10 @@
         },
         {
           "hash": "885b7a22b71e1e039bd174c9956f0c470bbdb750264b35a07fabde153c96262e",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/mcp/server.ts"
+          ],
           "importsFiles": [
             "src/mcp/server.ts",
             "src/sdk/cluster-sdk.ts"
@@ -4565,6 +5661,14 @@
         },
         {
           "hash": "7d509640f07008210f95d3fcc189049bc1c3eb1214a3f26f454f180298ba0840",
+          "importOrder": [
+            "src/adapters/local/index.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/sdk/cluster-sdk.ts",
+            "src/types/policy.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -4577,6 +5681,10 @@
         },
         {
           "hash": "94e014d3a892035fc8c841db1623b13039f692bf4a5a0af49a141e4e40132fbb",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/mcp/index.ts"
+          ],
           "importsFiles": [
             "src/mcp/index.ts",
             "src/sdk/cluster-sdk.ts"
@@ -4585,6 +5693,14 @@
         },
         {
           "hash": "d0137e7dd079931f49188edf06ab46d5edebbe651493367b6fbf897fc9637212",
+          "importOrder": [
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/types/policy.ts",
+            "src/adapters/local/index.ts",
+            "src/sdk/cluster-sdk.ts",
+            "src/contracts/index.ts",
+            "src/policy/redactor.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -4597,6 +5713,16 @@
         },
         {
           "hash": "2652a48227aaa914e061849bcb80eb58e9fed943d39459fe55430f28c301ea28",
+          "importOrder": [
+            "src/kernel/policy-enforced-kernel.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/types/policy.ts",
+            "src/adapters/local/index.ts",
+            "src/sdk/cluster-sdk.ts",
+            "src/mcp/server.ts",
+            "src/policy/redactor.ts",
+            "src/contracts/index.ts"
+          ],
           "importsFiles": [
             "src/adapters/local/index.ts",
             "src/contracts/index.ts",
@@ -4611,6 +5737,11 @@
         },
         {
           "hash": "25498291b4919d5daca4c0008c622d891e805e661a76baeb6b6499a02d06a82e",
+          "importOrder": [
+            "src/sdk/cluster-sdk.ts",
+            "src/mcp/index.ts",
+            "src/index.ts"
+          ],
           "importsFiles": [
             "src/index.ts",
             "src/mcp/index.ts",
@@ -4627,12 +5758,19 @@
       "origin": "authored",
       "role": "test",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "test/wave-a3-surface-regression.test.ts",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 1
     }
   ],
   "doors": [
     {
-      "checksCount": 2,
+      "checksCount": 1,
       "commands": [
         {
           "job": "test",
@@ -4729,11 +5867,12 @@
           "via": "tsc tsconfig.examples.json"
         },
         {
+          "built": true,
           "directory": true,
           "job": "test",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -5660,7 +6799,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 7,
+      "checksCount": 6,
       "commands": [
         {
           "job": "docker",
@@ -5724,10 +6863,11 @@
           "via": "docker build Dockerfile"
         },
         {
+          "built": true,
           "directory": true,
           "job": "docker",
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "docker build Dockerfile"
         },
         {
@@ -5814,6 +6954,7 @@
             "branches": [
               "main"
             ],
+            "byHand": true,
             "event": "push"
           }
         }
@@ -5899,7 +7040,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "gate",
@@ -5989,11 +7130,12 @@
           "via": "scripts/release-gate.mjs"
         },
         {
+          "built": true,
           "directory": true,
           "job": "gate",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "scripts/release-gate.mjs → tsc tsconfig.json"
         },
         {
@@ -6925,7 +8067,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 2,
+      "checksCount": 1,
       "commands": [
         {
           "job": "release",
@@ -7042,11 +8184,12 @@
           "via": "tsc tsconfig.examples.json"
         },
         {
+          "built": true,
           "directory": true,
           "job": "release",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -7981,7 +9124,7 @@
       "usesWorkflowToken": true
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "smoke",
@@ -8033,11 +9176,12 @@
           "runKind": "executes"
         },
         {
+          "built": true,
           "directory": true,
           "job": "smoke",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         }
       ],
@@ -8243,6 +9387,11 @@
     {
       "from": "scripts",
       "kind": "file",
+      "to": "src"
+    },
+    {
+      "from": "scripts",
+      "kind": "spawns",
       "to": "src"
     },
     {
@@ -8532,6 +9681,11 @@
     {
       "readers": [
         {
+          "by": "dashboard/index.html",
+          "call": "script",
+          "confidence": "ast"
+        },
+        {
           "by": "test/phase13-proof.test.ts",
           "call": "existsSync",
           "confidence": "ast",
@@ -8592,6 +9746,11 @@
     {
       "readers": [
         {
+          "by": "dashboard/index.html",
+          "call": "script",
+          "confidence": "ast"
+        },
+        {
           "by": "test/phase13-proof.test.ts",
           "call": "existsSync",
           "confidence": "ast",
@@ -8633,6 +9792,11 @@
           "confidence": "text"
         },
         {
+          "by": "dashboard/index.html",
+          "call": "script",
+          "confidence": "ast"
+        },
+        {
           "by": "test/phase13-proof.test.ts",
           "call": "existsSync",
           "confidence": "ast",
@@ -8672,6 +9836,11 @@
           "by": ".verifier-outputs/v2-cross-boundary.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "dashboard/index.html",
+          "call": "script",
+          "confidence": "ast"
         },
         {
           "by": "test/phase13-proof.test.ts",
@@ -8746,6 +9915,17 @@
           ]
         }
       ]
+    },
+    {
+      "readers": [
+        {
+          "by": "dashboard/index.html",
+          "call": "script",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dashboard/demo-data.js",
+      "writers": []
     },
     {
       "readers": [
@@ -8851,6 +10031,11 @@
     },
     {
       "readers": [
+        {
+          "by": "dashboard/index.html",
+          "call": "script",
+          "confidence": "ast"
+        },
         {
           "by": "test/wave-c1-fixup-regression.test.ts",
           "call": "readFileSync",

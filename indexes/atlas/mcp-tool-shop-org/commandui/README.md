@@ -71,6 +71,8 @@ runtime-persistence is tested only by the unit tests in its own files.
 
 runtime-planner is tested only by the unit tests in its own files.
 
+3 test files run in no workflow: packages/api-contract/src/contracts.test.ts, packages/domain/src/memoryDetectors.test.ts and packages/state/src/index.test.ts.
+
 ## Written but never read
 
 - **apps/desktop/src-tauri/gen/schemas/** is written by apps/desktop/src-tauri/build.rs (a build script) and read by nothing else in this repository.
@@ -89,9 +91,9 @@ People write .claude/, .github/, docs/, the repository root, site/ and winget/. 
 
 ## Where to start
 
-apps/desktop/src-tauri/src/main.rs → apps/desktop/src-tauri/src/lib.rs → apps/desktop/src-tauri/src/commands/planner.rs → crates/runtime-planner/src/lib.rs
+apps/desktop/src-tauri/src/main.rs → apps/desktop/src-tauri/src/lib.rs → apps/desktop/src-tauri/src/commands/planner.rs → crates/runtime-planner/src/lib.rs → crates/runtime-planner/src/client.rs → crates/runtime-planner/src/mock.rs → crates/runtime-planner/src/parity.rs → crates/runtime-planner/src/prompt.rs
 
-Read those in order to follow one run of commandui-desktop end to end. This path follows commandui-desktop (the desktop app people install) from its entry, since CI runs only tests.
+Read those in order to follow one run of commandui-desktop end to end. This path follows commandui-desktop (the desktop app people install) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 

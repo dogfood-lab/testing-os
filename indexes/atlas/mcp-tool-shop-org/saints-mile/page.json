@@ -37,21 +37,21 @@
     "items": [
       {
         "kind": "sequence",
-        "sentence": "In src/ui/screens/combat.rs, render combat gained a step, locked style, before lock reason style.",
+        "sentence": "In src/ui/screens/combat.rs, `render_combat` gained a step, `locked_style`, before `lock_reason_style`.",
         "subjects": [
           "src/ui/screens/combat.rs"
         ]
       },
       {
         "kind": "sequence",
-        "sentence": "In src/ui/screens/combat.rs, render combat gained a step, lock reason style, before dim style.",
+        "sentence": "In src/ui/screens/combat.rs, `render_combat` gained a step, `lock_reason_style`, before `dim_style`.",
         "subjects": [
           "src/ui/screens/combat.rs"
         ]
       },
       {
         "kind": "sequence",
-        "sentence": "In src/ui/screens/status.rs, render status gained a step, ammo color, before echo style.",
+        "sentence": "In src/ui/screens/status.rs, `render_status` gained a step, `ammo_color`, before `echo_style`.",
         "subjects": [
           "src/ui/screens/status.rs"
         ]
@@ -154,7 +154,7 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request touching 8 paths",
+        "on a pull request to main touching 8 paths",
         "on a push to main touching 8 paths",
         "or by hand"
       ]
@@ -273,9 +273,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:13:29.600Z",
+  "generatedAt": "2026-09-25T09:20:57.557Z",
   "limits": [
-    "1 import site could not be resolved.",
+    "1 import could not be resolved: `msix/resize-logo.mjs` imports `sharp`, which is not declared.",
     "6 writes and 1 read go to a path their caller passes, not to this repository.",
     "4 writes go to the directory the command is run in (saves/) or a path their caller passes, not to this repository.",
     "2 reads go to the directory the command is run in (saves/), not to this repository.",
@@ -297,9 +297,14 @@
   "startDoor": "Cargo.toml#saints-mile",
   "startHere": [
     "src/main.rs",
-    "src/lib.rs"
+    "src/lib.rs",
+    "src/ui/mod.rs",
+    "src/state/store.rs",
+    "src/ui/screens/title.rs",
+    "src/ui/screens/scene.rs",
+    "src/ui/screens/standoff.rs"
   ],
-  "startReason": "This path follows saints-mile (a command people run) from its entry, since CI runs only tests.",
+  "startReason": "This path follows saints-mile (a command people run) from its entry, since CI runs only tests and checks.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 47,

@@ -9,18 +9,19 @@ Mapped at 2026-09-25 from commit c87c284.
 ## What changed since 2026-09-24 (ac181ee)
 
 - migrations/ is now read by src/db/migrate.ts.
+- src/workbench/ui/app.js is now read by src/workbench/ui/index.html.
 - canon was generated and is now authored.
 - 235 files changed content, across 10 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 11 paths; on a push to main touching 11 paths; or by hand. Runs test/; checks src/.
+1. **CI.** On a pull request to main touching 11 paths; on a push to main touching 11 paths; or by hand. Runs test/; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **taste** (a command people run). Runs src/cli/index.ts.
 
 ## What happens through CI
 
-1. The workflow runs test/ in test; it checks src/ in src.
+1. The workflow runs test/ in test; it builds src/ in src.
 
 ## Who reads the results
 
@@ -64,9 +65,9 @@ People write .claude/, .github/, canon/, docs/, migrations/, proving/, the repos
 
 ## Where to start
 
-src/cli/index.ts
+.github/workflows/ci.yml → src/cli/index.ts → src/cli/commands/init.ts → src/cli/config.ts → src/db/sqlite.ts → src/db/migrate.ts → src/canon/canon-store.ts → src/cli/commands/doctor.ts
 
-Read those in order to follow one run of taste end to end. This path follows taste (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 

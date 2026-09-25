@@ -190,6 +190,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -222,6 +223,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "aad4080f4eba3ec31c6b8235b7f4571c7025d3d357b5871e5bc11876926479e3",
           "path": "site/src/site-config.ts"
         },
@@ -1014,6 +1016,10 @@
             "starterConfig"
           ],
           "hash": "7ff6b453ae3f26caf172ebfa1dda6a57efa913d16d1aeb978f50e0b6b7ad79f3",
+          "importOrder": [
+            "src/types.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/types.ts"
@@ -1048,6 +1054,10 @@
             "pLimit"
           ],
           "hash": "4963db76a1004e0279380d0d3c23c47f10651f537cbf79af97306e2517f59a28",
+          "importOrder": [
+            "src/errors.ts",
+            "src/auth.ts"
+          ],
           "importsFiles": [
             "src/auth.ts",
             "src/errors.ts"
@@ -1102,6 +1112,17 @@
         },
         {
           "hash": "69c094879476b363c63be584fba1449d456eaebd94a5a35c4d6c6412005c68ee",
+          "importOrder": [
+            "src/audit.ts",
+            "src/plan.ts",
+            "src/apply.ts",
+            "src/config.ts",
+            "src/errors.ts",
+            "src/semver.ts",
+            "src/diff.ts",
+            "src/format/diff.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/apply.ts",
             "src/audit.ts",
@@ -1204,12 +1225,19 @@
         {
           "reads": 1,
           "where": [
+            "cwd:package.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
             "cwd:registry-sync.config.json"
           ],
           "writes": 0
         }
       ],
-      "outsideReads": 6,
+      "outsideReads": 7,
       "outsideWrites": 4,
       "role": "code",
       "testedBy": 16,
@@ -1265,6 +1293,13 @@
         },
         {
           "hash": "323d3034c99e5a012116b33b711ac7443a0ad440c342b5fd9e26d5abb4dc07ce",
+          "importOrder": [
+            "src/audit.ts",
+            "src/providers/github.ts",
+            "src/providers/npm.ts",
+            "src/providers/ghcr.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/audit.ts",
             "src/providers/ghcr.ts",
@@ -1283,6 +1318,12 @@
         },
         {
           "hash": "d10ca1ac3368614c4f4e5fa5723fd131081ad15492d57a81fab398ea758fa5e2",
+          "importOrder": [
+            "src/cli.ts",
+            "src/audit.ts",
+            "src/errors.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/audit.ts",
             "src/cli.ts",
@@ -1337,6 +1378,12 @@
         },
         {
           "hash": "7e476d8d1c4cfe2c7a3d7aa08a54ceaf6bf043635d8361cda324b1635be412e3",
+          "importOrder": [
+            "src/format/table.ts",
+            "src/format/json.ts",
+            "src/format/markdown.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/format/json.ts",
             "src/format/markdown.ts",
@@ -1355,6 +1402,10 @@
         },
         {
           "hash": "69ccbb33822b3c1de6fce2bac49f810349a011336ef4be0af65215512f74deb9",
+          "importOrder": [
+            "src/providers/ghcr.ts",
+            "src/fetch.ts"
+          ],
           "importsFiles": [
             "src/fetch.ts",
             "src/providers/ghcr.ts"
@@ -1363,6 +1414,10 @@
         },
         {
           "hash": "05f84c977115670abc23bba673cab4b3ad9ce382eca9a71fca631fae8a878978",
+          "importOrder": [
+            "src/providers/github.ts",
+            "src/fetch.ts"
+          ],
           "importsFiles": [
             "src/fetch.ts",
             "src/providers/github.ts"
@@ -1453,7 +1508,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 18
+          "files": 19
         },
         {
           "boundary": "test",
@@ -1469,6 +1524,12 @@
           "runKind": "executes"
         },
         {
+          "built": true,
+          "job": "test",
+          "path": "src/index.ts",
+          "runKind": "executes"
+        },
+        {
           "directory": true,
           "job": "test",
           "matched": true,
@@ -1477,7 +1538,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 2,
+      "runsCount": 3,
       "secrets": [],
       "sends": {
         "changesRepositories": true,
@@ -1654,22 +1715,24 @@
       "pushes": false,
       "reach": [
         {
+          "boundary": "src",
+          "depth": 0,
+          "files": 19
+        },
+        {
           "boundary": "test",
           "depth": 0,
           "files": 17
-        },
-        {
-          "boundary": "src",
-          "depth": 1,
-          "enters": {
-            "file": "src/apply.ts",
-            "from": "test/apply.test.ts"
-          },
-          "files": 18
         }
       ],
       "readers": [],
       "runs": [
+        {
+          "built": true,
+          "job": "publish",
+          "path": "src/index.ts",
+          "runKind": "executes"
+        },
         {
           "directory": true,
           "job": "publish",
@@ -1679,7 +1742,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 1,
+      "runsCount": 2,
       "secrets": [
         "NPM_TOKEN"
       ],
@@ -1868,11 +1931,6 @@
         {
           "by": "src/cli.ts",
           "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/providers/github.ts",
-          "call": "literal",
           "confidence": "ast"
         },
         {

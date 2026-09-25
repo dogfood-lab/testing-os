@@ -136,6 +136,22 @@
       },
       {
         "kind": "landing",
+        "sentence": "packages/vibe-typer/authoring/*-*-*-****-edit.json is now written by packages/vibe-typer/scripts/author.mjs.",
+        "subjects": [
+          "packages/vibe-typer/authoring/*-*-*-****-edit.json",
+          "packages/vibe-typer/scripts/author.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "packages/vibe-typer/authoring/*-*-*-****-run.json is now written by packages/vibe-typer/scripts/author.mjs.",
+        "subjects": [
+          "packages/vibe-typer/authoring/*-*-*-****-run.json",
+          "packages/vibe-typer/scripts/author.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
         "sentence": "packages/vibe-typer/patterns/corpus/bash.json is now written by packages/vibe-typer/scripts/port-corpus.mjs.",
         "subjects": [
           "packages/vibe-typer/patterns/corpus/bash.json",
@@ -144,23 +160,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "packages/vibe-typer/patterns/corpus/csharp.json is now written by packages/vibe-typer/scripts/port-corpus.mjs.",
-        "subjects": [
-          "packages/vibe-typer/patterns/corpus/csharp.json",
-          "packages/vibe-typer/scripts/port-corpus.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "packages/vibe-typer/patterns/corpus/java.json is now written by packages/vibe-typer/scripts/port-corpus.mjs.",
-        "subjects": [
-          "packages/vibe-typer/patterns/corpus/java.json",
-          "packages/vibe-typer/scripts/port-corpus.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 19 more new writers and readers of places.",
+        "sentence": "And 21 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -970,12 +970,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:11:38.825Z",
+  "generatedAt": "2026-09-25T09:18:19.351Z",
   "limits": [
-    "17 import sites could not be resolved.",
+    "17 imports could not be resolved: `apps/cabinets/vite.config.ts` imports a path built at run time; `apps/cabinets/vite.config.ts` imports a path built at run time; `packages/ghost-on-the-menu/test/cli.test.ts` imports a path built at run time; and 14 more.",
     "7 writes and 14 reads use paths built at run time and are not named here.",
     "6 writes and 97 reads go to a path their caller passes, not to this repository.",
-    "5 writes and 8 reads go to the directory the command is run in (.venv/, film/ and fixtures/), not to this repository.",
+    "5 writes and 9 reads go to the directory the command is run in (.venv/, catalog/, film/ and 1 more place), not to this repository.",
     "2 writes and 4 reads go to the directory the command is run in (film/, fixtures/ and packages/) or a path their caller passes, not to this repository.",
     "4 writes go to a temporary directory, not to this repository.",
     "6 commands are built at run time and not followed, 3 of them in tests.",
@@ -1006,7 +1006,8 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "scripts/play.mjs"
+    "scripts/play.mjs",
+    "scripts/lib/cli.mjs"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -1040,6 +1041,8 @@
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
-  "untestedNote": [],
+  "untestedNote": [
+    "voice/tests/test_worker.py runs in no workflow."
+  ],
   "written": 13
 }

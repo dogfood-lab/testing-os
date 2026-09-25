@@ -8,22 +8,22 @@ Mapped at 2026-09-25 from commit da77f7a.
 
 ## What changed since 2026-09-24 (d4f816a)
 
-- In src/extension.ts, activate lost a step, is running.
-- In src/extension.ts, activate lost a step, execute run.
-- In src/extension.ts, activate lost a step, show runs picker.
+- In src/extension.ts, `activate` lost a step, `isRunning`.
+- In src/extension.ts, `activate` lost a step, `executeRun`.
+- In src/extension.ts, `activate` lost a step, `showRunsPicker`.
 - And 18 more changes to the order of work.
 - 221 files changed content, across 9 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more; checks src/extension.ts and test/extension-host/.
+1. **CI.** On a pull request to main touching 12 paths; on a push to main touching 12 paths; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more; builds test/extension-host/; checks src/extension.ts.
 2. **Build and Release.** When a tag matching `v*` is pushed; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more; checks src/extension.ts.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **runforge** (the extension people install from the VS Code Marketplace). Loads src/extension.ts.
 
 ## What happens through CI
 
-1. The workflow runs 34 files in test; it checks src/extension.ts in src and test/extension-host/ in test.
+1. The workflow runs 34 files in test; it builds test/extension-host/ in test; it checks src/extension.ts in src.
 2. That reaches python (18 files).
 
 ## Who reads the results
@@ -32,7 +32,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Build and Release** runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more, checks src/extension.ts, reaches python, creates a GitHub release on a tag push, uploads SHA256SUMS.txt and files named at run time to the release on a tag push, and publishes to the VS Code Marketplace when run by hand.
+**Build and Release** runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more, checks src/extension.ts, reaches python, creates a GitHub release and uploads SHA256SUMS.txt and files named at run time to the release on a tag push, and publishes to the VS Code Marketplace when run by hand.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -56,6 +56,8 @@ Window: 180 days; a pair counts from 3 shared commits, since 0 source files reac
 
 - **eslint-rules** is imported by no test.
 
+23 test files run in no workflow: python/ml_runner/test_artifact_inspect.py, python/ml_runner/test_cancellation_marker.py, python/ml_runner/test_csv_actionability.py and 20 mores.
+
 ## Written but never read
 
 No place this map can see is written, so none goes unread.
@@ -74,13 +76,13 @@ People write .github/, assets/, docs/, resources/, the repository root and site/
 
 ## Where to start
 
-src/extension.ts
+src/extension.ts → src/runner/run-manager.ts
 
-Read those in order to follow one activation of runforge end to end. This path follows runforge (the extension people install from the VS Code Marketplace) from its entry, since CI runs only tests.
+Read those in order to follow one activation of runforge end to end. This path follows runforge (the extension people install from the VS Code Marketplace) from its entry, since CI runs only tests and checks, and builds test/extension-host/.
 
 ## What this map cannot see
 
-- 83 import sites could not be resolved.
+- 83 imports could not be resolved: `python/ml_runner/test_cancellation_marker.py` imports `ml_runner`, which is no module on its import path and no declared dependency; `python/ml_runner/test_cancellation_marker.py` imports `ml_runner.contracts`, which is no module on its import path and no declared dependency; `python/ml_runner/test_cancellation_marker.py` imports `ml_runner.provenance`, which is no module on its import path and no declared dependency; and 80 more.
 - 2 writes and 16 reads use paths built at run time and are not named here.
 - 9 writes and 20 reads go to a path their caller passes, not to this repository.
 - 8 commands are built at run time and not followed, 5 of them in tests.

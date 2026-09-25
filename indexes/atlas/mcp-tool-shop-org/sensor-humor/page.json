@@ -144,15 +144,17 @@
   "derived": "8 parts, mostly TypeScript (86 files), JavaScript (3) and Python (1). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. People run sensor-humor.",
   "doors": [
     {
+      "builds": [
+        "src/"
+      ],
       "checks": [
         "package-lock.json",
         "package.json",
-        "src/",
         "tsconfig.build.json",
         "tsconfig.json"
       ],
-      "checksCount": 5,
-      "checksMore": 2,
+      "checksCount": 4,
+      "checksMore": 1,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -222,10 +224,11 @@
       ]
     },
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -402,9 +405,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:13:33.411Z",
+  "generatedAt": "2026-09-25T09:21:02.086Z",
   "limits": [
-    "1 import site could not be resolved.",
+    "1 import could not be resolved: `swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs` imports a path built at run time.",
     "2 writes use paths built at run time and are not named here.",
     "5 writes and 19 reads go to a path their caller passes, not to this repository.",
     "3 writes and 2 reads go to the home directory (.sensor-humor/) or a path their caller passes, not to this repository.",
@@ -428,11 +431,13 @@
   "spawnTested": [
     "scripts"
   ],
-  "startDoor": "package.json#sensor-humor",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "src/index.ts"
+    ".github/workflows/ci.yml",
+    "src/index.ts",
+    "src/ollama.ts",
+    "src/types.ts"
   ],
-  "startReason": "This path follows sensor-humor (a command people run) from its entry, since CI runs only tests and scripts that import no code here.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 27,

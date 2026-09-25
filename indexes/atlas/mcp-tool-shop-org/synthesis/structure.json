@@ -599,6 +599,13 @@
       "outsideReads": 1,
       "role": "code",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "scripts/eval-planted.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 1
     },
     {
@@ -622,6 +629,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -666,6 +674,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "2fdacce9f5d0145b7eee0321739c528d9b8038ce0045decc6b2251841000f6bb",
           "path": "site/src/site-config.ts"
         },
@@ -716,6 +725,10 @@
             "checkAgency"
           ],
           "hash": "d98855a65c08ca48628c87d24e82b662fc70b4956e4a8f818c0fa168ec6c77be",
+          "importOrder": [
+            "src/types.ts",
+            "src/checks/_text.ts"
+          ],
           "importsFiles": [
             "src/checks/_text.ts",
             "src/types.ts"
@@ -727,6 +740,16 @@
             "checkGroundedUptake"
           ],
           "hash": "e7f6e47ec7c99c0d151997af8a05f9c3d95e252daee2aaed8f3899581d569b30",
+          "importOrder": [
+            "src/types.ts",
+            "src/checks/similarity.ts",
+            "src/checks/pivot.ts",
+            "src/checks/lexicons/filler.ts",
+            "src/checks/performative.ts",
+            "src/checks/agency.ts",
+            "src/checks/reassurance.ts",
+            "src/checks/_text.ts"
+          ],
           "importsFiles": [
             "src/checks/_text.ts",
             "src/checks/agency.ts",
@@ -740,6 +763,7 @@
           "path": "src/checks/grounded_uptake.ts"
         },
         {
+          "constantOnly": true,
           "hash": "17cf999ffa898b383e30fc8265a36af19c41b6e4949b03339a891ad42503ae2c",
           "path": "src/checks/lexicons/concreteness.ts"
         },
@@ -753,6 +777,14 @@
             "stem"
           ],
           "hash": "5cfe87f9de04fdd27f351612d22a8695b021ea5e4a76f5ba26a7788ba054bbbc",
+          "importOrder": [
+            "src/types.ts",
+            "src/checks/similarity.ts",
+            "src/checks/pivot.ts",
+            "src/checks/lexicons/filler.ts",
+            "src/checks/lexicons/concreteness.ts",
+            "src/checks/_text.ts"
+          ],
           "importsFiles": [
             "src/checks/_text.ts",
             "src/checks/lexicons/concreteness.ts",
@@ -768,6 +800,11 @@
             "checkPivot"
           ],
           "hash": "3310dc72554f530c387fad8d7241e688fc4a0e2f4bed984a63d2fbc02ff34104",
+          "importOrder": [
+            "src/types.ts",
+            "src/checks/similarity.ts",
+            "src/checks/_text.ts"
+          ],
           "importsFiles": [
             "src/checks/_text.ts",
             "src/checks/similarity.ts",
@@ -780,6 +817,10 @@
             "checkReassurance"
           ],
           "hash": "0785550af042774daae0a79d05abfbe13218e064d6e80f4a7c9a30ff9dd1a140",
+          "importOrder": [
+            "src/types.ts",
+            "src/checks/_text.ts"
+          ],
           "importsFiles": [
             "src/checks/_text.ts",
             "src/types.ts"
@@ -1275,9 +1316,23 @@
             "caller"
           ],
           "writes": 3
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:data/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:schemas/"
+          ],
+          "writes": 0
         }
       ],
-      "outsideReads": 5,
+      "outsideReads": 8,
       "outsideWrites": 3,
       "role": "code",
       "testedBy": 14,
@@ -1383,6 +1438,11 @@
         },
         {
           "hash": "1a1575f48375d383963b3433139e83695e2385fa2e8d6354bd7139774bc9ee1a",
+          "importOrder": [
+            "src/runner.ts",
+            "src/relational.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/relational.ts",
             "src/runner.ts",
@@ -1428,7 +1488,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "test",
@@ -1520,19 +1580,21 @@
           "runKind": "executes"
         },
         {
+          "built": true,
           "directory": true,
           "job": "lint",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
+          "built": true,
           "directory": true,
           "job": "test",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -1687,7 +1749,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "publish",
@@ -1771,11 +1833,12 @@
           "runKind": "executes"
         },
         {
+          "built": true,
           "directory": true,
           "job": "publish",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -1973,11 +2036,6 @@
           "confidence": "ast"
         },
         {
-          "by": "src/index.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "tests/fairness.test.ts",
           "call": "readFileSync",
           "confidence": "ast",
@@ -2021,11 +2079,6 @@
         {
           "by": "scripts/eval-planted.mjs",
           "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/planted.ts",
-          "call": "literal",
           "confidence": "ast"
         },
         {
@@ -2093,11 +2146,6 @@
         },
         {
           "by": "scripts/example-run-fixture.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/index.ts",
           "call": "literal",
           "confidence": "ast"
         },

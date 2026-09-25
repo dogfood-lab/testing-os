@@ -21,16 +21,16 @@ Mapped at 2026-09-25 from commit e2ce19a.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; when a release is published; or by hand. Runs app/scripts/bundle-bridge.mjs, verify.sh, app/bridge-worker-access.test.ts and 111 more; builds app/src-tauri/src/main.rs; checks app/bridge-worker-commands.ts, app/bridge-worker.ts, app/src-tauri/src/lib.rs and 115 more.
+1. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; when a release is published; or by hand. Runs app/scripts/bundle-bridge.mjs, verify.sh, app/bridge-worker-access.test.ts and 111 more; builds app/src-tauri/src/main.rs, packages/cli/src/, packages/core/src/ and 33 more; checks app/bridge-worker-commands.ts, app/bridge-worker.ts, app/src-tauri/src/lib.rs and 5 more.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **capsule-desktop** (the desktop app people install). Runs app/src-tauri/src/main.rs.
 
 ## What happens through CI
 
-1. The workflow runs 65 files in app, verify.sh in the repository root, 4 files in artifacts, 22 files in cli, 8 files in core, and 14 files in 3 more parts; it checks app/bridge-worker-commands.ts, app/bridge-worker.ts and app/src-tauri/src/lib.rs in app, artifacts/ in artifacts, packages/cli/src/ in cli, packages/core/src/ in core, packages/storage/src/ in storage, and 25 files in 2 more parts.
+1. The workflow runs 65 files in app, verify.sh in the repository root, 4 files in artifacts, 22 files in cli, 8 files in core, and 14 files in 3 more parts; it checks app/bridge-worker-commands.ts, app/bridge-worker.ts and app/src-tauri/src/lib.rs in app and artifacts/ in artifacts.
 2. It writes to app/src-tauri/gen/schemas/.
 3. It also writes to app/src-tauri/resources/, which is not tracked.
-4. It builds app/src-tauri/src/main.rs into MSI and NSIS installers and uploads them to the release on a release event.
+4. It builds app/src-tauri/src/main.rs, packages/cli/src/, packages/core/src/, packages/storage/src/, packages/xaman/src/ and packages/xrpl/src/ into MSI and NSIS installers and uploads them to the release, on a release event.
 
 ## Who reads the results
 
@@ -85,13 +85,13 @@ People write .github/, artifacts/, docs/, fixtures/, the repository root and sit
 
 ## Where to start
 
-.github/workflows/ci.yml → app/scripts/bundle-bridge.mjs
+.github/workflows/ci.yml → packages/cli/src/index.ts → packages/cli/src/commands/create-release.ts → packages/core/src/access-grant-validate.ts → packages/core/src/ajv-formats-interop.ts → packages/core/src/access-grant.ts → packages/core/src/validate.ts → packages/core/src/hash.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 4 import sites could not be resolved.
+- 4 imports could not be resolved: `app/bridge-worker-commands.ts` imports `xrpl`, which is not declared; `app/bridge-worker-mint-persist.test.ts` imports `xrpl`, which is not declared; `app/bridge-worker-verify-release.test.ts` imports `xrpl`, which is not declared; and 1 more.
 - 6 writes and 15 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
 - 23 writes and 37 reads go to a path their caller passes, not to this repository.

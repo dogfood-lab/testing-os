@@ -7,7 +7,7 @@
   ],
   "breaks": [
     {
-      "doors": 2,
+      "doors": 3,
       "importedBy": [
         "src"
       ],
@@ -19,7 +19,7 @@
       "partLabel": "scripts"
     },
     {
-      "doors": 2,
+      "doors": 3,
       "importedBy": [
         "scripts"
       ],
@@ -29,6 +29,17 @@
       "kind": "part",
       "name": "src",
       "partLabel": "src"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "tests",
+      "partLabel": "tests",
+      "spawnedBy": [
+        "scripts"
+      ]
     },
     {
       "doors": 2,
@@ -51,8 +62,27 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "ci now also checks src/, src/pcraft/ and tests/.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "src/",
+          "src/pcraft/",
+          "tests/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "release now also checks src/ and tests/.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "src/",
+          "tests/"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -60,7 +90,7 @@
       "commit": "cdc0bedcb5fc94cf429b4d217ffc90090739e4fb",
       "generatedAt": "2026-09-25T02:23:39.532Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -147,13 +177,14 @@
   "changesTogetherWithTests": 1,
   "commit": "c800db5353d1f55a46d0f30ac96dda91dc341364",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly Python (112 files), JavaScript (2) and TypeScript (2). Work enters through 4 doors; the busiest is release, which reaches 4 parts. It publishes to PyPI and @mcptoolshop/prompt-crafter (npm) to npm. People run pcraft.",
+  "derived": "8 parts, mostly Python (112 files), JavaScript (2) and TypeScript (2). Work enters through 4 doors; the busiest is release, which reaches 5 parts. It publishes to PyPI and @mcptoolshop/prompt-crafter to npm. People run pcraft.",
   "doors": [
     {
       "checks": [
-        "src/pcraft/"
+        "src/",
+        "tests/"
       ],
-      "checksCount": 1,
+      "checksCount": 2,
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "held": [
@@ -189,9 +220,14 @@
           "files": 69
         },
         {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 38
+        },
+        {
           "boundary": "scripts",
           "depth": 1,
-          "files": 1
+          "files": 3
         }
       ],
       "runs": [
@@ -200,7 +236,7 @@
       "runsCount": 1,
       "runsMore": 0,
       "sends": [
-        "publishes to PyPI and @mcptoolshop/prompt-crafter (npm) to npm (on a run by hand, only with dry_run false)"
+        "publishes to PyPI and @mcptoolshop/prompt-crafter to npm (on a run by hand, only with dry_run false)"
       ],
       "stages": [],
       "triggers": [
@@ -209,8 +245,11 @@
       ]
     },
     {
-      "checks": [],
-      "checksCount": 0,
+      "checks": [
+        "src/",
+        "tests/"
+      ],
+      "checksCount": 2,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -222,6 +261,21 @@
           "boundary": "root",
           "depth": 0,
           "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 69
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 38
+        },
+        {
+          "boundary": "scripts",
+          "depth": 1,
+          "files": 3
         }
       ],
       "runs": [
@@ -313,12 +367,27 @@
       "from": "src",
       "fromTests": false,
       "to": "scripts"
+    },
+    {
+      "from": "tests",
+      "fromTests": true,
+      "to": "root"
+    },
+    {
+      "from": "tests",
+      "fromTests": true,
+      "to": "scripts"
+    },
+    {
+      "from": "tests",
+      "fromTests": true,
+      "to": "src"
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T03:19:44.317Z",
+  "generatedAt": "2026-09-25T09:19:24.468Z",
   "limits": [
-    "8 import sites could not be resolved.",
+    "8 imports could not be resolved: `src/pcraft/domains/image/scaffold.py` imports a path built at run time; `src/pcraft/domains/image/subdomains/sprite/calibrate.py` imports a path built at run time; `tests/test_amend_cli.py` imports a path built at run time; and 5 more.",
     "12 writes and 15 reads use paths built at run time and are not named here.",
     "1 read goes to a temporary directory, not to this repository.",
     "2 commands are built at run time and not followed.",
@@ -340,10 +409,8 @@
   "repo": "mcp-tool-shop-org/prompt-craft",
   "sequences": [],
   "startDoor": ".github/workflows/ci.yml",
-  "startHere": [
-    ".github/workflows/ci.yml",
-    "verify.py"
-  ],
+  "startHere": [],
+  "startNote": "ci runs no code this map can follow; it only checks code, so there is no path of files to read in order.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 38,

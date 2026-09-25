@@ -2868,6 +2868,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "34b036603793e4eb4bfad87e1fd7f851a84fef6a762257a3b2dc1411983d26df",
           "path": "site/src/content.config.ts"
         },
@@ -2912,6 +2913,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "cce0e4c8ae279018dd83d6b1255db3b7aaadd473bbbf04c44be016eb25dcf0bf",
           "path": "site/src/site-config.ts"
         },
@@ -2964,6 +2966,11 @@
             "normalizePassRate"
           ],
           "hash": "b92de93cf1cbdb40374dd222e99b9be0041db04ecc9d46df41b341f5081cf159",
+          "importOrder": [
+            "src/db/init.ts",
+            "src/search/fts.ts",
+            "src/audit/controls.ts"
+          ],
           "importsFiles": [
             "src/audit/controls.ts",
             "src/db/init.ts",
@@ -3107,6 +3114,27 @@
           "entry": "parsePositiveInt",
           "entryRule": 1,
           "hash": "c4dd68d458799dc0247017b2144ad46836cf5ccd4ea8d89db0f26fcede36204e",
+          "importOrder": [
+            "src/db/init.ts",
+            "src/sync/publish.ts",
+            "src/sync/build-health.ts",
+            "src/health/index.ts",
+            "src/sync/index.ts",
+            "src/sync/local.ts",
+            "src/search/fts.ts",
+            "src/audit/controls.ts",
+            "src/audit/import.ts",
+            "src/audit/queries.ts",
+            "src/config.ts",
+            "src/cli-exit.ts",
+            "src/colors.ts",
+            "src/sync/dogfood.ts",
+            "src/sync/dogfood-suggest.ts",
+            "src/games/parser.ts",
+            "src/games/scorer.ts",
+            "src/games/render.ts",
+            "src/index.ts"
+          ],
           "importsFiles": [
             "src/audit/controls.ts",
             "src/audit/import.ts",
@@ -3598,6 +3626,12 @@
         },
         {
           "hash": "aed9c01114f7cb7f4d0fd139ff1aba92f1843af4e9ab8a428c5042631f535a72",
+          "importOrder": [
+            "src/games/parser.ts",
+            "src/games/scorer.ts",
+            "src/games/render.ts",
+            "src/games/types.ts"
+          ],
           "importsFiles": [
             "src/games/parser.ts",
             "src/games/render.ts",
@@ -3624,6 +3658,10 @@
             "renderReport"
           ],
           "hash": "e18bcc84399666a19d7d93e3b6bf9a10de939cf63c60fbf7d3cfe03d713da602",
+          "importOrder": [
+            "src/games/types.ts",
+            "src/colors.ts"
+          ],
           "importsFiles": [
             "src/colors.ts",
             "src/games/types.ts"
@@ -3690,6 +3728,13 @@
         },
         {
           "hash": "6c5c71e091bae7b57f4bd4d785a3e4aa5278fd32fcd86d9a86010bea9ec72a76",
+          "importOrder": [
+            "src/health/feed.ts",
+            "src/health/doctor.ts",
+            "src/health/table.ts",
+            "src/health/fsck.ts",
+            "src/health/diff.ts"
+          ],
           "importsFiles": [
             "src/health/diff.ts",
             "src/health/doctor.ts",
@@ -3706,6 +3751,10 @@
             "renderHealthTableText"
           ],
           "hash": "9fdce63b4f3d1b69151096331eea74bd8fd85b1be1e35d7d211b69e1a70b1cd5",
+          "importOrder": [
+            "src/db/init.ts",
+            "src/colors.ts"
+          ],
           "importsFiles": [
             "src/colors.ts",
             "src/db/init.ts"
@@ -3714,6 +3763,21 @@
         },
         {
           "hash": "fac6a2f1504e472821c455dcbd5c32ebbaab887b12df8e64bcf93e08e184245d",
+          "importOrder": [
+            "src/config.ts",
+            "src/db/init.ts",
+            "src/sync/publish.ts",
+            "src/sync/build-health.ts",
+            "src/health/index.ts",
+            "src/search/fts.ts",
+            "src/sync/index.ts",
+            "src/sync/local.ts",
+            "src/sync/github.ts",
+            "src/audit/controls.ts",
+            "src/audit/import.ts",
+            "src/audit/queries.ts",
+            "src/games/index.ts"
+          ],
           "importsFiles": [
             "src/audit/controls.ts",
             "src/audit/import.ts",
@@ -3738,6 +3802,19 @@
           "entry": "main",
           "entryRule": 1,
           "hash": "a91d18ec4af529a55ebacc8303870d99659edfa56b6cd18927fa13f51cb3737a",
+          "importOrder": [
+            "src/db/init.ts",
+            "src/search/fts.ts",
+            "src/sync/index.ts",
+            "src/sync/dogfood.ts",
+            "src/sync/dogfood-suggest.ts",
+            "src/audit/controls.ts",
+            "src/audit/import.ts",
+            "src/audit/queries.ts",
+            "src/health/index.ts",
+            "src/config.ts",
+            "src/index.ts"
+          ],
           "importsFiles": [
             "src/audit/controls.ts",
             "src/audit/import.ts",
@@ -4000,6 +4077,15 @@
             "fullSync"
           ],
           "hash": "9c9ee507d78ff18d30a00fb996f6ec5e9fe6dd6c362936e7336916af15cff907",
+          "importOrder": [
+            "src/sync/github.ts",
+            "src/sync/local.ts",
+            "src/search/fts.ts",
+            "src/db/init.ts",
+            "src/config.ts",
+            "src/sync/publish.ts",
+            "src/sync/build-health.ts"
+          ],
           "importsFiles": [
             "src/config.ts",
             "src/db/init.ts",
@@ -4069,6 +4155,41 @@
         {
           "reads": 1,
           "where": [
+            "cwd:CHANGELOG.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:LICENSE"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:README.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:SECURITY.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:SHIP_GATE.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
             "cwd:data"
           ],
           "writes": 0
@@ -4095,10 +4216,17 @@
           "writes": 1
         }
       ],
-      "outsideReads": 85,
+      "outsideReads": 90,
       "outsideWrites": 6,
       "role": "code",
       "testedBy": 48,
+      "unresolvedNamed": [
+        {
+          "path": "src/mcp/server.ts",
+          "specifier": "zod",
+          "why": "undeclared"
+        }
+      ],
       "unresolvedSites": 1
     },
     {
@@ -4150,6 +4278,10 @@
       "files": [
         {
           "hash": "71ed0e884544eadf3fc4a335f3617502405654115346515ab2aca474a6a4c7ea",
+          "importOrder": [
+            "src/db/init.ts",
+            "src/audit/controls.ts"
+          ],
           "importsFiles": [
             "src/audit/controls.ts",
             "src/db/init.ts"
@@ -4158,6 +4290,12 @@
         },
         {
           "hash": "f63fd71ed26dfa29f6169c34434d28bcc2fe252a8c0d0dc1b709142e8117431c",
+          "importOrder": [
+            "src/db/init.ts",
+            "src/audit/controls.ts",
+            "src/audit/import.ts",
+            "src/audit/queries.ts"
+          ],
           "importsFiles": [
             "src/audit/controls.ts",
             "src/audit/import.ts",
@@ -4168,6 +4306,12 @@
         },
         {
           "hash": "50a3f42f82d0e656be63d65a56b067f585a6a3c964e1641a76d74e4db6e8e934",
+          "importOrder": [
+            "src/db/init.ts",
+            "src/audit/controls.ts",
+            "src/audit/import.ts",
+            "src/audit/queries.ts"
+          ],
           "importsFiles": [
             "src/audit/controls.ts",
             "src/audit/import.ts",
@@ -4254,6 +4398,11 @@
         },
         {
           "hash": "6ab134ed61efea9944802a52c5eceeab97cfe172a4a166d701ff6b6ab8b8445b",
+          "importOrder": [
+            "src/db/init.ts",
+            "src/sync/dogfood.ts",
+            "src/sync/dogfood-suggest.ts"
+          ],
           "importsFiles": [
             "src/db/init.ts",
             "src/sync/dogfood-suggest.ts",
@@ -4271,6 +4420,12 @@
         },
         {
           "hash": "de5f5780a0a99b567a5b48d63f64d33a5205beca2aedaf4942ef4d2d552fa939",
+          "importOrder": [
+            "src/db/init.ts",
+            "src/sync/dogfood.ts",
+            "src/sync/swarm.ts",
+            "src/sync/dogfood-suggest.ts"
+          ],
           "importsFiles": [
             "src/db/init.ts",
             "src/sync/dogfood-suggest.ts",
@@ -4363,6 +4518,12 @@
         },
         {
           "hash": "9495a0134b3f2128ef3b92afc34c1380bd71c4aa20b5e616b2431105528df41e",
+          "importOrder": [
+            "src/games/parser.ts",
+            "src/games/scorer.ts",
+            "src/games/render.ts",
+            "src/games/types.ts"
+          ],
           "importsFiles": [
             "src/games/parser.ts",
             "src/games/render.ts",
@@ -4396,6 +4557,11 @@
         },
         {
           "hash": "c1b459881e8f5b9c5e82905e90dc6272b151a1ffab8ca58b7680eb109f98e689",
+          "importOrder": [
+            "src/db/init.ts",
+            "src/audit/controls.ts",
+            "src/audit/import.ts"
+          ],
           "importsFiles": [
             "src/audit/controls.ts",
             "src/audit/import.ts",
@@ -4492,6 +4658,10 @@
         },
         {
           "hash": "096694c422b0c87abdbd000e5afaedc9eecc537a556ab20732f6019d772180bc",
+          "importOrder": [
+            "src/sync/build-health.ts",
+            "src/db/init.ts"
+          ],
           "importsFiles": [
             "src/db/init.ts",
             "src/sync/build-health.ts"
@@ -4523,6 +4693,11 @@
         },
         {
           "hash": "b8f673e66ae98d7eaa181fdfc272c4338a2545b45474b9348612cffddcead662",
+          "importOrder": [
+            "src/db/init.ts",
+            "src/sync/local.ts",
+            "src/sync/index.ts"
+          ],
           "importsFiles": [
             "src/db/init.ts",
             "src/sync/index.ts",
@@ -4634,6 +4809,24 @@
           "via": "eslint eslint.config.js"
         },
         {
+          "built": true,
+          "job": "build-and-test",
+          "path": "src/cli.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "build-and-test",
+          "path": "src/index.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "build-and-test",
+          "path": "src/mcp/server.ts",
+          "runKind": "executes"
+        },
+        {
           "directory": true,
           "job": "build-and-test",
           "matched": true,
@@ -4642,7 +4835,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 3,
+      "runsCount": 6,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -4741,6 +4934,7 @@
             "branches": [
               "main"
             ],
+            "byHand": true,
             "event": "push"
           }
         }
@@ -4959,6 +5153,24 @@
           "via": "eslint eslint.config.js"
         },
         {
+          "built": true,
+          "job": "release",
+          "path": "src/cli.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "src/index.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "src/mcp/server.ts",
+          "runKind": "executes"
+        },
+        {
           "directory": true,
           "job": "release",
           "matched": true,
@@ -4967,7 +5179,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 5,
+      "runsCount": 8,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -5205,11 +5417,6 @@
           "by": ".github/workflows/release.yml"
         },
         {
-          "by": "src/sync/local.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "test/version.test.ts",
           "call": "readFileSync",
           "confidence": "ast",
@@ -5237,11 +5444,6 @@
           "confidence": "text",
           "ref": "master",
           "repo": "unclechu/node-deep-extend"
-        },
-        {
-          "by": "src/sync/local.ts",
-          "call": "literal",
-          "confidence": "ast"
         }
       ],
       "target": "LICENSE",
@@ -5249,11 +5451,6 @@
     },
     {
       "readers": [
-        {
-          "by": "src/sync/local.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
         {
           "by": "test/db.test.ts",
           "call": "literal",
@@ -5310,28 +5507,6 @@
           ]
         }
       ]
-    },
-    {
-      "readers": [
-        {
-          "by": "src/sync/local.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "SECURITY.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "src/sync/local.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "SHIP_GATE.md",
-      "writers": []
     },
     {
       "readers": [],

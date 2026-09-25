@@ -175,13 +175,14 @@
   "changesTogetherWithTests": 0,
   "commit": "dd0e1de4318d08e23e8da2649dd27df6f7e93548",
   "defaultBranch": "main",
-  "derived": "12 parts, mostly TypeScript (36 files) and JavaScript (6). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.",
+  "derived": "12 parts, mostly Markdown (83 files); code in TypeScript (36) and JavaScript (6). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.",
   "doors": [
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -216,16 +217,17 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request",
+        "on a pull request to main",
         "on a push to main touching 13 paths",
         "or by hand"
       ]
     },
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
@@ -372,11 +374,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:14:50.645Z",
+  "generatedAt": "2026-09-25T09:22:55.421Z",
   "limits": [
-    "1 import site could not be resolved.",
+    "1 import could not be resolved: `scripts/eval-planted.mjs` imports a path built at run time.",
     "1 import site names a path outside this repository, so what it loads is not followed.",
     "3 writes and 6 reads go to a path their caller passes, not to this repository.",
+    "3 reads go to the directory the command is run in (data/ and schemas/), not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -406,7 +409,7 @@
               "name": "evaluatePlanted",
               "part": "src",
               "partLabel": "src",
-              "phrase": "evaluate planted"
+              "phrase": "`evaluatePlanted`"
             }
           ],
           "when": "options.planted"
@@ -417,7 +420,7 @@
               "name": "printSummary",
               "part": "src",
               "partLabel": "src",
-              "phrase": "print summary"
+              "phrase": "`printSummary`"
             }
           ],
           "when": "isJsonOutput()"
@@ -431,86 +434,86 @@
           "name": "runAllCases",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run all cases",
+          "phrase": "`runAllCases`",
           "steps": [
             {
               "name": "checkAgency",
               "part": "src",
               "partLabel": "src",
-              "phrase": "check agency"
+              "phrase": "`checkAgency`"
             },
             {
               "name": "checkReassurance",
               "part": "src",
               "partLabel": "src",
-              "phrase": "check reassurance"
+              "phrase": "`checkReassurance`"
             },
             {
               "name": "checkPivot",
               "part": "src",
               "partLabel": "src",
-              "phrase": "check pivot"
+              "phrase": "`checkPivot`"
             },
             {
               "name": "checkPerformativeEmpathy",
               "part": "src",
               "partLabel": "src",
-              "phrase": "check performative empathy"
+              "phrase": "`checkPerformativeEmpathy`"
             },
             {
               "name": "checkGroundedUptake",
               "part": "src",
               "partLabel": "src",
-              "phrase": "check grounded uptake"
+              "phrase": "`checkGroundedUptake`"
             },
             {
               "name": "computeRelationalPosture",
               "part": "src",
               "partLabel": "src",
-              "phrase": "compute relational posture"
+              "phrase": "`computeRelationalPosture`"
             }
           ]
         }
       ],
       "part": "src",
       "partLabel": "src",
-      "phrase": "main",
+      "phrase": "`main`",
       "steps": [
         {
           "name": "loadCases",
           "part": "src",
           "partLabel": "src",
-          "phrase": "load cases"
+          "phrase": "`loadCases`"
         },
         {
           "name": "runAllCases",
           "part": "src",
           "partLabel": "src",
-          "phrase": "run all cases"
+          "phrase": "`runAllCases`"
         },
         {
           "name": "writeReport",
           "part": "src",
           "partLabel": "src",
-          "phrase": "write report"
+          "phrase": "`writeReport`"
         },
         {
           "name": "hasColors",
           "part": "src",
           "partLabel": "src",
-          "phrase": "has colors"
+          "phrase": "`hasColors`"
         },
         {
           "name": "printSummary",
           "part": "src",
           "partLabel": "src",
-          "phrase": "print summary"
+          "phrase": "`printSummary`"
         },
         {
           "name": "formatArtifact",
           "part": "src",
           "partLabel": "src",
-          "phrase": "format artifact"
+          "phrase": "`formatArtifact`"
         }
       ]
     }
@@ -518,7 +521,9 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "src/index.ts"
+    "src/index.ts",
+    "src/load.ts",
+    "src/color.ts"
   ],
   "summary": null,
   "summaryFrom": null,

@@ -10,21 +10,19 @@ Mapped at 2026-09-25 from commit 4198db5.
 
 - CI now also runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more.
 - Publish now also runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more.
-- package-lock.json is now also read by src/discovery/filters.ts.
-- src/ is now also read by src/extractors/imports.ts.
 - 129 files changed content, across 5 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push touching 8 paths; or by hand. Runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more; checks src/.
+1. **CI.** On a pull request touching 8 paths; on a push touching 8 paths; or by hand. Runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **Publish.** When a release is published. Runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more; checks src/.
+3. **Publish.** When a release is published. Runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more; builds src/.
 4. **@mcptoolshop/repo-dataset** (the package people import). Loads src/index.ts.
 5. **repo-dataset** (a command people run). Runs src/cli.ts.
 
 ## What happens through CI
 
-1. The workflow runs 14 files in src; it checks src/ in src.
+1. The workflow runs 14 files in src; it builds src/ in src.
 
 ## Who reads the results
 
@@ -34,7 +32,7 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Publish** runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more, checks src/, and publishes to npm.
+**Publish** runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more, builds src/, and publishes to npm.
 
 **@mcptoolshop/repo-dataset** (the package people import) loads src/index.ts.
 
@@ -72,15 +70,15 @@ People write .github/, docs/, the repository root and site/. Nothing in this rep
 
 ## Where to start
 
-src/cli.ts
+.github/workflows/ci.yml → src/index.ts → src/types.ts
 
-Read those in order to follow one run of repo-dataset end to end. This path follows repo-dataset (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
 - 8 reads use paths built at run time and are not named here.
 - 9 writes and 12 reads go to a path their caller passes, not to this repository.
-- 3 reads go to the directory the command is run in (.github/, package.json and tsconfig.json), not to this repository.
+- 5 reads go to the directory the command is run in (.github/, package-lock.json, package.json and 2 more places), not to this repository.
 - 1 command is built at run time and not followed.
 - 19 test files under `src/tests/` are not run by CI and Publish on Linux, where the shell expands `**` as one directory level.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.

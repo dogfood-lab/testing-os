@@ -14,15 +14,15 @@ Mapped at 2026-09-25 from commit 0f920ec.
 
 ## What comes in
 
-1. **ci.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; checks src/.
+1. **ci.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **Release.** When a tag matching `v*` is pushed. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; checks src/.
+3. **Release.** When a tag matching `v*` is pushed. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; builds src/.
 4. **@mcptoolshop/bytefit** (the package people import). Loads src/index.ts.
 5. **bytefit** (a command people run). Runs src/cli.ts.
 
 ## What happens through ci
 
-1. The workflow runs 16 files in src; it checks src/ in src.
+1. The workflow runs 16 files in src; it builds src/ in src.
 
 ## Who reads the results
 
@@ -32,7 +32,7 @@ ci writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Release** runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more, checks src/, publishes to npm, and creates a GitHub release.
+**Release** runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more, builds src/, publishes to npm, and creates a GitHub release.
 
 **@mcptoolshop/bytefit** (the package people import) loads src/index.ts.
 
@@ -76,13 +76,13 @@ People write .github/, assets/, docs/, the repository root and site/. Nothing in
 
 ## Where to start
 
-src/cli.ts
+.github/workflows/ci.yml → src/index.ts → src/types.ts
 
-Read those in order to follow one run of bytefit end to end. This path follows bytefit (a command people run) from its entry, since ci runs only tests.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 4 reads go to a path their caller passes, not to this repository.
+- 3 reads go to a path their caller passes, not to this repository.
 - 1 write and 1 read go to a temporary directory or a path their caller passes, not to this repository.
 - 1 read goes to the home directory (.ollama/) or a path its caller passes, not to this repository.
 - 1 command is built at run time and not followed.

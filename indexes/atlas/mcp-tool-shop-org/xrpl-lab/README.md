@@ -8,16 +8,17 @@ Mapped at 2026-09-25 from commit 454f364.
 
 ## What changed since 2026-09-25 (0b2dd2f)
 
-Nothing structural changed since 2026-09-25; no file changed.
+- Smoke Test (Testnet) now also runs xrpl_lab/transport/xrpl_testnet.py.
+- No file changed.
 
 ## What comes in
 
 1. **CI.** On a pull request touching 10 paths; on a push touching 10 paths; or by hand. Runs tests/, site/src/lib/artifacts-panels.test.ts and site/src/lib/dashboard-ui.test.ts; checks xrpl_lab/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Release Binaries.** When a release is published; when the workflow Release completes; or by hand. Builds xrpl_lab/__main__.py.
-4. **Publish to PyPI.** When a release is published; when the workflow Release completes; or by hand. Checks xrpl_lab/.
-5. **Release.** When a tag matching `v*` is pushed; or by hand. Runs no file this map can see.
-6. **Smoke Test (Testnet).** By hand. Runs no file this map can see.
+4. **Smoke Test (Testnet).** By hand. Runs xrpl_lab/transport/xrpl_testnet.py.
+5. **Publish to PyPI.** When a release is published; when the workflow Release completes; or by hand. Checks xrpl_lab/.
+6. **Release.** When a tag matching `v*` is pushed; or by hand. Runs no file this map can see.
 7. **xrpl-lab** (a command people run, from package.json). Runs bin/xrpl-lab.js.
 8. **xrpl-lab** (a command people run, from pyproject.toml). Runs xrpl_lab/cli.py.
 
@@ -36,11 +37,11 @@ CI writes nothing this map can see.
 
 **Release Binaries** creates a GitHub release and builds xrpl_lab/__main__.py into binaries for linux-x64 and win-x64 and uploads them to the release.
 
+**Smoke Test (Testnet)** runs xrpl_lab/transport/xrpl_testnet.py.
+
 **Publish to PyPI** checks xrpl_lab/ and publishes to PyPI.
 
 **Release** runs no file this map can see, publishes to npm, and creates a GitHub release.
-
-**Smoke Test (Testnet)** runs no file this map can see.
 
 **xrpl-lab** (a command people run, from package.json) runs bin/xrpl-lab.js.
 
@@ -48,7 +49,7 @@ CI writes nothing this map can see.
 
 ## What breaks what
 
-- **xrpl_lab** is imported by 1 part (scripts), and by 1 more only from tests; it sits on the path of 4 doors.
+- **xrpl_lab** is imported by 1 part (scripts), and by 1 more only from tests; it sits on the path of 5 doors.
 - **the site** is imported by no other part and sits on the path of 2 doors.
 - **scripts** is imported only from tests, by 1 part (tests), and sits on the path of 1 door.
 
@@ -82,16 +83,16 @@ People write .github/, design/, docs/, modules/, presets/, the repository root a
 
 ## Where to start
 
-xrpl_lab/cli.py
+xrpl_lab/cli.py → xrpl_lab/__init__.py → xrpl_lab/actions/verify.py → xrpl_lab/errors.py → xrpl_lab/modules.py → xrpl_lab/reporting.py → xrpl_lab/state.py
 
-Read those in order to follow one run of xrpl-lab end to end. This path follows xrpl-lab (a command people run, from pyproject.toml) from its entry, since CI runs only tests.
+Read those in order to follow one run of xrpl-lab end to end. This path follows xrpl-lab (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 
-- 1 import site could not be resolved.
+- 1 import could not be resolved: `tests/test_product_smoke.py` imports a path built at run time.
 - 7 writes and 20 reads use paths built at run time and are not named here.
 - 5 reads go to the home directory (.xrpl-lab/) or a path their caller passes, not to this repository.
-- 2 reads go to the directory the command is run in, not to this repository.
+- 3 reads go to the directory the command is run in, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

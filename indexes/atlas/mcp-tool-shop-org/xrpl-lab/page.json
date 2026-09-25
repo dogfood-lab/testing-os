@@ -10,7 +10,7 @@
   ],
   "breaks": [
     {
-      "doors": 4,
+      "doors": 5,
       "importedBy": [
         "scripts"
       ],
@@ -50,8 +50,16 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "Smoke Test (Testnet) now also runs xrpl_lab/transport/xrpl_testnet.py.",
+        "subjects": [
+          ".github/workflows/smoke.yml",
+          "xrpl_lab/transport/xrpl_testnet.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -59,7 +67,7 @@
       "commit": "0b2dd2f45b8f927395521a3e85ce0bfa036d014b",
       "generatedAt": "2026-09-25T02:31:13.966Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -184,6 +192,33 @@
       ]
     },
     {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/smoke.yml",
+      "id": ".github/workflows/smoke.yml",
+      "landings": [],
+      "name": "Smoke Test (Testnet)",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "xrpl_lab",
+          "depth": 0,
+          "files": 11
+        }
+      ],
+      "runs": [
+        "xrpl_lab/transport/xrpl_testnet.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "by hand"
+      ]
+    },
+    {
       "checks": [
         "xrpl_lab/"
       ],
@@ -235,25 +270,6 @@
       "triggers": [
         "when a tag matching `v*` is pushed",
         "or by hand"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "checksMore": 0,
-      "file": ".github/workflows/smoke.yml",
-      "id": ".github/workflows/smoke.yml",
-      "landings": [],
-      "name": "Smoke Test (Testnet)",
-      "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
-      "runsMore": 0,
-      "sends": [],
-      "stages": [],
-      "triggers": [
-        "by hand"
       ]
     },
     {
@@ -320,12 +336,12 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T03:21:06.555Z",
+  "generatedAt": "2026-09-25T09:23:57.741Z",
   "limits": [
-    "1 import site could not be resolved.",
+    "1 import could not be resolved: `tests/test_product_smoke.py` imports a path built at run time.",
     "7 writes and 20 reads use paths built at run time and are not named here.",
     "5 reads go to the home directory (.xrpl-lab/) or a path their caller passes, not to this repository.",
-    "2 reads go to the directory the command is run in, not to this repository.",
+    "3 reads go to the directory the command is run in, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -348,9 +364,15 @@
   "sequences": [],
   "startDoor": "pyproject.toml#xrpl-lab",
   "startHere": [
-    "xrpl_lab/cli.py"
+    "xrpl_lab/cli.py",
+    "xrpl_lab/__init__.py",
+    "xrpl_lab/actions/verify.py",
+    "xrpl_lab/errors.py",
+    "xrpl_lab/modules.py",
+    "xrpl_lab/reporting.py",
+    "xrpl_lab/state.py"
   ],
-  "startReason": "This path follows xrpl-lab (a command people run, from pyproject.toml) from its entry, since CI runs only tests.",
+  "startReason": "This path follows xrpl-lab (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 127,

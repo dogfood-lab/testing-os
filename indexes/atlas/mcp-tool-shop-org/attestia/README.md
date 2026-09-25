@@ -4,36 +4,40 @@ Mapped at 2026-09-25 from commit 47e1a45.
 
 ## What this is
 
-23 parts, mostly TypeScript (407 files) and JavaScript (2). Work enters through 4 doors; the busiest is Publish to GHCR, which reaches 16 parts. It publishes @mcptoolshop/attestia (packages/attestia) to npm and a container image.
+23 parts, mostly TypeScript (407 files) and JavaScript (2). Work enters through 5 doors; the busiest is Publish to GHCR, which reaches 16 parts. It publishes @mcptoolshop/attestia to npm and a container image. People import @mcptoolshop/attestia.
 
 ## What changed since 2026-09-24 (245af30)
 
-- attestia-demo (packages/demo/package.json) is no longer a command.
+- CI now also builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 10 more.
+- Publish to GHCR now also builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 24 more.
+- Release now also builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 10 more.
+- And 2 more changes to doors.
 - 588 files changed content, across 22 parts.
 
 ## What comes in
 
-1. **Publish to GHCR.** When a release is published; or by hand. Runs packages/node/src/main.ts; checks package.json, packages/, pnpm-lock.yaml and 2 more.
-2. **Release.** When a tag matching `v*` is pushed. Runs packages/attestia/tests/, packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts and 181 more; checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 152 more.
-3. **CI.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts, packages/chain-observer/tests/evm/ and 175 more; checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 152 more.
+1. **Publish to GHCR.** When a release is published; or by hand. Runs packages/node/src/main.ts; builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 193 more; checks package.json, packages/, pnpm-lock.yaml and 2 more.
+2. **CI.** On a pull request to main touching 12 paths; on a push to main touching 12 paths; or by hand. Runs packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts, packages/chain-observer/tests/evm/ and 175 more; builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 193 more.
+3. **Release.** When a tag matching `v*` is pushed. Runs packages/attestia/tests/, packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts and 181 more; builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 193 more.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+5. **@mcptoolshop/attestia** (the package people import). Loads packages/attestia/dist/index.d.ts, built from a source this map cannot place.
 
 ## What happens through Publish to GHCR
 
-1. The workflow runs packages/node/src/main.ts in node; it checks 4 files in the repository root and packages/ (15 parts).
-   1. Inside packages/node/src/main.ts, main does, in order: load config, parse api keys and create app.
-   2. **Create app** runs, in order:
-      1. request id middleware
-      2. logger middleware
-      3. metrics middleware
-      4. create error handler
-      5. create health routes
-      6. auth middleware
-      7. create metrics route
-      8. create public verify routes
-      9. create public proof routes
-      10. create public compliance routes
-      11. create public open api routes
+1. The workflow runs packages/node/src/main.ts in node; it builds 13 files in attestia, packages/chain-observer/src/ in chain-observer, packages/demo/src/ in demo, packages/event-store/src/ in event-store, packages/ledger/src/ in ledger, and 146 files in 10 more parts; it checks 4 files in the repository root and packages/ (15 parts).
+   1. Inside packages/node/src/main.ts, `main` does, in order: `loadConfig`, `parseApiKeys` and `createApp`.
+   2. **`createApp`** runs, in order:
+      1. `requestIdMiddleware`
+      2. `loggerMiddleware`
+      3. `metricsMiddleware`
+      4. `createErrorHandler`
+      5. `createHealthRoutes`
+      6. `authMiddleware`
+      7. `createMetricsRoute`
+      8. `createPublicVerifyRoutes`
+      9. `createPublicProofRoutes`
+      10. `createPublicComplianceRoutes`
+      11. `createPublicOpenApiRoutes`
 2. It publishes a container image.
 
 ## Who reads the results
@@ -42,11 +46,13 @@ Publish to GHCR writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs packages/attestia/tests/, packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts and 181 more, checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 152 more, publishes @mcptoolshop/attestia (packages/attestia) to npm, and creates a GitHub release.
+**CI** runs packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts, packages/chain-observer/tests/evm/ and 175 more, and builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 193 more.
 
-**CI** runs packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts, packages/chain-observer/tests/evm/ and 175 more, and checks packages/chain-observer/src/, packages/demo/src/, packages/event-store/src/ and 152 more.
+**Release** runs packages/attestia/tests/, packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts and 181 more, builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 193 more, publishes @mcptoolshop/attestia to npm, and creates a GitHub release.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
+
+**@mcptoolshop/attestia** (the package people import) loads packages/attestia/dist/index.d.ts, built from a source this map cannot place.
 
 ## What breaks what
 
@@ -90,7 +96,7 @@ People write .github/, assets/, docs/, resources/, the repository root, site/ an
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/node/src/app.ts
+.github/workflows/ci.yml → packages/chain-observer/src/index.ts → packages/types/src/chain.ts
 
 Read those in order to follow one pull request end to end.
 

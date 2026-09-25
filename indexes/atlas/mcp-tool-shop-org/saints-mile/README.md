@@ -8,14 +8,14 @@ Mapped at 2026-09-25 from commit 18fa475.
 
 ## What changed since 2026-09-24 (49f5266)
 
-- In src/ui/screens/combat.rs, render combat gained a step, locked style, before lock reason style.
-- In src/ui/screens/combat.rs, render combat gained a step, lock reason style, before dim style.
-- In src/ui/screens/status.rs, render status gained a step, ammo color, before echo style.
+- In src/ui/screens/combat.rs, `render_combat` gained a step, `locked_style`, before `lock_reason_style`.
+- In src/ui/screens/combat.rs, `render_combat` gained a step, `lock_reason_style`, before `dim_style`.
+- In src/ui/screens/status.rs, `render_status` gained a step, `ammo_color`, before `echo_style`.
 - No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs src/combat/convoy.rs, src/combat/crowd.rs, src/combat/engine.rs and 43 more; checks src/lib.rs and src/main.rs.
+1. **CI.** On a pull request to main touching 8 paths; on a push to main touching 8 paths; or by hand. Runs src/combat/convoy.rs, src/combat/crowd.rs, src/combat/engine.rs and 43 more; checks src/lib.rs and src/main.rs.
 2. **Release Binaries.** When a release is published; or by hand. Runs msix/gen-assets.mjs; builds src/main.rs; checks src/lib.rs.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **saints-mile** (a command people run). Runs src/main.rs.
@@ -69,13 +69,13 @@ People write .github/, the repository root and site/. Nothing in this repository
 
 ## Where to start
 
-src/main.rs → src/lib.rs
+src/main.rs → src/lib.rs → src/ui/mod.rs → src/state/store.rs → src/ui/screens/title.rs → src/ui/screens/scene.rs → src/ui/screens/standoff.rs
 
-Read those in order to follow one run of saints-mile end to end. This path follows saints-mile (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one run of saints-mile end to end. This path follows saints-mile (a command people run) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 
-- 1 import site could not be resolved.
+- 1 import could not be resolved: `msix/resize-logo.mjs` imports `sharp`, which is not declared.
 - 6 writes and 1 read go to a path their caller passes, not to this repository.
 - 4 writes go to the directory the command is run in (saves/) or a path their caller passes, not to this repository.
 - 2 reads go to the directory the command is run in (saves/), not to this repository.

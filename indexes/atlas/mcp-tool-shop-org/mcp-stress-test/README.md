@@ -21,8 +21,8 @@ Mapped at 2026-09-25 from commit a8a79e8.
 ## What comes in
 
 1. **Publish.** When a release is published; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks src/mcp_stress_test/. On a run by hand with publish_docker true, it also checks README.md, pyproject.toml and src/.
-2. **CI.** On a pull request; on a push to main touching 8 paths; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks src/.
-3. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+2. **CI.** On a pull request to main; on a push to main touching 8 paths; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks src/.
+3. **Deploy site to GitHub Pages.** On a pull request to main touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **mcp-stress** (a command people run). Runs src/mcp_stress_test/cli/__init__.py.
 
 ## What happens through Publish
@@ -81,13 +81,13 @@ No configuration or documentation part is left to people alone.
 
 ## Where to start
 
-.github/workflows/ci.yml → src/mcp_stress_test/cli/__init__.py
+.github/workflows/ci.yml → src/mcp_stress_test/cli/__init__.py → src/mcp_stress_test/cli/main.py → src/mcp_stress_test/__init__.py → src/mcp_stress_test/cli/commands/chain.py → src/mcp_stress_test/cli/commands/fuzz.py → src/mcp_stress_test/cli/commands/generate.py → src/mcp_stress_test/cli/commands/info.py
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 2 import sites could not be resolved.
+- 2 imports could not be resolved: `tests/test_operator_contract.py` imports a path built at run time; `tests/test_operator_contract.py` imports a path built at run time.
 - 15 writes and 14 reads use paths built at run time and are not named here.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

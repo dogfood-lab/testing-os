@@ -290,7 +290,7 @@
       },
       {
         "kind": "door",
-        "sentence": "CI runs 424 more files than before.",
+        "sentence": "CI runs 425 more files than before.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
@@ -311,15 +311,6 @@
       },
       {
         "kind": "landing",
-        "sentence": ".ai-rpg-engine is now written by packages/cli/src/bin.ts and packages/cli/src/history.ts.",
-        "subjects": [
-          ".ai-rpg-engine",
-          "packages/cli/src/bin.ts",
-          "packages/cli/src/history.ts"
-        ]
-      },
-      {
-        "kind": "landing",
         "sentence": "docs/c0-alignment/intake-table.json is now written by packages/cli/src/c0-intake-table.test.ts.",
         "subjects": [
           "docs/c0-alignment/intake-table.json",
@@ -336,7 +327,15 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 88 more new writers and readers of places.",
+        "sentence": "docs/c0-alignment/version-skew.json is now written by packages/cli/src/c0-version-skew.test.ts.",
+        "subjects": [
+          "docs/c0-alignment/version-skew.json",
+          "packages/cli/src/c0-version-skew.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 87 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -348,7 +347,7 @@
       },
       {
         "kind": "sequence",
-        "sentence": "scripts/verify-isolated-consumer.mjs now starts at run; it started at publishable workspaces.",
+        "sentence": "scripts/verify-isolated-consumer.mjs now starts at `run`; it started at `publishableWorkspaces`.",
         "subjects": [
           "scripts/verify-isolated-consumer.mjs"
         ]
@@ -444,7 +443,7 @@
   ],
   "changesTogetherNote": [
     "11 files changed together with their own tests, as expected.",
-    "Window: 180 days; a pair counts from 10 shared commits, since 56 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
+    "Window: 180 days; a pair counts from 10 shared commits, since 55 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 11,
   "commit": "f7e56e65779e14e3b061a5e581fd13783abe2e98",
@@ -452,6 +451,9 @@
   "derived": "39 parts, mostly TypeScript (797 files), JavaScript (13) and GDScript (2). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. People run ai and ai-rpg-engine.",
   "doors": [
     {
+      "builds": [
+        "docs/mixed-game-viability-proof.ts"
+      ],
       "checks": [
         "package-lock.json",
         "package.json",
@@ -682,7 +684,6 @@
         "packages/cli/src/c0-intake-table.test.ts",
         "packages/cli/src/c0-reverse-table.test.ts",
         "packages/cli/src/c0-version-skew.test.ts",
-        "packages/cli/src/c1-conformance.test.ts",
         "packages/content-schema/src/ability-pack-validate.test.ts",
         "packages/content-schema/src/build-catalog.test.ts",
         "packages/content-schema/src/intake.test.ts",
@@ -821,10 +822,12 @@
         "on a pull request touching 15 paths",
         "on a push touching 15 paths",
         "or by hand"
-      ],
-      "untracked": ".ai-rpg-engine/, which is not tracked"
+      ]
     },
     {
+      "builds": [
+        "docs/mixed-game-viability-proof.ts"
+      ],
       "checks": [
         "package-lock.json",
         "package.json",
@@ -1060,7 +1063,6 @@
         "packages/content-schema/src/intake.test.ts",
         "packages/content-schema/src/json-schema.test.ts",
         "packages/content-schema/src/loader-from-file.test.ts",
-        "packages/content-schema/src/loader.test.ts",
         "packages/core/src/actions.test.ts",
         "packages/core/src/channels.test.ts",
         "packages/core/src/deserialize-rebind.test.ts",
@@ -1195,8 +1197,7 @@
       "triggers": [
         "when a release is published",
         "or by hand"
-      ],
-      "untracked": ".ai-rpg-engine/, which is not tracked"
+      ]
     },
     {
       "checks": [],
@@ -1411,8 +1412,7 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": [],
-      "untracked": ".ai-rpg-engine/, which is not tracked"
+      "triggers": []
     },
     {
       "checks": [],
@@ -1686,18 +1686,18 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:06:34.330Z",
+  "generatedAt": "2026-09-25T09:12:31.292Z",
   "limits": [
-    "3 import sites could not be resolved.",
-    "23 writes and 35 reads use paths built at run time and are not named here.",
-    "3 writes go to places this repository does not track, so they are not listed as generated.",
+    "3 imports could not be resolved: `packages/cli/src/external-pack.ts` imports a path built at run time; `packages/pack-registry/src/discover.ts` imports a path built at run time; `packages/pack-registry/src/starter-readme-usage.test.ts` imports a path built at run time.",
+    "21 writes and 34 reads use paths built at run time and are not named here.",
+    "1 write goes to places this repository does not track, so it is not listed as generated.",
     "7 writes and 112 reads go to a path their caller passes, not to this repository.",
     "16 writes and 13 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
-    "7 writes and 5 reads go to the directory the command is run in, not to this repository.",
+    "12 writes and 9 reads go to the directory the command is run in, not to this repository.",
     "6 writes and 3 reads go to a temporary directory, not to this repository.",
     "2 commands are built at run time and not followed, 1 of them in tests.",
-    "CI runs or checks 433 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Release runs or checks 432 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
+    "CI runs or checks 434 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs or checks 433 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -1758,7 +1758,7 @@
               "name": "closeReadline",
               "part": "cli",
               "partLabel": "cli",
-              "phrase": "close readline"
+              "phrase": "`closeReadline`"
             }
           ],
           "when": "args.includes('--version') || args.includes('-v') || comman…"
@@ -1769,7 +1769,7 @@
               "name": "closeReadline",
               "part": "cli",
               "partLabel": "cli",
-              "phrase": "close readline"
+              "phrase": "`closeReadline`"
             }
           ],
           "when": "wantsHelp && !COMMANDS_WITH_OWN_HELP.has(command)"
@@ -1780,7 +1780,7 @@
               "name": "map",
               "part": "cli",
               "partLabel": "cli",
-              "phrase": "map"
+              "phrase": "`map`"
             }
           ],
           "when": "raw === undefined || raw === '' || raw.startsWith('-')"
@@ -1791,7 +1791,7 @@
               "name": "map",
               "part": "cli",
               "partLabel": "cli",
-              "phrase": "map"
+              "phrase": "`map`"
             }
           ],
           "when": "!allPacks.some((p) => p.meta.id === raw)"
@@ -1802,13 +1802,13 @@
               "name": "glyphsFor",
               "part": "terminal-ui",
               "partLabel": "terminal-ui",
-              "phrase": "glyphs for"
+              "phrase": "`glyphsFor`"
             },
             {
               "name": "closeReadline",
               "part": "cli",
               "partLabel": "cli",
-              "phrase": "close readline"
+              "phrase": "`closeReadline`"
             }
           ],
           "when": "!parsed.ok"
@@ -1819,13 +1819,13 @@
               "name": "formatPackCatalog",
               "part": "cli",
               "partLabel": "cli",
-              "phrase": "format pack catalog"
+              "phrase": "`formatPackCatalog`"
             },
             {
               "name": "closeReadline",
               "part": "cli",
               "partLabel": "cli",
-              "phrase": "close readline"
+              "phrase": "`closeReadline`"
             }
           ],
           "when": "parsed.listPacks"
@@ -1836,7 +1836,7 @@
               "name": "find",
               "part": "cli",
               "partLabel": "cli",
-              "phrase": "find"
+              "phrase": "`find`"
             }
           ],
           "when": "slot.gameId"
@@ -1848,19 +1848,19 @@
               "name": null,
               "part": "terminal-ui",
               "partLabel": "terminal-ui",
-              "phrase": "src"
+              "phrase": "`index.ts`"
             },
             {
               "name": "promptMenu",
               "part": "cli",
               "partLabel": "cli",
-              "phrase": "prompt menu"
+              "phrase": "`promptMenu`"
             },
             {
               "name": "restoreSessionFromSave",
               "part": "cli",
               "partLabel": "cli",
-              "phrase": "restore session from save"
+              "phrase": "`restoreSessionFromSave`"
             }
           ],
           "when": "restorable.length === 1"
@@ -1868,98 +1868,70 @@
       ],
       "entry": "main",
       "file": "packages/cli/src/bin.ts",
-      "inner": [
-        {
-          "file": "packages/cli/src/restore-session.ts",
-          "name": "restoreSessionFromSave",
-          "part": "cli",
-          "partLabel": "cli",
-          "phrase": "restore session from save",
-          "steps": [
-            {
-              "name": "createGame",
-              "part": null,
-              "partLabel": null,
-              "phrase": "create game"
-            },
-            {
-              "name": "deserialize",
-              "part": "core",
-              "partLabel": "core",
-              "phrase": "deserialize"
-            },
-            {
-              "name": "migrateModuleStates",
-              "part": "core",
-              "partLabel": "core",
-              "phrase": "migrate module states"
-            }
-          ]
-        }
-      ],
+      "inner": [],
       "part": "cli",
       "partLabel": "cli",
-      "phrase": "main",
+      "phrase": "`main`",
       "steps": [
         {
           "name": "some",
           "part": "cli",
           "partLabel": "cli",
-          "phrase": "some"
+          "phrase": "`some`"
         },
         {
           "name": "find",
           "part": "cli",
           "partLabel": "cli",
-          "phrase": "find"
+          "phrase": "`find`"
         },
         {
           "name": "loadExternalPack",
           "part": "cli",
           "partLabel": "cli",
-          "phrase": "load external pack"
+          "phrase": "`loadExternalPack`"
         },
         {
           "name": "glyphsFor",
           "part": "terminal-ui",
           "partLabel": "terminal-ui",
-          "phrase": "glyphs for"
+          "phrase": "`glyphsFor`"
         },
         {
           "name": "closeReadline",
           "part": "cli",
           "partLabel": "cli",
-          "phrase": "close readline"
+          "phrase": "`closeReadline`"
         },
         {
           "name": "promptMenu",
           "part": "cli",
           "partLabel": "cli",
-          "phrase": "prompt menu"
+          "phrase": "`promptMenu`"
         },
         {
           "name": "readRunHistory",
           "part": "cli",
           "partLabel": "cli",
-          "phrase": "read run history"
+          "phrase": "`readRunHistory`"
         },
         {
           "name": "map",
           "part": "cli",
           "partLabel": "cli",
-          "phrase": "map"
+          "phrase": "`map`"
         },
         {
           "name": "formatRecentRuns",
           "part": "cli",
           "partLabel": "cli",
-          "phrase": "format recent runs"
+          "phrase": "`formatRecentRuns`"
         },
         {
           "name": "map",
           "part": "cli",
           "partLabel": "cli",
-          "phrase": "map"
+          "phrase": "`map`"
         }
       ]
     }
@@ -1969,7 +1941,8 @@
     ".github/workflows/ci.yml",
     "packages/cli/src/bin.ts",
     "packages/modules/src/ability-builders.ts",
-    "packages/content-schema/src/build-catalog.ts"
+    "packages/content-schema/src/build-catalog.ts",
+    "packages/content-schema/src/validate.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -2009,7 +1982,7 @@
     "starter-zombie": 42,
     "terminal-ui": 28
   },
-  "unnamedWrites": 23,
+  "unnamedWrites": 21,
   "unread": [
     {
       "place": "docs/c0-alignment/intake-table.json",

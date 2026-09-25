@@ -1839,6 +1839,7 @@
           "path": "site/public/robots.txt"
         },
         {
+          "constantOnly": true,
           "hash": "34b036603793e4eb4bfad87e1fd7f851a84fef6a762257a3b2dc1411983d26df",
           "path": "site/src/content.config.ts"
         },
@@ -2169,6 +2170,12 @@
             "renderPreview"
           ],
           "hash": "36cf56caa5286f02444817381324efd35fc22783e7f3c0dcd883fa50ce227a4c",
+          "importOrder": [
+            "src/fs-utils.mjs",
+            "src/dossier-block.mjs",
+            "src/specialist/record.mjs",
+            "src/specialist/training-programs.mjs"
+          ],
           "importsFiles": [
             "src/dossier-block.mjs",
             "src/fs-utils.mjs",
@@ -2202,6 +2209,12 @@
             "updateStepState"
           ],
           "hash": "e49fd0a6007f6f1e26bc4eba9dad2442010f1fe0a30c4eee9cc5a95e2b08a772",
+          "importOrder": [
+            "src/escalation.mjs",
+            "src/tool-profiles.mjs",
+            "src/knowledge/render-knowledge-block.mjs",
+            "src/dossier-block.mjs"
+          ],
           "importsFiles": [
             "src/dossier-block.mjs",
             "src/escalation.mjs",
@@ -2238,6 +2251,12 @@
             "formatEntryDecision"
           ],
           "hash": "440f17dadea8ca1e6294a7ce3c18d1dde5d66fee78ff9483ff49fa83616ae456",
+          "importOrder": [
+            "src/mission.mjs",
+            "src/packs.mjs",
+            "src/decompose.mjs",
+            "src/route.mjs"
+          ],
           "importsFiles": [
             "src/decompose.mjs",
             "src/mission.mjs",
@@ -2291,6 +2310,10 @@
             "scaffoldHooks"
           ],
           "hash": "bf8c12b8fb0818ecfac21690d889b1a69589673fda9dccbd911e05f4c6706bf1",
+          "importOrder": [
+            "src/specialist/conformance-consult.mjs",
+            "src/specialist/capability-gate.mjs"
+          ],
           "importsFiles": [
             "src/specialist/capability-gate.mjs",
             "src/specialist/conformance-consult.mjs"
@@ -2341,6 +2364,15 @@
         },
         {
           "hash": "805dd3fa9712c1bcee2d44c5cb554ef0d54b4b77d0baf354118513cc190f1a42",
+          "importOrder": [
+            "src/knowledge/resolve-overlay.mjs",
+            "src/knowledge/retrieve-for-dispatch.mjs",
+            "src/knowledge/attach-bundle-to-packet.mjs",
+            "src/knowledge/attach-bundle-to-evidence.mjs",
+            "src/knowledge/fallback-policy.mjs",
+            "src/knowledge/render-knowledge-block.mjs",
+            "src/knowledge/analyze-artifact-evidence.mjs"
+          ],
           "importsFiles": [
             "src/knowledge/analyze-artifact-evidence.mjs",
             "src/knowledge/attach-bundle-to-evidence.mjs",
@@ -2376,6 +2408,10 @@
             "retrieveForDispatch"
           ],
           "hash": "2edf5d56fed1384b5f7c0112fc08f0f17dc64952208fb27507b6011b93f9dc05",
+          "importOrder": [
+            "src/knowledge/resolve-overlay.mjs",
+            "src/knowledge/fallback-policy.mjs"
+          ],
           "importsFiles": [
             "src/knowledge/fallback-policy.mjs",
             "src/knowledge/resolve-overlay.mjs"
@@ -2409,6 +2445,13 @@
             "startNextStep"
           ],
           "hash": "bb108ddb3eaa52c529ae1d9694f5b73e9b1e562ad4a9e946219168b8c9785d23",
+          "importOrder": [
+            "src/mission.mjs",
+            "src/artifacts.mjs",
+            "src/swarm/build-gate.mjs",
+            "src/swarm/exit-condition.mjs",
+            "src/state-machine.mjs"
+          ],
           "importsFiles": [
             "src/artifacts.mjs",
             "src/mission.mjs",
@@ -2427,6 +2470,11 @@
             "validateMission"
           ],
           "hash": "bdffabc7f87cd174ca78c3b6100bcbce622cae584a05bd92ff004c867c781bc2",
+          "importOrder": [
+            "src/packs.mjs",
+            "src/artifacts.mjs",
+            "src/route.mjs"
+          ],
           "importsFiles": [
             "src/artifacts.mjs",
             "src/packs.mjs",
@@ -2450,6 +2498,10 @@
             "packsCommand"
           ],
           "hash": "c6a77bc52eb5e5dc16b40e3b607cbac74a279255d0aac4a1d212abc474bb926c",
+          "importOrder": [
+            "src/packs.mjs",
+            "src/fs-utils.mjs"
+          ],
           "importsFiles": [
             "src/fs-utils.mjs",
             "src/packs.mjs"
@@ -2495,6 +2547,11 @@
             "reviewCommand"
           ],
           "hash": "acf16db261e79da3663b53f2b25fefdd72285d92d4269893b161097df64adce0",
+          "importOrder": [
+            "src/fs-utils.mjs",
+            "src/prompts.mjs",
+            "src/escalation.mjs"
+          ],
           "importsFiles": [
             "src/escalation.mjs",
             "src/fs-utils.mjs",
@@ -2517,6 +2574,12 @@
             "scoreRole"
           ],
           "hash": "ef99537a991671e5acb6bd929694b7f05a32f18ad5b666f92dd734e225ad5b87",
+          "importOrder": [
+            "src/fs-utils.mjs",
+            "src/conflicts.mjs",
+            "src/escalation.mjs",
+            "src/packs.mjs"
+          ],
           "importsFiles": [
             "src/conflicts.mjs",
             "src/escalation.mjs",
@@ -2542,6 +2605,11 @@
             "runCommand"
           ],
           "hash": "8b50590571151cc30a75841ffc57cc1e23c05b82fe5f294061628add96c73cfa",
+          "importOrder": [
+            "src/run.mjs",
+            "src/artifacts.mjs",
+            "src/swarm/build-gate.mjs"
+          ],
           "importsFiles": [
             "src/artifacts.mjs",
             "src/run.mjs",
@@ -2574,6 +2642,16 @@
             "startNext"
           ],
           "hash": "aebd0ec00f154e5b852de217a26f0d8a147572b183ec2e1dda1b012df8759734",
+          "importOrder": [
+            "src/entry.mjs",
+            "src/mission.mjs",
+            "src/packs.mjs",
+            "src/route.mjs",
+            "src/artifacts.mjs",
+            "src/mission-run.mjs",
+            "src/state-machine.mjs",
+            "src/knowledge/index.mjs"
+          ],
           "importsFiles": [
             "src/artifacts.mjs",
             "src/entry.mjs",
@@ -2594,6 +2672,12 @@
             "scaffoldClaude"
           ],
           "hash": "463f568df934747aeb385a30a9ed1b664571349fc3e430f0fc31a0c9134e6f44",
+          "importOrder": [
+            "src/fs-utils.mjs",
+            "src/hooks.mjs",
+            "src/route.mjs",
+            "src/packs.mjs"
+          ],
           "importsFiles": [
             "src/fs-utils.mjs",
             "src/hooks.mjs",
@@ -3128,6 +3212,14 @@
             "dispatchSpecialist"
           ],
           "hash": "21a68ca8730bcd845ccff9170431e84a9eeccb1bd667b147287fc1822fae70ec",
+          "importOrder": [
+            "src/specialist/registry.mjs",
+            "src/specialist/gate.mjs",
+            "src/specialist/client.mjs",
+            "src/specialist/state.mjs",
+            "src/specialist/shadow.mjs",
+            "src/specialist/field-log.mjs"
+          ],
           "importsFiles": [
             "src/specialist/client.mjs",
             "src/specialist/field-log.mjs",
@@ -3192,6 +3284,13 @@
             "deriveTechniques"
           ],
           "hash": "70425a73c252a14d16cfe04937e98f3a54903db864a0e499ca57ea8588c97f4d",
+          "importOrder": [
+            "src/specialist/events.mjs",
+            "src/specialist/field-log.mjs",
+            "src/specialist/drift.mjs",
+            "src/specialist/state.mjs",
+            "src/calibration.mjs"
+          ],
           "importsFiles": [
             "src/calibration.mjs",
             "src/specialist/drift.mjs",
@@ -3789,6 +3888,7 @@
           "path": "src/swarm/persist-bridge.mjs"
         },
         {
+          "constantOnly": true,
           "hash": "4fe92e7078210955bf2de0a65216b0692438d43d7043229a4114bb82152da14d",
           "path": "src/tool-profiles.mjs"
         },
@@ -3800,6 +3900,11 @@
             "getRoleContract"
           ],
           "hash": "f599b6ce0f37ba04e3272905b5e06e7df72165417e275bc15f577616585b834c",
+          "importOrder": [
+            "src/route.mjs",
+            "src/tool-profiles.mjs",
+            "src/evidence.mjs"
+          ],
           "importsFiles": [
             "src/evidence.mjs",
             "src/route.mjs",
@@ -3940,18 +4045,46 @@
           "writes": 0
         },
         {
-          "reads": 2,
+          "reads": 4,
           "where": [
             "cwd:.claude"
           ],
           "writes": 0
         },
         {
-          "reads": 25,
+          "reads": 31,
           "where": [
             "cwd:.claude/"
           ],
+          "writes": 12
+        },
+        {
+          "reads": 8,
+          "where": [
+            "cwd:.role-os/"
+          ],
           "writes": 8
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:AUDIT-ACTION-PLAN.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:AUDIT-CRITIC-VERDICT.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:AUDIT-SUMMARY.md"
+          ],
+          "writes": 0
         },
         {
           "reads": 4,
@@ -3968,7 +4101,7 @@
           "writes": 0
         },
         {
-          "reads": 7,
+          "reads": 8,
           "where": [
             "cwd:audit-manifest.json"
           ],
@@ -3989,7 +4122,7 @@
           "writes": 0
         },
         {
-          "reads": 4,
+          "reads": 5,
           "where": [
             "cwd:package.json"
           ],
@@ -4038,8 +4171,8 @@
           "writes": 1
         }
       ],
-      "outsideReads": 112,
-      "outsideWrites": 47,
+      "outsideReads": 133,
+      "outsideWrites": 59,
       "role": "code",
       "testedBy": 72,
       "unresolvedSites": 0
@@ -4335,6 +4468,13 @@
         },
         {
           "hash": "93369839fea84c0c9e1a151c941e0b7929c9ea97da0771ac872b173434c13b3d",
+          "importOrder": [
+            "src/run.mjs",
+            "src/artifacts.mjs",
+            "src/calibration.mjs",
+            "src/route.mjs",
+            "src/brainstorm-roles.mjs"
+          ],
           "importsFiles": [
             "src/artifacts.mjs",
             "src/brainstorm-roles.mjs",
@@ -4346,6 +4486,11 @@
         },
         {
           "hash": "4d8a86ba2477906197a4877adc0d580ff70f3873fb3989351a0c4167fd4bfcab",
+          "importOrder": [
+            "src/brainstorm.mjs",
+            "src/brainstorm-roles.mjs",
+            "src/brainstorm-render.mjs"
+          ],
           "importsFiles": [
             "src/brainstorm-render.mjs",
             "src/brainstorm-roles.mjs",
@@ -4383,6 +4528,10 @@
         },
         {
           "hash": "3d9de84b3f12df5989ee8e023f76c045896e787ba39c07e2b82a881e8bd56776",
+          "importOrder": [
+            "src/specialist/capability-gate.mjs",
+            "src/hooks.mjs"
+          ],
           "importsFiles": [
             "src/hooks.mjs",
             "src/specialist/capability-gate.mjs"
@@ -4391,6 +4540,11 @@
         },
         {
           "hash": "c8539cf221aeff32b54a0f517bcd5fcb6fc81a56545cc7e1f6cd3b73c18da5f7",
+          "importOrder": [
+            "src/citation-panel.mjs",
+            "src/verify-citations.mjs",
+            "src/verify-citations-cmd.mjs"
+          ],
           "importsFiles": [
             "src/citation-panel.mjs",
             "src/verify-citations-cmd.mjs",
@@ -4420,6 +4574,10 @@
         },
         {
           "hash": "893996b4055d8ed6f6603607a8235c79559b2a003cf2baba5cb4ceee24cfb14c",
+          "importOrder": [
+            "src/dossier-block.mjs",
+            "src/crew-cmd.mjs"
+          ],
           "importsFiles": [
             "src/crew-cmd.mjs",
             "src/dossier-block.mjs"
@@ -4515,6 +4673,10 @@
         },
         {
           "hash": "c4de136fe154cbde28b75d8d8a444ea8c357dcabcdb3db744bc38a6d706cd3d0",
+          "importOrder": [
+            "src/knowledge/render-knowledge-block.mjs",
+            "src/dispatch.mjs"
+          ],
           "importsFiles": [
             "src/dispatch.mjs",
             "src/knowledge/render-knowledge-block.mjs"
@@ -4589,6 +4751,12 @@
         },
         {
           "hash": "2054b2a7704b0289fdb0a75b1ff9985a2e979839478b7d9afcba99af8f0f3987",
+          "importOrder": [
+            "src/run.mjs",
+            "src/packs.mjs",
+            "src/route.mjs",
+            "src/artifacts.mjs"
+          ],
           "importsFiles": [
             "src/artifacts.mjs",
             "src/packs.mjs",
@@ -4603,6 +4771,10 @@
         },
         {
           "hash": "64caff3c7862f0ae08a74b5d60da023a627134920b1b928da64508566b32181b",
+          "importOrder": [
+            "src/specialist/state.mjs",
+            "src/specialist/gate.mjs"
+          ],
           "importsFiles": [
             "src/specialist/gate.mjs",
             "src/specialist/state.mjs"
@@ -4615,6 +4787,11 @@
         },
         {
           "hash": "e9d4c80959fa028ca46832a4cae50c85c8871d0c4bdf994f80be95414c136295",
+          "importOrder": [
+            "src/replan.mjs",
+            "src/decompose.mjs",
+            "src/composite.mjs"
+          ],
           "importsFiles": [
             "src/composite.mjs",
             "src/decompose.mjs",
@@ -4684,6 +4861,13 @@
         },
         {
           "hash": "d3a2f608848f41556c83c62772577d62f526f289a3615e0bbb7144994f5098d4",
+          "importOrder": [
+            "src/specialist/dispatch.mjs",
+            "src/specialist/registry.mjs",
+            "src/specialist/events.mjs",
+            "src/specialist/state.mjs",
+            "src/specialist/field-log.mjs"
+          ],
           "importsFiles": [
             "src/specialist/dispatch.mjs",
             "src/specialist/events.mjs",
@@ -4739,6 +4923,10 @@
         },
         {
           "hash": "77986296391316449d273331821912ea6b33354fe0309a82d2a8b472586eef4d",
+          "importOrder": [
+            "src/specialist/shadow.mjs",
+            "src/specialist/events.mjs"
+          ],
           "importsFiles": [
             "src/specialist/events.mjs",
             "src/specialist/shadow.mjs"
@@ -4775,6 +4963,11 @@
         },
         {
           "hash": "fe55ae46d9a1bcdedd8b68193d6ff86ea39bfc6763181d1dab1041f6557a9ed0",
+          "importOrder": [
+            "src/swarm/exit-condition.mjs",
+            "src/mission-run.mjs",
+            "src/run.mjs"
+          ],
           "importsFiles": [
             "src/mission-run.mjs",
             "src/run.mjs",
@@ -4791,6 +4984,14 @@
         },
         {
           "hash": "f6aabbce0ce9ca417d699dc475cd4a709510b78d2338772beab6544e5083f421",
+          "importOrder": [
+            "src/route.mjs",
+            "src/packs.mjs",
+            "src/artifacts.mjs",
+            "src/mission.mjs",
+            "src/mission-run.mjs",
+            "src/tool-profiles.mjs"
+          ],
           "importsFiles": [
             "src/artifacts.mjs",
             "src/mission-run.mjs",
@@ -4817,6 +5018,10 @@
         },
         {
           "hash": "218e2e23f702875a38c9825b8931e93561e5b4c99385178afed5e87115b5b73f",
+          "importOrder": [
+            "src/verify-citations.mjs",
+            "src/verify-citations-cmd.mjs"
+          ],
           "importsFiles": [
             "src/verify-citations-cmd.mjs",
             "src/verify-citations.mjs"
@@ -4825,6 +5030,10 @@
         },
         {
           "hash": "398ee8c9f46fda148655f97c19782ea58a493187872710b0d9b293c5451b657f",
+          "importOrder": [
+            "src/verify-claims.mjs",
+            "src/verify-claims-cmd.mjs"
+          ],
           "importsFiles": [
             "src/verify-claims-cmd.mjs",
             "src/verify-claims.mjs"
@@ -4844,6 +5053,23 @@
       "origin": "authored",
       "role": "test",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "test/knowledge-integration.test.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "test/knowledge-integration.test.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "test/knowledge-integration.test.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 3
     },
     {
@@ -4880,6 +5106,16 @@
             "split_tool_atomic"
           ],
           "hash": "e52977895000080a17a044229f6533698aacab0be74a06aa4236ba8e6dd0a50f",
+          "importOrder": [
+            "tools/conformance-dataset/config.py",
+            "tools/conformance-dataset/conformance_puzzles.py",
+            "tools/conformance-dataset/audit.py"
+          ],
+          "importsFiles": [
+            "tools/conformance-dataset/audit.py",
+            "tools/conformance-dataset/config.py",
+            "tools/conformance-dataset/conformance_puzzles.py"
+          ],
           "path": "tools/conformance-dataset/build_conformance_dataset.py"
         },
         {
@@ -4924,6 +5160,9 @@
             "stamp_receipt"
           ],
           "hash": "95722c749a5129c70e63da1b3634104a7ccf78dd0ac8efb559ac40a86230616c",
+          "importsFiles": [
+            "tools/conformance-dataset/config.py"
+          ],
           "path": "tools/conformance-dataset/certify_conformance.py"
         },
         {
@@ -4956,6 +5195,9 @@
             "type_group"
           ],
           "hash": "0a4cc7a55e7d4e7615afb3269a7ab593874cd3ce5588bc61c008ca47b08b7976",
+          "importsFiles": [
+            "tools/conformance-dataset/config.py"
+          ],
           "path": "tools/conformance-dataset/conformance_puzzles.py"
         },
         {
@@ -4984,6 +5226,9 @@
             "query"
           ],
           "hash": "2bcb77fc3766ed46c818ca858f00b9cae7c953ae8750bad618def8156f61a357",
+          "importsFiles": [
+            "tools/conformance-dataset/config.py"
+          ],
           "path": "tools/conformance-dataset/dogfood_conformance.py"
         },
         {
@@ -5083,6 +5328,10 @@
             "test_stamp_receipt_andon_on_fc"
           ],
           "hash": "e53f4cf0267484006e39b99f60853171dc6b1b036bd38dcca787ed2dd8434cd0",
+          "importsFiles": [
+            "tools/conformance-dataset/certify_conformance.py",
+            "tools/conformance-dataset/config.py"
+          ],
           "path": "tools/conformance-dataset/test_certify_ship_stamp.py"
         },
         {
@@ -5094,6 +5343,11 @@
             "test_refuse_empty_replace"
           ],
           "hash": "7d75df5baad071767f024be222040183cbdac6810e16701967fb46342d336703",
+          "importsFiles": [
+            "tools/conformance-dataset/audit.py",
+            "tools/conformance-dataset/build_conformance_dataset.py",
+            "tools/conformance-dataset/config.py"
+          ],
           "path": "tools/conformance-dataset/test_empty_write_gate.py"
         },
         {
@@ -5337,6 +5591,9 @@
             "test_skipped_parse_counts"
           ],
           "hash": "5d805aa05006964449d71e9cedf6bcc8bc0ad244f82c6bd1bc27da16dcc27639",
+          "importsFiles": [
+            "tools/token-budget-dataset/harvester/__init__.py"
+          ],
           "path": "tools/token-budget-dataset/test_harvester.py"
         }
       ],
@@ -5365,8 +5622,8 @@
       "outsideReads": 3,
       "outsideWrites": 1,
       "role": "code",
-      "testedBy": 0,
-      "unresolvedSites": 12
+      "testedBy": 3,
+      "unresolvedSites": 0
     }
   ],
   "doors": [
@@ -5396,9 +5653,7 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "landings": [
-        ".claude/packets"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "CI",
       "permissions": [
@@ -5426,38 +5681,7 @@
           "files": 70
         }
       ],
-      "readers": [
-        {
-          "by": "src/fs-utils.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/fs-utils.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/packet.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/status.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/status.mjs",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "job": "test",
@@ -5525,12 +5749,6 @@
         {
           "event": "workflow_dispatch"
         }
-      ],
-      "untrackedLandings": [
-        ".claude/status/index.md",
-        ".role-os/specialist-events.jsonl",
-        ".role-os/specialist-field-log.jsonl",
-        ".role-os/specialist-state.json"
       ],
       "uses": [
         "actions/checkout",
@@ -5676,9 +5894,7 @@
           }
         }
       ],
-      "landings": [
-        ".claude/packets"
-      ],
+      "landings": [],
       "mentions": [
         {
           "job": "publish",
@@ -5707,38 +5923,7 @@
           "files": 58
         }
       ],
-      "readers": [
-        {
-          "by": "src/fs-utils.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/fs-utils.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/packet.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/status.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/status.mjs",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "directory": true,
@@ -5772,12 +5957,6 @@
           "event": "workflow_dispatch"
         }
       ],
-      "untrackedLandings": [
-        ".claude/status/index.md",
-        ".role-os/specialist-events.jsonl",
-        ".role-os/specialist-field-log.jsonl",
-        ".role-os/specialist-state.json"
-      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node"
@@ -5790,9 +5969,7 @@
       "elsewhere": [],
       "file": "package.json",
       "kind": "command",
-      "landings": [
-        ".claude/packets"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "roleos",
       "permissions": [],
@@ -5813,38 +5990,7 @@
           "files": 60
         }
       ],
-      "readers": [
-        {
-          "by": "src/fs-utils.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/fs-utils.mjs",
-          "call": "readFileSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/packet.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/status.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        },
-        {
-          "by": "src/status.mjs",
-          "call": "readdirSync",
-          "confidence": "ast",
-          "target": ".claude/packets"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "path": "bin/roleos.mjs",
@@ -5865,12 +6011,6 @@
       },
       "stages": [],
       "triggers": [],
-      "untrackedLandings": [
-        ".claude/status/index.md",
-        ".role-os/specialist-events.jsonl",
-        ".role-os/specialist-field-log.jsonl",
-        ".role-os/specialist-state.json"
-      ],
       "uses": [],
       "usesWorkflowToken": false
     }
@@ -5914,16 +6054,6 @@
           "by": "audit-manifest.json",
           "call": "configuration",
           "confidence": "config"
-        },
-        {
-          "by": "src/packet.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/status.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
         }
       ],
       "target": ".claude",
@@ -5961,53 +6091,6 @@
       ],
       "target": ".claude/hooks",
       "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "src/fs-utils.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/fs-utils.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/packet.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/status.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/status.mjs",
-          "call": "readdirSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".claude/packets",
-      "writers": [
-        {
-          "by": "src/fs-utils.mjs",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [],
-      "target": ".claude/packets/*",
-      "tracked": false,
-      "writers": [
-        {
-          "by": "src/fs-utils.mjs",
-          "confidence": "ast"
-        }
-      ]
     },
     {
       "readers": [
@@ -6056,23 +6139,6 @@
     {
       "readers": [
         {
-          "by": "src/fs-utils.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".claude/status/index.md",
-      "tracked": false,
-      "writers": [
-        {
-          "by": "src/fs-utils.mjs",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
           "by": "src/specialist/record.mjs",
           "call": "existsSync",
           "confidence": "ast"
@@ -6089,146 +6155,39 @@
     {
       "readers": [
         {
-          "by": "src/specialist/events.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/specialist/events.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
           "by": "src/specialist/record.mjs",
           "call": "existsSync",
           "confidence": "ast"
         }
       ],
       "target": ".role-os/specialist-events.jsonl",
-      "tracked": false,
-      "writers": [
-        {
-          "by": "src/specialist/events.mjs",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [],
-      "target": ".role-os/specialist-field-log.jsonl",
-      "tracked": false,
-      "writers": [
-        {
-          "by": "src/specialist/field-log.mjs",
-          "confidence": "ast"
-        }
-      ]
+      "writers": []
     },
     {
       "readers": [
         {
           "by": "src/specialist/record.mjs",
           "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/specialist/state.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/specialist/state.mjs",
-          "call": "readFileSync",
           "confidence": "ast"
         }
       ],
       "target": ".role-os/specialist-state.json",
-      "tracked": false,
-      "writers": [
-        {
-          "by": "src/specialist/state.mjs",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
-      "readers": [],
-      "target": ".role-os/specialist-state.json/*.*.*.tmp",
-      "tracked": false,
-      "writers": [
-        {
-          "by": "src/specialist/state.mjs",
-          "confidence": "ast"
-        }
-      ]
+      "writers": []
     },
     {
       "readers": [
         {
-          "by": "src/specialist-cmd.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/specialist/dispatch.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "src/specialist/record.mjs",
           "call": "existsSync",
           "confidence": "ast"
         },
         {
           "by": "src/specialist/record.mjs",
-          "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/specialist/registry.mjs",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/specialist/registry.mjs",
           "call": "readFileSync",
           "confidence": "ast"
         }
       ],
       "target": ".role-os/specialists.json",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "src/audit-cmd.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "AUDIT-ACTION-PLAN.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "src/audit-cmd.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "AUDIT-CRITIC-VERDICT.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "src/audit-cmd.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "AUDIT-SUMMARY.md",
       "writers": []
     },
     {
@@ -6296,11 +6255,6 @@
           "by": "README.zh.md",
           "call": "--manifest",
           "confidence": "text"
-        },
-        {
-          "by": "src/mission.mjs",
-          "call": "literal",
-          "confidence": "ast"
         },
         {
           "by": "test/deep-audit-proof.test.mjs",
@@ -6476,7 +6430,13 @@
       "writers": []
     },
     {
-      "readers": [],
+      "readers": [
+        {
+          "by": "dossier/dossier.html",
+          "call": "script",
+          "confidence": "ast"
+        }
+      ],
       "target": "dossier/data.js",
       "writers": [
         {
@@ -6656,11 +6616,6 @@
         {
           "by": "site/src/site-config.ts",
           "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/route.mjs",
-          "call": "literal",
           "confidence": "ast"
         },
         {
@@ -7544,6 +7499,17 @@
     {
       "readers": [
         {
+          "by": "tools/conformance-dataset/build_conformance_dataset.py",
+          "call": "import",
+          "confidence": "ast"
+        }
+      ],
+      "target": "tools/conformance-dataset/audit.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "tools/conformance-dataset/test_certify_ship_stamp.py",
           "call": "os.listdir",
           "confidence": "ast",
@@ -7551,6 +7517,43 @@
         }
       ],
       "target": "tools/conformance-dataset/certify",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/conformance-dataset/build_conformance_dataset.py",
+          "call": "import",
+          "confidence": "ast"
+        },
+        {
+          "by": "tools/conformance-dataset/certify_conformance.py",
+          "call": "import",
+          "confidence": "ast"
+        },
+        {
+          "by": "tools/conformance-dataset/conformance_puzzles.py",
+          "call": "import",
+          "confidence": "ast"
+        },
+        {
+          "by": "tools/conformance-dataset/dogfood_conformance.py",
+          "call": "import",
+          "confidence": "ast"
+        }
+      ],
+      "target": "tools/conformance-dataset/config.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/conformance-dataset/build_conformance_dataset.py",
+          "call": "import",
+          "confidence": "ast"
+        }
+      ],
+      "target": "tools/conformance-dataset/conformance_puzzles.py",
       "writers": []
     },
     {

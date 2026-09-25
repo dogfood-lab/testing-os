@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 07c7132.
 
 ## What this is
 
-10 parts, mostly JavaScript (15 files) and TypeScript (2). Work enters through 6 doors; the busiest is CI, which reaches 3 parts. It publishes a package to npm, chosen at run time. People run mcptoolshop-launch. People import @mcptoolshop/npm-launcher.
+10 parts, mostly JavaScript (15 files) and TypeScript (2). Work enters through 6 doors; the busiest is CI, which reaches 3 parts. It publishes @mcptoolshop/npm-launcher to npm, and a package to npm, chosen at run time. People run mcptoolshop-launch. People import @mcptoolshop/npm-launcher.
 
 ## What changed since 2026-09-25 (bb50ee9)
 
@@ -79,7 +79,7 @@ People write .github/, the repository root and site/. Nothing in this repository
 
 ## Where to start
 
-.github/workflows/ci.yml → bin/mcptoolshop-launch.js → src/index.js
+.github/workflows/ci.yml → bin/mcptoolshop-launch.js → src/index.js → src/log.js
 
 Read those in order to follow one pull request end to end.
 
@@ -87,8 +87,9 @@ Read those in order to follow one pull request end to end.
 
 - 3 reads use paths built at run time and are not named here.
 - 4 writes and 5 reads go to a path their caller passes, not to this repository.
-- 3 writes and 5 reads go to the home directory (.local/) or a path their caller passes, not to this repository.
+- 3 writes and 5 reads go to the home directory (.local/ and backpropagate/) or a path their caller passes, not to this repository.
 - 3 commands are built at run time and not followed.
+- 1 file belongs to no part: examples/ci/release-binaries.yml.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

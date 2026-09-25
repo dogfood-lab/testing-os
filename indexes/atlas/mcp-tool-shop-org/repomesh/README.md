@@ -4,18 +4,18 @@ Mapped at 2026-09-25 from commit 8843b88.
 
 ## What this is
 
-18 parts, mostly JavaScript (175 files) and TypeScript (2). Work enters through 9 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image. People run repomesh.
+18 parts, mostly JavaScript (175 files) and TypeScript (2). Work enters through 10 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh to npm and a container image. People run repomesh. People import @mcptoolshop/repomesh.
 
 ## What changed since 2026-09-23 (f13ad8e)
 
 - anchor-xrpl now also runs packages/repomesh-cli/scripts/build.mjs.
 - anchor-xrpl now also checks anchor/xrpl/config.json, anchor/xrpl/package-lock.json, anchor/xrpl/package.json and 5 more.
 - attestor-ci now also checks LICENSE.
-- And 3 more changes to doors.
+- And 4 more changes to doors.
 - anchor/xrpl/anchor-result.json is now written by anchor/xrpl/scripts/post-anchor.mjs.
 - anchor/xrpl/partition-root.json is now written by anchor/xrpl/scripts/compute-root.mjs.
 - packages/repomesh-cli/dist is now written by packages/repomesh-cli/scripts/build.mjs.
-- And 106 more new writers and readers of places.
+- And 103 more new writers and readers of places.
 - .github was mixed and is now authored.
 - pages was mixed and is now authored.
 - the repository root was mixed and is now authored.
@@ -32,7 +32,8 @@ Mapped at 2026-09-25 from commit 8843b88.
 6. **ledger-ci.** On a pull request touching 9 paths; or by hand. Runs ledger/scripts/validate-ledger.mjs.
 7. **xrpl-watch.** On a schedule (`0 12 * * 1`), Monday at 12:00 UTC; or by hand. Runs anchor/xrpl/scripts/watch.mjs.
 8. **repomesh-broadcast.** When a release is published; or by hand. Runs packages/repomesh-cli/scripts/build.mjs.
-9. **repomesh** (a command people run). Runs packages/repomesh-cli/dist/cli.mjs, built from a source this map cannot place.
+9. **@mcptoolshop/repomesh** (the package people import). Loads packages/repomesh-cli/dist/index.mjs, built from a source this map cannot place.
+10. **repomesh** (a command people run). Runs packages/repomesh-cli/dist/cli.mjs, built from a source this map cannot place.
 
 ## What happens through Release
 
@@ -40,7 +41,7 @@ Mapped at 2026-09-25 from commit 8843b88.
 2. That reaches pages (2 files), registry (4 files), tools (5 files) and verifiers (4 files).
 3. That reaches ledger (1 file).
 4. It writes to packages/repomesh-cli/dist/, which is not tracked.
-5. It publishes @mcptoolshop/repomesh (packages/repomesh-cli) to npm and a container image.
+5. It publishes @mcptoolshop/repomesh to npm and a container image.
 
 ## Who reads the results
 
@@ -62,6 +63,8 @@ Release writes only to packages/repomesh-cli/dist/, which is not tracked.
 
 **repomesh-broadcast** runs packages/repomesh-cli/scripts/build.mjs, writes to packages/repomesh-cli/dist/, which is not tracked, commits into a clone of mcp-tool-shop-org/repomesh and pushes there, uploads provenance.json and sbom.json to the release, and opens a pull request.
 
+**@mcptoolshop/repomesh** (the package people import) loads packages/repomesh-cli/dist/index.mjs, built from a source this map cannot place.
+
 **repomesh** (a command people run) runs packages/repomesh-cli/dist/cli.mjs, built from a source this map cannot place.
 
 ## What breaks what
@@ -73,7 +76,7 @@ Release writes only to packages/repomesh-cli/dist/, which is not tracked.
 - **registry** is run as a child process by 2 parts (repomesh-cli, tools) and sits on the path of 4 doors.
 - **pages** is run as a child process by 2 parts (repomesh-cli, tools) and sits on the path of 3 doors.
 - **ledger/events/events.jsonl** is written by .github, attestor and repomesh-cli, and read by .github, anchor, attestor, ledger, pages, policy, registry, repomesh-cli and tools; a hand edit reaches every reader.
-- **ledger/nodes/** is written by attestor and tools, and read by attestor, ledger, policy, registry and tools; a hand edit reaches every reader.
+- **registry/trust.json** is written by verifiers and read by pages, registry, repomesh-cli, scripts and verifiers; a hand edit reaches every reader.
 
 ## What tends to change together
 
@@ -84,6 +87,8 @@ Window: 180 days; a pair counts from 3 shared commits, since 0 source files reac
 ## What no test touches
 
 Every code part is imported by at least one test.
+
+72 test files run in no workflow: anchor/xrpl/tests/anchor-writepath-stagec.test.mjs, anchor/xrpl/tests/docker-image.test.mjs, anchor/xrpl/tests/idle-epoch.test.mjs and 69 mores.
 
 ## Written but never read
 
@@ -106,9 +111,8 @@ And 9 more pairs.
 ## Generated, never hand-edited
 
 - **anchor/xrpl/manifests/** is written by anchor/xrpl/scripts/compute-root.mjs.
-- **assets/** is written by repomesh-bot, which added every file in it.
+- **ledger/events/events.jsonl** is written by .github/workflows/anchor-xrpl.yml, .github/workflows/attestor-ci.yml, attestor/scripts/emit-key-event.mjs and packages/repomesh-cli/src/key/rotate-revoke.mjs.
 - **ledger/nodes/** is written by attestor/scripts/emit-key-event.mjs, tools/join-node.mjs and tools/register-node.mjs.
-- **profiles/** is written by repomesh-bot, which added every file in it.
 - **registry/anchors.json** is written by .github/workflows/anchor-xrpl.yml and verifiers/lib/common.mjs.
 - **registry/badges/** is written by registry/scripts/build-badges.mjs.
 - **registry/capabilities.json** is written by registry/scripts/build-registry.mjs.
@@ -117,26 +121,22 @@ And 9 more pairs.
 - **registry/snippets/** is written by registry/scripts/build-snippets.mjs.
 - **registry/trust.json** is written by verifiers/lib/common.mjs.
 - **registry/verifiers.json** is written by registry/scripts/build-verifiers.mjs.
-- **scripts/** is written by repomesh-bot, which added every file in it.
-- **templates/** is written by repomesh-bot, which added every file in it.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root, schemas/ and site/. Nothing in this repository writes to them.
-
-- **ledger/events/events.jsonl** is written by .github/workflows/anchor-xrpl.yml, .github/workflows/attestor-ci.yml, attestor/scripts/emit-key-event.mjs and packages/repomesh-cli/src/key/rotate-revoke.mjs, and by people: 14 of its 27 commits in the window are theirs.
+People write .github/, assets/, docs/, profiles/, the repository root, schemas/, scripts/, site/ and templates/. Nothing in this repository writes to them.
 
 ## Where to start
 
-.github/workflows/ledger-ci.yml → ledger/scripts/validate-ledger.mjs → verifiers/lib/anchor-notes.mjs
+.github/workflows/ledger-ci.yml → ledger/scripts/validate-ledger.mjs → verifiers/lib/key-window.mjs
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 114 import sites could not be resolved.
+- 114 imports could not be resolved: `attestor/tests/emit-key-event.test.mjs` imports a path built at run time; `attestor/tests/emit-key-event.test.mjs` imports a path built at run time; `packages/repomesh-cli/tests/anchor-leaf-window.test.mjs` imports a path built at run time; and 111 more.
 - 6 reads use paths built at run time and are not named here.
-- 25 writes go to places this repository does not track, so they are not listed as generated.
+- 23 writes go to places this repository does not track, so they are not listed as generated.
 - 38 writes and 141 reads go to a path their caller passes, not to this repository.
 - 7 writes and 13 reads go to the directory the command is run in (.repomesh-tmp/, anchor/ and ledger/) or a path their caller passes, not to this repository.
 - 12 reads go to the directory the command is run in (anchor/, ledger/ and verifiers/), not to this repository.

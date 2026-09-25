@@ -55,10 +55,11 @@
   "derived": "6 parts, mostly TypeScript (46 files) and JavaScript (2). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People import @mcptoolshop/websketch-ir.",
   "doors": [
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -112,16 +113,17 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request",
+        "on a pull request to main",
         "on a push to main touching 6 paths",
         "or by hand"
       ]
     },
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
@@ -205,11 +207,11 @@
       "runsCount": 2,
       "runsMore": 0,
       "sends": [
-        "deploys the site on a push to main"
+        "deploys the site on a push to main or by hand"
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 2 paths",
+        "on a pull request to main touching 2 paths",
         "on a push to main touching 2 paths",
         "or by hand"
       ]
@@ -255,7 +257,7 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T08:06:05.995Z",
+  "generatedAt": "2026-09-25T09:23:20.186Z",
   "limits": [
     "1 read goes to a path its caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
@@ -273,11 +275,12 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/websketch-ir",
   "sequences": [],
-  "startDoor": "package.json#@mcptoolshop/websketch-ir",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "src/codegen/index.ts"
+    ".github/workflows/ci.yml",
+    "src/index.ts",
+    "src/grammar.ts"
   ],
-  "startReason": "This path follows @mcptoolshop/websketch-ir (the package people import) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 33,

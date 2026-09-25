@@ -74,10 +74,18 @@
       "entryPoints": [
         "audiobooker/cli.py"
       ],
-      "externals": 0,
+      "externalNames": [
+        "docx"
+      ],
+      "externals": 11,
       "files": [
         {
           "hash": "ec64e9ab8893f83549ecb1bc6e3f79818ef567f802fd06b7e4d75c43186ab873",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/errors.py"
+          ],
           "importsFiles": [
             "audiobooker/errors.py",
             "audiobooker/models.py",
@@ -686,6 +694,11 @@
             "audition_voices"
           ],
           "hash": "aabc9050e0c4ffca4cba69e153500b4a2771bed2904a2a3157af22b3b5c58e76",
+          "importOrder": [
+            "audiobooker/language/profile.py",
+            "audiobooker/models.py",
+            "audiobooker/casting/voice_registry.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/voice_registry.py",
             "audiobooker/language/profile.py",
@@ -736,6 +749,25 @@
             "main"
           ],
           "hash": "d9a6e1072175e1f3a529ac6d44131d28a30e235be277fbd2e88f6d47761cba4f",
+          "importOrder": [
+            "audiobooker/renderer/engine.py",
+            "audiobooker/__init__.py",
+            "audiobooker/labels.py",
+            "audiobooker/shell_quote.py",
+            "audiobooker/errors.py",
+            "audiobooker/renderer/__init__.py",
+            "audiobooker/models.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/casting/__init__.py",
+            "audiobooker/casting/voice_suggester.py",
+            "audiobooker/renderer/cache_manifest.py",
+            "audiobooker/project.py",
+            "audiobooker/renderer/failure_report.py",
+            "audiobooker/casting/voice_registry.py",
+            "audiobooker/nlp/speaker_resolver.py",
+            "audiobooker/nlp/__init__.py",
+            "audiobooker/renderer/output.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/casting/__init__.py",
@@ -4748,6 +4780,10 @@
             "register_profile"
           ],
           "hash": "4f08a46cc7f1d62710fcc9cfccd0e812e260b85d1c259732e00ba2799e201aa5",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/language/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/language/__init__.py",
             "audiobooker/models.py"
@@ -4919,6 +4955,12 @@
         },
         {
           "hash": "0d8935623f192a7220d15f69740fad0b9599596399498f2b8b70bc87b9fb8d74",
+          "importOrder": [
+            "audiobooker/nlp/booknlp_adapter.py",
+            "audiobooker/nlp/speaker_resolver.py",
+            "audiobooker/nlp/emotion.py",
+            "audiobooker/nlp/normalizer.py"
+          ],
           "importsFiles": [
             "audiobooker/nlp/booknlp_adapter.py",
             "audiobooker/nlp/emotion.py",
@@ -5036,6 +5078,13 @@
         },
         {
           "hash": "daa65313fc8287efa3a8a53277c628333af248f1ef17a2a7e938579e0dd1f2a4",
+          "importOrder": [
+            "audiobooker/parser/text.py",
+            "audiobooker/parser/text_cleaners.py",
+            "audiobooker/parser/epub.py",
+            "audiobooker/parser/pdf.py",
+            "audiobooker/parser/docx.py"
+          ],
           "importsFiles": [
             "audiobooker/parser/docx.py",
             "audiobooker/parser/epub.py",
@@ -5050,6 +5099,11 @@
             "parse_docx"
           ],
           "hash": "82d7fe6ae66ff2a3e04aef83d0ed2c444dabe60b8a92d3f01f952818f829982f",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/parser/text.py"
+          ],
           "importsFiles": [
             "audiobooker/language/profile.py",
             "audiobooker/models.py",
@@ -5065,6 +5119,11 @@
             "process_footnotes"
           ],
           "hash": "5a04d1f401a76ff3d505342fc93d2f8604dfb68573287153b8668067e2450c40",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/parser/text.py"
+          ],
           "importsFiles": [
             "audiobooker/language/profile.py",
             "audiobooker/models.py",
@@ -5077,6 +5136,11 @@
             "parse_pdf"
           ],
           "hash": "15cc1e2bf886c034388c014fc82a96fa908e894eae47c8ef055b6a70b3b5a4da",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/parser/text.py"
+          ],
           "importsFiles": [
             "audiobooker/language/profile.py",
             "audiobooker/models.py",
@@ -5097,6 +5161,11 @@
             "strip_gutenberg_boilerplate"
           ],
           "hash": "4d56fff1888bcabeaf08bd054502e8e3138faed589557ba70da07b86ca71974a",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/parser/text_cleaners.py"
+          ],
           "importsFiles": [
             "audiobooker/language/profile.py",
             "audiobooker/models.py",
@@ -5125,6 +5194,23 @@
         },
         {
           "hash": "08a6d966baee9be36ee0040a21f59dcd43018ccf207a797f5a61dbc75041eb3a",
+          "importOrder": [
+            "audiobooker/errors.py",
+            "audiobooker/models.py",
+            "audiobooker/parser/epub.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/parser/pdf.py",
+            "audiobooker/parser/docx.py",
+            "audiobooker/parser/text.py",
+            "audiobooker/casting/voice_registry.py",
+            "audiobooker/parser/text_cleaners.py",
+            "audiobooker/renderer/engine.py",
+            "audiobooker/nlp/normalizer.py",
+            "audiobooker/casting/dialogue.py",
+            "audiobooker/nlp/speaker_resolver.py",
+            "audiobooker/nlp/emotion.py",
+            "audiobooker/review.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/dialogue.py",
             "audiobooker/casting/voice_registry.py",
@@ -5236,6 +5322,12 @@
         },
         {
           "hash": "17c81352a8e5e540fe62fc9c6d5f6289fa64e17ab0fc015fb92768d14e357eb3",
+          "importOrder": [
+            "audiobooker/renderer/engine.py",
+            "audiobooker/renderer/output.py",
+            "audiobooker/renderer/protocols.py",
+            "audiobooker/renderer/cache_manifest.py"
+          ],
           "importsFiles": [
             "audiobooker/renderer/cache_manifest.py",
             "audiobooker/renderer/engine.py",
@@ -5977,6 +6069,25 @@
                   "via": "engine_is_thread_safe"
                 },
                 {
+                  "inner": [
+                    {
+                      "line": 368,
+                      "name": "exists",
+                      "target": null,
+                      "via": "_recover_live_from_bak"
+                    },
+                    {
+                      "line": 370,
+                      "name": "with_suffix",
+                      "target": null,
+                      "via": "_recover_live_from_bak"
+                    },
+                    {
+                      "line": 393,
+                      "name": "read_text",
+                      "target": null
+                    }
+                  ],
                   "line": 2051,
                   "name": "load_manifest",
                   "target": {
@@ -6017,6 +6128,26 @@
                   "via": "_render_project_impl"
                 },
                 {
+                  "inner": [
+                    {
+                      "line": 206,
+                      "name": "normalize_key",
+                      "target": null,
+                      "via": "_chapter_casting_keys"
+                    },
+                    {
+                      "line": 210,
+                      "name": "resolve_alias",
+                      "target": null,
+                      "via": "_chapter_casting_keys"
+                    },
+                    {
+                      "line": 212,
+                      "name": "normalize_key",
+                      "target": null,
+                      "via": "_chapter_casting_keys"
+                    }
+                  ],
                   "line": 2019,
                   "name": "casting_hash",
                   "target": {
@@ -6091,6 +6222,25 @@
                   "via": "render_chapter_incremental"
                 },
                 {
+                  "inner": [
+                    {
+                      "line": 368,
+                      "name": "exists",
+                      "target": null,
+                      "via": "_recover_live_from_bak"
+                    },
+                    {
+                      "line": 370,
+                      "name": "with_suffix",
+                      "target": null,
+                      "via": "_recover_live_from_bak"
+                    },
+                    {
+                      "line": 318,
+                      "name": "read_text",
+                      "target": null
+                    }
+                  ],
                   "line": 953,
                   "name": "load_utterance_manifest",
                   "target": {
@@ -6627,6 +6777,8 @@
           "path": "audiobooker/renderer/ffmpeg_runner.py"
         },
         {
+          "entry": "casting_hash",
+          "entryRule": 4,
           "exports": [
             "casting_hash",
             "chapter_text_hash",
@@ -6640,7 +6792,96 @@
           "importsFiles": [
             "audiobooker/models.py"
           ],
-          "path": "audiobooker/renderer/hash_utils.py"
+          "path": "audiobooker/renderer/hash_utils.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 101,
+                  "name": "normalize_key",
+                  "target": null
+                },
+                {
+                  "line": 104,
+                  "name": "resolve_alias",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_character_for_speaker"
+            },
+            {
+              "calls": [
+                {
+                  "line": 101,
+                  "name": "normalize_key",
+                  "target": null,
+                  "via": "_character_for_speaker"
+                },
+                {
+                  "line": 104,
+                  "name": "resolve_alias",
+                  "target": null,
+                  "via": "_character_for_speaker"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "utterance_hash"
+            },
+            {
+              "calls": [
+                {
+                  "line": 206,
+                  "name": "normalize_key",
+                  "target": null
+                },
+                {
+                  "line": 210,
+                  "name": "resolve_alias",
+                  "target": null
+                },
+                {
+                  "line": 212,
+                  "name": "normalize_key",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_chapter_casting_keys"
+            },
+            {
+              "calls": [
+                {
+                  "line": 206,
+                  "name": "normalize_key",
+                  "target": null,
+                  "via": "_chapter_casting_keys"
+                },
+                {
+                  "line": 210,
+                  "name": "resolve_alias",
+                  "target": null,
+                  "via": "_chapter_casting_keys"
+                },
+                {
+                  "line": 212,
+                  "name": "normalize_key",
+                  "target": null,
+                  "via": "_chapter_casting_keys"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "casting_hash"
+            }
+          ]
         },
         {
           "entry": "assemble_m4b",
@@ -7132,6 +7373,11 @@
             "preview_review_format"
           ],
           "hash": "15b77e3424bbd0b31f0b9771428bf9f076d71fc05bf4b3f29ee24cdb98448b2e",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/shell_quote.py",
+            "audiobooker/project.py"
+          ],
           "importsFiles": [
             "audiobooker/models.py",
             "audiobooker/project.py",
@@ -7164,9 +7410,9 @@
         {
           "reads": 2,
           "where": [
-            "caller",
             "home:.config/",
-            "home:AppData/"
+            "home:AppData/",
+            "home:audiobooker/"
           ],
           "writes": 1
         }
@@ -7175,7 +7421,24 @@
       "outsideWrites": 1,
       "role": "code",
       "testedBy": 76,
-      "unresolvedSites": 15
+      "unresolvedNamed": [
+        {
+          "path": "audiobooker/cli.py",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "audiobooker/cli.py",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "audiobooker/language/profile.py",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
+      "unresolvedSites": 4
     },
     {
       "dynamicReads": 0,
@@ -7302,27 +7565,29 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 3,
-          "where": [
-            "caller"
-          ],
-          "writes": 0
-        },
-        {
           "reads": 2,
           "where": [
             "caller",
             "home:.local/",
-            "home:AppData/"
+            "home:AppData/",
+            "home:audiobooker/"
           ],
           "writes": 3
+        },
+        {
+          "reads": 3,
+          "where": [
+            "caller",
+            "home:audiobooker/"
+          ],
+          "writes": 0
         }
       ],
       "outsideReads": 5,
       "outsideWrites": 3,
       "role": "docs",
       "testedBy": 0,
-      "unresolvedSites": 1
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -7452,6 +7717,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -7488,6 +7754,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "cb1a46af25c00d342993240958a4352e22c24b7dd069e1790b29bddb8a4bd6ca",
           "path": "site/src/site-config.ts"
         },
@@ -7520,7 +7787,10 @@
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
-      "externals": 0,
+      "externalNames": [
+        "docx"
+      ],
+      "externals": 3,
       "files": [
         {
           "hash": "e805bf1fbc1fa5851a60db2238b9c789e2d3f179b14ca65b4e96920b1f9779dc",
@@ -7534,6 +7804,10 @@
             "simple_project"
           ],
           "hash": "3ca2695ea66c8387943f233d3f6f51cd6297bd6fcf39f2bf0800e22f55b7ccb4",
+          "importOrder": [
+            "audiobooker/project.py",
+            "audiobooker/cli.py"
+          ],
           "importsFiles": [
             "audiobooker/cli.py",
             "audiobooker/project.py"
@@ -7542,6 +7816,11 @@
         },
         {
           "hash": "913f1a99138f5c408b06cc7e5077cfd8de0371450c99e842d81384d41b9ea0be",
+          "importOrder": [
+            "tests/fakes/fake_tts.py",
+            "tests/fakes/fake_ffmpeg.py",
+            "tests/fakes/fake_registry.py"
+          ],
           "importsFiles": [
             "tests/fakes/fake_ffmpeg.py",
             "tests/fakes/fake_registry.py",
@@ -7594,6 +7873,15 @@
         },
         {
           "hash": "bc56c82199e9df88fb1200a7b1ebb43f421bb3c4df4637e075c9dd5363d47cbf",
+          "importOrder": [
+            "audiobooker/__init__.py",
+            "audiobooker/models.py",
+            "audiobooker/casting/dialogue.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/nlp/emotion.py",
+            "audiobooker/renderer/cache_manifest.py",
+            "tests/perf/conftest.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/casting/dialogue.py",
@@ -7607,6 +7895,16 @@
         },
         {
           "hash": "d17b294630ca53bd85d462a3b0d6c280d890f70449179e9711e08938d90c66b1",
+          "importOrder": [
+            "audiobooker/casting/dialogue.py",
+            "audiobooker/casting/voice_registry.py",
+            "audiobooker/casting/voice_suggester.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/models.py",
+            "audiobooker/nlp/emotion.py",
+            "audiobooker/nlp/normalizer.py",
+            "audiobooker/nlp/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/dialogue.py",
             "audiobooker/casting/voice_registry.py",
@@ -7621,6 +7919,13 @@
         },
         {
           "hash": "a6332cb4591b0b2244e3695c1907cabd9bee928f8bc4b61662ca6221d9e301cb",
+          "importOrder": [
+            "audiobooker/cli.py",
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/review.py",
+            "audiobooker/errors.py"
+          ],
           "importsFiles": [
             "audiobooker/cli.py",
             "audiobooker/errors.py",
@@ -7632,6 +7937,14 @@
         },
         {
           "hash": "d79ecb5a14356d4b1eee689949dc8091e7c3898b9dc2632f673d3c209c913266",
+          "importOrder": [
+            "audiobooker/errors.py",
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/config_file.py",
+            "audiobooker/casting/__init__.py",
+            "audiobooker/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/casting/__init__.py",
@@ -7644,6 +7957,11 @@
         },
         {
           "hash": "e0d23878ad840c6119ad45029b1dbc9119195d239e6c7de66d6a9092994c9047",
+          "importOrder": [
+            "audiobooker/parser/__init__.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/casting/dialogue.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/dialogue.py",
             "audiobooker/language/profile.py",
@@ -7656,6 +7974,16 @@
             "ffmpeg_available"
           ],
           "hash": "bbdf23a58791ab0e4a1b81e2e41cd6c87673a0cca0c57f3b5d8373c002cfa197",
+          "importOrder": [
+            "audiobooker/renderer/output.py",
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/renderer/__init__.py",
+            "audiobooker/renderer/cache_manifest.py",
+            "audiobooker/renderer/hash_utils.py",
+            "audiobooker/renderer/protocols.py",
+            "tests/fakes/fake_tts.py"
+          ],
           "importsFiles": [
             "audiobooker/models.py",
             "audiobooker/project.py",
@@ -7670,6 +7998,17 @@
         },
         {
           "hash": "389135a7424d4c5badfc12edde32215f84ca04a9b4867288453b843e672edabc",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/renderer/engine.py",
+            "tests/fakes/fake_ffmpeg.py",
+            "tests/fakes/fake_tts.py",
+            "audiobooker/cli.py",
+            "audiobooker/casting/voice_registry.py",
+            "audiobooker/errors.py",
+            "audiobooker/casting/presets.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/presets.py",
             "audiobooker/casting/voice_registry.py",
@@ -7697,6 +8036,10 @@
         },
         {
           "hash": "c749af39b2455f1024418cc694abee7d9bcbae3e18215ec17d8c0fa395493c90",
+          "importOrder": [
+            "audiobooker/project.py",
+            "audiobooker/casting/dialogue.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/dialogue.py",
             "audiobooker/project.py"
@@ -7750,6 +8093,10 @@
             "has_voice_soundboard"
           ],
           "hash": "9b7ba41ced63248578932d7604fccbbace4f1ffb5af0262657891d9c9ea2b3e1",
+          "importOrder": [
+            "tests/conftest.py",
+            "audiobooker/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "tests/conftest.py"
@@ -7765,6 +8112,14 @@
         },
         {
           "hash": "561e536cf18bf678d31258b800cd5312f17663c70deaef7e016f5cac6666151b",
+          "importOrder": [
+            "audiobooker/casting/dialogue.py",
+            "audiobooker/language/__init__.py",
+            "audiobooker/models.py",
+            "audiobooker/nlp/speaker_resolver.py",
+            "audiobooker/cli.py",
+            "audiobooker/project.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/dialogue.py",
             "audiobooker/cli.py",
@@ -7777,6 +8132,15 @@
         },
         {
           "hash": "ff66670a4621c73e8cec8afc4018124c8ec9ab995590b4e0309a2f017afae7ef",
+          "importOrder": [
+            "audiobooker/__init__.py",
+            "audiobooker/cli.py",
+            "audiobooker/errors.py",
+            "audiobooker/renderer/engine.py",
+            "audiobooker/renderer/output.py",
+            "audiobooker/renderer/__init__.py",
+            "audiobooker/casting/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/casting/__init__.py",
@@ -7799,6 +8163,14 @@
         },
         {
           "hash": "f2cd6a553e9d733e12863cb8b7a7ea89781955e15ab5b04d7e87c42d924e10a6",
+          "importOrder": [
+            "audiobooker/renderer/output.py",
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/renderer/__init__.py",
+            "audiobooker/renderer/protocols.py",
+            "tests/fakes/fake_tts.py"
+          ],
           "importsFiles": [
             "audiobooker/models.py",
             "audiobooker/project.py",
@@ -7820,6 +8192,14 @@
         },
         {
           "hash": "511ffe303877b6ad22a1b3b4a93d0041d28ed6c8816dd7e1f80353f8d53b8c8d",
+          "importOrder": [
+            "audiobooker/parser/docx.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/models.py",
+            "audiobooker/parser/text_cleaners.py",
+            "audiobooker/parser/text.py",
+            "audiobooker/parser/epub.py"
+          ],
           "importsFiles": [
             "audiobooker/language/profile.py",
             "audiobooker/models.py",
@@ -7832,6 +8212,12 @@
         },
         {
           "hash": "f4d8a73040279503d74a914b809eb05dc985cdfbd983c37e00b1b81bb70c63ff",
+          "importOrder": [
+            "audiobooker/cli.py",
+            "audiobooker/project.py",
+            "audiobooker/casting/voice_suggester.py",
+            "audiobooker/config_file.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/voice_suggester.py",
             "audiobooker/cli.py",
@@ -7858,6 +8244,16 @@
             "isolated_presets"
           ],
           "hash": "6891f136e4e0cd78ec3c777a83a46b4ee041426c79444565ef9d141986001091",
+          "importOrder": [
+            "audiobooker/casting/__init__.py",
+            "audiobooker/casting/dialogue.py",
+            "audiobooker/casting/voice_suggester.py",
+            "audiobooker/models.py",
+            "audiobooker/nlp/emotion.py",
+            "audiobooker/nlp/speaker_resolver.py",
+            "audiobooker/renderer/engine.py",
+            "audiobooker/nlp/booknlp_adapter.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/__init__.py",
             "audiobooker/casting/dialogue.py",
@@ -7876,6 +8272,14 @@
             "stub_presets"
           ],
           "hash": "7a4af3b11fe5dab308b98d3f13658e838ae79be8857cd6a8d0de75af3b277236",
+          "importOrder": [
+            "audiobooker/cli.py",
+            "audiobooker/models.py",
+            "audiobooker/nlp/speaker_resolver.py",
+            "audiobooker/project.py",
+            "audiobooker/casting/presets.py",
+            "audiobooker/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/casting/presets.py",
@@ -7897,6 +8301,17 @@
         },
         {
           "hash": "4efd07e80a54c93805696cfc0a22ef159822840468e1d1a62c58f819caa4e645",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/renderer/__init__.py",
+            "audiobooker/renderer/engine.py",
+            "audiobooker/renderer/output.py",
+            "audiobooker/casting/voice_registry.py",
+            "tests/fakes/fake_tts.py",
+            "audiobooker/renderer/protocols.py",
+            "audiobooker/renderer/cache_manifest.py",
+            "audiobooker/renderer/hash_utils.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/voice_registry.py",
             "audiobooker/models.py",
@@ -7918,6 +8333,13 @@
             "prose"
           ],
           "hash": "010953f05527d22608fae95d4e5bfd48cae03c9acd9a5c7f3294a3845d5533a8",
+          "importOrder": [
+            "audiobooker/language/profile.py",
+            "audiobooker/parser/__init__.py",
+            "audiobooker/parser/epub.py",
+            "audiobooker/parser/pdf.py",
+            "audiobooker/parser/docx.py"
+          ],
           "importsFiles": [
             "audiobooker/language/profile.py",
             "audiobooker/parser/__init__.py",
@@ -7929,6 +8351,14 @@
         },
         {
           "hash": "d5e7462b7cdcd5338edec235f64393be12ba855f20c0e2d9b6e728964f02df40",
+          "importOrder": [
+            "audiobooker/renderer/output.py",
+            "audiobooker/__init__.py",
+            "audiobooker/models.py",
+            "audiobooker/renderer/__init__.py",
+            "audiobooker/renderer/engine.py",
+            "tests/test_stageb_renderer.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/models.py",
@@ -7941,6 +8371,11 @@
         },
         {
           "hash": "73e630ca3ba2488750d45a04b9d01d458682cefc00b54c43238e19efd961749d",
+          "importOrder": [
+            "audiobooker/nlp/normalizer.py",
+            "audiobooker/casting/dialogue.py",
+            "audiobooker/models.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/dialogue.py",
             "audiobooker/models.py",
@@ -7959,6 +8394,10 @@
         },
         {
           "hash": "677666aa951b4ea60fd9a87ae08aee9015be81c7822ddaf17390825ce3104fbd",
+          "importOrder": [
+            "audiobooker/parser/__init__.py",
+            "audiobooker/language/profile.py"
+          ],
           "importsFiles": [
             "audiobooker/language/profile.py",
             "audiobooker/parser/__init__.py"
@@ -7977,6 +8416,16 @@
             "test_review_roundtrip_preserves_utterance_type"
           ],
           "hash": "6401f1e13a7affb6b6da1c04a90b23544c86df2c98eb75ac1bc7b66431f1289c",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/review.py",
+            "audiobooker/renderer/cache_manifest.py",
+            "audiobooker/renderer/engine.py",
+            "audiobooker/renderer/failure_report.py",
+            "audiobooker/renderer/__init__.py",
+            "audiobooker/renderer/output.py"
+          ],
           "importsFiles": [
             "audiobooker/models.py",
             "audiobooker/project.py",
@@ -7991,6 +8440,13 @@
         },
         {
           "hash": "09457ea56df4c4f7ca1b96a60a939bff14abedeff0f15b466dead2d0bf2bc6c4",
+          "importOrder": [
+            "audiobooker/casting/voice_suggester.py",
+            "audiobooker/nlp/emotion.py",
+            "audiobooker/nlp/speaker_resolver.py",
+            "audiobooker/models.py",
+            "audiobooker/nlp/booknlp_adapter.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/voice_suggester.py",
             "audiobooker/models.py",
@@ -8011,6 +8467,11 @@
         },
         {
           "hash": "558be29294b075a3d1ff178cdefc93c9942d4328f40d68a67a621d4f9a46b2f3",
+          "importOrder": [
+            "audiobooker/parser/__init__.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/language/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/language/__init__.py",
             "audiobooker/language/profile.py",
@@ -8035,6 +8496,17 @@
             "test_voice_soundboard_install_hint_is_canonical"
           ],
           "hash": "2ca9e490366fc27b655b1959667632211e3f59f00db49a31a82ea0817b669ed5",
+          "importOrder": [
+            "audiobooker/__init__.py",
+            "audiobooker/models.py",
+            "audiobooker/renderer/engine.py",
+            "tests/fakes/fake_tts.py",
+            "tests/fakes/fake_ffmpeg.py",
+            "tests/conftest.py",
+            "audiobooker/renderer/output.py",
+            "audiobooker/review.py",
+            "audiobooker/renderer/failure_report.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/models.py",
@@ -8050,6 +8522,12 @@
         },
         {
           "hash": "5431793bb2fa104012d799ccabbc8940daa357bd615a8951908cf75f0a05dcba",
+          "importOrder": [
+            "audiobooker/language/profile.py",
+            "audiobooker/models.py",
+            "audiobooker/casting/dialogue.py",
+            "audiobooker/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/casting/dialogue.py",
@@ -8060,6 +8538,14 @@
         },
         {
           "hash": "d6446a0e453d80f205dfc6563ec7c6f6fc0d37579a3abf3e7af4b5c17755a18c",
+          "importOrder": [
+            "audiobooker/__init__.py",
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/parser/text.py",
+            "audiobooker/renderer/output.py",
+            "audiobooker/casting/dialogue.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/casting/dialogue.py",
@@ -8079,6 +8565,10 @@
         },
         {
           "hash": "3841c3c4d78745c00e19e2783af7d9c05f6fc5119c1bc8108f0c55e0aac9d1e4",
+          "importOrder": [
+            "audiobooker/parser/text.py",
+            "audiobooker/parser/epub.py"
+          ],
           "importsFiles": [
             "audiobooker/parser/epub.py",
             "audiobooker/parser/text.py"
@@ -8087,6 +8577,13 @@
         },
         {
           "hash": "a9e483a85270e2423fdbb9bd2c8ffde41ed268aee3db924c6d8ecb03a507fbab",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/casting/voice_registry.py",
+            "audiobooker/renderer/output.py",
+            "audiobooker/parser/epub.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/voice_registry.py",
             "audiobooker/models.py",
@@ -8098,6 +8595,17 @@
         },
         {
           "hash": "86c40f45e427dfc2f7c935c674271c967443f9508a708a9ae9ee907fb86e8526",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/__init__.py",
+            "audiobooker/nlp/booknlp_adapter.py",
+            "audiobooker/nlp/speaker_resolver.py",
+            "audiobooker/nlp/emotion.py",
+            "tests/fakes/fake_registry.py",
+            "audiobooker/casting/voice_suggester.py",
+            "audiobooker/renderer/progress.py",
+            "audiobooker/renderer/failure_report.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/casting/voice_suggester.py",
@@ -8113,6 +8621,21 @@
         },
         {
           "hash": "f17ce3f886e3719df11948b313dca4f1344cf762d0adce8affb7ecb6efd7e84b",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/renderer/cache_manifest.py",
+            "audiobooker/renderer/engine.py",
+            "audiobooker/renderer/hash_utils.py",
+            "audiobooker/renderer/output.py",
+            "audiobooker/renderer/protocols.py",
+            "tests/fakes/fake_tts.py",
+            "tests/test_render_gates_on_attribution_quality.py",
+            "audiobooker/casting/__init__.py",
+            "audiobooker/casting/dialogue.py",
+            "audiobooker/parser/text.py",
+            "audiobooker/cli.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/__init__.py",
             "audiobooker/casting/dialogue.py",
@@ -8132,6 +8655,18 @@
         },
         {
           "hash": "1888c68ccd5bf6315831ec2cd3821d1c2fb7ba752d9af8e1dd24d7d49ee3b049",
+          "importOrder": [
+            "audiobooker/parser/epub.py",
+            "audiobooker/project.py",
+            "audiobooker/renderer/cache_manifest.py",
+            "audiobooker/renderer/engine.py",
+            "audiobooker/renderer/output.py",
+            "audiobooker/renderer/protocols.py",
+            "tests/fakes/fake_tts.py",
+            "audiobooker/parser/pdf.py",
+            "audiobooker/parser/docx.py",
+            "audiobooker/cli.py"
+          ],
           "importsFiles": [
             "audiobooker/cli.py",
             "audiobooker/parser/docx.py",
@@ -8176,6 +8711,13 @@
         },
         {
           "hash": "2e4f05d93303d89b2cb89ff6d4fdc1f80be37007d2e8d7afebd0825a63067d65",
+          "importOrder": [
+            "audiobooker/casting/__init__.py",
+            "audiobooker/models.py",
+            "audiobooker/parser/text.py",
+            "audiobooker/cli.py",
+            "audiobooker/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/casting/__init__.py",
@@ -8187,6 +8729,15 @@
         },
         {
           "hash": "a1a006e13e52963fb304946ceb05ed6a1a253e3590a5c38e4645bf9e22e7f15a",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/renderer/engine.py",
+            "audiobooker/renderer/output.py",
+            "tests/fakes/fake_tts.py",
+            "tests/fakes/fake_ffmpeg.py",
+            "audiobooker/project.py",
+            "audiobooker/renderer/ffmpeg_runner.py"
+          ],
           "importsFiles": [
             "audiobooker/models.py",
             "audiobooker/project.py",
@@ -8200,6 +8751,11 @@
         },
         {
           "hash": "8c7ab9329e0de6f6b71e01952ba270e768d721eaa273345f5b196764ff8a8338",
+          "importOrder": [
+            "audiobooker/__init__.py",
+            "audiobooker/cli.py",
+            "audiobooker/casting/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/casting/__init__.py",
@@ -8209,6 +8765,15 @@
         },
         {
           "hash": "546ea208eabb9f288028519e083e81918c6416653880b6f44f902deb6433d47e",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/renderer/engine.py",
+            "audiobooker/renderer/cache_manifest.py",
+            "audiobooker/renderer/hash_utils.py",
+            "tests/fakes/fake_tts.py",
+            "tests/fakes/fake_ffmpeg.py"
+          ],
           "importsFiles": [
             "audiobooker/models.py",
             "audiobooker/project.py",
@@ -8222,6 +8787,11 @@
         },
         {
           "hash": "2046d6b80532522f72e5b2c2f1d865cd06f019e7f3cceedb32085d7acb6739a9",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/review.py",
+            "audiobooker/project.py"
+          ],
           "importsFiles": [
             "audiobooker/models.py",
             "audiobooker/project.py",
@@ -8231,6 +8801,11 @@
         },
         {
           "hash": "533d992b71eee45b0e6ac67bfe825f876d7f89764fb0ef20394b4a12be5d55fb",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/review.py",
+            "audiobooker/project.py"
+          ],
           "importsFiles": [
             "audiobooker/models.py",
             "audiobooker/project.py",
@@ -8259,6 +8834,10 @@
         },
         {
           "hash": "589408787a0a155719d113ac8bf32b01766aefc72c718df6a35d6725565388ca",
+          "importOrder": [
+            "audiobooker/project.py",
+            "audiobooker/models.py"
+          ],
           "importsFiles": [
             "audiobooker/models.py",
             "audiobooker/project.py"
@@ -8282,6 +8861,13 @@
             "project"
           ],
           "hash": "111c47f80f25e40bcf99514b968ab7b3f920971ea0d024bd8961ad8076d354cd",
+          "importOrder": [
+            "audiobooker/__init__.py",
+            "audiobooker/renderer/engine.py",
+            "tests/fakes/fake_tts.py",
+            "tests/fakes/fake_ffmpeg.py",
+            "tests/conftest.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/renderer/engine.py",
@@ -8305,6 +8891,18 @@
         },
         {
           "hash": "b797ef5a27871593b94edb20f934df62790927d96225d8acdde59fe9d7e4861b",
+          "importOrder": [
+            "audiobooker/renderer/output.py",
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/renderer/__init__.py",
+            "audiobooker/renderer/engine.py",
+            "audiobooker/renderer/protocols.py",
+            "tests/fakes/fake_ffmpeg.py",
+            "tests/fakes/fake_tts.py",
+            "audiobooker/renderer/hash_utils.py",
+            "audiobooker/renderer/cache_manifest.py"
+          ],
           "importsFiles": [
             "audiobooker/models.py",
             "audiobooker/project.py",
@@ -8321,6 +8919,14 @@
         },
         {
           "hash": "0f15292c622463bbda79fbd49ac16e6b8702a0aa16b97e7aa3e845e4489850ef",
+          "importOrder": [
+            "audiobooker/__init__.py",
+            "audiobooker/cli.py",
+            "audiobooker/models.py",
+            "audiobooker/review.py",
+            "audiobooker/renderer/cache_manifest.py",
+            "audiobooker/renderer/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/__init__.py",
             "audiobooker/cli.py",
@@ -8337,6 +8943,18 @@
             "tolerant_assembler"
           ],
           "hash": "afd7697412ec89f4b420ed739e2c62cd98b888ff1ccb978222be18d23fc42057",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/renderer/engine.py",
+            "audiobooker/renderer/hash_utils.py",
+            "audiobooker/renderer/output.py",
+            "audiobooker/renderer/protocols.py",
+            "tests/fakes/fake_tts.py",
+            "audiobooker/renderer/cache_manifest.py",
+            "audiobooker/errors.py",
+            "audiobooker/config_file.py"
+          ],
           "importsFiles": [
             "audiobooker/config_file.py",
             "audiobooker/errors.py",
@@ -8353,6 +8971,12 @@
         },
         {
           "hash": "d1e4d72400e883264e4da18da459a4f16aff1b438b30b92bb50def6809010aee",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/renderer/engine.py",
+            "tests/fakes/fake_tts.py",
+            "audiobooker/renderer/protocols.py"
+          ],
           "importsFiles": [
             "audiobooker/models.py",
             "audiobooker/renderer/engine.py",
@@ -8392,6 +9016,14 @@
         },
         {
           "hash": "b405b97adc18d2c41ad93e4c4897c2868b5faf8082a7eda7d954e0ac56443d74",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/parser/text_cleaners.py",
+            "audiobooker/casting/dialogue.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/parser/__init__.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/dialogue.py",
             "audiobooker/language/profile.py",
@@ -8404,6 +9036,20 @@
         },
         {
           "hash": "84a3976bab1e01982ba746e127a6ff5223020fa4b595e8592244327b4e256f62",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/casting/dialogue.py",
+            "audiobooker/language/profile.py",
+            "audiobooker/nlp/emotion.py",
+            "audiobooker/nlp/booknlp_adapter.py",
+            "audiobooker/cli.py",
+            "audiobooker/casting/voice_suggester.py",
+            "tests/fakes/fake_registry.py",
+            "tests/fakes/fake_tts.py",
+            "tests/fakes/fake_ffmpeg.py",
+            "audiobooker/review.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/dialogue.py",
             "audiobooker/casting/voice_suggester.py",
@@ -8431,6 +9077,12 @@
         },
         {
           "hash": "f79fc9ab560a7a8a265da4ffba6d2e70f5c16e6f03e023bc892ee21190752338",
+          "importOrder": [
+            "audiobooker/models.py",
+            "audiobooker/project.py",
+            "audiobooker/casting/dialogue.py",
+            "audiobooker/renderer/engine.py"
+          ],
           "importsFiles": [
             "audiobooker/casting/dialogue.py",
             "audiobooker/models.py",
@@ -8458,7 +9110,24 @@
       "origin": "authored",
       "role": "test",
       "testedBy": 0,
-      "unresolvedSites": 6
+      "unresolvedNamed": [
+        {
+          "path": "tests/test_feat_f5_cli.py",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "tests/test_feat_in_parser.py",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "tests/test_planted_red_w5_stage_c.py",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
+      "unresolvedSites": 3
     },
     {
       "dynamicReads": 3,
@@ -8760,7 +9429,87 @@
         },
         {
           "job": "ci",
+          "path": "audiobooker/__init__.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/casting/voice_registry.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/casting/voice_suggester.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
           "path": "audiobooker/cli.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/language/en.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/language/profile.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/nlp/booknlp_adapter.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/nlp/emotion.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/nlp/speaker_resolver.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/renderer/cache_manifest.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/renderer/engine.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/renderer/failure_report.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/renderer/ffmpeg_runner.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/renderer/hash_utils.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/renderer/output.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/renderer/progress.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "audiobooker/renderer/protocols.py",
           "runKind": "executes"
         },
         {
@@ -8780,7 +9529,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 5,
+      "runsCount": 21,
       "secrets": [
         "CODECOV_TOKEN"
       ],
@@ -9238,6 +9987,11 @@
       "from": "tests",
       "fromTests": true,
       "kind": "file",
+      "to": "audiobooker"
+    },
+    {
+      "from": "tools",
+      "kind": "spawns",
       "to": "audiobooker"
     }
   ],

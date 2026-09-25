@@ -11,6 +11,7 @@ Mapped at 2026-09-25 from commit b7d57d3.
 - CI's pull request trigger now also names `atlas/**`.
 - CI's push trigger now also names `atlas/**`.
 - CI now also runs src/cli.ts.
+- And 2 more changes to doors.
 - CHANGELOG.md is now read by test/version.test.ts.
 - README.md is now read by test/providers/github.test.ts.
 - package.json is now also read by test/cli-commands.test.ts and test/version.test.ts.
@@ -18,31 +19,31 @@ Mapped at 2026-09-25 from commit b7d57d3.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 7 paths; on a push to main touching 7 paths; or by hand. Runs src/cli.ts and test/.
-2. **Publish.** When a release is published; or by hand. Runs test/.
+1. **CI.** On a pull request to main touching 7 paths; on a push to main touching 7 paths; or by hand. Runs src/cli.ts and test/; builds src/index.ts.
+2. **Publish.** When a release is published; or by hand. Runs test/; builds src/index.ts.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/registry-sync** (the package people import). Loads src/index.ts.
 5. **registry-sync** (a command people run). Runs src/cli.ts.
 
 ## What happens through CI
 
-1. The workflow runs src/cli.ts in src and test/ in test.
-   1. Inside src/cli.ts, main does, in order:
-      1. load config
-      2. audit
-      3. format audit json
-      4. format audit markdown
-      5. format audit table
-      6. load config
-      7. audit
-      8. plan
-      9. format plan json
-      10. format plan markdown
-      11. format plan table
-      12. load config, and 6 more
-   2. **Audit** runs, in order: list org repos, p limit, read package json, has dockerfile, get npm package info, compare semver and list ghcr packages.
-   3. **Audit** runs, in order: list org repos, p limit, read package json, has dockerfile, get npm package info, compare semver and list ghcr packages.
-   4. **Audit** runs, in order: list org repos, p limit, read package json, has dockerfile, get npm package info, compare semver and list ghcr packages.
+1. The workflow runs src/cli.ts in src and test/ in test; it builds src/index.ts in src.
+   1. Inside src/cli.ts, `main` does, in order:
+      1. `loadConfig`
+      2. `audit`
+      3. `formatAuditJson`
+      4. `formatAuditMarkdown`
+      5. `formatAuditTable`
+      6. `loadConfig`
+      7. `audit`
+      8. `plan`
+      9. `formatPlanJson`
+      10. `formatPlanMarkdown`
+      11. `formatPlanTable`
+      12. `loadConfig`, and 6 more
+   2. **`audit`** runs, in order: `listOrgRepos`, `pLimit`, `readPackageJson`, `hasDockerfile`, `getNpmPackageInfo`, `compareSemver` and `listGhcrPackages`.
+   3. **`audit`** runs, in order: `listOrgRepos`, `pLimit`, `readPackageJson`, `hasDockerfile`, `getNpmPackageInfo`, `compareSemver` and `listGhcrPackages`.
+   4. **`audit`** runs, in order: `listOrgRepos`, `pLimit`, `readPackageJson`, `hasDockerfile`, `getNpmPackageInfo`, `compareSemver` and `listGhcrPackages`.
 2. It runs gh.
 3. It changes other repositories through the GitHub API.
 
@@ -52,7 +53,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Publish** runs test/, reaches src, and publishes to npm.
+**Publish** runs test/, builds src/index.ts, and publishes to npm.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -93,15 +94,15 @@ People write .claude/, .github/, the repository root, site/ and templates/. Noth
 
 ## Where to start
 
-.github/workflows/ci.yml → src/cli.ts
+.github/workflows/ci.yml → src/cli.ts → src/config.ts → src/audit.ts → src/format/json.ts → src/format/markdown.ts → src/format/table.ts → src/plan.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
 - 4 writes and 4 reads go to a path their caller passes, not to this repository.
+- 2 reads go to the directory the command is run in (package.json and registry-sync.config.json), not to this repository.
 - 1 read goes to the directory the command is run in (registry-sync.config.json) or a path its caller passes, not to this repository.
-- 1 read goes to the directory the command is run in (registry-sync.config.json), not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

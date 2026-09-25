@@ -352,6 +352,12 @@
         },
         {
           "hash": "b76dfdf4395bee8d962a37f31419b00ca5e601c3754492ae2c3f84e232ece697",
+          "importOrder": [
+            "src/index.ts",
+            "src/calibration/receipt.ts",
+            "src/calibration/receipt-schema.ts",
+            "src/calibration/aggregate.ts"
+          ],
           "importsFiles": [
             "src/calibration/aggregate.ts",
             "src/calibration/receipt-schema.ts",
@@ -369,6 +375,11 @@
         },
         {
           "hash": "f5b8d57b26917f4bc4f56248c46b1cfa081a5fe007c4598eb11a61135d0188e7",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/intake/index.ts",
@@ -430,6 +441,7 @@
           "path": "site/src/assets/logo.png"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -490,6 +502,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "ab72a2b467864ff0572fff257d9b97ffc6cc8f4513a7aeeeaddef6d6bce434c2",
           "path": "site/src/site-config.ts"
         },
@@ -532,6 +545,19 @@
             "aggregate"
           ],
           "hash": "175ff95cb0b1c3cdbea29efcd8355da6fa4dd6a725831f62aae7da4919895c96",
+          "importOrder": [
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/resolution-schema.ts",
+            "src/dispositions/schema.ts",
+            "src/gates/schema.ts",
+            "src/sources/schema.ts",
+            "src/cowork/schema.ts",
+            "src/closure-ledger/effective-accepted.ts",
+            "src/audit/types.ts"
+          ],
           "importsFiles": [
             "src/audit/types.ts",
             "src/claims/schema.ts",
@@ -549,6 +575,13 @@
         },
         {
           "hash": "0951f85e2a8a3aecf52e38b385cd6e6bb7e076abdc02f5dc3903b27d2f35aece",
+          "importOrder": [
+            "src/audit/run.ts",
+            "src/audit/aggregate.ts",
+            "src/audit/markdown.ts",
+            "src/audit/schema.ts",
+            "src/audit/types.ts"
+          ],
           "importsFiles": [
             "src/audit/aggregate.ts",
             "src/audit/markdown.ts",
@@ -584,6 +617,12 @@
             "renderMissingPolicySourcesMarkdown"
           ],
           "hash": "bdcc3a1b1b15d367297285f9b2e0fe0a31a45a0790f503a9ccd6078250bee7b9",
+          "importOrder": [
+            "src/intake/schema.ts",
+            "src/sources/schema.ts",
+            "src/sources/effective-card.ts",
+            "src/sources/source-card-overrides-schema.ts"
+          ],
           "importsFiles": [
             "src/intake/schema.ts",
             "src/sources/effective-card.ts",
@@ -597,6 +636,24 @@
             "audit"
           ],
           "hash": "9fb6df88eebecb0f1ecdde659bb8222574cb7bea6b49c1b35fa1fcac6d868fc0",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/resolution-schema.ts",
+            "src/dispositions/schema.ts",
+            "src/sources/schema.ts",
+            "src/gates/schema.ts",
+            "src/review/schema.ts",
+            "src/cowork/schema.ts",
+            "src/sources/source-card-overrides.ts",
+            "src/audit/aggregate.ts",
+            "src/audit/missing-policy-sources.ts",
+            "src/audit/schema.ts",
+            "src/audit/markdown.ts",
+            "src/audit/types.ts"
+          ],
           "importsFiles": [
             "src/audit/aggregate.ts",
             "src/audit/markdown.ts",
@@ -633,6 +690,8 @@
           "path": "src/calibration/aggregate-receipt-schema.ts"
         },
         {
+          "entry": "aggregateReceipts",
+          "entryRule": 4,
           "exports": [
             "aggregateDecisionVocabulary",
             "aggregateMetric",
@@ -649,7 +708,24 @@
             "src/calibration/aggregate-receipt-schema.ts",
             "src/calibration/receipt-schema.ts"
           ],
-          "path": "src/calibration/aggregate.ts"
+          "path": "src/calibration/aggregate.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 323,
+                  "name": "parse",
+                  "target": {
+                    "file": "src/calibration/aggregate-receipt-schema.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "aggregateReceipts"
+            }
+          ]
         },
         {
           "exports": [
@@ -658,6 +734,12 @@
             "receiptPathForPack"
           ],
           "hash": "3f4e4b30aefee9f50b878963177a882e19977685bdba8357c0c01ed326cc6594",
+          "importOrder": [
+            "src/calibration/receipt-schema.ts",
+            "src/calibration/aggregate-receipt-schema.ts",
+            "src/calibration/receipt.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/calibration/aggregate-receipt-schema.ts",
             "src/calibration/receipt-schema.ts",
@@ -750,6 +832,13 @@
             "auditDensity"
           ],
           "hash": "d21eedbfff97b521931f8aafee47049910297f2909056c101ce70133e54a5350",
+          "importOrder": [
+            "src/errors.ts",
+            "src/index.ts",
+            "src/sources/schema.ts",
+            "src/claims/schema.ts",
+            "src/claims/density/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/density/schema.ts",
             "src/claims/schema.ts",
@@ -782,6 +871,21 @@
             "extract"
           ],
           "hash": "503ca0d7bfb74035051116f09acba8e981789901c48a7f3aba905b91e8c4c87c",
+          "importOrder": [
+            "src/errors.ts",
+            "src/index.ts",
+            "src/intake/schema.ts",
+            "src/sources/excerpts/index.ts",
+            "src/sources/schema.ts",
+            "src/sources/source-card-overrides.ts",
+            "src/sources/effective-card.ts",
+            "src/sources/severities.ts",
+            "src/claims/extract-completion-ledger.ts",
+            "src/claims/extractors/index.ts",
+            "src/claims/rescue-ledger.ts",
+            "src/claims/schema.ts",
+            "src/claims/types.ts"
+          ],
           "importsFiles": [
             "src/claims/extract-completion-ledger.ts",
             "src/claims/extractors/index.ts",
@@ -804,6 +908,12 @@
             "pageExcerpts"
           ],
           "hash": "ab7c53d89f03ffddfaeefa860f9d99df1554d18a35949c3d8069144c9c3485db",
+          "importOrder": [
+            "src/sources/excerpts/ledger.ts",
+            "src/sources/extractors/ollama-intern.ts",
+            "src/sources/excerpts/schema.ts",
+            "src/claims/types.ts"
+          ],
           "importsFiles": [
             "src/claims/types.ts",
             "src/sources/excerpts/ledger.ts",
@@ -814,6 +924,10 @@
         },
         {
           "hash": "364f5dfdbc5945d05314c6d57da380d3baf2b56f0df8e6560cb8dc89087af8f8",
+          "importOrder": [
+            "src/sources/excerpts/schema.ts",
+            "src/claims/types.ts"
+          ],
           "importsFiles": [
             "src/claims/types.ts",
             "src/sources/excerpts/schema.ts"
@@ -827,6 +941,12 @@
             "pickClaimExtractorWithDegradation"
           ],
           "hash": "acf275a36924472f258d7db800781034da22b8eb6794ca52dc1ce9279de07d86",
+          "importOrder": [
+            "src/claims/types.ts",
+            "src/claims/extractors/heuristic.ts",
+            "src/claims/extractors/mcp.ts",
+            "src/claims/extractors/direct-ollama-legacy-extractor.ts"
+          ],
           "importsFiles": [
             "src/claims/extractors/direct-ollama-legacy-extractor.ts",
             "src/claims/extractors/heuristic.ts",
@@ -840,6 +960,17 @@
             "pageExcerpts"
           ],
           "hash": "f89848e5432bf1bcaee3bef70a1f3ab7be7c3f92b88d7d30081e6de38b356ff4",
+          "importOrder": [
+            "src/sources/excerpts/ledger.ts",
+            "src/mcp/client.ts",
+            "src/sources/excerpts/schema.ts",
+            "src/claims/types.ts",
+            "src/claims/critic/mcp-critic.ts",
+            "src/claims/critic/prompt.ts",
+            "src/claims/critic/source-content.ts",
+            "src/claims/critic/rescue-eligibility.ts",
+            "src/claims/critic/rescue-critic.ts"
+          ],
           "importsFiles": [
             "src/claims/critic/mcp-critic.ts",
             "src/claims/critic/prompt.ts",
@@ -855,6 +986,17 @@
         },
         {
           "hash": "d8300a02ddbcef4fdef209c1a0efc027e63f974d701380513d8d638b775af85a",
+          "importOrder": [
+            "src/claims/extract.ts",
+            "src/claims/density/index.ts",
+            "src/claims/extractors/index.ts",
+            "src/claims/schema.ts",
+            "src/claims/repair-scope.ts",
+            "src/claims/scope-repairs-schema.ts",
+            "src/claims/scope-repairs.ts",
+            "src/claims/scope-proposer.ts",
+            "src/claims/types.ts"
+          ],
           "importsFiles": [
             "src/claims/density/index.ts",
             "src/claims/extract.ts",
@@ -874,6 +1016,16 @@
             "runScopeRepair"
           ],
           "hash": "a996c3f4e8f051e53aa2a90492fd9546dd40987143082db416f7a411ebc3b108",
+          "importOrder": [
+            "src/errors.ts",
+            "src/index.ts",
+            "src/claims/schema.ts",
+            "src/sources/schema.ts",
+            "src/intake/schema.ts",
+            "src/claims/scope-repairs.ts",
+            "src/claims/scope-proposer.ts",
+            "src/claims/scope-repairs-schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/claims/scope-proposer.ts",
@@ -898,6 +1050,11 @@
             "validateRescueLedgerRecord"
           ],
           "hash": "a598da302b233a94899ecb6c8419a3c157d59a9ea7c9f85aaff3c6f8adeb66cb",
+          "importOrder": [
+            "src/index.ts",
+            "src/claims/critic/rescue-eligibility.ts",
+            "src/claims/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/critic/rescue-eligibility.ts",
             "src/claims/schema.ts",
@@ -907,6 +1064,10 @@
         },
         {
           "hash": "632483203238d3a1ae31e03614ede7405616b7f83d8ba364ea39361d37199a06",
+          "importOrder": [
+            "src/sources/excerpts/schema.ts",
+            "src/claims/critic/rescue-eligibility.ts"
+          ],
           "importsFiles": [
             "src/claims/critic/rescue-eligibility.ts",
             "src/sources/excerpts/schema.ts"
@@ -951,6 +1112,11 @@
             "validateExtractTierBudgetValue"
           ],
           "hash": "a076a2961bc6fc5d54ac713c690ab25f01e4a825d35aaa2afbb225322a09f963",
+          "importOrder": [
+            "src/sources/excerpts/schema.ts",
+            "src/sources/schema.ts",
+            "src/claims/critic/rescue-eligibility.ts"
+          ],
           "importsFiles": [
             "src/claims/critic/rescue-eligibility.ts",
             "src/sources/excerpts/schema.ts",
@@ -972,6 +1138,38 @@
             "parsePositiveIntFlagArg"
           ],
           "hash": "e6209c011c7b41a2d2f79b82df5e13cacb70b604fee8c6d1114ca3df287db8fc",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/section_report/index.ts",
+            "src/sources/index.ts",
+            "src/discover/index.ts",
+            "src/claims/index.ts",
+            "src/triage/index.ts",
+            "src/claims/rescue-ledger.ts",
+            "src/contradictions/index.ts",
+            "src/contradictions/types.ts",
+            "src/gates/index.ts",
+            "src/review/index.ts",
+            "src/indexer/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/synth/prose/types.ts",
+            "src/claims/types.ts",
+            "src/recover/index.ts",
+            "src/audit/index.ts",
+            "src/freeze/index.ts",
+            "src/invalidate/index.ts",
+            "src/pack/publish/index.ts",
+            "src/sources/source-card-audit.ts",
+            "src/sources/rebuild-ledger.ts",
+            "src/errors.ts",
+            "src/cli/help-topics.ts",
+            "src/index.ts",
+            "src/calibration/lookup.ts",
+            "src/review/reviewer-options-schema.ts",
+            "src/intake/schema.ts"
+          ],
           "importsFiles": [
             "src/audit/index.ts",
             "src/calibration/lookup.ts",
@@ -1069,6 +1267,11 @@
             "pickContradictionDetector"
           ],
           "hash": "5d182979082943f382abc6afdeb825e329f23a264619d8bc3f9b4f86317f2ea2",
+          "importOrder": [
+            "src/contradictions/types.ts",
+            "src/contradictions/detectors/heuristic.ts",
+            "src/contradictions/detectors/ollama-intern.ts"
+          ],
           "importsFiles": [
             "src/contradictions/detectors/heuristic.ts",
             "src/contradictions/detectors/ollama-intern.ts",
@@ -1081,6 +1284,12 @@
             "candidateContradictionPairs"
           ],
           "hash": "bb9ddd16295a674884fd47a72bb54323e295fcfce31bf0bc0a950bccdce9c739",
+          "importOrder": [
+            "src/sources/extractors/ollama-intern.ts",
+            "src/util/progress.ts",
+            "src/claims/schema.ts",
+            "src/contradictions/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/types.ts",
@@ -1091,6 +1300,16 @@
         },
         {
           "hash": "c69313bbe3b8d822dae5f292d74ea9546268741af3527a8082bf5fd7ea27f6bc",
+          "importOrder": [
+            "src/contradictions/map.ts",
+            "src/contradictions/resolve.ts",
+            "src/contradictions/resolution-schema.ts",
+            "src/contradictions/detectors/index.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/scope.ts",
+            "src/contradictions/markdown.ts",
+            "src/contradictions/types.ts"
+          ],
           "importsFiles": [
             "src/contradictions/detectors/index.ts",
             "src/contradictions/map.ts",
@@ -1109,6 +1328,18 @@
             "map"
           ],
           "hash": "21ec800147e66e953a9fb584d37e7ee8af3fb5459516a9f2c633924ef87999f1",
+          "importOrder": [
+            "src/errors.ts",
+            "src/claims/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/detectors/index.ts",
+            "src/contradictions/detectors/heuristic.ts",
+            "src/contradictions/detectors/ollama-intern.ts",
+            "src/contradictions/markdown.ts",
+            "src/util/progress.ts",
+            "src/contradictions/types.ts",
+            "src/triage/run.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/detectors/heuristic.ts",
@@ -1143,6 +1374,10 @@
             "resolve"
           ],
           "hash": "c426ea7eb4f65f6e5187ca91b6869f7648d993f71a47ef5764544a86a679022d",
+          "importOrder": [
+            "src/errors.ts",
+            "src/contradictions/resolution-schema.ts"
+          ],
           "importsFiles": [
             "src/contradictions/resolution-schema.ts",
             "src/errors.ts"
@@ -1178,6 +1413,17 @@
             "derive"
           ],
           "hash": "8a2b48006cf6088dec511930efd899823094f2f842385c21ad9317793e9d95d2",
+          "importOrder": [
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/resolution-schema.ts",
+            "src/dispositions/schema.ts",
+            "src/gates/schema.ts",
+            "src/closure-ledger/effective-accepted.ts",
+            "src/cowork/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/closure-ledger/effective-accepted.ts",
@@ -1193,6 +1439,13 @@
         },
         {
           "hash": "49e996531b6145bff50b4a4db7ec91d30576240ebb991a1b4265098de926350a",
+          "importOrder": [
+            "src/cowork/run.ts",
+            "src/cowork/derive.ts",
+            "src/cowork/markdown.ts",
+            "src/cowork/schema.ts",
+            "src/cowork/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/derive.ts",
             "src/cowork/markdown.ts",
@@ -1218,6 +1471,21 @@
             "handoff"
           ],
           "hash": "97b8e452df3f3b0f8691a98bf988d558cffd79306c655f828f56c5ad2c75efeb",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/resolution-schema.ts",
+            "src/dispositions/schema.ts",
+            "src/gates/schema.ts",
+            "src/review/schema.ts",
+            "src/indexer/db.ts",
+            "src/cowork/derive.ts",
+            "src/cowork/schema.ts",
+            "src/cowork/markdown.ts",
+            "src/cowork/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/resolution-schema.ts",
@@ -1245,6 +1513,13 @@
         },
         {
           "hash": "a75f248571fbe51a241deca2341910fa89ea11ea12a877b8c11e6d2aa8e7d828",
+          "importOrder": [
+            "src/discover/run.ts",
+            "src/discover/schema.ts",
+            "src/discover/types.ts",
+            "src/discover/providers/llm-heuristic.ts",
+            "src/discover/relevance.ts"
+          ],
           "importsFiles": [
             "src/discover/providers/llm-heuristic.ts",
             "src/discover/relevance.ts",
@@ -1257,6 +1532,11 @@
         },
         {
           "hash": "8e1c0324c5fcdad13534ffd40872238b9302878f4a14fbea5cc0c14e623f5e51",
+          "importOrder": [
+            "src/sources/extractors/ollama-intern.ts",
+            "src/discover/types.ts",
+            "src/discover/schema.ts"
+          ],
           "importsFiles": [
             "src/discover/schema.ts",
             "src/discover/types.ts",
@@ -1287,6 +1567,15 @@
             "reject"
           ],
           "hash": "6cb9165febd93c7988ce1bc2a3a98f350c5fb6c33521ee5fced91154dfdbc633",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/index.ts",
+            "src/discover/schema.ts",
+            "src/discover/types.ts",
+            "src/discover/providers/llm-heuristic.ts",
+            "src/discover/relevance.ts"
+          ],
           "importsFiles": [
             "src/discover/providers/llm-heuristic.ts",
             "src/discover/relevance.ts",
@@ -1342,6 +1631,13 @@
         },
         {
           "hash": "7d5fbddb25d41cd43135553d67996b932e35375f127419383d1e9aa80b4f05fb",
+          "importOrder": [
+            "src/freeze/run.ts",
+            "src/freeze/citations.ts",
+            "src/freeze/markdown.ts",
+            "src/freeze/schema.ts",
+            "src/freeze/types.ts"
+          ],
           "importsFiles": [
             "src/freeze/citations.ts",
             "src/freeze/markdown.ts",
@@ -1368,6 +1664,21 @@
             "freeze"
           ],
           "hash": "0393bbcfcb003f0783cdd13fc7b038433734b5ff77f182e45d2744bb3afeab0b",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/audit/schema.ts",
+            "src/cowork/schema.ts",
+            "src/synth/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/closure-ledger/effective-accepted.ts",
+            "src/freeze/checks.ts",
+            "src/freeze/citations.ts",
+            "src/freeze/markdown.ts",
+            "src/freeze/schema.ts",
+            "src/freeze/types.ts"
+          ],
           "importsFiles": [
             "src/audit/schema.ts",
             "src/claims/schema.ts",
@@ -1398,6 +1709,10 @@
             "checkAcceptedClaimFloor"
           ],
           "hash": "c7897c7db025b06eeed1b43b27fd15a077b5a000f3bf49e8ad2c0a86e0187085",
+          "importOrder": [
+            "src/gates/types.ts",
+            "src/closure-ledger/effective-accepted.ts"
+          ],
           "importsFiles": [
             "src/closure-ledger/effective-accepted.ts",
             "src/gates/types.ts"
@@ -1419,6 +1734,10 @@
             "checkContradiction"
           ],
           "hash": "68232c18cc6b77c511eaac19f500f31e9715b76f245684fde8177571d474a4b0",
+          "importOrder": [
+            "src/gates/types.ts",
+            "src/contradictions/resolution-schema.ts"
+          ],
           "importsFiles": [
             "src/contradictions/resolution-schema.ts",
             "src/gates/types.ts"
@@ -1437,6 +1756,16 @@
         },
         {
           "hash": "49d622d02392ffb24c832b1f6b8c0c634ee17eb556ee16cee5f541fc3b54f2b1",
+          "importOrder": [
+            "src/gates/checks/source-floor.ts",
+            "src/gates/checks/claim-integrity.ts",
+            "src/gates/checks/scope-integrity.ts",
+            "src/gates/checks/freshness.ts",
+            "src/gates/checks/contradiction.ts",
+            "src/gates/checks/section-budget.ts",
+            "src/gates/checks/waivers.ts",
+            "src/gates/checks/accepted-claim-floor.ts"
+          ],
           "importsFiles": [
             "src/gates/checks/accepted-claim-floor.ts",
             "src/gates/checks/claim-integrity.ts",
@@ -1455,6 +1784,10 @@
             "checkScopeIntegrity"
           ],
           "hash": "c880236d45da95a179e7221f82bfb1cc8e489dcde45de7e3bdd4e3b0adda3d9b",
+          "importOrder": [
+            "src/gates/types.ts",
+            "src/contradictions/resolution-schema.ts"
+          ],
           "importsFiles": [
             "src/contradictions/resolution-schema.ts",
             "src/gates/types.ts"
@@ -1487,6 +1820,10 @@
             "applyWaivers"
           ],
           "hash": "a63988c9bfebbd2c73ceaed0c1a47fdd173e1922f9fc9743c6b4bd515d31537d",
+          "importOrder": [
+            "src/intake/schema.ts",
+            "src/gates/types.ts"
+          ],
           "importsFiles": [
             "src/gates/types.ts",
             "src/intake/schema.ts"
@@ -1495,6 +1832,13 @@
         },
         {
           "hash": "0122e3037269c32fcade23a4a88ece5e87ca3d9c4ec91bb50f74a4957a7a0266",
+          "importOrder": [
+            "src/gates/run.ts",
+            "src/gates/checks/index.ts",
+            "src/gates/markdown.ts",
+            "src/gates/schema.ts",
+            "src/gates/types.ts"
+          ],
           "importsFiles": [
             "src/gates/checks/index.ts",
             "src/gates/markdown.ts",
@@ -1520,6 +1864,21 @@
             "gate"
           ],
           "hash": "f9a4e7469be0ec603f68a9a070e4669c5a261f04cbca6d191bc9f289539eab75",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/resolution-schema.ts",
+            "src/sources/schema.ts",
+            "src/review/schema.ts",
+            "src/sources/source-card-overrides.ts",
+            "src/sources/effective-card.ts",
+            "src/gates/checks/index.ts",
+            "src/gates/markdown.ts",
+            "src/gates/schema.ts",
+            "src/gates/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/resolution-schema.ts",
@@ -1543,6 +1902,15 @@
         },
         {
           "hash": "70f7fe4463039b2dcb9fb9353bdd963768dcf3e4721abe15c9c228b14fc6b9e8",
+          "importOrder": [
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/resolution-schema.ts",
+            "src/sources/schema.ts",
+            "src/sources/source-card-overrides-schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/resolution-schema.ts",
@@ -1556,6 +1924,26 @@
         },
         {
           "hash": "71eddc8e93de0fb2edcb3d43fa53b7a4f6538ab5f4a5061cfaa4491a36bbf8f0",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/sources/index.ts",
+            "src/claims/index.ts",
+            "src/contradictions/index.ts",
+            "src/gates/index.ts",
+            "src/review/index.ts",
+            "src/indexer/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/audit/index.ts",
+            "src/freeze/index.ts",
+            "src/invalidate/index.ts",
+            "src/section_report/index.ts",
+            "src/triage/index.ts",
+            "src/discover/index.ts",
+            "src/recover/index.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/audit/index.ts",
             "src/claims/index.ts",
@@ -1602,6 +1990,17 @@
             "build"
           ],
           "hash": "26cac6237e7fe51312d8beed16d75a56a14e705c2e3c6bc38a004740ef9d9fb8",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/sources/schema.ts",
+            "src/gates/schema.ts",
+            "src/review/schema.ts",
+            "src/indexer/db.ts",
+            "src/indexer/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/schema.ts",
@@ -1641,6 +2040,15 @@
         },
         {
           "hash": "1bb688b9698180e700b2bb1c335181fadd9441024dd0ab20e64f67e1162ebbd1",
+          "importOrder": [
+            "src/indexer/build.ts",
+            "src/indexer/query.ts",
+            "src/indexer/export.ts",
+            "src/indexer/sync.ts",
+            "src/indexer/db.ts",
+            "src/indexer/schema.ts",
+            "src/indexer/types.ts"
+          ],
           "importsFiles": [
             "src/indexer/build.ts",
             "src/indexer/db.ts",
@@ -1689,6 +2097,11 @@
         },
         {
           "hash": "bb48d4e80b50a0bfc5f066c580e22119dd4d803d284d56fdb938dccb08f2a1f8",
+          "importOrder": [
+            "src/intake/scaffold.ts",
+            "src/intake/types.ts",
+            "src/intake/schema.ts"
+          ],
           "importsFiles": [
             "src/intake/scaffold.ts",
             "src/intake/schema.ts",
@@ -1725,6 +2138,12 @@
         },
         {
           "hash": "32def6b6c0c315e98f7c6e550dd3ab14e09fcf98a17fbe7ba2da457e6b52d949",
+          "importOrder": [
+            "src/invalidate/run.ts",
+            "src/invalidate/review.ts",
+            "src/invalidate/schema.ts",
+            "src/invalidate/types.ts"
+          ],
           "importsFiles": [
             "src/invalidate/review.ts",
             "src/invalidate/run.ts",
@@ -1751,6 +2170,13 @@
             "invalidateExtraction"
           ],
           "hash": "5858e9832845b307bbd68c0d616e2adb2ce7d7d028b827cd1c6bacc39cbcce20",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/index.ts",
+            "src/invalidate/schema.ts",
+            "src/invalidate/types.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/index.ts",
@@ -1775,6 +2201,10 @@
             "serverIgnoresTierBudgetOverride"
           ],
           "hash": "fbbdaf62e11949c31ad609578b2173848cc619ceae3639a53f6aded44f76a598",
+          "importOrder": [
+            "src/mcp/errors.ts",
+            "src/index.ts"
+          ],
           "importsFiles": [
             "src/index.ts",
             "src/mcp/errors.ts"
@@ -1807,6 +2237,17 @@
             "publish"
           ],
           "hash": "f5600377e35a3256e3355f31b9284a095eafbea93058a3ee9a34c3b53efe27f5",
+          "importOrder": [
+            "src/util/progress.ts",
+            "src/pack/publish/manifest.ts",
+            "src/pack/publish/readme.ts",
+            "src/pack/publish/how-to-read.ts",
+            "src/pack/publish/copy.ts",
+            "src/pack/publish/verify.ts",
+            "src/errors.ts",
+            "src/pack/publish/types.ts",
+            "src/pack/publish/schema.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/pack/publish/copy.ts",
@@ -1825,6 +2266,14 @@
             "deriveManifest"
           ],
           "hash": "40162c0f515c924a743b7bb4096505c517b85013392c5f90b6ff1b875ab583cb",
+          "importOrder": [
+            "src/intake/schema.ts",
+            "src/review/schema.ts",
+            "src/closure-ledger/effective-accepted.ts",
+            "src/pack/publish/schema.ts",
+            "src/index.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/closure-ledger/effective-accepted.ts",
             "src/errors.ts",
@@ -1861,6 +2310,10 @@
             "verifyPack"
           ],
           "hash": "3f0ac63c51c37411340bec1420dd2aedbbff41ecfee954c5590dd3e19d351970",
+          "importOrder": [
+            "src/pack/publish/schema.ts",
+            "src/freeze/run.ts"
+          ],
           "importsFiles": [
             "src/freeze/run.ts",
             "src/pack/publish/schema.ts"
@@ -1899,6 +2352,14 @@
             "isHealthy"
           ],
           "hash": "946d32285a96d3bc332f2c17fcf1834a09061ae92cce50461b9d45510fab2854",
+          "importOrder": [
+            "src/cowork/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/sources/schema.ts",
+            "src/synth/partial-pack/index.ts",
+            "src/recover/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/cowork/schema.ts",
@@ -1932,6 +2393,18 @@
         },
         {
           "hash": "e9ec1fb130cb80f03de3e83e587b60b72e2e6a34bede31e6ad31e02d6a5fc808",
+          "importOrder": [
+            "src/recover/run.ts",
+            "src/recover/diagnose.ts",
+            "src/recover/action-graph.ts",
+            "src/recover/advisor.ts",
+            "src/recover/verifier.ts",
+            "src/recover/fallback.ts",
+            "src/recover/prompt.ts",
+            "src/recover/markdown.ts",
+            "src/recover/schema.ts",
+            "src/recover/types.ts"
+          ],
           "importsFiles": [
             "src/recover/action-graph.ts",
             "src/recover/advisor.ts",
@@ -1984,6 +2457,11 @@
             "validateRegenerationLedgerRecord"
           ],
           "hash": "36daba822adc3fd3def4c7ca81379e15dc4e810d1050c0a0b2ffbdf747289a6d",
+          "importOrder": [
+            "src/index.ts",
+            "src/recover/types.ts",
+            "src/recover/schema.ts"
+          ],
           "importsFiles": [
             "src/index.ts",
             "src/recover/schema.ts",
@@ -1998,6 +2476,25 @@
             "writeRecoveryArtifact"
           ],
           "hash": "eb06ac42e27cab63c7e02eafa3f93f9f3176f9e3ca9cbe43726af3943813d009",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/cowork/schema.ts",
+            "src/index.ts",
+            "src/mcp/client.ts",
+            "src/recover/action-graph.ts",
+            "src/recover/advisor.ts",
+            "src/recover/diagnose.ts",
+            "src/recover/fallback.ts",
+            "src/recover/fallback-cause.ts",
+            "src/recover/markdown.ts",
+            "src/recover/prompt.ts",
+            "src/recover/regeneration-ledger.ts",
+            "src/recover/schema.ts",
+            "src/recover/verifier.ts",
+            "src/recover/types.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/schema.ts",
             "src/errors.ts",
@@ -2059,6 +2556,16 @@
         },
         {
           "hash": "4317aa90f9572f747ab1bddfc218af6b11d8e053f613825178d30ad601158a17",
+          "importOrder": [
+            "src/review/run.ts",
+            "src/review/reviewers/index.ts",
+            "src/review/promote.ts",
+            "src/review/profiles.ts",
+            "src/review/decision.ts",
+            "src/review/markdown.ts",
+            "src/review/schema.ts",
+            "src/review/types.ts"
+          ],
           "importsFiles": [
             "src/review/decision.ts",
             "src/review/markdown.ts",
@@ -2077,6 +2584,10 @@
             "renderReviewMarkdown"
           ],
           "hash": "a349b50e36a7b69fdfd348c596740ab9e0f0eb96ce7d225ab572344c38404e87",
+          "importOrder": [
+            "src/review/schema.ts",
+            "src/review/reviewer-options-schema.ts"
+          ],
           "importsFiles": [
             "src/review/reviewer-options-schema.ts",
             "src/review/schema.ts"
@@ -2099,6 +2610,13 @@
             "promote"
           ],
           "hash": "ff030eab39cccfea43e2039e9f1ac47fa5e35cbdd6bbb0384af01b6840314715",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/review/profiles.ts",
+            "src/review/schema.ts",
+            "src/review/markdown.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/intake/schema.ts",
@@ -2114,6 +2632,11 @@
         },
         {
           "hash": "a90936f3b0f359036681e39c9257868570f8f4445e1d99b6674a0751194f9c6c",
+          "importOrder": [
+            "src/claims/schema.ts",
+            "src/sources/excerpts/schema.ts",
+            "src/review/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/review/types.ts",
@@ -2127,6 +2650,12 @@
             "pickReviewer"
           ],
           "hash": "d373b4bf4609d2c0154d82e6c4d8ca4ed39ebea852c532eeae9cf3da42721b11",
+          "importOrder": [
+            "src/review/types.ts",
+            "src/review/reviewers/heuristic.ts",
+            "src/review/reviewers/ollama-intern.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/review/reviewers/heuristic.ts",
@@ -2140,6 +2669,12 @@
             "pageClaimsForReview"
           ],
           "hash": "c0aba803eb6be9b0fd64586404adca39aa1e1ce8825150e23dfab7e9fc86cb2b",
+          "importOrder": [
+            "src/sources/extractors/ollama-intern.ts",
+            "src/util/progress.ts",
+            "src/review/reviewer-options-schema.ts",
+            "src/review/types.ts"
+          ],
           "importsFiles": [
             "src/review/reviewer-options-schema.ts",
             "src/review/types.ts",
@@ -2153,6 +2688,25 @@
             "review"
           ],
           "hash": "af5a26e33e248dd41af5690da027a0fdb92aa5d2b82559db616b1845845805f1",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/resolution-schema.ts",
+            "src/sources/schema.ts",
+            "src/sources/excerpts/schema.ts",
+            "src/sources/excerpts/ledger.ts",
+            "src/gates/schema.ts",
+            "src/review/profiles.ts",
+            "src/review/reviewer-options-schema.ts",
+            "src/review/reviewers/index.ts",
+            "src/review/decision.ts",
+            "src/review/markdown.ts",
+            "src/review/schema.ts",
+            "src/review/types.ts",
+            "src/triage/run.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/resolution-schema.ts",
@@ -2183,6 +2737,16 @@
         },
         {
           "hash": "81b3d951e9e590bb963bc0ae6e761e7a70531e58e80fc73341da70b529187525",
+          "importOrder": [
+            "src/claims/schema.ts",
+            "src/review/reviewer-options-schema.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/resolution-schema.ts",
+            "src/sources/excerpts/schema.ts",
+            "src/sources/schema.ts",
+            "src/intake/schema.ts",
+            "src/gates/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/resolution-schema.ts",
@@ -2209,6 +2773,17 @@
             "reportSection"
           ],
           "hash": "47fe996febf5c15b320c393a0e5e96170941e5a3373a8fb25646b39df40e00b0",
+          "importOrder": [
+            "src/errors.ts",
+            "src/index.ts",
+            "src/intake/schema.ts",
+            "src/sources/schema.ts",
+            "src/claims/schema.ts",
+            "src/closure-ledger/effective-accepted.ts",
+            "src/contradictions/schema.ts",
+            "src/review/schema.ts",
+            "src/section_report/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/closure-ledger/effective-accepted.ts",
@@ -2272,6 +2847,13 @@
             "writeSourceCard"
           ],
           "hash": "7b9eda30ed6c7b3a137c8e4a1b9d44f996dcf0fa0162c53b03de2e42292f63e0",
+          "importOrder": [
+            "src/sources/schema.ts",
+            "src/sources/types.ts",
+            "src/sources/source-type-classifier.ts",
+            "src/sources/effective-card.ts",
+            "src/sources/source-card-overrides-schema.ts"
+          ],
           "importsFiles": [
             "src/sources/effective-card.ts",
             "src/sources/schema.ts",
@@ -2289,6 +2871,11 @@
             "getEffectiveSourceType"
           ],
           "hash": "3e92e013b943b70e9e9f57defa6e7f12b8d9b227f60341958c0d61a174f3c882",
+          "importOrder": [
+            "src/sources/schema.ts",
+            "src/sources/source-card-overrides-schema.ts",
+            "src/sources/severities.ts"
+          ],
           "importsFiles": [
             "src/sources/schema.ts",
             "src/sources/severities.ts",
@@ -2306,6 +2893,11 @@
         },
         {
           "hash": "671db93c3989f7db6b82c5a9a79b13a52bcd13ddb97e27304c1fe5a4f1ea2643",
+          "importOrder": [
+            "src/sources/excerpts/schema.ts",
+            "src/sources/excerpts/chunk.ts",
+            "src/sources/excerpts/ledger.ts"
+          ],
           "importsFiles": [
             "src/sources/excerpts/chunk.ts",
             "src/sources/excerpts/ledger.ts",
@@ -2354,6 +2946,11 @@
             "pickExtractor"
           ],
           "hash": "67a6f03c507a070b6723e780c0c625c04484ee7103fcbdf9db8ac352fe45f0b8",
+          "importOrder": [
+            "src/sources/types.ts",
+            "src/sources/extractors/heuristic.ts",
+            "src/sources/extractors/ollama-intern.ts"
+          ],
           "importsFiles": [
             "src/sources/extractors/heuristic.ts",
             "src/sources/extractors/ollama-intern.ts",
@@ -2378,6 +2975,11 @@
             "makeSourceId"
           ],
           "hash": "0c6aaccc37e719d29e091969f0532f3807c9e287e599fb96452d8c62df0a439e",
+          "importOrder": [
+            "src/sources/schema.ts",
+            "src/index.ts",
+            "src/sources/url-safety.ts"
+          ],
           "importsFiles": [
             "src/index.ts",
             "src/sources/schema.ts",
@@ -2390,6 +2992,18 @@
             "gather"
           ],
           "hash": "512f294a32e5dd16287c19bb851284aa6fa6c6fe636d02ccf0551e4b83fe25d4",
+          "importOrder": [
+            "src/errors.ts",
+            "src/util/progress.ts",
+            "src/sources/fetch.ts",
+            "src/sources/url-input.ts",
+            "src/sources/extractors/index.ts",
+            "src/sources/cards.ts",
+            "src/sources/source-card-overrides.ts",
+            "src/sources/severities.ts",
+            "src/sources/schema.ts",
+            "src/sources/types.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/sources/cards.ts",
@@ -2406,6 +3020,20 @@
         },
         {
           "hash": "35a235bcd48e4df59f1ac829eabcdf8d2d84aa357882fe79b7a0a865b69135a8",
+          "importOrder": [
+            "src/sources/gather.ts",
+            "src/sources/fetch.ts",
+            "src/sources/url-input.ts",
+            "src/sources/extractors/index.ts",
+            "src/sources/extractors/ollama-intern.ts",
+            "src/sources/cards.ts",
+            "src/sources/source-card-overrides.ts",
+            "src/sources/source-card-overrides-schema.ts",
+            "src/sources/effective-card.ts",
+            "src/sources/schema.ts",
+            "src/sources/types.ts",
+            "src/sources/excerpts/index.ts"
+          ],
           "importsFiles": [
             "src/sources/cards.ts",
             "src/sources/effective-card.ts",
@@ -2432,6 +3060,17 @@
             "validateRebuildLedgerRecord"
           ],
           "hash": "789b7c43b07d6cc30fe42a34d15af991cc973f8ebb40001a8113f7928591b56d",
+          "importOrder": [
+            "src/errors.ts",
+            "src/index.ts",
+            "src/sources/cards.ts",
+            "src/sources/source-card-audit.ts",
+            "src/sources/source-card-overrides.ts",
+            "src/sources/source-card-overrides-schema.ts",
+            "src/sources/schema.ts",
+            "src/sources/severities.ts",
+            "src/sources/types.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/index.ts",
@@ -2471,6 +3110,17 @@
             "runSourceCardAudit"
           ],
           "hash": "9cde82542a4f6e73765fd03be518d01d310f2ea9bd7a4d46a06038ab3c5ced02",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/sources/schema.ts",
+            "src/sources/source-card-overrides.ts",
+            "src/sources/source-card-overrides-schema.ts",
+            "src/sources/effective-card.ts",
+            "src/sources/source-type-classifier.ts",
+            "src/sources/severities.ts",
+            "src/index.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/index.ts",
@@ -2542,6 +3192,17 @@
             "deriveCrossSectionMap"
           ],
           "hash": "7515fb4f0f6366491a0474411510d5d3fb2ef5c47a85dd832be2a18f603b9af7",
+          "importOrder": [
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/sources/schema.ts",
+            "src/intake/schema.ts",
+            "src/cowork/schema.ts",
+            "src/contradictions/scope.ts",
+            "src/closure-ledger/effective-accepted.ts",
+            "src/synth/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/closure-ledger/effective-accepted.ts",
@@ -2557,6 +3218,15 @@
         },
         {
           "hash": "d37c63da2e8ef67ebb597e445d44d5f85c21d08cb2914f805bfc1812cbe0bec3",
+          "importOrder": [
+            "src/synth/run.ts",
+            "src/synth/section-run.ts",
+            "src/synth/partial-pack/index.ts",
+            "src/synth/derive.ts",
+            "src/synth/markdown.ts",
+            "src/synth/schema.ts",
+            "src/synth/types.ts"
+          ],
           "importsFiles": [
             "src/synth/derive.ts",
             "src/synth/markdown.ts",
@@ -2621,6 +3291,16 @@
         },
         {
           "hash": "3394721fa8e8b7c0bd394743d1f688c88025bb56706926ccfe9f2e6656234574",
+          "importOrder": [
+            "src/synth/partial-pack/run.ts",
+            "src/synth/partial-pack/classifier.ts",
+            "src/synth/partial-pack/markdown.ts",
+            "src/synth/partial-pack/drafter.ts",
+            "src/synth/partial-pack/bundle-planner.ts",
+            "src/synth/partial-pack/schema.ts",
+            "src/synth/partial-pack/recovery-embed.ts",
+            "src/synth/partial-pack/types.ts"
+          ],
           "importsFiles": [
             "src/synth/partial-pack/bundle-planner.ts",
             "src/synth/partial-pack/classifier.ts",
@@ -2639,6 +3319,10 @@
             "renderPartialPackMarkdown"
           ],
           "hash": "5b8dade2ddeab270d336805f14f452bbc68cc18fadd33fc615f6219e61efe281",
+          "importOrder": [
+            "src/synth/partial-pack/types.ts",
+            "src/synth/partial-pack/recovery-embed.ts"
+          ],
           "importsFiles": [
             "src/synth/partial-pack/recovery-embed.ts",
             "src/synth/partial-pack/types.ts"
@@ -2650,6 +3334,10 @@
             "renderPartialPackPrompt"
           ],
           "hash": "772e0950f6bbb8dd261d96a3fcd36db080ab500e254b216a14dab3c7ae1ce752",
+          "importOrder": [
+            "src/synth/prose/prompt.ts",
+            "src/synth/partial-pack/types.ts"
+          ],
           "importsFiles": [
             "src/synth/partial-pack/types.ts",
             "src/synth/prose/prompt.ts"
@@ -2674,6 +3362,24 @@
             "partialPackSynthesis"
           ],
           "hash": "cdd238bbcaeac92b1808933b2a7a4d68142897d095e4d4498279ba8a3ab8b9d4",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/cowork/schema.ts",
+            "src/index.ts",
+            "src/mcp/client.ts",
+            "src/recover/run.ts",
+            "src/recover/regeneration-ledger.ts",
+            "src/recover/types.ts",
+            "src/synth/partial-pack/classifier.ts",
+            "src/synth/partial-pack/drafter.ts",
+            "src/synth/partial-pack/markdown.ts",
+            "src/synth/partial-pack/schema.ts",
+            "src/synth/partial-pack/bundle-planner.ts",
+            "src/synth/partial-pack/recovery-embed.ts",
+            "src/synth/partial-pack/types.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/schema.ts",
             "src/errors.ts",
@@ -2696,6 +3402,10 @@
         },
         {
           "hash": "d17327044e02c1290b1b8b1162a5ddebc84cdd6aec065ec5f58f56439042d810",
+          "importOrder": [
+            "src/synth/partial-pack/types.ts",
+            "src/synth/partial-pack/recovery-embed.ts"
+          ],
           "importsFiles": [
             "src/synth/partial-pack/recovery-embed.ts",
             "src/synth/partial-pack/types.ts"
@@ -2704,6 +3414,10 @@
         },
         {
           "hash": "4ebb7bc5831133cf1455e679efca95f14e360d6e54044157c0e4f263d89733cb",
+          "importOrder": [
+            "src/synth/prose/types.ts",
+            "src/synth/partial-pack/recovery-embed.ts"
+          ],
           "importsFiles": [
             "src/synth/partial-pack/recovery-embed.ts",
             "src/synth/prose/types.ts"
@@ -2724,6 +3438,15 @@
         },
         {
           "hash": "538dcb6f5ce50d16064cdfede0c3621ae93a99dfcce574eda56e0133fa5e3bfe",
+          "importOrder": [
+            "src/synth/prose/run.ts",
+            "src/synth/prose/markdown.ts",
+            "src/synth/prose/planner.ts",
+            "src/synth/prose/drafter.ts",
+            "src/synth/prose/verifier.ts",
+            "src/synth/prose/prompt.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/synth/prose/drafter.ts",
             "src/synth/prose/markdown.ts",
@@ -2777,6 +3500,13 @@
             "runProseSynthesis"
           ],
           "hash": "0f79800e42856f52536e32977bec7d5262084f9a8b042db2ae4c2fa3df7e657b",
+          "importOrder": [
+            "src/synth/prose/planner.ts",
+            "src/synth/prose/drafter.ts",
+            "src/synth/prose/verifier.ts",
+            "src/synth/prose/prompt.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/synth/prose/drafter.ts",
             "src/synth/prose/planner.ts",
@@ -2813,6 +3543,20 @@
             "workspace"
           ],
           "hash": "0e436caf5e7626bdacf93c3ffedec672b52bf844a54d62b818a24242f47964e5",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/sources/schema.ts",
+            "src/cowork/schema.ts",
+            "src/synth/derive.ts",
+            "src/synth/schema.ts",
+            "src/synth/markdown.ts",
+            "src/synth/types.ts",
+            "src/synth/section-run.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/schema.ts",
@@ -2838,6 +3582,20 @@
             "sectionSynthesis"
           ],
           "hash": "395a3b5946c182fc2cd72f72618690c1eec32398ab62c86ea350750ce8aa0907",
+          "importOrder": [
+            "src/errors.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/sources/schema.ts",
+            "src/cowork/schema.ts",
+            "src/index.ts",
+            "src/mcp/client.ts",
+            "src/synth/prose/run.ts",
+            "src/synth/prose/markdown.ts",
+            "src/synth/prose/types.ts",
+            "src/recover/action-graph.ts",
+            "src/synth/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/cowork/schema.ts",
@@ -2877,6 +3635,13 @@
             "triage"
           ],
           "hash": "f6c82fe12288aa6677d310ea4c84fc37aa4473e5c93f49d6792e88f10ae3d9a7",
+          "importOrder": [
+            "src/errors.ts",
+            "src/index.ts",
+            "src/claims/schema.ts",
+            "src/triage/schema.ts",
+            "src/triage/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/errors.ts",
@@ -3050,12 +3815,26 @@
             "cwd:synthesis/"
           ],
           "writes": 6
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:README.md"
+          ],
+          "writes": 0
         }
       ],
-      "outsideReads": 358,
+      "outsideReads": 360,
       "outsideWrites": 145,
       "role": "code",
       "testedBy": 215,
+      "unresolvedNamed": [
+        {
+          "path": "src/indexer/sync.ts",
+          "specifier": "@mcptoolshop/repo-knowledge",
+          "why": "optional"
+        }
+      ],
       "unresolvedSites": 1
     },
     {
@@ -3103,6 +3882,20 @@
       "files": [
         {
           "hash": "9f60a163edc3b33b4af541c2a372ff157fdfa5f6b2b38359d8e80719d2d9a9fd",
+          "importOrder": [
+            "src/audit/aggregate.ts",
+            "src/intake/schema.ts",
+            "src/cowork/schema.ts",
+            "src/synth/markdown.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/resolution-schema.ts",
+            "src/dispositions/schema.ts",
+            "src/sources/schema.ts",
+            "src/gates/schema.ts",
+            "src/synth/types.ts"
+          ],
           "importsFiles": [
             "src/audit/aggregate.ts",
             "src/claims/schema.ts",
@@ -3121,6 +3914,13 @@
         },
         {
           "hash": "dbd54587b27e7cc1de64aa5c2723d74e840eb27a6bb3f56fd0346942a474e413",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/audit/index.ts",
+            "src/audit/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/audit/index.ts",
             "src/audit/schema.ts",
@@ -3132,6 +3932,11 @@
         },
         {
           "hash": "a88637edc511b4d8707ec24b5ad130e2dec40f8e22026bcb81b9a70d0d0c2a5f",
+          "importOrder": [
+            "src/calibration/aggregate.ts",
+            "src/calibration/aggregate-receipt-schema.ts",
+            "src/calibration/receipt-schema.ts"
+          ],
           "importsFiles": [
             "src/calibration/aggregate-receipt-schema.ts",
             "src/calibration/aggregate.ts",
@@ -3148,6 +3953,11 @@
         },
         {
           "hash": "0d85f0a1daccf3c6dd45d12a06da89173d5480b07d05328358b5359ef27160dd",
+          "importOrder": [
+            "src/calibration/receipt.ts",
+            "src/review/schema.ts",
+            "src/calibration/receipt-schema.ts"
+          ],
           "importsFiles": [
             "src/calibration/receipt-schema.ts",
             "src/calibration/receipt.ts",
@@ -3157,6 +3967,12 @@
         },
         {
           "hash": "ab646017b639bfe1bf97386e1eabeaa42b3e7e65ec63b1a58fcd50f52ccbdc87",
+          "importOrder": [
+            "src/calibration/lookup.ts",
+            "src/calibration/receipt-schema.ts",
+            "src/calibration/aggregate-receipt-schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/calibration/aggregate-receipt-schema.ts",
             "src/calibration/lookup.ts",
@@ -3174,6 +3990,11 @@
         },
         {
           "hash": "63675b127c3f0afab1de86277d0327238eaa49dd5d8dc5426dad2d467927f3c7",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/index.ts"
+          ],
           "importsFiles": [
             "src/claims/index.ts",
             "src/intake/index.ts",
@@ -3183,6 +4004,13 @@
         },
         {
           "hash": "c386f6f8830cd11c2fc38d7d80fbf46f4b7e7fe912d9e8a141beb012359f162e",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/index.ts",
+            "src/claims/density/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/claims/density/schema.ts",
             "src/claims/index.ts",
@@ -3194,6 +4022,12 @@
         },
         {
           "hash": "0f96d68ae191c4e7133d0dd6bb419866d96c703faf3b79b7132b8112a5c025d2",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/index.ts",
+            "src/claims/extractors/heuristic.ts"
+          ],
           "importsFiles": [
             "src/claims/extractors/heuristic.ts",
             "src/claims/index.ts",
@@ -3204,6 +4038,12 @@
         },
         {
           "hash": "18b8a43fb0b3251e13b13ace48f211e1451db91aa5537dbd790a0b42ce70bd38",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/index.ts",
+            "src/claims/extractors/heuristic.ts"
+          ],
           "importsFiles": [
             "src/claims/extractors/heuristic.ts",
             "src/claims/index.ts",
@@ -3214,6 +4054,14 @@
         },
         {
           "hash": "a3ee189576c8743f7123e5ce18fdd28dc1def2c6b5d731229891df3c9cd422c3",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/index.ts",
+            "src/claims/extractors/heuristic.ts",
+            "src/claims/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/claims/extractors/heuristic.ts",
             "src/claims/index.ts",
@@ -3263,6 +4111,14 @@
         },
         {
           "hash": "4d2e595c7d7a5b992620d28ef550a18097830d7a756b5f521e13bce609d42b2f",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/repair-scope.ts",
+            "src/claims/scope-repairs.ts",
+            "src/triage/index.ts",
+            "src/claims/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/repair-scope.ts",
             "src/claims/schema.ts",
@@ -3275,6 +4131,13 @@
         },
         {
           "hash": "a96be8e5d03b246dbf16284e22dd117dd9dfd8af87fb5ea8a84ee7f2b0f0d519",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/repair-scope.ts",
+            "src/claims/scope-repairs.ts",
+            "src/claims/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/repair-scope.ts",
             "src/claims/schema.ts",
@@ -3293,6 +4156,10 @@
         },
         {
           "hash": "88637337007495159fc56c1d1b662d25fb138898948aef08dd22ae08d8190d53",
+          "importOrder": [
+            "src/claims/scope-repairs.ts",
+            "src/claims/scope-repairs-schema.ts"
+          ],
           "importsFiles": [
             "src/claims/scope-repairs-schema.ts",
             "src/claims/scope-repairs.ts"
@@ -3357,6 +4224,13 @@
         },
         {
           "hash": "49e678ba662b2f4705faad0823e2e2f23e56092c1b27827318eafcb18b8e33f0",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/contradictions/index.ts",
+            "src/contradictions/schema.ts",
+            "src/contradictions/detectors/heuristic.ts"
+          ],
           "importsFiles": [
             "src/contradictions/detectors/heuristic.ts",
             "src/contradictions/index.ts",
@@ -3368,6 +4242,10 @@
         },
         {
           "hash": "cb1bac3360321ed1f0694bc917a5fcb7440a89f716771e59167b38001d3c91f7",
+          "importOrder": [
+            "src/contradictions/detectors/heuristic.ts",
+            "src/claims/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/detectors/heuristic.ts"
@@ -3376,6 +4254,12 @@
         },
         {
           "hash": "227d9e2ab51b690ad6ba12acfbacb282840dcd836925172fec0d44d4adeea6c1",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/contradictions/index.ts",
+            "src/contradictions/detectors/heuristic.ts"
+          ],
           "importsFiles": [
             "src/contradictions/detectors/heuristic.ts",
             "src/contradictions/index.ts",
@@ -3386,6 +4270,14 @@
         },
         {
           "hash": "2cd42280a5fe7316d16ed56b0f60cab692c19b507a42c3f6fd0ce0a58922f56c",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/contradictions/index.ts",
+            "src/contradictions/detectors/heuristic.ts",
+            "src/errors.ts",
+            "src/contradictions/schema.ts"
+          ],
           "importsFiles": [
             "src/contradictions/detectors/heuristic.ts",
             "src/contradictions/index.ts",
@@ -3406,6 +4298,10 @@
         },
         {
           "hash": "1dbd20c1dd9ef88b95ba6b95504682f8a037d043eb35f0a4d218bf0db48b2ac7",
+          "importOrder": [
+            "src/contradictions/detectors/ollama-intern.ts",
+            "src/claims/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/detectors/ollama-intern.ts"
@@ -3414,6 +4310,10 @@
         },
         {
           "hash": "21347899ba9475b8b1ad36d282342d81ea86c4fcc2aaf84f0194a1470bfb82f0",
+          "importOrder": [
+            "src/contradictions/detectors/ollama-intern.ts",
+            "src/claims/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/detectors/ollama-intern.ts"
@@ -3422,6 +4322,10 @@
         },
         {
           "hash": "2bd570a48ab25c66b2ebde0e2ce14359ff4135f8e0a5354d5d72f1b7bcea464b",
+          "importOrder": [
+            "src/contradictions/detectors/ollama-intern.ts",
+            "src/claims/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/detectors/ollama-intern.ts"
@@ -3430,6 +4334,14 @@
         },
         {
           "hash": "b93eca6cdd3a3b655e6227cc02bb5d004dc4426e4f3a8337abcc62c0217e6028",
+          "importOrder": [
+            "src/cowork/derive.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/gates/schema.ts",
+            "src/contradictions/resolution-schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/resolution-schema.ts",
@@ -3456,6 +4368,15 @@
         },
         {
           "hash": "84ee5880f3d9c3765f73d8d922f6550163572edcfdbd29c9c340416de696dfb6",
+          "importOrder": [
+            "src/cowork/derive.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/gates/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/dispositions/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/schema.ts",
@@ -3469,6 +4390,16 @@
         },
         {
           "hash": "2e0d8b4e0ea16f13b9e6e1194c1fc60f1b04195100ddeba38443d122224ef0bf",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/review/index.ts",
+            "src/cowork/derive.ts",
+            "src/review/types.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/cowork/derive.ts",
@@ -3491,6 +4422,13 @@
         },
         {
           "hash": "d99a6e532b208f61f5d199d3194154004777a25cd372ff5ff3f23e8ec8a3076d",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/cowork/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/cowork/schema.ts",
@@ -3545,6 +4483,13 @@
         },
         {
           "hash": "dc062d81996791dafc668ea227727a2929eac2e16240c0bb144f3b3c6c1a040b",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/discover/index.ts",
+            "src/discover/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/discover/index.ts",
             "src/discover/schema.ts",
@@ -3578,6 +4523,16 @@
         },
         {
           "hash": "57e10dca13877668698279510aba2e1468ac86161aedfdc62fd66e869489247c",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/audit/index.ts",
+            "src/freeze/index.ts",
+            "src/intake/schema.ts",
+            "src/freeze/schema.ts"
+          ],
           "importsFiles": [
             "src/audit/index.ts",
             "src/cowork/index.ts",
@@ -3592,6 +4547,17 @@
         },
         {
           "hash": "e3033fa70b6c026075729ab7a9f06370ad1fff44415a7d6490abd5e99c33f3be",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/audit/index.ts",
+            "src/freeze/index.ts",
+            "src/intake/schema.ts",
+            "src/freeze/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/audit/index.ts",
             "src/cowork/index.ts",
@@ -3607,6 +4573,15 @@
         },
         {
           "hash": "5323387b7b6774bf05bcaeb9a773e9856507b54bb5d3b1cdcf3eaa7b85e7aec1",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/audit/index.ts",
+            "src/freeze/index.ts",
+            "src/intake/schema.ts"
+          ],
           "importsFiles": [
             "src/audit/index.ts",
             "src/cowork/index.ts",
@@ -3620,6 +4595,14 @@
         },
         {
           "hash": "477b0975f3c54e2a342a20ba9779f5f22b70f88f9ec691674c48e9d649508efa",
+          "importOrder": [
+            "src/gates/checks/accepted-claim-floor.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/gates/types.ts",
+            "src/review/schema.ts",
+            "src/sources/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/gates/checks/accepted-claim-floor.ts",
@@ -3632,6 +4615,14 @@
         },
         {
           "hash": "f4b040de965a5a0f8d2f3c946e073c312189fbeffa861b2bac14de26b9c25db9",
+          "importOrder": [
+            "src/intake/schema.ts",
+            "src/gates/checks/index.ts",
+            "src/gates/types.ts",
+            "src/claims/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/sources/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/schema.ts",
@@ -3644,6 +4635,16 @@
         },
         {
           "hash": "8d47e5fe7c614c769e4f77afa2ff2868d3d2f46abf590e58a62b88d282032df4",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/gates/index.ts",
+            "src/intake/schema.ts",
+            "src/gates/checks/index.ts",
+            "src/gates/types.ts",
+            "src/sources/schema.ts",
+            "src/sources/source-card-overrides-schema.ts"
+          ],
           "importsFiles": [
             "src/gates/checks/index.ts",
             "src/gates/index.ts",
@@ -3658,6 +4659,11 @@
         },
         {
           "hash": "25d0f068728729fcf020d5a71d7388a781d0cb323abaa990bb833cd0669228af",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/gates/index.ts"
+          ],
           "importsFiles": [
             "src/gates/index.ts",
             "src/intake/index.ts",
@@ -3675,6 +4681,14 @@
         },
         {
           "hash": "cbd29237d6f1cbfd6630bb0317c04f148eac043e4b60986cdfb225aa64748152",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/gates/index.ts",
+            "src/intake/schema.ts",
+            "src/gates/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/gates/index.ts",
@@ -3694,6 +4708,12 @@
         },
         {
           "hash": "d16da5d6b84045c7b1051534db6996a49195609de07375bfb23cf69abc334d8e",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/indexer/index.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/indexer/index.ts",
@@ -3704,6 +4724,11 @@
         },
         {
           "hash": "b4ee79f25c8f10241ec4f942a3a5d5f3c3885f59fe7bc50f384145b739a8f4cc",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/indexer/index.ts"
+          ],
           "importsFiles": [
             "src/indexer/index.ts",
             "src/intake/index.ts",
@@ -3713,6 +4738,11 @@
         },
         {
           "hash": "60fcff19faaa0b378d633c1d51d08d746beb5e31a6305d3a2c3a5f6cb0d1498a",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/indexer/index.ts"
+          ],
           "importsFiles": [
             "src/indexer/index.ts",
             "src/intake/index.ts",
@@ -3722,6 +4752,11 @@
         },
         {
           "hash": "5bb7c092089236e28f3bd4773cbf0ff33503bdb50e577efa986bbbc356b46323",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/indexer/index.ts"
+          ],
           "importsFiles": [
             "src/indexer/index.ts",
             "src/intake/index.ts",
@@ -3731,6 +4766,10 @@
         },
         {
           "hash": "bcd7a1c0e2500bd7344745387a8a939fc0f9768aa8504e7e5edf55678e289cee",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/intake/index.ts"
@@ -3747,6 +4786,13 @@
         },
         {
           "hash": "4fba53120d51c2a0c73ca7a305804c3a66fe2b67d1af116a51a7daf9d7d7509a",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/invalidate/index.ts",
+            "src/invalidate/review.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/intake/index.ts",
@@ -3758,6 +4804,14 @@
         },
         {
           "hash": "224b711c52c200f298d575b8558143dcd76ac49d368199eb7c4b550c631d4b0c",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/invalidate/index.ts",
+            "src/intake/schema.ts",
+            "src/invalidate/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/intake/index.ts",
@@ -3778,6 +4832,10 @@
         },
         {
           "hash": "a29bd5fdc34a834e97e94f8c1860b8116f6aee7b61f8d3dce49fae71f02bf12b",
+          "importOrder": [
+            "test/pack-publish/helpers.ts",
+            "src/pack/publish/manifest.ts"
+          ],
           "importsFiles": [
             "src/pack/publish/manifest.ts",
             "test/pack-publish/helpers.ts"
@@ -3801,6 +4859,11 @@
         },
         {
           "hash": "f3d39d3a365936fb655eb7514d13acb9d6df648064f0726093460a2910879bdc",
+          "importOrder": [
+            "test/pack-publish/helpers.ts",
+            "src/pack/publish/manifest.ts",
+            "src/index.ts"
+          ],
           "importsFiles": [
             "src/index.ts",
             "src/pack/publish/manifest.ts",
@@ -3810,6 +4873,10 @@
         },
         {
           "hash": "b0aa0f77faa859e3aab0dd5795e87bda31763dd0049eeba19dc2c0e7d8eeacd6",
+          "importOrder": [
+            "test/pack-publish/helpers.ts",
+            "src/pack/publish/index.ts"
+          ],
           "importsFiles": [
             "src/pack/publish/index.ts",
             "test/pack-publish/helpers.ts"
@@ -3818,6 +4885,10 @@
         },
         {
           "hash": "ece3539e8cd40b8da9447948572810665a08f463c9ef6c186e0175e494fc0ae2",
+          "importOrder": [
+            "test/pack-publish/helpers.ts",
+            "src/pack/publish/index.ts"
+          ],
           "importsFiles": [
             "src/pack/publish/index.ts",
             "test/pack-publish/helpers.ts"
@@ -3834,6 +4905,12 @@
         },
         {
           "hash": "73a081333e5ca0be0f45e5b46daec1fb8f3be6c31ce618980d7bc2596a53a84a",
+          "importOrder": [
+            "src/pack/publish/index.ts",
+            "src/pack/publish/manifest.ts",
+            "src/errors.ts",
+            "test/pack-publish/helpers.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/pack/publish/index.ts",
@@ -3844,6 +4921,15 @@
         },
         {
           "hash": "0bec180bb846bcd2f440d7925af5c333f2eb9c6ea16c428df31763557d6383d8",
+          "importOrder": [
+            "src/pack/publish/verify.ts",
+            "src/freeze/run.ts",
+            "src/pack/publish/readme.ts",
+            "src/pack/publish/how-to-read.ts",
+            "src/pack/publish/manifest.ts",
+            "src/pack/publish/copy.ts",
+            "test/pack-publish/helpers.ts"
+          ],
           "importsFiles": [
             "src/freeze/run.ts",
             "src/pack/publish/copy.ts",
@@ -3857,6 +4943,10 @@
         },
         {
           "hash": "bad45ecf43c6ab334367c86f732194af41a25effd99ac824d2aa36dbf9353b20",
+          "importOrder": [
+            "test/pack-publish/helpers.ts",
+            "src/pack/publish/index.ts"
+          ],
           "importsFiles": [
             "src/pack/publish/index.ts",
             "test/pack-publish/helpers.ts"
@@ -3865,6 +4955,14 @@
         },
         {
           "hash": "0e5f885becaae7ff532e12bf829691fad6f9fdd657f64c4a72331573d64b13ea",
+          "importOrder": [
+            "src/pack/publish/verify.ts",
+            "test/pack-publish/helpers.ts",
+            "src/pack/publish/readme.ts",
+            "src/pack/publish/manifest.ts",
+            "src/pack/publish/copy.ts",
+            "src/pack/publish/schema.ts"
+          ],
           "importsFiles": [
             "src/pack/publish/copy.ts",
             "src/pack/publish/manifest.ts",
@@ -3877,6 +4975,17 @@
         },
         {
           "hash": "1ff884f71d0501a6555b5058888ae7cf9e1c0b3fd36abc828125d19deed28911",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/freeze/index.ts",
+            "src/synth/partial-pack/index.ts",
+            "src/synth/prose/types.ts",
+            "src/recover/types.ts",
+            "src/recover/run.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/freeze/index.ts",
@@ -3892,6 +5001,15 @@
         },
         {
           "hash": "3e9f427febbaa960780da66d2977771d55b71833d1f79e0e3bd2f8f0df224dfa",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/sources/index.ts",
+            "src/sources/extractors/heuristic.ts",
+            "src/review/reviewers/ollama-intern.ts",
+            "src/claims/schema.ts",
+            "src/intake/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/intake/index.ts",
@@ -3905,6 +5023,19 @@
         },
         {
           "hash": "938b53e04ac596dbcfd201cae5503bc68059f9614fbb585996d74064be14f22e",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/repair-scope.ts",
+            "src/claims/scope-repairs.ts",
+            "src/claims/scope-repairs-schema.ts",
+            "src/claims/scope-proposer.ts",
+            "src/triage/index.ts",
+            "src/claims/schema.ts",
+            "src/recover/action-graph.ts",
+            "src/recover/types.ts",
+            "src/sources/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/repair-scope.ts",
             "src/claims/schema.ts",
@@ -3922,6 +5053,12 @@
         },
         {
           "hash": "a1ac73452cfa0e008f068f2f910aa116229ed32c35152334a2934493688396db",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/discover/index.ts",
+            "src/discover/schema.ts"
+          ],
           "importsFiles": [
             "src/discover/index.ts",
             "src/discover/schema.ts",
@@ -3932,6 +5069,16 @@
         },
         {
           "hash": "c9e2221342c672e968e2b3f24302a50f86dc5aa5493a1036fc313f359fb449e5",
+          "importOrder": [
+            "src/sources/severities.ts",
+            "src/sources/source-card-overrides-schema.ts",
+            "src/sources/source-card-audit.ts",
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/index.ts",
+            "src/claims/extractors/heuristic.ts",
+            "src/sources/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/extractors/heuristic.ts",
             "src/claims/index.ts",
@@ -3946,6 +5093,16 @@
         },
         {
           "hash": "745c21bbc8021f7c1b28de5f639dbf213ceac44837e5f062cd3b95f7dce57fad",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/recover/index.ts",
+            "src/recover/fallback-cause.ts",
+            "src/recover/markdown.ts",
+            "src/synth/prose/types.ts",
+            "src/recover/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/intake/index.ts",
@@ -3960,6 +5117,15 @@
         },
         {
           "hash": "69ceda8e27bc2eed99be88f8f045d38521e5172f1c029d63281efd319653a531",
+          "importOrder": [
+            "src/claims/critic/source-content.ts",
+            "src/claims/extractors/mcp.ts",
+            "src/mcp/client.ts",
+            "src/sources/excerpts/schema.ts",
+            "src/sources/schema.ts",
+            "src/claims/critic/prompt.ts",
+            "src/claims/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/critic/prompt.ts",
             "src/claims/critic/source-content.ts",
@@ -3973,6 +5139,15 @@
         },
         {
           "hash": "0846c850aa12f3b43d7b1a32f56f08986504b4f4052d55733aaefda0a96e7f41",
+          "importOrder": [
+            "src/claims/critic/rescue-critic.ts",
+            "src/claims/extractors/mcp.ts",
+            "src/mcp/client.ts",
+            "src/sources/excerpts/schema.ts",
+            "src/sources/schema.ts",
+            "src/claims/rescue-ledger.ts",
+            "src/claims/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/critic/rescue-critic.ts",
             "src/claims/extractors/mcp.ts",
@@ -3993,6 +5168,13 @@
         },
         {
           "hash": "93df9b64db1086babf52d7f85a325e50d11c91fdb23137fed4a76c1d14bfba3c",
+          "importOrder": [
+            "src/sources/rebuild-ledger.ts",
+            "src/sources/source-card-audit.ts",
+            "src/sources/schema.ts",
+            "src/sources/source-card-overrides-schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/sources/rebuild-ledger.ts",
@@ -4004,6 +5186,15 @@
         },
         {
           "hash": "eafcc1956e542f6cf6b8f0ea2b51eacde71fc118591bdc3ca32cecb00fb80e86",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/recover/index.ts",
+            "src/recover/regeneration-ledger.ts",
+            "src/recover/types.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/intake/index.ts",
@@ -4017,6 +5208,13 @@
         },
         {
           "hash": "bb75e89b6ae621528df383f7c3a5d7d956e2c33ddf6a53ff139864fb983a8e37",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/index.ts",
+            "src/claims/extractors/heuristic.ts",
+            "src/claims/extract-completion-ledger.ts"
+          ],
           "importsFiles": [
             "src/claims/extract-completion-ledger.ts",
             "src/claims/extractors/heuristic.ts",
@@ -4035,6 +5233,14 @@
         },
         {
           "hash": "32e4c67b213d91507b1826f3a8d4b7eafb37d0390fa42e1880eb56d9ada7e5ab",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/audit/index.ts",
+            "src/audit/missing-policy-sources.ts",
+            "src/sources/schema.ts",
+            "src/intake/schema.ts"
+          ],
           "importsFiles": [
             "src/audit/index.ts",
             "src/audit/missing-policy-sources.ts",
@@ -4047,6 +5253,16 @@
         },
         {
           "hash": "f66cb71b4b39797e81a5f4ce7ad9aff0565e1e413cb12c1a9645fd67233da758",
+          "importOrder": [
+            "src/synth/prose/types.ts",
+            "src/synth/prose/run.ts",
+            "src/recover/regeneration-ledger.ts",
+            "src/recover/types.ts",
+            "src/claims/critic/rescue-critic.ts",
+            "src/sources/rebuild-ledger.ts",
+            "src/claims/extract-completion-ledger.ts",
+            "src/audit/missing-policy-sources.ts"
+          ],
           "importsFiles": [
             "src/audit/missing-policy-sources.ts",
             "src/claims/critic/rescue-critic.ts",
@@ -4077,6 +5293,13 @@
         },
         {
           "hash": "ff43f2120c3aa386e136161f21ce148e70ffdd7ec224ed1829af29cd359fff64",
+          "importOrder": [
+            "src/synth/prose/markdown.ts",
+            "src/synth/prose/types.ts",
+            "src/recover/action-graph.ts",
+            "src/recover/types.ts",
+            "src/synth/prose/planner.ts"
+          ],
           "importsFiles": [
             "src/recover/action-graph.ts",
             "src/recover/types.ts",
@@ -4088,6 +5311,17 @@
         },
         {
           "hash": "c300123bb3e301646bfc14aaf19a6f4043525b42fc24c9feb7323c1a0b853e8e",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/contradictions/index.ts",
+            "src/contradictions/detectors/ollama-intern.ts",
+            "src/contradictions/types.ts",
+            "src/claims/schema.ts",
+            "src/synth/prose/planner.ts",
+            "src/recover/action-graph.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/detectors/ollama-intern.ts",
@@ -4111,6 +5345,20 @@
         },
         {
           "hash": "cdfb603abab0a9c7dc765ab9e6497909b07e2173f5ec9e38d6800fba0d0f5767",
+          "importOrder": [
+            "src/claims/extractors/mcp.ts",
+            "src/mcp/client.ts",
+            "src/claims/critic/mcp-critic.ts",
+            "src/claims/critic/rescue-critic.ts",
+            "src/claims/types.ts",
+            "src/cli.ts",
+            "src/sources/excerpts/schema.ts",
+            "src/sources/schema.ts",
+            "src/synth/prose/types.ts",
+            "src/synth/prose/planner.ts",
+            "src/contradictions/types.ts",
+            "src/recover/action-graph.ts"
+          ],
           "importsFiles": [
             "src/claims/critic/mcp-critic.ts",
             "src/claims/critic/rescue-critic.ts",
@@ -4145,6 +5393,11 @@
         },
         {
           "hash": "69fb12704ebc5d3fc4c13ba6f9bbfc05144f8aaeba2d7ed33d4a21aca11ee8f4",
+          "importOrder": [
+            "src/recover/diagnose.ts",
+            "src/recover/action-graph.ts",
+            "src/cowork/schema.ts"
+          ],
           "importsFiles": [
             "src/cowork/schema.ts",
             "src/recover/action-graph.ts",
@@ -4154,6 +5407,10 @@
         },
         {
           "hash": "30fda8439454cf7064652ded7af04aa1affc372cdcd8bda067d7386f7c6dd08a",
+          "importOrder": [
+            "src/recover/diagnose.ts",
+            "src/cowork/schema.ts"
+          ],
           "importsFiles": [
             "src/cowork/schema.ts",
             "src/recover/diagnose.ts"
@@ -4162,6 +5419,14 @@
         },
         {
           "hash": "b64a9ef83ac877badd5292e3e7e48c5666939781f7b23ea9cfaad17ac814ef61",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/recover/index.ts",
+            "src/synth/prose/types.ts",
+            "src/recover/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/intake/index.ts",
@@ -4174,6 +5439,14 @@
         },
         {
           "hash": "68b99bdd6a1ddd1e20d0f323b68ccf3534cea574f848e84ad6ae7311e8ff9309",
+          "importOrder": [
+            "src/recover/verifier.ts",
+            "src/recover/action-graph.ts",
+            "src/recover/fallback.ts",
+            "src/recover/advisor.ts",
+            "src/recover/prompt.ts",
+            "src/recover/types.ts"
+          ],
           "importsFiles": [
             "src/recover/action-graph.ts",
             "src/recover/advisor.ts",
@@ -4186,6 +5459,12 @@
         },
         {
           "hash": "1e31a4dbf0b7d087a76e244ceb187295b4034af598ba293ecf51b23aec21bc33",
+          "importOrder": [
+            "src/intake/schema.ts",
+            "src/review/reviewers/ollama-intern.ts",
+            "src/claims/schema.ts",
+            "src/review/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/intake/schema.ts",
@@ -4196,6 +5475,11 @@
         },
         {
           "hash": "fdaa7ae77ae9abe0f0040dc7e82d1ff46d6ffd83e02e7b6e366fca596e787fab",
+          "importOrder": [
+            "src/review/decision.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/review/decision.ts",
@@ -4205,6 +5489,16 @@
         },
         {
           "hash": "6ea21db8709abf4aa2f9ae72b1a943f981f19ddc4bc6a5ed911bb13b1cea25c3",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/review/index.ts",
+            "src/review/promote.ts",
+            "src/errors.ts",
+            "src/review/reviewers/index.ts",
+            "src/review/types.ts",
+            "src/calibration/lookup.ts"
+          ],
           "importsFiles": [
             "src/calibration/lookup.ts",
             "src/errors.ts",
@@ -4219,6 +5513,13 @@
         },
         {
           "hash": "b4dc55348f4030baf25bdb0138fa24d726389598bb6aca9f32695768162b7464",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/review/index.ts",
+            "src/review/types.ts",
+            "src/review/schema.ts"
+          ],
           "importsFiles": [
             "src/intake/index.ts",
             "src/review/index.ts",
@@ -4230,6 +5531,14 @@
         },
         {
           "hash": "1faec8e4657cac1c5a05de8615ff0f866489d336a697a5358f36c02355e23107",
+          "importOrder": [
+            "src/review/reviewers/heuristic.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/sources/schema.ts",
+            "src/review/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/schema.ts",
@@ -4250,6 +5559,12 @@
         },
         {
           "hash": "9c88e08d726a9601cbfa94650824062259f745f6df1af1b5c8fd004906901ffc",
+          "importOrder": [
+            "src/review/reviewers/ollama-intern.ts",
+            "src/intake/schema.ts",
+            "src/review/types.ts",
+            "src/claims/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/intake/schema.ts",
@@ -4260,6 +5575,15 @@
         },
         {
           "hash": "0209a41b1557e00969abaadb96a9782da967d08cbdcb5f7deb15b156c9ea4083",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/review/index.ts",
+            "src/review/reviewers/heuristic.ts",
+            "src/intake/schema.ts",
+            "src/review/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/intake/index.ts",
@@ -4280,6 +5604,20 @@
         },
         {
           "hash": "51c9db4c24245624f32e90a088c43e920dfa91431141cad0a4ebe7961a8f4f0b",
+          "importOrder": [
+            "src/review/reviewer-options-schema.ts",
+            "src/review/reviewers/ollama-intern.ts",
+            "src/calibration/receipt-schema.ts",
+            "src/calibration/aggregate-receipt-schema.ts",
+            "src/calibration/receipt.ts",
+            "src/calibration/aggregate.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/types.ts",
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/review/index.ts"
+          ],
           "importsFiles": [
             "src/calibration/aggregate-receipt-schema.ts",
             "src/calibration/aggregate.ts",
@@ -4298,6 +5636,13 @@
         },
         {
           "hash": "fcade4cface6bbd84720f255e6b392a600b8acdeaa176c76280594c0e4853044",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/section_report/index.ts",
+            "src/section_report/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/intake/index.ts",
@@ -4309,6 +5654,16 @@
         },
         {
           "hash": "d47dde704894d272001e174a529b1bcb1af5db6cdc03fd1431fc1ac6dd910222",
+          "importOrder": [
+            "src/intake/schema.ts",
+            "src/gates/checks/index.ts",
+            "src/review/decision.ts",
+            "src/audit/aggregate.ts",
+            "src/gates/types.ts",
+            "src/claims/schema.ts",
+            "src/sources/schema.ts",
+            "src/review/schema.ts"
+          ],
           "importsFiles": [
             "src/audit/aggregate.ts",
             "src/claims/schema.ts",
@@ -4323,6 +5678,11 @@
         },
         {
           "hash": "07f1ca38da3778433023a43a8a08512e3de1339da72f8a1986f30cc3dd25517f",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/intake/index.ts",
@@ -4340,6 +5700,14 @@
         },
         {
           "hash": "1feff71c66013e32555a2e4603633f04d2af8d393c452cb1262b13131c9e7f45",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/sources/index.ts",
+            "src/sources/extractors/heuristic.ts",
+            "src/errors.ts",
+            "src/sources/schema.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/intake/index.ts",
@@ -4401,6 +5769,13 @@
         },
         {
           "hash": "d2c09e75092f469b989e432153377ad3b50ef046bbb5ca0e8ae471dc14173ea1",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/sources/index.ts",
+            "src/sources/extractors/heuristic.ts",
+            "src/sources/cards.ts"
+          ],
           "importsFiles": [
             "src/intake/index.ts",
             "src/sections/index.ts",
@@ -4412,6 +5787,13 @@
         },
         {
           "hash": "2793057b768ee7e84e8443528c4b66ff7a95d296de5bbecdb1f077fa4c85944b",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/sources/index.ts",
+            "src/sources/extractors/heuristic.ts",
+            "src/sources/types.ts"
+          ],
           "importsFiles": [
             "src/intake/index.ts",
             "src/sections/index.ts",
@@ -4423,6 +5805,14 @@
         },
         {
           "hash": "070f92016750e0923303e7fc513b9010c780d9d0216ba1ebe0b9a64708b26ea3",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/sources/index.ts",
+            "src/sources/extractors/heuristic.ts",
+            "src/sources/schema.ts",
+            "src/sources/types.ts"
+          ],
           "importsFiles": [
             "src/intake/index.ts",
             "src/sections/index.ts",
@@ -4435,6 +5825,11 @@
         },
         {
           "hash": "4d48870cb45ade2c711769fb64db8f6fc3673c67017e9d3ded6070d1ab15b708",
+          "importOrder": [
+            "src/sources/source-card-audit.ts",
+            "src/sources/schema.ts",
+            "src/sources/source-card-overrides-schema.ts"
+          ],
           "importsFiles": [
             "src/sources/schema.ts",
             "src/sources/source-card-audit.ts",
@@ -4444,6 +5839,12 @@
         },
         {
           "hash": "8acb573584536fb049a18dc08ac1a8ebd37baa1eb4b99c27a399718d07515877",
+          "importOrder": [
+            "src/sources/source-card-audit.ts",
+            "src/sources/source-card-overrides.ts",
+            "src/sources/source-card-overrides-schema.ts",
+            "src/sources/schema.ts"
+          ],
           "importsFiles": [
             "src/sources/schema.ts",
             "src/sources/source-card-audit.ts",
@@ -4468,6 +5869,14 @@
         },
         {
           "hash": "0030a89c2bf0b3b021ee7b745491695a12c4da696af17a0c2a652dc849eb757b",
+          "importOrder": [
+            "src/sources/source-card-overrides.ts",
+            "src/sources/source-card-overrides-schema.ts",
+            "src/sources/effective-card.ts",
+            "src/sources/cards.ts",
+            "src/sources/schema.ts",
+            "src/sources/types.ts"
+          ],
           "importsFiles": [
             "src/sources/cards.ts",
             "src/sources/effective-card.ts",
@@ -4480,6 +5889,10 @@
         },
         {
           "hash": "252d8063f2753bd1bcef233f0d076cddfef7d4ccda72c9baca634bae1ccc32f0",
+          "importOrder": [
+            "src/sources/severities.ts",
+            "src/sources/schema.ts"
+          ],
           "importsFiles": [
             "src/sources/schema.ts",
             "src/sources/severities.ts"
@@ -4495,6 +5908,13 @@
         },
         {
           "hash": "9e9ec3c0d213291122c3062dfa475d6215323e921e7cb235737a668f177895c2",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/index.ts",
+            "src/claims/schema.ts",
+            "src/claims/types.ts"
+          ],
           "importsFiles": [
             "src/claims/index.ts",
             "src/claims/schema.ts",
@@ -4506,6 +5926,12 @@
         },
         {
           "hash": "97a88caf821f33cbfb44bd7707c1f5cfb2a41efececc6e0c4404da4e3675ab64",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/index.ts",
+            "src/claims/extractors/heuristic.ts"
+          ],
           "importsFiles": [
             "src/claims/extractors/heuristic.ts",
             "src/claims/index.ts",
@@ -4548,6 +5974,10 @@
         },
         {
           "hash": "3689cc748c05d3778c6a8a5360c44b9898cdec3aa5be7a34af6db604fe76fae2",
+          "importOrder": [
+            "src/index.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/index.ts"
@@ -4556,6 +5986,10 @@
         },
         {
           "hash": "0b87796e91c727022aa97b801b1fc140ca317399ca0e0696ace7710063b59956",
+          "importOrder": [
+            "src/mcp/client.ts",
+            "src/index.ts"
+          ],
           "importsFiles": [
             "src/index.ts",
             "src/mcp/client.ts"
@@ -4579,6 +6013,15 @@
         },
         {
           "hash": "ab4eb2b6a3a1e515c46546ee0680976e8b518abf9f8b11f8e5e825ec41cf5571",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/audit/index.ts",
+            "src/freeze/index.ts",
+            "src/intake/schema.ts"
+          ],
           "importsFiles": [
             "src/audit/index.ts",
             "src/cowork/index.ts",
@@ -4592,6 +6035,15 @@
         },
         {
           "hash": "12fb468db1d9930b80b411ecc0529df2cec64b14df10b4317dca3860d0d0fe7e",
+          "importOrder": [
+            "src/cowork/derive.ts",
+            "src/synth/derive.ts",
+            "src/closure-ledger/effective-accepted.ts",
+            "src/review/schema.ts",
+            "src/claims/schema.ts",
+            "src/intake/schema.ts",
+            "src/cowork/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/closure-ledger/effective-accepted.ts",
@@ -4605,6 +6057,14 @@
         },
         {
           "hash": "07dc7bb1e0659c564d1f630dd3f6282d7c80563a4d253a83371c1988210f9fed",
+          "importOrder": [
+            "src/gates/checks/accepted-claim-floor.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/gates/types.ts",
+            "src/review/schema.ts",
+            "src/sources/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/gates/checks/accepted-claim-floor.ts",
@@ -4617,6 +6077,14 @@
         },
         {
           "hash": "14179e88987a66e2d8a740875015d20821f696812fb13498888fc21d6f7a85fb",
+          "importOrder": [
+            "src/gates/checks/accepted-claim-floor.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/gates/types.ts",
+            "src/review/schema.ts",
+            "src/sources/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/gates/checks/accepted-claim-floor.ts",
@@ -4646,6 +6114,14 @@
         },
         {
           "hash": "b31bf1cf2a3075657b6ea4a51c46b7f56da4e7d19b6693b9d464c06bf86820bb",
+          "importOrder": [
+            "src/audit/aggregate.ts",
+            "src/intake/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/dispositions/schema.ts",
+            "src/gates/schema.ts"
+          ],
           "importsFiles": [
             "src/audit/aggregate.ts",
             "src/claims/schema.ts",
@@ -4658,6 +6134,12 @@
         },
         {
           "hash": "53e300c9c9eb4f21fe6ef7ec91ef27f8e07f717a94eca47778b58b53107fde38",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/indexer/index.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/indexer/index.ts",
@@ -4668,6 +6150,15 @@
         },
         {
           "hash": "3ba11f4b9cd868c9914bd8f50e076e2b471cf83420b39d9745a562ad0d5c0e44",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/recover/index.ts",
+            "src/recover/regeneration-ledger.ts",
+            "src/synth/prose/types.ts",
+            "src/recover/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/intake/index.ts",
@@ -4688,6 +6179,13 @@
         },
         {
           "hash": "33d63c7c6591fda3a3aad6cc7648fd6c232a6b66a26e2ba1acd5b6e521330afe",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/contradictions/map.ts",
+            "src/claims/schema.ts",
+            "src/contradictions/types.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/map.ts",
@@ -4699,6 +6197,13 @@
         },
         {
           "hash": "afeba0f8a2ae51c367b5c75093eebe46c7b035f31f49793ff740d3d1e422923e",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/review/promote.ts",
+            "src/intake/schema.ts",
+            "src/review/schema.ts"
+          ],
           "importsFiles": [
             "src/intake/index.ts",
             "src/intake/schema.ts",
@@ -4710,6 +6215,14 @@
         },
         {
           "hash": "b71a903bf03db813499534d82d2e9da53691b2d8b2b5470bcd71d3779eb8dc18",
+          "importOrder": [
+            "src/review/reviewers/heuristic.ts",
+            "src/claims/schema.ts",
+            "src/sources/excerpts/schema.ts",
+            "src/sources/schema.ts",
+            "src/review/types.ts",
+            "src/intake/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/intake/schema.ts",
@@ -4729,6 +6242,13 @@
         },
         {
           "hash": "0466e27adc7f3767046ba1bde7fa4bd402cbac754ecfb89af762a6daafc01f6d",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/errors.ts",
+            "src/sources/source-card-audit.ts",
+            "src/sources/rebuild-ledger.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/intake/index.ts",
@@ -4747,6 +6267,12 @@
         },
         {
           "hash": "81bcd530a46f2fbe7ae4b191b960db30a916b5314ed64d15d20b4e199de38d9b",
+          "importOrder": [
+            "src/discover/relevance.ts",
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/discover/index.ts"
+          ],
           "importsFiles": [
             "src/discover/index.ts",
             "src/discover/relevance.ts",
@@ -4757,6 +6283,13 @@
         },
         {
           "hash": "f13ca0339c4a816171a3efe3359cf8edc856846b4e4c2736021854d980243db8",
+          "importOrder": [
+            "src/sources/cards.ts",
+            "src/sources/index.ts",
+            "src/sources/extractors/heuristic.ts",
+            "src/intake/index.ts",
+            "src/sections/index.ts"
+          ],
           "importsFiles": [
             "src/intake/index.ts",
             "src/sections/index.ts",
@@ -4783,6 +6316,14 @@
         },
         {
           "hash": "9d8b1c29ce40ae9f83c156cef59f1f95d438fd00bd3b780e44a45f5040cdcde5",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/errors.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/errors.ts",
@@ -4795,6 +6336,13 @@
         },
         {
           "hash": "a4cc660c3cbfe45a5bfae3204bd047c40aa62d7cd705035cf53bd536cba5d08b",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/intake/index.ts",
@@ -4822,6 +6370,13 @@
         },
         {
           "hash": "bbddf2ab5fe809f40f655b1c2db5f207ef2f02097146383f14c65ef38d8c9d23",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/index.ts",
+            "src/claims/extractors/heuristic.ts",
+            "src/claims/types.ts"
+          ],
           "importsFiles": [
             "src/claims/extractors/heuristic.ts",
             "src/claims/index.ts",
@@ -4833,6 +6388,13 @@
         },
         {
           "hash": "8e0aaafae0dcf4e64a4c4bbe788056bd341aa40d8d259dbcaba0063e6154f2d0",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/index.ts",
+            "src/claims/extract-completion-ledger.ts",
+            "src/claims/types.ts"
+          ],
           "importsFiles": [
             "src/claims/extract-completion-ledger.ts",
             "src/claims/index.ts",
@@ -4844,6 +6406,12 @@
         },
         {
           "hash": "21bd87dbc9aea87977aa4258bfb1e368d385324951236bbc1277555f4bc2eee3",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/claims/repair-scope.ts",
+            "src/claims/rescue-ledger.ts"
+          ],
           "importsFiles": [
             "src/claims/repair-scope.ts",
             "src/claims/rescue-ledger.ts",
@@ -4869,6 +6437,11 @@
         },
         {
           "hash": "90cc9778466fe0384333a008354443c84d362c1f870467013d3d35e07fe78d90",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/contradictions/index.ts"
+          ],
           "importsFiles": [
             "src/contradictions/index.ts",
             "src/intake/index.ts",
@@ -4878,6 +6451,13 @@
         },
         {
           "hash": "ffedadd06196fde994552bf25721c97aaf5653a179a8252d424c0a3ee35a3d5d",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/triage/index.ts",
+            "src/gates/index.ts",
+            "src/freeze/citations.ts"
+          ],
           "importsFiles": [
             "src/freeze/citations.ts",
             "src/gates/index.ts",
@@ -4889,6 +6469,11 @@
         },
         {
           "hash": "224402a27e6b43f7df1528a8159d215dc46516d21758e8997669ac6c654a4a7a",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/audit/index.ts"
+          ],
           "importsFiles": [
             "src/audit/index.ts",
             "src/intake/index.ts",
@@ -4928,6 +6513,14 @@
         },
         {
           "hash": "704b5d769da03247bd903002f62d32fb2228b292968754b3fbec53246bc1f19b",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/review/index.ts",
+            "src/review/reviewers/heuristic.ts",
+            "src/review/schema.ts",
+            "src/review/types.ts"
+          ],
           "importsFiles": [
             "src/intake/index.ts",
             "src/review/index.ts",
@@ -4948,6 +6541,12 @@
         },
         {
           "hash": "7fbef5831e98a4f683374d6966bd66311ccf469bbed6baa67e62bfcbb715057a",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/sources/index.ts",
+            "src/sources/extractors/heuristic.ts"
+          ],
           "importsFiles": [
             "src/intake/index.ts",
             "src/sections/index.ts",
@@ -4973,6 +6572,13 @@
         },
         {
           "hash": "ccef024cdfb1d91d519ac51eec330c4885c2a81108f953c6774c523d44a745a6",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/intake/index.ts",
@@ -4984,6 +6590,10 @@
         },
         {
           "hash": "997656f0883be55d3007c449fe032b88fe3259727629ce90cc6251f40811face",
+          "importOrder": [
+            "src/recover/diagnose.ts",
+            "src/cowork/schema.ts"
+          ],
           "importsFiles": [
             "src/cowork/schema.ts",
             "src/recover/diagnose.ts"
@@ -4992,6 +6602,16 @@
         },
         {
           "hash": "84120855bbc5c2df45dfbd76ef46897d944de894f0d911372025c6c3f675a944",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/discover/index.ts",
+            "src/contradictions/index.ts",
+            "src/indexer/query.ts",
+            "src/sources/source-card-audit.ts",
+            "src/invalidate/index.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/contradictions/index.ts",
             "src/discover/index.ts",
@@ -5006,6 +6626,15 @@
         },
         {
           "hash": "c1730bd5e3c5c06c393a195327d7c56593b5897641575401de7107e3eacaacf6",
+          "importOrder": [
+            "src/synth/derive.ts",
+            "src/intake/schema.ts",
+            "src/cowork/schema.ts",
+            "src/claims/schema.ts",
+            "src/review/schema.ts",
+            "src/contradictions/schema.ts",
+            "src/sources/schema.ts"
+          ],
           "importsFiles": [
             "src/claims/schema.ts",
             "src/contradictions/schema.ts",
@@ -5027,6 +6656,11 @@
         },
         {
           "hash": "211fba2e24ad342199ce21f816c5554f6c88453cda65405b243e72613f97548c",
+          "importOrder": [
+            "src/synth/partial-pack/classifier.ts",
+            "src/intake/schema.ts",
+            "src/cowork/schema.ts"
+          ],
           "importsFiles": [
             "src/cowork/schema.ts",
             "src/intake/schema.ts",
@@ -5036,6 +6670,15 @@
         },
         {
           "hash": "cb5adef337b354fc0678851c5e91a99176c1d74970de7092cfd4c24e6df6e66e",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/synth/partial-pack/prompt.ts",
+            "src/synth/prose/types.ts",
+            "src/synth/partial-pack/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/intake/index.ts",
@@ -5049,6 +6692,15 @@
         },
         {
           "hash": "81fefd1611a2cc435c34322f0ac482330d5b8c53e2ea5cb23d970a3805427f39",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/freeze/index.ts",
+            "src/synth/prose/types.ts",
+            "src/synth/partial-pack/markdown.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/freeze/index.ts",
@@ -5062,6 +6714,13 @@
         },
         {
           "hash": "3de9a5c1206cca06a75f72613fc7ee6db08dabf1bb5cd8eaab4facefa577134b",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/intake/index.ts",
@@ -5106,6 +6765,13 @@
         },
         {
           "hash": "bb89ec3fec9619d61fbafe23c5a85150e6aa6f9a3e95d9ab2247050bb315f937",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/intake/index.ts",
@@ -5117,6 +6783,14 @@
         },
         {
           "hash": "e34a006fad4f5841041241cfd29b76b5efe51aedeb02f203dcbe3f7cb5169aad",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/freeze/index.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/freeze/index.ts",
@@ -5146,6 +6820,14 @@
         },
         {
           "hash": "5b326d8703daa517759645b2ee98750a5c06404e41aea56ad2f596fc0b22d79a",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/freeze/index.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/freeze/index.ts",
@@ -5158,6 +6840,11 @@
         },
         {
           "hash": "2e2126aa95abcf58424b9200aae8ac07e18cc2af9ad1bdd240ffebb02ee5b82d",
+          "importOrder": [
+            "src/synth/prose/verifier.ts",
+            "src/synth/prose/prompt.ts",
+            "src/synth/prose/types.ts"
+          ],
           "importsFiles": [
             "src/synth/prose/prompt.ts",
             "src/synth/prose/types.ts",
@@ -5167,6 +6854,15 @@
         },
         {
           "hash": "84acd4ae92e794e8d954780727d2fa6c8712b5cafaacf4af37a2461a7e7353e8",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/synth/schema.ts",
+            "src/errors.ts",
+            "src/intake/schema.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/errors.ts",
@@ -5180,6 +6876,15 @@
         },
         {
           "hash": "7274d6f7e40ce3e355451da535b94b25f4f1bb42cab9cb4ed794df2ac447cc85",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/cowork/index.ts",
+            "src/synth/index.ts",
+            "src/freeze/index.ts",
+            "src/intake/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/cowork/index.ts",
             "src/errors.ts",
@@ -5193,6 +6898,13 @@
         },
         {
           "hash": "2abbd8009bc84a60faec592b55f07cd5ab77724e07d551e2a9596eca1ef8463e",
+          "importOrder": [
+            "src/intake/index.ts",
+            "src/sections/index.ts",
+            "src/triage/index.ts",
+            "src/triage/schema.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/intake/index.ts",
@@ -5296,6 +7008,42 @@
           "path": "src/",
           "runKind": "checks",
           "via": "eslint eslint.config.js"
+        },
+        {
+          "built": true,
+          "job": "verify",
+          "path": "src/calibration/aggregate-receipt-schema.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "verify",
+          "path": "src/calibration/aggregate.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "verify",
+          "path": "src/calibration/receipt-schema.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "verify",
+          "path": "src/calibration/receipt.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "verify",
+          "path": "src/cli.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "verify",
+          "path": "src/index.ts",
+          "runKind": "executes"
         },
         {
           "job": "verify",
@@ -6334,7 +8082,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 148,
+      "runsCount": 154,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -6523,6 +8271,7 @@
           ],
           "stages": [],
           "when": {
+            "byHand": true,
             "event": "push",
             "tags": true
           }
@@ -6566,6 +8315,42 @@
           "path": "src/",
           "runKind": "checks",
           "via": "eslint eslint.config.js"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "src/calibration/aggregate-receipt-schema.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "src/calibration/aggregate.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "src/calibration/receipt-schema.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "src/calibration/receipt.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "src/cli.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "src/index.ts",
+          "runKind": "executes"
         },
         {
           "job": "release",
@@ -7604,7 +9389,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 148,
+      "runsCount": 154,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -7778,16 +9563,6 @@
     },
     {
       "readers": [
-        {
-          "by": "src/pack/publish/index.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/pack/publish/verify.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
         {
           "by": "test/canonical-pack-publish-force-text.test.ts",
           "call": "literal",

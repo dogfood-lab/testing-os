@@ -283,9 +283,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:14:31.297Z",
+  "generatedAt": "2026-09-25T09:22:11.913Z",
   "limits": [
-    "2 import sites could not be resolved.",
+    "2 imports could not be resolved: `src/portlight/app/tui/screens/encounter.py` imports `portlight.content.weapons`, which is no module on its import path and no declared dependency; `src/portlight/app/tui/screens/encounter.py` imports `portlight.content.weapons`, which is no module on its import path and no declared dependency.",
     "5 writes and 2 reads use paths built at run time and are not named here.",
     "1 write and 3 reads go to the directory the command is run in, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
@@ -307,7 +307,13 @@
   "sequences": [],
   "startDoor": "pyproject.toml#starfreight",
   "startHere": [
-    "src/portlight/app/cli.py"
+    "src/portlight/app/cli.py",
+    "src/portlight/app/session.py",
+    "src/portlight/engine/encounter.py",
+    "src/portlight/engine/captain_memory.py",
+    "src/portlight/engine/underworld.py",
+    "src/portlight/engine/weapon_provenance.py",
+    "src/portlight/engine/loot.py"
   ],
   "startReason": "This path follows starfreight (a command people run) from its entry, since CI runs only tests.",
   "summary": null,

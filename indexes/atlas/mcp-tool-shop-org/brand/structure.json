@@ -1357,6 +1357,7 @@
           "path": "site/src/assets/logo.svg"
         },
         {
+          "constantOnly": true,
           "hash": "34b036603793e4eb4bfad87e1fd7f851a84fef6a762257a3b2dc1411983d26df",
           "path": "site/src/content.config.ts"
         },
@@ -1471,6 +1472,18 @@
           "entry": "main",
           "entryRule": 1,
           "hash": "45b2c184d6005d40e31ca06aed29aab472a79cffe48ac9c5f9ffd2f0a15312dd",
+          "importOrder": [
+            "src/commands/verify.ts",
+            "src/commands/manifest-cmd.ts",
+            "src/commands/audit.ts",
+            "src/commands/migrate.ts",
+            "src/commands/stats.ts",
+            "src/commands/add-gallery.ts",
+            "src/commands/add-model.ts",
+            "src/commands/remove.ts",
+            "src/commands/sync.ts",
+            "src/commands/history.ts"
+          ],
           "importsFiles": [
             "src/commands/add-gallery.ts",
             "src/commands/add-model.ts",
@@ -1518,6 +1531,12 @@
             "runAddModel"
           ],
           "hash": "271762b79036b5af4cb3908eb34be825b75a9e694d9678b859cc6287be771259",
+          "importOrder": [
+            "src/manifest.ts",
+            "src/commands/add-gallery.ts",
+            "src/model-view.ts",
+            "src/png-palette.ts"
+          ],
           "importsFiles": [
             "src/commands/add-gallery.ts",
             "src/manifest.ts",
@@ -1531,6 +1550,10 @@
             "runAudit"
           ],
           "hash": "b99cbea153096b7f6abe1c31ea5d1e031762c558ef01bd7e58e886990f45eb01",
+          "importOrder": [
+            "src/utils/readme-parser.ts",
+            "src/manifest.ts"
+          ],
           "importsFiles": [
             "src/manifest.ts",
             "src/utils/readme-parser.ts"
@@ -1562,6 +1585,10 @@
             "runMigrate"
           ],
           "hash": "c8f4be282ae37e06896e4e161759730a8802eca8b669b506a294017eb3dc7a89",
+          "importOrder": [
+            "src/utils/readme-parser.ts",
+            "src/manifest.ts"
+          ],
           "importsFiles": [
             "src/manifest.ts",
             "src/utils/readme-parser.ts"
@@ -1573,6 +1600,10 @@
             "runRemove"
           ],
           "hash": "33e35f1908e4417fadc42c2e58b24458b1e4feb35e481f2dd4533bb5ea168305",
+          "importOrder": [
+            "src/manifest.ts",
+            "src/commands/add-gallery.ts"
+          ],
           "importsFiles": [
             "src/commands/add-gallery.ts",
             "src/manifest.ts"
@@ -1594,6 +1625,11 @@
             "runSync"
           ],
           "hash": "322d817e1e0e862ab09ffaf227f7b29c032525e2c23b7372ef02141b02323540",
+          "importOrder": [
+            "src/manifest.ts",
+            "src/utils/marker-parser.ts",
+            "src/commands/add-gallery.ts"
+          ],
           "importsFiles": [
             "src/commands/add-gallery.ts",
             "src/manifest.ts",
@@ -1689,9 +1725,16 @@
             "caller"
           ],
           "writes": 23
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:README.md"
+          ],
+          "writes": 0
         }
       ],
-      "outsideReads": 55,
+      "outsideReads": 56,
       "outsideWrites": 23,
       "role": "code",
       "testedBy": 18,
@@ -1951,6 +1994,11 @@
         },
         {
           "hash": "01b1c81e3f9e87ad66c2d4cd4d0237dd1bb5e63a5e992db45fbdbaa373341405",
+          "importOrder": [
+            "src/manifest.ts",
+            "src/model-view.ts",
+            "src/commands/stats.ts"
+          ],
           "importsFiles": [
             "src/commands/stats.ts",
             "src/manifest.ts",
@@ -2022,7 +2070,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "lint-test-build",
@@ -2140,19 +2188,21 @@
           "runKind": "executes"
         },
         {
+          "built": true,
           "directory": true,
           "job": "integrity",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
+          "built": true,
           "directory": true,
           "job": "lint-test-build",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -2361,7 +2411,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "build",
@@ -2401,6 +2451,7 @@
             "branches": [
               "main"
             ],
+            "byHand": true,
             "event": "push"
           }
         }
@@ -2449,11 +2500,12 @@
           "via": "astro build"
         },
         {
+          "built": true,
           "directory": true,
           "job": "build",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         }
       ],
@@ -2514,7 +2566,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "release",
@@ -2605,11 +2657,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "release",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -2788,7 +2841,7 @@
       "usesWorkflowToken": true
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "sync",
@@ -2926,11 +2979,12 @@
           "runKind": "executes"
         },
         {
+          "built": true,
           "directory": true,
           "job": "sync",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -3078,11 +3132,6 @@
     },
     {
       "readers": [
-        {
-          "by": "src/commands/audit.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
         {
           "by": "tests/audit.test.ts",
           "call": "literal",

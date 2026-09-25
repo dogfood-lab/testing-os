@@ -4,19 +4,21 @@ Mapped at 2026-09-25 from commit 25c0ecc.
 
 ## What this is
 
-10 parts, mostly Python (61 files), JavaScript (2) and TypeScript (2). Work enters through 8 doors; the busiest is CI, which reaches 3 parts. It publishes to npm and PyPI. People run escape-the-valley and trail.
+10 parts, mostly Python (61 files), JavaScript (2) and TypeScript (2). Work enters through 8 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. People run escape-the-valley and trail.
 
 ## What changed since 2026-09-25 (fa2660c)
 
-Nothing structural changed since 2026-09-25; no file changed.
+- Release now also runs tests/.
+- Release now also checks src/.
+- No file changed.
 
 ## What comes in
 
 1. **CI.** On a pull request touching 8 paths; on a push touching 8 paths; on a `workflow_call` event; or by hand. Runs tests/; checks src/.
-2. **Release Binaries.** When a release is published; when the workflow Release completes; or by hand. Runs scripts/smoke_test_binary.py; builds src/escape_the_valley/__main__.py.
-3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-4. **Publish to PyPI.** When a release is published; when the workflow Release completes; or by hand. Checks src/escape_the_valley/.
-5. **Release.** When a tag matching `v*` is pushed; or by hand. Runs no file this map can see.
+2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; checks src/.
+3. **Release Binaries.** When a release is published; when the workflow Release completes; or by hand. Runs scripts/smoke_test_binary.py; builds src/escape_the_valley/__main__.py.
+4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+5. **Publish to PyPI.** When a release is published; when the workflow Release completes; or by hand. Checks src/escape_the_valley/.
 6. **escape-the-valley** (a command people run). Runs bin/escape-the-valley.js.
 7. **trail** (a command people run, from package.json). Runs bin/escape-the-valley.js.
 8. **trail** (a command people run, from pyproject.toml). Runs src/escape_the_valley/cli.py.
@@ -32,13 +34,13 @@ CI writes nothing this map can see.
 
 ## The other doors
 
+**Release** runs tests/, checks src/, reaches agents, publishes to npm, and creates a GitHub release.
+
 **Release Binaries** runs scripts/smoke_test_binary.py, creates a GitHub release, and builds src/escape_the_valley/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
 **Publish to PyPI** checks src/escape_the_valley/ and publishes to PyPI.
-
-**Release** runs no file this map can see, publishes to npm, and creates a GitHub release.
 
 **escape-the-valley** (a command people run) runs bin/escape-the-valley.js.
 
@@ -48,9 +50,10 @@ CI writes nothing this map can see.
 
 ## What breaks what
 
-- **src** is imported by 2 parts (agents, scripts), and by 1 more only from tests; it sits on the path of 4 doors.
-- **agents** is imported by 1 part (scripts), and by 1 more only from tests; it sits on the path of 1 door.
+- **src** is imported by 2 parts (agents, scripts), and by 1 more only from tests; it sits on the path of 5 doors.
+- **agents** is imported by 1 part (scripts), and by 1 more only from tests; it sits on the path of 2 doors.
 - **bin** is imported by no other part and sits on the path of 2 doors.
+- **tests** is imported by no other part and sits on the path of 2 doors.
 
 ## What tends to change together
 
@@ -88,9 +91,9 @@ People write .github/, assets/, docs/, the repository root and site/; 2 writes w
 
 ## Where to start
 
-src/escape_the_valley/cli.py
+src/escape_the_valley/cli.py → src/escape_the_valley/save.py → src/escape_the_valley/models.py → src/escape_the_valley/worldgen.py → src/escape_the_valley/gm.py → src/escape_the_valley/voice.py → src/escape_the_valley/step_engine.py
 
-Read those in order to follow one run of trail end to end. This path follows trail (a command people run, from pyproject.toml) from its entry, since CI runs only tests.
+Read those in order to follow one run of trail end to end. This path follows trail (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 

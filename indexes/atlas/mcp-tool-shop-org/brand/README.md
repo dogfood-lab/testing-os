@@ -17,20 +17,20 @@ Mapped at 2026-09-25 from commit 8110f52.
 - README.zh.md is now read by tests/migrate.test.ts.
 - And 240 more new writers and readers of places.
 - logos was generated and is now authored.
-- src/cli.ts now starts at main; it started at with globals.
+- src/cli.ts now starts at `main`; it started at `withGlobals`.
 - 1 file added and 100 changed content, across 9 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 16 paths; on a push touching 16 paths; or by hand. Runs scripts/check-audit-allowlist.mjs, src/cli.ts, tests/add-gallery.test.ts and 18 more; checks src/.
-2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/add-gallery.test.ts, tests/add-model.test.ts, tests/audit.test.ts and 16 more; checks src/.
-3. **Deploy site to GitHub Pages.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs site/astro.config.mjs and site/src/; checks src/.
-4. **Sync org logos.** On a schedule (`0 6 * * *`); or by hand. Runs scripts/sync-org-logos.sh and src/cli.ts; checks src/.
+1. **CI.** On a pull request touching 16 paths; on a push touching 16 paths; or by hand. Runs scripts/check-audit-allowlist.mjs, src/cli.ts, tests/add-gallery.test.ts and 18 more; builds src/.
+2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/add-gallery.test.ts, tests/add-model.test.ts, tests/audit.test.ts and 16 more; builds src/.
+3. **Deploy site to GitHub Pages.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs site/astro.config.mjs and site/src/; builds src/.
+4. **Sync org logos.** On a schedule (`0 6 * * *`); or by hand. Runs scripts/sync-org-logos.sh and src/cli.ts; builds src/.
 5. **brand** (a command people run). Runs src/cli.ts.
 
 ## What happens through CI
 
-1. The workflow runs scripts/check-audit-allowlist.mjs in scripts, src/cli.ts in src, and 19 files in tests; it checks src/ in src.
+1. The workflow runs scripts/check-audit-allowlist.mjs in scripts, src/cli.ts in src, and 19 files in tests; it builds src/ in src.
 2. That reaches the site (1 file).
 3. It runs git.
 
@@ -40,11 +40,11 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs tests/add-gallery.test.ts, tests/add-model.test.ts, tests/audit.test.ts and 16 more, checks src/, reaches the site, publishes to npm, and creates a GitHub release.
+**Release** runs tests/add-gallery.test.ts, tests/add-model.test.ts, tests/audit.test.ts and 16 more, builds src/, reaches the site, publishes to npm, and creates a GitHub release.
 
-**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, checks src/, and deploys the site on a push to main.
+**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, builds src/, and deploys the site on a push to main or by hand.
 
-**Sync org logos** runs scripts/sync-org-logos.sh and src/cli.ts, checks src/, writes to manifest.json, commits logos/ (written by people) and manifest.json, then pushes to a branch for review, never to main, runs git, opens an issue, and opens a pull request.
+**Sync org logos** runs scripts/sync-org-logos.sh and src/cli.ts, builds src/, writes to manifest.json, commits logos/ (written by people) and manifest.json, then pushes to a branch for review, never to main, runs git, opens an issue, and opens a pull request.
 
 **brand** (a command people run) runs src/cli.ts and runs git.
 
@@ -88,7 +88,7 @@ People write .claude/, .githooks/, .github/, assets/, docs/, logos/ and site/. N
 
 ## Where to start
 
-.github/workflows/ci.yml → src/cli.ts
+.github/workflows/ci.yml → src/cli.ts → src/commands/verify.ts → src/commands/manifest-cmd.ts → src/commands/audit.ts → src/commands/migrate.ts → src/commands/stats.ts → src/commands/add-gallery.ts
 
 Read those in order to follow one pull request end to end.
 
@@ -96,7 +96,7 @@ Read those in order to follow one pull request end to end.
 
 - 6 reads use paths built at run time and are not named here.
 - 24 writes and 66 reads go to a path their caller passes, not to this repository.
-- 7 reads go to the directory the command is run in (logos/ and manifest.json), not to this repository.
+- 8 reads go to the directory the command is run in (README.md, logos/ and manifest.json), not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

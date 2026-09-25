@@ -4,7 +4,6 @@
     ".husky/",
     "assets/",
     "curation/",
-    "dist/",
     "docs/",
     "fixtures/",
     "schema/",
@@ -32,7 +31,17 @@
       "readers": [
         "scripts"
       ],
-      "target": "bundles/",
+      "target": "dist/registry.index.json",
+      "writers": [
+        "scripts"
+      ]
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "scripts"
+      ],
+      "target": "dist/capabilities.json",
       "writers": [
         "scripts"
       ]
@@ -48,8 +57,59 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI now also runs scripts/query.mjs.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "scripts/query.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "bundles/*.json is now written by scripts/build-bundles.mjs.",
+        "subjects": [
+          "bundles/*.json",
+          "scripts/build-bundles.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "dist/REGISTRY_HEALTH.md is now written by scripts/health-report.mjs.",
+        "subjects": [
+          "dist/REGISTRY_HEALTH.md",
+          "scripts/health-report.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "dist/capabilities.json is now written by scripts/build-derived.mjs.",
+        "subjects": [
+          "dist/capabilities.json",
+          "scripts/build-derived.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 17 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "origin",
+        "sentence": "bundles was generated and is now mixed.",
+        "subjects": [
+          "bundles"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "dist was authored and is now mixed.",
+        "subjects": [
+          "dist"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; 1 file changed content.",
+        "sentence": "1 file changed content, across 1 part.",
         "subjects": []
       }
     ],
@@ -57,7 +117,7 @@
       "commit": "4fd9a954cb4acb06fe35b90781746e696ee3fb05",
       "generatedAt": "2026-09-25T02:09:43.986Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -66,49 +126,8 @@
   "changesTogetherWithTests": 0,
   "commit": "2bb195fa484d4e572d28ef756d371624b1efac32",
   "defaultBranch": "main",
-  "derived": "13 parts, mostly JavaScript (17 files) and TypeScript (2). Work enters through 5 doors; the busiest is @mcptoolshop/mcp-tool-registry, which reaches 3 parts. It publishes to npm. People import @mcptoolshop/mcp-tool-registry.",
+  "derived": "13 parts, mostly JavaScript (17 files) and TypeScript (2). Work enters through 5 doors; CI and Operations each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People import @mcptoolshop/mcp-tool-registry.",
   "doors": [
-    {
-      "checks": [],
-      "checksCount": 0,
-      "checksMore": 0,
-      "file": "package.json",
-      "id": "package.json#@mcptoolshop/mcp-tool-registry",
-      "kind": "package",
-      "landings": [],
-      "name": "@mcptoolshop/mcp-tool-registry",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "bundles",
-          "depth": 0,
-          "files": 4
-        },
-        {
-          "boundary": "root",
-          "depth": 0,
-          "files": 1
-        },
-        {
-          "boundary": "schema",
-          "depth": 0,
-          "files": 1
-        }
-      ],
-      "runs": [
-        "registry.json",
-        "bundles/agents.json",
-        "bundles/core.json",
-        "bundles/evaluation.json",
-        "bundles/ops.json",
-        "schema/registry.schema.json"
-      ],
-      "runsCount": 6,
-      "runsMore": 3,
-      "sends": [],
-      "stages": [],
-      "triggers": []
-    },
     {
       "checks": [],
       "checksCount": 0,
@@ -118,30 +137,46 @@
         {
           "checks": [],
           "checksMore": 0,
-          "lead": "except on a pull request or on a `push` event",
+          "lead": "on a schedule or by hand",
           "runs": [
             "scripts/build-bundles.mjs",
             "scripts/build-site.mjs"
           ],
           "runsMore": 0,
-          "when": "except on a pull request or on a `push` event"
+          "when": "on a schedule or by hand"
         },
         {
           "checks": [],
           "checksMore": 0,
           "lead": "except on a schedule",
           "runs": [
+            "scripts/query.mjs",
             "scripts/validate.mjs",
             "scripts/verify-pack.mjs",
             "tests/search.test.mjs"
           ],
-          "runsMore": 0,
+          "runsMore": 1,
           "when": "except on a schedule"
         }
       ],
       "id": ".github/workflows/ci.yml",
       "landings": [
-        "bundles/"
+        "dist/REGISTRY_HEALTH.md",
+        "dist/capabilities.json",
+        "dist/derived.meta.json",
+        "dist/featured.json",
+        "dist/registry.index.json",
+        "dist/registry.llms.txt",
+        "dist/registry.report.json"
+      ],
+      "landingsHeld": [
+        {
+          "lead": "on a schedule or by hand",
+          "places": [
+            "bundles/*.json"
+          ],
+          "when": "on a schedule or by hand"
+        }
       ],
       "name": "CI",
       "programs": [
@@ -152,7 +187,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 6
+          "files": 7
         },
         {
           "boundary": "tests",
@@ -174,7 +209,7 @@
         "on a schedule (`0 0 * * 1`), Monday at 00:00 UTC",
         "or by hand"
       ],
-      "untracked": "_site/ and dist/, which are not tracked"
+      "untracked": "_site/, which is not tracked"
     },
     {
       "checks": [],
@@ -185,13 +220,23 @@
         {
           "checks": [],
           "checksMore": 0,
-          "lead": "on a `issues` event",
+          "lead": "on a push to main or by hand",
+          "runs": [
+            "tests/site-smoke.mjs"
+          ],
+          "runsMore": 0,
+          "when": "on a push to main or by hand"
+        },
+        {
+          "checks": [],
+          "checksMore": 0,
+          "lead": "on an `issues` event",
           "runs": [
             "scripts/patch-registry.mjs",
             "scripts/submission-guard.mjs"
           ],
           "runsMore": 0,
-          "when": "on a `issues` event"
+          "when": "on an `issues` event"
         },
         {
           "checks": [],
@@ -207,18 +252,42 @@
         {
           "checks": [],
           "checksMore": 0,
-          "lead": "except on a `issues` event or on a release event",
+          "lead": "except on an `issues` event",
           "runs": [
-            "tests/site-smoke.mjs"
+            "scripts/build-derived.mjs"
           ],
           "runsMore": 0,
-          "when": "except on a `issues` event or on a release event"
+          "when": "except on an `issues` event"
         }
       ],
       "id": ".github/workflows/operations.yml",
-      "landings": [
-        "bundles/",
-        "registry.json"
+      "landings": [],
+      "landingsHeld": [
+        {
+          "lead": "on an `issues` event",
+          "places": [
+            "registry.json"
+          ],
+          "when": "on an `issues` event"
+        },
+        {
+          "lead": "on a release event",
+          "places": [
+            "bundles/*.json"
+          ],
+          "when": "on a release event"
+        },
+        {
+          "lead": "except on an `issues` event",
+          "places": [
+            "dist/capabilities.json",
+            "dist/derived.meta.json",
+            "dist/featured.json",
+            "dist/registry.index.json",
+            "dist/registry.llms.txt"
+          ],
+          "when": "except on an `issues` event"
+        }
       ],
       "name": "Operations",
       "programs": [
@@ -237,23 +306,20 @@
           "files": 1
         }
       ],
-      "runs": [
-        "scripts/build-derived.mjs"
-      ],
-      "runsCount": 1,
+      "runs": [],
+      "runsCount": 0,
       "runsMore": 0,
       "sends": [
-        "commits registry.json and pushes to a branch for review, never to main on a `issues` event",
+        "commits registry.json and pushes to a branch for review, never to main, and opens a pull request, on an `issues` event",
         "publishes to npm on a release event"
       ],
       "stages": [],
       "triggers": [
-        "on a `issues` event",
+        "on an `issues` event",
         "on a push to main touching 5 paths",
         "when a release is published",
         "or by hand"
-      ],
-      "untracked": "dist/, which is not tracked"
+      ]
     },
     {
       "checks": [],
@@ -292,7 +358,10 @@
       "checksMore": 0,
       "file": ".github/workflows/publish.yml",
       "id": ".github/workflows/publish.yml",
-      "landings": [],
+      "landings": [
+        "dist/REGISTRY_HEALTH.md",
+        "dist/registry.report.json"
+      ],
       "name": "Publish to npm",
       "pushes": false,
       "reach": [
@@ -318,6 +387,48 @@
         "when a release is published",
         "or by hand"
       ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "dataOnly": true,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/mcp-tool-registry",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/mcp-tool-registry",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bundles",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "schema",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "registry.json",
+        "bundles/agents.json",
+        "bundles/core.json",
+        "bundles/evaluation.json",
+        "bundles/ops.json",
+        "schema/registry.schema.json"
+      ],
+      "runsCount": 6,
+      "runsMore": 3,
+      "sends": [],
+      "stages": [],
+      "triggers": []
     }
   ],
   "duplicates": [],
@@ -326,9 +437,51 @@
   "edges": [],
   "generated": [
     {
-      "place": "bundles/",
+      "place": "bundles/*.json",
       "writers": [
         "scripts/build-bundles.mjs"
+      ]
+    },
+    {
+      "place": "dist/REGISTRY_HEALTH.md",
+      "writers": [
+        "scripts/health-report.mjs"
+      ]
+    },
+    {
+      "place": "dist/capabilities.json",
+      "writers": [
+        "scripts/build-derived.mjs"
+      ]
+    },
+    {
+      "place": "dist/derived.meta.json",
+      "writers": [
+        "scripts/build-derived.mjs"
+      ]
+    },
+    {
+      "place": "dist/featured.json",
+      "writers": [
+        "scripts/build-derived.mjs"
+      ]
+    },
+    {
+      "place": "dist/registry.index.json",
+      "writers": [
+        "scripts/build-derived.mjs"
+      ]
+    },
+    {
+      "place": "dist/registry.llms.txt",
+      "writers": [
+        "scripts/build-derived.mjs"
+      ]
+    },
+    {
+      "place": "dist/registry.report.json",
+      "writers": [
+        "scripts/health-report.mjs"
       ]
     },
     {
@@ -339,16 +492,15 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T03:19:19.125Z",
+  "generatedAt": "2026-09-25T09:18:28.460Z",
   "limits": [
-    "1 import site could not be resolved.",
     "2 reads use paths built at run time and are not named here.",
-    "2 writes go to places this repository does not track, so they are not listed as generated.",
+    "1 write goes to places this repository does not track, so it is not listed as generated.",
     "3 reads go to a path their caller passes, not to this repository.",
-    "2 commands are built at run time and not followed, 1 of them in tests.",
+    "1 command is built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
-  "mainDoor": "package.json#@mcptoolshop/mcp-tool-registry",
+  "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
     ".github": ".github",
     ".husky": ".husky",
@@ -365,31 +517,52 @@
     "tests": "tests"
   },
   "parts": 13,
-  "readers": [],
+  "readers": [
+    {
+      "readers": [],
+      "target": "bundles/*.json"
+    },
+    {
+      "readers": [
+        "scripts (5 files)"
+      ],
+      "target": "dist/",
+      "tests": 1
+    }
+  ],
   "repo": "mcp-tool-shop-org/mcp-tool-registry",
   "sequences": [],
+  "spawnTested": [
+    "scripts"
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "scripts/build-derived.mjs"
+    "scripts/build-derived.mjs",
+    "dist/capabilities.json",
+    "scripts/verify-exports.js"
   ],
   "summary": null,
   "summaryFrom": null,
   "testFiles": 3,
   "testedBy": {
-    "scripts": 0
+    "scripts": 1
   },
   "unnamedWrites": 0,
-  "unread": [],
-  "unreadFiles": 0,
-  "unreadNote": [],
-  "untested": [
+  "unread": [
     {
-      "part": "scripts",
-      "partLabel": "scripts",
-      "testedBy": 0
+      "place": "bundles/*.json",
+      "writers": [
+        "scripts/build-bundles.mjs"
+      ]
     }
   ],
-  "untestedNote": [],
-  "written": 2
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [
+    "scripts is touched by tests only through a spawn: a test runs its files as a child process.",
+    "tests/registry-integrity.test.mjs runs in no workflow."
+  ],
+  "written": 9
 }

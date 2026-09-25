@@ -81,11 +81,24 @@
       },
       {
         "kind": "landing",
-        "sentence": "apps/desktop/src-tauri/src/main.rs is now read by apps/desktop/src-tauri/Cargo.toml.",
+        "sentence": "docs/dogfood/stage44-quality/*-post-*x*.png is now written by scripts/dogfood-44-quality.mjs.",
         "subjects": [
-          "apps/desktop/src-tauri/src/main.rs",
-          "apps/desktop/src-tauri/Cargo.toml"
+          "docs/dogfood/stage44-quality/*-post-*x*.png",
+          "scripts/dogfood-44-quality.mjs"
         ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "docs/dogfood/stage44-quality/*-pre-*x*.png is now written by scripts/dogfood-44-quality.mjs.",
+        "subjects": [
+          "docs/dogfood/stage44-quality/*-pre-*x*.png",
+          "scripts/dogfood-44-quality.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 3 more new writers and readers of places.",
+        "subjects": []
       },
       {
         "kind": "origin",
@@ -281,7 +294,7 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request touching 8 paths",
+        "on a pull request to main touching 8 paths",
         "on a push to main touching 8 paths",
         "or by hand"
       ]
@@ -450,7 +463,19 @@
       ]
     },
     {
-      "place": "docs/dogfood/stage44-quality/",
+      "place": "docs/dogfood/stage44-quality/*-post-*x*.png",
+      "writers": [
+        "scripts/dogfood-44-quality.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage44-quality/*-pre-*x*.png",
+      "writers": [
+        "scripts/dogfood-44-quality.mjs"
+      ]
+    },
+    {
+      "place": "docs/dogfood/stage44-quality/dogfood-log.md",
       "writers": [
         "scripts/dogfood-44-quality.mjs"
       ]
@@ -468,13 +493,25 @@
       ]
     },
     {
-      "place": "docs/showcase/stage46/",
+      "place": "docs/showcase/stage46/*--*.png",
       "writers": [
         "scripts/showcase-46.mjs"
       ]
     },
     {
-      "place": "docs/showcase/stage47-ollama/",
+      "place": "docs/showcase/stage46/showcase-log.md",
+      "writers": [
+        "scripts/showcase-46.mjs"
+      ]
+    },
+    {
+      "place": "docs/showcase/stage47-ollama/*---*x*.png",
+      "writers": [
+        "scripts/dogfood-47-ollama.mjs"
+      ]
+    },
+    {
+      "place": "docs/showcase/stage47-ollama/dogfood-log.md",
       "writers": [
         "scripts/dogfood-47-ollama.mjs"
       ]
@@ -534,9 +571,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:10:08.202Z",
+  "generatedAt": "2026-09-25T09:17:00.113Z",
   "limits": [
-    "17 import sites could not be resolved.",
+    "17 imports could not be resolved: `scripts/critique-sprite.mjs` imports a path built at run time; `scripts/critique-sprite.mjs` loads `fast-png` when it is installed, which is not declared; `scripts/dogfood-43-creature.mjs` imports a path built at run time; and 14 more.",
     "59 writes and 10 reads use paths built at run time and are not named here.",
     "13 writes and 31 reads go to a path their caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
@@ -584,7 +621,7 @@
     "apps/desktop/src-tauri/src/main.rs",
     "apps/desktop/src-tauri/src/lib.rs"
   ],
-  "startReason": "This path follows glyphstudio (a desktop app built from apps/desktop/src-tauri, which nothing ships) from its entry, since CI runs only tests.",
+  "startReason": "This path follows glyphstudio (a desktop app built from apps/desktop/src-tauri, which nothing ships) from its entry, since CI runs only tests and checks.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 202,
@@ -650,7 +687,7 @@
   ],
   "unreadFiles": 0,
   "unreadNote": [
-    "And 13 more places."
+    "And 17 more places."
   ],
   "untested": [
     {
@@ -664,6 +701,8 @@
       "testedBy": 0
     }
   ],
-  "untestedNote": [],
-  "written": 24
+  "untestedNote": [
+    "64 test files run in no workflow: apps/desktop/src/components/AISettingsPanel.test.tsx, apps/desktop/src/components/AnchorPanel.test.tsx, apps/desktop/src/components/AssetBrowserPanel.test.tsx and 61 mores."
+  ],
+  "written": 28
 }

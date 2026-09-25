@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit c7c22e5.
 
 ## What this is
 
-7 parts, mostly TypeScript (36 files) and JavaScript (4). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.
+7 parts, mostly Markdown (71 files); code in TypeScript (36) and JavaScript (4). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.
 
 ## What changed since 2026-09-23 (a91c112)
 
@@ -20,15 +20,15 @@ Mapped at 2026-09-25 from commit c7c22e5.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 9 paths; on a push to main touching 9 paths; or by hand. Runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more; checks src/.
+1. **CI.** On a pull request to main touching 9 paths; on a push to main touching 9 paths; or by hand. Runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **Publish to npm.** When a release is published; or by hand. Runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more; checks src/.
+3. **Publish to npm.** When a release is published; or by hand. Runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more; builds src/.
 4. **@mcptoolshop/polyglot-mcp** (the package people import). Loads src/index.ts, src/cache.ts, src/codeSpans.ts and 9 more.
 5. **polyglot-mcp** (a command people run). Runs src/index.ts.
 
 ## What happens through CI
 
-1. The workflow runs 18 files in src; it checks src/ in src.
+1. The workflow runs 18 files in src; it builds src/ in src.
 
 ## Who reads the results
 
@@ -38,7 +38,7 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Publish to npm** runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more, checks src/, and publishes to npm.
+**Publish to npm** runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more, builds src/, and publishes to npm.
 
 **@mcptoolshop/polyglot-mcp** (the package people import) loads src/index.ts, src/cache.ts, src/codeSpans.ts and 9 more.
 
@@ -82,9 +82,9 @@ No configuration or documentation part is left to people alone.
 
 ## Where to start
 
-src/index.ts
+.github/workflows/ci.yml → src/index.ts → src/translate.ts → src/languages.ts → src/ollama.ts → src/glossary.ts → src/codeSpans.ts → src/polish.ts
 
-Read those in order to follow one run of polyglot-mcp end to end. This path follows polyglot-mcp (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 

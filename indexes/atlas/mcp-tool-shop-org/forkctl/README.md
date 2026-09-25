@@ -8,15 +8,11 @@ Mapped at 2026-09-25 from commit 72e9d21.
 
 ## What changed since 2026-09-24 (31ad2f4)
 
-- .github/workflows/ is now read by src/lib/rename/identity/simple-text.ts.
-- LICENSE is now also read by src/lib/rename/identity/simple-text.ts.
-- README.md is now also read by src/lib/rename/identity/simple-text.ts.
-- And 2 more new writers and readers of places.
-- No file changed.
+Nothing structural changed since 2026-09-24; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 11 paths; on a push to main touching 11 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 47 more; checks src/.
+1. **CI.** On a pull request touching 11 paths; on a push to main touching 11 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 47 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **@mcptoolshop/forkctl** (the package's entry, not published from here). Loads src/index.ts.
 4. **forkctl** (a command people run). Runs src/cli.ts.
@@ -24,7 +20,7 @@ Mapped at 2026-09-25 from commit 72e9d21.
 
 ## What happens through CI
 
-1. The workflow runs 50 files in tests; it checks src/ in src.
+1. The workflow runs 50 files in tests; it builds src/ in src.
 
 ## Who reads the results
 
@@ -72,15 +68,16 @@ People write .github/, assets/, design/, the repository root and site/; 8 writes
 
 ## Where to start
 
-src/cli.ts
+.github/workflows/ci.yml → src/cli.ts → src/dispatch.ts → src/lib/github.ts → src/lib/state.ts → src/lib/operations.ts → src/tools/registry.ts → src/tools/types.ts
 
-Read those in order to follow one run of forkctl end to end. This path follows forkctl (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 import site could not be resolved.
+- 1 import could not be resolved: `src/lib/rename/symbols.ts` imports a path built at run time.
 - 8 writes and 8 reads use paths built at run time and are not named here.
 - 26 writes and 22 reads go to a path their caller passes, not to this repository.
+- 14 reads go to the directory the command is run in (.env.example, .github/, LICENSE and 4 more places), not to this repository.
 - 3 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

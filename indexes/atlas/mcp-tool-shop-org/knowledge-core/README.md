@@ -68,9 +68,9 @@ People write .github/, knowledge/, the repository root and site/. Nothing in thi
 
 ## Where to start
 
-src/ingest/ingest.ts
+src/index.ts → src/types.ts
 
-Read those in order to follow one import of @roleos/knowledge-core end to end. This path follows @roleos/knowledge-core (the package's entry, not published from here) from its entry, since CI runs only tests.
+Read those in order to follow one import of @roleos/knowledge-core end to end. This path follows @roleos/knowledge-core (the package's entry, not published from here) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 

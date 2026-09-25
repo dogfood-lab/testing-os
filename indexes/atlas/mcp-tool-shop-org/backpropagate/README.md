@@ -21,10 +21,10 @@ Mapped at 2026-09-25 from commit fd35beb.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push to main touching 8 paths; or by hand. Runs tests/ and verify.sh; checks backpropagate/.
+1. **CI.** On a pull request to main; on a push to main touching 8 paths; or by hand. Runs tests/ and verify.sh; checks backpropagate/.
 2. **Publish.** When a release is published; when the workflow Release completes; or by hand. Runs backpropagate/cli.py; checks LICENSE, README.md, backpropagate/ and 1 more.
 3. **Nightly Train Smoke.** On a schedule (`0 4 * * 1`), Monday at 04:00 UTC; or by hand. Runs scripts/nightly_train_smoke.py.
-4. **Doc Drift Check.** On a pull request; on a push to main touching 7 paths; or by hand. Runs scripts/check_doc_drift.py.
+4. **Doc Drift Check.** On a pull request to main; on a push to main touching 7 paths; or by hand. Runs scripts/check_doc_drift.py.
 5. **Pages deploy.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 6. **Post-Publish Smoke.** When the workflow Publish completes; or by hand. Runs backpropagate/cli.py.
 7. **Mutation testing (mutmut).** By hand. Runs no file this map can see.
@@ -104,17 +104,17 @@ People write .claude/, .github/, assets/, docs/, examples/ and site/; 13 writes 
 
 ## Where to start
 
-backpropagate/cli.py
+backpropagate/cli.py → backpropagate/logging_config.py
 
-Read those in order to follow one run of backprop end to end. This path follows backprop (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one run of backprop end to end. This path follows backprop (a command people run) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 
 - 40 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.
-- 6 import sites could not be resolved.
+- 6 imports could not be resolved: `backpropagate/rxconfig.py` imports `ui_app.auth`, which is no module on its import path and no declared dependency; `backpropagate/trainer.py` imports a path built at run time; `tests/test_fp8_smoke.py` imports a path built at run time; and 3 more.
 - 13 writes and 33 reads use paths built at run time and are not named here.
 - 2 writes and 7 reads go to a path their caller passes, not to this repository.
-- 1 write goes to the home directory (AppData/ and Library/) or a path its caller passes, not to this repository.
+- 1 write goes to the home directory (AppData/, Library/ and backpropagate/) or a path its caller passes, not to this repository.
 - 1 read goes to the directory the command is run in, not to this repository.
 - 1 read goes to the home directory (.cache/), not to this repository.
 - There is a compose.yaml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.

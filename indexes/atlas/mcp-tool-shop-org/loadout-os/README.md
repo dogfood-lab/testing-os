@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 61d98b6.
 
 ## What this is
 
-9 parts, mostly TypeScript (84 files) and JavaScript (7). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os (packages/cli) to npm. People run ai-loadout, claude-memories, claude-rules and loadout-os.
+9 parts, mostly Markdown (236 files); code in TypeScript (84) and JavaScript (7). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os to npm. People run ai-loadout, claude-memories, claude-rules and loadout-os.
 
 ## What changed since 2026-09-23 (741a092)
 
@@ -21,8 +21,8 @@ Mapped at 2026-09-25 from commit 61d98b6.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts, packages/cli/src/tests/doctor.test.ts and 31 more; checks packages/cli/src/, packages/kernel/src/, packages/memories/src/ and 17 more. On a push to main, it also runs site/astro.config.mjs and site/src/.
-2. **Release.** When a tag matching `v*` is pushed. Runs packages/cli/esbuild.config.mjs, packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts and 32 more; checks packages/cli/src/, packages/kernel/src/, packages/memories/src/ and 17 more.
+1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts, packages/cli/src/tests/doctor.test.ts and 31 more; builds packages/cli/src/, packages/kernel/src/, packages/memories/src/ and 17 more. On a push to main, it also runs site/astro.config.mjs and site/src/.
+2. **Release.** When a tag matching `v*` is pushed. Runs packages/cli/esbuild.config.mjs, packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts and 32 more; builds packages/cli/src/, packages/kernel/src/, packages/memories/src/ and 17 more.
 3. **claude-memories** (a command people run). Runs packages/memories/src/cli.ts.
 4. **claude-rules** (a command people run). Runs packages/rules/src/cli.ts.
 5. **ai-loadout** (a command people run). Runs packages/kernel/src/cli.ts.
@@ -30,7 +30,7 @@ Mapped at 2026-09-25 from commit 61d98b6.
 
 ## What happens through CI
 
-1. The workflow runs 9 files in cli, packages/kernel/src/tests/ in kernel, packages/memories/src/tests/ in memories, and packages/rules/src/tests/ in rules; it checks packages/cli/src/ in cli, packages/kernel/src/ in kernel, packages/memories/src/ in memories and packages/rules/src/ in rules.
+1. The workflow runs 9 files in cli, packages/kernel/src/tests/ in kernel, packages/memories/src/tests/ in memories, and packages/rules/src/tests/ in rules; it builds packages/cli/src/ in cli, packages/kernel/src/ in kernel, packages/memories/src/ in memories and packages/rules/src/ in rules.
 2. On a push to main, it also runs site/astro.config.mjs and site/src/.
 3. It deploys the site on a push to main.
 
@@ -40,7 +40,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs packages/cli/esbuild.config.mjs, packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts and 32 more, checks packages/cli/src/, packages/kernel/src/, packages/memories/src/ and 17 more, publishes @mcptoolshop/loadout-os (packages/cli) to npm, and creates a GitHub release.
+**Release** runs packages/cli/esbuild.config.mjs, packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts and 32 more, builds packages/cli/src/, packages/kernel/src/, packages/memories/src/ and 17 more, publishes @mcptoolshop/loadout-os to npm, and creates a GitHub release.
 
 **claude-memories** (a command people run) runs packages/memories/src/cli.ts and reaches kernel.
 
@@ -94,9 +94,9 @@ People write .claude/, .github/, packages/kernel/, packages/memories/, packages/
 
 ## Where to start
 
-packages/memories/src/cli.ts
+.github/workflows/ci.yml → packages/kernel/src/index.ts → packages/kernel/src/types.ts
 
-Read those in order to follow one run of claude-memories end to end. This path follows claude-memories (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 

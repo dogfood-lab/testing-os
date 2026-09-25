@@ -65,9 +65,36 @@
             "lib/args.js",
             "lib/errors.js",
             "lib/log.js",
+            "scripts/canon-bind.js",
+            "scripts/card.js",
+            "scripts/compare.js",
+            "scripts/critique-show.js",
             "scripts/critique.js",
+            "scripts/curate.js",
+            "scripts/eligibility.js",
+            "scripts/eval-pack.js",
+            "scripts/eval-run.js",
+            "scripts/export.js",
+            "scripts/generate-controlnet.js",
+            "scripts/generate-identity.js",
+            "scripts/generate-ipadapter.js",
+            "scripts/generate.js",
+            "scripts/implementation-pack.js",
+            "scripts/ingest.js",
+            "scripts/init.js",
+            "scripts/measure.js",
+            "scripts/migrate-records.js",
+            "scripts/painterly-test.js",
+            "scripts/painterly.js",
             "scripts/refine.js",
-            "scripts/select.js"
+            "scripts/reingest.js",
+            "scripts/select.js",
+            "scripts/sheet.js",
+            "scripts/snapshot.js",
+            "scripts/split.js",
+            "scripts/training-manifest.js",
+            "scripts/training-package.js",
+            "scripts/training-profile.js"
           ],
           "path": "bin/sdlab.js",
           "sequences": [
@@ -91,6 +118,7 @@
                   "branch": "command === head",
                   "line": 605,
                   "name": "findClosest",
+                  "over": "namespaces",
                   "target": {
                     "file": "lib/args.js"
                   }
@@ -99,6 +127,7 @@
                   "branch": "command === head",
                   "line": 609,
                   "name": "inputError",
+                  "over": "namespaces",
                   "target": {
                     "file": "lib/errors.js"
                   }
@@ -367,7 +396,14 @@
       "role": "code",
       "testedBy": 9,
       "testedThroughSpawn": true,
-      "unresolvedSites": 3
+      "unresolvedNamed": [
+        {
+          "path": "bin/sdlab.js",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
+      "unresolvedSites": 1
     },
     {
       "dynamicReads": 0,
@@ -414,6 +450,13 @@
             "buildPackage"
           ],
           "hash": "f8dd4e50107278a6725179c632f81366ebbca81ff21d7039ec4d390e96a22b22",
+          "importOrder": [
+            "lib/captions.js",
+            "lib/rows.js",
+            "lib/errors.js",
+            "lib/export.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/captions.js",
             "lib/errors.js",
@@ -428,6 +471,17 @@
             "executeRun"
           ],
           "hash": "c5941f8a07a80371e084b87884a0ae8ad2894da33430c05c9d8b0b082feda267",
+          "importOrder": [
+            "lib/comfyui.js",
+            "lib/adapters/comfyui-workflows.js",
+            "lib/runtime-runs.js",
+            "lib/config.js",
+            "lib/comfyui-output.js",
+            "lib/run-manifest.js",
+            "lib/snapshot.js",
+            "lib/log.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/adapters/comfyui-workflows.js",
             "lib/comfyui-output.js",
@@ -459,6 +513,11 @@
             "buildPackage"
           ],
           "hash": "22f1d456e189d281db2720a877a0e6ebe0992217d771dcef674305c5a2e448b6",
+          "importOrder": [
+            "lib/rows.js",
+            "lib/export.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/export.js",
             "lib/log.js",
@@ -471,6 +530,11 @@
             "buildPackage"
           ],
           "hash": "88c542f651dad8c70d9dae0bb1123e2813835997f36419ae90ad858e394b3d8b",
+          "importOrder": [
+            "lib/rows.js",
+            "lib/export.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/export.js",
             "lib/log.js",
@@ -503,6 +567,7 @@
                   "branch": "aliasIndex[def.alias]",
                   "line": 40,
                   "name": "inputError",
+                  "over": "Object.entries(flagDefs)",
                   "target": {
                     "file": "lib/errors.js"
                   }
@@ -644,6 +709,13 @@
             "ingestAssetSource"
           ],
           "hash": "cb5d986d31979e297949f6314109fa2beffbed5ff73b9427893c7a54f39466ae",
+          "importOrder": [
+            "lib/records.js",
+            "lib/errors.js",
+            "lib/png-meta.js",
+            "lib/asset-masks.js",
+            "lib/asset-source.js"
+          ],
           "importsFiles": [
             "lib/asset-masks.js",
             "lib/asset-source.js",
@@ -677,6 +749,13 @@
             "validateManifestShape"
           ],
           "hash": "836a04cdbee7f77ecb07f363d00f91e8f4085dd654d5ae059df46c06586b0a81",
+          "importOrder": [
+            "lib/errors.js",
+            "lib/export.js",
+            "lib/png-meta.js",
+            "lib/npy-meta.js",
+            "lib/asset-masks.js"
+          ],
           "importsFiles": [
             "lib/asset-masks.js",
             "lib/errors.js",
@@ -692,6 +771,12 @@
             "compileBatch"
           ],
           "hash": "481066aaac7251dd17ffd0ede80939b7519d12f8878e93abdb7ca3c90f9eafca",
+          "importOrder": [
+            "lib/brief-compiler.js",
+            "lib/batch-modes.js",
+            "lib/workflow-profiles.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/batch-modes.js",
             "lib/brief-compiler.js",
@@ -708,6 +793,10 @@
             "validateBatchMode"
           ],
           "hash": "1d0af0f2892422036e1c3c81e3bc84bc72542e3afecb26ef8e56f93e055f91e7",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/errors.js",
             "lib/paths.js"
@@ -727,6 +816,13 @@
             "saveBatchManifest"
           ],
           "hash": "ef6af3ea058bdb6814cc28a3e04b7af7f6edaf74b2950bdc860a32fb3e5eec0d",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/adapters/comfyui-runner.js",
+            "lib/run-summary.js",
+            "lib/log.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/adapters/comfyui-runner.js",
             "lib/errors.js",
@@ -760,6 +856,13 @@
             "saveCompiledBrief"
           ],
           "hash": "0b24b805111320be69b7482c05ad709d855dc9483dab98c3bb40f2072dc86ea1",
+          "importOrder": [
+            "lib/config.js",
+            "lib/workflow-profiles.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/brief-render.js"
+          ],
           "importsFiles": [
             "lib/brief-render.js",
             "lib/config.js",
@@ -798,6 +901,20 @@
             "runBuild"
           ],
           "hash": "a28a713572fb5f97a44989c2690e56d871367da56cacebafbf2bf1d1b07eea21",
+          "importOrder": [
+            "lib/canon-build/load-config.js",
+            "lib/canon-build/load-schema.js",
+            "lib/canon-build/load-entry.js",
+            "lib/canon-build/lane-resolve.js",
+            "lib/canon-build/emitters/index.js",
+            "lib/canon-build/emitters/base.js",
+            "lib/rows.js",
+            "lib/snapshot.js",
+            "lib/training-profiles.js",
+            "lib/captions.js",
+            "lib/errors.js",
+            "lib/freeze-stamp.js"
+          ],
           "importsFiles": [
             "lib/canon-build/emitters/base.js",
             "lib/canon-build/emitters/index.js",
@@ -870,6 +987,16 @@
             "getEmitter"
           ],
           "hash": "caeb25c8e40b07827206af158c774524d939fac85d3ff2d870ec2853666ce1f7",
+          "importOrder": [
+            "lib/canon-build/emitters/monster.js",
+            "lib/canon-build/emitters/character.js",
+            "lib/canon-build/emitters/deity.js",
+            "lib/canon-build/emitters/location.js",
+            "lib/canon-build/emitters/relic.js",
+            "lib/canon-build/emitters/faction.js",
+            "lib/canon-build/emitters/ship.js",
+            "lib/canon-build/emitters/species.js"
+          ],
           "importsFiles": [
             "lib/canon-build/emitters/character.js",
             "lib/canon-build/emitters/deity.js",
@@ -959,6 +1086,10 @@
             "resolveLane"
           ],
           "hash": "462c18a8f3bdc4b81c234ebec3eef40446a1ef4dad7044feae7694322c6d6ba3",
+          "importOrder": [
+            "lib/errors.js",
+            "lib/canon-build/load-config.js"
+          ],
           "importsFiles": [
             "lib/canon-build/load-config.js",
             "lib/errors.js"
@@ -1014,6 +1145,11 @@
             "generateCard"
           ],
           "hash": "2b59bcc9b60ac3553ab73be8f8757f6f61111440eac319a761462cb94e1c6f57",
+          "importOrder": [
+            "lib/snapshot.js",
+            "lib/split.js",
+            "lib/config.js"
+          ],
           "importsFiles": [
             "lib/config.js",
             "lib/snapshot.js",
@@ -1076,6 +1212,14 @@
             "triageCandidates"
           ],
           "hash": "70f6fb09aa76edd7c6ea50d16bf645d5db2c75f451f9d221a068a1de15b3a1f4",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/runtime-runs.js",
+            "lib/workflow-profiles.js",
+            "lib/config.js",
+            "lib/errors.js",
+            "lib/verifier.js"
+          ],
           "importsFiles": [
             "lib/config.js",
             "lib/errors.js",
@@ -1147,6 +1291,13 @@
             "scoreEvalRun"
           ],
           "hash": "29bed1c73b090a964a0e124a1cb47d090fae2c230aa20a0ca5985dd650b28436",
+          "importOrder": [
+            "lib/training-manifests.js",
+            "lib/eval-pack.js",
+            "lib/config.js",
+            "lib/snapshot.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/config.js",
             "lib/errors.js",
@@ -1165,6 +1316,15 @@
             "loadExport"
           ],
           "hash": "84d9ba3b0ea7ec7742680817fa2e3892f3dce182d8629c0b663885ac716d4b59",
+          "importOrder": [
+            "lib/config.js",
+            "lib/snapshot.js",
+            "lib/split.js",
+            "lib/records.js",
+            "lib/card.js",
+            "lib/errors.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/card.js",
             "lib/config.js",
@@ -1197,6 +1357,14 @@
             "resolveEntryBySubject"
           ],
           "hash": "97384b7683e771fad2c04f81902895661eb694da7c69e40b90b89da6fcdf277a",
+          "importOrder": [
+            "lib/canon-build/load-config.js",
+            "lib/canon-build/load-entry.js",
+            "lib/freeze-stamp.js",
+            "lib/freeze-events.js",
+            "lib/errors.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/canon-build/load-config.js",
             "lib/canon-build/load-entry.js",
@@ -1242,6 +1410,15 @@
             "loadImplementationPack"
           ],
           "hash": "1bb1c52c5924f121d7d99e336094d06ed50e7afa8717ee245a6207d2584118dd",
+          "importOrder": [
+            "lib/training-manifests.js",
+            "lib/training-profiles.js",
+            "lib/config.js",
+            "lib/split.js",
+            "lib/records.js",
+            "lib/snapshot.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/config.js",
             "lib/log.js",
@@ -1260,6 +1437,12 @@
             "loadWaveIndex"
           ],
           "hash": "e3d327ae8c98aa94ba2c01264a7d4df9a64427964fdd4f3bcbbe14f40fdb9bb0",
+          "importOrder": [
+            "lib/records.js",
+            "lib/export.js",
+            "lib/errors.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/errors.js",
             "lib/export.js",
@@ -1306,6 +1489,10 @@
             "runPythonMeasurement"
           ],
           "hash": "163989f94fcdfdebcf9b335740d5606a2df4a72d755327d0c7b237a4ea320714",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/errors.js",
             "lib/paths.js"
@@ -1374,6 +1561,10 @@
             "saveRefinedBrief"
           ],
           "hash": "f39da3bc7a18859a176536168157c737586b369658509ab6588c921d3320f4fd",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/errors.js",
             "lib/paths.js"
@@ -1385,6 +1576,14 @@
             "reingestSelection"
           ],
           "hash": "99d4f64575c56acf4a26a88d2e0c866ddcfdcb65f1a25c432b2d1b1e588a9781",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/batch-runs.js",
+            "lib/selections.js",
+            "lib/generated-provenance.js",
+            "lib/records.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/batch-runs.js",
             "lib/errors.js",
@@ -1401,6 +1600,10 @@
             "reingestGenerated"
           ],
           "hash": "7fd953a23600850efd5163a86d8f210eeb02881e6b5cf586b8d5a89b2db0426d",
+          "importOrder": [
+            "lib/training-manifests.js",
+            "lib/records.js"
+          ],
           "importsFiles": [
             "lib/records.js",
             "lib/training-manifests.js"
@@ -1465,6 +1668,11 @@
             "saveRunManifest"
           ],
           "hash": "b9779e476a9509d4b9fa797e3b8de7e9c65d0f4d40176d3924e3495fbfa89667",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/errors.js",
             "lib/log.js",
@@ -1484,6 +1692,11 @@
             "saveSelection"
           ],
           "hash": "ef41d8ca65c65fbc5f0cfd729bd739236c49d3bc5af81b215650e25fb07fb4eb",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/batch-runs.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/batch-runs.js",
             "lib/errors.js",
@@ -1523,6 +1736,12 @@
             "normalizeIdStem"
           ],
           "hash": "a9c2e0858276933fa51d90f4e32234d4f6250fabdca75bf334ecd93056b77802",
+          "importOrder": [
+            "lib/config.js",
+            "lib/snapshot.js",
+            "lib/records.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/config.js",
             "lib/log.js",
@@ -1551,6 +1770,12 @@
             "validateTrainingManifest"
           ],
           "hash": "96e05cb34c5812fa5349c6b5bbbe6bcc50891fdbbd7bb01511c161125ba35e69",
+          "importOrder": [
+            "lib/export.js",
+            "lib/training-profiles.js",
+            "lib/snapshot.js",
+            "lib/eval-pack.js"
+          ],
           "importsFiles": [
             "lib/eval-pack.js",
             "lib/export.js",
@@ -1566,6 +1791,18 @@
             "loadTrainingPackage"
           ],
           "hash": "a9aa1576113cb08e557a5bb2708e7fa582242f6010759580b2bdc7116eb3dc34",
+          "importOrder": [
+            "lib/training-manifests.js",
+            "lib/training-profiles.js",
+            "lib/split.js",
+            "lib/records.js",
+            "lib/config.js",
+            "lib/errors.js",
+            "lib/snapshot.js",
+            "lib/training-adapters.js",
+            "lib/rows.js",
+            "lib/export.js"
+          ],
           "importsFiles": [
             "lib/config.js",
             "lib/errors.js",
@@ -1613,6 +1850,10 @@
             "validateWorkflowProfile"
           ],
           "hash": "42ebc9f79aebf530bf79404f3082307fa48b249c147974c27610595cb0fd229e",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/errors.js",
             "lib/paths.js"
@@ -1668,6 +1909,13 @@
       "outsideWrites": 96,
       "role": "code",
       "testedBy": 93,
+      "unresolvedNamed": [
+        {
+          "path": "lib/training-adapters.js",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 1
     },
     {
@@ -1717,6 +1965,9 @@
             "main"
           ],
           "hash": "ac7a7ca3a3bde14cd4d7187098a67f890e8d644e276a56f6f12dcbc86cb49632",
+          "importsFiles": [
+            "projects/ai-eye-test/compositor/compositor.py"
+          ],
           "path": "projects/ai-eye-test/compositor/phase1_smoke.py"
         },
         {
@@ -1728,6 +1979,9 @@
             "seamless_paste"
           ],
           "hash": "0d80c4e80cb63d482fca99782793b3c6a68dff10b193c2aa347d087546cb772c",
+          "importsFiles": [
+            "projects/ai-eye-test/compositor/compositor.py"
+          ],
           "path": "projects/ai-eye-test/compositor/phase2.py"
         },
         {
@@ -1736,6 +1990,10 @@
             "main"
           ],
           "hash": "ad1ee2747ac19f05e8ef6ea0f55d805851dbfec554addf2e8bfa9f29e910120b",
+          "importsFiles": [
+            "projects/ai-eye-test/compositor/compositor.py",
+            "projects/ai-eye-test/compositor/phase2.py"
+          ],
           "path": "projects/ai-eye-test/compositor/phase2_build.py"
         },
         {
@@ -1744,6 +2002,10 @@
             "main"
           ],
           "hash": "dd101f18f7b047cf3e44edfe814074c4b31990148ae0f2dd00ca765f6e683191",
+          "importsFiles": [
+            "projects/ai-eye-test/compositor/compositor.py",
+            "projects/ai-eye-test/compositor/phase2.py"
+          ],
           "path": "projects/ai-eye-test/compositor/phase2_noshadow_build.py"
         },
         {
@@ -1752,6 +2014,10 @@
             "main"
           ],
           "hash": "d75be95f57a2587c24c4e179aba8f0a989f3800f8e4392b10d0cc85ad619ec66",
+          "importsFiles": [
+            "projects/ai-eye-test/compositor/compositor.py",
+            "projects/ai-eye-test/compositor/phase2.py"
+          ],
           "path": "projects/ai-eye-test/compositor/phase2b_build.py"
         },
         {
@@ -1772,6 +2038,9 @@
             "tiny_cutout"
           ],
           "hash": "5e04612ef9fc1851a6b48f30b98b4a96d7ac81bb0b9f6ceb30312f6dd0572040",
+          "importsFiles": [
+            "projects/ai-eye-test/compositor/compositor.py"
+          ],
           "path": "projects/ai-eye-test/compositor/test_compositor.py"
         },
         {
@@ -1792,6 +2061,9 @@
             "test_seamless_paste_falls_back_at_edge"
           ],
           "hash": "701af440c12c4bba528fc8a2d90b303e6100c2f939fe1ad6231e4bc05119872e",
+          "importsFiles": [
+            "projects/ai-eye-test/compositor/phase2.py"
+          ],
           "path": "projects/ai-eye-test/compositor/test_phase2.py"
         },
         {
@@ -13406,7 +13678,19 @@
       "outsideWrites": 7,
       "role": "config",
       "testedBy": 2,
-      "unresolvedSites": 12
+      "unresolvedNamed": [
+        {
+          "path": "projects/salt-road/inputs/prompts/build-training-package.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "projects/salt-road/inputs/prompts/wave-runner.py",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
+      "unresolvedSites": 2
     },
     {
       "dynamicReads": 0,
@@ -13614,6 +13898,10 @@
             "assertKnownOptions"
           ],
           "hash": "9f1ac88aad3e67d304c378e7eb8916a0b8d4faae00aa9f95ead653595573e6df",
+          "importOrder": [
+            "lib/errors.js",
+            "lib/args.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js"
@@ -13625,6 +13913,13 @@
             "run"
           ],
           "hash": "cb619e1db706ef514b3bbf0808a27b70425d8cee292236dc65ceef128ca48611",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/asset-ingest.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/asset-ingest.js",
@@ -13639,6 +13934,15 @@
             "run"
           ],
           "hash": "7d987690e414c81b3cd73ce3eb27236d952b5aeb945e725a686b9cfb6cd35721",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/batch-compiler.js",
+            "lib/batch-modes.js",
+            "lib/batch-runs.js",
+            "lib/batch-sheet-render.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/batch-compiler.js",
@@ -13655,6 +13959,15 @@
             "run"
           ],
           "hash": "e9cd80a476c929f21e023f3a11b14070f8df953b165092024ebaed53ad90ab8d",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/batch-runs.js",
+            "lib/batch-modes.js",
+            "lib/batch-sheet-render.js",
+            "lib/errors.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/batch-modes.js",
@@ -13671,6 +13984,11 @@
             "run"
           ],
           "hash": "1b5c8f77005329ff9b5de87644929abc3cb700ee5f4d2bc226afd73eb7645cb8",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/batch-runs.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/batch-runs.js",
@@ -13683,6 +14001,13 @@
             "run"
           ],
           "hash": "3742505040b71d2f9ffbdc127202ceb2a51ad56bb84347c83a7a583b224d6b8c",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/brief-compiler.js",
+            "lib/log.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/brief-compiler.js",
@@ -13697,6 +14022,13 @@
             "run"
           ],
           "hash": "711af3bee8200a9103c3ffb37450d2b4b6166884fb2b4a663c7b0143aeaaecb2",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/brief-compiler.js",
+            "lib/brief-render.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/brief-compiler.js",
@@ -13711,6 +14043,12 @@
             "run"
           ],
           "hash": "2cba0ee3ca906350a347b9c846e9cac29add74e0e031cec97275da7d9d29e511",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/config.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/config.js",
@@ -13724,6 +14062,12 @@
             "run"
           ],
           "hash": "302d4b88498924bfbfb592e991644c8b07cd57e70babf6c4491ee9a855238089",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/canon-build/build.js",
+            "lib/errors.js",
+            "scripts/_shared-args.js"
+          ],
           "importsFiles": [
             "lib/canon-build/build.js",
             "lib/errors.js",
@@ -13737,6 +14081,16 @@
             "run"
           ],
           "hash": "70f5c9cd05e5247e7901b9147f73819cc5b5b893628eae57512bba3335ee8ad0",
+          "importOrder": [
+            "lib/canon-build/load-config.js",
+            "lib/canon-build/load-entry.js",
+            "lib/canon-build/load-schema.js",
+            "lib/freeze-stamp.js",
+            "lib/freeze-events.js",
+            "lib/errors.js",
+            "lib/paths.js",
+            "scripts/_shared-args.js"
+          ],
           "importsFiles": [
             "lib/canon-build/load-config.js",
             "lib/canon-build/load-entry.js",
@@ -13754,6 +14108,15 @@
             "run"
           ],
           "hash": "e74379d83a40f84d281add3ef668f40b042ed3ddc0bea05413e7317aa2419014",
+          "importOrder": [
+            "lib/canon-build/load-config.js",
+            "lib/canon-build/load-entry.js",
+            "lib/freeze-stamp.js",
+            "lib/freeze-events.js",
+            "lib/errors.js",
+            "lib/paths.js",
+            "scripts/_shared-args.js"
+          ],
           "importsFiles": [
             "lib/canon-build/load-config.js",
             "lib/canon-build/load-entry.js",
@@ -13770,6 +14133,15 @@
             "run"
           ],
           "hash": "cd9554a5c516f8dd5afd9dc1fdde0808e991ad91b0dc1a3796fd12b1699cf082",
+          "importOrder": [
+            "lib/canon-build/load-config.js",
+            "lib/canon-build/load-entry.js",
+            "lib/freeze-stamp.js",
+            "lib/freeze-events.js",
+            "lib/errors.js",
+            "lib/paths.js",
+            "scripts/_shared-args.js"
+          ],
           "importsFiles": [
             "lib/canon-build/load-config.js",
             "lib/canon-build/load-entry.js",
@@ -13786,6 +14158,15 @@
             "run"
           ],
           "hash": "304b62093a9036d7051c59483113d3813019d1182eb46006fb253791f2d3d6ce",
+          "importOrder": [
+            "lib/canon-build/load-config.js",
+            "lib/canon-build/load-entry.js",
+            "lib/freeze-stamp.js",
+            "lib/freeze-events.js",
+            "lib/errors.js",
+            "lib/paths.js",
+            "scripts/_shared-args.js"
+          ],
           "importsFiles": [
             "lib/canon-build/load-config.js",
             "lib/canon-build/load-entry.js",
@@ -13802,6 +14183,14 @@
             "run"
           ],
           "hash": "04c12d7ad9f7d31e20dcfa5a61f6fb643e71678c59bc95d6f44e0e87dac3f1b1",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/snapshot.js",
+            "lib/split.js",
+            "lib/card.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/card.js",
@@ -13817,6 +14206,12 @@
             "run"
           ],
           "hash": "89e30e50074de8c8ac837d100db524c1289e219c85fca4d92c80af14ce6b6973",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/config.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/config.js",
@@ -13830,6 +14225,12 @@
             "run"
           ],
           "hash": "443abdd6d065e95633b8cc12f7730dc6b4b104ea1188f6b2da8f9b7343b92a41",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/critique-engine.js",
+            "lib/critique-render.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/critique-engine.js",
@@ -13949,6 +14350,15 @@
             "run"
           ],
           "hash": "2855592b729a3ed0e1aea8b9ac6d46474a2e3702aec7c26d57b3fd81d8b2bfe5",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/config.js",
+            "lib/errors.js",
+            "lib/log.js",
+            "lib/freeze-gate.js",
+            "lib/verifier.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/config.js",
@@ -13965,6 +14375,11 @@
             "run"
           ],
           "hash": "27ba0ec6980c6adfa9f34b0b6a6cf7449c5b1c38bfec153af76374602cde3a54",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -13977,6 +14392,14 @@
             "run"
           ],
           "hash": "e41a5d7d91b06279fa74112fb979ae5a6d19a5ffc7aed534f494bfc0c5df775a",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/config.js",
+            "lib/errors.js",
+            "lib/eligibility.js",
+            "lib/judgment-provenance.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/config.js",
@@ -13992,6 +14415,12 @@
             "run"
           ],
           "hash": "5f851b02c2921e53dd74c32cea4f8bab63dd60ad82bb3152c035eee2baaadb83",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/eval-pack.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14005,6 +14434,14 @@
             "run"
           ],
           "hash": "2e69022d0ffb9f31e3095f668770041c6acda83a8023a4be5ffd88bc00e00180",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/training-manifests.js",
+            "lib/eval-pack.js",
+            "lib/eval-runs.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14020,6 +14457,14 @@
             "run"
           ],
           "hash": "a8c36ffe07870070837e1099ee60c19bb3860d87d7de8f804cab27d5b011f647",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/snapshot.js",
+            "lib/split.js",
+            "lib/export.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14035,6 +14480,15 @@
             "run"
           ],
           "hash": "0f9f76e6cb7ff30648278edb6b0127a224df8b537015fa3ff160094a9cd57afc",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/config.js",
+            "lib/errors.js",
+            "lib/comfyui.js",
+            "lib/freeze-gate.js",
+            "scripts/_resume.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/comfyui.js",
@@ -14051,6 +14505,15 @@
             "run"
           ],
           "hash": "9354beeee2ec3378fc9eb0bb1002b67d3f4030e6dd36ae11f11bd0fc7b8eeeb9",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/config.js",
+            "lib/errors.js",
+            "lib/comfyui.js",
+            "lib/freeze-gate.js",
+            "scripts/_resume.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/comfyui.js",
@@ -14067,6 +14530,14 @@
             "run"
           ],
           "hash": "70a440fcfae33e69472d88b32716b99fccb311abc710f63c93ac039c3142b394",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/comfyui.js",
+            "lib/freeze-gate.js",
+            "scripts/_resume.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/comfyui.js",
@@ -14082,6 +14553,17 @@
             "run"
           ],
           "hash": "622d98b512b8f6d82f7892fa832a5f0b916a3fb0c51ddb5559868bf637aec76a",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/config.js",
+            "lib/errors.js",
+            "lib/comfyui.js",
+            "lib/comfyui-output.js",
+            "lib/adapters/comfyui-workflows.js",
+            "lib/run-manifest.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/adapters/comfyui-workflows.js",
             "lib/args.js",
@@ -14100,6 +14582,13 @@
             "run"
           ],
           "hash": "9506afa14430cf20b06c4efb63c4895acb3682e513ae00c6858867ce59c6a45d",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/training-manifests.js",
+            "lib/implementation-packs.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14114,6 +14603,13 @@
             "run"
           ],
           "hash": "d7a5b04e902ee02039daabdd3856f60037dd9bee8b30687b54a3029c06adc518",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/ingest.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14128,6 +14624,11 @@
             "run"
           ],
           "hash": "aee7b3c866c9c667f86b1774fe16627fd24853eeb0fd69935215e217fa607c36",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/args.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14140,6 +14641,13 @@
             "run"
           ],
           "hash": "ab5e3b2ce934ea53cd00a958356bb25c62f8ae2a06ae8cc80637341f87da9453",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/log.js",
+            "lib/measure.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14164,6 +14672,11 @@
             "run"
           ],
           "hash": "e2213d81b1578656bd76c6d1221a8871fcb43c476af91947cc83f19dc8801947",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14176,6 +14689,12 @@
             "run"
           ],
           "hash": "cb2b58adb51d017147388ed03dc8b084f57f98b71a634bdfe1f5ffb045cf584c",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/comfyui.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/comfyui.js",
@@ -14189,6 +14708,12 @@
             "run"
           ],
           "hash": "fea63fc282456feba4038e41ca040a842bb818db9eee96c036a052a905ac238a",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/comfyui.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/comfyui.js",
@@ -14300,6 +14825,12 @@
             "run"
           ],
           "hash": "d18f4d33cf5268a6389b446fb13872dbe70896434485abde7bed8760e4f18c5a",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/reingest-selected.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/log.js",
@@ -14313,6 +14844,13 @@
             "run"
           ],
           "hash": "fe2deb8cfb8bf576bf4d8dd9e036528d97e90a6b1f5b3689d3567ae420eea617",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/reingest.js",
+            "scripts/reingest-selected.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14327,6 +14865,14 @@
             "run"
           ],
           "hash": "8232d6015943f7e2c641c728a978ce755d6485e0773ba0493f0cf1b3b3b790fd",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/brief-compiler.js",
+            "lib/adapters/comfyui-runner.js",
+            "lib/run-summary.js",
+            "lib/log.js"
+          ],
           "importsFiles": [
             "lib/adapters/comfyui-runner.js",
             "lib/args.js",
@@ -14354,6 +14900,12 @@
             "run"
           ],
           "hash": "63006a3bf8219bb6f9c4a9f257f23c11ad26716ebada08b49d67df5cd78284dc",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/runtime-runs.js",
+            "lib/run-summary.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/paths.js",
@@ -14462,6 +15014,13 @@
             "run"
           ],
           "hash": "081628e48f2fc22c5c76957ed1aa20be8fbc103f1afe53f24e3b436fc280b75f",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/log.js",
+            "lib/candidate-sheet.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/candidate-sheet.js",
@@ -14476,6 +15035,14 @@
             "run"
           ],
           "hash": "d6a62583dda9c108cc73bf016dea8295bc7a6d785ca4a5c66a886821d8f1ad22",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/config.js",
+            "lib/errors.js",
+            "lib/snapshot.js",
+            "lib/eligibility.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/config.js",
@@ -14491,6 +15058,14 @@
             "run"
           ],
           "hash": "55df20987b579f015e2e7b9a2a86d893348a093268d12fdd1a272800adaba5e7",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/config.js",
+            "lib/errors.js",
+            "lib/snapshot.js",
+            "lib/split.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/config.js",
@@ -14506,6 +15081,13 @@
             "run"
           ],
           "hash": "d53ac49ff939551ddaa43fd4991eba998b03b6860cfcc4e8066d4c9614311fa6",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/export.js",
+            "lib/training-manifests.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14520,6 +15102,13 @@
             "run"
           ],
           "hash": "7704a0ca87cd618098ac2fe6f5b3c130c1d163ef664b2a4a2e3241556123c3a5",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/training-manifests.js",
+            "lib/training-packages.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14534,6 +15123,12 @@
             "run"
           ],
           "hash": "57a6839c013688f1d3a22ac9de8178a626fae782ebe1e5817381a53daccf2c3a",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/errors.js",
+            "lib/training-profiles.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14547,6 +15142,12 @@
             "run"
           ],
           "hash": "245d2214f843abc51fbd90ee4efec05585e3f599cd7856c76af94c06fe8ef567",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/workflow-profiles.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14560,6 +15161,12 @@
             "run"
           ],
           "hash": "be219a68582485386ed9831ff0c67310d3b8b1e8d72c8fba6643da8523384a75",
+          "importOrder": [
+            "lib/args.js",
+            "lib/paths.js",
+            "lib/workflow-profiles.js",
+            "lib/errors.js"
+          ],
           "importsFiles": [
             "lib/args.js",
             "lib/errors.js",
@@ -14582,9 +15189,16 @@
             "caller"
           ],
           "writes": 6
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:README.md"
+          ],
+          "writes": 0
         }
       ],
-      "outsideReads": 19,
+      "outsideReads": 20,
       "outsideWrites": 6,
       "role": "code",
       "testedBy": 19,
@@ -14615,6 +15229,7 @@
           "path": "site/public/robots.txt"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -14687,6 +15302,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "ad0964566b6457cc47ac4ac9af0774218a00ac8fdc1d978654f0e9e2e0a787b3",
           "path": "site/src/site-config.ts"
         },
@@ -14925,6 +15541,10 @@
         },
         {
           "hash": "d8867f0f76f17291a568a8953a2ff133b62c97a496c6ef71ad64a7cca776aa3f",
+          "importOrder": [
+            "lib/canon-build/load-schema.js",
+            "lib/canon-build/load-entry.js"
+          ],
           "importsFiles": [
             "lib/canon-build/load-entry.js",
             "lib/canon-build/load-schema.js"
@@ -14972,6 +15592,10 @@
         },
         {
           "hash": "f35ad23d511dcb8f0fe28c05353c7d735389322df5799321a2053bed660318ca",
+          "importOrder": [
+            "scripts/doctor.js",
+            "lib/paths.js"
+          ],
           "importsFiles": [
             "lib/paths.js",
             "scripts/doctor.js"
@@ -14980,6 +15604,10 @@
         },
         {
           "hash": "937af257f22bcdbd219bff6a4f5a97e92fc3f80f85f94d6308a89f5645bb81a7",
+          "importOrder": [
+            "scripts/doctor.js",
+            "lib/paths.js"
+          ],
           "importsFiles": [
             "lib/paths.js",
             "scripts/doctor.js"
@@ -14988,6 +15616,14 @@
         },
         {
           "hash": "cbe083046aff430ac7d5c05a72efc3dbce2ecbbc7f710fc535fc514385d4410e",
+          "importOrder": [
+            "lib/paths.js",
+            "scripts/generate.js",
+            "scripts/generate-identity.js",
+            "scripts/generate-controlnet.js",
+            "scripts/generate-ipadapter.js",
+            "scripts/painterly.js"
+          ],
           "importsFiles": [
             "lib/paths.js",
             "scripts/generate-controlnet.js",
@@ -15028,6 +15664,10 @@
         },
         {
           "hash": "d6bb4cfc23ffe45b81a325e1a971d5ee6622b032da13b13aa371317c9e505da9",
+          "importOrder": [
+            "scripts/init.js",
+            "lib/paths.js"
+          ],
           "importsFiles": [
             "lib/paths.js",
             "scripts/init.js"
@@ -15065,6 +15705,10 @@
         },
         {
           "hash": "473d65dd487fb311d94aca1508996e966a0be7fd5ecce6b82d379dbef961fd8c",
+          "importOrder": [
+            "scripts/init.js",
+            "scripts/eligibility.js"
+          ],
           "importsFiles": [
             "scripts/eligibility.js",
             "scripts/init.js"
@@ -15110,6 +15754,12 @@
         },
         {
           "hash": "28195b25e8b9e4edba44107034e802554c9845a653524d2c3ca38975b69027f6",
+          "importOrder": [
+            "lib/asset-source.js",
+            "lib/asset-ingest.js",
+            "tests/lib-asset/fixtures/make-asset.js",
+            "tests/lib-dataset/fixtures/make-project.js"
+          ],
           "importsFiles": [
             "lib/asset-ingest.js",
             "lib/asset-source.js",
@@ -15164,6 +15814,13 @@
         },
         {
           "hash": "c847225619cf8baec6efbbe9747b5ceafc7d0eb7f622f678ee91c2c70b3dc277",
+          "importOrder": [
+            "lib/canon-build/emitters/monster.js",
+            "lib/canon-build/emitters/character.js",
+            "lib/canon-build/emitters/deity.js",
+            "lib/canon-build/emitters/location.js",
+            "lib/canon-build/emitters/relic.js"
+          ],
           "importsFiles": [
             "lib/canon-build/emitters/character.js",
             "lib/canon-build/emitters/deity.js",
@@ -15182,6 +15839,13 @@
         },
         {
           "hash": "adda24d2f7e858361cb246c5173dba1a9e1d48c81047d47ad742c24e53b2c2a3",
+          "importOrder": [
+            "lib/canon-build/frontmatter.js",
+            "lib/canon-build/load-entry.js",
+            "lib/canon-build/load-schema.js",
+            "lib/canon-build/load-config.js",
+            "lib/canon-build/lane-resolve.js"
+          ],
           "importsFiles": [
             "lib/canon-build/frontmatter.js",
             "lib/canon-build/lane-resolve.js",
@@ -15244,6 +15908,10 @@
         },
         {
           "hash": "460f02bdd3d76987034c58df8884d331d982fd97824eddc081941ea9588b2668",
+          "importOrder": [
+            "lib/freeze-stamp.js",
+            "lib/freeze-gate.js"
+          ],
           "importsFiles": [
             "lib/freeze-gate.js",
             "lib/freeze-stamp.js"
@@ -15260,6 +15928,13 @@
         },
         {
           "hash": "1f4ab2c33e407438800eac4769c9cc130f532016ffbfb9882d8290aefc72a18f",
+          "importOrder": [
+            "lib/snapshot.js",
+            "lib/eval-pack.js",
+            "lib/training-packages.js",
+            "tests/lib-dataset/fixtures/make-project.js",
+            "tests/lib-dataset/fixtures/make-training-package-project.js"
+          ],
           "importsFiles": [
             "lib/eval-pack.js",
             "lib/snapshot.js",
@@ -15271,6 +15946,13 @@
         },
         {
           "hash": "bb7baad0d8bd872f685205f359447ae8a1f44b5273d268d45f257252ebb9526e",
+          "importOrder": [
+            "lib/paths.js",
+            "lib/batch-sheet-render.js",
+            "lib/candidate-sheet.js",
+            "tests/lib-dataset/fixtures/make-project.js",
+            "scripts/sheet.js"
+          ],
           "importsFiles": [
             "lib/batch-sheet-render.js",
             "lib/candidate-sheet.js",
@@ -15291,6 +15973,11 @@
         },
         {
           "hash": "30ef67d5324bf1232f4f6aa0b083b8ef41682272c2985a655497edf3b35d2146",
+          "importOrder": [
+            "tests/lib-dataset/fixtures/make-project.js",
+            "lib/eval-pack.js",
+            "lib/eval-runs.js"
+          ],
           "importsFiles": [
             "lib/eval-pack.js",
             "lib/eval-runs.js",
@@ -15300,6 +15987,12 @@
         },
         {
           "hash": "20f3ee0670fb37c0141516ccbf713dff5a905abeb604410958bba1825a2100a6",
+          "importOrder": [
+            "lib/snapshot.js",
+            "lib/split.js",
+            "lib/export.js",
+            "tests/lib-dataset/fixtures/make-project.js"
+          ],
           "importsFiles": [
             "lib/export.js",
             "lib/snapshot.js",
@@ -15321,6 +16014,11 @@
             "createTrainingPackageProject"
           ],
           "hash": "40f0118d56d04af333c08849e21a8654f5c2554bbc518284ca69b37831f79edb",
+          "importOrder": [
+            "tests/lib-dataset/fixtures/make-project.js",
+            "lib/snapshot.js",
+            "lib/split.js"
+          ],
           "importsFiles": [
             "lib/snapshot.js",
             "lib/split.js",
@@ -15330,6 +16028,15 @@
         },
         {
           "hash": "1939da0c7d2b2cc30abacea2f32154affcbdd50753fb1266925068a1cdd3dd09",
+          "importOrder": [
+            "lib/snapshot.js",
+            "lib/split.js",
+            "lib/export.js",
+            "lib/eval-pack.js",
+            "lib/eval-runs.js",
+            "tests/lib-dataset/fixtures/make-project.js",
+            "lib/training-manifests.js"
+          ],
           "importsFiles": [
             "lib/eval-pack.js",
             "lib/eval-runs.js",
@@ -15383,6 +16090,15 @@
         },
         {
           "hash": "6d890331ff621f63daa448ddb73099177859a2baa0cc50ca73a132382d2eadc8",
+          "importOrder": [
+            "lib/snapshot.js",
+            "lib/split.js",
+            "lib/export.js",
+            "lib/training-packages.js",
+            "lib/implementation-packs.js",
+            "tests/lib-dataset/fixtures/make-project.js",
+            "tests/lib-dataset/fixtures/make-training-package-project.js"
+          ],
           "importsFiles": [
             "lib/export.js",
             "lib/implementation-packs.js",
@@ -15413,6 +16129,12 @@
         },
         {
           "hash": "9ef27775d57d2a037bc63272dcbfd1c83fe189104cae10476d752a713bce006a",
+          "importOrder": [
+            "lib/snapshot.js",
+            "lib/split.js",
+            "lib/card.js",
+            "tests/lib-dataset/fixtures/make-project.js"
+          ],
           "importsFiles": [
             "lib/card.js",
             "lib/snapshot.js",
@@ -15423,6 +16145,13 @@
         },
         {
           "hash": "516a26f2b7dc2097508502e088fc87bd264a8edd8a73548217bc283f4b74a4fb",
+          "importOrder": [
+            "lib/snapshot.js",
+            "lib/split.js",
+            "lib/export.js",
+            "lib/training-manifests.js",
+            "tests/lib-dataset/fixtures/make-project.js"
+          ],
           "importsFiles": [
             "lib/export.js",
             "lib/snapshot.js",
@@ -15434,6 +16163,17 @@
         },
         {
           "hash": "d8e330630be6d5b6f1b8ad6d2f8e65be01d13145d251e6570bd3494096cdc4b8",
+          "importOrder": [
+            "lib/training-packages.js",
+            "lib/export.js",
+            "lib/snapshot.js",
+            "lib/split.js",
+            "lib/adapters/generic-image-caption.js",
+            "lib/adapters/diffusers-lora.js",
+            "lib/adapters/ai-toolkit.js",
+            "tests/lib-dataset/fixtures/make-project.js",
+            "tests/lib-dataset/fixtures/make-training-package-project.js"
+          ],
           "importsFiles": [
             "lib/adapters/ai-toolkit.js",
             "lib/adapters/diffusers-lora.js",
@@ -15456,6 +16196,10 @@
         },
         {
           "hash": "c938b449965a49478b3a5f55729087934145287f66a779a09d76a3c2543cda93",
+          "importOrder": [
+            "lib/freeze-gate.js",
+            "lib/freeze-events.js"
+          ],
           "importsFiles": [
             "lib/freeze-events.js",
             "lib/freeze-gate.js"
@@ -15527,6 +16271,10 @@
         },
         {
           "hash": "75b1cf9edae82b2ebd21bc49ede408f3958c54a1f0a971a252d23e81d55c797f",
+          "importOrder": [
+            "lib/training-profiles.js",
+            "lib/captions.js"
+          ],
           "importsFiles": [
             "lib/captions.js",
             "lib/training-profiles.js"
@@ -15553,6 +16301,10 @@
         },
         {
           "hash": "182fa5d6a3425528eb11e71f06e3380dd6b884d32256fc4b64bbd3c7dc5c299f",
+          "importOrder": [
+            "lib/run-manifest.js",
+            "lib/adapters/comfyui-workflows.js"
+          ],
           "importsFiles": [
             "lib/adapters/comfyui-workflows.js",
             "lib/run-manifest.js"
@@ -15583,6 +16335,11 @@
         },
         {
           "hash": "5c3f61422bb2312c9e2f0cbc887b68401fa33c12c401e8384c7719a3ea67bcea",
+          "importOrder": [
+            "lib/verifier.js",
+            "lib/critique-engine.js",
+            "lib/snapshot.js"
+          ],
           "importsFiles": [
             "lib/critique-engine.js",
             "lib/snapshot.js",
@@ -15628,6 +16385,10 @@
         },
         {
           "hash": "750b1e4190d4c663fd24fdaa9c1b07f5a687ecdde419dec2efb7e78e76071a57",
+          "importOrder": [
+            "lib/workflow-profiles.js",
+            "lib/batch-modes.js"
+          ],
           "importsFiles": [
             "lib/batch-modes.js",
             "lib/workflow-profiles.js"
@@ -15664,6 +16425,11 @@
         },
         {
           "hash": "55eadae26b8af5af1b631064a711967233821247990304e89ba3608c4612cf95",
+          "importOrder": [
+            "lib/runtime-runs.js",
+            "lib/batch-runs.js",
+            "lib/reingest-selected.js"
+          ],
           "importsFiles": [
             "lib/batch-runs.js",
             "lib/reingest-selected.js",
@@ -15701,6 +16467,18 @@
       "origin": "authored",
       "role": "test",
       "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "tests/cli-scripts/canon-cwd-independence.test.js",
+          "specifier": null,
+          "why": "dynamic"
+        },
+        {
+          "path": "tests/cli-scripts/project-root-traversal.test.js",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 2
     },
     {
@@ -15815,16 +16593,16 @@
             "file": "lib/errors.js",
             "from": "bin/sdlab.js"
           },
-          "files": 73
+          "files": 74
         },
         {
           "boundary": "scripts",
           "depth": 1,
           "enters": {
-            "file": "scripts/critique.js",
+            "file": "scripts/critique-show.js",
             "from": "bin/sdlab.js"
           },
-          "files": 13
+          "files": 33
         }
       ],
       "readers": [
@@ -15836,7 +16614,25 @@
         },
         {
           "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
+          "call": "import",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
           "call": "literal",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2.py",
+          "call": "import",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_build.py",
+          "call": "import",
           "confidence": "ast",
           "target": "projects"
         },
@@ -15848,7 +16644,19 @@
         },
         {
           "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
+          "call": "import",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
           "call": "literal",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
+          "call": "import",
           "confidence": "ast",
           "target": "projects"
         },
@@ -16404,16 +17212,16 @@
             "file": "lib/errors.js",
             "from": "bin/sdlab.js"
           },
-          "files": 73
+          "files": 74
         },
         {
           "boundary": "scripts",
           "depth": 1,
           "enters": {
-            "file": "scripts/critique.js",
+            "file": "scripts/critique-show.js",
             "from": "bin/sdlab.js"
           },
-          "files": 13
+          "files": 33
         }
       ],
       "readers": [
@@ -16425,7 +17233,25 @@
         },
         {
           "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
+          "call": "import",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
           "call": "literal",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2.py",
+          "call": "import",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_build.py",
+          "call": "import",
           "confidence": "ast",
           "target": "projects"
         },
@@ -16437,7 +17263,19 @@
         },
         {
           "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
+          "call": "import",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
           "call": "literal",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
+          "call": "import",
           "confidence": "ast",
           "target": "projects"
         },
@@ -16822,7 +17660,9 @@
       "elsewhere": [],
       "file": "package.json",
       "kind": "command",
-      "landings": [],
+      "landings": [
+        "projects"
+      ],
       "mentions": [],
       "name": "sdlab",
       "permissions": [],
@@ -16840,19 +17680,215 @@
             "file": "lib/errors.js",
             "from": "bin/sdlab.js"
           },
-          "files": 22
+          "files": 49
         },
         {
           "boundary": "scripts",
           "depth": 1,
           "enters": {
-            "file": "scripts/critique.js",
+            "file": "scripts/critique-show.js",
             "from": "bin/sdlab.js"
           },
-          "files": 3
+          "files": 32
         }
       ],
-      "readers": [],
+      "readers": [
+        {
+          "by": "lib/paths.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
+          "call": "import",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2.py",
+          "call": "import",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_build.py",
+          "call": "import",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_build.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
+          "call": "import",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
+          "call": "import",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/outputs/synthetic/phase2/manifest.json",
+          "call": "configuration",
+          "confidence": "config",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/manifest.json",
+          "call": "configuration",
+          "confidence": "config",
+          "target": "projects"
+        },
+        {
+          "by": "projects/ai-eye-test/outputs/synthetic/phase2b/manifest.json",
+          "call": "configuration",
+          "confidence": "config",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/build-review-page.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/build-review-page.mjs",
+          "call": "readdir",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
+          "call": "readdir",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/ingest-styleset-records.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/populate-canon-subjects.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/populate-canon-subjects.mjs",
+          "call": "readdir",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/prompt-foundry.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/prompt-foundry.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/wave-runner.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "projects/salt-road/inputs/prompts/wave-runner.py",
+          "call": "open",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "scripts/init.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "projects"
+        },
+        {
+          "by": "tests/cli-scripts/init-generate-path.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "projects"
+        },
+        {
+          "by": "tests/lib-pipeline/flux-profiles.test.js",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "projects"
+        },
+        {
+          "by": "tests/lib-runtime/paths-workspace-root.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "projects"
+        }
+      ],
       "runs": [
         {
           "path": "bin/sdlab.js",
@@ -16912,13 +17948,7 @@
   },
   "landings": [
     {
-      "readers": [
-        {
-          "by": "scripts/init.js",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
+      "readers": [],
       "target": "README.md",
       "writers": [
         {
@@ -17086,6 +18116,58 @@
         }
       ],
       "target": "projects/ai-eye-test/backgrounds",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
+          "call": "import",
+          "confidence": "ast"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2.py",
+          "call": "import",
+          "confidence": "ast"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_build.py",
+          "call": "import",
+          "confidence": "ast"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
+          "call": "import",
+          "confidence": "ast"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
+          "call": "import",
+          "confidence": "ast"
+        }
+      ],
+      "target": "projects/ai-eye-test/compositor/compositor.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_build.py",
+          "call": "import",
+          "confidence": "ast"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
+          "call": "import",
+          "confidence": "ast"
+        },
+        {
+          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
+          "call": "import",
+          "confidence": "ast"
+        }
+      ],
+      "target": "projects/ai-eye-test/compositor/phase2.py",
       "writers": []
     },
     {
@@ -19170,6 +20252,16 @@
       "writers": []
     },
     {
+      "readers": [],
+      "target": "projects/salt-road/inbox/generated/set-v2-2026-07-30",
+      "writers": [
+        {
+          "by": "projects/salt-road/inputs/prompts/wave-runner.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
       "readers": [
         {
           "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
@@ -19177,7 +20269,8 @@
           "confidence": "ast"
         }
       ],
-      "target": "projects/salt-road/inbox/generated/set-v2-2026-07-30",
+      "target": "projects/salt-road/inbox/generated/set-v2-2026-07-30/*.png",
+      "tracked": false,
       "writers": [
         {
           "by": "projects/salt-road/inputs/prompts/wave-runner.py",

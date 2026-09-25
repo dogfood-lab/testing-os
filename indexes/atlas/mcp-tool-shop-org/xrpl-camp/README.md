@@ -39,7 +39,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Publish** runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh and xrpl_camp/cli.py and checks LICENSE, README.md, pyproject.toml and 10 more on a tag push, publishes to PyPI and a container image on a tag push, creates a GitHub release on a tag push, and builds xrpl_camp/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release on a tag push.
+**Publish** runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh and xrpl_camp/cli.py and checks LICENSE, README.md, pyproject.toml and 10 more on a tag push, and publishes to PyPI and a container image, creates a GitHub release, and builds xrpl_camp/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release, on a tag push.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -88,13 +88,13 @@ People write the repository root, scripts/ and site/; 4 writes with paths built 
 
 ## Where to start
 
-xrpl_camp/cli.py
+xrpl_camp/cli.py → xrpl_camp/errors.py
 
-Read those in order to follow one run of xrpl-camp end to end. This path follows xrpl-camp (a command people run, from pyproject.toml) from its entry, since CI runs only tests.
+Read those in order to follow one run of xrpl-camp end to end. This path follows xrpl-camp (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 
-- 1 import site could not be resolved.
+- 1 import could not be resolved: `xrpl_camp/cli.py` imports a path built at run time.
 - 4 writes and 11 reads use paths built at run time and are not named here.
 - 1 write goes to a temporary directory, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.

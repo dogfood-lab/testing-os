@@ -166,17 +166,18 @@
   "changesTogetherWithTests": 0,
   "commit": "61d98b601565a5b7eccd66a4baf98a4e1b8c3032",
   "defaultBranch": "main",
-  "derived": "9 parts, mostly TypeScript (84 files) and JavaScript (7). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os (packages/cli) to npm. People run ai-loadout, claude-memories, claude-rules and loadout-os.",
+  "derived": "9 parts, mostly Markdown (236 files); code in TypeScript (84) and JavaScript (7). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os to npm. People run ai-loadout, claude-memories, claude-rules and loadout-os.",
   "doors": [
     {
-      "checks": [
+      "builds": [
         "packages/cli/src/",
         "packages/kernel/src/",
         "packages/memories/src/",
         "packages/rules/src/"
       ],
-      "checksCount": 4,
-      "checksMore": 17,
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "held": [
         {
@@ -249,14 +250,15 @@
       ]
     },
     {
-      "checks": [
+      "builds": [
         "packages/cli/src/",
         "packages/kernel/src/",
         "packages/memories/src/",
         "packages/rules/src/"
       ],
-      "checksCount": 4,
-      "checksMore": 17,
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [],
@@ -302,7 +304,7 @@
       "runsCount": 13,
       "runsMore": 32,
       "sends": [
-        "publishes @mcptoolshop/loadout-os (packages/cli) to npm",
+        "publishes @mcptoolshop/loadout-os to npm",
         "creates a GitHub release"
       ],
       "stages": [],
@@ -527,7 +529,7 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T02:10:17.982Z",
+  "generatedAt": "2026-09-25T09:17:10.738Z",
   "limits": [
     "6 writes and 10 reads use paths built at run time and are not named here.",
     "2 writes and 26 reads go to the directory the command is run in, not to this repository.",
@@ -557,11 +559,12 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/loadout-os",
   "sequences": [],
-  "startDoor": "packages/memories/package.json#claude-memories",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "packages/memories/src/cli.ts"
+    ".github/workflows/ci.yml",
+    "packages/kernel/src/index.ts",
+    "packages/kernel/src/types.ts"
   ],
-  "startReason": "This path follows claude-memories (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 45,

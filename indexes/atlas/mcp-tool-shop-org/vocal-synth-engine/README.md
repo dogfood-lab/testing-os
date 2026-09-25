@@ -13,10 +13,10 @@ Mapped at 2026-09-25 from commit a2738c5.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 10 paths; on a push to main touching 10 paths; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs scripts/bench-gate.mjs, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more; checks src/.
-2. **Release.** When a tag matching `v*` is pushed. Runs scripts/verify.sh, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more; checks src/.
+1. **CI.** On a pull request to main touching 10 paths; on a push to main touching 10 paths; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs scripts/bench-gate.mjs, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more; builds src/.
+2. **Release.** When a tag matching `v*` is pushed. Runs scripts/verify.sh, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-4. **Dogfood.** On a push to main touching 3 paths; or by hand. On main, it runs src/server/index.prod.ts; checks src/.
+4. **Dogfood.** On a push to main touching 3 paths; or by hand. On main, it runs src/server/index.prod.ts; builds src/.
 5. **@mcptoolshop/vocal-synth-engine** (the package people import). Loads src/index.ts, src/engine/LiveSynthEngine.ts, src/engine/StreamingVocalSynthEngine.ts and 8 more.
 6. **vocal-synth-engine-mcp** (a command people run). Runs src/mcp/server.ts.
 7. **vse-analyze** (a command people run). Runs src/cli/analyze.ts.
@@ -31,7 +31,7 @@ Mapped at 2026-09-25 from commit a2738c5.
 
 ## What happens through CI
 
-1. The workflow runs scripts/bench-gate.mjs in scripts and 17 files in tests; it checks src/ in src.
+1. The workflow runs scripts/bench-gate.mjs in scripts and 17 files in tests; it builds src/ in src.
 
 ## Who reads the results
 
@@ -39,11 +39,11 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs scripts/verify.sh, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more, checks src/, publishes to npm, and creates a GitHub release.
+**Release** runs scripts/verify.sh, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more, builds src/, publishes to npm, and creates a GitHub release.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Dogfood** runs src/server/index.prod.ts and checks src/ on main, runs git, and sends a dispatch to mcp-tool-shop-org/dogfood-labs on main.
+**Dogfood** runs src/server/index.prod.ts on main, runs git, and sends a dispatch to mcp-tool-shop-org/dogfood-labs on main.
 
 **@mcptoolshop/vocal-synth-engine** (the package people import) loads src/index.ts, src/engine/LiveSynthEngine.ts, src/engine/StreamingVocalSynthEngine.ts and 8 more.
 
@@ -84,6 +84,8 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 - **cockpit** is imported by no test.
 - **scripts** is imported by no test.
 
+apps/cockpit/tests/smoke.spec.ts runs in no workflow.
+
 ## Written but never read
 
 - **ref/ah_sustain.wav** is written by scripts/generate-ref-wav.ts and read by nothing else in this repository.
@@ -99,20 +101,20 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, assets/, presets/, the repository root and site/; 1 write with a path built at run time may land here.
+People write .github/, assets/, presets/, the repository root and site/. Nothing in this repository writes to them.
 
 ## Where to start
 
-src/mcp/server.ts
+.github/workflows/ci.yml → src/index.ts → src/engine/LiveSynthEngine.ts → src/preset/schema.ts → src/engine/renderer.ts → src/engine/curves.ts
 
-Read those in order to follow one run of vocal-synth-engine-mcp end to end. This path follows vocal-synth-engine-mcp (a command people run) from its entry, since CI runs only tests and scripts that import no code here.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 write and 4 reads use paths built at run time and are not named here.
+- 4 reads use paths built at run time and are not named here.
 - 28 writes and 33 reads go to the directory the command is run in (.vscockpit/, assets/, calib/ and 2 more places) or a path their caller passes, not to this repository.
 - 7 writes and 21 reads go to a path their caller passes, not to this repository.
-- 3 writes and 1 read go to the directory the command is run in (apps/ and test-preset/), not to this repository.
+- 4 writes and 1 read go to the directory the command is run in, not to this repository.
 - 1 command is built at run time and not followed, and it is in tests.
 - cockpit calls src over HTTP at 11 routes, a link no import shows: the map draws it, and no door's reach follows it.
 - scripts calls src over HTTP at 1 route, a link no import shows: the map draws it, and no door's reach follows it.

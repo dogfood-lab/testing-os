@@ -88,13 +88,14 @@
   "changesTogetherWithTests": 0,
   "commit": "65dce696cf1d1022aa3a5309fe8561db6c7303c3",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly TypeScript (38 files) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-guardian.",
+  "derived": "7 parts, mostly Markdown (75 files); code in TypeScript (38) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-guardian.",
   "doors": [
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -127,10 +128,11 @@
       ]
     },
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
@@ -202,9 +204,10 @@
       "file": ".github/workflows/dogfood.yml",
       "held": [
         {
-          "checks": [
+          "builds": [
             "src/"
           ],
+          "checks": [],
           "checksMore": 0,
           "lead": "on main",
           "runs": [
@@ -306,13 +309,14 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-25T02:07:51.756Z",
+  "generatedAt": "2026-09-25T09:14:47.949Z",
   "limits": [
-    "1 import site could not be resolved.",
+    "1 import could not be resolved: `src/mcp-server.ts` imports `zod`, which is not declared.",
     "1 write and 3 reads use paths built at run time and are not named here.",
     "14 writes and 17 reads go to the home directory (.claude-guardian/ and .claude/), not to this repository.",
     "2 writes and 9 reads go to a path their caller passes, not to this repository.",
     "1 write and 3 reads go to the home directory (.claude-guardian/ and .claude/) or a path their caller passes, not to this repository.",
+    "1 read goes to the directory the command is run in (package.json), not to this repository.",
     "1 command is built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
@@ -330,11 +334,17 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/claude-guardian",
   "sequences": [],
-  "startDoor": "package.json#claude-guardian",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "src/cli.ts"
+    ".github/workflows/ci.yml",
+    "src/cli.ts",
+    "src/log-manager.ts",
+    "src/doctor.ts",
+    "src/watchdog.ts",
+    "src/mcp-server.ts",
+    "src/watch-daemon.ts",
+    "src/process-monitor.ts"
   ],
-  "startReason": "This path follows claude-guardian (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 16,

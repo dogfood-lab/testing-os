@@ -69,16 +69,17 @@
       },
       {
         "kind": "door",
-        "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
+        "sentence": "CI now also builds src/cli.ts, src/index.ts and src/mcp/server.ts.",
         "subjects": [
-          ".github/workflows/pages.yml",
-          "site/astro.config.mjs",
-          "site/src/"
+          ".github/workflows/ci.yml",
+          "src/cli.ts",
+          "src/index.ts",
+          "src/mcp/server.ts"
         ]
       },
       {
         "kind": "door",
-        "sentence": "And 2 more changes to doors.",
+        "sentence": "And 4 more changes to doors.",
         "subjects": []
       },
       {
@@ -112,7 +113,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 15 more new writers and readers of places.",
+        "sentence": "And 12 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -218,9 +219,14 @@
   "changesTogetherWithTests": 0,
   "commit": "4435870bbfdf3726b9faa07e235fe5ce501c027d",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly TypeScript (84 files) and JavaScript (10). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run rk. People import @mcptoolshop/repo-knowledge.",
+  "derived": "11 parts, mostly Markdown (646 files); code in TypeScript (84) and JavaScript (10). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run rk. People import @mcptoolshop/repo-knowledge.",
   "doors": [
     {
+      "builds": [
+        "src/cli.ts",
+        "src/index.ts",
+        "src/mcp/server.ts"
+      ],
       "checks": [
         "src/"
       ],
@@ -264,6 +270,11 @@
       "untracked": "dist/, which is not tracked"
     },
     {
+      "builds": [
+        "src/cli.ts",
+        "src/index.ts",
+        "src/mcp/server.ts"
+      ],
       "checks": [
         "src/"
       ],
@@ -300,9 +311,7 @@
       "runsCount": 4,
       "runsMore": 48,
       "sends": [
-        "publishes to npm on a tag push",
-        "creates a GitHub release on a tag push",
-        "uploads sbom.json to the release on a tag push"
+        "publishes to npm, creates a GitHub release, and uploads sbom.json to the release, on a tag push"
       ],
       "stages": [],
       "triggers": [
@@ -334,11 +343,11 @@
       "runsCount": 2,
       "runsMore": 0,
       "sends": [
-        "deploys the site on a push to main"
+        "deploys the site on a push to main or by hand"
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 2 paths",
+        "on a pull request to main touching 2 paths",
         "on a push to main touching 2 paths",
         "or by hand"
       ]
@@ -443,13 +452,13 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:12:50.259Z",
+  "generatedAt": "2026-09-25T09:19:58.260Z",
   "limits": [
-    "1 import site could not be resolved.",
+    "1 import could not be resolved: `src/mcp/server.ts` imports `zod`, which is not declared.",
     "3 writes and 15 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
     "2 writes and 77 reads go to a path their caller passes, not to this repository.",
-    "4 writes and 8 reads go to the directory the command is run in (data/, rk.config.json and rk.config.json.tmp), not to this repository.",
+    "4 writes and 13 reads go to the directory the command is run in (CHANGELOG.md, LICENSE, README.md and 5 more places), not to this repository.",
     "2 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -471,11 +480,12 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/repo-knowledge",
   "sequences": [],
-  "startDoor": "package.json#rk",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "src/cli.ts"
+    ".github/workflows/ci.yml",
+    "src/index.ts",
+    "src/config.ts"
   ],
-  "startReason": "This path follows rk (a command people run) from its entry, since CI runs only tests and scripts that import no code here.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 55,

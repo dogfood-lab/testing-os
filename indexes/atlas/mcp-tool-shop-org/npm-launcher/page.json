@@ -62,7 +62,7 @@
   "changesTogetherWithTests": 0,
   "commit": "07c7132c09eb143dfc0cbe1bbdedd3668eb4e8f0",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly JavaScript (15 files) and TypeScript (2). Work enters through 6 doors; the busiest is CI, which reaches 3 parts. It publishes a package to npm, chosen at run time. People run mcptoolshop-launch. People import @mcptoolshop/npm-launcher.",
+  "derived": "10 parts, mostly JavaScript (15 files) and TypeScript (2). Work enters through 6 doors; the busiest is CI, which reaches 3 parts. It publishes @mcptoolshop/npm-launcher to npm, and a package to npm, chosen at run time. People run mcptoolshop-launch. People import @mcptoolshop/npm-launcher.",
   "doors": [
     {
       "checks": [],
@@ -266,12 +266,13 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T03:19:28.296Z",
+  "generatedAt": "2026-09-25T09:18:49.276Z",
   "limits": [
     "3 reads use paths built at run time and are not named here.",
     "4 writes and 5 reads go to a path their caller passes, not to this repository.",
-    "3 writes and 5 reads go to the home directory (.local/) or a path their caller passes, not to this repository.",
+    "3 writes and 5 reads go to the home directory (.local/ and backpropagate/) or a path their caller passes, not to this repository.",
     "3 commands are built at run time and not followed.",
+    "1 file belongs to no part: examples/ci/release-binaries.yml.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -298,7 +299,8 @@
   "startHere": [
     ".github/workflows/ci.yml",
     "bin/mcptoolshop-launch.js",
-    "src/index.js"
+    "src/index.js",
+    "src/log.js"
   ],
   "summary": null,
   "summaryFrom": null,

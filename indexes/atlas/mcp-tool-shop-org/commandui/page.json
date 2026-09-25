@@ -427,7 +427,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:08:21.729Z",
+  "generatedAt": "2026-09-25T09:15:20.591Z",
   "limits": [
     "1 read uses a path built at run time and is not named here.",
     "1 write goes to the home directory, not to this repository.",
@@ -465,9 +465,13 @@
     "apps/desktop/src-tauri/src/main.rs",
     "apps/desktop/src-tauri/src/lib.rs",
     "apps/desktop/src-tauri/src/commands/planner.rs",
-    "crates/runtime-planner/src/lib.rs"
+    "crates/runtime-planner/src/lib.rs",
+    "crates/runtime-planner/src/client.rs",
+    "crates/runtime-planner/src/mock.rs",
+    "crates/runtime-planner/src/parity.rs",
+    "crates/runtime-planner/src/prompt.rs"
   ],
-  "startReason": "This path follows commandui-desktop (the desktop app people install) from its entry, since CI runs only tests.",
+  "startReason": "This path follows commandui-desktop (the desktop app people install) from its entry, since CI runs only tests and checks.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 22,
@@ -510,7 +514,8 @@
     "console is tested only by the unit tests in its own files.",
     "runtime-core is tested only by the unit tests in its own files.",
     "runtime-persistence is tested only by the unit tests in its own files.",
-    "runtime-planner is tested only by the unit tests in its own files."
+    "runtime-planner is tested only by the unit tests in its own files.",
+    "3 test files run in no workflow: packages/api-contract/src/contracts.test.ts, packages/domain/src/memoryDetectors.test.ts and packages/state/src/index.test.ts."
   ],
   "written": 1
 }

@@ -15,28 +15,28 @@ Mapped at 2026-09-25 from commit 1249f83.
 - CONTRIBUTING.md is now also read by scripts/sync-doc-versions.mjs.
 - And 9 more new writers and readers of places.
 - the site was authored and is now mixed.
-- In src/index.ts, main lost a step, note prewarm in progress request.
-- In src/index.ts, main lost a step, mint run id.
-- In src/index.ts, main lost a step, with run context.
+- In src/index.ts, `main` lost a step, `notePrewarmInProgressRequest`.
+- In src/index.ts, `main` lost a step, `mintRunId`.
+- In src/index.ts, `main` lost a step, `withRunContext`.
 - And 13 more changes to the order of work.
 - No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 18 paths; on a push to main touching 18 paths; or by hand. Runs scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, src/index.ts and 98 more; checks hermes.config.example.yaml, package-lock.json, package.json and 93 more. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
+1. **CI.** On a pull request touching 18 paths; on a push to main touching 18 paths; or by hand. Runs scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, src/index.ts and 98 more; builds src/; checks hermes.config.example.yaml, package-lock.json, package.json and 1 more. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
 2. **Doc Drift.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs scripts/sync-doc-versions.mjs, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more; checks HANDOFF.md, README.md and SHIP_GATE.md.
-3. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more; checks hermes.config.example.yaml, package-lock.json, package.json and 93 more.
+3. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more; builds src/; checks hermes.config.example.yaml, package-lock.json, package.json and 1 more.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-5. **CodeQL.** On a pull request; on a push to main; on a schedule (`0 9 * * 0`), Sunday at 09:00 UTC; or by hand. Runs no file this map can see.
-6. **Dependency Review.** On a pull request. Runs no file this map can see.
+5. **CodeQL.** On a pull request to main; on a push to main; on a schedule (`0 9 * * 0`), Sunday at 09:00 UTC; or by hand. Runs no file this map can see.
+6. **Dependency Review.** On a pull request to main. Runs no file this map can see.
 7. **ollama-intern-mcp** (a command people run, from package.json). Runs src/index.ts.
 8. **ollama-intern-mcp** (the package people import, from package.json). Loads src/index.ts.
 
 ## What happens through CI
 
-1. The workflow runs scripts/gen-tool-docs.mjs and scripts/sync-doc-versions.mjs in scripts, src/index.ts in src, and 98 files in tests; it checks 4 files in the repository root and src/ in src.
-   1. Inside src/index.ts, main does, in order: profiles (3 steps), ollama (3 steps), timestamp and run prewarm.
-   2. **Run prewarm** runs, in order: resolve tier, resolve num ctx and timestamp.
+1. The workflow runs scripts/gen-tool-docs.mjs and scripts/sync-doc-versions.mjs in scripts, src/index.ts in src, and 98 files in tests; it builds src/ in src; it checks 4 files in the repository root.
+   1. Inside src/index.ts, `main` does, in order: `profiles.ts` (3 steps), `ollama.ts` (3 steps), `timestamp` and `runPrewarm`.
+   2. **`runPrewarm`** runs, in order: `resolveTier`, `resolveNumCtx` and `timestamp`.
 2. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
 3. It writes to site/src/content/docs/handbook/tools.md.
 
@@ -48,7 +48,7 @@ Mapped at 2026-09-25 from commit 1249f83.
 
 **Doc Drift** runs scripts/sync-doc-versions.mjs, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more, checks HANDOFF.md, README.md and SHIP_GATE.md, and reaches src.
 
-**Release** runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more, checks hermes.config.example.yaml, package-lock.json, package.json and 93 more, creates a GitHub release on a tag push, and publishes to npm and a container image (on a run by hand, only with dry_run false).
+**Release** runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more, builds src/, checks hermes.config.example.yaml, package-lock.json, package.json and 1 more, creates a GitHub release on a tag push, and publishes to npm and a container image (on a run by hand, only with dry_run false).
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -106,18 +106,18 @@ People write .github/, docs/, evals/ and the repository root; 3 writes with path
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts
+.github/workflows/ci.yml → src/index.ts → src/profiles.ts → src/tiers.ts → src/errors.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 import site could not be resolved.
+- 1 import could not be resolved: `scripts/gen-tool-docs.mjs` imports a path built at run time.
 - 3 writes and 9 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
 - 9 writes and 18 reads go to the home directory (.claude/ and .ollama-intern/) or a path their caller passes, not to this repository.
 - 8 writes and 13 reads go to a path their caller passes, not to this repository.
-- 1 write and 1 read go to the directory the command is run in, not to this repository.
+- 1 write and 12 reads go to the directory the command is run in, not to this repository.
 - 1 write goes to a temporary directory, not to this repository.
 - 3 commands are built at run time and not followed, 1 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.

@@ -151,7 +151,7 @@
       ],
       "importConfidence": "full",
       "name": "bundles",
-      "origin": "generated",
+      "origin": "mixed",
       "role": "data",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -237,7 +237,7 @@
       ],
       "importConfidence": "full",
       "name": "dist",
-      "origin": "authored",
+      "origin": "mixed",
       "role": "data",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -545,8 +545,11 @@
           "sequences": []
         },
         {
+          "entry": "main",
+          "entryRule": 1,
           "hash": "7d0e6b4f335d2b0d8ee07fc6fb6e7718fdbe06fdae16f1ed5f7ce0dfc33ac6d6",
-          "path": "scripts/query.mjs"
+          "path": "scripts/query.mjs",
+          "sequences": []
         },
         {
           "entry": "runGh",
@@ -595,8 +598,9 @@
       ],
       "outsideReads": 3,
       "role": "code",
-      "testedBy": 0,
-      "unresolvedSites": 1
+      "testedBy": 1,
+      "testedThroughSpawn": true,
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -619,6 +623,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "96ef3f9daeb3d45093e61972a50132af53d0f85d3f81542f130352c4bc930a90",
           "path": "site/src/content.config.ts"
         },
@@ -651,6 +656,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "6b09d68f8eb6df2027c6925a95e7e66aa9f7af84a3e5856b852104a91ca1f32e",
           "path": "site/src/site-config.ts"
         },
@@ -679,8 +685,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 1,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -787,8 +793,24 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "landingGates": [
+        {
+          "target": "bundles/*.json",
+          "when": {
+            "byHand": true,
+            "event": "schedule"
+          }
+        }
+      ],
       "landings": [
-        "bundles"
+        "bundles/*.json",
+        "dist/REGISTRY_HEALTH.md",
+        "dist/capabilities.json",
+        "dist/derived.meta.json",
+        "dist/featured.json",
+        "dist/registry.index.json",
+        "dist/registry.llms.txt",
+        "dist/registry.report.json"
       ],
       "mentions": [
         {
@@ -806,7 +828,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 6
+          "files": 7
         },
         {
           "boundary": "tests",
@@ -816,66 +838,114 @@
       ],
       "readers": [
         {
-          "by": "scripts/build-bundles.mjs",
-          "call": "readFile",
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
           "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/build-bundles.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/build-derived.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/build-derived.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/health-report.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/health-report.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/validate.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "bundles"
+          "target": "dist/REGISTRY_HEALTH.md"
         },
         {
           "by": "scripts/verify-pack.mjs",
           "call": "literal",
           "confidence": "ast",
-          "target": "bundles"
+          "target": "dist/REGISTRY_HEALTH.md"
         },
         {
-          "by": "tests/registry-integrity.test.mjs",
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/capabilities.json"
+        },
+        {
+          "by": "scripts/verify-pack.mjs",
           "call": "literal",
           "confidence": "ast",
-          "fromTests": true,
-          "target": "bundles"
+          "target": "dist/capabilities.json"
         },
         {
-          "by": "tests/search.test.mjs",
-          "call": "readFileSync",
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/derived.meta.json"
+        },
+        {
+          "by": "scripts/verify-pack.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "dist/derived.meta.json"
+        },
+        {
+          "by": "scripts/build-site.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "target": "dist/featured.json"
+        },
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/featured.json"
+        },
+        {
+          "by": "scripts/query.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "target": "dist/registry.index.json"
+        },
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/registry.index.json"
+        },
+        {
+          "by": "scripts/verify-pack.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "dist/registry.index.json"
+        },
+        {
+          "by": "tests/site-smoke.mjs",
+          "call": "readFile",
           "confidence": "ast",
           "fromTests": true,
-          "target": "bundles"
+          "target": "dist/registry.index.json"
+        },
+        {
+          "by": "scripts/build-site.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "dist/registry.llms.txt"
+        },
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/registry.llms.txt"
+        },
+        {
+          "by": "tests/site-smoke.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "dist/registry.llms.txt"
+        },
+        {
+          "by": "scripts/facets.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "target": "dist/registry.report.json"
+        },
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/registry.report.json"
+        },
+        {
+          "by": "scripts/verify-pack.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "dist/registry.report.json"
         }
       ],
       "runs": [
@@ -884,59 +954,44 @@
           "path": "scripts/build-bundles.mjs",
           "runKind": "executes",
           "when": {
-            "except": [
-              "pull_request",
-              "push"
-            ]
+            "byHand": true,
+            "event": "schedule"
           }
         },
         {
           "job": "ecosystem",
           "path": "scripts/build-derived.mjs",
-          "runKind": "executes",
-          "when": {
-            "except": [
-              "pull_request",
-              "push"
-            ]
-          }
+          "runKind": "executes"
         },
         {
           "job": "validate",
           "path": "scripts/build-derived.mjs",
-          "runKind": "executes",
-          "when": {
-            "except": [
-              "schedule"
-            ]
-          }
+          "runKind": "executes"
         },
         {
           "job": "ecosystem",
           "path": "scripts/build-site.mjs",
           "runKind": "executes",
           "when": {
-            "except": [
-              "pull_request",
-              "push"
-            ]
+            "byHand": true,
+            "event": "schedule"
           }
         },
         {
           "job": "ecosystem",
           "path": "scripts/health-report.mjs",
-          "runKind": "executes",
-          "when": {
-            "except": [
-              "pull_request",
-              "push"
-            ]
-          }
+          "runKind": "executes"
         },
         {
           "job": "validate",
           "path": "scripts/health-report.mjs",
+          "runKind": "executes"
+        },
+        {
+          "job": "validate",
+          "path": "scripts/query.mjs",
           "runKind": "executes",
+          "via": "tests/search.test.mjs",
           "when": {
             "except": [
               "schedule"
@@ -974,7 +1029,7 @@
           }
         }
       ],
-      "runsCount": 7,
+      "runsCount": 8,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -1028,8 +1083,7 @@
         }
       ],
       "untrackedLandings": [
-        "_site/",
-        "dist/"
+        "_site/"
       ],
       "uses": [
         "actions/checkout",
@@ -1121,7 +1175,9 @@
           ],
           "pushes": false,
           "pushesForReview": true,
-          "sends": [],
+          "sends": [
+            "opensPullRequests"
+          ],
           "stages": [
             "registry.json"
           ],
@@ -1144,8 +1200,67 @@
           }
         }
       ],
+      "landingGates": [
+        {
+          "target": "bundles/*.json",
+          "when": {
+            "event": "release"
+          }
+        },
+        {
+          "target": "dist/capabilities.json",
+          "when": {
+            "except": [
+              "issues"
+            ]
+          }
+        },
+        {
+          "target": "dist/derived.meta.json",
+          "when": {
+            "except": [
+              "issues"
+            ]
+          }
+        },
+        {
+          "target": "dist/featured.json",
+          "when": {
+            "except": [
+              "issues"
+            ]
+          }
+        },
+        {
+          "target": "dist/registry.index.json",
+          "when": {
+            "except": [
+              "issues"
+            ]
+          }
+        },
+        {
+          "target": "dist/registry.llms.txt",
+          "when": {
+            "except": [
+              "issues"
+            ]
+          }
+        },
+        {
+          "target": "registry.json",
+          "when": {
+            "event": "issues"
+          }
+        }
+      ],
       "landings": [
-        "bundles",
+        "bundles/*.json",
+        "dist/capabilities.json",
+        "dist/derived.meta.json",
+        "dist/featured.json",
+        "dist/registry.index.json",
+        "dist/registry.llms.txt",
         "registry.json"
       ],
       "mentions": [],
@@ -1175,66 +1290,84 @@
       ],
       "readers": [
         {
-          "by": "scripts/build-bundles.mjs",
-          "call": "readFile",
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
           "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/build-bundles.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/build-derived.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/build-derived.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/health-report.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/health-report.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "bundles"
-        },
-        {
-          "by": "scripts/validate.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "bundles"
+          "target": "dist/capabilities.json"
         },
         {
           "by": "scripts/verify-pack.mjs",
           "call": "literal",
           "confidence": "ast",
-          "target": "bundles"
+          "target": "dist/capabilities.json"
         },
         {
-          "by": "tests/registry-integrity.test.mjs",
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/derived.meta.json"
+        },
+        {
+          "by": "scripts/verify-pack.mjs",
           "call": "literal",
           "confidence": "ast",
-          "fromTests": true,
-          "target": "bundles"
+          "target": "dist/derived.meta.json"
         },
         {
-          "by": "tests/search.test.mjs",
-          "call": "readFileSync",
+          "by": "scripts/build-site.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "target": "dist/featured.json"
+        },
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/featured.json"
+        },
+        {
+          "by": "scripts/query.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "target": "dist/registry.index.json"
+        },
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/registry.index.json"
+        },
+        {
+          "by": "scripts/verify-pack.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "dist/registry.index.json"
+        },
+        {
+          "by": "tests/site-smoke.mjs",
+          "call": "readFile",
           "confidence": "ast",
           "fromTests": true,
-          "target": "bundles"
+          "target": "dist/registry.index.json"
+        },
+        {
+          "by": "scripts/build-site.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "dist/registry.llms.txt"
+        },
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/registry.llms.txt"
+        },
+        {
+          "by": "tests/site-smoke.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "dist/registry.llms.txt"
         },
         {
           "by": ".github/workflows/ci.yml",
@@ -1316,7 +1449,9 @@
           "path": "scripts/build-derived.mjs",
           "runKind": "executes",
           "when": {
-            "event": "release"
+            "except": [
+              "issues"
+            ]
           }
         },
         {
@@ -1325,8 +1460,7 @@
           "runKind": "executes",
           "when": {
             "except": [
-              "issues",
-              "release"
+              "issues"
             ]
           }
         },
@@ -1359,10 +1493,11 @@
           "path": "tests/site-smoke.mjs",
           "runKind": "executes",
           "when": {
-            "except": [
-              "issues",
-              "release"
-            ]
+            "branches": [
+              "main"
+            ],
+            "byHand": true,
+            "event": "push"
           }
         }
       ],
@@ -1412,9 +1547,6 @@
         {
           "event": "workflow_dispatch"
         }
-      ],
-      "untrackedLandings": [
-        "dist/"
       ],
       "uses": [
         "actions/checkout",
@@ -1535,7 +1667,10 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish.yml",
-      "landings": [],
+      "landings": [
+        "dist/REGISTRY_HEALTH.md",
+        "dist/registry.report.json"
+      ],
       "mentions": [
         {
           "job": "publish",
@@ -1555,7 +1690,38 @@
           "files": 4
         }
       ],
-      "readers": [],
+      "readers": [
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/REGISTRY_HEALTH.md"
+        },
+        {
+          "by": "scripts/verify-pack.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "dist/REGISTRY_HEALTH.md"
+        },
+        {
+          "by": "scripts/facets.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "target": "dist/registry.report.json"
+        },
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "dist/registry.report.json"
+        },
+        {
+          "by": "scripts/verify-pack.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "dist/registry.report.json"
+        }
+      ],
       "runs": [
         {
           "job": "publish",
@@ -1757,6 +1923,11 @@
         }
       ],
       "target": "bundles",
+      "writers": []
+    },
+    {
+      "readers": [],
+      "target": "bundles/*.json",
       "writers": [
         {
           "by": "scripts/build-bundles.mjs",
@@ -1847,12 +2018,205 @@
       "writers": []
     },
     {
-      "readers": [],
+      "readers": [
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast"
+        }
+      ],
       "target": "dist",
-      "tracked": false,
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/verify-pack.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dist/REGISTRY_HEALTH.md",
+      "writers": [
+        {
+          "by": "scripts/health-report.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dist/bundles/agents.index.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dist/bundles/core.index.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dist/bundles/evaluation.index.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dist/bundles/ops.index.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/verify-pack.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dist/capabilities.json",
       "writers": [
         {
           "by": "scripts/build-derived.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/verify-pack.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dist/derived.meta.json",
+      "writers": [
+        {
+          "by": "scripts/build-derived.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/build-site.mjs",
+          "call": "readFile",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dist/featured.json",
+      "writers": [
+        {
+          "by": "scripts/build-derived.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/query.mjs",
+          "call": "readFile",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/verify-pack.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "tests/site-smoke.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "dist/registry.index.json",
+      "writers": [
+        {
+          "by": "scripts/build-derived.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/build-site.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/verify-exports.js",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "tests/site-smoke.mjs",
+          "call": "readFile",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "dist/registry.llms.txt",
+      "writers": [
+        {
+          "by": "scripts/build-derived.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/facets.mjs",
+          "call": "readFile",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/verify-pack.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dist/registry.report.json",
+      "writers": [
+        {
+          "by": "scripts/health-report.mjs",
           "confidence": "ast"
         }
       ]

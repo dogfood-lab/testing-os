@@ -452,6 +452,11 @@
       "files": [
         {
           "hash": "47cacf379a626628ab35a0cead00019ac701a78ba4c15fa7a550a6543a75cb78",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/routing.ts",
+            "src/profiles.ts"
+          ],
           "importsFiles": [
             "src/ollama.ts",
             "src/profiles.ts",
@@ -490,6 +495,13 @@
       "role": "code",
       "testedBy": 1,
       "testedThroughSpawn": true,
+      "unresolvedNamed": [
+        {
+          "path": "scripts/gen-tool-docs.mjs",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
       "unresolvedSites": 1
     },
     {
@@ -517,6 +529,7 @@
           "path": "site/public/favicon.svg"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -761,6 +774,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "00a4aafc127681ac0ba8507f0484ab6bf8cf66ecb36eed2e732470136bf78d63",
           "path": "site/src/site-config.ts"
         },
@@ -801,6 +815,14 @@
         },
         {
           "hash": "9f17328f2d7cbf2d1b51cf76db3fb00179816217c3fd928d4133d121cc23ba43",
+          "importOrder": [
+            "src/profiles.ts",
+            "src/ollama.ts",
+            "src/observability.ts",
+            "src/tools/corpusIndex.ts",
+            "src/tools/corpusSearch.ts",
+            "src/tools/corpusList.ts"
+          ],
           "importsFiles": [
             "src/observability.ts",
             "src/ollama.ts",
@@ -813,6 +835,12 @@
         },
         {
           "hash": "35c003e75957e13b38a8cfee480d19bc5a02d14aa2936678b8e6c05290b3a6f0",
+          "importOrder": [
+            "src/profiles.ts",
+            "src/ollama.ts",
+            "src/observability.ts",
+            "src/tools/summarizeDeep.ts"
+          ],
           "importsFiles": [
             "src/observability.ts",
             "src/ollama.ts",
@@ -823,6 +851,20 @@
         },
         {
           "hash": "26ced40c582521708fd86b930416494c5ef6b1a4a809f172aca47159c8ecbb63",
+          "importOrder": [
+            "src/profiles.ts",
+            "src/ollama.ts",
+            "src/observability.ts",
+            "src/tools/triageLogs.ts",
+            "src/tools/summarizeFast.ts",
+            "src/tools/summarizeDeep.ts",
+            "src/tools/research.ts",
+            "src/tools/draft.ts",
+            "src/tools/embed.ts",
+            "src/tools/classify.ts",
+            "src/tools/extract.ts",
+            "src/tools/chat.ts"
+          ],
           "importsFiles": [
             "src/observability.ts",
             "src/ollama.ts",
@@ -841,6 +883,13 @@
         },
         {
           "hash": "d1afbf9e7d4531bcb8de56a1df61db759cc08ae80f0e40ce180c75060a6b340f",
+          "importOrder": [
+            "src/profiles.ts",
+            "src/ollama.ts",
+            "src/observability.ts",
+            "src/tools/summarizeDeep.ts",
+            "src/tools/embedSearch.ts"
+          ],
           "importsFiles": [
             "src/observability.ts",
             "src/ollama.ts",
@@ -852,6 +901,15 @@
         },
         {
           "hash": "e899e5275fd7af0b25395b59c7a1e2e87e076215928905adb62d9da45ee61c7d",
+          "importOrder": [
+            "src/profiles.ts",
+            "src/ollama.ts",
+            "src/observability.ts",
+            "src/tools/triageLogs.ts",
+            "src/tools/summarizeFast.ts",
+            "src/tools/classify.ts",
+            "src/tools/draft.ts"
+          ],
           "importsFiles": [
             "src/observability.ts",
             "src/ollama.ts",
@@ -1002,6 +1060,16 @@
             "sha256File"
           ],
           "hash": "1f9f9e9ee9dc57b35623c8b2f3943c5fa2cd9f4ac70d261b6b44e4340c1d5582",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/corpus/chunker.ts",
+            "src/corpus/storage.ts",
+            "src/corpus/manifest.ts",
+            "src/corpus/lock.ts",
+            "src/errors.ts",
+            "src/guardrails/embedTimeout.ts",
+            "src/corpus/identity.ts"
+          ],
           "importsFiles": [
             "src/corpus/chunker.ts",
             "src/corpus/identity.ts",
@@ -1049,6 +1117,13 @@
             "saveManifest"
           ],
           "hash": "5fc252ace576555eb56a864d40526448facbfaf838f1d6a4ae0dfc0322ef9f6e",
+          "importOrder": [
+            "src/errors.ts",
+            "src/corpus/storage.ts",
+            "src/corpus/atomicWrite.ts",
+            "src/corpus/lock.ts",
+            "src/corpus/identity.ts"
+          ],
           "importsFiles": [
             "src/corpus/atomicWrite.ts",
             "src/corpus/identity.ts",
@@ -1064,6 +1139,15 @@
             "refreshCorpus"
           ],
           "hash": "3c53f18e91ee1d3726721af6c3e0f547e85afb55e976cbc8ad388d5b651ba22b",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/errors.ts",
+            "src/corpus/storage.ts",
+            "src/corpus/manifest.ts",
+            "src/corpus/indexer.ts",
+            "src/corpus/lock.ts",
+            "src/corpus/identity.ts"
+          ],
           "importsFiles": [
             "src/corpus/identity.ts",
             "src/corpus/indexer.ts",
@@ -1083,6 +1167,16 @@
             "searchCorpus"
           ],
           "hash": "da140a9b30193baa54fed3b34fd8402bcef1f64e8c357e91f333904b0bfc0fd9",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/embedMath.ts",
+            "src/errors.ts",
+            "src/guardrails/embedTimeout.ts",
+            "src/corpus/chunker.ts",
+            "src/corpus/lexical.ts",
+            "src/corpus/fusion.ts",
+            "src/corpus/storage.ts"
+          ],
           "importsFiles": [
             "src/corpus/chunker.ts",
             "src/corpus/fusion.ts",
@@ -1108,6 +1202,13 @@
             "saveCorpus"
           ],
           "hash": "068732d5a14193c4f9f73645a27d313d5866f40b589fdb663e20d3da38f2f41b",
+          "importOrder": [
+            "src/errors.ts",
+            "src/corpus/manifest.ts",
+            "src/corpus/atomicWrite.ts",
+            "src/corpus/lock.ts",
+            "src/corpus/identity.ts"
+          ],
           "importsFiles": [
             "src/corpus/atomicWrite.ts",
             "src/corpus/identity.ts",
@@ -1144,6 +1245,11 @@
             "isEvicted"
           ],
           "hash": "c70b80e1159dc7fe4a8a38c0c3c7adb7ce2bc9cb5254b04517b968c9deb76137",
+          "importOrder": [
+            "src/tiers.ts",
+            "src/routing.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/routing.ts",
             "src/runContext.ts",
@@ -1166,6 +1272,11 @@
             "summarizeEval"
           ],
           "hash": "797e7d073353b6063b669d0ba98dd9000173c1e9b14eb3185a310a3e2c96c248",
+          "importOrder": [
+            "src/corpus/storage.ts",
+            "src/corpus/searcher.ts",
+            "src/ollama.ts"
+          ],
           "importsFiles": [
             "src/corpus/searcher.ts",
             "src/corpus/storage.ts",
@@ -1222,6 +1333,12 @@
             "embedWithTimeout"
           ],
           "hash": "e8f3e80246e184e26008b461caa8cb47bf1a5b4b4da75690d34567f277b29a81",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/errors.ts",
+            "src/observability.ts",
+            "src/tiers.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/observability.ts",
@@ -1243,6 +1360,11 @@
             "runWithTimeoutAndFallback"
           ],
           "hash": "e16f1e2fca0ab903c11f4c283f7ec24859a7366b0848fbcdaeda35496bca041a",
+          "importOrder": [
+            "src/errors.ts",
+            "src/tiers.ts",
+            "src/observability.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/observability.ts",
@@ -1569,6 +1691,13 @@
             "timestamp"
           ],
           "hash": "af460ad9e32a6404c417055ead96eab067334d3802b49c9bc38b86f0894f1c25",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/format.ts",
+            "src/routing.ts",
+            "src/tiers.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/format.ts",
@@ -1605,6 +1734,13 @@
             "setTestBackoff"
           ],
           "hash": "7cb42e2cc96548092174bf359e7d4e1098c949b29c38c9bde96360b722703caa",
+          "importOrder": [
+            "src/semaphore.ts",
+            "src/errors.ts",
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/tiers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -1707,6 +1843,10 @@
             "validateNumCtx"
           ],
           "hash": "2fdcf165bd27772711251d7ecef9c4df8e81b30b0873eb546a00b6f123e69bc2",
+          "importOrder": [
+            "src/tiers.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/tiers.ts"
@@ -1728,6 +1868,13 @@
             "setRouteDirective"
           ],
           "hash": "064be65623dd86c0dafa7af41170d60c521f6dc5adba1ba25bdc970945a806be",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/errors.ts",
+            "src/observability.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -1746,6 +1893,12 @@
             "withRunContext"
           ],
           "hash": "2a4d0c0607d8d5487712023b4950446118e67463b6520b9a6534682a405bb70d",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/tiers.ts",
+            "src/observability.ts",
+            "src/profiles.ts"
+          ],
           "importsFiles": [
             "src/observability.ts",
             "src/ollama.ts",
@@ -1811,6 +1964,10 @@
             "withCallContext"
           ],
           "hash": "f57f265943c6f1f2555b9c0f21a1dff52c765f1b610d16ed3226382c9cbafcec",
+          "importOrder": [
+            "src/runContext.ts",
+            "src/observability.ts"
+          ],
           "importsFiles": [
             "src/observability.ts",
             "src/runContext.ts"
@@ -1822,6 +1979,14 @@
             "handleArtifactDiff"
           ],
           "hash": "f9ef20b7c313352ff87ba2d750e9a9d16ace739f18081452db92a1349c768031",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/runContext.ts",
+            "src/errors.ts",
+            "src/tools/artifacts/scan.ts",
+            "src/tools/artifacts/diff.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -1837,6 +2002,13 @@
             "handleArtifactExportToPath"
           ],
           "hash": "4724d3d67a32b22a9ad487442128b462e1dbae885c9b06f1a488550c646692ce",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/runContext.ts",
+            "src/tools/artifacts/scan.ts",
+            "src/tools/artifacts/export.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -1851,6 +2023,13 @@
             "handleArtifactList"
           ],
           "hash": "1ffda29734ac39c77b2b0dd5f653507cdde316f2ce66b83fb0b7accc3db21889",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/runContext.ts",
+            "src/errors.ts",
+            "src/tools/artifacts/scan.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -1865,6 +2044,13 @@
             "handleArtifactPrune"
           ],
           "hash": "890193ddeb73bdd752fbd9a3cd985054d17d52bfcff36667d537df42bcbf2392",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/tools/artifacts/scan.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -1879,6 +2065,13 @@
             "handleArtifactRead"
           ],
           "hash": "9519cb6cec90fff27a6248b78f818fbc067538bae9335816ed4fb570cdc5b098",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/runContext.ts",
+            "src/errors.ts",
+            "src/tools/artifacts/scan.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -1895,6 +2088,17 @@
             "handleArtifactReleaseNoteSnippet"
           ],
           "hash": "ee6c3e305af5ed5c4248e4d995f66d8cad0fdef815fd2ec240556ea4e1a14ede",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/runContext.ts",
+            "src/errors.ts",
+            "src/tools/artifacts/scan.ts",
+            "src/tools/artifacts/snippets.ts",
+            "src/tools/packs/incidentPack.ts",
+            "src/tools/packs/repoPack.ts",
+            "src/tools/packs/changePack.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -1914,6 +2118,13 @@
             "lineDiff"
           ],
           "hash": "b37c2992a90a1636696908f9a944b51422b17926a85ebfe00008f6cf246e9a31",
+          "importOrder": [
+            "src/errors.ts",
+            "src/tools/artifacts/scan.ts",
+            "src/tools/packs/incidentPack.ts",
+            "src/tools/packs/repoPack.ts",
+            "src/tools/packs/changePack.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/tools/artifacts/scan.ts",
@@ -1945,6 +2156,12 @@
             "scanAllArtifacts"
           ],
           "hash": "590d8f611af1846c7c1a4211992922de06250b6c3ce158fdfbc56d9efa7362b2",
+          "importOrder": [
+            "src/errors.ts",
+            "src/tools/packs/incidentPack.ts",
+            "src/tools/packs/repoPack.ts",
+            "src/tools/packs/changePack.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/tools/packs/changePack.ts",
@@ -1960,6 +2177,11 @@
             "renderReleaseNote"
           ],
           "hash": "5ae8b29c4b24b6c825f36d5e855b89f0b192948e840d4390de842237943d539e",
+          "importOrder": [
+            "src/tools/packs/incidentPack.ts",
+            "src/tools/packs/repoPack.ts",
+            "src/tools/packs/changePack.ts"
+          ],
           "importsFiles": [
             "src/tools/packs/changePack.ts",
             "src/tools/packs/incidentPack.ts",
@@ -1972,6 +2194,18 @@
             "runBatch"
           ],
           "hash": "368db8ff9d3da0a463acf5a6e907520ef6132568dbc52fe60c7b3de657531b45",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/tiers.ts",
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/guardrails/timeouts.ts",
+            "src/routing.ts",
+            "src/profiles.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/_runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -1993,6 +2227,13 @@
             "handleBatchProofCheck"
           ],
           "hash": "139c1e84aab568febd31100e89e25032dc109142390c3695a4a4eca598fb8184",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/guardrails/stringifiedArrayGuard.ts",
+            "src/errors.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2015,6 +2256,15 @@
             "readString"
           ],
           "hash": "023dfb974f84c873cfe7eecece99a0bf8854fcf5aa1ebbe8dbf4a8aa13c2b3a9",
+          "importOrder": [
+            "src/tiers.ts",
+            "src/sources.ts",
+            "src/corpus/storage.ts",
+            "src/corpus/searcher.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/briefs/evidence.ts"
+          ],
           "importsFiles": [
             "src/corpus/searcher.ts",
             "src/corpus/storage.ts",
@@ -2048,6 +2298,17 @@
             "synthesizeChangeBrief"
           ],
           "hash": "53da6ac05918f9e589c67b9fc86fcb82b171c04ec87baa1ab7459c15d88e82fc",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/briefs/evidence.ts",
+            "src/tools/briefs/common.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2066,6 +2327,18 @@
             "handleChat"
           ],
           "hash": "a36cd0d3f1301e3ab45c1240e84e85a64fb4e454a022a81c5ee2b6c5451d585e",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/tiers.ts",
+            "src/guardrails/timeouts.ts",
+            "src/routing.ts",
+            "src/profiles.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2085,6 +2358,20 @@
             "handleClassify"
           ],
           "hash": "5aac471c9870eb3516d3d46f4e0052f46ef72b28015b3da67abceba86ad2f732",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/tools/batch.ts",
+            "src/tools/_helpers.ts",
+            "src/guardrails/confidence.ts",
+            "src/guardrails/stringifiedArrayGuard.ts",
+            "src/sources.ts",
+            "src/tools/briefs/common.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/_runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2106,6 +2393,17 @@
             "handleCodeCitation"
           ],
           "hash": "f032554e544e959231cd5f979b41d9140a82b0f42681ed40e2cf0e351ddd75f6",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/sources.ts",
+            "src/guardrails/stringifiedArrayGuard.ts",
+            "src/tools/briefs/common.ts",
+            "src/observability.ts",
+            "src/runContext.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/guardrails/stringifiedArrayGuard.ts",
@@ -2124,6 +2422,12 @@
             "handleCodeMap"
           ],
           "hash": "7707f4f7fccb57f1994fb8d030d9f0a0d01a671ae32948c53182119d187fc5f7",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2137,6 +2441,15 @@
             "handleCodeReview"
           ],
           "hash": "fe60954c3309a314ce96d69d8996e711faa2362e3ad47a79dac5473cca6ce636",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/sources.ts",
+            "src/tools/briefs/common.ts",
+            "src/tools/_helpers.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/runContext.ts",
@@ -2153,6 +2466,20 @@
             "handleCorpusAmend"
           ],
           "hash": "f2c939c78f2766095b3d0174fdcc66f0517c047cc94892a6be86a5f66b265eff",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/tiers.ts",
+            "src/guardrails/embedTimeout.ts",
+            "src/corpus/storage.ts",
+            "src/corpus/manifest.ts",
+            "src/corpus/lock.ts",
+            "src/corpus/identity.ts",
+            "src/corpus/indexer.ts",
+            "src/corpus/chunker.ts",
+            "src/errors.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/chunker.ts",
             "src/corpus/identity.ts",
@@ -2174,6 +2501,13 @@
             "handleCorpusAmendHistory"
           ],
           "hash": "1bd0403e6b5ddbafc2012221c568a76288b4fb0a1d426ed6d897953688d42d81",
+          "importOrder": [
+            "src/corpus/manifest.ts",
+            "src/errors.ts",
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/manifest.ts",
             "src/envelope.ts",
@@ -2190,6 +2524,18 @@
             "validateAndMapCitations"
           ],
           "hash": "8f4dc056dc81f5e7b641042320be747bf81a931ac839d93a62a8cdc7bf7d6146",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/observability.ts",
+            "src/tools/briefs/common.ts",
+            "src/corpus/storage.ts",
+            "src/corpus/searcher.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/corpus/searcher.ts",
             "src/corpus/storage.ts",
@@ -2209,6 +2555,14 @@
             "handleCorpusHealth"
           ],
           "hash": "59b2a3aec69b6cb58e8d8f1ba381ffece65c9fee1abc7e2a0f04e84f6ad5cfa9",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/corpus/storage.ts",
+            "src/corpus/manifest.ts",
+            "src/errors.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/manifest.ts",
             "src/corpus/storage.ts",
@@ -2224,6 +2578,15 @@
             "handleCorpusIndex"
           ],
           "hash": "737b89ae395f14872eb2eca60f0f7129e340fd43144a5ba6770823b816e5be3c",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/tiers.ts",
+            "src/corpus/indexer.ts",
+            "src/corpus/storage.ts",
+            "src/errors.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/indexer.ts",
             "src/corpus/storage.ts",
@@ -2240,6 +2603,12 @@
             "handleCorpusList"
           ],
           "hash": "411fc66e5e9687e98872d95c87fa578d2fe972e4e64b90c2518d8038c887e720",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/corpus/storage.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/storage.ts",
             "src/envelope.ts",
@@ -2253,6 +2622,13 @@
             "handleCorpusRefresh"
           ],
           "hash": "a1da5b20d8d0eb56bc37a318f270291354fb2ae214b712b8f6bd096abfc11f8c",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/tiers.ts",
+            "src/corpus/refresh.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/refresh.ts",
             "src/envelope.ts",
@@ -2267,6 +2643,12 @@
             "handleCorpusRerank"
           ],
           "hash": "49b1fe56ceafb2a5e4dff6c258ba6726ed1bbca69dd076d68947f082ab78898a",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2282,6 +2664,16 @@
             "handleCorpusSearch"
           ],
           "hash": "e5d25a831b8fd7f0cf2894252aace791d5ec492657eba99dc5bc462b62e6a6f6",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/tiers.ts",
+            "src/corpus/storage.ts",
+            "src/corpus/searcher.ts",
+            "src/profiles.ts",
+            "src/errors.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/searcher.ts",
             "src/corpus/storage.ts",
@@ -2370,6 +2762,17 @@
             "handleDraft"
           ],
           "hash": "c86533797699fa1166e58b116476bc5dde363a9c24c2bb4614777de5b49b8723",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/guardrails/writeConfirm.ts",
+            "src/guardrails/compileCheck.ts",
+            "src/guardrails/bannedPhrases.ts",
+            "src/errors.ts",
+            "src/observability.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2389,6 +2792,13 @@
             "handleEmbed"
           ],
           "hash": "6cb8a53079290997c35ffd5b0fa9c80438abe69ba2f7f93c2f5c1bc8142c18c5",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/tiers.ts",
+            "src/guardrails/embedTimeout.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/guardrails/embedTimeout.ts",
@@ -2403,6 +2813,15 @@
             "handleEmbedSearch"
           ],
           "hash": "8ec9a93b5a792f9c75cbb6abaf4a5f1ed27e0dd54f0b88f6971c1ee711748a84",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/tiers.ts",
+            "src/embedMath.ts",
+            "src/errors.ts",
+            "src/guardrails/embedTimeout.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/embedMath.ts",
             "src/envelope.ts",
@@ -2419,6 +2838,16 @@
             "handleExtract"
           ],
           "hash": "790c0d95a585893d69ae035e865909ab81f87ad13ea6da6d3ee53490e1209178",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/tools/batch.ts",
+            "src/sources.ts",
+            "src/tools/briefs/common.ts",
+            "src/errors.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2436,6 +2865,18 @@
             "handleHypothesisDrill"
           ],
           "hash": "b55cc897bc6d04a7ecad0dbda0956f87d7e259819bc9ba36111e6d8cb04edcc9",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/tools/briefs/common.ts",
+            "src/tools/artifacts/scan.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/packs/incidentPack.ts",
+            "src/tools/briefs/evidence.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2456,6 +2897,17 @@
             "synthesizeIncidentBrief"
           ],
           "hash": "add5feb910a19cc0f627abe28b01886ea1578b43068d3de79f7ef20344ebfd1a",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/briefs/evidence.ts",
+            "src/tools/briefs/common.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2485,6 +2937,13 @@
             "handleLogStats"
           ],
           "hash": "098165b54f61cb0e960b99fa7610cc2da391787dde11078b7a14e3540cf04431",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/logRead.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2499,6 +2958,13 @@
             "handleLogTail"
           ],
           "hash": "bab119f0de4846a84c66144f044c187197820297e8602caabfc98c46009a095d",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/logRead.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2513,6 +2979,16 @@
             "handleMultiFileRefactorPropose"
           ],
           "hash": "adf522c13682eaa30caae4c000bebd42ed84f14f5d9558a7d8f1ad792392907b",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/sources.ts",
+            "src/guardrails/stringifiedArrayGuard.ts",
+            "src/tools/briefs/common.ts",
+            "src/runContext.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/guardrails/stringifiedArrayGuard.ts",
@@ -2547,6 +3023,22 @@
             "handleChangePack"
           ],
           "hash": "d36c530fe63e9b51ff31ff13b75e02fad4c43ca2e0bb25a28192d60c7bfac612",
+          "importOrder": [
+            "src/tools/packs/artifactWrite.ts",
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/runContext.ts",
+            "src/tools/_runContext.ts",
+            "src/errors.ts",
+            "src/tools/briefs/common.ts",
+            "src/tools/briefs/evidence.ts",
+            "src/sources.ts",
+            "src/tools/triageLogs.ts",
+            "src/tools/changeBrief.ts",
+            "src/tools/extract.ts",
+            "src/guardrails/stringifiedArrayGuard.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2570,6 +3062,20 @@
             "handleIncidentPack"
           ],
           "hash": "8fc1fb70b628495cbc8b638d62bc688d0f51d3ef0d688d3a2ada5e04baefb68d",
+          "importOrder": [
+            "src/tools/packs/artifactWrite.ts",
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/runContext.ts",
+            "src/tools/_runContext.ts",
+            "src/errors.ts",
+            "src/tools/briefs/common.ts",
+            "src/tools/briefs/evidence.ts",
+            "src/tools/triageLogs.ts",
+            "src/tools/incidentBrief.ts",
+            "src/guardrails/stringifiedArrayGuard.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2592,6 +3098,19 @@
             "handleRepoPack"
           ],
           "hash": "b883a808582eafd620de5522732e8448c76b73785e38da7bc080d91772b5cfb2",
+          "importOrder": [
+            "src/tools/packs/artifactWrite.ts",
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/runContext.ts",
+            "src/tools/_runContext.ts",
+            "src/tools/briefs/common.ts",
+            "src/tools/briefs/evidence.ts",
+            "src/sources.ts",
+            "src/tools/repoBrief.ts",
+            "src/tools/extract.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -2612,6 +3131,16 @@
             "handleRefactorPlan"
           ],
           "hash": "dcf6c2cf4309d1fa33e9635832d2eac4e49774040db6a00e55c10b2bc83958d9",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/sources.ts",
+            "src/guardrails/stringifiedArrayGuard.ts",
+            "src/tools/briefs/common.ts",
+            "src/runContext.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/guardrails/stringifiedArrayGuard.ts",
@@ -2630,6 +3159,16 @@
             "synthesizeRepoBrief"
           ],
           "hash": "e8261f4153717d669fc7b554387905c2f85d9fe7c389ad407b7f807bb188d39a",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/observability.ts",
+            "src/runContext.ts",
+            "src/tools/briefs/evidence.ts",
+            "src/tools/briefs/common.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -2647,6 +3186,19 @@
             "handleResearch"
           ],
           "hash": "a4270606d81be38f9e06b23693235566f53d55e339773b91275579b23dac1a7c",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/tools/_helpers.ts",
+            "src/guardrails/citations.ts",
+            "src/sources.ts",
+            "src/coverage.ts",
+            "src/guardrails/stringifiedArrayGuard.ts",
+            "src/protectedPaths.ts",
+            "src/runContext.ts",
+            "src/tools/_runContext.ts"
+          ],
           "importsFiles": [
             "src/coverage.ts",
             "src/envelope.ts",
@@ -2667,6 +3219,18 @@
             "runTool"
           ],
           "hash": "4e365ba6aa5c18bb2938c77b48fda48bd490b3469c60a54df0a37590db275ead",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/tiers.ts",
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/guardrails/timeouts.ts",
+            "src/routing.ts",
+            "src/profiles.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/_runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2686,6 +3250,19 @@
             "handleSummarizeDeep"
           ],
           "hash": "32ee08aa8966bfd599051044743f9e9a9de629770a9eb8018d4dcb2062472e18",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/tools/summarizeFast.ts",
+            "src/sources.ts",
+            "src/coverage.ts",
+            "src/guardrails/stringifiedArrayGuard.ts",
+            "src/tools/briefs/common.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/_helpers.ts"
+          ],
           "importsFiles": [
             "src/coverage.ts",
             "src/envelope.ts",
@@ -2706,6 +3283,13 @@
             "handleSummarizeFast"
           ],
           "hash": "47c089fdec56f80fd0dfabccc4b109b5887307fbfb321485b5aa053d7a34cb14",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/tools/briefs/common.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/runContext.ts",
@@ -2720,6 +3304,16 @@
             "handleTriageLogs"
           ],
           "hash": "c4cc9497d50e54a3f2ef533ea7ab3018467c97fbdbb1e83b674604be2cf4c91b",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/tools/batch.ts",
+            "src/guardrails/stringifiedArrayGuard.ts",
+            "src/tools/briefs/common.ts",
+            "src/errors.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2737,6 +3331,17 @@
             "handleVerifyClaims"
           ],
           "hash": "f6d70497f5b3b85eabb8525f5cbeaaa121f6ef286ef13d7e4fb56b60ed3d2311",
+          "importOrder": [
+            "src/envelope.ts",
+            "src/observability.ts",
+            "src/tiers.ts",
+            "src/tools/runner.ts",
+            "src/sources.ts",
+            "src/tools/briefs/common.ts",
+            "src/errors.ts",
+            "src/profiles.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -2785,6 +3390,69 @@
           "writes": 1
         },
         {
+          "reads": 1,
+          "where": [
+            "cwd:.gitignore"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:CHANGELOG.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:CONTRIBUTING.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:Dockerfile"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:LICENSE"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:README.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:SECURITY.md"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:package.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:tsconfig.json"
+          ],
+          "writes": 0
+        },
+        {
           "reads": 0,
           "where": [
             "temp"
@@ -2792,7 +3460,7 @@
           "writes": 1
         }
       ],
-      "outsideReads": 31,
+      "outsideReads": 42,
       "outsideWrites": 19,
       "role": "code",
       "testedBy": 97,
@@ -2811,6 +3479,11 @@
             "createFakeOllama"
           ],
           "hash": "50174214e4fd176cde231bf9bd2c0459b2bce64e7ac1ed2ca77d459e1c4ca8b3",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/tiers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/ollama.ts",
@@ -2824,6 +3497,13 @@
             "sampleEnvelope"
           ],
           "hash": "ec512426ac9ecb6bb56f80495659684523eafb27c8ae9f9acf4272ddbc6937dc",
+          "importOrder": [
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/runContext.ts",
+            "tests/_helpers/fakeOllama.ts"
+          ],
           "importsFiles": [
             "src/observability.ts",
             "src/ollama.ts",
@@ -2855,6 +3535,10 @@
         },
         {
           "hash": "812a8eef1f5a60118333cc11e5861e5f1161130070c1d0bf020adef1bc74430c",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/ollama.ts"
@@ -2863,6 +3547,10 @@
         },
         {
           "hash": "929dad26b7dcf4ae5eaa7fb882e9f461cd41fc2b369782dc18d49cf4cc70492c",
+          "importOrder": [
+            "src/profiles.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/profiles.ts"
@@ -2871,6 +3559,17 @@
         },
         {
           "hash": "22b7451d53d99457772b6b5420ccb96e1bcbb1780b04657714eb0f16a970a74c",
+          "importOrder": [
+            "src/tools/runner.ts",
+            "src/tools/chat.ts",
+            "src/routing.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "tests/_helpers/index.ts",
+            "src/runContext.ts",
+            "src/ollama.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/observability.ts",
@@ -2900,6 +3599,16 @@
         },
         {
           "hash": "81648c22de49c67049afde1464458ab6ec0e08a00ac6b063dae7c04de1f59990",
+          "importOrder": [
+            "src/corpus/indexer.ts",
+            "src/corpus/searcher.ts",
+            "src/corpus/manifest.ts",
+            "src/corpus/storage.ts",
+            "src/tools/corpusIndex.ts",
+            "src/errors.ts",
+            "src/ollama.ts",
+            "src/envelope.ts"
+          ],
           "importsFiles": [
             "src/corpus/indexer.ts",
             "src/corpus/manifest.ts",
@@ -2922,6 +3631,10 @@
         },
         {
           "hash": "354d21632011483501dc8a15d535d8c9cf6cd5476c0de0a8cbf2bc5d64887630",
+          "importOrder": [
+            "src/corpus/lock.ts",
+            "src/corpus/identity.ts"
+          ],
           "importsFiles": [
             "src/corpus/identity.ts",
             "src/corpus/lock.ts"
@@ -2930,6 +3643,14 @@
         },
         {
           "hash": "82515bf417b9980f6eb5255fd2657bc04d8458de7638b51ac6e1fc561f3e61de",
+          "importOrder": [
+            "src/corpus/indexer.ts",
+            "src/corpus/refresh.ts",
+            "src/corpus/storage.ts",
+            "src/corpus/manifest.ts",
+            "src/ollama.ts",
+            "src/envelope.ts"
+          ],
           "importsFiles": [
             "src/corpus/indexer.ts",
             "src/corpus/manifest.ts",
@@ -2942,6 +3663,12 @@
         },
         {
           "hash": "423e56c1b8478dc0e59321f09e06f5786da9ef02bbbdcc09cae65f1315eea084",
+          "importOrder": [
+            "src/corpus/searcher.ts",
+            "src/corpus/storage.ts",
+            "src/ollama.ts",
+            "src/envelope.ts"
+          ],
           "importsFiles": [
             "src/corpus/searcher.ts",
             "src/corpus/storage.ts",
@@ -2952,6 +3679,19 @@
         },
         {
           "hash": "ca0fa800a5d10ade21eb3a90e3afdecc8a7c6fa7e3f0dced1c41c764e9a75e73",
+          "importOrder": [
+            "src/corpus/indexer.ts",
+            "src/corpus/refresh.ts",
+            "src/corpus/searcher.ts",
+            "src/corpus/manifest.ts",
+            "src/corpus/storage.ts",
+            "src/tools/corpusSearch.ts",
+            "src/tools/corpusAnswer.ts",
+            "src/tools/corpusRefresh.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/tools/corpusIndex.ts"
+          ],
           "importsFiles": [
             "src/corpus/indexer.ts",
             "src/corpus/manifest.ts",
@@ -2977,6 +3717,14 @@
         },
         {
           "hash": "0fba12a2161dc83ec9d4ac2e44532e4ef5df32826a852d5c850dcf5cb4533ba1",
+          "importOrder": [
+            "src/tools/doctor.ts",
+            "tests/_helpers/fakeOllama.ts",
+            "src/observability.ts",
+            "src/profiles.ts",
+            "src/runContext.ts",
+            "src/routing.ts"
+          ],
           "importsFiles": [
             "src/observability.ts",
             "src/profiles.ts",
@@ -3011,6 +3759,13 @@
         },
         {
           "hash": "cad0e4fcbcf53b6c09b6d63ea87ca6e506cb4cd4238147ef1ac38def55b7ee61",
+          "importOrder": [
+            "src/corpus/indexer.ts",
+            "src/corpus/storage.ts",
+            "src/evals/retrieval.ts",
+            "src/ollama.ts",
+            "src/envelope.ts"
+          ],
           "importsFiles": [
             "src/corpus/indexer.ts",
             "src/corpus/storage.ts",
@@ -3058,6 +3813,11 @@
         },
         {
           "hash": "020d127c4a4bf3bbe5dd15942b4585d8346a9116ee5d4d4e4368e1ef14a9d03a",
+          "importOrder": [
+            "src/guardrails/writeConfirm.ts",
+            "src/protectedPaths.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/guardrails/writeConfirm.ts",
@@ -3082,6 +3842,23 @@
         },
         {
           "hash": "504c440fbba0dfa81bd1c781a11f44fb973fd1c0adfaa2f0c10c9961d23a20b4",
+          "importOrder": [
+            "src/tools/extract.ts",
+            "src/tools/classify.ts",
+            "src/tools/summarizeFast.ts",
+            "src/tools/summarizeDeep.ts",
+            "src/tools/research.ts",
+            "src/tools/chat.ts",
+            "src/tools/codeCitation.ts",
+            "src/tools/changeBrief.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts",
+            "src/tools/corpusAnswer.ts",
+            "src/corpus/storage.ts"
+          ],
           "importsFiles": [
             "src/corpus/storage.ts",
             "src/envelope.ts",
@@ -3103,6 +3880,10 @@
         },
         {
           "hash": "6c5537c4cafb243880b325dc68753aa0051d456fa9027dd3aa71a78988358c8b",
+          "importOrder": [
+            "src/observability.ts",
+            "src/envelope.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts"
@@ -3111,6 +3892,10 @@
         },
         {
           "hash": "40faa1eaa4b9e8e51beaed51fa99099fd91035aef279d1bf94980e95f3285731",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/ollama.ts"
@@ -3119,6 +3904,10 @@
         },
         {
           "hash": "2984f9560ed1bfa0012bc1a0b9614057341c3942082474fc39b37cba37dada3c",
+          "importOrder": [
+            "src/ollama.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/ollama.ts"
@@ -3131,6 +3920,14 @@
         },
         {
           "hash": "0280748349235861ffe2eb1ad53af143632a2fd3a45b35709e4a16943fef4259",
+          "importOrder": [
+            "src/prewarm.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3143,6 +3940,14 @@
         },
         {
           "hash": "11fd2e396544fbb766637fa50f9113eca8864d579275b66dfca8cbfcc3f469f3",
+          "importOrder": [
+            "src/prewarm.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3155,6 +3960,10 @@
         },
         {
           "hash": "5e551f842e78335c6fd19551acea3528c92fb1b0d8119bf6b888a0dffa6edf63",
+          "importOrder": [
+            "src/profiles.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/profiles.ts"
@@ -3163,6 +3972,10 @@
         },
         {
           "hash": "d9ddd0384b7ffff0f8bf45350575bf022f7e7116825a748e247a028222ad255b",
+          "importOrder": [
+            "src/protectedPaths.ts",
+            "src/guardrails/writeConfirm.ts"
+          ],
           "importsFiles": [
             "src/guardrails/writeConfirm.ts",
             "src/protectedPaths.ts"
@@ -3171,6 +3984,24 @@
         },
         {
           "hash": "4c16270440ffda461c5dae07aba1f86f34abf520a42cbeb508d9a12de2ef7a27",
+          "importOrder": [
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/guardrails/compileCheck.ts",
+            "src/tools/draft.ts",
+            "src/tools/research.ts",
+            "src/tools/embedSearch.ts",
+            "src/tools/summarizeDeep.ts",
+            "src/tools/summarizeFast.ts",
+            "src/tools/classify.ts",
+            "src/tools/extract.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/errors.ts",
+            "src/runContext.ts",
+            "src/tools/corpusAnswer.ts",
+            "src/corpus/storage.ts"
+          ],
           "importsFiles": [
             "src/corpus/storage.ts",
             "src/envelope.ts",
@@ -3197,6 +4028,13 @@
         },
         {
           "hash": "20529473653e53be19b72e359327507a799012d30aa807c46ed971c023a13d98",
+          "importOrder": [
+            "src/routing.ts",
+            "tests/_helpers/fakeOllama.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/tiers.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/observability.ts",
@@ -3208,6 +4046,17 @@
         },
         {
           "hash": "050dd4d84f064f2e6d9551b1818f9c5cc755c3c962e30414c0c242747b5ea9f9",
+          "importOrder": [
+            "src/tools/classify.ts",
+            "src/tools/runner.ts",
+            "src/routing.ts",
+            "tests/_helpers/fakeOllama.ts",
+            "src/observability.ts",
+            "src/profiles.ts",
+            "src/errors.ts",
+            "src/ollama.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/observability.ts",
@@ -3223,6 +4072,14 @@
         },
         {
           "hash": "47334f687e1a77e9351c0bb61959e581c311d0bf1985963fc49802516aab09ab",
+          "importOrder": [
+            "src/routing.ts",
+            "tests/_helpers/fakeOllama.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/tiers.ts",
+            "src/ollama.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/observability.ts",
@@ -3235,6 +4092,10 @@
         },
         {
           "hash": "c736faf81d6f8f4054185605b50147451016ad6acafc1f53b12599da3afe9e1b",
+          "importOrder": [
+            "src/runContext.ts",
+            "src/envelope.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/runContext.ts"
@@ -3243,6 +4104,10 @@
         },
         {
           "hash": "1a3e3ee5bd503143bc93774020501b78a865ba00eb6c9d317051340521ad645f",
+          "importOrder": [
+            "src/semaphore.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/semaphore.ts"
@@ -3251,6 +4116,16 @@
         },
         {
           "hash": "a0297b8d4317c0a7f413602a65437aed30c1f7caca5c2ad7fc38e12ea3e7ef00",
+          "importOrder": [
+            "src/tools/runner.ts",
+            "src/ollama.ts",
+            "src/semaphore.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/tiers.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/observability.ts",
@@ -3265,6 +4140,10 @@
         },
         {
           "hash": "bc0616bbf578f62b279e61a065e4ac1e401b0e696e13d97988331a3396469208",
+          "importOrder": [
+            "src/sources.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/sources.ts"
@@ -3299,6 +4178,15 @@
         },
         {
           "hash": "9e3f40814a4f99878427110de6b6841fa3c83d721d69a01fa8fe080f9d4bf518",
+          "importOrder": [
+            "src/tools/artifactDiff.ts",
+            "src/tools/artifacts/diff.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3312,6 +4200,15 @@
         },
         {
           "hash": "ffc649b65a815dd50d7bb1f97221c70b8c286ef243a472e56ebf24445a7765d2",
+          "importOrder": [
+            "src/tools/artifactExportToPath.ts",
+            "src/tools/artifactSnippets.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3325,6 +4222,14 @@
         },
         {
           "hash": "796f54e929de4c6e7165280b4364cee2d179d827a1307e73a9a7844b88ae552e",
+          "importOrder": [
+            "src/tools/artifactPrune.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3344,6 +4249,15 @@
         },
         {
           "hash": "052026f7cdc17ee0b4f048de97bcc0b9ea8257bd3270693653c5c17a4dcac48b",
+          "importOrder": [
+            "src/tools/artifactList.ts",
+            "src/tools/artifactRead.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3357,6 +4271,18 @@
         },
         {
           "hash": "27b935f38f46b4922fbf7845ea8c7679572e15ec8ae26b45000aad4558ed4456",
+          "importOrder": [
+            "src/tools/batch.ts",
+            "src/tools/classify.ts",
+            "src/tools/extract.ts",
+            "src/tools/triageLogs.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/envelope.ts",
+            "src/ollama.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -3373,6 +4299,15 @@
         },
         {
           "hash": "94d3938e5e5e42a8c7756c3188df56b5068aff94461a3ddd29d3ced24bd94894",
+          "importOrder": [
+            "src/tools/batchProofCheck.ts",
+            "src/errors.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -3386,6 +4321,15 @@
         },
         {
           "hash": "41eb702667dd7a8fd5a4e4628bfd2e566adcf0559fe18f4bb2728882b4607c61",
+          "importOrder": [
+            "src/tools/batch.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/tiers.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3399,6 +4343,15 @@
         },
         {
           "hash": "8d34c92564e434d6aade7cdc04d447ee3a46637117a4e9fa4c4e0e9febe42f54",
+          "importOrder": [
+            "src/tools/packs/changePack.ts",
+            "src/corpus/storage.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/storage.ts",
             "src/envelope.ts",
@@ -3412,6 +4365,13 @@
         },
         {
           "hash": "d123fe36c367143d60dde6ff427bc0b35ce2e7d73050b868efebb83a62d56896",
+          "importOrder": [
+            "src/tools/chat.ts",
+            "src/profiles.ts",
+            "tests/_helpers/index.ts",
+            "src/routing.ts",
+            "src/tiers.ts"
+          ],
           "importsFiles": [
             "src/profiles.ts",
             "src/routing.ts",
@@ -3423,6 +4383,11 @@
         },
         {
           "hash": "30ae6fac884866dea45c4cbcc72d960b2a0e5faf9082a1e81df0097b73733429",
+          "importOrder": [
+            "src/tools/classify.ts",
+            "src/profiles.ts",
+            "tests/_helpers/index.ts"
+          ],
           "importsFiles": [
             "src/profiles.ts",
             "src/tools/classify.ts",
@@ -3432,6 +4397,14 @@
         },
         {
           "hash": "f0f3338e00e5cab9403acd894eea06e3b1bfcfa8c09ab5eb79977a7ba3e93ca8",
+          "importOrder": [
+            "src/tools/codeCitation.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3444,6 +4417,14 @@
         },
         {
           "hash": "aa7494f94f00369c2d3b239891e6d200dfca5eb8ea0cd746d38a98f849807116",
+          "importOrder": [
+            "src/tools/codeMap.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3456,6 +4437,10 @@
         },
         {
           "hash": "18839c48bcaf9f65f8964d7f3c168122febb03c9e1b7babb388b445f7565d351",
+          "importOrder": [
+            "tests/_helpers/index.ts",
+            "src/tools/codeReview.ts"
+          ],
           "importsFiles": [
             "src/tools/codeReview.ts",
             "tests/_helpers/index.ts"
@@ -3464,6 +4449,17 @@
         },
         {
           "hash": "eae04f2a4e24e3c9b6acb98dcb1197b60b67fe9a9f74005a06fde5dc739c37f8",
+          "importOrder": [
+            "src/corpus/indexer.ts",
+            "src/corpus/storage.ts",
+            "src/corpus/manifest.ts",
+            "src/tools/corpusAmend.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/indexer.ts",
             "src/corpus/manifest.ts",
@@ -3479,6 +4475,11 @@
         },
         {
           "hash": "d9592759ea42968bfbce257eca0b1f0fbb9172a4033c7838e46179c697d3879b",
+          "importOrder": [
+            "src/tools/corpusAmendHistory.ts",
+            "src/runContext.ts",
+            "src/corpus/manifest.ts"
+          ],
           "importsFiles": [
             "src/corpus/manifest.ts",
             "src/runContext.ts",
@@ -3488,6 +4489,15 @@
         },
         {
           "hash": "346f63bbe4424c2d47b2f14c9ed71969bf5626702715393d245a6c2846135916",
+          "importOrder": [
+            "src/tools/corpusAnswer.ts",
+            "src/corpus/storage.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/storage.ts",
             "src/envelope.ts",
@@ -3501,6 +4511,16 @@
         },
         {
           "hash": "1e29560dfad22300bc4fcfa822393dc5f224b632923f65d22322e20284a6e33a",
+          "importOrder": [
+            "src/tools/corpusSearch.ts",
+            "src/tools/corpusAnswer.ts",
+            "src/corpus/storage.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/storage.ts",
             "src/envelope.ts",
@@ -3515,6 +4535,16 @@
         },
         {
           "hash": "8be8ad86dc1d8f5d46b3bc6211bccf7074ef90fcfc8a34cd99c16f49ce5e4635",
+          "importOrder": [
+            "src/corpus/indexer.ts",
+            "src/corpus/manifest.ts",
+            "src/tools/corpusHealth.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/indexer.ts",
             "src/corpus/manifest.ts",
@@ -3536,6 +4566,14 @@
         },
         {
           "hash": "1d8500b281e14c84c6d3d98b2c15e241cedf21ce3e55d4f0043d21161d983fc1",
+          "importOrder": [
+            "src/tools/corpusRerank.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3548,6 +4586,17 @@
         },
         {
           "hash": "0e842d7fbe4d81b5c77090c333e706986988528aa990621d2f8750db2d167254",
+          "importOrder": [
+            "src/corpus/indexer.ts",
+            "src/corpus/manifest.ts",
+            "src/tools/corpusIndex.ts",
+            "src/tools/corpusAmend.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/indexer.ts",
             "src/corpus/manifest.ts",
@@ -3563,6 +4612,16 @@
         },
         {
           "hash": "0a6a188a5c38141fc744ec0e7797ab3f51a65d4ab86cb5dd39d2b7087f5652af",
+          "importOrder": [
+            "src/corpus/indexer.ts",
+            "src/tools/corpusSearch.ts",
+            "src/corpus/storage.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/indexer.ts",
             "src/corpus/storage.ts",
@@ -3577,6 +4636,14 @@
         },
         {
           "hash": "9d9e59b7ba11ec998d1a1633e4c74353840acf59abb0d4c6a16bd198589bdf9f",
+          "importOrder": [
+            "src/tools/doctor.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3589,6 +4656,11 @@
         },
         {
           "hash": "258ded011bfcc1e348091ab31469e4426dfe12055b10bf5d6155760e5a797ba8",
+          "importOrder": [
+            "src/tools/draft.ts",
+            "src/errors.ts",
+            "tests/_helpers/index.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/tools/draft.ts",
@@ -3598,6 +4670,15 @@
         },
         {
           "hash": "f10c6723d6ed69900c84cf49b4710b0c790a281b6ebcf77b6134c9b2fff1a2e9",
+          "importOrder": [
+            "src/tools/embedSearch.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts",
+            "src/errors.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -3611,6 +4692,15 @@
         },
         {
           "hash": "8112e0b78be16b8f307d2411fbe16efc1327ed6c6fe5df02a18e62e458658577",
+          "importOrder": [
+            "src/tools/embed.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -3624,6 +4714,14 @@
         },
         {
           "hash": "66448ac63cfd06300d6ee0b9bf089cd0165becffa7910de59c6561edb060e5fc",
+          "importOrder": [
+            "src/tools/embed.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3636,6 +4734,11 @@
         },
         {
           "hash": "cc2bb9bd31bf3e9f1cc232e3f67ee2f8c7268ade4948789d7c00ca9ff14c0186",
+          "importOrder": [
+            "src/tools/extract.ts",
+            "src/profiles.ts",
+            "tests/_helpers/index.ts"
+          ],
           "importsFiles": [
             "src/profiles.ts",
             "src/tools/extract.ts",
@@ -3645,6 +4748,15 @@
         },
         {
           "hash": "e99b4c6ea7f84a17eb4cbe291dc9c102058a406de8d1fc050ab2d34089cc68aa",
+          "importOrder": [
+            "src/tools/briefs/common.ts",
+            "src/tools/codeReview.ts",
+            "src/tools/classify.ts",
+            "src/tools/extract.ts",
+            "src/tools/triageLogs.ts",
+            "src/tools/summarizeFast.ts",
+            "tests/_helpers/index.ts"
+          ],
           "importsFiles": [
             "src/tools/briefs/common.ts",
             "src/tools/classify.ts",
@@ -3658,6 +4770,15 @@
         },
         {
           "hash": "94b311f653bc23cfaeead3237a6b9f872dc30dfe03354a629febdc3bdfbfad8e",
+          "importOrder": [
+            "src/tools/hypothesisDrill.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts",
+            "src/tools/packs/incidentPack.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3671,6 +4792,15 @@
         },
         {
           "hash": "f4e9fbc886804ef5cd81f27927ae5209031cde8826631411aa29c0abe135a425",
+          "importOrder": [
+            "src/tools/incidentBrief.ts",
+            "src/corpus/storage.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/storage.ts",
             "src/envelope.ts",
@@ -3684,6 +4814,14 @@
         },
         {
           "hash": "7e4f0607b0e121619513e0fa8ae6769c2359f368d40267f5ad7c02758cab2dc3",
+          "importOrder": [
+            "src/tools/packs/incidentPack.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3704,6 +4842,14 @@
         },
         {
           "hash": "eafef577ee618c1c73bf2b954e99aaa1ce083605c709e82b1ee7565be76645cd",
+          "importOrder": [
+            "src/tools/logTail.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3716,6 +4862,14 @@
         },
         {
           "hash": "7a28da48d0436f8402d509c341b498a59cd34e12aa91e87825d987f9b2caef50",
+          "importOrder": [
+            "src/tools/multiFileRefactorPropose.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3728,6 +4882,16 @@
         },
         {
           "hash": "0fd237b575158ba88108002e0bb9fc093fed56b74383270c1bf01ccc3d2afc83",
+          "importOrder": [
+            "src/tools/extract.ts",
+            "src/tools/runner.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "src/envelope.ts",
+            "src/ollama.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/errors.ts",
@@ -3742,6 +4906,14 @@
         },
         {
           "hash": "7054b23112812a083fccbc755961ccb8445fe91015f1b25e8b0b0e6e753749c1",
+          "importOrder": [
+            "src/tools/refactorPlan.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3754,6 +4926,16 @@
         },
         {
           "hash": "5d30d5b78dfef65c4ef3ba4b3db14654b6c9c75967ca5fd02e73941d09ce2fe4",
+          "importOrder": [
+            "src/tools/repoBrief.ts",
+            "src/tools/changeBrief.ts",
+            "src/corpus/storage.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/storage.ts",
             "src/envelope.ts",
@@ -3768,6 +4950,15 @@
         },
         {
           "hash": "4e91a3025e5274fa9afdbbf1cbd485e35fed39084fba4b43f88cea58729e5996",
+          "importOrder": [
+            "src/tools/packs/repoPack.ts",
+            "src/corpus/storage.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/corpus/storage.ts",
             "src/envelope.ts",
@@ -3781,6 +4972,14 @@
         },
         {
           "hash": "0ba3ac8f80565db9f4ed4719c1c25cf7942e34ee54d73e41f52a553b670f0f9b",
+          "importOrder": [
+            "src/tools/research.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3793,6 +4992,15 @@
         },
         {
           "hash": "b256274f637b7ccfd572c5aa571fa64f6db1e41458e0216cc8b789d009208cfe",
+          "importOrder": [
+            "src/tools/runner.ts",
+            "src/observability.ts",
+            "src/profiles.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts",
+            "src/tiers.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3806,6 +5014,12 @@
         },
         {
           "hash": "47347fd8f20d284fd9e8856c5523d67880030974ffa462958afd82f8ca980c94",
+          "importOrder": [
+            "src/tools/artifacts/snippets.ts",
+            "src/tools/packs/incidentPack.ts",
+            "src/tools/packs/repoPack.ts",
+            "src/tools/packs/changePack.ts"
+          ],
           "importsFiles": [
             "src/tools/artifacts/snippets.ts",
             "src/tools/packs/changePack.ts",
@@ -3816,6 +5030,14 @@
         },
         {
           "hash": "1b77ebdae27296e23e597f48131ecdef3bf9201a49ae5b17982a946e671ee82c",
+          "importOrder": [
+            "src/tools/summarizeDeep.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3828,6 +5050,14 @@
         },
         {
           "hash": "c22598bba1eceac5ce644dfe7f53ca78e9c1025e986b1ae5add5f4795ad0d8b4",
+          "importOrder": [
+            "src/tools/summarizeFast.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/ollama.ts",
+            "src/envelope.ts",
+            "src/runContext.ts"
+          ],
           "importsFiles": [
             "src/envelope.ts",
             "src/observability.ts",
@@ -3848,6 +5078,16 @@
         },
         {
           "hash": "616a9e43659a5e119aaf6ca1fb051b9b56cdb951388adce1fcd2378d79b6fd5e",
+          "importOrder": [
+            "src/tools/verifyClaims.ts",
+            "src/routing.ts",
+            "src/profiles.ts",
+            "src/observability.ts",
+            "src/errors.ts",
+            "tests/_helpers/index.ts",
+            "src/runContext.ts",
+            "src/ollama.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
             "src/observability.ts",
@@ -3881,7 +5121,7 @@
   ],
   "doors": [
     {
-      "checksCount": 5,
+      "checksCount": 4,
       "commands": [
         {
           "job": "verify",
@@ -4089,37 +5329,41 @@
           "runKind": "executes"
         },
         {
+          "built": true,
           "directory": true,
           "job": "cloud-smoke",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json",
           "when": {
             "event": "workflow_dispatch"
           }
         },
         {
+          "built": true,
           "directory": true,
           "job": "docker-build",
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "docker build Dockerfile"
         },
         {
+          "built": true,
           "directory": true,
           "job": "lockfile-sync",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
+          "built": true,
           "directory": true,
           "job": "verify",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -5136,7 +6380,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 5,
+      "checksCount": 4,
       "commands": [
         {
           "job": "npm",
@@ -5277,18 +6521,20 @@
           "via": "docker build Dockerfile"
         },
         {
+          "built": true,
           "directory": true,
           "job": "docker",
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "docker build Dockerfile"
         },
         {
+          "built": true,
           "directory": true,
           "job": "npm",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -5788,26 +7034,10 @@
     {
       "readers": [
         {
-          "by": "src/tools/codeMap.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": ".gitignore",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": ".github/workflows/doc-drift.yml"
         },
         {
           "by": ".github/workflows/release.yml"
-        },
-        {
-          "by": "src/tools/codeMap.ts",
-          "call": "literal",
-          "confidence": "ast"
         }
       ],
       "target": "CHANGELOG.md",
@@ -5819,25 +7049,9 @@
           "by": "scripts/sync-doc-versions.mjs",
           "call": "literal",
           "confidence": "ast"
-        },
-        {
-          "by": "src/tools/codeMap.ts",
-          "call": "literal",
-          "confidence": "ast"
         }
       ],
       "target": "CONTRIBUTING.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "src/tools/codeMap.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "Dockerfile",
       "writers": []
     },
     {
@@ -5853,16 +7067,6 @@
     },
     {
       "readers": [
-        {
-          "by": "src/protectedPaths.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/tools/codeMap.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
         {
           "by": "tests/guardrails/writeConfirm.test.ts",
           "call": "literal",
@@ -5889,11 +7093,6 @@
       "readers": [
         {
           "by": "scripts/sync-doc-versions.mjs",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/tools/codeMap.ts",
           "call": "literal",
           "confidence": "ast"
         },
@@ -5927,16 +7126,6 @@
     },
     {
       "readers": [
-        {
-          "by": "src/protectedPaths.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/tools/codeMap.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
         {
           "by": "tests/guardrails/writeConfirm.test.ts",
           "call": "literal",
@@ -6061,11 +7250,6 @@
         {
           "by": "src/corpus/storage.ts",
           "call": "readFileSync",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/tools/codeMap.ts",
-          "call": "literal",
           "confidence": "ast"
         },
         {
@@ -6316,11 +7500,6 @@
     },
     {
       "readers": [
-        {
-          "by": "src/tools/codeMap.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
         {
           "by": "tests/tools/artifactDiff.test.ts",
           "call": "literal",

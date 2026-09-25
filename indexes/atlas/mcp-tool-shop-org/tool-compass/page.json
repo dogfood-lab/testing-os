@@ -6,7 +6,7 @@
   ],
   "breaks": [
     {
-      "doors": 5,
+      "doors": 6,
       "importedBy": [],
       "importedByTests": [
         "tests"
@@ -26,8 +26,32 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "Release Binaries now also runs ui.py.",
+        "subjects": [
+          ".github/workflows/release-binaries.yml",
+          "ui.py"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release now also runs ui.py.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "ui.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "cli.py is now also read by .github/workflows/release.yml.",
+        "subjects": [
+          "cli.py",
+          ".github/workflows/release.yml"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -35,7 +59,7 @@
       "commit": "6f5a2339b184abe7a06e9092d79ce97ff40b7f05",
       "generatedAt": "2026-09-25T02:34:04.334Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -44,7 +68,7 @@
   "changesTogetherWithTests": 0,
   "commit": "3af3760cde1bcd74bbc083de6453a617fd8e8786",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly Python (46 files), JavaScript (4) and TypeScript (2). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes to PyPI, @mcptoolshop/tool-compass (npm) to npm, and a container image. People run tool-compass and tool-compass-ui.",
+  "derived": "8 parts, mostly Python (46 files), JavaScript (4) and TypeScript (2). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes to PyPI, @mcptoolshop/tool-compass to npm, and a container image. People run tool-compass and tool-compass-ui.",
   "doors": [
     {
       "checks": [
@@ -131,7 +155,7 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 15 paths",
+        "on a pull request to main touching 15 paths",
         "on a push to main touching 15 paths",
         "on a schedule (`0 9 * * 1,3,5`)",
         "or by hand"
@@ -190,6 +214,38 @@
       ]
     },
     {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 11
+        }
+      ],
+      "runs": [
+        "ui.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [
+        "publishes @mcptoolshop/tool-compass to npm",
+        "creates a GitHub release",
+        "uploads artifacts/* to the release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*` is pushed",
+        "or by hand"
+      ]
+    },
+    {
       "builds": [
         "cli.py"
       ],
@@ -208,8 +264,10 @@
           "files": 12
         }
       ],
-      "runs": [],
-      "runsCount": 0,
+      "runs": [
+        "ui.py"
+      ],
+      "runsCount": 1,
       "runsMore": 0,
       "sends": [
         "creates a GitHub release",
@@ -219,29 +277,6 @@
       "triggers": [
         "when a release is published",
         "on a `workflow_call` event",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "checksMore": 0,
-      "file": ".github/workflows/release.yml",
-      "id": ".github/workflows/release.yml",
-      "landings": [],
-      "name": "Release",
-      "pushes": false,
-      "reach": [],
-      "runs": [],
-      "runsCount": 0,
-      "runsMore": 0,
-      "sends": [
-        "publishes @mcptoolshop/tool-compass (npm) to npm",
-        "creates a GitHub release"
-      ],
-      "stages": [],
-      "triggers": [
-        "when a tag matching `v*` is pushed",
         "or by hand"
       ]
     },
@@ -323,9 +358,8 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T03:20:54.651Z",
+  "generatedAt": "2026-09-25T09:23:08.561Z",
   "limits": [
-    "3 import sites could not be resolved.",
     "11 writes and 6 reads use paths built at run time and are not named here.",
     "1 read goes to a path its caller passes, not to this repository.",
     "There is a docker-compose.yml and a fly.toml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.",
@@ -354,7 +388,7 @@
               "name": "redact_url_credentials",
               "part": "root",
               "partLabel": "the repository root",
-              "phrase": "redact url credentials"
+              "phrase": "`redact_url_credentials`"
             }
           ],
           "when": "isinstance(explicit, str) and explicit.strip()"
@@ -365,7 +399,7 @@
               "name": "redact_url_credentials",
               "part": "root",
               "partLabel": "the repository root",
-              "phrase": "redact url credentials"
+              "phrase": "`redact_url_credentials`"
             }
           ],
           "when": "_is_ollama_embedding_provider(cfg)"
@@ -376,7 +410,7 @@
               "name": "disconnect_all",
               "part": "root",
               "partLabel": "the repository root",
-              "phrase": "disconnect all",
+              "phrase": "`disconnect_all`",
               "receiver": "SimpleBackendManager"
             }
           ],
@@ -388,7 +422,7 @@
               "name": "disconnect_all",
               "part": "root",
               "partLabel": "the repository root",
-              "phrase": "disconnect all",
+              "phrase": "`disconnect_all`",
               "receiver": "SimpleBackendManager"
             }
           ],
@@ -400,52 +434,46 @@
       "inner": [],
       "part": "root",
       "partLabel": "the repository root",
-      "phrase": "main",
+      "phrase": "`main`",
       "steps": [
         {
           "count": 6,
           "name": null,
           "part": "root",
           "partLabel": "the repository root",
-          "phrase": "config"
+          "phrase": "`config.py`"
         },
         {
           "count": 3,
           "name": null,
           "part": "root",
           "partLabel": "the repository root",
-          "phrase": "backend client simple"
+          "phrase": "`backend_client_simple.py`"
         },
         {
           "name": "ToolDefinition",
           "part": "root",
           "partLabel": "the repository root",
-          "phrase": "tool definition"
-        },
-        {
-          "name": "resolved_embedding_base_url",
-          "part": null,
-          "partLabel": null,
-          "phrase": "resolved embedding base url"
+          "phrase": "`ToolDefinition`"
         },
         {
           "name": "Embedder",
           "part": "root",
           "partLabel": "the repository root",
-          "phrase": "embedder"
+          "phrase": "`Embedder`"
         },
         {
           "count": 3,
           "name": null,
           "part": "root",
           "partLabel": "the repository root",
-          "phrase": "indexer"
+          "phrase": "`indexer.py`"
         },
         {
           "name": "disconnect_all",
           "part": "root",
           "partLabel": "the repository root",
-          "phrase": "disconnect all",
+          "phrase": "`disconnect_all`",
           "receiver": "SimpleBackendManager"
         },
         {
@@ -453,7 +481,7 @@
           "name": null,
           "part": "root",
           "partLabel": "the repository root",
-          "phrase": "indexer"
+          "phrase": "`indexer.py`"
         }
       ]
     }
@@ -464,7 +492,12 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "gateway.py"
+    "gateway.py",
+    "config.py",
+    "backend_client_simple.py",
+    "tool_manifest.py",
+    "embedder.py",
+    "indexer.py"
   ],
   "summary": null,
   "summaryFrom": null,

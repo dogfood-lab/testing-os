@@ -517,6 +517,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -557,6 +558,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "b4f3ac7bda3a8486a365920fc12c531935b4a3ed9de19580b2d9e5a4e559463b",
           "path": "site/src/site-config.ts"
         },
@@ -599,6 +601,13 @@
             "insertCandidateArtifact"
           ],
           "hash": "899e2b0a05e5ba1b2566b91f92974920b97cc22171d6fda25b5fc6afeb56537a",
+          "importOrder": [
+            "src/core/types.ts",
+            "src/db/schema.ts",
+            "src/core/enums.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/core/enums.ts",
             "src/core/ids.ts",
@@ -615,6 +624,12 @@
             "insertEvidence"
           ],
           "hash": "888251bcb626a3edea0535849f75a156fcb19d2b4ff6fe960b014d4f65d7bb68",
+          "importOrder": [
+            "src/core/types.ts",
+            "src/db/schema.ts",
+            "src/core/enums.ts",
+            "src/core/ids.ts"
+          ],
           "importsFiles": [
             "src/core/enums.ts",
             "src/core/ids.ts",
@@ -630,6 +645,14 @@
             "insertSourceArtifact"
           ],
           "hash": "4fe2b11cffdef2ca31aeadf3d4f68ac087a863b501d7fb4697061c313490d019",
+          "importOrder": [
+            "src/core/types.ts",
+            "src/db/schema.ts",
+            "src/core/enums.ts",
+            "src/core/ids.ts",
+            "src/util/hashing.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/core/enums.ts",
             "src/core/ids.ts",
@@ -649,6 +672,10 @@
             "restoreBackup"
           ],
           "hash": "430009a5ddfb2c0eb7af273eb9a865bd4901ecfa070bb2b0b2fc60955c3c9667",
+          "importOrder": [
+            "src/util/timestamps.ts",
+            "src/util/json.ts"
+          ],
           "importsFiles": [
             "src/util/json.ts",
             "src/util/timestamps.ts"
@@ -669,6 +696,12 @@
             "insertReviewFeedback"
           ],
           "hash": "6584fa36987101ae1e61a7b7f4a9abb764076bf25ff10f1e67004a8379c5c665",
+          "importOrder": [
+            "src/calibration/calibration-types.ts",
+            "src/review/review-run-types.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/calibration/calibration-types.ts",
             "src/core/ids.ts",
@@ -691,6 +724,12 @@
             "persistFindings"
           ],
           "hash": "96aba66dce409793dfddbd4d4a7908acd91ed2977179108398cd891368c8d3e3",
+          "importOrder": [
+            "src/calibration/calibration-types.ts",
+            "src/calibration/calibration-store.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/calibration/calibration-store.ts",
             "src/calibration/calibration-types.ts",
@@ -706,6 +745,12 @@
             "writeCanonFile"
           ],
           "hash": "c9fa0134117a8a734e1207ce748b8fbae6fdc4e0f55b421f2589a6a1f9b0c4ef",
+          "importOrder": [
+            "src/util/json.ts",
+            "src/core/validate.ts",
+            "src/util/timestamps.ts",
+            "src/core/types.ts"
+          ],
           "importsFiles": [
             "src/core/types.ts",
             "src/core/validate.ts",
@@ -725,6 +770,13 @@
             "updateStatementLifecycle"
           ],
           "hash": "3435732bfd3291b41df4422698721ee1ac2406edc6d40bcede53f500a916a23b",
+          "importOrder": [
+            "src/core/types.ts",
+            "src/db/schema.ts",
+            "src/core/enums.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/core/enums.ts",
             "src/core/ids.ts",
@@ -742,6 +794,11 @@
             "listVersions"
           ],
           "hash": "d93a03be86fa43c00b358f1b62adb7f71b0f59878d38514c0f1f2220a44dffad",
+          "importOrder": [
+            "src/db/schema.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/core/ids.ts",
             "src/db/schema.ts",
@@ -780,6 +837,16 @@
             "reviewFeedbackCommand"
           ],
           "hash": "f86024b022b9e87bf362c38489f4bb948cdbc1d326e76ff3481c942161e08e24",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/calibration/calibration-store.ts",
+            "src/calibration/findings-engine.ts",
+            "src/calibration/calibration-types.ts",
+            "src/review/review-run-types.ts"
+          ],
           "importsFiles": [
             "src/calibration/calibration-store.ts",
             "src/calibration/calibration-types.ts",
@@ -797,6 +864,13 @@
             "canonStatusCommand"
           ],
           "hash": "ab69330c0c25c62bed18cb19fcbdaf5ad930553485b4198fc78a52baa111542a",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/canon/canon-store.ts",
+            "src/canon/canon-version.ts",
+            "src/core/enums.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/canon/canon-version.ts",
@@ -821,6 +895,17 @@
             "curateResolveContradictionCommand"
           ],
           "hash": "7c95081b36cdb4b58bb6058933cbb8f905955f709b20d4ac0a45b7fb6133367a",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/extraction/extraction-store.ts",
+            "src/curation/curation-store.ts",
+            "src/canon/canon-files.ts",
+            "src/extraction/extraction-types.ts",
+            "src/core/enums.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-files.ts",
             "src/canon/canon-store.ts",
@@ -839,6 +924,12 @@
             "doctorCommand"
           ],
           "hash": "c2b0d57d7e2190396c1db3ca38a837f8bc6423a8bb2f3d64223598a2b85130ad",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/providers/ollama/ollama-provider.ts"
+          ],
           "importsFiles": [
             "src/cli/config.ts",
             "src/db/migrate.ts",
@@ -856,6 +947,17 @@
             "extractStatusCommand"
           ],
           "hash": "2a41bc891dd72bd1966ac9706567720969440bae7dfa8b7526fb94ee2abd5e2f",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/source-artifacts.ts",
+            "src/providers/ollama/ollama-provider.ts",
+            "src/extraction/extraction-store.ts",
+            "src/extraction/extract.ts",
+            "src/extraction/extraction-types.ts"
+          ],
           "importsFiles": [
             "src/artifacts/source-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -878,6 +980,19 @@
             "gateRunCommand"
           ],
           "hash": "744e57d99fe2ffbbd63646e001e2bde43ecab2f8a16f1d7c681b19b343e221da",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/providers/ollama/ollama-provider.ts",
+            "src/gate/artifact-detector.ts",
+            "src/gate/gate-engine.ts",
+            "src/gate/gate-types.ts",
+            "src/gate/policy.ts",
+            "src/gate/policy-types.ts",
+            "src/gate/rollout-report.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/cli/config.ts",
@@ -898,6 +1013,15 @@
             "ingestCommand"
           ],
           "hash": "efdd5a8083b03a5ab54776972d65e4840e305dffcd295b9779b44f8b25849bb7",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/source-artifacts.ts",
+            "src/util/hashing.ts",
+            "src/core/enums.ts"
+          ],
           "importsFiles": [
             "src/artifacts/source-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -914,6 +1038,13 @@
             "initCommand"
           ],
           "hash": "ddf2907784ac89dbd1359d455f3cafc35f565053bc577d294e0a30c770e8b865",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/cli/commands/doctor.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/cli/commands/doctor.ts",
@@ -930,6 +1061,21 @@
             "onboardRunCommand"
           ],
           "hash": "6c535f15ff5f84e432479a72ec60eecb18d22576f8801c50c5e0ed64105753a3",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/onboard/source-scanner.ts",
+            "src/onboard/policy-presets.ts",
+            "src/onboard/onboard-report.ts",
+            "src/onboard/recommend.ts",
+            "src/portfolio/portfolio-engine.ts",
+            "src/gate/policy.ts",
+            "src/cli/commands/init.ts",
+            "src/cli/commands/ingest.ts",
+            "src/onboard/onboard-types.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/cli/commands/ingest.ts",
@@ -964,6 +1110,13 @@
             "orgStaleCommand"
           ],
           "hash": "f9d79e178dd8f667956a08001c77d6839e9584f6077b553c9eca2844c5a4d1d7",
+          "importOrder": [
+            "src/org/org-engine.ts",
+            "src/portfolio/portfolio-engine.ts",
+            "src/org/org-alerts.ts",
+            "src/org/org-actions.ts",
+            "src/gate/gate-types.ts"
+          ],
           "importsFiles": [
             "src/gate/gate-types.ts",
             "src/org/org-actions.ts",
@@ -990,6 +1143,16 @@
             "redirectRunCommand"
           ],
           "hash": "106ae8940eac6bb5330814ce4dc337c4e7a2d49acef76d7c6ca32748fc8e3754",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/providers/ollama/ollama-provider.ts",
+            "src/review/review-store.ts",
+            "src/redirect/redirect-engine.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -1007,6 +1170,16 @@
             "repairRunCommand"
           ],
           "hash": "598364951c79a2e31f851acef40f1967d874123348e4fa60bc522873d2b246ec",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/providers/ollama/ollama-provider.ts",
+            "src/review/review-store.ts",
+            "src/revision/structural-engine.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -1027,6 +1200,17 @@
             "reviewShowCommand"
           ],
           "hash": "628bf239005e1c1475e373628caea8c765762d12416bda620985ac5e7436712c",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/providers/ollama/ollama-provider.ts",
+            "src/review/review-engine.ts",
+            "src/review/review-store.ts",
+            "src/core/enums.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -1045,6 +1229,16 @@
             "reviseRunCommand"
           ],
           "hash": "32d7b63a8f67852e3c9ac18e8104c01a132cc55ea91aeaaca474f4fd98bd9290",
+          "importOrder": [
+            "src/cli/config.ts",
+            "src/db/sqlite.ts",
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/providers/ollama/ollama-provider.ts",
+            "src/review/review-store.ts",
+            "src/revision/revision-engine.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -1062,6 +1256,11 @@
             "statusCommand"
           ],
           "hash": "6425dc4ca0fdf3f2384069f8d08ae50e8b9ed2f30e5ceb3b70b3e25d49b0d374",
+          "importOrder": [
+            "src/org/org-engine.ts",
+            "src/org/org-alerts.ts",
+            "src/watchtower/watchtower-engine.ts"
+          ],
           "importsFiles": [
             "src/org/org-alerts.ts",
             "src/org/org-engine.ts",
@@ -1112,6 +1311,27 @@
         },
         {
           "hash": "e4cc0e21440936fbaaa9579a066369271fc40aff1798f74275daa2399486e14f",
+          "importOrder": [
+            "src/cli/commands/init.ts",
+            "src/cli/commands/doctor.ts",
+            "src/cli/commands/canon.ts",
+            "src/cli/commands/ingest.ts",
+            "src/cli/commands/extract.ts",
+            "src/cli/commands/review.ts",
+            "src/cli/commands/calibrate.ts",
+            "src/cli/commands/revise.ts",
+            "src/cli/commands/repair.ts",
+            "src/cli/commands/gate.ts",
+            "src/cli/commands/redirect.ts",
+            "src/cli/commands/onboard.ts",
+            "src/cli/commands/portfolio.ts",
+            "src/cli/commands/org.ts",
+            "src/cli/commands/workbench.ts",
+            "src/cli/commands/status.ts",
+            "src/cli/commands/watchtower.ts",
+            "src/cli/commands/backup.ts",
+            "src/cli/commands/curate.ts"
+          ],
           "importsFiles": [
             "src/cli/commands/backup.ts",
             "src/cli/commands/calibrate.ts",
@@ -1175,6 +1395,17 @@
             "rejectCandidate"
           ],
           "hash": "2c2043452226bd80b7fa62a045a910c2b38d9494e90e5937e33723b6e0f4c376",
+          "importOrder": [
+            "src/curation/curation-types.ts",
+            "src/core/types.ts",
+            "src/extraction/extraction-types.ts",
+            "src/core/enums.ts",
+            "src/canon/canon-store.ts",
+            "src/extraction/extraction-store.ts",
+            "src/canon/canon-version.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/canon/canon-version.ts",
@@ -1219,6 +1450,10 @@
             "consolidateCandidates"
           ],
           "hash": "1f68567ed24f9fe8a81c79ba38122fa31eea97543b724e55cb47cc998f871efe",
+          "importOrder": [
+            "src/extraction/extraction-types.ts",
+            "src/extraction/extraction-store.ts"
+          ],
           "importsFiles": [
             "src/extraction/extraction-store.ts",
             "src/extraction/extraction-types.ts"
@@ -1230,6 +1465,14 @@
             "runExtraction"
           ],
           "hash": "137cbcf69a8cd115f255c02454990015de12efd95c317f1adbeffe6ea3c3b004",
+          "importOrder": [
+            "src/providers/provider.ts",
+            "src/core/types.ts",
+            "src/extraction/extraction-types.ts",
+            "src/extraction/extraction-store.ts",
+            "src/extraction/pass-runner.ts",
+            "src/extraction/consolidation.ts"
+          ],
           "importsFiles": [
             "src/core/types.ts",
             "src/extraction/consolidation.ts",
@@ -1259,6 +1502,12 @@
             "updatePassResult"
           ],
           "hash": "d5e16df0a1fdfbee4a9566cf41291de116dc952f490f33a94808891609bd78a1",
+          "importOrder": [
+            "src/extraction/extraction-types.ts",
+            "src/core/enums.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/core/enums.ts",
             "src/core/ids.ts",
@@ -1289,6 +1538,16 @@
             "runPass"
           ],
           "hash": "51386a58e07bdcd34f2f920adf328cc5ae52ef3983b283df714f961d872ae342",
+          "importOrder": [
+            "src/providers/provider.ts",
+            "src/core/types.ts",
+            "src/extraction/extraction-types.ts",
+            "src/core/enums.ts",
+            "src/extraction/extraction-validate.ts",
+            "src/extraction/extraction-store.ts",
+            "src/extraction/prompts.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/core/enums.ts",
             "src/core/types.ts",
@@ -1330,6 +1589,13 @@
             "runGate"
           ],
           "hash": "9256534af0e47ad15eeee122294224cad72fc81c03d0dbf3b40c5834fc1380fd",
+          "importOrder": [
+            "src/providers/provider.ts",
+            "src/gate/gate-types.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/review/review-engine.ts",
+            "src/review/review-store.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/gate/gate-types.ts",
@@ -1353,6 +1619,10 @@
         },
         {
           "hash": "f30688540cb5cd16ef2a5fe4814a871d49199297344e852ebc9f170edd93f075",
+          "importOrder": [
+            "src/gate/gate-types.ts",
+            "src/core/enums.ts"
+          ],
           "importsFiles": [
             "src/core/enums.ts",
             "src/gate/gate-types.ts"
@@ -1370,6 +1640,14 @@
             "shouldSkip"
           ],
           "hash": "8c8833e4b24eab89242d3671d83b4de9844aa1410d068f3ac49c9f1d87f9f4c9",
+          "importOrder": [
+            "src/gate/policy-types.ts",
+            "src/core/enums.ts",
+            "src/gate/gate-types.ts",
+            "src/util/json.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/core/enums.ts",
             "src/core/ids.ts",
@@ -1397,6 +1675,11 @@
             "generateOnboardReport"
           ],
           "hash": "7a99a6e3eabf517f8a5fdcde621454fad905f56d9049abac3f8ea7eca42ab524",
+          "importOrder": [
+            "src/onboard/onboard-types.ts",
+            "src/core/enums.ts",
+            "src/canon/canon-store.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/core/enums.ts",
@@ -1428,6 +1711,12 @@
             "generateRecommendation"
           ],
           "hash": "ad927f17d3035011ba381a810f4f926621d96773441487ad33ab7203f34fab0c",
+          "importOrder": [
+            "src/onboard/onboard-types.ts",
+            "src/gate/policy-types.ts",
+            "src/onboard/source-scanner.ts",
+            "src/onboard/policy-presets.ts"
+          ],
           "importsFiles": [
             "src/gate/policy-types.ts",
             "src/onboard/onboard-types.ts",
@@ -1458,6 +1747,14 @@
             "rollbackAction"
           ],
           "hash": "2f962c7fed49d5d18b097eaf551757cf13d98160179677e67026c56784a6c053",
+          "importOrder": [
+            "src/gate/gate-types.ts",
+            "src/gate/policy.ts",
+            "src/cli/config.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts",
+            "src/util/json.ts"
+          ],
           "importsFiles": [
             "src/cli/config.ts",
             "src/core/ids.ts",
@@ -1474,6 +1771,10 @@
             "generateOrgAlerts"
           ],
           "hash": "3d7c0da4585b5b7a92f99895fb7cffad3c005d96a7b314c7f5982be6b538f3d0",
+          "importOrder": [
+            "src/org/org-types.ts",
+            "src/org/org-engine.ts"
+          ],
           "importsFiles": [
             "src/org/org-engine.ts",
             "src/org/org-types.ts"
@@ -1489,6 +1790,12 @@
             "generateOrgRecommendations"
           ],
           "hash": "078785add154250107cfee95ac924d80c2f5ea5805c0c85ec7e7360449890aaa",
+          "importOrder": [
+            "src/org/org-types.ts",
+            "src/cli/config.ts",
+            "src/gate/policy.ts",
+            "src/core/enums.ts"
+          ],
           "importsFiles": [
             "src/cli/config.ts",
             "src/core/enums.ts",
@@ -1509,6 +1816,12 @@
             "generatePortfolioFindings"
           ],
           "hash": "79659318275c6f32071b7e78dbcab16e6b94ebdd10b85c6097a59558902d6257",
+          "importOrder": [
+            "src/portfolio/portfolio-types.ts",
+            "src/onboard/onboard-report.ts",
+            "src/gate/policy.ts",
+            "src/cli/config.ts"
+          ],
           "importsFiles": [
             "src/cli/config.ts",
             "src/gate/policy.ts",
@@ -1533,6 +1846,11 @@
         },
         {
           "hash": "f36f5018bfe65782b38f6ce6cd877265791918c4e85a39eeaeb1eb0c99e38586",
+          "importOrder": [
+            "src/providers/provider.ts",
+            "src/providers/ollama/ollama-types.ts",
+            "src/providers/ollama/ollama-health.ts"
+          ],
           "importsFiles": [
             "src/providers/ollama/ollama-health.ts",
             "src/providers/ollama/ollama-types.ts",
@@ -1553,6 +1871,16 @@
             "runRedirect"
           ],
           "hash": "d9345703705f68f8c66a7510efd16917e41bea585d0eec563a5655be0062b9a6",
+          "importOrder": [
+            "src/providers/provider.ts",
+            "src/core/types.ts",
+            "src/redirect/redirect-types.ts",
+            "src/review/canon-packet.ts",
+            "src/review/review-store.ts",
+            "src/redirect/redirect-prompts.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/core/ids.ts",
             "src/core/types.ts",
@@ -1579,6 +1907,15 @@
             "formatPacketForPrompt"
           ],
           "hash": "49018b81fe7d1af6c26ba405df6f92692d0add4ad32e1790a5bc809ee01a4f4e",
+          "importOrder": [
+            "src/core/types.ts",
+            "src/core/enums.ts",
+            "src/review/review-run-types.ts",
+            "src/curation/curation-types.ts",
+            "src/canon/canon-store.ts",
+            "src/curation/curation-store.ts",
+            "src/core/ids.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/core/enums.ts",
@@ -1606,6 +1943,17 @@
             "runReview"
           ],
           "hash": "518336da252199ed536552bf902979e3077bc5cd501f57c3e4d38dc7abbf55a0",
+          "importOrder": [
+            "src/providers/provider.ts",
+            "src/core/types.ts",
+            "src/review/review-run-types.ts",
+            "src/core/enums.ts",
+            "src/review/canon-packet.ts",
+            "src/review/dimension-prompts.ts",
+            "src/review/review-store.ts",
+            "src/review/verdict-synthesis.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/core/enums.ts",
             "src/core/types.ts",
@@ -1651,6 +1999,13 @@
             "listReviewRuns"
           ],
           "hash": "ffdaa9e3e882d4d4285dc4bcd26df087fb71b7d1e541b3434a5d54cadbb25e7d",
+          "importOrder": [
+            "src/review/review-run-types.ts",
+            "src/core/types.ts",
+            "src/core/enums.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/core/enums.ts",
             "src/core/ids.ts",
@@ -1690,6 +2045,18 @@
             "runRevision"
           ],
           "hash": "d60613281dfe67180f63a43663f8a6888a0d400d3345a72782b601df4e9e6207",
+          "importOrder": [
+            "src/providers/provider.ts",
+            "src/core/types.ts",
+            "src/revision/revision-types.ts",
+            "src/review/canon-packet.ts",
+            "src/review/review-engine.ts",
+            "src/review/review-store.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/revision/revision-prompts.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/core/ids.ts",
@@ -1717,6 +2084,18 @@
             "runStructuralRepair"
           ],
           "hash": "42a310436b51fd2f3129139d5c147e696fb57bc4bb7ad1c972f05de0d1c521d6",
+          "importOrder": [
+            "src/providers/provider.ts",
+            "src/core/types.ts",
+            "src/revision/structural-types.ts",
+            "src/review/canon-packet.ts",
+            "src/review/review-engine.ts",
+            "src/review/review-store.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/revision/structural-prompts.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/core/ids.ts",
@@ -1770,6 +2149,15 @@
             "runScan"
           ],
           "hash": "dc41cba1456e00ee659a6f20fd82fb2182f3a208413d61ad54b80fc7f755d260",
+          "importOrder": [
+            "src/watchtower/watchtower-types.ts",
+            "src/org/org-types.ts",
+            "src/org/org-engine.ts",
+            "src/org/org-alerts.ts",
+            "src/core/ids.ts",
+            "src/util/timestamps.ts",
+            "src/util/json.ts"
+          ],
           "importsFiles": [
             "src/core/ids.ts",
             "src/org/org-alerts.ts",
@@ -1783,6 +2171,10 @@
         },
         {
           "hash": "ea130da0636e04b3b0b284bcbf2f3d1b685dc6d2abdf8f07e4e2e0208f2f58ae",
+          "importOrder": [
+            "src/org/org-types.ts",
+            "src/org/org-alerts.ts"
+          ],
           "importsFiles": [
             "src/org/org-alerts.ts",
             "src/org/org-types.ts"
@@ -1794,6 +2186,14 @@
             "createApi"
           ],
           "hash": "5acb701d5461604438b9edb30572550b16180b5e8f1d2030d2b1b7b95db02b26",
+          "importOrder": [
+            "src/org/org-engine.ts",
+            "src/org/org-alerts.ts",
+            "src/org/org-actions.ts",
+            "src/portfolio/portfolio-engine.ts",
+            "src/gate/gate-types.ts",
+            "src/watchtower/watchtower-engine.ts"
+          ],
           "importsFiles": [
             "src/gate/gate-types.ts",
             "src/org/org-actions.ts",
@@ -1919,6 +2319,14 @@
         },
         {
           "hash": "0c0d3029f8721079116303bf12fdc81912a7adc941cd2e8bdfb20955d44a0bd5",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/canon/canon-version.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/review/review-store.ts",
+            "src/calibration/calibration-store.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/calibration/calibration-store.ts",
@@ -1931,6 +2339,15 @@
         },
         {
           "hash": "21f83620989fea41db249d6788d62e891c2151c2cac0d3e85cc3cd669033a08b",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/canon/canon-version.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/review/review-store.ts",
+            "src/calibration/calibration-store.ts",
+            "src/calibration/findings-engine.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/calibration/calibration-store.ts",
@@ -1958,6 +2375,13 @@
         },
         {
           "hash": "83d149ecfd16b60d302bdda5c979d2a30c3a75d74a26c0f668435a5cdeb6dbef",
+          "importOrder": [
+            "src/cli/commands/init.ts",
+            "src/cli/commands/ingest.ts",
+            "src/db/sqlite.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/source-artifacts.ts"
+          ],
           "importsFiles": [
             "src/artifacts/source-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -2013,6 +2437,14 @@
         },
         {
           "hash": "a6b2e64142307be8f4d217d1eea7fd2b5429f72cbe1f4f73d05eb14da1905744",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/source-artifacts.ts",
+            "src/extraction/extraction-store.ts",
+            "src/curation/curation-store.ts",
+            "src/extraction/extraction-types.ts"
+          ],
           "importsFiles": [
             "src/artifacts/source-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -2025,6 +2457,15 @@
         },
         {
           "hash": "a40b5e60e4aceb5d02a25be4eef63453313194e19956bade0e054045112da481",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/source-artifacts.ts",
+            "src/extraction/extraction-store.ts",
+            "src/curation/curation-store.ts",
+            "src/canon/canon-files.ts",
+            "src/extraction/extraction-types.ts"
+          ],
           "importsFiles": [
             "src/artifacts/source-artifacts.ts",
             "src/canon/canon-files.ts",
@@ -2045,6 +2486,15 @@
         },
         {
           "hash": "0dff28e1ab0161314955c915789a0d81de8ea6778196c7c5db60f3cc6f632409",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/canon/canon-version.ts",
+            "src/artifacts/source-artifacts.ts",
+            "src/artifacts/evidence.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/util/hashing.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/artifacts/evidence.ts",
@@ -2058,6 +2508,12 @@
         },
         {
           "hash": "203b5c9183e5ea7356e4c03cdd0afa2e3ed59b7268ea79ed1e71c057541885e0",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/extraction/extraction-store.ts",
+            "src/extraction/consolidation.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/db/migrate.ts",
@@ -2068,6 +2524,14 @@
         },
         {
           "hash": "949f75349dd89490b1665316462bb23dffc60c787cb51a47559a2e9ca59e4b66",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/source-artifacts.ts",
+            "src/extraction/extraction-store.ts",
+            "src/extraction/extract.ts",
+            "src/providers/provider.ts"
+          ],
           "importsFiles": [
             "src/artifacts/source-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -2080,6 +2544,12 @@
         },
         {
           "hash": "a850f7a005c70b35304180244bf59a77964b25b44749bf320d70e5270d9aa825",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/source-artifacts.ts",
+            "src/extraction/extraction-store.ts"
+          ],
           "importsFiles": [
             "src/artifacts/source-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -2104,6 +2574,10 @@
         },
         {
           "hash": "c1aa5f253041c0c749e283253c8f47df7c31740cd57ac7bae4b0d859d98df07a",
+          "importOrder": [
+            "src/extraction/prompts.ts",
+            "src/extraction/extraction-types.ts"
+          ],
           "importsFiles": [
             "src/extraction/extraction-types.ts",
             "src/extraction/prompts.ts"
@@ -2119,6 +2593,14 @@
         },
         {
           "hash": "607214691367c69698b2e8f910434dd5a719241f24772bf97ed0a307fba99aec",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/canon/canon-version.ts",
+            "src/gate/gate-engine.ts",
+            "src/gate/gate-types.ts",
+            "src/providers/provider.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/canon/canon-version.ts",
@@ -2138,6 +2620,13 @@
         },
         {
           "hash": "0d1b68f4de21856d362106caf21dfc0075d3599b750a691162ba6b00483d381a",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/gate/policy.ts",
+            "src/gate/policy-types.ts",
+            "src/gate/gate-types.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/db/migrate.ts",
@@ -2149,6 +2638,15 @@
         },
         {
           "hash": "4d8cf155b08c0c55e9192088d08839a1fdd74c053e30484f0f0a00e648e2844b",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/canon/canon-version.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/review/review-store.ts",
+            "src/gate/policy.ts",
+            "src/gate/rollout-report.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -2162,6 +2660,11 @@
         },
         {
           "hash": "8a30416e4f99f70c9581a4d995749145adea01319d45a8ccb783b6a36652d569",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/onboard/onboard-report.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/db/migrate.ts",
@@ -2178,6 +2681,10 @@
         },
         {
           "hash": "4a7213c852c1b42fbc6a2e8c33678ce3743fac81fb693f2131a6f6c1f9ee4ca1",
+          "importOrder": [
+            "src/onboard/recommend.ts",
+            "src/onboard/onboard-types.ts"
+          ],
           "importsFiles": [
             "src/onboard/onboard-types.ts",
             "src/onboard/recommend.ts"
@@ -2193,6 +2700,12 @@
         },
         {
           "hash": "7f0e05b9a5f5cf7ace02c06766dfbb88060c6616963ebcbca3271e8c1835de0f",
+          "importOrder": [
+            "src/org/org-actions.ts",
+            "src/gate/policy.ts",
+            "src/gate/policy-types.ts",
+            "src/util/json.ts"
+          ],
           "importsFiles": [
             "src/gate/policy-types.ts",
             "src/gate/policy.ts",
@@ -2241,6 +2754,15 @@
         },
         {
           "hash": "954e60530144488d36c0d72dc96271793c852aff44a1efc502ed25c162fd7d1a",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/canon/canon-version.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/review/review-engine.ts",
+            "src/redirect/redirect-engine.ts",
+            "src/providers/provider.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -2254,6 +2776,13 @@
         },
         {
           "hash": "64e8addd8fbddfe04a82f4f784ec740c16306692808c19bbddcac1811c39d11d",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/canon/canon-version.ts",
+            "src/curation/curation-store.ts",
+            "src/review/canon-packet.ts"
+          ],
           "importsFiles": [
             "src/canon/canon-store.ts",
             "src/canon/canon-version.ts",
@@ -2273,6 +2802,15 @@
         },
         {
           "hash": "6cbf151a399a23209256405b427f67868c99aa83bed00f93335c56ca6a782a13",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/canon/canon-version.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/review/review-engine.ts",
+            "src/review/review-store.ts",
+            "src/providers/provider.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -2286,6 +2824,12 @@
         },
         {
           "hash": "a3acd1b9ab3ad5ac82ba36fd3d69d4816a6b0838a1a0b7e7cf89d6d95e129c81",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/review/review-store.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -2296,6 +2840,10 @@
         },
         {
           "hash": "a536e9e320c8e13da0a31a3aa2ea7af16b86d9090e9e8893c22f35476feb6849",
+          "importOrder": [
+            "src/review/verdict-synthesis.ts",
+            "src/review/review-run-types.ts"
+          ],
           "importsFiles": [
             "src/review/review-run-types.ts",
             "src/review/verdict-synthesis.ts"
@@ -2304,6 +2852,15 @@
         },
         {
           "hash": "8d4fdc823faf404baef9766f0a58e7d67da2efadbbc9b09f61f072651face0f0",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/canon/canon-version.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/review/review-engine.ts",
+            "src/revision/revision-engine.ts",
+            "src/providers/provider.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -2317,6 +2874,15 @@
         },
         {
           "hash": "8c6ca76f185b73d9d2c380b240f6ee337837e4945dfa11e0302d69fe731a947f",
+          "importOrder": [
+            "src/db/migrate.ts",
+            "src/canon/canon-store.ts",
+            "src/canon/canon-version.ts",
+            "src/artifacts/candidate-artifacts.ts",
+            "src/review/review-engine.ts",
+            "src/revision/structural-engine.ts",
+            "src/providers/provider.ts"
+          ],
           "importsFiles": [
             "src/artifacts/candidate-artifacts.ts",
             "src/canon/canon-store.ts",
@@ -2330,6 +2896,11 @@
         },
         {
           "hash": "d4e4258729149cef8ee64c4f56578e3c3b53b0edfd2ea6fb3c5e1b63529b8134",
+          "importOrder": [
+            "src/watchtower/watchtower-engine.ts",
+            "src/watchtower/watchtower-types.ts",
+            "src/org/org-types.ts"
+          ],
           "importsFiles": [
             "src/org/org-types.ts",
             "src/watchtower/watchtower-engine.ts",
@@ -2351,7 +2922,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "ci",
@@ -2406,11 +2977,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "ci",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -2714,6 +3286,17 @@
         }
       ],
       "target": "src/workbench/ui",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/workbench/ui/index.html",
+          "call": "script",
+          "confidence": "ast"
+        }
+      ],
+      "target": "src/workbench/ui/app.js",
       "writers": []
     },
     {

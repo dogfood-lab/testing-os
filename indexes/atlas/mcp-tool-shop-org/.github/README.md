@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 8d8d1d2.
 
 ## What this is
 
-8 parts, mostly JavaScript (4 files), Python (1) and TypeScript (1). Work enters through 3 doors; the busiest is Org Drift Guard, which reaches 3 parts.
+This is the organization's profile page and the community-health files its repositories inherit. 8 parts, mostly JavaScript (4 files), Python (1) and TypeScript (1). Work enters through 3 doors; the busiest is Org Drift Guard, which reaches 3 parts.
 
 ## What changed since 2026-09-25 (f4a5220)
 
@@ -62,7 +62,9 @@ People write .github/, assets/, brand/, profile/, the repository root and site/.
 
 ## Where to start
 
-Org Drift Guard runs no code this map can follow, so there is no path of files to read in order.
+.github/workflows/docs-quality.yml → scripts/check-catalog.mjs → docs/catalog.yaml → scripts/build-catalog.mjs
+
+Read those in order to follow one pull request end to end. This path follows Docs Quality, since Org Drift Guard runs no code this map can follow.
 
 ## What this map cannot see
 

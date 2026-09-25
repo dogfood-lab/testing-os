@@ -162,7 +162,7 @@
   "changesTogetherWithTests": 0,
   "commit": "6d91d8cceb43d7acbbcd994ba718ee17ef9bf483",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly TypeScript (83 files), JavaScript (9) and Python (2). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk.",
+  "derived": "10 parts, mostly Markdown (1273 files); code in TypeScript (83), JavaScript (9) and Python (2). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk.",
   "doors": [
     {
       "checks": [
@@ -197,17 +197,18 @@
       "sends": [],
       "stages": [],
       "triggers": [
-        "on a pull request",
+        "on a pull request to main",
         "on a push to main",
         "or by hand"
       ]
     },
     {
-      "checks": [
+      "builds": [
         "src/cli.ts",
         "src/mcp-server.ts"
       ],
-      "checksCount": 2,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
@@ -275,10 +276,11 @@
       ]
     },
     {
-      "checks": [
+      "builds": [
         "src/mcp-server.ts"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/sync.yml",
       "id": ".github/workflows/sync.yml",
@@ -460,7 +462,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T02:08:13.260Z",
+  "generatedAt": "2026-09-25T09:15:08.943Z",
   "limits": [
     "9 writes and 32 reads go to a path their caller passes, not to this repository.",
     "1 write and 8 reads go to the directory the command is run in (data/ and synergies/) or a path their caller passes, not to this repository.",
@@ -486,9 +488,15 @@
   "sequences": [],
   "startDoor": "package.json#claude-synergy-mcp",
   "startHere": [
-    "src/mcp-server.ts"
+    "src/mcp-server.ts",
+    "src/db.ts",
+    "src/query.ts",
+    "src/hybrid.ts",
+    "src/fetch.ts",
+    "src/ingest.ts",
+    "src/embed.ts"
   ],
-  "startReason": "This path follows claude-synergy-mcp (a command people run) from its entry, since Tests runs only tests.",
+  "startReason": "This path follows claude-synergy-mcp (a command people run) from its entry, since Tests runs only tests and checks.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 77,
@@ -532,6 +540,8 @@
       "testedBy": 0
     }
   ],
-  "untestedNote": [],
+  "untestedNote": [
+    "test/smoke/full-corpus.test.ts runs in no workflow."
+  ],
   "written": 7
 }

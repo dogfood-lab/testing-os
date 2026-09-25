@@ -67,22 +67,6 @@
         ]
       },
       {
-        "kind": "landing",
-        "sentence": "package-lock.json is now also read by src/discovery/filters.ts.",
-        "subjects": [
-          "package-lock.json",
-          "src/discovery/filters.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "src/ is now also read by src/extractors/imports.ts.",
-        "subjects": [
-          "src/",
-          "src/extractors/imports.ts"
-        ]
-      },
-      {
         "kind": "counts",
         "sentence": "129 files changed content, across 5 parts.",
         "subjects": []
@@ -104,10 +88,11 @@
   "derived": "5 parts, mostly TypeScript (78 files) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run repo-dataset. People import @mcptoolshop/repo-dataset.",
   "doors": [
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -179,10 +164,11 @@
       ]
     },
     {
-      "checks": [
+      "builds": [
         "src/"
       ],
-      "checksCount": 1,
+      "checks": [],
+      "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/publish.yml",
       "id": ".github/workflows/publish.yml",
@@ -283,11 +269,11 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-25T02:12:43.658Z",
+  "generatedAt": "2026-09-25T09:19:52.143Z",
   "limits": [
     "8 reads use paths built at run time and are not named here.",
     "9 writes and 12 reads go to a path their caller passes, not to this repository.",
-    "3 reads go to the directory the command is run in (.github/, package.json and tsconfig.json), not to this repository.",
+    "5 reads go to the directory the command is run in (.github/, package-lock.json, package.json and 2 more places), not to this repository.",
     "1 command is built at run time and not followed.",
     "19 test files under `src/tests/` are not run by CI and Publish on Linux, where the shell expands `**` as one directory level.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
@@ -304,11 +290,12 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/repo-dataset",
   "sequences": [],
-  "startDoor": "package.json#repo-dataset",
+  "startDoor": ".github/workflows/ci.yml",
   "startHere": [
-    "src/cli.ts"
+    ".github/workflows/ci.yml",
+    "src/index.ts",
+    "src/types.ts"
   ],
-  "startReason": "This path follows repo-dataset (a command people run) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 49,

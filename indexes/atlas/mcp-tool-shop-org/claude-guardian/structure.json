@@ -409,6 +409,7 @@
           "path": "site/package.json"
         },
         {
+          "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
@@ -449,6 +450,7 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "constantOnly": true,
           "hash": "c0ce6eaef0a60ac1fd5ed4dbea464d376bd558e48c390b88eea8779c9202fa43",
           "path": "site/src/site-config.ts"
         },
@@ -493,6 +495,12 @@
             "writeBudget"
           ],
           "hash": "56cf34464e711a4b49cfc7affff1c78d2ea3524e0eb717ba9e0810937be98f63",
+          "importOrder": [
+            "src/defaults.ts",
+            "src/fs-utils.ts",
+            "src/errors.ts",
+            "src/process-monitor.ts"
+          ],
           "importsFiles": [
             "src/defaults.ts",
             "src/errors.ts",
@@ -503,6 +511,11 @@
         },
         {
           "hash": "e7bc4c725926cb6e9b59a2478712c513b22ea1fdd29f261764d98f6a120e22d3",
+          "importOrder": [
+            "src/defaults.ts",
+            "src/process-monitor.ts",
+            "src/budget-store.ts"
+          ],
           "importsFiles": [
             "src/budget-store.ts",
             "src/defaults.ts",
@@ -512,6 +525,21 @@
         },
         {
           "hash": "603926050b2045bb67c9fff6af8d5118f5f89a84209709366d1fd624049a2129",
+          "importOrder": [
+            "src/log-manager.ts",
+            "src/doctor.ts",
+            "src/watchdog.ts",
+            "src/mcp-server.ts",
+            "src/watch-daemon.ts",
+            "src/process-monitor.ts",
+            "src/state.ts",
+            "src/fs-utils.ts",
+            "src/defaults.ts",
+            "src/budget.ts",
+            "src/budget-store.ts",
+            "src/errors.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/budget-store.ts",
             "src/budget.ts",
@@ -566,6 +594,16 @@
             "validateOutputPath"
           ],
           "hash": "9a86adb982f236dd534e94b264d08fa1cbe1fc1dfddc8eb21ca94fb46d27d510",
+          "importOrder": [
+            "src/types.ts",
+            "src/defaults.ts",
+            "src/fs-utils.ts",
+            "src/log-manager.ts",
+            "src/process-monitor.ts",
+            "src/handle-count.ts",
+            "src/state.ts",
+            "src/incident.ts"
+          ],
           "importsFiles": [
             "src/defaults.ts",
             "src/fs-utils.ts",
@@ -601,6 +639,10 @@
             "writeJournalEntry"
           ],
           "hash": "25624060ad35351c56392674b0a86b6ef09c0f28e28de3f1c4d7a9d720518ccf",
+          "importOrder": [
+            "src/types.ts",
+            "src/defaults.ts"
+          ],
           "importsFiles": [
             "src/defaults.ts",
             "src/types.ts"
@@ -636,6 +678,11 @@
             "scanLogs"
           ],
           "hash": "a0e1451309ddd335cda286a07d374b75278ea8fdd6dfd9bb4b92e9197119f7f6",
+          "importOrder": [
+            "src/types.ts",
+            "src/defaults.ts",
+            "src/fs-utils.ts"
+          ],
           "importsFiles": [
             "src/defaults.ts",
             "src/fs-utils.ts",
@@ -650,6 +697,20 @@
             "startMcpServer"
           ],
           "hash": "79fdda506a00d987a83b4093963d4344eac44a3fbebbbaf5edfe02970bb62577",
+          "importOrder": [
+            "src/log-manager.ts",
+            "src/doctor.ts",
+            "src/fs-utils.ts",
+            "src/defaults.ts",
+            "src/process-monitor.ts",
+            "src/state.ts",
+            "src/budget-store.ts",
+            "src/budget.ts",
+            "src/recovery-plan.ts",
+            "src/errors.ts",
+            "src/port-probe.ts",
+            "src/project-classify.ts"
+          ],
           "importsFiles": [
             "src/budget-store.ts",
             "src/budget.ts",
@@ -716,6 +777,14 @@
             "writeState"
           ],
           "hash": "5554d6d08dc4fc6b780c5c20c51fed3208beb439221eb190ee328d53b4a4d111",
+          "importOrder": [
+            "src/defaults.ts",
+            "src/fs-utils.ts",
+            "src/errors.ts",
+            "src/process-monitor.ts",
+            "src/incident.ts",
+            "src/budget.ts"
+          ],
           "importsFiles": [
             "src/budget.ts",
             "src/defaults.ts",
@@ -735,6 +804,18 @@
             "startWatchDaemon"
           ],
           "hash": "525e8984b25ae4e1953567cd6248632e7e2a95d56aadb72b7b9ff4ca9a056d21",
+          "importOrder": [
+            "src/fs-utils.ts",
+            "src/defaults.ts",
+            "src/process-monitor.ts",
+            "src/state.ts",
+            "src/incident.ts",
+            "src/budget.ts",
+            "src/budget-store.ts",
+            "src/handle-count.ts",
+            "src/log-manager.ts",
+            "src/doctor.ts"
+          ],
           "importsFiles": [
             "src/budget-store.ts",
             "src/budget.ts",
@@ -754,6 +835,13 @@
             "formatHealthStatus"
           ],
           "hash": "201ea3adc71bd5d40fb8be15b34de1f6c5d30b720fb282891bb28165adbc637e",
+          "importOrder": [
+            "src/types.ts",
+            "src/defaults.ts",
+            "src/fs-utils.ts",
+            "src/doctor.ts",
+            "src/log-manager.ts"
+          ],
           "importsFiles": [
             "src/defaults.ts",
             "src/doctor.ts",
@@ -795,6 +883,13 @@
           "writes": 0
         },
         {
+          "reads": 1,
+          "where": [
+            "cwd:package.json"
+          ],
+          "writes": 0
+        },
+        {
           "reads": 10,
           "where": [
             "home:.claude-guardian"
@@ -816,10 +911,17 @@
           "writes": 0
         }
       ],
-      "outsideReads": 29,
+      "outsideReads": 30,
       "outsideWrites": 17,
       "role": "code",
       "testedBy": 16,
+      "unresolvedNamed": [
+        {
+          "path": "src/mcp-server.ts",
+          "specifier": "zod",
+          "why": "undeclared"
+        }
+      ],
       "unresolvedSites": 1
     },
     {
@@ -832,6 +934,10 @@
       "files": [
         {
           "hash": "0d6d0f02ae7e365a3f18d1d6ebdb15683299f146bdfa02bf673022239f2a9a1a",
+          "importOrder": [
+            "src/mcp-server.ts",
+            "src/budget-store.ts"
+          ],
           "importsFiles": [
             "src/budget-store.ts",
             "src/mcp-server.ts"
@@ -840,6 +946,11 @@
         },
         {
           "hash": "8b66ca1d2e807b6a8d2419affa8e7086847e13a510c79ed7e5836acf03128c1b",
+          "importOrder": [
+            "src/budget.ts",
+            "src/budget-store.ts",
+            "src/defaults.ts"
+          ],
           "importsFiles": [
             "src/budget-store.ts",
             "src/budget.ts",
@@ -878,6 +989,11 @@
         },
         {
           "hash": "489b30db0b591cd20cac105c2a5e3d900d7d3903a5c176b8af77fa9c5c400ca6",
+          "importOrder": [
+            "src/log-manager.ts",
+            "src/fs-utils.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/fs-utils.ts",
             "src/log-manager.ts",
@@ -938,6 +1054,13 @@
         },
         {
           "hash": "e63639bfe606c1d3283e4952a60bb21dfd697b95d6c3a661e51f7478e0978213",
+          "importOrder": [
+            "src/budget-store.ts",
+            "src/budget.ts",
+            "src/incident.ts",
+            "src/fs-utils.ts",
+            "src/process-monitor.ts"
+          ],
           "importsFiles": [
             "src/budget-store.ts",
             "src/budget.ts",
@@ -949,6 +1072,11 @@
         },
         {
           "hash": "c50c51071d0846ba95d164296adc7d925b7540b0dc056d68d577bbf5a9c73d5d",
+          "importOrder": [
+            "src/watchdog.ts",
+            "src/types.ts",
+            "src/defaults.ts"
+          ],
           "importsFiles": [
             "src/defaults.ts",
             "src/types.ts",
@@ -970,7 +1098,7 @@
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "build",
@@ -1020,11 +1148,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "build",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -1097,7 +1226,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "dogfood",
@@ -1174,11 +1303,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "dogfood",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json",
           "when": {
             "branches": [
@@ -1321,7 +1451,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "release",
@@ -1398,11 +1528,12 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "release",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
         {
@@ -1528,11 +1659,6 @@
         {
           "by": "src/cli.ts",
           "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "src/project-classify.ts",
-          "call": "literal",
           "confidence": "ast"
         }
       ],

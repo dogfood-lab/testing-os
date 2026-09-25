@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 5139ec7.
 
 ## What this is
 
-14 parts, mostly TypeScript (555 files), Python (47) and JavaScript (32). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
+14 parts, mostly JSON data (1721 files); code in TypeScript (555), Python (47) and JavaScript (32). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
 ## What changed since 2026-09-24 (8734514)
 
@@ -14,14 +14,14 @@ Mapped at 2026-09-25 from commit 5139ec7.
 - .eval-checkpoints is now written by scripts/run-jam-actions-corpus-eval.ts.
 - datasets/jam-actions-v0-public/ is now also written by scripts/run-jam-actions-corpus-eval.ts.
 - datasets/jam-actions-v0-public/evals/ is now written by scripts/run-jam-actions-corpus-eval.ts.
-- And 120 more new writers and readers of places.
+- And 123 more new writers and readers of places.
 - songs was generated and is now mixed.
 - 1961 files changed content, across 13 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 20 paths; on a push to main touching 20 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/ and 180 more; checks LICENSE, README.md, logo.png and 541 more.
-2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more; checks LICENSE, README.md, logo.png and 481 more.
+1. **CI.** On a pull request touching 20 paths; on a push to main touching 20 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/ and 289 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 92 more; checks LICENSE, README.md, logo.png and 429 more.
+2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 296 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 93 more; checks LICENSE, README.md, logo.png and 372 more.
 3. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; or by hand. Runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more.
 4. **Publish jam-actions-v0.** By hand. Runs scripts/check-release-gate.ts and scripts/verify-public-package-checksums.ts.
 5. **Push jam-actions adapters to HuggingFace.** By hand. Runs no file this map can see.
@@ -33,9 +33,9 @@ Mapped at 2026-09-25 from commit 5139ec7.
 
 ## What happens through CI
 
-1. The workflow runs apps/cockpit/src/ and apps/cockpit/vite.config.ts in cockpit, 9 files in experiments, 4 files in scripts, and 71 files in src; it checks 7 files in the repository root, 6 files in scripts, src/ in src, samples/vocal/ in samples, and songs/library/ in songs.
-   1. Inside src/mcp-server.ts, main does, in order: should supervise stdio, user songs dir, initialize from library, server state path and open rpc output stream.
-   2. Or, when `shouldSuperviseStdio()`, main does run stdio supervisor instead.
+1. The workflow runs apps/cockpit/src/ and apps/cockpit/vite.config.ts in cockpit, 9 files in experiments, 4 files in scripts, and 69 files in src; it builds 95 files in src; it checks 7 files in the repository root, 5 files in scripts, src/ in src, samples/vocal/ in samples, and songs/library/ in songs.
+   1. Inside src/mcp-server.ts, `main` does, in order: `shouldSuperviseStdio`, `userSongsDir`, `initializeFromLibrary`, `serverStatePath` and `openRpcOutputStream`.
+   2. Or, when `shouldSuperviseStdio()`, `main` does `runStdioSupervisor` instead.
 
 ## Who reads the results
 
@@ -43,7 +43,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more, checks LICENSE, README.md, logo.png and 481 more, and publishes to npm and a container image.
+**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 296 more, builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 93 more, checks LICENSE, README.md, logo.png and 372 more, and publishes to npm and a container image.
 
 **Deploy site to GitHub Pages** runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more, reaches src, writes to site/dist, which is not tracked, and deploys the site.
 
@@ -226,18 +226,18 @@ People write .github/, the repository root and site/; 47 writes with paths built
 
 ## Where to start
 
-.github/workflows/ci.yml → src/mcp-server.ts
+.github/workflows/ci.yml → src/mcp-server.ts → src/stdio-supervisor.ts → src/state-home.ts → src/songs/config/loader.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
 - 5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.
-- 11 import sites could not be resolved.
+- 2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.
 - 47 writes and 134 reads use paths built at run time and are not named here.
 - 21 writes go to places this repository does not track, so they are not listed as generated.
 - 95 writes and 329 reads go to a path their caller passes, not to this repository.
-- 2 writes and 16 reads go to the directory the command is run in, not to this repository.
+- 2 writes and 18 reads go to the directory the command is run in, not to this repository.
 - 3 writes and 11 reads go to the home directory (.ssh/), not to this repository.
 - 7 writes and 2 reads go to a temporary directory, not to this repository.
 - 1 write and 1 read go to the home directory (.ai-jam-sessions/) or a path their caller passes, not to this repository.
