@@ -5,7 +5,7 @@ import { cargoProject } from './cargo.js';
 import { godotProjects } from './godot.js';
 import { repositoryView } from './commands.js';
 import { isTestFile, isTestMaterial } from './landings.js';
-import { declaredScripts } from './python-manifest.js';
+import { declaredScripts, pythonLibrary } from './python-manifest.js';
 import { resolveDeclaredPath, resolvePythonModule, unplacedBuildOutput } from './resolve.js';
 
 const FALLBACKS = [
@@ -118,6 +118,9 @@ export function manifestCommands(repoPath, tracked, scripts = []) {
   for (const script of scripts) {
     if (!isTestMaterial(script.manifest)) out.push({ kind: 'command', name: script.name, manifest: script.manifest, path: script.path });
   }
+  // A Python project that installs no command is a library people import.
+  const library = pythonLibrary(repoPath, tracked);
+  if (library) out.push(library);
   for (const crate of cargoProject(repoPath, tracked).crates) {
     for (const bin of crate.bins) out.push({ kind: 'command', name: bin.name, manifest: crate.manifest, path: bin.path, ...(desktopBin(crate, bin) ? { app: 'desktop' } : {}) });
     // An example is a program people run from a checkout with cargo run

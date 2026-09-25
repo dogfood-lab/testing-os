@@ -195,8 +195,12 @@ export function markUnpublished(doors, manifest) {
   const toNpm = sent.some((sends) => sends.publishesTo.includes('npm') && rootSent(sends.packages));
   const declared = manifest?.private === false
     && workflows.some((door) => /publish|release/i.test(`${posix.basename(door.file)} ${door.name}`));
-  if (toNpm || declared) return;
-  for (const door of doors) if (door.kind === 'package') door.unpublished = true;
+  // A Python library is published by an upload to PyPI.
+  const toPypi = sent.some((sends) => sends.publishesTo.includes('pypi'));
+  for (const door of doors) {
+    if (door.kind !== 'package') continue;
+    if (door.file === 'pyproject.toml' ? !toPypi : !(toNpm || declared)) door.unpublished = true;
+  }
 }
 
 const MARKETPLACES = ['open-vsx', 'vscode-marketplace'];

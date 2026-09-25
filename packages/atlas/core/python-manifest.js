@@ -87,6 +87,28 @@ export function declaredDependencies(repoPath, tracked) {
  * @param {Iterable<string>} tracked
  * @returns {Array<{ manifest: string, name: string, module: string, fn: string | null }>}
  */
+/**
+ * The package a Python project people import is, when its root
+ * pyproject.toml names a project and installs no command: the import name
+ * the project folds to, and the __init__.py that name loads from the root,
+ * src/ or a package-dir mapping. Null for anything else.
+ */
+export function pythonLibrary(repoPath, tracked) {
+  if (!tracked.has('pyproject.toml')) return null;
+  const tables = readToml(repoPath, 'pyproject.toml');
+  const name = tables.get('project')?.name;
+  if (typeof name !== 'string' || name.trim() === '') return null;
+  for (const table of ['project.scripts', 'project.gui-scripts', 'tool.poetry.scripts']) if (Object.keys(tables.get(table) ?? {}).length > 0) return null;
+  const mapped = packageDirs(tables);
+  const root = rootPackageDir(tables);
+  for (const module of importNames(name.replace(/^["']|["']$/g, ''))) {
+    const dirs = [mapped.get(module), root ? `${root}/${module}` : null, module, `src/${module}`].filter(Boolean);
+    const found = dirs.map((dir) => `${dir}/__init__.py`).find((path) => tracked.has(path));
+    if (found) return { kind: 'package', name: module, manifest: 'pyproject.toml', path: found };
+  }
+  return null;
+}
+
 export function declaredScripts(repoPath, tracked) {
   const out = [];
   for (const path of tracked) {
