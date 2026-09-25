@@ -3162,6 +3162,9 @@ export function attachLandings({ files, doors, boundaries, places }) {
   // A shape tracked files have (bundles/*.json) is kept by the commit that
   // keeps them.
   const shapeKept = (target) => {
+    // A bare * names every file of a directory, which is no shape a write
+    // spells: output made there beside what people keep stays untracked.
+    if (target.slice(target.lastIndexOf('/') + 1).replace(/\*/g, '') === '') return false;
     const isMatch = picomatch(target, { dot: true });
     const head = target.slice(0, target.lastIndexOf('/') + 1);
     return [...places.files].some((path) => path.startsWith(head) && isMatch(path));

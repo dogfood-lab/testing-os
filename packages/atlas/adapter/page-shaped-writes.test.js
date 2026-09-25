@@ -28,5 +28,9 @@ describe('a write named by its shape', () => {
     const { markdown } = buildPage({ structure, statistics: {}, document: {}, repoName: 'fixture/shaped-writes' });
     assert.ok(markdown.includes('- **bundles/*.json** is written by scripts/build-bundles.mjs.'), markdown);
     assert.ok(!markdown.includes('**bundles/** is written'), markdown);
+    // A run directory named at run time beside runs/README.md is no shape a
+    // tracked file has: it stays output nothing tracks, runs/ people's.
+    const run = structure.landings.find((landing) => landing.writers.some((entry) => entry.by === 'scripts/record-run.mjs'));
+    assert.equal(run.tracked, false, JSON.stringify(run));
   });
 });
