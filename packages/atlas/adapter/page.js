@@ -688,6 +688,7 @@ export function sendPhrases(door) {
   if (sends.deploysPages) phrases.push('deploys the site');
   if (sends.opensIssues) phrases.push(sends.opensIssuesOnFailure ? 'opens an issue when it fails' : 'opens an issue');
   if (sends.opensPullRequests) phrases.push('opens a pull request');
+  if (sends.readsRepositories) phrases.push('reads other repositories through the GitHub API');
   if (sends.changesRepositories) phrases.push('changes other repositories through the GitHub API');
   // A job held to one trigger says which, once, after all it does there:
   // "deploys the site on a push to main", "commits registry.json and pushes

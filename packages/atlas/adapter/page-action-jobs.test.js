@@ -37,3 +37,10 @@ describe('a job made only of actions', () => {
     assert.ok(flow.includes('2. It lints Markdown with markdownlint-cli2.\n3. It checks links with lychee.'), flow);
   });
 });
+
+describe('a job that reads the organization through gh api', () => {
+  it('reads other repositories', () => {
+    const markdown = page();
+    assert.ok(markdown.includes('**Org Guard** runs no file this map can see and reads other repositories through the GitHub API.'), markdown);
+  });
+});

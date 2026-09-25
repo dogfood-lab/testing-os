@@ -550,7 +550,26 @@ function finishSends(sends, issues, texts) {
     opensIssues: issues.length > 0,
     opensIssuesOnFailure: issues.length > 0 && issues.every(Boolean),
     opensPullRequests: sends.opensPullRequests,
+    ...(readsRepositories(joined) ? { readsRepositories: true } : {}),
   };
+}
+
+/**
+ * Whether a gh api call reads repositories other than this one: an
+ * organization's repository list, or a repository whose name the shell
+ * fills in (repos/${ORG}/${repo}/readme), never github.repository, with no
+ * method or field that makes it a write.
+ */
+function readsRepositories(text) {
+  const own = /^\/?repos\/(?:\$\{\{\s*github\.repository\s*\}\}|\$\{?GITHUB_REPOSITORY\}?|\{owner\}\/\{repo\})(?:\/|$)/;
+  const other = /^\/?(?:orgs\/[^/]+\/repos\b|repos\/[^/]+\/[^/]+)/;
+  return commandLines(text).some((tokens) => {
+    const at = tokens.findIndex((word, index) => word === 'api' && tokens[index - 1] === 'gh');
+    if (at === -1) return false;
+    const args = tokens.slice(at + 1);
+    if (args.some((word, index) => ((word === '-X' || word === '--method') && !/^get$/i.test(args[index + 1] ?? '')) || /^--method=(?!get$)/i.test(word) || /^-[fF]$|^--(?:raw-)?field$|^--input$/.test(word))) return false;
+    return args.some((word) => other.test(word) && !own.test(word) && (/^\/?orgs\//.test(word) || word.includes('$')));
+  });
 }
 
 // A gated job's sends as a list, the shape the page reads them back from.
@@ -562,7 +581,7 @@ function sendKeys(sends) {
   for (const entry of sends.packages ?? []) keys.push(`packages:${JSON.stringify(entry)}`);
   for (const platform of sends.exports ?? []) keys.push(`exports:${platform}`);
   for (const asset of sends.assets ?? []) keys.push(`assets:${asset}`);
-  for (const flag of ['releases', 'deploysPages', 'opensIssues', 'opensIssuesOnFailure', 'opensPullRequests']) if (sends[flag]) keys.push(flag);
+  for (const flag of ['releases', 'deploysPages', 'opensIssues', 'opensIssuesOnFailure', 'opensPullRequests', 'readsRepositories']) if (sends[flag]) keys.push(flag);
   return keys;
 }
 

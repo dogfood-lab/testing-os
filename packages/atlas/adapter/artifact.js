@@ -453,6 +453,7 @@ function carryDoor(door) {
       opensPullRequests: door.sends.opensPullRequests,
       publishes: door.sends.publishes,
       publishesTo: [...door.sends.publishesTo],
+      ...(door.sends.readsRepositories ? { readsRepositories: true } : {}),
       releases: door.sends.releases,
     },
     ...(door.shellMissed?.length > 0 ? { shellMissed: door.shellMissed.map((entry) => ({ ...entry })) } : {}),
