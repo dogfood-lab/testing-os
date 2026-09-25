@@ -1614,6 +1614,9 @@ function pythonSite(node, site, pil = false) {
   if (owner === 'os' && (attribute === 'listdir' || attribute === 'scandir')) return site('read', call, args[0]);
   if (owner === 'shutil' && PY_SHUTIL_WRITES.has(attribute)) return site('write', call, args[1]);
   if (owner === 'glob' && attribute === 'glob') return site('read', call, args[0]);
+  // sqlite3.connect(path) opens the database file, making it when absent,
+  // and whatever the connection commits is written there.
+  if (owner === 'sqlite3' && attribute === 'connect' && args[0]?.text !== '":memory:"' && args[0]?.text !== "':memory:'") return site('write', call, args[0]);
   if (PY_RECEIVER_WRITES.has(attribute)) return site('write', attribute, object);
   if (pil && attribute === 'save' && args[0]) return site('write', 'save', args[0]);
   if (PY_RECEIVER_READS.has(attribute)) return site('read', attribute, object);
@@ -3323,7 +3326,13 @@ export function attachLandings({ files, doors, boundaries, places }) {
       // A write made only when a committed file is absent bootstraps it:
       // it happens once, before the commit, and stamps nothing.
       if (bootstraps(write, places)) entry.unless = ['exists'];
-      else if (stamps(file, write.target, places)) entry.stamps = true;
+      else if (stamps(file, write.target, places)) {
+        // A test that reads a tracked file and writes it back restores what
+        // it found (fx-dub's test_kb puts kb/fxdub.db's bytes back): no
+        // writer of it.
+        if (isTestMaterial(file.path)) continue;
+        entry.stamps = true;
+      }
       add(writers, write.target, entry);
     }
   }
