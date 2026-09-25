@@ -711,6 +711,9 @@ export function assetsPhrase(assets, from = []) {
  * @returns {string}
  */
 export function gatePhrase(when) {
+  // A gate that also holds on a run by hand says so after the trigger:
+  // "on a schedule or by hand".
+  if (when.byHand) return `${gatePhrase({ ...when, byHand: undefined })} or by hand`;
   // A pull request held to where it comes from, beside the triggers that
   // run every time: "on a push, or a pull request from a fork".
   if (when.fork != null) {

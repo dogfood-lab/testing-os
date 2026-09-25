@@ -26,8 +26,9 @@ describe('a job held off one trigger', () => {
   it('sends only on the trigger that is left, worded as that trigger', () => {
     const pages = door('.github/workflows/pages.yml');
     assert.equal(pages.sends.deploysPages, false);
-    assert.deepEqual(pages.gated.map((entry) => entry.when), [{ branches: ['main'], event: 'push' }]);
-    assert.deepEqual(sendPhrases(pages), ['deploys the site on a push to main']);
+    // The workflow also runs by hand, which the gate does not hold off.
+    assert.deepEqual(pages.gated.map((entry) => entry.when), [{ branches: ['main'], byHand: true, event: 'push' }]);
+    assert.deepEqual(sendPhrases(pages), ['deploys the site on a push to main or by hand']);
   });
 
   it('names the trigger it is held off when more than one is left', () => {

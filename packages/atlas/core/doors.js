@@ -622,7 +622,7 @@ function eitherGate(alternatives, triggers) {
     let status = 'never';
     for (const gate of gates) {
       const byHand = trigger.event === 'workflow_dispatch';
-      const reached = byHand ? (!gate.event || gate.event === 'workflow_dispatch') && !(gate.except ?? []).includes('workflow_dispatch') && gate.fork == null : meets(trigger, gate);
+      const reached = byHand ? (!gate.event || gate.event === 'workflow_dispatch' || gate.byHand === true) && !(gate.except ?? []).includes('workflow_dispatch') && gate.fork == null : meets(trigger, gate);
       if (!reached) continue;
       // A pull request held to where it comes from is run only for some.
       if (gate.fork != null) {
@@ -660,15 +660,23 @@ function eitherGate(alternatives, triggers) {
 }
 
 // The gate that holds to a set of a workflow's triggers: none when it is all
-// of them, the one event when they share one, and otherwise the events left out.
+// of them, the one event when they share one, that event or a run by hand
+// (byHand) when a run by hand is the other, and otherwise the events left
+// out. A condition written as the events it runs on reads as those events.
 function coveredGate(covered, triggers) {
   if (covered.length === triggers.length) return {};
   const events = [...new Set(covered.map((trigger) => trigger.event))];
-  if (events.length === 1) {
-    const gate = { event: events[0] };
-    if (events[0] === 'push' && covered.every((trigger) => (trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0))) gate.tags = true;
+  const others = events.filter((event) => event !== 'workflow_dispatch');
+  if (others.length === 1) {
+    const gate = { event: others[0] };
+    const held = covered.filter((trigger) => trigger.event === others[0]);
+    if (others[0] === 'push' && held.every((trigger) => (trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0))) gate.tags = true;
+    // A push the workflow takes only to some branches is a push to those.
+    else if (others[0] === 'push' && held.every((trigger) => (trigger.branches?.length ?? 0) > 0)) gate.branches = [...new Set(held.flatMap((trigger) => trigger.branches))].sort();
+    if (events.includes('workflow_dispatch')) gate.byHand = true;
     return gate;
   }
+  if (events.length === 1) return { event: events[0] };
   return { except: [...new Set(triggers.filter((trigger) => !events.includes(trigger.event)).map((trigger) => trigger.event))].sort() };
 }
 
@@ -724,7 +732,7 @@ function shipBuilds(shipping, runs, triggers, scopeOf) {
   const shipped = assets.size > 0 ? [...assets] : named.length > 0 ? [...named.map((path) => `file:${path}`), ...(unnamed ? ['files'] : [])] : ['files'];
   // Every trigger an upload runs on, and whether they cover the workflow's.
   const covers = triggers.length > 0 && triggers.every((trigger) => uploads.some((upload) => upload.when == null || (trigger.event === 'workflow_dispatch'
-    ? upload.when.event === 'workflow_dispatch' || (!upload.when.event && !upload.when.tags && !(upload.when.except ?? []).includes('workflow_dispatch'))
+    ? upload.when.event === 'workflow_dispatch' || upload.when.byHand === true || (!upload.when.event && !upload.when.tags && !(upload.when.except ?? []).includes('workflow_dispatch'))
     : meets(trigger, upload.when))));
   const scopes = covers ? [scopeOf(null)] : [...new Map(uploads.map((upload) => [upload.when ? canonical(upload.when) : '', scopeOf(upload.when)])).values()];
   for (const scope of scopes) for (const asset of shipped) scope.sends.assets.add(asset);
@@ -816,6 +824,10 @@ function joinGates(job, step) {
   const inputs = { ...(job.inputs ?? {}), ...(step.inputs ?? {}) };
   const joined = { ...job, ...step };
   if (Object.keys(inputs).length > 0) joined.inputs = inputs;
+  // A step held to an event of its own runs by hand only when its own
+  // condition lets it.
+  if (step.event && !step.byHand) delete joined.byHand;
+  if (joined.event === 'workflow_dispatch') delete joined.byHand;
   return canonical(joined) === canonical(job) ? job : joined;
 }
 
@@ -840,7 +852,8 @@ function heldOff(part) {
   return negated ? negated[1] : null;
 }
 
-// What an excepted event leaves is the gate, when it is one trigger's worth.
+// What an excepted event leaves is the gate, when it is one trigger's worth,
+// with a run by hand when the workflow has one the gate does not except.
 function settleExcept(gate, triggers) {
   if (gate.event) {
     delete gate.except;
@@ -850,8 +863,10 @@ function settleExcept(gate, triggers) {
   const events = [...new Set(left.map((trigger) => trigger.event))];
   if (events.length !== 1) return;
   const [only] = events;
+  const byHand = !gate.except.includes('workflow_dispatch') && triggers.some((trigger) => trigger.event === 'workflow_dispatch');
   delete gate.except;
   gate.event = only;
+  if (byHand) gate.byHand = true;
   if (only !== 'push') return;
   const tagged = left.every((trigger) => (trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0));
   if (tagged) {
@@ -863,6 +878,7 @@ function settleExcept(gate, triggers) {
 }
 
 function meets(trigger, gate) {
+  if (gate.byHand && trigger.event === 'workflow_dispatch') return true;
   if (gate.except && gate.except.includes(trigger.event)) return false;
   if (gate.event && trigger.event !== gate.event) return false;
   if (gate.tags && !((trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0))) return false;

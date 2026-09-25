@@ -1,0 +1,17 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+  release:
+    types: [published]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/check.mjs
+  pack:
+    if: github.event_name != 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/pack.mjs
