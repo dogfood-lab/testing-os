@@ -1703,8 +1703,11 @@ function writtenPlaces(ctx) {
     // the source it builds from (schumann-surface's viewer/template.html):
     // people write it, though the directory is the writer's.
     const sources = inside
+      // The place has one writer, and it reads the file: with more, one may
+      // be what writes it under a name built at run time (ingest's
+      // indexes/latest-by-repo.json, which portfolio also reads and writes).
       .filter((landing) => landing.target !== target && ctx.fileOf.has(landing.target) && landing.writers.length === 0
-        && landing.readers.some((entry) => writers.includes(entry.by) && !quotedOnly(entry)))
+        && writers.length === 1 && landing.readers.some((entry) => entry.by === writers[0] && !quotedOnly(entry)))
       .map((landing) => landing.target).sort(cmp);
     return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}), ...(mixed ? { mixed: true } : {}), ...(sources.length > 0 ? { sources } : {}) };
   });
@@ -2214,7 +2217,8 @@ function generated(ctx) {
     claimed.push(inside);
     const once = writers.length > 0 && writers.every((by) => (guards.get(by) ?? []).includes('exists'));
     const fromRoot = writers.length > 0 && writers.every((by) => held.every((place) => !place.writers.includes(by) || place.fromRoot.includes(by)));
-    const sources = [...new Set(held.flatMap((place) => place.sources ?? []))].sort(cmp);
+    // As for a place: one writer of the whole part, and it reads the file.
+    const sources = writers.length === 1 ? [...new Set(held.flatMap((place) => place.sources ?? []))].sort(cmp) : [];
     items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers, guards, ...(once ? { once: true } : {}), ...(fromRoot ? { fromRoot: true } : {}), ...(sources.length > 0 ? { sources } : {}) });
   }
   for (const place of written) {

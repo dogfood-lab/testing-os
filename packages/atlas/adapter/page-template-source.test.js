@@ -28,3 +28,14 @@ describe('a template inside the directory its reader writes', () => {
     assert.deepEqual(JSON.parse(json).generated.find((item) => item.place === 'viewer/').sources, ['viewer/template.html']);
   });
 });
+
+describe('a file in a written directory that one of its writers never reads', () => {
+  it('is named as no source, since that writer may write it', () => {
+    const root = makeRepo(resolve(import.meta.dirname, '../../../fixtures/atlas/template-shared'));
+    roots.push(root);
+    const boundaries = [{ name: 'scripts', globs: ['scripts/**'], role: 'code' }, { name: 'viewer', globs: ['viewer/**'], role: 'site' }];
+    const structure = buildArtifact(mapRepository({ repoPath: root, boundaries }), '0'.repeat(40));
+    const { markdown } = buildPage({ structure, statistics: {}, document: {}, repoName: 'fixture/template-shared' });
+    assert.ok(markdown.includes('- **viewer/** is written by scripts/build_viewer.py and scripts/index_pages.py.'), markdown);
+  });
+});
