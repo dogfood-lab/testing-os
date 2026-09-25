@@ -495,6 +495,7 @@ function doorSteps(ctx, door) {
   steps.push(...heldText);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
+  if (door.untracked) steps.push(`It ${arr(door.landings).length > 0 ? 'also ' : ''}writes to ${esc(str(door.untracked))}.`);
   if (arr(door.stages).length > 0) steps.push(`It commits ${commitsClause(ctx, door)}.`);
   if (arr(door.programs).length > 0) steps.push(`It runs ${esc(list(arr(door.programs).map(str)))}.`);
   for (const send of arr(door.sends)) steps.push(`It ${inline(send)}.`);
@@ -594,7 +595,10 @@ function unreadFiles(ctx) {
 
 function readsSection(ctx) {
   const name = esc(ctx.main.name);
-  if (arr(ctx.main.landings).length === 0) return section('Who reads the results', p(absence('writes', unreadFiles(ctx), esc(leadName(ctx.main)))));
+  if (arr(ctx.main.landings).length === 0) {
+    const outputs = ctx.main.untracked ? `${esc(leadName(ctx.main))} writes only to ${esc(str(ctx.main.untracked))}.` : null;
+    return section('Who reads the results', p(outputs ?? absence('writes', unreadFiles(ctx), esc(leadName(ctx.main)))));
+  }
   const groups = arr(ctx.page.readers);
   if (groups.length === 0) return section('Who reads the results', p(`Only ${name} itself reads what it writes.`));
   const bullets = groups.map((group) => {
@@ -634,7 +638,11 @@ function otherDoors(ctx) {
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => str(entry.boundary))))].sort(cmp).map((part) => ctx.name(part));
     if (reached.length > 0) clauses.push({ html: `reaches ${list(reached.map(esc))}`, text: `reaches ${list(reached)}` });
     const landings = arr(door.landings).map(str);
-    if (landings.length > 0) clauses.push({ html: `writes to ${placesHtml(ctx, landings)}`, text: `writes to ${list(landings)}` });
+    // Output the repository does not keep is named as page.js names it.
+    const joiner = landings.length > 1 ? ', and to ' : ' and to ';
+    const outputs = door.untracked ? [{ html: esc(str(door.untracked)), text: str(door.untracked) }] : [];
+    const written = [...(landings.length > 0 ? [{ html: placesHtml(ctx, landings), text: list(landings) }] : []), ...outputs];
+    if (written.length > 0) clauses.push({ html: `writes to ${written.map((item) => item.html).join(joiner)}`, text: `writes to ${written.map((item) => item.text).join(joiner)}` });
     const stages = arr(door.stages).map((place) => `${str(place)}${peopleWrite(door, place) ? ' (written by people)' : ''}`);
     if (stages.length > 0) {
       const push = pushWords(door);

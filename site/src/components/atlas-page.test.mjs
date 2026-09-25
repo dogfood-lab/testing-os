@@ -986,3 +986,16 @@ test('a Cargo example reads as a command people run with cargo run, as the markd
   assert.ok(plain(html).includes('export_all (a command people run with cargo run --example export_all). Runs examples/export_all.rs.'), 'what comes in');
   assert.ok(html.includes('<code>cargo run --example export_all</code>'), 'the command is code, as the markdown marks it');
 });
+
+// Output the repository does not keep, as page.js words it:
+// fixtures/atlas/untracked-literal gives these sentences in the markdown
+// (packages/atlas/adapter/page-untracked-literal.test.js).
+test('a write to a place nothing tracks is named as not tracked, as the markdown words it', () => {
+  const door = (fields) => ({ checks: [], checksCount: 0, checksMore: 0, landings: [], pushes: false, reach: [{ boundary: 'examples', depth: 0, files: 1 }], runsCount: 1, runsMore: 0, sends: [], stages: [], ...fields });
+  const example = door({ example: true, file: 'Cargo.toml', id: 'Cargo.toml#export_all', kind: 'command', name: 'export_all', runWith: 'cargo run --example export_all', runs: ['examples/export_all.rs'], triggers: [], untracked: 'output/, which is not tracked' });
+  const ci = door({ file: '.github/workflows/ci.yml', id: '.github/workflows/ci.yml', name: 'CI', runs: ['scripts/report.mjs'], triggers: ['on a pull request'], untracked: 'reports/, which is not tracked' });
+  const text = plain(render.renderPage({ ...page, doors: [example, ci], mainDoor: example.id, readers: [] }, { repo: page.repo }));
+  assert.ok(text.includes('It writes to output/, which is not tracked.'), 'what happens through the door');
+  assert.ok(text.includes('export_all writes only to output/, which is not tracked.'), 'who reads the results');
+  assert.ok(text.includes('CI runs scripts/report.mjs and writes to reports/, which is not tracked.'), 'the other doors');
+});

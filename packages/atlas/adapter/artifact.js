@@ -402,6 +402,7 @@ function carryDoor(door) {
     stages: [...door.stages],
     ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
+    ...(door.untrackedLandings?.length > 0 ? { untrackedLandings: door.untrackedLandings.filter((target) => !inAtlas(target)) } : {}),
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
     ...(door.unpublished ? { unpublished: true } : {}),
     ...(door.unshipped ? { unshipped: true } : {}),

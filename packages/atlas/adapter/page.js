@@ -940,6 +940,16 @@ function writes(ctx, door) {
   return cover(door.landings ?? []).map(ctx.place);
 }
 
+// The places a door writes that the repository does not track, said so:
+// "output/, which is not tracked", three by name and the rest counted. Null
+// when there are none.
+function untrackedWrites(door) {
+  const places = cover((door.untrackedLandings ?? []).map((target) => target.replace(/\/$/, ''))).map((target) => ((door.untrackedLandings ?? []).includes(`${target}/`) ? `${target}/` : target));
+  if (places.length === 0) return null;
+  const named = places.length <= RUNS_SHOWN ? list(places) : `${places.slice(0, RUNS_SHOWN).join(', ')} and ${count(places.length - RUNS_SHOWN, 'more place')}`;
+  return `${named}, which ${places.length === 1 ? 'is' : 'are'} not tracked`;
+}
+
 function doorSteps(ctx, door) {
   const steps = [];
   const ran = shownRuns(door, 'executes');
@@ -956,6 +966,8 @@ function doorSteps(ctx, door) {
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   const places = writes(ctx, door);
   if (places.length > 0) steps.push(`It writes to ${list(places)}.`);
+  const outputs = untrackedWrites(door);
+  if (outputs) steps.push(`It ${places.length > 0 ? 'also ' : ''}writes to ${outputs}.`);
   if ((door.stages ?? []).length > 0) steps.push(`It commits ${commitsClause(door)}.`);
   // git and gh from outside the repository, which its code starts.
   if ((door.programs ?? []).length > 0) steps.push(`It runs ${list(door.programs)}.`);
@@ -1325,7 +1337,10 @@ function unreadCount(ctx) {
 function readsSection(ctx, main, groups) {
   const lines = ['## Who reads the results'];
   if ((main.landings ?? []).length === 0) {
-    lines.push(absence('writes', unreadCount(ctx), leadName(main)));
+    // Output the repository does not keep is where the door writes, all the
+    // same; no one here reads it back.
+    const outputs = untrackedWrites(main);
+    lines.push(outputs ? `${leadName(main)} writes only to ${outputs}.` : absence('writes', unreadCount(ctx), leadName(main)));
     return lines.join('\n\n');
   }
   const bullets = groups.map((group) => {
@@ -1374,7 +1389,8 @@ function otherDoors(ctx, main) {
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => entry.boundary)))].sort(cmp);
     if (reached.length > 0) clauses.push(`reaches ${list(reached.map(ctx.shown))}`);
     const places = writes(ctx, door);
-    if (places.length > 0) clauses.push(`writes to ${list(places)}`);
+    const outputs = untrackedWrites(door);
+    if (places.length > 0 || outputs) clauses.push(`writes to ${[...(places.length > 0 ? [list(places)] : []), ...(outputs ? [outputs] : [])].join(places.length > 1 ? ', and to ' : ' and to ')}`);
     const stages = door.stages ?? [];
     if (stages.length > 0) clauses.push(`commits ${commitsClause(door)}`);
     if ((door.programs ?? []).length > 0) clauses.push(`runs ${list(door.programs)}`);
@@ -2854,6 +2870,7 @@ function doorData(ctx, door) {
     ...(door.extension ? { extension: true } : {}),
     ...(door.publishedTo ? { publishedTo: registryList(door.publishedTo) } : {}),
     ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
+    ...(untrackedWrites(door) ? { untracked: untrackedWrites(door) } : {}),
     ...(door.runsCommand != null ? { runsCommand: door.runsCommand } : {}),
     ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
   };

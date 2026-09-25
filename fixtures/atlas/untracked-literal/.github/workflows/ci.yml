@@ -1,0 +1,13 @@
+name: CI
+
+on:
+  pull_request:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/report.mjs
+      - run: node scripts/state.mjs
+      - run: node scripts/db.mjs
