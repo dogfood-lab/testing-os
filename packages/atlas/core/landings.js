@@ -1199,13 +1199,68 @@ function callerRootedFunctions(root, ctx) {
       : body && body.type !== 'statement_block'
         ? evalJs(body, scratch, 0)
         : union(returnExpressions(body, 'return_statement', JS_FUNCTIONS).map((expr) => evalJs(expr, scratch, 0))));
-    // A path under the function's own parameter is the calls' to decide.
-    if (values.length > 0 && values.every((value) => outside(value) && !boundParam(value))) {
-      out[name] = values.some((value) => value.anchor === 'home') ? 'home' : values[0].anchor;
-      where[name] = whereSet(values, null);
+    const theirs = callersPlace(values);
+    if (theirs) {
+      out[name] = theirs.anchor;
+      where[name] = theirs.where;
+    }
+  }
+  // A module constant holding such a place is one as well: export const
+  // REPO_ROOT = getWorkspaceRoot().
+  for (const [name, value] of moduleConstants(root, ctx.python)) {
+    if (out[name] != null) continue;
+    const theirs = callersPlace(ctx.python ? evalPy(value, scratch, 0) : evalJs(value, scratch, 0));
+    if (theirs) {
+      out[name] = theirs.anchor;
+      where[name] = theirs.where;
     }
   }
   Object.defineProperty(out, 'where', { value: where, enumerable: false, configurable: true });
+  return out;
+}
+
+/**
+ * Whether a function's or a constant's every path is the caller's place, and
+ * which: the home directory, the working directory, an environment variable
+ * or a command-line argument. A path under the function's own parameter is
+ * the calls' to decide. A root that falls back to the working directory is
+ * the caller's though another of its alternatives is the code's own
+ * directory or a root this map cannot read: resolveWorkspaceRootFrom(process.cwd()) trying SDLAB_ROOT, a
+ * walk up from cwd, the module root and cwd itself finds a checkout only
+ * when the command is run from one, and the user's directory otherwise.
+ */
+function callersPlace(values) {
+  if (values.length === 0 || values.some(boundParam)) return null;
+  const theirs = values.filter(outside);
+  const own = values.filter((value) => !outside(value));
+  // The others may be the code's own directory, or a root read at run time
+  // this map cannot follow (resolve(env.SDLAB_ROOT)).
+  const fallsBack = theirs.some((value) => value.anchor === 'cwd' && value.text === '')
+    && own.every((value) => !value.open && ((value.anchor === 'file') || (value.rooted && value.text === '')));
+  if (own.length > 0 && !fallsBack) return null;
+  return { anchor: theirs.some((value) => value.anchor === 'home') ? 'home' : theirs[0].anchor, where: whereSet(theirs, null) };
+}
+
+// The module-level constants a file binds to a value that is no function:
+// const X = ..., export const X = ..., and X = ... at a Python module's top.
+function moduleConstants(root, python) {
+  const out = [];
+  for (const child of root.namedChildren) {
+    if (python) {
+      const assignment = child.type === 'expression_statement' ? child.namedChildren[0] : null;
+      const left = assignment?.type === 'assignment' ? assignment.childForFieldName('left') : null;
+      const right = assignment?.childForFieldName('right');
+      if (left?.type === 'identifier' && right) out.push([left.text, right]);
+      continue;
+    }
+    const declaration = child.type === 'export_statement' ? child.childForFieldName('declaration') : child;
+    if (declaration?.type !== 'lexical_declaration' && declaration?.type !== 'variable_declaration') continue;
+    for (const declarator of declaration.namedChildren) {
+      const value = declarator.type === 'variable_declarator' ? declarator.childForFieldName('value') : null;
+      const id = declarator.childForFieldName?.('name');
+      if (value && id?.type === 'identifier' && !JS_FUNCTIONS.has(value.type)) out.push([id.text, value]);
+    }
+  }
   return out;
 }
 
@@ -1559,7 +1614,7 @@ function evalJs(node, ctx, depth) {
     case 'identifier':
       if (node.text === '__dirname') return [anchored(ctx.dir)];
       if (node.text === '__filename') return [anchored(ctx.file)];
-      return bindingJs(node.text, node, ctx, next);
+      return orImported(bindingJs(node.text, node, ctx, next), node, ctx);
     case 'member_expression': {
       const object = node.childForFieldName('object');
       const property = node.childForFieldName('property')?.text;
@@ -1934,7 +1989,7 @@ function evalPy(node, ctx, depth) {
       return union([evalPy(node.namedChildren[0], ctx, next), evalPy(node.namedChildren[2], ctx, next)]);
     case 'identifier':
       if (node.text === '__file__') return [anchored(ctx.file)];
-      return bindingPy(node.text, node, ctx, next);
+      return orImported(bindingPy(node.text, node, ctx, next), node, ctx);
     case 'attribute': {
       if (node.childForFieldName('attribute')?.text === 'parent') return dirnameValues(evalPy(node.childForFieldName('object'), ctx, next));
       const object = node.childForFieldName('object');
@@ -1986,6 +2041,13 @@ function imported(name, from, ctx) {
   ctx.imports ??= ctx.python ? pythonImports(from) : scriptImports(from);
   const found = ctx.imports.get(name);
   return found ? [{ text: '', open: false, anchor: `${HELPER}${found.specifier}#${found.name}` }] : [];
+}
+
+// A name this file binds nowhere but imports from a module of its own
+// repository is that module's value (REPO_ROOT from '../lib/paths.js'), read
+// as its return is, for settleHelperPaths.
+function orImported(values, node, ctx) {
+  return values.length > 0 ? values : imported(node.text, node, ctx);
 }
 
 function programOf(node) {
