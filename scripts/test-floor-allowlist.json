@@ -216,6 +216,18 @@
     {
       "path": "fixtures/atlas/grammar-shapes/src/trailing.test.ts",
       "reason": "Atlas fixture, not a test. It sits inside the grammar-shapes fixture repository that packages/atlas/core/grammar-shapes.test.js maps, where the grammar must read typeof import(...) on a line of its own with a trailing comma, the vitest importOriginal mock shape, and record its specifier. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-order/own-part/test/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-order fixture repository that packages/atlas/adapter/page-start-order.test.js maps, where CI's node --test runs it and it imports the command's entry, so CI runs only tests and the path follows the command people run. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-order/single/test/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-order fixture repository that packages/atlas/adapter/page-start-order.test.js maps, where CI's node --test runs it and it imports the command's entry, so CI runs only tests and the path follows the command people run. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-order/imports/test/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-order fixture repository that packages/atlas/adapter/page-start-order.test.js maps, where CI's node --test runs it and it imports one command module, so CI runs only tests and the path follows the command people run. It holds no test and is never meant to run."
     }
   ]
 }

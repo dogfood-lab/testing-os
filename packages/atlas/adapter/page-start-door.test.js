@@ -39,7 +39,8 @@ describe('where to start', () => {
       { name: 'server', globs: ['packages/server/**'], role: 'code' },
     ]);
     assert.match(markdown, /the busiest is Release, which reaches 3 parts/);
-    assert.ok(section(markdown, 'Where to start').includes('.github/workflows/ci.yml → packages/core/src/index.js\n'), markdown);
+    // Inside the package, the path goes on to the file its entry calls.
+    assert.ok(section(markdown, 'Where to start').includes('.github/workflows/ci.yml → packages/core/src/index.js → packages/core/src/helper.js\n'), markdown);
     assert.match(section(markdown, 'Where to start'), /Read those in order to follow one pull request end to end\./);
     assert.equal(JSON.parse(json).startDoor, '.github/workflows/ci.yml');
   });
@@ -64,7 +65,8 @@ describe('a tie the pull request only checks', () => {
     const data = JSON.parse(json);
     assert.match(markdown, /Work enters through 4 doors; CI, @s\/tie, tie and Publish each reach 1 part, and CI is followed because a pull request goes through it\./);
     assert.equal(data.mainDoor, '.github/workflows/ci.yml');
-    assert.deepEqual(data.startHere, ['src/cli.js']);
+    // The command's top level calls tie, which its import brings in.
+    assert.deepEqual(data.startHere, ['src/cli.js', 'src/tie.js']);
     assert.match(section(markdown, 'Where to start'), /Read those in order to follow one run of tie end to end\. This path follows tie \(a command people run\) from its entry, since CI only checks code\./);
   });
 });

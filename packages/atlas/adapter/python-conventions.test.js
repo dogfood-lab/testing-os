@@ -223,11 +223,13 @@ describe('the page on a Python package', () => {
   });
 
   it('starts where the door\'s code opens the package and follows the name it imports to its file', () => {
+    // Inside the package, the path goes on to what trainer.py uses.
     assert.deepEqual(mapped.page.startHere, [
       '.github/workflows/smoke.yml',
       'scripts/smoke.py',
       'trainkit/__init__.py',
       'trainkit/trainer.py',
+      'trainkit/datasets.py',
     ]);
   });
 

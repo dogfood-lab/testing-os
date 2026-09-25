@@ -2106,6 +2106,21 @@ function firstCallInto(ctx, path, part) {
   return call?.target.file ?? null;
 }
 
+/**
+ * The files a file's entry calls, in the order it calls them: the calls it
+ * makes on every pass before those behind a branch, each file once. A call
+ * handed on as a value (a callback) is not a call it makes. With no order of
+ * work recorded, the files it imports, in the order it imports them.
+ */
+function calledFiles(ctx, path) {
+  const file = ctx.fileOf.get(path);
+  const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
+  const calls = (root?.calls ?? []).filter((item) => !item.passed && item.target?.file);
+  if (calls.length === 0) return file?.importOrder ?? file?.importsFiles ?? [];
+  const ordered = [...calls.filter((item) => !item.branch), ...calls.filter((item) => item.branch)];
+  return [...new Set(ordered.map((item) => item.target.file))];
+}
+
 // A page a reader opens runs as surely as a script does.
 function runsAsCode(path) {
   return isCodePath(path) || /\.html?$/i.test(path);
@@ -2210,8 +2225,10 @@ const START_STEPS = 6;
  * place ends it. The chain starts at a file the door runs (see startRuns for
  * which jobs), past any file with no statements (an empty __init__.py). From
  * each file it goes to the file it imports that writes a place the door lands
- * on and code outside reads, and otherwise into another part, the one the
- * door reaches most files of; a test is passed over for the production file
+ * on and code outside reads, otherwise into another part, the one the door
+ * reaches most files of, and otherwise on inside its own part, to the next
+ * file the entry of that part calls (or imports, when it records no order of
+ * work); a test is passed over for the production file
  * it imports, and a package index to the file the entry's call reaches
  * through it. It ends at the place a file writes and the first reader
  * outside the door's own reach, so it ends at whoever uses the result rather
@@ -2327,7 +2344,20 @@ function startHere(ctx, main, first = null) {
     const writer = options.find((target) => ending(target));
     if (writer) return writer;
     const width = (target) => breadth.get(ctx.boundaryOf.get(target)) ?? 0;
-    return options.filter((target) => (ctx.boundaryOf.get(target) ?? null) !== part).sort((a, b) => width(b) - width(a) || cmp(a, b))[0] ?? null;
+    const across = options.filter((target) => (ctx.boundaryOf.get(target) ?? null) !== part);
+    if (across.length > 0) return across.sort((a, b) => width(b) - width(a) || cmp(a, b))[0];
+    // Inside its own part the path follows the order of work of the file it
+    // entered the part by, past a package index that only hands names on:
+    // the next file that file's entry calls, which is how a reader of the
+    // entry meets them.
+    const owner = chain.find((entry) => (ctx.boundaryOf.get(entry) ?? null) === part && ctx.fileOf.has(entry)
+      && !isIndex(entry) && !ctx.fileOf.get(entry)?.reexportsOnly) ?? path;
+    for (const target of calledFiles(ctx, owner)) {
+      if ((ctx.boundaryOf.get(target) ?? null) !== part || !ctx.fileOf.has(target) || isTestFile(target) || !readable(target)) continue;
+      const found = working(ctx, target, owner);
+      if (found != null && !chain.includes(found)) return found;
+    }
+    return null;
   };
   // Of the files a binary uses through its library, and the files those use
   // in the same part, the first that imports another part, the one the door
@@ -2501,7 +2531,13 @@ function startSection(words, main, readable, reason = null) {
   }
   if (words.length === 0) return ['## Where to start', noPath(main)].join('\n\n');
   const noun = heldNoun(main) ?? triggerNoun(main);
-  const read = `Read those in order to follow one ${noun}${noun.includes(',') ? ',' : ''} end to end.`;
+  const comma = noun.includes(',') ? ',' : '';
+  // One file is where to start, not a list to read in order.
+  if (words.length === 1) {
+    const single = `Start at ${words[0]} to follow one ${noun}${comma} end to end.`;
+    return ['## Where to start', reason ? `${single} ${reason}` : single].join('\n\n');
+  }
+  const read = `Read those in order to follow one ${noun}${comma} end to end.`;
   return ['## Where to start', words.join(' → '), reason ? `${read} ${reason}` : read].join('\n\n');
 }
 

@@ -250,6 +250,11 @@ function carryFile(file) {
   if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
   const imported = importTargets(file);
   if (imported.files.length > 0) out.importsFiles = imported.files;
+  // A file whose entry calls into no file has no order of work; the order it
+  // imports in is then the order a reader meets what it uses (a CLI that
+  // registers its commands as it imports them), carried when it is not the
+  // sorted order already listed.
+  if (!entryReachesFile(file) && imported.ordered.some((target, index) => target !== imported.files[index])) out.importOrder = imported.ordered;
   if (imported.all.length > 0) out.reexportsAll = imported.all;
   if (file.sequences) out.sequences = file.sequences.map(carrySequence);
   if (file.entry != null) {
@@ -269,8 +274,11 @@ function carryFile(file) {
 function importTargets(file) {
   const files = new Set();
   const all = new Set();
-  if (!Array.isArray(file.imports)) return { files: [], all: [] };
-  for (const site of file.imports) {
+  if (!Array.isArray(file.imports)) return { files: [], all: [], ordered: [] };
+  const sites = file.imports.map((site, index) => ({ site, index }))
+    .sort((a, b) => (a.site.line ?? 0) - (b.site.line ?? 0) || a.index - b.index)
+    .map((entry) => entry.site);
+  for (const site of sites) {
     if (loadsManifest(site)) continue;
     const resolved = site.resolved;
     let target = null;
@@ -280,7 +288,12 @@ function importTargets(file) {
     files.add(target);
     if (site.reexportsAll) all.add(target);
   }
-  return { files: [...files].sort(), all: [...all].sort() };
+  return { files: [...files].sort(), all: [...all].sort(), ordered: [...files] };
+}
+
+function entryReachesFile(file) {
+  const root = (file.sequences ?? []).find((sequence) => sequence.name === file.entry);
+  return (root?.calls ?? []).some((call) => !call.passed && call.target?.file);
 }
 
 function carrySequence(sequence) {

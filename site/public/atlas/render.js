@@ -865,6 +865,9 @@ function startSection(ctx) {
   }
   const chain = arr(ctx.page.startHere).map((path) => pathHtml(ctx, path));
   if (chain.length === 0 && ctx.page.startNote) return section('Where to start', p(esc(ctx.page.startNote)));
+  const reason = ctx.page.startReason ? ` ${esc(str(ctx.page.startReason))}` : '';
+  // One file is where to start, not a list to read in order.
+  if (chain.length === 1) return section('Where to start', p(`Start at ${chain[0]} to follow one ${esc(triggerNoun(ctx.start))} end to end.${reason}`));
   const body = [
     `<p class="chain">${chain.join(' <span aria-hidden="true">→</span><span class="sr">, then</span> ')}</p>`,
     p(`Read those in order to follow one ${esc(triggerNoun(ctx.start))} end to end.${ctx.page.startReason ? ` ${esc(str(ctx.page.startReason))}` : ''}`),

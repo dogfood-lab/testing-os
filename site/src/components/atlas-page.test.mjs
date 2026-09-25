@@ -428,6 +428,9 @@ test('a stamped block, the door a reading starts at, and a door with no path rea
   assert.ok(started.includes('Read those in order to follow one pull request end to end.'), 'the start door names the noun');
   const none = render.renderPage({ ...page, startDoor: ci.id, startHere: [], startNote: 'CI runs no code this map can follow, so there is no path of files to read in order.' }, { repo: page.repo });
   assert.ok(none.includes('<h2>Where to start</h2>\n<p>CI runs no code this map can follow, so there is no path of files to read in order.</p></section>'), 'no path');
+  const one = plain(render.renderPage({ ...page, startDoor: ci.id, startHere: ['packages/atlas/cli.js'], startReason: undefined }, { repo: page.repo }));
+  assert.ok(one.includes('Start at packages/atlas/cli.js to follow one pull request end to end.'), 'one file is said in the singular');
+  assert.ok(!one.includes('Read those in order to follow one pull request'), 'one file is no list');
 });
 
 test('with nothing written, the never-read section says so rather than that every place is read', () => {
