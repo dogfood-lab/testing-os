@@ -908,11 +908,16 @@ const PY_SPAWNS = /(^|\.)(run|call|check_call|check_output|Popen)$/;
  */
 function pythonSpawns(root) {
   const interpreters = new Set();
+  // A command line bound to a name before it is handed on (pytest = [py,
+  // "-m", "pytest", "-q"]; _run("suite", pytest)) is the list the name holds,
+  // when the file binds the name to a list once.
+  const lists = new Map();
   walkNamed(root, (node) => {
     if (node.type !== 'assignment') return;
     const left = node.childForFieldName('left');
     const right = node.childForFieldName('right');
     if (left?.type === 'identifier' && right?.text === 'sys.executable') interpreters.add(left.text);
+    if (left?.type === 'identifier') lists.set(left.text, lists.has(left.text) || right?.type !== 'list' ? null : right);
   });
   // A function of the file that hands one of its parameters to subprocess
   // (def _run(label, cmd): subprocess.run(cmd)) runs the list each call
@@ -936,6 +941,7 @@ function pythonSpawns(root) {
     let list = null;
     if (helpers.has(callee)) list = args[helpers.get(callee)] ?? null;
     else if (PY_SPAWNS.test(callee)) list = args[0] ?? null;
+    if (list?.type === 'identifier') list = lists.get(list.text) ?? null;
     if (list?.type !== 'list') return;
     const items = list.namedChildren.filter((child) => child.type !== 'comment');
     const head = items[0];
