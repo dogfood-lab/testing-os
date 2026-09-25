@@ -455,8 +455,11 @@ function shownRuns(door, kind = null, only = null) {
   const named = new Set((door.runs ?? []).filter((run) => !run.matched).map((run) => run.path));
   const within = (path, dir) => dir !== path && path.startsWith(dir) && (!named.has(path) || named.has(dir))
     && (kinds.get(dir) === 'executes' || kinds.get(path) === 'checks');
+  // A directory is never named beside a directory holding it that is run
+  // the same way (src/mcp_arcade/ and src/): the one holding it says both.
+  const nested = (path) => path.endsWith('/') && dirs.some((dir) => dir !== path && path.startsWith(dir) && kinds.get(dir) === kinds.get(path));
   return paths
-    .filter((path) => !dirs.some((dir) => within(path, dir)))
+    .filter((path) => !dirs.some((dir) => within(path, dir)) && !nested(path))
     .filter((path) => kind == null || kinds.get(path) === kind)
     .sort((a, b) => Number(!named.has(a)) - Number(!named.has(b))
       || Number(a !== door.entry) - Number(b !== door.entry)
