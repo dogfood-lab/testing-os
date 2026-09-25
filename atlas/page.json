@@ -94,7 +94,6 @@
       "readers": [
         "ingest",
         "portfolio",
-        "report",
         "scripts",
         "site"
       ],
@@ -109,95 +108,111 @@
         "findings",
         "ingest",
         "portfolio",
-        "report"
+        "verify"
       ],
-      "target": "records/",
+      "target": "policies/repos/",
       "writers": [
-        "ingest"
+        "findings"
       ]
     }
   ],
   "changes": {
     "fileCounts": {
-      "added": 141,
-      "changed": 59,
+      "added": 369,
+      "changed": 69,
       "moved": 0,
-      "parts": 14,
+      "parts": 15,
       "removed": 0
     },
     "items": [
       {
         "kind": "door",
-        "sentence": "CI runs 17 more files than before.",
+        "sentence": "CI runs 38 more files than before.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
       },
       {
         "kind": "door",
-        "sentence": "Release runs 17 more files than before.",
+        "sentence": "Release runs 38 more files than before.",
         "subjects": [
           ".github/workflows/release.yml"
         ]
       },
       {
         "kind": "landing",
-        "sentence": ".github/workflows/ci.yml is now also read by packages/atlas/adapter/page-cargo-examples.test.js, packages/atlas/adapter/page-cargo-widest-test.test.js, packages/atlas/adapter/page-fork-gate.test.js, packages/atlas/adapter/page-godot-discovery.test.js, packages/atlas/adapter/page-tauri-build-script.test.js and packages/atlas/core/checkout-path.test.js.",
+        "sentence": "dogfood/roadmap/*.*.json is now written by packages/dogfood-swarm/lib/roadmap/compiler.js.",
+        "subjects": [
+          "dogfood/roadmap/*.*.json",
+          "packages/dogfood-swarm/lib/roadmap/compiler.js"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "indexes/integrity/anchors is now also written by packages/ingest/lib/atomic-write.js.",
+        "subjects": [
+          "indexes/integrity/anchors",
+          "packages/ingest/lib/atomic-write.js"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": ".github/workflows/ci.yml is now also read by packages/atlas/adapter/page-build-starts.test.js, packages/atlas/adapter/page-data-package.test.js, packages/atlas/adapter/page-start-dead-ends.test.js, packages/atlas/adapter/page-start-order.test.js, packages/atlas/core/next-app.test.js, packages/atlas/core/python-spawns.test.js, packages/atlas/core/test-spawn-joined.test.js, packages/atlas/core/turbo-runs.test.js and packages/atlas/core/vitest-projects.test.js.",
         "subjects": [
           ".github/workflows/ci.yml",
-          "packages/atlas/adapter/page-cargo-examples.test.js",
-          "packages/atlas/adapter/page-cargo-widest-test.test.js",
-          "packages/atlas/adapter/page-fork-gate.test.js",
-          "packages/atlas/adapter/page-godot-discovery.test.js",
-          "packages/atlas/adapter/page-tauri-build-script.test.js",
-          "packages/atlas/core/checkout-path.test.js"
+          "packages/atlas/adapter/page-build-starts.test.js",
+          "packages/atlas/adapter/page-data-package.test.js",
+          "packages/atlas/adapter/page-start-dead-ends.test.js",
+          "packages/atlas/adapter/page-start-order.test.js",
+          "packages/atlas/core/next-app.test.js",
+          "packages/atlas/core/python-spawns.test.js",
+          "packages/atlas/core/test-spawn-joined.test.js",
+          "packages/atlas/core/turbo-runs.test.js",
+          "packages/atlas/core/vitest-projects.test.js"
         ]
       },
       {
         "kind": "landing",
-        "sentence": ".github/workflows/release.yml is now also read by packages/atlas/adapter/changes.test.js, packages/atlas/adapter/page-release-binaries.test.js, packages/atlas/core/release-binaries.test.js and site/src/components/atlas-page.test.mjs.",
-        "subjects": [
-          ".github/workflows/release.yml",
-          "packages/atlas/adapter/changes.test.js",
-          "packages/atlas/adapter/page-release-binaries.test.js",
-          "packages/atlas/core/release-binaries.test.js",
-          "site/src/components/atlas-page.test.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "SHIP_GATE.md is now also read by packages/atlas/core/where-set.test.js.",
-        "subjects": [
-          "SHIP_GATE.md",
-          "packages/atlas/core/where-set.test.js"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 15 more new writers and readers of places.",
+        "sentence": "And 56 more new writers and readers of places.",
         "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "141 files added and 59 changed content, across 14 parts.",
+        "sentence": "369 files added and 69 changed content, across 15 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "8dfd0f98ca920f06afa06258ff9beca1b755ea9c",
-      "generatedAt": "2026-09-24T20:11:36.707Z"
+      "commit": "0485577c9203349cff876f8dbcfd5af952a957bf",
+      "generatedAt": "2026-09-25T00:53:41.567Z"
     },
     "unchanged": false
   },
-  "changesTogether": [],
+  "changesTogether": [
+    {
+      "a": "site/public/atlas/render.js",
+      "b": "site/src/components/atlas-page.test.mjs",
+      "either": 60,
+      "partLabels": [
+        "site",
+        "site"
+      ],
+      "parts": [
+        "site",
+        "site"
+      ],
+      "relation": "inside",
+      "shared": 30
+    }
+  ],
   "changesTogetherNote": [
     "1 file changed together with its own test, as expected.",
-    "Window: 180 days; a pair counts from 10 shared commits, since 34 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
+    "Window: 180 days; a pair counts from 10 shared commits, since 35 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "0485577c9203349cff876f8dbcfd5af952a957bf",
+  "commit": "ce2ccd2671fc8deb8b8d306faebef60f8ee6ff95",
   "defaultBranch": "main",
-  "derived": "23 parts, mostly JavaScript (1164 files), TypeScript (127), Rust (87), Python (67) and GDScript (32). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
+  "derived": "23 parts, mostly JavaScript (1296 files), TypeScript (154), Python (87), Rust (87) and GDScript (32). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
     {
       "checks": [
@@ -307,8 +322,8 @@
         "packages/atlas/adapter/init-fixture-manifest.test.js",
         "packages/atlas/adapter/init-godot-roles.test.js",
         "packages/atlas/adapter/init-ignores.test.js",
+        "packages/atlas/adapter/init-role-ties.test.js",
         "packages/atlas/adapter/init-roles.test.js",
-        "packages/atlas/adapter/init.test.js",
         "packages/atlas/core/artifact-builds.test.js",
         "packages/atlas/core/build-config.test.js",
         "packages/atlas/core/built-runs.test.js",
@@ -323,7 +338,7 @@
         "packages/atlas/core/command-files.test.js",
         "packages/atlas/core/commands.test.js",
         "packages/atlas/core/container-starts.test.js",
-        "packages/atlas/core/divergence.test.js",
+        "packages/atlas/core/dependency-names.test.js",
         "packages/dogfood-swarm/a3-roadmap-envelope-conformance.test.js",
         "packages/dogfood-swarm/adjudicate-explicit-wave.test.js",
         "packages/dogfood-swarm/advance.test.js",
@@ -484,8 +499,8 @@
         "scripts/check-package-deps-hygiene.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 622,
-      "runsMore": 636,
+      "runsCount": 660,
+      "runsMore": 674,
       "sends": [
         "publishes workspace packages to npm and a container image",
         "creates a GitHub release"
@@ -597,8 +612,8 @@
         "packages/atlas/adapter/init-fixture-manifest.test.js",
         "packages/atlas/adapter/init-godot-roles.test.js",
         "packages/atlas/adapter/init-ignores.test.js",
+        "packages/atlas/adapter/init-role-ties.test.js",
         "packages/atlas/adapter/init-roles.test.js",
-        "packages/atlas/adapter/init.test.js",
         "packages/atlas/core/artifact-builds.test.js",
         "packages/atlas/core/build-config.test.js",
         "packages/atlas/core/built-runs.test.js",
@@ -613,7 +628,7 @@
         "packages/atlas/core/command-files.test.js",
         "packages/atlas/core/commands.test.js",
         "packages/atlas/core/container-starts.test.js",
-        "packages/atlas/core/divergence.test.js",
+        "packages/atlas/core/dependency-names.test.js",
         "packages/dogfood-swarm/a3-roadmap-envelope-conformance.test.js",
         "packages/dogfood-swarm/adjudicate-explicit-wave.test.js",
         "packages/dogfood-swarm/advance.test.js",
@@ -777,8 +792,8 @@
         "scripts/check-package-deps-hygiene.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 621,
-      "runsMore": 635,
+      "runsCount": 659,
+      "runsMore": 673,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -1406,9 +1421,7 @@
     {
       "place": "indexes/",
       "writers": [
-        "packages/ingest/anchor/compute-root.js",
-        "packages/ingest/lib/chain-manifest.js",
-        "packages/ingest/rebuild-indexes.js",
+        "ingest (4 files)",
         "packages/portfolio/generate.js"
       ]
     },
@@ -1439,23 +1452,24 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T00:53:41.567Z",
+  "generatedAt": "2026-09-25T07:23:26.025Z",
   "limits": [
-    "2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
-    "154 import sites could not be resolved.",
+    "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
+    "159 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 156 more.",
     "3 import sites name a path outside this repository, so what they load is not followed.",
     "13 files in fixtures use syntax the parser cannot read (fixtures/atlas/grammar-shapes/src/broken.ts, fixtures/atlas/grammars-rust-gdscript/scripts/broken.gd, fixtures/atlas/grammars-rust-gdscript/src/broken.rs and 10 more), so what they import is not known: a bare `&` in JSX text (1) and other syntax (12).",
     "6 writes and 32 reads use paths built at run time and are not named here.",
-    "8 writes go to places this repository does not track, so they are not listed as generated.",
-    "73 writes and 508 reads go to a path their caller passes, not to this repository.",
+    "6 writes go to places this repository does not track, so they are not listed as generated.",
+    "73 writes and 525 reads go to a path their caller passes, not to this repository.",
+    "35 reads go to the directory the command is run in, not to this repository.",
     "2 writes and 8 reads go to the directory the command is run in (.github/, dogfood/, policy.example.yaml and 2 more places) or a path their caller passes, not to this repository.",
     "5 writes and 3 reads go to a temporary directory, not to this repository.",
     "2 writes and 3 reads go to a temporary directory or a path their caller passes, not to this repository.",
-    "5 reads go to the directory the command is run in, not to this repository.",
     "31 commands are built at run time and not followed, 22 of them in tests.",
+    "1 file belongs to no part: packages/.gitkeep.",
     "Readers marked (found by text) come from scanning unparsed files.",
-    "Release runs or checks 626 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "CI runs or checks 622 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
+    "Release runs or checks 664 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "CI runs or checks 660 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
   "mainDoor": ".github/workflows/ingest.yml",
   "partLabels": {
@@ -1487,9 +1501,7 @@
   "readers": [
     {
       "readers": [
-        "packages/atlas/adapter/fleet.js",
         "packages/atlas/core/fixture-repo.js",
-        "packages/atlas/core/unseen.js",
         "scripts/doc-drift-patterns.json (found by text)"
       ],
       "target": "README.md",
@@ -1503,7 +1515,6 @@
     },
     {
       "readers": [
-        "packages/report/status.js",
         "scripts/atlas-render.mjs",
         "site/public/dashboard/index.html (found by text)"
       ],
@@ -1511,9 +1522,7 @@
       "tests": 5
     },
     {
-      "readers": [
-        "packages/dogfood-swarm/lib/domains.js"
-      ],
+      "readers": [],
       "target": "package-lock.json",
       "tests": 2
     },
@@ -1531,8 +1540,7 @@
         "packages/findings/README.md (found by text)",
         "packages/findings/derive/load-records.js",
         "packages/ingest/rebuild-indexes.js",
-        "packages/portfolio/lib/compute-trends.js",
-        "packages/report/status.js"
+        "packages/portfolio/lib/compute-trends.js"
       ],
       "target": "records/",
       "tests": 12
@@ -1554,25 +1562,25 @@
           "name": "loadRepoPolicy",
           "part": "ingest",
           "partLabel": "ingest",
-          "phrase": "load repo policy",
+          "phrase": "`loadRepoPolicy`",
           "steps": [
             {
               "name": "isUnsafeSegment",
               "part": "ingest",
               "partLabel": "ingest",
-              "phrase": "is unsafe segment"
+              "phrase": "`isUnsafeSegment`"
             },
             {
               "name": "logStage",
               "part": "dogfood-swarm",
               "partLabel": "dogfood-swarm",
-              "phrase": "log stage"
+              "phrase": "`logStage`"
             },
             {
               "name": "validatePayload",
               "part": "schemas",
               "partLabel": "schemas",
-              "phrase": "validate payload"
+              "phrase": "`validatePayload`"
             }
           ]
         },
@@ -1581,55 +1589,49 @@
           "name": "verify",
           "part": "verify",
           "partLabel": "verify",
-          "phrase": "verify",
+          "phrase": "`verify`",
           "steps": [
             {
               "name": "parseRunUrlRepo",
               "part": "verify",
               "partLabel": "verify",
-              "phrase": "parse run url repo"
+              "phrase": "`parseRunUrlRepo`"
             },
             {
               "name": "validateSubmissionSchema",
               "part": "verify",
               "partLabel": "verify",
-              "phrase": "validate submission schema"
+              "phrase": "`validateSubmissionSchema`"
             },
             {
               "name": "validateSchemaVersion",
               "part": "verify",
               "partLabel": "verify",
-              "phrase": "validate schema version"
-            },
-            {
-              "name": "confirm",
-              "part": null,
-              "partLabel": null,
-              "phrase": "confirm"
+              "phrase": "`validateSchemaVersion`"
             },
             {
               "name": "validateStepResults",
               "part": "verify",
               "partLabel": "verify",
-              "phrase": "validate step results"
+              "phrase": "`validateStepResults`"
             },
             {
               "name": "validateRequiredSteps",
               "part": "verify",
               "partLabel": "verify",
-              "phrase": "validate required steps"
+              "phrase": "`validateRequiredSteps`"
             },
             {
               "name": "validatePolicy",
               "part": "verify",
               "partLabel": "verify",
-              "phrase": "validate policy"
+              "phrase": "`validatePolicy`"
             },
             {
               "name": "computeVerdict",
               "part": "verify",
               "partLabel": "verify",
-              "phrase": "compute verdict"
+              "phrase": "`computeVerdict`"
             }
           ]
         },
@@ -1638,81 +1640,81 @@
           "name": "writeRecord",
           "part": "ingest",
           "partLabel": "ingest",
-          "phrase": "write record",
+          "phrase": "`writeRecord`",
           "steps": [
             {
               "name": "isUnsafeSegment",
               "part": "ingest",
               "partLabel": "ingest",
-              "phrase": "is unsafe segment"
+              "phrase": "`isUnsafeSegment`"
             },
             {
               "name": "readChainHead",
               "part": "ingest",
               "partLabel": "ingest",
-              "phrase": "read chain head"
+              "phrase": "`readChainHead`"
             },
             {
               "name": "submissionDigest",
               "part": "ingest",
               "partLabel": "ingest",
-              "phrase": "submission digest"
+              "phrase": "`submissionDigest`"
             },
             {
               "name": "validateRecord",
               "part": "ingest",
               "partLabel": "ingest",
-              "phrase": "validate record"
+              "phrase": "`validateRecord`"
             },
             {
               "name": "appendChainEntry",
               "part": "ingest",
               "partLabel": "ingest",
-              "phrase": "append chain entry"
+              "phrase": "`appendChainEntry`"
             }
           ]
         }
       ],
       "part": "ingest",
       "partLabel": "ingest",
-      "phrase": "ingest",
+      "phrase": "`ingest`",
       "steps": [
         {
           "name": "logStage",
           "part": "dogfood-swarm",
           "partLabel": "dogfood-swarm",
-          "phrase": "log stage"
+          "phrase": "`logStage`"
         },
         {
           "name": "isDuplicate",
           "part": "ingest",
           "partLabel": "ingest",
-          "phrase": "is duplicate"
+          "phrase": "`isDuplicate`"
         },
         {
           "count": 3,
           "name": null,
           "part": "ingest",
           "partLabel": "ingest",
-          "phrase": "load context"
+          "phrase": "`load-context.js`"
         },
         {
           "name": "verify",
           "part": "verify",
           "partLabel": "verify",
-          "phrase": "verify"
+          "phrase": "`verify`"
         },
         {
           "name": "writeRecord",
           "part": "ingest",
           "partLabel": "ingest",
-          "phrase": "write record"
+          "phrase": "`writeRecord`"
         },
         {
           "name": "rebuildIndexes",
           "part": "ingest",
           "partLabel": "ingest",
-          "phrase": "rebuild indexes"
+          "phrase": "`rebuildIndexes`"
         }
       ]
     },
@@ -1722,31 +1724,31 @@
       "inner": [],
       "part": "portfolio",
       "partLabel": "portfolio",
-      "phrase": "main",
+      "phrase": "`main`",
       "steps": [
         {
           "name": "computeTrends",
           "part": "portfolio",
           "partLabel": "portfolio",
-          "phrase": "compute trends"
+          "phrase": "`computeTrends`"
         },
         {
           "name": "atomicWriteFileSync",
           "part": "findings",
           "partLabel": "findings",
-          "phrase": "atomic write file sync"
+          "phrase": "`atomicWriteFileSync`"
         },
         {
           "name": "generateBadges",
           "part": "portfolio",
           "partLabel": "portfolio",
-          "phrase": "generate badges"
+          "phrase": "`generateBadges`"
         },
         {
           "name": "atomicWriteFileSync",
           "part": "findings",
           "partLabel": "findings",
-          "phrase": "atomic write file sync"
+          "phrase": "`atomicWriteFileSync`"
         }
       ]
     }
@@ -1757,22 +1759,22 @@
     "packages/ingest/run.js",
     "packages/ingest/persist.js",
     "records/",
-    "packages/report/status.js"
+    "packages/findings/derive/load-records.js"
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 729,
+  "testFiles": 786,
   "testedBy": {
-    "atlas": 141,
-    "dogfood-swarm": 295,
-    "findings": 134,
-    "ingest": 72,
+    "atlas": 184,
+    "dogfood-swarm": 300,
+    "findings": 139,
+    "ingest": 80,
     "portfolio": 22,
-    "report": 28,
+    "report": 33,
     "schemas": 114,
     "scripts": 16,
     "site": 1,
-    "verify": 83
+    "verify": 88
   },
   "unnamedWrites": 6,
   "unread": [],
