@@ -653,12 +653,20 @@ export function sendPhrases(door) {
   if (sends.opensIssues) phrases.push(sends.opensIssuesOnFailure ? 'opens an issue when it fails' : 'opens an issue');
   if (sends.opensPullRequests) phrases.push('opens a pull request');
   if (sends.changesRepositories) phrases.push('changes other repositories through the GitHub API');
-  // A job held to one trigger says which: "deploys the site on a push to main".
+  // A job held to one trigger says which, once, after all it does there:
+  // "deploys the site on a push to main", "commits registry.json and pushes
+  // to a branch for review, never to main, and opens a pull request, on an
+  // `issues` event". A gate after a phrase that holds a comma is set off by
+  // one, so it limits the whole phrase, not its last words.
   for (const entry of door.gated ?? []) {
     const when = gatePhrase(entry.when);
     const stages = stagedShown(entry.stages);
-    if (stages.length > 0) phrases.push(`commits ${commitsClause({ stages: entry.stages, pushes: entry.pushes, pushesForReview: entry.pushesForReview, pushesTo: entry.pushesTo })} ${when}`);
-    for (const phrase of sendPhrases({ sends: sendsFrom(entry.sends), builtFrom: builtPaths(door) })) phrases.push(`${phrase} ${when}`);
+    const held = [];
+    if (stages.length > 0) held.push(`commits ${commitsClause({ stages: entry.stages, pushes: entry.pushes, pushesForReview: entry.pushesForReview, pushesTo: entry.pushesTo })}`);
+    held.push(...sendPhrases({ sends: sendsFrom(entry.sends), builtFrom: builtPaths(door) }));
+    if (held.length === 0) continue;
+    const joined = clauseList(held);
+    phrases.push(`${joined}${joined.includes(',') ? ',' : ''} ${when}`);
   }
   return phrases;
 }

@@ -1,0 +1,29 @@
+name: Operations
+on:
+  push:
+    branches: [main]
+  issues:
+    types: [opened]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/check.mjs
+  submit:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/patch.mjs
+      - run: |
+          git checkout -b submission
+          git add registry.json
+          git commit -m "Add a submission"
+          git push origin submission
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.pulls.create({ owner: context.repo.owner, repo: context.repo.repo, head: 'submission', base: 'main', title: 'Submission' });

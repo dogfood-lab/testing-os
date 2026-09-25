@@ -29,6 +29,11 @@ const ACTION_SENDS = [
   ['actions/deploy-pages', (sends) => { sends.deploysPages = true; }],
   ['peaceiris/actions-gh-pages', (sends) => { sends.deploysPages = true; }],
   ['peter-evans/create-pull-request', (sends) => { sends.opensPullRequests = true; }],
+  // A script github-script runs opens a pull request its Octokit creates.
+  ['actions/github-script', (sends, step) => {
+    const script = typeof step.with?.script === 'string' ? step.with.script : '';
+    if (/\bpulls\.create\s*\(/.test(script)) sends.opensPullRequests = true;
+  }],
 ];
 
 /**
