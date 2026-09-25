@@ -391,6 +391,10 @@ export function better(a, b) {
   delete out.passes;
   delete out.built;
   if (built) out.built = true;
+  // A file only packed into an image is packed; one anything else checks or
+  // runs is that.
+  delete out.packed;
+  if (a.packed && b.packed) out.packed = true;
   if (passes.length > 0) out.passes = passes;
   // A binary either way builds is built, whatever else checks it.
   if (a.builds || b.builds) out.builds = true;
@@ -796,7 +800,8 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
 
   /**
    * docker build, docker buildx build and podman build of a context: the
-   * Dockerfile's COPY and ADD sources the image is built from are checked,
+   * Dockerfile's COPY and ADD sources the image is built from are packed
+   * into it (checked, and marked packed: nothing runs them here),
    * its RUN lines are read as commands from the context, and the command line
    * its ENTRYPOINT and CMD start is read as a command the image runs. Returns
    * true when the words are a build.
@@ -818,7 +823,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     const dockerfile = fileArg != null ? pathFrom(dir, fileArg) : context ? `${context}/Dockerfile` : 'Dockerfile';
     if (dockerfile == null || !repo.tracked.has(dockerfile)) return;
     const chain = via(frame, `docker build ${dockerfile}`);
-    const checks = { ...frame, runKind: 'checks' };
+    const checks = { ...frame, runKind: 'checks', packed: true };
     const stages = [];
     let stage = null;
     for (const { op, args } of dockerInstructions(repo.text(dockerfile) ?? '')) {
@@ -1732,6 +1737,7 @@ function stamp(entry, frame, via = frame.via) {
   if (via) out.via = via;
   if (frame.builds) out.builds = true;
   if (frame.built) out.built = true;
+  if (frame.packed) out.packed = true;
   return out;
 }
 

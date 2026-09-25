@@ -254,6 +254,11 @@ function builds(ctx, door) {
   return arr(door.builds).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
 }
 
+// What a Dockerfile copies into the image a door builds, as page.js names it.
+function packs(ctx, door) {
+  return arr(door.packs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
+}
+
 // runsCount and checksCount are how many paths the door runs and checks when
 // page.json lists fewer, so "and N more" counts every one.
 function runTotal(door, items) {
@@ -477,6 +482,7 @@ function comesIn(ctx) {
     else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
     if (built.length > 0) clauses.push(`builds ${runsShown(built)}`);
     if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
+    if (packs(ctx, door).length > 0) clauses.push(`packs ${runsShown(packs(ctx, door))} into an image`);
     const heldText = heldSentences(ctx, door, startVerb(door), clauses.length > 0, { withBuilds: true });
     const ran = [...(clauses.length > 0 || heldText.length === 0 ? [capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`)] : []), ...heldText].join(' ');
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
@@ -507,6 +513,7 @@ function doorSteps(ctx, door) {
   if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
   if (built.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} builds ${runsShown(built)}`);
   if (checked.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
+  if (packs(ctx, door).length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} packs ${runsShown(packs(ctx, door))} into an image`);
   const heldText = heldSentences(ctx, door, 'runs', clauses.length > 0);
   if (clauses.length > 0 || heldText.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   steps.push(...heldText);
@@ -655,6 +662,8 @@ function otherDoors(ctx) {
     if (checked.length > 0) {
       clauses.push({ html: `checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`, text: `checks ${runsShownText(checked, checkTotal(door, checked), moreOf(door.checksMore))}` });
     }
+    const packed = packs(ctx, door);
+    if (packed.length > 0) clauses.push({ html: `packs ${runsShown(packed)} into an image`, text: `packs ${runsShownText(packed)} into an image` });
     for (const group of held(ctx, door)) {
       const html = heldClause(group, verb, ' and ', 'html');
       if (html) clauses.push({ html: `${html} ${esc(group.when)}`, text: `${heldClause(group, verb, ' and ', 'text')} ${group.when}` });

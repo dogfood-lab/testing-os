@@ -1061,3 +1061,10 @@ test('a place written from inputs the repository does not keep is people\'s too,
   assert.ok(html.includes('Every tracked place code writes here is edited by people too; see Hand-authored.'), html);
   assert.ok(html.includes('src/game/data/events.json is written by scripts/convert.py from inputs this repository does not keep, and by people.'), html);
 });
+
+test('what a Dockerfile copies into an image is packed, as the markdown says, never checked', () => {
+  const ci = page.doors.find((door) => door.name === 'CI');
+  const doors = page.doors.map((door) => (door === ci ? { ...door, checks: [], packs: ['camp/', 'pyproject.toml'] } : door));
+  const html = plain(render.renderPage({ ...page, doors }, { repo: page.repo }));
+  assert.ok(html.includes('packs camp/ and pyproject.toml into an image'), html.slice(0, 4000));
+});

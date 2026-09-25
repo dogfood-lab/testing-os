@@ -431,9 +431,9 @@ function heldSentences(ctx, door, verb, alsoRuns, { builds = false } = {}) {
 // listed.
 function runKinds(door) {
   const kinds = new Map();
-  const rank = { checks: 0, builds: 1, executes: 2 };
+  const rank = { packs: 0, checks: 1, builds: 2, executes: 3 };
   for (const run of door.runs ?? []) {
-    const kind = run.runKind === 'checks' ? 'checks' : run.built ? 'builds' : 'executes';
+    const kind = run.runKind === 'checks' ? (run.packed ? 'packs' : 'checks') : run.built ? 'builds' : 'executes';
     if (!kinds.has(run.path) || rank[kind] > rank[kinds.get(run.path)]) kinds.set(run.path, kind);
   }
   return kinds;
@@ -950,9 +950,11 @@ function runsAndChecks(ctx, door, verb) {
   const ran = namedRuns(door, 'executes');
   const built = shownRuns(door, 'builds');
   const checked = shownRuns(door, 'checks');
+  const packed = shownRuns(door, 'packs');
   if (ran.length > 0) clauses.push(`${verb} ${filesShown(ctx, shownWithFinds(door, ran), unrecordedRuns(door, 'executes'))}`);
   if (built.length > 0) clauses.push(`builds ${filesShown(ctx, built)}`);
   if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked, unrecordedRuns(door, 'checks'))}`);
+  if (packed.length > 0) clauses.push(`packs ${filesShown(ctx, packed)} into an image`);
   return clauses.length > 0 ? clauses.join('; ') : null;
 }
 
@@ -1104,6 +1106,8 @@ function doorSteps(ctx, door) {
   if (ran.length > 0) clauses.push(`${subject} ${runGroups(ctx, door, ran)}`);
   if (built.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} builds ${runGroups(ctx, door, built)}`);
   if (checked.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} checks ${runGroups(ctx, door, checked)}`);
+  const packed = shownRuns(door, 'packs');
+  if (packed.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} packs ${runGroups(ctx, door, packed)} into an image`);
   const held = heldSentences(ctx, door, 'runs', clauses.length > 0);
   if (clauses.length > 0 || held.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   steps.push(...held);
@@ -1540,6 +1544,8 @@ function otherDoors(ctx, main) {
     const plain = plainBuilds(door);
     if (plain.length > 0) clauses.push(`builds ${filesShown(ctx, plain)}`);
     if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked, unrecordedRuns(door, 'checks'))}`);
+    const packed = shownRuns(door, 'packs');
+    if (packed.length > 0) clauses.push(`packs ${filesShown(ctx, packed)} into an image`);
     for (const group of groups) {
       const clause = heldClause(ctx, door, group, verb, ' and ');
       if (clause) clauses.push(`${clause} ${gatePhrase(group.when)}`);
@@ -3318,6 +3324,7 @@ function doorData(ctx, door) {
     reach: (door.reach ?? []).map((entry) => ({ boundary: entry.boundary, depth: entry.depth, files: entry.files })),
     ...(shownRuns(door, 'builds').length > 0 ? { builds: shownRuns(door, 'builds') } : {}),
     checks: shownRuns(door, 'checks'),
+    ...(shownRuns(door, 'packs').length > 0 ? { packs: shownRuns(door, 'packs') } : {}),
     checksCount: runTotal(door, 'checks'),
     checksMore: moreFiles(ctx, shownRuns(door, 'checks'), unrecordedRuns(door, 'checks')),
     ...(gatedRuns(door).length > 0
