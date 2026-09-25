@@ -186,6 +186,9 @@ function readDoor(repoPath, file, repo) {
   const uses = new Set();
   const runs = new Map();
   const mentions = new Map();
+  // Places of this repository a command run from another checkout is handed
+  // to write, by an output flag (index.js attachLandings).
+  const handed = new Set();
   const stages = new Set();
   let pushes = false;
   const sidePushes = [];
@@ -317,6 +320,14 @@ function readDoor(repoPath, file, repo) {
       if (/\bmakeappx(?:\.exe)?["']?\s+pack\b/i.test(step.run)) shipped.packs = true;
       for (const target of buildTargets(expandEnv(step.run, lookup), body)) shipped.targets.add(target);
       if (/\bgh\s+issue\s+create\b/.test(step.run)) scope.issues.push(onlyOnFailure(step.if) || onlyOnFailure(body.if));
+      // A step outside this repository's checkout names this repository by
+      // a path through that checkout: stage/.github/pins.env from the
+      // workspace, ../stage/fixtures from a sibling checkout.
+      if (selfPath != null && ownDir == null) {
+        const through = throughCheckout(expandEnv(step.run, lookup), String(rawDir ?? ''), selfPath, repo);
+        for (const path of through.named) mentions.set(`${path}\0${job}`, { path, job });
+        for (const path of through.written) handed.add(path);
+      }
       // A step whose working directory cannot be read as a repository path
       // names nothing Atlas can place, so its tokens are left unresolved.
       const dir = selfPath != null ? ownDir : step['working-directory'] === undefined ? jobDir : cleanDir(step['working-directory']);
@@ -383,6 +394,7 @@ function readDoor(repoPath, file, repo) {
     ...(conditional.length > 0 ? { conditional: [...conditional].sort() } : {}),
     ...(missed.size > 0 ? { shellMissed: shellMissed(missed) } : {}),
     uses: [...uses].sort(),
+    ...(handed.size > 0 ? { handedWrites: [...handed].sort() } : {}),
     // Read by index.js markUnshipped, then dropped.
     publishedCrates: [sends, ...[...gates.values()].map((entry) => entry.sends)].flatMap((scope) => scope.crates),
   };
@@ -1382,6 +1394,39 @@ function ownCheckoutPath(steps) {
     return dir == null || dir === '' ? null : dir;
   }
   return null;
+}
+
+// The flags a command takes the place it writes after.
+const OUTPUT_FLAGS = new Set(['--out', '--output', '--out-dir', '--outdir', '--output-dir', '-o']);
+
+/**
+ * The places of this repository a step run outside its checkout names by a
+ * path through the checkout's directory: each word (and each --flag=value
+ * value) that, read from where the step runs, lands under the checkout, and
+ * is a tracked file or directory there. One handed to an output flag is a
+ * place the command, another repository's code, writes; a check mode
+ * (--check, --dry-run) writes nothing.
+ */
+function throughCheckout(run, dir, selfPath, repo) {
+  const named = new Set();
+  const written = new Set();
+  for (const tokens of commandLines(run)) {
+    const checking = tokens.includes('--check') || tokens.includes('--dry-run');
+    for (let i = 0; i < tokens.length; i += 1) {
+      const token = tokens[i];
+      const eq = token.startsWith('-') ? token.indexOf('=') : -1;
+      const flag = eq === -1 ? (OUTPUT_FLAGS.has(tokens[i - 1]) ? tokens[i - 1] : null) : token.slice(0, eq);
+      const value = eq === -1 ? token : token.slice(eq + 1);
+      if (value === '' || value.startsWith('-') || value.includes('$') || value.startsWith('/')) continue;
+      const joined = posix.normalize(dir ? `${dir}/${value}` : value).replace(/\/+$/, '');
+      if (joined !== selfPath && !joined.startsWith(`${selfPath}/`)) continue;
+      const path = joined === selfPath ? '' : joined.slice(selfPath.length + 1);
+      if (path === '' || !(repo.tracked.has(path) || repo.dirs.has(path))) continue;
+      if (flag != null && OUTPUT_FLAGS.has(flag) && !checking) written.add(path);
+      else named.add(path);
+    }
+  }
+  return { named: [...named].sort(), written: [...written].sort() };
 }
 
 // actions/checkout of another repository into a directory of the workspace.

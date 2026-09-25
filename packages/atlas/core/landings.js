@@ -3058,6 +3058,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     door.stagedTargets = stagedTargets([...door.stages, ...(door.gated ?? []).flatMap((entry) => entry.stages)], places);
     const named = new Set(door.mentions.map((mention) => mention.path));
     door.ownWrites = [...new Set([
+      ...(door.handedWrites ?? []),
       ...(door.commands ?? []).filter((command) => command.dir != null)
         .flatMap((command) => shellLandings(command.text, places, { dir: command.dir, follow: true }).writes.map((write) => write.target)),
       ...door.stagedTargets.filter((place) => named.has(place)),
@@ -3134,6 +3135,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     const written = (place) => door.landings.some((target) => target === place || target.startsWith(`${place}/`) || place.startsWith(`${target}/`));
     door.unwrittenStages = door.stagedTargets.filter((place) => (places.files.has(place) || places.dirs.has(place)) && !written(place));
     delete door.stagedTargets;
+    delete door.handedWrites;
   }
   // A workflow that names a place its own run writes (echo refreshed
   // indexes/latest.json) is describing its output, not reading it.
