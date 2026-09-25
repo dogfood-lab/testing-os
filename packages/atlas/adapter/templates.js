@@ -91,7 +91,15 @@ function commonDirectory(paths) {
  */
 function roleByFiles(paths, kinds) {
   if (paths.some((path) => SITE_CONFIG.test(path) || SITE_CONTENT.test(path))) return 'site';
-  if (paths.some((path) => WORKFLOW.test(path))) return 'config';
+  // A package of its own (a manifest at the directory's top and code under
+  // it) that carries the workflows of the repository it came from
+  // (accessibility-suite's src/a11y-assist) is read by its files, as any
+  // other part is, never made config by those workflows.
+  const top = commonDirectory(paths);
+  const manifestAtTop = ['pyproject.toml', 'package.json', 'Cargo.toml', 'setup.py'].some((name) => paths.includes(`${top}${name}`));
+  const packageCode = paths.some((path, index) => kinds[index] === 'code' && !WORKFLOW.test(path) && !path.slice(top.length).startsWith('.github/'));
+  const ownPackage = manifestAtTop && packageCode;
+  if (!ownPackage && paths.some((path) => WORKFLOW.test(path))) return 'config';
   // An npm package with a command of its own (a wrapper: package.json, bin/
   // and its READMEs) is code, however many READMEs it carries.
   const root = commonDirectory(paths);
