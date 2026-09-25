@@ -2,7 +2,7 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.20.0] — 2026-09-25
 
 ### Added
 - **A release build is a build.** A job's `cargo build`, Tauri build or PyInstaller output that the job uploads to a release, or uploads as an artifact the releasing job downloads, is run as `built`, never a check: "builds src/main.rs into an MSIX package and binaries for darwin-arm64, linux-x64 and win-x64, and uploads them to the release". Assets are named from the upload paths (MSI, NSIS, MSIX, DMG, deb, rpm, AppImage) or per target; an upload of files no build here makes is named ("uploads sbom.json to the release"); `softprops/action-gh-release` on a release event uploads to that release and creates none. saints-mile's Release Binaries and commandui's Release Desktop had been said to "check" the crate and "create a GitHub release".
