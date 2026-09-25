@@ -1108,12 +1108,23 @@ function alternativesOf(ctx, calls) {
   const byCondition = new Map();
   for (const call of calls) {
     if (call.branch == null || call.passed) continue;
-    if (!byCondition.has(call.branch)) byCondition.set(call.branch, []);
-    byCondition.get(call.branch).push({ ...call, branch: undefined });
+    const key = JSON.stringify([call.branch, call.over ?? null]);
+    if (!byCondition.has(key)) byCondition.set(key, []);
+    byCondition.get(key).push({ ...call, branch: undefined, over: undefined });
   }
   return [...byCondition.entries()]
-    .map(([when, list]) => ({ when, steps: stepUnits(ctx, list).units }))
+    .map(([key, list]) => {
+      const [when, over] = JSON.parse(key);
+      return { ...(over != null ? { over } : {}), when, steps: stepUnits(ctx, list).units };
+    })
     .filter((alternative) => alternative.steps.length > 0);
+}
+
+// "when `--version`", or, for a condition on a loop's variable, which
+// holds each entry in turn, "for an entry of `namespaces` where `command
+// === head`".
+export function alternativeLead(alternative) {
+  return alternative.over != null ? `for an entry of \`${alternative.over}\` where \`${alternative.when}\`` : `when \`${alternative.when}\``;
 }
 
 function inOrder(lead, texts, indent) {
@@ -1179,7 +1190,7 @@ function sequenceLines(ctx, found) {
     lines.push(inOrder(`Inside ${sequence.file}, ${sequence.phrase} does, in order:`, unitTexts(ctx, sequence.steps, sequence.part), SUB_INDENT));
     const alternatives = sequence.alternatives ?? [];
     for (const alternative of alternatives.slice(0, ALTERNATIVES_SHOWN)) {
-      lines.push(`Or, when \`${alternative.when}\`, ${sequence.phrase} does ${list(unitTexts(ctx, alternative.steps, sequence.part))} instead.`);
+      lines.push(`Or, ${alternativeLead(alternative)}, ${sequence.phrase} does ${list(unitTexts(ctx, alternative.steps, sequence.part))} instead.`);
     }
     if (alternatives.length > ALTERNATIVES_SHOWN) lines.push(`${capitalize(sequence.phrase)} returns early ${count(alternatives.length - ALTERNATIVES_SHOWN, 'more way')}.`);
     for (const inner of sequence.inner) {

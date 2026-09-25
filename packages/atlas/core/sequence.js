@@ -102,7 +102,7 @@ export function sequenceFacts(language, root) {
   }
 
   const plain = (step) => {
-    const branch = step.branch ? { branch: step.branch } : {};
+    const branch = step.branch ? { branch: step.branch, ...(step.over ? { over: step.over } : {}) } : {};
     if (step.kind === 'local') return { kind: 'local', fn: step.node.startIndex, line: step.line, ...branch };
     const out = { kind: step.kind, name: step.name, line: step.line, ...branch };
     if (step.site) out.site = step.site;
@@ -250,9 +250,10 @@ function fileSequences(path, files, allFacts, entryFunction) {
     const visited = new Set([fn.id]);
     // A call inside an early return's branch keeps that branch, and so does
     // everything a function it splices does.
-    const expand = (current, via, branch) => {
+    const expand = (current, via, branch, over = null) => {
       for (const step of current.steps) {
         const on = branch ?? step.branch ?? null;
+        const loop = branch != null ? over : step.over ?? null;
         if (step.kind === 'local') {
           // A function is spliced at its first call only. Each later call adds
           // nothing, so a helper called at every stage is read once, and a
@@ -260,7 +261,7 @@ function fileSequences(path, files, allFacts, entryFunction) {
           if (visited.has(step.fn) || !byId.has(step.fn)) continue;
           visited.add(step.fn);
           const callee = byId.get(step.fn);
-          expand(callee, callee.name, on);
+          expand(callee, callee.name, on, loop);
           continue;
         }
         const target = step.kind === 'unknown' ? null : targetOf(step);
@@ -270,6 +271,7 @@ function fileSequences(path, files, allFacts, entryFunction) {
         if (step.receiver) call.receiver = step.receiver;
         if (via != null) call.via = via;
         if (on != null) call.branch = on;
+        if (on != null && loop != null) call.over = loop;
         const last = calls[calls.length - 1];
         if (last && last.name === call.name && sameTarget(last.target, call.target) && last.passed === call.passed
           && last.receiver === call.receiver && last.branch === call.branch) continue;
@@ -454,7 +456,18 @@ function visitJs(node, ctx, steps) {
     visitJs(condition, ctx, steps);
     const inner = [];
     visitJs(node.childForFieldName('consequence'), ctx, inner);
-    for (const step of inner) steps.push({ ...step, branch: step.branch ?? conditionText(condition) });
+    const over = loopOver(condition, ctx);
+    for (const step of inner) steps.push(step.branch ? step : { ...step, branch: conditionText(condition), ...(over ? { over } : {}) });
+    return;
+  }
+  // A condition inside a for-of names the loop's variable, which holds each
+  // entry in turn, never one value: the loop is kept so the page can say so.
+  if (node.type === 'for_in_statement') {
+    const left = node.childForFieldName('left');
+    const right = node.childForFieldName('right');
+    (ctx.loops ??= []).push({ names: identifierNames(left), over: conditionText(right) });
+    for (const child of node.namedChildren) visitJs(child, ctx, steps);
+    ctx.loops.pop();
     return;
   }
   if (node.type === 'call_expression' || node.type === 'new_expression') {
@@ -493,6 +506,28 @@ function registration(fn) {
   }
   if (fn?.type === 'identifier') return /^(register|on)[A-Z]/.test(fn.text) || fn.text === 'register';
   return false;
+}
+
+// The identifiers a node holds, by name.
+function identifierNames(node) {
+  const names = new Set();
+  const stack = node ? [node] : [];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    if (current.type === 'identifier' || current.type === 'shorthand_property_identifier_pattern') names.add(current.text);
+    for (const child of current.namedChildren) stack.push(child);
+  }
+  return names;
+}
+
+// The iterable of the innermost enclosing loop whose variable the condition
+// names, or null.
+function loopOver(condition, ctx) {
+  const used = identifierNames(condition);
+  for (const loop of [...(ctx.loops ?? [])].reverse()) {
+    if ([...loop.names].some((name) => used.has(name))) return loop.over;
+  }
+  return null;
 }
 
 // A branch with no else that ends in a return or a throw.
@@ -753,7 +788,14 @@ function visitPy(node, ctx, steps) {
     visitPy(condition, ctx, steps);
     const inner = [];
     visitPy(node.childForFieldName('consequence'), ctx, inner);
-    for (const step of inner) steps.push({ ...step, branch: step.branch ?? conditionText(condition) });
+    const over = loopOver(condition, ctx);
+    for (const step of inner) steps.push(step.branch ? step : { ...step, branch: conditionText(condition), ...(over ? { over } : {}) });
+    return;
+  }
+  if (node.type === 'for_statement') {
+    (ctx.loops ??= []).push({ names: identifierNames(node.childForFieldName('left')), over: conditionText(node.childForFieldName('right')) });
+    for (const child of node.namedChildren) visitPy(child, ctx, steps);
+    ctx.loops.pop();
     return;
   }
   if (node.type === 'call') {

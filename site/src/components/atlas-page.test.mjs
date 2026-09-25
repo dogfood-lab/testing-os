@@ -444,6 +444,14 @@ test('a build no release ships is said as a build, in the steps and among the ot
   assert.ok(paragraph.includes('builds packages/schemas/src/index.ts'), paragraph);
 });
 
+test('a branch on a loop variable is said with its loop, as the markdown says it', () => {
+  const sequences = [{ entry: 'main', file: 'bin/tool.js', inner: [], part: null, phrase: 'main', steps: [{ phrase: 'start' }, { phrase: 'finish' }],
+    alternatives: [{ over: 'namespaces', when: 'command === head', steps: [{ phrase: 'report' }] }, { when: '!command', steps: [{ phrase: 'usage' }] }] }];
+  const html = render.renderPage({ ...page, sequences }, { repo: page.repo });
+  assert.ok(html.includes('Or, for an entry of <code>namespaces</code> where <code>command === head</code>, main does report instead.'), 'the loop is said');
+  assert.ok(html.includes('Or, when <code>!command</code>, main does usage instead.'), 'a plain branch is unchanged');
+});
+
 test('with nothing written, the never-read section says so rather than that every place is read', () => {
   const html = render.renderPage({ ...page, unread: [], unreadNote: [], written: 0, unreadFiles: 0 }, { repo: page.repo });
   assert.ok(html.includes('<h2>Written but never read</h2>\n<p>No place this map can see is written, so none goes unread.</p></section>'));

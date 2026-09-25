@@ -561,7 +561,9 @@ function sequenceItems(ctx) {
     // three at most, as page.js says them.
     const alternatives = arr(sequence.alternatives).filter((alternative) => alternative && typeof alternative === 'object');
     for (const alternative of alternatives.slice(0, 3)) {
-      items.push(`Or, when <code>${esc(alternative.when)}</code>, ${esc(sequence.phrase)} does ${list(stepTexts(ctx, alternative.steps, own))} instead.`);
+      // A condition on a loop's variable is said with the loop, as page.js says it.
+      const lead = alternative.over != null ? `for an entry of <code>${esc(alternative.over)}</code> where <code>${esc(alternative.when)}</code>` : `when <code>${esc(alternative.when)}</code>`;
+      items.push(`Or, ${lead}, ${esc(sequence.phrase)} does ${list(stepTexts(ctx, alternative.steps, own))} instead.`);
     }
     if (alternatives.length > 3) items.push(`${esc(capitalize(str(sequence.phrase)))} returns early ${count(alternatives.length - 3, 'more way')}.`);
     // page.json holds only the called functions the markdown shows, in the

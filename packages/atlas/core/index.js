@@ -900,10 +900,55 @@ function collectScript(root) {
     const args = node.childForFieldName('arguments');
     const first = args?.namedChildren[0] ?? null;
     const literal = jsString(first);
-    if (literal != null) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node) });
-    else imports.push({ specifier: first ? first.text : '', kind: 'dynamic', line: lineOf(node) });
+    if (literal != null) {
+      imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node) });
+      return;
+    }
+    // import(COMMANDS[name]), or import(path) after const path =
+    // COMMANDS[name], where COMMANDS is a const object literal of paths:
+    // every path the table holds is one the call may load.
+    const table = tableValues(root, first);
+    if (table.length > 0) {
+      for (const specifier of table) imports.push({ specifier, kind: 'dynamic-literal', line: lineOf(node), table: true });
+      return;
+    }
+    imports.push({ specifier: first ? first.text : '', kind: 'dynamic', line: lineOf(node) });
   });
   return imports;
+}
+
+/**
+ * The string values of the const object literal a dynamic import's argument
+ * looks up: TABLE[key] itself, or a const bound to TABLE[key]. Empty when
+ * the argument is anything else, or the name is declared more than once.
+ */
+function tableValues(root, arg) {
+  let lookup = arg;
+  if (lookup?.type === 'identifier') lookup = constValue(root, lookup.text);
+  if (lookup?.type !== 'subscript_expression') return [];
+  const object = lookup.childForFieldName('object');
+  if (object?.type !== 'identifier') return [];
+  const table = constValue(root, object.text);
+  if (table?.type !== 'object') return [];
+  const values = [];
+  for (const pair of table.namedChildren) {
+    if (pair.type !== 'pair') continue;
+    const value = jsString(pair.childForFieldName('value'));
+    if (value != null && !values.includes(value)) values.push(value);
+  }
+  return values;
+}
+
+// The value a const declares for a name, when the file declares it once.
+function constValue(root, name) {
+  const found = [];
+  walkNamed(root, (node) => {
+    if (node.type !== 'variable_declarator' || node.childForFieldName('name')?.text !== name) return;
+    const declaration = node.parent;
+    if (declaration?.type === 'lexical_declaration' && declaration.children.some((child) => child.type === 'const')) found.push(node.childForFieldName('value'));
+    else found.push(null);
+  });
+  return found.length === 1 ? found[0] : null;
 }
 
 // require.resolve('@scope/pkg/json/x.json') and import.meta.resolve(...) load
