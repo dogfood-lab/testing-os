@@ -380,6 +380,8 @@ export function better(a, b) {
   const out = { ...pick, runKind };
   delete out.passes;
   if (passes.length > 0) out.passes = passes;
+  // A binary either way builds is built, whatever else checks it.
+  if (a.builds || b.builds) out.builds = true;
   return out;
 }
 
@@ -1076,9 +1078,10 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     pybuild(argv, dir, frame) {
       if (argv[1] === 'build') pythonBuild('.', dir, frame);
     },
-    // pyinstaller bundles the script it is handed into a program that runs it.
+    // pyinstaller bundles the script it is handed into a program that runs
+    // it: a binary it builds, which a later step may ship (core/doors.js).
     pyinstaller(argv, dir, frame) {
-      for (const token of split(argv, 1, VALUE_SETS.pyinstaller).positional) file(token, dir, frame);
+      for (const token of split(argv, 1, VALUE_SETS.pyinstaller).positional) file(token, dir, { ...frame, builds: true });
     },
     hatch(argv, dir, frame) {
       if (argv[1] === 'build') {
@@ -1295,7 +1298,10 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         for (const path of packages.flatMap((crate) => crate.benches)) record(stamp({ path, matched: true }, frame, chain));
       } else if (CARGO_CHECKS.has(sub)) {
         const checks = { ...frame, runKind: 'checks' };
-        for (const path of [...new Set(packages.flatMap((crate) => targets(crate)))]) record(stamp({ path, matched: true }, checks, chain));
+        // cargo build makes each binary it compiles, which a later step may
+        // ship (core/doors.js); it runs none of them.
+        const bins = new Set(sub === 'build' ? packages.flatMap((crate) => crate.bins.map((bin) => bin.path)) : []);
+        for (const path of [...new Set(packages.flatMap((crate) => targets(crate)))]) record(stamp({ path, matched: true, ...(bins.has(path) ? { builds: true } : {}) }, checks, chain));
       }
     },
     /**
@@ -1316,8 +1322,9 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       if (script && at != null) read(script, at, { level: 1, via: chain, active: frame.active, installed: frame.installed });
       if (!app.crate) return;
       const kind = sub === 'build' ? { ...frame, runKind: 'checks' } : frame;
-      const roots = [...app.crate.bins.map((bin) => bin.path), ...(sub === 'build' && app.crate.lib ? [app.crate.lib.path] : [])];
-      for (const path of roots) record(stamp({ path, matched: true }, kind, chain));
+      const bins = app.crate.bins.map((bin) => bin.path);
+      const roots = [...bins, ...(sub === 'build' && app.crate.lib ? [app.crate.lib.path] : [])];
+      for (const path of roots) record(stamp({ path, matched: true, ...(sub === 'build' && bins.includes(path) ? { builds: true } : {}) }, kind, chain));
     },
     /**
      * Godot, from the project --path names or the directory it runs in: a
@@ -1588,6 +1595,7 @@ function shellWord(word) {
 function stamp(entry, frame, via = frame.via) {
   const out = { ...entry, runKind: frame.runKind ?? 'executes' };
   if (via) out.via = via;
+  if (frame.builds) out.builds = true;
   return out;
 }
 

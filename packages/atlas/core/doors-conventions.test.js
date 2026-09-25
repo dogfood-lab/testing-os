@@ -220,7 +220,9 @@ describe('doors in a TypeScript repository', () => {
   it('records npm publishing, an image pushed by buildx across a continued line, a release action and a pages action', () => {
     const release = door(ts, 'Release').sends;
     assert.deepEqual(release.publishesTo, ['container image', 'npm']);
-    assert.equal(release.releases, true);
+    // On a release event the release action works on the release that started
+    // the run; it creates none.
+    assert.equal(release.releases, false);
     assert.equal(door(ts, 'Docs').sends.deploysPages, true);
     assert.deepEqual(job(door(ts, 'Docs'), 'build'), [{ path: 'site/build.js' }]);
   });

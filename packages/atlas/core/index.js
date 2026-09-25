@@ -173,7 +173,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     // run; what the door writes is read only from the files it runs.
     const walked = walkReach(door.runs.map((run) => run.path), graph);
     door.reach = walked.reach;
-    const ran = walkReach(door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path), graph);
+    // A binary a door builds to ship runs nowhere here, so what it writes is
+    // not the door's.
+    const ran = walkReach(door.runs.filter((run) => run.runKind !== 'checks' && !run.built).map((run) => run.path), graph);
     door.reachFiles = ran.files;
     // A package is imported, never run as a program.
     door.executed = door.kind === 'package' ? [] : ran.executed;
@@ -182,7 +184,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     // file runs it against its own stand-ins, and a package only loaded
     // calls nothing, so neither is the door's reach for this.
     if (door.kind !== 'package') {
-      const runs = door.runs.filter((run) => run.runKind !== 'checks' && !isTestFile(run.path)).map((run) => run.path);
+      const runs = door.runs.filter((run) => run.runKind !== 'checks' && !run.built && !isTestFile(run.path)).map((run) => run.path);
       const walkedRuns = walkReach(runs, graph).files;
       if (walkedRuns.some((path) => (graph.files.get(path)?.githubChanges ?? 0) > 0)) door.sends.changesRepositories = true;
       // git and gh the code it runs starts, which change no part here.

@@ -1,0 +1,56 @@
+name: Release Binaries
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: linux-x64
+          - os: windows-latest
+            target: win-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build release binary
+        run: cargo build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.target }}
+          path: target/release/mile-${{ matrix.target }}
+
+  msix:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build release binary
+        run: cargo build --release
+      - name: Build MSIX
+        shell: pwsh
+        run: |
+          & makeappx pack /d layout /p mile.msix
+      - uses: actions/upload-artifact@v4
+        with:
+          name: msix
+          path: mile.msix
+
+  release:
+    needs: [build, msix]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+      - name: Upload to the latest release
+        if: github.event_name == 'workflow_dispatch'
+        run: gh release upload "$TAG" artifacts/* --clobber

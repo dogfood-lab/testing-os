@@ -331,6 +331,23 @@ describe('compareStructures', () => {
     ]);
   });
 
+  // fixtures/atlas/release-binaries: a binary a release builds to ship and
+  // runs nowhere is said as built.
+  it('says a door now builds a binary it ships, apart from what it runs and checks', () => {
+    const release = (runs) => ({ file: '.github/workflows/release.yml', name: 'Release', reach: [], runs, triggers: [{ event: 'release' }] });
+    const previous = structure({ doors: [release([{ job: 'j', path: 'scripts/notes.mjs', runKind: 'executes' }])] });
+    const current = structure({ doors: [release([
+      { job: 'j', path: 'scripts/notes.mjs', runKind: 'executes' },
+      { job: 'j', path: 'src/lib.rs', runKind: 'checks' },
+      { job: 'j', path: 'src/main.rs', runKind: 'executes', built: true },
+    ])] });
+    assert.deepEqual(sentences(compareStructures(previous, current)), [
+      'Release now also builds src/main.rs.',
+      'Release now also checks src/lib.rs.',
+      'No file changed.',
+    ]);
+  });
+
   it('says first when there is no committed structure', () => {
     assert.deepEqual(changesSince(null, structure()), { first: true });
   });

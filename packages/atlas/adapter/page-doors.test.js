@@ -79,7 +79,9 @@ describe('doors on the page, by the conventions of their tools', () => {
     has(py.markdown, '## The other doors', '**Publish** runs no file this map can see and publishes to PyPI and a container image.');
     has(py.markdown, '## The other doors', '**Nightly** runs scripts/smoke.py, reaches src, and opens an issue when it fails.');
     has(py.markdown, '## The other doors', '**Image smoke** runs no file this map can see and opens an issue.');
-    has(ts.markdown, '## The other doors', '**Release** runs no file this map can see, publishes @doors/core (packages/core) to npm and a container image, and creates a GitHub release.');
+    // The release action runs on the release that started the run, which it
+    // does not create.
+    has(ts.markdown, '## The other doors', '**Release** runs no file this map can see and publishes @doors/core (packages/core) to npm and a container image.');
   });
 
   it('never prints a staged variable: a path set at run time is said to be one, last', () => {

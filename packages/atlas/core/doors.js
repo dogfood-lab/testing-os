@@ -22,7 +22,9 @@ const ACTION_SENDS = [
   ['docker/build-push-action', (sends, step) => {
     if (pushes(step.with?.push)) sends.publishesTo.add('container image');
   }],
-  ['softprops/action-gh-release', (sends) => { sends.releases = true; }],
+  // On a release event it uploads to the release that started the run; on
+  // any other it creates one. What it uploads is read by shipBuilds.
+  ['softprops/action-gh-release', (sends, step, onRelease) => { if (!onRelease) sends.releases = true; }],
   ['ncipollo/release-action', (sends) => { sends.releases = true; }],
   ['actions/deploy-pages', (sends) => { sends.deploysPages = true; }],
   ['peaceiris/actions-gh-pages', (sends) => { sends.deploysPages = true; }],
@@ -197,7 +199,14 @@ function readDoor(repoPath, file, repo) {
   const gates = new Map();
   // The jobs that run only when an earlier job's output says so.
   const conditional = [];
+  // What each job builds, uploads and downloads, for what a release ships.
+  const shipping = [];
   const triggers = triggerList(doc.on);
+  const scopeOfGate = (when) => {
+    const key = canonical(when);
+    if (!gates.has(key)) gates.set(key, { when, jobs: [], sends: emptySends(), issues: [], texts: [], stages: new Set(), pushes: false, sidePushes: [] });
+    return gates.get(key);
+  };
   const workflowDir = workingDirectory(doc.defaults);
   const workflowEnv = envOf(doc.env);
   for (const [job, body] of Object.entries(isMapping(doc.jobs) ? doc.jobs : {})) {
@@ -243,6 +252,8 @@ function readDoor(repoPath, file, repo) {
     // The run texts of the job's steps so far, where a later step's run-time
     // directory is assigned.
     const jobTexts = [];
+    const shipped = { job, body, platforms, gate, builds: new Set(), targets: new Set(), artifacts: [], downloads: false, uploads: [], packs: false };
+    shipping.push(shipped);
     steps.forEach((step, index) => {
       if (!isMapping(step)) return;
       const when = joinGates(gate, jobGate(step.if, triggers));
@@ -254,7 +265,13 @@ function readDoor(repoPath, file, repo) {
         // An action whose push input is an expression pushes on the runs the
         // expression holds on, read as an if: is.
         const pushWhen = typeof step.with?.push === 'string' && step.with.push.includes('${{') ? joinGates(when, jobGate(step.with.push, triggers)) : when;
-        for (const [name, apply] of ACTION_SENDS) if (action === name || action.startsWith(`${name}/`)) apply(scopeFor(pushWhen).sends, step);
+        for (const [name, apply] of ACTION_SENDS) if (action === name || action.startsWith(`${name}/`)) apply(scopeFor(pushWhen).sends, step, onReleaseEvent(when, triggers));
+        if (action === 'actions/upload-artifact') shipped.artifacts.push(...inputPaths(step.with?.path));
+        if (action === 'actions/download-artifact') shipped.downloads = true;
+        if (action === 'softprops/action-gh-release' && inputPaths(step.with?.files).length > 0) {
+          shipped.uploads.push({ when, files: inputPaths(step.with.files), creates: !onReleaseEvent(when, triggers) });
+        }
+        if (action === 'actions/upload-release-asset') shipped.uploads.push({ when, files: inputPaths(step.with?.asset_path), creates: false });
         const checkout = otherCheckout(action, step.with);
         if (checkout) clones.set(checkout.dir, checkout.repository);
         // The action builds the image from the context and file it is handed.
@@ -294,6 +311,10 @@ function readDoor(repoPath, file, repo) {
       const place = { raw: ownDir ?? rawDir, jobTexts, repo, tagged: triggers.some((trigger) => (trigger.tags?.length ?? 0) > 0) };
       commandSends(expandEnv(step.run, lookup), scope.sends, place);
       jobTexts.push(step.run);
+      const released = releaseUploads(expandEnv(step.run, lookup));
+      if (released) shipped.uploads.push({ when, files: released, creates: false });
+      if (/\bmakeappx(?:\.exe)?["']?\s+pack\b/i.test(step.run)) shipped.packs = true;
+      for (const target of buildTargets(expandEnv(step.run, lookup), body)) shipped.targets.add(target);
       if (/\bgh\s+issue\s+create\b/.test(step.run)) scope.issues.push(onlyOnFailure(step.if) || onlyOnFailure(body.if));
       // A step whose working directory cannot be read as a repository path
       // names nothing Atlas can place, so its tokens are left unresolved.
@@ -312,6 +333,7 @@ function readDoor(repoPath, file, repo) {
         const key = `${entry.path}\0${job}`;
         const run = { ...entry, job, ...held };
         runs.set(key, runs.has(key) ? mergeRun(runs.get(key), run) : run);
+        if (entry.builds) shipped.builds.add(entry.path);
       }
       for (const path of named.mentions) mentions.set(`${path}\0${job}`, { path, job });
     });
@@ -319,6 +341,7 @@ function readDoor(repoPath, file, repo) {
     if (!gate) sidePushes.push(...jobScope.sidePushes);
   }
 
+  shipBuilds(shipping, runs, triggers, (when) => (when ? scopeOfGate(when) : { sends }));
   const recorded = recordedRuns([...runs.values()]);
   const runKeys = new Set(recorded.all.map((run) => `${run.path}\0${run.job}`));
   const underRun = (path, job) => recorded.all.some((run) => run.job === job && run.directory && path.startsWith(run.path));
@@ -407,7 +430,7 @@ function jobPlatforms(body) {
 
 
 function emptySends() {
-  return { publishesTo: new Set(), packages: new Map(), exports: new Set(), releases: false, deploysPages: false, opensPullRequests: false };
+  return { publishesTo: new Set(), packages: new Map(), exports: new Set(), assets: new Set(), releases: false, deploysPages: false, opensPullRequests: false };
 }
 
 function finishSends(sends, issues, texts) {
@@ -415,12 +438,14 @@ function finishSends(sends, issues, texts) {
   const publishesTo = [...sends.publishesTo].sort();
   const packages = [...sends.packages.entries()].sort(([a], [b]) => compare(a, b)).map(([, entry]) => entry);
   const exports = [...sends.exports].sort();
+  const assets = [...(sends.assets ?? [])].sort();
   return {
     dispatchesTo: [
       ...new Set([...joined.matchAll(/repos\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)\/dispatches\b/g)].map((m) => `${m[1]}/${m[2]}`)),
     ].sort(),
     ...(packages.length > 0 ? { packages } : {}),
     ...(exports.length > 0 ? { exports } : {}),
+    ...(assets.length > 0 ? { assets } : {}),
     publishes: publishesTo.length > 0,
     publishesTo,
     releases: sends.releases,
@@ -439,6 +464,7 @@ function sendKeys(sends) {
   for (const registry of sends.publishesTo) keys.push(`publishesTo:${registry}`);
   for (const entry of sends.packages ?? []) keys.push(`packages:${JSON.stringify(entry)}`);
   for (const platform of sends.exports ?? []) keys.push(`exports:${platform}`);
+  for (const asset of sends.assets ?? []) keys.push(`assets:${asset}`);
   for (const flag of ['releases', 'deploysPages', 'opensIssues', 'opensIssuesOnFailure', 'opensPullRequests']) if (sends[flag]) keys.push(flag);
   return keys;
 }
@@ -574,6 +600,143 @@ function coveredGate(covered, triggers) {
     return gate;
   }
   return { except: [...new Set(triggers.filter((trigger) => !events.includes(trigger.event)).map((trigger) => trigger.event))].sort() };
+}
+
+/**
+ * What a workflow's release ships, read once every job is: a job that builds
+ * a binary (cargo build, the Tauri CLI's build, pyinstaller) ships what it
+ * builds when it uploads to a release itself, or uploads an artifact that a
+ * job uploading to a release downloads. Each such build is then the
+ * binary's entry run, marked built, not a check; and every release upload
+ * sends what those jobs ship, named by what they upload: an MSI, NSIS, MSIX,
+ * DMG, Debian, RPM or AppImage package by its path, and a binary for each
+ * target the build names, else each target of the job's matrix, else each
+ * system it runs on. An upload of what no build here makes ships the files
+ * it names (sbom.json, dist/*), or files when it names only variables.
+ * Uploads held to triggers that between them cover every trigger of the
+ * workflow ship on every run, and are said once. Mutates runs and the scopes.
+ */
+function shipBuilds(shipping, runs, triggers, scopeOf) {
+  const uploads = shipping.flatMap((entry) => entry.uploads);
+  if (uploads.length === 0) return;
+  const downloaded = shipping.some((entry) => entry.uploads.length > 0 && entry.downloads);
+  const assets = new Set();
+  for (const entry of shipping) {
+    if (entry.builds.size === 0 && !entry.packs) continue;
+    if (entry.uploads.length === 0 && !(downloaded && entry.artifacts.length > 0)) continue;
+    const named = new Set();
+    let bare = false;
+    for (const path of [...entry.artifacts, ...entry.uploads.flatMap((upload) => upload.files)]) {
+      const kind = packageKind(path);
+      if (kind) named.add(kind);
+      else bare = true;
+    }
+    if (entry.packs) named.add('msix');
+    for (const kind of named) assets.add(kind);
+    if ((bare || named.size === 0) && entry.builds.size > 0) {
+      for (const target of jobTargets(entry)) assets.add(`binary:${target}`);
+    }
+    for (const run of runs.values()) {
+      if (run.job === entry.job && entry.builds.has(run.path)) {
+        run.runKind = 'executes';
+        run.built = true;
+      }
+    }
+  }
+  for (const run of runs.values()) delete run.builds;
+  // With no build here the upload is named by what it hands over: a path as
+  // spelled, a file outside the checkout by its name, and files when a step
+  // hands over a variable.
+  const named = [...new Set(uploads.flatMap((upload) => upload.files).filter((path) => !path.includes('$'))
+    .map((path) => (path.startsWith('/') ? posix.basename(path) : path.replace(/^\.\//, ''))))].sort(compare);
+  // A path set at run time beside named ones is more than the names: said.
+  const unnamed = uploads.some((upload) => upload.files.some((path) => path.includes('$')));
+  const shipped = assets.size > 0 ? [...assets] : named.length > 0 ? [...named.map((path) => `file:${path}`), ...(unnamed ? ['files'] : [])] : ['files'];
+  // Every trigger an upload runs on, and whether they cover the workflow's.
+  const covers = triggers.length > 0 && triggers.every((trigger) => uploads.some((upload) => upload.when == null || (trigger.event === 'workflow_dispatch'
+    ? upload.when.event === 'workflow_dispatch' || (!upload.when.event && !upload.when.tags && !(upload.when.except ?? []).includes('workflow_dispatch'))
+    : meets(trigger, upload.when))));
+  const scopes = covers ? [scopeOf(null)] : [...new Map(uploads.map((upload) => [upload.when ? canonical(upload.when) : '', scopeOf(upload.when)])).values()];
+  for (const scope of scopes) for (const asset of shipped) scope.sends.assets.add(asset);
+}
+
+// Whether a step held to `when` runs only on a release event: its gate is
+// the release event, or every trigger of the workflow but a run by hand is.
+function onReleaseEvent(when, triggers) {
+  if (when?.event) return when.event === 'release';
+  const events = triggers.map((trigger) => trigger.event).filter((event) => event !== 'workflow_dispatch');
+  return events.length > 0 && events.every((event) => event === 'release');
+}
+
+// A path input, one path or one per line.
+function inputPaths(value) {
+  if (typeof value !== 'string') return [];
+  return value.split('\n').map((line) => line.trim()).filter((line) => line !== '' && !line.startsWith('#'));
+}
+
+// The files a step's gh release upload hands over, past the tag; null for a
+// step that uploads nothing to a release.
+function releaseUploads(run) {
+  let found = null;
+  for (const tokens of commandLines(run)) {
+    const words = programWords(tokens);
+    if (words[0] !== 'gh' || words[1] !== 'release' || words[2] !== 'upload') continue;
+    found ??= [];
+    // A redirect the shell reads (2>/dev/null) is no file handed over.
+    found.push(...words.slice(4).filter((word) => !word.startsWith('-') && !/[<>|&]/.test(word)));
+  }
+  return found;
+}
+
+// A package a release ships, by the path it is uploaded from: a Tauri
+// bundle's directory (bundle/msi/, bundle/nsis/) or the file's extension.
+function packageKind(path) {
+  const text = String(path).toLowerCase();
+  const bundle = /(?:^|\/)bundle\/(msi|nsis|dmg|deb|rpm|appimage|msix)\//.exec(text);
+  if (bundle) return bundle[1];
+  const ext = /\.(msi|msix|dmg|deb|rpm|appimage)$/.exec(text);
+  return ext ? ext[1] : null;
+}
+
+// The targets a job builds binaries for, as cargo build's --target names
+// them in its commands (a matrix value spelled out), else the job matrix's
+// target values, else the systems the job runs on.
+function jobTargets(entry) {
+  if (entry.targets.size > 0) return [...entry.targets];
+  const matrix = isMapping(entry.body.strategy) && isMapping(entry.body.strategy.matrix) ? entry.body.strategy.matrix : {};
+  const values = matrixValues(matrix, 'target');
+  if (values.length > 0) return values;
+  return entry.platforms.map((platform) => PLATFORM_NAMES[platform] ?? platform);
+}
+
+const PLATFORM_NAMES = { linux: 'Linux', macos: 'macOS', windows: 'Windows' };
+
+function matrixValues(matrix, key) {
+  const values = [];
+  for (const value of Array.isArray(matrix[key]) ? matrix[key] : []) if (typeof value === 'string' || typeof value === 'number') values.push(String(value));
+  for (const entry of Array.isArray(matrix.include) ? matrix.include : []) {
+    if (isMapping(entry) && (typeof entry[key] === 'string' || typeof entry[key] === 'number')) values.push(String(entry[key]));
+  }
+  return [...new Set(values)];
+}
+
+// The --target each cargo build of a step names: a literal, or the values of
+// the matrix key an expression spells.
+function buildTargets(run, body) {
+  const out = [];
+  const matrix = isMapping(body.strategy) && isMapping(body.strategy.matrix) ? body.strategy.matrix : {};
+  for (const tokens of commandLines(run)) {
+    const words = programWords(tokens);
+    if (words[0] !== 'cargo' || !words.slice(1).find((word) => !word.startsWith('-') && !word.startsWith('+'))?.match(/^(build|b)$/)) continue;
+    for (let i = 1; i < words.length; i += 1) {
+      const value = words[i] === '--target' ? words[i + 1] : words[i].startsWith('--target=') ? words[i].slice('--target='.length) : null;
+      if (value == null) continue;
+      const axis = /^\$\{\{\s*matrix\.([\w-]+)\s*\}\}$/.exec(value);
+      if (axis) out.push(...matrixValues(matrix, axis[1]));
+      else if (!value.includes('$')) out.push(value);
+    }
+  }
+  return out;
 }
 
 // A step's gate inside a job's: the step's narrows the job's.

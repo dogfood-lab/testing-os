@@ -237,6 +237,12 @@ function checks(ctx, door) {
   return arr(door.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
 }
 
+// The binaries a door builds to ship and runs nowhere, which "What comes in"
+// names apart; elsewhere the send that ships them names them.
+function builds(ctx, door) {
+  return arr(door.builds).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
+}
+
 // runsCount and checksCount are how many paths the door runs and checks when
 // page.json lists fewer, so "and N more" counts every one.
 function runTotal(door, items) {
@@ -426,22 +432,24 @@ function held(ctx, door) {
     when: str(group.when),
     runs: arr(group.runs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
     checks: arr(group.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+    builds: arr(group.builds).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
     runsMore: moreOf(group.runsMore),
     checksMore: moreOf(group.checksMore),
   }));
 }
 
-function heldClause(group, verb, joiner, field) {
+function heldClause(group, verb, joiner, field, { withBuilds = false } = {}) {
   const clauses = [];
   const shown = (items, more) => (field === 'html' ? runsShown(items, items.length, more) : runsShownText(items, items.length, more));
   if (group.runs.length > 0) clauses.push(`${verb} ${shown(group.runs, group.runsMore)}`);
+  if (withBuilds && group.builds.length > 0) clauses.push(`builds ${shown(group.builds)}`);
   if (group.checks.length > 0) clauses.push(`checks ${shown(group.checks, group.checksMore)}`);
   return clauses.length > 0 ? clauses.join(joiner) : null;
 }
 
-function heldSentences(ctx, door, verb, also) {
+function heldSentences(ctx, door, verb, also, { withBuilds = false } = {}) {
   return held(ctx, door).map((group) => {
-    const clause = heldClause(group, verb, '; ', 'html');
+    const clause = heldClause(group, verb, '; ', 'html', { withBuilds });
     return clause ? `${capitalize(esc(group.lead))}, it ${also ? 'also ' : ''}${clause}.` : null;
   }).filter(Boolean);
 }
@@ -451,12 +459,14 @@ function comesIn(ctx) {
     const name = `<strong>${esc(door.name)}.</strong>`;
     if (door.parseError) return `${name} This workflow could not be read.`;
     const paths = runs(ctx, door);
+    const built = builds(ctx, door);
     const checked = checks(ctx, door);
     const clauses = [];
     if (door.unplaced) clauses.push(unplacedClause(door));
     else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
+    if (built.length > 0) clauses.push(`builds ${runsShown(built)}`);
     if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
-    const heldText = heldSentences(ctx, door, startVerb(door), clauses.length > 0);
+    const heldText = heldSentences(ctx, door, startVerb(door), clauses.length > 0, { withBuilds: true });
     const ran = [...(clauses.length > 0 || heldText.length === 0 ? [capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`)] : []), ...heldText].join(' ');
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
     const when = capitalize(arr(door.triggers).map(str).join('; ')) || 'Nothing this map can read starts it';

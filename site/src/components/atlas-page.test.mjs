@@ -956,3 +956,15 @@ test('a part only its own unit tests touch reads as touched, as the markdown say
   assert.ok(text.includes('Every code part is touched by at least one test.'));
   assert.ok(text.includes(note[0]));
 });
+
+// A release that builds a binary and ships it, as page.js words it:
+// fixtures/atlas/release-binaries gives these sentences in the markdown
+// (packages/atlas/adapter/page-release-binaries.test.js).
+test('a binary a release builds reads apart from what it runs, as the markdown words it', () => {
+  const release = { builds: ['src/main.rs'], checks: ['src/lib.rs'], checksCount: 1, checksMore: 0, file: '.github/workflows/release.yml', id: '.github/workflows/release.yml', landings: [], name: 'Release Binaries', pushes: false, reach: [], runs: [], runsCount: 0, runsMore: 0, sends: ['builds src/main.rs into an MSIX package and binaries for linux-x64 and win-x64, and uploads them to the release'], stages: [], triggers: ['when a release is published', 'or by hand'] };
+  const held = { ...release, builds: [], checks: [], checksCount: 0, file: '.github/workflows/desktop.yml', id: '.github/workflows/desktop.yml', name: 'Release Desktop', sends: [], held: [{ builds: ['app/main.rs'], checks: [], checksMore: 0, lead: 'on a release event', runs: [], runsMore: 0, when: 'on a release event' }] };
+  const text = plain(render.renderPage({ ...page, doors: [...page.doors, release, held] }, { repo: page.repo }));
+  assert.ok(text.includes('Release Binaries. When a release is published; or by hand. Builds src/main.rs; checks src/lib.rs.'), 'what comes in');
+  assert.ok(text.includes('On a release event, it builds app/main.rs.'), 'what comes in, held to a trigger');
+  assert.ok(text.includes('Release Binaries checks src/lib.rs and builds src/main.rs into an MSIX package and binaries for linux-x64 and win-x64, and uploads them to the release.'), 'the other doors name it with what ships');
+});

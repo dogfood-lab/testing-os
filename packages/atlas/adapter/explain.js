@@ -199,11 +199,15 @@ function doorFacts(ctx, found, part) {
   const readable = ctx.doors.filter((door) => !door.parseError);
   // A directory run stands for the files under it.
   const runs = (run) => inside.has(run.path) || (run.path.endsWith('/') && found.members.some((member) => member.startsWith(run.path)));
-  // A door that only lints or type-checks a member reads it and runs nothing.
-  const executes = (run) => run.runKind !== 'checks';
+  // A door that only lints or type-checks a member reads it and runs nothing,
+  // and one that builds it into a binary it ships runs it nowhere.
+  const executes = (run) => run.runKind !== 'checks' && !run.built;
   const runBy = readable.filter((door) => (door.runs ?? []).some((run) => executes(run) && runs(run))).map((door) => door.name);
+  const builtBy = readable
+    .filter((door) => !runBy.includes(door.name) && (door.runs ?? []).some((run) => run.built && runs(run)))
+    .map((door) => door.name);
   const checkedBy = readable
-    .filter((door) => !runBy.includes(door.name) && (door.runs ?? []).some((run) => !executes(run) && runs(run)))
+    .filter((door) => !runBy.includes(door.name) && !builtBy.includes(door.name) && (door.runs ?? []).some((run) => run.runKind === 'checks' && runs(run)))
     .map((door) => door.name);
   const onPath = part == null
     ? []
@@ -211,7 +215,7 @@ function doorFacts(ctx, found, part) {
   // A manifest that installs a command declares a door rather than being one:
   // the command runs the file it names, and that file says so.
   const self = found.kind === 'file' ? ctx.doors.find((door) => !installed(door) && door.file === found.path) ?? null : null;
-  return { checkedBy, onPath, runBy, self };
+  return { builtBy, checkedBy, onPath, runBy, self };
 }
 
 function doorLine(doors, partLabel, kind) {
@@ -220,13 +224,16 @@ function doorLine(doors, partLabel, kind) {
     return parseError ? `It is the door ${name}, whose workflow could not be read.` : `It is the door ${name}.`;
   }
   const directory = kind === 'directory';
-  if (doors.runBy.length > 0 || doors.checkedBy.length > 0) {
+  const built = doors.builtBy ?? [];
+  if (doors.runBy.length > 0 || built.length > 0 || doors.checkedBy.length > 0) {
     const clauses = [];
     if (!directory) {
       if (doors.runBy.length > 0) clauses.push(`run by ${list(doors.runBy)}`);
+      if (built.length > 0) clauses.push(`built into a binary by ${list(built)}`);
       if (doors.checkedBy.length > 0) clauses.push(`checked by ${list(doors.checkedBy)}`);
     } else {
       if (doors.runBy.length > 0) clauses.push(`${list(doors.runBy)} ${doors.runBy.length === 1 ? 'runs' : 'run'} files in it`);
+      if (built.length > 0) clauses.push(`${list(built)} ${built.length === 1 ? 'builds' : 'build'} files in it into a binary`);
       if (doors.checkedBy.length > 0) clauses.push(`${list(doors.checkedBy)} ${doors.checkedBy.length === 1 ? 'checks' : 'check'} files in it`);
     }
     const text = clauses.join('; ');
@@ -318,7 +325,7 @@ function explainFound(ctx, found, map) {
   const overlap = found.kind === 'file' ? overlapOf(ctx, found.path) : null;
   const facts = {
     changesWith: [],
-    doors: { checkedBy: [], isDoor: null, onPath: [], runBy: [] },
+    doors: { builtBy: [], checkedBy: [], isDoor: null, onPath: [], runBy: [] },
     externals: 0,
     generatedAt: map.generatedAt,
     importGrain: 'part',
@@ -374,7 +381,7 @@ function explainFound(ctx, found, map) {
   }
 
   const doors = doorFacts(ctx, found, part?.part ?? null);
-  facts.doors = { checkedBy: doors.checkedBy, isDoor: doors.self?.name ?? null, onPath: doors.onPath, runBy: doors.runBy };
+  facts.doors = { builtBy: doors.builtBy, checkedBy: doors.checkedBy, isDoor: doors.self?.name ?? null, onPath: doors.onPath, runBy: doors.runBy };
   lines.push(doorLine(doors, part?.partLabel ?? null, found.kind));
 
   if (found.kind === 'file') {

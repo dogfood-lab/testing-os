@@ -372,30 +372,36 @@ function gatedRuns(door) {
 }
 
 // "runs X; checks Y" for the paths of one gated group, or null.
-function heldClause(ctx, door, group, verb, joiner = '; ') {
+function heldClause(ctx, door, group, verb, joiner = '; ', { builds = false } = {}) {
   const clauses = [];
   const ran = shownRuns(door, 'executes', group.paths);
+  const built = builds ? shownRuns(door, 'builds', group.paths) : [];
   const checked = shownRuns(door, 'checks', group.paths);
   if (ran.length > 0) clauses.push(`${verb} ${filesShown(ctx, ran)}`);
+  if (built.length > 0) clauses.push(`builds ${filesShown(ctx, built)}`);
   if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked)}`);
   return clauses.length > 0 ? clauses.join(joiner) : null;
 }
 
 // The sentence that says what a door does on one trigger only: "On a pull
 // request, it also runs scripts/comment.mjs."
-function heldSentences(ctx, door, verb, alsoRuns) {
+function heldSentences(ctx, door, verb, alsoRuns, { builds = false } = {}) {
   return gatedRuns(door).map((group) => {
-    const clause = heldClause(ctx, door, group, verb);
+    const clause = heldClause(ctx, door, group, verb, '; ', { builds });
     return clause ? `${capitalize(gateLead(group.when))}, it ${alsoRuns ? 'also ' : ''}${clause}.` : null;
   }).filter(Boolean);
 }
 
-// Whether the door runs each path or only checks it. A path any of its tools
-// runs is run; an artifact written before runs carried a kind ran all it listed.
+// Whether the door runs each path, builds it into a binary it ships, or only
+// checks it. A path any of its tools runs is run, and one it builds and does
+// not run is built; an artifact written before runs carried a kind ran all it
+// listed.
 function runKinds(door) {
   const kinds = new Map();
+  const rank = { checks: 0, builds: 1, executes: 2 };
   for (const run of door.runs ?? []) {
-    if (kinds.get(run.path) !== 'executes') kinds.set(run.path, run.runKind === 'checks' ? 'checks' : 'executes');
+    const kind = run.runKind === 'checks' ? 'checks' : run.built ? 'builds' : 'executes';
+    if (!kinds.has(run.path) || rank[kind] > rank[kinds.get(run.path)]) kinds.set(run.path, kind);
   }
   return kinds;
 }
@@ -627,6 +633,8 @@ export function sendPhrases(door) {
   // A Godot export builds the game for a platform, a release's asset.
   if (sends.exports?.length > 0) phrases.push(`exports the game for ${list(sends.exports)}`);
   if (sends.releases) phrases.push('creates a GitHub release');
+  const shipped = assetsPhrase(sends.assets ?? [], door.builtFrom ?? builtPaths(door));
+  if (shipped) phrases.push(shipped);
   if (sends.deploysPages) phrases.push('deploys the site');
   if (sends.opensIssues) phrases.push(sends.opensIssuesOnFailure ? 'opens an issue when it fails' : 'opens an issue');
   if (sends.opensPullRequests) phrases.push('opens a pull request');
@@ -636,9 +644,50 @@ export function sendPhrases(door) {
     const when = gatePhrase(entry.when);
     const stages = stagedShown(entry.stages);
     if (stages.length > 0) phrases.push(`commits ${commitsClause({ stages: entry.stages, pushes: entry.pushes, pushesForReview: entry.pushesForReview, pushesTo: entry.pushesTo })} ${when}`);
-    for (const phrase of sendPhrases({ sends: sendsFrom(entry.sends) })) phrases.push(`${phrase} ${when}`);
+    for (const phrase of sendPhrases({ sends: sendsFrom(entry.sends), builtFrom: builtPaths(door) })) phrases.push(`${phrase} ${when}`);
   }
   return phrases;
+}
+
+// The files a door builds into the binaries it ships.
+function builtPaths(door) {
+  return [...new Set((door.runs ?? []).filter((run) => run.built).map((run) => run.path))].sort(cmp);
+}
+
+const PACKAGES = {
+  appimage: 'an AppImage',
+  deb: 'a Debian package',
+  dmg: 'a DMG disk image',
+  msix: 'an MSIX package',
+  rpm: 'an RPM package',
+};
+const INSTALLERS = { msi: 'MSI', nsis: 'NSIS' };
+
+/**
+ * What a release ships (core/doors.js shipBuilds), as one phrase: "builds
+ * src/main.rs into an MSIX package and binaries for linux-x64 and win-x64,
+ * and uploads them to the release", the binaries last, since their targets
+ * already hold an "and". Files no build here makes are named as the upload
+ * names them, or "files". Null when it ships nothing.
+ *
+ * @param {string[]} assets
+ * @returns {string|null}
+ */
+export function assetsPhrase(assets, from = []) {
+  if (assets.length === 0) return null;
+  const targets = assets.filter((asset) => asset.startsWith('binary:')).map((asset) => asset.slice('binary:'.length));
+  const installers = Object.keys(INSTALLERS).filter((kind) => assets.includes(kind)).map((kind) => INSTALLERS[kind]);
+  const items = [
+    ...(installers.length === 1 ? [`an ${installers[0]} installer`] : installers.length > 1 ? [`${list(installers)} installers`] : []),
+    ...Object.keys(PACKAGES).filter((kind) => assets.includes(kind)).map((kind) => PACKAGES[kind]),
+    ...(targets.length === 1 ? [`a binary for ${targets[0]}`] : targets.length > 1 ? [`binaries for ${list(targets)}`] : []),
+  ];
+  const files = assets.filter((asset) => asset.startsWith('file:')).map((asset) => asset.slice('file:'.length));
+  if (items.length === 0 && files.length > 0) return `uploads ${list([...files, ...(assets.includes('files') ? ['files named at run time'] : [])])} to the release`;
+  if (items.length === 0) return assets.includes('files') ? 'uploads files to the release' : null;
+  const built = list(items);
+  const source = from.length > 0 ? `${list(from)} into ` : '';
+  return `builds ${source}${built}${built.includes(' and ') && items.length > 1 ? ',' : ''} and uploads them to the release`;
 }
 
 /**
@@ -692,7 +741,7 @@ const GATE_EVENTS = {
 
 // A gated job's send keys read back into the shape sendPhrases reads.
 function sendsFrom(keys) {
-  const sends = { dispatchesTo: [], exports: [], packages: [], publishesTo: [] };
+  const sends = { assets: [], dispatchesTo: [], exports: [], packages: [], publishesTo: [] };
   for (const key of keys ?? []) {
     const at = key.indexOf(':');
     if (at === -1) sends[key] = true;
@@ -721,9 +770,12 @@ function runTotal(door, kind = null) {
   const recorded = runPaths(door).filter((path) => kind == null || kinds.get(path) === kind).length;
   const held = [...heldRuns(door).keys()].filter((path) => kind == null || kinds.get(path) === kind).length;
   const checks = door.checksCount ?? 0;
+  // Every binary a door builds is recorded, so only runs and checks are capped.
+  const built = [...kinds.values()].filter((value) => value === 'builds').length;
   let counted = door.runsCount ?? recorded;
   if (door.runsCount != null && kind === 'checks') counted = checks;
-  else if (door.runsCount != null && kind === 'executes') counted = door.runsCount - checks;
+  else if (door.runsCount != null && kind === 'executes') counted = door.runsCount - checks - built;
+  else if (kind === 'builds') counted = built;
   return shownRuns(door, kind).length + Math.max(0, counted - held - recorded);
 }
 
@@ -761,8 +813,10 @@ function runsAndChecks(ctx, door, verb) {
   if (door.unplaced) return unplacedClause(verb, door.unplaced);
   const clauses = [];
   const ran = shownRuns(door, 'executes');
+  const built = shownRuns(door, 'builds');
   const checked = shownRuns(door, 'checks');
   if (ran.length > 0) clauses.push(`${verb} ${filesShown(ctx, ran, unrecordedRuns(door, 'executes'))}`);
+  if (built.length > 0) clauses.push(`builds ${filesShown(ctx, built)}`);
   if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked, unrecordedRuns(door, 'checks'))}`);
   return clauses.length > 0 ? clauses.join('; ') : null;
 }
@@ -772,7 +826,7 @@ function comesIn(ctx) {
   const items = ctx.doors.map((door, index) => {
     if (door.parseError) return `${index + 1}. **${door.name}.** This workflow could not be read.`;
     const named = runsAndChecks(ctx, door, startVerb(door));
-    const held = heldSentences(ctx, door, startVerb(door), named != null);
+    const held = heldSentences(ctx, door, startVerb(door), named != null, { builds: true });
     const runs = [...(named || held.length === 0 ? [capitalize(named ? `${named}.` : `${startVerb(door)} no file this map can see.`)] : []), ...held].join(' ');
     if (installed(door)) return `${index + 1}. **${door.name}** (${installedAs(door)}). ${runs}`;
     const when = capitalize(triggerPhrases(door).join('; ')) || 'Nothing this map can read starts it';
@@ -879,6 +933,7 @@ function doorSteps(ctx, door) {
   const noun = door.extension ? 'extension' : door.app === 'desktop' ? 'desktop app' : door.app === 'game' ? 'game' : door.kind;
   const subject = installed(door) ? `The ${noun} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
+  // What it builds is said with what it ships (sendPhrases).
   if (ran.length > 0) clauses.push(`${subject} ${runGroups(ctx, door, ran)}`);
   if (checked.length > 0) clauses.push(`${ran.length > 0 ? 'it' : 'The workflow'} checks ${runGroups(ctx, door, checked)}`);
   const held = heldSentences(ctx, door, 'runs', clauses.length > 0);
@@ -1289,10 +1344,12 @@ function otherDoors(ctx, main) {
     const clauses = [];
     const verb = startVerb(door);
     const ran = shownRuns(door, 'executes');
+    const built = shownRuns(door, 'builds');
     const checked = shownRuns(door, 'checks');
     const groups = gatedRuns(door);
+    // What it builds is said with what it ships (sendPhrases).
     if (door.unplaced) clauses.push(unplacedClause(verb, door.unplaced));
-    else if (ran.length > 0 || (checked.length === 0 && groups.length === 0)) {
+    else if (ran.length > 0 || (built.length === 0 && checked.length === 0 && groups.length === 0)) {
       clauses.push(ran.length > 0 ? `${verb} ${filesShown(ctx, ran, unrecordedRuns(door, 'executes'))}` : `${verb} no file this map can see`);
     }
     if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked, unrecordedRuns(door, 'checks'))}`);
@@ -2745,11 +2802,12 @@ function doorData(ctx, door) {
     ...(door.pushesForReview ? { pushesForReview: true } : {}),
     ...(door.pushesTo ? { pushesTo: door.pushesTo } : {}),
     reach: (door.reach ?? []).map((entry) => ({ boundary: entry.boundary, depth: entry.depth, files: entry.files })),
+    ...(shownRuns(door, 'builds').length > 0 ? { builds: shownRuns(door, 'builds') } : {}),
     checks: shownRuns(door, 'checks'),
     checksCount: runTotal(door, 'checks'),
     checksMore: moreFiles(ctx, shownRuns(door, 'checks'), unrecordedRuns(door, 'checks')),
     ...(gatedRuns(door).length > 0
-      ? { held: gatedRuns(door).map((group) => ({ checks: shownRuns(door, 'checks', group.paths), checksMore: moreFiles(ctx, shownRuns(door, 'checks', group.paths)), lead: gateLead(group.when), runs: shownRuns(door, 'executes', group.paths), runsMore: moreFiles(ctx, shownRuns(door, 'executes', group.paths)), when: gatePhrase(group.when) })) }
+      ? { held: gatedRuns(door).map((group) => ({ ...(shownRuns(door, 'builds', group.paths).length > 0 ? { builds: shownRuns(door, 'builds', group.paths) } : {}), checks: shownRuns(door, 'checks', group.paths), checksMore: moreFiles(ctx, shownRuns(door, 'checks', group.paths)), lead: gateLead(group.when), runs: shownRuns(door, 'executes', group.paths), runsMore: moreFiles(ctx, shownRuns(door, 'executes', group.paths)), when: gatePhrase(group.when) })) }
       : {}),
     runs: shownRuns(door, 'executes'),
     runsCount: runTotal(door, 'executes'),

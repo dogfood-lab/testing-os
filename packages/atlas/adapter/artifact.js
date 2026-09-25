@@ -341,6 +341,8 @@ function carryRun(run) {
   if (run.directory) out.directory = true;
   if (run.matched) out.matched = true;
   if (run.via) out.via = run.via;
+  // A binary the door builds and ships, which it runs nowhere.
+  if (run.built) out.built = true;
   if (run.when) out.when = { ...run.when, ...(run.when.inputs ? { inputs: { ...run.when.inputs } } : {}) };
   return out;
 }
@@ -382,6 +384,7 @@ function carryDoor(door) {
     checksCount: door.checksCount ?? 0,
     secrets: [...door.secrets],
     sends: {
+      ...(door.sends.assets?.length > 0 ? { assets: [...door.sends.assets] } : {}),
       ...(door.sends.changesRepositories ? { changesRepositories: true } : {}),
       deploysPages: door.sends.deploysPages,
       ...(door.sends.exports?.length > 0 ? { exports: [...door.sends.exports] } : {}),
