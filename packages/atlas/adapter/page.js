@@ -711,6 +711,13 @@ export function assetsPhrase(assets, from = []) {
  * @returns {string}
  */
 export function gatePhrase(when) {
+  // A pull request held to where it comes from, beside the triggers that
+  // run every time: "on a push, or a pull request from a fork".
+  if (when.fork != null) {
+    const from = when.fork ? 'a pull request from a fork' : 'a pull request from this repository';
+    if (when.event === 'pull_request' || !(when.also?.length > 0)) return `on ${from}`;
+    return `${list(when.also.map((event) => (event === 'push' ? 'on a push' : GATE_EVENTS[event] ?? `on a \`${event}\` event`))).replace(/ and /g, ', ')}, or ${from}`;
+  }
   const inputs = inputWords(when.inputs);
   if (inputs) {
     // Inputs hold only a run by hand; on its own an input's condition leaves
@@ -2108,6 +2115,14 @@ function pullRequested(door) {
   return (door.triggers ?? []).some((trigger) => trigger.event === 'pull_request' || trigger.event === 'pull_request_target');
 }
 
+// The runs a path through the door starts from: those it runs on every
+// trigger, or when every one is held to a trigger (a job that skips a pull
+// request from this repository), those.
+function startShown(door) {
+  const shown = shownRuns(door, 'executes');
+  return shown.length > 0 ? shown : shownRuns(door, 'executes', new Set((door.runs ?? []).map((run) => run.path)));
+}
+
 // A door only a push or the clock starts acts on a change after review.
 function afterReview(door) {
   const events = (door.triggers ?? []).map((trigger) => trigger.event).filter((event) => event !== 'workflow_dispatch');
@@ -2215,7 +2230,7 @@ function startHere(ctx, main, first = null) {
   const runs = startRuns(main);
   const named = new Set(runs.filter((run) => !run.matched).map((run) => run.path));
   const executed = new Set(runs.filter((run) => run.runKind !== 'checks').map((run) => run.path));
-  const ran = shownRuns(main, 'executes').filter((path) => executed.has(path));
+  const ran = startShown(main).filter((path) => executed.has(path));
   // A file a test runner runs for the unit tests it holds (cargo test and a
   // #[cfg(test)] module) is a test's way in, as a test file is, not the
   // door's entry.
@@ -2403,7 +2418,7 @@ function working(ctx, path, from, hops = 0) {
 function testsOnly(ctx, door) {
   if (!door || installed(door)) return null;
   const executed = new Set(startRuns(door).filter((run) => run.runKind !== 'checks').map((run) => run.path));
-  const files = filesOfRuns(ctx, shownRuns(door, 'executes').filter((path) => executed.has(path))).filter(runsAsCode);
+  const files = filesOfRuns(ctx, startShown(door).filter((path) => executed.has(path))).filter(runsAsCode);
   if (files.length === 0) return (door.runs ?? []).length > 0 ? { checks: true } : null;
   // cargo test runs a file holding its own unit tests for those tests, and
   // a GDScript suite is a test by what it extends.
@@ -2418,7 +2433,7 @@ function testsOnly(ctx, door) {
 // #[cfg(test)] module), which is no way into the code.
 function runsUnitTests(ctx, door) {
   const executed = new Set(startRuns(door).filter((run) => run.runKind !== 'checks').map((run) => run.path));
-  return filesOfRuns(ctx, shownRuns(door, 'executes').filter((path) => executed.has(path)))
+  return filesOfRuns(ctx, startShown(door).filter((path) => executed.has(path)))
     .some((path) => !isTestFile(path) && ctx.fileOf.get(path)?.testsInside === true);
 }
 
@@ -2430,7 +2445,7 @@ function runsUnitTests(ctx, door) {
 function widestTest(ctx, door) {
   const executed = new Set(startRuns(door).filter((run) => run.runKind !== 'checks').map((run) => run.path));
   const isTest = (path) => isTestFile(path) || ctx.fileOf.get(path)?.testSuite === true;
-  const tests = filesOfRuns(ctx, shownRuns(door, 'executes').filter((path) => executed.has(path))).filter((path) => runsAsCode(path) && isTest(path));
+  const tests = filesOfRuns(ctx, startShown(door).filter((path) => executed.has(path))).filter((path) => runsAsCode(path) && isTest(path));
   const reach = new Map(tests.map((path) => [path, partsReached(ctx, [path]).size]));
   return [...tests].sort((a, b) => reach.get(b) - reach.get(a) || cmp(a, b))[0] ?? null;
 }
@@ -2467,13 +2482,26 @@ function noPath(door) {
   return `${why}, so there is no path of files to read in order.`;
 }
 
+// What one pass through a door is when its every run is held to where a
+// pull request comes from: "push, or pull request from a fork".
+function heldNoun(door) {
+  const keys = new Set((door.runs ?? []).map((run) => (run.when ? JSON.stringify(sortKeys(run.when)) : null)));
+  if (keys.size !== 1 || keys.has(null)) return null;
+  const when = JSON.parse([...keys][0]);
+  if (when.fork == null) return null;
+  const from = when.fork ? 'pull request from a fork' : 'pull request from this repository';
+  const also = (when.also ?? []).map((event) => (event === 'schedule' ? 'scheduled run' : event === 'push' ? 'push' : event.replace(/_/g, ' ')));
+  return when.event === 'pull_request' || also.length === 0 ? from : `${also.join(', ')}, or ${from}`;
+}
+
 function startSection(words, main, readable, reason = null) {
   if (!main) {
     const why = readable ? 'No door runs a file this map can see' : 'No door was found';
     return ['## Where to start', `${why}, so there is no path through this repository to follow.`].join('\n\n');
   }
   if (words.length === 0) return ['## Where to start', noPath(main)].join('\n\n');
-  const read = `Read those in order to follow one ${triggerNoun(main)} end to end.`;
+  const noun = heldNoun(main) ?? triggerNoun(main);
+  const read = `Read those in order to follow one ${noun}${noun.includes(',') ? ',' : ''} end to end.`;
   return ['## Where to start', words.join(' → '), reason ? `${read} ${reason}` : read].join('\n\n');
 }
 

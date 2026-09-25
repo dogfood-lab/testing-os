@@ -1,0 +1,12 @@
+name: forks
+
+on:
+  pull_request:
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.fork
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/suite.mjs

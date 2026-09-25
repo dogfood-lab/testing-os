@@ -508,6 +508,7 @@ function jobGate(condition, triggers) {
   const gate = conjunctionGate(expression, triggers, false);
   if (Object.keys(gate).length === 0) return null;
   if (gate.inputs) return gate;
+  if (gate.fork != null) return forkGate(gate, triggers);
   return triggers.length > 0 && triggers.every((trigger) => meets(trigger, gate)) ? null : gate;
 }
 
@@ -531,6 +532,14 @@ function conjunctionGate(expression, triggers, strict) {
     }
     const branch = /^github\.ref\s*==\s*'refs\/heads\/([^']+)'$/.exec(part) ?? /^'refs\/heads\/([^']+)'\s*==\s*github\.ref$/.exec(part);
     const input = inputPart(part);
+    const fork = forkPart(part);
+    if (fork) {
+      gate.fork = fork.fork;
+      // head.repo.fork is null on any other event, so it holds the work to a
+      // pull request; head.repo.full_name != github.repository holds there.
+      if (fork.pullRequestOnly) gate.event = 'pull_request';
+      continue;
+    }
     if (event) gate.event = event[1];
     else if (branch) gate.branches = [...new Set([...(gate.branches ?? []), branch[1]])].sort();
     else if (/^startsWith\(\s*github\.ref\s*,\s*'refs\/tags\/[^']*'\s*\)$/.test(part) || /^github\.ref_type\s*==\s*'tag'$/.test(part)) {
@@ -541,6 +550,33 @@ function conjunctionGate(expression, triggers, strict) {
   }
   if (gate.except) settleExcept(gate, triggers);
   return settleInputs(gate, triggers);
+}
+
+// Whether a part holds a pull request to one from a fork (fork true) or from
+// this repository (fork false): github.event.pull_request.head.repo.fork,
+// its negation or comparison with a boolean, and head.repo.full_name compared
+// with github.repository. Null for any other part.
+function forkPart(part) {
+  const head = 'github\\.event\\.pull_request\\.head\\.repo';
+  const bare = new RegExp(`^(!\\s*)?${head}\\.fork$`).exec(part);
+  if (bare) return { fork: !bare[1], pullRequestOnly: !bare[1] };
+  const compared = new RegExp(`^${head}\\.fork\\s*(==|!=)\\s*(true|false)$`).exec(part);
+  if (compared) {
+    const fork = (compared[1] === '==') === (compared[2] === 'true');
+    return { fork, pullRequestOnly: fork };
+  }
+  const named = new RegExp(`^${head}\\.full_name\\s*(==|!=)\\s*github\\.repository$`).exec(part) ?? new RegExp(`^github\\.repository\\s*(==|!=)\\s*${head}\\.full_name$`).exec(part);
+  if (named) return { fork: named[1] === '!=', pullRequestOnly: named[1] === '==' };
+  return null;
+}
+
+// A gate that holds a pull request to where it comes from, with the other
+// triggers it runs on every time (also), which the page names beside it.
+function forkGate(gate, triggers) {
+  if (gate.event && gate.event !== 'pull_request') return gate;
+  if (gate.event === 'pull_request') return gate;
+  const also = [...new Set(triggers.map((trigger) => trigger.event).filter((event) => event !== 'pull_request' && event !== 'pull_request_target' && event !== 'workflow_dispatch'))].sort();
+  return { ...gate, ...(also.length > 0 ? { also } : {}) };
 }
 
 // inputs.x, github.event.inputs.x, their negation, and a comparison with a
@@ -581,12 +617,26 @@ function eitherGate(alternatives, triggers) {
   const gates = alternatives.map((alternative) => conjunctionGate(alternative, triggers, true));
   if (gates.some((gate) => gate === UNREAD_PART) || triggers.length === 0) return null;
   let inputs = null;
+  let fork = null;
   const held = triggers.map((trigger) => {
     let status = 'never';
     for (const gate of gates) {
       const byHand = trigger.event === 'workflow_dispatch';
-      const reached = byHand ? (!gate.event || gate.event === 'workflow_dispatch') && !(gate.except ?? []).includes('workflow_dispatch') : meets(trigger, gate);
+      const reached = byHand ? (!gate.event || gate.event === 'workflow_dispatch') && !(gate.except ?? []).includes('workflow_dispatch') && gate.fork == null : meets(trigger, gate);
       if (!reached) continue;
+      // A pull request held to where it comes from is run only for some.
+      if (gate.fork != null) {
+        const pullRequest = trigger.event === 'pull_request' || trigger.event === 'pull_request_target';
+        if (!pullRequest) {
+          if (!gate.event) return 'always';
+          continue;
+        }
+        if (status === 'never') {
+          status = 'fork';
+          fork = gate.fork;
+        }
+        continue;
+      }
       const needs = Object.values(gate.inputs ?? {});
       if (!byHand && needs.some((value) => value !== false)) continue;
       if (!byHand || needs.length === 0) return 'always';
@@ -601,6 +651,11 @@ function eitherGate(alternatives, triggers) {
   const covered = triggers.filter((_, index) => held[index] !== 'never');
   const gate = coveredGate(covered, triggers);
   if (inputs && held.includes('inputs')) gate.inputs = inputs;
+  if (fork != null && held.includes('fork')) {
+    gate.fork = fork;
+    const also = [...new Set(triggers.filter((trigger, index) => held[index] === 'always' && trigger.event !== 'workflow_dispatch').map((trigger) => trigger.event))].sort();
+    if (also.length > 0 && !gate.event) gate.also = also;
+  }
   return Object.keys(gate).length > 0 ? gate : null;
 }
 
