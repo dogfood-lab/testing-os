@@ -3169,6 +3169,22 @@ function summaryOf(document) {
 }
 
 const LANGUAGE_NAMES = { gdscript: 'GDScript', javascript: 'JavaScript', python: 'Python', rust: 'Rust', tsx: 'TypeScript', typescript: 'TypeScript' };
+// Code this map does not parse still says what the repository is written
+// in: an Astro theme's components, a desktop app's C#, a site's HTML, a
+// repository's shell scripts.
+const UNPARSED_LANGUAGES = new Map([
+  ['.astro', 'Astro'], ['.cs', 'C#'], ['.html', 'HTML'], ['.htm', 'HTML'], ['.css', 'CSS'], ['.scss', 'CSS'],
+  ['.sh', 'shell'], ['.bash', 'shell'], ['.ps1', 'PowerShell'], ['.go', 'Go'], ['.java', 'Java'], ['.kt', 'Kotlin'],
+  ['.swift', 'Swift'], ['.c', 'C'], ['.h', 'C'], ['.cpp', 'C++'], ['.hpp', 'C++'], ['.cc', 'C++'], ['.rb', 'Ruby'],
+  ['.php', 'PHP'], ['.vue', 'Vue'], ['.svelte', 'Svelte'], ['.lua', 'Lua'],
+]);
+
+function languageName(path) {
+  const parsed = LANGUAGE_NAMES[languageOf(path)];
+  if (parsed) return parsed;
+  const at = path.lastIndexOf('.');
+  return at > path.lastIndexOf('/') ? UNPARSED_LANGUAGES.get(path.slice(at).toLowerCase()) ?? null : null;
+}
 // A command's name is what a reader types, so up to twelve are all named;
 // past that, ten are and the rest counted.
 const INSTALLED_ALL = 12;
@@ -3189,13 +3205,17 @@ function languageClause(ctx) {
     if (isImagePath(path)) held.set('images', held.get('images') + 1);
     else if (/\.jsonl?$/i.test(path)) held.set('JSON data', held.get('JSON data') + 1);
     else if (/\.mdx?$/i.test(path)) held.set('Markdown', held.get('Markdown') + 1);
-    const language = LANGUAGE_NAMES[languageOf(path)];
+    const language = languageName(path);
     if (language) counts.set(language, (counts.get(language) ?? 0) + 1);
   }
   const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1] || cmp(a[0], b[0]));
-  const [kind, most] = [...held.entries()].sort((a, b) => b[1] - a[1])[0];
+  const kinds = [...held.entries()].sort((a, b) => b[1] - a[1]);
+  const [kind, most] = kinds[0];
   if (most * 2 > ctx.fileOf.size) {
-    const lead = `, mostly ${kind} (${count(most, 'file')})`;
+    // Another kind that holds a tenth of the files, ten at least, is named
+    // beside it: research-packs' Markdown beside its JSON, never a README.
+    const beside = kinds.slice(1).filter(([, n]) => n * 10 >= ctx.fileOf.size && n >= 10);
+    const lead = `, mostly ${list([`${kind} (${count(most, 'file')})`, ...beside.map(([other, n]) => `${other} (${n})`)])}`;
     return ranked.length === 0 ? lead : `${lead}; code in ${list(ranked.map(([name, n]) => `${name} (${n})`))}`;
   }
   if (ranked.length === 0) return '';
@@ -3276,6 +3296,8 @@ function derivedLine(ctx, main, name = '') {
   if (name === '.github' && ctx.fileOf.has('profile/README.md')) sentences.unshift("This is the organization's profile page and the community-health files its repositories inherit.");
   const published = publishesSentence(ctx);
   if (published) sentences.push(published);
+  // A door that deploys to GitHub Pages is a site the repository serves.
+  if (ctx.doors.some((door) => door.sends?.deploysPages || (door.gated ?? []).some((entry) => (entry.sends ?? []).includes('deploysPages')))) sentences.push('It deploys a site to GitHub Pages.');
   const commands = installedNames(ctx, 'command');
   if (commands) sentences.push(`People run ${commands}.`);
   const packages = installedNames(ctx, 'package');
