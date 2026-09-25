@@ -1,14 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-25 from commit 5fc5728.
+Mapped at 2026-09-25 from commit aba3055.
 
 ## What this is
 
 23 parts, mostly JavaScript (1296 files), TypeScript (154), Python (88), Rust (87) and GDScript (32). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
 
-## What changed since 2026-09-25 (ce2ccd2)
+## What changed since 2026-09-25 (5fc5728)
 
-Nothing structural changed since 2026-09-25; 1 file added and 5 changed content.
+Nothing structural changed since 2026-09-25; 1 file added and 3 changed content.
 
 ## What comes in
 
