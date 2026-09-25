@@ -87,7 +87,9 @@ const PY_HOME = new Set(['Path.home', 'pathlib.Path.home']);
 // repository's: mkdtemp(), tmpdir(), tempfile.gettempdir().
 const JS_TEMP = new Set(['tmpdir', 'mkdtempSync', 'mkdtemp', 'mkdtempDisposableSync']);
 const PY_TEMP = new Set(['tempfile.mkdtemp', 'mkdtemp', 'tempfile.gettempdir', 'gettempdir', 'tempfile.mktemp']);
-const HOME_VARIABLES = new Set(['HOME', 'USERPROFILE']);
+// The home directory, and the per-user directories under it a platform
+// names by variable: a cache, a config or a data directory is the person's.
+const HOME_VARIABLES = new Set(['HOME', 'USERPROFILE', 'APPDATA', 'LOCALAPPDATA', 'XDG_CACHE_HOME', 'XDG_CONFIG_HOME', 'XDG_DATA_HOME', 'XDG_STATE_HOME']);
 // The checkout a workflow runs in: a path under it is this repository, which
 // the map cannot place from the variable alone, so it names no caller's place.
 const WORKSPACE_VARIABLES = new Set(['GITHUB_WORKSPACE']);
