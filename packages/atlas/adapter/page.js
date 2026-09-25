@@ -246,6 +246,7 @@ export function orderDoors(doors) {
 // a Godot project's main scene is what the engine runs.
 function installedAs(door) {
   const what = door.example ? `a command people run with \`${exampleCommand(door)}\``
+    : door.unshipped && door.privatePackage ? 'a command of a private package, which nothing ships'
     : door.unshipped ? `${door.app === 'desktop' ? 'a desktop app' : 'a command'} built from ${builtFrom(door)}, which nothing ships`
     : door.app === 'desktop' ? 'the desktop app people install'
     : door.app === 'game' ? 'what Godot runs'
@@ -3193,13 +3194,16 @@ function derivedLine(ctx, main) {
 function unshippedSentences(ctx) {
   const out = [];
   for (const app of [null, 'desktop']) {
-    const doors = ctx.doors.filter((door) => door.kind === 'command' && door.unshipped && (door.app ?? null) === app);
+    const doors = ctx.doors.filter((door) => door.kind === 'command' && door.unshipped && !door.privatePackage && (door.app ?? null) === app);
     if (doors.length === 0) continue;
     const noun = app === 'desktop' ? 'desktop app' : 'command';
     const names = list([...new Set(doors.map((door) => door.name))].sort(cmp));
     const dirs = list([...new Set(doors.map(builtFrom))].sort(cmp));
     out.push(doors.length === 1 ? `${names} is a ${noun} built from ${dirs} (nothing ships it).` : `${names} are ${noun}s built from ${dirs} (nothing ships them).`);
   }
+  // A private package's commands are installed by no one.
+  const kept = [...new Set(ctx.doors.filter((door) => door.kind === 'command' && door.privatePackage).map((door) => door.name))].sort(cmp);
+  if (kept.length > 0) out.push(`${list(kept)} ${kept.length === 1 ? 'is a command' : 'are commands'} of a private package (nothing ships ${kept.length === 1 ? 'it' : 'them'}).`);
   return out;
 }
 
@@ -3235,6 +3239,7 @@ function doorData(ctx, door) {
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
     ...(door.unpublished ? { unpublished: true } : {}),
     ...(door.unshipped ? { builtFrom: builtFrom(door), unshipped: true } : {}),
+    ...(door.privatePackage ? { privatePackage: true } : {}),
     ...(door.example ? { example: true, runWith: exampleCommand(door) } : {}),
     ...(door.extension ? { extension: true } : {}),
     ...(door.publishedTo ? { publishedTo: registryList(door.publishedTo) } : {}),

@@ -199,6 +199,7 @@ function installed(door) {
 function installedAs(door) {
   const bundled = arr(door.bundledInto).map(str);
   const what = door.example ? `a command people run with <code>${esc(str(door.runWith))}</code>`
+    : door.unshipped && door.privatePackage ? 'a command of a private package, which nothing ships'
     : door.unshipped ? `${door.app === 'desktop' ? 'a desktop app' : 'a command'} built from ${esc(str(door.builtFrom))}, which nothing ships`
     : door.app === 'desktop' ? 'the desktop app people install'
     : door.app === 'game' ? 'what Godot runs'

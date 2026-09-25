@@ -180,6 +180,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     .filter((entry) => entry != null && !doors.some((door) => door.kind === 'package' && door.file === entry.manifest));
   const memberDoors = members.length > 0 ? mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands: members, builtFrom, emitted, unitTests, discovered }) : [];
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
+  markPrivateCommands(doors, rootManifest(repoPath, trackedSet));
   doors.push(...memberDoors);
   markUnshipped(doors, cargoProject(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
@@ -319,6 +320,22 @@ function markUnshipped(doors, project) {
     if (door.kind !== 'command' || door.example || posix.basename(door.file) !== 'Cargo.toml') continue;
     if (published.has(door.file) || (door.runs ?? []).some((run) => built.has(run.path))) continue;
     door.unshipped = true;
+  }
+}
+
+/**
+ * A command the root package.json declares, when the package is private: npm
+ * publishes no private package, so no one installs the command from here,
+ * and the page says nothing ships it, as it says of a crate's binary. A
+ * private workspace member's command is settled by settleInstalled.
+ * Mutates the doors.
+ */
+function markPrivateCommands(doors, manifest) {
+  if (manifest?.private !== true) return;
+  for (const door of doors) {
+    if (door.kind !== 'command' || door.file !== 'package.json' || door.bundledInto?.length > 0) continue;
+    door.unshipped = true;
+    door.privatePackage = true;
   }
 }
 

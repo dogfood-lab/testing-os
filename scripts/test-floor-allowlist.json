@@ -264,6 +264,10 @@
     {
       "path": "fixtures/atlas/test-spawn-joined/tests/search.test.mjs",
       "reason": "Atlas fixture, not a test. It sits inside the test-spawn-joined fixture repository that packages/atlas/core/test-spawn-joined.test.js maps, where it runs scripts/query.mjs through a command line held in a const, so the map must read that spawn. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/private-command/test/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the private-command fixture repository that packages/atlas/adapter/page-private-command.test.js maps, where CI's node --test runs it, so the path follows the command a private package declares. It holds no test and is never meant to run."
     }
   ]
 }

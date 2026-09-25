@@ -462,6 +462,7 @@ function carryDoor(door) {
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
     ...(door.unpublished ? { unpublished: true } : {}),
     ...(door.unshipped ? { unshipped: true } : {}),
+    ...(door.privatePackage ? { privatePackage: true } : {}),
     uses: [...door.uses],
     usesWorkflowToken: door.usesWorkflowToken,
   };
