@@ -900,10 +900,28 @@ function pythonSpawns(root) {
     const right = node.childForFieldName('right');
     if (left?.type === 'identifier' && right?.text === 'sys.executable') interpreters.add(left.text);
   });
+  // A function of the file that hands one of its parameters to subprocess
+  // (def _run(label, cmd): subprocess.run(cmd)) runs the list each call
+  // hands it there.
+  const helpers = new Map();
+  walkNamed(root, (node) => {
+    if (node.type !== 'function_definition') return;
+    const params = (node.childForFieldName('parameters')?.namedChildren ?? []).map((child) => (child.type === 'identifier' ? child.text : child.namedChildren.find((inner) => inner.type === 'identifier')?.text ?? null));
+    walkNamed(node.childForFieldName('body'), (inner) => {
+      if (inner.type !== 'call' || !PY_SPAWNS.test(inner.childForFieldName('function')?.text ?? '')) return;
+      const first = inner.childForFieldName('arguments')?.namedChildren.find((child) => child.type !== 'comment');
+      const at = first?.type === 'identifier' ? params.indexOf(first.text) : -1;
+      if (at !== -1) helpers.set(node.childForFieldName('name')?.text, at);
+    });
+  });
   const commands = new Set();
   walkNamed(root, (node) => {
-    if (node.type !== 'call' || !PY_SPAWNS.test(node.childForFieldName('function')?.text ?? '')) return;
-    const list = node.childForFieldName('arguments')?.namedChildren.find((child) => child.type !== 'comment');
+    if (node.type !== 'call') return;
+    const callee = node.childForFieldName('function')?.text ?? '';
+    const args = node.childForFieldName('arguments')?.namedChildren.filter((child) => child.type !== 'comment') ?? [];
+    let list = null;
+    if (helpers.has(callee)) list = args[helpers.get(callee)] ?? null;
+    else if (PY_SPAWNS.test(callee)) list = args[0] ?? null;
     if (list?.type !== 'list') return;
     const items = list.namedChildren.filter((child) => child.type !== 'comment');
     const head = items[0];

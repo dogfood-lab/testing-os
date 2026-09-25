@@ -26,5 +26,7 @@ describe('Python spawns and inline code', () => {
     assert.ok(runs.includes('pkg/check.py executes'), runs.join('\n'));
     assert.ok(runs.includes('tests/test_check.py executes') || runs.includes('tests/ executes'), runs.join('\n'));
     assert.ok(runs.includes('pkg/ checks'), runs.join('\n'));
+    // gate.py hands mypy's command to its own _run, which runs it.
+    assert.ok(ci.runs.some((run) => run.path === 'pkg/' && (run.via ?? '').includes('gate.py')), JSON.stringify(ci.runs));
   });
 });
