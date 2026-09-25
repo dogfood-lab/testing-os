@@ -1690,7 +1690,14 @@ function writtenPlaces(ctx) {
     // Every writer reading inputs this repository does not keep cannot make
     // the file again from here, so what is committed is edited by people.
     const mixed = inside.length > 0 && inside.every((landing) => landing.writers.length > 0 && landing.writers.every((entry) => entry.untrackedInputs));
-    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}), ...(mixed ? { mixed: true } : {}) };
+    // A tracked file under the place its writer reads and nothing writes is
+    // the source it builds from (schumann-surface's viewer/template.html):
+    // people write it, though the directory is the writer's.
+    const sources = inside
+      .filter((landing) => landing.target !== target && ctx.fileOf.has(landing.target) && landing.writers.length === 0
+        && landing.readers.some((entry) => writers.includes(entry.by) && !quotedOnly(entry)))
+      .map((landing) => landing.target).sort(cmp);
+    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}), ...(mixed ? { mixed: true } : {}), ...(sources.length > 0 ? { sources } : {}) };
   });
 }
 
@@ -2188,14 +2195,15 @@ function generated(ctx) {
     claimed.push(inside);
     const once = writers.length > 0 && writers.every((by) => (guards.get(by) ?? []).includes('exists'));
     const fromRoot = writers.length > 0 && writers.every((by) => held.every((place) => !place.writers.includes(by) || place.fromRoot.includes(by)));
-    items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers, guards, ...(once ? { once: true } : {}), ...(fromRoot ? { fromRoot: true } : {}) });
+    const sources = [...new Set(held.flatMap((place) => place.sources ?? []))].sort(cmp);
+    items.push({ place: boundaryPlace(boundary), shown: shownPlace(ctx, boundary), writers, guards, ...(once ? { once: true } : {}), ...(fromRoot ? { fromRoot: true } : {}), ...(sources.length > 0 ? { sources } : {}) });
   }
   for (const place of written) {
     if (claimed.some((inside) => inside(place.target))) continue;
     const target = ctx.place(place.target);
     const once = place.writers.length > 0 && place.writers.every((by) => (place.guards.get(by) ?? []).includes('exists'));
     const fromRoot = place.writers.length > 0 && place.writers.every((by) => place.fromRoot.includes(by));
-    items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}), ...(once ? { once: true } : {}), ...(fromRoot ? { fromRoot: true } : {}) });
+    items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}), ...(once ? { once: true } : {}), ...(fromRoot ? { fromRoot: true } : {}), ...(place.sources ? { sources: place.sources } : {}) });
   }
   for (const boundary of ctx.boundaries.filter((item) => item.origin !== 'generated')) {
     const bot = botAdded(ctx, boundary.name);
@@ -2204,6 +2212,12 @@ function generated(ctx) {
   return items
     .sort((a, b) => cmp(a.place, b.place))
     .map(({ guards, ...item }) => ({ ...item, writers: writerItems(ctx, item.writers, guards) }));
+}
+
+// ", except viewer/template.html, which it reads and people write".
+export function sourcesClause(sources) {
+  if (!Array.isArray(sources) || sources.length === 0) return '';
+  return `, except ${list(sources)}, which it reads and people write`;
 }
 
 // With every written place also edited by people, nothing is generated, and
@@ -2219,7 +2233,8 @@ function generatedSection(ctx, items, shared = []) {
       if (item.once) return `- **${item.shown}** is written once by ${by}.`;
       // Output of a run from the root that the repository checks in.
       if (item.fromRoot) return `- **${item.shown}** is written by ${by} when run from the repository root, and committed.`;
-      return item.block ? `- **${item.shown}** has a block written by ${by}.` : `- **${item.shown}** is written by ${by}.`;
+      if (item.block) return `- **${item.shown}** has a block written by ${by}.`;
+      return `- **${item.shown}** is written by ${by}${sourcesClause(item.sources)}.`;
     }).join('\n')
     : shared.length > 0 ? ALL_SHARED : absence('generated', unreadCount(ctx));
   return ['## Generated, never hand-edited', body].join('\n\n');
@@ -3576,7 +3591,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesLead: duplicated.lead,
     duplicatesNote: duplicated.note,
     edges: breakEdges(ctx, breakEntries),
-    generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), ...(item.fromRoot ? { fromRoot: true } : {}), ...(item.once ? { once: true } : {}), place: item.place, writers: worded(item.writers, id) })),
+    generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), ...(item.fromRoot ? { fromRoot: true } : {}), ...(item.once ? { once: true } : {}), place: item.place, ...(item.sources ? { sources: item.sources } : {}), writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
     mainDoor: main ? doorKey(main) : null,

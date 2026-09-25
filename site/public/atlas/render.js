@@ -842,7 +842,10 @@ function generatedSection(ctx) {
       // A stamped file is written by people, with one block a script keeps.
       if (item.once) return `${place} is written once by ${by}.`;
       if (item.fromRoot) return `${place} is written by ${by} when run from the repository root, and committed.`;
-      return item.block ? `${place} has a block written by ${by}.` : `${place} is written by ${by}.`;
+      if (item.block) return `${place} has a block written by ${by}.`;
+      // A source the writer reads and people write, as page.js says it.
+      const sources = arr(item.sources).map(str);
+      return `${place} is written by ${by}${sources.length > 0 ? `, except ${list(sources.map((path) => pathHtml(ctx, path)))}, which it reads and people write` : ''}.`;
     }))
     : arr(ctx.page.authoredWritten).length > 0
       ? p('Every tracked place code writes here is edited by people too; see Hand-authored.')

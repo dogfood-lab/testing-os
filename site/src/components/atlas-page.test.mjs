@@ -1087,3 +1087,9 @@ test('a workflow that runs only echo is said so, as the markdown says it', () =>
   const html = plain(render.renderPage({ ...page, doors }, { repo: page.repo }));
   assert.ok(html.includes('CI runs only echo'), html.slice(html.indexOf('The other doors'), html.indexOf('The other doors') + 2000));
 });
+
+test('a source a generated place keeps is named as the markdown names it', () => {
+  const generated = [{ place: 'viewer/', sources: ['viewer/template.html'], writers: ['scripts/build_viewer.py'] }];
+  const html = plain(render.renderPage({ ...page, generated }, { repo: page.repo }));
+  assert.ok(html.includes('viewer/ is written by scripts/build_viewer.py, except viewer/template.html, which it reads and people write.'), html);
+});
