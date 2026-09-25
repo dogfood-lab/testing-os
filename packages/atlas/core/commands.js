@@ -1392,6 +1392,26 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
      * check, clippy, doc, fmt and install compile the targets and run none
      * of them. tauri hands on to the Tauri CLI.
      */
+    // dotnet test builds and runs the test project it is handed; dotnet
+    // build, publish and pack build theirs, as cargo build does, and run
+    // none of it.
+    dotnet(argv, dir, frame) {
+      const sub = argv[1];
+      if (!['test', 'build', 'publish', 'pack'].includes(sub)) return;
+      const chain = via(frame, `dotnet ${sub}`);
+      const next = sub === 'test' ? { ...frame, runKind: 'executes' } : { ...frame, runKind: 'executes', built: true };
+      const values = new Set(['-c', '--configuration', '-f', '--framework', '-r', '--runtime', '-o', '--output', '--filter', '-v', '--verbosity', '-p', '--property', '--logger', '-l', '--results-directory', '-s', '--settings']);
+      for (let i = 2; i < argv.length; i += 1) {
+        const word = argv[i];
+        if (values.has(word)) {
+          i += 1;
+          continue;
+        }
+        if (word.startsWith('-') || word.startsWith('/')) continue;
+        const path = pathFrom(dir, word);
+        if (path != null && repo.tracked.has(path) && /\.(?:csproj|fsproj|vbproj|sln|slnx)$/i.test(path)) record(stamp({ path, matched: true }, next, chain));
+      }
+    },
     cargo(argv, dir, frame) {
       let i = 1;
       let cwd = dir;
@@ -1812,6 +1832,7 @@ function toolOf(word) {
   if (name === 'tox') return 'none';
   if (name === 'gdlint' || name === 'gdformat') return 'gdtoolkit';
   if (name === 'cargo') return 'cargo';
+  if (name === 'dotnet') return 'dotnet';
   if (name === 'tauri') return 'tauri';
   const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'tsup', 'turbo', 'next', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro', 'vite'];
   return known.includes(name) ? name : null;

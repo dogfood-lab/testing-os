@@ -1493,8 +1493,12 @@ function topLevel(text, operator) {
   return parts.map((part) => part.trim()).filter((part) => part !== '');
 }
 
+// Actions spells ${{ env.X }} out before the shell sees the step, and a
+// PowerShell step reads $env:X from the same environment.
 function expandEnv(text, lookup) {
-  return text.replace(/\$\{\{\s*env\.([A-Za-z_][A-Za-z0-9_]*)\s*\}\}/g, (whole, name) => lookup(name) ?? whole);
+  return text
+    .replace(/\$\{\{\s*env\.([A-Za-z_][A-Za-z0-9_]*)\s*\}\}/g, (whole, name) => lookup(name) ?? whole)
+    .replace(/\$env:([A-Za-z_][A-Za-z0-9_]*)/g, (whole, name) => lookup(name) ?? whole);
 }
 
 function envOf(value) {
