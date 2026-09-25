@@ -93,6 +93,7 @@ const VALUES = {
   pylint: ['--rcfile', '--disable', '-d', '--enable', '-e', '-j', '--jobs', '--output-format', '-f', '--ignore', '--ignore-paths', '--ignore-patterns', '--load-plugins', '--output', '--fail-under', '--max-line-length', '--init-hook'],
   bandit: ['-c', '--configfile', '-f', '--format', '-o', '--output', '-x', '--exclude', '-p', '--profile', '-t', '--tests', '-s', '--skip', '-b', '--baseline', '--ini', '--msg-template', '-a', '--aggregate', '--severity-level', '--confidence-level'],
   tsc: ['-p', '--project', '--outDir', '--rootDir', '--target', '-t', '--module', '-m', '--lib', '--jsx', '--declarationDir', '--tsBuildInfoFile', '--moduleResolution', '--types', '--baseUrl', '--outFile', '--generateTrace', '--locale'],
+  next: ['-p', '--port', '-H', '--hostname', '--experimental-debug-memory-usage', '-d', '--dir'],
   turbo: ['--filter', '-F', '--concurrency', '--cache-dir', '--log-order', '--output-logs', '--env-mode', '--ui', '--log-prefix'],
   tsup: ['--format', '-d', '--out-dir', '--target', '--config', '--external', '--tsconfig', '--platform', '--global-name', '--inject', '--onSuccess'],
   vite: ['-c', '--config', '--base', '-m', '--mode', '--outDir', '--assetsDir', '-l', '--logLevel', '--ssr', '--target', '--port'],
@@ -1177,6 +1178,26 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         for (const pattern of found.patterns) matched(repo.compact(repo.filesMatching('', pattern.globs, pattern.exclude)), next, tool);
       }
     },
+    // next build and next dev run the app's next.config.* and the routes
+    // under its app/, src/app/, pages/ and src/pages/; next start serves what
+    // a build made, and next lint checks the app.
+    next(argv, dir, frame) {
+      const parsed = split(argv, 1, VALUE_SETS.next);
+      const [sub, root] = [parsed.positional[0], parsed.positional[1]];
+      if (!['build', 'dev', 'lint'].includes(sub)) return;
+      const at = root != null ? pathFrom(dir, root) : dir;
+      if (at == null) return;
+      const chain = via(frame, `next ${sub}`);
+      const kind = sub === 'lint' ? { ...frame, runKind: 'checks' } : frame;
+      for (const name of ['next.config.js', 'next.config.mjs', 'next.config.cjs', 'next.config.ts', 'next.config.mts']) {
+        const path = pathFrom(at, name);
+        if (path != null && repo.tracked.has(path)) record(stamp({ path, matched: true }, kind, chain));
+      }
+      for (const name of ['app', 'src/app', 'pages', 'src/pages']) {
+        const path = pathFrom(at, name);
+        if (path != null && repo.dirs.has(path)) record(stamp({ path: `${path}/`, directory: true, matched: true }, kind, chain));
+      }
+    },
     // turbo run <task...> (or turbo <task...>) runs each task's script in
     // every workspace member that defines it, or in the members --filter
     // selects; the order turbo.json's dependsOn gives them is not this map's
@@ -1742,7 +1763,7 @@ function toolOf(word) {
   if (name === 'gdlint' || name === 'gdformat') return 'gdtoolkit';
   if (name === 'cargo') return 'cargo';
   if (name === 'tauri') return 'tauri';
-  const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'tsup', 'turbo', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro', 'vite'];
+  const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'tsup', 'turbo', 'next', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro', 'vite'];
   return known.includes(name) ? name : null;
 }
 

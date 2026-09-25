@@ -282,7 +282,29 @@ function fromPackage(repoPath, root, manifest, tracked) {
     const resolved = rel ? resolveDeclaredPath(repoPath, rel, tracked) : null;
     if (resolved) found.add(resolved);
   }
+  for (const path of nextEntries(pkg, root, tracked)) found.add(path);
   return [...found].sort();
+}
+
+const NEXT_ROUTE = /\/(page|layout|route|template|default|loading|error|not-found)\.[cm]?[jt]sx?$/;
+
+/**
+ * A Next.js app's ways in: every page, layout and route under app/ or
+ * src/app/ (the App Router), and every file under pages/ or src/pages/,
+ * which Next serves as a route. Nothing when the package does not depend on
+ * next.
+ */
+export function nextEntries(pkg, root, tracked) {
+  const deps = { ...(pkg?.dependencies ?? {}), ...(pkg?.devDependencies ?? {}) };
+  if (typeof deps.next !== 'string') return [];
+  const at = (dir) => (root ? `${root}/${dir}/` : `${dir}/`);
+  const out = [];
+  for (const path of tracked) {
+    if (isTestFile(path) || !/\.[cm]?[jt]sx?$/.test(path)) continue;
+    if ((path.startsWith(at('app')) || path.startsWith(at('src/app'))) && NEXT_ROUTE.test(path)) out.push(path);
+    else if ((path.startsWith(at('pages')) || path.startsWith(at('src/pages'))) && !path.endsWith('.d.ts')) out.push(path);
+  }
+  return out.sort();
 }
 
 function collectStrings(value, out) {
