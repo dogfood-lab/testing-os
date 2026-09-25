@@ -304,7 +304,13 @@ function key(node) {
 // program, or in the first argument after it that is not a flag (the script
 // node runs), names nothing to follow, and is built at run time; one whose
 // unread parts come later (node x.mjs ${tgz}) still runs x.mjs.
-function text(node, pathText) {
+function text(node, pathText, depth = 0) {
+  // A command held in a const (const cmd = `node "${script}" ...`) is read
+  // from what the const holds.
+  if (node?.type === 'identifier' && depth < 2) {
+    const value = constBound(node);
+    if (value != null) return text(value, pathText, depth + 1);
+  }
   const plain = literal(node);
   if (plain != null || node?.type !== 'template_string') return plain;
   let out = '';
@@ -318,6 +324,30 @@ function text(node, pathText) {
   const words = out.trim().split(/\s+/);
   const script = words.slice(1).find((word) => !word.startsWith('-'));
   return words[0]?.includes(UNREAD) || script?.includes(UNREAD) ? null : out;
+}
+
+/**
+ * The value a const declares for an identifier's name, in the innermost
+ * function or file that declares it once, or null.
+ */
+function constBound(node) {
+  for (let scope = node.parent; scope != null; scope = scope.parent) {
+    if (!FUNCTIONS.has(scope.type) && scope.type !== 'program') continue;
+    const found = [];
+    const stack = [scope];
+    while (stack.length > 0) {
+      const current = stack.pop();
+      if (current !== scope && FUNCTIONS.has(current.type)) continue;
+      if (current.type === 'variable_declarator' && current.childForFieldName('name')?.text === node.text) {
+        const declaration = current.parent;
+        found.push(declaration?.type === 'lexical_declaration' && declaration.children.some((child) => child.type === 'const') ? current.childForFieldName('value') : null);
+      }
+      for (const child of current.namedChildren) stack.push(child);
+    }
+    if (found.length === 1) return found[0];
+    if (found.length > 1) return null;
+  }
+  return null;
 }
 
 function literal(node) {

@@ -260,6 +260,10 @@
     {
       "path": "fixtures/atlas/vitest-projects/packages/b/test/b.test.ts",
       "reason": "Atlas fixture, not a test. It sits inside the vitest-projects fixture repository that packages/atlas/core/vitest-projects.test.js maps, where the root vitest config hands the run to each package's own config or vitest's defaults, and whether this file is selected is the point. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/test-spawn-joined/tests/search.test.mjs",
+      "reason": "Atlas fixture, not a test. It sits inside the test-spawn-joined fixture repository that packages/atlas/core/test-spawn-joined.test.js maps, where it runs scripts/query.mjs through a command line held in a const, so the map must read that spawn. It holds no test and is never meant to run."
     }
   ]
 }
