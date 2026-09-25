@@ -1,6 +1,6 @@
 # si-rpg-engine: how it works
 
-Mapped at 2026-09-25 from commit a097f44.
+Mapped at 2026-09-25 from commit aad8a8c.
 
 ## What this is
 
@@ -10,7 +10,7 @@ Deterministic 3D RPG tick: the model proposes, a checker admits, and the host dr
 
 ## What changed since 2026-09-25 (a6479da)
 
-Nothing structural changed since 2026-09-25; 98 files changed content.
+Nothing structural changed since 2026-09-25; 1 file added and 98 changed content.
 
 ## What comes in
 
