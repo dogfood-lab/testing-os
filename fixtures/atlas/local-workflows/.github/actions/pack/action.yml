@@ -1,0 +1,7 @@
+name: Pack
+description: Build the package in a clean room
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: node scripts/pack.mjs

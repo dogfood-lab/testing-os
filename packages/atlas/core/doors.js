@@ -175,6 +175,64 @@ export function isWorkflow(path) {
   return WORKFLOW.test(path);
 }
 
+// A local file a workflow names by uses: ./path, parsed, or null.
+function localYaml(repoPath, repo, path) {
+  const clean = String(path).replace(/^\.\//, '').replace(/\/+$/, '');
+  for (const candidate of clean.endsWith('.yml') || clean.endsWith('.yaml') ? [clean] : [`${clean}/action.yml`, `${clean}/action.yaml`]) {
+    if (!repo.tracked.has(candidate)) continue;
+    try {
+      const doc = parse(storedText(readFileSync(join(repoPath, candidate), 'utf8')));
+      return isMapping(doc) ? doc : null;
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+/**
+ * A workflow's jobs with each job that calls a reusable workflow of this
+ * repository (uses: ./.github/workflows/ci.yml) replaced by that
+ * workflow's jobs, named caller/callee, under the caller's if when they
+ * have none of their own: the calling door runs them. One level deep.
+ */
+function localJobs(repoPath, repo, jobs) {
+  const out = {};
+  for (const [job, body] of Object.entries(jobs)) {
+    const called = isMapping(body) && typeof body.uses === 'string' && body.uses.startsWith('./') ? localYaml(repoPath, repo, body.uses) : null;
+    if (!called || !isMapping(called.jobs)) {
+      out[job] = body;
+      continue;
+    }
+    for (const [inner, innerBody] of Object.entries(called.jobs)) {
+      if (!isMapping(innerBody) || typeof innerBody.uses === 'string') continue;
+      out[`${job}/${inner}`] = body.if != null && innerBody.if == null ? { ...innerBody, if: body.if } : innerBody;
+    }
+  }
+  return out;
+}
+
+/**
+ * A job's steps with each step that uses a composite action of this
+ * repository (uses: ./.github/actions/clean-room) replaced by the action's
+ * own steps, under the step's if when they have none: the job runs them.
+ * Two levels deep.
+ */
+function localSteps(repoPath, repo, steps, depth = 0) {
+  const out = [];
+  for (const step of steps) {
+    const action = isMapping(step) && typeof step.uses === 'string' && step.uses.startsWith('./') && depth < 2 ? localYaml(repoPath, repo, step.uses) : null;
+    const inner = action?.runs?.using === 'composite' && Array.isArray(action.runs.steps) ? action.runs.steps : null;
+    if (!inner) {
+      out.push(step);
+      continue;
+    }
+    const held = inner.map((item) => (isMapping(item) && step.if != null && item.if == null ? { ...item, if: step.if } : item));
+    out.push(...localSteps(repoPath, repo, held, depth + 1));
+  }
+  return out;
+}
+
 function readDoor(repoPath, file, repo) {
   const fallback = posix.basename(file).replace(/\.ya?ml$/, '');
   let text;
@@ -219,7 +277,7 @@ function readDoor(repoPath, file, repo) {
   };
   const workflowDir = workingDirectory(doc.defaults);
   const workflowEnv = envOf(doc.env);
-  for (const [job, body] of Object.entries(isMapping(doc.jobs) ? doc.jobs : {})) {
+  for (const [job, body] of Object.entries(localJobs(repoPath, repo, isMapping(doc.jobs) ? doc.jobs : {}))) {
     if (!isMapping(body)) continue;
     const gate = jobGate(body.if, triggers);
     if (typeof body.if === 'string' && /\bneeds\.[\w-]+\.outputs\b/.test(body.if)) conditional.push(job);
@@ -242,7 +300,7 @@ function readDoor(repoPath, file, repo) {
     const jobDir = workingDirectory(body.defaults) ?? workflowDir ?? '';
     const jobEnv = envOf(body.env);
     const platforms = jobPlatforms(body);
-    const steps = Array.isArray(body.steps) ? body.steps : [];
+    const steps = localSteps(repoPath, repo, Array.isArray(body.steps) ? body.steps : []);
     // The clones a job makes, by the directory they are made in: another
     // repository's checkout, read from actions/checkout, and what a step
     // clones. A step that works inside one works on that repository.
