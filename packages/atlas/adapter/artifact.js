@@ -1,3 +1,4 @@
+import { commandLines } from '../core/commands.js';
 import { loadsManifest } from '../core/languages.js';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
 import { roleFor } from './templates.js';
@@ -414,7 +415,7 @@ function carryDoor(door) {
     ...(door.app ? { app: door.app } : {}),
     ...(door.example ? { example: true } : {}),
     ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
-    commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
+    commands: door.commands.map((command) => ({ job: command.job, programs: stepPrograms(command.text), step: command.step })),
     ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),
     elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
     ...(door.entry ? { entry: door.entry } : {}),
@@ -466,6 +467,28 @@ function carryDoor(door) {
     uses: [...door.uses],
     usesWorkflowToken: door.usesWorkflowToken,
   };
+}
+
+// A step is kept as the programs its script runs, never the script: the map
+// is committed, so script text in it is republished to every tool that scans
+// the tree, and a scan's own pattern list then matches the map (site-theme's
+// secret scan). What the engine reads from a script (the files it runs,
+// checks and writes, its gate) is recorded on the door already.
+const SHELL_WORDS = new Set(['!', 'if', 'then', 'else', 'elif', 'fi', 'while', 'until', 'do', 'done', 'time', 'in', 'esac']);
+const LOOP_HEADS = new Set(['for', 'select', 'case', 'function']);
+// Builtins that steer the shell and run nothing.
+const STEERING = new Set(['break', 'continue', 'return', 'exit', 'set', 'shift', 'export', 'unset', 'local', 'readonly', 'declare', 'true', 'false', ':']);
+
+function stepPrograms(text) {
+  const programs = new Set();
+  for (const words of commandLines(text ?? '')) {
+    let i = 0;
+    while (i < words.length && (SHELL_WORDS.has(words[i]) || /^[A-Za-z_][A-Za-z0-9_]*\+?=/.test(words[i]))) i += 1;
+    const first = words[i];
+    if (first == null || LOOP_HEADS.has(first) || STEERING.has(first)) continue;
+    if (/^[A-Za-z0-9_.@+-][A-Za-z0-9_./@+-]*$/.test(first)) programs.add(first);
+  }
+  return [...programs].sort();
 }
 
 function carryReach(entry) {
