@@ -324,6 +324,8 @@ describe('atlas page', () => {
       structure: {
         ...withoutIngest(doors.structure),
         boundaries: doors.structure.boundaries.map((boundary) => ({ ...boundary, dynamicReads: 0, dynamicWrites: 0, outsideReads: 0, outsideWrites: 0, unresolvedSites: 0 })),
+        // A file in no part is a fact the page states too; cleared with the rest.
+        unassigned: [],
       },
       statistics: { ...doors.statistics, confidence: { level: 'high' } },
       document: doors.document,

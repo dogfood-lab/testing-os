@@ -2887,6 +2887,12 @@ function limits(ctx, shownText) {
   }
   lines.push(...shellLines(ctx));
   lines.push(...httpLines(ctx), ...unseenLines(ctx));
+  // A tracked file no glob claims is in no part, so nothing above counts it.
+  const loose = (ctx.structure.unassigned ?? []).map((file) => file.path).sort(cmp);
+  if (loose.length > 0) {
+    const named = loose.length > RUNS_SHOWN ? `${loose.slice(0, RUNS_SHOWN).join(', ')} and ${count(loose.length - RUNS_SHOWN, 'more')}` : list(loose);
+    lines.push(`${count(loose.length, 'file')} ${loose.length === 1 ? 'belongs' : 'belong'} to no part: ${named}.`);
+  }
   if (shownText) lines.push('Readers marked (found by text) come from scanning unparsed files.');
   for (const door of ctx.doors) {
     if (door.parseError) continue;
