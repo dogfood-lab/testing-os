@@ -1,0 +1,10 @@
+name: PR comment
+on:
+  pull_request:
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    env:
+      REPO: ${{ github.repository }}
+    steps:
+      - run: gh api --paginate "repos/${REPO}/issues/1/comments" --jq '.[].id'

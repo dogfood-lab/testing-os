@@ -44,3 +44,10 @@ describe('a job that reads the organization through gh api', () => {
     assert.ok(markdown.includes('**Org Guard** runs no file this map can see and reads other repositories through the GitHub API.'), markdown);
   });
 });
+
+describe('a job that reads its own repository through gh api', () => {
+  it('reads no other repository', () => {
+    const markdown = page();
+    assert.ok(markdown.includes('**PR comment** runs no file this map can see.'), markdown);
+  });
+});

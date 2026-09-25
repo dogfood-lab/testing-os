@@ -647,7 +647,10 @@ function readsRepositories(text) {
     if (at === -1) return false;
     const args = tokens.slice(at + 1);
     if (args.some((word, index) => ((word === '-X' || word === '--method') && !/^get$/i.test(args[index + 1] ?? '')) || /^--method=(?!get$)/i.test(word) || /^-[fF]$|^--(?:raw-)?field$|^--input$/.test(word))) return false;
-    return args.some((word) => other.test(word) && !own.test(word) && (/^\/?orgs\//.test(word) || word.includes('$')));
+    // repos/${REPO}/issues spells owner/name as one variable, the workflow's
+    // own repository by convention (REPO: ${{ github.repository }}).
+    const whole = /^\/?repos\/\$\{?[A-Za-z_][A-Za-z0-9_]*\}?\/(?:issues|pulls|contents|readme|branches|actions|releases|commits|git|dispatches|labels|milestones|deployments|environments|hooks|check-runs|check-suites|statuses|compare|tags|collaborators)(?:\/|$)/;
+    return args.some((word) => other.test(word) && !own.test(word) && !whole.test(word) && (/^\/?orgs\//.test(word) || word.includes('$')));
   });
 }
 
