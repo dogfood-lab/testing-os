@@ -1,0 +1,20 @@
+name: Release
+on:
+  release:
+    types: [published]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          for dir in packages/*/; do
+            private=$(node -p "require('./${dir}package.json').private === true")
+            if [ "$private" = "true" ]; then
+              continue
+            fi
+            tarball=$(cd "$dir" && pnpm pack --pack-destination "$RUNNER_TEMP" | tail -1)
+            npm publish "$tarball" --access public
+          done

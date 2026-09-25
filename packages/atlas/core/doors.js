@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join, posix } from 'node:path';
+import picomatch from 'picomatch';
 import { parse } from 'yaml';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 import { godotProjects } from './godot.js';
@@ -977,10 +978,14 @@ function commandSends(run, sends, place) {
   if (HUB_UPLOAD.test(said) && said.includes('huggingface_hub')) sends.publishesTo.add('huggingface');
   // A Zenodo deposit is a draft until actions/publish mints its DOI.
   if (ZENODO_DEPOSIT.test(said) && ZENODO_PUBLISH.test(said)) sends.publishesTo.add('zenodo');
-  for (const tokens of unrolled(commandLines(run))) {
+  // The directory the last pack in this pass of a loop ran in: npm publish
+  // "$tarball" after tarball=$(cd "$dir" && pnpm pack) sends that package.
+  let packed = null;
+  for (const tokens of unrolled(commandLines(run), 0, (word) => loopWords(word, place.repo))) {
     if (tokens[0] === LOOP_TURN) {
       if (tokens[1] === 0) loopBase = cwd;
       else cwd = loopBase;
+      packed = null;
       continue;
     }
     if (tokens[0] === 'cd' && tokens.length <= 2) {
@@ -990,6 +995,7 @@ function commandSends(run, sends, place) {
     const words = programWords(tokens);
     if (words.length === 0) continue;
     const [program, sub] = words;
+    if ((program === 'npm' || program === 'pnpm' || program === 'yarn') && sub === 'pack') packed = cwd;
     if (program === 'gh' && sub === 'release' && words[2] === 'create') sends.releases = true;
     if (program === 'gh' && sub === 'pr' && words[2] === 'create') sends.opensPullRequests = true;
     const exported = godotExport(words, place);
@@ -1007,8 +1013,24 @@ function commandSends(run, sends, place) {
       sends.crates.push({ dir: cwd ?? '', ...(at !== -1 && words[at + 1] ? { name: words[at + 1] } : {}) });
     }
     if (registry !== 'npm') continue;
-    for (const entry of publishedPackages(words, cwd, place)) sends.packages.set(entry.key, entry.value);
+    const tarball = words.slice(words.indexOf('publish') + 1).find((word) => !word.startsWith('-'));
+    const from = packed != null && tarball != null && (tarball.includes('$') || /\.tgz$/.test(tarball)) ? packed : null;
+    for (const entry of from != null ? publishedPackages(['publish'], from, place) : publishedPackages(words, cwd, place)) sends.packages.set(entry.key, entry.value);
   }
+}
+
+/**
+ * The words a shell for loop over a glob goes through, when the glob names
+ * tracked directories (packages/*\/) or files: each one, in the order sh
+ * sorts them. Null for any other word, which the loop leaves as it is.
+ */
+function loopWords(word, repo) {
+  if (!/[*?[]/.test(word) || word.includes('$')) return null;
+  const dirs = word.endsWith('/');
+  const pattern = word.replace(/^\.\//, '').replace(/\/+$/, '');
+  const isMatch = picomatch(pattern, { dot: false });
+  const found = [...(dirs ? repo.dirs : repo.tracked)].filter((path) => isMatch(path)).sort(compare);
+  return found.length > 0 ? found.map((path) => (dirs ? `${path}/` : path)) : null;
 }
 
 const HUB_UPLOAD = /\b(?:upload_folder|upload_file|upload_large_folder|create_commit|push_to_hub)\s*\(/;
@@ -1024,11 +1046,12 @@ const LOOP_TURN = '\0turn';
  * "$dir" && npm publish); done publishes both packages by name. A loop over
  * a glob or a variable is left as it is.
  */
-function unrolled(lines, depth = 0) {
+function unrolled(lines, depth = 0, expand = () => null) {
   const out = [];
   for (let i = 0; i < lines.length; i += 1) {
     const tokens = lines[i];
-    const words = tokens.slice(3);
+    // A glob over tracked directories or files is what sh hands the loop.
+    const words = tokens.slice(3).flatMap((word) => expand(word) ?? [word]);
     if (tokens[0] !== 'for' || tokens[2] !== 'in' || depth > 2 || words.length === 0 || words.some((word) => /[$*?[{`]/.test(word))) {
       out.push(tokens);
       continue;
@@ -1049,7 +1072,7 @@ function unrolled(lines, depth = 0) {
     const spelled = (word, value) => word.replaceAll(`\${${name}}`, value).replace(new RegExp(`\\$${name}(?![A-Za-z0-9_])`, 'g'), value);
     for (const value of words) {
       out.push([LOOP_TURN, words.indexOf(value)]);
-      out.push(...unrolled(body.map((line) => line.map((word) => spelled(word, value))), depth + 1));
+      out.push(...unrolled(body.map((line) => line.map((word) => spelled(word, value))), depth + 1, expand));
     }
     i = end;
   }
@@ -1158,8 +1181,10 @@ function publishedPackages(words, cwd, place) {
   const dir = handed != null ? joinDir(cwd, handed) : cwd;
   if (!dir.includes('$')) {
     const clean = dir.replace(/^\.\/?/, '').replace(/\/+$/, '');
-    const name = place.repo.manifest(clean)?.name;
-    if (typeof name !== 'string' || name === '') return [];
+    const manifest = place.repo.manifest(clean);
+    const name = manifest?.name;
+    // npm refuses a private package, which a loop skips.
+    if (typeof name !== 'string' || name === '' || manifest?.private === true) return [];
     return [{ key: `named\0${clean}`, value: { dir: clean, name, registry: 'npm' } }];
   }
   const variable = /\$\{\{\s*env\.([A-Za-z_][A-Za-z0-9_]*)\s*\}\}|\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?/.exec(dir);
