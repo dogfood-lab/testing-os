@@ -20,6 +20,29 @@ export function importName(distribution) {
   return String(distribution).trim().toLowerCase().replace(/[-.]+/g, '_');
 }
 
+// Distributions imported under a name their own does not fold to.
+const IMPORT_ALIASES = {
+  attrs: 'attr', beautifulsoup4: 'bs4', 'faiss_cpu': 'faiss', 'opencv_python': 'cv2', 'opencv_python_headless': 'cv2',
+  pillow: 'PIL', protobuf: 'google', pyjwt: 'jwt', pymupdf: 'fitz', pyyaml: 'yaml', 'scikit_learn': 'sklearn',
+};
+
+/**
+ * Every name a distribution may be imported under: its folded name, a
+ * known alias (PyYAML is yaml, Pillow is PIL), and the name without the
+ * python- prefix or the -py suffix its packagers add (python-docx is docx,
+ * xrpl-py is xrpl).
+ */
+export function importNames(distribution) {
+  const folded = importName(distribution);
+  const names = new Set([folded]);
+  if (IMPORT_ALIASES[folded]) names.add(IMPORT_ALIASES[folded].toLowerCase());
+  if (folded.startsWith('python_') && folded.length > 7) names.add(folded.slice(7));
+  if (folded.startsWith('py_') && folded.length > 3) names.add(folded.slice(3));
+  if (folded.endsWith('_py') && folded.length > 3) names.add(folded.slice(0, -3));
+  if (folded.endsWith('_python') && folded.length > 7) names.add(folded.slice(0, -7));
+  return [...names];
+}
+
 /**
  * The import names every tracked pyproject.toml and requirements file
  * declares as dependencies, without the projects' own names: an extra that
@@ -38,14 +61,14 @@ export function declaredDependencies(repoPath, tracked) {
       for (const name of projectNames(tables)) own.add(name);
       for (const spec of dependencySpecs(tables)) {
         const match = REQUIREMENT_NAME.exec(spec);
-        if (match) names.add(importName(match[1]));
+        if (match) for (const name of importNames(match[1])) names.add(name);
       }
     } else if (REQUIREMENTS.test(path)) {
       for (const line of readText(repoPath, path).split(/\r?\n/)) {
         const text = line.replace(/\s#.*$/, '').trim();
         if (text === '' || text.startsWith('#') || text.startsWith('-')) continue;
         const match = REQUIREMENT_NAME.exec(text);
-        if (match) names.add(importName(match[1]));
+        if (match) for (const name of importNames(match[1])) names.add(name);
       }
     }
   }
@@ -92,6 +115,27 @@ function rootPackageDir(tables) {
   const match = typeof text === 'string' ? /(["'])\1\s*=\s*["']([^"']+)["']/.exec(text) : null;
   const dir = match ? match[2].replace(/^\.\/|\/+$/g, '') : '';
   return dir && !dir.startsWith('/') && !dir.split('/').includes('..') ? dir : null;
+}
+
+/**
+ * The directories, relative to a pyproject.toml's own, that setuptools
+ * installs top-level modules from: package-dir's "" entry, and each where
+ * of packages.find. They are source roots, as src/ is.
+ *
+ * @param {string} text the pyproject.toml
+ * @returns {string[]}
+ */
+export function setuptoolsRoots(text) {
+  const tables = parseToml(text);
+  const out = [];
+  const add = (dir) => {
+    const clean = String(dir).replace(/^\.\//, '').replace(/\/+$/, '');
+    if (clean && clean !== '.' && !clean.startsWith('/') && !clean.split('/').includes('..') && !out.includes(clean)) out.push(clean);
+  };
+  const root = rootPackageDir(tables);
+  if (root) add(root);
+  for (const dir of strings(tables.get('tool.setuptools.packages.find')?.where ?? '')) add(dir);
+  return out;
 }
 
 function projectNames(tables) {

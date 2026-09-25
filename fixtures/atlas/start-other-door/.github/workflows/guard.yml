@@ -1,0 +1,9 @@
+name: Guard
+on:
+  pull_request:
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: markdownlint README.md docs/guide.md brand/palette.md

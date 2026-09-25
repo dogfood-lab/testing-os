@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join, posix } from 'node:path';
+import picomatch from 'picomatch';
 import { parse } from 'yaml';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 import { godotProjects } from './godot.js';
@@ -29,6 +30,11 @@ const ACTION_SENDS = [
   ['actions/deploy-pages', (sends) => { sends.deploysPages = true; }],
   ['peaceiris/actions-gh-pages', (sends) => { sends.deploysPages = true; }],
   ['peter-evans/create-pull-request', (sends) => { sends.opensPullRequests = true; }],
+  // A script github-script runs opens a pull request its Octokit creates.
+  ['actions/github-script', (sends, step) => {
+    const script = typeof step.with?.script === 'string' ? step.with.script : '';
+    if (/\bpulls\.create\s*\(/.test(script)) sends.opensPullRequests = true;
+  }],
 ];
 
 /**
@@ -169,6 +175,64 @@ export function isWorkflow(path) {
   return WORKFLOW.test(path);
 }
 
+// A local file a workflow names by uses: ./path, parsed, or null.
+function localYaml(repoPath, repo, path) {
+  const clean = String(path).replace(/^\.\//, '').replace(/\/+$/, '');
+  for (const candidate of clean.endsWith('.yml') || clean.endsWith('.yaml') ? [clean] : [`${clean}/action.yml`, `${clean}/action.yaml`]) {
+    if (!repo.tracked.has(candidate)) continue;
+    try {
+      const doc = parse(storedText(readFileSync(join(repoPath, candidate), 'utf8')));
+      return isMapping(doc) ? doc : null;
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+/**
+ * A workflow's jobs with each job that calls a reusable workflow of this
+ * repository (uses: ./.github/workflows/ci.yml) replaced by that
+ * workflow's jobs, named caller/callee, under the caller's if when they
+ * have none of their own: the calling door runs them. One level deep.
+ */
+function localJobs(repoPath, repo, jobs) {
+  const out = {};
+  for (const [job, body] of Object.entries(jobs)) {
+    const called = isMapping(body) && typeof body.uses === 'string' && body.uses.startsWith('./') ? localYaml(repoPath, repo, body.uses) : null;
+    if (!called || !isMapping(called.jobs)) {
+      out[job] = body;
+      continue;
+    }
+    for (const [inner, innerBody] of Object.entries(called.jobs)) {
+      if (!isMapping(innerBody) || typeof innerBody.uses === 'string') continue;
+      out[`${job}/${inner}`] = body.if != null && innerBody.if == null ? { ...innerBody, if: body.if } : innerBody;
+    }
+  }
+  return out;
+}
+
+/**
+ * A job's steps with each step that uses a composite action of this
+ * repository (uses: ./.github/actions/clean-room) replaced by the action's
+ * own steps, under the step's if when they have none: the job runs them.
+ * Two levels deep.
+ */
+function localSteps(repoPath, repo, steps, depth = 0) {
+  const out = [];
+  for (const step of steps) {
+    const action = isMapping(step) && typeof step.uses === 'string' && step.uses.startsWith('./') && depth < 2 ? localYaml(repoPath, repo, step.uses) : null;
+    const inner = action?.runs?.using === 'composite' && Array.isArray(action.runs.steps) ? action.runs.steps : null;
+    if (!inner) {
+      out.push(step);
+      continue;
+    }
+    const held = inner.map((item) => (isMapping(item) && step.if != null && item.if == null ? { ...item, if: step.if } : item));
+    out.push(...localSteps(repoPath, repo, held, depth + 1));
+  }
+  return out;
+}
+
 function readDoor(repoPath, file, repo) {
   const fallback = posix.basename(file).replace(/\.ya?ml$/, '');
   let text;
@@ -213,7 +277,7 @@ function readDoor(repoPath, file, repo) {
   };
   const workflowDir = workingDirectory(doc.defaults);
   const workflowEnv = envOf(doc.env);
-  for (const [job, body] of Object.entries(isMapping(doc.jobs) ? doc.jobs : {})) {
+  for (const [job, body] of Object.entries(localJobs(repoPath, repo, isMapping(doc.jobs) ? doc.jobs : {}))) {
     if (!isMapping(body)) continue;
     const gate = jobGate(body.if, triggers);
     if (typeof body.if === 'string' && /\bneeds\.[\w-]+\.outputs\b/.test(body.if)) conditional.push(job);
@@ -236,7 +300,7 @@ function readDoor(repoPath, file, repo) {
     const jobDir = workingDirectory(body.defaults) ?? workflowDir ?? '';
     const jobEnv = envOf(body.env);
     const platforms = jobPlatforms(body);
-    const steps = Array.isArray(body.steps) ? body.steps : [];
+    const steps = localSteps(repoPath, repo, Array.isArray(body.steps) ? body.steps : []);
     // The clones a job makes, by the directory they are made in: another
     // repository's checkout, read from actions/checkout, and what a step
     // clones. A step that works inside one works on that repository.
@@ -354,6 +418,7 @@ function readDoor(repoPath, file, repo) {
   }
 
   shipBuilds(shipping, runs, triggers, (when) => (when ? scopeOfGate(when) : { sends }));
+  unionPathGates([...runs.values()], triggers);
   const recorded = recordedRuns([...runs.values()]);
   const runKeys = new Set(recorded.all.map((run) => `${run.path}\0${run.job}`));
   const underRun = (path, job) => recorded.all.some((run) => run.job === job && run.directory && path.startsWith(run.path));
@@ -622,7 +687,7 @@ function eitherGate(alternatives, triggers) {
     let status = 'never';
     for (const gate of gates) {
       const byHand = trigger.event === 'workflow_dispatch';
-      const reached = byHand ? (!gate.event || gate.event === 'workflow_dispatch') && !(gate.except ?? []).includes('workflow_dispatch') && gate.fork == null : meets(trigger, gate);
+      const reached = byHand ? (!gate.event || gate.event === 'workflow_dispatch' || gate.byHand === true) && !(gate.except ?? []).includes('workflow_dispatch') && gate.fork == null : meets(trigger, gate);
       if (!reached) continue;
       // A pull request held to where it comes from is run only for some.
       if (gate.fork != null) {
@@ -660,15 +725,23 @@ function eitherGate(alternatives, triggers) {
 }
 
 // The gate that holds to a set of a workflow's triggers: none when it is all
-// of them, the one event when they share one, and otherwise the events left out.
+// of them, the one event when they share one, that event or a run by hand
+// (byHand) when a run by hand is the other, and otherwise the events left
+// out. A condition written as the events it runs on reads as those events.
 function coveredGate(covered, triggers) {
   if (covered.length === triggers.length) return {};
   const events = [...new Set(covered.map((trigger) => trigger.event))];
-  if (events.length === 1) {
-    const gate = { event: events[0] };
-    if (events[0] === 'push' && covered.every((trigger) => (trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0))) gate.tags = true;
+  const others = events.filter((event) => event !== 'workflow_dispatch');
+  if (others.length === 1) {
+    const gate = { event: others[0] };
+    const held = covered.filter((trigger) => trigger.event === others[0]);
+    if (others[0] === 'push' && held.every((trigger) => (trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0))) gate.tags = true;
+    // A push the workflow takes only to some branches is a push to those.
+    else if (others[0] === 'push' && held.every((trigger) => (trigger.branches?.length ?? 0) > 0)) gate.branches = [...new Set(held.flatMap((trigger) => trigger.branches))].sort();
+    if (events.includes('workflow_dispatch')) gate.byHand = true;
     return gate;
   }
+  if (events.length === 1) return { event: events[0] };
   return { except: [...new Set(triggers.filter((trigger) => !events.includes(trigger.event)).map((trigger) => trigger.event))].sort() };
 }
 
@@ -724,7 +797,7 @@ function shipBuilds(shipping, runs, triggers, scopeOf) {
   const shipped = assets.size > 0 ? [...assets] : named.length > 0 ? [...named.map((path) => `file:${path}`), ...(unnamed ? ['files'] : [])] : ['files'];
   // Every trigger an upload runs on, and whether they cover the workflow's.
   const covers = triggers.length > 0 && triggers.every((trigger) => uploads.some((upload) => upload.when == null || (trigger.event === 'workflow_dispatch'
-    ? upload.when.event === 'workflow_dispatch' || (!upload.when.event && !upload.when.tags && !(upload.when.except ?? []).includes('workflow_dispatch'))
+    ? upload.when.event === 'workflow_dispatch' || upload.when.byHand === true || (!upload.when.event && !upload.when.tags && !(upload.when.except ?? []).includes('workflow_dispatch'))
     : meets(trigger, upload.when))));
   const scopes = covers ? [scopeOf(null)] : [...new Map(uploads.map((upload) => [upload.when ? canonical(upload.when) : '', scopeOf(upload.when)])).values()];
   for (const scope of scopes) for (const asset of shipped) scope.sends.assets.add(asset);
@@ -816,6 +889,10 @@ function joinGates(job, step) {
   const inputs = { ...(job.inputs ?? {}), ...(step.inputs ?? {}) };
   const joined = { ...job, ...step };
   if (Object.keys(inputs).length > 0) joined.inputs = inputs;
+  // A step held to an event of its own runs by hand only when its own
+  // condition lets it.
+  if (step.event && !step.byHand) delete joined.byHand;
+  if (joined.event === 'workflow_dispatch') delete joined.byHand;
   return canonical(joined) === canonical(job) ? job : joined;
 }
 
@@ -840,7 +917,8 @@ function heldOff(part) {
   return negated ? negated[1] : null;
 }
 
-// What an excepted event leaves is the gate, when it is one trigger's worth.
+// What an excepted event leaves is the gate, when it is one trigger's worth,
+// with a run by hand when the workflow has one the gate does not except.
 function settleExcept(gate, triggers) {
   if (gate.event) {
     delete gate.except;
@@ -850,8 +928,10 @@ function settleExcept(gate, triggers) {
   const events = [...new Set(left.map((trigger) => trigger.event))];
   if (events.length !== 1) return;
   const [only] = events;
+  const byHand = !gate.except.includes('workflow_dispatch') && triggers.some((trigger) => trigger.event === 'workflow_dispatch');
   delete gate.except;
   gate.event = only;
+  if (byHand) gate.byHand = true;
   if (only !== 'push') return;
   const tagged = left.every((trigger) => (trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0));
   if (tagged) {
@@ -862,7 +942,33 @@ function settleExcept(gate, triggers) {
   if (branches.every((list) => list.length > 0)) gate.branches = [...new Set([...(gate.branches ?? []), ...branches.flat()])].sort();
 }
 
+/**
+ * A path two gated jobs run runs on the triggers either holds on: each of
+ * its runs is held to that union (none, when it covers every trigger), so
+ * the page says the path under one gate rather than under none. A gate on
+ * inputs or on where a pull request comes from is left as it is.
+ */
+function unionPathGates(runs, triggers) {
+  const byPath = new Map();
+  for (const run of runs) {
+    if (!byPath.has(run.path)) byPath.set(run.path, []);
+    byPath.get(run.path).push(run);
+  }
+  for (const group of byPath.values()) {
+    const keys = new Set(group.map((run) => (run.when ? canonical(run.when) : null)));
+    if (keys.size < 2 || keys.has(null)) continue;
+    if (group.some((run) => run.when.inputs || run.when.fork != null || run.when.also)) continue;
+    const covered = triggers.filter((trigger) => group.some((run) => meets(trigger, run.when)));
+    const gate = coveredGate(covered, triggers);
+    for (const run of group) {
+      if (Object.keys(gate).length === 0) delete run.when;
+      else run.when = { ...gate };
+    }
+  }
+}
+
 function meets(trigger, gate) {
+  if (gate.byHand && trigger.event === 'workflow_dispatch') return true;
   if (gate.except && gate.except.includes(trigger.event)) return false;
   if (gate.event && trigger.event !== gate.event) return false;
   if (gate.tags && !((trigger.tags?.length ?? 0) > 0 && !((trigger.branches?.length ?? 0) > 0))) return false;
@@ -886,9 +992,12 @@ function meets(trigger, gate) {
  */
 function recordedRuns(entries) {
   const directories = entries.filter((entry) => entry.directory);
+  // A directory stands for a file under it that it does as much to: a run
+  // for anything, a build for a build or a check, a check for a check.
+  const doing = (entry) => (entry.runKind === 'checks' ? 0 : entry.built ? 1 : 2);
   const covered = (entry) => entry.matched && directories.some((dir) => (
     dir.job === entry.job && entry.path !== dir.path && entry.path.startsWith(dir.path)
-    && (dir.runKind !== 'checks' || entry.runKind === 'checks')
+    && doing(dir) >= doing(entry)
   ));
   const all = entries.filter((entry) => !covered(entry)).sort((a, b) => compare(a.path, b.path) || compare(a.job, b.job));
   const rank = new Map();
@@ -927,10 +1036,14 @@ function commandSends(run, sends, place) {
   if (HUB_UPLOAD.test(said) && said.includes('huggingface_hub')) sends.publishesTo.add('huggingface');
   // A Zenodo deposit is a draft until actions/publish mints its DOI.
   if (ZENODO_DEPOSIT.test(said) && ZENODO_PUBLISH.test(said)) sends.publishesTo.add('zenodo');
-  for (const tokens of unrolled(commandLines(run))) {
+  // The directory the last pack in this pass of a loop ran in: npm publish
+  // "$tarball" after tarball=$(cd "$dir" && pnpm pack) sends that package.
+  let packed = null;
+  for (const tokens of unrolled(commandLines(run), 0, (word) => loopWords(word, place.repo))) {
     if (tokens[0] === LOOP_TURN) {
       if (tokens[1] === 0) loopBase = cwd;
       else cwd = loopBase;
+      packed = null;
       continue;
     }
     if (tokens[0] === 'cd' && tokens.length <= 2) {
@@ -940,6 +1053,7 @@ function commandSends(run, sends, place) {
     const words = programWords(tokens);
     if (words.length === 0) continue;
     const [program, sub] = words;
+    if ((program === 'npm' || program === 'pnpm' || program === 'yarn') && sub === 'pack') packed = cwd;
     if (program === 'gh' && sub === 'release' && words[2] === 'create') sends.releases = true;
     if (program === 'gh' && sub === 'pr' && words[2] === 'create') sends.opensPullRequests = true;
     const exported = godotExport(words, place);
@@ -957,8 +1071,24 @@ function commandSends(run, sends, place) {
       sends.crates.push({ dir: cwd ?? '', ...(at !== -1 && words[at + 1] ? { name: words[at + 1] } : {}) });
     }
     if (registry !== 'npm') continue;
-    for (const entry of publishedPackages(words, cwd, place)) sends.packages.set(entry.key, entry.value);
+    const tarball = words.slice(words.indexOf('publish') + 1).find((word) => !word.startsWith('-'));
+    const from = packed != null && tarball != null && (tarball.includes('$') || /\.tgz$/.test(tarball)) ? packed : null;
+    for (const entry of from != null ? publishedPackages(['publish'], from, place) : publishedPackages(words, cwd, place)) sends.packages.set(entry.key, entry.value);
   }
+}
+
+/**
+ * The words a shell for loop over a glob goes through, when the glob names
+ * tracked directories (packages/*\/) or files: each one, in the order sh
+ * sorts them. Null for any other word, which the loop leaves as it is.
+ */
+function loopWords(word, repo) {
+  if (!/[*?[]/.test(word) || word.includes('$')) return null;
+  const dirs = word.endsWith('/');
+  const pattern = word.replace(/^\.\//, '').replace(/\/+$/, '');
+  const isMatch = picomatch(pattern, { dot: false });
+  const found = [...(dirs ? repo.dirs : repo.tracked)].filter((path) => isMatch(path)).sort(compare);
+  return found.length > 0 ? found.map((path) => (dirs ? `${path}/` : path)) : null;
 }
 
 const HUB_UPLOAD = /\b(?:upload_folder|upload_file|upload_large_folder|create_commit|push_to_hub)\s*\(/;
@@ -974,11 +1104,12 @@ const LOOP_TURN = '\0turn';
  * "$dir" && npm publish); done publishes both packages by name. A loop over
  * a glob or a variable is left as it is.
  */
-function unrolled(lines, depth = 0) {
+function unrolled(lines, depth = 0, expand = () => null) {
   const out = [];
   for (let i = 0; i < lines.length; i += 1) {
     const tokens = lines[i];
-    const words = tokens.slice(3);
+    // A glob over tracked directories or files is what sh hands the loop.
+    const words = tokens.slice(3).flatMap((word) => expand(word) ?? [word]);
     if (tokens[0] !== 'for' || tokens[2] !== 'in' || depth > 2 || words.length === 0 || words.some((word) => /[$*?[{`]/.test(word))) {
       out.push(tokens);
       continue;
@@ -999,7 +1130,7 @@ function unrolled(lines, depth = 0) {
     const spelled = (word, value) => word.replaceAll(`\${${name}}`, value).replace(new RegExp(`\\$${name}(?![A-Za-z0-9_])`, 'g'), value);
     for (const value of words) {
       out.push([LOOP_TURN, words.indexOf(value)]);
-      out.push(...unrolled(body.map((line) => line.map((word) => spelled(word, value))), depth + 1));
+      out.push(...unrolled(body.map((line) => line.map((word) => spelled(word, value))), depth + 1, expand));
     }
     i = end;
   }
@@ -1027,6 +1158,12 @@ function godotExport(words, place) {
 // A registry is named the way its users name it.
 function publishRegistry(words) {
   const [program, sub, next] = words;
+  // pnpm --filter <name> publish: its own flags come before the command.
+  if (program === 'pnpm' && sub?.startsWith('-')) {
+    let i = 1;
+    while (i < words.length && words[i].startsWith('-')) i += ['--filter', '-F', '-C', '--dir', '--filter-prod'].includes(words[i]) ? 2 : 1;
+    if (words[i] === 'publish') return 'npm';
+  }
   if ((program === 'huggingface-cli' || program === 'hf') && sub === 'upload') return 'huggingface';
   if ((program === 'npm' || program === 'pnpm' || program === 'bun') && sub === 'publish') return 'npm';
   if (program === 'yarn' && (sub === 'publish' || (sub === 'npm' && next === 'publish'))) return 'npm';
@@ -1102,14 +1239,39 @@ function publishedPackages(words, cwd, place) {
       if (typeof name === 'string' && (name === value || dir === joinDir(cwd, value))) members.push({ key: `named\0${dir}`, value: { dir, name, registry: 'npm' } });
     }
   }
+  // pnpm publish --filter <name> (or pnpm --filter <name> publish) sends
+  // the members the selector names: a name, a glob over names, or a path.
+  if (words[0] === 'pnpm') {
+    for (let i = 1; i < words.length; i += 1) {
+      const flag = words[i].split('=')[0];
+      if (flag !== '--filter' && flag !== '-F') continue;
+      const value = words[i].includes('=') ? words[i].slice(words[i].indexOf('=') + 1) : words[i + 1];
+      if (value == null || value.startsWith('!')) continue;
+      if (value.includes('$')) {
+        members.push({ key: 'workspace', value: { registry: 'npm', workspace: true } });
+        continue;
+      }
+      const bare = value.replace(/^\.\.\./, '').replace(/\.\.\.$/, '').replace(/^\{(.+)\}$/, '$1');
+      const isMatch = picomatch(bare);
+      for (const [dir, name] of place.repo.workspaces()) {
+        if (typeof name !== 'string') continue;
+        if (isMatch(name) || dir === joinDir(cwd, bare).replace(/^\.\/?/, '').replace(/\/+$/, '')) {
+          if (place.repo.manifest(dir)?.private === true) continue;
+          members.push({ key: `named\0${dir}`, value: { dir, name, registry: 'npm' } });
+        }
+      }
+    }
+  }
   if (members.length > 0) return members;
   const handed = args.find((word, index) => !word.startsWith('-') && !/\.tgz$/.test(word)
     && !(index > 0 && ['--tag', '--access', '--otp', '--registry', '-w', '--workspace'].includes(args[index - 1])));
   const dir = handed != null ? joinDir(cwd, handed) : cwd;
   if (!dir.includes('$')) {
     const clean = dir.replace(/^\.\/?/, '').replace(/\/+$/, '');
-    const name = place.repo.manifest(clean)?.name;
-    if (typeof name !== 'string' || name === '') return [];
+    const manifest = place.repo.manifest(clean);
+    const name = manifest?.name;
+    // npm refuses a private package, which a loop skips.
+    if (typeof name !== 'string' || name === '' || manifest?.private === true) return [];
     return [{ key: `named\0${clean}`, value: { dir: clean, name, registry: 'npm' } }];
   }
   const variable = /\$\{\{\s*env\.([A-Za-z_][A-Za-z0-9_]*)\s*\}\}|\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?/.exec(dir);

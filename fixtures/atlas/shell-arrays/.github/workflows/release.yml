@@ -1,0 +1,18 @@
+name: Release
+on:
+  release:
+    types: [published]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          PKG_JSONS=(
+            packages/a/package.json
+            packages/b/package.json
+          )
+          for PKG_JSON in "${PKG_JSONS[@]}"; do
+            jq -r .version "$PKG_JSON"
+          done
+          jq -r .name packages/a/package.json

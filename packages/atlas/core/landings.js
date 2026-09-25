@@ -87,7 +87,9 @@ const PY_HOME = new Set(['Path.home', 'pathlib.Path.home']);
 // repository's: mkdtemp(), tmpdir(), tempfile.gettempdir().
 const JS_TEMP = new Set(['tmpdir', 'mkdtempSync', 'mkdtemp', 'mkdtempDisposableSync']);
 const PY_TEMP = new Set(['tempfile.mkdtemp', 'mkdtemp', 'tempfile.gettempdir', 'gettempdir', 'tempfile.mktemp']);
-const HOME_VARIABLES = new Set(['HOME', 'USERPROFILE']);
+// The home directory, and the per-user directories under it a platform
+// names by variable: a cache, a config or a data directory is the person's.
+const HOME_VARIABLES = new Set(['HOME', 'USERPROFILE', 'APPDATA', 'LOCALAPPDATA', 'XDG_CACHE_HOME', 'XDG_CONFIG_HOME', 'XDG_DATA_HOME', 'XDG_STATE_HOME']);
 // The checkout a workflow runs in: a path under it is this repository, which
 // the map cannot place from the variable alone, so it names no caller's place.
 const WORKSPACE_VARIABLES = new Set(['GITHUB_WORKSPACE']);
@@ -141,7 +143,10 @@ export function trackedPlaces(paths) {
   const dirs = new Set();
   for (const path of paths) {
     const parts = path.split('/');
-    if (parts.some((part) => part === 'node_modules' || part === 'dist')) continue;
+    // A tracked directory is a place whatever its name: a dist/ the
+    // repository commits is kept, and only build output it does not track
+    // is not. A dependency directory is never the repository's own.
+    if (parts.some((part) => part === 'node_modules')) continue;
     files.add(path);
     for (let i = 1; i < parts.length; i += 1) dirs.add(parts.slice(0, i).join('/'));
   }
@@ -228,6 +233,22 @@ export function noLandings() {
  * doors instead, and a file of a kind that is not text a person reads is
  * skipped rather than decoded.
  */
+const HTML = new Set(['.html', '.htm']);
+
+function pageLoads(source, path, places) {
+  const dir = posix.dirname(path) === '.' ? '' : posix.dirname(path);
+  const out = [];
+  for (const match of source.matchAll(/<(script|link)\b[^>]*?\b(src|href)\s*=\s*["']([^"'#?]+)[^"']*["'][^>]*>/gi)) {
+    const [, tag, attribute, spelled] = match;
+    if (tag.toLowerCase() === 'script' && attribute.toLowerCase() !== 'src') continue;
+    if (tag.toLowerCase() === 'link' && (attribute.toLowerCase() !== 'href' || !/\brel\s*=\s*["']?(stylesheet|modulepreload|preload)/i.test(match[0]))) continue;
+    if (/^[a-z]+:|^\/\//i.test(spelled)) continue;
+    const target = spelled.startsWith('/') ? posix.normalize(spelled.slice(1)) : posix.normalize(dir ? `${dir}/${spelled}` : spelled);
+    if (places.files.has(target)) out.push({ target, call: tag.toLowerCase() === 'script' ? 'script' : 'stylesheet', confidence: 'ast' });
+  }
+  return out;
+}
+
 export function textLandings(path, bytes, places) {
   if (isWorkflow(path) || !TEXT_SCANNED.has(extname(path).toLowerCase())) return noLandings();
   // A package manifest lists what it ships (files, main, exports) and names
@@ -239,12 +260,15 @@ export function textLandings(path, bytes, places) {
     return { writes: [], dynamicWrites: 0, reads: sortEntries(markdownReads(source, places)), dynamicReads: 0 };
   }
   if (configurationFile(path)) return { writes: [], dynamicWrites: 0, reads: sortEntries(configurationReads(source, path, places)), dynamicReads: 0 };
+  // A page loads the script its <script src> names and the stylesheet its
+  // <link href> names, beside it or from the root: it reads them.
+  const loaded = HTML.has(extname(path).toLowerCase()) ? pageLoads(source, path, places) : [];
   if (extname(path).toLowerCase() === '.ps1') {
     const found = powershellLandings(source, path, places);
     return { writes: sortEntries(found.writes), dynamicWrites: 0, reads: sortEntries(found.reads), dynamicReads: 0 };
   }
   if (extname(path).toLowerCase() === '.xml' || extname(path).toLowerCase() === '.toml') return noLandings();
-  const reads = [];
+  const reads = [...loaded];
   for (const pattern of [/"([^"\r\n]*)"/g, /'([^'\r\n]*)'/g]) {
     for (const match of source.matchAll(pattern)) {
       const target = literalPlace(match[1], places);
@@ -740,7 +764,7 @@ export function astLandings(language, root, path, places) {
   const evaluate = ctx.python ? evalPy : evalJs;
   const site = (kind, call, node, countDynamic = true) => {
     if (!node) return;
-    const all = ctx.python ? evaluate(node, ctx, 0) : throughClosure(node, ctx);
+    const all = (ctx.python ? evaluate(node, ctx, 0) : throughClosure(node, ctx)).filter((value) => !value.shape);
     for (const value of all) named(value);
     const unless = kind === 'write' ? writeGuards(node, ctx.python) : [];
     // A read only compared with what is about to be written is a drift check,
@@ -1275,7 +1299,7 @@ function landingEntry(target, call, value, places, { settled = false } = {}) {
   // files under, is a directory, which the page names as one. A maker handed
   // a path through a parameter may make the directory above it, which the
   // parameter's reading does not keep, so the place is not called one.
-  if (!places.files.has(target) && !places.dirs.has(target) && (value.open || (DIRECTORY_MAKERS.has(call) && !settled))) entry.directory = true;
+  if (!places.files.has(target) && !places.dirs.has(target) && !target.includes('*') && (value.open || (DIRECTORY_MAKERS.has(call) && !settled))) entry.directory = true;
   return entry;
 }
 
@@ -2581,6 +2605,13 @@ function shapedLikeNothing(value, call, places) {
   // directories have its shape; a file needs a name after the unread part.
   const directory = DIRECTORY_MAKERS.has(call);
   if (!directory && value.tail.replace(/[*/\\]/g, '') === '') return false;
+  // A file named by its shape under a directory nothing tracks is that
+  // directory's output, placed as the directory, whatever its name spells.
+  if (!directory) {
+    const spelled = value.text.replaceAll('\\', '/').replace(/^(\.\/)+/, '');
+    const head = spelled.slice(0, Math.max(spelled.lastIndexOf('/'), 0));
+    if (head !== '' && !places.dirs.has(head)) return false;
+  }
   let text = value.text.replaceAll('\\', '/');
   while (text.startsWith('./')) text = text.slice(2);
   const pattern = `${globText(text)}${value.tail}`;
@@ -2626,6 +2657,26 @@ function cwdPlace(value, call, places) {
 
 // Where a write shaped like no tracked file goes: the readable head and the
 // first unread segment (swarms/*), a place no one tracks.
+// The pattern an open path names right under a tracked directory, when its
+// name has a spelled part, tracked files have that shape and the directory
+// holds others beside them: bundles/*.json beside bundles/rules/. A
+// directory whose every file has the shape is the place itself.
+function trackedShape(value, places) {
+  if (!value.open || value.tail == null || value.tail.includes('/') || value.tail.replace(/\*/g, '') === '') return null;
+  let text = value.text.replaceAll('\\', '/');
+  while (text.startsWith('./')) text = text.slice(2);
+  if (!text.endsWith('/')) return null;
+  const isMatch = picomatch(`${globText(text)}${value.tail}`, { dot: true });
+  let shaped = false;
+  let other = false;
+  for (const path of places.files) {
+    if (!path.startsWith(text)) continue;
+    if (isMatch(path)) shaped = true;
+    else other = true;
+  }
+  return shaped && other ? `${text}${value.tail}` : null;
+}
+
 function shapedTarget(value) {
   const text = value.text.replaceAll('\\', '/').replace(/^(\.\/)+/, '');
   const firstSegment = value.tail.split('/')[0];
@@ -2724,7 +2775,11 @@ function concat(parts) {
     }
     acc = cap(joined);
   }
-  return acc.filter((value) => !(value.open && value.text === '') || outside(value) || isHelper(value));
+  // An unread part with a name spelled after it (`${id}.json`) keeps that
+  // shape, marked, for the path it is joined onto (bundles/*.json); on its own
+  // it names no place (site drops it).
+  return acc.filter((value) => !(value.open && value.text === '') || outside(value) || isHelper(value) || /[^*]/.test(value.tail ?? ''))
+    .map((value) => (value.open && value.text === '' && !outside(value) && !isHelper(value) ? { ...value, shape: true } : value));
 }
 
 function defaultKey(of) {
@@ -2792,6 +2847,15 @@ function writtenPlace(value, places, call = null, untracked = true) {
   let text = value.text.replaceAll('\\', '/');
   while (text.startsWith('./')) text = text.slice(2);
   const spelled = value.open ? text.slice(0, Math.max(text.lastIndexOf('/'), 0)) : text.replace(/\/+$/, '');
+  // A tracked place is where the write lands, in a dist/ or not.
+  if (target === spelled && (places.files.has(target) || places.dirs.has(target))) {
+    // A file named at run time right under a tracked directory, with a name
+    // spelled after the unread part (bundles/${id}.json), lands on the files
+    // of that shape, not on the whole directory: bundles/rules/ beside them
+    // is no output of the write.
+    const shape = trackedShape(value, places);
+    return shape ?? target;
+  }
   const parts = spelled.split('/');
   const at = parts.findIndex((part) => part === 'node_modules' || part === 'dist');
   return at === -1 ? target : parts.slice(0, at + 1).join('/');
@@ -2981,6 +3045,28 @@ function key(node) {
 }
 
 /**
+ * The places a door writes only through runs held to one gate, with that
+ * gate: every file that writes the place is reached by gated runs alone,
+ * and all of them by the same gate.
+ */
+function heldLandings(door, byPath, places, targets) {
+  const out = [];
+  for (const target of targets) {
+    const gates = new Map();
+    let open = false;
+    for (const group of door.reachByGate ?? []) {
+      const writes = group.files.some((path) => (byPath.get(path)?.writes ?? []).some((write) => write.target === target && write.confidence !== 'weak'
+        && guardsHit(door, path, write, places).length === 0));
+      if (!writes) continue;
+      if (group.when == null) open = true;
+      else gates.set(JSON.stringify(group.when), group.when);
+    }
+    if (!open && gates.size === 1) out.push({ target, when: [...gates.values()][0] });
+  }
+  return out;
+}
+
+/**
  * Where each door and each file lands, and who reads those places.
  *
  * A door lands on what it stages and on what every file in its reach writes;
@@ -3073,7 +3159,17 @@ export function attachLandings({ files, doors, boundaries, places }) {
   // A place named by its shape (swarms/*, a temporary file beside a record)
   // is one no tracked file has, so no commit keeps it either.
   const committed = mapped.flatMap((door) => door.stagedTargets);
-  const untracked = new Set([...writers.keys(), ...readers.keys()].filter((target) => target.includes('*') || (
+  // A shape tracked files have (bundles/*.json) is kept by the commit that
+  // keeps them.
+  const shapeKept = (target) => {
+    // A bare * names every file of a directory, which is no shape a write
+    // spells: output made there beside what people keep stays untracked.
+    if (target.slice(target.lastIndexOf('/') + 1).replace(/\*/g, '') === '') return false;
+    const isMatch = picomatch(target, { dot: true });
+    const head = target.slice(0, target.lastIndexOf('/') + 1);
+    return [...places.files].some((path) => path.startsWith(head) && isMatch(path));
+  };
+  const untracked = new Set([...writers.keys(), ...readers.keys()].filter((target) => (target.includes('*') && !shapeKept(target)) || (target.includes('*') ? false : 
     !places.files.has(target) && !places.dirs.has(target) && !keptForOutput(target, places)
     && !committed.some((staged) => target === staged || target.startsWith(`${staged}/`))
   )));
@@ -3127,6 +3223,9 @@ export function attachLandings({ files, doors, boundaries, places }) {
       }
     }
     door.landings = [...targets].filter((target) => !spans.has(target) && !untracked.has(target)).sort(compare);
+    // A place only work held to one gate writes is written on that gate.
+    const held = heldLandings(door, byPath, places, door.landings);
+    if (held.length > 0) door.landingGates = held;
     // Output the repository does not keep is counted, never placed, and the
     // door names where it goes: a place spelled whole, not a shape.
     const outputs = [...targets].filter((target) => untracked.has(target) && !spans.has(target) && !target.includes('*'))
@@ -3200,13 +3299,29 @@ function settleRelativePaths(files, doors) {
     const into = (door.kind === 'command' && !door.example) || door.kind === 'package' ? byInstall : byWorkflow;
     for (const path of door.reachFiles ?? []) into.add(path);
   }
+  // What a workflow that reaches a file commits is that workflow's output,
+  // made from this repository's root.
+  const staged = new Map();
+  for (const door of doors) {
+    if ((door.kind === 'command' && !door.example) || door.kind === 'package') continue;
+    const targets = [...(door.stages ?? []), ...(door.gated ?? []).flatMap((entry) => entry.stages ?? [])]
+      .map((stage) => String(stage).replace(/^\.\//, '').replace(/\/+$/, '')).filter((stage) => stage !== '' && stage !== '.');
+    if (targets.length === 0) continue;
+    for (const path of door.reachFiles ?? []) staged.set(path, [...(staged.get(path) ?? []), ...targets]);
+  }
+  const committed = (path, target) => (staged.get(path) ?? []).some((stage) => target === stage || target.startsWith(`${stage}/`) || stage.startsWith(`${target}/`));
   for (const file of files) {
-    const theirs = byInstall.has(file.path) && !byWorkflow.has(file.path);
+    // A command people install runs where they are, so what it writes under
+    // the directory it is run in is theirs, though a workflow also runs it
+    // once from this repository's root; only what such a workflow commits
+    // is this repository's.
+    const installed = byInstall.has(file.path);
     for (const [kind, count] of [['writes', 'outsideWrites'], ['reads', 'outsideReads']]) {
       if (!Array.isArray(file[kind])) continue;
       const kept = [];
       for (const entry of file[kind]) {
         const { relative, fixed, ...rest } = entry;
+        const theirs = installed && (!byWorkflow.has(file.path) || !committed(file.path, entry.target));
         // Under the working directory is under the person's, for a command
         // people run from wherever they are, whatever else a workflow has
         // the file do from the root: shipcheck init writes SHIP_GATE.md into

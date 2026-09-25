@@ -37,7 +37,7 @@ describe('the order of work in an entry', () => {
   it('keeps a branch that returns early apart, as the other way the function goes', () => {
     assert.deepEqual(main().calls.map((call) => call.branch ?? null), ["process.argv.includes('--version')", null, null]);
     const { markdown } = buildPage({ structure, statistics: {}, document: {}, repoName: 'fixture/callbacks' });
-    assert.ok(markdown.includes('1. Inside src/index.js, main does, in order: load config and create server.'), markdown);
-    assert.ok(markdown.includes("2. Or, when `process.argv.includes('--version')`, main does print version instead."), markdown);
+    assert.ok(markdown.includes('1. Inside src/index.js, `main` does, in order: `loadConfig` and `createServer`.'), markdown);
+    assert.ok(markdown.includes("2. Or, when `process.argv.includes('--version')`, `main` does `printVersion` instead."), markdown);
   });
 });

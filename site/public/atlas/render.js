@@ -199,13 +199,14 @@ function installed(door) {
 function installedAs(door) {
   const bundled = arr(door.bundledInto).map(str);
   const what = door.example ? `a command people run with <code>${esc(str(door.runWith))}</code>`
+    : door.unshipped && door.privatePackage ? 'a command of a private package, which nothing ships'
     : door.unshipped ? `${door.app === 'desktop' ? 'a desktop app' : 'a command'} built from ${esc(str(door.builtFrom))}, which nothing ships`
     : door.app === 'desktop' ? 'the desktop app people install'
     : door.app === 'game' ? 'what Godot runs'
     : door.kind !== 'package' ? (bundled.length > 0 ? `a command bundled into ${esc(list(bundled))}` : 'a command people run')
     : door.runsCommand != null ? `the package&#39;s entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${esc(door.runsCommand)}` : 'runs a program as it loads'}; it is not a library`
     : door.extension ? (door.unpublished ? 'the extension&#39;s entry, not published from here' : `the extension people install from ${esc(str(door.publishedTo))}`)
-      : door.unpublished ? 'the package&#39;s entry, not published from here' : 'the package people import';
+      : door.unpublished ? 'the package&#39;s entry, not published from here' : door.dataOnly ? 'the data package people import' : 'the package people import';
   return door.sharedName ? `${what}, from ${esc(door.file)}` : what;
 }
 
@@ -219,7 +220,7 @@ function sharedNames(doors) {
 
 // A game starts its main scene, as page.js words it.
 function startVerb(door) {
-  return door?.kind === 'package' ? 'loads' : door?.app === 'game' ? 'starts' : 'runs';
+  return door?.dataOnly ? 'ships' : door?.kind === 'package' ? 'loads' : door?.app === 'game' ? 'starts' : 'runs';
 }
 
 // The game is named as a noun, so it is capitalized where a sentence starts.
@@ -488,20 +489,30 @@ function comesIn(ctx) {
 // names the runs without the markdown's "in <part>" grouping, three and a
 // count as "What comes in" does, since a door that runs a test suite runs
 // hundreds.
+// A build a release ships is said with what it ships; any other build is
+// said as a build, as page.js says it.
+function plainBuilds(ctx, door) {
+  return arr(door.sends).some((send) => str(send).startsWith('builds ')) ? [] : builds(ctx, door);
+}
+
 function doorSteps(ctx, door) {
   const steps = [];
   const paths = runs(ctx, door);
+  const built = plainBuilds(ctx, door);
   const checked = checks(ctx, door);
   const noun = door.extension ? 'extension' : door.app === 'desktop' ? 'desktop app' : door.app === 'game' ? 'game' : door.kind;
   const subject = installed(door) ? `The ${noun} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
   if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
-  if (checked.length > 0) clauses.push(`${paths.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
+  if (built.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} builds ${runsShown(built)}`);
+  if (checked.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
   const heldText = heldSentences(ctx, door, 'runs', clauses.length > 0);
   if (clauses.length > 0 || heldText.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   steps.push(...heldText);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
+  // A place only gated work writes is said under its gate, as page.js says it.
+  for (const group of arr(door.landingsHeld)) steps.push(`${capitalize(esc(str(group.lead)))}, it writes to ${placesHtml(ctx, arr(group.places))}.`);
   if (door.untracked) steps.push(`It ${arr(door.landings).length > 0 ? 'also ' : ''}writes to ${esc(str(door.untracked))}.`);
   if (arr(door.stages).length > 0) steps.push(`It commits ${commitsClause(ctx, door)}.`);
   if (arr(door.programs).length > 0) steps.push(`It runs ${esc(list(arr(door.programs).map(str)))}.`);
@@ -530,7 +541,8 @@ function stepTexts(ctx, steps, ownPart) {
     const collapsed = Number(step.count) || 0;
     if (collapsed > 0) notes.push(`${collapsed} steps`);
     const phrase = str(step.phrase);
-    return esc(notes.length > 0 ? `${phrase} (${notes.join(', ')})` : phrase);
+    // An identifier is code, as page.js writes it.
+    return inline(notes.length > 0 ? `${phrase} (${notes.join(', ')})` : phrase);
   });
 }
 
@@ -548,14 +560,16 @@ function sequenceItems(ctx) {
   for (const sequence of arr(ctx.page.sequences)) {
     if (!sequence || typeof sequence !== 'object') continue;
     const own = sequence.part == null ? null : str(sequence.part);
-    items.push(inOrder(`Inside ${pathHtml(ctx, sequence.file)}, ${esc(sequence.phrase)} does, in order:`, stepTexts(ctx, sequence.steps, own)));
+    items.push(inOrder(`Inside ${pathHtml(ctx, sequence.file)}, ${inline(sequence.phrase)} does, in order:`, stepTexts(ctx, sequence.steps, own)));
     // An early return's branch is the other way the entry goes, said once,
     // three at most, as page.js says them.
     const alternatives = arr(sequence.alternatives).filter((alternative) => alternative && typeof alternative === 'object');
     for (const alternative of alternatives.slice(0, 3)) {
-      items.push(`Or, when <code>${esc(alternative.when)}</code>, ${esc(sequence.phrase)} does ${list(stepTexts(ctx, alternative.steps, own))} instead.`);
+      // A condition on a loop's variable is said with the loop, as page.js says it.
+      const lead = alternative.over != null ? `for an entry of <code>${esc(alternative.over)}</code> where <code>${esc(alternative.when)}</code>` : `when <code>${esc(alternative.when)}</code>`;
+      items.push(`Or, ${lead}, ${inline(sequence.phrase)} does ${list(stepTexts(ctx, alternative.steps, own))} instead.`);
     }
-    if (alternatives.length > 3) items.push(`${esc(capitalize(str(sequence.phrase)))} returns early ${count(alternatives.length - 3, 'more way')}.`);
+    if (alternatives.length > 3) items.push(`${inline(capitalize(str(sequence.phrase)))} returns early ${count(alternatives.length - 3, 'more way')}.`);
     // page.json holds only the called functions the markdown shows, in the
     // order the entry calls them. A part is named only when it is not the
     // entry file's own.
@@ -565,7 +579,7 @@ function sequenceItems(ctx) {
       let where = null;
       if (part != null && part !== own) where = esc(partName(ctx, inner));
       else if (part == null && inner.file) where = pathHtml(ctx, inner.file);
-      const lead = `<strong>${esc(capitalize(str(inner.phrase)))}</strong>${where ? ` (${where})` : ''} runs, in order:`;
+      const lead = `<strong>${inline(capitalize(str(inner.phrase)))}</strong>${where ? ` (${where})` : ''} runs, in order:`;
       items.push(inOrder(lead, stepTexts(ctx, inner.steps, part)));
     }
   }
@@ -630,11 +644,13 @@ function otherDoors(ctx) {
     const checked = checks(ctx, door);
     const verb = startVerb(door);
     if (door.unplaced) clauses.push({ html: unplacedClause(door), text: `${verb} ${str(door.unplaced)}, built from a source this map cannot place` });
-    else if (paths.length > 0 || (checked.length === 0 && arr(door.held).length === 0)) {
+    else if (paths.length > 0 || (arr(door.builds).length === 0 && checked.length === 0 && arr(door.held).length === 0)) {
       clauses.push(paths.length > 0
         ? { html: `${verb} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths), moreOf(door.runsMore))}` }
         : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
     }
+    const plain = plainBuilds(ctx, door);
+    if (plain.length > 0) clauses.push({ html: `builds ${runsShown(plain)}`, text: `builds ${runsShownText(plain)}` });
     if (checked.length > 0) {
       clauses.push({ html: `checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`, text: `checks ${runsShownText(checked, checkTotal(door, checked), moreOf(door.checksMore))}` });
     }
@@ -650,6 +666,7 @@ function otherDoors(ctx) {
     const outputs = door.untracked ? [{ html: esc(str(door.untracked)), text: str(door.untracked) }] : [];
     const written = [...(landings.length > 0 ? [{ html: placesHtml(ctx, landings), text: list(landings) }] : []), ...outputs];
     if (written.length > 0) clauses.push({ html: `writes to ${written.map((item) => item.html).join(joiner)}`, text: `writes to ${written.map((item) => item.text).join(joiner)}` });
+    for (const group of arr(door.landingsHeld)) clauses.push({ html: `writes to ${placesHtml(ctx, arr(group.places))} ${esc(str(group.when))}`, text: `writes to ${list(arr(group.places).map(str))} ${str(group.when)}` });
     const stages = arr(door.stages).map((place) => `${str(place)}${peopleWrite(door, place) ? ' (written by people)' : ''}`);
     if (stages.length > 0) {
       const push = pushWords(door);
@@ -865,6 +882,9 @@ function startSection(ctx) {
   }
   const chain = arr(ctx.page.startHere).map((path) => pathHtml(ctx, path));
   if (chain.length === 0 && ctx.page.startNote) return section('Where to start', p(esc(ctx.page.startNote)));
+  const reason = ctx.page.startReason ? ` ${esc(str(ctx.page.startReason))}` : '';
+  // One file is where to start, not a list to read in order.
+  if (chain.length === 1) return section('Where to start', p(`Start at ${chain[0]} to follow one ${esc(triggerNoun(ctx.start))} end to end.${reason}`));
   const body = [
     `<p class="chain">${chain.join(' <span aria-hidden="true">→</span><span class="sr">, then</span> ')}</p>`,
     p(`Read those in order to follow one ${esc(triggerNoun(ctx.start))} end to end.${ctx.page.startReason ? ` ${esc(str(ctx.page.startReason))}` : ''}`),

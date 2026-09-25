@@ -291,7 +291,7 @@ describe('compareStructures', () => {
     const previous = build([call('loadPolicy'), call('writeRecord')]);
     const current = build([call('loadPolicy'), call('validateRequiredSteps'), call('writeRecord')]);
     assert.deepEqual(sentences(compareStructures(previous, current)), [
-      'In tools/run.js, run gained a step, validate required steps, before write record.',
+      'In tools/run.js, `run` gained a step, `validateRequiredSteps`, before `writeRecord`.',
       'No file changed.',
     ]);
   });

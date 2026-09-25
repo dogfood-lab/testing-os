@@ -1,0 +1,26 @@
+name: Operations
+on:
+  push:
+    branches: [main]
+  issues:
+    types: [opened]
+  schedule:
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+jobs:
+  verify:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/derive.mjs
+  nightly:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/derive.mjs
+      - run: node scripts/bundle.mjs
+  triage:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/triage.mjs

@@ -40,13 +40,14 @@ describe('where to start, when the pull request only runs tests', () => {
     assert.equal(data.startDoor, 'package.json#tool');
     const start = section(markdown, 'Where to start');
     assert.ok(start.includes('\nsrc/cli.js → engine/run.js\n'), start);
-    assert.match(start, /Read those in order to follow one run of tool end to end\. This path follows tool \(a command people run\) from its entry, since CI runs only tests\./);
-    assert.equal(data.startReason, 'This path follows tool (a command people run) from its entry, since CI runs only tests.');
+    // CI also checks src/cli.js with node --check, which is said.
+    assert.match(start, /Read those in order to follow one run of tool end to end\. This path follows tool \(a command people run\) from its entry, since CI runs only tests and checks\./);
+    assert.equal(data.startReason, 'This path follows tool (a command people run) from its entry, since CI runs only tests and checks.');
   });
 
-  it('starts past the package entry when it only hands names on', () => {
+  it('starts at the package entry, though it only hands names on: what it exports is the package', () => {
     const { data } = page('package', ['src', 'tests', 'text']);
-    assert.deepEqual(data.startHere, ['src/parse.js', 'text/token.js']);
+    assert.deepEqual(data.startHere, ['src/index.js', 'src/parse.js', 'text/token.js']);
     assert.equal(data.startDoor, 'package.json#@s/lib');
   });
 

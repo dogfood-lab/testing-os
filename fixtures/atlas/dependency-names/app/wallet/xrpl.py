@@ -1,0 +1,2 @@
+def wallet():
+    return None

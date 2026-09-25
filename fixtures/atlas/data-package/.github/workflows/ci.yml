@@ -1,0 +1,8 @@
+name: CI
+on:
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node scripts/validate.mjs

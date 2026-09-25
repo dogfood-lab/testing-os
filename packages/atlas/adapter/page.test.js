@@ -193,26 +193,28 @@ describe('atlas page', () => {
     const lines = section(markdown, '## What happens through Ingest').split('\n');
     const first = lines.indexOf('1. The workflow runs tools/ingest.js and tools/prepare.js in tools.');
     assert.ok(first >= 0);
-    // Seven called functions have two or more steps. prepare has two, in the
-    // entry's own part, so it is not followed; of the six left, the five with
-    // the most steps are kept, and verify beats load policy on source order at
-    // two steps each. The kept ones are shown in the order ingest calls them.
+    // Six called functions have two or more steps of the project's own:
+    // verify's provenance.confirm is a method of what its caller hands it,
+    // no step here, so verify has one. prepare has two, in the entry's own
+    // part, so it is not followed; the five left are kept, in the order
+    // ingest calls them.
     assert.deepEqual(lines.slice(first + 1, first + 9), [
-      '   1. Inside tools/ingest.js, ingest does, in order: prepare, verify (lib), load policy, write record, rebuild index, audit record and seal record.',
-      '   2. **Verify** (lib) runs, in order: check policy and confirm.',
-      '   3. **Write record** (lib) runs, in order: check schema, check policy, schema version and load policy.',
-      '   4. **Rebuild index** (lib) runs, in order: load schema, check policy and schema version.',
-      '   5. **Audit record** (lib) runs, in order: check schema, write record and schema version.',
-      '   6. **Seal record** (lib) runs, in order: check schema, check policy, load schema, load policy and schema version.',
-      '   7. Inside tools/prepare.js, prepare does, in order: check schema (lib) and check policy.',
+      '   1. Inside tools/ingest.js, `ingest` does, in order: `prepare`, `verify` (lib), `loadPolicy`, `writeRecord`, `rebuildIndex`, `auditRecord` and `sealRecord`.',
+      '   2. **`loadPolicy`** (lib) runs, in order: `loadSchema` and `checkSchema`.',
+      '   3. **`writeRecord`** (lib) runs, in order: `checkSchema`, `checkPolicy`, `schemaVersion` and `loadPolicy`.',
+      '   4. **`rebuildIndex`** (lib) runs, in order: `loadSchema`, `checkPolicy` and `schemaVersion`.',
+      '   5. **`auditRecord`** (lib) runs, in order: `checkSchema`, `writeRecord` and `schemaVersion`.',
+      '   6. **`sealRecord`** (lib) runs, in order: `checkSchema`, `checkPolicy`, `loadSchema`, `loadPolicy` and `schemaVersion`.',
+      '   7. Inside tools/prepare.js, `prepare` does, in order: `checkSchema` (lib) and `checkPolicy`.',
       '2. That reaches lib (4 files).',
     ]);
-    assert.equal(lines.some((line) => /\*\*(Prepare|Load policy)\*\*/.test(line)), false);
+    assert.equal(lines.some((line) => /\*\*`(prepare|verify)`\*\*/.test(line)), false);
     // Another part is named once, after the first step that enters it.
     assert.equal(lines[first + 1].split('(lib)').length - 1, 1);
     // lib/verify.js hands checkSchema to runCheck; a function passed is not
-    // known to run there, so the artifact keeps it and the page does not.
-    assert.equal(lines[first + 2].includes('check schema'), false);
+    // known to run there, so verify's one step left is checkPolicy, and it is
+    // not followed.
+    assert.equal(lines.some((line) => line.includes('**`verify`**')), false);
     const [ingest] = JSON.parse(json).sequences;
     assert.equal(ingest.file, 'tools/ingest.js');
     assert.equal(ingest.entry, 'ingest');
@@ -226,7 +228,7 @@ describe('atlas page', () => {
       ['sealRecord', 'lib'],
     ]);
     assert.deepEqual(ingest.inner.map((inner) => [inner.name, inner.file, inner.steps.length]), [
-      ['verify', 'lib/verify.js', 2],
+      ['loadPolicy', 'lib/policy.js', 2],
       ['writeRecord', 'lib/store.js', 4],
       ['rebuildIndex', 'lib/store.js', 3],
       ['auditRecord', 'lib/policy.js', 3],
@@ -245,8 +247,8 @@ describe('atlas page', () => {
       ]),
     });
     const happens = section(markdown, '## What happens through Ingest');
-    assert.match(happens, /^ {3}2\. \*\*Prepare\*\* runs, in order: step 1 \(lib\), step 2 and step 3\.$/m);
-    assert.match(happens, /^ {3}3\. \*\*Verify\*\* \(lib\) runs, in order: step 1 and step 2\.$/m);
+    assert.match(happens, /^ {3}2\. \*\*`prepare`\*\* runs, in order: `step1` \(lib\), `step2` and `step3`\.$/m);
+    assert.match(happens, /^ {3}3\. \*\*`verify`\*\* \(lib\) runs, in order: `step1` and `step2`\.$/m);
   });
 
   it('carries the name the page gives each part next to its id, so the site words it the same way', () => {
@@ -262,7 +264,7 @@ describe('atlas page', () => {
     assert.deepEqual(ingest.steps.map((step) => [step.part, step.partLabel]), [['tools', 'tools'], ['root', 'the repository root']]);
     assert.deepEqual([ingest.inner[0].part, ingest.inner[0].partLabel], ['root', 'the repository root']);
     assert.deepEqual(ingest.inner[0].steps.map((step) => step.partLabel), ['lib', 'lib']);
-    assert.match(section(markdown, '## What happens through Ingest'), /^ {3}2\. \*\*Configure\*\* \(the repository root\) runs, in order: step one \(lib\) and step two\.$/m);
+    assert.match(section(markdown, '## What happens through Ingest'), /^ {3}2\. \*\*`configure`\*\* \(the repository root\) runs, in order: `stepOne` \(lib\) and `stepTwo`\.$/m);
   });
 
   it('lists eight or more steps, stops at twelve, and folds three calls into one file into one step', () => {
@@ -272,19 +274,19 @@ describe('atlas page', () => {
       line: index + 1,
     }));
     const inside = (calls) => section(page(doors, { structure: (structure) => withEntryCalls(withoutChecks(structure), calls) }).markdown, '## What happens through Ingest');
-    assert.match(inside(named(7)), /^ {3}1\. Inside tools\/ingest\.js, ingest does, in order: step number 1 \(lib\), step number 2, .+ and step number 7\.$/m);
+    assert.match(inside(named(7)), /^ {3}1\. Inside tools\/ingest\.js, `ingest` does, in order: `stepNumber1` \(lib\), `stepNumber2`, .+ and `stepNumber7`\.$/m);
     const listed = inside(named(8)).split('\n');
-    const lead = listed.indexOf('   1. Inside tools/ingest.js, ingest does, in order:');
+    const lead = listed.indexOf('   1. Inside tools/ingest.js, `ingest` does, in order:');
     assert.ok(lead >= 0);
-    assert.deepEqual(listed.slice(lead + 1, lead + 3), ['      1. step number 1 (lib)', '      2. step number 2']);
-    assert.equal(listed[lead + 8], '      8. step number 8');
+    assert.deepEqual(listed.slice(lead + 1, lead + 3), ['      1. `stepNumber1` (lib)', '      2. `stepNumber2`']);
+    assert.equal(listed[lead + 8], '      8. `stepNumber8`');
     const capped = inside(named(14)).split('\n');
-    assert.equal(capped[capped.indexOf('   1. Inside tools/ingest.js, ingest does, in order:') + 12], '      12. step number 12, and 2 more');
-    assert.equal(capped.some((line) => line.includes('step number 13')), false);
+    assert.equal(capped[capped.indexOf('   1. Inside tools/ingest.js, `ingest` does, in order:') + 12], '      12. `stepNumber12`, and 2 more');
+    assert.equal(capped.some((line) => line.includes('stepNumber13')), false);
     const store = (name, line) => ({ name, target: { file: 'lib/store.js' }, line });
     assert.match(
       inside([store('openStore', 1), store('writeRecord', 2), store('closeStore', 3), { name: 'rebuildIndex', target: { file: 'tools/prepare.js' }, line: 4 }]),
-      /^ {3}1\. Inside tools\/ingest\.js, ingest does, in order: store \(lib, 3 steps\) and rebuild index\.$/m,
+      /^ {3}1\. Inside tools\/ingest\.js, `ingest` does, in order: `store\.js` \(lib, 3 steps\) and `rebuildIndex`\.$/m,
     );
   });
 
@@ -324,6 +326,8 @@ describe('atlas page', () => {
       structure: {
         ...withoutIngest(doors.structure),
         boundaries: doors.structure.boundaries.map((boundary) => ({ ...boundary, dynamicReads: 0, dynamicWrites: 0, outsideReads: 0, outsideWrites: 0, unresolvedSites: 0 })),
+        // A file in no part is a fact the page states too; cleared with the rest.
+        unassigned: [],
       },
       statistics: { ...doors.statistics, confidence: { level: 'high' } },
       document: doors.document,
@@ -466,8 +470,8 @@ describe('atlas page', () => {
     const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
     assert.ok(followed.length <= 5);
-    assert.ok(followed.some((line) => line.includes('**Verify** (verify) runs, in order:')));
-    assert.ok(followed.some((line) => line.includes('**Write record** runs, in order:')));
+    assert.ok(followed.some((line) => line.includes('**`verify`** (verify) runs, in order:')));
+    assert.ok(followed.some((line) => line.includes('**`writeRecord`** runs, in order:')));
     assert.equal(happens.some((line) => line.includes('Is duplicate')), false);
 
     const source = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|py)$/i;
@@ -622,7 +626,8 @@ describe('atlas page', () => {
 
   it('names what no test touches, what is written but never read, and helpers that look alike', () => {
     const { markdown, json } = page(doors);
-    assert.equal(section(markdown, '## What no test touches'), '## What no test touches\n\n- **tools** is imported by no test.\n');
+    // lib/verify.test.js is a test file no workflow runs, which is said.
+    assert.equal(section(markdown, '## What no test touches'), '## What no test touches\n\n- **tools** is imported by no test.\n\nlib/verify.test.js runs in no workflow.\n');
     // cache/state.json is read only by the file that writes it; records/ and
     // the two reports are read by nothing at all.
     assert.equal(section(markdown, '## Written but never read'), [
@@ -645,7 +650,7 @@ describe('atlas page', () => {
     const data = JSON.parse(json);
     assert.deepEqual(data.testedBy, { lib: 1, tools: 0 });
     assert.deepEqual(data.untested, [{ part: 'tools', partLabel: 'tools', testedBy: 0 }]);
-    assert.deepEqual(data.untestedNote, []);
+    assert.deepEqual(data.untestedNote, ['lib/verify.test.js runs in no workflow.']);
     assert.deepEqual(data.unread.map((item) => item.place), ['cache/state.json', 'records/', 'reports/out.json', 'reports/out.md']);
     assert.deepEqual(data.unread[1].writers, ['tools/ingest.js', 'tools/scratch.js']);
     assert.deepEqual(data.unreadNote, []);
@@ -716,7 +721,7 @@ describe('atlas page', () => {
     assert.equal(bullets[4], '- **pair3** is exported by extra6/a.js (extra6) and extra7/a.js (extra7); the two look alike.');
     assert.ok(alike.endsWith('\n\nAnd 1 more candidate.\n'), alike);
     const data = JSON.parse(json);
-    assert.deepEqual([data.untested.length, data.untestedNote], [8, ['And 2 more parts.']]);
+    assert.deepEqual([data.untested.length, data.untestedNote], [8, ['lib/verify.test.js runs in no workflow.', 'And 2 more parts.']]);
     assert.deepEqual(data.duplicatesNote, ['And 1 more candidate.']);
   });
 

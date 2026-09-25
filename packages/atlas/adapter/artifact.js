@@ -27,12 +27,17 @@ function siteCounts(files) {
   let externals = 0;
   let outside = 0;
   const externalNames = new Set();
+  const named = [];
   for (const file of files) {
     if (!Array.isArray(file.imports)) continue;
     for (const site of file.imports) {
       const outcome = site.resolved?.outcome;
+      if (outcome === 'manifest') continue;
       if (outcome === 'file' || outcome === 'boundary' || outcome === 'external') resolved += 1;
-      else unresolved += 1;
+      else {
+        unresolved += 1;
+        named.push(unresolvedEntry(file.path, site));
+      }
       if (site.resolved?.declared) {
         externals += 1;
         externalNames.add(site.specifier.split('.')[0]);
@@ -40,7 +45,29 @@ function siteCounts(files) {
       if (site.resolved?.outside) outside += 1;
     }
   }
-  return { unresolved, resolved, externals, externalNames: [...externalNames].sort(), outside };
+  named.sort((a, b) => cmp(a.path, b.path) || (a.line ?? 0) - (b.line ?? 0));
+  return { unresolved, resolved, externals, externalNames: [...externalNames].sort(), outside, named: named.slice(0, UNRESOLVED_NAMED).map(({ line, ...rest }) => rest) };
+}
+
+// How many of a part's unresolved sites the map names, with why; the rest
+// are counted.
+const UNRESOLVED_NAMED = 3;
+
+// Why a site did not resolve, in the words the page uses: an undeclared
+// package a file probes for or loads if it is there, an import of a path a
+// build generates (.next/, dist/), one of a path the repository does not
+// hold, or one built at run time.
+function unresolvedEntry(path, site) {
+  const reason = site.resolved?.reason ?? 'unresolved';
+  const entry = { line: site.line, path, specifier: site.kind === 'dynamic' ? null : site.specifier };
+  if (reason === 'undeclared-package') entry.why = site.locates ? 'probe' : site.optional ? 'optional' : 'undeclared';
+  else if (site.kind === 'dynamic') entry.why = 'dynamic';
+  else if (reason === 'build-output-without-source' || /(^|\/)\.?(next|nuxt|svelte-kit|astro|dist|build|out)\//.test(site.specifier)) entry.why = 'generated';
+  else if (reason === 'not-tracked' || reason === 'module-not-found') entry.why = 'missing';
+  else if (reason === 'python-module-not-found') entry.why = 'unplaced';
+  else if (reason === 'workspace-member-not-found' || reason === 'workspace-export-unresolved' || reason === 'local-package-not-found') entry.why = 'member';
+  else entry.why = 'other';
+  return entry;
 }
 
 // Reads and writes whose path is built at run time name no place, so the map
@@ -204,6 +231,7 @@ export function buildArtifact(mapped, commit) {
       ...(tested.testedInside.has(boundary.name) ? { testedInside: true } : {}),
       ...(tested.throughSpawn.has(boundary.name) ? { testedThroughSpawn: true } : {}),
       unresolvedSites: sites.unresolved,
+      ...(sites.named.length > 0 ? { unresolvedNamed: sites.named } : {}),
     };
   });
   const overlaps = keep(mapped.overlaps)
@@ -250,6 +278,11 @@ function carryFile(file) {
   if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
   const imported = importTargets(file);
   if (imported.files.length > 0) out.importsFiles = imported.files;
+  // A file whose entry calls into no file has no order of work; the order it
+  // imports in is then the order a reader meets what it uses (a CLI that
+  // registers its commands as it imports them), carried when it is not the
+  // sorted order already listed.
+  if (!entryReachesFile(file) && imported.ordered.some((target, index) => target !== imported.files[index])) out.importOrder = imported.ordered;
   if (imported.all.length > 0) out.reexportsAll = imported.all;
   if (file.sequences) out.sequences = file.sequences.map(carrySequence);
   if (file.entry != null) {
@@ -269,8 +302,11 @@ function carryFile(file) {
 function importTargets(file) {
   const files = new Set();
   const all = new Set();
-  if (!Array.isArray(file.imports)) return { files: [], all: [] };
-  for (const site of file.imports) {
+  if (!Array.isArray(file.imports)) return { files: [], all: [], ordered: [] };
+  const sites = file.imports.map((site, index) => ({ site, index }))
+    .sort((a, b) => (a.site.line ?? 0) - (b.site.line ?? 0) || a.index - b.index)
+    .map((entry) => entry.site);
+  for (const site of sites) {
     if (loadsManifest(site)) continue;
     const resolved = site.resolved;
     let target = null;
@@ -280,7 +316,12 @@ function importTargets(file) {
     files.add(target);
     if (site.reexportsAll) all.add(target);
   }
-  return { files: [...files].sort(), all: [...all].sort() };
+  return { files: [...files].sort(), all: [...all].sort(), ordered: [...files] };
+}
+
+function entryReachesFile(file) {
+  const root = (file.sequences ?? []).find((sequence) => sequence.name === file.entry);
+  return (root?.calls ?? []).some((call) => !call.passed && call.target?.file);
 }
 
 function carrySequence(sequence) {
@@ -298,6 +339,7 @@ function carrySequence(sequence) {
 function carryCall(call) {
   const out = { line: call.line, name: call.name, target: call.target == null ? null : { ...call.target } };
   if (call.branch != null) out.branch = call.branch;
+  if (call.over != null) out.over = call.over;
   if (call.passed) out.passed = true;
   if (call.receiver != null) out.receiver = call.receiver;
   if (call.via != null) out.via = call.via;
@@ -382,6 +424,7 @@ function carryDoor(door) {
       ? { gated: door.gated.map((entry) => ({ jobs: [...entry.jobs], pushes: entry.pushes, ...(entry.pushesForReview ? { pushesForReview: true } : {}), ...(entry.pushesTo ? { pushesTo: [...entry.pushesTo] } : {}), sends: [...entry.sends], stages: [...entry.stages], when: { ...entry.when } })) }
       : {}),
     landings: door.landings.filter((target) => !inAtlas(target)),
+    ...(door.landingGates?.length > 0 ? { landingGates: door.landingGates.filter((entry) => !inAtlas(entry.target)).map((entry) => ({ target: entry.target, when: { ...entry.when } })) } : {}),
     mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),
     name: door.name,
     permissions: [...door.permissions],
@@ -419,6 +462,7 @@ function carryDoor(door) {
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
     ...(door.unpublished ? { unpublished: true } : {}),
     ...(door.unshipped ? { unshipped: true } : {}),
+    ...(door.privatePackage ? { privatePackage: true } : {}),
     uses: [...door.uses],
     usesWorkflowToken: door.usesWorkflowToken,
   };

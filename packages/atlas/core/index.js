@@ -8,7 +8,7 @@ import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
-import { declaredEntries, deriveEntryPoints, manifestCommands, pythonScripts } from './entry-points.js';
+import { declaredEntries, deriveEntryPoints, manifestCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
@@ -173,7 +173,15 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests, discovered }),
     ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests, discovered }),
   ], [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], repoPath, trackedSet);
+  // A workspace member a workflow publishes by name is a package people
+  // import, with a door of its own, as the root package is; being named by
+  // a publish, it is published.
+  const members = publishedMembers(doors).map((dir) => memberPackage(repoPath, dir, trackedSet))
+    .filter((entry) => entry != null && !doors.some((door) => door.kind === 'package' && door.file === entry.manifest));
+  const memberDoors = members.length > 0 ? mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands: members, builtFrom, emitted, unitTests, discovered }) : [];
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
+  markPrivateCommands(doors, rootManifest(repoPath, trackedSet));
+  doors.push(...memberDoors);
   markUnshipped(doors, cargoProject(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }));
@@ -190,6 +198,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     // not the door's.
     const ran = walkReach(door.runs.filter((run) => run.runKind !== 'checks' && !run.built).map((run) => run.path), graph);
     door.reachFiles = ran.files;
+    // The files each gate's runs reach, so a place only gated work writes
+    // is said under that gate (landings.js).
+    door.reachByGate = gateReach(door, graph);
     // A package is imported, never run as a program.
     door.executed = door.kind === 'package' ? [] : ran.executed;
     // A file the door runs that changes other repositories through the API
@@ -211,6 +222,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   // the door is credited with, which attachLandings has now decided.
   for (const door of doors) {
     delete door.reachFiles;
+    delete door.reachByGate;
     delete door.executed;
     for (const run of door.runs ?? []) delete run.passes;
   }
@@ -237,6 +249,37 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     landings,
     ...(unseen.length > 0 ? { unseen } : {}),
   };
+}
+
+// The files the runs held to each gate reach, one entry per gate, the
+// ungated runs under a null gate.
+function gateReach(door, graph) {
+  const groups = new Map();
+  for (const run of door.runs ?? []) {
+    if (run.runKind === 'checks' || run.built) continue;
+    const key = run.when ? JSON.stringify(sortedKeys(run.when)) : '';
+    if (!groups.has(key)) groups.set(key, { when: run.when ?? null, paths: [] });
+    groups.get(key).paths.push(run.path);
+  }
+  return [...groups.values()].map((group) => ({ when: group.when, files: walkReach(group.paths, graph).files }));
+}
+
+function sortedKeys(value) {
+  if (Array.isArray(value)) return value.map(sortedKeys);
+  if (value && typeof value === 'object') return Object.fromEntries(Object.keys(value).sort().map((key) => [key, sortedKeys(value[key])]));
+  return value;
+}
+
+// The workspace members, by directory, a workflow's npm publish names.
+function publishedMembers(doors) {
+  const dirs = new Set();
+  for (const door of doors) {
+    if (door.kind || door.parseError) continue;
+    const entries = [...(door.sends?.packages?.values?.() ?? door.sends?.packages ?? [])];
+    for (const key of (door.gated ?? []).flatMap((entry) => entry.sends ?? [])) if (typeof key === 'string' && key.startsWith('packages:')) entries.push(JSON.parse(key.slice('packages:'.length)));
+    for (const entry of entries) if (entry?.dir && entry.dir !== '' && entry.registry === 'npm') dirs.add(entry.dir);
+  }
+  return [...dirs].sort();
 }
 
 /**
@@ -277,6 +320,22 @@ function markUnshipped(doors, project) {
     if (door.kind !== 'command' || door.example || posix.basename(door.file) !== 'Cargo.toml') continue;
     if (published.has(door.file) || (door.runs ?? []).some((run) => built.has(run.path))) continue;
     door.unshipped = true;
+  }
+}
+
+/**
+ * A command the root package.json declares, when the package is private: npm
+ * publishes no private package, so no one installs the command from here,
+ * and the page says nothing ships it, as it says of a crate's binary. A
+ * private workspace member's command is settled by settleInstalled.
+ * Mutates the doors.
+ */
+function markPrivateCommands(doors, manifest) {
+  if (manifest?.private !== true) return;
+  for (const door of doors) {
+    if (door.kind !== 'command' || door.file !== 'package.json' || door.bundledInto?.length > 0) continue;
+    door.unshipped = true;
+    door.privatePackage = true;
   }
 }
 
@@ -530,7 +589,7 @@ function parseFile(language, path, original, places) {
       imports,
       landings: astLandings(language, tree.rootNode, path, places),
       sequence: sequenceFacts(language, tree.rootNode),
-      spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
+      spawned: language === 'python' ? pythonSpawns(tree.rootNode) : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
       githubChanges: language === 'python' ? 0 : githubChanges(tree.rootNode),
       noStatements: statementless(tree.rootNode),
       startsOnLoad: language !== 'python' && startsOnLoad(tree.rootNode),
@@ -800,22 +859,83 @@ function statementless(root) {
 /**
  * A module that does no work of its own: a barrel whose every statement hands
  * on what another file exports ('reexports'), or one that holds a single
- * constant ('constant'), such as a version string. A reader following the
- * work passes over both, to what the barrel hands on.
+ * constant ('constant'): a version string, or one object or array a tool
+ * reads (content.config.ts's collections), beside the imports that build it.
+ * A value that is a function, or a call made as the module loads, is work. A
+ * reader following the work passes over both, to what the barrel hands on.
  */
 function onlyHolds(root) {
   const statements = root.namedChildren.filter((child) => child.type !== 'comment');
   if (statements.length === 0) return null;
   if (statements.every((statement) => statement.type === 'export_statement' && statement.childForFieldName('source') != null)) return 'reexports';
-  if (statements.length !== 1) return null;
-  const declaration = statements[0].type === 'export_statement' ? statements[0].childForFieldName('declaration') : statements[0];
+  const own = statements.filter((statement) => statement.type !== 'import_statement');
+  if (own.length !== 1) return null;
+  const declaration = own[0].type === 'export_statement' ? own[0].childForFieldName('declaration') : own[0];
   if (declaration?.type !== 'lexical_declaration' && declaration?.type !== 'variable_declaration') return null;
   const declarators = declaration.namedChildren.filter((child) => child.type === 'variable_declarator');
   if (declarators.length !== 1) return null;
-  const value = declarators[0].childForFieldName('value');
-  const literal = ['string', 'number', 'true', 'false', 'null'].includes(value?.type)
+  let value = declarators[0].childForFieldName('value');
+  while (value?.type === 'as_expression' || value?.type === 'satisfies_expression' || value?.type === 'parenthesized_expression') value = value.namedChildren[0];
+  const literal = ['string', 'number', 'true', 'false', 'null', 'object', 'array'].includes(value?.type)
     || (value?.type === 'template_string' && !value.namedChildren.some((child) => child.type === 'template_substitution'));
+  // One literal held beside nothing it imports is the version string case;
+  // an object or array beside imports is a tool's config, and still no work.
   return literal ? 'constant' : null;
+}
+
+const PY_SPAWNS = /(^|\.)(run|call|check_call|check_output|Popen)$/;
+
+/**
+ * The command lines a Python file hands to a child process that run a
+ * module under the interpreter running the file: subprocess.run([
+ * sys.executable, "-m", "pytest", ...]), or with the interpreter held in a
+ * name (py = sys.executable). Read as python -m <module> with the words
+ * spelled out, up to the first one built at run time.
+ */
+function pythonSpawns(root) {
+  const interpreters = new Set();
+  walkNamed(root, (node) => {
+    if (node.type !== 'assignment') return;
+    const left = node.childForFieldName('left');
+    const right = node.childForFieldName('right');
+    if (left?.type === 'identifier' && right?.text === 'sys.executable') interpreters.add(left.text);
+  });
+  // A function of the file that hands one of its parameters to subprocess
+  // (def _run(label, cmd): subprocess.run(cmd)) runs the list each call
+  // hands it there.
+  const helpers = new Map();
+  walkNamed(root, (node) => {
+    if (node.type !== 'function_definition') return;
+    const params = (node.childForFieldName('parameters')?.namedChildren ?? []).map((child) => (child.type === 'identifier' ? child.text : child.namedChildren.find((inner) => inner.type === 'identifier')?.text ?? null));
+    walkNamed(node.childForFieldName('body'), (inner) => {
+      if (inner.type !== 'call' || !PY_SPAWNS.test(inner.childForFieldName('function')?.text ?? '')) return;
+      const first = inner.childForFieldName('arguments')?.namedChildren.find((child) => child.type !== 'comment');
+      const at = first?.type === 'identifier' ? params.indexOf(first.text) : -1;
+      if (at !== -1) helpers.set(node.childForFieldName('name')?.text, at);
+    });
+  });
+  const commands = new Set();
+  walkNamed(root, (node) => {
+    if (node.type !== 'call') return;
+    const callee = node.childForFieldName('function')?.text ?? '';
+    const args = node.childForFieldName('arguments')?.namedChildren.filter((child) => child.type !== 'comment') ?? [];
+    let list = null;
+    if (helpers.has(callee)) list = args[helpers.get(callee)] ?? null;
+    else if (PY_SPAWNS.test(callee)) list = args[0] ?? null;
+    if (list?.type !== 'list') return;
+    const items = list.namedChildren.filter((child) => child.type !== 'comment');
+    const head = items[0];
+    if (!(head?.text === 'sys.executable' || (head?.type === 'identifier' && interpreters.has(head.text)))) return;
+    const words = ['python'];
+    for (const item of items.slice(1)) {
+      if (item.type !== 'string') break;
+      const text = item.namedChildren.filter((child) => child.type === 'string_content').map((child) => child.text).join('');
+      if (/[\s'"]/.test(text) || text === '') break;
+      words.push(text);
+    }
+    if (words[1] === '-m' && words[2]) commands.add(words.join(' '));
+  });
+  return { commands: [...commands].sort(), built: 0 };
 }
 
 function walkNamed(root, visit) {
@@ -884,20 +1004,101 @@ function collectScript(root) {
     const fn = node.childForFieldName('function');
     if (!fn) return;
     if (isResolveCall(fn)) {
-      const literal = jsString(node.childForFieldName('arguments')?.namedChildren[0] ?? null);
-      if (literal != null) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node), locates: true });
+      const literal = jsString(firstArgument(node));
+      if (literal != null) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node), locates: true, ...(optionalCall(node) ? { optional: true } : {}) });
       return;
     }
     const isImport = fn.type === 'import';
     const isRequire = fn.type === 'identifier' && fn.text === 'require';
     if (!isImport && !isRequire) return;
-    const args = node.childForFieldName('arguments');
-    const first = args?.namedChildren[0] ?? null;
-    const literal = jsString(first);
-    if (literal != null) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node) });
-    else imports.push({ specifier: first ? first.text : '', kind: 'dynamic', line: lineOf(node) });
+    // A comment beside the argument (import(/* @vite-ignore */ name)) is no
+    // part of it, and a const the argument names holds what it loads.
+    const first = firstArgument(node);
+    const bound = first?.type === 'identifier' ? constValue(root, first.text) : null;
+    const literal = jsString(first) ?? jsString(bound);
+    const optional = optionalCall(node) ? { optional: true } : {};
+    if (literal != null) {
+      imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node), ...optional });
+      return;
+    }
+    // require(join(ROOT, 'package.json')) reads the manifest for its fields;
+    // it loads no module.
+    if (manifestPath(bound ?? first)) {
+      imports.push({ specifier: 'package.json', kind: 'manifest', line: lineOf(node) });
+      return;
+    }
+    // import(COMMANDS[name]), or import(path) after const path =
+    // COMMANDS[name], where COMMANDS is a const object literal of paths:
+    // every path the table holds is one the call may load.
+    const table = tableValues(root, first);
+    if (table.length > 0) {
+      for (const specifier of table) imports.push({ specifier, kind: 'dynamic-literal', line: lineOf(node), table: true });
+      return;
+    }
+    imports.push({ specifier: first ? first.text : '', kind: 'dynamic', line: lineOf(node) });
   });
   return imports;
+}
+
+// The first argument of a call, past any comment beside it.
+function firstArgument(call) {
+  return call.childForFieldName('arguments')?.namedChildren.find((child) => child.type !== 'comment') ?? null;
+}
+
+// A load the code is ready to go without: inside a try, or with a .catch on
+// what it returns.
+function optionalCall(call) {
+  if (call.parent?.type === 'member_expression' && call.parent.childForFieldName('property')?.text === 'catch') return true;
+  for (let node = call.parent; node != null; node = node.parent) {
+    if (node.type === 'try_statement') return true;
+    if (node.type === 'function_declaration' || node.type === 'arrow_function' || node.type === 'function_expression' || node.type === 'method_definition') return false;
+  }
+  return false;
+}
+
+// join(ROOT, 'package.json') and its kin: a path call whose last argument
+// is a package.json.
+function manifestPath(node) {
+  if (node?.type !== 'call_expression') return false;
+  const name = node.childForFieldName('function')?.text ?? '';
+  if (!/(^|\.)(join|resolve)$/.test(name)) return false;
+  const args = node.childForFieldName('arguments')?.namedChildren.filter((child) => child.type !== 'comment') ?? [];
+  const last = jsString(args[args.length - 1] ?? null);
+  return last != null && /(^|\/)package\.json$/.test(last);
+}
+
+/**
+ * The string values of the const object literal a dynamic import's argument
+ * looks up: TABLE[key] itself, or a const bound to TABLE[key]. Empty when
+ * the argument is anything else, or the name is declared more than once.
+ */
+function tableValues(root, arg) {
+  let lookup = arg;
+  if (lookup?.type === 'identifier') lookup = constValue(root, lookup.text);
+  if (lookup?.type !== 'subscript_expression') return [];
+  const object = lookup.childForFieldName('object');
+  if (object?.type !== 'identifier') return [];
+  const table = constValue(root, object.text);
+  if (table?.type !== 'object') return [];
+  const values = [];
+  for (const pair of table.namedChildren) {
+    if (pair.type !== 'pair') continue;
+    const value = jsString(pair.childForFieldName('value'));
+    if (value != null && !values.includes(value)) values.push(value);
+  }
+  return values;
+}
+
+// The value a const declares for a name, when the file declares it once.
+function constValue(root, name) {
+  const found = [];
+  walkNamed(root, (node) => {
+    if (node.type !== 'variable_declarator' || node.childForFieldName('name')?.text !== name) return;
+    const declaration = node.parent;
+    if (declaration?.type === 'lexical_declaration' && declaration.children.some((child) => child.type === 'const')) found.push(node.childForFieldName('value'));
+    else found.push(null);
+  });
+  return found.length === 1 ? found[0] : null;
 }
 
 // require.resolve('@scope/pkg/json/x.json') and import.meta.resolve(...) load

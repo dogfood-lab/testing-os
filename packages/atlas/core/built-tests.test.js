@@ -24,7 +24,8 @@ after(() => {
 
 function runs(file) {
   const door = mapped.doors.find((entry) => entry.file === file);
-  return door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path).sort();
+  // A build runs none of what it builds.
+  return door.runs.filter((run) => run.runKind !== 'checks' && !run.built).map((run) => run.path).sort();
 }
 
 describe('a test run of a build\'s output', () => {

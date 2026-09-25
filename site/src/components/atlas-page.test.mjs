@@ -113,7 +113,8 @@ test('the sentences are the ones the committed markdown carries', () => {
     'swarm (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, ingest, report, schemas and verify, writes to dogfood/roadmap/, indexes/, policies/repos/ and records/, and to swarms/control-plane.db, which is not tracked, and runs git.',
     'Read those in order to follow one dogfood submission end to end.',
     'Regenerate with npx --yes @dogfood-lab/atlas map.',
-    'Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.',
+    // Identifiers are code on both, the backticks and code tags dropped here.
+    'Inside packages/ingest/run.js, ingest does, in order: logStage (dogfood-swarm), isDuplicate, load-context.js (3 steps), verify (verify), writeRecord and rebuildIndexes.',
   ]) {
     assert.ok(text.includes(sentence), sentence);
     assert.ok(markdown.includes(sentence), `the markdown twin says it too: ${sentence}`);
@@ -219,12 +220,13 @@ test('the order of work sits under step 1, as the markdown nests it', () => {
   const expected = page.sequences.reduce((sum, sequence) => sum + 1 + sequence.inner.length, 0);
   assert.equal(inside.length, expected, 'one item per sequence and per inner function');
   const [first] = page.sequences;
-  assert.ok(plain(inside[0]).startsWith(`Inside ${first.file}, ${first.phrase} does, in order:`), plain(inside[0]));
+  assert.ok(plain(inside[0]).startsWith(`Inside ${first.file}, ${first.phrase.replace(/`/g, '')} does, in order:`), plain(inside[0]));
   const blob = `https://github.com/dogfood-lab/testing-os/blob/${page.commit}/`;
   assert.ok(inside[0].includes(`<a href="${blob}${first.file}"><code>${first.file}</code></a>`), 'the file links to the mapped commit');
   for (const step of steps.slice(1)) assert.equal(step.includes('<ol>'), false, 'only step 1 carries the order of work');
   const lines = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8').split(/\r?\n/);
-  assert.ok(lines.includes(`   1. ${plain(inside[0])}`), 'the markdown nests it the same way');
+  // Its code spans read as their text, as the site's code tags do.
+  assert.ok(lines.map((line) => line.replaceAll('`', '')).includes(`   1. ${plain(inside[0])}`), 'the markdown nests it the same way');
 });
 
 test('a called function reads as a list from eight steps and as a sentence up to seven', () => {
@@ -428,6 +430,44 @@ test('a stamped block, the door a reading starts at, and a door with no path rea
   assert.ok(started.includes('Read those in order to follow one pull request end to end.'), 'the start door names the noun');
   const none = render.renderPage({ ...page, startDoor: ci.id, startHere: [], startNote: 'CI runs no code this map can follow, so there is no path of files to read in order.' }, { repo: page.repo });
   assert.ok(none.includes('<h2>Where to start</h2>\n<p>CI runs no code this map can follow, so there is no path of files to read in order.</p></section>'), 'no path');
+  const one = plain(render.renderPage({ ...page, startDoor: ci.id, startHere: ['packages/atlas/cli.js'], startReason: undefined }, { repo: page.repo }));
+  assert.ok(one.includes('Start at packages/atlas/cli.js to follow one pull request end to end.'), 'one file is said in the singular');
+  assert.ok(!one.includes('Read those in order to follow one pull request'), 'one file is no list');
+});
+
+test('a build no release ships is said as a build, in the steps and among the other doors', () => {
+  const ci = page.doors.find((door) => door.name === 'CI');
+  const doors = page.doors.map((door) => (door === ci ? { ...door, builds: ['packages/schemas/src/index.ts'], sends: [] } : door));
+  const main = plain(render.renderPage({ ...page, doors, mainDoor: ci.id }, { repo: page.repo }));
+  assert.ok(main.includes('builds packages/schemas/src/index.ts'), 'the steps say the build');
+  const other = plain(render.renderPage({ ...page, doors }, { repo: page.repo }));
+  const at = other.indexOf('CI runs', other.indexOf('The other doors'));
+  const paragraph = other.slice(at, at + 400);
+  assert.ok(paragraph.includes('builds packages/schemas/src/index.ts'), paragraph);
+});
+
+test('an identifier in the order of work is code, as the markdown writes it', () => {
+  const sequences = [{ entry: 'main', file: 'bin/tool.js', inner: [], part: null, phrase: '`main`', steps: [{ phrase: '`load_text`' }, { phrase: '`write_report`' }] }];
+  const html = render.renderPage({ ...page, sequences }, { repo: page.repo });
+  assert.ok(html.includes('<code>main</code> does, in order: <code>load_text</code> and <code>write_report</code>.'), 'identifiers render as code');
+});
+
+test('a branch on a loop variable is said with its loop, as the markdown says it', () => {
+  const sequences = [{ entry: 'main', file: 'bin/tool.js', inner: [], part: null, phrase: 'main', steps: [{ phrase: 'start' }, { phrase: 'finish' }],
+    alternatives: [{ over: 'namespaces', when: 'command === head', steps: [{ phrase: 'report' }] }, { when: '!command', steps: [{ phrase: 'usage' }] }] }];
+  const html = render.renderPage({ ...page, sequences }, { repo: page.repo });
+  assert.ok(html.includes('Or, for an entry of <code>namespaces</code> where <code>command === head</code>, main does report instead.'), 'the loop is said');
+  assert.ok(html.includes('Or, when <code>!command</code>, main does usage instead.'), 'a plain branch is unchanged');
+});
+
+test('a place only gated work writes is said under its gate, in the steps and among the other doors', () => {
+  const ci = page.doors.find((door) => door.name === 'CI');
+  const doors = page.doors.map((door) => (door === ci ? { ...door, landingsHeld: [{ lead: 'on a schedule or by hand', places: ['indexes/'], when: 'on a schedule or by hand' }] } : door));
+  const main = plain(render.renderPage({ ...page, doors, mainDoor: ci.id }, { repo: page.repo }));
+  assert.ok(main.includes('On a schedule or by hand, it writes to indexes/.'), 'the steps say the gate');
+  const other = plain(render.renderPage({ ...page, doors }, { repo: page.repo }));
+  const at = other.indexOf('CI runs', other.indexOf('The other doors'));
+  assert.ok(other.slice(at, at + 600).includes('writes to indexes/ on a schedule or by hand'), other.slice(at, at + 600));
 });
 
 test('with nothing written, the never-read section says so rather than that every place is read', () => {

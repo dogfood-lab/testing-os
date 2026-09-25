@@ -21,9 +21,10 @@ describe('a run of a build output', () => {
     roots.push(root);
     const { doors } = mapRepository({ repoPath: root, boundaries: [{ name: 'src', globs: ['src/**'] }] });
     const ci = doors.find((door) => door.file === '.github/workflows/ci.yml');
-    const runs = ci.runs.map((run) => `${run.path} ${run.runKind}`);
-    // npm run build hands tsc the sources, which checks them and runs none.
-    assert.deepEqual(runs, ['src/ checks', 'src/cli.ts executes']);
+    const runs = ci.runs.map((run) => `${run.path} ${run.runKind}${run.built ? ' built' : ''}`);
+    // npm run build hands tsc the sources, which it builds into the outDir
+    // and runs none of.
+    assert.deepEqual(runs, ['src/ executes built', 'src/cli.ts executes']);
     assert.deepEqual(ci.reach.map((entry) => `${entry.boundary}:${entry.files}`), ['src:2']);
   });
 });

@@ -81,7 +81,8 @@ describe('doors on the page, by the conventions of their tools', () => {
     has(py.markdown, '## The other doors', '**Image smoke** runs no file this map can see and opens an issue.');
     // The release action runs on the release that started the run, which it
     // does not create.
-    has(ts.markdown, '## The other doors', '**Release** runs no file this map can see and publishes @doors/core (packages/core) to npm and a container image.');
+    // One package is named by itself; its directory tells two apart.
+    has(ts.markdown, '## The other doors', '**Release** runs no file this map can see and publishes @doors/core to npm and a container image.');
   });
 
   it('never prints a staged variable: a path set at run time is said to be one, last', () => {

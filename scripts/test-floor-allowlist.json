@@ -216,6 +216,66 @@
     {
       "path": "fixtures/atlas/grammar-shapes/src/trailing.test.ts",
       "reason": "Atlas fixture, not a test. It sits inside the grammar-shapes fixture repository that packages/atlas/core/grammar-shapes.test.js maps, where the grammar must read typeof import(...) on a line of its own with a trailing comma, the vitest importOriginal mock shape, and record its specifier. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-order/own-part/test/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-order fixture repository that packages/atlas/adapter/page-start-order.test.js maps, where CI's node --test runs it and it imports the command's entry, so CI runs only tests and the path follows the command people run. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-order/single/test/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-order fixture repository that packages/atlas/adapter/page-start-order.test.js maps, where CI's node --test runs it and it imports the command's entry, so CI runs only tests and the path follows the command people run. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-order/imports/test/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-order fixture repository that packages/atlas/adapter/page-start-order.test.js maps, where CI's node --test runs it and it imports one command module, so CI runs only tests and the path follows the command people run. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/build-starts/tsup/test/run.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the build-starts fixture repository that packages/atlas/adapter/page-build-starts.test.js maps, where CI's node --test runs it beside a build of the package, so the path must start at the package's entry rather than at a test. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/build-starts/tsc/test/run.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the build-starts fixture repository that packages/atlas/adapter/page-build-starts.test.js maps, where CI's node --test runs it beside a build of the package, so the path must start at the package's entry rather than at a test. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/build-starts/vite/test/run.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the build-starts fixture repository that packages/atlas/adapter/page-build-starts.test.js maps, where CI's node --test runs it beside a build of the package, so the path must start at the package's entry rather than at a test. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-dead-ends/gate/test/work.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-dead-ends fixture repository that packages/atlas/adapter/page-start-dead-ends.test.js maps, where CI's node --test runs it beside a gate script that imports nothing, so the path must go through it into src/ rather than end on the gate. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-order/checks-too/test/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-order fixture repository that packages/atlas/adapter/page-start-order.test.js maps, where CI's node --test runs it beside a lint of src/, so the page must say CI runs only tests and checks. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/turbo-runs/packages/core/test/shape.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the turbo-runs fixture repository that packages/atlas/core/turbo-runs.test.js maps, where turbo runs the core member's test script, node --test test/, so CI must count it among the files it runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/vitest-projects/packages/a/src/a.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the vitest-projects fixture repository that packages/atlas/core/vitest-projects.test.js maps, where the root vitest config hands the run to each package's own config or vitest's defaults, and whether this file is selected is the point. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/vitest-projects/packages/b/test/b.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the vitest-projects fixture repository that packages/atlas/core/vitest-projects.test.js maps, where the root vitest config hands the run to each package's own config or vitest's defaults, and whether this file is selected is the point. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/test-spawn-joined/tests/search.test.mjs",
+      "reason": "Atlas fixture, not a test. It sits inside the test-spawn-joined fixture repository that packages/atlas/core/test-spawn-joined.test.js maps, where it runs scripts/query.mjs through a command line held in a const, so the map must read that spawn. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/private-command/test/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the private-command fixture repository that packages/atlas/adapter/page-private-command.test.js maps, where CI's node --test runs it, so the path follows the command a private package declares. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/unrun-tests/test/app.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the unrun-tests fixture repository that packages/atlas/adapter/page-unrun-tests.test.js maps, where CI runs one test by name and not the other, so the page must name the one no workflow runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/unrun-tests/test/version.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the unrun-tests fixture repository that packages/atlas/adapter/page-unrun-tests.test.js maps, where CI runs one test by name and not the other, so the page must name the one no workflow runs. It holds no test and is never meant to run."
     }
   ]
 }

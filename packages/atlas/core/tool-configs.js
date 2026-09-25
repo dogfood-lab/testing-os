@@ -282,6 +282,20 @@ export function tscOutput(repo, path) {
   return { config: path, outDir: options.outDir, rootDir };
 }
 
+/**
+ * Whether tsc run on a config writes JavaScript somewhere a later step can
+ * load it: an outDir, the config's or the flag's, and no noEmit, the
+ * config's or the flag's. Beside its sources is no build a person names.
+ *
+ * @param {{ outDir?: boolean, noEmit?: boolean }} flags what the command line sets
+ */
+export function tscEmits(repo, path, flags = {}) {
+  if (flags.noEmit) return false;
+  const options = compilerPaths(repo, path);
+  if (options == null || options.noEmit === true) return false;
+  return Boolean(flags.outDir || options.outDir);
+}
+
 function compilerPaths(repo, path, seen = new Set()) {
   if (seen.has(path) || seen.size > 8) return null;
   seen.add(path);
@@ -295,6 +309,7 @@ function compilerPaths(repo, path, seen = new Set()) {
     outDir: typeof options.outDir === 'string' ? join(dir, options.outDir) : undefined,
     rootDir: typeof options.rootDir === 'string' ? join(dir, options.rootDir) : undefined,
     allowJs: typeof options.allowJs === 'boolean' ? options.allowJs : undefined,
+    noEmit: typeof options.noEmit === 'boolean' ? options.noEmit : undefined,
   };
   const bases = (Array.isArray(json.extends) ? json.extends : [json.extends]).filter((item) => typeof item === 'string' && item.startsWith('.'));
   for (const base of bases) {
@@ -303,7 +318,7 @@ function compilerPaths(repo, path, seen = new Set()) {
     if (!target.endsWith('.json')) target = repo.tracked.has(`${target}.json`) ? `${target}.json` : `${target}/tsconfig.json`;
     const inherited = compilerPaths(repo, target, seen);
     if (!inherited) continue;
-    for (const field of ['outDir', 'rootDir', 'allowJs']) if (own[field] === undefined) own[field] = inherited[field];
+    for (const field of ['outDir', 'rootDir', 'allowJs', 'noEmit']) if (own[field] === undefined) own[field] = inherited[field];
   }
   return own;
 }
@@ -392,9 +407,30 @@ export function vitestTargets(repo, cwd, { config, root }) {
       if (excludes) exclude = excludes.complete ? excludes.values : [...VITEST_EXCLUDE, ...excludes.values];
       const dir = read('dir');
       if (dir?.values.length === 1 && root == null) base = join(cwd, dir.values[0]) ?? base;
+      // projects (and the older workspace) hands the run to each project's
+      // own config: a directory, a glob of them, or a config file.
+      const projects = read('projects') ?? read('workspace');
+      if (projects && projects.values.length > 0) {
+        const from = posix.dirname(found) === '.' ? '' : posix.dirname(found);
+        return { config: found, base, include, exclude, projects: vitestProjects(repo, from, projects.values) };
+      }
     }
   }
   return { config: found, base, include, exclude };
+}
+
+// The directories (with a config file, when one is named) the projects of a
+// vitest config stand for, relative to the config's own directory.
+function vitestProjects(repo, from, entries) {
+  const out = [];
+  for (const entry of entries) {
+    if (entry.startsWith('!')) continue;
+    const target = join(from, entry.replace(/\/$/, ''));
+    if (target == null) continue;
+    if (repo.tracked.has(target)) out.push({ dir: posix.dirname(target) === '.' ? '' : posix.dirname(target), config: posix.basename(target) });
+    else for (const dir of repo.directoriesMatching(target)) out.push({ dir, config: null });
+  }
+  return out;
 }
 
 /* ---------- jest ---------- */

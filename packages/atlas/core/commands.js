@@ -8,6 +8,7 @@ import { isCodePath } from './languages.js';
 import { wheelPackages } from './python-manifest.js';
 import { storedText } from './text.js';
 import {
+  tscEmits,
   eslintTargets,
   jestTargets,
   makeRecipes,
@@ -61,7 +62,8 @@ const PY_TOOLS = new Set(['pytest', 'py.test', 'mypy', 'black', 'flake8', 'pylin
 // or compile them, and run none of them. A file one of these reaches is
 // checked, not executed: what it would write when run is not written by the
 // door (core/index.js walks landings from executed runs alone). tsc is one
-// whether or not it emits, since a compiler runs none of the code it builds.
+// when it only checks; a tsc that emits, like tsup and a library's vite
+// build, builds the code, which it still does not run (built runs).
 const CHECKERS = new Set(['ruff', 'mypy', 'checker', 'tsc', 'eslint']);
 // Python modules that only compile what they are handed.
 const PY_COMPILERS = new Set(['py_compile', 'compileall']);
@@ -91,6 +93,9 @@ const VALUES = {
   pylint: ['--rcfile', '--disable', '-d', '--enable', '-e', '-j', '--jobs', '--output-format', '-f', '--ignore', '--ignore-paths', '--ignore-patterns', '--load-plugins', '--output', '--fail-under', '--max-line-length', '--init-hook'],
   bandit: ['-c', '--configfile', '-f', '--format', '-o', '--output', '-x', '--exclude', '-p', '--profile', '-t', '--tests', '-s', '--skip', '-b', '--baseline', '--ini', '--msg-template', '-a', '--aggregate', '--severity-level', '--confidence-level'],
   tsc: ['-p', '--project', '--outDir', '--rootDir', '--target', '-t', '--module', '-m', '--lib', '--jsx', '--declarationDir', '--tsBuildInfoFile', '--moduleResolution', '--types', '--baseUrl', '--outFile', '--generateTrace', '--locale'],
+  next: ['-p', '--port', '-H', '--hostname', '--experimental-debug-memory-usage', '-d', '--dir'],
+  turbo: ['--filter', '-F', '--concurrency', '--cache-dir', '--log-order', '--output-logs', '--env-mode', '--ui', '--log-prefix'],
+  tsup: ['--format', '-d', '--out-dir', '--target', '--config', '--external', '--tsconfig', '--platform', '--global-name', '--inject', '--onSuccess'],
   vite: ['-c', '--config', '--base', '-m', '--mode', '--outDir', '--assetsDir', '-l', '--logLevel', '--ssr', '--target', '--port'],
   vitest: ['-c', '--config', '-r', '--root', '--dir', '--project', '-t', '--testNamePattern', '--reporter', '--outputFile', '--environment', '--pool', '--shard', '--mode', '--exclude', '--silent', '--maxWorkers', '--minWorkers', '--testTimeout', '--hookTimeout', '--bail', '--retry', '--changed'],
   jest: ['-c', '--config', '--rootDir', '--roots', '-t', '--testNamePattern', '--testPathPattern', '--testPathIgnorePatterns', '--reporters', '--outputFile', '-w', '--maxWorkers', '--selectProjects', '--shard', '--coverageDirectory', '--testMatch', '--testRegex', '--testEnvironment', '--testTimeout', '--env', '--changedSince'],
@@ -378,9 +383,14 @@ export function better(a, b) {
     }
   }
   const runKind = a.runKind === 'checks' && b.runKind === 'checks' ? 'checks' : 'executes';
+  // A file only built, or built and checked, is built; one anything runs is run.
+  const ran = (entry) => entry.runKind !== 'checks' && !entry.built;
+  const built = (a.built || b.built) && !ran(a) && !ran(b);
   const passes = (a.passes ?? []).filter((flag) => (b.passes ?? []).includes(flag));
   const out = { ...pick, runKind };
   delete out.passes;
+  delete out.built;
+  if (built) out.built = true;
   if (passes.length > 0) out.passes = passes;
   // A binary either way builds is built, whatever else checks it.
   if (a.builds || b.builds) out.builds = true;
@@ -513,6 +523,12 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     if (first >= tokens.length) return;
     for (const target of npmTargets(tokens, dir, repo)) npmScript(target.dir, target.script, frame);
     const argv = tokens.slice(first);
+    // pnpm vitest run, with no script named vitest, is vitest.
+    const binary = runnerBinary(argv, dir, repo);
+    if (binary != null) {
+      interpret(argv.slice(binary), dir, frame);
+      return;
+    }
     // npm exec, pnpm dlx and their kin run a package binary the way npx does.
     if (PACKAGE_RUNNERS.has(argv[0]) && ['exec', 'x', 'dlx'].includes(argv[1])) {
       handlers.npx(['npx', ...argv.slice(2)], dir, frame);
@@ -683,6 +699,22 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       } else file(token.replace(/::.*$/, ''), dir, frame, { directories: true });
     }
     return parsed;
+  }
+
+  // The module an import names, as the package's code loads it: a module
+  // file or a package's __init__.py, from the directory the step runs in or
+  // a packaging root.
+  function importedModule(name, dir, frame) {
+    const stem = name.split('.').join('/');
+    for (const base of [dir, dir ? `${dir}/src` : 'src', ...packagingRoots(repo)]) {
+      for (const candidate of [`${stem}.py`, `${stem}/__init__.py`]) {
+        const path = pathFrom(base, candidate);
+        if (path != null && repo.tracked.has(path)) {
+          record(stamp({ path }, frame));
+          return;
+        }
+      }
+    }
   }
 
   function pythonModule(name, rest, dir, frame) {
@@ -942,7 +974,11 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     python(argv, dir, frame) {
       for (let i = 1; i < argv.length; i += 1) {
         const token = argv[i];
-        if (token === '-c') return;
+        // python -c "..." runs the modules its code imports.
+        if (token === '-c') {
+          if (i + 1 < argv.length) for (const name of inlineImports(argv[i + 1])) importedModule(name, dir, frame);
+          return;
+        }
         if (token === '-m') {
           if (i + 1 < argv.length) pythonModule(argv[i + 1], argv.slice(i + 2), dir, frame);
           return;
@@ -1155,9 +1191,56 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         const found = tscTargets(repo, dir, project, { build });
         if (found.config == null) continue;
         const tool = `tsc ${found.config}`;
-        directoryRuns([...found.directories].sort(), frame, tool);
-        for (const pattern of found.patterns) matched(repo.compact(repo.filesMatching('', pattern.globs, pattern.exclude)), frame, tool);
+        // A compile that emits to an outDir builds what it compiles.
+        const emits = tscEmits(repo, found.config, { noEmit: parsed.flags.has('--noEmit'), outDir: valueOf(parsed, '--outDir') != null });
+        const next = emits ? { ...frame, runKind: 'executes', built: true } : frame;
+        directoryRuns([...found.directories].sort(), next, tool);
+        for (const pattern of found.patterns) matched(repo.compact(repo.filesMatching('', pattern.globs, pattern.exclude)), next, tool);
       }
+    },
+    // next build and next dev run the app's next.config.* and the routes
+    // under its app/, src/app/, pages/ and src/pages/; next start serves what
+    // a build made, and next lint checks the app.
+    next(argv, dir, frame) {
+      const parsed = split(argv, 1, VALUE_SETS.next);
+      const [sub, root] = [parsed.positional[0], parsed.positional[1]];
+      if (!['build', 'dev', 'lint'].includes(sub)) return;
+      const at = root != null ? pathFrom(dir, root) : dir;
+      if (at == null) return;
+      const chain = via(frame, `next ${sub}`);
+      const kind = sub === 'lint' ? { ...frame, runKind: 'checks' } : frame;
+      for (const name of ['next.config.js', 'next.config.mjs', 'next.config.cjs', 'next.config.ts', 'next.config.mts']) {
+        const path = pathFrom(at, name);
+        if (path != null && repo.tracked.has(path)) record(stamp({ path, matched: true }, kind, chain));
+      }
+      for (const name of ['app', 'src/app', 'pages', 'src/pages']) {
+        const path = pathFrom(at, name);
+        if (path != null && repo.dirs.has(path)) record(stamp({ path: `${path}/`, directory: true, matched: true }, kind, chain));
+      }
+    },
+    // turbo run <task...> (or turbo <task...>) runs each task's script in
+    // every workspace member that defines it, or in the members --filter
+    // selects; the order turbo.json's dependsOn gives them is not this map's
+    // to follow, since every member's script runs either way.
+    turbo(argv, dir, frame) {
+      const start = argv[1] === 'run' ? 2 : 1;
+      const parsed = split(argv, start, VALUE_SETS.turbo);
+      const filters = [...(parsed.values.get('--filter') ?? []), ...(parsed.values.get('-F') ?? [])];
+      const members = filters.length > 0 ? [...new Set(filters.flatMap((selector) => pnpmSelected(repo, selector, dir)))] : workspaceDirs(repo);
+      for (const task of parsed.positional) {
+        for (const member of members) {
+          const scripts = repo.manifest(member)?.scripts;
+          if (scripts && typeof scripts[task] === 'string') npmScript(member, task, { ...frame, via: via(frame, `turbo run ${task}`) });
+        }
+      }
+    },
+    // tsup builds the entries it is handed, or its config's literal entry
+    // list, and runs none of them.
+    tsup(argv, dir, frame) {
+      const parsed = split(argv, 1, VALUE_SETS.tsup);
+      const next = { ...frame, runKind: 'executes', built: true };
+      const entries = parsed.positional.length > 0 ? parsed.positional.map((token) => ({ token, from: dir })) : tsupEntries(repo, dir, valueOf(parsed, '--config'));
+      for (const { token, from } of entries) file(token, from, next);
     },
     vitest(argv, dir, frame) {
       const start = ['run', 'watch', 'dev', 'related', 'bench'].includes(argv[1]) ? 2 : 1;
@@ -1165,6 +1248,18 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const found = vitestTargets(repo, dir, { config: valueOf(parsed, '-c', '--config'), root: valueOf(parsed, '-r', '--root') });
       if (found.base == null) return;
       const filters = parsed.positional.map((token) => stripDot(token));
+      if (found.projects) {
+        // Each project runs its own tests, by its own config or vitest's
+        // defaults, from its own directory.
+        for (const project of found.projects) {
+          const own = vitestTargets(repo, project.dir, { config: project.config, root: null });
+          if (own.base == null || own.projects) continue;
+          const files = repo.filesMatching(own.base, own.include, own.exclude)
+            .filter((path) => filters.length === 0 || filters.some((filter) => path.includes(filter)));
+          matched(repo.compact(files), frame, own.config ? `vitest ${own.config}` : `vitest ${found.config}`);
+        }
+        return;
+      }
       const files = repo.filesMatching(found.base, found.include, found.exclude)
         .filter((path) => filters.length === 0 || filters.some((filter) => path.includes(filter)));
       matched(repo.compact(files), frame, found.config ? `vitest ${found.config}` : 'vitest');
@@ -1255,6 +1350,16 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const named = valueOf(parsed, '-c', '--config');
       const configs = named != null ? [pathFrom(dir, named)] : VITE_CONFIGS.map((name) => pathFrom(at, name));
       for (const path of configs) if (path != null && repo.tracked.has(path)) record(stamp({ path, matched: true }, frame, chain));
+      // A library's build bundles the entry its config names, and runs none
+      // of its code.
+      const config = configs.find((path) => path != null && repo.tracked.has(path));
+      const library = sub === 'build' && config != null ? viteLibraryEntries(repo.text(config) ?? '') : [];
+      const lib = { ...frame, runKind: 'executes', built: true };
+      for (const entry of library) {
+        const path = pathFrom(posix.dirname(config) === '.' ? '' : posix.dirname(config), entry);
+        if (path != null && repo.tracked.has(path)) record(stamp({ path, matched: true }, lib, chain));
+      }
+      if (library.length > 0) return;
       const src = pathFrom(at, 'src');
       if (src != null && repo.dirs.has(src)) record(stamp({ path: `${src}/`, directory: true, matched: true }, frame, chain));
     },
@@ -1602,6 +1707,16 @@ function imageStage(words, stages) {
   return { name, workdir: base?.workdir ?? '/', copies: [...(base?.copies ?? [])], entry: base?.entry ?? null, cmd: base?.cmd ?? null };
 }
 
+// The modules the code handed to python -c imports, in order.
+function inlineImports(code) {
+  const names = [];
+  for (const match of String(code).matchAll(/(?:^|[;\n])\s*(?:from\s+([A-Za-z_][\w.]*)\s+import\b|import\s+([A-Za-z_][\w.]*(?:\s*,\s*[A-Za-z_][\w.]*)*))/g)) {
+    if (match[1]) names.push(match[1]);
+    else for (const name of match[2].split(',')) names.push(name.trim());
+  }
+  return [...new Set(names)];
+}
+
 // A word as the shell would read it back as one word.
 function shellWord(word) {
   return /^[\w@%+=:,./-]+$/.test(word) ? word : `'${word.replaceAll("'", "'\\''")}'`;
@@ -1613,7 +1728,44 @@ function stamp(entry, frame, via = frame.via) {
   const out = { ...entry, runKind: frame.runKind ?? 'executes' };
   if (via) out.via = via;
   if (frame.builds) out.builds = true;
+  if (frame.built) out.built = true;
   return out;
+}
+
+// The entries a tsup config lists as string literals: entry: ['src/index.ts']
+// or entry: { index: 'src/index.ts' }, relative to the config's directory.
+function tsupEntries(repo, dir, named) {
+  const names = named != null ? [named] : ['tsup.config.ts', 'tsup.config.mts', 'tsup.config.cts', 'tsup.config.js', 'tsup.config.mjs', 'tsup.config.cjs', 'tsup.config.json'];
+  for (const name of names) {
+    const path = pathFrom(dir, name);
+    if (path == null || !repo.tracked.has(path)) continue;
+    const text = repo.text(path) ?? '';
+    const at = text.search(/\bentry["']?\s*:/);
+    if (at === -1) return [];
+    const open = text.slice(at).search(/[[{'"]/);
+    if (open === -1) return [];
+    const start = at + open;
+    const end = text[start] === '[' ? text.indexOf(']', start) : text[start] === '{' ? text.indexOf('}', start) : text.indexOf(text[start], start + 1);
+    const body = text.slice(start, end === -1 ? undefined : end + 1);
+    const from = posix.dirname(path) === '.' ? '' : posix.dirname(path);
+    return [...body.matchAll(/['"]([^'"]+\.[cm]?[jt]sx?)['"]/g)].map((match) => ({ token: match[1], from }));
+  }
+  return [];
+}
+
+// The entries a vite config's build.lib names as string literals, or none
+// when it builds no library.
+function viteLibraryEntries(text) {
+  const at = text.search(/\blib\s*:\s*\{/);
+  if (at === -1) return [];
+  const open = text.indexOf('{', at);
+  const close = closingBrace(text, open);
+  const body = text.slice(open, close === -1 ? undefined : close + 1);
+  const entry = body.search(/\bentry\s*:/);
+  if (entry === -1) return [];
+  const rest = body.slice(entry);
+  const stop = rest.search(/,\s*[A-Za-z_]+\s*:|}\s*$/);
+  return [...(stop === -1 ? rest : rest.slice(0, stop)).matchAll(/['"]([^'"]+\.[cm]?[jt]sx?)['"]/g)].map((match) => match[1]);
 }
 
 // The rule a tool's first word selects, or null for a word this reader does
@@ -1641,7 +1793,7 @@ function toolOf(word) {
   if (name === 'gdlint' || name === 'gdformat') return 'gdtoolkit';
   if (name === 'cargo') return 'cargo';
   if (name === 'tauri') return 'tauri';
-  const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro', 'vite'];
+  const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'tsup', 'turbo', 'next', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro', 'vite'];
   return known.includes(name) ? name : null;
 }
 
@@ -1789,6 +1941,12 @@ export function commandLines(text, globs = null) {
     } else if (/\s/.test(ch)) {
       if (ch === '\n') endLine();
       else endWord();
+    } else if (ch === '(' && inWord && /^[A-Za-z_][A-Za-z0-9_]*\+?=$/.test(word)) {
+      // NAME=( a b c ) is an array of values, one word; the lines inside it
+      // are no commands (a list of manifests jq later reads).
+      const end = closingParen(source, i);
+      word += '()';
+      i = end;
     } else if (';&|()`{}'.includes(ch)) {
       endLine();
     } else {
@@ -1965,6 +2123,28 @@ function pnpmTargets(args, dir, repo) {
   if (filters.length > 0) dirs = filters.flatMap((selector) => pnpmSelected(repo, selector, prefix));
   else if (recursive) dirs = workspaceDirs(repo);
   return [...new Set(dirs)].map((target) => ({ dir: target, script }));
+}
+
+/**
+ * Where a tool's name stands in pnpm <name> and yarn <name> when the package
+ * has no script of that name: both run the package binary of that name, as
+ * pnpm exec does. Null for a script, one of the manager's own commands, a
+ * word this map knows no tool for, and a command moved to another member.
+ */
+function runnerBinary(argv, dir, repo) {
+  if (argv[0] !== 'pnpm' && argv[0] !== 'yarn') return null;
+  const own = argv[0] === 'pnpm' ? PNPM_COMMANDS : YARN_COMMANDS;
+  let i = 1;
+  for (; i < argv.length && argv[i].startsWith('-'); i += 1) {
+    const flag = argv[i].split('=')[0];
+    if (['-C', '--dir', '--filter', '-F', '--filter-prod', '--cwd', '-r', '--recursive'].includes(flag)) return null;
+    if (!argv[i].includes('=') && PNPM_VALUE_FLAGS.has(flag)) i += 1;
+  }
+  const command = argv[i];
+  if (command == null || own.has(command) || RUN_ALIASES.has(command) || TEST_ALIASES.has(command) || LIFECYCLE.has(command)) return null;
+  const scripts = repo.manifest(dir)?.scripts;
+  if (scripts && typeof scripts === 'object' && typeof scripts[command] === 'string') return null;
+  return toolOf(command) != null ? i : null;
 }
 
 function pnpmSelected(repo, selector, prefix) {

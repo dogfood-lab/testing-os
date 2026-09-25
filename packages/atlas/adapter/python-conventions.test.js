@@ -101,10 +101,10 @@ describe('python resolution', () => {
     assert.equal(trainkit.unresolvedSites, 0);
   });
 
-  it('leaves a name that is local only by a sys.path insert unresolved, since nothing says which it is', () => {
-    // scripts/smoke.py imports helpers, which is scripts/helpers.py only when
-    // the script's own directory is on the path; it is not declared.
-    assert.equal(part('scripts').unresolvedSites, 1);
+  it('resolves a module beside a script, whose own directory is first on its path', () => {
+    // scripts/smoke.py imports helpers: run as a script, scripts/ is first on
+    // its import path, so helpers is scripts/helpers.py.
+    assert.equal(part('scripts').unresolvedSites, 0);
     assert.equal('externalNames' in part('scripts'), false);
     assert.equal(part('scripts').externals, 0);
   });
@@ -144,6 +144,7 @@ describe('the order of work through objects', () => {
       'Trainer → trainkit/trainer.py',
       'train (Trainer) → trainkit/trainer.py',
       'main → trainkit/console.py',
+      'handle → scripts/helpers.py',
     ]);
   });
 
@@ -169,6 +170,8 @@ describe('own tests across directories', () => {
     assert.equal(section(mapped.markdown, '## What no test touches'), [
       '## What no test touches',
       '- **bin** is imported by no test.\n- **web** is imported by no test.',
+      // The Smoke workflow runs the script, never the tests.
+      '2 test files run in no workflow: tests/test_smoke.py and tests/test_trainer.py.',
     ].join('\n\n') + '\n');
   });
 
@@ -214,27 +217,30 @@ describe('the page on a Python package', () => {
       '## What happens through Smoke',
       [
         '1. The workflow runs scripts/smoke.py in scripts.',
-        '   1. Inside scripts/smoke.py, main does, in order: trainer (trainkit), train (Trainer) and main.',
+        '   1. Inside scripts/smoke.py, `main` does, in order: `Trainer` (trainkit), `train` (Trainer), `main` and `handle`.',
         '2. That reaches trainkit (5 files).',
       ].join('\n'),
     ].join('\n\n') + '\n');
     const steps = mapped.page.sequences[0].steps;
-    assert.deepEqual(steps.map((step) => step.receiver ?? null), [null, 'Trainer', null]);
+    assert.deepEqual(steps.map((step) => step.receiver ?? null), [null, 'Trainer', null, null]);
   });
 
   it('starts where the door\'s code opens the package and follows the name it imports to its file', () => {
+    // Inside the package, the path goes on to what trainer.py uses.
     assert.deepEqual(mapped.page.startHere, [
       '.github/workflows/smoke.yml',
       'scripts/smoke.py',
       'trainkit/__init__.py',
       'trainkit/trainer.py',
+      'trainkit/datasets.py',
     ]);
   });
 
   it('counts declared dependencies apart from what could not be resolved', () => {
-    assert.deepEqual(mapped.page.limits.slice(0, 2), [
+    // Every other site resolves: helpers is the module beside the script.
+    assert.ok(!mapped.page.limits.some((line) => line.includes('could not be resolved')), mapped.page.limits.join(' | '));
+    assert.deepEqual(mapped.page.limits.slice(0, 1), [
       '2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.',
-      '1 import site could not be resolved.',
     ]);
   });
 });

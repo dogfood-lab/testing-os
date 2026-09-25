@@ -1,0 +1,14 @@
+name: Publish to npm
+on:
+  release:
+    types: [published]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm publish --filter @s/core --no-git-checks --access public
+      - run: pnpm --filter @s/ui publish --no-git-checks

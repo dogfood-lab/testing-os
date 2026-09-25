@@ -31,7 +31,8 @@ describe('where to start reading a Rust command whose CI only tests it', () => {
 
   it('reads a file cargo test runs for its own unit tests as a test, so the path follows the command', () => {
     assert.equal(data.startDoor, 'Cargo.toml#mile');
-    assert.deepEqual(data.startHere, ['src/main.rs', 'src/lib.rs']);
+    // Inside the part, the path goes on to the module main calls into.
+    assert.deepEqual(data.startHere, ['src/main.rs', 'src/lib.rs', 'src/game.rs']);
     // CI only tests it, so nothing here ships the binary.
     assert.equal(data.startReason, 'This path follows mile (a command built from the repository root, which nothing ships) from its entry, since CI runs only tests.');
   });
@@ -53,7 +54,9 @@ describe('where to start reading a CI that checks a Tauri crate and runs its uni
     roots.push(root);
     const data = start(root, parse(readFileSync(join(FIXTURE, 'atlas', 'boundaries.yaml'), 'utf8')).boundaries);
     assert.equal(data.startDoor, '.github/workflows/ci.yml');
-    assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'app/scripts/bundle.mjs']);
+    // The bundling script imports nothing and writes nothing, so the path
+    // goes on to the web half vite builds, never ending on the script.
+    assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'app/src/main.js', 'app/src/view.js']);
   });
 
   it('passes over a crate entry CI only checks, in the part the web half is built from', () => {
@@ -65,6 +68,6 @@ describe('where to start reading a CI that checks a Tauri crate and runs its uni
       { name: 'app', globs: ['app/**'], role: 'code' },
       { name: 'root', globs: ['*', '.github/**'], role: 'config' },
     ]);
-    assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'app/scripts/bundle.mjs']);
+    assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'app/src/main.js', 'app/src/view.js']);
   });
 });

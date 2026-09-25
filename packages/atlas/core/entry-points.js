@@ -107,13 +107,9 @@ export function manifestCommands(repoPath, tracked, scripts = []) {
       if (path) out.push({ kind: 'command', name, manifest, path, ...privately });
       else if (unplaced) out.push({ kind: 'command', name, manifest, path: null, unplaced, ...privately });
     }
-    if (dir !== '' || typeof pkg.name !== 'string' || pkg.name === '' || pkg.private === true) continue;
-    const specs = mainSpecs(pkg);
-    const loaded = specs.map((spec) => declaredFile(repoPath, dir, spec, tracked)).find(Boolean);
-    const unplaced = loaded ? null : specs.map((spec) => unplacedFile(repoPath, dir, spec, tracked)).find(Boolean);
-    const exported = exportSpecs(pkg).map((spec) => declaredFile(repoPath, dir, spec, tracked)).filter(Boolean);
-    if (loaded) out.push({ kind: 'package', name: pkg.name, manifest, path: loaded, paths: [...new Set([loaded, ...exported])].sort(compare) });
-    else if (unplaced) out.push({ kind: 'package', name: pkg.name, manifest, path: null, unplaced });
+    if (dir !== '') continue;
+    const entry = packageEntry(repoPath, dir, pkg, tracked);
+    if (entry) out.push(entry);
   }
   for (const script of scripts) {
     if (!isTestMaterial(script.manifest)) out.push({ kind: 'command', name: script.name, manifest: script.manifest, path: script.path });
@@ -130,6 +126,32 @@ export function manifestCommands(repoPath, tracked, scripts = []) {
   }
   const unique = new Map(out.map((entry) => [`${entry.manifest}\0${entry.name}\0${entry.kind}${entry.example ? '\0example' : ''}`, entry]));
   return [...unique.values()].sort((a, b) => compare(a.manifest, b.manifest) || compare(a.name, b.name) || compare(a.kind, b.kind));
+}
+
+/**
+ * The package a workspace member is, as the root's is: the file its main or
+ * exports["."] loads, with every file an exports subpath names. Null for a
+ * member that is private, unnamed or not tracked. index.js adds one for each
+ * member a workflow publishes by name.
+ *
+ * @returns {null | { kind: 'package', name: string, manifest: string, path: string|null, paths?: string[], unplaced?: string }}
+ */
+export function memberPackage(repoPath, dir, tracked) {
+  const manifest = dir ? `${dir}/package.json` : 'package.json';
+  const pkg = readManifest(repoPath, manifest, tracked);
+  return pkg ? packageEntry(repoPath, dir, pkg, tracked) : null;
+}
+
+function packageEntry(repoPath, dir, pkg, tracked) {
+  if (typeof pkg.name !== 'string' || pkg.name === '' || pkg.private === true) return null;
+  const manifest = dir ? `${dir}/package.json` : 'package.json';
+  const specs = mainSpecs(pkg);
+  const loaded = specs.map((spec) => declaredFile(repoPath, dir, spec, tracked)).find(Boolean);
+  const unplaced = loaded ? null : specs.map((spec) => unplacedFile(repoPath, dir, spec, tracked)).find(Boolean);
+  const exported = exportSpecs(pkg).map((spec) => declaredFile(repoPath, dir, spec, tracked)).filter(Boolean);
+  if (loaded) return { kind: 'package', name: pkg.name, manifest, path: loaded, paths: [...new Set([loaded, ...exported])].sort(compare) };
+  if (unplaced) return { kind: 'package', name: pkg.name, manifest, path: null, unplaced };
+  return null;
 }
 
 // The name cargo gives an example found by convention: examples/x.rs and
@@ -282,7 +304,29 @@ function fromPackage(repoPath, root, manifest, tracked) {
     const resolved = rel ? resolveDeclaredPath(repoPath, rel, tracked) : null;
     if (resolved) found.add(resolved);
   }
+  for (const path of nextEntries(pkg, root, tracked)) found.add(path);
   return [...found].sort();
+}
+
+const NEXT_ROUTE = /\/(page|layout|route|template|default|loading|error|not-found)\.[cm]?[jt]sx?$/;
+
+/**
+ * A Next.js app's ways in: every page, layout and route under app/ or
+ * src/app/ (the App Router), and every file under pages/ or src/pages/,
+ * which Next serves as a route. Nothing when the package does not depend on
+ * next.
+ */
+export function nextEntries(pkg, root, tracked) {
+  const deps = { ...(pkg?.dependencies ?? {}), ...(pkg?.devDependencies ?? {}) };
+  if (typeof deps.next !== 'string') return [];
+  const at = (dir) => (root ? `${root}/${dir}/` : `${dir}/`);
+  const out = [];
+  for (const path of tracked) {
+    if (isTestFile(path) || !/\.[cm]?[jt]sx?$/.test(path)) continue;
+    if ((path.startsWith(at('app')) || path.startsWith(at('src/app'))) && NEXT_ROUTE.test(path)) out.push(path);
+    else if ((path.startsWith(at('pages')) || path.startsWith(at('src/pages'))) && !path.endsWith('.d.ts')) out.push(path);
+  }
+  return out.sort();
 }
 
 function collectStrings(value, out) {

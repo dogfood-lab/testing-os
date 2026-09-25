@@ -92,7 +92,10 @@ function commonDirectory(paths) {
 function roleByFiles(paths, kinds) {
   if (paths.some((path) => SITE_CONFIG.test(path) || SITE_CONTENT.test(path))) return 'site';
   if (paths.some((path) => WORKFLOW.test(path))) return 'config';
+  // An npm package with a command of its own (a wrapper: package.json, bin/
+  // and its READMEs) is code, however many READMEs it carries.
   const root = commonDirectory(paths);
+  if (paths.includes(`${root}package.json`) && paths.some((path) => path.startsWith(`${root}bin/`) && CODE_EXT.has(extensionOf(baseName(path))))) return 'code';
   const source = paths.some((path, index) => kinds[index] === 'code' && (path.startsWith(`${root}src/`) || path.startsWith(`${root}lib/`)));
   return source ? 'code' : null;
 }
@@ -121,7 +124,10 @@ function isData(paths) {
   const home = commonDirectory(kept).replace(/\/$/, '');
   if (SETTINGS_DIRS.has(home.slice(home.lastIndexOf('/') + 1).toLowerCase())) return false;
   const data = bases.filter((base) => !SETTINGS_NAME.test(base) && (DATA_EXT.has(extensionOf(base)) || IMAGE_EXT.has(extensionOf(base))));
-  return data.length * 2 > kept.length;
+  // Reports a run writes (a JSON and a Markdown file per run) are data too:
+  // the prose beside as many data files is the same output read by people.
+  const prose = bases.filter((base) => /\.mdx?$/i.test(base) && !/^readme/i.test(base));
+  return data.length * 2 > kept.length || (data.length > 0 && data.length >= prose.length && (data.length + prose.length) * 2 > kept.length && prose.length > 0 && kept.length >= 4);
 }
 
 /**
@@ -165,5 +171,7 @@ export function roleFor(paths, { manifest = false } = {}) {
   const config = voting.filter((kind) => kind === 'config').length;
   if (docs > voting.length / 2) return 'docs';
   if (config > voting.length / 2) return 'config';
+  // With no code, a tie between docs and config is docs: what people read.
+  if (docs > 0 && docs >= config) return 'docs';
   return 'code';
 }

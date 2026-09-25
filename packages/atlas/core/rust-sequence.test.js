@@ -58,7 +58,7 @@ describe('the order of work in a Rust binary', () => {
   it('says the steps on the page', () => {
     const structure = buildArtifact(mapped, '0'.repeat(40));
     const { markdown } = buildPage({ structure, statistics: {}, document: {}, repoName: 'fixture/rust-sequence' });
-    assert.match(markdown, /Inside src\/main\.rs, main does, in order: load, new \(Engine\), validate, run and draw\./);
-    assert.match(markdown, /Or, when `settings\.help`, main does usage instead\./);
+    assert.match(markdown, /Inside src\/main\.rs, `main` does, in order: `load`, `new` \(Engine\), `validate`, `run` and `draw`\./);
+    assert.match(markdown, /Or, when `settings\.help`, `main` does `usage` instead\./);
   });
 });
