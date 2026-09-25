@@ -1,0 +1,16 @@
+name: Publish wrapper
+on:
+  workflow_dispatch:
+    inputs:
+      tool:
+        description: Wrapper under examples/
+        required: true
+        type: string
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish
+        working-directory: examples/${{ inputs.tool }}
+        run: npm publish --access public
