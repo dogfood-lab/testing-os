@@ -21,7 +21,7 @@
 *AIによる支援を受けたソフトウェアのためのプロトコル、証拠ストア、および学習ループ。*
 
 <!-- version:start -->
-**v1.20.0** — 現在のリリース。変更点は[CHANGELOG.md](CHANGELOG.md)を参照してください。
+**v1.21.0** — 現在のリリース。変更点は[CHANGELOG.md](CHANGELOG.md)を参照してください。
 <!-- version:end -->
 
 📖 **[ハンドブックを読む →](https://dogfood-lab.github.io/testing-os/handbook/)**
@@ -32,15 +32,15 @@
 
 ## これは何ですか
 
-`testing-os`は、AIネイティブなワークフローで、リポジトリの実際のテスト証拠を記録、検証し、そこから学習します。リポジトリを指定すると、すべてのテスト実行は、信頼できるProvenance（来歴）が確認されたレコードとなり、自己申告による合格ではなくなります。
+`testing-os`は、AIネイティブなワークフローで、リポジトリの実際のテスト証拠を記録、検証し、そこから学習します。リポジトリを指定すると、すべてのテスト実行は、信頼できるProvenance（来歴）が確認された記録となり、自己申告による合格ではなくなります。
 
 得られるもの：
 
-- **Provenance（来歴）が確認されたレコード。**すべての提出物は、受け入れられる前に、実際のCI実行に紐付けられます（プロバイダー自身のIDによるキーレス）。その結果、改ざんが検知可能な、追記専用の証拠ストアとなり、単なる「合格」のチェックマークではありません。
-- **制御可能なポリシー契約。**YAMLで「検証済み」と見なすものを宣言します。これは、境界が定められた、評価を実行しない述語DSL（`field`/`op`/`value` + `all`/`any`/`not`/`implies`）であり、リポジトリ全体で強制することができます。ポリシーをリリースする前に、`dogfood-verify lint`でlintを実行します。
-- **並列エージェントスウォームプロトコル。**コードベースに対してマルチエージェント監査を実行し、生の調査結果を再利用可能なパターンとドクトリンに変換します。
-- **ライブステータスサーフェス。**リポジトリごとのレコード、インデックス、およびステータスバッジはすべて、1つの証拠ストアから提供されます。
-- **リポジトリの動作を説明するページ。**Atlasは、リポジトリのワークフローとマニフェスト、実行するツール、インポート、書き込み、および履歴を読み取り、`atlas/README.md`を書き込みます。つまり、何が入力され、何が実行され、どこに保存され、誰が読み取り、何が何に影響を与え、前回から何が変更され、どこから開始するかです。そこに書かれた文章はすべて人間が書いたものではなく、`atlas check`はマップがコードと一致しなくなった場合にCIを失敗させ、`atlas explain <file>`はシステム内の1つのファイルが何であるかを回答し、すべてのプルリクエストには構造的なデルタがコメントとして追加されます。
+- **Provenance（来歴）が確認された記録。**すべての提出物は、受け入れられる前に、実際のCI実行にバインドされます（プロバイダー自身のIDによるキーレス）。その結果、改ざんが検知可能な、追記専用の証拠ストアとなり、単なる「合格」のチェックマークではありません。
+- **制御可能なポリシー契約。**YAMLで「検証済み」と見なすものを宣言します。これは、境界が定められた、評価を実行しない述語DSL（`field`/`op`/`value` + `all`/`any`/`not`/`implies`）であり、リポジトリ全体でそれを強制します。ポリシーをリリースする前に、`dogfood-verify lint`でポリシーをLint（静的解析）します。
+- **並列エージェントスウォームプロトコル。**コードベースに対してマルチエージェント監査を実行し、次に生の調査結果を再利用可能なパターンとドクトリンに変換します。
+- **リアルタイムのステータス表示。**リポジトリごとの記録、インデックス、およびステータスバッジはすべて、1つの証拠ストアから提供されます。
+- **リポジトリの動作方法を示すページ。**Atlasは、リポジトリのワークフローとマニフェスト、実行するツール、インポート、書き込み、および履歴を読み取り、`atlas/README.md`を書き込みます。つまり、何が入力され、何が実行され、どこに保存され、誰が読み取り、何が何に影響を与え、前回から何が変更され、どこから開始するかを示します。そこに書かれた文章は、人が書いたものではありません。`atlas check`は、マップがコードと一致しなくなった場合にCIを失敗させ、`atlas explain <file>`はシステム内の1つのファイルが何であるかを回答し、すべてのプルリクエストには構造的なデルタがコメントとして追加されます。
 
 これは、[Dogfood Lab](https://github.com/dogfood-lab)組織の主要なモノリポジトリであり、8つの`@dogfood-lab/*`パッケージが、1つの`swarm`CLIと1つの`atlas`CLIの基盤となっています。
 
@@ -51,11 +51,11 @@ npm install -g @dogfood-lab/dogfood-swarm
 swarm --help
 ```
 
-独自のレポジトリのテスト証拠をここに記録したいですか？**[`examples/`スターターキット](examples/)**を使用すると、5分で設定できます（`dogfood-report`が提出物をビルドし、`dogfood-init`がワークフローを構築します）。オペレーターガイド、CLIリファレンス、スキーマリファレンス、および統合レシピは、**[ハンドブック](https://dogfood-lab.github.io/testing-os/handbook/)**にあります。バージョンごとの詳細は、[CHANGELOG.md](CHANGELOG.md)にあります。
+独自のリポジトリのテスト証拠をここに記録したいですか？**[`examples/`スターターキット](examples/)**を使用すると、5分で設定できます（`dogfood-report`は提出物をビルドし、`dogfood-init`はワークフローを構築します）。オペレーターガイド、CLIリファレンス、スキーマリファレンス、および統合レシピは、**[ハンドブック](https://dogfood-lab.github.io/testing-os/handbook/)**にあります。バージョンごとの詳細は、[CHANGELOG.md](CHANGELOG.md)にあります。
 
 ## プライベート環境で実行する
 
-パブリックサイトは、Atlasを採用したすべてのパブリックリポジトリをレンダリングします。マシンから出さないようにする必要があるリポジトリの場合、同じエンジンは、永続メモリを備えたコンテナとして提供されます。
+パブリックサイトは、Atlasを採用したすべてのパブリックリポジトリをレンダリングします。マシンから外部に情報を送信する必要がないリポジトリの場合、同じエンジンは、永続的なメモリを持つコンテナとして提供されます。
 
 ```bash
 mkdir -p atlas-data repos
@@ -63,23 +63,23 @@ cp docker/fleet.example.yml atlas-data/fleet.yml   # list your repositories, by 
 docker compose -f docker/compose.example.yml up -d
 ```
 
-`./atlas-data`がメモリです。`fleet.yml`は、すべてのレンダリング、各リポジトリの履歴と状態です。サービスは、メモリが空の状態で起動時に1回マップし、次に`fleet.yml`のスケジュールに従ってマップし、`http://127.0.0.1:8080/`でフリートリストを、`/?repo=owner/name`で各ページを提供します。リストに登録したリポジトリのgitフェッチを除いて、コンテナから何も出力されません。`./atlas-data`を削除すると、すべてが忘れられます。同じイメージは、1つのリポジトリでCLIを実行します。`docker run --rm -v "$PWD:/repo" ghcr.io/dogfood-lab/atlas map`。コマンドを実行すると、ファイル構造は[`docker/README.md`](docker/README.md)にあります。
+`./atlas-data`がメモリです。`fleet.yml`は、すべてのレンダリング、各リポジトリの履歴と状態です。サービスは、メモリが空の状態で起動時に1回マップし、次に`fleet.yml`のスケジュールに従ってマップし、`http://127.0.0.1:8080/`でフリートリストを、および各ページを`/?repo=owner/name`で提供します。リストに登録したリポジトリのgitフェッチを除いて、コンテナから外部に送信されるものは何もありません。`./atlas-data`を削除すると、すべてが忘れられます。同じイメージは、1つのリポジトリでCLIを実行します。`docker run --rm -v "$PWD:/repo" ghcr.io/dogfood-lab/atlas map`。コマンドを実行すると、ファイル構造は[`docker/README.md`](docker/README.md)にあります。
 
 ## 脅威モデル
 
 testing-osは、`mcp-tool-shop-org/*`と`dogfood-lab/*`の下にある信頼できるGitHubリポジトリから、`repository_dispatch`を介して送信されたdogfood提出物を処理します。検証者は、CIのProvenance（来歴）を必要とします。主張された実行IDは、プロバイダーのAPIを介して確認され、形状が正しくない、参照が欠落している、またはポリシーの主張が無効な提出物は拒否されます。
 
-**Provenance（来歴）が認証です。**`github`の提出物について、検証者は、主張されたGitHub Actionsの実行が実際に存在すること（GitHub API）を確認し、提出物の`repo`と`commit_sha`をその確認された実行にバインドします。これは、ライブでキーレスのチェックであり、GitHub自身のOIDC IDに根ざしているため、レコードは、実際には発生しなかった実行またはコミットを証明することはできません。**GitLab CI**は、オプションでサポートされています（`source.provider: gitlab`）。GitLabの提出物は、検証者が非GitHubホストを呼び出す唯一のケースであり（`gitlab.com/api`）、それも`gitlab`の提出物に対してのみです。
+**Provenance（来歴）が認証です。**`github`の提出物について、検証者は、主張されたGitHub Actionsの実行が実際に存在すること（GitHub API）を確認し、提出物の`repo`と`commit_sha`をその確認された実行にバインドします。これは、GitHub自身のOIDC IDに根ざした、ライブでキーレスのチェックであり、記録は、実際に発生しなかった実行またはコミットを証明することはできません。**GitLab CI**は、オプションでサポートされています（`source.provider: gitlab`）。GitLabの提出物は、検証者が非GitHubホストを呼び出す唯一のケースであり（`gitlab.com/api`）、および`gitlab`の提出物に対してのみ呼び出されます。
 
-**レコードの整合性は、改ざん防止ではなく、改ざんが検知可能です。**永続化されたすべてのレコードには、`integrity`ブロック（`submission_digest` + `prev_digest`）が含まれており、これは追記専用のハッシュチェーンを形成し、`node packages/ingest/run.js --verify-chain`がオフラインで完全に検証します。これにより、外部からの改ざん、ディスクの破損、および部分的な復元が検出されます。ただし、これは、レコードとチェーンの両方を書き換えることができるインジェスト資格情報自体を防御するものではありません。これを解決するには、書き込み者の制御外にあるアンカーが必要です。**オプションで、デフォルトでは無効になっているXRPLアンカー**（`node packages/ingest/run.js --anchor-*`）は、チェーンのヘッダーをパブリックXRP Ledgerに記録し、アンカーポイントより下の任意の切り捨てまたは書き換えを検出できるようにします。これは、開示された2番目の非GitHub呼び出しであり、オペレーターが有効にした場合にのみ行われます。
+**記録の整合性は、改ざん防止ではなく、改ざんが検知可能です。**永続化されたすべての記録には、`integrity`ブロック（`submission_digest` + `prev_digest`）が含まれており、これは追記専用のハッシュチェーンを形成し、`node packages/ingest/run.js --verify-chain`がオフラインで完全に検証します。これにより、外部からの改ざん、ディスクの破損、および部分的な復元が検出されます。ただし、これは、記録自体とチェーンを書き換えることができるインジェスト資格情報を防ぐものではありません。これを防ぐには、書き込み者の制御外にあるアンカーが必要です。**オプションで、デフォルトでは無効になっているXRPLアンカー**（`node packages/ingest/run.js --anchor-*`）は、チェーンのヘッダーをパブリックXRP Ledgerに記録し、アンカーポイントより下の任意の切り捨てまたは書き換えを検出できるようにします。これは、開示された2番目の非GitHub呼び出しであり、オペレーターが有効にした場合にのみ呼び出されます。
 
-**testing-os が扱うもの:** 各 `repository_dispatch` ペイロード内の送信 JSON、このリポジトリ内の `policies/`、`fixtures/`、`records/`、`indexes/`、および `dogfood/roadmap/`（最後のものはオペレーターが呼び出した `swarm roadmap compile` によってのみ書き込まれ、自動化された取り込みパスでは決して書き込まれません）、信頼性検証のための `api.github.com` へのアウトバウンド呼び出し、および `github` の送信のみに対して、送信リポジトリのコミットハッシュにおける `dogfood/scenarios/<scenario_id>.yaml` の読み取り専用フェッチ（シナリオ定義で、必須ステップの強制を制御します。使用前にサイズ制限とスキーマ検証が行われ、ファイルが存在しない場合は、そのチェックが実行されず、目に見える警告が表示されます）。
+**testing-os が扱うもの:** 各 `repository_dispatch` ペイロード内の送信 JSON、このリポジトリ内の `policies/`、`fixtures/`、`records/`、`indexes/`、および `dogfood/roadmap/`（最後のものは、オペレーターが呼び出した `swarm roadmap compile` によってのみ書き込まれ、自動化された取り込みパスによって書き込まれることはありません）、信頼性検証のための `api.github.com` へのアウトバウンド呼び出し、および `github` の送信にのみ適用される、送信リポジトリの `dogfood/scenarios/<scenario_id>.yaml` の読み取り専用フェッチ（検証されたコミット時点のもの。これは、必須ステップの強制に使用されるシナリオ定義であり、使用前にサイズ制限とスキーマ検証が行われ、ファイルが存在しない場合は、そのチェックが実行されず、目に見える警告が表示されます）。
 
-**testing-os が扱わないもの:** 宣言された `dogfood/scenarios/` 定義ファイルを超えた、コンシューマーのソースコード、コンシューマーリポジトリ内の、ディスパッチエンベロープを超えたシークレット、またはこのリポジトリのワーキングツリー外のすべてのもの。
+**testing-os が扱わないもの:** 宣言された `dogfood/scenarios/` 定義ファイルを超えた、コンシューマーのソースコード、コンシューマーリポジトリ内の、ディスパッチエンベロープを超えたシークレット、またはこのリポジトリのワーキングツリー外のあらゆるもの。
 
-**検出状態の移行は、証拠となるものであり、追加のみが可能です。** スウォーム制御プレーンのクローズ動詞（`swarm reopen`、`swarm close`）には、明示的な理由、証拠、およびオペレーターによるクローズの場合は、宣言された検証モードが必要です。すべての移行は、実行された権限を記録する不変の `finding_events` 行を書き込みます。自動化されたパスで、検出が古くなった場合にクローズしたり、予測によって再開したりすることはできません。また、どの動詞もイベント履歴を書き換えることはできません。誤って使用された認証情報は移行を追加できますが、各追加自体も記録されます。
+**検出状態の移行は、証拠となるものであり、追加のみが可能です。** スウォーム制御プレーンのクローズ動詞（`swarm reopen`、`swarm close`）には、明示的な理由、証拠、およびオペレーターによるクローズの場合は、宣言された検証モードが必要です。すべての移行では、実行主体を記録した不変の `finding_events` 行が書き込まれます。自動化されたパスで、検出が古いという理由でクローズされたり、予測によって再開されたりすることはありません。また、どの動詞もイベント履歴を書き換えることはできません。誤って使用された認証情報によって移行が追加される可能性がありますが、各追加自体も記録されます。
 
-**ネットワークの範囲。** デフォルトでは、唯一の送信先は `api.github.com` です（読み取り専用：信頼性確認 + 上記のシナリオ定義のフェッチ）。例外は 2 つだけで、どちらもオプトインであり、上記で説明されています。GitLab プロバイダーによる送信（`gitlab.com/api`）、およびオペレーターが有効にした XRPL アンカーの実行です。**テレメトリや分析は行いません。このコードベースは、外部に情報を送信しません。上記の 2 つのオプトインパスがない場合、GitHub 以外にネットワークの範囲は存在しません。** 受信ワークフローは、このリポジトリにのみスコープされた `contents: write` で実行されます。
+**ネットワークの範囲。** デフォルトでは、唯一の送信先は `api.github.com` です（読み取り専用：信頼性の確認 + 上記のシナリオ定義のフェッチ）。例外は 2 つだけで、どちらもオプトインであり、上記で説明されています。GitLab プロバイダーによる送信（`gitlab.com/api`）、およびオペレーターが有効にした XRPL アンカーの実行です。**テレメトリや分析は行いません。このコードベースは、外部に情報を送信しません。上記の 2 つのオプトインパスがない場合、GitHub 以外にネットワークの範囲は存在しません。** 受信ワークフローは、このリポジトリのみにスコープされた `contents: write` で実行されます。
 
 ## パッケージ
 
@@ -94,7 +94,7 @@ testing-osは、`mcp-tool-shop-org/*`と`dogfood-lab/*`の下にある信頼で�
 | `@dogfood-lab/dogfood-swarm` | JS | 10 フェーズの並列エージェントプロトコル + SQLite 制御プレーン + `swarm` バイナリ。 |
 | `@dogfood-lab/atlas` | JS | リポジトリを読み取り、その動作方法を記述したページを書き込みます（`atlas/README.md`）。`atlas check` が CI でマップをゲートします。依存関係はありません。任意のレポジトリで実行できます。 |
 
-**独立性を維持しながら、公開された API を介して統合する** 姉妹のテストツール：[`shipcheck`](https://github.com/mcp-tool-shop-org/shipcheck)、[`repo-knowledge`](https://github.com/mcp-tool-shop-org/repo-knowledge)、[`ai-eyes-mcp`](https://github.com/mcp-tool-shop-org/ai-eyes-mcp)、[`taste-engine`](https://github.com/mcp-tool-shop-org/taste-engine)、[`style-dataset-lab`](https://github.com/mcp-tool-shop-org/style-dataset-lab)。
+**独立性を維持しながら、公開された API を介して統合する** 関連するテストツール：[`shipcheck`](https://github.com/mcp-tool-shop-org/shipcheck)、[`repo-knowledge`](https://github.com/mcp-tool-shop-org/repo-knowledge)、[`ai-eyes-mcp`](https://github.com/mcp-tool-shop-org/ai-eyes-mcp)、[`taste-engine`](https://github.com/mcp-tool-shop-org/taste-engine)、[`style-dataset-lab`](https://github.com/mcp-tool-shop-org/style-dataset-lab)。
 
 ## レイアウト
 
@@ -127,11 +127,11 @@ npm run verify      # version-sync + doc-drift + regression-pin gates + build + 
 
 Node ≥ 22 が必要です。CI マトリックスは、Node 22 + 24 を `ubuntu-latest` で実行し、ローカルでは Node 25 で検証します。
 
-**サポートされているファイルシステム:** APFS、HFS+、ext4（CI のベースライン）、NTFS — POSIX `link(2)` を実装しているもの。**サポート対象外:** exFAT、FAT32。[`packages/findings/lib/file-lock.js`](packages/findings/lib/file-lock.js) のファイルロック CAS は、アトミックな公開のためにハードリンクセマンティクスを必要とします。exFAT では、`linkSync` が `ENOTSUP` をスローします（静かにではなく、大きな警告が表示されます）。一般的な落とし穴：クロスプラットフォームの外部 SSD は、多くの場合、exFAT でフォーマットされています。リポジトリをローカルの APFS/HFS+ にクローンしてください。完全なセッション G 検証マトリックスについては、[`docs/m5-validation-2026-04-29.md`](docs/m5-validation-2026-04-29.md) を参照してください。
+**サポートされているファイルシステム:** APFS、HFS+、ext4（CI ベースライン）、NTFS — POSIX `link(2)` を実装しているもの。**サポートされていないファイルシステム:** exFAT、FAT32。[`packages/findings/lib/file-lock.js`](packages/findings/lib/file-lock.js) のファイルロック CAS は、アトミックな公開にハードリンクのセマンティクスが必要です。exFAT では、`linkSync` が `ENOTSUP` をスローします（静かにではなく、大きな警告が表示されます）。一般的な落とし穴：クロスプラットフォームの外部 SSD は、多くの場合、exFAT でフォーマットされています。リポジトリをローカルの APFS/HFS+ にクローンしてください。完全なセッション G 検証マトリックスについては、[`docs/m5-validation-2026-04-29.md`](docs/m5-validation-2026-04-29.md) を参照してください。
 
 ## バージョン管理
 
-すべての `@dogfood-lab/*` パッケージは、まとめてバージョンアップされます。モノリポジトリ全体で、1 つの番号が使用されます。7 つのパッケージは、v1.20.0 で、ロックステップで `@dogfood-lab` に公開されます（`schemas`、`verify`、`report`、`ingest`、`findings`、`dogfood-swarm`、`atlas`）。8 番目のパッケージである `@dogfood-lab/portfolio` は、内部で使用されます。この README の上部近くにあるバージョン行は、すべての `npm run build` で、[`scripts/sync-version.mjs`](scripts/sync-version.mjs) を介して `package.json` から自動的にタイムスタンプが設定されます。
+すべての `@dogfood-lab/*` パッケージは、まとめてバージョンアップされます。つまり、モノリポジトリ全体で 1 つの番号が使用されます。7 つのパッケージは、v1.21.0 で、ロックステップで `@dogfood-lab` に公開されます（`schemas`、`verify`、`report`、`ingest`、`findings`、`dogfood-swarm`、`atlas`）。8 番目のパッケージである `@dogfood-lab/portfolio` は、内部でのみ使用されます。この README の上部近くにあるバージョン行は、すべての `npm run build` で、[`scripts/sync-version.mjs`](scripts/sync-version.mjs) を介して `package.json` から自動的にタイムスタンプが設定されます。
 
 ## ライセンス
 

@@ -2,7 +2,7 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.21.0] — 2026-09-25
 
 ### Added
 - **Runners and frameworks the map now follows.** `turbo run <task>` runs the task in every workspace member that defines it; `pnpm <tool>` with no script of that name runs the tool; vitest `projects` run every member's tests; `next build` and `next dev` run `next.config.*` and the app's pages, layouts and routes, which are entries of the app's part; a dynamic import through a const table of paths imports every path; local reusable workflows and composite actions are followed into their steps; `subprocess` calls with `sys.executable -m` and the imports inside a `python -c` step are read. motif's CI and Release had "run no file"; they now reach seventeen parts.
