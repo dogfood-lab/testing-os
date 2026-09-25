@@ -233,6 +233,22 @@ export function noLandings() {
  * doors instead, and a file of a kind that is not text a person reads is
  * skipped rather than decoded.
  */
+const HTML = new Set(['.html', '.htm']);
+
+function pageLoads(source, path, places) {
+  const dir = posix.dirname(path) === '.' ? '' : posix.dirname(path);
+  const out = [];
+  for (const match of source.matchAll(/<(script|link)\b[^>]*?\b(src|href)\s*=\s*["']([^"'#?]+)[^"']*["'][^>]*>/gi)) {
+    const [, tag, attribute, spelled] = match;
+    if (tag.toLowerCase() === 'script' && attribute.toLowerCase() !== 'src') continue;
+    if (tag.toLowerCase() === 'link' && (attribute.toLowerCase() !== 'href' || !/\brel\s*=\s*["']?(stylesheet|modulepreload|preload)/i.test(match[0]))) continue;
+    if (/^[a-z]+:|^\/\//i.test(spelled)) continue;
+    const target = spelled.startsWith('/') ? posix.normalize(spelled.slice(1)) : posix.normalize(dir ? `${dir}/${spelled}` : spelled);
+    if (places.files.has(target)) out.push({ target, call: tag.toLowerCase() === 'script' ? 'script' : 'stylesheet', confidence: 'ast' });
+  }
+  return out;
+}
+
 export function textLandings(path, bytes, places) {
   if (isWorkflow(path) || !TEXT_SCANNED.has(extname(path).toLowerCase())) return noLandings();
   // A package manifest lists what it ships (files, main, exports) and names
@@ -244,12 +260,15 @@ export function textLandings(path, bytes, places) {
     return { writes: [], dynamicWrites: 0, reads: sortEntries(markdownReads(source, places)), dynamicReads: 0 };
   }
   if (configurationFile(path)) return { writes: [], dynamicWrites: 0, reads: sortEntries(configurationReads(source, path, places)), dynamicReads: 0 };
+  // A page loads the script its <script src> names and the stylesheet its
+  // <link href> names, beside it or from the root: it reads them.
+  const loaded = HTML.has(extname(path).toLowerCase()) ? pageLoads(source, path, places) : [];
   if (extname(path).toLowerCase() === '.ps1') {
     const found = powershellLandings(source, path, places);
     return { writes: sortEntries(found.writes), dynamicWrites: 0, reads: sortEntries(found.reads), dynamicReads: 0 };
   }
   if (extname(path).toLowerCase() === '.xml' || extname(path).toLowerCase() === '.toml') return noLandings();
-  const reads = [];
+  const reads = [...loaded];
   for (const pattern of [/"([^"\r\n]*)"/g, /'([^'\r\n]*)'/g]) {
     for (const match of source.matchAll(pattern)) {
       const target = literalPlace(match[1], places);
