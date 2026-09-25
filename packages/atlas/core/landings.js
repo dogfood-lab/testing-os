@@ -3365,7 +3365,10 @@ export function attachLandings({ files, doors, boundaries, places }) {
       ...(door.handedWrites ?? []),
       ...(door.commands ?? []).filter((command) => command.dir != null)
         .flatMap((command) => shellLandings(command.text, places, { dir: command.dir, follow: true }).writes.map((write) => write.target)),
-      ...door.stagedTargets.filter((place) => named.has(place)),
+      // A staged place code here writes is that code's: the step that names
+      // it reads what the code wrote (registry-stats checks stats.json's
+      // freshness before git add stages it), and writes nothing.
+      ...door.stagedTargets.filter((place) => named.has(place) && !writers.has(place)),
     ])].sort(compare);
     for (const target of door.ownWrites) add(writers, target, { by: door.file });
     for (const mention of door.mentions) add(readers, mention.path, { by: door.file });
