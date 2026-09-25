@@ -3273,6 +3273,11 @@ function heldLandings(door, byPath, places, targets) {
       if (group.when == null) open = true;
       else gates.set(JSON.stringify(group.when), group.when);
     }
+    const own = door.ownWriteGates?.get(target);
+    if (own) {
+      if (own.open) open = true;
+      for (const [key, when] of own.gates) gates.set(key, when);
+    } else if ((door.handedWrites ?? []).includes(target)) open = true;
     if (!open && gates.size === 1) out.push({ target, when: [...gates.values()][0] });
   }
   return out;
@@ -3361,10 +3366,21 @@ export function attachLandings({ files, doors, boundaries, places }) {
     // A job that commits only on one trigger still commits what it stages.
     door.stagedTargets = stagedTargets([...door.stages, ...(door.gated ?? []).flatMap((entry) => entry.stages)], places);
     const named = new Set(door.mentions.map((mention) => mention.path));
+    // What a step's own shell writes keeps the step's gate, as a run's
+    // writes keep its (heldLandings): a redirect in a job run only by hand
+    // writes only then.
+    const shellWrites = (door.commands ?? []).filter((command) => command.dir != null)
+      .flatMap((command) => shellLandings(command.text, places, { dir: command.dir, follow: true }).writes.map((write) => ({ target: write.target, when: command.when ?? null })));
+    door.ownWriteGates = new Map();
+    for (const { target, when } of shellWrites) {
+      const entry = door.ownWriteGates.get(target) ?? { open: false, gates: new Map() };
+      if (when == null) entry.open = true;
+      else entry.gates.set(JSON.stringify(when), when);
+      door.ownWriteGates.set(target, entry);
+    }
     door.ownWrites = [...new Set([
       ...(door.handedWrites ?? []),
-      ...(door.commands ?? []).filter((command) => command.dir != null)
-        .flatMap((command) => shellLandings(command.text, places, { dir: command.dir, follow: true }).writes.map((write) => write.target)),
+      ...shellWrites.map((write) => write.target),
       // A staged place code here writes is that code's: the step that names
       // it reads what the code wrote (registry-stats checks stats.json's
       // freshness before git add stages it), and writes nothing.
@@ -3446,6 +3462,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     door.landings = [...targets].filter((target) => !spans.has(target) && !untracked.has(target)).sort(compare);
     // A place only work held to one gate writes is written on that gate.
     const held = heldLandings(door, byPath, places, door.landings);
+    delete door.ownWriteGates;
     if (held.length > 0) door.landingGates = held;
     // Output the repository does not keep is counted, never placed, and the
     // door names where it goes: a place spelled whole, not a shape.

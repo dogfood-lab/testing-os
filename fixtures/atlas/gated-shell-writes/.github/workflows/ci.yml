@@ -1,0 +1,23 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python tool/scan.py
+  update-baseline:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: python tool/scan.py > docs/baseline.json
+      - run: |
+          git add docs/baseline.json
+          git commit -m "baseline"
+          git push

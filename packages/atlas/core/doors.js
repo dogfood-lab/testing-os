@@ -430,7 +430,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
       // attachLandings).
       const firstDir = own(rawDirs[0]);
       const firstStart = firstDir == null ? { here: false } : placeOf({ here: true, dir: '' }, firstDir, clones, repo, lookup);
-      commands.push({ job, step: name, text: step.run, ...(firstStart.here && rawDirs.length === 1 ? { dir: firstStart.dir } : {}) });
+      commands.push({ job, step: name, text: step.run, ...(firstStart.here && rawDirs.length === 1 ? { dir: firstStart.dir } : {}), ...held });
       for (const rawDir of rawDirs) {
         const ownDir = own(rawDir);
         const start = ownDir == null ? { here: false, dir: String(rawDir ?? ''), clone: null } : placeOf({ here: true, dir: '' }, ownDir, clones, repo, lookup);
