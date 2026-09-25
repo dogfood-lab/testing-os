@@ -3198,8 +3198,11 @@ function installedNames(ctx, kind, { extension = false, app = null } = {}) {
  * work enters, where the repository publishes, and what it installs for
  * people to run or import.
  */
-function derivedLine(ctx, main) {
+function derivedLine(ctx, main, name = '') {
   const sentences = [`${count(ctx.boundaries.length, 'part')}${languageClause(ctx)}.`, doorsSentence(ctx, main)];
+  // An organization's .github repository is its profile page and the
+  // community-health files every repository of the organization inherits.
+  if (name === '.github' && ctx.fileOf.has('profile/README.md')) sentences.unshift("This is the organization's profile page and the community-health files its repositories inherit.");
   const published = publishesSentence(ctx);
   if (published) sentences.push(published);
   const commands = installedNames(ctx, 'command');
@@ -3360,7 +3363,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   const shownText = groups.some((group) => group.readers.some((reader) => reader.text?.endsWith(' (found by text)')));
   const limitLines = limits(ctx, shownText);
 
-  const derived = derivedLine(ctx, main);
+  const derived = derivedLine(ctx, main, name);
   const whatThisIs = ['## What this is'];
   if (summary) whatThisIs.push(`${summary} (written by a person)`);
   whatThisIs.push(derived);
