@@ -486,6 +486,10 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
 
   shipBuilds(shipping, runs, triggers, (when) => (when ? scopeOfGate(when) : { sends }));
   unionPathGates([...runs.values()], triggers);
+  // The packages whose own test script a step runs, kept on the door so a
+  // run reads the same whichever script reached it.
+  const testScripts = [...new Set([...runs.values()].map((run) => run.testScript).filter((dir) => dir != null))].sort();
+  for (const run of runs.values()) delete run.testScript;
   const recorded = recordedRuns([...runs.values()]);
   const runKeys = new Set(recorded.all.map((run) => `${run.path}\0${run.job}`));
   const underRun = (path, job) => recorded.all.some((run) => run.job === job && run.directory && path.startsWith(run.path));
@@ -528,6 +532,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
     uses: [...uses].sort(),
     ...(handed.size > 0 ? { handedWrites: [...handed].sort() } : {}),
     ...(workedIn.size > 0 ? { workedIn: [...workedIn].sort() } : {}),
+    ...(testScripts.length > 0 ? { testScripts } : {}),
     // Read by index.js markUnshipped, then dropped.
     publishedCrates: [sends, ...[...gates.values()].map((entry) => entry.sends)].flatMap((scope) => scope.crates),
   };

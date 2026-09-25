@@ -191,9 +191,22 @@ function testReach(mapped) {
   // A part no test imports that a test runs as a child process is touched
   // only through that spawn, which the page says, and so is one only the
   // unit tests in its own files test.
-  const throughSpawn = new Set([...testedBy.keys()].filter((part) => !imported.has(part) && !insideParts.has(part)));
+  // A package's own test script a workflow runs (npm test in its
+  // directory) tests the part holding its manifest, though no test file
+  // imports it.
+  const scriptParts = new Set();
+  for (const door of mapped.doors ?? []) {
+    if (door.kind || door.parseError) continue;
+    for (const dir of door.testScripts ?? []) {
+      const part = boundaryOf.get(dir === '' ? 'package.json' : `${dir}/package.json`);
+      if (part != null) scriptParts.add(part);
+    }
+  }
+  for (const part of scriptParts) if (!testedBy.has(part)) testedBy.set(part, 1);
+  const throughSpawn = new Set([...testedBy.keys()].filter((part) => !imported.has(part) && !insideParts.has(part) && !scriptParts.has(part)));
   const testedInside = new Set([...insideParts].filter((part) => !imported.has(part)));
-  return { testFiles: tests.length + inside.length, testedBy, throughSpawn, testedInside };
+  const testedByScript = new Set([...scriptParts].filter((part) => !imported.has(part) && !insideParts.has(part)));
+  return { testFiles: tests.length + inside.length, testedBy, throughSpawn, testedInside, testedByScript };
 }
 
 // A boundary file may leave a role out; the role is then derived from the
@@ -231,6 +244,7 @@ export function buildArtifact(mapped, commit) {
       testedBy: tested.testedBy.get(boundary.name) ?? 0,
       ...(tested.testedInside.has(boundary.name) ? { testedInside: true } : {}),
       ...(tested.throughSpawn.has(boundary.name) ? { testedThroughSpawn: true } : {}),
+      ...(tested.testedByScript.has(boundary.name) ? { testedByScript: true } : {}),
       unresolvedSites: sites.unresolved,
       ...(sites.named.length > 0 ? { unresolvedNamed: sites.named } : {}),
     };

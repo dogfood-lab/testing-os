@@ -1972,7 +1972,10 @@ function untested(ctx) {
   // A part only the unit tests in its own files test is touched from inside.
   const inside = parts.filter((boundary) => boundary.testedInside && (boundary.testedBy ?? 0) > 0).map((boundary) => boundary.name);
   const within = inside.map((name) => insideLine(ctx.shown(name)));
-  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...unrunTests(ctx), ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside };
+  // A part only its package's own test script tests, which a workflow runs.
+  const scripted = parts.filter((boundary) => boundary.testedByScript && (boundary.testedBy ?? 0) > 0).map((boundary) => boundary.name);
+  const byScript = scripted.map((name) => `${ctx.shown(name)} is tested only by its package's own test script, which a workflow runs.`);
+  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...byScript, ...unrunTests(ctx), ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside, scripted };
 }
 
 /**
@@ -2018,7 +2021,7 @@ export function spawnedLine(partLabel) {
 }
 
 function untestedSection(found) {
-  const every = found.spawned.length > 0 || found.inside.length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.';
+  const every = found.spawned.length > 0 || found.inside.length > 0 || (found.scripted ?? []).length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.';
   const body = found.items.length > 0
     ? found.items.map((item) => `- **${item.partLabel}** is imported by no test.`).join('\n')
     : (found.testFiles === 0 ? null : every);
@@ -3496,6 +3499,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     summaryFrom: summary ? 'person' : null,
     ...(untestedParts.spawned.length > 0 ? { spawnTested: untestedParts.spawned } : {}),
     ...(untestedParts.inside.length > 0 ? { testedInside: untestedParts.inside } : {}),
+    ...((untestedParts.scripted ?? []).length > 0 ? { testedByScript: untestedParts.scripted } : {}),
     testedBy: untestedParts.testedBy,
     testFiles: untestedParts.testFiles,
     unreadFiles: unreadCount(ctx),

@@ -1068,3 +1068,8 @@ test('what a Dockerfile copies into an image is packed, as the markdown says, ne
   const html = plain(render.renderPage({ ...page, doors }, { repo: page.repo }));
   assert.ok(html.includes('packs camp/ and pyproject.toml into an image'), html.slice(0, 4000));
 });
+
+test('a part only its package\'s own test script tests is touched by a test, as the markdown says', () => {
+  const html = plain(render.renderPage({ ...page, untested: [], spawnTested: [], testedInside: [], testedByScript: ['launcher'], testFiles: 3 }, { repo: page.repo }));
+  assert.ok(html.includes('Every code part is touched by at least one test.'), html);
+});

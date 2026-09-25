@@ -395,6 +395,9 @@ export function better(a, b) {
   // runs is that.
   delete out.packed;
   if (a.packed && b.packed) out.packed = true;
+  delete out.testScript;
+  const testScript = a.testScript ?? b.testScript;
+  if (testScript != null) out.testScript = testScript;
   if (passes.length > 0) out.passes = passes;
   // A binary either way builds is built, whatever else checks it.
   if (a.builds || b.builds) out.builds = true;
@@ -581,7 +584,10 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     frame.active.add(key);
     // A package script runs in the manager's shell, sh or cmd, whatever
     // shell the step that started it names.
-    const next = frame.platforms ? { ...frame, expanding: frame.platforms.filter((os) => os !== 'windows') } : frame;
+    const shell = frame.platforms ? { ...frame, expanding: frame.platforms.filter((os) => os !== 'windows') } : frame;
+    // A package's own test script is a test of that package, whatever it
+    // runs (armature's launcher self-test is its bin run with a flag).
+    const next = script === 'test' ? { ...shell, testScript: target } : shell;
     for (const name of [`pre${script}`, script, `post${script}`]) {
       if (typeof scripts[name] !== 'string') continue;
       read(name === script && args.length > 0 ? `${scripts[name]} ${args.join(' ')}` : scripts[name], target, next);
@@ -1738,6 +1744,7 @@ function stamp(entry, frame, via = frame.via) {
   if (frame.builds) out.builds = true;
   if (frame.built) out.built = true;
   if (frame.packed) out.packed = true;
+  if (frame.testScript != null) out.testScript = frame.testScript;
   return out;
 }
 

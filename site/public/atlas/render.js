@@ -787,7 +787,7 @@ function untestedSection(ctx) {
   const note = arr(ctx.page.untestedNote).map((line) => p(esc(line)));
   const body = items.length > 0
     ? [ul(items.map((item) => `<strong>${esc(partName(ctx, item) ?? '')}</strong> is imported by no test.`))]
-    : (Number(ctx.page.testFiles) === 0 ? [] : [p(arr(ctx.page.spawnTested).length > 0 || arr(ctx.page.testedInside).length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.')]);
+    : (Number(ctx.page.testFiles) === 0 ? [] : [p(arr(ctx.page.spawnTested).length > 0 || arr(ctx.page.testedInside).length > 0 || arr(ctx.page.testedByScript).length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.')]);
   return section('What no test touches', [...body, ...note].join('\n'));
 }
 
