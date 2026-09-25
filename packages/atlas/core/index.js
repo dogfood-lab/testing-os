@@ -639,7 +639,7 @@ function parseFile(language, path, original, places) {
       githubChanges: language === 'python' ? 0 : githubChanges(tree.rootNode),
       noStatements: statementless(tree.rootNode),
       startsOnLoad: language !== 'python' && startsOnLoad(tree.rootNode),
-      holds: language === 'python' ? null : onlyHolds(tree.rootNode),
+      holds: language === 'python' ? pythonHolds(tree.rootNode) : onlyHolds(tree.rootNode),
       http: language === 'python' ? null : httpFacts(tree.rootNode),
       builds: language === 'python' || isTestFile(path) ? [] : buildCalls(tree.rootNode, (node) => pathShape(node, path)),
     };
@@ -910,6 +910,23 @@ function statementless(root) {
  * A value that is a function, or a call made as the module loads, is work. A
  * reader following the work passes over both, to what the barrel hands on.
  */
+// A Python module of nothing but its docstring and literal constants
+// (__version__ = "1.2.0") holds a value and does no work, as a script of one
+// literal does: never a step of a path, nor its end.
+function pythonHolds(root) {
+  const statements = root.namedChildren.filter((child) => child.type !== 'comment');
+  if (statements.length === 0) return null;
+  const literal = (node) => ['string', 'integer', 'float', 'true', 'false', 'none', 'concatenated_string'].includes(node?.type)
+    || ((node?.type === 'list' || node?.type === 'tuple') && node.namedChildren.every((child) => child.type === 'string'));
+  const constants = statements.filter((statement) => {
+    const inner = statement.type === 'expression_statement' ? statement.namedChildren[0] : null;
+    if (inner?.type === 'string') return false;
+    return inner?.type === 'assignment' && inner.childForFieldName('left')?.type === 'identifier' && literal(inner.childForFieldName('right'));
+  });
+  const docstrings = statements.filter((statement) => statement.type === 'expression_statement' && statement.namedChildren[0]?.type === 'string');
+  return constants.length > 0 && constants.length + docstrings.length === statements.length ? 'constant' : null;
+}
+
 function onlyHolds(root) {
   const statements = root.namedChildren.filter((child) => child.type !== 'comment');
   if (statements.length === 0) return null;
