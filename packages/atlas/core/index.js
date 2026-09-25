@@ -945,19 +945,26 @@ function pythonSpawns(root) {
     let list = null;
     if (helpers.has(callee)) list = args[helpers.get(callee)] ?? null;
     else if (PY_SPAWNS.test(callee)) list = args[0] ?? null;
-    if (list?.type === 'identifier') list = lists.get(list.text) ?? null;
-    if (list?.type !== 'list') return;
-    const items = list.namedChildren.filter((child) => child.type !== 'comment');
-    const head = items[0];
-    if (!(head?.text === 'sys.executable' || (head?.type === 'identifier' && interpreters.has(head.text)))) return;
-    const words = ['python'];
-    for (const item of items.slice(1)) {
-      if (item.type !== 'string') break;
-      const text = item.namedChildren.filter((child) => child.type === 'string_content').map((child) => child.text).join('');
-      if (/[\s'"]/.test(text) || text === '') break;
-      words.push(text);
+    // A name a loop binds from a literal list (for label, argv, env in legs:
+    // run(label, argv)) is each command line the list holds.
+    const candidates = list?.type === 'identifier' ? (lists.get(list.text) ? [lists.get(list.text)] : loopItems(node, list.text, lists)) : [list];
+    for (const candidate of candidates) {
+      if (candidate?.type !== 'list') continue;
+      const items = candidate.namedChildren.filter((child) => child.type !== 'comment');
+      const head = items[0];
+      if (!(head?.text === 'sys.executable' || (head?.type === 'identifier' && interpreters.has(head.text)))) continue;
+      const words = ['python'];
+      for (const item of items.slice(1)) {
+        if (item.type !== 'string') break;
+        const text = item.namedChildren.filter((child) => child.type === 'string_content').map((child) => child.text).join('');
+        if (/[\s'"]/.test(text) || text === '') break;
+        // An interpreter flag before -m (python -O -m pytest) runs the same
+        // module.
+        if (words.length === 1 && /^-[A-Za-z]$/.test(text) && text !== '-m' && text !== '-c') continue;
+        words.push(text);
+      }
+      if (words[1] === '-m' && words[2]) commands.add(words.join(' '));
     }
-    if (words[1] === '-m' && words[2]) commands.add(words.join(' '));
   });
   return { commands: [...commands].sort(), built: 0 };
 }
@@ -993,6 +1000,25 @@ function fileUrlImport(root, node, path) {
   const from = posix.dirname(path);
   const relative = posix.relative(from === '.' ? '' : from, target);
   return relative.startsWith('.') ? relative : `./${relative}`;
+}
+
+// The items a Python loop binds a name to from a literal list: each element,
+// or each tuple's element where an unpacked target holds the name, the list
+// spelled in the loop or bound once to a name.
+function loopItems(node, name, lists) {
+  for (let scope = node.parent; scope; scope = scope.parent) {
+    if (scope.type !== 'for_statement') continue;
+    const left = scope.childForFieldName('left');
+    const at = left?.type === 'identifier' ? (left.text === name ? -1 : null)
+      : (left?.type === 'pattern_list' || left?.type === 'tuple_pattern') ? left.namedChildren.findIndex((child) => child.type === 'identifier' && child.text === name) : null;
+    if (at == null || (at < 0 && left?.type !== 'identifier')) continue;
+    let right = scope.childForFieldName('right');
+    if (right?.type === 'identifier') right = lists.get(right.text) ?? null;
+    if (right?.type !== 'list' && right?.type !== 'tuple') return [];
+    const elements = right.namedChildren.filter((child) => child.type !== 'comment');
+    return at === -1 ? elements : elements.filter((item) => item.type === 'tuple').map((item) => item.namedChildren.filter((child) => child.type !== 'comment')[at]).filter(Boolean);
+  }
+  return [];
 }
 
 function walkNamed(root, visit) {
