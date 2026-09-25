@@ -206,7 +206,7 @@ function installedAs(door) {
     : door.kind !== 'package' ? (bundled.length > 0 ? `a command bundled into ${esc(list(bundled))}` : 'a command people run')
     : door.runsCommand != null ? `the package&#39;s entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${esc(door.runsCommand)}` : 'runs a program as it loads'}; it is not a library`
     : door.extension ? (door.unpublished ? 'the extension&#39;s entry, not published from here' : `the extension people install from ${esc(str(door.publishedTo))}`)
-      : door.unpublished ? 'the package&#39;s entry, not published from here' : 'the package people import';
+      : door.unpublished ? 'the package&#39;s entry, not published from here' : door.dataOnly ? 'the data package people import' : 'the package people import';
   return door.sharedName ? `${what}, from ${esc(door.file)}` : what;
 }
 
@@ -220,7 +220,7 @@ function sharedNames(doors) {
 
 // A game starts its main scene, as page.js words it.
 function startVerb(door) {
-  return door?.kind === 'package' ? 'loads' : door?.app === 'game' ? 'starts' : 'runs';
+  return door?.dataOnly ? 'ships' : door?.kind === 'package' ? 'loads' : door?.app === 'game' ? 'starts' : 'runs';
 }
 
 // The game is named as a noun, so it is capitalized where a sentence starts.

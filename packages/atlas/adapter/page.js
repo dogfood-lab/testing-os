@@ -198,9 +198,17 @@ function checksOnly(door) {
 // repository. Then one that runs code comes before one that only checks it,
 // one a change starts before one only the clock does, and a workflow before
 // a command or package people install.
+// A package whose every export is data (JSON) loads no code: people import
+// what it ships, and it is no door work goes through.
+export function dataOnly(door) {
+  const runs = door.runs ?? [];
+  return door.kind === 'package' && runs.length > 0 && runs.every((run) => !isCodePath(run.path));
+}
+
 function byReach(doors) {
   return [...doors].sort((a, b) => (
-    reachSize(b) - reachSize(a)
+    Number(dataOnly(a)) - Number(dataOnly(b))
+    || reachSize(b) - reachSize(a)
     || Number(!pullRequested(a)) - Number(!pullRequested(b))
     || Number(checksOnly(a)) - Number(checksOnly(b))
     || Number(scheduleOnly(a)) - Number(scheduleOnly(b))
@@ -253,7 +261,7 @@ function installedAs(door) {
     : door.kind !== 'package' ? (door.bundledInto?.length > 0 ? `a command bundled into ${list(door.bundledInto)}` : 'a command people run')
     : door.runsCommand != null ? `the package's entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${door.runsCommand}` : 'runs a program as it loads'}; it is not a library`
     : door.extension ? (door.unpublished ? "the extension's entry, not published from here" : `the extension people install from ${registryList(door.publishedTo ?? [])}`)
-      : door.unpublished ? "the package's entry, not published from here" : 'the package people import';
+      : door.unpublished ? "the package's entry, not published from here" : dataOnly(door) ? 'the data package people import' : 'the package people import';
   return door.sharedName ? `${what}, from ${door.file}` : what;
 }
 
@@ -288,7 +296,7 @@ export function leadName(door) {
 }
 
 function startVerb(door) {
-  return door.kind === 'package' ? 'loads' : door.app === 'game' ? 'starts' : 'runs';
+  return dataOnly(door) ? 'ships' : door.kind === 'package' ? 'loads' : door.app === 'game' ? 'starts' : 'runs';
 }
 
 // A job that commits only on one trigger still commits into the repository;
@@ -3240,6 +3248,7 @@ function doorData(ctx, door) {
     ...(door.unpublished ? { unpublished: true } : {}),
     ...(door.unshipped ? { builtFrom: builtFrom(door), unshipped: true } : {}),
     ...(door.privatePackage ? { privatePackage: true } : {}),
+    ...(dataOnly(door) ? { dataOnly: true } : {}),
     ...(door.example ? { example: true, runWith: exampleCommand(door) } : {}),
     ...(door.extension ? { extension: true } : {}),
     ...(door.publishedTo ? { publishedTo: registryList(door.publishedTo) } : {}),
