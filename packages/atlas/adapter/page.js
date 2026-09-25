@@ -2112,11 +2112,11 @@ function firstCallInto(ctx, path, part) {
  * handed on as a value (a callback) is not a call it makes. With no order of
  * work recorded, the files it imports, in the order it imports them.
  */
-function calledFiles(ctx, path) {
+function calledFiles(ctx, path, { imports = true } = {}) {
   const file = ctx.fileOf.get(path);
   const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
   const calls = (root?.calls ?? []).filter((item) => !item.passed && item.target?.file);
-  if (calls.length === 0) return file?.importOrder ?? file?.importsFiles ?? [];
+  if (calls.length === 0) return imports ? file?.importOrder ?? file?.importsFiles ?? [] : [];
   const ordered = [...calls.filter((item) => !item.branch), ...calls.filter((item) => item.branch)];
   return [...new Set(ordered.map((item) => item.target.file))];
 }
@@ -2345,7 +2345,25 @@ function startHere(ctx, main, first = null) {
     if (writer) return writer;
     const width = (target) => breadth.get(ctx.boundaryOf.get(target)) ?? 0;
     const across = options.filter((target) => (ctx.boundaryOf.get(target) ?? null) !== part);
-    if (across.length > 0) return across.sort((a, b) => width(b) - width(a) || cmp(a, b))[0];
+    if (across.length > 0) {
+      // Of the files in the part the door reaches most of, the one the file
+      // calls first, else the one that reaches the most parts; a tie left
+      // after both ends the path, since the order of names says nothing.
+      const widest = Math.max(...across.map(width));
+      const tied = across.filter((target) => width(target) === widest);
+      if (tied.length === 1) return tied[0];
+      // A call reaches a file through the package index that hands it on.
+      const hands = (option, target) => option === target
+        || ((isIndex(option) || ctx.fileOf.get(option)?.reexportsOnly) && (ctx.fileOf.get(option)?.importsFiles ?? []).includes(target));
+      for (const target of calledFiles(ctx, path, { imports: false })) {
+        const called = tied.find((option) => option === target) ?? tied.find((option) => hands(option, target));
+        if (called) return called;
+      }
+      const parts = new Map(tied.map((target) => [target, partsReached(ctx, [target]).size]));
+      const most = Math.max(...parts.values());
+      const reaching = tied.filter((target) => parts.get(target) === most);
+      return reaching.length === 1 ? reaching[0] : null;
+    }
     // Inside its own part the path follows the order of work of the file it
     // entered the part by, past a package index that only hands names on:
     // the next file that file's entry calls, which is how a reader of the

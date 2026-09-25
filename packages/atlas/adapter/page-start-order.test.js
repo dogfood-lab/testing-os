@@ -46,6 +46,21 @@ describe('where to start inside one part', () => {
     assert.deepEqual(data.startHere, ['src/cli.js', 'src/init.js', 'src/add.js', 'src/build.js']);
   });
 
+  it('breaks a tie among a part\'s files by the call the entry makes first, never by name', () => {
+    const { data } = page('tie-calls', ['bin', 'lib']);
+    assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'bin/tool.js', 'lib/gamma.js']);
+  });
+
+  it('with no call to tell them apart, goes to the one that reaches the most parts', () => {
+    const { data } = page('tie-reach', ['bin', 'lib', 'util']);
+    assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'bin/tool.js', 'lib/b.js', 'util/deep.js']);
+  });
+
+  it('ends the path at a tie nothing breaks', () => {
+    const { data } = page('tie-none', ['bin', 'lib']);
+    assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'bin/tool.js']);
+  });
+
   it('says a path of one file in the singular', () => {
     const { markdown, data } = page('single', ['src', 'test']);
     assert.deepEqual(data.startHere, ['src/cli.js']);
