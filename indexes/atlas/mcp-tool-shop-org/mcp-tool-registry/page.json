@@ -1,0 +1,395 @@
+{
+  "authored": [
+    ".github/",
+    ".husky/",
+    "assets/",
+    "curation/",
+    "dist/",
+    "docs/",
+    "fixtures/",
+    "schema/",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 3,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "tests",
+      "partLabel": "tests"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "scripts"
+      ],
+      "target": "bundles/",
+      "writers": [
+        "scripts"
+      ]
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 1,
+      "moved": 0,
+      "parts": 1,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-25; 1 file changed content.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "4fd9a954cb4acb06fe35b90781746e696ee3fb05",
+      "generatedAt": "2026-09-25T02:09:43.986Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "2bb195fa484d4e572d28ef756d371624b1efac32",
+  "defaultBranch": "main",
+  "derived": "13 parts, mostly JavaScript (17 files) and TypeScript (2). Work enters through 5 doors; the busiest is @mcptoolshop/mcp-tool-registry, which reaches 3 parts. It publishes to npm. People import @mcptoolshop/mcp-tool-registry.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/mcp-tool-registry",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/mcp-tool-registry",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bundles",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "schema",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "registry.json",
+        "bundles/agents.json",
+        "bundles/core.json",
+        "bundles/evaluation.json",
+        "bundles/ops.json",
+        "schema/registry.schema.json"
+      ],
+      "runsCount": 6,
+      "runsMore": 3,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "held": [
+        {
+          "checks": [],
+          "checksMore": 0,
+          "lead": "except on a pull request or on a `push` event",
+          "runs": [
+            "scripts/build-bundles.mjs",
+            "scripts/build-site.mjs"
+          ],
+          "runsMore": 0,
+          "when": "except on a pull request or on a `push` event"
+        },
+        {
+          "checks": [],
+          "checksMore": 0,
+          "lead": "except on a schedule",
+          "runs": [
+            "scripts/validate.mjs",
+            "scripts/verify-pack.mjs",
+            "tests/search.test.mjs"
+          ],
+          "runsMore": 0,
+          "when": "except on a schedule"
+        }
+      ],
+      "id": ".github/workflows/ci.yml",
+      "landings": [
+        "bundles/"
+      ],
+      "name": "CI",
+      "programs": [
+        "git"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "scripts/build-derived.mjs",
+        "scripts/health-report.mjs"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 9 paths",
+        "on a push to main touching 9 paths",
+        "on a schedule (`0 0 * * 1`), Monday at 00:00 UTC",
+        "or by hand"
+      ],
+      "untracked": "_site/ and dist/, which are not tracked"
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/operations.yml",
+      "held": [
+        {
+          "checks": [],
+          "checksMore": 0,
+          "lead": "on a `issues` event",
+          "runs": [
+            "scripts/patch-registry.mjs",
+            "scripts/submission-guard.mjs"
+          ],
+          "runsMore": 0,
+          "when": "on a `issues` event"
+        },
+        {
+          "checks": [],
+          "checksMore": 0,
+          "lead": "on a release event",
+          "runs": [
+            "scripts/build-bundles.mjs",
+            "scripts/validate.mjs"
+          ],
+          "runsMore": 0,
+          "when": "on a release event"
+        },
+        {
+          "checks": [],
+          "checksMore": 0,
+          "lead": "except on a `issues` event or on a release event",
+          "runs": [
+            "tests/site-smoke.mjs"
+          ],
+          "runsMore": 0,
+          "when": "except on a `issues` event or on a release event"
+        }
+      ],
+      "id": ".github/workflows/operations.yml",
+      "landings": [
+        "bundles/",
+        "registry.json"
+      ],
+      "name": "Operations",
+      "programs": [
+        "git"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "scripts/build-derived.mjs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [
+        "commits registry.json and pushes to a branch for review, never to main on a `issues` event",
+        "publishes to npm on a release event"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a `issues` event",
+        "on a push to main touching 5 paths",
+        "when a release is published",
+        "or by hand"
+      ],
+      "untracked": "dist/, which is not tracked"
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/publish.yml",
+      "id": ".github/workflows/publish.yml",
+      "landings": [],
+      "name": "Publish to npm",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 4
+        }
+      ],
+      "runs": [
+        "scripts/health-report.mjs",
+        "scripts/policy-check.mjs",
+        "scripts/test-compat.mjs",
+        "scripts/validate.mjs"
+      ],
+      "runsCount": 4,
+      "runsMore": 1,
+      "sends": [
+        "publishes to npm"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "generated": [
+    {
+      "place": "bundles/",
+      "writers": [
+        "scripts/build-bundles.mjs"
+      ]
+    },
+    {
+      "block": true,
+      "place": "registry.json",
+      "writers": [
+        "scripts/patch-registry.mjs"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-25T03:19:19.125Z",
+  "limits": [
+    "1 import site could not be resolved.",
+    "2 reads use paths built at run time and are not named here.",
+    "2 writes go to places this repository does not track, so they are not listed as generated.",
+    "3 reads go to a path their caller passes, not to this repository.",
+    "2 commands are built at run time and not followed, 1 of them in tests.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": "package.json#@mcptoolshop/mcp-tool-registry",
+  "partLabels": {
+    ".github": ".github",
+    ".husky": ".husky",
+    "assets": "assets",
+    "bundles": "bundles",
+    "curation": "curation",
+    "dist": "dist",
+    "docs": "docs",
+    "fixtures": "fixtures",
+    "root": "the repository root",
+    "schema": "schema",
+    "scripts": "scripts",
+    "site": "the site",
+    "tests": "tests"
+  },
+  "parts": 13,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/mcp-tool-registry",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "scripts/build-derived.mjs"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 3,
+  "testedBy": {
+    "scripts": 0
+  },
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "scripts",
+      "partLabel": "scripts",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 2
+}

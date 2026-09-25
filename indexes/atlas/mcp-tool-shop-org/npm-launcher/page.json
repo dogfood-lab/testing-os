@@ -1,0 +1,344 @@
+{
+  "authored": [
+    ".github/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 4,
+      "importedBy": [
+        "bin"
+      ],
+      "importedByTests": [
+        "test"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "bin",
+      "partLabel": "bin"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "test",
+      "partLabel": "test"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "bb50ee9f783b06f651331192af9e353a93192761",
+      "generatedAt": "2026-09-25T02:15:53.850Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "07c7132c09eb143dfc0cbe1bbdedd3668eb4e8f0",
+  "defaultBranch": "main",
+  "derived": "10 parts, mostly JavaScript (15 files) and TypeScript (2). Work enters through 6 doors; the busiest is CI, which reaches 3 parts. It publishes a package to npm, chosen at run time. People run mcptoolshop-launch. People import @mcptoolshop/npm-launcher.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 8
+        }
+      ],
+      "runs": [
+        "bin/mcptoolshop-launch.js",
+        "test/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 9 paths",
+        "on a push touching 9 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "test",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "test/"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [
+        "publishes to npm",
+        "creates a GitHub release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a tag matching `v*` is pushed",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/publish-wrapper.yml",
+      "id": ".github/workflows/publish-wrapper.yml",
+      "landings": [],
+      "name": "Publish wrapper",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [
+        "publishes a package to npm, chosen at run time"
+      ],
+      "stages": [],
+      "triggers": [
+        "by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#mcptoolshop-launch",
+      "kind": "command",
+      "landings": [],
+      "name": "mcptoolshop-launch",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bin",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 8
+        }
+      ],
+      "runs": [
+        "bin/mcptoolshop-launch.js"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/npm-launcher",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/npm-launcher",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 8
+        }
+      ],
+      "runs": [
+        "src/index.js"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "bin",
+      "fromTests": false,
+      "to": "src"
+    },
+    {
+      "from": "test",
+      "fromTests": true,
+      "to": "src"
+    }
+  ],
+  "generated": [],
+  "generatedAt": "2026-09-25T03:19:28.296Z",
+  "limits": [
+    "3 reads use paths built at run time and are not named here.",
+    "4 writes and 5 reads go to a path their caller passes, not to this repository.",
+    "3 writes and 5 reads go to the home directory (.local/) or a path their caller passes, not to this repository.",
+    "3 commands are built at run time and not followed.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "backpropagate": "backpropagate",
+    "bin": "bin",
+    "root": "the repository root",
+    "site": "the site",
+    "sovereignty": "sovereignty",
+    "src": "src",
+    "test": "test",
+    "xrpl-camp": "xrpl-camp",
+    "xrpl-lab": "xrpl-lab"
+  },
+  "parts": 10,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/npm-launcher",
+  "sequences": [],
+  "spawnTested": [
+    "bin"
+  ],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "bin/mcptoolshop-launch.js",
+    "src/index.js"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 2,
+  "testedBy": {
+    "backpropagate": 0,
+    "bin": 1,
+    "sovereignty": 0,
+    "src": 1,
+    "xrpl-camp": 0,
+    "xrpl-lab": 0
+  },
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "backpropagate",
+      "partLabel": "backpropagate",
+      "testedBy": 0
+    },
+    {
+      "part": "sovereignty",
+      "partLabel": "sovereignty",
+      "testedBy": 0
+    },
+    {
+      "part": "xrpl-camp",
+      "partLabel": "xrpl-camp",
+      "testedBy": 0
+    },
+    {
+      "part": "xrpl-lab",
+      "partLabel": "xrpl-lab",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [
+    "bin is touched by tests only through a spawn: a test runs its files as a child process."
+  ],
+  "written": 0
+}

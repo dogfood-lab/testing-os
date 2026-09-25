@@ -1,0 +1,203 @@
+{
+  "authored": [
+    ".github/",
+    "assets/",
+    "brand/",
+    "profile/",
+    "root",
+    "site/"
+  ],
+  "breaks": [],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "f4a52204518a78c45f388d6c70cf7b727a5cc6a6",
+      "generatedAt": "2026-09-25T02:07:48.685Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "8d8d1d23d1b860bbb3ebb374c74c636f93895777",
+  "defaultBranch": "main",
+  "derived": "8 parts, mostly JavaScript (4 files), Python (1) and TypeScript (1). Work enters through 3 doors; the busiest is Org Drift Guard, which reaches 3 parts.",
+  "doors": [
+    {
+      "checks": [
+        "CODE_OF_CONDUCT.md",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "SECURITY.md",
+        "SUPPORT.md",
+        "brand/README.md",
+        "brand/og/manifest.json",
+        "brand/palette.md",
+        "docs/BADGES.md",
+        "docs/BRANCH_POLICY.md",
+        "docs/MAINTENANCE.md",
+        "docs/RELEASING.md",
+        "docs/VERSIONING.md"
+      ],
+      "checksCount": 13,
+      "checksMore": 10,
+      "file": ".github/workflows/org-guard.yml",
+      "id": ".github/workflows/org-guard.yml",
+      "landings": [],
+      "name": "Org Drift Guard",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "brand",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "docs",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 8 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/docs-quality.yml",
+      "id": ".github/workflows/docs-quality.yml",
+      "landings": [],
+      "name": "Docs Quality",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "scripts/check-catalog.mjs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 3 paths",
+        "on a push to main touching 3 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 2
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "generated": [
+    {
+      "place": "docs/catalog.yaml",
+      "writers": [
+        "scripts/build-catalog.mjs"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-25T03:17:34.313Z",
+  "limits": [
+    "1 write goes to places this repository does not track, so it is not listed as generated.",
+    "1 write goes to a temporary directory, not to this repository.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/org-guard.yml",
+  "partLabels": {
+    ".github": ".github",
+    "assets": "assets",
+    "brand": "brand",
+    "docs": "docs",
+    "profile": "profile",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "the site"
+  },
+  "parts": 8,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/.github",
+  "sequences": [],
+  "startDoor": ".github/workflows/org-guard.yml",
+  "startHere": [],
+  "startNote": "Org Drift Guard runs no code this map can follow, so there is no path of files to read in order.",
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 0,
+  "testedBy": {
+    "scripts": 0
+  },
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [
+    "No test files were found by name."
+  ],
+  "written": 1
+}
