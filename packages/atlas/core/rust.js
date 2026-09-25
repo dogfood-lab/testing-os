@@ -550,15 +550,19 @@ export function rustSequence(root, imports) {
   };
   const classify = (call) => {
     const fn = call.childForFieldName('function');
-    const line = call.startPosition.row + 1;
-    if (fn?.type === 'identifier') {
-      if (byName.has(fn.text)) return { kind: 'local', node: byName.get(fn.text), name: fn.text, line };
-      const site = bound.get(fn.text);
-      return site ? { kind: 'import', name: fn.text, site: { specifier: site.specifier, line: site.line }, line } : null;
+    if (fn?.type !== 'identifier' && fn?.type !== 'scoped_identifier') return null;
+    return classifyPath(pathSegments(fn), call.startPosition.row + 1);
+  };
+  // A call by path, from a call expression or from a macro's arguments.
+  const classifyPath = (segments, line) => {
+    if (segments == null || segments.length === 0) return null;
+    if (segments.length === 1) {
+      const [name] = segments;
+      if (byName.has(name)) return { kind: 'local', node: byName.get(name), name, line };
+      const site = bound.get(name);
+      return site ? { kind: 'import', name, site: { specifier: site.specifier, line: site.line }, line } : null;
     }
-    if (fn?.type !== 'scoped_identifier') return null;
-    const segments = pathSegments(fn);
-    if (segments == null || segments.length < 2 || segments.includes('Self') || segments[0] === '') return null;
+    if (segments.includes('Self') || segments[0] === '') return null;
     const module = segments.slice(0, -1);
     const site = siteOf(module);
     if (!site) return null;
@@ -568,7 +572,18 @@ export function rustSequence(root, imports) {
   };
   const visit = (node, steps) => {
     if (!node) return;
-    if (['function_item', 'mod_item', 'impl_item', 'trait_item', 'macro_invocation'].includes(node.type)) return;
+    // A macro's arguments are tokens the grammar leaves unparsed: a path
+    // followed by its arguments in them (println!("{}", config::load())) is
+    // a call, read from the tokens; a method on a value is not.
+    if (node.type === 'macro_invocation') {
+      const tree = node.namedChildren.find((child) => child.type === 'token_tree');
+      for (const call of tree ? tokenCalls(tree) : []) {
+        const step = classifyPath(call.segments, call.line);
+        if (step) steps.push(step);
+      }
+      return;
+    }
+    if (['function_item', 'mod_item', 'impl_item', 'trait_item'].includes(node.type)) return;
     if (node.type === 'if_expression' && earlyReturn(node)) {
       const condition = node.childForFieldName('condition');
       visit(condition, steps);
@@ -608,6 +623,38 @@ export function rustSequence(root, imports) {
   });
   const main = moduleFunctions.find((fn) => fn.childForFieldName('name').text === 'main');
   return { functions, topLevel: main ? [main.startIndex] : [], reexports: [] };
+}
+
+// The calls by path a macro's tokens spell, in order, the arguments of each
+// before it: a run of names joined by :: followed by a parenthesized tree,
+// never after a . (a method) and never a macro of its own (name!(...)).
+function tokenCalls(tree) {
+  const out = [];
+  let run = [];
+  let joined = false;
+  let method = false;
+  for (let i = 0; i < tree.childCount; i += 1) {
+    const token = tree.child(i);
+    if (token.type === '::') {
+      joined = true;
+      continue;
+    }
+    if (token.type === 'identifier' || token.type === 'crate' || token.type === 'self' || token.type === 'super') {
+      if (run.length > 0 && !joined) run = [];
+      if (run.length === 0) method = tree.child(i - 1)?.type === '.';
+      run.push(token.text);
+      joined = false;
+      continue;
+    }
+    if (token.type === 'token_tree') {
+      out.push(...tokenCalls(token));
+      if (run.length > 0 && !joined && !method && token.text.startsWith('(')) out.push({ segments: [...run], line: token.startPosition.row + 1 });
+    }
+    run = [];
+    joined = false;
+    method = false;
+  }
+  return out;
 }
 
 // if cond { ...; return; } with no else: the other way the function goes.
