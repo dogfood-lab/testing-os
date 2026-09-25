@@ -3105,15 +3105,20 @@ const INSTALLED_NAMED = 10;
 // after them: a sprite pack's four scripts are not what it is.
 function languageClause(ctx) {
   const counts = new Map();
-  let images = 0;
+  // Data, prose and images are what a repository mostly is when they hold
+  // most of its tracked files: a registry's JSON, a docs site's pages.
+  const held = new Map([['images', 0], ['JSON data', 0], ['Markdown', 0]]);
   for (const path of ctx.fileOf.keys()) {
-    if (isImagePath(path)) images += 1;
+    if (isImagePath(path)) held.set('images', held.get('images') + 1);
+    else if (/\.jsonl?$/i.test(path)) held.set('JSON data', held.get('JSON data') + 1);
+    else if (/\.mdx?$/i.test(path)) held.set('Markdown', held.get('Markdown') + 1);
     const language = LANGUAGE_NAMES[languageOf(path)];
     if (language) counts.set(language, (counts.get(language) ?? 0) + 1);
   }
   const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1] || cmp(a[0], b[0]));
-  if (images * 2 > ctx.fileOf.size) {
-    const lead = `, mostly images (${count(images, 'file')})`;
+  const [kind, most] = [...held.entries()].sort((a, b) => b[1] - a[1])[0];
+  if (most * 2 > ctx.fileOf.size) {
+    const lead = `, mostly ${kind} (${count(most, 'file')})`;
     return ranked.length === 0 ? lead : `${lead}; code in ${list(ranked.map(([name, n]) => `${name} (${n})`))}`;
   }
   if (ranked.length === 0) return '';
