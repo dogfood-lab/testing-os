@@ -57,6 +57,19 @@ describe('atlas init and the ignore files', () => {
     assert.equal(again.includes('added atlas'), false, again);
   });
 
+  it('keeps the map out of markdownlint, in the ignores of a cli2 config or in .markdownlintignore', () => {
+    const cli2 = adopt('cli2');
+    const out = init(cli2);
+    assert.equal(read(cli2, '.markdownlint-cli2.jsonc'), '{\n  // markdownlint-cli2\n  "ignores": ["atlas/**", "node_modules/**"]\n}\n');
+    assert.ok(out.includes('added "atlas/**" to the ignores of .markdownlint-cli2.jsonc'), out);
+    assert.equal(existsSync(join(cli2, '.markdownlintignore')), false);
+    init(cli2, '--force');
+    assert.equal(read(cli2, '.markdownlint-cli2.jsonc'), '{\n  // markdownlint-cli2\n  "ignores": ["atlas/**", "node_modules/**"]\n}\n');
+    const mdlint = adopt('mdlint');
+    init(mdlint);
+    assert.equal(read(mdlint, '.markdownlintignore'), 'atlas/\n');
+  });
+
   it('leaves an ignore file alone when the manifest lists its files, and makes none for prettier it does not use', () => {
     const root = adopt('listed');
     const out = init(root);

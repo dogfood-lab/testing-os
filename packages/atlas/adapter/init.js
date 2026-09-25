@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { stringify } from 'yaml';
 import { mapRepository } from '../core/index.js';
@@ -38,6 +38,9 @@ const IGNORES = [
   { file: '.vscodeignore', line: 'atlas/**', when: (pkg, present) => present && !Array.isArray(pkg?.files) },
   { file: '.npmignore', line: 'atlas/', when: (pkg, present) => present && !Array.isArray(pkg?.files) },
   { file: '.prettierignore', line: 'atlas/', when: (pkg) => usesPrettier(pkg) },
+  // markdownlint-cli reads .markdownlintignore; markdownlint-cli2 reads the
+  // ignores of its own config, which keepMapOut edits instead.
+  { file: '.markdownlintignore', line: 'atlas/', when: (pkg, present, repo) => present || (usesMarkdownlint(pkg, repo) && !cli2Config(repo)) },
 ];
 const COVERS = new Set(['atlas', 'atlas/', 'atlas/**', 'atlas/**/*', '/atlas', '/atlas/', '/atlas/**', '**/atlas', '**/atlas/', '**/atlas/**']);
 
@@ -61,14 +64,58 @@ function keepMapOut(repo) {
   for (const ignore of IGNORES) {
     const path = join(repo, ignore.file);
     const present = existsSync(path);
-    if (!ignore.when(pkg, present)) continue;
+    if (!ignore.when(pkg, present, repo)) continue;
     const text = present ? readFileSync(path, 'utf8') : '';
     if (text.split(/\r?\n/).some((line) => COVERS.has(line.trim()))) continue;
     const eol = text.includes('\r\n') ? '\r\n' : '\n';
     writeArtifactSync(path, `${text}${text === '' || text.endsWith('\n') ? '' : eol}${ignore.line}${eol}`);
     added.push({ file: ignore.file, line: ignore.line });
   }
+  const config = cli2Config(repo);
+  if (config && ignoreInCli2(join(repo, config))) added.push({ file: `the ignores of ${config}`, line: '"atlas/**"' });
   return added;
+}
+
+const CLI2_CONFIGS = ['.markdownlint-cli2.jsonc', '.markdownlint-cli2.json'];
+
+function cli2Config(repo) {
+  return CLI2_CONFIGS.find((name) => existsSync(join(repo, name))) ?? null;
+}
+
+// Whether markdownlint checks the repository's Markdown: a dependency, a
+// script or a workflow that runs it, or a config of its own.
+function usesMarkdownlint(pkg, repo) {
+  const declared = pkg != null && typeof pkg === 'object' && ['dependencies', 'devDependencies'].some((field) => pkg[field] != null && typeof pkg[field] === 'object'
+    && Object.keys(pkg[field]).some((name) => name.startsWith('markdownlint')));
+  const scripts = pkg?.scripts != null && typeof pkg.scripts === 'object' ? Object.values(pkg.scripts) : [];
+  if (declared || scripts.some((script) => typeof script === 'string' && /\bmarkdownlint/.test(script))) return true;
+  if (['.markdownlint.json', '.markdownlint.jsonc', '.markdownlint.yaml', '.markdownlint.yml', '.markdownlintrc'].some((name) => existsSync(join(repo, name)))) return true;
+  const workflows = join(repo, '.github', 'workflows');
+  if (!existsSync(workflows)) return false;
+  return readdirSync(workflows).some((name) => /\.ya?ml$/.test(name) && /markdownlint/.test(readFileSync(join(workflows, name), 'utf8')));
+}
+
+/**
+ * Adds "atlas/**" to the ignores of a markdownlint-cli2 config, keeping the
+ * rest of the text as it is. False when an ignore already covers atlas/.
+ */
+function ignoreInCli2(path) {
+  const text = readFileSync(path, 'utf8');
+  const at = text.search(/"ignores"\s*:\s*\[/);
+  if (at !== -1) {
+    const open = text.indexOf('[', at);
+    const close = text.indexOf(']', open);
+    const body = text.slice(open + 1, close === -1 ? undefined : close);
+    if ([...body.matchAll(/"([^"]*)"/g)].some((match) => COVERS.has(match[1]))) return false;
+    const empty = body.trim() === '';
+    writeArtifactSync(path, `${text.slice(0, open + 1)}"atlas/**"${empty ? '' : ', '}${text.slice(open + 1)}`);
+    return true;
+  }
+  const brace = text.indexOf('{');
+  if (brace === -1) return false;
+  const rest = text.slice(brace + 1).trim();
+  writeArtifactSync(path, `${text.slice(0, brace + 1)}\n  "ignores": ["atlas/**"]${rest.startsWith('}') ? '' : ','}${text.slice(brace + 1)}`);
+  return true;
 }
 
 function usesPrettier(pkg) {
