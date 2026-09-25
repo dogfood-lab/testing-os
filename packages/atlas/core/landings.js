@@ -743,7 +743,7 @@ export function astLandings(language, root, path, places) {
   const evaluate = ctx.python ? evalPy : evalJs;
   const site = (kind, call, node, countDynamic = true) => {
     if (!node) return;
-    const all = ctx.python ? evaluate(node, ctx, 0) : throughClosure(node, ctx);
+    const all = (ctx.python ? evaluate(node, ctx, 0) : throughClosure(node, ctx)).filter((value) => !value.shape);
     for (const value of all) named(value);
     const unless = kind === 'write' ? writeGuards(node, ctx.python) : [];
     // A read only compared with what is about to be written is a drift check,
@@ -1278,7 +1278,7 @@ function landingEntry(target, call, value, places, { settled = false } = {}) {
   // files under, is a directory, which the page names as one. A maker handed
   // a path through a parameter may make the directory above it, which the
   // parameter's reading does not keep, so the place is not called one.
-  if (!places.files.has(target) && !places.dirs.has(target) && (value.open || (DIRECTORY_MAKERS.has(call) && !settled))) entry.directory = true;
+  if (!places.files.has(target) && !places.dirs.has(target) && !target.includes('*') && (value.open || (DIRECTORY_MAKERS.has(call) && !settled))) entry.directory = true;
   return entry;
 }
 
@@ -2584,6 +2584,13 @@ function shapedLikeNothing(value, call, places) {
   // directories have its shape; a file needs a name after the unread part.
   const directory = DIRECTORY_MAKERS.has(call);
   if (!directory && value.tail.replace(/[*/\\]/g, '') === '') return false;
+  // A file named by its shape under a directory nothing tracks is that
+  // directory's output, placed as the directory, whatever its name spells.
+  if (!directory) {
+    const spelled = value.text.replaceAll('\\', '/').replace(/^(\.\/)+/, '');
+    const head = spelled.slice(0, Math.max(spelled.lastIndexOf('/'), 0));
+    if (head !== '' && !places.dirs.has(head)) return false;
+  }
   let text = value.text.replaceAll('\\', '/');
   while (text.startsWith('./')) text = text.slice(2);
   const pattern = `${globText(text)}${value.tail}`;
@@ -2629,6 +2636,26 @@ function cwdPlace(value, call, places) {
 
 // Where a write shaped like no tracked file goes: the readable head and the
 // first unread segment (swarms/*), a place no one tracks.
+// The pattern an open path names right under a tracked directory, when its
+// name has a spelled part, tracked files have that shape and the directory
+// holds others beside them: bundles/*.json beside bundles/rules/. A
+// directory whose every file has the shape is the place itself.
+function trackedShape(value, places) {
+  if (!value.open || value.tail == null || value.tail.includes('/') || value.tail.replace(/\*/g, '') === '') return null;
+  let text = value.text.replaceAll('\\', '/');
+  while (text.startsWith('./')) text = text.slice(2);
+  if (!text.endsWith('/')) return null;
+  const isMatch = picomatch(`${globText(text)}${value.tail}`, { dot: true });
+  let shaped = false;
+  let other = false;
+  for (const path of places.files) {
+    if (!path.startsWith(text)) continue;
+    if (isMatch(path)) shaped = true;
+    else other = true;
+  }
+  return shaped && other ? `${text}${value.tail}` : null;
+}
+
 function shapedTarget(value) {
   const text = value.text.replaceAll('\\', '/').replace(/^(\.\/)+/, '');
   const firstSegment = value.tail.split('/')[0];
@@ -2727,7 +2754,11 @@ function concat(parts) {
     }
     acc = cap(joined);
   }
-  return acc.filter((value) => !(value.open && value.text === '') || outside(value) || isHelper(value));
+  // An unread part with a name spelled after it (`${id}.json`) keeps that
+  // shape, marked, for the path it is joined onto (bundles/*.json); on its own
+  // it names no place (site drops it).
+  return acc.filter((value) => !(value.open && value.text === '') || outside(value) || isHelper(value) || /[^*]/.test(value.tail ?? ''))
+    .map((value) => (value.open && value.text === '' && !outside(value) && !isHelper(value) ? { ...value, shape: true } : value));
 }
 
 function defaultKey(of) {
@@ -2796,7 +2827,14 @@ function writtenPlace(value, places, call = null, untracked = true) {
   while (text.startsWith('./')) text = text.slice(2);
   const spelled = value.open ? text.slice(0, Math.max(text.lastIndexOf('/'), 0)) : text.replace(/\/+$/, '');
   // A tracked place is where the write lands, in a dist/ or not.
-  if (target === spelled && (places.files.has(target) || places.dirs.has(target))) return target;
+  if (target === spelled && (places.files.has(target) || places.dirs.has(target))) {
+    // A file named at run time right under a tracked directory, with a name
+    // spelled after the unread part (bundles/${id}.json), lands on the files
+    // of that shape, not on the whole directory: bundles/rules/ beside them
+    // is no output of the write.
+    const shape = trackedShape(value, places);
+    return shape ?? target;
+  }
   const parts = spelled.split('/');
   const at = parts.findIndex((part) => part === 'node_modules' || part === 'dist');
   return at === -1 ? target : parts.slice(0, at + 1).join('/');
@@ -3100,7 +3138,14 @@ export function attachLandings({ files, doors, boundaries, places }) {
   // A place named by its shape (swarms/*, a temporary file beside a record)
   // is one no tracked file has, so no commit keeps it either.
   const committed = mapped.flatMap((door) => door.stagedTargets);
-  const untracked = new Set([...writers.keys(), ...readers.keys()].filter((target) => target.includes('*') || (
+  // A shape tracked files have (bundles/*.json) is kept by the commit that
+  // keeps them.
+  const shapeKept = (target) => {
+    const isMatch = picomatch(target, { dot: true });
+    const head = target.slice(0, target.lastIndexOf('/') + 1);
+    return [...places.files].some((path) => path.startsWith(head) && isMatch(path));
+  };
+  const untracked = new Set([...writers.keys(), ...readers.keys()].filter((target) => (target.includes('*') && !shapeKept(target)) || (target.includes('*') ? false : 
     !places.files.has(target) && !places.dirs.has(target) && !keptForOutput(target, places)
     && !committed.some((staged) => target === staged || target.startsWith(`${staged}/`))
   )));
