@@ -113,7 +113,8 @@ test('the sentences are the ones the committed markdown carries', () => {
     'swarm (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, ingest, report, schemas and verify, writes to dogfood/roadmap/, indexes/, policies/repos/ and records/, and to swarms/control-plane.db, which is not tracked, and runs git.',
     'Read those in order to follow one dogfood submission end to end.',
     'Regenerate with npx --yes @dogfood-lab/atlas map.',
-    'Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.',
+    // Identifiers are code on both, the backticks and code tags dropped here.
+    'Inside packages/ingest/run.js, ingest does, in order: logStage (dogfood-swarm), isDuplicate, load-context.js (3 steps), verify (verify), writeRecord and rebuildIndexes.',
   ]) {
     assert.ok(text.includes(sentence), sentence);
     assert.ok(markdown.includes(sentence), `the markdown twin says it too: ${sentence}`);
@@ -219,12 +220,13 @@ test('the order of work sits under step 1, as the markdown nests it', () => {
   const expected = page.sequences.reduce((sum, sequence) => sum + 1 + sequence.inner.length, 0);
   assert.equal(inside.length, expected, 'one item per sequence and per inner function');
   const [first] = page.sequences;
-  assert.ok(plain(inside[0]).startsWith(`Inside ${first.file}, ${first.phrase} does, in order:`), plain(inside[0]));
+  assert.ok(plain(inside[0]).startsWith(`Inside ${first.file}, ${first.phrase.replace(/`/g, '')} does, in order:`), plain(inside[0]));
   const blob = `https://github.com/dogfood-lab/testing-os/blob/${page.commit}/`;
   assert.ok(inside[0].includes(`<a href="${blob}${first.file}"><code>${first.file}</code></a>`), 'the file links to the mapped commit');
   for (const step of steps.slice(1)) assert.equal(step.includes('<ol>'), false, 'only step 1 carries the order of work');
   const lines = readFileSync(join(repoRoot, 'atlas', 'README.md'), 'utf8').split(/\r?\n/);
-  assert.ok(lines.includes(`   1. ${plain(inside[0])}`), 'the markdown nests it the same way');
+  // Its code spans read as their text, as the site's code tags do.
+  assert.ok(lines.map((line) => line.replaceAll('`', '')).includes(`   1. ${plain(inside[0])}`), 'the markdown nests it the same way');
 });
 
 test('a called function reads as a list from eight steps and as a sentence up to seven', () => {
