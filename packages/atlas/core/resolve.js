@@ -99,6 +99,7 @@ function countSites(files) {
     if (!Array.isArray(file.imports)) continue;
     for (const site of file.imports) {
       const outcome = site.resolved?.outcome;
+      if (outcome === 'manifest') continue;
       if (outcome === 'file' || outcome === 'boundary' || outcome === 'external') resolved += 1;
       else unresolved += 1;
     }
@@ -147,6 +148,7 @@ function collectEdges(boundaries, boundaryByFile) {
 }
 
 function resolveSite(ctx, fromAbs, language, site) {
+  if (site.kind === 'manifest') return { outcome: 'manifest' };
   if (site.kind === 'dynamic' || site.kind === 'wildcard') {
     return { outcome: 'unresolved', reason: site.kind };
   }

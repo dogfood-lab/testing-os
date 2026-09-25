@@ -236,7 +236,8 @@ describe('the page on a Python package', () => {
   it('counts declared dependencies apart from what could not be resolved', () => {
     assert.deepEqual(mapped.page.limits.slice(0, 2), [
       '2 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.',
-      '1 import site could not be resolved.',
+      // The line names the site and why it did not resolve.
+      '1 import could not be resolved: `scripts/smoke.py` imports `helpers`, which is no module on its import path and no declared dependency.',
     ]);
   });
 });

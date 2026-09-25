@@ -27,12 +27,17 @@ function siteCounts(files) {
   let externals = 0;
   let outside = 0;
   const externalNames = new Set();
+  const named = [];
   for (const file of files) {
     if (!Array.isArray(file.imports)) continue;
     for (const site of file.imports) {
       const outcome = site.resolved?.outcome;
+      if (outcome === 'manifest') continue;
       if (outcome === 'file' || outcome === 'boundary' || outcome === 'external') resolved += 1;
-      else unresolved += 1;
+      else {
+        unresolved += 1;
+        named.push(unresolvedEntry(file.path, site));
+      }
       if (site.resolved?.declared) {
         externals += 1;
         externalNames.add(site.specifier.split('.')[0]);
@@ -40,7 +45,29 @@ function siteCounts(files) {
       if (site.resolved?.outside) outside += 1;
     }
   }
-  return { unresolved, resolved, externals, externalNames: [...externalNames].sort(), outside };
+  named.sort((a, b) => cmp(a.path, b.path) || (a.line ?? 0) - (b.line ?? 0));
+  return { unresolved, resolved, externals, externalNames: [...externalNames].sort(), outside, named: named.slice(0, UNRESOLVED_NAMED).map(({ line, ...rest }) => rest) };
+}
+
+// How many of a part's unresolved sites the map names, with why; the rest
+// are counted.
+const UNRESOLVED_NAMED = 3;
+
+// Why a site did not resolve, in the words the page uses: an undeclared
+// package a file probes for or loads if it is there, an import of a path a
+// build generates (.next/, dist/), one of a path the repository does not
+// hold, or one built at run time.
+function unresolvedEntry(path, site) {
+  const reason = site.resolved?.reason ?? 'unresolved';
+  const entry = { line: site.line, path, specifier: site.kind === 'dynamic' ? null : site.specifier };
+  if (reason === 'undeclared-package') entry.why = site.locates ? 'probe' : site.optional ? 'optional' : 'undeclared';
+  else if (site.kind === 'dynamic') entry.why = 'dynamic';
+  else if (reason === 'build-output-without-source' || /(^|\/)\.?(next|nuxt|svelte-kit|astro|dist|build|out)\//.test(site.specifier)) entry.why = 'generated';
+  else if (reason === 'not-tracked' || reason === 'module-not-found') entry.why = 'missing';
+  else if (reason === 'python-module-not-found') entry.why = 'unplaced';
+  else if (reason === 'workspace-member-not-found' || reason === 'workspace-export-unresolved' || reason === 'local-package-not-found') entry.why = 'member';
+  else entry.why = 'other';
+  return entry;
 }
 
 // Reads and writes whose path is built at run time name no place, so the map
@@ -204,6 +231,7 @@ export function buildArtifact(mapped, commit) {
       ...(tested.testedInside.has(boundary.name) ? { testedInside: true } : {}),
       ...(tested.throughSpawn.has(boundary.name) ? { testedThroughSpawn: true } : {}),
       unresolvedSites: sites.unresolved,
+      ...(sites.named.length > 0 ? { unresolvedNamed: sites.named } : {}),
     };
   });
   const overlaps = keep(mapped.overlaps)

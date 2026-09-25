@@ -2784,6 +2784,39 @@ export function unreadLine(files) {
   return constructs ? `${lead}: ${constructs}.` : `${lead}.`;
 }
 
+// How many import sites a line names by file and reason; the rest counted.
+const UNRESOLVED_SHOWN = 3;
+
+/**
+ * "1 import could not be resolved: `vitest.config.ts` probes
+ * `@vitest/coverage-v8`, which is not declared." Up to three sites named
+ * with why, the rest counted, so a reader can open the one that matters.
+ *
+ * @param {number} total
+ * @param {Array<{ path: string, specifier: string|null, why: string }>} named
+ * @returns {string}
+ */
+export function unresolvedLine(total, named) {
+  const lead = `${count(total, 'import')} could not be resolved`;
+  const shown = [...named].sort((a, b) => cmp(a.path, b.path) || cmp(a.specifier ?? '', b.specifier ?? '')).slice(0, UNRESOLVED_SHOWN);
+  if (shown.length === 0) return `${lead}.`;
+  const phrase = (entry) => {
+    const file = `\`${entry.path}\``;
+    const spec = `\`${entry.specifier}\``;
+    if (entry.why === 'probe') return `${file} probes ${spec}, which is not declared`;
+    if (entry.why === 'optional') return `${file} loads ${spec} when it is installed, which is not declared`;
+    if (entry.why === 'undeclared') return `${file} imports ${spec}, which is not declared`;
+    if (entry.why === 'generated') return `${file} imports ${spec}, which a build generates`;
+    if (entry.why === 'missing') return `${file} imports ${spec}, which is not in this repository`;
+    if (entry.why === 'unplaced') return `${file} imports ${spec}, which is no module on its import path and no declared dependency`;
+    if (entry.why === 'member') return `${file} imports ${spec}, which no workspace member provides`;
+    if (entry.why === 'dynamic') return `${file} imports a path built at run time`;
+    return `${file} imports ${spec}`;
+  };
+  const rest = total - shown.length;
+  return `${lead}: ${shown.map(phrase).join('; ')}${rest > 0 ? `; and ${rest} more` : ''}.`;
+}
+
 function limits(ctx, shownText) {
   const lines = [];
   const externals = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.externals ?? 0), 0);
@@ -2791,7 +2824,7 @@ function limits(ctx, shownText) {
   const declared = externalsLine(externals, names);
   if (declared) lines.push(declared);
   const unresolved = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.unresolvedSites ?? 0), 0);
-  if (unresolved > 0) lines.push(`${count(unresolved, 'import site')} could not be resolved.`);
+  if (unresolved > 0) lines.push(unresolvedLine(unresolved, ctx.boundaries.flatMap((boundary) => boundary.unresolvedNamed ?? [])));
   const outside = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.outsideImports ?? 0), 0);
   if (outside > 0) {
     lines.push(`${count(outside, 'import site')} ${outside === 1 ? 'names' : 'name'} a path outside this repository, so what ${outside === 1 ? 'it loads' : 'they load'} is not followed.`);

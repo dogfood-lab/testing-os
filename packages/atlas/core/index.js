@@ -913,18 +913,27 @@ function collectScript(root) {
     const fn = node.childForFieldName('function');
     if (!fn) return;
     if (isResolveCall(fn)) {
-      const literal = jsString(node.childForFieldName('arguments')?.namedChildren[0] ?? null);
-      if (literal != null) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node), locates: true });
+      const literal = jsString(firstArgument(node));
+      if (literal != null) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node), locates: true, ...(optionalCall(node) ? { optional: true } : {}) });
       return;
     }
     const isImport = fn.type === 'import';
     const isRequire = fn.type === 'identifier' && fn.text === 'require';
     if (!isImport && !isRequire) return;
-    const args = node.childForFieldName('arguments');
-    const first = args?.namedChildren[0] ?? null;
-    const literal = jsString(first);
+    // A comment beside the argument (import(/* @vite-ignore */ name)) is no
+    // part of it, and a const the argument names holds what it loads.
+    const first = firstArgument(node);
+    const bound = first?.type === 'identifier' ? constValue(root, first.text) : null;
+    const literal = jsString(first) ?? jsString(bound);
+    const optional = optionalCall(node) ? { optional: true } : {};
     if (literal != null) {
-      imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node) });
+      imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node), ...optional });
+      return;
+    }
+    // require(join(ROOT, 'package.json')) reads the manifest for its fields;
+    // it loads no module.
+    if (manifestPath(bound ?? first)) {
+      imports.push({ specifier: 'package.json', kind: 'manifest', line: lineOf(node) });
       return;
     }
     // import(COMMANDS[name]), or import(path) after const path =
@@ -938,6 +947,33 @@ function collectScript(root) {
     imports.push({ specifier: first ? first.text : '', kind: 'dynamic', line: lineOf(node) });
   });
   return imports;
+}
+
+// The first argument of a call, past any comment beside it.
+function firstArgument(call) {
+  return call.childForFieldName('arguments')?.namedChildren.find((child) => child.type !== 'comment') ?? null;
+}
+
+// A load the code is ready to go without: inside a try, or with a .catch on
+// what it returns.
+function optionalCall(call) {
+  if (call.parent?.type === 'member_expression' && call.parent.childForFieldName('property')?.text === 'catch') return true;
+  for (let node = call.parent; node != null; node = node.parent) {
+    if (node.type === 'try_statement') return true;
+    if (node.type === 'function_declaration' || node.type === 'arrow_function' || node.type === 'function_expression' || node.type === 'method_definition') return false;
+  }
+  return false;
+}
+
+// join(ROOT, 'package.json') and its kin: a path call whose last argument
+// is a package.json.
+function manifestPath(node) {
+  if (node?.type !== 'call_expression') return false;
+  const name = node.childForFieldName('function')?.text ?? '';
+  if (!/(^|\.)(join|resolve)$/.test(name)) return false;
+  const args = node.childForFieldName('arguments')?.namedChildren.filter((child) => child.type !== 'comment') ?? [];
+  const last = jsString(args[args.length - 1] ?? null);
+  return last != null && /(^|\/)package\.json$/.test(last);
 }
 
 /**
