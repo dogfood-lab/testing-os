@@ -407,9 +407,30 @@ export function vitestTargets(repo, cwd, { config, root }) {
       if (excludes) exclude = excludes.complete ? excludes.values : [...VITEST_EXCLUDE, ...excludes.values];
       const dir = read('dir');
       if (dir?.values.length === 1 && root == null) base = join(cwd, dir.values[0]) ?? base;
+      // projects (and the older workspace) hands the run to each project's
+      // own config: a directory, a glob of them, or a config file.
+      const projects = read('projects') ?? read('workspace');
+      if (projects && projects.values.length > 0) {
+        const from = posix.dirname(found) === '.' ? '' : posix.dirname(found);
+        return { config: found, base, include, exclude, projects: vitestProjects(repo, from, projects.values) };
+      }
     }
   }
   return { config: found, base, include, exclude };
+}
+
+// The directories (with a config file, when one is named) the projects of a
+// vitest config stand for, relative to the config's own directory.
+function vitestProjects(repo, from, entries) {
+  const out = [];
+  for (const entry of entries) {
+    if (entry.startsWith('!')) continue;
+    const target = join(from, entry.replace(/\/$/, ''));
+    if (target == null) continue;
+    if (repo.tracked.has(target)) out.push({ dir: posix.dirname(target) === '.' ? '' : posix.dirname(target), config: posix.basename(target) });
+    else for (const dir of repo.directoriesMatching(target)) out.push({ dir, config: null });
+  }
+  return out;
 }
 
 /* ---------- jest ---------- */

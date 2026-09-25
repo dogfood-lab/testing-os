@@ -522,6 +522,12 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     if (first >= tokens.length) return;
     for (const target of npmTargets(tokens, dir, repo)) npmScript(target.dir, target.script, frame);
     const argv = tokens.slice(first);
+    // pnpm vitest run, with no script named vitest, is vitest.
+    const binary = runnerBinary(argv, dir, repo);
+    if (binary != null) {
+      interpret(argv.slice(binary), dir, frame);
+      return;
+    }
     // npm exec, pnpm dlx and their kin run a package binary the way npx does.
     if (PACKAGE_RUNNERS.has(argv[0]) && ['exec', 'x', 'dlx'].includes(argv[1])) {
       handlers.npx(['npx', ...argv.slice(2)], dir, frame);
@@ -1201,6 +1207,18 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const found = vitestTargets(repo, dir, { config: valueOf(parsed, '-c', '--config'), root: valueOf(parsed, '-r', '--root') });
       if (found.base == null) return;
       const filters = parsed.positional.map((token) => stripDot(token));
+      if (found.projects) {
+        // Each project runs its own tests, by its own config or vitest's
+        // defaults, from its own directory.
+        for (const project of found.projects) {
+          const own = vitestTargets(repo, project.dir, { config: project.config, root: null });
+          if (own.base == null || own.projects) continue;
+          const files = repo.filesMatching(own.base, own.include, own.exclude)
+            .filter((path) => filters.length === 0 || filters.some((filter) => path.includes(filter)));
+          matched(repo.compact(files), frame, own.config ? `vitest ${own.config}` : `vitest ${found.config}`);
+        }
+        return;
+      }
       const files = repo.filesMatching(found.base, found.include, found.exclude)
         .filter((path) => filters.length === 0 || filters.some((filter) => path.includes(filter)));
       matched(repo.compact(files), frame, found.config ? `vitest ${found.config}` : 'vitest');
@@ -2048,6 +2066,28 @@ function pnpmTargets(args, dir, repo) {
   if (filters.length > 0) dirs = filters.flatMap((selector) => pnpmSelected(repo, selector, prefix));
   else if (recursive) dirs = workspaceDirs(repo);
   return [...new Set(dirs)].map((target) => ({ dir: target, script }));
+}
+
+/**
+ * Where a tool's name stands in pnpm <name> and yarn <name> when the package
+ * has no script of that name: both run the package binary of that name, as
+ * pnpm exec does. Null for a script, one of the manager's own commands, a
+ * word this map knows no tool for, and a command moved to another member.
+ */
+function runnerBinary(argv, dir, repo) {
+  if (argv[0] !== 'pnpm' && argv[0] !== 'yarn') return null;
+  const own = argv[0] === 'pnpm' ? PNPM_COMMANDS : YARN_COMMANDS;
+  let i = 1;
+  for (; i < argv.length && argv[i].startsWith('-'); i += 1) {
+    const flag = argv[i].split('=')[0];
+    if (['-C', '--dir', '--filter', '-F', '--filter-prod', '--cwd', '-r', '--recursive'].includes(flag)) return null;
+    if (!argv[i].includes('=') && PNPM_VALUE_FLAGS.has(flag)) i += 1;
+  }
+  const command = argv[i];
+  if (command == null || own.has(command) || RUN_ALIASES.has(command) || TEST_ALIASES.has(command) || LIFECYCLE.has(command)) return null;
+  const scripts = repo.manifest(dir)?.scripts;
+  if (scripts && typeof scripts === 'object' && typeof scripts[command] === 'string') return null;
+  return toolOf(command) != null ? i : null;
 }
 
 function pnpmSelected(repo, selector, prefix) {

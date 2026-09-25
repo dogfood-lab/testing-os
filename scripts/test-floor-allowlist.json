@@ -252,6 +252,14 @@
     {
       "path": "fixtures/atlas/turbo-runs/packages/core/test/shape.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the turbo-runs fixture repository that packages/atlas/core/turbo-runs.test.js maps, where turbo runs the core member's test script, node --test test/, so CI must count it among the files it runs. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/vitest-projects/packages/a/src/a.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the vitest-projects fixture repository that packages/atlas/core/vitest-projects.test.js maps, where the root vitest config hands the run to each package's own config or vitest's defaults, and whether this file is selected is the point. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/vitest-projects/packages/b/test/b.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the vitest-projects fixture repository that packages/atlas/core/vitest-projects.test.js maps, where the root vitest config hands the run to each package's own config or vitest's defaults, and whether this file is selected is the point. It holds no test and is never meant to run."
     }
   ]
 }
