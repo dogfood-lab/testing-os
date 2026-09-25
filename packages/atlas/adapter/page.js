@@ -228,12 +228,13 @@ function byReach(doors) {
 
 /**
  * A door that a manifest installs (a command people run, or the package they
- * import) rather than a workflow the repository starts.
+ * import), or an action other repositories use, rather than a workflow the
+ * repository starts.
  *
  * @param {{ kind?: string }} door
  */
 export function installed(door) {
-  return door.kind === 'command' || door.kind === 'package';
+  return door.kind === 'command' || door.kind === 'package' || door.kind === 'action';
 }
 
 /**
@@ -261,7 +262,8 @@ export function orderDoors(doors) {
 // A Tauri app's binary is installed as the app, not typed as a command, and
 // a Godot project's main scene is what the engine runs.
 function installedAs(door) {
-  const what = door.example ? `a command people run with \`${exampleCommand(door)}\``
+  const what = door.kind === 'action' ? 'an action other repositories use'
+    : door.example ? `a command people run with \`${exampleCommand(door)}\``
     : door.unshipped && door.privatePackage ? 'a command of a private package, which nothing ships'
     : door.unshipped ? `${door.app === 'desktop' ? 'a desktop app' : 'a command'} built from ${builtFrom(door)}, which nothing ships`
     : door.app === 'desktop' ? 'the desktop app people install'
@@ -3258,6 +3260,8 @@ function derivedLine(ctx, main, name = '') {
   if (commands) sentences.push(`People run ${commands}.`);
   const packages = installedNames(ctx, 'package');
   if (packages) sentences.push(`People import ${packages}.`);
+  const actions = installedNames(ctx, 'action');
+  if (actions) sentences.push(`Other repositories use the ${actions} ${actions.includes(' and ') ? 'actions' : 'action'}.`);
   const extensions = installedNames(ctx, 'package', { extension: true });
   if (extensions) sentences.push(`People install the ${extensions} extension.`);
   const game = installedNames(ctx, 'command', { app: 'game' });

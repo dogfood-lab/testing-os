@@ -51,10 +51,57 @@ const ACTION_SENDS = [
  */
 export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom, emitted, unitTests, discovered }) {
   const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests, discovered });
-  return [...tracked]
-    .filter(isWorkflow)
-    .sort()
-    .map((file) => readDoor(repoPath, file, repo));
+  const workflows = [...tracked].filter(isWorkflow).sort();
+  const doors = workflows.map((file) => readDoor(repoPath, file, repo));
+  // An action this repository defines that none of its workflows uses is
+  // one it ships for other repositories: a root action.yml, or one under
+  // .github/actions/ that no workflow names as ./.github/actions/<name>.
+  const used = new Set();
+  for (const file of workflows) {
+    let text = '';
+    try {
+      text = readFileSync(join(repoPath, file), 'utf8');
+    } catch {
+      continue;
+    }
+    for (const match of text.matchAll(/\buses:\s*['"]?\.\/([^'"\s@#]+)/g)) used.add(match[1].replace(/\/+$/, '').replace(/\/action\.ya?ml$/, ''));
+  }
+  const actions = [...tracked].filter((path) => /^action\.ya?ml$/.test(path) || /^\.github\/actions\/[^/]+\/action\.ya?ml$/.test(path))
+    .filter((path) => path.includes('/') ? !used.has(posix.dirname(path)) : true)
+    .sort();
+  for (const file of actions) doors.push(readDoor(repoPath, file, repo, actionAsWorkflow));
+  return doors;
+}
+
+/**
+ * An action a repository ships, read as a workflow of one job: a composite
+ * action's steps, or a JavaScript action's main run with node. Its steps
+ * run in the caller's workspace, so a path is this repository's only when
+ * spelled through github.action_path, which is the action's directory. An
+ * action has no trigger of its own; what it does is what other
+ * repositories' workflows run.
+ */
+function actionAsWorkflow(doc, file) {
+  const dir = posix.dirname(file);
+  const here = dir === '.' ? '.' : `./${dir}`;
+  const name = typeof doc.name === 'string' && doc.name.trim() !== '' ? doc.name : (dir === '.' ? 'action' : posix.basename(dir));
+  const runs = isMapping(doc.runs) ? doc.runs : {};
+  const through = (text) => (typeof text === 'string' ? text.replace(/\$\{\{\s*github\.action_path\s*\}\}/g, here) : text);
+  let steps = [];
+  if (runs.using === 'composite' && Array.isArray(runs.steps)) {
+    steps = runs.steps.filter(isMapping).map((step) => {
+      const env = isMapping(step.env) ? step.env : {};
+      let run = through(step.run);
+      for (const [variable, value] of Object.entries(env)) {
+        if (typeof run !== 'string' || typeof value !== 'string' || !/^\s*\$\{\{\s*github\.action_path\s*\}\}\s*$/.test(value)) continue;
+        run = run.replace(new RegExp(`\\$\\{${variable}\\}|\\$${variable}\\b`, 'g'), here);
+      }
+      return { ...step, ...(run !== undefined ? { run } : {}), ...(step['working-directory'] !== undefined ? { 'working-directory': through(step['working-directory']) } : {}) };
+    });
+  } else if (typeof runs.using === 'string' && /^node\d+$/.test(runs.using) && typeof runs.main === 'string') {
+    steps = [{ name: 'main', run: `node ${posix.join(here, runs.main)}` }];
+  }
+  return { name, on: {}, jobs: { action: { steps } } };
 }
 
 /**
@@ -233,7 +280,7 @@ function localSteps(repoPath, repo, steps, depth = 0) {
   return out;
 }
 
-function readDoor(repoPath, file, repo) {
+function readDoor(repoPath, file, repo, asWorkflow = null) {
   const fallback = posix.basename(file).replace(/\.ya?ml$/, '');
   let text;
   let doc;
@@ -244,7 +291,11 @@ function readDoor(repoPath, file, repo) {
     return { file, name: fallback, parseError: true };
   }
   if (!isMapping(doc)) return { file, name: fallback, parseError: true };
+  if (asWorkflow) return { ...readWorkflow(repoPath, file, repo, asWorkflow(doc, file), fallback, text), kind: 'action' };
+  return readWorkflow(repoPath, file, repo, doc, fallback, text);
+}
 
+function readWorkflow(repoPath, file, repo, doc, fallback, text) {
   const permissions = new Set(permissionList(doc.permissions));
   const commands = [];
   const uses = new Set();

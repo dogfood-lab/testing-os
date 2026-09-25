@@ -1049,3 +1049,9 @@ test('a runner that finds its tests at run time reads with what it finds, as the
   const text = plain(render.renderPage({ ...page, doors: [...page.doors, ci] }, { repo: page.repo }));
   assert.ok(text.includes('ci. On a pull request. Runs tools/headless.gd, which runs the 2 test suites under tests/ it finds at run time.'), 'what comes in');
 });
+
+test('an action a repository ships is named as one other repositories use, as the markdown names it', () => {
+  const action = { file: 'action.yml', id: 'action.yml#Renderer', kind: 'action', landings: [], name: 'Renderer', pushes: false, runs: ['scripts/render.mjs'], sends: [], stages: [], triggers: [] };
+  const html = plain(render.renderPage({ ...page, doors: [...page.doors, action] }, { repo: page.repo }));
+  assert.ok(html.includes('Renderer (an action other repositories use)'), html.slice(html.indexOf('The other doors'), html.indexOf('The other doors') + 3000));
+});

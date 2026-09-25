@@ -190,7 +190,7 @@ function wordedName(ctx, text) {
 // A door a manifest installs, a command people run or the package they
 // import, has no trigger; page.js names what it is instead.
 function installed(door) {
-  return door?.kind === 'command' || door?.kind === 'package';
+  return door?.kind === 'command' || door?.kind === 'package' || door?.kind === 'action';
 }
 
 // page.json carries where an extension is installed from as the page words it,
@@ -198,7 +198,8 @@ function installed(door) {
 // is bundled into, and the app a Tauri binary or a Godot project is.
 function installedAs(door) {
   const bundled = arr(door.bundledInto).map(str);
-  const what = door.example ? `a command people run with <code>${esc(str(door.runWith))}</code>`
+  const what = door.kind === 'action' ? 'an action other repositories use'
+    : door.example ? `a command people run with <code>${esc(str(door.runWith))}</code>`
     : door.unshipped && door.privatePackage ? 'a command of a private package, which nothing ships'
     : door.unshipped ? `${door.app === 'desktop' ? 'a desktop app' : 'a command'} built from ${esc(str(door.builtFrom))}, which nothing ships`
     : door.app === 'desktop' ? 'the desktop app people install'

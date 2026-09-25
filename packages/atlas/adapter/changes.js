@@ -267,9 +267,10 @@ function bare(triggers) {
 
 // What a door is called when it appears or goes: a workflow is a door, and
 // a manifest's entry is the command, the desktop app, the game or the
-// package it installs.
+// package it installs, and an action is one other repositories use.
 function doorNoun(door) {
   if (!installed(door)) return 'door';
+  if (door.kind === 'action') return 'action other repositories use';
   if (door.app === 'desktop') return 'desktop app';
   if (door.app === 'game') return 'game';
   return door.kind === 'package' ? 'package' : 'command';
