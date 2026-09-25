@@ -141,7 +141,10 @@ export function trackedPlaces(paths) {
   const dirs = new Set();
   for (const path of paths) {
     const parts = path.split('/');
-    if (parts.some((part) => part === 'node_modules' || part === 'dist')) continue;
+    // A tracked directory is a place whatever its name: a dist/ the
+    // repository commits is kept, and only build output it does not track
+    // is not. A dependency directory is never the repository's own.
+    if (parts.some((part) => part === 'node_modules')) continue;
     files.add(path);
     for (let i = 1; i < parts.length; i += 1) dirs.add(parts.slice(0, i).join('/'));
   }
@@ -2792,6 +2795,8 @@ function writtenPlace(value, places, call = null, untracked = true) {
   let text = value.text.replaceAll('\\', '/');
   while (text.startsWith('./')) text = text.slice(2);
   const spelled = value.open ? text.slice(0, Math.max(text.lastIndexOf('/'), 0)) : text.replace(/\/+$/, '');
+  // A tracked place is where the write lands, in a dist/ or not.
+  if (target === spelled && (places.files.has(target) || places.dirs.has(target))) return target;
   const parts = spelled.split('/');
   const at = parts.findIndex((part) => part === 'node_modules' || part === 'dist');
   return at === -1 ? target : parts.slice(0, at + 1).join('/');
