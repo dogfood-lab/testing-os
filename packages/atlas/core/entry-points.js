@@ -128,8 +128,11 @@ export function manifestCommands(repoPath, tracked, scripts = []) {
     for (const path of crate.examples) out.push({ kind: 'command', name: exampleName(path), manifest: crate.manifest, path, example: true });
   }
   // A Godot project is a game the engine runs from its main scene.
+  // One whose name says it is a lab, a tool or a test bench (sprite-foundry's
+  // Foundry Render Lab) is no game, and is called the Godot project.
   for (const project of godotProjects(repoPath, tracked)) {
-    if (project.mainScene) out.push({ kind: 'command', name: 'the game', manifest: project.file, path: project.mainScene, app: 'game' });
+    const tool = /\b(?:lab|labs|tool|tools|editor|test|tests|bench|harness|sandbox|demo)\b/i.test(project.name ?? '');
+    if (project.mainScene) out.push({ kind: 'command', name: tool ? 'the Godot project' : 'the game', manifest: project.file, path: project.mainScene, app: 'game' });
   }
   const unique = new Map(out.map((entry) => [`${entry.manifest}\0${entry.name}\0${entry.kind}${entry.example ? '\0example' : ''}`, entry]));
   return [...unique.values()].sort((a, b) => compare(a.manifest, b.manifest) || compare(a.name, b.name) || compare(a.kind, b.kind));

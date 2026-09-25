@@ -272,7 +272,7 @@ function doorNoun(door) {
   if (!installed(door)) return 'door';
   if (door.kind === 'action') return 'action other repositories use';
   if (door.app === 'desktop') return 'desktop app';
-  if (door.app === 'game') return 'game';
+  if (door.app === 'game') return door.name === 'the Godot project' ? 'Godot project' : 'game';
   return door.kind === 'package' ? 'package' : 'command';
 }
 
