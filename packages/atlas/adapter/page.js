@@ -2049,10 +2049,15 @@ function unrunTests(ctx) {
   // A script a conftest.py keeps out of collection is no test.
   const ignored = new Set(ctx.structure.collectIgnored ?? []);
   const left = [...ctx.fileOf.keys()].filter((path) => named(path) && !ignored.has(path) && !/(^|\/)(fixtures|__fixtures__|testdata)\//.test(path) && !ran(path)).sort(cmp);
-  if (left.length === 0) return [];
-  if (left.length === 1) return [`${left[0]} runs in no workflow.`];
+  // A gate script at the root (verify.sh) that no workflow runs is a check
+  // only a person runs, which a reader of CI would assume it covers.
+  const gates = [...ctx.fileOf.keys()].filter((path) => /^(?:verify|check|gate)(?:[-_.][^/]*)?\.(?:sh|bash|ps1|py|mjs|js)$/.test(path) && !ran(path)
+    && !workflows.some((door) => (door.mentions ?? []).some((mention) => mention.path === path))).sort(cmp);
+  const gateLines = gates.map((path) => `${path} runs in no workflow.`);
+  if (left.length === 0) return gateLines;
+  if (left.length === 1) return [`${left[0]} runs in no workflow.`, ...gateLines];
   const shown = left.length > RUNS_SHOWN ? `${left.slice(0, RUNS_SHOWN).join(', ')} and ${count(left.length - RUNS_SHOWN, 'more', 'more')}` : list(left);
-  return [`${count(left.length, 'test file')} run in no workflow: ${shown}.`];
+  return [`${count(left.length, 'test file')} run in no workflow: ${shown}.`, ...gateLines];
 }
 
 export function spawnedLine(partLabel) {
