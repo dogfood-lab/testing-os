@@ -153,7 +153,7 @@ function resolveSite(ctx, fromAbs, language, site) {
     return { outcome: 'unresolved', reason: site.kind };
   }
   if (site.location) return resolveLocation(ctx, site.specifier);
-  if (language === 'python') return resolvePython(ctx, fromAbs, site.specifier, site.roots ?? []);
+  if (language === 'python') return resolvePython(ctx, fromAbs, site.specifier, site.roots ?? [], site.names ?? []);
   return resolveJavaScript(ctx, fromAbs, site.specifier);
 }
 
@@ -744,7 +744,7 @@ function repoRelative(repo, absPath) {
   return rel;
 }
 
-function resolvePython(ctx, fromAbs, specifier, inserted = []) {
+function resolvePython(ctx, fromAbs, specifier, inserted = [], names = []) {
   const fromRel = relative(ctx.repo, fromAbs).replaceAll('\\', '/');
   if (specifier.startsWith('.')) {
     const hit = pythonRelative(fromRel, specifier, ctx.tracked);
@@ -757,6 +757,13 @@ function resolvePython(ctx, fromAbs, specifier, inserted = []) {
   const python = ctx.python();
   const hit = pythonAbsolute(specifier, python.roots, ctx.tracked);
   if (hit) return { outcome: 'file', path: hit };
+  // A namespace package (a directory with no __init__.py at a source root)
+  // is imported through its modules: from pipeline import foundry_ingest is
+  // pipeline/foundry_ingest.py.
+  for (const name of names) {
+    const inside = pythonAbsolute(`${specifier}.${name}`, python.roots, ctx.tracked);
+    if (inside) return { outcome: 'file', path: inside };
+  }
   // A script's own directory is first on its import path, and pytest puts a
   // test's there too: a helper, a stub or a conftest beside the file.
   // A module inside a package (its directory holds __init__.py) is imported

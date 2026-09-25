@@ -1275,10 +1275,17 @@ function collectPython(root, path, places) {
       const module = node.childForFieldName('module_name');
       if (!module) return;
       const wildcard = node.namedChildren.some((child) => child.type === 'wildcard_import');
+      // The names imported from it, which are its submodules when it is a
+      // namespace package (from pipeline import foundry_ingest).
+      const names = node.namedChildren
+        .filter((child) => child.startIndex !== module.startIndex && (child.type === 'dotted_name' || child.type === 'aliased_import'))
+        .map((child) => (child.type === 'aliased_import' ? child.childForFieldName('name')?.text : child.text))
+        .filter((name) => typeof name === 'string' && /^[A-Za-z_]\w*$/.test(name));
       imports.push({
         specifier: module.text,
         kind: wildcard ? 'wildcard' : 'static',
         line: lineOf(node),
+        ...(names.length > 0 && !module.text.startsWith('.') ? { names } : {}),
       });
       return;
     }
