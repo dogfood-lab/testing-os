@@ -613,7 +613,11 @@ function chosenBy(entry) {
 // before publishesTo existed meant npm by publishes.
 function publishPhrase(sends) {
   const to = Array.isArray(sends.publishesTo) ? sends.publishesTo : sends.publishes ? ['npm'] : [];
-  const packages = (Array.isArray(sends.packages) ? sends.packages : []).filter((entry) => entry.name == null || entry.dir !== '');
+  // The repository's own package is named only beside another publish to the
+  // same registry, which would otherwise read as the only one.
+  const all = Array.isArray(sends.packages) ? sends.packages : [];
+  const others = (entry) => all.some((item) => item !== entry && item.registry === entry.registry && !(item.name != null && item.dir === ''));
+  const packages = all.filter((entry) => entry.name == null || entry.dir !== '' || others(entry));
   const bare = to.filter((name) => name !== IMAGE && name !== RECORD && !packages.some((entry) => entry.registry === name));
   const items = [];
   if (bare.length > 0) items.push({ text: `to ${registryList(bare)}`, compound: bare.length > 1 });
@@ -621,7 +625,7 @@ function publishPhrase(sends) {
     const where = REGISTRIES[name] ?? name;
     const entries = packages.filter((entry) => entry.registry === name);
     const named = entries.filter((entry) => entry.name != null);
-    if (named.length > 0) items.push({ text: `${list(named.map((entry) => (entry.dir ? `${entry.name} (${entry.dir})` : entry.name)))} to ${where}`, compound: named.length > 1 });
+    if (named.length > 0) items.push({ text: `${list(named.map((entry) => (entry.dir ? `${entry.name} (${entry.dir})` : entry.name)))} to ${where}`, compound: named.length > 1 || entries.length > named.length });
     for (const entry of entries.filter((item) => item.name == null)) items.push({ text: `${chosenPackage(entry)} to ${where}${chosenBy(entry)}`, compound: entry.chosenBy != null });
   }
   if (to.includes(IMAGE)) items.push({ text: 'a container image', compound: false });
