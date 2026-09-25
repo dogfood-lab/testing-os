@@ -484,9 +484,15 @@ export function triggerPhrases(door) {
         phrases.push(...pushPhrases(trigger));
         break;
       case 'pull_request':
-      case 'pull_request_target':
-        phrases.push(trigger.paths?.length > 0 ? `on a pull request touching ${count(trigger.paths.length, 'path')}` : 'on a pull request');
+      case 'pull_request_target': {
+        // A pull request filtered by the branch it targets says which, as a
+        // push's branches are said.
+        let phrase = 'on a pull request';
+        if (trigger.branches?.length > 0) phrase += ` to ${list(trigger.branches).replace(/ and /g, ' or ')}`;
+        if (trigger.paths?.length > 0) phrase += ` touching ${count(trigger.paths.length, 'path')}`;
+        phrases.push(phrase);
         break;
+      }
       case 'release':
         phrases.push(trigger.types?.length > 0 && trigger.types.every((type) => type === 'published')
           ? 'when a release is published'
