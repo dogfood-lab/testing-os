@@ -800,21 +800,27 @@ function statementless(root) {
 /**
  * A module that does no work of its own: a barrel whose every statement hands
  * on what another file exports ('reexports'), or one that holds a single
- * constant ('constant'), such as a version string. A reader following the
- * work passes over both, to what the barrel hands on.
+ * constant ('constant'): a version string, or one object or array a tool
+ * reads (content.config.ts's collections), beside the imports that build it.
+ * A value that is a function, or a call made as the module loads, is work. A
+ * reader following the work passes over both, to what the barrel hands on.
  */
 function onlyHolds(root) {
   const statements = root.namedChildren.filter((child) => child.type !== 'comment');
   if (statements.length === 0) return null;
   if (statements.every((statement) => statement.type === 'export_statement' && statement.childForFieldName('source') != null)) return 'reexports';
-  if (statements.length !== 1) return null;
-  const declaration = statements[0].type === 'export_statement' ? statements[0].childForFieldName('declaration') : statements[0];
+  const own = statements.filter((statement) => statement.type !== 'import_statement');
+  if (own.length !== 1) return null;
+  const declaration = own[0].type === 'export_statement' ? own[0].childForFieldName('declaration') : own[0];
   if (declaration?.type !== 'lexical_declaration' && declaration?.type !== 'variable_declaration') return null;
   const declarators = declaration.namedChildren.filter((child) => child.type === 'variable_declarator');
   if (declarators.length !== 1) return null;
-  const value = declarators[0].childForFieldName('value');
-  const literal = ['string', 'number', 'true', 'false', 'null'].includes(value?.type)
+  let value = declarators[0].childForFieldName('value');
+  while (value?.type === 'as_expression' || value?.type === 'satisfies_expression' || value?.type === 'parenthesized_expression') value = value.namedChildren[0];
+  const literal = ['string', 'number', 'true', 'false', 'null', 'object', 'array'].includes(value?.type)
     || (value?.type === 'template_string' && !value.namedChildren.some((child) => child.type === 'template_substitution'));
+  // One literal held beside nothing it imports is the version string case;
+  // an object or array beside imports is a tool's config, and still no work.
   return literal ? 'constant' : null;
 }
 

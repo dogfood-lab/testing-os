@@ -2237,7 +2237,7 @@ function fileInRun(ctx, door, dir) {
   if (next.length > 0) return [...next].sort(cmp)[0];
   const entry = entryFile(ctx.boundaries.find((boundary) => boundary.name === runPart(ctx, dir)));
   if (entry?.startsWith(dir) && !ctx.fileOf.get(entry)?.noStatements) return entry;
-  return [...ctx.fileOf.keys()].filter((path) => path.startsWith(dir) && isCodePath(path) && !ctx.fileOf.get(path)?.noStatements).sort(cmp)[0] ?? null;
+  return [...ctx.fileOf.keys()].filter((path) => path.startsWith(dir) && isCodePath(path) && !ctx.fileOf.get(path)?.noStatements && !ctx.fileOf.get(path)?.constantOnly).sort(cmp)[0] ?? null;
 }
 
 // A chain names this many files after the door at most, so it stays a path
@@ -2279,7 +2279,13 @@ function startHere(ctx, main, first = null) {
   // door's entry.
   const unitRun = (path) => !named.has(path) && ctx.fileOf.get(path)?.testsInside === true;
   const spelled = ran.filter((path) => named.has(path));
-  const paths = (spelled.length > 0 ? spelled : ran).filter((path) => path.endsWith('/') || runsAsCode(path));
+  // A script that imports nothing here and writes nothing (a gate that checks
+  // a tarball) goes nowhere a reader can follow: a path never ends on it, and
+  // what the door runs besides it is followed instead.
+  const deadEnd = (path) => !path.endsWith('/') && !isTestFile(path) && (ctx.fileOf.get(path)?.importsFiles ?? []).length === 0
+    && !ctx.landings.some((landing) => landing.writers.some((entry) => entry.by === path));
+  const live = spelled.filter((path) => !deadEnd(path));
+  const paths = (live.length > 0 ? live : ran.filter((path) => !deadEnd(path))).filter((path) => path.endsWith('/') || runsAsCode(path));
   const filesIn = (path) => depthZero.find((entry) => entry.boundary === runPart(ctx, path))?.files ?? 0;
   const readable = (path) => runsAsCode(path) && !ctx.fileOf.get(path)?.noStatements;
   const entries = new Set(ctx.boundaries.flatMap((boundary) => boundary.entryPoints ?? []));

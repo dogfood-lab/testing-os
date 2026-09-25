@@ -54,7 +54,9 @@ describe('where to start reading a CI that checks a Tauri crate and runs its uni
     roots.push(root);
     const data = start(root, parse(readFileSync(join(FIXTURE, 'atlas', 'boundaries.yaml'), 'utf8')).boundaries);
     assert.equal(data.startDoor, '.github/workflows/ci.yml');
-    assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'app/scripts/bundle.mjs']);
+    // The bundling script imports nothing and writes nothing, so the path
+    // goes on to the web half vite builds, never ending on the script.
+    assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'app/src/main.js', 'app/src/view.js']);
   });
 
   it('passes over a crate entry CI only checks, in the part the web half is built from', () => {
@@ -66,6 +68,6 @@ describe('where to start reading a CI that checks a Tauri crate and runs its uni
       { name: 'app', globs: ['app/**'], role: 'code' },
       { name: 'root', globs: ['*', '.github/**'], role: 'config' },
     ]);
-    assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'app/scripts/bundle.mjs']);
+    assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'app/src/main.js', 'app/src/view.js']);
   });
 });

@@ -114,9 +114,11 @@ describe('a file a linter checks is not a file the door runs', () => {
     };
     const { markdown: page } = buildPage({ structure: { boundaries: parts, doors: [ci], edges: [], landings: [] }, statistics: {}, document: null, repoName: 'acme/suite' });
     assert.ok(page.includes('1. The workflow runs scripts/gate.mjs in scripts, a/x.test.js and a/y.test.js in a, b/x.test.js and b/y.test.js in b, c/x.test.js and c/y.test.js in c, d/x.test.js and d/y.test.js in d, and 6 files in 3 more parts.'), page);
-    // Each part of tests holds more files than scripts, but the reading path
-    // starts at the script the workflow names.
-    assert.ok(page.split('\n').includes('.github/workflows/ci.yml → scripts/gate.mjs'), page);
+    // The script the workflow names imports nothing and writes nothing, and
+    // the tests import nothing either: a path never ends on a gate script,
+    // so there is none to read.
+    assert.ok(!page.includes('→ scripts/gate.mjs'), page);
+    assert.ok(page.includes('CI runs no code this map can follow, so there is no path of files to read in order.'), page);
   });
 
   it('tells explain a file is checked, not run', () => {
