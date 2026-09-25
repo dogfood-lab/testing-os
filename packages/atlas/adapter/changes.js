@@ -1,5 +1,5 @@
 import { unassignedDrift } from './check.js';
-import { capitalize, count, displayName, doorKey, installed, leadName, list, mainDoor, runsShown, triggerPhrases, words } from './page.js';
+import { capitalize, count, displayName, doorKey, installed, leadName, list, mainDoor, runsShown, siteCount, triggerPhrases, words } from './page.js';
 
 /**
  * What changed since the last committed map, as structural facts in fixed
@@ -64,8 +64,9 @@ function code(value) {
 
 function names(previous, current) {
   const shown = new Map();
-  for (const boundary of [...(previous.boundaries ?? []), ...(current.boundaries ?? [])]) {
-    shown.set(boundary.name, displayName(boundary));
+  for (const side of [previous, current]) {
+    const sites = siteCount(side.boundaries ?? []);
+    for (const boundary of side.boundaries ?? []) shown.set(boundary.name, displayName(boundary, { sites }));
   }
   return (name) => shown.get(name) ?? name;
 }

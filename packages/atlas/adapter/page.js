@@ -100,10 +100,17 @@ function rootLevel(glob) {
  * @param {{ name: string, globs?: string[] }} boundary
  * @returns {string}
  */
-export function displayName(boundary) {
+export function displayName(boundary, { sites = 1 } = {}) {
   const globs = boundary.globs ?? [];
   if (globs.length > 0 && globs.every(rootLevel)) return ROOT_NAME;
-  return boundary.role === 'site' ? SITE_NAME : boundary.name;
+  // With more than one site, each is named by its part, so four sites never
+  // read as "the site, the site, the site".
+  return boundary.role === 'site' && sites <= 1 ? SITE_NAME : boundary.name;
+}
+
+// How many parts are sites, for displayName.
+export function siteCount(boundaries) {
+  return boundaries.filter((boundary) => boundary.role === 'site').length;
 }
 
 function sortKeys(value) {
@@ -137,7 +144,8 @@ function facts({ structure, statistics }) {
   // Every name the page gives a part, by id. page.json carries this map once,
   // so explain and the site name a part as the page does without each
   // reproducing displayName; a field that names a part keeps its id.
-  const partLabels = Object.fromEntries(boundaries.map((boundary) => [boundary.name, displayName(boundary)]));
+  const sites = siteCount(boundaries);
+  const partLabels = Object.fromEntries(boundaries.map((boundary) => [boundary.name, displayName(boundary, { sites })]));
   const spans = new Map();
   const partsUnder = (dir) => {
     if (!spans.has(dir)) {
