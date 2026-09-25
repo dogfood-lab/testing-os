@@ -521,7 +521,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     let first = 0;
     while (first < tokens.length && (PREFIX_WORDS.has(tokens[first]) || /^[A-Za-z_][A-Za-z0-9_]*=/.test(tokens[first]))) first += 1;
     if (first >= tokens.length) return;
-    for (const target of npmTargets(tokens, dir, repo)) npmScript(target.dir, target.script, frame);
+    for (const target of npmTargets(tokens, dir, repo)) npmScript(target.dir, target.script, frame, target.args ?? []);
     const argv = tokens.slice(first);
     // pnpm vitest run, with no script named vitest, is vitest.
     const binary = runnerBinary(argv, dir, repo);
@@ -566,7 +566,9 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     }
   }
 
-  function npmScript(target, script, frame) {
+  // What npm run hands the script after its name (npm run tauri build --
+  // --bundles deb) is appended to the script's own command, as npm does.
+  function npmScript(target, script, frame, args = []) {
     const key = `${target}\0${script}`;
     if (frame.active.has(key)) return;
     const pkg = repo.manifest(target);
@@ -577,7 +579,8 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     // shell the step that started it names.
     const next = frame.platforms ? { ...frame, expanding: frame.platforms.filter((os) => os !== 'windows') } : frame;
     for (const name of [`pre${script}`, script, `post${script}`]) {
-      if (typeof scripts[name] === 'string') read(scripts[name], target, next);
+      if (typeof scripts[name] !== 'string') continue;
+      read(name === script && args.length > 0 ? `${scripts[name]} ${args.join(' ')}` : scripts[name], target, next);
     }
     frame.active.delete(key);
   }
@@ -2033,9 +2036,19 @@ function npmCommandTargets(args, dir, repo) {
   let allWorkspaces = false;
   let includeRoot = false;
   const named = [];
+  let passed = [];
   for (let i = 0; i < args.length; i += 1) {
     const token = args[i];
-    if (token === '--') break;
+    if (token === '--') {
+      if (script != null) passed.push(...args.slice(i + 1));
+      break;
+    }
+    // npm reads its own flags anywhere before --; a word after the script's
+    // name is the script's.
+    if (script != null && !token.startsWith('-')) {
+      passed.push(token);
+      continue;
+    }
     const eq = token.indexOf('=');
     const flag = token.startsWith('-') && eq !== -1 ? token.slice(0, eq) : token;
     if (NPM_VALUE_FLAGS.has(flag)) {
@@ -2063,7 +2076,8 @@ function npmCommandTargets(args, dir, repo) {
   else if (named.length > 0) dirs = named.map((value) => workspaceDir(repo, value, prefix)).filter((found) => found != null);
   else dirs = [prefix];
   if (includeRoot && (allWorkspaces || named.length > 0)) dirs = [prefix, ...dirs];
-  return [...new Set(dirs)].map((target) => ({ dir: target, script }));
+  if (!RUN_ALIASES.has(command)) passed = [];
+  return [...new Set(dirs)].map((target) => ({ dir: target, script, ...(passed.length > 0 ? { args: passed } : {}) }));
 }
 
 // pnpm's own commands. Any other first word is a script of the package, which
