@@ -488,15 +488,23 @@ function comesIn(ctx) {
 // names the runs without the markdown's "in <part>" grouping, three and a
 // count as "What comes in" does, since a door that runs a test suite runs
 // hundreds.
+// A build a release ships is said with what it ships; any other build is
+// said as a build, as page.js says it.
+function plainBuilds(ctx, door) {
+  return arr(door.sends).some((send) => str(send).startsWith('builds ')) ? [] : builds(ctx, door);
+}
+
 function doorSteps(ctx, door) {
   const steps = [];
   const paths = runs(ctx, door);
+  const built = plainBuilds(ctx, door);
   const checked = checks(ctx, door);
   const noun = door.extension ? 'extension' : door.app === 'desktop' ? 'desktop app' : door.app === 'game' ? 'game' : door.kind;
   const subject = installed(door) ? `The ${noun} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
   if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
-  if (checked.length > 0) clauses.push(`${paths.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
+  if (built.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} builds ${runsShown(built)}`);
+  if (checked.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
   const heldText = heldSentences(ctx, door, 'runs', clauses.length > 0);
   if (clauses.length > 0 || heldText.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   steps.push(...heldText);
@@ -630,11 +638,13 @@ function otherDoors(ctx) {
     const checked = checks(ctx, door);
     const verb = startVerb(door);
     if (door.unplaced) clauses.push({ html: unplacedClause(door), text: `${verb} ${str(door.unplaced)}, built from a source this map cannot place` });
-    else if (paths.length > 0 || (checked.length === 0 && arr(door.held).length === 0)) {
+    else if (paths.length > 0 || (arr(door.builds).length === 0 && checked.length === 0 && arr(door.held).length === 0)) {
       clauses.push(paths.length > 0
         ? { html: `${verb} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths), moreOf(door.runsMore))}` }
         : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
     }
+    const plain = plainBuilds(ctx, door);
+    if (plain.length > 0) clauses.push({ html: `builds ${runsShown(plain)}`, text: `builds ${runsShownText(plain)}` });
     if (checked.length > 0) {
       clauses.push({ html: `checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`, text: `checks ${runsShownText(checked, checkTotal(door, checked), moreOf(door.checksMore))}` });
     }

@@ -8,6 +8,7 @@ import { isCodePath } from './languages.js';
 import { wheelPackages } from './python-manifest.js';
 import { storedText } from './text.js';
 import {
+  tscEmits,
   eslintTargets,
   jestTargets,
   makeRecipes,
@@ -61,7 +62,8 @@ const PY_TOOLS = new Set(['pytest', 'py.test', 'mypy', 'black', 'flake8', 'pylin
 // or compile them, and run none of them. A file one of these reaches is
 // checked, not executed: what it would write when run is not written by the
 // door (core/index.js walks landings from executed runs alone). tsc is one
-// whether or not it emits, since a compiler runs none of the code it builds.
+// when it only checks; a tsc that emits, like tsup and a library's vite
+// build, builds the code, which it still does not run (built runs).
 const CHECKERS = new Set(['ruff', 'mypy', 'checker', 'tsc', 'eslint']);
 // Python modules that only compile what they are handed.
 const PY_COMPILERS = new Set(['py_compile', 'compileall']);
@@ -91,6 +93,7 @@ const VALUES = {
   pylint: ['--rcfile', '--disable', '-d', '--enable', '-e', '-j', '--jobs', '--output-format', '-f', '--ignore', '--ignore-paths', '--ignore-patterns', '--load-plugins', '--output', '--fail-under', '--max-line-length', '--init-hook'],
   bandit: ['-c', '--configfile', '-f', '--format', '-o', '--output', '-x', '--exclude', '-p', '--profile', '-t', '--tests', '-s', '--skip', '-b', '--baseline', '--ini', '--msg-template', '-a', '--aggregate', '--severity-level', '--confidence-level'],
   tsc: ['-p', '--project', '--outDir', '--rootDir', '--target', '-t', '--module', '-m', '--lib', '--jsx', '--declarationDir', '--tsBuildInfoFile', '--moduleResolution', '--types', '--baseUrl', '--outFile', '--generateTrace', '--locale'],
+  tsup: ['--format', '-d', '--out-dir', '--target', '--config', '--external', '--tsconfig', '--platform', '--global-name', '--inject', '--onSuccess'],
   vite: ['-c', '--config', '--base', '-m', '--mode', '--outDir', '--assetsDir', '-l', '--logLevel', '--ssr', '--target', '--port'],
   vitest: ['-c', '--config', '-r', '--root', '--dir', '--project', '-t', '--testNamePattern', '--reporter', '--outputFile', '--environment', '--pool', '--shard', '--mode', '--exclude', '--silent', '--maxWorkers', '--minWorkers', '--testTimeout', '--hookTimeout', '--bail', '--retry', '--changed'],
   jest: ['-c', '--config', '--rootDir', '--roots', '-t', '--testNamePattern', '--testPathPattern', '--testPathIgnorePatterns', '--reporters', '--outputFile', '-w', '--maxWorkers', '--selectProjects', '--shard', '--coverageDirectory', '--testMatch', '--testRegex', '--testEnvironment', '--testTimeout', '--env', '--changedSince'],
@@ -378,9 +381,14 @@ export function better(a, b) {
     }
   }
   const runKind = a.runKind === 'checks' && b.runKind === 'checks' ? 'checks' : 'executes';
+  // A file only built, or built and checked, is built; one anything runs is run.
+  const ran = (entry) => entry.runKind !== 'checks' && !entry.built;
+  const built = (a.built || b.built) && !ran(a) && !ran(b);
   const passes = (a.passes ?? []).filter((flag) => (b.passes ?? []).includes(flag));
   const out = { ...pick, runKind };
   delete out.passes;
+  delete out.built;
+  if (built) out.built = true;
   if (passes.length > 0) out.passes = passes;
   // A binary either way builds is built, whatever else checks it.
   if (a.builds || b.builds) out.builds = true;
@@ -1155,9 +1163,20 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         const found = tscTargets(repo, dir, project, { build });
         if (found.config == null) continue;
         const tool = `tsc ${found.config}`;
-        directoryRuns([...found.directories].sort(), frame, tool);
-        for (const pattern of found.patterns) matched(repo.compact(repo.filesMatching('', pattern.globs, pattern.exclude)), frame, tool);
+        // A compile that emits to an outDir builds what it compiles.
+        const emits = tscEmits(repo, found.config, { noEmit: parsed.flags.has('--noEmit'), outDir: valueOf(parsed, '--outDir') != null });
+        const next = emits ? { ...frame, runKind: 'executes', built: true } : frame;
+        directoryRuns([...found.directories].sort(), next, tool);
+        for (const pattern of found.patterns) matched(repo.compact(repo.filesMatching('', pattern.globs, pattern.exclude)), next, tool);
       }
+    },
+    // tsup builds the entries it is handed, or its config's literal entry
+    // list, and runs none of them.
+    tsup(argv, dir, frame) {
+      const parsed = split(argv, 1, VALUE_SETS.tsup);
+      const next = { ...frame, runKind: 'executes', built: true };
+      const entries = parsed.positional.length > 0 ? parsed.positional.map((token) => ({ token, from: dir })) : tsupEntries(repo, dir, valueOf(parsed, '--config'));
+      for (const { token, from } of entries) file(token, from, next);
     },
     vitest(argv, dir, frame) {
       const start = ['run', 'watch', 'dev', 'related', 'bench'].includes(argv[1]) ? 2 : 1;
@@ -1255,6 +1274,16 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const named = valueOf(parsed, '-c', '--config');
       const configs = named != null ? [pathFrom(dir, named)] : VITE_CONFIGS.map((name) => pathFrom(at, name));
       for (const path of configs) if (path != null && repo.tracked.has(path)) record(stamp({ path, matched: true }, frame, chain));
+      // A library's build bundles the entry its config names, and runs none
+      // of its code.
+      const config = configs.find((path) => path != null && repo.tracked.has(path));
+      const library = sub === 'build' && config != null ? viteLibraryEntries(repo.text(config) ?? '') : [];
+      const lib = { ...frame, runKind: 'executes', built: true };
+      for (const entry of library) {
+        const path = pathFrom(posix.dirname(config) === '.' ? '' : posix.dirname(config), entry);
+        if (path != null && repo.tracked.has(path)) record(stamp({ path, matched: true }, lib, chain));
+      }
+      if (library.length > 0) return;
       const src = pathFrom(at, 'src');
       if (src != null && repo.dirs.has(src)) record(stamp({ path: `${src}/`, directory: true, matched: true }, frame, chain));
     },
@@ -1613,7 +1642,44 @@ function stamp(entry, frame, via = frame.via) {
   const out = { ...entry, runKind: frame.runKind ?? 'executes' };
   if (via) out.via = via;
   if (frame.builds) out.builds = true;
+  if (frame.built) out.built = true;
   return out;
+}
+
+// The entries a tsup config lists as string literals: entry: ['src/index.ts']
+// or entry: { index: 'src/index.ts' }, relative to the config's directory.
+function tsupEntries(repo, dir, named) {
+  const names = named != null ? [named] : ['tsup.config.ts', 'tsup.config.mts', 'tsup.config.cts', 'tsup.config.js', 'tsup.config.mjs', 'tsup.config.cjs', 'tsup.config.json'];
+  for (const name of names) {
+    const path = pathFrom(dir, name);
+    if (path == null || !repo.tracked.has(path)) continue;
+    const text = repo.text(path) ?? '';
+    const at = text.search(/\bentry["']?\s*:/);
+    if (at === -1) return [];
+    const open = text.slice(at).search(/[[{'"]/);
+    if (open === -1) return [];
+    const start = at + open;
+    const end = text[start] === '[' ? text.indexOf(']', start) : text[start] === '{' ? text.indexOf('}', start) : text.indexOf(text[start], start + 1);
+    const body = text.slice(start, end === -1 ? undefined : end + 1);
+    const from = posix.dirname(path) === '.' ? '' : posix.dirname(path);
+    return [...body.matchAll(/['"]([^'"]+\.[cm]?[jt]sx?)['"]/g)].map((match) => ({ token: match[1], from }));
+  }
+  return [];
+}
+
+// The entries a vite config's build.lib names as string literals, or none
+// when it builds no library.
+function viteLibraryEntries(text) {
+  const at = text.search(/\blib\s*:\s*\{/);
+  if (at === -1) return [];
+  const open = text.indexOf('{', at);
+  const close = closingBrace(text, open);
+  const body = text.slice(open, close === -1 ? undefined : close + 1);
+  const entry = body.search(/\bentry\s*:/);
+  if (entry === -1) return [];
+  const rest = body.slice(entry);
+  const stop = rest.search(/,\s*[A-Za-z_]+\s*:|}\s*$/);
+  return [...(stop === -1 ? rest : rest.slice(0, stop)).matchAll(/['"]([^'"]+\.[cm]?[jt]sx?)['"]/g)].map((match) => match[1]);
 }
 
 // The rule a tool's first word selects, or null for a word this reader does
@@ -1641,7 +1707,7 @@ function toolOf(word) {
   if (name === 'gdlint' || name === 'gdformat') return 'gdtoolkit';
   if (name === 'cargo') return 'cargo';
   if (name === 'tauri') return 'tauri';
-  const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro', 'vite'];
+  const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'tsup', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro', 'vite'];
   return known.includes(name) ? name : null;
 }
 

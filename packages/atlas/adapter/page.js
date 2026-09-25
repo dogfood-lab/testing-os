@@ -995,16 +995,24 @@ function untrackedWrites(door) {
   return `${named}, which ${places.length === 1 ? 'is' : 'are'} not tracked`;
 }
 
+// A build a release ships is said with what it ships (sendPhrases); any
+// other build, a package's tsup or a tsc that emits, is said as a build.
+function plainBuilds(door) {
+  return sendPhrases(door).some((phrase) => phrase.startsWith('builds ')) ? [] : shownRuns(door, 'builds');
+}
+
 function doorSteps(ctx, door) {
   const steps = [];
   const ran = namedRuns(door, 'executes');
+  const built = plainBuilds(door);
   const checked = shownRuns(door, 'checks');
   const noun = door.extension ? 'extension' : door.app === 'desktop' ? 'desktop app' : door.app === 'game' ? 'game' : door.kind;
   const subject = installed(door) ? `The ${noun} ${startVerb(door)}` : 'The workflow runs';
   const clauses = [];
   // What it builds is said with what it ships (sendPhrases).
   if (ran.length > 0) clauses.push(`${subject} ${runGroups(ctx, door, ran)}`);
-  if (checked.length > 0) clauses.push(`${ran.length > 0 ? 'it' : 'The workflow'} checks ${runGroups(ctx, door, checked)}`);
+  if (built.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} builds ${runGroups(ctx, door, built)}`);
+  if (checked.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} checks ${runGroups(ctx, door, checked)}`);
   const held = heldSentences(ctx, door, 'runs', clauses.length > 0);
   if (clauses.length > 0 || held.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   steps.push(...held);
@@ -1126,7 +1134,7 @@ function inOrder(lead, texts, indent) {
 function sequences(ctx, door) {
   const out = [];
   const held = heldRuns(door);
-  const named = [...new Set((door.runs ?? []).filter((run) => !run.matched && run.runKind !== 'checks' && !held.has(run.path)).map((run) => run.path))].sort(cmp);
+  const named = [...new Set((door.runs ?? []).filter((run) => !run.matched && run.runKind !== 'checks' && !run.built && !held.has(run.path)).map((run) => run.path))].sort(cmp);
   // A scene the door starts runs the scripts it instances, which is where
   // its order of work is.
   const scripts = [...new Set(named.flatMap((path) => (/\.(?:tscn|scn)$/.test(path) ? (ctx.fileOf.get(path)?.importsFiles ?? []).filter((file) => file.endsWith('.gd')) : [path])))];
@@ -1428,6 +1436,8 @@ function otherDoors(ctx, main) {
     else if (ran.length > 0 || (built.length === 0 && checked.length === 0 && groups.length === 0)) {
       clauses.push(ran.length > 0 ? `${verb} ${filesShown(ctx, shownWithFinds(door, ran), unrecordedRuns(door, 'executes'))}` : `${verb} no file this map can see`);
     }
+    const plain = plainBuilds(door);
+    if (plain.length > 0) clauses.push(`builds ${filesShown(ctx, plain)}`);
     if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked, unrecordedRuns(door, 'checks'))}`);
     for (const group of groups) {
       const clause = heldClause(ctx, door, group, verb, ' and ');
@@ -2121,6 +2131,22 @@ function calledFiles(ctx, path, { imports = true } = {}) {
   return [...new Set(ordered.map((item) => item.target.file))];
 }
 
+/**
+ * The package entries a door builds (tsup, a tsc that emits, a library's
+ * vite build): each entry point a built run names or holds, the entry of its
+ * part first. A package a door builds is where its code starts, as a package
+ * people import is.
+ */
+function builtEntries(ctx, door) {
+  const built = startRuns(door).filter((run) => run.built);
+  if (built.length === 0) return [];
+  const main = new Set(ctx.boundaries.map((boundary) => entryFile(boundary)).filter(Boolean));
+  const holds = (path) => built.some((run) => run.path === path || (run.path.endsWith('/') && path.startsWith(run.path)));
+  return [...new Set(ctx.boundaries.flatMap((boundary) => boundary.entryPoints ?? []))]
+    .filter((path) => holds(path) && !isTestFile(path) && ctx.fileOf.has(path))
+    .sort((a, b) => Number(!main.has(a)) - Number(!main.has(b)) || cmp(a, b));
+}
+
 // A page a reader opens runs as surely as a script does.
 function runsAsCode(path) {
   return isCodePath(path) || /\.html?$/i.test(path);
@@ -2269,9 +2295,13 @@ function startHere(ctx, main, first = null) {
   // part. A package is read from what an import of its name loads.
   // A barrel is passed through to the file it hands on, and a file holding
   // one constant is never where a reader starts.
+  // A package's own entry is where its code starts, though it only hands
+  // names on: what it exports is the package.
+  const packageEntries = new Set([...builtEntries(ctx, main), ...(main.kind === 'package' ? (main.runs ?? []).map((run) => run.path) : [])]);
   const firstOf = (path) => {
     const file = path.endsWith('/') ? fileInRun(ctx, main, path) : path;
     if (file == null) return null;
+    if (packageEntries.has(file) && readable(file) && !ctx.fileOf.get(file)?.constantOnly) return file;
     if (!isTestFile(file)) return readable(file) ? working(ctx, file, null) : null;
     for (const target of ctx.fileOf.get(file)?.importsFiles ?? []) {
       if (!ctx.fileOf.has(target) || !readable(target) || isTestFile(target)) continue;
@@ -2297,6 +2327,7 @@ function startHere(ctx, main, first = null) {
   const helper = (path) => !path.endsWith('/') && !isTestFile(path) && (ctx.fileOf.get(path)?.importsFiles ?? []).length === 0;
   const candidates = [
     ...ran.filter((path) => entries.has(path) && !isTestFile(path) && !unitRun(path)).sort(byWidth),
+    ...builtEntries(ctx, main),
     ...spelled.filter(drives).sort(byWidth),
     ...[...new Set(partEntries)].sort((a, b) => Number(!imported.has(a)) - Number(!imported.has(b)) || byWidth(a, b)),
     // A helper that imports nothing comes after a test's way into the code.
@@ -2465,6 +2496,8 @@ function working(ctx, path, from, hops = 0) {
 // which the page says.
 function testsOnly(ctx, door) {
   if (!door || installed(door)) return null;
+  // A door that builds a package starts at the package's entry.
+  if (builtEntries(ctx, door).length > 0) return null;
   const executed = new Set(startRuns(door).filter((run) => run.runKind !== 'checks').map((run) => run.path));
   const files = filesOfRuns(ctx, startShown(door).filter((path) => executed.has(path))).filter(runsAsCode);
   if (files.length === 0) return (door.runs ?? []).length > 0 ? { checks: true } : null;

@@ -433,6 +433,17 @@ test('a stamped block, the door a reading starts at, and a door with no path rea
   assert.ok(!one.includes('Read those in order to follow one pull request'), 'one file is no list');
 });
 
+test('a build no release ships is said as a build, in the steps and among the other doors', () => {
+  const ci = page.doors.find((door) => door.name === 'CI');
+  const doors = page.doors.map((door) => (door === ci ? { ...door, builds: ['packages/schemas/src/index.ts'], sends: [] } : door));
+  const main = plain(render.renderPage({ ...page, doors, mainDoor: ci.id }, { repo: page.repo }));
+  assert.ok(main.includes('builds packages/schemas/src/index.ts'), 'the steps say the build');
+  const other = plain(render.renderPage({ ...page, doors }, { repo: page.repo }));
+  const at = other.indexOf('CI runs', other.indexOf('The other doors'));
+  const paragraph = other.slice(at, at + 400);
+  assert.ok(paragraph.includes('builds packages/schemas/src/index.ts'), paragraph);
+});
+
 test('with nothing written, the never-read section says so rather than that every place is read', () => {
   const html = render.renderPage({ ...page, unread: [], unreadNote: [], written: 0, unreadFiles: 0 }, { repo: page.repo });
   assert.ok(html.includes('<h2>Written but never read</h2>\n<p>No place this map can see is written, so none goes unread.</p></section>'));

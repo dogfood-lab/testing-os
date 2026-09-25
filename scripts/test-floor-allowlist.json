@@ -228,6 +228,18 @@
     {
       "path": "fixtures/atlas/start-order/imports/test/cli.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the start-order fixture repository that packages/atlas/adapter/page-start-order.test.js maps, where CI's node --test runs it and it imports one command module, so CI runs only tests and the path follows the command people run. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/build-starts/tsup/test/run.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the build-starts fixture repository that packages/atlas/adapter/page-build-starts.test.js maps, where CI's node --test runs it beside a build of the package, so the path must start at the package's entry rather than at a test. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/build-starts/tsc/test/run.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the build-starts fixture repository that packages/atlas/adapter/page-build-starts.test.js maps, where CI's node --test runs it beside a build of the package, so the path must start at the package's entry rather than at a test. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/build-starts/vite/test/run.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the build-starts fixture repository that packages/atlas/adapter/page-build-starts.test.js maps, where CI's node --test runs it beside a build of the package, so the path must start at the package's entry rather than at a test. It holds no test and is never meant to run."
     }
   ]
 }

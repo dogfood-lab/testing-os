@@ -886,9 +886,12 @@ function meets(trigger, gate) {
  */
 function recordedRuns(entries) {
   const directories = entries.filter((entry) => entry.directory);
+  // A directory stands for a file under it that it does as much to: a run
+  // for anything, a build for a build or a check, a check for a check.
+  const doing = (entry) => (entry.runKind === 'checks' ? 0 : entry.built ? 1 : 2);
   const covered = (entry) => entry.matched && directories.some((dir) => (
     dir.job === entry.job && entry.path !== dir.path && entry.path.startsWith(dir.path)
-    && (dir.runKind !== 'checks' || entry.runKind === 'checks')
+    && doing(dir) >= doing(entry)
   ));
   const all = entries.filter((entry) => !covered(entry)).sort((a, b) => compare(a.path, b.path) || compare(a.job, b.job));
   const rank = new Map();

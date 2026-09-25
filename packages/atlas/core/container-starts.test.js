@@ -24,7 +24,7 @@ after(() => {
 });
 
 function runs(file) {
-  return doors.find((door) => door.file === file).runs.map((run) => `${run.path} ${run.runKind}`);
+  return doors.find((door) => door.file === file).runs.map((run) => `${run.path} ${run.runKind}${run.built ? ' built' : ''}`);
 }
 
 describe('what an image starts', () => {
@@ -32,6 +32,8 @@ describe('what an image starts', () => {
     assert.deepEqual(runs('.github/workflows/image.yml'), [
       'package.json checks',
       'packages/ checks',
+      // The image's tsc emits to an outDir: a build.
+      'packages/node/ executes built',
       'packages/node/src/main.ts executes',
       'pnpm-workspace.yaml checks',
     ]);

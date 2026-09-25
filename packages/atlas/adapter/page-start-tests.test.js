@@ -44,9 +44,9 @@ describe('where to start, when the pull request only runs tests', () => {
     assert.equal(data.startReason, 'This path follows tool (a command people run) from its entry, since CI runs only tests.');
   });
 
-  it('starts past the package entry when it only hands names on', () => {
+  it('starts at the package entry, though it only hands names on: what it exports is the package', () => {
     const { data } = page('package', ['src', 'tests', 'text']);
-    assert.deepEqual(data.startHere, ['src/parse.js', 'text/token.js']);
+    assert.deepEqual(data.startHere, ['src/index.js', 'src/parse.js', 'text/token.js']);
     assert.equal(data.startDoor, 'package.json#@s/lib');
   });
 
