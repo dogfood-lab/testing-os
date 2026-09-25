@@ -2538,7 +2538,11 @@ function testsOnly(ctx, door) {
   if (!files.some(isTest)) return null;
   const helpers = files.filter((path) => !isTest(path));
   if (helpers.some((path) => (ctx.fileOf.get(path)?.importsFiles ?? []).length > 0)) return null;
-  return { helpers: helpers.length > 0 };
+  // What else it does is said with the tests, so "only tests" stays true: a
+  // type-check or a lint of code, and a build of what no package enters.
+  const checks = shownRuns(door, 'checks').some((path) => path.endsWith('/') || isCodePath(path));
+  const builds = shownRuns(door, 'builds');
+  return { helpers: helpers.length > 0, ...(checks ? { alsoChecks: true } : {}), ...(builds.length > 0 ? { builds } : {}) };
 }
 
 // Whether a door runs a file for the unit tests it holds (cargo test and a
@@ -2583,7 +2587,9 @@ function installedStart(ctx) {
 // Why the path follows an installed door rather than the pull request's. The
 // door's name is not put first, since it may be spelled in lower case.
 function startReason(from, door, found) {
-  const runs = found.checks ? 'only checks code' : found.helpers ? 'runs only tests and scripts that import no code here' : 'runs only tests';
+  const done = ['tests', ...(found.helpers ? ['scripts that import no code here'] : []), ...(found.alsoChecks ? ['checks'] : [])];
+  const built = found.builds ? `, and builds ${runsShown(found.builds)}` : '';
+  const runs = found.checks ? 'only checks code' : `runs only ${list(done)}${built}`;
   return `This path follows ${door.name} (${installedAs(door)}) from its entry, since ${from.name} ${runs}.`;
 }
 

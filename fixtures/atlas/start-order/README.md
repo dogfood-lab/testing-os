@@ -15,3 +15,6 @@ them in an order that is not the order of their names, and the path goes to
 the one it calls first; in tie-reach/ it records no order of work and one of
 them goes on into another part, and the path goes to that one; in tie-none/
 nothing tells them apart, and the path ends at bin/tool.js.
+
+In checks-too/ CI lints src/ beside the tests, and the page says it runs
+only tests and checks.

@@ -61,6 +61,11 @@ describe('where to start inside one part', () => {
     assert.deepEqual(data.startHere, ['.github/workflows/ci.yml', 'bin/tool.js']);
   });
 
+  it('says what else the pull request does when it runs only tests', () => {
+    const { data } = page('checks-too', ['src', 'test']);
+    assert.equal(data.startReason, 'This path follows tool (a command people run) from its entry, since CI runs only tests and checks.');
+  });
+
   it('says a path of one file in the singular', () => {
     const { markdown, data } = page('single', ['src', 'test']);
     assert.deepEqual(data.startHere, ['src/cli.js']);

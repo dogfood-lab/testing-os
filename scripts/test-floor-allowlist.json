@@ -244,6 +244,10 @@
     {
       "path": "fixtures/atlas/start-dead-ends/gate/test/work.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the start-dead-ends fixture repository that packages/atlas/adapter/page-start-dead-ends.test.js maps, where CI's node --test runs it beside a gate script that imports nothing, so the path must go through it into src/ rather than end on the gate. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/start-order/checks-too/test/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the start-order fixture repository that packages/atlas/adapter/page-start-order.test.js maps, where CI's node --test runs it beside a lint of src/, so the page must say CI runs only tests and checks. It holds no test and is never meant to run."
     }
   ]
 }
