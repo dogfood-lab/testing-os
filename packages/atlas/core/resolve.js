@@ -767,7 +767,7 @@ function resolvePython(ctx, fromAbs, specifier, inserted = []) {
   if (beside) return { outcome: 'file', path: beside };
   const first = specifier.split('.')[0];
   if (PYTHON_STDLIB.has(first)) return { outcome: 'external' };
-  const present = segmentPresent(ctx.tracked, first);
+  const present = segmentPresent(ctx.tracked, first, python.roots);
   // Python looks a bare name up from the source roots, so a local module of
   // the same name deeper in the tree does not shadow a dependency the project
   // declares: `from datasets import Dataset` beside backpropagate/datasets.py
@@ -856,11 +856,19 @@ function sourceRoots(tracked, repo = null) {
   return roots;
 }
 
-function segmentPresent(tracked, name) {
+// Whether a module of this name is in the tree where a reader could take a
+// bare import for it: a file name.py anywhere, or a directory of that name
+// at a source root. A package nested under another (src/prism/mcp/) is
+// that package's module, never the top-level name, so an import of an
+// installed mcp is the dependency and nothing here shares its name.
+function segmentPresent(tracked, name, roots = []) {
   const file = `${name}.py`;
+  const tops = new Set(['', ...roots].map((root) => (root === '.' ? '' : root)));
   for (const path of tracked) {
     if (path === file || path.endsWith(`/${file}`)) return true;
-    if (path.split('/').includes(name)) return true;
+    const parts = path.split('/');
+    const at = parts.indexOf(name);
+    if (at !== -1 && at < parts.length - 1 && tops.has(parts.slice(0, at).join('/'))) return true;
   }
   return false;
 }
