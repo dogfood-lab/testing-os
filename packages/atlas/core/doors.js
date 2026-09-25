@@ -278,7 +278,26 @@ function localSteps(repoPath, repo, steps, depth = 0) {
       out.push(step);
       continue;
     }
-    const held = inner.map((item) => (isMapping(item) && step.if != null && item.if == null ? { ...item, if: step.if } : item));
+    // The action's steps read its inputs as the calling step hands them
+    // (with: baseline: docs/baselines/a11y.scorecard.json), or as the
+    // action's defaults, so a path handed in is one its steps name.
+    const given = isMapping(step.with) ? step.with : {};
+    const declared = isMapping(action.inputs) ? action.inputs : {};
+    const input = (name) => {
+      const value = given[name] ?? (isMapping(declared[name]) ? declared[name].default : undefined);
+      return value == null || typeof value === 'object' ? null : String(value);
+    };
+    const fill = (text) => (typeof text === 'string' ? text.replace(/\$\{\{\s*inputs\.([\w-]+)\s*\}\}/g, (whole, name) => input(name) ?? whole) : text);
+    const held = inner.map((item) => {
+      if (!isMapping(item)) return item;
+      const filled = {
+        ...item,
+        ...(item.run !== undefined ? { run: fill(item.run) } : {}),
+        ...(item['working-directory'] !== undefined ? { 'working-directory': fill(item['working-directory']) } : {}),
+        ...(isMapping(item.env) ? { env: Object.fromEntries(Object.entries(item.env).map(([key, value]) => [key, fill(value)])) } : {}),
+      };
+      return step.if != null && item.if == null ? { ...filled, if: step.if } : filled;
+    });
     out.push(...localSteps(repoPath, repo, held, depth + 1));
   }
   return out;

@@ -3370,7 +3370,11 @@ export function attachLandings({ files, doors, boundaries, places }) {
     // writes keep its (heldLandings): a redirect in a job run only by hand
     // writes only then.
     const shellWrites = (door.commands ?? []).filter((command) => command.dir != null)
-      .flatMap((command) => shellLandings(command.text, places, { dir: command.dir, follow: true }).writes.map((write) => ({ target: write.target, when: command.when ?? null })));
+      .flatMap((command) => shellLandings(command.text, places, { dir: command.dir, follow: true }).writes.map((write) => ({ target: write.target, when: command.when ?? null, job: command.job })));
+    // The jobs whose own shell writes each place, for whether a mention in
+    // another job reads it.
+    door.writingJobs = new Map();
+    for (const { target, job } of shellWrites) door.writingJobs.set(target, new Set([...(door.writingJobs.get(target) ?? []), job]));
     door.ownWriteGates = new Map();
     for (const { target, when } of shellWrites) {
       const entry = door.ownWriteGates.get(target) ?? { open: false, gates: new Map() };
@@ -3476,15 +3480,21 @@ export function attachLandings({ files, doors, boundaries, places }) {
   }
   // A workflow that names a place its own run writes (echo refreshed
   // indexes/latest.json) is describing its output, not reading it.
+  // A job that only reads the place (a gate handing a baseline another job
+  // writes to its action) reads it, though the workflow writes it too.
   for (const door of mapped) {
     for (const target of door.landings) {
       for (const [place, entries] of readers) {
         if (place !== target && !place.startsWith(`${target}/`)) continue;
+        const writing = door.writingJobs?.get(place);
+        const readingJobs = door.mentions.filter((mention) => mention.path === place).map((mention) => mention.job);
+        if (writing && readingJobs.some((job) => !writing.has(job))) continue;
         entries.delete(canonicalEntry({ by: door.file }));
         if (entries.size === 0 && !writers.has(place)) readers.delete(place);
       }
     }
   }
+  for (const door of mapped) delete door.writingJobs;
   for (const door of mapped) {
     const found = new Map();
     for (const target of door.landings) {
