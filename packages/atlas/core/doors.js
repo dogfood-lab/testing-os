@@ -1182,6 +1182,9 @@ function commandSends(run, sends, place) {
     }
     const registry = publishRegistry(words);
     if (registry == null || words.includes('--dry-run')) continue;
+    // npm refuses to publish a private package, so such a publish sends
+    // nothing (accessibility-suite's root).
+    if (registry === 'npm' && packed == null && refusedByNpm(words, cwd, place)) continue;
     sends.publishesTo.add(registry);
     // The crate a cargo publish sends: the one -p names, or the one found
     // from where it runs (index.js markUnshipped).
@@ -1337,6 +1340,19 @@ function joinDir(dir, next) {
  * is one of the packages there, chosen by the tag when a tag starts the
  * workflow.
  */
+// An npm publish of one directory, spelled out, whose manifest is private.
+function refusedByNpm(words, cwd, place) {
+  const args = words.slice(words.indexOf('publish') + 1);
+  if (words[0] !== 'npm' || args.some((word) => /^(?:-w|--workspaces?|-ws)(?:=|$)/.test(word))) return false;
+  const handed = args.find((word, index) => !word.startsWith('-') && !(index > 0 && ['--tag', '--access', '--otp', '--registry'].includes(args[index - 1])));
+  if (handed != null && /\.tgz$/.test(handed)) return false;
+  const dir = handed != null ? joinDir(cwd, handed) : cwd;
+  if (dir == null || dir.includes('$')) return false;
+  const clean = dir.replace(/^\.\/?/, '').replace(/\/+$/, '');
+  const manifest = place.repo.manifest(clean);
+  return manifest?.private === true;
+}
+
 function publishedPackages(words, cwd, place) {
   const at = words.indexOf('publish');
   const args = words.slice(at + 1);
