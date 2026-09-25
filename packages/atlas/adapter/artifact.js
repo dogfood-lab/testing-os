@@ -354,6 +354,8 @@ function carryRun(run) {
   if (run.via) out.via = run.via;
   // A binary the door builds and ships, which it runs nowhere.
   if (run.built) out.built = true;
+  // A script a runner the door runs finds at run time and runs.
+  if (run.foundBy) out.foundBy = run.foundBy;
   if (run.when) out.when = { ...run.when, ...(run.when.inputs ? { inputs: { ...run.when.inputs } } : {}) };
   return out;
 }

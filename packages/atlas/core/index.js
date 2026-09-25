@@ -166,9 +166,12 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const builtFrom = (path) => (trackedSet.has(path) ? null : resolveDeclaredPath(repoPath, path, trackedSet));
   const emitted = () => emittedFiles(repoPath, trackedSet);
   const unitTests = new Set([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps].filter((file) => file.testsInside).map((file) => file.path));
+  // What a runner finds at run time and runs, by the runner (gdscript.js).
+  const discovered = new Map([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps].filter((file) => file.discovers).map((file) => [file.path, file.discovers]));
+  for (const file of [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]) delete file.discovers;
   const doors = settleInstalled([
-    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests }),
-    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests }),
+    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests, discovered }),
+    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests, discovered }),
   ], [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], repoPath, trackedSet);
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
   markUnshipped(doors, cargoProject(repoPath, trackedSet));

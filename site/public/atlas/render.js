@@ -228,8 +228,15 @@ function leadName(door) {
   return door?.app === 'game' ? capitalize(name) : name;
 }
 
+// A runner that finds its scripts at run time is named with what it finds,
+// as page.js names it: "tools/headless.gd, which runs the 11 test suites
+// under tests/ it finds at run time".
 function runs(ctx, door) {
-  return arr(door.runs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
+  const found = new Map(arr(door.found).map((entry) => [str(entry.by), str(entry.what)]));
+  return arr(door.runs).map((path) => {
+    const what = found.get(str(path));
+    return what ? { html: `${pathHtml(ctx, path)}, which runs ${esc(what)} it finds at run time`, text: `${str(path)}, which runs ${what} it finds at run time` } : { html: pathHtml(ctx, path), text: str(path) };
+  });
 }
 
 // The paths a door only checks (a linter or a type-checker reads them and
@@ -432,7 +439,7 @@ function held(ctx, door) {
   return arr(door.held).map((group) => ({
     lead: str(group.lead),
     when: str(group.when),
-    runs: arr(group.runs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+    runs: runs(ctx, { found: door.found, runs: group.runs }),
     checks: arr(group.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
     builds: arr(group.builds).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
     runsMore: moreOf(group.runsMore),

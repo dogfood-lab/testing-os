@@ -388,7 +388,7 @@ function gatedRuns(door) {
 // "runs X; checks Y" for the paths of one gated group, or null.
 function heldClause(ctx, door, group, verb, joiner = '; ', { builds = false } = {}) {
   const clauses = [];
-  const ran = shownRuns(door, 'executes', group.paths);
+  const ran = shownWithFinds(door, namedRuns(door, 'executes', group.paths));
   const built = builds ? shownRuns(door, 'builds', group.paths) : [];
   const checked = shownRuns(door, 'checks', group.paths);
   if (ran.length > 0) clauses.push(`${verb} ${filesShown(ctx, ran)}`);
@@ -816,6 +816,44 @@ function unrecordedRuns(door, kind) {
   return Math.max(0, runTotal(door, kind) - shownRuns(door, kind).length);
 }
 
+// The scripts runners the door runs find at run time and run, by runner.
+function foundRuns(door) {
+  const out = new Map();
+  for (const run of door.runs ?? []) {
+    if (!run.foundBy) continue;
+    if (!out.has(run.foundBy)) out.set(run.foundBy, new Set());
+    out.get(run.foundBy).add(run.path);
+  }
+  return out;
+}
+
+// What a runner finds: "the 11 test suites under tests/".
+function foundWhat(paths) {
+  const list = [...paths];
+  const dirs = [...new Set(list.map((path) => (path.includes('/') ? path.slice(0, path.lastIndexOf('/') + 1) : '')))];
+  const where = dirs.length === 1 ? (dirs[0] || 'the repository root') : count(dirs.length, 'directory', 'directories');
+  const noun = list.every(isTestFile) ? 'test suite' : 'script';
+  return `the ${count(list.length, noun)} under ${where}`;
+}
+
+// "tools/headless.gd, which runs the 11 test suites under tests/ it finds
+// at run time", a runner as a door's runs name it.
+function foundPhrase(runner, paths) {
+  return `${runner}, which runs ${foundWhat(paths)} it finds at run time`;
+}
+
+// The runs of a kind the page names, a runner's finds said with the runner.
+function namedRuns(door, kind, only = null) {
+  const found = foundRuns(door);
+  const within = new Set([...found.values()].flatMap((paths) => [...paths]));
+  return shownRuns(door, kind, only).filter((path) => !within.has(path) || found.has(path));
+}
+
+function shownWithFinds(door, paths) {
+  const found = foundRuns(door);
+  return paths.map((path) => (found.has(path) ? foundPhrase(path, found.get(path)) : path));
+}
+
 // What an installed door runs when its manifest points at a build's output
 // that no tracked config traces to a source: the path, said as that.
 export function unplacedClause(verb, path) {
@@ -826,10 +864,10 @@ export function unplacedClause(verb, path) {
 function runsAndChecks(ctx, door, verb) {
   if (door.unplaced) return unplacedClause(verb, door.unplaced);
   const clauses = [];
-  const ran = shownRuns(door, 'executes');
+  const ran = namedRuns(door, 'executes');
   const built = shownRuns(door, 'builds');
   const checked = shownRuns(door, 'checks');
-  if (ran.length > 0) clauses.push(`${verb} ${filesShown(ctx, ran, unrecordedRuns(door, 'executes'))}`);
+  if (ran.length > 0) clauses.push(`${verb} ${filesShown(ctx, shownWithFinds(door, ran), unrecordedRuns(door, 'executes'))}`);
   if (built.length > 0) clauses.push(`builds ${filesShown(ctx, built)}`);
   if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked, unrecordedRuns(door, 'checks'))}`);
   return clauses.length > 0 ? clauses.join('; ') : null;
@@ -952,7 +990,7 @@ function untrackedWrites(door) {
 
 function doorSteps(ctx, door) {
   const steps = [];
-  const ran = shownRuns(door, 'executes');
+  const ran = namedRuns(door, 'executes');
   const checked = shownRuns(door, 'checks');
   const noun = door.extension ? 'extension' : door.app === 'desktop' ? 'desktop app' : door.app === 'game' ? 'game' : door.kind;
   const subject = installed(door) ? `The ${noun} ${startVerb(door)}` : 'The workflow runs';
@@ -963,6 +1001,8 @@ function doorSteps(ctx, door) {
   const held = heldSentences(ctx, door, 'runs', clauses.length > 0);
   if (clauses.length > 0 || held.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
   steps.push(...held);
+  // A runner held to a trigger is said with what it finds in its sentence.
+  for (const [runner, paths] of foundRuns(door)) if (ran.includes(runner)) steps.push(`${runner} runs ${foundWhat(paths)} it finds at run time.`);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   const places = writes(ctx, door);
   if (places.length > 0) steps.push(`It writes to ${list(places)}.`);
@@ -1372,14 +1412,14 @@ function otherDoors(ctx, main) {
     if (door.parseError) return `**${door.name}.** This workflow could not be read.`;
     const clauses = [];
     const verb = startVerb(door);
-    const ran = shownRuns(door, 'executes');
+    const ran = namedRuns(door, 'executes');
     const built = shownRuns(door, 'builds');
     const checked = shownRuns(door, 'checks');
     const groups = gatedRuns(door);
     // What it builds is said with what it ships (sendPhrases).
     if (door.unplaced) clauses.push(unplacedClause(verb, door.unplaced));
     else if (ran.length > 0 || (built.length === 0 && checked.length === 0 && groups.length === 0)) {
-      clauses.push(ran.length > 0 ? `${verb} ${filesShown(ctx, ran, unrecordedRuns(door, 'executes'))}` : `${verb} no file this map can see`);
+      clauses.push(ran.length > 0 ? `${verb} ${filesShown(ctx, shownWithFinds(door, ran), unrecordedRuns(door, 'executes'))}` : `${verb} no file this map can see`);
     }
     if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked, unrecordedRuns(door, 'checks'))}`);
     for (const group of groups) {
@@ -2942,11 +2982,12 @@ function doorData(ctx, door) {
     checksCount: runTotal(door, 'checks'),
     checksMore: moreFiles(ctx, shownRuns(door, 'checks'), unrecordedRuns(door, 'checks')),
     ...(gatedRuns(door).length > 0
-      ? { held: gatedRuns(door).map((group) => ({ ...(shownRuns(door, 'builds', group.paths).length > 0 ? { builds: shownRuns(door, 'builds', group.paths) } : {}), checks: shownRuns(door, 'checks', group.paths), checksMore: moreFiles(ctx, shownRuns(door, 'checks', group.paths)), lead: gateLead(group.when), runs: shownRuns(door, 'executes', group.paths), runsMore: moreFiles(ctx, shownRuns(door, 'executes', group.paths)), when: gatePhrase(group.when) })) }
+      ? { held: gatedRuns(door).map((group) => ({ ...(shownRuns(door, 'builds', group.paths).length > 0 ? { builds: shownRuns(door, 'builds', group.paths) } : {}), checks: shownRuns(door, 'checks', group.paths), checksMore: moreFiles(ctx, shownRuns(door, 'checks', group.paths)), lead: gateLead(group.when), runs: namedRuns(door, 'executes', group.paths), runsMore: moreFiles(ctx, namedRuns(door, 'executes', group.paths)), when: gatePhrase(group.when) })) }
       : {}),
-    runs: shownRuns(door, 'executes'),
-    runsCount: runTotal(door, 'executes'),
-    runsMore: moreFiles(ctx, shownRuns(door, 'executes'), unrecordedRuns(door, 'executes')),
+    ...(foundRuns(door).size > 0 ? { found: [...foundRuns(door)].map(([by, paths]) => ({ by, what: foundWhat(paths) })) } : {}),
+    runs: namedRuns(door, 'executes'),
+    runsCount: runTotal(door, 'executes') - (shownRuns(door, 'executes').length - namedRuns(door, 'executes').length),
+    runsMore: moreFiles(ctx, namedRuns(door, 'executes'), unrecordedRuns(door, 'executes')),
     sends: sendPhrases(door),
     stages: stagedShown(door.stages),
     triggers: triggerPhrases(door),

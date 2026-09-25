@@ -43,8 +43,8 @@ const ACTION_SENDS = [
  *   build output is compiled from; unitTests is every Rust file holding its
  *   own unit tests, which cargo test runs
  */
-export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom, emitted, unitTests }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests });
+export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom, emitted, unitTests, discovered }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests, discovered });
   return [...tracked]
     .filter(isWorkflow)
     .sort()
@@ -64,8 +64,8 @@ export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom,
  *
  * @param {{ repoPath: string, tracked: Set<string>, spawned?: Map<string, string[]>, commands: Array<{ kind: string, name: string, manifest: string, path: string }> }} input
  */
-export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests }) {
-  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests });
+export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests, discovered }) {
+  const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests, discovered });
   return commands.map((command) => {
     const programs = command.path == null ? [] : (command.paths ?? [command.path]);
     const read = new Map();

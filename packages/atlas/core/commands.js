@@ -122,7 +122,7 @@ const VALUE_SETS = Object.fromEntries(Object.entries(VALUES).map(([tool, flags])
  * unitTests is every Rust file that holds its own unit tests, which cargo
  * test runs with the crate's test targets.
  */
-export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null, emitted = () => new Map(), unitTests = new Set() }) {
+export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null, emitted = () => new Map(), unitTests = new Set(), discovered = new Map() }) {
   const dirs = new Set(['']);
   // The commands the repository installs, by the name a step types.
   const installed = new Map();
@@ -144,6 +144,8 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
     commands,
     builtFrom,
     unitTests,
+    // The scripts a runner finds and runs at run time, by the runner.
+    discovered,
     text(path) {
       if (!tracked.has(path)) return null;
       if (!texts.has(path)) {
@@ -1356,6 +1358,8 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       if (script != null) {
         const path = place(script);
         if (path) record(stamp({ path }, checks));
+        // A runner that finds its tests at run time runs each it finds.
+        for (const found of path ? repo.discovered?.get(path) ?? [] : []) record(stamp({ path: found, matched: true, foundBy: path }, checks, via(frame, path)));
         const base = path ? posix.basename(path) : posix.basename(script);
         const runner = base === 'gut_cmdln.gd' ? 'gut' : /^GdUnitCmdTool\.gd$/i.test(base) ? 'gdUnit4' : null;
         if (runner) matched(repo.compact(godotTests(repo, project, runner, argv, place)), frame, runner);

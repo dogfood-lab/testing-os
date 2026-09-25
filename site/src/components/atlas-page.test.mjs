@@ -999,3 +999,12 @@ test('a write to a place nothing tracks is named as not tracked, as the markdown
   assert.ok(text.includes('export_all writes only to output/, which is not tracked.'), 'who reads the results');
   assert.ok(text.includes('CI runs scripts/report.mjs and writes to reports/, which is not tracked.'), 'the other doors');
 });
+
+// A runner that finds its tests at run time, as page.js words it:
+// fixtures/atlas/godot-discovery gives this sentence in the markdown
+// (packages/atlas/adapter/page-godot-discovery.test.js).
+test('a runner that finds its tests at run time reads with what it finds, as the markdown words it', () => {
+  const ci = { checks: [], checksCount: 0, checksMore: 0, file: '.github/workflows/ci.yml', found: [{ by: 'tools/headless.gd', what: 'the 2 test suites under tests/' }], id: '.github/workflows/ci.yml', landings: [], name: 'ci', pushes: false, reach: [], runs: ['tools/headless.gd'], runsCount: 1, runsMore: 0, sends: [], stages: [], triggers: ['on a pull request'] };
+  const text = plain(render.renderPage({ ...page, doors: [...page.doors, ci] }, { repo: page.repo }));
+  assert.ok(text.includes('ci. On a pull request. Runs tools/headless.gd, which runs the 2 test suites under tests/ it finds at run time.'), 'what comes in');
+});
