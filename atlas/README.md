@@ -1,20 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-25 from commit ce2ccd2.
+Mapped at 2026-09-25 from commit 5fc5728.
 
 ## What this is
 
-23 parts, mostly JavaScript (1296 files), TypeScript (154), Python (87), Rust (87) and GDScript (32). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
+23 parts, mostly JavaScript (1296 files), TypeScript (154), Python (88), Rust (87) and GDScript (32). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
 
-## What changed since 2026-09-25 (0485577)
+## What changed since 2026-09-25 (ce2ccd2)
 
-- CI runs 38 more files than before.
-- Release runs 38 more files than before.
-- dogfood/roadmap/*.*.json is now written by packages/dogfood-swarm/lib/roadmap/compiler.js.
-- indexes/integrity/anchors is now also written by packages/ingest/lib/atomic-write.js.
-- .github/workflows/ci.yml is now also read by packages/atlas/adapter/page-build-starts.test.js, packages/atlas/adapter/page-data-package.test.js, packages/atlas/adapter/page-start-dead-ends.test.js, packages/atlas/adapter/page-start-order.test.js, packages/atlas/core/next-app.test.js, packages/atlas/core/python-spawns.test.js, packages/atlas/core/test-spawn-joined.test.js, packages/atlas/core/turbo-runs.test.js and packages/atlas/core/vitest-projects.test.js.
-- And 56 more new writers and readers of places.
-- 369 files added and 69 changed content, across 15 parts.
+Nothing structural changed since 2026-09-25; 1 file added and 5 changed content.
 
 ## What comes in
 
@@ -96,7 +90,7 @@ Mapped at 2026-09-25 from commit ce2ccd2.
 
 ## What tends to change together
 
-- **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 30 of 60 commits, inside the site part.
+No two source files, other than a file and its own test, changed together often enough to name.
 
 1 file changed together with its own test, as expected.
 
@@ -148,7 +142,7 @@ Read those in order to follow one dogfood submission end to end.
 - 6 writes and 32 reads use paths built at run time and are not named here.
 - 6 writes go to places this repository does not track, so they are not listed as generated.
 - 73 writes and 525 reads go to a path their caller passes, not to this repository.
-- 35 reads go to the directory the command is run in, not to this repository.
+- 36 reads go to the directory the command is run in, not to this repository.
 - 2 writes and 8 reads go to the directory the command is run in (.github/, dogfood/, policy.example.yaml and 2 more places) or a path their caller passes, not to this repository.
 - 5 writes and 3 reads go to a temporary directory, not to this repository.
 - 2 writes and 3 reads go to a temporary directory or a path their caller passes, not to this repository.

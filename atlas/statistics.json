@@ -51,7 +51,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "atlas",
-      "qualifyingSourceCommits": 218,
+      "qualifyingSourceCommits": 219,
       "rebaseline": null
     },
     {
@@ -172,7 +172,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "fixtures",
-      "qualifyingSourceCommits": 155,
+      "qualifyingSourceCommits": 156,
       "rebaseline": null
     },
     {
@@ -360,12 +360,12 @@
         "importsAndCoChanges": [],
         "importsOnly": []
       },
-      "cohesion": 1,
+      "cohesion": null,
       "cohesionDropped": false,
       "confidence": "full",
-      "highWater": 1,
+      "highWater": null,
       "name": "site",
-      "qualifyingSourceCommits": 73,
+      "qualifyingSourceCommits": 74,
       "rebaseline": null
     },
     {
@@ -549,8 +549,8 @@
         "path": "assets/logo.png"
       },
       {
-        "commits": 56,
-        "lines": 1980,
+        "commits": 57,
+        "lines": 2061,
         "path": "atlas/README.md"
       },
       {
@@ -579,18 +579,18 @@
         "path": "atlas/orientation.md"
       },
       {
-        "commits": 56,
-        "lines": 10068,
+        "commits": 57,
+        "lines": 10280,
         "path": "atlas/page.json"
       },
       {
-        "commits": 70,
-        "lines": 63010,
+        "commits": 71,
+        "lines": 66780,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 74,
-        "lines": 133942,
+        "commits": 75,
+        "lines": 139286,
         "path": "atlas/structure.json"
       },
       {
@@ -6264,14 +6264,19 @@
         "path": "fixtures/atlas/python-pkg/web/store.js"
       },
       {
-        "commits": 1,
-        "lines": 9,
+        "commits": 2,
+        "lines": 10,
         "path": "fixtures/atlas/python-spawns/.github/workflows/ci.yml"
       },
       {
-        "commits": 1,
-        "lines": 6,
+        "commits": 2,
+        "lines": 9,
         "path": "fixtures/atlas/python-spawns/README.md"
+      },
+      {
+        "commits": 1,
+        "lines": 16,
+        "path": "fixtures/atlas/python-spawns/gate.py"
       },
       {
         "commits": 1,
@@ -10744,8 +10749,8 @@
         "path": "packages/atlas/core/import-table.test.js"
       },
       {
-        "commits": 82,
-        "lines": 5103,
+        "commits": 83,
+        "lines": 5125,
         "path": "packages/atlas/core/index.js"
       },
       {
@@ -10824,8 +10829,8 @@
         "path": "packages/atlas/core/python-manifest.js"
       },
       {
-        "commits": 1,
-        "lines": 30,
+        "commits": 2,
+        "lines": 32,
         "path": "packages/atlas/core/python-spawns.test.js"
       },
       {
@@ -15619,8 +15624,8 @@
         "path": "site/src/components/BaseLayout.test.mjs"
       },
       {
-        "commits": 59,
-        "lines": 5967,
+        "commits": 60,
+        "lines": 5975,
         "path": "site/src/components/atlas-page.test.mjs"
       },
       {
@@ -15839,9 +15844,9 @@
     "level": "full",
     "reason": "at least 30 qualifying commits, and at least 20 source files reach 10 revisions"
   },
-  "generatedAt": "2026-09-25T07:23:26.025Z",
+  "generatedAt": "2026-09-25T07:44:30.776Z",
   "generatedFrom": {
-    "commit": "ce2ccd2671fc8deb8b8d306faebef60f8ee6ff95"
+    "commit": "5fc5728d99ee12179ecda8bb2ebadcc181b3d319"
   },
   "pairs": [
     {
@@ -16428,44 +16433,44 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 34,
-      "shared": 34,
+      "either": 35,
+      "shared": 35,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 43,
-      "shared": 34,
-      "strength": 0.790698
+      "either": 44,
+      "shared": 35,
+      "strength": 0.795455
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 46,
-      "shared": 34,
-      "strength": 0.73913
+      "either": 47,
+      "shared": 35,
+      "strength": 0.744681
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 43,
-      "shared": 34,
-      "strength": 0.790698
+      "either": 44,
+      "shared": 35,
+      "strength": 0.795455
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 46,
-      "shared": 34,
-      "strength": 0.73913
+      "either": 47,
+      "shared": 35,
+      "strength": 0.744681
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 47,
-      "shared": 42,
-      "strength": 0.893617
+      "either": 48,
+      "shared": 43,
+      "strength": 0.895833
     },
     {
       "a": "indexes/badges/_aggregate.json",
@@ -16767,13 +16772,6 @@
       "either": 16,
       "shared": 14,
       "strength": 0.875
-    },
-    {
-      "a": "site/public/atlas/render.js",
-      "b": "site/src/components/atlas-page.test.mjs",
-      "either": 60,
-      "shared": 30,
-      "strength": 0.5
     }
   ],
   "parameters": {
@@ -16786,16 +16784,16 @@
     "floor": "strong",
     "floorHeld": false,
     "floorTrigger": null,
-    "headDate": "2026-09-25T03:21:01-04:00",
-    "inScopeFiles": 3063,
+    "headDate": "2026-09-25T03:43:07-04:00",
+    "inScopeFiles": 3064,
     "pinnedStart": null,
     "priorFloor": "strong",
-    "qualifyingCommits": 728,
+    "qualifyingCommits": 731,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 10,
-    "since": "2026-03-29T07:21:01.000Z",
+    "since": "2026-03-29T07:43:07.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
