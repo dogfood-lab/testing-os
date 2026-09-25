@@ -1080,3 +1080,10 @@ test('a code part the map cannot read is named, and never counted among those a 
   assert.ok(html.includes(line), html);
   assert.ok(html.includes('Every code part this map reads is'), html);
 });
+
+test('a workflow that runs only echo is said so, as the markdown says it', () => {
+  const ci = page.doors.find((door) => door.name === 'CI');
+  const doors = page.doors.map((door) => (door === ci ? { ...door, runs: [], runsCount: 0, builds: [], checks: [], packs: [], held: [], sends: [], landings: [], reach: [], echoOnly: true } : door));
+  const html = plain(render.renderPage({ ...page, doors }, { repo: page.repo }));
+  assert.ok(html.includes('CI runs only echo'), html.slice(html.indexOf('The other doors'), html.indexOf('The other doors') + 2000));
+});

@@ -484,7 +484,9 @@ function comesIn(ctx) {
     if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
     if (packs(ctx, door).length > 0) clauses.push(`packs ${runsShown(packs(ctx, door))} into an image`);
     const heldText = heldSentences(ctx, door, startVerb(door), clauses.length > 0, { withBuilds: true });
-    const ran = [...(clauses.length > 0 || heldText.length === 0 ? [capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`)] : []), ...heldText].join(' ');
+    // A workflow that runs only echo, as page.js says it.
+    const nothing = door.echoOnly ? 'runs only echo' : `${startVerb(door)} no file this map can see`;
+    const ran = [...(clauses.length > 0 || heldText.length === 0 ? [capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${nothing}.`)] : []), ...heldText].join(' ');
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
     const when = capitalize(arr(door.triggers).map(str).join('; ')) || 'Nothing this map can read starts it';
     return `${name} ${inline(when)}. ${ran}`;
@@ -515,7 +517,7 @@ function doorSteps(ctx, door) {
   if (checked.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
   if (packs(ctx, door).length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} packs ${runsShown(packs(ctx, door))} into an image`);
   const heldText = heldSentences(ctx, door, 'runs', clauses.length > 0);
-  if (clauses.length > 0 || heldText.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
+  if (clauses.length > 0 || heldText.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : door.echoOnly ? `${subject} only echo.` : `${subject} no file this map can see.`);
   steps.push(...heldText);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
@@ -655,7 +657,7 @@ function otherDoors(ctx) {
     else if (paths.length > 0 || (arr(door.builds).length === 0 && checked.length === 0 && arr(door.held).length === 0)) {
       clauses.push(paths.length > 0
         ? { html: `${verb} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths), moreOf(door.runsMore))}` }
-        : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
+        : door.echoOnly ? { html: 'runs only echo', text: 'runs only echo' } : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
     }
     const plain = plainBuilds(ctx, door);
     if (plain.length > 0) clauses.push({ html: `builds ${runsShown(plain)}`, text: `builds ${runsShownText(plain)}` });

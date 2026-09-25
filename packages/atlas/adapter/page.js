@@ -489,7 +489,18 @@ function pushPhrases(trigger) {
   let phrase = 'on a push';
   if (trigger.branches?.length > 0) phrase += ` to ${list(trigger.branches)}`;
   if (trigger.paths?.length > 0) phrase += ` touching ${count(trigger.paths.length, 'path')}`;
+  phrase += ignoredPaths(trigger);
   return tagged ? [phrase, tagged] : [phrase];
+}
+
+// A paths-ignore filter holds the trigger off when only those paths change:
+// "on a pull request to main except when only docs/ changes".
+function ignoredPaths(trigger) {
+  const ignored = trigger['paths-ignore'] ?? [];
+  if (ignored.length === 0) return '';
+  if (ignored.length === 1) return ` except when only ${ignored[0]} changes`;
+  if (ignored.length <= 3) return ` except when only ${list(ignored).replace(/ and /g, ' or ')} change`;
+  return ` except when only the ${ignored.length} paths it ignores change`;
 }
 
 export function triggerPhrases(door) {
@@ -515,6 +526,7 @@ export function triggerPhrases(door) {
         let phrase = 'on a pull request';
         if (trigger.branches?.length > 0) phrase += ` to ${list(trigger.branches).replace(/ and /g, ' or ')}`;
         if (trigger.paths?.length > 0) phrase += ` touching ${count(trigger.paths.length, 'path')}`;
+        phrase += ignoredPaths(trigger);
         phrases.push(phrase);
         break;
       }
@@ -943,6 +955,17 @@ export function unplacedClause(verb, path) {
   return `${verb} ${path}, built from a source this map cannot place`;
 }
 
+// A workflow whose steps run nothing but echo (a gate that only satisfies
+// required check names) runs only that, which the page says rather than
+// that it runs nothing it can see.
+const ECHOES = new Set(['echo', 'printf']);
+export function echoOnly(door) {
+  if (installed(door) || door.parseError || (door.runs ?? []).length > 0) return false;
+  const commands = door.commands ?? [];
+  if (commands.length === 0 || !commands.every((command) => Array.isArray(command.programs) && command.programs.length > 0 && command.programs.every((program) => ECHOES.has(program)))) return false;
+  return (door.uses ?? []).every((action) => /^actions\/checkout$/i.test(action)) && sendPhrases(door).length === 0 && (door.stages ?? []).length === 0;
+}
+
 // "runs X; checks Y", or null when the door names no file at all.
 function runsAndChecks(ctx, door, verb) {
   if (door.unplaced) return unplacedClause(verb, door.unplaced);
@@ -964,7 +987,8 @@ function comesIn(ctx) {
     if (door.parseError) return `${index + 1}. **${door.name}.** This workflow could not be read.`;
     const named = runsAndChecks(ctx, door, startVerb(door));
     const held = heldSentences(ctx, door, startVerb(door), named != null, { builds: true });
-    const runs = [...(named || held.length === 0 ? [capitalize(named ? `${named}.` : `${startVerb(door)} no file this map can see.`)] : []), ...held].join(' ');
+    const nothing = echoOnly(door) ? 'runs only echo' : `${startVerb(door)} no file this map can see`;
+    const runs = [...(named || held.length === 0 ? [capitalize(named ? `${named}.` : `${nothing}.`)] : []), ...held].join(' ');
     if (installed(door)) return `${index + 1}. **${door.name}** (${installedAs(door)}). ${runs}`;
     const when = capitalize(triggerPhrases(door).join('; ')) || 'Nothing this map can read starts it';
     return `${index + 1}. **${door.name}.** ${when}. ${runs}`;
@@ -1109,7 +1133,7 @@ function doorSteps(ctx, door) {
   const packed = shownRuns(door, 'packs');
   if (packed.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} packs ${runGroups(ctx, door, packed)} into an image`);
   const held = heldSentences(ctx, door, 'runs', clauses.length > 0);
-  if (clauses.length > 0 || held.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
+  if (clauses.length > 0 || held.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : echoOnly(door) ? `${subject} only echo.` : `${subject} no file this map can see.`);
   steps.push(...held);
   // A runner held to a trigger is said with what it finds in its sentence.
   for (const [runner, paths] of foundRuns(door)) if (ran.includes(runner)) steps.push(`${runner} runs ${foundWhat(paths)} it finds at run time.`);
@@ -1539,7 +1563,7 @@ function otherDoors(ctx, main) {
     // What it builds is said with what it ships (sendPhrases).
     if (door.unplaced) clauses.push(unplacedClause(verb, door.unplaced));
     else if (ran.length > 0 || (built.length === 0 && checked.length === 0 && groups.length === 0)) {
-      clauses.push(ran.length > 0 ? `${verb} ${filesShown(ctx, shownWithFinds(door, ran), unrecordedRuns(door, 'executes'))}` : `${verb} no file this map can see`);
+      clauses.push(ran.length > 0 ? `${verb} ${filesShown(ctx, shownWithFinds(door, ran), unrecordedRuns(door, 'executes'))}` : echoOnly(door) ? 'runs only echo' : `${verb} no file this map can see`);
     }
     const plain = plainBuilds(door);
     if (plain.length > 0) clauses.push(`builds ${filesShown(ctx, plain)}`);
@@ -3386,6 +3410,7 @@ function doorData(ctx, door) {
     file: door.file,
     id: doorKey(door),
     ...(installed(door) ? { kind: door.kind } : {}),
+    ...(echoOnly(door) ? { echoOnly: true } : {}),
     landings: writes(ctx, door),
     ...(heldWrites(ctx, door).length > 0 ? { landingsHeld: heldWrites(ctx, door) } : {}),
     name: door.name,

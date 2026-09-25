@@ -8,7 +8,7 @@ import { isTestFile } from './landings.js';
 import { storedText } from './text.js';
 
 const WORKFLOW = /^\.github\/workflows\/[^/]+\.ya?ml$/;
-const TRIGGER_LISTS = ['paths', 'branches', 'tags', 'types', 'workflows'];
+const TRIGGER_LISTS = ['paths', 'paths-ignore', 'branches', 'tags', 'types', 'workflows'];
 
 // Words that start the program a command line runs without being it.
 const RUNNER_WORDS = new Set(['sudo', 'env', 'time', 'exec', 'command', 'nohup']);
