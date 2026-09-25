@@ -248,6 +248,10 @@
     {
       "path": "fixtures/atlas/start-order/checks-too/test/cli.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the start-order fixture repository that packages/atlas/adapter/page-start-order.test.js maps, where CI's node --test runs it beside a lint of src/, so the page must say CI runs only tests and checks. It holds no test and is never meant to run."
+    },
+    {
+      "path": "fixtures/atlas/turbo-runs/packages/core/test/shape.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the turbo-runs fixture repository that packages/atlas/core/turbo-runs.test.js maps, where turbo runs the core member's test script, node --test test/, so CI must count it among the files it runs. It holds no test and is never meant to run."
     }
   ]
 }
