@@ -739,7 +739,9 @@ function breaksSection(ctx) {
     ? ul(entries.map((entry) => breakLine(ctx, entry)))
     : p(absence('breaks', unreadFiles(ctx)));
   const figure = renderBreaksFigure(ctx.page);
-  return section('What breaks what', figure ? `${body}\n${figure}` : body);
+  // A code part the map cannot read, said as page.js says it.
+  const unread = typeof ctx.page.unreadCodeUses === 'string' ? `\n${p(esc(ctx.page.unreadCodeUses))}` : '';
+  return section('What breaks what', figure ? `${body}${unread}\n${figure}` : `${body}${unread}`);
 }
 
 // "the tests part", as page.js words a part in a sentence about parts; the
@@ -787,7 +789,7 @@ function untestedSection(ctx) {
   const note = arr(ctx.page.untestedNote).map((line) => p(esc(line)));
   const body = items.length > 0
     ? [ul(items.map((item) => `<strong>${esc(partName(ctx, item) ?? '')}</strong> is imported by no test.`))]
-    : (Number(ctx.page.testFiles) === 0 ? [] : [p(arr(ctx.page.spawnTested).length > 0 || arr(ctx.page.testedInside).length > 0 || arr(ctx.page.testedByScript).length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.')]);
+    : (Number(ctx.page.testFiles) === 0 ? [] : [p(`Every code part${arr(ctx.page.unreadCode).length > 0 ? ' this map reads' : ''} is ${arr(ctx.page.spawnTested).length > 0 || arr(ctx.page.testedInside).length > 0 || arr(ctx.page.testedByScript).length > 0 ? 'touched by' : 'imported by'} at least one test.`)]);
   return section('What no test touches', [...body, ...note].join('\n'));
 }
 

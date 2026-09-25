@@ -1073,3 +1073,10 @@ test('a part only its package\'s own test script tests is touched by a test, as 
   const html = plain(render.renderPage({ ...page, untested: [], spawnTested: [], testedInside: [], testedByScript: ['launcher'], testFiles: 3 }, { repo: page.repo }));
   assert.ok(html.includes('Every code part is touched by at least one test.'), html);
 });
+
+test('a code part the map cannot read is named, and never counted among those a test imports', () => {
+  const line = 'components holds only Astro files, which this map does not read, so what uses it cannot be seen.';
+  const html = plain(render.renderPage({ ...page, untested: [], spawnTested: [], testedInside: [], testFiles: 3, unreadCode: ['components'], unreadCodeUses: line }, { repo: page.repo }));
+  assert.ok(html.includes(line), html);
+  assert.ok(html.includes('Every code part this map reads is'), html);
+});

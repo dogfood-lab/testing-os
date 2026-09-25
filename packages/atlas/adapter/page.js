@@ -1827,7 +1827,8 @@ function breaksSection(ctx, entries) {
   const body = entries.length > 0
     ? entries.map((entry) => breakLine(ctx, entry)).join('\n')
     : absence('breaks', unreadCount(ctx));
-  return ['## What breaks what', body].join('\n\n');
+  const unread = unreadCodeLine(unreadCodeParts(ctx), 'uses');
+  return ['## What breaks what', body, ...(unread ? [unread] : [])].join('\n\n');
 }
 
 function importsBetween(ctx) {
@@ -1975,7 +1976,9 @@ function untested(ctx) {
   // A part only its package's own test script tests, which a workflow runs.
   const scripted = parts.filter((boundary) => boundary.testedByScript && (boundary.testedBy ?? 0) > 0).map((boundary) => boundary.name);
   const byScript = scripted.map((name) => `${ctx.shown(name)} is tested only by its package's own test script, which a workflow runs.`);
-  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...byScript, ...unrunTests(ctx), ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside, scripted };
+  const unread = unreadCodeParts(ctx);
+  const unreadLine = unreadCodeLine(unread, 'tests');
+  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...byScript, ...(unreadLine ? [unreadLine] : []), ...unrunTests(ctx), ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside, scripted, unread: unread.map((entry) => entry.part) };
 }
 
 /**
@@ -2021,7 +2024,9 @@ export function spawnedLine(partLabel) {
 }
 
 function untestedSection(found) {
-  const every = found.spawned.length > 0 || found.inside.length > 0 || (found.scripted ?? []).length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.';
+  // A part the map cannot read is no part it can say a test imports.
+  const read = (found.unread ?? []).length > 0 ? ' this map reads' : '';
+  const every = found.spawned.length > 0 || found.inside.length > 0 || (found.scripted ?? []).length > 0 ? `Every code part${read} is touched by at least one test.` : `Every code part${read} is imported by at least one test.`;
   const body = found.items.length > 0
     ? found.items.map((item) => `- **${item.partLabel}** is imported by no test.`).join('\n')
     : (found.testFiles === 0 ? null : every);
@@ -3179,6 +3184,35 @@ const UNPARSED_LANGUAGES = new Map([
   ['.php', 'PHP'], ['.vue', 'Vue'], ['.svelte', 'Svelte'], ['.lua', 'Lua'],
 ]);
 
+/**
+ * The code parts that hold no file this map parses, only code it does not
+ * read (site-theme's Astro components and stylesheet, registry-stats' C#
+ * desktop app), each with those languages. Nothing can be seen of what
+ * imports them or of what tests them, and the page says so rather than
+ * leave them out.
+ */
+function unreadCodeParts(ctx) {
+  return ctx.boundaries
+    .filter((boundary) => boundary.role === 'code')
+    .map((boundary) => {
+      const paths = (boundary.files ?? []).map((file) => file.path);
+      if (paths.some((path) => languageOf(path) != null)) return null;
+      const languages = [...new Set(paths.map(languageName).filter(Boolean))].sort(cmp);
+      return languages.length > 0 ? { part: boundary.name, partLabel: ctx.shown(boundary.name), languages } : null;
+    })
+    .filter(Boolean);
+}
+
+// "components and styles hold only Astro and CSS files, which this map does
+// not read, so what uses them cannot be seen."
+function unreadCodeLine(parts, what) {
+  if (parts.length === 0) return null;
+  const one = parts.length === 1;
+  const languages = [...new Set(parts.flatMap((entry) => entry.languages))].sort(cmp);
+  const tail = what === 'tests' ? `whether a test touches ${one ? 'it' : 'them'}` : `what uses ${one ? 'it' : 'them'}`;
+  return `${list(parts.map((entry) => entry.partLabel))} ${one ? 'holds' : 'hold'} only ${list(languages)} files, which this map does not read, so ${tail} cannot be seen.`;
+}
+
 function languageName(path) {
   const parsed = LANGUAGE_NAMES[languageOf(path)];
   if (parsed) return parsed;
@@ -3522,6 +3556,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     ...(untestedParts.spawned.length > 0 ? { spawnTested: untestedParts.spawned } : {}),
     ...(untestedParts.inside.length > 0 ? { testedInside: untestedParts.inside } : {}),
     ...((untestedParts.scripted ?? []).length > 0 ? { testedByScript: untestedParts.scripted } : {}),
+    ...(unreadCodeParts(ctx).length > 0 ? { unreadCode: unreadCodeParts(ctx).map((entry) => entry.part), unreadCodeUses: unreadCodeLine(unreadCodeParts(ctx), 'uses') } : {}),
     testedBy: untestedParts.testedBy,
     testFiles: untestedParts.testFiles,
     unreadFiles: unreadCount(ctx),
