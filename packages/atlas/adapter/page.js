@@ -2555,14 +2555,26 @@ function startHere(ctx, main, first = null) {
     // entered the part by, past a package index that only hands names on:
     // the next file that file's entry calls, which is how a reader of the
     // entry meets them.
-    const owner = chain.find((entry) => (ctx.boundaryOf.get(entry) ?? null) === part && ctx.fileOf.has(entry)
+    const entered = chain.find((entry) => (ctx.boundaryOf.get(entry) ?? null) === part && ctx.fileOf.has(entry)
       && !isIndex(entry) && !ctx.fileOf.get(entry)?.reexportsOnly) ?? path;
+    // An arrow is an import or a call of the file before it: the entry's
+    // calls are followed in order, but with no calls recorded its import list
+    // is no order of work, so only what the current file imports goes next
+    // (slice AC's fallback listed cli.py's imports as if each led on).
+    const byCalls = calledFiles(ctx, entered, { imports: false }).length > 0;
+    const owner = byCalls ? entered : path;
+    const found = [];
     for (const target of calledFiles(ctx, owner)) {
       if ((ctx.boundaryOf.get(target) ?? null) !== part || !ctx.fileOf.has(target) || isTestFile(target) || !readable(target)) continue;
-      const found = working(ctx, target, owner);
-      if (found != null && !chain.includes(found)) return found;
+      const file = working(ctx, target, owner);
+      if (file != null && !chain.includes(file) && !found.includes(file)) found.push(file);
     }
-    return null;
+    if (byCalls) return found[0] ?? null;
+    // By imports alone, a file that goes on inside the part comes first, in
+    // the order imported; a package's __init__.py that goes nowhere is no
+    // step, since it holds what the package exports, not the work.
+    const goesOn = (file) => (ctx.fileOf.get(file)?.importsFiles ?? []).some((other) => other !== file && !chain.includes(other) && (ctx.boundaryOf.get(other) ?? null) === part && !isTestFile(other));
+    return found.find(goesOn) ?? found.find((file) => !/(^|\/)__init__\.py$/.test(file)) ?? null;
   };
   // Of the files a binary uses through its library, and the files those use
   // in the same part, the first that imports another part, the one the door

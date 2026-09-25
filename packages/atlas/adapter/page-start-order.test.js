@@ -41,9 +41,9 @@ describe('where to start inside one part', () => {
     assert.equal(start[4], 'Read those in order to follow one run of tool end to end. This path follows tool (a command people run) from its entry, since CI runs only tests.');
   });
 
-  it('with no order of work, reads what the entry imports in the order it imports it', () => {
+  it('with no order of work, goes on only by what each file imports, never down the entry\'s import list', () => {
     const { data } = page('imports', ['src', 'test']);
-    assert.deepEqual(data.startHere, ['src/cli.js', 'src/init.js', 'src/add.js', 'src/build.js']);
+    assert.deepEqual(data.startHere, ['src/cli.js', 'src/init.js']);
   });
 
   it('breaks a tie among a part\'s files by the call the entry makes first, never by name', () => {
