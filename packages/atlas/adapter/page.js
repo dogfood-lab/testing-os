@@ -2948,8 +2948,8 @@ const UNRESOLVED_SHOWN = 3;
  */
 export function unresolvedLine(total, named) {
   const lead = `${count(total, 'import')} could not be resolved`;
-  const shown = [...named].sort((a, b) => cmp(a.path, b.path) || cmp(a.specifier ?? '', b.specifier ?? '')).slice(0, UNRESOLVED_SHOWN);
-  if (shown.length === 0) return `${lead}.`;
+  const sorted = [...named].sort((a, b) => cmp(a.path, b.path) || cmp(a.specifier ?? '', b.specifier ?? ''));
+  if (sorted.length === 0) return `${lead}.`;
   const phrase = (entry) => {
     const file = `\`${entry.path}\``;
     const spec = `\`${entry.specifier}\``;
@@ -2963,8 +2963,15 @@ export function unresolvedLine(total, named) {
     if (entry.why === 'dynamic') return `${file} imports a path built at run time`;
     return `${file} imports ${spec}`;
   };
-  const rest = total - shown.length;
-  return `${lead}: ${shown.map(phrase).join('; ')}${rest > 0 ? `; and ${rest} more` : ''}.`;
+  // One import a file makes twice (two sites of one name) is one clause,
+  // said once with how many sites it is.
+  const clauses = new Map();
+  for (const entry of sorted) clauses.set(phrase(entry), (clauses.get(phrase(entry)) ?? 0) + 1);
+  const shown = [...clauses].slice(0, UNRESOLVED_SHOWN);
+  const said = shown.reduce((sum, [, n]) => sum + n, 0);
+  const rest = total - said;
+  const times = (n) => (n === 1 ? '' : n === 2 ? ', twice' : `, ${n} times`);
+  return `${lead}: ${shown.map(([text, n]) => `${text}${times(n)}`).join('; ')}${rest > 0 ? `; and ${rest} more` : ''}.`;
 }
 
 function limits(ctx, shownText) {
