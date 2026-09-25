@@ -247,7 +247,7 @@
   "changesTogetherWithTests": 0,
   "commit": "e2ce19a5099a1e2fba8c13c8bac76019e0db761a",
   "defaultBranch": "main",
-  "derived": "12 parts, mostly TypeScript (183 files), Rust (4) and JavaScript (2). Work enters through 3 doors; the busiest is CI, which reaches 8 parts. People install the capsule-desktop desktop app.",
+  "derived": "12 parts, mostly TypeScript (183 files), Rust (4), CSS (3), JavaScript (2), Astro (1), HTML (1) and shell (1). Work enters through 3 doors; the busiest is CI, which reaches 8 parts. It deploys a site to GitHub Pages. People install the capsule-desktop desktop app.",
   "doors": [
     {
       "builds": [
@@ -406,7 +406,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -515,7 +515,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:23:47.952Z",
+  "generatedAt": "2026-09-25T16:40:15.929Z",
   "limits": [
     "4 imports could not be resolved: `app/bridge-worker-commands.ts` imports `xrpl`, which is not declared; `app/bridge-worker-mint-persist.test.ts` imports `xrpl`, which is not declared; `app/bridge-worker-verify-release.test.ts` imports `xrpl`, which is not declared; and 1 more.",
     "6 writes and 15 reads use paths built at run time and are not named here.",
@@ -552,12 +552,10 @@
   "startHere": [
     ".github/workflows/ci.yml",
     "packages/cli/src/index.ts",
-    "packages/cli/src/commands/create-release.ts",
+    "packages/cli/src/commands/resolve.ts",
     "packages/core/src/access-grant-validate.ts",
-    "packages/core/src/ajv-formats-interop.ts",
-    "packages/core/src/access-grant.ts",
     "packages/core/src/validate.ts",
-    "packages/core/src/hash.ts"
+    "packages/core/src/ajv-formats-interop.ts"
   ],
   "summary": null,
   "summaryFrom": null,

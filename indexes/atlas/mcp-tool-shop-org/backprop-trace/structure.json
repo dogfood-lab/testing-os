@@ -137,6 +137,9 @@
             "main"
           ],
           "hash": "1bfb60785c8699da76c6e58f93ba92001e433427f4bb3793cd1948d7871640cb",
+          "importsFiles": [
+            "scripts/extract/pytorch.py"
+          ],
           "path": "examples/pytorch/extract_step.py"
         }
       ],
@@ -148,14 +151,7 @@
       "origin": "authored",
       "role": "code",
       "testedBy": 0,
-      "unresolvedNamed": [
-        {
-          "path": "examples/pytorch/extract_step.py",
-          "specifier": "pytorch",
-          "why": "unplaced"
-        }
-      ],
-      "unresolvedSites": 1
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -1152,7 +1148,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -1246,7 +1243,7 @@
       "dynamicReads": 6,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 12,
+      "dynamicWrites": 11,
       "entryPoints": [],
       "externalNames": [
         "jax"
@@ -1384,6 +1381,9 @@
             "main"
           ],
           "hash": "10f79d196511d94ead430206d3d82d90a495db08425cfe2031daea9c56658d06",
+          "importsFiles": [
+            "scripts/extract/pytorch.py"
+          ],
           "path": "scripts/generate-pytorch-coupled-l2-helper-goldens.py"
         },
         {
@@ -1391,6 +1391,9 @@
             "main"
           ],
           "hash": "2d0afa1d693e234fd3902b35f0cdca381f0cbfd7e3906bcc28536be01ba11446",
+          "importsFiles": [
+            "scripts/extract/pytorch.py"
+          ],
           "path": "scripts/generate-pytorch-helper-goldens.py"
         },
         {
@@ -1488,6 +1491,13 @@
       "origin": "authored",
       "outsidePlaces": [
         {
+          "reads": 2,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        },
+        {
           "reads": 3,
           "where": [
             "temp"
@@ -1495,23 +1505,11 @@
           "writes": 2
         }
       ],
-      "outsideReads": 3,
+      "outsideReads": 5,
       "outsideWrites": 2,
       "role": "code",
       "testedBy": 0,
-      "unresolvedNamed": [
-        {
-          "path": "scripts/generate-pytorch-coupled-l2-helper-goldens.py",
-          "specifier": "pytorch",
-          "why": "unplaced"
-        },
-        {
-          "path": "scripts/generate-pytorch-helper-goldens.py",
-          "specifier": "pytorch",
-          "why": "unplaced"
-        }
-      ],
-      "unresolvedSites": 2
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -1564,6 +1562,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -5320,103 +5326,145 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.16.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "4",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "4"
         },
         {
           "job": "test",
-          "step": "5",
-          "text": "pnpm typecheck"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "5"
         },
         {
           "job": "test",
-          "step": "6",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "6"
         },
         {
           "job": "test",
-          "step": "7",
-          "text": "pnpm test"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "7"
         },
         {
           "job": "byte-equal",
-          "step": "3",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "3"
         },
         {
           "job": "byte-equal",
-          "step": "4",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "4"
         },
         {
           "job": "byte-equal",
-          "step": "5",
-          "text": "pnpm test"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "5"
         },
         {
           "job": "byte-equal",
-          "step": "verify mazur.generated.jsonl matches golden",
-          "text": "if [ -f tmp/mazur.generated.jsonl ]; then\n  diff fixtures/mazur.golden.jsonl tmp/mazur.generated.jsonl\nelse\n  echo \"FAIL: determinism gate cannot run — golden not produced (tmp/mazur.generated.jsonl missing after pnpm test). A gate that cannot go RED is not a gate.\" >&2\n  exit 1\nfi\n"
+          "programs": [
+            "2",
+            "diff",
+            "echo"
+          ],
+          "step": "verify mazur.generated.jsonl matches golden"
         },
         {
           "job": "audit",
-          "step": "3",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "3"
         },
         {
           "job": "audit",
-          "step": "dependency audit (prod — blocking)",
-          "text": "pnpm audit --prod --audit-level=moderate"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "dependency audit (prod — blocking)"
         },
         {
           "job": "audit",
-          "step": "dependency audit (full tree incl. devDeps — visible, non-blocking)",
-          "text": "pnpm audit --audit-level=moderate || true"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "dependency audit (full tree incl. devDeps — visible, non-blocking)"
         },
         {
           "job": "torch-e2e",
-          "step": "install CPU torch (pinned)",
-          "text": "python -m pip install --upgrade pip && python -m pip install -r scripts/extract/requirements-cpu.txt --index-url https://download.pytorch.org/whl/cpu"
+          "programs": [
+            "python"
+          ],
+          "step": "install CPU torch (pinned)"
         },
         {
           "job": "torch-e2e",
-          "step": "5",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "5"
         },
         {
           "job": "torch-e2e",
-          "step": "6",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "6"
         },
         {
           "job": "torch-e2e",
-          "step": "torch-gated live-helper end-to-end test",
-          "text": "node --import tsx --test test/import-pytorch-helper.torch-e2e.test.ts"
+          "programs": [
+            "node"
+          ],
+          "step": "torch-gated live-helper end-to-end test"
         },
         {
           "job": "jax-e2e",
-          "step": "install CPU jax (pinned)",
-          "text": "python -m pip install --upgrade pip && python -m pip install -r scripts/extract/requirements-jax-cpu.txt"
+          "programs": [
+            "python"
+          ],
+          "step": "install CPU jax (pinned)"
         },
         {
           "job": "jax-e2e",
-          "step": "5",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "5"
         },
         {
           "job": "jax-e2e",
-          "step": "6",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "6"
         },
         {
           "job": "jax-e2e",
-          "step": "jax-gated live-helper end-to-end test",
-          "text": "node --import tsx --test test/import-jax-helper.jax-e2e.test.ts"
+          "programs": [
+            "node"
+          ],
+          "step": "jax-gated live-helper end-to-end test"
         }
       ],
       "conditional": [
@@ -6893,18 +6941,24 @@
       "commands": [
         {
           "job": "pack-smoke",
-          "step": "3",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "3"
         },
         {
           "job": "pack-smoke",
-          "step": "4",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "4"
         },
         {
           "job": "pack-smoke",
-          "step": "pack-install-smoke",
-          "text": "pnpm pack-smoke"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "pack-install-smoke"
         }
       ],
       "elsewhere": [],
@@ -6987,13 +7041,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -7011,7 +7069,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -7073,53 +7131,76 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Install dependencies",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "verify",
-          "step": "Verify gate",
-          "text": "pnpm verify"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Verify gate"
         },
         {
           "job": "verify",
-          "step": "Pack-install smoke",
-          "text": "pnpm pack-smoke"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Pack-install smoke"
         },
         {
           "job": "ship",
-          "step": "Install dependencies",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "ship",
-          "step": "Build",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build"
         },
         {
           "job": "ship",
-          "step": "Tag-vs-package.json version equality",
-          "text": "TAG_REF=\"${GITHUB_REF_NAME}\"\nTAG_VERSION=\"${TAG_REF#v}\"\nPKG_VERSION=$(node -p \"require('./package.json').version\")\necho \"tag_ref=$TAG_REF\"\necho \"tag_version=$TAG_VERSION\"\necho \"pkg_version=$PKG_VERSION\"\nif [ \"$TAG_VERSION\" != \"$PKG_VERSION\" ]; then\n  echo \"::error::Tag $TAG_REF does not match package.json version $PKG_VERSION (expected v$PKG_VERSION)\"\n  exit 1\nfi\necho \"version=$PKG_VERSION\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Tag-vs-package.json version equality"
         },
         {
           "job": "ship",
-          "step": "Upgrade npm for OIDC trusted publishing (>= 11.5.1)",
-          "text": "npm install -g npm@latest"
+          "programs": [
+            "npm"
+          ],
+          "step": "Upgrade npm for OIDC trusted publishing (>= 11.5.1)"
         },
         {
           "job": "ship",
-          "step": "Publish to npm with Sigstore provenance",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with Sigstore provenance"
         },
         {
           "job": "ship",
-          "step": "Extract CHANGELOG entry",
-          "text": "VERSION=\"${{ steps.version-check.outputs.version }}\"\nBODY=$(awk -v v=\"$VERSION\" '\n  $0 ~ \"^## \\\\[\" v \"\\\\]\" { found=1; next }\n  found && /^## \\[/      { exit }\n  found                  { print }\n' CHANGELOG.md)\nif [ -z \"$BODY\" ]; then\n  BODY=\"See CHANGELOG.md for v$VERSION details.\"\nfi\necho \"$BODY\" > /tmp/release-notes.md\necho \"notes_file=/tmp/release-notes.md\" >> \"$GITHUB_OUTPUT\"\necho \"--- extracted release notes ---\"\ncat /tmp/release-notes.md\necho \"--- end ---\"\n"
+          "programs": [
+            "awk",
+            "cat",
+            "echo"
+          ],
+          "step": "Extract CHANGELOG entry"
         },
         {
           "job": "ship",
-          "step": "Create GitHub release",
-          "text": "gh release create \"$GITHUB_REF_NAME\" \\\n  --title \"$GITHUB_REF_NAME\" \\\n  --notes-file \"${{ steps.changelog.outputs.notes_file }}\" \\\n  --verify-tag\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub release"
         }
       ],
       "elsewhere": [],
@@ -8113,6 +8194,11 @@
     }
   ],
   "edges": [
+    {
+      "from": "examples",
+      "kind": "file",
+      "to": "scripts"
+    },
     {
       "from": "scripts",
       "kind": "file",
@@ -9330,7 +9416,12 @@
         }
       ],
       "target": "fixtures/external/pytorch.helper-emitted.adamw.sidecar.jsonl",
-      "writers": []
+      "writers": [
+        {
+          "by": "scripts/generate-pytorch-helper-goldens.py",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [
@@ -9379,7 +9470,12 @@
         }
       ],
       "target": "fixtures/external/pytorch.helper-emitted.sgd-momentum.sidecar.jsonl",
-      "writers": []
+      "writers": [
+        {
+          "by": "scripts/generate-pytorch-helper-goldens.py",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [
@@ -9400,7 +9496,12 @@
         }
       ],
       "target": "fixtures/external/pytorch.helper-emitted.sgd.softmax-ce.sidecar.jsonl",
-      "writers": []
+      "writers": [
+        {
+          "by": "scripts/generate-pytorch-helper-goldens.py",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [

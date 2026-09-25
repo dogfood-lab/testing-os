@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 4198db5.
 
 ## What this is
 
-5 parts, mostly TypeScript (78 files) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run repo-dataset. People import @mcptoolshop/repo-dataset.
+5 parts, mostly TypeScript (78 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run repo-dataset. People import @mcptoolshop/repo-dataset.
 
 ## What changed since 2026-09-24 (3665fc1)
 
@@ -70,7 +70,7 @@ People write .github/, docs/, the repository root and site/. Nothing in this rep
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts → src/types.ts
+.github/workflows/ci.yml → src/index.ts → src/pipeline/runner.ts → src/discovery/scanner.ts → src/discovery/git.ts → src/extractors/registry.ts → src/formatters/registry.ts → src/pipeline/quality.ts
 
 Read those in order to follow one pull request end to end.
 

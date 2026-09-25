@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 65dce69.
 
 ## What this is
 
-7 parts, mostly Markdown (75 files); code in TypeScript (38) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-guardian.
+7 parts, mostly Markdown (75 files); code in TypeScript (38), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-guardian.
 
 ## What changed since 2026-09-23 (628c46f)
 
@@ -26,6 +26,7 @@ Mapped at 2026-09-25 from commit 65dce69.
 ## What happens through CI
 
 1. The workflow runs tests/ in tests; it builds src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -79,7 +80,7 @@ People write .github/; 1 write with a path built at run time may land here.
 
 ## Where to start
 
-.github/workflows/ci.yml → src/cli.ts → src/log-manager.ts → src/doctor.ts → src/watchdog.ts → src/mcp-server.ts → src/watch-daemon.ts → src/process-monitor.ts
+.github/workflows/ci.yml → src/cli.ts → src/log-manager.ts → src/defaults.ts → src/types.ts
 
 Read those in order to follow one pull request end to end.
 

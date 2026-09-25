@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 53be69f.
 
 ## What this is
 
-8 parts, mostly TypeScript (86 files), JavaScript (3) and Python (1). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. People run sensor-humor.
+8 parts, mostly TypeScript (86 files), JavaScript (3), CSS (2), Astro (1), Python (1) and shell (1). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run sensor-humor.
 
 ## What changed since 2026-09-24 (6e8ea9a)
 
@@ -12,7 +12,7 @@ Nothing structural changed since 2026-09-24; 152 files changed content.
 
 ## What comes in
 
-1. **Release.** When a tag matching `v*` is pushed. Runs scripts/check-pack.mjs, src/index.ts, tests/capture.test.ts and 25 more; builds src/; checks package-lock.json, package.json, tsconfig.build.json and 1 more.
+1. **Release.** When a tag matching `v*` is pushed. Runs scripts/check-pack.mjs, src/index.ts, tests/capture.test.ts and 25 more; builds src/; packs package-lock.json, package.json, tsconfig.build.json and 1 more into an image.
 2. **CI.** On a pull request touching 12 paths; on a push touching 12 paths; or by hand. Runs scripts/check-pack.mjs, tests/capture.test.ts, tests/character-voice-schema.test.ts and 24 more; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/sensor-humor** (the package's entry, which runs the command sensor-humor; it is not a library). Loads src/index.ts.
@@ -20,7 +20,7 @@ Nothing structural changed since 2026-09-24; 152 files changed content.
 
 ## What happens through Release
 
-1. The workflow runs scripts/check-pack.mjs in scripts, src/index.ts in src, and 26 files in tests; it builds src/ in src; it checks 4 files in the repository root.
+1. The workflow runs scripts/check-pack.mjs in scripts, src/index.ts in src, and 26 files in tests; it builds src/ in src; it packs 4 files in the repository root into an image.
 2. It publishes to npm and a container image.
 3. It creates a GitHub release.
 
@@ -30,7 +30,7 @@ Release writes nothing this map can see.
 
 ## The other doors
 
-**CI** runs scripts/check-pack.mjs, tests/capture.test.ts, tests/character-voice-schema.test.ts and 24 more, and builds src/.
+**CI** runs scripts/check-pack.mjs, tests/capture.test.ts, tests/character-voice-schema.test.ts and 24 more, builds src/, and scans for secrets with TruffleHog.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -64,6 +64,8 @@ Every code part is touched by at least one test.
 
 scripts is touched by tests only through a spawn: a test runs its files as a child process.
 
+verify.sh runs in no workflow.
+
 ## Written but never read
 
 - **swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/citation-receipt.json** is written by swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs and read by nothing else in this repository.
@@ -90,7 +92,7 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 import could not be resolved: `swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs` imports a path built at run time.
+- 1 import could not be resolved: `swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs` imports `../../../../E:/AI/role-os/src/verify-citations.mjs`, which is not in this repository.
 - 2 writes use paths built at run time and are not named here.
 - 5 writes and 19 reads go to a path their caller passes, not to this repository.
 - 3 writes and 2 reads go to the home directory (.sensor-humor/) or a path their caller passes, not to this repository.

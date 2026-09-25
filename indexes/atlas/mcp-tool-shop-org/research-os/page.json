@@ -160,7 +160,7 @@
   "changesTogetherWithTests": 0,
   "commit": "23a0bc238d328d207817abace7c98e1f9b30a00c",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly TypeScript (420 files) and JavaScript (7). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run research-os. People import @mcptoolshop/research-os.",
+  "derived": "10 parts, mostly TypeScript (420 files), JavaScript (7), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run research-os. People import @mcptoolshop/research-os.",
   "doors": [
     {
       "builds": [
@@ -558,7 +558,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -647,7 +647,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:20:25.786Z",
+  "generatedAt": "2026-09-25T16:35:17.034Z",
   "limits": [
     "1 import could not be resolved: `src/indexer/sync.ts` loads `@mcptoolshop/repo-knowledge` when it is installed, which is not declared.",
     "12 writes and 7 reads use paths built at run time and are not named here.",
@@ -679,9 +679,8 @@
     ".github/workflows/ci.yml",
     "src/index.ts",
     "src/intake/scaffold.ts",
-    "src/errors.ts",
     "src/intake/schema.ts",
-    "src/intake/types.ts"
+    "src/review/reviewer-options-schema.ts"
   ],
   "summary": null,
   "summaryFrom": null,

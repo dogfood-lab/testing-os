@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit b7d57d3.
 
 ## What this is
 
-7 parts, mostly TypeScript (40 files) and JavaScript (1). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run registry-sync. People import @mcptoolshop/registry-sync.
+7 parts, mostly TypeScript (40 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run registry-sync. People import @mcptoolshop/registry-sync.
 
 ## What changed since 2026-09-23 (e78b5d0)
 

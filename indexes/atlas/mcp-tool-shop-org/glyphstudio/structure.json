@@ -6044,6 +6044,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -8199,23 +8207,31 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Typecheck packages",
-          "text": "pnpm --filter @glyphstudio/domain --filter @glyphstudio/state --filter @glyphstudio/mcp-sprite-server typecheck"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Typecheck packages"
         },
         {
           "job": "test",
-          "step": "Test packages",
-          "text": "pnpm --filter @glyphstudio/domain --filter @glyphstudio/state --filter @glyphstudio/mcp-sprite-server test"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Test packages"
         }
       ],
       "elsewhere": [],
@@ -9205,13 +9221,22 @@
       "commands": [
         {
           "job": "submit",
-          "step": "Build submission",
-          "text": "FINISHED_AT=$(date -u +\"%Y-%m-%dT%H:%M:%SZ\")\nRUN_ID=\"glyphstudio-${{ github.run_id }}-${{ github.run_attempt }}\"\nFAILED_STEPS=\"${{ inputs.failed_steps }}\"\n\n# Build step_results: all pass unless listed in failed_steps\nSTEP_RESULTS=$(jq -n --arg failed \"$FAILED_STEPS\" '\n  [\"launch-app\",\"create-sprite\",\"draw-content\",\"export-png\",\"verify-export\"]\n  | map({\n      \"step_id\": .,\n      \"status\": (if ($failed | split(\",\") | map(gsub(\"^\\\\s+|\\\\s+$\";\"\")) | index(.)) then \"fail\" else \"pass\" end)\n    })')\n\n# Build evidence array\nEVIDENCE=$(jq -n \\\n  --arg url \"${{ inputs.screenshot_url }}\" \\\n  '[\n    {\n      \"kind\": \"screenshot\",\n      \"url\": $url,\n      \"description\": \"Canvas screenshot from dogfood session\"\n    }\n  ]')\n\n# Build the full submission\nSUBMISSION=$(jq -n \\\n  --arg schema_version \"1.0.0\" \\\n  --arg run_id \"$RUN_ID\" \\\n  --arg repo \"${{ github.repository }}\" \\\n  --arg branch \"${{ github.ref_name }}\" \\\n  --arg sha \"${{ github.sha }}\" \\\n  --arg workflow \"dogfood.yml\" \\\n  --arg provider_run_id \"${{ github.run_id }}\" \\\n  --argjson attempt \"${{ github.run_attempt }}\" \\\n  --arg run_url \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\" \\\n  --arg actor \"${{ github.actor }}\" \\\n  --arg finished_at \"$FINISHED_AT\" \\\n  --arg scenario_id \"${{ inputs.scenario }}\" \\\n  --arg execution_mode \"${{ inputs.execution_mode }}\" \\\n  --arg verdict \"${{ inputs.verdict }}\" \\\n  --arg attested_by \"${{ github.actor }}\" \\\n  --arg notes \"${{ inputs.notes }}\" \\\n  --arg blocking_reason \"${{ inputs.blocking_reason }}\" \\\n  --argjson step_results \"$STEP_RESULTS\" \\\n  --argjson evidence \"$EVIDENCE\" \\\n  '{\n    \"schema_version\": $schema_version,\n    \"run_id\": $run_id,\n    \"repo\": $repo,\n    \"ref\": { \"branch\": $branch, \"commit_sha\": $sha },\n    \"source\": {\n      \"provider\": \"github\",\n      \"workflow\": $workflow,\n      \"provider_run_id\": $provider_run_id,\n      \"attempt\": $attempt,\n      \"run_url\": $run_url,\n      \"actor\": $actor\n    },\n    \"timing\": {\n      \"started_at\": $finished_at,\n      \"finished_at\": $finished_at,\n      \"duration_ms\": 0\n    },\n    \"scenario_results\": [\n      {\n        \"scenario_id\": $scenario_id,\n        \"scenario_name\": \"Export roundtrip: 16x16 sprite\",\n        \"scenario_version\": \"1.0.0\",\n        \"product_surface\": \"desktop\",\n        \"execution_mode\": $execution_mode,\n        \"verdict\": $verdict,\n        \"attested_by\": $attested_by,\n        \"step_results\": $step_results,\n        \"evidence\": $evidence,\n        \"notes\": $notes\n      }\n      + (if $blocking_reason != \"\" then { \"blocking_reason\": $blocking_reason } else {} end)\n    ],\n    \"overall_verdict\": $verdict,\n    \"notes\": (\"Dogfood session by \" + $attested_by + \". \" + $notes)\n  }')\n\necho \"$SUBMISSION\" > /tmp/submission.json\njq empty /tmp/submission.json\necho \"Submission built:\"\njq '.run_id, .overall_verdict' /tmp/submission.json\n"
+          "programs": [
+            "date",
+            "echo",
+            "jq"
+          ],
+          "step": "Build submission"
         },
         {
           "job": "submit",
-          "step": "Dispatch to testing-os",
-          "text": "SUBMISSION=$(cat /tmp/submission.json)\nRUN_ID=$(echo \"$SUBMISSION\" | jq -r '.run_id')\n\nif [ -z \"$GH_TOKEN\" ]; then\n  echo \"::warning::DOGFOOD_TOKEN not set — skipping dispatch\"\n  exit 0\nfi\n\njq -n --argjson sub \"$SUBMISSION\" \\\n  '{\"event_type\":\"dogfood_submission\",\"client_payload\":{\"submission\":$sub}}' \\\n  | gh api repos/dogfood-lab/testing-os/dispatches \\\n    --input - --silent\n\necho \"Dispatched $RUN_ID to testing-os\"\n"
+          "programs": [
+            "cat",
+            "echo",
+            "gh",
+            "jq"
+          ],
+          "step": "Dispatch to testing-os"
         }
       ],
       "elsewhere": [],
@@ -9256,13 +9281,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -9280,7 +9309,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],

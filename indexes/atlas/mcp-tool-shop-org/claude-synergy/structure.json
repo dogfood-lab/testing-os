@@ -6316,7 +6316,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -6451,6 +6452,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -8777,13 +8786,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -8801,7 +8814,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -8863,48 +8876,71 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install pnpm",
-          "text": "npm install -g pnpm@10"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install pnpm"
         },
         {
           "job": "release",
-          "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth",
-          "text": "# The in-place 'npm install -g npm@latest' on Node 22's bundled npm\n# 10.9 races on its own arborist rebuild and breaks irrecoverably\n# (MODULE_NOT_FOUND: promise-retry). Workaround: install npm@latest\n# as a regular dependency into a sandbox directory and prepend its\n# bin to PATH. The system npm is left untouched; we just shadow it.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} → ${TAG_VERSION}\"\necho \"Package: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "Install dependencies",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "release",
-          "step": "Run tests",
-          "text": "pnpm test"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "release",
-          "step": "Build",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (verify shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify shape)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release",
-          "text": "gh release create \"${GITHUB_REF_NAME}\" \\\n  --title \"claude-synergy ${GITHUB_REF_NAME}\" \\\n  --generate-notes \\\n  --verify-tag\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         }
       ],
       "elsewhere": [],
@@ -9019,23 +9055,32 @@
       "commands": [
         {
           "job": "sync",
-          "step": "Install pnpm",
-          "text": "npm install -g pnpm@10"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install pnpm"
         },
         {
           "job": "sync",
-          "step": "Build CLI",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build CLI"
         },
         {
           "job": "sync",
-          "step": "Refresh top-level summaries",
-          "text": "node dist/cli.js products > PRODUCTS.txt\nnode dist/cli.js latest --limit 50 > LATEST.txt\n"
+          "programs": [
+            "node"
+          ],
+          "step": "Refresh top-level summaries"
         },
         {
           "job": "sync",
-          "step": "Commit changes if any",
-          "text": "git config user.name \"claude-synergy-bot\"\ngit config user.email \"bot@mcp-tool-shop.dev\"\ngit add -A data/ products/ URGENT_FINDINGS.md SOURCES.md PRODUCTS.txt LATEST.txt\ngit diff --staged --quiet || (git commit -m \"Daily sync $(date -I)\" && git push)\n"
+          "programs": [
+            "date",
+            "git"
+          ],
+          "step": "Commit changes if any"
         }
       ],
       "elsewhere": [],
@@ -9119,33 +9164,45 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install pnpm",
-          "text": "npm install -g pnpm@10"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install pnpm"
         },
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Dependency audit",
-          "text": "pnpm audit --audit-level=high || true"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Dependency audit"
         },
         {
           "job": "test",
-          "step": "Typecheck",
-          "text": "pnpm typecheck"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Typecheck"
         },
         {
           "job": "test",
-          "step": "Run tests with coverage",
-          "text": "pnpm test:coverage"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Run tests with coverage"
         }
       ],
       "elsewhere": [],

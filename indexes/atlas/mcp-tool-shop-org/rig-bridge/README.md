@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 204828b.
 
 ## What this is
 
-6 parts, mostly TypeScript (48 files) and JavaScript (1). Work enters through 4 doors; ci, Deploy site to GitHub Pages, Release and rig-bridge each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. People run rig-bridge.
+6 parts, mostly TypeScript (48 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 4 doors; ci, Deploy site to GitHub Pages, Release and rig-bridge each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run rig-bridge.
 
 ## What changed since 2026-09-24 (e91f65b)
 

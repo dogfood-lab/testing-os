@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 1249f83.
 
 ## What this is
 
-11 parts, mostly TypeScript (196 files), JavaScript (10) and Python (2). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. People run ollama-intern-mcp. People import ollama-intern-mcp.
+11 parts, mostly TypeScript (196 files), JavaScript (10), CSS (2), Python (2) and Astro (1). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run ollama-intern-mcp. People import ollama-intern-mcp.
 
 ## What changed since 2026-09-24 (5e48e36)
 
@@ -23,9 +23,9 @@ Mapped at 2026-09-25 from commit 1249f83.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 18 paths; on a push to main touching 18 paths; or by hand. Runs scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, src/index.ts and 98 more; builds src/; checks hermes.config.example.yaml, package-lock.json, package.json and 1 more. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
+1. **CI.** On a pull request touching 18 paths; on a push to main touching 18 paths; or by hand. Runs scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, src/index.ts and 98 more; builds src/; packs hermes.config.example.yaml, package-lock.json, package.json and 1 more into an image. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
 2. **Doc Drift.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs scripts/sync-doc-versions.mjs, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more; checks HANDOFF.md, README.md and SHIP_GATE.md.
-3. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more; builds src/; checks hermes.config.example.yaml, package-lock.json, package.json and 1 more.
+3. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more; builds src/; packs hermes.config.example.yaml, package-lock.json, package.json and 1 more into an image.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 5. **CodeQL.** On a pull request to main; on a push to main; on a schedule (`0 9 * * 0`), Sunday at 09:00 UTC; or by hand. Runs no file this map can see.
 6. **Dependency Review.** On a pull request to main. Runs no file this map can see.
@@ -34,7 +34,7 @@ Mapped at 2026-09-25 from commit 1249f83.
 
 ## What happens through CI
 
-1. The workflow runs scripts/gen-tool-docs.mjs and scripts/sync-doc-versions.mjs in scripts, src/index.ts in src, and 98 files in tests; it builds src/ in src; it checks 4 files in the repository root.
+1. The workflow runs scripts/gen-tool-docs.mjs and scripts/sync-doc-versions.mjs in scripts, src/index.ts in src, and 98 files in tests; it builds src/ in src; it packs 4 files in the repository root into an image.
    1. Inside src/index.ts, `main` does, in order: `profiles.ts` (3 steps), `ollama.ts` (3 steps), `timestamp` and `runPrewarm`.
    2. **`runPrewarm`** runs, in order: `resolveTier`, `resolveNumCtx` and `timestamp`.
 2. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
@@ -48,13 +48,13 @@ Mapped at 2026-09-25 from commit 1249f83.
 
 **Doc Drift** runs scripts/sync-doc-versions.mjs, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more, checks HANDOFF.md, README.md and SHIP_GATE.md, and reaches src.
 
-**Release** runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more, builds src/, checks hermes.config.example.yaml, package-lock.json, package.json and 1 more, creates a GitHub release on a tag push, and publishes to npm and a container image (on a run by hand, only with dry_run false).
+**Release** runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more, builds src/, packs hermes.config.example.yaml, package-lock.json, package.json and 1 more into an image, creates a GitHub release on a tag push, and publishes to npm and a container image (on a run by hand, only with dry_run false).
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**CodeQL** runs no file this map can see.
+**CodeQL** runs no file this map can see and scans code with CodeQL.
 
-**Dependency Review** runs no file this map can see.
+**Dependency Review** runs no file this map can see and reviews dependency changes.
 
 **ollama-intern-mcp** (a command people run, from package.json) runs src/index.ts.
 
@@ -106,7 +106,7 @@ People write .github/, docs/, evals/ and the repository root; 3 writes with path
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts → src/profiles.ts → src/tiers.ts → src/errors.ts
+.github/workflows/ci.yml → src/index.ts → src/profiles.ts → src/tiers.ts
 
 Read those in order to follow one pull request end to end.
 

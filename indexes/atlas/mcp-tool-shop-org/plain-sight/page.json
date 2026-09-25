@@ -44,7 +44,7 @@
   "changesTogetherWithTests": 0,
   "commit": "8042d12eb1a3174c84b3d46346957f2f4f2c4088",
   "defaultBranch": "main",
-  "derived": "5 parts, mostly Python (9 files), TypeScript (2) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 2 parts. People run plain-sight and plain-sight-mcp.",
+  "derived": "5 parts, mostly Python (9 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 4 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run plain-sight and plain-sight-mcp.",
   "doors": [
     {
       "checks": [],
@@ -95,7 +95,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -171,9 +171,10 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-25T10:05:17.619Z",
+  "generatedAt": "2026-09-25T16:33:27.268Z",
   "limits": [
-    "2 writes and 1 read use paths built at run time and are not named here.",
+    "1 read uses a path built at run time and is not named here.",
+    "2 writes and 2 reads go to a path their caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -192,8 +193,7 @@
   "startHere": [
     ".github/workflows/ci.yml",
     "src/plain_sight/server.py",
-    "src/plain_sight/engine.py",
-    "src/plain_sight/sidecars.py"
+    "src/plain_sight/engine.py"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -201,11 +201,13 @@
   "testedBy": {
     "src": 3
   },
-  "unnamedWrites": 2,
+  "unnamedWrites": 0,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
-  "untestedNote": [],
+  "untestedNote": [
+    "verify.sh runs in no workflow."
+  ],
   "written": 0
 }

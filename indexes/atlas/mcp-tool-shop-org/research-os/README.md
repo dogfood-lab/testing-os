@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 23a0bc2.
 
 ## What this is
 
-10 parts, mostly TypeScript (420 files) and JavaScript (7). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run research-os. People import @mcptoolshop/research-os.
+10 parts, mostly TypeScript (420 files), JavaScript (7), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run research-os. People import @mcptoolshop/research-os.
 
 ## What changed since 2026-09-25 (d888f86)
 
@@ -77,7 +77,7 @@ People write .github/, docs/, examples/, the repository root, site/ and template
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts → src/intake/scaffold.ts → src/errors.ts → src/intake/schema.ts → src/intake/types.ts
+.github/workflows/ci.yml → src/index.ts → src/intake/scaffold.ts → src/intake/schema.ts → src/review/reviewer-options-schema.ts
 
 Read those in order to follow one pull request end to end.
 

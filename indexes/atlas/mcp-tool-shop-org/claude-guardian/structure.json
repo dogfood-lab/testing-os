@@ -385,7 +385,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -447,6 +448,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1102,28 +1111,38 @@
       "commands": [
         {
           "job": "build",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.15.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "build",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "build",
-          "step": "4",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "build",
-          "step": "5",
-          "text": "npm test -- --coverage"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "dep-audit",
-          "step": "2",
-          "text": "npm audit --omit=dev || true"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         }
       ],
       "elsewhere": [],
@@ -1230,43 +1249,73 @@
       "commands": [
         {
           "job": "dogfood",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "dogfood",
-          "step": "3",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "dogfood",
-          "step": "Step: run-status",
-          "text": "# Create a mock Claude project dir so guardian has something to scan\nmkdir -p /tmp/claude-test/.claude/projects\necho \"test log content\" > /tmp/claude-test/.claude/projects/test.jsonl\nnode dist/cli.js status 2>&1 | tee /tmp/status.log\nif [ $? -eq 0 ]; then\n  echo \"status=pass\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"status=fail\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "mkdir",
+            "node",
+            "tee"
+          ],
+          "step": "Step: run-status"
         },
         {
           "job": "dogfood",
-          "step": "Step: run-preflight",
-          "text": "node dist/cli.js preflight --dry-run 2>&1 | tee /tmp/preflight.log\nif [ $? -eq 0 ]; then\n  echo \"status=pass\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"status=fail\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "node",
+            "tee"
+          ],
+          "step": "Step: run-preflight"
         },
         {
           "job": "dogfood",
-          "step": "Step: verify-output",
-          "text": "# Confirm both commands produced meaningful output\nif [ -s /tmp/status.log ] && [ -s /tmp/preflight.log ]; then\n  echo \"status=pass\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"status=fail\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Step: verify-output"
         },
         {
           "job": "dogfood",
-          "step": "Determine overall verdict",
-          "text": "S=\"${{ steps.status.outputs.status }}\"\nP=\"${{ steps.preflight.outputs.status }}\"\nV=\"${{ steps.verify_output.outputs.status }}\"\nif [ \"$S\" = \"pass\" ] && [ \"$P\" = \"pass\" ] && [ \"$V\" = \"pass\" ]; then\n  echo \"verdict=pass\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"verdict=fail\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Determine overall verdict"
         },
         {
           "job": "dogfood",
-          "step": "Build submission",
-          "text": "FINISHED_AT=$(date -u +\"%Y-%m-%dT%H:%M:%SZ\")\ncat > /tmp/submission.json << 'INNER_EOF'\n{\n  \"schema_version\": \"1.0.0\",\n  \"run_id\": \"claude-guardian-RUN_ID-ATTEMPT\",\n  \"repo\": \"REPO_SLUG\",\n  \"ref\": {\n    \"branch\": \"REF_NAME\",\n    \"commit_sha\": \"COMMIT_SHA\"\n  },\n  \"source\": {\n    \"provider\": \"github\",\n    \"workflow\": \"dogfood.yml\",\n    \"provider_run_id\": \"PROVIDER_RUN_ID\",\n    \"attempt\": ATTEMPT_NUM,\n    \"run_url\": \"RUN_URL_PLACEHOLDER\",\n    \"actor\": \"ACTOR_NAME\"\n  },\n  \"timing\": {\n    \"started_at\": \"STARTED_PLACEHOLDER\",\n    \"finished_at\": \"FINISHED_PLACEHOLDER\",\n    \"duration_ms\": 0\n  },\n  \"ci_checks\": [],\n  \"scenario_results\": [\n    {\n      \"scenario_id\": \"status-preflight-roundtrip\",\n      \"scenario_name\": \"Run status + preflight on mock project\",\n      \"scenario_version\": \"1.0.0\",\n      \"product_surface\": \"mcp-server\",\n      \"execution_mode\": \"bot\",\n      \"verdict\": \"VERDICT_PLACEHOLDER\",\n      \"step_results\": [\n        { \"step_id\": \"run-status\", \"status\": \"STATUS_STATUS\" },\n        { \"step_id\": \"run-preflight\", \"status\": \"PREFLIGHT_STATUS\" },\n        { \"step_id\": \"verify-output\", \"status\": \"VERIFY_STATUS\" }\n      ],\n      \"evidence\": [\n        {\n          \"kind\": \"log\",\n          \"url\": \"RUN_URL_PLACEHOLDER\",\n          \"description\": \"CI run log with status + preflight output\"\n        }\n      ],\n      \"notes\": \"Bot-driven status + preflight roundtrip\"\n    }\n  ],\n  \"overall_verdict\": \"VERDICT_PLACEHOLDER\",\n  \"notes\": \"Phase 2 rollout: claude-guardian MCP dogfood.\"\n}\nINNER_EOF\n\nsed -i \"s|REPO_SLUG|${GITHUB_REPOSITORY}|g\" /tmp/submission.json\nsed -i \"s|REF_NAME|${GITHUB_REF_NAME}|g\" /tmp/submission.json\nsed -i \"s|COMMIT_SHA|${GITHUB_SHA}|g\" /tmp/submission.json\nsed -i \"s|PROVIDER_RUN_ID|${GITHUB_RUN_ID}|g\" /tmp/submission.json\nsed -i \"s|ATTEMPT_NUM|${GITHUB_RUN_ATTEMPT}|g\" /tmp/submission.json\nsed -i \"s|RUN_URL_PLACEHOLDER|https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}|g\" /tmp/submission.json\nsed -i \"s|ACTOR_NAME|${GITHUB_ACTOR}|g\" /tmp/submission.json\nsed -i \"s|STARTED_PLACEHOLDER|${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}|g\" /tmp/submission.json\nsed -i \"s|FINISHED_PLACEHOLDER|${FINISHED_AT}|g\" /tmp/submission.json\nsed -i \"s|claude-guardian-RUN_ID-ATTEMPT|claude-guardian-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}|g\" /tmp/submission.json\nsed -i \"s|VERDICT_PLACEHOLDER|${{ steps.verdict.outputs.verdict }}|g\" /tmp/submission.json\nsed -i \"s|STATUS_STATUS|${{ steps.status.outputs.status }}|g\" /tmp/submission.json\nsed -i \"s|PREFLIGHT_STATUS|${{ steps.preflight.outputs.status }}|g\" /tmp/submission.json\nsed -i \"s|VERIFY_STATUS|${{ steps.verify_output.outputs.status }}|g\" /tmp/submission.json\n\njq empty /tmp/submission.json\necho \"Submission built:\"\njq '.run_id, .overall_verdict' /tmp/submission.json\n"
+          "programs": [
+            "cat",
+            "date",
+            "echo",
+            "jq",
+            "sed"
+          ],
+          "step": "Build submission"
         },
         {
           "job": "dogfood",
-          "step": "Dispatch to testing-os",
-          "text": "SUBMISSION=$(cat /tmp/submission.json)\nRUN_ID=$(echo \"$SUBMISSION\" | jq -r '.run_id')\n\nif [ -z \"$GH_TOKEN\" ]; then\n  echo \"::warning::DOGFOOD_TOKEN not set — skipping dispatch\"\n  exit 0\nfi\n\njq -n --argjson sub \"$SUBMISSION\" \\\n  '{\"event_type\":\"dogfood_submission\",\"client_payload\":{\"submission\":$sub}}' \\\n  | gh api repos/dogfood-lab/testing-os/dispatches \\\n    --input - --silent\n\necho \"Dispatched $RUN_ID to testing-os\"\n"
+          "programs": [
+            "cat",
+            "echo",
+            "gh",
+            "jq"
+          ],
+          "step": "Dispatch to testing-os"
         }
       ],
       "elsewhere": [],
@@ -1369,13 +1418,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -1393,7 +1446,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1455,43 +1508,65 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22 ships npm 10.9, which signs provenance but cannot negotiate\n# the OIDC auth path (PUT returns a misleading 404). An in-place\n# `npm i -g npm@latest` races the bundled arborist and breaks — install\n# npm@latest into a sandbox dir and shadow the system npm via PATH.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Resolve tag",
-          "text": "TAG=\"${{ github.event.inputs.tag || github.ref_name }}\"\necho \"tag=${TAG}\" >> \"$GITHUB_OUTPUT\"\necho \"version=${TAG#v}\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Resolve tag"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${{ steps.tag.outputs.version }}\"\necho \"Tag: ${{ steps.tag.outputs.tag }} -> ${TAG_VERSION} | package.json: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "5",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "release",
-          "step": "Verify (repo's own contract — test + build + pack shape)",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify (repo's own contract — test + build + pack shape)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher, no token)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher, no token)"
         },
         {
           "job": "release",
-          "step": "Extract CHANGELOG section for the release notes",
-          "text": "# This CHANGELOG uses Keep-a-Changelog bracketed headings\n# (\"## [1.2.1] - 2026-03-25\"); the optional brackets keep this working\n# if the style is ever unbracketed.\nVERSION=\"${{ steps.tag.outputs.version }}\"\nawk -v ver=\"$VERSION\" '\n  /^## / {\n    if (inSection) exit\n    h = $0\n    gsub(/[][]/, \"\", h)          # tolerate both \"## 1.2.1\" and \"## [1.2.1]\"\n    if (h ~ (\"^## \" ver \"( |$)\")) inSection = 1\n    next\n  }\n  inSection { print }\n' CHANGELOG.md > release-notes.md\nif [ -s release-notes.md ]; then\n  echo \"have_notes=true\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"have_notes=false\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "awk",
+            "echo"
+          ],
+          "step": "Extract CHANGELOG section for the release notes"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release",
-          "text": "TAG=\"${{ steps.tag.outputs.tag }}\"\nif [ \"${{ steps.notes.outputs.have_notes }}\" = \"true\" ]; then\n  gh release create \"$TAG\" --title \"claude-guardian $TAG\" --notes-file release-notes.md --verify-tag\nelse\n  gh release create \"$TAG\" --title \"claude-guardian $TAG\" --generate-notes --verify-tag\nfi\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         }
       ],
       "elsewhere": [],

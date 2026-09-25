@@ -254,6 +254,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1017,78 +1025,109 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Type check",
-          "text": "npm run typecheck"
+          "programs": [
+            "npm"
+          ],
+          "step": "Type check"
         },
         {
           "job": "test",
-          "step": "Lint",
-          "text": "npm run lint"
+          "programs": [
+            "npm"
+          ],
+          "step": "Lint"
         },
         {
           "job": "test",
-          "step": "Build",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build"
         },
         {
           "job": "test",
-          "step": "Run tests",
-          "text": "npm run test:run"
+          "programs": [
+            "npm"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "test",
-          "step": "Check for placeholder tests",
-          "text": "if grep -rn \"expect(true)\\.toBe(true)\\|expect(1 + 1)\\.toBe(2)\\|it('placeholder'\" tests/ src/__tests__/ 2>/dev/null; then\n  echo \"::error::Placeholder tests detected. Replace with real assertions or use it.skip() with a tracking issue.\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "grep"
+          ],
+          "step": "Check for placeholder tests"
         },
         {
           "job": "test",
-          "step": "Test coverage",
-          "text": "npm run coverage"
+          "programs": [
+            "npm"
+          ],
+          "step": "Test coverage"
         },
         {
           "job": "build-check",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "build-check",
-          "step": "Clean build",
-          "text": "npm run clean"
+          "programs": [
+            "npm"
+          ],
+          "step": "Clean build"
         },
         {
           "job": "build-check",
-          "step": "Build",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build"
         },
         {
           "job": "build-check",
-          "step": "Check dist output",
-          "text": "if [ ! -d \"dist\" ]; then\n  echo \"Error: dist directory not created\"\n  exit 1\nfi\nif [ ! -f \"dist/index.js\" ]; then\n  echo \"Error: dist/index.js not found\"\n  exit 1\nfi\necho \"Build artifacts present\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Check dist output"
         },
         {
           "job": "build-check",
-          "step": "Verify exports",
-          "text": "node -e \"import('./dist/index.js').then(() => console.log('Package exports valid'))\""
+          "programs": [
+            "node"
+          ],
+          "step": "Verify exports"
         },
         {
           "job": "audit",
-          "step": "Install dependencies",
-          "text": "npm install --ignore-scripts"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "audit",
-          "step": "Run npm audit",
-          "text": "npm audit --audit-level=moderate"
+          "programs": [
+            "npm"
+          ],
+          "step": "Run npm audit"
         }
       ],
       "elsewhere": [],
@@ -1378,18 +1417,24 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Audit site dependencies",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Audit site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -1426,7 +1471,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1498,48 +1543,71 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install npm >= 11.5.1 (required for OIDC trusted publishing)",
-          "text": "# Node 22 ships npm 10.9, which signs provenance but cannot negotiate\n# the OIDC auth path (publish PUT returns a misleading 404). Install a\n# newer npm into a sandbox prefix and shadow it on PATH — an in-place\n# `npm i -g npm@latest` races the bundled arborist and breaks.\nnpm install --prefix \"$HOME/.npm-cli-sandbox\" npm@latest >/dev/null 2>&1\necho \"$HOME/.npm-cli-sandbox/node_modules/.bin\" >> \"$GITHUB_PATH\"\n"
+          "programs": [
+            "1",
+            "echo",
+            "npm"
+          ],
+          "step": "Install npm >= 11.5.1 (required for OIDC trusted publishing)"
         },
         {
           "job": "release",
-          "step": "Show npm version",
-          "text": "npm --version"
+          "programs": [
+            "npm"
+          ],
+          "step": "Show npm version"
         },
         {
           "job": "release",
-          "step": "Resolve release tag",
-          "text": "TAG=\"${{ github.event.inputs.tag || github.ref_name }}\"\necho \"tag=$TAG\" >> \"$GITHUB_OUTPUT\"\necho \"version=${TAG#v}\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Resolve release tag"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=\"$(node -p \"require('./package.json').version\")\"\nif [ \"${{ steps.tag.outputs.version }}\" != \"$PKG_VERSION\" ]; then\n  echo \"::error::Tag ${{ steps.tag.outputs.tag }} does not match package.json version $PKG_VERSION\"\n  exit 1\nfi\necho \"Tag ${{ steps.tag.outputs.tag }} matches package.json version $PKG_VERSION\"\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "release",
-          "step": "Build",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build"
         },
         {
           "job": "release",
-          "step": "Test",
-          "text": "npm run test:run"
+          "programs": [
+            "npm"
+          ],
+          "step": "Test"
         },
         {
           "job": "release",
-          "step": "Publish to npm (OIDC trusted publishing + provenance)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm (OIDC trusted publishing + provenance)"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release",
-          "text": "TAG=\"${{ steps.tag.outputs.tag }}\"\nif gh release view \"$TAG\" >/dev/null 2>&1; then\n  echo \"Release $TAG already exists — skipping.\"\nelse\n  gh release create \"$TAG\" --title \"$TAG\" --generate-notes\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         }
       ],
       "elsewhere": [],

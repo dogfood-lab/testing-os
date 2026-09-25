@@ -65,7 +65,7 @@
       ],
       "importConfidence": "full",
       "name": "artifacts",
-      "origin": "authored",
+      "origin": "generated",
       "role": "code",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -320,6 +320,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -354,7 +362,7 @@
       "dynamicReads": 1,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 5,
+      "dynamicWrites": 0,
       "entryPoints": [
         "src/portlight/app/cli.py"
       ],
@@ -10903,22 +10911,30 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 3,
+          "reads": 129,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:artifacts/"
+          ],
+          "writes": 4
+        },
+        {
+          "reads": 2,
           "where": [
             "cwd"
           ],
           "writes": 0
-        },
-        {
-          "reads": 1,
-          "where": [
-            "cwd:saves/"
-          ],
-          "writes": 1
         }
       ],
-      "outsideReads": 4,
-      "outsideWrites": 1,
+      "outsideReads": 131,
+      "outsideWrites": 6,
       "role": "code",
       "testedBy": 74,
       "unresolvedNamed": [
@@ -12388,28 +12404,40 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "pip install -e \".[dev,tui]\""
+          "programs": [
+            "pip"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Lint",
-          "text": "ruff check src/ tests/"
+          "programs": [
+            "ruff"
+          ],
+          "step": "Lint"
         },
         {
           "job": "test",
-          "step": "Test",
-          "text": "python -c \"import textual; print('textual', textual.__version__)\"\npytest tests/ -x -q -rs --tb=short -o junit_family=xunit2 --junitxml=junit.xml\npython <<'PY'\nimport sys\nimport xml.etree.ElementTree as ET\nskipped = []\nfor case in ET.parse(\"junit.xml\").iter(\"testcase\"):\n    label = (case.get(\"classname\") or \"\") + \".\" + (case.get(\"name\") or \"\")\n    if \"tui\" in label.lower() and case.find(\"skipped\") is not None:\n        skipped.append(label)\nif skipped:\n    print(\"ERROR: TUI tests were skipped; textual extra must be installed\", file=sys.stderr)\n    for name in skipped:\n        print(\"  \" + name, file=sys.stderr)\n    sys.exit(1)\nPY\n"
+          "programs": [
+            "pytest",
+            "python"
+          ],
+          "step": "Test"
         }
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "artifacts/balance/balance-report.json",
+        "artifacts/balance/balance-report.md"
+      ],
       "mentions": [],
       "name": "CI",
       "permissions": [],
@@ -12426,7 +12454,20 @@
           "files": 77
         }
       ],
-      "readers": [],
+      "readers": [
+        {
+          "by": "tools/run_balance.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "artifacts/balance/balance-report.json"
+        },
+        {
+          "by": "tools/run_balance.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "artifacts/balance/balance-report.md"
+        }
+      ],
       "runs": [
         {
           "directory": true,
@@ -12503,13 +12544,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -12527,7 +12572,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -12589,53 +12634,79 @@
       "commands": [
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "pip install -e \".[dev,tui]\" build"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Lint",
-          "text": "ruff check src/ tests/"
+          "programs": [
+            "ruff"
+          ],
+          "step": "Lint"
         },
         {
           "job": "test",
-          "step": "Test",
-          "text": "python -c \"import textual; print('textual', textual.__version__)\"\npytest tests/ -x -q -rs --tb=short -o junit_family=xunit2 --junitxml=junit.xml\npython <<'PY'\nimport sys\nimport xml.etree.ElementTree as ET\nskipped = []\nfor case in ET.parse(\"junit.xml\").iter(\"testcase\"):\n    label = (case.get(\"classname\") or \"\") + \".\" + (case.get(\"name\") or \"\")\n    if \"tui\" in label.lower() and case.find(\"skipped\") is not None:\n        skipped.append(label)\nif skipped:\n    print(\"ERROR: TUI tests were skipped; textual extra must be installed\", file=sys.stderr)\n    for name in skipped:\n        print(\"  \" + name, file=sys.stderr)\n    sys.exit(1)\nPY\n"
+          "programs": [
+            "pytest",
+            "python"
+          ],
+          "step": "Test"
         },
         {
           "job": "test",
-          "step": "Build package",
-          "text": "python -m build"
+          "programs": [
+            "python"
+          ],
+          "step": "Build package"
         },
         {
           "job": "test",
-          "step": "Smoke-import the built wheel",
-          "text": "SMOKE_DIR=\"$(mktemp -d)\"\npython -m pip install --no-deps --force-reinstall --target \"$SMOKE_DIR\" dist/*.whl\nPYTHONPATH=\"$SMOKE_DIR\" python -c \"from portlight.app.cli import app; print('CLI entrypoint: OK')\"\nPYTHONPATH=\"$SMOKE_DIR\" python -c \"from portlight.stress.invariants import check_all_invariants; print('Stress module: OK')\"\nPYTHONPATH=\"$SMOKE_DIR\" python -c \"from portlight.balance.runner import run_balance_simulation; print('Balance module: OK')\"\n"
+          "programs": [
+            "mktemp",
+            "python"
+          ],
+          "step": "Smoke-import the built wheel"
         },
         {
           "job": "build",
-          "step": "2",
-          "text": "uv python install 3.12"
+          "programs": [
+            "uv"
+          ],
+          "step": "2"
         },
         {
           "job": "build",
-          "step": "3",
-          "text": "uv venv"
+          "programs": [
+            "uv"
+          ],
+          "step": "3"
         },
         {
           "job": "build",
-          "step": "Install dependencies + PyInstaller",
-          "text": "uv pip install . \"pyinstaller>=6.9.0\""
+          "programs": [
+            "uv"
+          ],
+          "step": "Install dependencies + PyInstaller"
         },
         {
           "job": "build",
-          "step": "Build binary",
-          "text": "VERSION=${GITHUB_REF_NAME#v}\nuv run pyinstaller --onefile --name \"${{ env.TOOL_NAME }}\" --console \\\n  --collect-submodules rich \\\n  \"${{ env.ENTRYPOINT }}\"\nOUTNAME=\"${{ env.TOOL_NAME }}-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\nmv \"dist/${{ env.TOOL_NAME }}${{ matrix.ext }}\" \"dist/${OUTNAME}\"\necho \"ASSET_NAME=${OUTNAME}\" >> \"$GITHUB_ENV\"\n"
+          "programs": [
+            "echo",
+            "mv",
+            "uv"
+          ],
+          "step": "Build binary"
         },
         {
           "job": "release",
-          "step": "Generate checksums",
-          "text": "VERSION=\"${{ github.event.release.tag_name }}\"\nVERSION=\"${VERSION#v}\"\ncd artifacts\nsha256sum * > \"checksums-${VERSION}.txt\"\ncat \"checksums-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         }
       ],
       "elsewhere": [],
@@ -12657,7 +12728,10 @@
           }
         }
       ],
-      "landings": [],
+      "landings": [
+        "artifacts/balance/balance-report.json",
+        "artifacts/balance/balance-report.md"
+      ],
       "mentions": [],
       "name": "Release Binaries",
       "permissions": [
@@ -12676,7 +12750,20 @@
           "files": 77
         }
       ],
-      "readers": [],
+      "readers": [
+        {
+          "by": "tools/run_balance.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "artifacts/balance/balance-report.json"
+        },
+        {
+          "by": "tools/run_balance.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "artifacts/balance/balance-report.md"
+        }
+      ],
       "runs": [
         {
           "directory": true,
@@ -12758,48 +12845,69 @@
       "commands": [
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "pip install -e \".[dev,tui]\" build"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Lint",
-          "text": "ruff check src/ tests/"
+          "programs": [
+            "ruff"
+          ],
+          "step": "Lint"
         },
         {
           "job": "test",
-          "step": "Test",
-          "text": "python -c \"import textual; print('textual', textual.__version__)\"\npytest tests/ -x -q -rs --tb=short -o junit_family=xunit2 --junitxml=junit.xml\npython <<'PY'\nimport sys\nimport xml.etree.ElementTree as ET\nskipped = []\nfor case in ET.parse(\"junit.xml\").iter(\"testcase\"):\n    label = (case.get(\"classname\") or \"\") + \".\" + (case.get(\"name\") or \"\")\n    if \"tui\" in label.lower() and case.find(\"skipped\") is not None:\n        skipped.append(label)\nif skipped:\n    print(\"ERROR: TUI tests were skipped; textual extra must be installed\", file=sys.stderr)\n    for name in skipped:\n        print(\"  \" + name, file=sys.stderr)\n    sys.exit(1)\nPY\n"
+          "programs": [
+            "pytest",
+            "python"
+          ],
+          "step": "Test"
         },
         {
           "job": "test",
-          "step": "Build package",
-          "text": "python -m build"
+          "programs": [
+            "python"
+          ],
+          "step": "Build package"
         },
         {
           "job": "test",
-          "step": "Smoke-import the built wheel",
-          "text": "SMOKE_DIR=\"$(mktemp -d)\"\npython -m pip install --no-deps --force-reinstall --target \"$SMOKE_DIR\" dist/*.whl\nPYTHONPATH=\"$SMOKE_DIR\" python -c \"from portlight.app.cli import app; print('CLI entrypoint: OK')\"\nPYTHONPATH=\"$SMOKE_DIR\" python -c \"from portlight.stress.invariants import check_all_invariants; print('Stress module: OK')\"\nPYTHONPATH=\"$SMOKE_DIR\" python -c \"from portlight.balance.runner import run_balance_simulation; print('Balance module: OK')\"\n"
+          "programs": [
+            "mktemp",
+            "python"
+          ],
+          "step": "Smoke-import the built wheel"
         },
         {
           "job": "pypi",
-          "step": "Install build tools",
-          "text": "pip install build"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install build tools"
         },
         {
           "job": "pypi",
-          "step": "Build package",
-          "text": "python -m build"
+          "programs": [
+            "python"
+          ],
+          "step": "Build package"
         },
         {
           "job": "npm",
-          "step": "Publish npm launcher with provenance",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish npm launcher with provenance"
         }
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
-      "landings": [],
+      "landings": [
+        "artifacts/balance/balance-report.json",
+        "artifacts/balance/balance-report.md"
+      ],
       "mentions": [],
       "name": "Release",
       "permissions": [
@@ -12819,7 +12927,20 @@
           "files": 77
         }
       ],
-      "readers": [],
+      "readers": [
+        {
+          "by": "tools/run_balance.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "artifacts/balance/balance-report.json"
+        },
+        {
+          "by": "tools/run_balance.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "artifacts/balance/balance-report.md"
+        }
+      ],
       "runs": [
         {
           "directory": true,
@@ -13043,6 +13164,28 @@
       "writers": []
     },
     {
+      "readers": [],
+      "target": "artifacts/balance/balance-report.json",
+      "writers": [
+        {
+          "by": "src/portlight/balance/reporting.py",
+          "confidence": "ast",
+          "fromCwd": true
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "artifacts/balance/balance-report.md",
+      "writers": [
+        {
+          "by": "src/portlight/balance/reporting.py",
+          "confidence": "ast",
+          "fromCwd": true
+        }
+      ]
+    },
+    {
       "readers": [
         {
           "by": "tools/run_stress.py",
@@ -13052,6 +13195,28 @@
       ],
       "target": "artifacts/stress",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": "artifacts/stress/stress-report.json",
+      "writers": [
+        {
+          "by": "src/portlight/stress/reporting.py",
+          "confidence": "ast",
+          "fromCwd": true
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "artifacts/stress/stress-report.md",
+      "writers": [
+        {
+          "by": "src/portlight/stress/reporting.py",
+          "confidence": "ast",
+          "fromCwd": true
+        }
+      ]
     },
     {
       "readers": [

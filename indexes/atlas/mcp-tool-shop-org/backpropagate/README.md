@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit fd35beb.
 
 ## What this is
 
-11 parts, mostly Python (125 files), JavaScript (2) and TypeScript (2). Work enters through 12 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. People run backprop and backpropagate.
+11 parts, mostly Python (125 files), shell (5), Astro (2), CSS (2), JavaScript (2) and TypeScript (2). Work enters through 12 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run backprop and backpropagate.
 
 ## What changed since 2026-09-23 (34a7862)
 
@@ -14,7 +14,7 @@ Mapped at 2026-09-25 from commit fd35beb.
 - And 4 more changes to doors.
 - .github/workflows/ci.yml is now read by docs/ci-gates-triage-plan.md.
 - README.md is now also read by pyproject.toml and tests/test_model_card.py.
-- backpropagate/ is now also read by CONTRIBUTING.md and pyproject.toml.
+- backpropagate/ is now also read by CONTRIBUTING.md, pyproject.toml, scripts/check_doc_drift.py and tests/test_error_codes_catalog.py.
 - And 15 more new writers and readers of places.
 - .github was generated and is now authored.
 - 247 files changed content, across 10 parts.
@@ -22,7 +22,7 @@ Mapped at 2026-09-25 from commit fd35beb.
 ## What comes in
 
 1. **CI.** On a pull request to main; on a push to main touching 8 paths; or by hand. Runs tests/ and verify.sh; checks backpropagate/.
-2. **Publish.** When a release is published; when the workflow Release completes; or by hand. Runs backpropagate/cli.py; checks LICENSE, README.md, backpropagate/ and 1 more.
+2. **Publish.** When a release is published; when the workflow Release completes; or by hand. Runs backpropagate/cli.py; checks backpropagate/; packs LICENSE, README.md and pyproject.toml into an image.
 3. **Nightly Train Smoke.** On a schedule (`0 4 * * 1`), Monday at 04:00 UTC; or by hand. Runs scripts/nightly_train_smoke.py.
 4. **Doc Drift Check.** On a pull request to main; on a push to main touching 7 paths; or by hand. Runs scripts/check_doc_drift.py.
 5. **Pages deploy.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
@@ -38,6 +38,8 @@ Mapped at 2026-09-25 from commit fd35beb.
 
 1. The workflow runs verify.sh in the repository root and tests/ in tests; it checks backpropagate/ in backpropagate.
 2. That reaches scripts (1 file).
+3. It uploads coverage to Codecov.
+4. It scans code with CodeQL.
 
 ## Who reads the results
 
@@ -45,7 +47,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Publish** runs backpropagate/cli.py, checks LICENSE, README.md, backpropagate/ and 1 more, and publishes to PyPI and a container image.
+**Publish** runs backpropagate/cli.py, checks backpropagate/, packs LICENSE, README.md and pyproject.toml into an image, and publishes to PyPI and a container image.
 
 **Nightly Train Smoke** runs scripts/nightly_train_smoke.py, reaches backpropagate, and opens an issue when it fails.
 
@@ -57,7 +59,7 @@ CI writes nothing this map can see.
 
 **Mutation testing (mutmut)** runs no file this map can see, commits .github/mutmut-baseline.txt and pushes to a branch for review, never to main, and opens a pull request.
 
-**OpenSSF Scorecard** runs no file this map can see.
+**OpenSSF Scorecard** runs no file this map can see and scans code with CodeQL.
 
 **Release** runs no file this map can see, publishes to npm, creates a GitHub release, and uploads backpropagate-npm-sbom.cdx.json and backpropagate-sbom.cdx.json to the release.
 
@@ -100,7 +102,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .claude/, .github/, assets/, docs/, examples/ and site/; 13 writes with paths built at run time may land here.
+People write .claude/, .github/, assets/, docs/, examples/ and site/; 6 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -111,9 +113,9 @@ Read those in order to follow one run of backprop end to end. This path follows 
 ## What this map cannot see
 
 - 40 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.
-- 6 imports could not be resolved: `backpropagate/rxconfig.py` imports `ui_app.auth`, which is no module on its import path and no declared dependency; `backpropagate/trainer.py` imports a path built at run time; `tests/test_fp8_smoke.py` imports a path built at run time; and 3 more.
-- 13 writes and 33 reads use paths built at run time and are not named here.
-- 2 writes and 7 reads go to a path their caller passes, not to this repository.
+- 5 imports could not be resolved: `backpropagate/trainer.py` imports a path built at run time; `tests/test_fp8_smoke.py` imports a path built at run time; `tests/test_kto_smoke.py` imports a path built at run time; and 2 more.
+- 6 writes and 10 reads use paths built at run time and are not named here.
+- 17 writes and 53 reads go to a path their caller passes, not to this repository.
 - 1 write goes to the home directory (AppData/, Library/ and backpropagate/) or a path its caller passes, not to this repository.
 - 1 read goes to the directory the command is run in, not to this repository.
 - 1 read goes to the home directory (.cache/), not to this repository.

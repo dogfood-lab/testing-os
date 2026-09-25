@@ -133,7 +133,7 @@
   "changesTogetherWithTests": 0,
   "commit": "842976b0eff0d8b0bae702c0306c2bc25bbf6522",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly TypeScript (59 files), Rust (53) and JavaScript (1). Work enters through 5 doors; the busiest is Release Desktop, which reaches 7 parts. People install the commandui-desktop desktop app. commandui-console is a command built from apps/console (nothing ships it).",
+  "derived": "15 parts, in TypeScript (59 files), Rust (53 files), CSS (3 files), Astro (2 files), HTML (1 file) and JavaScript (1 file). Work enters through 5 doors; the busiest is Release Desktop, which reaches 7 parts. It deploys a site to GitHub Pages. People install the commandui-desktop desktop app. commandui-console is a command built from apps/console (nothing ships it).",
   "doors": [
     {
       "builds": [
@@ -270,7 +270,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 6
         }
       ],
       "runs": [
@@ -427,7 +427,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:15:20.591Z",
+  "generatedAt": "2026-09-25T16:28:53.787Z",
   "limits": [
     "1 read uses a path built at run time and is not named here.",
     "1 write goes to the home directory, not to this repository.",
@@ -467,9 +467,8 @@
     "apps/desktop/src-tauri/src/commands/planner.rs",
     "crates/runtime-planner/src/lib.rs",
     "crates/runtime-planner/src/client.rs",
-    "crates/runtime-planner/src/mock.rs",
-    "crates/runtime-planner/src/parity.rs",
-    "crates/runtime-planner/src/prompt.rs"
+    "crates/runtime-planner/src/prompt.rs",
+    "crates/runtime-planner/src/types.rs"
   ],
   "startReason": "This path follows commandui-desktop (the desktop app people install) from its entry, since CI runs only tests and checks.",
   "summary": null,

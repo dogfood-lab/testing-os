@@ -4,14 +4,15 @@ Mapped at 2026-09-25 from commit 5e9e75f.
 
 ## What this is
 
-12 parts, mostly GDScript (36 files), Python (8), JavaScript (2) and TypeScript (2). Work enters through 4 doors; the busiest is ci, which reaches 5 parts. People run the game.
+12 parts, mostly GDScript (36 files), Python (8), CSS (2), JavaScript (2), TypeScript (2), Astro (1) and shell (1). Work enters through 4 doors; the busiest is ci, which reaches 5 parts. It deploys a site to GitHub Pages. People run the game.
 
 ## What changed since 2026-09-24 (ef2f9cb)
 
 - ci now also runs tests/test_diorama.gd, tests/test_felt_juice.gd, tests/test_felt_mixer.gd and 8 more.
 - fixtures/ is now written by .github/workflows/ci.yml.
 - .github/upstream-pins.env is now read by .github/workflows/ci.yml.
-- fixtures/world.tscn is now also read by stage/diorama.gd.
+- assets/dimetric/ is now also read by assets/dimetric/andon/build_manifest.py.
+- And 1 more new writer or reader of a place.
 - fixtures was authored and is now generated.
 - No file changed.
 
@@ -37,7 +38,7 @@ Mapped at 2026-09-25 from commit 5e9e75f.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**Bump upstream pins** runs no file this map can see, writes to .github/upstream-pins.env, commits .github/upstream-pins.env and pushes to a branch for review, never to main, and opens an issue.
+**Bump upstream pins** runs no file this map can see, writes to .github/upstream-pins.env, commits .github/upstream-pins.env and pushes to a branch for review, never to main, opens an issue, and reads other repositories through the GitHub API.
 
 **the game** (what Godot runs) starts stage/diorama.tscn and reaches client and fixtures.
 
@@ -47,7 +48,7 @@ Mapped at 2026-09-25 from commit 5e9e75f.
 - **stage** is imported by 1 part (tools), and by 1 more only from tests; it sits on the path of 2 doors.
 - **fixtures** is imported by 1 part (stage) and sits on the path of 2 doors.
 - **tools** is imported only from tests, by 1 part (tests), and sits on the path of 1 door.
-- **fixtures/** is written by .github and read by stage and tools; a hand edit reaches every reader.
+- **fixtures/** is written by .github and read by stage and tools, and by 2 tests; a hand edit reaches every reader.
 
 ## What tends to change together
 
@@ -58,6 +59,8 @@ Window: 180 days; a pair counts from 3 shared commits, since 0 source files reac
 ## What no test touches
 
 - **assets** is imported by no test.
+
+verify.sh runs in no workflow.
 
 ## Written but never read
 
@@ -87,8 +90,8 @@ Read those in order to follow one push, or pull request from a fork, end to end.
 
 ## What this map cannot see
 
-- 14 reads use paths built at run time and are not named here.
-- 5 writes and 2 reads go to a path their caller passes, not to this repository.
+- 12 reads use paths built at run time and are not named here.
+- 5 writes and 3 reads go to a path their caller passes, not to this repository.
 - 2 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

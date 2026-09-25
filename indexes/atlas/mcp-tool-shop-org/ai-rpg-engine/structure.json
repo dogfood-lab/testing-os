@@ -16542,6 +16542,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -20203,78 +20211,108 @@
       "commands": [
         {
           "job": "build-and-test",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "build-and-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.14.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "build-and-test",
-          "step": "4",
-          "text": "npm audit --audit-level=high --omit=dev"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "build-and-test",
-          "step": "5",
-          "text": "npm run lint"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "build-and-test",
-          "step": "6",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "6"
         },
         {
           "job": "build-and-test",
-          "step": "Typecheck doc examples",
-          "text": "npx tsc -p docs/examples/tsconfig.json --noEmit"
+          "programs": [
+            "npx"
+          ],
+          "step": "Typecheck doc examples"
         },
         {
           "job": "build-and-test",
-          "step": "Typecheck test files",
-          "text": "npm run typecheck:tests"
+          "programs": [
+            "npm"
+          ],
+          "step": "Typecheck test files"
         },
         {
           "job": "build-and-test",
-          "step": "Behavior-test doc examples",
-          "text": "npx vitest run --config docs/examples/vitest.config.ts"
+          "programs": [
+            "npx"
+          ],
+          "step": "Behavior-test doc examples"
         },
         {
           "job": "build-and-test",
-          "step": "Release gate — mixed-game viability proof",
-          "text": "node scripts/verify-mixed-game-viability.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Release gate — mixed-game viability proof"
         },
         {
           "job": "build-and-test",
-          "step": "Packaging gate (LICENSE/README in every publishable tarball)",
-          "text": "node scripts/check-packaging.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Packaging gate (LICENSE/README in every publishable tarball)"
         },
         {
           "job": "build-and-test",
-          "step": "Isolated-consumer proof (packed tarball)",
-          "text": "node scripts/verify-isolated-consumer.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Isolated-consumer proof (packed tarball)"
         },
         {
           "job": "build-and-test",
-          "step": "13",
-          "text": "npm run test"
+          "programs": [
+            "npm"
+          ],
+          "step": "13"
         },
         {
           "job": "build-and-test",
-          "step": "Coverage",
-          "text": "npx vitest run --coverage"
+          "programs": [
+            "npx"
+          ],
+          "step": "Coverage"
         },
         {
           "job": "docker-smoke",
-          "step": "Smoke — CLI --help",
-          "text": "docker run --rm ai-rpg-engine:ci-smoke --help"
+          "programs": [
+            "docker"
+          ],
+          "step": "Smoke — CLI --help"
         },
         {
           "job": "docker-smoke",
-          "step": "Smoke — create-starter writes under /tmp",
-          "text": "docker run --rm ai-rpg-engine:ci-smoke create-starter ci-smoke --out /tmp/ci-smoke"
+          "programs": [
+            "docker"
+          ],
+          "step": "Smoke — create-starter writes under /tmp"
         }
       ],
       "elsewhere": [],
@@ -20506,12 +20544,14 @@
         },
         {
           "job": "docker-smoke",
+          "packed": true,
           "path": "package-lock.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker-smoke",
+          "packed": true,
           "path": "package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -20519,6 +20559,7 @@
         {
           "directory": true,
           "job": "docker-smoke",
+          "packed": true,
           "path": "packages/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -21882,6 +21923,7 @@
         {
           "directory": true,
           "job": "docker-smoke",
+          "packed": true,
           "path": "templates/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -21895,6 +21937,7 @@
         },
         {
           "job": "docker-smoke",
+          "packed": true,
           "path": "tsconfig.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -21980,8 +22023,10 @@
       "commands": [
         {
           "job": "docs-integrity",
-          "step": "2",
-          "text": "node docs/check-docs-integrity.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "2"
         }
       ],
       "elsewhere": [],
@@ -22060,13 +22105,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -22101,7 +22150,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -22170,78 +22219,122 @@
       "commands": [
         {
           "job": "npm",
-          "step": "Install pinned npm for OIDC",
-          "text": "npm install -g npm@11.19.1 --ignore-scripts"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install pinned npm for OIDC"
         },
         {
           "job": "npm",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "npm",
-          "step": "4",
-          "text": "npm run lint"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "npm",
-          "step": "5",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "npm",
-          "step": "Typecheck test files",
-          "text": "npm run typecheck:tests"
+          "programs": [
+            "npm"
+          ],
+          "step": "Typecheck test files"
         },
         {
           "job": "npm",
-          "step": "Release gate — mixed-game viability proof",
-          "text": "node scripts/verify-mixed-game-viability.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Release gate — mixed-game viability proof"
         },
         {
           "job": "npm",
-          "step": "8",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "8"
         },
         {
           "job": "npm",
-          "step": "Packaging gate (LICENSE/README + advertised entry points)",
-          "text": "node scripts/check-packaging.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Packaging gate (LICENSE/README + advertised entry points)"
         },
         {
           "job": "npm",
-          "step": "Isolated-consumer proof (packed tarball)",
-          "text": "node scripts/verify-isolated-consumer.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Isolated-consumer proof (packed tarball)"
         },
         {
           "job": "npm",
-          "step": "Publish (dry-run)",
-          "text": "set -euo pipefail\nfor dir in packages/* templates/*; do\n  [ -f \"$dir/package.json\" ] || continue\n  priv=$(node -p \"require('./$dir/package.json').private === true\")\n  [ \"$priv\" = \"true\" ] && { echo \"skip private $dir\"; continue; }\n  name=$(node -p \"require('./$dir/package.json').name\")\n  echo \"::group::dry-run $name\"\n  npm publish -w \"$name\" --access public --provenance --dry-run\n  echo \"::endgroup::\"\ndone\n"
+          "programs": [
+            "echo",
+            "node",
+            "npm"
+          ],
+          "step": "Publish (dry-run)"
         },
         {
           "job": "npm",
-          "step": "Publish (live, idempotent)",
-          "text": "set -euo pipefail\nTAG_ARGS=()\nif [ \"${RELEASE_PRERELEASE:-}\" = \"true\" ]; then\n  TAG_ARGS=(--tag next)\n  echo \"GitHub prerelease: publishing with --tag next (never latest)\"\nfi\nfor dir in packages/* templates/*; do\n  [ -f \"$dir/package.json\" ] || continue\n  priv=$(node -p \"require('./$dir/package.json').private === true\")\n  [ \"$priv\" = \"true\" ] && { echo \"skip private $dir\"; continue; }\n  name=$(node -p \"require('./$dir/package.json').name\")\n  ver=$(node -p \"require('./$dir/package.json').version\")\n  view_out=\"\"\n  view_ec=0\n  view_out=\"$(npm view \"$name@$ver\" version 2>&1)\" && view_ec=0 || view_ec=$?\n  if [ \"$view_ec\" -eq 0 ]; then\n    echo \"skip $name@$ver — already on registry\"\n    continue\n  fi\n  unpublished=0\n  if echo \"$view_out\" | grep -Eq 'code E404|E404|404 Not Found|is not in this registry|version not found'; then\n    unpublished=1\n  elif echo \"$view_out\" | grep -q 'E403' && echo \"$view_out\" | grep -Eqi 'not found|not in this registry|version not found'; then\n    unpublished=1\n  fi\n  if [ \"$unpublished\" -ne 1 ]; then\n    echo \"::error::npm view $name@$ver failed with exit $view_ec (not a version-not-found signal) — refusing to publish\"\n    echo \"$view_out\"\n    exit 1\n  fi\n  if [ ${#TAG_ARGS[@]} -gt 0 ]; then\n    echo \"publish $name@$ver — not on registry (tag next)\"\n  else\n    echo \"publish $name@$ver — not on registry\"\n  fi\n  echo \"::group::publish $name@$ver\"\n  npm publish -w \"$name\" --access public --provenance \"${TAG_ARGS[@]}\"\n  echo \"::endgroup::\"\ndone\n"
+          "programs": [
+            "1",
+            "echo",
+            "grep",
+            "node",
+            "npm"
+          ],
+          "step": "Publish (live, idempotent)"
         },
         {
           "job": "npm",
-          "step": "Registry round-trip — npm install CLI from registry",
-          "text": "set -euo pipefail\nver=$(node -p \"require('./packages/cli/package.json').version\")\nprefix=$(mktemp -d)\necho \"installing @ai-rpg-engine/cli@$ver from https://registry.npmjs.org into $prefix\"\nnpm install -g --prefix \"$prefix\" --registry=https://registry.npmjs.org \"@ai-rpg-engine/cli@$ver\"\nPATH=\"$prefix/bin:$PATH\" ai-rpg-engine --help\n"
+          "programs": [
+            "ai-rpg-engine",
+            "echo",
+            "mktemp",
+            "node",
+            "npm"
+          ],
+          "step": "Registry round-trip — npm install CLI from registry"
         },
         {
           "job": "docker",
-          "step": "Smoke — CLI --help",
-          "text": "docker run --rm ai-rpg-engine:ci-smoke --help"
+          "programs": [
+            "docker"
+          ],
+          "step": "Smoke — CLI --help"
         },
         {
           "job": "docker",
-          "step": "Smoke — create-starter writes under /tmp",
-          "text": "docker run --rm ai-rpg-engine:ci-smoke create-starter ci-smoke --out /tmp/ci-smoke"
+          "programs": [
+            "docker"
+          ],
+          "step": "Smoke — create-starter writes under /tmp"
         },
         {
           "job": "docker",
-          "step": "Registry round-trip — GHCR pull + --help",
-          "text": "set -euo pipefail\ndocker rmi ai-rpg-engine:ci-smoke || true\nwhile IFS= read -r tag; do\n  [ -n \"$tag\" ] || continue\n  docker rmi \"$tag\" || true\ndone <<< \"$META_TAGS\"\nprimary=$(printf '%s\\n' \"$META_TAGS\" | awk 'NF { print; exit }')\n[ -n \"$primary\" ] || { echo \"::error::no GHCR tag from metadata-action\"; exit 1; }\ndocker pull \"$primary\"\ndigest=$(docker image inspect --format '{{index .RepoDigests 0}}' \"$primary\")\ndocker run --rm \"$digest\" --help\n"
+          "programs": [
+            "awk",
+            "docker",
+            "echo",
+            "printf",
+            "read"
+          ],
+          "step": "Registry round-trip — GHCR pull + --help"
         }
       ],
       "elsewhere": [],
@@ -22488,12 +22581,14 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "package-lock.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -22501,6 +22596,7 @@
         {
           "directory": true,
           "job": "docker",
+          "packed": true,
           "path": "packages/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -23873,6 +23969,7 @@
         {
           "directory": true,
           "job": "docker",
+          "packed": true,
           "path": "templates/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -23894,6 +23991,7 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "tsconfig.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"

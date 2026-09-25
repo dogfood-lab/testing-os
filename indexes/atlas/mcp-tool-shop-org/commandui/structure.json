@@ -2166,10 +2166,26 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "hash": "a4f27bfa78b63f1a02c374661931f98c56fa94973531f775bb9287ddac4bf82c",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/privacy.astro"
         },
         {
@@ -2335,23 +2351,31 @@
       "commands": [
         {
           "job": "check-and-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.19.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "check-and-test",
-          "step": "Install system dependencies",
-          "text": "sudo apt-get update\nsudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libglib2.0-dev\n"
+          "programs": [
+            "sudo"
+          ],
+          "step": "Install system dependencies"
         },
         {
           "job": "check-and-test",
-          "step": "Cargo check (crates)",
-          "text": "cargo check -p commandui-runtime-core -p commandui-runtime-persistence -p commandui-runtime-planner"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Cargo check (crates)"
         },
         {
           "job": "check-and-test",
-          "step": "Cargo test (crates)",
-          "text": "cargo test -p commandui-runtime-core -p commandui-runtime-persistence -p commandui-runtime-planner"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Cargo test (crates)"
         }
       ],
       "elsewhere": [],
@@ -2537,13 +2561,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -2561,7 +2589,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 6
         }
       ],
       "readers": [],
@@ -2623,13 +2651,17 @@
       "commands": [
         {
           "job": "build-windows",
-          "step": "4",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "4"
         },
         {
           "job": "build-windows",
-          "step": "Build Tauri app",
-          "text": "pnpm --filter @commandui/desktop tauri:build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build Tauri app"
         }
       ],
       "elsewhere": [],

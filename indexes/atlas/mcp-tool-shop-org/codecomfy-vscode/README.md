@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 93df7e1.
 
 ## What this is
 
-9 parts, mostly TypeScript (50 files) and JavaScript (5). Work enters through 4 doors; CI and Build and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the codecomfy-vscode extension.
+9 parts, mostly TypeScript (50 files), JavaScript (5), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the codecomfy-vscode extension.
 
 ## What changed since 2026-09-24 (e196fbe)
 

@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 6767835.
 
 ## What this is
 
-15 parts, mostly TypeScript (424 files), Rust (46) and JavaScript (20). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).
+15 parts, mostly TypeScript (424 files), Rust (46), JavaScript (20), CSS (4), Astro (1) and HTML (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It deploys a site to GitHub Pages. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).
 
 ## What changed since 2026-09-24 (cfb8917)
 
@@ -48,7 +48,7 @@ Mapped at 2026-09-25 from commit 6767835.
 - **domain** is imported by 4 parts (api-contract, desktop, mcp-sprite-server, state) and sits on the path of 1 door.
 - **api-contract** is imported by 2 parts (desktop, state) and sits on the path of 1 door.
 - **state** is imported by 2 parts (desktop, mcp-sprite-server) and sits on the path of 1 door.
-- **packages/mcp-sprite-server/fixtures/golden/** is written by mcp-sprite-server and read by mcp-sprite-server; a hand edit reaches every reader.
+- **packages/mcp-sprite-server/fixtures/golden/** is written by mcp-sprite-server and read by mcp-sprite-server, and by 1 test; a hand edit reaches every reader.
 
 ## What tends to change together
 
@@ -61,7 +61,7 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 - **scripts** is imported by no test.
 - **showcase** is imported by no test.
 
-64 test files run in no workflow: apps/desktop/src/components/AISettingsPanel.test.tsx, apps/desktop/src/components/AnchorPanel.test.tsx, apps/desktop/src/components/AssetBrowserPanel.test.tsx and 61 mores.
+64 test files run in no workflow: apps/desktop/src/components/AISettingsPanel.test.tsx, apps/desktop/src/components/AnchorPanel.test.tsx, apps/desktop/src/components/AssetBrowserPanel.test.tsx and 61 more.
 
 ## Written but never read
 

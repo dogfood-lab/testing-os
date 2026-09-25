@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit e2ce19a.
 
 ## What this is
 
-12 parts, mostly TypeScript (183 files), Rust (4) and JavaScript (2). Work enters through 3 doors; the busiest is CI, which reaches 8 parts. People install the capsule-desktop desktop app.
+12 parts, mostly TypeScript (183 files), Rust (4), CSS (3), JavaScript (2), Astro (1), HTML (1) and shell (1). Work enters through 3 doors; the busiest is CI, which reaches 8 parts. It deploys a site to GitHub Pages. People install the capsule-desktop desktop app.
 
 ## What changed since 2026-09-24 (1f7eeff)
 
@@ -85,7 +85,7 @@ People write .github/, artifacts/, docs/, fixtures/, the repository root and sit
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/cli/src/index.ts → packages/cli/src/commands/create-release.ts → packages/core/src/access-grant-validate.ts → packages/core/src/ajv-formats-interop.ts → packages/core/src/access-grant.ts → packages/core/src/validate.ts → packages/core/src/hash.ts
+.github/workflows/ci.yml → packages/cli/src/index.ts → packages/cli/src/commands/resolve.ts → packages/core/src/access-grant-validate.ts → packages/core/src/validate.ts → packages/core/src/ajv-formats-interop.ts
 
 Read those in order to follow one pull request end to end.
 

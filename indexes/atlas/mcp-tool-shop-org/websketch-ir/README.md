@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit d18f24a.
 
 ## What this is
 
-6 parts, mostly TypeScript (46 files) and JavaScript (2). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People import @mcptoolshop/websketch-ir.
+6 parts, mostly TypeScript (46 files), CSS (2), JavaScript (2) and Astro (1). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People import @mcptoolshop/websketch-ir.
 
 ## What changed since 2026-09-25 (e9980b1)
 
@@ -20,6 +20,8 @@ Nothing structural changed since 2026-09-25; 2 files changed content.
 ## What happens through CI
 
 1. The workflow runs 28 files in tests; it builds src/ in src.
+2. It uploads coverage to Codecov.
+3. It scans for secrets with TruffleHog.
 
 ## Who reads the results
 
@@ -66,7 +68,7 @@ People write .github/, the repository root and site/. Nothing in this repository
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts → src/grammar.ts
+.github/workflows/ci.yml → src/index.ts → src/text.ts → src/errors.ts → src/compat.ts
 
 Read those in order to follow one pull request end to end.
 

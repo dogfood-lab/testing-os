@@ -270,20 +270,15 @@
   "changesTogetherWithTests": 2,
   "commit": "1249f8307d15e578f101622a6ab257d340dab8ab",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly TypeScript (196 files), JavaScript (10) and Python (2). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. People run ollama-intern-mcp. People import ollama-intern-mcp.",
+  "derived": "11 parts, mostly TypeScript (196 files), JavaScript (10), CSS (2), Python (2) and Astro (1). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run ollama-intern-mcp. People import ollama-intern-mcp.",
   "doors": [
     {
       "builds": [
         "src/"
       ],
-      "checks": [
-        "hermes.config.example.yaml",
-        "package-lock.json",
-        "package.json",
-        "tsconfig.json"
-      ],
-      "checksCount": 4,
-      "checksMore": 1,
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "held": [
         {
@@ -302,6 +297,12 @@
         "site/src/content/docs/handbook/tools.md"
       ],
       "name": "CI",
+      "packs": [
+        "hermes.config.example.yaml",
+        "package-lock.json",
+        "package.json",
+        "tsconfig.json"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -472,18 +473,19 @@
       "builds": [
         "src/"
       ],
-      "checks": [
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "packs": [
         "hermes.config.example.yaml",
         "package-lock.json",
         "package.json",
         "tsconfig.json"
       ],
-      "checksCount": 4,
-      "checksMore": 1,
-      "file": ".github/workflows/release.yml",
-      "id": ".github/workflows/release.yml",
-      "landings": [],
-      "name": "Release",
       "pushes": false,
       "reach": [
         {
@@ -570,7 +572,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -601,7 +603,9 @@
       "runs": [],
       "runsCount": 0,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "scans code with CodeQL"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main",
@@ -623,7 +627,9 @@
       "runs": [],
       "runsCount": 0,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "reviews dependency changes"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main"
@@ -706,7 +712,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:18:57.692Z",
+  "generatedAt": "2026-09-25T16:33:25.013Z",
   "limits": [
     "1 import could not be resolved: `scripts/gen-tool-docs.mjs` imports a path built at run time.",
     "3 writes and 9 reads use paths built at run time and are not named here.",
@@ -817,8 +823,7 @@
     ".github/workflows/ci.yml",
     "src/index.ts",
     "src/profiles.ts",
-    "src/tiers.ts",
-    "src/errors.ts"
+    "src/tiers.ts"
   ],
   "summary": null,
   "summaryFrom": null,

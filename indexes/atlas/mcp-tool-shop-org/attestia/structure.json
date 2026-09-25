@@ -4895,6 +4895,14 @@
         },
         {
           "hash": "1c4f96168c1faf343c85365196072da7cfef690a5242c4142ba0c3f9a29086ad",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -6879,38 +6887,55 @@
       "commands": [
         {
           "job": "build-and-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "build-and-test",
-          "step": "4",
-          "text": "pnpm install"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "4"
         },
         {
           "job": "build-and-test",
-          "step": "Build",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build"
         },
         {
           "job": "build-and-test",
-          "step": "Typecheck",
-          "text": "pnpm typecheck"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Typecheck"
         },
         {
           "job": "build-and-test",
-          "step": "Test with coverage",
-          "text": "pnpm test:coverage"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Test with coverage"
         },
         {
           "job": "build-and-test",
-          "step": "Dependency vulnerability scan",
-          "text": "set +e\naudit_out=\"$(pnpm audit --prod --audit-level=high 2>&1)\"\nstatus=$?\necho \"$audit_out\"\nif [ \"$status\" -eq 0 ]; then\n  echo \"No high or critical vulnerabilities found.\"\n  exit 0\nfi\nif echo \"$audit_out\" | grep -qiE 'vulnerabilit'; then\n  echo \"::error::High or critical dependency vulnerabilities detected.\"\n  exit 1\nfi\necho \"::warning::pnpm audit could not reach the advisory registry; treating as non-blocking.\"\nexit 0\n"
+          "programs": [
+            "1",
+            "echo",
+            "grep",
+            "pnpm"
+          ],
+          "step": "Dependency vulnerability scan"
         },
         {
           "job": "build-and-test",
-          "step": "Run benchmarks",
-          "text": "pnpm bench"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Run benchmarks"
         }
       ],
       "elsewhere": [],
@@ -8065,6 +8090,7 @@
       "runs": [
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8072,6 +8098,7 @@
         {
           "directory": true,
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8169,6 +8196,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/chain-observer/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8184,6 +8212,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/demo/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8199,6 +8228,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/event-store/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8214,6 +8244,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/ledger/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8229,6 +8260,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/node/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8250,6 +8282,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/proof/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8265,6 +8298,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/reconciler/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8280,6 +8314,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/registrum/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8295,6 +8330,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/sdk/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8310,6 +8346,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/treasury/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8325,6 +8362,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/types/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8340,6 +8378,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/vault/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8355,6 +8394,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/verify/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8370,6 +8410,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "packages/witness/package.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8385,18 +8426,21 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "pnpm-lock.yaml",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "pnpm-workspace.yaml",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "tsconfig.json",
           "runKind": "checks",
           "via": "docker build packages/node/Dockerfile"
@@ -8443,13 +8487,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -8467,7 +8515,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -8529,53 +8577,80 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install pnpm",
-          "text": "npm install -g pnpm@10"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install pnpm"
         },
         {
           "job": "release",
-          "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22's bundled npm 10.9 breaks on an in-place 'npm i -g npm@latest'\n# (arborist race -> MODULE_NOT_FOUND: promise-retry). Install npm@latest\n# into a sandbox and shadow it on PATH; the system npm is untouched.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Verify tag matches packages/attestia/package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./packages/attestia/package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} -> ${TAG_VERSION}\"\necho \"Package: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match packages/attestia/package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches packages/attestia/package.json version"
         },
         {
           "job": "release",
-          "step": "Install dependencies",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "release",
-          "step": "Build all packages (incl. the bundle)",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build all packages (incl. the bundle)"
         },
         {
           "job": "release",
-          "step": "Run tests",
-          "text": "pnpm test"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "release",
-          "step": "Strip workspace-only devDependencies from the published manifest",
-          "text": "# The @attestia/* deps are build-time only (inlined by tsup) and use the\n# pnpm `workspace:*` protocol, which npm cannot resolve. Consumers never\n# need them. Drop the whole devDependencies block so the published\n# manifest has only the real third-party `dependencies`.\nnpm pkg delete devDependencies\necho \"Published dependencies:\" && node -p \"JSON.stringify(require('./package.json').dependencies, null, 2)\"\n"
+          "programs": [
+            "echo",
+            "node",
+            "npm"
+          ],
+          "step": "Strip workspace-only devDependencies from the published manifest"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (verify tarball shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify tarball shape)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release",
-          "text": "gh release create \"${GITHUB_REF_NAME}\" \\\n  --title \"@mcptoolshop/attestia ${GITHUB_REF_NAME}\" \\\n  --generate-notes \\\n  --verify-tag\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         }
       ],
       "elsewhere": [],

@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 18fa475.
 
 ## What this is
 
-6 parts, mostly Rust (109 files), JavaScript (3) and TypeScript (2). Work enters through 4 doors; CI and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to crates.io. People run saints-mile.
+6 parts, mostly Rust (109 files), JavaScript (3), CSS (2), TypeScript (2), Astro (1), PowerShell (1) and shell (1). Work enters through 4 doors; CI and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to crates.io. It deploys a site to GitHub Pages. People run saints-mile.
 
 ## What changed since 2026-09-24 (49f5266)
 
@@ -50,6 +50,8 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 ## What no test touches
 
 - **msix** is imported by no test.
+
+verify.sh runs in no workflow.
 
 ## Written but never read
 

@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit fe9bf66.
 
 ## What this is
 
-13 parts, mostly TypeScript (258 files) and JavaScript (16). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.
+13 parts, mostly TypeScript (258 files), JavaScript (16), CSS (2), Astro (1) and HTML (1). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.
 
 ## What changed since 2026-09-24 (1374860)
 
@@ -26,7 +26,7 @@ Mapped at 2026-09-25 from commit fe9bf66.
 2. **Release.** When a tag matching `v*` is pushed. Runs test/actor-required-regression.test.ts, test/adapters.test.ts, test/backend-env-surfaces.test.ts and 124 more; builds src/; checks examples/.
 3. **Release Gate.** On a push to main; when a tag matching `v*` is pushed; or by hand. Runs scripts/completeness-checks.mjs, scripts/doc-drift.mjs, scripts/jsdoc-gate.mjs and 129 more; builds src/.
 4. **Smoke Install.** On a pull request touching 1 path; when a tag matching `v*` is pushed; or by hand. Runs scripts/smoke-install.mjs; builds src/.
-5. **Docker Publish.** When a tag matching `v*` is pushed; or by hand. Runs src/cli.ts; builds src/; checks LICENSE, README.md, docs/ and 3 more.
+5. **Docker Publish.** When a tag matching `v*` is pushed; or by hand. Runs src/cli.ts; builds src/; packs LICENSE, README.md, docs/ and 3 more into an image.
 6. **Deploy site to GitHub Pages.** On a pull request to main touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 7. **@mcptoolshop/db-cluster** (the package people import). Loads src/index.ts, src/mcp/index.ts, src/policy/index.ts and 3 more.
 8. **db-cluster** (a command people run). Runs src/cli.ts.
@@ -50,7 +50,7 @@ CI writes only to examples/dogfood-project-memory/.db-cluster, which is not trac
 
 **Smoke Install** runs scripts/smoke-install.mjs and builds src/.
 
-**Docker Publish** runs src/cli.ts, builds src/, checks LICENSE, README.md, docs/ and 3 more, writes to examples/dogfood-project-memory/.db-cluster, which is not tracked, and publishes a container image.
+**Docker Publish** runs src/cli.ts, builds src/, packs LICENSE, README.md, docs/ and 3 more into an image, writes to examples/dogfood-project-memory/.db-cluster, which is not tracked, and publishes a container image.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on a push to main or by hand.
 
@@ -101,13 +101,13 @@ People write .github/, .stage-b-amend/, .stage-b-audit/, .verifier-outputs-b1/, 
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts → src/types/entity.ts
+.github/workflows/ci.yml → src/index.ts → src/types/evidence-bundle.ts → src/types/entity.ts
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 17 imports could not be resolved: `dashboard/lib/apply-redaction.d.ts` imports `../../dist/dashboard/dashboard-model.js`, which a build generates; `examples/agent-safe-app-db/index.ts` imports `@mcptoolshop/db-cluster/policy`, which a build generates; `examples/agent-safe-app-db/index.ts` imports `@mcptoolshop/db-cluster/policy`, which a build generates; and 14 more.
+- 17 imports could not be resolved: `dashboard/lib/apply-redaction.d.ts` imports `../../dist/dashboard/dashboard-model.js`, which a build generates; `examples/agent-safe-app-db/index.ts` imports `@mcptoolshop/db-cluster/policy`, which a build generates, twice; `examples/agent-safe-app-db/index.ts` imports `@mcptoolshop/db-cluster/sdk`, which a build generates; and 13 more.
 - 5 writes and 14 reads use paths built at run time and are not named here.
 - 7 writes go to places this repository does not track, so they are not listed as generated.
 - 47 writes and 101 reads go to a path their caller passes, not to this repository.

@@ -45,8 +45,11 @@
           "path": ".github/actions/delta-audit/action.yml"
         },
         {
+          "entry": "audit",
+          "entryRule": 1,
           "hash": "db6a8e50c7da3858b97e39911f7bedee7586d9fd1751cc6685bdceb8272a37fb",
-          "path": ".github/actions/delta-audit/delta-audit.mjs"
+          "path": ".github/actions/delta-audit/delta-audit.mjs",
+          "sequences": []
         },
         {
           "hash": "d85ffb834f8af28137f527317b28b93b8f97b6b929636e17517e87910bd98375",
@@ -470,6 +473,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -501,9 +512,65 @@
       "checksCount": 0,
       "commands": [
         {
+          "job": "action",
+          "programs": [
+            "node"
+          ],
+          "step": "Delta audit against the base branch"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/actions/delta-audit/action.yml",
+      "kind": "action",
+      "landings": [],
+      "mentions": [],
+      "name": "Delta dependency audit",
+      "permissions": [],
+      "programs": [
+        "git"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": ".github",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "job": "action",
+          "path": ".github/actions/delta-audit/delta-audit.mjs",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [
+        {
           "job": "catalog-consistency",
-          "step": "ECOSYSTEM.md agrees with catalog.yaml",
-          "text": "node scripts/check-catalog.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "ECOSYSTEM.md agrees with catalog.yaml"
         }
       ],
       "elsewhere": [],
@@ -580,38 +647,70 @@
       "commands": [
         {
           "job": "check-org-standards",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "check-org-standards",
-          "step": "Check for forbidden 'master' branch references in workflows",
-          "text": "echo \"=== Checking for 'master' branch references in .github repo workflows ===\"\nviolations=0\n\nfor f in .github/workflows/*.yml; do\n  # Skip this workflow itself\n  [ \"$(basename \"$f\")\" = \"org-guard.yml\" ] && continue\n\n  if grep -n 'branches:.*master' \"$f\" 2>/dev/null; then\n    echo \"::warning file=$f::Found 'master' branch reference — use 'main' instead\"\n    violations=$((violations + 1))\n  fi\ndone\n\nif [ \"$violations\" -gt 0 ]; then\n  echo \"::warning::Found $violations workflow(s) referencing 'master' branch\"\nelse\n  echo \"All workflows use 'main' branch references\"\nfi\n"
+          "programs": [
+            "basename",
+            "echo",
+            "grep",
+            "violations"
+          ],
+          "step": "Check for forbidden 'master' branch references in workflows"
         },
         {
           "job": "check-org-standards",
-          "step": "Check action version floors",
-          "text": "echo \"=== Checking action version floors ===\"\nwarnings=0\n\nfor f in .github/workflows/*.yml; do\n  # setup-python must be v6+\n  if grep -qE 'actions/setup-python@v[1-5]' \"$f\" 2>/dev/null; then\n    echo \"::warning file=$f::setup-python below v6 — update to actions/setup-python@v6\"\n    warnings=$((warnings + 1))\n  fi\n\n  # codecov-action must be v5+\n  if grep -qE 'codecov/codecov-action@v[1-4]' \"$f\" 2>/dev/null; then\n    echo \"::warning file=$f::codecov-action below v5 — update to codecov/codecov-action@v5\"\n    warnings=$((warnings + 1))\n  fi\n\n  # checkout should be v6+\n  if grep -qE 'actions/checkout@v[1-5]' \"$f\" 2>/dev/null; then\n    echo \"::warning file=$f::checkout below v6 — update to actions/checkout@v6\"\n    warnings=$((warnings + 1))\n  fi\n\n  # setup-dotnet should be v4+\n  if grep -qE 'actions/setup-dotnet@v[1-3]' \"$f\" 2>/dev/null; then\n    echo \"::warning file=$f::setup-dotnet below v4 — update to actions/setup-dotnet@v4\"\n    warnings=$((warnings + 1))\n  fi\n\n  # setup-node should be v4+\n  if grep -qE 'actions/setup-node@v[1-3]' \"$f\" 2>/dev/null; then\n    echo \"::warning file=$f::setup-node below v4 — update to actions/setup-node@v4\"\n    warnings=$((warnings + 1))\n  fi\ndone\n\nif [ \"$warnings\" -gt 0 ]; then\n  echo \"::warning::Found $warnings action(s) below version floor\"\nelse\n  echo \"All actions meet version floors\"\nfi\n"
+          "programs": [
+            "echo",
+            "grep",
+            "warnings"
+          ],
+          "step": "Check action version floors"
         },
         {
           "job": "check-org-standards",
-          "step": "Check org-level docs integrity",
-          "text": "echo \"=== Checking required org docs ===\"\nerrors=0\n\nfor doc in SUPPORT.md SECURITY.md CODE_OF_CONDUCT.md CONTRIBUTING.md LICENSE; do\n  if [ ! -f \"$doc\" ]; then\n    echo \"::error::Missing required org doc: $doc\"\n    errors=$((errors + 1))\n  else\n    echo \"OK: $doc exists\"\n  fi\ndone\n\n# Check SUPPORT.md has Discussions links\nif [ -f \"SUPPORT.md\" ]; then\n  if ! grep -q '/discussions' SUPPORT.md; then\n    echo \"::warning file=SUPPORT.md::No Discussions links found — add repo discussion URLs\"\n  else\n    count=$(grep -c '/discussions' SUPPORT.md)\n    echo \"OK: SUPPORT.md contains $count Discussions links\"\n  fi\nfi\n\n# Check brand kit exists\nfor doc in brand/README.md brand/palette.md brand/og/manifest.json; do\n  if [ ! -f \"$doc\" ]; then\n    echo \"::warning::Missing brand asset: $doc\"\n    errors=$((errors + 1))\n  else\n    echo \"OK: $doc exists\"\n  fi\ndone\n\nif [ \"$errors\" -gt 0 ]; then\n  echo \"::error::Found $errors missing doc(s)\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "errors",
+            "grep"
+          ],
+          "step": "Check org-level docs integrity"
         },
         {
           "job": "check-org-standards",
-          "step": "Check release policy docs",
-          "text": "echo \"=== Checking release policy docs ===\"\nfor doc in docs/RELEASING.md docs/VERSIONING.md docs/MAINTENANCE.md docs/BRANCH_POLICY.md docs/BADGES.md; do\n  if [ ! -f \"$doc\" ]; then\n    echo \"::warning::Missing release doc: $doc\"\n  else\n    echo \"OK: $doc exists\"\n  fi\ndone\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Check release policy docs"
         },
         {
           "job": "check-org-repos",
-          "step": "Scan all org repos for regressions",
-          "text": "set -uo pipefail\n\nORG=\"mcp-tool-shop-org\"\nfail=0\nfindings=\"$RUNNER_TEMP/org_guard_findings.md\"\necho \"# Org Guard Findings\" > \"$findings\"\necho \"\" >> \"$findings\"\n\n# Fetch all non-archived repos (single paginated call, reuse JSON)\nrepos_json=\"$(gh api -H \"Accept: application/vnd.github+json\" \\\n  \"/orgs/${ORG}/repos?per_page=100&type=all\" --paginate)\"\nrepos=\"$(echo \"$repos_json\" | jq -r '.[] | select(.archived == false) | .name' | sort)\"\n\nrepo_count=$(echo \"$repos\" | wc -l)\necho \"Scanning $repo_count non-archived repos...\"\n\nfor repo in $repos; do\n  echo \"\"\n  echo \"==> $repo\"\n\n  # --- 1. Default branch must be main ---\n  default_branch=\"$(echo \"$repos_json\" | jq -r --arg r \"$repo\" \\\n    '.[] | select(.name==$r) | .default_branch')\"\n  if [[ \"$default_branch\" != \"main\" ]]; then\n    echo \"::error::$repo — default branch is '$default_branch' (expected 'main')\"\n    echo \"- :x: **$repo** default branch is \\`$default_branch\\` (expected \\`main\\`).\" >> \"$findings\"\n    fail=1\n  fi\n\n  # --- 2. Stale master branch ---\n  if gh api \"repos/${ORG}/${repo}/branches/master\" --jq '.name' 2>/dev/null | grep -q master; then\n    echo \"::warning::$repo — stale 'master' branch exists alongside '$default_branch'\"\n    echo \"- :warning: **$repo** stale \\`master\\` branch exists alongside \\`$default_branch\\`.\" >> \"$findings\"\n    fail=1\n  fi\n\n  # --- 3. README: branch=master or /master/ in URLs ---\n  # Use /readme endpoint (handles README.rst, README.adoc, etc.)\n  readme_b64=\"$(gh api \"repos/${ORG}/${repo}/readme\" --jq '.content' 2>/dev/null | tr -d '\\n')\" || true\n  if [[ -n \"$readme_b64\" ]]; then\n    readme=\"$(printf \"%s\" \"$readme_b64\" | base64 -d 2>/dev/null || true)\"\n    if echo \"$readme\" | grep -qE 'branch=master|/actions/workflows/[^)]*\\?branch=master'; then\n      echo \"::warning::$repo — README contains branch=master in badge URL\"\n      echo \"- :warning: **$repo** README contains \\`branch=master\\` in badge URL.\" >> \"$findings\"\n      fail=1\n    fi\n  fi\n\n  # --- 4. Workflow files: master triggers + action floors ---\n  wf_list=\"$(gh api \"repos/${ORG}/${repo}/contents/.github/workflows\" \\\n    --jq '.[] | select(.type==\"file\") | select(.name | test(\"\\\\.ya?ml$\")) | .path' 2>/dev/null)\" || true\n  [[ -z \"$wf_list\" ]] && continue\n\n  while IFS= read -r path; do\n    [[ -z \"$path\" ]] && continue\n    f=\"$(basename \"$path\")\"\n\n    wf_b64=\"$(gh api \"repos/${ORG}/${repo}/contents/${path}\" --jq '.content' 2>/dev/null | tr -d '\\n')\" || true\n    [[ -z \"$wf_b64\" ]] && continue\n    wf=\"$(printf \"%s\" \"$wf_b64\" | base64 -d 2>/dev/null || true)\"\n    [[ -z \"$wf\" ]] && continue\n\n    # This guard's own file carries the detection patterns below as\n    # literals. Scanning it matches the rule it implements, which made\n    # the guard report a permanent finding against itself.\n    if [[ \"$repo\" == \".github\" && \"$f\" == \"org-guard.yml\" ]]; then\n      continue\n    fi\n\n    # Master branch triggers\n    if echo \"$wf\" | grep -qE 'branches:\\s*\\[.*master'; then\n      echo \"::warning::$repo/$f — workflow triggers on 'master'\"\n      echo \"- :warning: **$repo** \\`$f\\` triggers on \\`master\\`.\" >> \"$findings\"\n      fail=1\n    fi\n\n    # Action pinned to @master (supply chain risk)\n    # Match @master at end of line or followed by quote/whitespace\n    if echo \"$wf\" | grep -qE '@master[\"[:space:]]|@master$'; then\n      echo \"::warning::$repo/$f — action pinned to @master (supply chain risk)\"\n      echo \"- :warning: **$repo** \\`$f\\` uses an action pinned to \\`@master\\`.\" >> \"$findings\"\n      fail=1\n    fi\n\n    # Version floors (match @vN but not @vNN, e.g. @v5 but not @v50)\n    if echo \"$wf\" | grep -qE 'actions/setup-python@v[1-5][^0-9]'; then\n      echo \"::warning::$repo/$f — setup-python below v6\"\n      echo \"- :warning: **$repo** \\`$f\\` uses \\`setup-python\\` below v6.\" >> \"$findings\"\n      fail=1\n    fi\n\n    if echo \"$wf\" | grep -qE 'codecov/codecov-action@v[1-4][^0-9]'; then\n      echo \"::warning::$repo/$f — codecov-action below v5\"\n      echo \"- :warning: **$repo** \\`$f\\` uses \\`codecov-action\\` below v5.\" >> \"$findings\"\n      fail=1\n    fi\n  done <<< \"$wf_list\"\ndone\n\n# --- Summary ---\necho \"\" >> \"$findings\"\nif [[ \"$fail\" -eq 1 ]]; then\n  echo \"## Status: FAIL\" >> \"$findings\"\n  echo \"Found regressions. Fix and re-run org-guard.\" >> \"$findings\"\nelse\n  echo \"## Status: PASS\" >> \"$findings\"\n  echo \"No regressions detected across $repo_count repos.\" >> \"$findings\"\nfi\n\necho \"----\"\ncat \"$findings\"\necho \"----\"\n\nexit \"$fail\"\n"
+          "programs": [
+            "base64",
+            "basename",
+            "cat",
+            "echo",
+            "gh",
+            "grep",
+            "jq",
+            "printf",
+            "read",
+            "sort",
+            "tr",
+            "wc"
+          ],
+          "step": "Scan all org repos for regressions"
         },
         {
           "job": "check-org-repos",
-          "step": "Job summary",
-          "text": "findings=\"$RUNNER_TEMP/org_guard_findings.md\"\nif [[ -f \"$findings\" ]]; then\n  cat \"$findings\" >> \"$GITHUB_STEP_SUMMARY\"\nfi\n"
+          "programs": [
+            "cat"
+          ],
+          "step": "Job summary"
         }
       ],
       "elsewhere": [],
@@ -719,6 +818,7 @@
         "opensPullRequests": false,
         "publishes": false,
         "publishesTo": [],
+        "readsRepositories": true,
         "releases": false
       },
       "stages": [],
@@ -751,13 +851,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -775,7 +879,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 2
+          "files": 4
         }
       ],
       "readers": [],
@@ -928,8 +1032,52 @@
       "writers": []
     },
     {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/Attestia-Desktop.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/ConsensusOS.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/InControl-Desktop.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/ThrottleAI-Desktop.png",
+      "writers": []
+    },
+    {
       "readers": [],
-      "target": "brand/previews/_tmp_*.svg",
+      "target": "brand/previews/_tmp_Attestia-Desktop.svg",
       "tracked": false,
       "writers": [
         {
@@ -937,6 +1085,215 @@
           "confidence": "ast"
         }
       ]
+    },
+    {
+      "readers": [],
+      "target": "brand/previews/_tmp_ConsensusOS.svg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "brand/generate-previews.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "brand/previews/_tmp_InControl-Desktop.svg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "brand/generate-previews.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "brand/previews/_tmp_ThrottleAI-Desktop.svg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "brand/generate-previews.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "brand/previews/_tmp_backpropagate.svg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "brand/generate-previews.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "brand/previews/_tmp_code-batch.svg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "brand/generate-previews.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "brand/previews/_tmp_file-compass.svg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "brand/generate-previews.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "brand/previews/_tmp_headless-wheel-builder.svg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "brand/generate-previews.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "brand/previews/_tmp_mcp-voice-engine.svg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "brand/generate-previews.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "brand/previews/_tmp_mcp-voice-soundboard.svg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "brand/generate-previews.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "brand/previews/_tmp_tool-compass.svg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "brand/generate-previews.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "brand/previews/_tmp_tool-scan.svg",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "brand/generate-previews.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/backpropagate.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/code-batch.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/file-compass.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/headless-wheel-builder.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/mcp-voice-engine.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/mcp-voice-soundboard.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/tool-compass.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "brand/generate-previews.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "brand/previews/tool-scan.png",
+      "writers": []
     },
     {
       "readers": [

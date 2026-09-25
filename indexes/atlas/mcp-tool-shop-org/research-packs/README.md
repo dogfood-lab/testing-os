@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 923a792.
 
 ## What this is
 
-7 parts, mostly JSON data (1166 files); code in JavaScript (8) and TypeScript (2). Work enters through 2 doors; the busiest is Verify, which reaches 2 parts.
+7 parts, mostly JSON data (1166 files) and Markdown (430); code in HTML (174), JavaScript (8), CSS (2), TypeScript (2) and Astro (1). Work enters through 2 doors; the busiest is Verify, which reaches 2 parts. It deploys a site to GitHub Pages.
 
 ## What changed since 2026-09-25 (82aca6d)
 

@@ -77,7 +77,7 @@
   "changesTogetherWithTests": 1,
   "commit": "454f364c2c4c05c2149f8fd23b98123f50a019c2",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly Python (173 files), TypeScript (8) and JavaScript (2). Work enters through 8 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI. People run xrpl-lab.",
+  "derived": "11 parts, mostly Python (173 files), Astro (13), TypeScript (8), CSS (4), JavaScript (2), HTML (1) and shell (1). Work enters through 8 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run xrpl-lab.",
   "doors": [
     {
       "checks": [
@@ -140,7 +140,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 10
+          "files": 26
         }
       ],
       "runs": [
@@ -336,12 +336,13 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T09:23:57.741Z",
+  "generatedAt": "2026-09-25T16:40:53.899Z",
   "limits": [
     "1 import could not be resolved: `tests/test_product_smoke.py` imports a path built at run time.",
-    "7 writes and 20 reads use paths built at run time and are not named here.",
-    "5 reads go to the home directory (.xrpl-lab/) or a path their caller passes, not to this repository.",
-    "3 reads go to the directory the command is run in, not to this repository.",
+    "3 writes and 7 reads use paths built at run time and are not named here.",
+    "6 writes and 51 reads go to a path their caller passes, not to this repository.",
+    "1 write and 6 reads go to the home directory (.xrpl-lab/) or a path their caller passes, not to this repository.",
+    "4 reads go to the directory the command is run in, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -365,12 +366,8 @@
   "startDoor": "pyproject.toml#xrpl-lab",
   "startHere": [
     "xrpl_lab/cli.py",
-    "xrpl_lab/__init__.py",
     "xrpl_lab/actions/verify.py",
-    "xrpl_lab/errors.py",
-    "xrpl_lab/modules.py",
-    "xrpl_lab/reporting.py",
-    "xrpl_lab/state.py"
+    "xrpl_lab/transport/base.py"
   ],
   "startReason": "This path follows xrpl-lab (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.",
   "summary": null,
@@ -381,7 +378,7 @@
     "scripts": 1,
     "xrpl_lab": 115
   },
-  "unnamedWrites": 7,
+  "unnamedWrites": 3,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],
@@ -392,6 +389,8 @@
       "testedBy": 0
     }
   ],
-  "untestedNote": [],
+  "untestedNote": [
+    "verify.sh runs in no workflow."
+  ],
   "written": 0
 }

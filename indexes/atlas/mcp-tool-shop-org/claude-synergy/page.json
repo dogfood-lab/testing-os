@@ -162,7 +162,7 @@
   "changesTogetherWithTests": 0,
   "commit": "6d91d8cceb43d7acbbcd994ba718ee17ef9bf483",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly Markdown (1273 files); code in TypeScript (83), JavaScript (9) and Python (2). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk.",
+  "derived": "10 parts, mostly Markdown (1273 files) and JSON data (317); code in TypeScript (83), JavaScript (9), CSS (2), Python (2), Astro (1) and shell (1). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. It deploys a site to GitHub Pages. People run claude-synergy-mcp and hk.",
   "doors": [
     {
       "checks": [
@@ -257,7 +257,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -462,7 +462,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:15:08.943Z",
+  "generatedAt": "2026-09-25T16:28:38.036Z",
   "limits": [
     "9 writes and 32 reads go to a path their caller passes, not to this repository.",
     "1 write and 8 reads go to the directory the command is run in (data/ and synergies/) or a path their caller passes, not to this repository.",
@@ -490,11 +490,7 @@
   "startHere": [
     "src/mcp-server.ts",
     "src/db.ts",
-    "src/query.ts",
-    "src/hybrid.ts",
-    "src/fetch.ts",
-    "src/ingest.ts",
-    "src/embed.ts"
+    "src/errors.ts"
   ],
   "startReason": "This path follows claude-synergy-mcp (a command people run) from its entry, since Tests runs only tests and checks.",
   "summary": null,
@@ -541,7 +537,8 @@
     }
   ],
   "untestedNote": [
-    "test/smoke/full-corpus.test.ts runs in no workflow."
+    "test/smoke/full-corpus.test.ts runs in no workflow.",
+    "verify.sh runs in no workflow."
   ],
   "written": 7
 }

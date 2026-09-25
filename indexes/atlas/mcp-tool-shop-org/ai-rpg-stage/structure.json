@@ -36,7 +36,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -2283,13 +2283,14 @@
       "origin": "mixed",
       "outsidePlaces": [
         {
-          "reads": 0,
+          "reads": 1,
           "where": [
             "caller"
           ],
           "writes": 5
         }
       ],
+      "outsideReads": 1,
       "outsideWrites": 5,
       "role": "code",
       "testedBy": 0,
@@ -2828,6 +2829,14 @@
         },
         {
           "hash": "4fb84a646c4d833c33f4058e1ed1775849e855c65e5adb7e45d2a633674bd603",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -4330,13 +4339,24 @@
       "commands": [
         {
           "job": "bump",
-          "step": "Resolve upstream tips and compare against the pins",
-          "text": "set -euo pipefail\nPINS=.github/upstream-pins.env\ncur_engine=$(grep -oE \"^ENGINE_REF=[0-9a-f]{40}$\" \"$PINS\" | cut -d= -f2)\ncur_forge=$(grep -oE \"^FORGE_REF=[0-9a-f]{40}$\" \"$PINS\" | cut -d= -f2)\nnew_engine=$(gh api repos/mcp-tool-shop-org/ai-rpg-engine/commits/main --jq .sha)\nnew_forge=$(gh api repos/mcp-tool-shop-org/world-forge/commits/main --jq .sha)\necho \"engine: $cur_engine -> $new_engine\"\necho \"forge:  $cur_forge -> $new_forge\"\necho \"cur_engine=$cur_engine\" >> \"$GITHUB_OUTPUT\"\necho \"new_engine=$new_engine\" >> \"$GITHUB_OUTPUT\"\necho \"cur_forge=$cur_forge\" >> \"$GITHUB_OUTPUT\"\necho \"new_forge=$new_forge\" >> \"$GITHUB_OUTPUT\"\nif [ \"$cur_engine\" = \"$new_engine\" ] && [ \"$cur_forge\" = \"$new_forge\" ]; then\n  echo \"changed=false\" >> \"$GITHUB_OUTPUT\"\n  echo \"Pins are current.\"\nelse\n  echo \"changed=true\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "cut",
+            "echo",
+            "gh",
+            "grep"
+          ],
+          "step": "Resolve upstream tips and compare against the pins"
         },
         {
           "job": "bump",
-          "step": "Push the bump branch and file the drift issue",
-          "text": "set -euo pipefail\nBRANCH=chore/bump-upstream-pins\n\n# Only this data file is touched. GITHUB_TOKEN may not modify anything\n# under .github/workflows/ under ANY permission setting, which is\n# exactly why the pins were moved out of ci.yml.\nPINS=.github/upstream-pins.env\nsed -i \"s/${CUR_ENGINE}/${NEW_ENGINE}/; s/${CUR_FORGE}/${NEW_FORGE}/\" \"$PINS\"\n\ngit config user.name \"github-actions[bot]\"\ngit config user.email \"41898282+github-actions[bot]@users.noreply.github.com\"\ngit checkout -B \"$BRANCH\"\ngit add \"$PINS\"\ngit commit -m \"chore(ci): bump upstream pins to current main\" \\\n           -m \"engine ${CUR_ENGINE:0:7} -> ${NEW_ENGINE:0:7}; forge ${CUR_FORGE:0:7} -> ${NEW_FORGE:0:7}. Prepared by the weekly bump job; CI on this branch is what proves the new pair.\"\ngit push -f origin \"$BRANCH\"\n\n# Show the size of the jump, not two opaque SHAs.\neng_n=$(gh api \"repos/mcp-tool-shop-org/ai-rpg-engine/compare/${CUR_ENGINE}...${NEW_ENGINE}\" --jq .total_commits 2>/dev/null || echo '?')\nfg_n=$(gh api \"repos/mcp-tool-shop-org/world-forge/compare/${CUR_FORGE}...${NEW_FORGE}\" --jq .total_commits 2>/dev/null || echo '?')\n\n{\n  printf 'The pinned upstream SHAs are behind `main`.\\n\\n'\n  printf '| repo | pinned | current | commits behind |\\n|---|---|---|---|\\n'\n  printf '| ai-rpg-engine | `%s` | `%s` | %s |\\n' \"${CUR_ENGINE:0:7}\" \"${NEW_ENGINE:0:7}\" \"$eng_n\"\n  printf '| world-forge | `%s` | `%s` | %s |\\n\\n' \"${CUR_FORGE:0:7}\" \"${NEW_FORGE:0:7}\" \"$fg_n\"\n  printf 'A branch carrying the bump is already pushed. Open the PR here:\\n\\n'\n  printf '  https://github.com/%s/pull/new/%s\\n\\n' \"$GITHUB_REPOSITORY\" \"$BRANCH\"\n  printf 'This job pushes the branch and files an issue rather than opening the PR '\n  printf 'itself, because the org has \"Allow GitHub Actions to create and approve pull '\n  printf 'requests\" disabled. That is a sensible default and not worth changing for '\n  printf 'this; if it is ever enabled, the last step here can become a gh pr create.\\n\\n'\n  printf 'These pins exist because the Export Salt Road step generates '\n  printf 'stage/fixtures/world.tscn from the world-forge exporter. Floating them made '\n  printf 'the suite measure a moving target. CI has been dispatched against the '\n  printf 'branch - check it is green before merging, because the whole point of the '\n  printf 'pin is that the new pair has to be proven.\\n'\n} > /tmp/issue-body.md\n\nTITLE=\"Upstream pins are behind main (engine ${NEW_ENGINE:0:7}, forge ${NEW_FORGE:0:7})\"\nexisting=$(gh issue list --state open --label upstream-pins --json number --jq '.[0].number // empty')\nif [ -n \"$existing\" ]; then\n  gh issue edit \"$existing\" --title \"$TITLE\" --body-file /tmp/issue-body.md\n  echo \"updated issue #$existing\"\nelse\n  gh label create upstream-pins --description 'Weekly upstream pin drift' --color ededed 2>/dev/null || true\n  gh issue create --title \"$TITLE\" --label upstream-pins --body-file /tmp/issue-body.md\nfi\n\n# Kick CI on the branch so the proof exists before anyone opens the PR.\ngh workflow run ci --ref \"$BRANCH\" \\\n  || echo \"::warning::could not dispatch ci.yml on $BRANCH - run it manually before merging\"\n"
+          "programs": [
+            "echo",
+            "gh",
+            "git",
+            "printf",
+            "sed"
+          ],
+          "step": "Push the bump branch and file the drift issue"
         }
       ],
       "elsewhere": [],
@@ -4376,6 +4396,7 @@
         "opensPullRequests": false,
         "publishes": false,
         "publishesTo": [],
+        "readsRepositories": true,
         "releases": false
       },
       "stages": [
@@ -4400,53 +4421,92 @@
       "commands": [
         {
           "job": "headless",
-          "step": "Load upstream pins",
-          "text": "set -euo pipefail\ngrep -E \"^(ENGINE_REF|FORGE_REF)=[0-9a-f]{40}$\" stage/.github/upstream-pins.env >> \"$GITHUB_ENV\"\ngrep -E \"^(ENGINE_REF|FORGE_REF)=\" stage/.github/upstream-pins.env\n"
+          "programs": [
+            "grep"
+          ],
+          "step": "Load upstream pins"
         },
         {
           "job": "headless",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.19.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "headless",
-          "step": "Build the engine CLI",
-          "text": "set -euo pipefail\nnpm ci\nnpm run build\n# The harness looks for exactly this file and fails loudly without it. Asserted\n# here so a build that silently produced nothing fails at the build step\n# rather than as a confusing connection timeout later.\ntest -f packages/cli/dist/bin.js || { echo \"::error::engine CLI did not build\"; exit 1; }\n# And that the transport the stage needs actually exists in this ref.\n#\n# ⚠ Output is captured to a file and grepped separately, NOT piped into\n# `grep -q`.\n#\n# OBSERVED, and the cause is not yet established: the piped form\n# (`node ... 2>&1 | grep -q -- '--listen'` under `set -o pipefail`) FAILED on\n# this runner against a ref that demonstrably carries the flag, while the\n# identical pipeline passes locally. So the gate declared \"no --listen\n# transport\" about an engine that has it — a gate failing for the wrong reason,\n# which is as useless as one that cannot fail.\n#\n# An EPIPE-under-pipefail theory was the obvious suspect and was TESTED and\n# REFUTED: node exits 0 when its pipe closes early, and `--help` returns\n# through the branch that does not call `process.exit`. What is measured is\n# that this help text goes entirely to STDERR (28 lines; stdout gets none),\n# which makes it sensitive to how a given platform flushes a piped stderr at\n# exit. Capturing to a file removes the dependency either way, and the `cat`\n# below means the next failure arrives with its own evidence instead of a\n# theory.\nnode packages/cli/dist/bin.js sidecar --help > /tmp/sidecar-help.txt 2>&1 || true\ngrep -q -- '--listen' /tmp/sidecar-help.txt \\\n  || { echo \"::error::this engine ref has no --listen transport\"; cat /tmp/sidecar-help.txt; exit 1; }\n"
+          "programs": [
+            "1",
+            "cat",
+            "echo",
+            "grep",
+            "node",
+            "npm",
+            "test"
+          ],
+          "step": "Build the engine CLI"
         },
         {
           "job": "headless",
-          "step": "Export Salt Road",
-          "text": "set -euo pipefail\nnpm ci\nnpm run build\n# ONE invocation emits BOTH lanes — the client's scene and the sim's content —\n# and refuses to write if they disagree about which zones exist. A first version\n# ran the engine lane through an inline `npx tsx -e`, where a relative import has\n# no base file to resolve against: `Cannot find module './dogfood/worlds/salt-road.js'`.\nnpx tsx dogfood/export-stage-fixture.ts             --world=salt-road             --out=../stage/fixtures             --doctor             --engine-out=dogfood/output/salt-road/pack.json\ntest -f dogfood/output/salt-road/pack.json || { echo \"::error::engine-lane pack not written\"; exit 1; }\ntest -f ../stage/fixtures/world.tscn || { echo \"::error::scene not written\"; exit 1; }\n"
+          "programs": [
+            "echo",
+            "npm",
+            "npx",
+            "test"
+          ],
+          "step": "Export Salt Road"
         },
         {
           "job": "headless",
-          "step": "Install Godot",
-          "text": "set -euo pipefail\nmkdir -p ~/godot\nZIP=\"Godot_v${GODOT_VERSION}_linux.x86_64.zip\"\ncurl -fsSL -o /tmp/godot.zip \\\n  \"https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${ZIP}\"\nunzip -q /tmp/godot.zip -d ~/godot\nmv ~/godot/Godot_v${GODOT_VERSION}_linux.x86_64 ~/godot/godot\nchmod +x ~/godot/godot\n"
+          "programs": [
+            "chmod",
+            "curl",
+            "mkdir",
+            "mv",
+            "unzip"
+          ],
+          "step": "Install Godot"
         },
         {
           "job": "headless",
-          "step": "Report Godot version",
-          "text": "set -euo pipefail\n# Captured then grepped, for the same reason as the engine-build step above:\n# this check used the same piped-into-`grep -q` shape and would have been\n# exposed to the same unexplained failure.\n~/godot/godot --version > /tmp/godot-version.txt 2>&1\ncat /tmp/godot-version.txt\n# The Godot that runs the suite must be the one the suite was pinned to. A\n# cache key can hit on a stale entry; this is the check that the binary is\n# what the key claims.\ngrep -q \"^4\\.7\\.\" /tmp/godot-version.txt \\\n  || { echo \"::error::Godot is not 4.7.x\"; exit 1; }\n"
+          "programs": [
+            "1",
+            "cat",
+            "echo",
+            "grep"
+          ],
+          "step": "Report Godot version"
         },
         {
           "job": "headless",
-          "step": "Import project",
-          "text": "~/godot/godot --headless --path . --import"
+          "programs": [],
+          "step": "Import project"
         },
         {
           "job": "headless",
-          "step": "Headless suite",
-          "text": "set -euo pipefail\n# AI_RPG_ENGINE_DIR is deliberately NOT set: the harness falls back to a\n# sibling `../ai-rpg-engine`, which is the layout above, so CI exercises the\n# same resolution a developer does instead of a CI-only shortcut.\n~/godot/godot --headless --path . --script res://tools/headless.gd 2>&1 | tee /tmp/suite.log\n# The runner's own exit code is authoritative, but `tee` hides it behind\n# the pipe, so the verdict line is checked directly. Belt and braces on\n# purpose: a suite whose failure cannot reach the CI status is not a gate.\ngrep -q '^verdict=PASS' /tmp/suite.log \\\n  || { echo \"::error::headless suite reported failure\"; exit 1; }\n"
+          "programs": [
+            "1",
+            "echo",
+            "grep",
+            "tee"
+          ],
+          "step": "Headless suite"
         },
         {
           "job": "headless",
-          "step": "Every expected suite actually ran",
-          "text": "set -euo pipefail\n# The runner discovers `tests/test_*.gd` by glob, so a file that is renamed,\n# deleted, or moved simply stops being found and the suite passes with fewer\n# checks and no complaint. This is the manifest that makes a disappearance a\n# failure. Adding a suite here is deliberate; that is the point.\nfor suite in diorama felt_juice felt_mixer felt_voice framing iso_math iso_world live_session scene_join tick_queue wire_session; do\n  grep -q \"^── ${suite} ──$\" /tmp/suite.log \\\n    || { echo \"::error::suite '${suite}' did not run\"; exit 1; }\ndone\necho \"all eleven suites ran\"\n"
+          "programs": [
+            "echo",
+            "grep"
+          ],
+          "step": "Every expected suite actually ran"
         },
         {
           "job": "headless",
-          "step": "Refuse resource-load noise",
-          "text": "set -euo pipefail\n# A scene that half-loads still instantiates, and a join test will\n# happily reconcile the surviving half. Godot reports the damage on\n# stderr rather than through an exit code, so it is asserted here.\nif grep -Eq 'SCRIPT ERROR|Failed loading resource|Cannot open file|Condition \".*\" is true' /tmp/suite.log; then\n  echo \"::error::engine reported load errors during the suite\"\n  grep -En 'SCRIPT ERROR|Failed loading resource|Cannot open file|Condition \".*\" is true' /tmp/suite.log\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "grep"
+          ],
+          "step": "Refuse resource-load noise"
         }
       ],
       "elsewhere": [],
@@ -4785,18 +4845,24 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Audit site dependencies",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Audit site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -4814,7 +4880,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -7364,6 +7430,11 @@
     },
     {
       "readers": [
+        {
+          "by": "assets/dimetric/andon/build_manifest.py",
+          "call": "open",
+          "confidence": "ast"
+        },
         {
           "by": "verify.sh",
           "call": "literal",

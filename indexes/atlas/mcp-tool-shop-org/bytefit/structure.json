@@ -239,6 +239,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1027,18 +1035,24 @@
       "commands": [
         {
           "job": "build-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "build-test",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "build-test",
-          "step": "4",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         }
       ],
       "elsewhere": [],
@@ -1220,13 +1234,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -1244,7 +1262,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1306,43 +1324,64 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22's bundled npm 10.x breaks on in-place 'npm install -g npm@latest'\n# (MODULE_NOT_FOUND arborist race). Install npm@latest into a sandbox dir and\n# shadow the system npm via PATH instead — the system npm is left untouched.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag ${GITHUB_REF_NAME} -> ${TAG_VERSION}; package ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "release",
-          "step": "Build + typecheck + test",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build + typecheck + test"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (verify shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify shape)"
         },
         {
           "job": "release",
-          "step": "Extract release notes from CHANGELOG",
-          "text": "awk '/^## \\[/{n++; if(n==2) exit} n==1' CHANGELOG.md > RELEASE_NOTES.md"
+          "programs": [
+            "awk"
+          ],
+          "step": "Extract release notes from CHANGELOG"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release",
-          "text": "gh release create \"${GITHUB_REF_NAME}\" \\\n  --title \"bytefit ${GITHUB_REF_NAME}\" \\\n  --notes-file RELEASE_NOTES.md \\\n  --verify-tag\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         }
       ],
       "elsewhere": [],

@@ -4,6 +4,15 @@
     "root",
     "site/"
   ],
+  "authoredWritten": [
+    {
+      "place": "spaces/jam-actions-live/demo_data.json",
+      "untrackedInputs": true,
+      "writers": [
+        "spaces/jam-actions-live/extract-demo-data.mjs"
+      ]
+    }
+  ],
   "breaks": [
     {
       "doors": 7,
@@ -65,6 +74,7 @@
         "experiments"
       ],
       "target": "experiments/rollout-arc/p4/runs/",
+      "tests": 2,
       "writers": [
         "experiments"
       ]
@@ -77,6 +87,7 @@
         "src"
       ],
       "target": "songs/library/",
+      "tests": 6,
       "writers": [
         "scripts"
       ]
@@ -84,11 +95,11 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 1961,
+      "added": 5,
+      "changed": 1986,
       "moved": 0,
       "parts": 13,
-      "removed": 0
+      "removed": 181
     },
     "items": [
       {
@@ -101,7 +112,7 @@
       },
       {
         "kind": "door",
-        "sentence": "CI runs 1 more file than before.",
+        "sentence": "CI runs 2 more files than before.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
@@ -114,6 +125,11 @@
           "apps/cockpit/src/",
           "apps/cockpit/vite.config.ts"
         ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 2 more changes to doors.",
+        "subjects": []
       },
       {
         "kind": "landing",
@@ -141,7 +157,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 123 more new writers and readers of places.",
+        "sentence": "And 133 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -153,7 +169,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "1961 files changed content, across 13 parts.",
+        "sentence": "5 files added, 181 removed and 1986 changed content, across 13 parts.",
         "subjects": []
       }
     ],
@@ -169,9 +185,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 5 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "5139ec7d5d8050437f20c821ad1770526d58ac6d",
+  "commit": "46ce8246d5f2fddb24f5ba8a2a77548ff833db46",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly JSON data (1721 files); code in TypeScript (555), Python (47) and JavaScript (32). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
+  "derived": "14 parts, mostly JSON data (1602 files) and Markdown (346); code in TypeScript (556), Python (47), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
     {
       "builds": [
@@ -268,6 +284,19 @@
         "src/vocal/kokoro-lead.ts"
       ],
       "checks": [
+        "scripts/analysis-chords.ts",
+        "scripts/analysis-patterns.ts",
+        "scripts/analysis-sections.ts",
+        "scripts/analysis-validate.ts",
+        "scripts/analyze-carriers.ts"
+      ],
+      "checksCount": 57,
+      "checksMore": 54,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "packs": [
         "LICENSE",
         "README.md",
         "logo.png",
@@ -277,19 +306,8 @@
         "samples/vocal/",
         "songs/library/",
         "src/",
-        "tsconfig.json",
-        "scripts/analysis-chords.ts",
-        "scripts/analysis-patterns.ts",
-        "scripts/analysis-sections.ts",
-        "scripts/analysis-validate.ts",
-        "scripts/analyze-carriers.ts"
+        "tsconfig.json"
       ],
-      "checksCount": 67,
-      "checksMore": 429,
-      "file": ".github/workflows/ci.yml",
-      "id": ".github/workflows/ci.yml",
-      "landings": [],
-      "name": "CI",
       "pushes": false,
       "reach": [
         {
@@ -315,7 +333,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 366
+          "files": 367
         }
       ],
       "runs": [
@@ -404,9 +422,11 @@
         "src/vocal/g2p.test.ts",
         "src/vocal/kokoro-lead.test.ts"
       ],
-      "runsCount": 292,
-      "runsMore": 289,
-      "sends": [],
+      "runsCount": 293,
+      "runsMore": 290,
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request touching 20 paths",
@@ -509,7 +529,14 @@
         "src/vocal/index.ts",
         "src/vocal/kokoro-lead.ts"
       ],
-      "checks": [
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "packs": [
         "LICENSE",
         "README.md",
         "logo.png",
@@ -521,12 +548,6 @@
         "src/",
         "tsconfig.json"
       ],
-      "checksCount": 10,
-      "checksMore": 372,
-      "file": ".github/workflows/release.yml",
-      "id": ".github/workflows/release.yml",
-      "landings": [],
-      "name": "Release",
       "pushes": false,
       "reach": [
         {
@@ -552,7 +573,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 366
+          "files": 367
         }
       ],
       "runs": [
@@ -655,8 +676,8 @@
         "src/vocal/kokoro-lead.test.ts",
         "src/vocal/melody-notes.test.ts"
       ],
-      "runsCount": 299,
-      "runsMore": 296,
+      "runsCount": 300,
+      "runsMore": 297,
       "sends": [
         "publishes to npm and a container image"
       ],
@@ -684,7 +705,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         },
         {
           "boundary": "src",
@@ -727,15 +748,16 @@
         },
         {
           "boundary": "src",
-          "depth": 1,
-          "files": 2
+          "depth": 0,
+          "files": 3
         }
       ],
       "runs": [
         "scripts/check-release-gate.ts",
-        "scripts/verify-public-package-checksums.ts"
+        "scripts/verify-public-package-checksums.ts",
+        "src/dataset/published-evidence.test.ts"
       ],
-      "runsCount": 2,
+      "runsCount": 3,
       "runsMore": 0,
       "sends": [
         "publishes to the Hugging Face Hub when run by hand with confirm_irreversible yes-mint-doi and mode publish",
@@ -1014,18 +1036,6 @@
         "scripts/package-jam-actions-public.ts",
         "scripts/regenerate-public-package-checksums.ts",
         "scripts/run-jam-actions-corpus-eval.ts"
-      ]
-    },
-    {
-      "place": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-results.json",
-      "writers": [
-        "scripts/build-slice19-unified-baseline.mjs"
-      ]
-    },
-    {
-      "place": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json",
-      "writers": [
-        "scripts/build-slice19-unified-baseline.mjs"
       ]
     },
     {
@@ -1647,12 +1657,6 @@
       ]
     },
     {
-      "place": "spaces/jam-actions-live/demo_data.json",
-      "writers": [
-        "spaces/jam-actions-live/extract-demo-data.mjs"
-      ]
-    },
-    {
       "place": "spaces/jam-actions-live/divergence.json",
       "writers": [
         "spaces/jam-actions-live/gen-divergence.mjs"
@@ -1665,14 +1669,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:11:25.264Z",
+  "generatedAt": "2026-09-25T16:21:54.894Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",
-    "47 writes and 134 reads use paths built at run time and are not named here.",
-    "21 writes go to places this repository does not track, so they are not listed as generated.",
-    "95 writes and 329 reads go to a path their caller passes, not to this repository.",
-    "2 writes and 18 reads go to the directory the command is run in, not to this repository.",
+    "46 writes and 105 reads use paths built at run time and are not named here.",
+    "26 writes go to places this repository does not track, so they are not listed as generated.",
+    "98 writes and 362 reads go to a path their caller passes, not to this repository.",
+    "1 write and 18 reads go to the directory the command is run in, not to this repository.",
     "3 writes and 11 reads go to the home directory (.ssh/), not to this repository.",
     "7 writes and 2 reads go to a temporary directory, not to this repository.",
     "1 write and 1 read go to the home directory (.ai-jam-sessions/) or a path their caller passes, not to this repository.",
@@ -1681,8 +1685,8 @@
     "10 commands are built at run time and not followed, 1 of them in tests.",
     "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.",
-    "CI runs or checks 460 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "CI runs or checks 461 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs or checks 402 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -1770,22 +1774,16 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 191,
+  "testFiles": 192,
   "testedBy": {
     "cockpit": 13,
     "experiments": 10,
     "scripts": 11,
     "spaces": 0,
-    "src": 168
+    "src": 169
   },
-  "unnamedWrites": 47,
+  "unnamedWrites": 46,
   "unread": [
-    {
-      "place": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json",
-      "writers": [
-        "scripts/build-slice19-unified-baseline.mjs"
-      ]
-    },
     {
       "place": "datasets/jam-actions-v0/evals/e1-tool-use-results.json",
       "writers": [
@@ -1827,11 +1825,17 @@
       "writers": [
         "src/dataset/acoustic-v1/generate-probe.ts"
       ]
+    },
+    {
+      "place": "datasets/jam-actions-v1-probe/README.md",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-probe.ts"
+      ]
     }
   ],
   "unreadFiles": 0,
   "unreadNote": [
-    "And 61 more places."
+    "And 60 more places."
   ],
   "untested": [
     {
@@ -1841,5 +1845,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 107
+  "written": 105
 }

@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit ddf3c8c.
 
 ## What this is
 
-6 parts, mostly TypeScript (34 files) and JavaScript (4). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. ai-playtest is a command of a private package (nothing ships it).
+6 parts, mostly TypeScript (34 files), JavaScript (4), CSS (2) and Astro (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. ai-playtest is a command of a private package (nothing ships it).
 
 ## What changed since 2026-09-25 (e794ed9)
 

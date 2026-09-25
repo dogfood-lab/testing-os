@@ -322,6 +322,14 @@
         },
         {
           "hash": "3e25831663a95981fbab755c6b1abcdf278d882e1754380099e77566f076edfa",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -4611,18 +4619,24 @@
       "commands": [
         {
           "job": "check-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.19.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "check-test",
-          "step": "4",
-          "text": "cargo check"
+          "programs": [
+            "cargo"
+          ],
+          "step": "4"
         },
         {
           "job": "check-test",
-          "step": "5",
-          "text": "cargo test"
+          "programs": [
+            "cargo"
+          ],
+          "step": "5"
         }
       ],
       "elsewhere": [],
@@ -5045,13 +5059,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -5069,7 +5087,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -5131,58 +5149,99 @@
       "commands": [
         {
           "job": "validate",
-          "step": "Extract expected version from tag",
-          "text": "TAG=\"${GITHUB_REF_NAME}\"\nVERSION=\"${TAG#v}\"\necho \"EXPECTED_VERSION=${VERSION}\" >> \"$GITHUB_ENV\"\necho \"Expected version from tag: ${VERSION}\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Extract expected version from tag"
         },
         {
           "job": "validate",
-          "step": "Validate Cargo.toml version matches tag",
-          "text": "CARGO_VERSION=$(grep '^version' Cargo.toml | head -1 | sed 's/.*\"\\(.*\\)\"/\\1/')\necho \"Cargo.toml version: ${CARGO_VERSION}\"\necho \"Tag version: ${EXPECTED_VERSION}\"\nif [ \"$CARGO_VERSION\" != \"$EXPECTED_VERSION\" ]; then\n  echo \"::error::Version mismatch! Cargo.toml has ${CARGO_VERSION} but tag says ${EXPECTED_VERSION}\"\n  exit 1\nfi\necho \"Version alignment confirmed: ${CARGO_VERSION}\"\n"
+          "programs": [
+            "echo",
+            "grep",
+            "head",
+            "sed"
+          ],
+          "step": "Validate Cargo.toml version matches tag"
         },
         {
           "job": "validate",
-          "step": "Validate CHANGELOG.md has entry for this version",
-          "text": "if ! grep -q \"\\[${EXPECTED_VERSION}\\]\" CHANGELOG.md; then\n  echo \"::error::CHANGELOG.md has no entry for version ${EXPECTED_VERSION}\"\n  exit 1\nfi\necho \"CHANGELOG.md entry found for ${EXPECTED_VERSION}\"\n"
+          "programs": [
+            "echo",
+            "grep"
+          ],
+          "step": "Validate CHANGELOG.md has entry for this version"
         },
         {
           "job": "build",
-          "step": "Build release binary",
-          "text": "cargo build --release"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Build release binary"
         },
         {
           "job": "build",
-          "step": "Rename binary",
-          "text": "set -e\nVERSION=${GITHUB_REF_NAME#v}\nif [ -z \"$VERSION\" ] || [ \"$VERSION\" = \"$GITHUB_REF_NAME\" ]; then\n  echo \"Tag-based version not available, falling back to cargo metadata...\"\n  VERSION=$(cargo metadata --no-deps --format-version 1 | python3 -c \"import sys,json; print(json.load(sys.stdin)['packages'][0]['version'])\")\nfi\nif [ -z \"$VERSION\" ]; then\n  echo \"ERROR: Failed to extract version\"\n  exit 1\nfi\necho \"Extracted version: ${VERSION}\"\nOUTNAME=\"${{ env.TOOL_NAME }}-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\nmv \"target/release/${{ env.TOOL_NAME }}${{ matrix.ext }}\" \"target/release/${OUTNAME}\"\necho \"ASSET_NAME=${OUTNAME}\" >> \"$GITHUB_ENV\"\necho \"VERSION=${VERSION}\" >> \"$GITHUB_ENV\"\n"
+          "programs": [
+            "cargo",
+            "echo",
+            "mv",
+            "python3"
+          ],
+          "step": "Rename binary"
         },
         {
           "job": "msix",
-          "step": "Build release binary",
-          "text": "cargo build --release"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Build release binary"
         },
         {
           "job": "msix",
-          "step": "Generate MSIX assets",
-          "text": "node msix/gen-assets.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Generate MSIX assets"
         },
         {
           "job": "msix",
-          "step": "Build MSIX",
-          "text": "$SdkBin = Get-ChildItem \"C:\\Program Files (x86)\\Windows Kits\\10\\bin\\*\\x64\\makeappx.exe\" |\n  Sort-Object FullName -Descending | Select-Object -First 1\n$MakeAppx = $SdkBin.FullName\n\n$LayoutDir = \"msix\\layout\"\nNew-Item -ItemType Directory -Path $LayoutDir -Force | Out-Null\nNew-Item -ItemType Directory -Path \"$LayoutDir\\Assets\" -Force | Out-Null\n\nCopy-Item \"target\\release\\saints-mile.exe\" -Destination $LayoutDir\nCopy-Item \"msix\\AppxManifest.xml\" -Destination $LayoutDir\nGet-ChildItem \"msix\\Assets\\*.png\" | ForEach-Object {\n  Copy-Item $_.FullName -Destination \"$LayoutDir\\Assets\"\n}\n\n& $MakeAppx pack /d $LayoutDir /p \"msix\\SaintsMile.msix\" /o\n"
+          "programs": [
+            "Copy-Item",
+            "ForEach-Object",
+            "Get-ChildItem",
+            "New-Item",
+            "Out-Null",
+            "Select-Object",
+            "Sort-Object"
+          ],
+          "step": "Build MSIX"
         },
         {
           "job": "release",
-          "step": "Generate checksums",
-          "text": "set -e\ncd artifacts\nVERSION=$(ls | head -1 | sed \"s/${TOOL_NAME}-//;s/-.*//\" )\nif [ -z \"$VERSION\" ]; then\n  echo \"ERROR: Failed to extract version from artifact names\"\n  exit 1\nfi\necho \"Extracted version for checksums: ${VERSION}\"\nsha256sum * > \"checksums-${VERSION}.txt\"\ncat \"checksums-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "echo",
+            "head",
+            "ls",
+            "sed",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         },
         {
           "job": "release",
-          "step": "Upload to latest release (workflow_dispatch)",
-          "text": "TAG=$(gh release list --limit 1 --json tagName -q '.[0].tagName')\nfor f in artifacts/*; do\n  gh release upload \"$TAG\" \"$f\" --clobber\ndone\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Upload to latest release (workflow_dispatch)"
         },
         {
           "job": "publish-crate",
-          "step": "Publish to crates.io",
-          "text": "cargo publish --allow-dirty"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Publish to crates.io"
         }
       ],
       "elsewhere": [],

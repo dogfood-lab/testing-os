@@ -174,7 +174,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -449,6 +450,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1326,8 +1335,8 @@
       "unresolvedNamed": [
         {
           "path": "swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs",
-          "specifier": null,
-          "why": "dynamic"
+          "specifier": "../../../../E:/AI/role-os/src/verify-citations.mjs",
+          "why": "missing"
         }
       ],
       "unresolvedSites": 1
@@ -1653,38 +1662,52 @@
       "commands": [
         {
           "job": "build-and-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "build-and-test",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "build-and-test",
-          "step": "4",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "build-and-test",
-          "step": "5",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "build-and-test",
-          "step": "Tarball budget",
-          "text": "npm run pack:check"
+          "programs": [
+            "npm"
+          ],
+          "step": "Tarball budget"
         },
         {
           "job": "security",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "security",
-          "step": "Dependency audit (prod tree, critical gate)",
-          "text": "npm audit --omit=dev --audit-level=critical"
+          "programs": [
+            "npm"
+          ],
+          "step": "Dependency audit (prod tree, critical gate)"
         }
       ],
       "elsewhere": [],
@@ -1979,13 +2002,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -2003,7 +2030,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -2065,68 +2092,106 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} -> ${TAG_VERSION} | package.json: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "verify",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "verify",
-          "step": "Test",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Test"
         },
         {
           "job": "verify",
-          "step": "Build",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build"
         },
         {
           "job": "verify",
-          "step": "Tarball budget",
-          "text": "npm run pack:check"
+          "programs": [
+            "npm"
+          ],
+          "step": "Tarball budget"
         },
         {
           "job": "verify",
-          "step": "Extract release notes from CHANGELOG",
-          "text": "# awk-implementation-independent extraction (cdt-005): gawk and mawk differ on\n# dynamic-regex backslash handling, and an unescaped '.' in the version string is a\n# regex wildcard. Use an exact-prefix string match in node, and FAIL LOUDLY if the\n# section is missing rather than silently shipping a barren \"See CHANGELOG.md\" body.\nnode -e '\n  const { readFileSync, writeFileSync } = require(\"fs\");\n  const version = (process.env.REF_NAME || \"\").replace(/^v/, \"\");\n  const target = \"## [\" + version + \"]\";\n  const lines = readFileSync(\"CHANGELOG.md\", \"utf8\").split(/\\r?\\n/);\n  if (!lines.some((l) => l.indexOf(target) === 0)) {\n    console.error(\"::error::No CHANGELOG section found for \" + target);\n    process.exit(1);\n  }\n  let capture = false; const out = [];\n  for (const line of lines) {\n    if (/^## \\[/.test(line)) { if (capture) break; capture = line.indexOf(target) === 0; continue; }\n    if (capture) out.push(line);\n  }\n  const notes = out.join(\"\\n\").trim();\n  writeFileSync(\"RELEASE_NOTES.md\", (notes || \"See CHANGELOG.md\") + \"\\n\");\n'\necho \"--- RELEASE_NOTES.md ---\"; cat RELEASE_NOTES.md\n"
+          "programs": [
+            "cat",
+            "echo",
+            "node"
+          ],
+          "step": "Extract release notes from CHANGELOG"
         },
         {
           "job": "npm-release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} -> ${TAG_VERSION} | package.json: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "npm-release",
-          "step": "Extract release notes from CHANGELOG",
-          "text": "node -e '\n  const { readFileSync, writeFileSync } = require(\"fs\");\n  const version = (process.env.REF_NAME || \"\").replace(/^v/, \"\");\n  const target = \"## [\" + version + \"]\";\n  const lines = readFileSync(\"CHANGELOG.md\", \"utf8\").split(/\\r?\\n/);\n  if (!lines.some((l) => l.indexOf(target) === 0)) {\n    console.error(\"::error::No CHANGELOG section found for \" + target);\n    process.exit(1);\n  }\n  let capture = false; const out = [];\n  for (const line of lines) {\n    if (/^## \\[/.test(line)) { if (capture) break; capture = line.indexOf(target) === 0; continue; }\n    if (capture) out.push(line);\n  }\n  const notes = out.join(\"\\n\").trim();\n  writeFileSync(\"RELEASE_NOTES.md\", (notes || \"See CHANGELOG.md\") + \"\\n\");\n'\n"
+          "programs": [
+            "node"
+          ],
+          "step": "Extract release notes from CHANGELOG"
         },
         {
           "job": "npm-release",
-          "step": "Create GitHub Release",
-          "text": "if gh release view \"${GITHUB_REF_NAME}\" >/dev/null 2>&1; then\n  echo \"GitHub Release ${GITHUB_REF_NAME} already exists; skipping create\"\nelse\n  gh release create \"${GITHUB_REF_NAME}\" \\\n    --title \"sensor-humor ${GITHUB_REF_NAME}\" \\\n    --notes-file RELEASE_NOTES.md \\\n    --verify-tag\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         },
         {
           "job": "npm-release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC trusted publishing",
-          "text": "# Node 22 bundles npm 10.9; in-place `npm i -g npm@latest` races on its\n# arborist rebuild (MODULE_NOT_FOUND: promise-retry). Install npm@latest\n# into an isolated sandbox and shadow the system npm via PATH instead.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC trusted publishing"
         },
         {
           "job": "npm-release",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "npm-release",
-          "step": "Build",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build"
         },
         {
           "job": "npm-release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "PKG_NAME=$(node -p \"require('./package.json').name\")\nPKG_VERSION=$(node -p \"require('./package.json').version\")\nPUBLISHED=$(npm view \"${PKG_NAME}@${PKG_VERSION}\" version 2>/dev/null || true)\nif [ \"${PUBLISHED}\" = \"${PKG_VERSION}\" ]; then\n  echo \"${PKG_NAME}@${PKG_VERSION} already on npm; skipping publish\"\nelse\n  npm publish --provenance --access public\nfi\n"
+          "programs": [
+            "echo",
+            "node",
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         }
       ],
       "elsewhere": [],
@@ -2192,12 +2257,14 @@
       "runs": [
         {
           "job": "docker",
+          "packed": true,
           "path": "package-lock.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -2423,12 +2490,14 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "tsconfig.build.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "tsconfig.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"

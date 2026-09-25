@@ -328,7 +328,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -375,6 +376,9 @@
           "entry": "main",
           "entryRule": 1,
           "hash": "75a5f6025c8188a3374aa603e1a8c2f54d665512c40bc2c0bc63d5b27b58f4be",
+          "importsFiles": [
+            "src/index.ts"
+          ],
           "path": "site/scripts/fetch-stats.mjs",
           "sequences": [
             {
@@ -429,6 +433,88 @@
             {
               "calls": [
                 {
+                  "line": 237,
+                  "name": "bulk",
+                  "target": {
+                    "file": "src/index.ts"
+                  }
+                },
+                {
+                  "line": 269,
+                  "name": "stats",
+                  "target": {
+                    "file": "src/index.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "fetchAllRegistries"
+            },
+            {
+              "calls": [
+                {
+                  "line": 325,
+                  "name": "inferPortfolio",
+                  "target": {
+                    "file": "src/index.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runInference"
+            },
+            {
+              "calls": [
+                {
+                  "line": 339,
+                  "name": "createCache",
+                  "target": {
+                    "file": "src/index.ts"
+                  }
+                },
+                {
+                  "line": 384,
+                  "name": "mine",
+                  "target": {
+                    "file": "src/index.ts"
+                  }
+                },
+                {
+                  "line": 237,
+                  "name": "bulk",
+                  "target": {
+                    "file": "src/index.ts"
+                  },
+                  "via": "fetchAllRegistries"
+                },
+                {
+                  "line": 269,
+                  "name": "stats",
+                  "target": {
+                    "file": "src/index.ts"
+                  },
+                  "via": "fetchAllRegistries"
+                },
+                {
+                  "line": 416,
+                  "name": "range",
+                  "target": {
+                    "file": "src/index.ts"
+                  }
+                },
+                {
+                  "line": 325,
+                  "name": "inferPortfolio",
+                  "target": {
+                    "file": "src/index.ts"
+                  },
+                  "via": "runInference"
+                },
+                {
                   "line": 92,
                   "name": "getFullYear",
                   "target": null,
@@ -460,6 +546,9 @@
         },
         {
           "hash": "e1e9eb6e3d318280a56cd6b101e7d11f3e9a347b3ed6dae2fa013b783f2b3cae",
+          "importsFiles": [
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/components/AppShell.astro"
         },
         {
@@ -517,18 +606,58 @@
         },
         {
           "hash": "c041323c019e7cce8e37ba15c00afee55b257b3c16c2c84320eabfe357365fcb",
+          "importOrder": [
+            "site/src/components/AppShell.astro",
+            "site/src/components/AppNav.astro",
+            "site/src/data/stats.json"
+          ],
+          "importsFiles": [
+            "site/src/components/AppNav.astro",
+            "site/src/components/AppShell.astro",
+            "site/src/data/stats.json"
+          ],
           "path": "site/src/pages/dashboard.astro"
         },
         {
           "hash": "17c7eb408dc920c1db17f151ba36cc8a7f5dfb8bc9c2556c90410fc5396d21e4",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "hash": "88771771bbc0d31d3166d843290ec72578d371713b3a1f268379b425ab9d1069",
+          "importOrder": [
+            "site/src/components/AppShell.astro",
+            "site/src/components/AppNav.astro",
+            "site/src/data/stats.json"
+          ],
+          "importsFiles": [
+            "site/src/components/AppNav.astro",
+            "site/src/components/AppShell.astro",
+            "site/src/data/stats.json"
+          ],
           "path": "site/src/pages/privacy.astro"
         },
         {
           "hash": "e882beba91a072b5cab45f10868c3c8a065cbfdfa7bf75b4bd4a7859b0d6d986",
+          "importOrder": [
+            "site/src/components/AppShell.astro",
+            "site/src/components/AppNav.astro",
+            "site/src/data/packages.json",
+            "site/src/data/stats.json"
+          ],
+          "importsFiles": [
+            "site/src/components/AppNav.astro",
+            "site/src/components/AppShell.astro",
+            "site/src/data/packages.json",
+            "site/src/data/stats.json"
+          ],
           "path": "site/src/pages/setup.astro"
         },
         {
@@ -557,14 +686,7 @@
       "origin": "mixed",
       "role": "site",
       "testedBy": 0,
-      "unresolvedNamed": [
-        {
-          "path": "site/scripts/fetch-stats.mjs",
-          "specifier": "@mcptoolshop/registry-stats",
-          "why": "member"
-        }
-      ],
-      "unresolvedSites": 1
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -1350,28 +1472,38 @@
       "commands": [
         {
           "job": "build-test",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "build-test",
-          "step": "3",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "build-test",
-          "step": "4",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "build-test",
-          "step": "5",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "build-test",
-          "step": "6",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "6"
         }
       ],
       "elsewhere": [],
@@ -1501,38 +1633,53 @@
       "commands": [
         {
           "job": "refresh",
-          "step": "Install library dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install library dependencies"
         },
         {
           "job": "refresh",
-          "step": "Build library",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build library"
         },
         {
           "job": "refresh",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "refresh",
-          "step": "Fetch live stats",
-          "text": "npm run fetch-stats"
+          "programs": [
+            "npm"
+          ],
+          "step": "Fetch live stats"
         },
         {
           "job": "refresh",
-          "step": "Verify stats freshness",
-          "text": "node -e '\n  const fs = require(\"fs\");\n  const p = \"site/src/data/stats.json\";\n  if (!fs.existsSync(p)) { console.error(\"::error::stats.json missing\"); process.exit(1); }\n  const fetchedAt = new Date(JSON.parse(fs.readFileSync(p, \"utf8\")).fetchedAt);\n  const ageH = (Date.now() - fetchedAt.getTime()) / 3.6e6;\n  console.log(`stats.json fetchedAt=${fetchedAt.toISOString()} age=${ageH.toFixed(1)}h`);\n  if (!(ageH < 26)) { console.error(`::error::stats.json is stale (${ageH.toFixed(1)}h old)`); process.exit(1); }\n'\n"
+          "programs": [
+            "node"
+          ],
+          "step": "Verify stats freshness"
         },
         {
           "job": "refresh",
-          "step": "Run tests",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "refresh",
-          "step": "Commit changes if any (best-effort)",
-          "text": "if [ -n \"$(git status --porcelain)\" ]; then\n  git config user.name \"github-actions[bot]\"\n  git config user.email \"41898282+github-actions[bot]@users.noreply.github.com\"\n  git add site/src/data/stats.json site/src/data/snapshots.json site/src/data/history.json\n  if ! git diff --cached --quiet; then\n    git commit -m \"chore: daily stats refresh [skip ci]\"\n    git pull --rebase --autostash origin main || true\n    git push || echo \"::notice::daily stats commit-back push rejected (protected branch); data fetched + verified, no persistence this run\"\n  else\n    echo \"No stats changes to commit.\"\n  fi\nelse\n  echo \"No changes to commit.\"\nfi\n"
+          "programs": [
+            "echo",
+            "git"
+          ],
+          "step": "Commit changes if any (best-effort)"
         }
       ],
       "elsewhere": [],
@@ -1601,6 +1748,24 @@
         {
           "by": "site/scripts/fetch-stats.mjs",
           "call": "readFile",
+          "confidence": "ast",
+          "target": "site/src/data/stats.json"
+        },
+        {
+          "by": "site/src/pages/dashboard.astro",
+          "call": "import",
+          "confidence": "ast",
+          "target": "site/src/data/stats.json"
+        },
+        {
+          "by": "site/src/pages/privacy.astro",
+          "call": "import",
+          "confidence": "ast",
+          "target": "site/src/data/stats.json"
+        },
+        {
+          "by": "site/src/pages/setup.astro",
+          "call": "import",
           "confidence": "ast",
           "target": "site/src/data/stats.json"
         }
@@ -1695,42 +1860,78 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
           "job": "build-msix",
-          "step": "Install MAUI workload",
-          "text": "dotnet workload install maui-windows"
+          "programs": [
+            "dotnet"
+          ],
+          "step": "Install MAUI workload"
         },
         {
           "job": "build-msix",
-          "step": "Run desktop tests",
-          "text": "dotnet test desktop/RegistryPulse.Tests/RegistryPulse.Tests.csproj -c Release"
+          "programs": [
+            "dotnet"
+          ],
+          "step": "Run desktop tests"
         },
         {
           "job": "build-msix",
-          "step": "Build web assets",
-          "text": "cd site\nnpm ci\nnpm run fetch-stats\nnpm run build\n"
+          "programs": [
+            "cd",
+            "npm"
+          ],
+          "step": "Build web assets"
         },
         {
           "job": "build-msix",
-          "step": "Generate self-signed cert (CI)",
-          "text": "$cert = New-SelfSignedCertificate `\n  -Type Custom `\n  -Subject \"CN=5305D976-6952-4F00-9C21-3A5DB090359F\" `\n  -KeyUsage DigitalSignature `\n  -KeyExportPolicy Exportable `\n  -HashAlgorithm SHA256 `\n  -KeyLength 2048 `\n  -CertStoreLocation \"Cert:\\CurrentUser\\My\" `\n  -FriendlyName \"Registry Pulse CI\" `\n  -TextExtension @(\"2.5.29.37={text}1.3.6.1.5.5.7.3.3\")\n\n$cert | Format-List Subject, Thumbprint, EnhancedKeyUsageList\n\"thumbprint=$($cert.Thumbprint)\" | Out-File -FilePath $env:GITHUB_OUTPUT -Append\nWrite-Host \"Cert thumbprint: $($cert.Thumbprint)\"\n"
+          "programs": [
+            "-CertStoreLocation",
+            "-FriendlyName",
+            "-HashAlgorithm",
+            "-KeyExportPolicy",
+            "-KeyLength",
+            "-KeyUsage",
+            "-Subject",
+            "-TextExtension",
+            "-Type",
+            "Format-List",
+            "Out-File",
+            "Write-Host"
+          ],
+          "step": "Generate self-signed cert (CI)"
         },
         {
           "job": "build-msix",
-          "step": "Publish (Release MSIX, unsigned)",
-          "text": "dotnet publish $env:APP_PROJECT -c $env:CONFIGURATION `\n  /p:GenerateAppxPackageOnBuild=true `\n  /p:AppxPackageSigningEnabled=false\n"
+          "programs": [
+            "dotnet"
+          ],
+          "step": "Publish (Release MSIX, unsigned)"
         },
         {
           "job": "build-msix",
-          "step": "Sign MSIX with signtool",
-          "text": "$msix = Get-ChildItem -Path \"${{ github.workspace }}\" -Recurse -Filter *.msix | Select-Object -First 1\nif (-not $msix) { throw \"No .msix found\" }\nWrite-Host \"Signing: $($msix.FullName)\"\n\n# Find signtool from Windows SDK\n$signtool = Get-ChildItem \"C:\\Program Files (x86)\\Windows Kits\\10\\bin\" -Recurse -Filter signtool.exe |\n  Where-Object { $_.FullName -match 'x64' } |\n  Sort-Object { [version]($_.DirectoryName -replace '.*\\\\(\\d+\\.\\d+\\.\\d+\\.\\d+)\\\\.*','$1') } -Descending |\n  Select-Object -First 1\n\nif (-not $signtool) { throw \"signtool.exe not found\" }\nWrite-Host \"Using: $($signtool.FullName)\"\n\n& $signtool.FullName sign /sha1 \"${{ steps.cert.outputs.thumbprint }}\" /fd SHA256 /td SHA256 \"$($msix.FullName)\"\nif ($LASTEXITCODE -ne 0) { throw \"signtool failed with exit code $LASTEXITCODE\" }\nWrite-Host \"Signed successfully\"\n"
+          "programs": [
+            "-Descending",
+            "-not",
+            "Select-Object",
+            "Sort-Object",
+            "Where-Object",
+            "Write-Host",
+            "throw"
+          ],
+          "step": "Sign MSIX with signtool"
         },
         {
           "job": "build-msix",
-          "step": "Find MSIX",
-          "text": "$msix = Get-ChildItem -Path \"${{ github.workspace }}\" -Recurse -Filter *.msix | Select-Object -First 1\nif (-not $msix) { throw \"No .msix found\" }\n\"msix_path=$($msix.FullName)\" | Out-File -FilePath $env:GITHUB_OUTPUT -Append\nWrite-Host \"MSIX: $($msix.FullName)\"\n"
+          "programs": [
+            "-not",
+            "Out-File",
+            "Select-Object",
+            "Write-Host",
+            "throw"
+          ],
+          "step": "Find MSIX"
         }
       ],
       "elsewhere": [],
@@ -1750,12 +1951,21 @@
         {
           "boundary": "desktop",
           "depth": 0,
-          "files": 1
+          "files": 2
         },
         {
           "boundary": "site",
           "depth": 0,
-          "files": 4
+          "files": 13
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "enters": {
+            "file": "src/index.ts",
+            "from": "site/scripts/fetch-stats.mjs"
+          },
+          "files": 13
         }
       ],
       "readers": [
@@ -1788,13 +1998,41 @@
           "call": "readFile",
           "confidence": "ast",
           "target": "site/src/data/stats.json"
+        },
+        {
+          "by": "site/src/pages/dashboard.astro",
+          "call": "import",
+          "confidence": "ast",
+          "target": "site/src/data/stats.json"
+        },
+        {
+          "by": "site/src/pages/privacy.astro",
+          "call": "import",
+          "confidence": "ast",
+          "target": "site/src/data/stats.json"
+        },
+        {
+          "by": "site/src/pages/setup.astro",
+          "call": "import",
+          "confidence": "ast",
+          "target": "site/src/data/stats.json"
         }
       ],
       "runs": [
         {
+          "built": true,
           "job": "build-msix",
+          "matched": true,
+          "path": "desktop/RegistryPulse.Desktop/RegistryPulse.Desktop.csproj",
+          "runKind": "executes",
+          "via": "dotnet publish"
+        },
+        {
+          "job": "build-msix",
+          "matched": true,
           "path": "desktop/RegistryPulse.Tests/RegistryPulse.Tests.csproj",
-          "runKind": "checks"
+          "runKind": "executes",
+          "via": "dotnet test"
         },
         {
           "job": "build-msix",
@@ -1817,7 +2055,7 @@
           "via": "astro build"
         }
       ],
-      "runsCount": 4,
+      "runsCount": 5,
       "secrets": [
         "MSIX_CERT_PASSWORD"
       ],
@@ -1870,43 +2108,60 @@
       "commands": [
         {
           "job": "build",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.21.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "build",
-          "step": "Install library dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install library dependencies"
         },
         {
           "job": "build",
-          "step": "Build library",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build library"
         },
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Audit site dependencies",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Audit site dependencies"
         },
         {
           "job": "build",
-          "step": "Fetch live stats",
-          "text": "npm run fetch-stats"
+          "programs": [
+            "npm"
+          ],
+          "step": "Fetch live stats"
         },
         {
           "job": "build",
-          "step": "Commit fresh stats back to repo (best-effort)",
-          "text": "git config user.name \"github-actions[bot]\"\ngit config user.email \"41898282+github-actions[bot]@users.noreply.github.com\"\ngit add site/src/data/stats.json site/src/data/snapshots.json\nif ! git diff --cached --quiet; then\n  git commit -m \"chore: update stats snapshot [skip ci]\"\n  git pull --rebase --autostash origin main || true\n  git push || echo \"::notice::stats commit-back push rejected (protected branch); deploying fresh data anyway\"\nfi\n"
+          "programs": [
+            "echo",
+            "git"
+          ],
+          "step": "Commit fresh stats back to repo (best-effort)"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -1993,7 +2248,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 4
+          "files": 13
         },
         {
           "boundary": "src",
@@ -2029,6 +2284,24 @@
         {
           "by": "site/scripts/fetch-stats.mjs",
           "call": "readFile",
+          "confidence": "ast",
+          "target": "site/src/data/stats.json"
+        },
+        {
+          "by": "site/src/pages/dashboard.astro",
+          "call": "import",
+          "confidence": "ast",
+          "target": "site/src/data/stats.json"
+        },
+        {
+          "by": "site/src/pages/privacy.astro",
+          "call": "import",
+          "confidence": "ast",
+          "target": "site/src/data/stats.json"
+        },
+        {
+          "by": "site/src/pages/setup.astro",
+          "call": "import",
           "confidence": "ast",
           "target": "site/src/data/stats.json"
         }
@@ -2120,28 +2393,38 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Install dependencies",
-          "text": "if [ -f package-lock.json ]; then\n  npm ci\nelse\n  npm install\nfi\n"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "publish",
-          "step": "3",
-          "text": "npm run build --if-present"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "publish",
-          "step": "4",
-          "text": "npm test --if-present"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "publish",
-          "step": "Upgrade npm for Trusted Publishing (>= 11.5.1)",
-          "text": "npm install -g npm@latest"
+          "programs": [
+            "npm"
+          ],
+          "step": "Upgrade npm for Trusted Publishing (>= 11.5.1)"
         },
         {
           "job": "publish",
-          "step": "Publish to npm (Trusted Publishing / OIDC)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm (Trusted Publishing / OIDC)"
         }
       ],
       "elsewhere": [],
@@ -2350,6 +2633,11 @@
   ],
   "edges": [
     {
+      "from": "site",
+      "kind": "file",
+      "to": "src"
+    },
+    {
       "from": "test",
       "fromTests": true,
       "kind": "file",
@@ -2546,13 +2834,25 @@
           "by": "site/scripts/fetch-stats.mjs",
           "call": "readFile",
           "confidence": "ast"
+        },
+        {
+          "by": "site/src/pages/dashboard.astro",
+          "call": "import",
+          "confidence": "ast"
+        },
+        {
+          "by": "site/src/pages/privacy.astro",
+          "call": "import",
+          "confidence": "ast"
+        },
+        {
+          "by": "site/src/pages/setup.astro",
+          "call": "import",
+          "confidence": "ast"
         }
       ],
       "target": "site/src/data/stats.json",
       "writers": [
-        {
-          "by": ".github/workflows/daily-refresh.yml"
-        },
         {
           "by": "site/scripts/fetch-stats.mjs",
           "confidence": "ast",

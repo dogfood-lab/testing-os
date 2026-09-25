@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit da77f7a.
 
 ## What this is
 
-10 parts, mostly TypeScript (71 files), Python (45) and JavaScript (3). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. People install the runforge extension.
+10 parts, mostly TypeScript (71 files), Python (45), JavaScript (3), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the runforge extension.
 
 ## What changed since 2026-09-24 (d4f816a)
 
@@ -25,6 +25,7 @@ Mapped at 2026-09-25 from commit da77f7a.
 
 1. The workflow runs 34 files in test; it builds test/extension-host/ in test; it checks src/extension.ts in src.
 2. That reaches python (18 files).
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -56,7 +57,7 @@ Window: 180 days; a pair counts from 3 shared commits, since 0 source files reac
 
 - **eslint-rules** is imported by no test.
 
-23 test files run in no workflow: python/ml_runner/test_artifact_inspect.py, python/ml_runner/test_cancellation_marker.py, python/ml_runner/test_csv_actionability.py and 20 mores.
+23 test files run in no workflow: python/ml_runner/test_artifact_inspect.py, python/ml_runner/test_cancellation_marker.py, python/ml_runner/test_csv_actionability.py and 20 more.
 
 ## Written but never read
 
@@ -72,7 +73,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, resources/, the repository root and site/; 2 writes with paths built at run time may land here.
+People write .github/, assets/, docs/, resources/, the repository root and site/; 1 write with a path built at run time may land here.
 
 ## Where to start
 
@@ -82,9 +83,8 @@ Read those in order to follow one activation of runforge end to end. This path f
 
 ## What this map cannot see
 
-- 83 imports could not be resolved: `python/ml_runner/test_cancellation_marker.py` imports `ml_runner`, which is no module on its import path and no declared dependency; `python/ml_runner/test_cancellation_marker.py` imports `ml_runner.contracts`, which is no module on its import path and no declared dependency; `python/ml_runner/test_cancellation_marker.py` imports `ml_runner.provenance`, which is no module on its import path and no declared dependency; and 80 more.
-- 2 writes and 16 reads use paths built at run time and are not named here.
-- 9 writes and 20 reads go to a path their caller passes, not to this repository.
+- 1 write and 9 reads use paths built at run time and are not named here.
+- 21 writes and 31 reads go to a path their caller passes, not to this repository.
 - 8 commands are built at run time and not followed, 5 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

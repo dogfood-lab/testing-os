@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit a8a79e8.
 
 ## What this is
 
-6 parts, mostly Python (76 files), TypeScript (2) and JavaScript (1). Work enters through 4 doors; the busiest is Publish, which reaches 3 parts. It publishes to PyPI and a container image. People run mcp-stress.
+6 parts, mostly Python (76 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is Publish, which reaches 3 parts. It publishes to PyPI and a container image. It deploys a site to GitHub Pages. People run mcp-stress.
 
 ## What changed since 2026-09-23 (be7da06)
 
@@ -20,7 +20,7 @@ Mapped at 2026-09-25 from commit a8a79e8.
 
 ## What comes in
 
-1. **Publish.** When a release is published; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks src/mcp_stress_test/. On a run by hand with publish_docker true, it also checks README.md, pyproject.toml and src/.
+1. **Publish.** When a release is published; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks src/mcp_stress_test/. On a run by hand with publish_docker true, it also packs README.md, pyproject.toml and src/ into an image.
 2. **CI.** On a pull request to main; on a push to main touching 8 paths; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks src/.
 3. **Deploy site to GitHub Pages.** On a pull request to main touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **mcp-stress** (a command people run). Runs src/mcp_stress_test/cli/__init__.py.
@@ -28,7 +28,7 @@ Mapped at 2026-09-25 from commit a8a79e8.
 ## What happens through Publish
 
 1. The workflow runs src/mcp_stress_test/cli/__init__.py in src and tests/ in tests; it checks src/mcp_stress_test/ in src.
-2. On a run by hand with publish_docker true, it also checks README.md, pyproject.toml and src/.
+2. On a run by hand with publish_docker true, it also packs README.md, pyproject.toml and src/ into an image.
 3. It uploads dist/* to the release on a release event.
 4. It publishes a container image (on a run by hand, only with publish_docker true).
 5. It publishes to PyPI (on a run by hand, only with publish_pypi true).
@@ -81,14 +81,15 @@ No configuration or documentation part is left to people alone.
 
 ## Where to start
 
-.github/workflows/ci.yml → src/mcp_stress_test/cli/__init__.py → src/mcp_stress_test/cli/main.py → src/mcp_stress_test/__init__.py → src/mcp_stress_test/cli/commands/chain.py → src/mcp_stress_test/cli/commands/fuzz.py → src/mcp_stress_test/cli/commands/generate.py → src/mcp_stress_test/cli/commands/info.py
+.github/workflows/ci.yml → src/mcp_stress_test/cli/__init__.py → src/mcp_stress_test/cli/main.py → src/mcp_stress_test/__init__.py → src/mcp_stress_test/models.py
 
 Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 2 imports could not be resolved: `tests/test_operator_contract.py` imports a path built at run time; `tests/test_operator_contract.py` imports a path built at run time.
-- 15 writes and 14 reads use paths built at run time and are not named here.
+- 2 imports could not be resolved: `tests/test_operator_contract.py` imports a path built at run time, twice.
+- 3 writes and 8 reads use paths built at run time and are not named here.
+- 12 writes and 21 reads go to a path their caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

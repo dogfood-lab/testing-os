@@ -10192,10 +10192,12 @@
         },
         {
           "hash": "ee617b59ef291d065d0940dcd58757db19d0a507b184acb19d01df00c8473899",
+          "noStatements": true,
           "path": "site/src/components/starlight/ThemeProvider.astro"
         },
         {
           "hash": "f017cacad6c2ba7f5aef77abe1aea838537a0b7358ee3c8a48e9284035abe2b4",
+          "noStatements": true,
           "path": "site/src/components/starlight/ThemeSelect.astro"
         },
         {
@@ -10257,6 +10259,16 @@
         },
         {
           "hash": "7847aecc6d57062384fc05a5c76c57d74a737ee1a17e79794d531c4588e66db4",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/layouts/MarketingLayout.astro",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/layouts/MarketingLayout.astro",
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -10293,88 +10305,122 @@
       "commands": [
         {
           "job": "build-and-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.14.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "build-and-test",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "build-and-test",
-          "step": "Dependency audit",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Dependency audit"
         },
         {
           "job": "build-and-test",
-          "step": "5",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "build-and-test",
-          "step": "6",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "6"
         },
         {
           "job": "build-and-test",
-          "step": "Dogfood typecheck",
-          "text": "npm run typecheck:dogfood"
+          "programs": [
+            "npm"
+          ],
+          "step": "Dogfood typecheck"
         },
         {
           "job": "build-and-test",
-          "step": "Version + documented-count drift gate",
-          "text": "npm run check-version"
+          "programs": [
+            "npm"
+          ],
+          "step": "Version + documented-count drift gate"
         },
         {
           "job": "build-and-test",
-          "step": "Pack contents (SHIP_GATE D)",
-          "text": "node scripts/check-pack.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Pack contents (SHIP_GATE D)"
         },
         {
           "job": "build-and-test",
-          "step": "Re-run suite with coverage",
-          "text": "npx vitest run --coverage"
+          "programs": [
+            "npx"
+          ],
+          "step": "Re-run suite with coverage"
         },
         {
           "job": "e2e",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "e2e",
-          "step": "3",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "e2e",
-          "step": "Install Playwright Chromium",
-          "text": "npx playwright install --with-deps chromium"
+          "programs": [
+            "npx"
+          ],
+          "step": "Install Playwright Chromium"
         },
         {
           "job": "e2e",
-          "step": "Playwright e2e",
-          "text": "npm run test:e2e"
+          "programs": [
+            "npm"
+          ],
+          "step": "Playwright e2e"
         },
         {
           "job": "e2e",
-          "step": "Point operator at Playwright artifacts",
-          "text": "if [ -d playwright-report ] || [ -d test-results ]; then\n  echo \"::notice::Playwright failed — download the playwright-e2e artifact (HTML report + traces).\"\nelse\n  echo \"::warning::Playwright wrote no report/traces (install or config failed before the runner). Re-run locally with PWDEBUG=1; traces need harness retain-on-failure.\"\nfi\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Point operator at Playwright artifacts"
         },
         {
           "job": "site-build",
-          "step": "Install site deps",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site deps"
         },
         {
           "job": "site-build",
-          "step": "Dependency audit",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Dependency audit"
         },
         {
           "job": "site-build",
-          "step": "Build handbook",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build handbook"
         }
       ],
       "elsewhere": [],
@@ -10445,7 +10491,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 8
         },
         {
           "boundary": "root",
@@ -11113,23 +11159,36 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Dependency audit",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Dependency audit"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         },
         {
           "job": "deploy",
-          "step": "Verify deployed site returns 200",
-          "text": "url=\"${{ steps.deployment.outputs.page_url }}\"\nif [ -z \"$url\" ]; then\n  echo \"::error::deploy-pages emitted no page_url — check environment github-pages, permissions pages:write + id-token:write. Next: re-run after Pages is enabled.\"\n  exit 1\nfi\n# F-961db918: landing 200 is not enough — the secondary CTA is /handbook/.\nprobe() {\n  local target=\"$1\"\n  local label=\"$2\"\n  echo \"Probing $label $target\"\n  local max=5\n  local status=\"\"\n  local attempt\n  for attempt in $(seq 1 \"$max\"); do\n    status=$(curl -sS -o /dev/null -w \"%{http_code}\" --max-time 15 \"$target\" || true)\n    if [ -z \"$status\" ] || [ \"$status\" = \"000\" ]; then\n      status=\"curl-failed\"\n    fi\n    echo \"$label attempt $attempt/$max: HTTP $status\"\n    if [ \"$status\" = \"200\" ]; then\n      echo \"::notice::Pages $label verified ($target returned 200)\"\n      return 0\n    fi\n    if [ \"$attempt\" -lt \"$max\" ]; then\n      wait_s=$((attempt * 5))\n      echo \"::warning::Pages $label probe attempt $attempt/$max got HTTP $status for $target — sleeping ${wait_s}s (CDN lag)\"\n      sleep \"$wait_s\"\n    fi\n  done\n  echo \"::error::Pages $label verification failed after $max attempts — last HTTP $status for $target. Next: wait for CDN and re-run the workflow, or open $target\"\n  return 1\n}\nprobe \"$url\" \"landing\" || exit 1\nhandbook=\"${url%/}/handbook/\"\nprobe \"$handbook\" \"handbook\" || exit 1\n"
+          "programs": [
+            "attempt",
+            "curl",
+            "echo",
+            "probe",
+            "seq",
+            "sleep"
+          ],
+          "step": "Verify deployed site returns 200"
         }
       ],
       "elsewhere": [],
@@ -11167,7 +11226,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 8
         }
       ],
       "readers": [],
@@ -11250,98 +11309,211 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Strip _authToken from npmrc so OIDC can exchange",
-          "text": "# F-8cdb6b66: v7 no longer exports a dummy NODE_AUTH_TOKEN (do not\n# write an empty NODE_AUTH_TOKEN= to GITHUB_ENV — that recreates\n# \"auth is configured\" for some npm versions). Strip any leftover\n# _authToken line from .npmrc so a pin drift back to v6 cannot\n# short-circuit the OIDC exchange (ENEEDAUTH).\nunset NODE_AUTH_TOKEN\nfor rc in \"${NPM_CONFIG_USERCONFIG:-}\" \"$HOME/.npmrc\" .npmrc; do\n  if [ -n \"$rc\" ] && [ -f \"$rc\" ]; then\n    sed -i '/_authToken/d' \"$rc\"\n  fi\ndone\n"
+          "programs": [
+            "sed"
+          ],
+          "step": "Strip _authToken from npmrc so OIDC can exchange"
         },
         {
           "job": "publish",
-          "step": "Install npm 11.6.2 in sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22 bundles npm 10.x, which cannot do OIDC trusted publishing,\n# and an in-place `npm i -g npm@11.6.2` races its own arborist rebuild.\n# F-8cdb6b66: pin 11.6.2 (11.5+ required) — never npm@latest.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@11.6.2\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\nSANDBOX_NPM=\"$SANDBOX/node_modules/.bin/npm\"\nGOT=\"$(\"$SANDBOX_NPM\" --version)\"\necho \"sandbox npm ${GOT}\"\nif [ \"$GOT\" != \"11.6.2\" ]; then\n  echo \"::error::pinned npm@11.6.2 but sandbox reports ${GOT}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm 11.6.2 in sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "publish",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "publish",
-          "step": "Dependency audit",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Dependency audit"
         },
         {
           "job": "publish",
-          "step": "Verify release tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} -> ${TAG_VERSION} | Package: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Release tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify release tag matches package.json version"
         },
         {
           "job": "publish",
-          "step": "Build",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build"
         },
         {
           "job": "publish",
-          "step": "Test",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Test"
         },
         {
           "job": "publish",
-          "step": "Dogfood typecheck",
-          "text": "npm run typecheck:dogfood"
+          "programs": [
+            "npm"
+          ],
+          "step": "Dogfood typecheck"
         },
         {
           "job": "publish",
-          "step": "Version + documented-count drift gate",
-          "text": "npm run check-version"
+          "programs": [
+            "npm"
+          ],
+          "step": "Version + documented-count drift gate"
         },
         {
           "job": "publish",
-          "step": "Install Playwright Chromium",
-          "text": "npx playwright install --with-deps chromium"
+          "programs": [
+            "npx"
+          ],
+          "step": "Install Playwright Chromium"
         },
         {
           "job": "publish",
-          "step": "Playwright e2e",
-          "text": "npm run test:e2e"
+          "programs": [
+            "npm"
+          ],
+          "step": "Playwright e2e"
         },
         {
           "job": "publish",
-          "step": "Point operator at Playwright artifacts",
-          "text": "if [ -d playwright-report ] || [ -d test-results ]; then\n  echo \"::notice::Playwright failed — download the playwright-e2e-release artifact (HTML report + traces).\"\nelse\n  echo \"::warning::Playwright wrote no report/traces (install or config failed before the runner). Re-run locally with PWDEBUG=1; traces need harness retain-on-failure.\"\nfi\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Point operator at Playwright artifacts"
         },
         {
           "job": "publish",
-          "step": "Publish if not already on the registry",
-          "text": "PKG_NAME=\"$(node -p \"require('./package.json').name\")\"\nPKG_VERSION=\"$(node -p \"require('./package.json').version\")\"\nSPEC=\"${PKG_NAME}@${PKG_VERSION}\"\n\n# F-762af11a: registry read-back. Empty / missing dist.attestations\n# (e.g. @world-forge/schema@4.4.2) must not count as provenance.\nprovenance_url() {\n  PROVENANCE_SPEC=\"$1\" node -e '\n    const { execFileSync } = require(\"child_process\");\n    const spec = process.env.PROVENANCE_SPEC;\n    if (!spec) process.exit(1);\n    let raw = \"\";\n    try {\n      raw = execFileSync(\"npm\", [\"view\", spec, \"--json\", \"dist.attestations\"], {\n        encoding: \"utf8\",\n        stdio: [\"ignore\", \"pipe\", \"pipe\"],\n      });\n    } catch {\n      process.exit(1);\n    }\n    raw = String(raw || \"\").trim();\n    if (!raw || raw === \"undefined\" || raw === \"null\") process.exit(1);\n    let v;\n    try { v = JSON.parse(raw); } catch { process.exit(1); }\n    if (!v || typeof v !== \"object\" || Array.isArray(v)) process.exit(1);\n    const pred = v.provenance && typeof v.provenance.predicateType === \"string\"\n      ? v.provenance.predicateType\n      : \"\";\n    if (!pred) process.exit(1);\n    const url = typeof v.url === \"string\" ? v.url : \"\";\n    process.stdout.write(url || pred);\n  '\n}\n\necho \"Checking whether ${SPEC} is already published...\"\nVIEW_ERR=\"$(mktemp)\"\nif npm view \"${SPEC}\" version >\"$VIEW_ERR\" 2>&1; then\n  rm -f \"$VIEW_ERR\"\n  echo \"::notice::${SPEC} is already on npm - skipping publish (idempotent re-run).\"\n  URL=\"$(provenance_url \"${SPEC}\" || true)\"\n  if [ -n \"$URL\" ]; then\n    echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n  else\n    echo \"::warning::${SPEC} is already live without provenance attestations. Skip does not make this a provenance-bearing release; a re-run cannot attach provenance. Next: deprecate ${SPEC} and publish a new version with working OIDC.\"\n  fi\nelse\n  echo \"npm view ${SPEC} version failed:\"\n  cat \"$VIEW_ERR\"\n  if grep -q 'E404' \"$VIEW_ERR\"; then\n    echo \"${SPEC} not found on the registry (E404) - publishing.\"\n  else\n    echo \"::warning::npm view ${SPEC} failed with a non-E404 error (not a confirmed miss); fail-open to publish. Publish's own exit code governs from here.\"\n  fi\n  rm -f \"$VIEW_ERR\"\n  npm publish --provenance --access public\n  max=5\n  URL=\"\"\n  for attempt in $(seq 1 \"$max\"); do\n    URL=\"$(provenance_url \"${SPEC}\" || true)\"\n    if [ -n \"$URL\" ]; then\n      echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n      break\n    fi\n    if [ \"$attempt\" -lt \"$max\" ]; then\n      wait_s=$((attempt * 5))\n      echo \"::warning::${SPEC} has no provenance attestation yet (attempt ${attempt}/${max}) — sleeping ${wait_s}s (registry lag)\"\n      sleep \"$wait_s\"\n    fi\n  done\n  if [ -z \"$URL\" ]; then\n    echo \"::error::${SPEC} published but registry has no provenance attestation after ${max} probes. Trusted-publisher/OIDC likely misconfigured; the tarball is live unsigned. Provenance cannot be attached after the fact. Next: npm deprecate ${SPEC} and cut a new version after fixing OIDC.\"\n    exit 1\n  fi\nfi\n"
+          "programs": [
+            "1",
+            "attempt",
+            "cat",
+            "echo",
+            "grep",
+            "mktemp",
+            "node",
+            "npm",
+            "provenance_url",
+            "rm",
+            "seq",
+            "sleep"
+          ],
+          "step": "Publish if not already on the registry"
         },
         {
           "job": "publish",
-          "step": "Publish if not already on the registry",
-          "text": "PKG_NAME=\"$(node -p \"require('./package.json').name\")\"\nPKG_VERSION=\"$(node -p \"require('./package.json').version\")\"\nSPEC=\"${PKG_NAME}@${PKG_VERSION}\"\n\n# F-762af11a: registry read-back. Empty / missing dist.attestations\n# (e.g. @world-forge/schema@4.4.2) must not count as provenance.\nprovenance_url() {\n  PROVENANCE_SPEC=\"$1\" node -e '\n    const { execFileSync } = require(\"child_process\");\n    const spec = process.env.PROVENANCE_SPEC;\n    if (!spec) process.exit(1);\n    let raw = \"\";\n    try {\n      raw = execFileSync(\"npm\", [\"view\", spec, \"--json\", \"dist.attestations\"], {\n        encoding: \"utf8\",\n        stdio: [\"ignore\", \"pipe\", \"pipe\"],\n      });\n    } catch {\n      process.exit(1);\n    }\n    raw = String(raw || \"\").trim();\n    if (!raw || raw === \"undefined\" || raw === \"null\") process.exit(1);\n    let v;\n    try { v = JSON.parse(raw); } catch { process.exit(1); }\n    if (!v || typeof v !== \"object\" || Array.isArray(v)) process.exit(1);\n    const pred = v.provenance && typeof v.provenance.predicateType === \"string\"\n      ? v.provenance.predicateType\n      : \"\";\n    if (!pred) process.exit(1);\n    const url = typeof v.url === \"string\" ? v.url : \"\";\n    process.stdout.write(url || pred);\n  '\n}\n\necho \"Checking whether ${SPEC} is already published...\"\nVIEW_ERR=\"$(mktemp)\"\nif npm view \"${SPEC}\" version >\"$VIEW_ERR\" 2>&1; then\n  rm -f \"$VIEW_ERR\"\n  echo \"::notice::${SPEC} is already on npm - skipping publish (idempotent re-run).\"\n  URL=\"$(provenance_url \"${SPEC}\" || true)\"\n  if [ -n \"$URL\" ]; then\n    echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n  else\n    echo \"::warning::${SPEC} is already live without provenance attestations. Skip does not make this a provenance-bearing release; a re-run cannot attach provenance. Next: deprecate ${SPEC} and publish a new version with working OIDC.\"\n  fi\nelse\n  echo \"npm view ${SPEC} version failed:\"\n  cat \"$VIEW_ERR\"\n  if grep -q 'E404' \"$VIEW_ERR\"; then\n    echo \"${SPEC} not found on the registry (E404) - publishing.\"\n  else\n    echo \"::warning::npm view ${SPEC} failed with a non-E404 error (not a confirmed miss); fail-open to publish. Publish's own exit code governs from here.\"\n  fi\n  rm -f \"$VIEW_ERR\"\n  npm publish --provenance --access public\n  max=5\n  URL=\"\"\n  for attempt in $(seq 1 \"$max\"); do\n    URL=\"$(provenance_url \"${SPEC}\" || true)\"\n    if [ -n \"$URL\" ]; then\n      echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n      break\n    fi\n    if [ \"$attempt\" -lt \"$max\" ]; then\n      wait_s=$((attempt * 5))\n      echo \"::warning::${SPEC} has no provenance attestation yet (attempt ${attempt}/${max}) — sleeping ${wait_s}s (registry lag)\"\n      sleep \"$wait_s\"\n    fi\n  done\n  if [ -z \"$URL\" ]; then\n    echo \"::error::${SPEC} published but registry has no provenance attestation after ${max} probes. Trusted-publisher/OIDC likely misconfigured; the tarball is live unsigned. Provenance cannot be attached after the fact. Next: npm deprecate ${SPEC} and cut a new version after fixing OIDC.\"\n    exit 1\n  fi\nfi\n"
+          "programs": [
+            "1",
+            "attempt",
+            "cat",
+            "echo",
+            "grep",
+            "mktemp",
+            "node",
+            "npm",
+            "provenance_url",
+            "rm",
+            "seq",
+            "sleep"
+          ],
+          "step": "Publish if not already on the registry"
         },
         {
           "job": "publish",
-          "step": "Publish if not already on the registry",
-          "text": "PKG_NAME=\"$(node -p \"require('./package.json').name\")\"\nPKG_VERSION=\"$(node -p \"require('./package.json').version\")\"\nSPEC=\"${PKG_NAME}@${PKG_VERSION}\"\n\n# F-762af11a: registry read-back. Empty / missing dist.attestations\n# (e.g. @world-forge/schema@4.4.2) must not count as provenance.\nprovenance_url() {\n  PROVENANCE_SPEC=\"$1\" node -e '\n    const { execFileSync } = require(\"child_process\");\n    const spec = process.env.PROVENANCE_SPEC;\n    if (!spec) process.exit(1);\n    let raw = \"\";\n    try {\n      raw = execFileSync(\"npm\", [\"view\", spec, \"--json\", \"dist.attestations\"], {\n        encoding: \"utf8\",\n        stdio: [\"ignore\", \"pipe\", \"pipe\"],\n      });\n    } catch {\n      process.exit(1);\n    }\n    raw = String(raw || \"\").trim();\n    if (!raw || raw === \"undefined\" || raw === \"null\") process.exit(1);\n    let v;\n    try { v = JSON.parse(raw); } catch { process.exit(1); }\n    if (!v || typeof v !== \"object\" || Array.isArray(v)) process.exit(1);\n    const pred = v.provenance && typeof v.provenance.predicateType === \"string\"\n      ? v.provenance.predicateType\n      : \"\";\n    if (!pred) process.exit(1);\n    const url = typeof v.url === \"string\" ? v.url : \"\";\n    process.stdout.write(url || pred);\n  '\n}\n\necho \"Checking whether ${SPEC} is already published...\"\nVIEW_ERR=\"$(mktemp)\"\nif npm view \"${SPEC}\" version >\"$VIEW_ERR\" 2>&1; then\n  rm -f \"$VIEW_ERR\"\n  echo \"::notice::${SPEC} is already on npm - skipping publish (idempotent re-run).\"\n  URL=\"$(provenance_url \"${SPEC}\" || true)\"\n  if [ -n \"$URL\" ]; then\n    echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n  else\n    echo \"::warning::${SPEC} is already live without provenance attestations. Skip does not make this a provenance-bearing release; a re-run cannot attach provenance. Next: deprecate ${SPEC} and publish a new version with working OIDC.\"\n  fi\nelse\n  echo \"npm view ${SPEC} version failed:\"\n  cat \"$VIEW_ERR\"\n  if grep -q 'E404' \"$VIEW_ERR\"; then\n    echo \"${SPEC} not found on the registry (E404) - publishing.\"\n  else\n    echo \"::warning::npm view ${SPEC} failed with a non-E404 error (not a confirmed miss); fail-open to publish. Publish's own exit code governs from here.\"\n  fi\n  rm -f \"$VIEW_ERR\"\n  npm publish --provenance --access public\n  max=5\n  URL=\"\"\n  for attempt in $(seq 1 \"$max\"); do\n    URL=\"$(provenance_url \"${SPEC}\" || true)\"\n    if [ -n \"$URL\" ]; then\n      echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n      break\n    fi\n    if [ \"$attempt\" -lt \"$max\" ]; then\n      wait_s=$((attempt * 5))\n      echo \"::warning::${SPEC} has no provenance attestation yet (attempt ${attempt}/${max}) — sleeping ${wait_s}s (registry lag)\"\n      sleep \"$wait_s\"\n    fi\n  done\n  if [ -z \"$URL\" ]; then\n    echo \"::error::${SPEC} published but registry has no provenance attestation after ${max} probes. Trusted-publisher/OIDC likely misconfigured; the tarball is live unsigned. Provenance cannot be attached after the fact. Next: npm deprecate ${SPEC} and cut a new version after fixing OIDC.\"\n    exit 1\n  fi\nfi\n"
+          "programs": [
+            "1",
+            "attempt",
+            "cat",
+            "echo",
+            "grep",
+            "mktemp",
+            "node",
+            "npm",
+            "provenance_url",
+            "rm",
+            "seq",
+            "sleep"
+          ],
+          "step": "Publish if not already on the registry"
         },
         {
           "job": "publish",
-          "step": "Publish if not already on the registry",
-          "text": "PKG_NAME=\"$(node -p \"require('./package.json').name\")\"\nPKG_VERSION=\"$(node -p \"require('./package.json').version\")\"\nSPEC=\"${PKG_NAME}@${PKG_VERSION}\"\n\n# F-762af11a: registry read-back. Empty / missing dist.attestations\n# (e.g. @world-forge/schema@4.4.2) must not count as provenance.\nprovenance_url() {\n  PROVENANCE_SPEC=\"$1\" node -e '\n    const { execFileSync } = require(\"child_process\");\n    const spec = process.env.PROVENANCE_SPEC;\n    if (!spec) process.exit(1);\n    let raw = \"\";\n    try {\n      raw = execFileSync(\"npm\", [\"view\", spec, \"--json\", \"dist.attestations\"], {\n        encoding: \"utf8\",\n        stdio: [\"ignore\", \"pipe\", \"pipe\"],\n      });\n    } catch {\n      process.exit(1);\n    }\n    raw = String(raw || \"\").trim();\n    if (!raw || raw === \"undefined\" || raw === \"null\") process.exit(1);\n    let v;\n    try { v = JSON.parse(raw); } catch { process.exit(1); }\n    if (!v || typeof v !== \"object\" || Array.isArray(v)) process.exit(1);\n    const pred = v.provenance && typeof v.provenance.predicateType === \"string\"\n      ? v.provenance.predicateType\n      : \"\";\n    if (!pred) process.exit(1);\n    const url = typeof v.url === \"string\" ? v.url : \"\";\n    process.stdout.write(url || pred);\n  '\n}\n\necho \"Checking whether ${SPEC} is already published...\"\nVIEW_ERR=\"$(mktemp)\"\nif npm view \"${SPEC}\" version >\"$VIEW_ERR\" 2>&1; then\n  rm -f \"$VIEW_ERR\"\n  echo \"::notice::${SPEC} is already on npm - skipping publish (idempotent re-run).\"\n  URL=\"$(provenance_url \"${SPEC}\" || true)\"\n  if [ -n \"$URL\" ]; then\n    echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n  else\n    echo \"::warning::${SPEC} is already live without provenance attestations. Skip does not make this a provenance-bearing release; a re-run cannot attach provenance. Next: deprecate ${SPEC} and publish a new version with working OIDC.\"\n  fi\nelse\n  echo \"npm view ${SPEC} version failed:\"\n  cat \"$VIEW_ERR\"\n  if grep -q 'E404' \"$VIEW_ERR\"; then\n    echo \"${SPEC} not found on the registry (E404) - publishing.\"\n  else\n    echo \"::warning::npm view ${SPEC} failed with a non-E404 error (not a confirmed miss); fail-open to publish. Publish's own exit code governs from here.\"\n  fi\n  rm -f \"$VIEW_ERR\"\n  npm publish --provenance --access public\n  max=5\n  URL=\"\"\n  for attempt in $(seq 1 \"$max\"); do\n    URL=\"$(provenance_url \"${SPEC}\" || true)\"\n    if [ -n \"$URL\" ]; then\n      echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n      break\n    fi\n    if [ \"$attempt\" -lt \"$max\" ]; then\n      wait_s=$((attempt * 5))\n      echo \"::warning::${SPEC} has no provenance attestation yet (attempt ${attempt}/${max}) — sleeping ${wait_s}s (registry lag)\"\n      sleep \"$wait_s\"\n    fi\n  done\n  if [ -z \"$URL\" ]; then\n    echo \"::error::${SPEC} published but registry has no provenance attestation after ${max} probes. Trusted-publisher/OIDC likely misconfigured; the tarball is live unsigned. Provenance cannot be attached after the fact. Next: npm deprecate ${SPEC} and cut a new version after fixing OIDC.\"\n    exit 1\n  fi\nfi\n"
+          "programs": [
+            "1",
+            "attempt",
+            "cat",
+            "echo",
+            "grep",
+            "mktemp",
+            "node",
+            "npm",
+            "provenance_url",
+            "rm",
+            "seq",
+            "sleep"
+          ],
+          "step": "Publish if not already on the registry"
         },
         {
           "job": "publish",
-          "step": "Publish if not already on the registry",
-          "text": "PKG_NAME=\"$(node -p \"require('./package.json').name\")\"\nPKG_VERSION=\"$(node -p \"require('./package.json').version\")\"\nSPEC=\"${PKG_NAME}@${PKG_VERSION}\"\n\n# F-762af11a: registry read-back. Empty / missing dist.attestations\n# (e.g. @world-forge/schema@4.4.2) must not count as provenance.\nprovenance_url() {\n  PROVENANCE_SPEC=\"$1\" node -e '\n    const { execFileSync } = require(\"child_process\");\n    const spec = process.env.PROVENANCE_SPEC;\n    if (!spec) process.exit(1);\n    let raw = \"\";\n    try {\n      raw = execFileSync(\"npm\", [\"view\", spec, \"--json\", \"dist.attestations\"], {\n        encoding: \"utf8\",\n        stdio: [\"ignore\", \"pipe\", \"pipe\"],\n      });\n    } catch {\n      process.exit(1);\n    }\n    raw = String(raw || \"\").trim();\n    if (!raw || raw === \"undefined\" || raw === \"null\") process.exit(1);\n    let v;\n    try { v = JSON.parse(raw); } catch { process.exit(1); }\n    if (!v || typeof v !== \"object\" || Array.isArray(v)) process.exit(1);\n    const pred = v.provenance && typeof v.provenance.predicateType === \"string\"\n      ? v.provenance.predicateType\n      : \"\";\n    if (!pred) process.exit(1);\n    const url = typeof v.url === \"string\" ? v.url : \"\";\n    process.stdout.write(url || pred);\n  '\n}\n\necho \"Checking whether ${SPEC} is already published...\"\nVIEW_ERR=\"$(mktemp)\"\nif npm view \"${SPEC}\" version >\"$VIEW_ERR\" 2>&1; then\n  rm -f \"$VIEW_ERR\"\n  echo \"::notice::${SPEC} is already on npm - skipping publish (idempotent re-run).\"\n  URL=\"$(provenance_url \"${SPEC}\" || true)\"\n  if [ -n \"$URL\" ]; then\n    echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n  else\n    echo \"::warning::${SPEC} is already live without provenance attestations. Skip does not make this a provenance-bearing release; a re-run cannot attach provenance. Next: deprecate ${SPEC} and publish a new version with working OIDC.\"\n  fi\nelse\n  echo \"npm view ${SPEC} version failed:\"\n  cat \"$VIEW_ERR\"\n  if grep -q 'E404' \"$VIEW_ERR\"; then\n    echo \"${SPEC} not found on the registry (E404) - publishing.\"\n  else\n    echo \"::warning::npm view ${SPEC} failed with a non-E404 error (not a confirmed miss); fail-open to publish. Publish's own exit code governs from here.\"\n  fi\n  rm -f \"$VIEW_ERR\"\n  npm publish --provenance --access public\n  max=5\n  URL=\"\"\n  for attempt in $(seq 1 \"$max\"); do\n    URL=\"$(provenance_url \"${SPEC}\" || true)\"\n    if [ -n \"$URL\" ]; then\n      echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n      break\n    fi\n    if [ \"$attempt\" -lt \"$max\" ]; then\n      wait_s=$((attempt * 5))\n      echo \"::warning::${SPEC} has no provenance attestation yet (attempt ${attempt}/${max}) — sleeping ${wait_s}s (registry lag)\"\n      sleep \"$wait_s\"\n    fi\n  done\n  if [ -z \"$URL\" ]; then\n    echo \"::error::${SPEC} published but registry has no provenance attestation after ${max} probes. Trusted-publisher/OIDC likely misconfigured; the tarball is live unsigned. Provenance cannot be attached after the fact. Next: npm deprecate ${SPEC} and cut a new version after fixing OIDC.\"\n    exit 1\n  fi\nfi\n"
+          "programs": [
+            "1",
+            "attempt",
+            "cat",
+            "echo",
+            "grep",
+            "mktemp",
+            "node",
+            "npm",
+            "provenance_url",
+            "rm",
+            "seq",
+            "sleep"
+          ],
+          "step": "Publish if not already on the registry"
         },
         {
           "job": "publish",
-          "step": "Publish if not already on the registry",
-          "text": "PKG_NAME=\"$(node -p \"require('./package.json').name\")\"\nPKG_VERSION=\"$(node -p \"require('./package.json').version\")\"\nSPEC=\"${PKG_NAME}@${PKG_VERSION}\"\n\n# F-762af11a: registry read-back. Empty / missing dist.attestations\n# (e.g. @world-forge/schema@4.4.2) must not count as provenance.\nprovenance_url() {\n  PROVENANCE_SPEC=\"$1\" node -e '\n    const { execFileSync } = require(\"child_process\");\n    const spec = process.env.PROVENANCE_SPEC;\n    if (!spec) process.exit(1);\n    let raw = \"\";\n    try {\n      raw = execFileSync(\"npm\", [\"view\", spec, \"--json\", \"dist.attestations\"], {\n        encoding: \"utf8\",\n        stdio: [\"ignore\", \"pipe\", \"pipe\"],\n      });\n    } catch {\n      process.exit(1);\n    }\n    raw = String(raw || \"\").trim();\n    if (!raw || raw === \"undefined\" || raw === \"null\") process.exit(1);\n    let v;\n    try { v = JSON.parse(raw); } catch { process.exit(1); }\n    if (!v || typeof v !== \"object\" || Array.isArray(v)) process.exit(1);\n    const pred = v.provenance && typeof v.provenance.predicateType === \"string\"\n      ? v.provenance.predicateType\n      : \"\";\n    if (!pred) process.exit(1);\n    const url = typeof v.url === \"string\" ? v.url : \"\";\n    process.stdout.write(url || pred);\n  '\n}\n\necho \"Checking whether ${SPEC} is already published...\"\nVIEW_ERR=\"$(mktemp)\"\nif npm view \"${SPEC}\" version >\"$VIEW_ERR\" 2>&1; then\n  rm -f \"$VIEW_ERR\"\n  echo \"::notice::${SPEC} is already on npm - skipping publish (idempotent re-run).\"\n  URL=\"$(provenance_url \"${SPEC}\" || true)\"\n  if [ -n \"$URL\" ]; then\n    echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n  else\n    echo \"::warning::${SPEC} is already live without provenance attestations. Skip does not make this a provenance-bearing release; a re-run cannot attach provenance. Next: deprecate ${SPEC} and publish a new version with working OIDC.\"\n  fi\nelse\n  echo \"npm view ${SPEC} version failed:\"\n  cat \"$VIEW_ERR\"\n  if grep -q 'E404' \"$VIEW_ERR\"; then\n    echo \"${SPEC} not found on the registry (E404) - publishing.\"\n  else\n    echo \"::warning::npm view ${SPEC} failed with a non-E404 error (not a confirmed miss); fail-open to publish. Publish's own exit code governs from here.\"\n  fi\n  rm -f \"$VIEW_ERR\"\n  npm publish --provenance --access public\n  max=5\n  URL=\"\"\n  for attempt in $(seq 1 \"$max\"); do\n    URL=\"$(provenance_url \"${SPEC}\" || true)\"\n    if [ -n \"$URL\" ]; then\n      echo \"::notice::${SPEC} provenance attestation: ${URL}\"\n      break\n    fi\n    if [ \"$attempt\" -lt \"$max\" ]; then\n      wait_s=$((attempt * 5))\n      echo \"::warning::${SPEC} has no provenance attestation yet (attempt ${attempt}/${max}) — sleeping ${wait_s}s (registry lag)\"\n      sleep \"$wait_s\"\n    fi\n  done\n  if [ -z \"$URL\" ]; then\n    echo \"::error::${SPEC} published but registry has no provenance attestation after ${max} probes. Trusted-publisher/OIDC likely misconfigured; the tarball is live unsigned. Provenance cannot be attached after the fact. Next: npm deprecate ${SPEC} and cut a new version after fixing OIDC.\"\n    exit 1\n  fi\nfi\n"
+          "programs": [
+            "1",
+            "attempt",
+            "cat",
+            "echo",
+            "grep",
+            "mktemp",
+            "node",
+            "npm",
+            "provenance_url",
+            "rm",
+            "seq",
+            "sleep"
+          ],
+          "step": "Publish if not already on the registry"
         },
         {
           "job": "publish",
-          "step": "Pack tarballs and attach to GitHub Release",
-          "text": "mkdir -p dist-tarballs\nfor dir in packages/schema packages/export-ai-rpg packages/export-unreal packages/export-godot packages/renderer-2d packages/editor; do\n  (cd \"$dir\" && npm pack --pack-destination \"$GITHUB_WORKSPACE/dist-tarballs\")\ndone\nls -la dist-tarballs\ngh release upload \"${GITHUB_REF_NAME}\" dist-tarballs/*.tgz --clobber\n"
+          "programs": [
+            "cd",
+            "gh",
+            "ls",
+            "mkdir",
+            "npm"
+          ],
+          "step": "Pack tarballs and attach to GitHub Release"
         }
       ],
       "elsewhere": [],
@@ -11356,6 +11528,30 @@
         {
           "job": "publish",
           "path": "package.json"
+        },
+        {
+          "job": "publish",
+          "path": "packages/editor/package.json"
+        },
+        {
+          "job": "publish",
+          "path": "packages/export-ai-rpg/package.json"
+        },
+        {
+          "job": "publish",
+          "path": "packages/export-godot/package.json"
+        },
+        {
+          "job": "publish",
+          "path": "packages/export-unreal/package.json"
+        },
+        {
+          "job": "publish",
+          "path": "packages/renderer-2d/package.json"
+        },
+        {
+          "job": "publish",
+          "path": "packages/schema/package.json"
         },
         {
           "job": "publish",
@@ -11985,7 +12181,33 @@
         "opensPullRequests": false,
         "packages": [
           {
-            "chosenBy": "run",
+            "dir": "packages/editor",
+            "name": "@world-forge/editor",
+            "registry": "npm"
+          },
+          {
+            "dir": "packages/export-ai-rpg",
+            "name": "@world-forge/export-ai-rpg",
+            "registry": "npm"
+          },
+          {
+            "dir": "packages/export-godot",
+            "name": "@world-forge/export-godot",
+            "registry": "npm"
+          },
+          {
+            "dir": "packages/export-unreal",
+            "name": "@world-forge/export-unreal",
+            "registry": "npm"
+          },
+          {
+            "dir": "packages/renderer-2d",
+            "name": "@world-forge/renderer-2d",
+            "registry": "npm"
+          },
+          {
+            "dir": "packages/schema",
+            "name": "@world-forge/schema",
             "registry": "npm"
           }
         ],
@@ -12011,6 +12233,58 @@
         "actions/upload-artifact"
       ],
       "usesWorkflowToken": true
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "entry": "packages/export-ai-rpg/src/index.ts",
+      "file": "packages/export-ai-rpg/package.json",
+      "kind": "package",
+      "landings": [],
+      "mentions": [],
+      "name": "@world-forge/export-ai-rpg",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "export-ai-rpg",
+          "depth": 0,
+          "files": 31
+        },
+        {
+          "boundary": "schema",
+          "depth": 2,
+          "enters": {
+            "file": "packages/schema/src/index.ts",
+            "from": "packages/export-ai-rpg/src/convert-build-catalog.ts"
+          },
+          "files": 24
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "packages/export-ai-rpg/src/index.ts",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
     },
     {
       "checksCount": 0,
@@ -12043,6 +12317,58 @@
       "runs": [
         {
           "path": "packages/export-ai-rpg/src/cli.ts",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "entry": "packages/export-godot/src/index.ts",
+      "file": "packages/export-godot/package.json",
+      "kind": "package",
+      "landings": [],
+      "mentions": [],
+      "name": "@world-forge/export-godot",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "export-godot",
+          "depth": 0,
+          "files": 28
+        },
+        {
+          "boundary": "schema",
+          "depth": 2,
+          "enters": {
+            "file": "packages/schema/src/index.ts",
+            "from": "packages/export-godot/src/convert-assets.ts"
+          },
+          "files": 24
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "packages/export-godot/src/index.ts",
           "runKind": "executes"
         }
       ],
@@ -12118,6 +12444,70 @@
       "checksCount": 0,
       "commands": [],
       "elsewhere": [],
+      "entry": "packages/export-unreal/src/index.ts",
+      "file": "packages/export-unreal/package.json",
+      "kind": "package",
+      "landings": [],
+      "mentions": [],
+      "name": "@world-forge/export-unreal",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "export-unreal",
+          "depth": 0,
+          "files": 22
+        },
+        {
+          "boundary": "schema",
+          "depth": 2,
+          "enters": {
+            "file": "packages/schema/src/index.ts",
+            "from": "packages/export-unreal/src/convert-connections.ts"
+          },
+          "files": 24
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "packages/export-unreal/src/diff.ts",
+          "runKind": "executes"
+        },
+        {
+          "path": "packages/export-unreal/src/index.ts",
+          "runKind": "executes"
+        },
+        {
+          "path": "packages/export-unreal/src/signing.ts",
+          "runKind": "executes"
+        },
+        {
+          "path": "packages/export-unreal/src/summary.ts",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 4,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
       "file": "packages/export-unreal/package.json",
       "kind": "command",
       "landings": [],
@@ -12145,6 +12535,101 @@
       "runs": [
         {
           "path": "packages/export-unreal/src/cli.ts",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "entry": "packages/renderer-2d/src/index.ts",
+      "file": "packages/renderer-2d/package.json",
+      "kind": "package",
+      "landings": [],
+      "mentions": [],
+      "name": "@world-forge/renderer-2d",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "renderer-2d",
+          "depth": 0,
+          "files": 11
+        },
+        {
+          "boundary": "schema",
+          "depth": 2,
+          "enters": {
+            "file": "packages/schema/src/index.ts",
+            "from": "packages/renderer-2d/src/connection-renderer.ts"
+          },
+          "files": 24
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "packages/renderer-2d/src/index.ts",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "entry": "packages/schema/src/index.ts",
+      "file": "packages/schema/package.json",
+      "kind": "package",
+      "landings": [],
+      "mentions": [],
+      "name": "@world-forge/schema",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "schema",
+          "depth": 0,
+          "files": 24
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "packages/schema/src/index.ts",
           "runKind": "executes"
         }
       ],
@@ -13145,6 +13630,15 @@
     {
       "readers": [
         {
+          "by": ".github/workflows/release.yml"
+        }
+      ],
+      "target": "packages/editor/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "dogfood/__tests__/vitest-include-floor.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -13370,6 +13864,9 @@
     {
       "readers": [
         {
+          "by": ".github/workflows/release.yml"
+        },
+        {
           "by": "packages/export-ai-rpg/src/__tests__/engine-deps-3x.test.ts",
           "call": "readFileSync",
           "confidence": "ast",
@@ -13554,6 +14051,15 @@
     {
       "readers": [
         {
+          "by": ".github/workflows/release.yml"
+        }
+      ],
+      "target": "packages/export-godot/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
@@ -13565,6 +14071,15 @@
         }
       ],
       "target": "packages/export-unreal",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/release.yml"
+        }
+      ],
+      "target": "packages/export-unreal/package.json",
       "writers": []
     },
     {
@@ -13616,6 +14131,15 @@
     {
       "readers": [
         {
+          "by": ".github/workflows/release.yml"
+        }
+      ],
+      "target": "packages/renderer-2d/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "package-lock.json",
           "call": "literal",
           "confidence": "text"
@@ -13627,6 +14151,15 @@
         }
       ],
       "target": "packages/schema",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/release.yml"
+        }
+      ],
+      "target": "packages/schema/package.json",
       "writers": []
     },
     {

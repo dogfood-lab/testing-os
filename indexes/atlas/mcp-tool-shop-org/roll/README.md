@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 936fb0a.
 
 ## What this is
 
-5 parts, mostly TypeScript (57 files) and JavaScript (1). Work enters through 7 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run roll, roll-bridge and roll-mcp. People import @mcptoolshop/roll.
+5 parts, mostly TypeScript (57 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 7 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run roll, roll-bridge and roll-mcp. People import @mcptoolshop/roll.
 
 ## What changed since 2026-09-24 (97f0f4f)
 

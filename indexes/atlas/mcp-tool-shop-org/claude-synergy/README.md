@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 6d91d8c.
 
 ## What this is
 
-10 parts, mostly Markdown (1273 files); code in TypeScript (83), JavaScript (9) and Python (2). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. People run claude-synergy-mcp and hk.
+10 parts, mostly Markdown (1273 files) and JSON data (317); code in TypeScript (83), JavaScript (9), CSS (2), Python (2), Astro (1) and shell (1). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. It deploys a site to GitHub Pages. People run claude-synergy-mcp and hk.
 
 ## What changed since 2026-09-24 (fb90b80)
 
@@ -71,6 +71,8 @@ Window: 180 days; a pair counts from 3 shared commits, since 0 source files reac
 
 test/smoke/full-corpus.test.ts runs in no workflow.
 
+verify.sh runs in no workflow.
+
 ## Written but never read
 
 - **dataset/changelog-actions/v1/eval-report-run1.json** is written by scripts/eval-cs-actions.mjs and read by nothing else in this repository.
@@ -98,7 +100,7 @@ People write .github/, docs/, products/, the repository root, site/ and synergie
 
 ## Where to start
 
-src/mcp-server.ts → src/db.ts → src/query.ts → src/hybrid.ts → src/fetch.ts → src/ingest.ts → src/embed.ts
+src/mcp-server.ts → src/db.ts → src/errors.ts
 
 Read those in order to follow one run of claude-synergy-mcp end to end. This path follows claude-synergy-mcp (a command people run) from its entry, since Tests runs only tests and checks.
 

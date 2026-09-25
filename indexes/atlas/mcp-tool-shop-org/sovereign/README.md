@@ -4,11 +4,12 @@ Mapped at 2026-09-25 from commit b5f1ba5.
 
 ## What this is
 
-8 parts, mostly JavaScript (52 files) and TypeScript (2). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run sovereign. People import @mcptoolshop/sovereign.
+8 parts, mostly JavaScript (52 files), HTML (39), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sovereign. People import @mcptoolshop/sovereign.
 
 ## What changed since 2026-09-25 (87de092)
 
-Nothing structural changed since 2026-09-25; no file changed.
+- test now imports tools.
+- No file changed.
 
 ## What comes in
 
@@ -21,6 +22,7 @@ Nothing structural changed since 2026-09-25; no file changed.
 ## What happens through CI
 
 1. The workflow runs bin/sovereign.js in bin and test/determinism.test.mjs, test/playability.test.mjs and test/smoke.test.mjs in test.
+2. That reaches tools (1 file).
 
 ## Who reads the results
 
@@ -28,7 +30,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs bin/sovereign.js, test/determinism.test.mjs, test/playability.test.mjs and 1 more, publishes to npm, and creates a GitHub release.
+**Release** runs bin/sovereign.js, test/determinism.test.mjs, test/playability.test.mjs and 1 more, reaches tools, publishes to npm, and creates a GitHub release.
 
 **Deploy GitHub Pages** runs site/astro.config.mjs and site/src/, writes to site/dist, which is not tracked, and deploys the site.
 
@@ -39,6 +41,7 @@ CI writes nothing this map can see.
 ## What breaks what
 
 - **bin** is imported by no other part and sits on the path of 4 doors.
+- **tools** is imported only from tests, by 1 part (test), and sits on the path of 2 doors.
 - **test** is imported by no other part and sits on the path of 2 doors.
 
 ## What tends to change together
@@ -49,9 +52,11 @@ Window: 180 days; a pair counts from 3 shared commits, since 0 source files reac
 
 ## What no test touches
 
-- **tools** is imported by no test.
+Every code part is touched by at least one test.
 
 bin is touched by tests only through a spawn: a test runs its files as a child process.
+
+verify.sh runs in no workflow.
 
 ## Written but never read
 
@@ -75,7 +80,6 @@ Start at bin/sovereign.js to follow one run of sovereign end to end. This path f
 
 ## What this map cannot see
 
-- 1 import could not be resolved: `test/determinism.test.mjs` imports a path built at run time.
 - 10 writes and 9 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
 - 1 read goes to a path its caller passes, not to this repository.

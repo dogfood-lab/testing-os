@@ -1919,10 +1919,10 @@
       "unresolvedSites": 1
     },
     {
-      "dynamicReads": 4,
+      "dynamicReads": 1,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 3,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -6480,6 +6480,9 @@
         },
         {
           "hash": "0614c54da11ed17a5c01809003c5db950f6937d4bdfa20c115c37db54d405a51",
+          "importsFiles": [
+            "lib/captions.js"
+          ],
           "path": "projects/salt-road/inputs/prompts/build-training-package.mjs"
         },
         {
@@ -13667,30 +13670,25 @@
       "origin": "mixed",
       "outsidePlaces": [
         {
-          "reads": 3,
+          "reads": 6,
           "where": [
             "caller"
           ],
           "writes": 7
         }
       ],
-      "outsideReads": 3,
+      "outsideReads": 6,
       "outsideWrites": 7,
       "role": "config",
       "testedBy": 2,
       "unresolvedNamed": [
-        {
-          "path": "projects/salt-road/inputs/prompts/build-training-package.mjs",
-          "specifier": null,
-          "why": "dynamic"
-        },
         {
           "path": "projects/salt-road/inputs/prompts/wave-runner.py",
           "specifier": null,
           "why": "dynamic"
         }
       ],
-      "unresolvedSites": 2
+      "unresolvedSites": 1
     },
     {
       "dynamicReads": 0,
@@ -13784,7 +13782,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -13858,10 +13857,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 12,
+      "dynamicReads": 11,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 20,
+      "dynamicWrites": 16,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -15184,11 +15183,19 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 19,
+          "reads": 20,
           "where": [
             "caller"
           ],
-          "writes": 6
+          "writes": 10
+        },
+        {
+          "reads": 2,
+          "where": [
+            "caller",
+            "cwd"
+          ],
+          "writes": 12
         },
         {
           "reads": 1,
@@ -15198,8 +15205,8 @@
           "writes": 0
         }
       ],
-      "outsideReads": 20,
-      "outsideWrites": 6,
+      "outsideReads": 23,
+      "outsideWrites": 22,
       "role": "code",
       "testedBy": 19,
       "unresolvedSites": 0
@@ -15295,10 +15302,30 @@
         },
         {
           "hash": "22d1a7e5cf637cc8032b29cfd10d71d1f0aa5d85eede6072bf4171a8e3d5fd16",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/layouts/SiteLayout.astro",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/layouts/SiteLayout.astro",
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/404.astro"
         },
         {
           "hash": "851c407daae29e28aa8948da9f068bbed551921b5a1855e0fd3ff460d03a511d",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/layouts/SiteLayout.astro",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/layouts/SiteLayout.astro",
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -16515,60 +16542,78 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "verify",
-          "step": "3",
-          "text": "npm ci --ignore-scripts"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "verify",
-          "step": "Smoke test — help",
-          "text": "node bin/sdlab.js --help"
+          "programs": [
+            "node"
+          ],
+          "step": "Smoke test — help"
         },
         {
           "job": "verify",
-          "step": "Smoke test — doctor",
-          "text": "node bin/sdlab.js project doctor --project star-freight"
+          "programs": [
+            "node"
+          ],
+          "step": "Smoke test — doctor"
         },
         {
           "job": "verify",
-          "step": "Smoke test — snapshot dry-run",
-          "text": "node bin/sdlab.js snapshot create --dry-run --project star-freight"
+          "programs": [
+            "node"
+          ],
+          "step": "Smoke test — snapshot dry-run"
         },
         {
           "job": "verify",
-          "step": "Smoke test — eligibility",
-          "text": "node bin/sdlab.js eligibility audit --project star-freight"
+          "programs": [
+            "node"
+          ],
+          "step": "Smoke test — eligibility"
         },
         {
           "job": "verify",
-          "step": "Smoke test — training profiles",
-          "text": "node bin/sdlab.js training-profile list --project star-freight"
+          "programs": [
+            "node"
+          ],
+          "step": "Smoke test — training profiles"
         },
         {
           "job": "verify",
-          "step": "Verify script",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify script"
         },
         {
           "job": "verify",
-          "step": "Tests",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Tests"
         },
         {
           "job": "verify",
-          "step": "Coverage (Node 22 only)",
-          "text": "npm run coverage"
+          "programs": [
+            "npm"
+          ],
+          "step": "Coverage (Node 22 only)"
         }
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "landings": [
-        "projects"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "CI",
       "permissions": [
@@ -16605,203 +16650,7 @@
           "files": 33
         }
       ],
-      "readers": [
-        {
-          "by": "lib/paths.js",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_build.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_build.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/outputs/synthetic/phase2/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/outputs/synthetic/phase2b/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-review-page.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-review-page.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-styleset-records.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/populate-canon-subjects.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/populate-canon-subjects.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/prompt-foundry.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/prompt-foundry.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/wave-runner.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/wave-runner.py",
-          "call": "open",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "scripts/init.js",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "tests/cli-scripts/init-generate-path.test.js",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "projects"
-        },
-        {
-          "by": "tests/lib-pipeline/flux-profiles.test.js",
-          "call": "readFile",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "projects"
-        },
-        {
-          "by": "tests/lib-runtime/paths-workspace-root.test.js",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "projects"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "job": "verify",
@@ -17062,13 +16911,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -17086,7 +16939,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 7
         }
       ],
       "readers": [],
@@ -17148,40 +17001,51 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG=\"${{ github.event.release.tag_name }}\"\nif [[ \"v$PKG_VERSION\" != \"$TAG\" ]]; then\n  echo \"::error::Tag $TAG does not match package.json version v$PKG_VERSION\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "publish",
-          "step": "3",
-          "text": "npm ci --ignore-scripts"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "publish",
-          "step": "Verify",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify"
         },
         {
           "job": "publish",
-          "step": "Tests",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Tests"
         },
         {
           "job": "publish",
-          "step": "Upgrade npm for OIDC trusted publishing (>= 11.5.1)",
-          "text": "npm install -g npm@latest"
+          "programs": [
+            "npm"
+          ],
+          "step": "Upgrade npm for OIDC trusted publishing (>= 11.5.1)"
         },
         {
           "job": "publish",
-          "step": "7",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "7"
         }
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish.yml",
-      "landings": [
-        "projects"
-      ],
+      "landings": [],
       "mentions": [
         {
           "job": "publish",
@@ -17224,203 +17088,7 @@
           "files": 33
         }
       ],
-      "readers": [
-        {
-          "by": "lib/paths.js",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_build.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_build.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/outputs/synthetic/phase2/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/outputs/synthetic/phase2b/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-review-page.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-review-page.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-styleset-records.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/populate-canon-subjects.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/populate-canon-subjects.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/prompt-foundry.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/prompt-foundry.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/wave-runner.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/wave-runner.py",
-          "call": "open",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "scripts/init.js",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "tests/cli-scripts/init-generate-path.test.js",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "projects"
-        },
-        {
-          "by": "tests/lib-pipeline/flux-profiles.test.js",
-          "call": "readFile",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "projects"
-        },
-        {
-          "by": "tests/lib-runtime/paths-workspace-root.test.js",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "projects"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "job": "publish",
@@ -17660,9 +17328,7 @@
       "elsewhere": [],
       "file": "package.json",
       "kind": "command",
-      "landings": [
-        "projects"
-      ],
+      "landings": [],
       "mentions": [],
       "name": "sdlab",
       "permissions": [],
@@ -17692,203 +17358,7 @@
           "files": 32
         }
       ],
-      "readers": [
-        {
-          "by": "lib/paths.js",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_build.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_build.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
-          "call": "import",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/outputs/synthetic/phase2/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "projects"
-        },
-        {
-          "by": "projects/ai-eye-test/outputs/synthetic/phase2b/manifest.json",
-          "call": "configuration",
-          "confidence": "config",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-review-page.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-review-page.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-styleset-records.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/populate-canon-subjects.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/populate-canon-subjects.mjs",
-          "call": "readdir",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/prompt-foundry.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/prompt-foundry.mjs",
-          "call": "readFile",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/wave-runner.py",
-          "call": "literal",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "projects/salt-road/inputs/prompts/wave-runner.py",
-          "call": "open",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "scripts/init.js",
-          "call": "existsSync",
-          "confidence": "ast",
-          "target": "projects"
-        },
-        {
-          "by": "tests/cli-scripts/init-generate-path.test.js",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "projects"
-        },
-        {
-          "by": "tests/lib-pipeline/flux-profiles.test.js",
-          "call": "readFile",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "projects"
-        },
-        {
-          "by": "tests/lib-runtime/paths-workspace-root.test.js",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true,
-          "target": "projects"
-        }
-      ],
+      "readers": [],
       "runs": [
         {
           "path": "bin/sdlab.js",
@@ -17923,6 +17393,11 @@
       "from": "bin",
       "kind": "file",
       "to": "scripts"
+    },
+    {
+      "from": "projects",
+      "kind": "file",
+      "to": "lib"
     },
     {
       "from": "scripts",
@@ -18035,12 +17510,12 @@
     {
       "readers": [
         {
-          "by": "projects/salt-road/inputs/prompts/build-training-package.mjs",
+          "by": "projects/facet-assets/eval/consistency-preregistration.json",
           "call": "literal",
-          "confidence": "ast"
+          "confidence": "text"
         }
       ],
-      "target": "lib/captions.js",
+      "target": "docs/asset-lane-eval-preregistration.md",
       "writers": []
     },
     {
@@ -18078,11 +17553,6 @@
           "confidence": "ast"
         },
         {
-          "by": "scripts/init.js",
-          "call": "existsSync",
-          "confidence": "ast"
-        },
-        {
           "by": "tests/cli-scripts/init-generate-path.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -18090,12 +17560,7 @@
         }
       ],
       "target": "projects",
-      "writers": [
-        {
-          "by": "scripts/init.js",
-          "confidence": "ast"
-        }
-      ]
+      "writers": []
     },
     {
       "readers": [
@@ -18121,53 +17586,12 @@
     {
       "readers": [
         {
-          "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
-          "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2.py",
-          "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_build.py",
-          "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
-          "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
-          "call": "import",
+          "by": "projects/ai-eye-test/compositor/compositor.py",
+          "call": "read_bytes",
           "confidence": "ast"
         }
       ],
-      "target": "projects/ai-eye-test/compositor/compositor.py",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_build.py",
-          "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2_noshadow_build.py",
-          "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "projects/ai-eye-test/compositor/phase2b_build.py",
-          "call": "import",
-          "confidence": "ast"
-        }
-      ],
-      "target": "projects/ai-eye-test/compositor/phase2.py",
+      "target": "projects/ai-eye-test/outputs/candidates/hero_green_apple_v1.png",
       "writers": []
     },
     {
@@ -18231,7 +17655,12 @@
         }
       ],
       "target": "projects/ai-eye-test/outputs/synthetic/phase1",
-      "writers": []
+      "writers": [
+        {
+          "by": "projects/ai-eye-test/compositor/compositor.py",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [],
@@ -20252,16 +19681,6 @@
       "writers": []
     },
     {
-      "readers": [],
-      "target": "projects/salt-road/inbox/generated/set-v2-2026-07-30",
-      "writers": [
-        {
-          "by": "projects/salt-road/inputs/prompts/wave-runner.py",
-          "confidence": "ast"
-        }
-      ]
-    },
-    {
       "readers": [
         {
           "by": "projects/salt-road/inputs/prompts/ingest-wave.mjs",
@@ -20287,7 +19706,12 @@
         }
       ],
       "target": "projects/salt-road/inbox/generated/set-v2-2026-07-30/receipts.jsonl",
-      "writers": []
+      "writers": [
+        {
+          "by": "projects/salt-road/inputs/prompts/wave-runner.py",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [],

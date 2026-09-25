@@ -234,7 +234,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 1,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -331,12 +331,13 @@
         {
           "reads": 0,
           "where": [
-            "caller"
+            "caller",
+            "cwd:.trail/"
           ],
-          "writes": 3
+          "writes": 5
         }
       ],
-      "outsideWrites": 3,
+      "outsideWrites": 5,
       "role": "code",
       "testedBy": 1,
       "unresolvedSites": 0
@@ -640,13 +641,14 @@
       "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [
         "src/escape_the_valley/cli.py"
       ],
       "externals": 0,
       "files": [
         {
+          "constantOnly": true,
           "hash": "cccb98a069d170411348314de904305a47b5a62db86114bcd1b83b0f588d44cb",
           "path": "src/escape_the_valley/__init__.py"
         },
@@ -3898,21 +3900,15 @@
       "origin": "mixed",
       "outsidePlaces": [
         {
-          "reads": 1,
+          "reads": 12,
           "where": [
             "caller"
           ],
-          "writes": 0
-        },
-        {
-          "reads": 1,
-          "where": [
-            "cwd:.trail/"
-          ],
-          "writes": 0
+          "writes": 2
         }
       ],
-      "outsideReads": 2,
+      "outsideReads": 12,
+      "outsideWrites": 2,
       "role": "code",
       "testedBy": 23,
       "unresolvedSites": 0
@@ -4515,28 +4511,39 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "pip install -e \".[dev,xrpl]\""
+          "programs": [
+            "pip"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Lint",
-          "text": "ruff check src/ tests/"
+          "programs": [
+            "ruff"
+          ],
+          "step": "Lint"
         },
         {
           "job": "test",
-          "step": "Dependency audit",
-          "text": "pip install pip-audit\npip-audit || true\n"
+          "programs": [
+            "pip",
+            "pip-audit"
+          ],
+          "step": "Dependency audit"
         },
         {
           "job": "test",
-          "step": "Test",
-          "text": "pytest --tb=short -q"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Test"
         }
       ],
       "elsewhere": [],
@@ -4641,13 +4648,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -4727,8 +4738,10 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Build sdist + wheel",
-          "text": "python -m pip install --upgrade build\npython -m build\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Build sdist + wheel"
         }
       ],
       "elsewhere": [],
@@ -4804,33 +4817,49 @@
       "commands": [
         {
           "job": "build",
-          "step": "2",
-          "text": "uv python install 3.12"
+          "programs": [
+            "uv"
+          ],
+          "step": "2"
         },
         {
           "job": "build",
-          "step": "3",
-          "text": "uv venv"
+          "programs": [
+            "uv"
+          ],
+          "step": "3"
         },
         {
           "job": "build",
-          "step": "Install dependencies + PyInstaller",
-          "text": "uv pip install . \"pyinstaller>=6.9.0\""
+          "programs": [
+            "uv"
+          ],
+          "step": "Install dependencies + PyInstaller"
         },
         {
           "job": "build",
-          "step": "Build binary",
-          "text": "REF_NAME=\"$REF_NAME_RAW\"\nVERSION=${REF_NAME#v}\n# F-a4d8291c: PyInstaller's --add-data separator is OS-specific (`;`\n# on Windows, `:` elsewhere) -- this step runs under bash on every\n# matrix leg via `shell: bash`, but PyInstaller itself is a native\n# Windows Python process on windows-latest and parses the\n# SRC<sep>DEST spec using the target OS's separator, not the\n# invoking shell's.\nif [ \"${{ runner.os }}\" = \"Windows\" ]; then\n  DATA_SEP=\";\"\nelse\n  DATA_SEP=\":\"\nfi\n# --no-sync: build from the base env created by `uv pip install .`\n# above; do NOT re-resolve the project (which would drag in optional\n# extras like [voice] -> voice-soundboard[kokoro] -> onnxruntime and\n# bloat the binary). The binary ships the base game only; voice is\n# pip-install-only via `escape-the-valley[voice]`.\n#\n# F-a4d8291c: --add-data bundles the two non-Python files the game\n# needs at runtime that PyInstaller cannot discover on its own:\n# tui.tcss (TrailApp.CSS_PATH) and data/event_skeletons.json (~200\n# of the game's ~260 events -- event_loader.load_json_events()\n# silently returns [] if this is missing, so an unbundled JSON\n# ships a binary that starts cleanly and plays a quarter-game).\nuv run --no-sync pyinstaller --onefile --name \"${{ env.TOOL_NAME }}\" --console \\\n  --collect-submodules rich \\\n  --collect-submodules textual \\\n  --collect-data textual \\\n  --add-data \"src/escape_the_valley/tui.tcss${DATA_SEP}escape_the_valley\" \\\n  --add-data \"src/escape_the_valley/data/event_skeletons.json${DATA_SEP}escape_the_valley/data\" \\\n  \"${{ env.ENTRYPOINT }}\"\nOUTNAME=\"${{ env.TOOL_NAME }}-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\nmv \"dist/${{ env.TOOL_NAME }}${{ matrix.ext }}\" \"dist/${OUTNAME}\"\necho \"ASSET_NAME=${OUTNAME}\" >> \"$GITHUB_ENV\"\n"
+          "programs": [
+            "echo",
+            "mv",
+            "uv"
+          ],
+          "step": "Build binary"
         },
         {
           "job": "build",
-          "step": "Smoke test binary",
-          "text": "uv run --no-sync python scripts/smoke_test_binary.py \"dist/$ASSET_NAME\""
+          "programs": [
+            "uv"
+          ],
+          "step": "Smoke test binary"
         },
         {
           "job": "release",
-          "step": "Generate checksums",
-          "text": "REF_NAME=\"$REF_NAME_RAW\"\nVERSION=${REF_NAME#v}\ncd artifacts\nsha256sum * > \"checksums-${VERSION}.txt\"\ncat \"checksums-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         }
       ],
       "elsewhere": [],
@@ -4920,63 +4949,98 @@
       "commands": [
         {
           "job": "gate/test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "gate/test",
-          "step": "Install dependencies",
-          "text": "pip install -e \".[dev,xrpl]\""
+          "programs": [
+            "pip"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "gate/test",
-          "step": "Lint",
-          "text": "ruff check src/ tests/"
+          "programs": [
+            "ruff"
+          ],
+          "step": "Lint"
         },
         {
           "job": "gate/test",
-          "step": "Dependency audit",
-          "text": "pip install pip-audit\npip-audit || true\n"
+          "programs": [
+            "pip",
+            "pip-audit"
+          ],
+          "step": "Dependency audit"
         },
         {
           "job": "gate/test",
-          "step": "Test",
-          "text": "pytest --tb=short -q"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Test"
         },
         {
           "job": "release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22 ships npm 10.9, which signs Sigstore provenance but cannot\n# negotiate the OIDC auth path for trusted publishing (the PUT returns\n# a misleading 404 \"not in this registry\"). An in-place\n# `npm install -g npm@latest` races on the bundled npm's arborist\n# rebuild and breaks irrecoverably; a sandbox install + PATH shadow\n# avoids the race. See memory: npm-115-required-for-oidc.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} -> ${TAG_VERSION} | package.json: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "Verify tag matches pyproject.toml version",
-          "text": "PY_VERSION=$(python3 -c \"import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"pyproject.toml: ${PY_VERSION}\"\nif [ \"${PY_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match pyproject.toml version ${PY_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "python3"
+          ],
+          "step": "Verify tag matches pyproject.toml version"
         },
         {
           "job": "release",
-          "step": "Install dependencies",
-          "text": "npm install --no-audit --no-fund"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (verify tarball shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify tarball shape)"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release (idempotent)",
-          "text": "# Extract the `## [<version>] - ...` section from CHANGELOG.md as notes;\n# fall back to the tag name if the section is missing.\nVERSION=\"${GITHUB_REF_NAME#v}\"\nNOTES_FILE=\"$(mktemp)\"\n# Match the heading literally with index() — a dynamic regex with\n# escaped brackets (\\[ \\]) is treated as a character class by some awk\n# variants, which silently yields empty notes.\nawk -v hdr=\"## [${VERSION}]\" '\n  index($0, hdr) == 1 {capture=1; next}\n  capture && /^## / {exit}\n  capture {print}\n' CHANGELOG.md > \"${NOTES_FILE}\"\n\nif [ ! -s \"${NOTES_FILE}\" ]; then\n  echo \"Escape the Valley ${GITHUB_REF_NAME}\" > \"${NOTES_FILE}\"\n  echo \"\" >> \"${NOTES_FILE}\"\n  echo \"See CHANGELOG.md for details.\" >> \"${NOTES_FILE}\"\nfi\n\n# Idempotent: skip creation if the release already exists (re-pushed\n# tag / workflow_dispatch re-run). Publishing the release lets the\n# downstream workflow_run chain (publish.yml + release-binaries.yml) run.\nif gh release view \"${GITHUB_REF_NAME}\" >/dev/null 2>&1; then\n  echo \"Release ${GITHUB_REF_NAME} already exists; skipping create.\"\nelse\n  gh release create \"${GITHUB_REF_NAME}\" \\\n    --title \"Escape the Valley ${GITHUB_REF_NAME}\" \\\n    --notes-file \"${NOTES_FILE}\" \\\n    --verify-tag\nfi\n"
+          "programs": [
+            "1",
+            "awk",
+            "echo",
+            "gh",
+            "mktemp"
+          ],
+          "step": "Create GitHub Release (idempotent)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         }
       ],
       "elsewhere": [],
@@ -5340,7 +5404,8 @@
       "writers": [
         {
           "by": "scripts/yaml_to_json.py",
-          "confidence": "ast"
+          "confidence": "ast",
+          "untrackedInputs": true
         }
       ]
     },

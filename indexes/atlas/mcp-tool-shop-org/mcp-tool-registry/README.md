@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 2bb195f.
 
 ## What this is
 
-13 parts, mostly JavaScript (17 files) and TypeScript (2). Work enters through 5 doors; CI and Operations each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People import @mcptoolshop/mcp-tool-registry.
+13 parts, mostly JavaScript (17 files), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Operations each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People import @mcptoolshop/mcp-tool-registry.
 
 ## What changed since 2026-09-25 (4fd9a95)
 
@@ -54,7 +54,7 @@ Mapped at 2026-09-25 from commit 2bb195f.
 
 - **scripts** is imported by no other part and sits on the path of 3 doors.
 - **tests** is imported by no other part and sits on the path of 2 doors.
-- **dist/registry.index.json** is written by scripts and read by scripts; a hand edit reaches every reader.
+- **dist/registry.index.json** is written by scripts and read by scripts, and by 1 test; a hand edit reaches every reader.
 - **dist/capabilities.json** is written by scripts and read by scripts; a hand edit reaches every reader.
 
 ## What tends to change together

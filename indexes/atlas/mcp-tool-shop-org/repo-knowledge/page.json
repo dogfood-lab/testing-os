@@ -219,7 +219,7 @@
   "changesTogetherWithTests": 0,
   "commit": "4435870bbfdf3726b9faa07e235fe5ce501c027d",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly Markdown (646 files); code in TypeScript (84) and JavaScript (10). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run rk. People import @mcptoolshop/repo-knowledge.",
+  "derived": "11 parts, mostly Markdown (646 files); code in TypeScript (84), JavaScript (10), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run rk. People import @mcptoolshop/repo-knowledge.",
   "doors": [
     {
       "builds": [
@@ -333,7 +333,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -452,7 +452,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:19:58.260Z",
+  "generatedAt": "2026-09-25T16:34:44.915Z",
   "limits": [
     "1 import could not be resolved: `src/mcp/server.ts` imports `zod`, which is not declared.",
     "3 writes and 15 reads use paths built at run time and are not named here.",
@@ -484,7 +484,8 @@
   "startHere": [
     ".github/workflows/ci.yml",
     "src/index.ts",
-    "src/config.ts"
+    "src/sync/publish.ts",
+    "src/db/init.ts"
   ],
   "summary": null,
   "summaryFrom": null,

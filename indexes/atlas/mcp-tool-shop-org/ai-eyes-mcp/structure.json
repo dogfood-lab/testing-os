@@ -204,6 +204,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -684,28 +692,40 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "pip install -e \".[dev]\""
+          "programs": [
+            "pip"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Dependency scan (advisory)",
-          "text": "pip install pip-audit\npip-audit\n"
+          "programs": [
+            "pip",
+            "pip-audit"
+          ],
+          "step": "Dependency scan (advisory)"
         },
         {
           "job": "test",
-          "step": "Verify imports and tool registration",
-          "text": "echo \"[1/3] Import check...\"\npython -c \"from ai_eyes_mcp.server import mcp; from ai_eyes_mcp.engine import SigLIPEngine; print('  imports OK')\"\necho \"[2/3] Tool registration check...\"\npython -c \"\nfrom ai_eyes_mcp import EXPECTED_TOOL_NAMES\nfrom ai_eyes_mcp.server import mcp\nimport asyncio\ntools = asyncio.run(mcp._list_tools())\nnames = {t.name for t in tools}\nassert names == EXPECTED_TOOL_NAMES, f'Expected {EXPECTED_TOOL_NAMES}, got {names}'\nprint(f'  {len(tools)} tools registered OK')\n\"\necho \"[3/3] Engine status check...\"\npython -c \"\nfrom ai_eyes_mcp.engine import SigLIPEngine, assert_cold_status\ns = SigLIPEngine().status()\nassert_cold_status(s)\nprint(f'  engine OK: model={s[\\\"model_id\\\"]}, revision={s[\\\"revision\\\"]}, loaded={s[\\\"loaded\\\"]}')\n\"\n"
+          "programs": [
+            "echo",
+            "python"
+          ],
+          "step": "Verify imports and tool registration"
         },
         {
           "job": "test",
-          "step": "Run CI-safe tests",
-          "text": "pytest -m \"not dogfood\" -v"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run CI-safe tests"
         }
       ],
       "elsewhere": [],
@@ -805,13 +825,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -829,7 +853,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],

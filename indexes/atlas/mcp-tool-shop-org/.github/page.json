@@ -18,8 +18,45 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "Delta dependency audit (.github/actions/delta-audit/action.yml) is a new action other repositories use. It runs .github/actions/delta-audit/delta-audit.mjs.",
+        "subjects": [
+          ".github/actions/delta-audit/action.yml",
+          ".github/actions/delta-audit/delta-audit.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "brand/previews/_tmp_Attestia-Desktop.svg is now written by brand/generate-previews.py.",
+        "subjects": [
+          "brand/previews/_tmp_Attestia-Desktop.svg",
+          "brand/generate-previews.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "brand/previews/_tmp_ConsensusOS.svg is now written by brand/generate-previews.py.",
+        "subjects": [
+          "brand/previews/_tmp_ConsensusOS.svg",
+          "brand/generate-previews.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "brand/previews/_tmp_InControl-Desktop.svg is now written by brand/generate-previews.py.",
+        "subjects": [
+          "brand/previews/_tmp_InControl-Desktop.svg",
+          "brand/generate-previews.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 21 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -27,7 +64,7 @@
       "commit": "f4a52204518a78c45f388d6c70cf7b727a5cc6a6",
       "generatedAt": "2026-09-25T02:07:48.685Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -36,7 +73,7 @@
   "changesTogetherWithTests": 0,
   "commit": "8d8d1d23d1b860bbb3ebb374c74c636f93895777",
   "defaultBranch": "main",
-  "derived": "This is the organization's profile page and the community-health files its repositories inherit. 8 parts, mostly JavaScript (4 files), Python (1) and TypeScript (1). Work enters through 3 doors; the busiest is Org Drift Guard, which reaches 3 parts.",
+  "derived": "This is the organization's profile page and the community-health files its repositories inherit. 8 parts, in JavaScript (4 files), Astro (1 file), CSS (1 file), Python (1 file), TypeScript (1 file) and shell (1 file). Work enters through 4 doors; the busiest is Org Drift Guard, which reaches 3 parts. It deploys a site to GitHub Pages. Other repositories use the Delta dependency audit action.",
   "doors": [
     {
       "checks": [
@@ -81,7 +118,9 @@
       "runs": [],
       "runsCount": 0,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "reads other repositories through the GitHub API"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request touching 8 paths",
@@ -109,7 +148,10 @@
       ],
       "runsCount": 1,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "lints Markdown with markdownlint-cli2",
+        "checks links with lychee"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request touching 3 paths",
@@ -130,7 +172,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 2
+          "files": 4
         }
       ],
       "runs": [
@@ -147,6 +189,35 @@
         "on a push to main touching 2 paths",
         "or by hand"
       ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/actions/delta-audit/action.yml",
+      "id": ".github/actions/delta-audit/action.yml#Delta dependency audit",
+      "kind": "action",
+      "landings": [],
+      "name": "Delta dependency audit",
+      "programs": [
+        "git"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": ".github",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        ".github/actions/delta-audit/delta-audit.mjs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
     }
   ],
   "duplicates": [],
@@ -161,9 +232,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:10:12.843Z",
+  "generatedAt": "2026-09-25T16:20:23.578Z",
   "limits": [
-    "1 write goes to places this repository does not track, so it is not listed as generated.",
+    "12 writes go to places this repository does not track, so they are not listed as generated.",
     "1 write goes to a temporary directory, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],

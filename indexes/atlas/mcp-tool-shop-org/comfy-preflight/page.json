@@ -7,6 +7,17 @@
   ],
   "breaks": [
     {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "tests",
+      "partLabel": "tests",
+      "spawnedBy": [
+        "root"
+      ]
+    },
+    {
       "doors": 3,
       "importedBy": [],
       "importedByTests": [
@@ -32,6 +43,7 @@
         "tools"
       ],
       "target": "tests/fixtures/graphs/",
+      "tests": 1,
       "writers": [
         "tools"
       ]
@@ -47,8 +59,24 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI now also runs tests/.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "tests/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release now also runs tests/.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "tests/"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -56,7 +84,7 @@
       "commit": "93d683ce7e99265b9940fa7cde40ba54d7ce311d",
       "generatedAt": "2026-09-25T09:34:21.074Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -65,7 +93,7 @@
   "changesTogetherWithTests": 0,
   "commit": "855e57c8b5634492409972c2d6c7057767a1da22",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly Python (33 files), JavaScript (2) and TypeScript (2). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. People run comfy-preflight.",
+  "derived": "8 parts, mostly Python (33 files), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run comfy-preflight.",
   "doors": [
     {
       "checks": [
@@ -88,12 +116,18 @@
           "boundary": "src",
           "depth": 0,
           "files": 16
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 14
         }
       ],
       "runs": [
-        "verify.py"
+        "verify.py",
+        "tests/"
       ],
-      "runsCount": 1,
+      "runsCount": 2,
       "runsMore": 0,
       "sends": [],
       "stages": [],
@@ -127,12 +161,18 @@
           "boundary": "src",
           "depth": 0,
           "files": 16
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 14
         }
       ],
       "runs": [
-        "verify.py"
+        "verify.py",
+        "tests/"
       ],
-      "runsCount": 1,
+      "runsCount": 2,
       "runsMore": 0,
       "sends": [
         "publishes to npm and PyPI",
@@ -158,7 +198,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -232,7 +272,13 @@
   "duplicates": [],
   "duplicatesLead": null,
   "duplicatesNote": [],
-  "edges": [],
+  "edges": [
+    {
+      "from": "tests",
+      "fromTests": true,
+      "to": "src"
+    }
+  ],
   "generated": [
     {
       "place": "tests/fixtures/MANIFEST.json",
@@ -247,11 +293,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T10:05:05.933Z",
+  "generatedAt": "2026-09-25T16:28:51.654Z",
   "limits": [
-    "2 imports could not be resolved: `tests/test_packaging.py` imports a path built at run time; `tests/test_packaging.py` imports a path built at run time.",
-    "1 write and 4 reads use paths built at run time and are not named here.",
-    "4 writes go to a path their caller passes, not to this repository.",
+    "2 imports could not be resolved: `tests/test_packaging.py` imports a path built at run time, twice.",
+    "1 write and 3 reads use paths built at run time and are not named here.",
+    "4 writes and 5 reads go to a path their caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -269,9 +315,16 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/comfy-preflight",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
-  "startHere": [],
-  "startNote": "CI runs no code this map can follow; it only checks code, so there is no path of files to read in order.",
+  "startDoor": "pyproject.toml#comfy-preflight",
+  "startHere": [
+    "src/comfy_preflight/cli.py",
+    "src/comfy_preflight/graph.py",
+    "src/comfy_preflight/register.py",
+    "src/comfy_preflight/checks/c1_link_topology.py",
+    "src/comfy_preflight/aggregate.py",
+    "src/comfy_preflight/__init__.py"
+  ],
+  "startReason": "This path follows comfy-preflight (a command people run, from pyproject.toml) from its entry, since CI runs only tests, scripts that import no code here and checks.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 85,
@@ -296,8 +349,6 @@
       "testedBy": 0
     }
   ],
-  "untestedNote": [
-    "13 test files run in no workflow: tests/test_aggregate.py, tests/test_c1_link_topology.py, tests/test_c2_register.py and 10 mores."
-  ],
+  "untestedNote": [],
   "written": 2
 }

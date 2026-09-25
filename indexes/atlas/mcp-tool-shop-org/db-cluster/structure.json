@@ -830,7 +830,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -1264,6 +1265,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -5774,33 +5783,45 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.15.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "3",
-          "text": "npm ci --ignore-scripts"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "test",
-          "step": "4",
-          "text": "npm rebuild @ast-grep/cli"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "test",
-          "step": "5",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "test",
-          "step": "6",
-          "text": "npm run lint"
+          "programs": [
+            "npm"
+          ],
+          "step": "6"
         },
         {
           "job": "test",
-          "step": "7",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "7"
         }
       ],
       "elsewhere": [],
@@ -6803,8 +6824,11 @@
       "commands": [
         {
           "job": "docker",
-          "step": "Resolve version",
-          "text": "if [ -n \"${{ inputs.version }}\" ]; then\n  VER=\"${{ inputs.version }}\"\n  echo \"Source: workflow_dispatch input\"\nelif [ \"${GITHUB_REF_TYPE}\" = \"tag\" ]; then\n  VER=\"${GITHUB_REF_NAME#v}\"\n  echo \"Source: git tag (${GITHUB_REF_NAME})\"\nelse\n  VER=$(node -p \"require('./package.json').version\")\n  echo \"Source: package.json\"\nfi\nMAJOR=\"${VER%%.*}\"\nREST=\"${VER#*.}\"\nMINOR=\"${REST%%.*}\"\n{\n  echo \"version=${VER}\"\n  echo \"major_minor=${MAJOR}.${MINOR}\"\n  echo \"major=${MAJOR}\"\n} >> \"$GITHUB_OUTPUT\"\necho \"Image will tag: ${VER}, ${MAJOR}.${MINOR}, ${MAJOR}, latest\"\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Resolve version"
         }
       ],
       "elsewhere": [],
@@ -6833,12 +6857,14 @@
       "runs": [
         {
           "job": "docker",
+          "packed": true,
           "path": "LICENSE",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "README.md",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -6846,18 +6872,21 @@
         {
           "directory": true,
           "job": "docker",
+          "packed": true,
           "path": "docs/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "package-lock.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -6878,6 +6907,7 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "tsconfig.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -6928,13 +6958,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -6972,7 +7006,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -7044,23 +7078,31 @@
       "commands": [
         {
           "job": "gate",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "gate",
-          "step": "3",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "gate",
-          "step": "4",
-          "text": "node scripts/release-gate.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "4"
         },
         {
           "job": "gate",
-          "step": "Stryker dry run (the mutation setup still runs)",
-          "text": "npx stryker run --dryRunOnly"
+          "programs": [
+            "npx"
+          ],
+          "step": "Stryker dry run (the mutation setup still runs)"
         }
       ],
       "elsewhere": [],
@@ -8071,48 +8113,71 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth",
-          "text": "# The in-place 'npm install -g npm@latest' on Node 22's bundled npm\n# 10.9 races on its own arborist rebuild and breaks irrecoverably\n# (MODULE_NOT_FOUND: promise-retry). Workaround: install npm@latest\n# as a regular dependency into a sandbox directory and prepend its\n# bin to PATH. The system npm is left untouched; we just shadow it.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} → ${TAG_VERSION}\"\necho \"Package: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "release",
-          "step": "Build",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build"
         },
         {
           "job": "release",
-          "step": "Lint",
-          "text": "npm run lint"
+          "programs": [
+            "npm"
+          ],
+          "step": "Lint"
         },
         {
           "job": "release",
-          "step": "Test",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Test"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (verify shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify shape)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release",
-          "text": "gh release create \"${GITHUB_REF_NAME}\" \\\n  --title \"db-cluster ${GITHUB_REF_NAME}\" \\\n  --generate-notes \\\n  --verify-tag\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         }
       ],
       "elsewhere": [],
@@ -9128,23 +9193,31 @@
       "commands": [
         {
           "job": "smoke",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "smoke",
-          "step": "3",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "smoke",
-          "step": "4",
-          "text": "npm pack"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "smoke",
-          "step": "5",
-          "text": "node scripts/smoke-install.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "5"
         }
       ],
       "elsewhere": [],

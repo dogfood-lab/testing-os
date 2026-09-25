@@ -1254,6 +1254,14 @@
         },
         {
           "hash": "e71929be4c6d9faa255d0cc879051045d1664e8d69160b870a622443c6902c60",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1287,23 +1295,31 @@
       "commands": [
         {
           "job": "build-and-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.19.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "build-and-test",
-          "step": "Check",
-          "text": "cargo check --workspace"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Check"
         },
         {
           "job": "build-and-test",
-          "step": "Clippy",
-          "text": "cargo clippy --workspace -- -D warnings"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Clippy"
         },
         {
           "job": "build-and-test",
-          "step": "Test",
-          "text": "cargo test --workspace"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Test"
         }
       ],
       "elsewhere": [],

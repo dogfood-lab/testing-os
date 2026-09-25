@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit c7fbc27.
 
 ## What this is
 
-7 parts, mostly TypeScript (26 files), JavaScript (3) and Rust (2). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. stillpoint is a desktop app built from apps/desktop/src-tauri (nothing ships it).
+7 parts, mostly TypeScript (26 files), CSS (3), JavaScript (3), Rust (2), Astro (1), HTML (1) and PowerShell (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. stillpoint is a desktop app built from apps/desktop/src-tauri (nothing ships it).
 
 ## What changed since 2026-09-24 (26647ad)
 

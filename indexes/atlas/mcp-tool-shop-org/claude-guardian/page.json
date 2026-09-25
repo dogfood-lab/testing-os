@@ -88,7 +88,7 @@
   "changesTogetherWithTests": 0,
   "commit": "65dce696cf1d1022aa3a5309fe8561db6c7303c3",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly Markdown (75 files); code in TypeScript (38) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-guardian.",
+  "derived": "7 parts, mostly Markdown (75 files); code in TypeScript (38), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-guardian.",
   "doors": [
     {
       "builds": [
@@ -119,7 +119,9 @@
       ],
       "runsCount": 1,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request touching 10 paths",
@@ -179,7 +181,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -309,7 +311,7 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-25T09:14:47.949Z",
+  "generatedAt": "2026-09-25T16:28:15.532Z",
   "limits": [
     "1 import could not be resolved: `src/mcp-server.ts` imports `zod`, which is not declared.",
     "1 write and 3 reads use paths built at run time and are not named here.",
@@ -339,11 +341,8 @@
     ".github/workflows/ci.yml",
     "src/cli.ts",
     "src/log-manager.ts",
-    "src/doctor.ts",
-    "src/watchdog.ts",
-    "src/mcp-server.ts",
-    "src/watch-daemon.ts",
-    "src/process-monitor.ts"
+    "src/defaults.ts",
+    "src/types.ts"
   ],
   "summary": null,
   "summaryFrom": null,

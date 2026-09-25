@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit f7e56e6.
 
 ## What this is
 
-39 parts, mostly TypeScript (797 files), JavaScript (13) and GDScript (2). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. People run ai and ai-rpg-engine.
+39 parts, mostly TypeScript (797 files), JavaScript (13), CSS (2), GDScript (2) and Astro (1). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run ai and ai-rpg-engine.
 
 ## What changed since 2026-09-23 (7ff40cd)
 
@@ -22,8 +22,8 @@ Mapped at 2026-09-25 from commit f7e56e6.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 15 paths; on a push touching 15 paths; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 390 more; builds docs/mixed-game-viability-proof.ts; checks package-lock.json, package.json, packages/ and 21 more.
-2. **Release.** When a release is published; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more; builds docs/mixed-game-viability-proof.ts; checks package-lock.json, package.json, packages/ and 21 more.
+1. **CI.** On a pull request touching 15 paths; on a push touching 15 paths; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 390 more; builds docs/mixed-game-viability-proof.ts; checks templates/, docs/, eslint.config.js and 5 more; packs package-lock.json, package.json, packages/ and 1 more into an image.
+2. **Release.** When a release is published; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more; builds docs/mixed-game-viability-proof.ts; checks templates/, docs/, eslint.config.js and 5 more; packs package-lock.json, package.json, packages/ and 1 more into an image.
 3. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Docs Integrity.** On a pull request touching 5 paths; on a push touching 5 paths; or by hand. Runs docs/check-docs-integrity.mjs.
 5. **ai-rpg-engine** (a command people run). Runs packages/cli/src/bin.ts.
@@ -31,7 +31,7 @@ Mapped at 2026-09-25 from commit f7e56e6.
 
 ## What happens through CI
 
-1. The workflow runs 6 files in cli, 4 files in scripts, packages/asset-registry/src/file-store.test.ts, packages/asset-registry/src/hash.test.ts and packages/asset-registry/src/memory-store.test.ts in asset-registry, packages/audio-director/src/director.test.ts in audio-director, 4 files in campaign-memory, and 141 files in 29 more parts; it builds docs/mixed-game-viability-proof.ts in docs; it checks docs/ in docs, 5 files in the repository root, scripts/ in scripts, templates/ in starter, and packages/ (31 parts).
+1. The workflow runs 6 files in cli, 4 files in scripts, packages/asset-registry/src/file-store.test.ts, packages/asset-registry/src/hash.test.ts and packages/asset-registry/src/memory-store.test.ts in asset-registry, packages/audio-director/src/director.test.ts in audio-director, 4 files in campaign-memory, and 141 files in 29 more parts; it builds docs/mixed-game-viability-proof.ts in docs; it checks docs/ in docs, eslint.config.js and vitest.config.ts in the repository root, scripts/ in scripts, and templates/ in starter; it packs package-lock.json, package.json and tsconfig.json in the repository root and packages/ (31 parts) into an image.
    1. Inside packages/cli/src/bin.ts, `main` does, in order:
       1. `some`
       2. `find`
@@ -48,6 +48,7 @@ Mapped at 2026-09-25 from commit f7e56e6.
    4. Or, when `raw === undefined || raw === '' || raw.startsWith('-')`, `main` does `map` instead.
    5. `main` returns early 5 more ways.
 2. It writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json.
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -55,7 +56,7 @@ Mapped at 2026-09-25 from commit f7e56e6.
 
 ## The other doors
 
-**Release** runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more, builds docs/mixed-game-viability-proof.ts, checks package-lock.json, package.json, packages/ and 21 more, writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json, and publishes workspace packages to npm and a container image (on a run by hand, only with dry_run false).
+**Release** runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more, builds docs/mixed-game-viability-proof.ts, checks templates/, docs/, eslint.config.js and 5 more, packs package-lock.json, package.json, packages/ and 1 more into an image, writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json, and publishes workspace packages to npm and a container image (on a run by hand, only with dry_run false).
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on main.
 
@@ -127,7 +128,7 @@ People write .claude/, .github/, dogfood/, the repository root and site/; 21 wri
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/cli/src/bin.ts → packages/modules/src/ability-builders.ts → packages/content-schema/src/build-catalog.ts → packages/content-schema/src/validate.ts
+.github/workflows/ci.yml → packages/cli/src/bin.ts → packages/modules/src/ability-builders.ts → packages/content-schema/src/build-catalog.ts → packages/content-schema/src/validate.ts → packages/content-schema/src/schemas.ts → packages/core/src/actions.ts → packages/core/src/world.ts
 
 Read those in order to follow one pull request end to end.
 

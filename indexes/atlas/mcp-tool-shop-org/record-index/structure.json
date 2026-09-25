@@ -63,16 +63,18 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 4,
+      "dynamicReads": 1,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [
-        "record_index/index.py"
+        "record_index/__init__.py"
       ],
       "externals": 0,
       "files": [
         {
+          "entry": "bind",
+          "entryRule": 4,
           "exports": [
             "bind",
             "is_record_root",
@@ -84,7 +86,24 @@
             "record_index/mechanism.py",
             "record_index/parse.py"
           ],
-          "path": "record_index/__init__.py"
+          "path": "record_index/__init__.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 270,
+                  "name": "load",
+                  "target": {
+                    "file": "record_index/conventions.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "bind"
+            }
+          ]
         },
         {
           "exports": [
@@ -195,6 +214,17 @@
       "importConfidence": "full",
       "name": "record_index",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 3,
+          "where": [
+            "caller"
+          ],
+          "writes": 7
+        }
+      ],
+      "outsideReads": 3,
+      "outsideWrites": 7,
       "role": "code",
       "testedBy": 16,
       "unresolvedSites": 0
@@ -321,6 +351,14 @@
         },
         {
           "hash": "6bc53d351f60ad74390521934d7217e10131e87f0827e98d065d191471b7709f",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1008,23 +1046,31 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.21.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install the package and the test runner",
-          "text": "python -m pip install --upgrade pip\npython -m pip install -e .\npython -m pip install pytest\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Install the package and the test runner"
         },
         {
           "job": "test",
-          "step": "Show what is installed",
-          "text": "python -m pip list"
+          "programs": [
+            "python"
+          ],
+          "step": "Show what is installed"
         },
         {
           "job": "test",
-          "step": "Run the suite",
-          "text": "python -m pytest tests -q"
+          "programs": [
+            "python"
+          ],
+          "step": "Run the suite"
         }
       ],
       "elsewhere": [],
@@ -1109,13 +1155,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "install site dependencies"
         },
         {
           "job": "build",
-          "step": "build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "build site"
         }
       ],
       "elsewhere": [],
@@ -1133,7 +1183,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1195,13 +1245,17 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Build the sdist and the wheel",
-          "text": "python -m pip install --upgrade pip\npython -m pip install build\npython -m build\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Build the sdist and the wheel"
         },
         {
           "job": "publish",
-          "step": "What is about to be published",
-          "text": "ls -l dist/"
+          "programs": [
+            "ls"
+          ],
+          "step": "What is about to be published"
         }
       ],
       "elsewhere": [],
@@ -1259,6 +1313,49 @@
         "actions/setup-python",
         "pypa/gh-action-pypi-publish"
       ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "entry": "record_index/__init__.py",
+      "file": "pyproject.toml",
+      "kind": "package",
+      "landings": [],
+      "mentions": [],
+      "name": "record_index",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "record_index",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "record_index/__init__.py",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
       "usesWorkflowToken": false
     }
   ],

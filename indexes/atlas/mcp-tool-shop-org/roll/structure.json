@@ -177,6 +177,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -4878,28 +4886,38 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "test",
-          "step": "4",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "test",
-          "step": "5",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "test",
-          "step": "6",
-          "text": "node dist/bin.js --version"
+          "programs": [
+            "node"
+          ],
+          "step": "6"
         }
       ],
       "elsewhere": [],
@@ -5010,13 +5028,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -5034,7 +5056,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -5096,48 +5118,72 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22 ships npm 10.9, which signs provenance but cannot negotiate\n# the OIDC auth path (PUT returns a misleading 404). An in-place\n# `npm i -g npm@latest` races the bundled arborist and breaks — install\n# npm@latest into a sandbox dir and shadow the system npm via PATH.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Resolve tag",
-          "text": "TAG=\"${{ github.event.inputs.tag || github.ref_name }}\"\necho \"tag=${TAG}\" >> \"$GITHUB_OUTPUT\"\necho \"version=${TAG#v}\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Resolve tag"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${{ steps.tag.outputs.version }}\"\necho \"Tag: ${{ steps.tag.outputs.tag }} -> ${TAG_VERSION} | package.json: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "5",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "release",
-          "step": "Verify (build + typecheck + test)",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify (build + typecheck + test)"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (shape check)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (shape check)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher, no token)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher, no token)"
         },
         {
           "job": "release",
-          "step": "Extract CHANGELOG section for the release notes",
-          "text": "VERSION=\"${{ steps.tag.outputs.version }}\"\nawk -v ver=\"$VERSION\" '\n  $0 ~ (\"^## \" ver \"( |$)\") {flag=1; next}\n  flag && /^## / {exit}\n  flag {print}\n' CHANGELOG.md > release-notes.md\nif [ -s release-notes.md ]; then\n  echo \"have_notes=true\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"have_notes=false\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "awk",
+            "echo"
+          ],
+          "step": "Extract CHANGELOG section for the release notes"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release",
-          "text": "TAG=\"${{ steps.tag.outputs.tag }}\"\nif [ \"${{ steps.notes.outputs.have_notes }}\" = \"true\" ]; then\n  gh release create \"$TAG\" --title \"roll $TAG\" --notes-file release-notes.md --verify-tag\nelse\n  gh release create \"$TAG\" --title \"roll $TAG\" --generate-notes --verify-tag\nfi\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         }
       ],
       "elsewhere": [],

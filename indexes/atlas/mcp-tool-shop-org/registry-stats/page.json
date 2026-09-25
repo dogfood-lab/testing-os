@@ -7,8 +7,10 @@
   ],
   "breaks": [
     {
-      "doors": 6,
-      "importedBy": [],
+      "doors": 7,
+      "importedBy": [
+        "site"
+      ],
       "importedByTests": [
         "test"
       ],
@@ -43,8 +45,60 @@
     },
     "items": [
       {
+        "kind": "import-added",
+        "sentence": "the site now imports src.",
+        "subjects": [
+          "site",
+          "src"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Desktop CI (MSIX) now also builds desktop/RegistryPulse.Desktop/RegistryPulse.Desktop.csproj.",
+        "subjects": [
+          ".github/workflows/desktop-ci.yml",
+          "desktop/RegistryPulse.Desktop/RegistryPulse.Desktop.csproj"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "site/src/data/stats.json is now also read by site/src/pages/dashboard.astro, site/src/pages/privacy.astro and site/src/pages/setup.astro.",
+        "subjects": [
+          "site/src/data/stats.json",
+          "site/src/pages/dashboard.astro",
+          "site/src/pages/privacy.astro",
+          "site/src/pages/setup.astro"
+        ]
+      },
+      {
+        "kind": "sequence",
+        "sentence": "In site/scripts/fetch-stats.mjs, `main` gained a step, `createCache`, before `mine`.",
+        "subjects": [
+          "site/scripts/fetch-stats.mjs"
+        ]
+      },
+      {
+        "kind": "sequence",
+        "sentence": "In site/scripts/fetch-stats.mjs, `main` gained a step, `mine`, before `bulk`.",
+        "subjects": [
+          "site/scripts/fetch-stats.mjs"
+        ]
+      },
+      {
+        "kind": "sequence",
+        "sentence": "In site/scripts/fetch-stats.mjs, `main` gained a step, `bulk`, before `stats`.",
+        "subjects": [
+          "site/scripts/fetch-stats.mjs"
+        ]
+      },
+      {
+        "kind": "sequence",
+        "sentence": "And 3 more changes to the order of work.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -52,7 +106,7 @@
       "commit": "38f6612ae62fb5a45c6d4f17759f7a45cdf74fe1",
       "generatedAt": "2026-09-25T09:12:50.403Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -61,8 +115,59 @@
   "changesTogetherWithTests": 0,
   "commit": "ccdcd1374bfbc49d4c77bf18f1265745c64da64e",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly TypeScript (35 files) and JavaScript (2). Work enters through 7 doors; the busiest is Daily Refresh, which reaches 3 parts. It publishes to npm. People run registry-stats. People import @mcptoolshop/registry-stats.",
+  "derived": "8 parts, mostly TypeScript (35 files), C# (8), Astro (6), HTML (4), CSS (3) and JavaScript (2). Work enters through 7 doors; Daily Refresh and Desktop CI (MSIX) each reach 3 parts, and Daily Refresh is followed because it commits into the repository. It publishes to npm. It deploys a site to GitHub Pages. People run registry-stats. People import @mcptoolshop/registry-stats.",
   "doors": [
+    {
+      "builds": [
+        "desktop/RegistryPulse.Desktop/RegistryPulse.Desktop.csproj"
+      ],
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/desktop-ci.yml",
+      "id": ".github/workflows/desktop-ci.yml",
+      "landings": [
+        "site/public/data/packages.json",
+        "site/public/data/stats.json",
+        "site/src/data/history.json",
+        "site/src/data/snapshots.json",
+        "site/src/data/stats.json"
+      ],
+      "name": "Desktop CI (MSIX)",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "desktop",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 13
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 13
+        }
+      ],
+      "runs": [
+        "site/scripts/fetch-stats.mjs",
+        "desktop/RegistryPulse.Tests/RegistryPulse.Tests.csproj",
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 4,
+      "runsMore": 2,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request to main touching 2 paths",
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
     {
       "builds": [
         "src/index.ts"
@@ -203,7 +308,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 4
+          "files": 13
         },
         {
           "boundary": "src",
@@ -225,50 +330,6 @@
         "on a pull request touching 3 paths",
         "on a push to main touching 3 paths",
         "on a schedule (`0 7 * * 1`), Monday at 07:00 UTC",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [
-        "desktop/RegistryPulse.Tests/RegistryPulse.Tests.csproj"
-      ],
-      "checksCount": 1,
-      "checksMore": 0,
-      "file": ".github/workflows/desktop-ci.yml",
-      "id": ".github/workflows/desktop-ci.yml",
-      "landings": [
-        "site/public/data/packages.json",
-        "site/public/data/stats.json",
-        "site/src/data/history.json",
-        "site/src/data/snapshots.json",
-        "site/src/data/stats.json"
-      ],
-      "name": "Desktop CI (MSIX)",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "desktop",
-          "depth": 0,
-          "files": 1
-        },
-        {
-          "boundary": "site",
-          "depth": 0,
-          "files": 4
-        }
-      ],
-      "runs": [
-        "site/scripts/fetch-stats.mjs",
-        "site/astro.config.mjs",
-        "site/src/"
-      ],
-      "runsCount": 3,
-      "runsMore": 0,
-      "sends": [],
-      "stages": [],
-      "triggers": [
-        "on a pull request to main touching 2 paths",
-        "on a push to main touching 2 paths",
         "or by hand"
       ]
     },
@@ -373,6 +434,11 @@
   "duplicatesNote": [],
   "edges": [
     {
+      "from": "site",
+      "fromTests": false,
+      "to": "src"
+    },
+    {
       "from": "test",
       "fromTests": true,
       "to": "src"
@@ -406,16 +472,15 @@
       ]
     },
     {
+      "block": true,
       "place": "site/src/data/stats.json",
       "writers": [
-        ".github/workflows/daily-refresh.yml",
         "site/scripts/fetch-stats.mjs"
       ]
     }
   ],
-  "generatedAt": "2026-09-25T10:05:29.118Z",
+  "generatedAt": "2026-09-25T16:34:27.597Z",
   "limits": [
-    "1 import could not be resolved: `site/scripts/fetch-stats.mjs` imports `@mcptoolshop/registry-stats`, which no workspace member provides.",
     "8 reads go to a path their caller passes, not to this repository.",
     "1 write and 3 reads go to the directory the command is run in (registry-stats.config.json), not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -434,11 +499,32 @@
   "parts": 8,
   "readers": [],
   "repo": "mcp-tool-shop-org/registry-stats",
-  "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "sequences": [
+    {
+      "entry": "main",
+      "file": "site/scripts/fetch-stats.mjs",
+      "inner": [],
+      "part": "site",
+      "partLabel": "the site",
+      "phrase": "`main`",
+      "steps": [
+        {
+          "count": 6,
+          "name": null,
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "`index.ts`"
+        }
+      ]
+    }
+  ],
+  "startDoor": ".github/workflows/desktop-ci.yml",
   "startHere": [
-    ".github/workflows/ci.yml",
+    ".github/workflows/desktop-ci.yml",
+    "site/scripts/fetch-stats.mjs",
     "src/index.ts",
+    "src/providers/npm.ts",
+    "src/fetch.ts",
     "src/types.ts"
   ],
   "summary": null,
@@ -460,18 +546,17 @@
       "writers": [
         "site/scripts/fetch-stats.mjs"
       ]
-    },
-    {
-      "place": "site/src/data/stats.json",
-      "writers": [
-        ".github/workflows/daily-refresh.yml",
-        "site/scripts/fetch-stats.mjs"
-      ]
     }
   ],
+  "unreadCode": [
+    "desktop"
+  ],
+  "unreadCodeUses": "desktop holds only C#, CSS and HTML files, which this map does not read, so what uses it cannot be seen.",
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
-  "untestedNote": [],
+  "untestedNote": [
+    "desktop holds only C#, CSS and HTML files, which this map does not read, so whether a test touches it cannot be seen."
+  ],
   "written": 5
 }

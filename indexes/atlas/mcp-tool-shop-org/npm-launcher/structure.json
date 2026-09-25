@@ -194,7 +194,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -248,6 +249,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -844,23 +853,31 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "3",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "test",
-          "step": "4",
-          "text": "node bin/mcptoolshop-launch.js --version"
+          "programs": [
+            "node"
+          ],
+          "step": "4"
         },
         {
           "job": "test",
-          "step": "5",
-          "text": "node bin/mcptoolshop-launch.js --help"
+          "programs": [
+            "node"
+          ],
+          "step": "5"
         }
       ],
       "elsewhere": [],
@@ -963,13 +980,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -987,7 +1008,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1049,24 +1070,82 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Verify wrapper exists + version matches",
-          "text": "test -f package.json || { echo \"::error::examples/${{ inputs.tool }}/package.json missing\"; exit 1; }\ntest -f \"bin/${{ inputs.tool }}.js\" || { echo \"::error::examples/${{ inputs.tool }}/bin/${{ inputs.tool }}.js missing\"; exit 1; }\n# README + LICENSE are listed in package.json `files` but npm publish\n# silently skips missing entries — leaving the npmjs.com page blank.\n# Sovereignty 2.0.2 + 2.1.0 shipped blank because of this; refuse\n# to publish here so the gap can't recur.\ntest -f README.md || { echo \"::error::examples/${{ inputs.tool }}/README.md missing — copy from the tool repo before publishing (see memory/npm-launcher.md Step 0). npm publish would silently ship a blank package page.\"; exit 1; }\ntest -f LICENSE || { echo \"::error::examples/${{ inputs.tool }}/LICENSE missing — copy from the tool repo before publishing.\"; exit 1; }\n# README must not be the trivial 1-line stub — guard against the\n# \"I created the file but didn't copy real content\" failure mode.\nREADME_BYTES=$(wc -c < README.md)\nif [ \"$README_BYTES\" -lt 200 ]; then\n  echo \"::error::examples/${{ inputs.tool }}/README.md is only ${README_BYTES} bytes — looks like a stub. Copy the real README from the tool repo.\"\n  exit 1\nfi\nACTUAL=$(node -p \"require('./package.json').version\")\nEXPECTED=\"${{ inputs.version }}\"\nif [ \"$ACTUAL\" != \"$EXPECTED\" ]; then\n  echo \"::error::package.json version is '$ACTUAL', expected '$EXPECTED'. Bump the wrapper files + commit to main before dispatching this workflow.\"\n  exit 1\nfi\necho \"Wrapper verified at $EXPECTED (README ${README_BYTES} bytes, LICENSE present)\"\n"
+          "programs": [
+            "echo",
+            "node",
+            "test",
+            "wc"
+          ],
+          "step": "Verify wrapper exists + version matches"
         },
         {
           "job": "publish",
-          "step": "Pre-publish inspect",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "Pre-publish inspect"
         },
         {
           "job": "publish",
-          "step": "Publish to npm",
-          "text": "npm publish --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm"
         }
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish-wrapper.yml",
       "landings": [],
-      "mentions": [],
+      "mentions": [
+        {
+          "job": "publish",
+          "path": "examples/backpropagate/LICENSE"
+        },
+        {
+          "job": "publish",
+          "path": "examples/backpropagate/README.md"
+        },
+        {
+          "job": "publish",
+          "path": "examples/backpropagate/package.json"
+        },
+        {
+          "job": "publish",
+          "path": "examples/sovereignty/LICENSE"
+        },
+        {
+          "job": "publish",
+          "path": "examples/sovereignty/README.md"
+        },
+        {
+          "job": "publish",
+          "path": "examples/sovereignty/package.json"
+        },
+        {
+          "job": "publish",
+          "path": "examples/xrpl-camp/LICENSE"
+        },
+        {
+          "job": "publish",
+          "path": "examples/xrpl-camp/README.md"
+        },
+        {
+          "job": "publish",
+          "path": "examples/xrpl-camp/package.json"
+        },
+        {
+          "job": "publish",
+          "path": "examples/xrpl-lab/LICENSE"
+        },
+        {
+          "job": "publish",
+          "path": "examples/xrpl-lab/README.md"
+        },
+        {
+          "job": "publish",
+          "path": "examples/xrpl-lab/package.json"
+        }
+      ],
       "name": "Publish wrapper",
       "permissions": [
         "contents:read"
@@ -1087,7 +1166,23 @@
         "opensPullRequests": false,
         "packages": [
           {
-            "chosenBy": "run",
+            "dir": "examples/backpropagate",
+            "name": "@mcptoolshop/backpropagate",
+            "registry": "npm"
+          },
+          {
+            "dir": "examples/sovereignty",
+            "name": "@mcptoolshop/sovereignty",
+            "registry": "npm"
+          },
+          {
+            "dir": "examples/xrpl-camp",
+            "name": "@mcptoolshop/xrpl-camp",
+            "registry": "npm"
+          },
+          {
+            "dir": "examples/xrpl-lab",
+            "name": "@mcptoolshop/xrpl-lab",
             "registry": "npm"
           }
         ],
@@ -1114,48 +1209,73 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22 ships npm 10.9, which signs provenance but cannot negotiate\n# the OIDC auth path (PUT returns a misleading 404). An in-place\n# `npm i -g npm@latest` races the bundled arborist and breaks — install\n# npm@latest into a sandbox dir and shadow the system npm via PATH.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Resolve tag",
-          "text": "TAG=\"${{ github.event.inputs.tag || github.ref_name }}\"\necho \"tag=${TAG}\" >> \"$GITHUB_OUTPUT\"\necho \"version=${TAG#v}\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Resolve tag"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${{ steps.tag.outputs.version }}\"\necho \"Tag: ${{ steps.tag.outputs.tag }} -> ${TAG_VERSION} | package.json: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "Install dependencies (lockfile-aware)",
-          "text": "# This package ships zero dependencies and therefore has no\n# package-lock.json; `npm ci` hard-fails with EUSAGE when one is\n# absent. Install only when there is something to install rather than\n# committing an empty lockfile to satisfy the command.\nif [ -f package-lock.json ]; then\n  npm ci\nelse\n  echo \"no package-lock.json (zero-dependency package) - using npm install\"\n  npm install --no-audit --no-fund\nfi\n"
+          "programs": [
+            "echo",
+            "npm"
+          ],
+          "step": "Install dependencies (lockfile-aware)"
         },
         {
           "job": "release",
-          "step": "Verify (repo's own contract — test suite)",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify (repo's own contract — test suite)"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (shape check)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (shape check)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher, no token)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher, no token)"
         },
         {
           "job": "release",
-          "step": "Extract CHANGELOG section for the release notes",
-          "text": "# This CHANGELOG uses Keep-a-Changelog bracketed headings\n# (\"## [1.2.1] - 2026-03-25\"); the optional brackets keep this working\n# if the style is ever unbracketed.\nVERSION=\"${{ steps.tag.outputs.version }}\"\nawk -v ver=\"$VERSION\" '\n  /^## / {\n    if (inSection) exit\n    h = $0\n    gsub(/[][]/, \"\", h)          # tolerate both \"## 1.1.1\" and \"## [1.1.1]\"\n    if (h ~ (\"^## \" ver \"( |$)\")) inSection = 1\n    next\n  }\n  inSection { print }\n' CHANGELOG.md > release-notes.md\nif [ -s release-notes.md ]; then\n  echo \"have_notes=true\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"have_notes=false\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "awk",
+            "echo"
+          ],
+          "step": "Extract CHANGELOG section for the release notes"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release",
-          "text": "TAG=\"${{ steps.tag.outputs.tag }}\"\nif [ \"${{ steps.notes.outputs.have_notes }}\" = \"true\" ]; then\n  gh release create \"$TAG\" --title \"npm-launcher $TAG\" --notes-file release-notes.md --verify-tag\nelse\n  gh release create \"$TAG\" --title \"npm-launcher $TAG\" --generate-notes --verify-tag\nfi\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         }
       ],
       "elsewhere": [],
@@ -1243,6 +1363,174 @@
         "actions/setup-node"
       ],
       "usesWorkflowToken": true
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "examples/backpropagate/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "backpropagate",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "backpropagate",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "examples/backpropagate/bin/backpropagate.js",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "examples/sovereignty/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "sovereignty",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "sovereignty",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "examples/sovereignty/bin/sovereignty.js",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "examples/xrpl-camp/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "xrpl-camp",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "xrpl-camp",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "examples/xrpl-camp/bin/xrpl-camp.js",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "examples/xrpl-lab/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "xrpl-lab",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "xrpl-lab",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "examples/xrpl-lab/bin/xrpl-lab.js",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
     },
     {
       "checksCount": 0,
@@ -1381,6 +1669,114 @@
         }
       ],
       "target": "bin/mcptoolshop-launch.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/backpropagate/LICENSE",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/backpropagate/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/backpropagate/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/sovereignty/LICENSE",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/sovereignty/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/sovereignty/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/xrpl-camp/LICENSE",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/xrpl-camp/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/xrpl-camp/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/xrpl-lab/LICENSE",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/xrpl-lab/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/publish-wrapper.yml"
+        }
+      ],
+      "target": "examples/xrpl-lab/package.json",
       "writers": []
     },
     {

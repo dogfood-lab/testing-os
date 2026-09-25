@@ -67,10 +67,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 22,
+      "dynamicReads": 6,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 30,
+      "dynamicWrites": 5,
       "entryPoints": [
         "audiobooker/cli.py"
       ],
@@ -7401,9 +7401,17 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 4,
+          "reads": 37,
           "where": [
             "caller"
+          ],
+          "writes": 27
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:.audiobookerrc",
+            "home:.audiobookerrc"
           ],
           "writes": 0
         },
@@ -7417,8 +7425,8 @@
           "writes": 1
         }
       ],
-      "outsideReads": 6,
-      "outsideWrites": 1,
+      "outsideReads": 40,
+      "outsideWrites": 28,
       "role": "code",
       "testedBy": 76,
       "unresolvedNamed": [
@@ -7549,8 +7557,11 @@
           "path": "npm/README.zh.md"
         },
         {
+          "entry": "fail",
+          "entryRule": 1,
           "hash": "e44e2c113871952214b1ca514a0eb0e96bfa1639c0c2e5e30bdde9528d559d84",
-          "path": "npm/bin/audiobooker.js"
+          "path": "npm/bin/audiobooker.js",
+          "sequences": []
         },
         {
           "hash": "81339b90518c7e2c218c2695fd071b8c70b415b7f97464c7919dfe1e3b238924",
@@ -7751,6 +7762,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -9130,10 +9149,10 @@
       "unresolvedSites": 3
     },
     {
-      "dynamicReads": 3,
+      "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -9308,7 +9327,7 @@
       ],
       "importConfidence": "full",
       "name": "tools",
-      "origin": "authored",
+      "origin": "mixed",
       "outsidePlaces": [
         {
           "reads": 2,
@@ -9330,63 +9349,89 @@
       "commands": [
         {
           "job": "ci",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "ci",
-          "step": "Install dependencies",
-          "text": "python -m pip install --upgrade pip\npip install -e \".[dev]\"\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "ci",
-          "step": "Ruff check",
-          "text": "ruff check audiobooker/"
+          "programs": [
+            "ruff"
+          ],
+          "step": "Ruff check"
         },
         {
           "job": "ci",
-          "step": "Import gate",
-          "text": "python -c \"\nimport audiobooker\nfrom audiobooker.renderer.engine import render_chapter, render_project, RenderError, RenderSummary\nfrom audiobooker.renderer.protocols import TTSEngine, SynthesisResult, FFmpegRunner, RunResult\nfrom audiobooker.renderer.ffmpeg_runner import RealFFmpegRunner\nfrom audiobooker.renderer.output import assemble_m4b, AssemblyResult, generate_chapter_metadata\nfrom audiobooker.renderer.cache_manifest import CacheManifest, load_manifest, save_manifest\nfrom audiobooker.renderer.hash_utils import sha256_text, sha256_json, chapter_text_hash, casting_hash, render_params_hash\nfrom audiobooker.casting.voice_registry import validate_voices, get_available_voices\nfrom audiobooker.casting.voice_suggester import VoiceSuggester, VoiceSuggestion\nfrom audiobooker.language.profile import LanguageProfile, get_profile, available_profiles\nfrom audiobooker.language.en import ENGLISH\nfrom audiobooker.nlp.booknlp_adapter import BookNLPAdapter, BookNLPResult\nfrom audiobooker.nlp.speaker_resolver import SpeakerResolver\nfrom audiobooker.nlp.emotion import EmotionInferencer, EmotionResult\nfrom audiobooker.renderer.progress import RenderProgressTracker\nfrom audiobooker.renderer.failure_report import RenderFailureReport\nassert get_profile('en').code == 'en'\nassert BookNLPAdapter().is_available() == False\nprint('All imports OK')\n\"\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Import gate"
         },
         {
           "job": "ci",
-          "step": "Run tests with coverage",
-          "text": "pytest tests/ -v --tb=short \\\n  --cov=audiobooker --cov-report=xml --cov-report=term-missing\n"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run tests with coverage"
         },
         {
           "job": "ci",
-          "step": "Test CLI",
-          "text": "audiobooker --help\naudiobooker voices --help || true\naudiobooker new --help || true\n"
+          "programs": [
+            "audiobooker"
+          ],
+          "step": "Test CLI"
         },
         {
           "job": "typecheck",
-          "step": "Install dependencies",
-          "text": "python -m pip install --upgrade pip\npip install -e \".[dev]\"\n# PINNED 2026-09-14 (latest at the time). This was a bare\n# `pip install pyright`, which made every pyright release a live\n# input to this job — the same shape that took the lint step from\n# clean to 369 errors when ruff floated, and the reason\n# pyproject.toml pins ruff==0.16.6 with its own note. Every other\n# tool here is pinned: Actions by SHA, the Dockerfile by digest,\n# release.yml to npm@12.0.2. This was the one hole.\n# A new pyright minor routinely tightens inference, so bump this\n# deliberately, with the [tool.pyright] block in pyproject.toml in\n# view. The job is a required check; a float would quietly change\n# what \"typecheck passed\" meant (and can raise the residual cap).\npip install pyright==1.1.414\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "typecheck",
-          "step": "CI policy assertions",
-          "text": "python tools/check_ci_policy.py"
+          "programs": [
+            "python"
+          ],
+          "step": "CI policy assertions"
         },
         {
           "job": "typecheck",
-          "step": "Pyright type-check",
-          "text": "python tools/check_pyright_gate.py audiobooker/"
+          "programs": [
+            "python"
+          ],
+          "step": "Pyright type-check"
         },
         {
           "job": "dep-audit",
-          "step": "2",
-          "text": "pip install pip-audit\npip install .\n"
+          "programs": [
+            "pip"
+          ],
+          "step": "2"
         },
         {
           "job": "dep-audit",
-          "step": "3",
-          "text": "pip-audit --desc"
+          "programs": [
+            "pip-audit"
+          ],
+          "step": "3"
         }
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "tools/pyright_baseline.txt"
+      ],
       "mentions": [
         {
           "job": "typecheck",
@@ -9419,7 +9464,26 @@
           "files": 2
         }
       ],
-      "readers": [],
+      "readers": [
+        {
+          "by": "tools/check_ci_policy.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "tools/pyright_baseline.txt"
+        },
+        {
+          "by": "tools/check_pyright_gate.py",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "tools/pyright_baseline.txt"
+        },
+        {
+          "by": "tools/check_pyright_gate.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "target": "tools/pyright_baseline.txt"
+        }
+      ],
       "runs": [
         {
           "directory": true,
@@ -9581,8 +9645,11 @@
       "commands": [
         {
           "job": "build-and-push",
-          "step": "Verify release tag matches pyproject.toml",
-          "text": "PKG_VERSION=$(python3 tools/read_project_version.py pyproject.toml)\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"tag=${TAG_VERSION} pkg=${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match pyproject.toml ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "python3"
+          ],
+          "step": "Verify release tag matches pyproject.toml"
         }
       ],
       "elsewhere": [],
@@ -9631,12 +9698,14 @@
       "runs": [
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "LICENSE",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "README.md",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -9644,6 +9713,7 @@
         {
           "directory": true,
           "job": "build-and-push",
+          "packed": true,
           "path": "audiobooker/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -9656,6 +9726,7 @@
         },
         {
           "job": "build-and-push",
+          "packed": true,
           "path": "pyproject.toml",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -9708,13 +9779,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -9732,7 +9807,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -9794,43 +9869,72 @@
       "commands": [
         {
           "job": "dispatch-notice",
-          "step": "Dispatch does not publish",
-          "text": "echo \"::error::This workflow publishes only from a GitHub Release (on: release published). workflow_dispatch does not upload to PyPI or npm. Create a published GitHub Release to ship.\"\nexit 1\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Dispatch does not publish"
         },
         {
           "job": "preflight",
-          "step": "Verify tag matches pyproject.toml and npm/package.json",
-          "text": "PKG_VERSION=$(python3 tools/read_project_version.py pyproject.toml)\nNPM_VERSION=$(node -p \"require('./npm/package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"tag=${TAG_VERSION} pkg=${PKG_VERSION} npm=${NPM_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ] || [ \"${NPM_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match pyproject.toml ${PKG_VERSION} / npm ${NPM_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node",
+            "python3"
+          ],
+          "step": "Verify tag matches pyproject.toml and npm/package.json"
         },
         {
           "job": "preflight",
-          "step": "Build sdist and wheel (pinned frontend) and twine check",
-          "text": "python -m pip install --upgrade \\\n  pip==26.2.1 \\\n  build==1.5.0 \\\n  setuptools==84.0.0 \\\n  wheel==0.48.0 \\\n  twine==7.0.0\n# --no-isolation so the pins above actually produce the metadata,\n# rather than PEP 517 isolation re-fetching setuptools>=61.0 unbounded.\npython -m build --no-isolation\npython -m twine check dist/*\necho \"preflight dist identity:\"\nls -l dist\nsha256sum dist/*\n"
+          "programs": [
+            "echo",
+            "ls",
+            "python",
+            "sha256sum"
+          ],
+          "step": "Build sdist and wheel (pinned frontend) and twine check"
         },
         {
           "job": "publish",
-          "step": "Confirm preflight dist",
-          "text": "if ! ls dist/*.whl dist/*.tar.gz >/dev/null 2>&1; then\n  echo \"::error::preflight dist/ artifact is empty; refusing to publish\"\n  exit 1\nfi\necho \"PyPI publishing the preflight dist/ (not a second build):\"\nls -l dist\nsha256sum dist/*\n"
+          "programs": [
+            "1",
+            "echo",
+            "ls",
+            "sha256sum"
+          ],
+          "step": "Confirm preflight dist"
         },
         {
           "job": "publish-npm",
-          "step": "Install pinned npm in a sandbox for OIDC trusted publishing",
-          "text": "SANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\n# PINNED. This binary performs the OIDC exchange for `npm publish`\n# below, so it gets the same exact-version discipline as every\n# actions/* step in this file — `npm@latest` would let the registry\n# pick the publish-credential binary at run time. Last verified\n# 2026-09-14 (registry `latest` dist-tag at time of pin).\nnpm install --no-save --no-audit --no-fund --silent npm@12.0.2\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install pinned npm in a sandbox for OIDC trusted publishing"
         },
         {
           "job": "publish-npm",
-          "step": "Verify tag matches npm/package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./npm/package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"tag=${TAG_VERSION} pkg=${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match npm/package.json ${PKG_VERSION}\"\n  exit 1\nfi\necho \"::notice::npm @mcptoolshop/audiobooker@${PKG_VERSION} publishes only after PyPI job publish succeeded for the same tag (preflight dist/, not a second build).\"\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches npm/package.json version"
         },
         {
           "job": "publish-npm",
-          "step": "Stage the changelog into the launcher package",
-          "text": "cp CHANGELOG.md npm/CHANGELOG.md"
+          "programs": [
+            "cp"
+          ],
+          "step": "Stage the changelog into the launcher package"
         },
         {
           "job": "publish-npm",
-          "step": "Publish launcher to npm (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish launcher to npm (OIDC trusted publisher)"
         }
       ],
       "elsewhere": [],
@@ -9932,6 +10036,133 @@
         "actions/upload-artifact",
         "pypa/gh-action-pypi-publish"
       ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [
+        {
+          "job": "action",
+          "programs": [
+            "sudo"
+          ],
+          "step": "Install FFmpeg"
+        },
+        {
+          "job": "action",
+          "programs": [
+            "echo",
+            "python3"
+          ],
+          "step": "Install audiobooker"
+        },
+        {
+          "job": "action",
+          "programs": [
+            "audiobooker",
+            "openssl",
+            "printf"
+          ],
+          "step": "Render audiobook"
+        }
+      ],
+      "elsewhere": [],
+      "file": "action.yml",
+      "kind": "action",
+      "landings": [],
+      "mentions": [
+        {
+          "job": "action",
+          "path": "pyproject.toml"
+        }
+      ],
+      "name": "Audiobooker",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "audiobooker",
+          "depth": 0,
+          "files": 34
+        },
+        {
+          "boundary": "tools",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "job": "action",
+          "path": "audiobooker/cli.py",
+          "runKind": "executes"
+        },
+        {
+          "job": "action",
+          "path": "tools/read_project_version.py",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 2,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [
+        "actions/setup-python"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "npm/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "audiobooker",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "npm",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "npm/bin/audiobooker.js",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
       "usesWorkflowToken": false
     },
     {
@@ -10158,6 +10389,9 @@
           "by": ".github/workflows/release.yml"
         },
         {
+          "by": "action.yml"
+        },
+        {
           "by": "audiobooker/config_file.py",
           "call": "literal",
           "confidence": "ast"
@@ -10165,6 +10399,11 @@
         {
           "by": "audiobooker/config_file.py",
           "call": "literal",
+          "confidence": "weak"
+        },
+        {
+          "by": "audiobooker/config_file.py",
+          "call": "open",
           "confidence": "weak"
         },
         {
@@ -10226,10 +10465,21 @@
           "by": "tools/check_pyright_gate.py",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tools/check_pyright_gate.py",
+          "call": "read_text",
+          "confidence": "ast"
         }
       ],
       "target": "tools/pyright_baseline.txt",
-      "writers": []
+      "writers": [
+        {
+          "by": "tools/check_pyright_gate.py",
+          "confidence": "ast",
+          "stamps": true
+        }
+      ]
     }
   ],
   "overlaps": [],

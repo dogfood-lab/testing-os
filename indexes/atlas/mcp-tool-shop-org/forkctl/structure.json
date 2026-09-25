@@ -169,7 +169,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -243,6 +244,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -2336,68 +2345,103 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "verify",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "verify",
-          "step": "Verify better-sqlite3 native build",
-          "text": "if ! node -e \"require('better-sqlite3')\" 2>/tmp/sqlite3-err.log; then\n  echo \"::error::better-sqlite3 failed to load. This usually means the prebuilt native binary did not resolve for this Node/OS combination.\"\n  echo \"\"\n  echo \"Diagnostic info:\"\n  echo \"  Node version: $(node --version)\"\n  echo \"  npm version:  $(npm --version)\"\n  echo \"  OS:           $(uname -a)\"\n  echo \"  Arch:         $(uname -m)\"\n  echo \"\"\n  echo \"Error output:\"\n  cat /tmp/sqlite3-err.log\n  echo \"\"\n  echo \"Troubleshooting: https://github.com/WiseLibs/better-sqlite3/blob/master/docs/troubleshooting.md\"\n  exit 1\nfi\necho \"better-sqlite3 loaded successfully.\"\n"
+          "programs": [
+            "cat",
+            "echo",
+            "node",
+            "npm",
+            "uname"
+          ],
+          "step": "Verify better-sqlite3 native build"
         },
         {
           "job": "verify",
-          "step": "Supply-chain audit (npm audit, high severity)",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Supply-chain audit (npm audit, high severity)"
         },
         {
           "job": "verify",
-          "step": "Verify TypeScript types",
-          "text": "npm run typecheck"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify TypeScript types"
         },
         {
           "job": "verify",
-          "step": "Run test suite",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Run test suite"
         },
         {
           "job": "verify",
-          "step": "Build distributable output",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build distributable output"
         },
         {
           "job": "package-verify",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "package-verify",
-          "step": "Build distributable output",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build distributable output"
         },
         {
           "job": "package-verify",
-          "step": "Inspect tarball via npm pack --dry-run",
-          "text": "set -euo pipefail\nnpm pack --dry-run --json > pack.json\necho \"Tarball manifest captured to pack.json\"\nnode -e \"const p=require('./pack.json');console.log('Files in tarball:');for (const f of p[0].files){console.log('  '+f.path)}\"\n"
+          "programs": [
+            "echo",
+            "node",
+            "npm"
+          ],
+          "step": "Inspect tarball via npm pack --dry-run"
         },
         {
           "job": "package-verify",
-          "step": "Assert no forbidden paths in tarball",
-          "text": "set -euo pipefail\nnode <<'EOF'\nconst pack = require('./pack.json');\nconst files = pack[0].files.map(f => f.path);\nconst forbiddenPrefixes = ['design/', 'SHIP_GATE', 'tests/', '.github/', 'site/', 'node_modules/'];\nconst violations = [];\nfor (const f of files) {\n  for (const p of forbiddenPrefixes) {\n    if (f.startsWith(p)) violations.push({ file: f, rule: p });\n  }\n}\nif (violations.length) {\n  console.error('::error::Forbidden files found in published tarball:');\n  for (const v of violations) console.error(`  ${v.file} (matches ${v.rule})`);\n  console.error('');\n  console.error('The \"files\" field in package.json should restrict the tarball to shippable artifacts only.');\n  process.exit(1);\n}\nconsole.log('Tarball contents clean: no forbidden paths present.');\nEOF\n"
+          "programs": [
+            "node"
+          ],
+          "step": "Assert no forbidden paths in tarball"
         },
         {
           "job": "package-verify",
-          "step": "Assert required dist entry points are in tarball",
-          "text": "set -euo pipefail\nnode <<'EOF'\nconst pack = require('./pack.json');\nconst files = new Set(pack[0].files.map(f => f.path));\nconst required = ['dist/cli.js', 'dist/server.js', 'dist/index.js', 'dist/index.d.ts'];\nconst missing = required.filter(r => !files.has(r));\nif (missing.length) {\n  console.error('::error::Required entry points missing from tarball:');\n  for (const m of missing) console.error(`  - ${m}`);\n  console.error('');\n  console.error('Check the build output in dist/ and the \"files\" field in package.json.');\n  process.exit(1);\n}\nconsole.log('All required entry points present in tarball.');\nEOF\n"
+          "programs": [
+            "node"
+          ],
+          "step": "Assert required dist entry points are in tarball"
         },
         {
           "job": "package-verify",
-          "step": "Verify install resolves cleanly (npm install --dry-run)",
-          "text": "set -euo pipefail\nFRESH_DIR=\"$(mktemp -d)\"\necho \"Using fresh temp dir: $FRESH_DIR\"\nPKG=\"$(npm pack --silent --pack-destination \"$FRESH_DIR\")\"\necho \"Packed tarball: $FRESH_DIR/$PKG\"\ncd \"$FRESH_DIR\"\nnpm init -y >/dev/null\nnpm install --dry-run \"./$PKG\"\necho \"Install resolution check passed.\"\n"
+          "programs": [
+            "cd",
+            "echo",
+            "mktemp",
+            "npm"
+          ],
+          "step": "Verify install resolves cleanly (npm install --dry-run)"
         }
       ],
       "elsewhere": [],
@@ -2801,18 +2845,24 @@
       "commands": [
         {
           "job": "build",
-          "step": "Guard — skip if no site/ directory",
-          "text": "if [ ! -d site ]; then\n  echo \"::notice::No site/ directory, skipping Pages build\"\n  echo \"skip=true\" >> \"$GITHUB_OUTPUT\"\n  exit 0\nfi\necho \"skip=false\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Guard — skip if no site/ directory"
         },
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -2830,7 +2880,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 4
+          "files": 6
         }
       ],
       "readers": [],

@@ -332,7 +332,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -499,6 +500,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -6939,43 +6948,59 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "verify",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "verify",
-          "step": "Build",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build"
         },
         {
           "job": "verify",
-          "step": "Typecheck",
-          "text": "npm run typecheck"
+          "programs": [
+            "npm"
+          ],
+          "step": "Typecheck"
         },
         {
           "job": "verify",
-          "step": "Lint",
-          "text": "npm run lint"
+          "programs": [
+            "npm"
+          ],
+          "step": "Lint"
         },
         {
           "job": "verify",
-          "step": "Test",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Test"
         },
         {
           "job": "verify",
-          "step": "Coverage",
-          "text": "npm run test:coverage"
+          "programs": [
+            "npm"
+          ],
+          "step": "Coverage"
         },
         {
           "job": "verify",
-          "step": "Dependency audit (advisory)",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Dependency audit (advisory)"
         }
       ],
       "elsewhere": [],
@@ -8123,13 +8148,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -8147,7 +8176,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -8209,53 +8238,85 @@
       "commands": [
         {
           "job": "release",
-          "step": "Assert Node major version (20.x or 22.x)",
-          "text": "V=$(node --version)\ncase \"$V\" in\n  v20.*|v22.*) echo \"Node $V ok\";;\n  *) echo \"::error::Node $V not 20.x or 22.x\"; exit 1;;\nesac\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Assert Node major version (20.x or 22.x)"
         },
         {
           "job": "release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth",
-          "text": "# Tokenless OIDC trusted publishing needs npm >= 11.5.1. Node 22 ships\n# npm 10.x, which races on an in-place `npm i -g npm@latest`\n# (MODULE_NOT_FOUND: promise-retry). Install npm@latest into a sandbox\n# dir and shadow the system npm via PATH instead.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\necho \"npm now: $(\"$SANDBOX/node_modules/.bin/npm\" --version)\"\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG=\"${{ github.event.inputs.tag || github.ref_name }}\"\nEXPECTED=\"v$PKG_VERSION\"\nif [ \"$TAG\" != \"$EXPECTED\" ]; then\n  echo \"::error::Tag $TAG does not match package.json version $EXPECTED\"\n  exit 1\nfi\necho \"Tag $TAG matches package.json $PKG_VERSION\"\necho \"version=$PKG_VERSION\" >> \"$GITHUB_OUTPUT\"\necho \"tag=$TAG\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "Verify gate (build + typecheck + lint + test)",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify gate (build + typecheck + lint + test)"
         },
         {
           "job": "release",
-          "step": "Extract CHANGELOG section for this version",
-          "text": "VERSION=\"${{ steps.verify.outputs.version }}\"\n# Capture the section between this version's heading and the next\n# \"## \" heading. Compare the heading's version token by LITERAL string\n# equality, NOT a regex interpolation — a regex \"## \\[?$ver\\]?\" treats\n# '.' as any-char and is unanchored on the right, so e.g. ver=0.14.0\n# would also match \"## [0.14.01]\" and a wrong section could ship.\nSECTION=$(awk -v ver=\"$VERSION\" '\n  /^## / {\n    if (found) { exit }\n    hdr = $0\n    sub(/^## +/, \"\", hdr)\n    gsub(/[][]/, \"\", hdr)\n    split(hdr, a, /[ \\t]/)\n    if (a[1] == ver) { found = 1 }\n    next\n  }\n  found { print }\n' CHANGELOG.md)\nif [ -z \"$SECTION\" ]; then\n  echo \"::warning::No CHANGELOG section found for v${VERSION} — release body falls back to --generate-notes\"\n  echo \"has_section=false\" >> \"$GITHUB_OUTPUT\"\nelse\n  printf \"%s\\n\" \"$SECTION\" > .release-notes.md\n  echo \"has_section=true\" >> \"$GITHUB_OUTPUT\"\n  echo \"Resolved CHANGELOG section ($(wc -l < .release-notes.md) lines)\"\nfi\n"
+          "programs": [
+            "awk",
+            "echo",
+            "printf",
+            "wc"
+          ],
+          "step": "Extract CHANGELOG section for this version"
         },
         {
           "job": "release",
-          "step": "Check whether this version is already on the registry",
-          "text": "NAME=$(node -p \"require('./package.json').name\")\nVER=\"${{ steps.verify.outputs.version }}\"\nif npm view \"$NAME@$VER\" version >/dev/null 2>&1; then\n  echo \"::warning::$NAME@$VER is already published — skipping npm publish (split-failure re-run path); proceeding to GitHub release\"\n  echo \"already=true\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"already=false\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "node",
+            "npm"
+          ],
+          "step": "Check whether this version is already on the registry"
         },
         {
           "job": "release",
-          "step": "Publish to npm (Trusted Publishing, OIDC)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm (Trusted Publishing, OIDC)"
         },
         {
           "job": "release",
-          "step": "Create GitHub release (CHANGELOG section)",
-          "text": "gh release create \"${{ steps.verify.outputs.tag }}\" \\\n  --title \"${{ steps.verify.outputs.tag }}\" \\\n  --notes-file .release-notes.md \\\n  --verify-tag\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub release (CHANGELOG section)"
         },
         {
           "job": "release",
-          "step": "Create GitHub release (fallback to auto-notes)",
-          "text": "gh release create \"${{ steps.verify.outputs.tag }}\" \\\n  --title \"${{ steps.verify.outputs.tag }}\" \\\n  --generate-notes \\\n  --verify-tag\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub release (fallback to auto-notes)"
         }
       ],
       "elsewhere": [],

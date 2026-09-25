@@ -107,7 +107,7 @@
   "changesTogetherWithTests": 0,
   "commit": "a8a79e8ac1f94d79173271b443e304d501a8bf24",
   "defaultBranch": "main",
-  "derived": "6 parts, mostly Python (76 files), TypeScript (2) and JavaScript (1). Work enters through 4 doors; the busiest is Publish, which reaches 3 parts. It publishes to PyPI and a container image. People run mcp-stress.",
+  "derived": "6 parts, mostly Python (76 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is Publish, which reaches 3 parts. It publishes to PyPI and a container image. It deploys a site to GitHub Pages. People run mcp-stress.",
   "doors": [
     {
       "checks": [
@@ -118,13 +118,14 @@
       "file": ".github/workflows/publish.yml",
       "held": [
         {
-          "checks": [
+          "checks": [],
+          "checksMore": 0,
+          "lead": "on a run by hand with publish_docker true",
+          "packs": [
             "README.md",
             "pyproject.toml",
             "src/"
           ],
-          "checksMore": 0,
-          "lead": "on a run by hand with publish_docker true",
           "runs": [],
           "runsMore": 0,
           "when": "(on a run by hand, only with publish_docker true)"
@@ -218,7 +219,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -296,10 +297,11 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-25T09:18:25.865Z",
+  "generatedAt": "2026-09-25T16:32:53.157Z",
   "limits": [
-    "2 imports could not be resolved: `tests/test_operator_contract.py` imports a path built at run time; `tests/test_operator_contract.py` imports a path built at run time.",
-    "15 writes and 14 reads use paths built at run time and are not named here.",
+    "2 imports could not be resolved: `tests/test_operator_contract.py` imports a path built at run time, twice.",
+    "3 writes and 8 reads use paths built at run time and are not named here.",
+    "12 writes and 21 reads go to a path their caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/publish.yml",
@@ -321,10 +323,7 @@
     "src/mcp_stress_test/cli/__init__.py",
     "src/mcp_stress_test/cli/main.py",
     "src/mcp_stress_test/__init__.py",
-    "src/mcp_stress_test/cli/commands/chain.py",
-    "src/mcp_stress_test/cli/commands/fuzz.py",
-    "src/mcp_stress_test/cli/commands/generate.py",
-    "src/mcp_stress_test/cli/commands/info.py"
+    "src/mcp_stress_test/models.py"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -333,7 +332,7 @@
     "site": 0,
     "src": 9
   },
-  "unnamedWrites": 15,
+  "unnamedWrites": 3,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],

@@ -1,7 +1,7 @@
 {
   "boundaries": [
     {
-      "dynamicReads": 2,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -143,6 +143,17 @@
       "importConfidence": "full",
       "name": ".github",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        }
+      ],
+      "outsideReads": 2,
+      "outsideWrites": 1,
       "role": "config",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -1275,10 +1286,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 6,
+      "dynamicReads": 2,
       "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -1528,14 +1539,15 @@
       "origin": "mixed",
       "outsidePlaces": [
         {
-          "reads": 4,
+          "reads": 8,
           "where": [
             "caller"
           ],
-          "writes": 0
+          "writes": 1
         }
       ],
-      "outsideReads": 4,
+      "outsideReads": 8,
+      "outsideWrites": 1,
       "role": "code",
       "testedBy": 0,
       "unresolvedNamed": [
@@ -1924,6 +1936,16 @@
         },
         {
           "hash": "f8190ef4a5ea119b49d367dc87cc0794a184a6fb39615920ae6d1a9445187d6b",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/components/BaseLayout.astro",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/components/BaseLayout.astro",
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1955,7 +1977,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 19,
+      "dynamicReads": 14,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -7855,6 +7877,13 @@
       "origin": "authored",
       "outsidePlaces": [
         {
+          "reads": 7,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        },
+        {
           "reads": 1,
           "where": [
             "cwd:README.md"
@@ -7869,7 +7898,7 @@
           "writes": 0
         }
       ],
-      "outsideReads": 2,
+      "outsideReads": 9,
       "role": "code",
       "testedBy": 37,
       "unresolvedNamed": [
@@ -8021,15 +8050,25 @@
       "importConfidence": "full",
       "name": "sov_daemon",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 3,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
+      "outsideReads": 3,
       "role": "code",
       "testedBy": 32,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 8,
+      "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 2,
+      "dynamicWrites": 1,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -10235,6 +10274,13 @@
       "origin": "authored",
       "outsidePlaces": [
         {
+          "reads": 19,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        },
+        {
           "reads": 0,
           "where": [
             "cwd:.sov/"
@@ -10242,7 +10288,8 @@
           "writes": 1
         }
       ],
-      "outsideWrites": 1,
+      "outsideReads": 19,
+      "outsideWrites": 2,
       "role": "code",
       "testedBy": 51,
       "unresolvedSites": 0
@@ -11927,133 +11974,188 @@
       "commands": [
         {
           "job": "lint-and-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "lint-and-test",
-          "step": "Install dependencies",
-          "text": "uv sync --frozen --all-extras --dev"
+          "programs": [
+            "uv"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "lint-and-test",
-          "step": "Lint with ruff",
-          "text": "uv run ruff check --output-format=github ."
+          "programs": [
+            "uv"
+          ],
+          "step": "Lint with ruff"
         },
         {
           "job": "lint-and-test",
-          "step": "Check formatting with ruff",
-          "text": "uv run ruff format --check ."
+          "programs": [
+            "uv"
+          ],
+          "step": "Check formatting with ruff"
         },
         {
           "job": "lint-and-test",
-          "step": "Type-check with mypy",
-          "text": "uv run mypy sov_engine sov_transport sov_cli sov_daemon"
+          "programs": [
+            "uv"
+          ],
+          "step": "Type-check with mypy"
         },
         {
           "job": "lint-and-test",
-          "step": "Voice anti-pattern gate",
-          "text": "bash scripts/check-voice.sh"
+          "programs": [
+            "bash"
+          ],
+          "step": "Voice anti-pattern gate"
         },
         {
           "job": "lint-and-test",
-          "step": "Run tests",
-          "text": "uv run pytest tests/ -v \\\n  -W error::DeprecationWarning \\\n  -W error::PendingDeprecationWarning \\\n  -W \"ignore::DeprecationWarning:websockets\" \\\n  -W \"ignore::DeprecationWarning:websockets.legacy\" \\\n  -W \"ignore::DeprecationWarning:uvicorn.protocols.websockets.websockets_impl\"\n"
+          "programs": [
+            "uv"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Install Tauri Linux deps",
-          "text": "sudo apt-get update\nsudo apt-get install -y libwebkit2gtk-4.1-dev libsoup-3.0-dev libssl-dev\n"
+          "programs": [
+            "sudo"
+          ],
+          "step": "Install Tauri Linux deps"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Install frontend deps",
-          "text": "npm --prefix app ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install frontend deps"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "npm audit signatures (advisory)",
-          "text": "npm audit signatures"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm audit signatures (advisory)"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Cargo check",
-          "text": "cargo check"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Cargo check"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Install cargo-audit",
-          "text": "cargo install cargo-audit --locked --version \"0.22.2\""
+          "programs": [
+            "cargo"
+          ],
+          "step": "Install cargo-audit"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Cargo audit",
-          "text": "cargo audit --deny warnings \\\n  --ignore RUSTSEC-2026-0190 \\\n  --ignore RUSTSEC-2026-0194 \\\n  --ignore RUSTSEC-2026-0195\n"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Cargo audit"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Cargo clippy",
-          "text": "cargo clippy --all-targets -- -D warnings"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Cargo clippy"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Cargo fmt --check",
-          "text": "cargo fmt --check"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Cargo fmt --check"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Cargo test",
-          "text": "cargo test -- --test-threads=1 --nocapture"
+          "programs": [
+            "cargo"
+          ],
+          "step": "Cargo test"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Frontend typecheck",
-          "text": "npm --prefix app run typecheck"
+          "programs": [
+            "npm"
+          ],
+          "step": "Frontend typecheck"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Frontend lint",
-          "text": "npm --prefix app run lint"
+          "programs": [
+            "npm"
+          ],
+          "step": "Frontend lint"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Theme-token discipline gate",
-          "text": "bash scripts/check-theme-tokens.sh"
+          "programs": [
+            "bash"
+          ],
+          "step": "Theme-token discipline gate"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Frontend test",
-          "text": "npm --prefix app test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Frontend test"
         },
         {
           "job": "tauri-and-frontend",
-          "step": "Frontend build",
-          "text": "npm --prefix app run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Frontend build"
         },
         {
           "job": "security",
-          "step": "Install dependencies",
-          "text": "uv sync --frozen --all-extras --dev"
+          "programs": [
+            "uv"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "security",
-          "step": "pip-audit (HIGH gate)",
-          "text": "# Build --ignore-vuln args from allowlist file if present.\nALLOWLIST_ARGS=\"\"\nif [ -f .pip-audit-ignore ]; then\n  while IFS= read -r line; do\n    # Strip trailing inline rationale comment + whitespace\n    entry=\"${line%%#*}\"\n    entry=\"${entry// /}\"\n    entry=\"${entry//$'\\t'/}\"\n    [ -z \"$entry\" ] && continue\n    ALLOWLIST_ARGS=\"$ALLOWLIST_ARGS --ignore-vuln $entry\"\n  done < .pip-audit-ignore\nfi\n# Frozen lock → requirements.txt; uvx does not touch the project venv.\nuv export --frozen --all-extras --no-hashes -o \"${RUNNER_TEMP}/sov-reqs.txt\"\n# Overlay click==8.3.3 (PYSEC-2026-2132 / GHSA-47fr-3ffg-hgmw).\n# uv.lock is shared across domains and must not be rewritten here;\n# pyproject.toml is out of ci-tooling. Scanner env + exported reqs\n# are pinned so this known click advisory cannot fail-open the rest\n# of the gate; a real lock bump still belongs with the pyproject owner.\npython3 -c \"\nfrom pathlib import Path\nimport os, re\np = Path(os.environ['RUNNER_TEMP']) / 'sov-reqs.txt'\nt = p.read_text(encoding='utf-8')\nt2, n = re.subn(r'(?im)^click(?:==|>=|~=|!=|<|>)[^\\n]*', 'click==8.3.3', t)\nif n == 0:\n    t2 = t.rstrip() + '\\nclick==8.3.3\\n'\np.write_text(t2, encoding='utf-8')\nprint('pinned click==8.3.3 in pip-audit input (replacements=%d)' % n)\n\"\n# pip-audit fails on any unfixed advisory by default; --strict is\n# for signature verification (different concern) and conflicts with\n# positional --ignore-vuln args. Allowlist is the failure-mode gate.\nuvx --from \"pip-audit==${PIP_AUDIT_VERSION}\" --with \"click==8.3.3\" pip-audit -r \"${RUNNER_TEMP}/sov-reqs.txt\" $ALLOWLIST_ARGS\n"
+          "programs": [
+            "python3",
+            "read",
+            "uv",
+            "uvx"
+          ],
+          "step": "pip-audit (HIGH gate)"
         },
         {
           "job": "publish-yml-static",
-          "step": "bash -n Stage artifact matrix",
-          "text": "python3 .github/scripts/check-publish-yml.py"
+          "programs": [
+            "python3"
+          ],
+          "step": "bash -n Stage artifact matrix"
         },
         {
           "job": "canary",
-          "step": "2",
-          "text": "uv sync --frozen --all-extras"
+          "programs": [
+            "uv"
+          ],
+          "step": "2"
         },
         {
           "job": "canary",
-          "step": "CLI smoke",
-          "text": "uv run sov --help\nuv run sov self-check\nuv run sov doctor\nuv run python -c \"import sov_daemon, starlette, uvicorn\"\nuv run sov daemon --help\n"
+          "programs": [
+            "uv"
+          ],
+          "step": "CLI smoke"
         }
       ],
       "elsewhere": [],
@@ -12439,13 +12541,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -12483,7 +12589,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 6
         }
       ],
       "readers": [],
@@ -12548,92 +12654,148 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 3,
+      "checksCount": 4,
       "commands": [
         {
           "job": "require-release-tag",
-          "step": "Fail unless a v* tag is targeted",
-          "text": "set -euo pipefail\nif [[ \"$GIT_REF\" == refs/tags/v* ]]; then\n  echo \"ok: github.ref=$GIT_REF\"\n  exit 0\nfi\nif [[ \"$TAG_INPUT\" =~ ^v ]]; then\n  echo \"ok: inputs.tag=$TAG_INPUT\"\n  exit 0\nfi\necho \"::error::Release requires github.ref=refs/tags/v* or workflow_dispatch inputs.tag matching ^v (event=$EVENT_NAME ref=$GIT_REF tag='$TAG_INPUT'). Actions → Release → Run workflow on the default branch with a blank tag is not a recovery; pass tag=vX.Y.Z or dispatch from the tag ref with the same value.\"\nexit 1\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Fail unless a v* tag is targeted"
         },
         {
           "job": "publish",
-          "step": "Verify version matches tag",
-          "text": "VERSION=$(python -c \"import tomllib; print(tomllib.loads(open('pyproject.toml','rb').read().decode())['project']['version'])\")\nTAG=\"${RELEASE_TAG#v}\"\nif [ \"$VERSION\" != \"$TAG\" ]; then\n  echo \"::error::pyproject.toml version $VERSION does not match git tag $TAG\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "python"
+          ],
+          "step": "Verify version matches tag"
         },
         {
           "job": "publish",
-          "step": "Install build tools",
-          "text": "pip install build"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install build tools"
         },
         {
           "job": "publish",
-          "step": "Build package",
-          "text": "python -m build"
+          "programs": [
+            "python"
+          ],
+          "step": "Build package"
         },
         {
           "job": "publish",
-          "step": "Install jq for status assertion",
-          "text": "sudo apt-get update && sudo apt-get install -y jq"
+          "programs": [
+            "sudo"
+          ],
+          "step": "Install jq for status assertion"
         },
         {
           "job": "publish",
-          "step": "Smoke test built wheel in fresh venv",
-          "text": "set -euo pipefail\nSMOKE_DIR=\"$(mktemp -d)\"\n# hatchling produces sovereignty_game-*.whl (PEP 503 underscore form);\n# `|| true` defangs `set -euo pipefail` propagating ls's nonzero exit\n# when the glob has no matches, so the defensive empty-WHEEL check\n# below can actually run. v2.0.0 shipped with two glob patterns\n# (underscore + hyphen) — the hyphen variant matched nothing and\n# killed the script via set -e BEFORE the if check; v2.0.1 fixes that.\nWHEEL=$(ls dist/sovereignty_game-*.whl 2>/dev/null | head -n1 || true)\nif [ -z \"$WHEEL\" ]; then\n  echo \"::error::No built wheel found under dist/\"\n  ls -la dist/\n  exit 1\nfi\necho \"Smoke-testing wheel: $WHEEL\"\npython -m venv \"$SMOKE_DIR/venv\"\n# shellcheck disable=SC1091\nsource \"$SMOKE_DIR/venv/bin/activate\"\npip install --upgrade pip\n# Install with both extras. [daemon] pulls starlette/uvicorn/httpx.\n# hatch wheel packages are sov_engine/sov_transport/sov_cli —\n# sov_daemon is not on the import path unless the extra's install\n# layout actually exposes it. `sov daemon --help` is CLI wiring\n# only (Typer never imports sov_daemon). Import-surface check is\n# `python -c \"import sov_daemon, starlette, uvicorn\"` (F-f6699291).\npip install \"${WHEEL}[xrpl,daemon]\"\n# 1. --version exits 0 with a non-empty version line\nVERSION_OUT=$(sov --version)\necho \"sov --version => $VERSION_OUT\"\n[ -n \"$VERSION_OUT\" ] || { echo \"::error::sov --version produced empty output\"; exit 1; }\n# 2. --help exits 0 and mentions the binary name\nHELP_OUT=$(sov --help)\necho \"$HELP_OUT\" | grep -q \"sov\" || { echo \"::error::sov --help missing binary name\"; exit 1; }\n# 3. self-check JSON status must be ok or warn (not fail)\nSTATUS=$(sov self-check --json | jq -r .status)\necho \"sov self-check --json status => $STATUS\"\ncase \"$STATUS\" in\n  ok|warn) echo \"Smoke test passed.\" ;;\n  *) echo \"::error::sov self-check --json reported status=$STATUS (expected ok|warn)\"; exit 1 ;;\nesac\n# 4. CLI wiring: daemon Typer subapp is registered (does NOT\n# import sov_daemon / starlette / uvicorn).\nsov daemon --help > /dev/null || { echo \"::error::sov daemon --help failed — daemon CLI not wired\"; exit 1; }\n# 5. Import surface for the [daemon] extra (F-f6699291). Typer\n# --help never runs _import_daemon_api(); missing extra deps or a\n# wheel that omitted sov_daemon must fail here.\npython -c \"import sov_daemon, starlette, uvicorn\" || { echo \"::error::[daemon] extra import surface missing (sov_daemon/starlette/uvicorn)\"; exit 1; }\ndeactivate\nrm -rf \"$SMOKE_DIR\"\n"
+          "programs": [
+            "deactivate",
+            "echo",
+            "grep",
+            "head",
+            "jq",
+            "ls",
+            "mktemp",
+            "ok",
+            "pip",
+            "python",
+            "rm",
+            "source",
+            "sov",
+            "warn"
+          ],
+          "step": "Smoke test built wheel in fresh venv"
         },
         {
           "job": "build-binaries",
-          "step": "2",
-          "text": "uv python install 3.12"
+          "programs": [
+            "uv"
+          ],
+          "step": "2"
         },
         {
           "job": "build-binaries",
-          "step": "3",
-          "text": "uv venv"
+          "programs": [
+            "uv"
+          ],
+          "step": "3"
         },
         {
           "job": "build-binaries",
-          "step": "Install dependencies + PyInstaller",
-          "text": "uv pip install . \"pyinstaller==6.11.1\""
+          "programs": [
+            "uv"
+          ],
+          "step": "Install dependencies + PyInstaller"
         },
         {
           "job": "build-binaries",
-          "step": "Build binary",
-          "text": "VERSION=${RELEASE_TAG#v}\nuv run pyinstaller --onefile --name \"sovereignty\" --console \\\n  --collect-submodules rich \\\n  --collect-data xrpl \\\n  sov_cli/__main__.py\nOUTNAME=\"sovereignty-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\nmv \"dist/sovereignty${{ matrix.ext }}\" \"dist/${OUTNAME}\"\necho \"ASSET_NAME=${OUTNAME}\" >> \"$GITHUB_ENV\"\n"
+          "programs": [
+            "echo",
+            "mv",
+            "uv"
+          ],
+          "step": "Build binary"
         },
         {
           "job": "build-tauri-binaries",
-          "step": "Install Tauri Linux deps",
-          "text": "sudo apt-get update\nsudo apt-get install -y \\\n  libwebkit2gtk-4.1-dev libsoup-3.0-dev libssl-dev \\\n  file patchelf libayatana-appindicator3-dev librsvg2-dev\nsudo apt-get install -y libfuse2t64 || sudo apt-get install -y libfuse2\n"
+          "programs": [
+            "sudo"
+          ],
+          "step": "Install Tauri Linux deps"
         },
         {
           "job": "build-tauri-binaries",
-          "step": "Install frontend deps",
-          "text": "npm --prefix app ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install frontend deps"
         },
         {
           "job": "build-tauri-binaries",
-          "step": "Build Tauri app",
-          "text": "set -euo pipefail\nif [ \"${{ matrix.os }}\" = \"ubuntu-latest\" ]; then\n  if ! npm --prefix app run tauri build -- ${{ matrix.tauri-args }} --verbose; then\n    echo \"::warning::combined --bundles deb,appimage failed (likely linuxdeploy); rebuilding .deb only\"\n    find app/src-tauri/target -type f \\\n      \\( -iname '*linuxdeploy*' -o -iname '*appimage*.log' \\) \\\n      -print -exec echo '===== {} =====' \\; -exec cat {} \\; || true\n    npm --prefix app run tauri build -- --bundles deb --verbose\n  fi\nelse\n  npm --prefix app run tauri build -- ${{ matrix.tauri-args }}\nfi\n"
+          "programs": [
+            "echo",
+            "find",
+            "npm"
+          ],
+          "step": "Build Tauri app"
         },
         {
           "job": "build-tauri-binaries",
-          "step": "Stage artifact",
-          "text": "set -euo pipefail\nVERSION=\"${VERSION#v}\"\nexport VERSION ARTIFACT_GLOBS BUNDLE_BASE TARGET\nbash .github/scripts/stage-tauri-artifacts.sh\n"
+          "programs": [
+            "bash"
+          ],
+          "step": "Stage artifact"
         },
         {
           "job": "upload-cli-binaries",
-          "step": "Generate checksums",
-          "text": "set -euo pipefail\nVERSION=${RELEASE_TAG#v}\ncd artifacts\nsha256sum * > \"checksums-${VERSION}.txt\"\ncat \"checksums-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         },
         {
           "job": "upload-tauri-binaries",
-          "step": "Generate latest.json",
-          "text": "set -euo pipefail\nexport VERSION=\"${VERSION#v}\"\npython3 .github/scripts/generate-latest-json.py artifacts\n"
+          "programs": [
+            "python3"
+          ],
+          "step": "Generate latest.json"
         },
         {
           "job": "upload-tauri-binaries",
-          "step": "Generate checksums",
-          "text": "set -euo pipefail\nVERSION=${RELEASE_TAG#v}\ncd artifacts\nsha256sum * > \"checksums-app-${VERSION}.txt\"\ncat \"checksums-app-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         }
       ],
       "elsewhere": [],
@@ -12660,6 +12822,11 @@
           "files": 2
         },
         {
+          "boundary": "app",
+          "depth": 0,
+          "files": 80
+        },
+        {
           "boundary": "sov_cli",
           "depth": 0,
           "files": 4
@@ -12667,7 +12834,7 @@
         {
           "boundary": "sov_daemon",
           "depth": 0,
-          "files": 6
+          "files": 7
         },
         {
           "boundary": "sov_engine",
@@ -12691,6 +12858,43 @@
           "job": "build-tauri-binaries",
           "path": ".github/scripts/stage-tauri-artifacts.sh",
           "runKind": "executes"
+        },
+        {
+          "job": "build-tauri-binaries",
+          "matched": true,
+          "path": "app/src-tauri/build.rs",
+          "runKind": "executes",
+          "via": "tauri build"
+        },
+        {
+          "job": "build-tauri-binaries",
+          "matched": true,
+          "path": "app/src-tauri/src/lib.rs",
+          "runKind": "checks",
+          "via": "tauri build"
+        },
+        {
+          "built": true,
+          "job": "build-tauri-binaries",
+          "matched": true,
+          "path": "app/src-tauri/src/main.rs",
+          "runKind": "executes",
+          "via": "tauri build"
+        },
+        {
+          "directory": true,
+          "job": "build-tauri-binaries",
+          "matched": true,
+          "path": "app/src/",
+          "runKind": "executes",
+          "via": "tauri build → tsc app/tsconfig.json"
+        },
+        {
+          "job": "build-tauri-binaries",
+          "matched": true,
+          "path": "app/vite.config.ts",
+          "runKind": "executes",
+          "via": "tauri build → vite build"
         },
         {
           "directory": true,
@@ -12730,7 +12934,7 @@
           "via": "build pyproject.toml"
         }
       ],
-      "runsCount": 8,
+      "runsCount": 13,
       "secrets": [
         "TAURI_SIGNING_PRIVATE_KEY",
         "TAURI_SIGNING_PRIVATE_KEY_PASSWORD"
@@ -12738,6 +12942,7 @@
       "sends": {
         "assets": [
           "binary:darwin-arm64",
+          "binary:darwin-universal",
           "binary:linux-x64",
           "binary:win-x64"
         ],
@@ -12763,6 +12968,9 @@
         {
           "event": "workflow_dispatch"
         }
+      ],
+      "untrackedLandings": [
+        "app/src-tauri/gen/schemas"
       ],
       "uses": [
         "actions/attest-build-provenance",
@@ -12818,7 +13026,6 @@
       },
       "stages": [],
       "triggers": [],
-      "unshipped": true,
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -12846,7 +13053,7 @@
             "file": "sov_daemon/__init__.py",
             "from": "sov_cli/main.py"
           },
-          "files": 6
+          "files": 7
         },
         {
           "boundary": "sov_engine",

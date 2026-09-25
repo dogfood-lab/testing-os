@@ -2826,6 +2826,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -3318,53 +3326,73 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "test",
-          "step": "Verify",
-          "text": "bash verify.sh"
+          "programs": [
+            "bash"
+          ],
+          "step": "Verify"
         },
         {
           "job": "cargo-check",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "cargo-check",
-          "step": "Build frontend",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build frontend"
         },
         {
           "job": "cargo-check",
-          "step": "cargo check",
-          "text": "cargo check --all-targets --locked"
+          "programs": [
+            "cargo"
+          ],
+          "step": "cargo check"
         },
         {
           "job": "cargo-check",
-          "step": "cargo test",
-          "text": "cargo test --locked"
+          "programs": [
+            "cargo"
+          ],
+          "step": "cargo test"
         },
         {
           "job": "build-desktop",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "build-desktop",
-          "step": "Bundle bridge worker",
-          "text": "node scripts/bundle-bridge.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Bundle bridge worker"
         },
         {
           "job": "build-desktop",
-          "step": "Build Tauri app",
-          "text": "npx tauri build"
+          "programs": [
+            "npx"
+          ],
+          "step": "Build Tauri app"
         }
       ],
       "elsewhere": [],
@@ -4295,13 +4323,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -4319,7 +4351,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],

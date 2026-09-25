@@ -60,20 +60,20 @@
       "partLabel": "sov_daemon"
     },
     {
-      "doors": 2,
+      "doors": 3,
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
-      "name": ".github",
-      "partLabel": ".github"
+      "name": "app",
+      "partLabel": "app"
     },
     {
       "doors": 2,
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
-      "name": "app",
-      "partLabel": "app"
+      "name": ".github",
+      "partLabel": ".github"
     },
     {
       "kind": "place",
@@ -105,11 +105,27 @@
       },
       {
         "kind": "door",
-        "sentence": "Release now also runs sov_daemon/__init__.py.",
+        "sentence": "Release now also runs app/src-tauri/build.rs, app/src/, app/vite.config.ts and 1 more.",
         "subjects": [
           ".github/workflows/publish.yml",
+          "app/src-tauri/build.rs",
+          "app/src/",
+          "app/vite.config.ts",
           "sov_daemon/__init__.py"
         ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release now also builds app/src-tauri/src/main.rs.",
+        "subjects": [
+          ".github/workflows/publish.yml",
+          "app/src-tauri/src/main.rs"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 1 more change to a door.",
+        "subjects": []
       },
       {
         "kind": "landing",
@@ -225,7 +241,7 @@
   "changesTogetherWithTests": 0,
   "commit": "8bed6b624294b05e8ec37d74ba9cff50a47d4229",
   "defaultBranch": "main",
-  "derived": "12 parts, mostly Python (109 files), TypeScript (60), JavaScript (19) and Rust (6). Work enters through 5 doors; the busiest is CI, which reaches 10 parts. It publishes to PyPI. People run sov. sov-tauri-shell is a desktop app built from app/src-tauri (nothing ships it).",
+  "derived": "12 parts, in Python (109 files), TypeScript (60 files), CSS (19 files), JavaScript (19 files), Rust (6 files), HTML (4 files), shell (4 files) and Astro (2 files). Work enters through 5 doors; the busiest is CI, which reaches 10 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run sov. People install the sov-tauri-shell desktop app.",
   "doors": [
     {
       "checks": [],
@@ -334,7 +350,9 @@
       "runs": [],
       "runsCount": 0,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "scans for secrets with TruffleHog"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request",
@@ -346,15 +364,17 @@
     },
     {
       "builds": [
-        "sov_cli/__main__.py"
+        "sov_cli/__main__.py",
+        "app/src-tauri/src/main.rs"
       ],
       "checks": [
         "sov_cli/",
         "sov_engine/",
-        "sov_transport/"
+        "sov_transport/",
+        "app/src-tauri/src/lib.rs"
       ],
-      "checksCount": 3,
-      "checksMore": 0,
+      "checksCount": 4,
+      "checksMore": 1,
       "file": ".github/workflows/publish.yml",
       "id": ".github/workflows/publish.yml",
       "landings": [],
@@ -367,6 +387,11 @@
           "files": 2
         },
         {
+          "boundary": "app",
+          "depth": 0,
+          "files": 80
+        },
+        {
           "boundary": "sov_cli",
           "depth": 0,
           "files": 4
@@ -374,7 +399,7 @@
         {
           "boundary": "sov_daemon",
           "depth": 0,
-          "files": 6
+          "files": 7
         },
         {
           "boundary": "sov_engine",
@@ -391,19 +416,23 @@
         ".github/scripts/generate-latest-json.py",
         ".github/scripts/stage-tauri-artifacts.sh",
         "sov_cli/main.py",
-        "sov_daemon/__init__.py"
+        "sov_daemon/__init__.py",
+        "app/src-tauri/build.rs",
+        "app/src/",
+        "app/vite.config.ts"
       ],
-      "runsCount": 4,
-      "runsMore": 1,
+      "runsCount": 7,
+      "runsMore": 60,
       "sends": [
         "publishes to PyPI",
-        "builds sov_cli/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release"
+        "builds app/src-tauri/src/main.rs and sov_cli/__main__.py into binaries for darwin-arm64, darwin-universal, linux-x64 and win-x64 and uploads them to the release"
       ],
       "stages": [],
       "triggers": [
         "when a release is published",
         "or by hand"
-      ]
+      ],
+      "untracked": "app/src-tauri/gen/schemas, which is not tracked"
     },
     {
       "checks": [],
@@ -418,7 +447,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 6
         }
       ],
       "runs": [
@@ -456,7 +485,7 @@
         {
           "boundary": "sov_daemon",
           "depth": 1,
-          "files": 6
+          "files": 7
         },
         {
           "boundary": "sov_engine",
@@ -480,7 +509,6 @@
     },
     {
       "app": "desktop",
-      "builtFrom": "app/src-tauri",
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
@@ -504,8 +532,7 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": [],
-      "unshipped": true
+      "triggers": []
     }
   ],
   "duplicates": [],
@@ -561,13 +588,13 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:21:24.554Z",
+  "generatedAt": "2026-09-25T16:37:20.561Z",
   "limits": [
     "24 import sites name a declared dependency that shares its name with a local module (xrpl); they are read as the dependency, which is not in this repository.",
     "3 imports could not be resolved: `assets/print/source/render.mjs` imports `puppeteer-core`, which is not declared; `assets/print/source/vendor/react-dom.production.min.js` imports `react`, which is not declared; `sov_cli/main.py` imports a path built at run time.",
-    "3 writes and 49 reads use paths built at run time and are not named here.",
+    "1 write and 32 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "7 reads go to a path their caller passes, not to this repository.",
+    "3 writes and 42 reads go to a path their caller passes, not to this repository.",
     "1 write and 2 reads go to the directory the command is run in (.sov/, README.md and docs/), not to this repository.",
     "1 command is built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -611,8 +638,12 @@
     "sov_engine": 51,
     "sov_transport": 45
   },
-  "unnamedWrites": 3,
+  "unnamedWrites": 1,
   "unread": [],
+  "unreadCode": [
+    "scripts"
+  ],
+  "unreadCodeUses": "scripts holds only shell files, which this map does not read, so what uses it cannot be seen.",
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [
@@ -622,6 +653,8 @@
       "testedBy": 0
     }
   ],
-  "untestedNote": [],
+  "untestedNote": [
+    "scripts holds only shell files, which this map does not read, so whether a test touches it cannot be seen."
+  ],
   "written": 1
 }

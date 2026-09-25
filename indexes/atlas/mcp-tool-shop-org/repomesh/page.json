@@ -20,7 +20,9 @@
         "registry",
         "tools"
       ],
-      "importedByTests": [],
+      "importedByTests": [
+        "repomesh-cli"
+      ],
       "kind": "part",
       "name": "verifiers",
       "partLabel": "verifiers"
@@ -99,6 +101,7 @@
         "tools"
       ],
       "target": "ledger/events/events.jsonl",
+      "tests": 4,
       "writers": [
         ".github",
         "attestor",
@@ -130,6 +133,21 @@
     },
     "items": [
       {
+        "kind": "import-added",
+        "sentence": "repomesh-cli now imports verifiers.",
+        "subjects": [
+          "repomesh-cli",
+          "verifiers"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "RepoMesh verify-release (.github/actions/verify/action.yml) is a new action other repositories use. It runs no file this map can see.",
+        "subjects": [
+          ".github/actions/verify/action.yml"
+        ]
+      },
+      {
         "kind": "door",
         "sentence": "anchor-xrpl now also runs packages/repomesh-cli/scripts/build.mjs.",
         "subjects": [
@@ -154,15 +172,7 @@
       },
       {
         "kind": "door",
-        "sentence": "attestor-ci now also checks LICENSE.",
-        "subjects": [
-          ".github/workflows/attestor-ci.yml",
-          "LICENSE"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 4 more changes to doors.",
+        "sentence": "And 5 more changes to doors.",
         "subjects": []
       },
       {
@@ -191,7 +201,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 103 more new writers and readers of places.",
+        "sentence": "And 102 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -239,24 +249,26 @@
   "changesTogetherWithTests": 0,
   "commit": "8843b8894a8ccae1569bce0ad24618ed0ce208e7",
   "defaultBranch": "main",
-  "derived": "18 parts, mostly JavaScript (175 files) and TypeScript (2). Work enters through 10 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh to npm and a container image. People run repomesh. People import @mcptoolshop/repomesh.",
+  "derived": "18 parts, mostly JavaScript (175 files), CSS (3), TypeScript (2), Astro (1) and shell (1). Work enters through 11 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh to npm and a container image. It deploys a site to GitHub Pages. People run repomesh. People import @mcptoolshop/repomesh. Other repositories use the RepoMesh verify-release action.",
   "doors": [
     {
-      "checks": [
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "packs": [
         "anchor/xrpl/config.json",
         "anchor/xrpl/package-lock.json",
         "anchor/xrpl/package.json",
         "anchor/xrpl/scripts/",
         "package-lock.json",
         "package.json",
-        "packages/repomesh-cli/"
+        "packages/repomesh-cli/",
+        "packages/repomesh-cli/package.json"
       ],
-      "checksCount": 7,
-      "checksMore": 66,
-      "file": ".github/workflows/release.yml",
-      "id": ".github/workflows/release.yml",
-      "landings": [],
-      "name": "Release",
       "pushes": false,
       "reach": [
         {
@@ -317,17 +329,9 @@
       "untracked": "packages/repomesh-cli/dist/, which is not tracked"
     },
     {
-      "checks": [
-        "anchor/xrpl/config.json",
-        "anchor/xrpl/package-lock.json",
-        "anchor/xrpl/package.json",
-        "anchor/xrpl/scripts/",
-        "package-lock.json",
-        "package.json",
-        "packages/repomesh-cli/"
-      ],
-      "checksCount": 7,
-      "checksMore": 66,
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/anchor-xrpl.yml",
       "id": ".github/workflows/anchor-xrpl.yml",
       "landings": [
@@ -337,6 +341,16 @@
         "registry/trust.json"
       ],
       "name": "anchor-xrpl",
+      "packs": [
+        "anchor/xrpl/config.json",
+        "anchor/xrpl/package-lock.json",
+        "anchor/xrpl/package.json",
+        "anchor/xrpl/scripts/",
+        "package-lock.json",
+        "package.json",
+        "packages/repomesh-cli/",
+        "packages/repomesh-cli/package.json"
+      ],
       "pushes": false,
       "pushesForReview": true,
       "reach": [
@@ -432,7 +446,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         },
         {
           "boundary": "anchor",
@@ -724,6 +738,26 @@
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
+      "file": ".github/actions/verify/action.yml",
+      "id": ".github/actions/verify/action.yml#RepoMesh verify-release",
+      "kind": "action",
+      "landings": [],
+      "name": "RepoMesh verify-release",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [
+        "scans code with CodeQL"
+      ],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
       "file": "packages/repomesh-cli/package.json",
       "id": "packages/repomesh-cli/package.json#repomesh",
       "kind": "command",
@@ -851,6 +885,11 @@
       "from": "registry",
       "fromTests": false,
       "to": "verifiers"
+    },
+    {
+      "from": "repomesh-cli",
+      "fromTests": true,
+      "to": "verifiers"
     }
   ],
   "generated": [
@@ -880,7 +919,6 @@
     {
       "place": "registry/anchors.json",
       "writers": [
-        ".github/workflows/anchor-xrpl.yml",
         "verifiers/lib/common.mjs"
       ]
     },
@@ -927,9 +965,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:20:12.588Z",
+  "generatedAt": "2026-09-25T16:35:01.474Z",
   "limits": [
-    "114 imports could not be resolved: `attestor/tests/emit-key-event.test.mjs` imports a path built at run time; `attestor/tests/emit-key-event.test.mjs` imports a path built at run time; `packages/repomesh-cli/tests/anchor-leaf-window.test.mjs` imports a path built at run time; and 111 more.",
+    "107 imports could not be resolved: `attestor/tests/emit-key-event.test.mjs` imports a path built at run time, twice; `packages/repomesh-cli/tests/anchor-leaf-window.test.mjs` imports a path built at run time; `packages/repomesh-cli/tests/anchor-prev-chain.test.mjs` imports a path built at run time, twice; and 102 more.",
     "6 reads use paths built at run time and are not named here.",
     "23 writes go to places this repository does not track, so they are not listed as generated.",
     "38 writes and 141 reads go to a path their caller passes, not to this repository.",
@@ -980,9 +1018,9 @@
     "pages": 5,
     "policy": 3,
     "registry": 15,
-    "repomesh-cli": 26,
+    "repomesh-cli": 28,
     "tools": 13,
-    "verifiers": 53
+    "verifiers": 54
   },
   "unnamedWrites": 0,
   "unread": [
@@ -1009,7 +1047,7 @@
   "unreadNote": [],
   "untested": [],
   "untestedNote": [
-    "72 test files run in no workflow: anchor/xrpl/tests/anchor-writepath-stagec.test.mjs, anchor/xrpl/tests/docker-image.test.mjs, anchor/xrpl/tests/idle-epoch.test.mjs and 69 mores."
+    "72 test files run in no workflow: anchor/xrpl/tests/anchor-writepath-stagec.test.mjs, anchor/xrpl/tests/docker-image.test.mjs, anchor/xrpl/tests/idle-epoch.test.mjs and 69 more."
   ],
   "written": 11
 }

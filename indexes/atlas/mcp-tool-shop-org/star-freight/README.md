@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 743f657.
 
 ## What this is
 
-8 parts, mostly Python (207 files), TypeScript (2) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI. People run starfreight.
+8 parts, mostly Python (207 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run starfreight.
 
 ## What changed since 2026-09-23 (fd07312)
 
@@ -13,9 +13,9 @@ Mapped at 2026-09-25 from commit 743f657.
 - Publish to PyPI now also checks src/portlight/.
 - And 1 more change to a door.
 - README.md is now read by pyproject.toml.
-- dogfood/scenarios/ is now also read by tests/test_dogfood_runner.py.
+- dogfood/scenarios/ is now also read by src/portlight/engine/dogfood_runner.py and tests/test_dogfood_runner.py.
 - dogfood/scenarios/gray_seizure_60d_s17.json is now read by tests/test_dogfood_runner.py.
-- And 5 more new writers and readers of places.
+- And 6 more new writers and readers of places.
 - 316 files changed content, across 8 parts.
 
 ## What comes in
@@ -30,6 +30,7 @@ Mapped at 2026-09-25 from commit 743f657.
 
 1. The workflow runs tests/ in tests.
 2. That reaches src (104 files).
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -77,7 +78,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, design/, the repository root, site/ and world/; 5 writes with paths built at run time may land here.
+People write .github/, design/, the repository root, site/ and world/. Nothing in this repository writes to them.
 
 ## Where to start
 
@@ -87,9 +88,9 @@ Read those in order to follow one run of starfreight end to end. This path follo
 
 ## What this map cannot see
 
-- 2 imports could not be resolved: `src/portlight/app/tui/screens/encounter.py` imports `portlight.content.weapons`, which is no module on its import path and no declared dependency; `src/portlight/app/tui/screens/encounter.py` imports `portlight.content.weapons`, which is no module on its import path and no declared dependency.
-- 5 writes and 2 reads use paths built at run time and are not named here.
-- 1 write and 3 reads go to the directory the command is run in, not to this repository.
+- 2 imports could not be resolved: `src/portlight/app/tui/screens/encounter.py` imports `portlight.content.weapons`, which is no module on its import path and no declared dependency, twice.
+- 6 writes and 124 reads go to a path their caller passes, not to this repository.
+- 2 reads go to the directory the command is run in, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

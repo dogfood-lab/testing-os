@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit a2738c5.
 
 ## What this is
 
-10 parts, mostly TypeScript (99 files), JavaScript (3) and Python (1). Work enters through 15 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run vocal-synth-engine-mcp, vse-analyze, vse-build-preset, vse-compare, vse-gen-vowel-wav, vse-inspect, vse-phonemize, vse-play-score, vse-resynth and vse-score-from-midi. People import @mcptoolshop/vocal-synth-engine.
+10 parts, mostly TypeScript (99 files), JavaScript (3), Astro (2), CSS (2), shell (2), HTML (1) and Python (1). Work enters through 15 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run vocal-synth-engine-mcp, vse-analyze, vse-build-preset, vse-compare, vse-gen-vowel-wav, vse-inspect, vse-phonemize, vse-play-score, vse-resynth and vse-score-from-midi. People import @mcptoolshop/vocal-synth-engine.
 
 ## What changed since 2026-09-24 (f8fe895)
 
@@ -105,7 +105,7 @@ People write .github/, assets/, presets/, the repository root and site/. Nothing
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts → src/engine/LiveSynthEngine.ts → src/preset/schema.ts → src/engine/renderer.ts → src/engine/curves.ts
+.github/workflows/ci.yml → src/index.ts → src/engine/LiveSynthEngine.ts → src/engine/renderer.ts → src/engine/curves.ts → src/types/score.ts → src/types/scoreSchema.ts
 
 Read those in order to follow one pull request end to end.
 

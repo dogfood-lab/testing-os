@@ -908,6 +908,10 @@
           "path": "logos/prov-spec/readme.png"
         },
         {
+          "hash": "47c0c6b4ab1f94f39f7b75eda070c5442ccabe7dc9f6dd8b9086feaa2b7e30aa",
+          "path": "logos/readouts/readme.png"
+        },
+        {
           "hash": "b39817031c85e5132442aa074d188a32b8b174b879c261984d53792f1ba369e8",
           "path": "logos/receipt-factory/readme.png"
         },
@@ -1247,7 +1251,7 @@
           "path": "SHIP_GATE.md"
         },
         {
-          "hash": "4b9871840a43450fb096c8fbe8c5b1210e1912c35a6d19a49d22667c1f716b1b",
+          "hash": "1752b3450d023013cc1a5dbd820e4a519afa746b347f911ccd1b0ff68cd6481a",
           "path": "manifest.json"
         },
         {
@@ -1274,7 +1278,8 @@
       "name": "root",
       "origin": "mixed",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -1392,11 +1397,32 @@
           "path": "site/src/lib/model-views.mjs"
         },
         {
+          "exports": [
+            "getStaticPaths"
+          ],
           "hash": "3f53ed3420be7850d711e150af55903e8c885b5b4a2351eddcf4bd6288119ff0",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts",
+            "site/src/lib/model-views.mjs"
+          ],
+          "importsFiles": [
+            "site/src/lib/model-views.mjs",
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/[slug]/view.astro"
         },
         {
           "hash": "32f01dc841830604746028cf904590cd6f536825f3321a122c82e370bd73faff",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -2074,63 +2100,88 @@
       "commands": [
         {
           "job": "lint-test-build",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.15.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "lint-test-build",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "lint-test-build",
-          "step": "npm audit (high)",
-          "text": "set +e\nnpm audit --audit-level=high --json > audit-report.json\nAUDIT_EXIT=$?\nset -e\nnode scripts/check-audit-allowlist.mjs audit-report.json .github/audit-allowlist.json \"$AUDIT_EXIT\"\n"
+          "programs": [
+            "node",
+            "npm"
+          ],
+          "step": "npm audit (high)"
         },
         {
           "job": "lint-test-build",
-          "step": "5",
-          "text": "npm run typecheck"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "lint-test-build",
-          "step": "6",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "6"
         },
         {
           "job": "lint-test-build",
-          "step": "Test (with coverage)",
-          "text": "npm run test:ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Test (with coverage)"
         },
         {
           "job": "lint-test-build",
-          "step": "Test",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Test"
         },
         {
           "job": "lint-test-build",
-          "step": "Write CI summary",
-          "text": "{\n  echo \"## CI summary (node ${{ matrix.node-version }})\"\n  echo \"\"\n  echo \"| Step | Result |\"\n  echo \"| --- | --- |\"\n  echo \"| npm audit (high) | ${{ steps.audit.outcome }} |\"\n  echo \"| typecheck / build / test | ${{ job.status }} |\"\n  echo \"| Commit | \\`${{ github.sha }}\\` |\"\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Write CI summary"
         },
         {
           "job": "integrity",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "integrity",
-          "step": "3",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "integrity",
-          "step": "Verify manifest integrity",
-          "text": "node dist/cli.js manifest --check --logos logos --output manifest.json"
+          "programs": [
+            "node"
+          ],
+          "step": "Verify manifest integrity"
         },
         {
           "job": "integrity",
-          "step": "Write integrity summary",
-          "text": "{\n  echo \"## Manifest integrity\"\n  echo \"\"\n  if [ \"${{ steps.verify.outcome }}\" = \"success\" ]; then\n    echo \"Manifest hashes match every file in \\`logos/\\`.\"\n  else\n    echo \"Manifest verification FAILED — \\`logos/\\` and \\`manifest.json\\` are out of sync.\"\n  fi\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Write integrity summary"
         }
       ],
       "elsewhere": [],
@@ -2415,23 +2466,32 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install root dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install root dependencies"
         },
         {
           "job": "build",
-          "step": "Build root package",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build root package"
         },
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "rm -rf node_modules package-lock.json\nnpm install --no-audit --no-fund\n"
+          "programs": [
+            "npm",
+            "rm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -2474,7 +2534,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 5
+          "files": 8
         },
         {
           "boundary": "src",
@@ -2570,48 +2630,72 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22 ships npm 10.9, which signs provenance but cannot negotiate\n# the OIDC auth path (PUT returns a misleading 404). An in-place\n# `npm i -g npm@latest` races the bundled arborist and breaks — install\n# npm@latest into a sandbox dir and shadow the system npm via PATH.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Resolve tag",
-          "text": "TAG=\"${{ github.event.inputs.tag || github.ref_name }}\"\necho \"tag=${TAG}\" >> \"$GITHUB_OUTPUT\"\necho \"version=${TAG#v}\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Resolve tag"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${{ steps.tag.outputs.version }}\"\necho \"Tag: ${{ steps.tag.outputs.tag }} -> ${TAG_VERSION} | package.json: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "5",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "release",
-          "step": "Verify (typecheck + build + test)",
-          "text": "npm run typecheck\nnpm test\n"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify (typecheck + build + test)"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (shape check)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (shape check)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher, no token)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher, no token)"
         },
         {
           "job": "release",
-          "step": "Extract CHANGELOG section for the release notes",
-          "text": "VERSION=\"${{ steps.tag.outputs.version }}\"\nawk -v ver=\"$VERSION\" '\n  $0 ~ (\"^## \" ver \"( |$)\") {flag=1; next}\n  flag && /^## / {exit}\n  flag {print}\n' CHANGELOG.md > release-notes.md\nif [ -s release-notes.md ]; then\n  echo \"have_notes=true\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"have_notes=false\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "awk",
+            "echo"
+          ],
+          "step": "Extract CHANGELOG section for the release notes"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release",
-          "text": "TAG=\"${{ steps.tag.outputs.tag }}\"\nif [ \"${{ steps.notes.outputs.have_notes }}\" = \"true\" ]; then\n  gh release create \"$TAG\" --title \"brand $TAG\" --notes-file release-notes.md --verify-tag\nelse\n  gh release create \"$TAG\" --title \"brand $TAG\" --generate-notes --verify-tag\nfi\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         }
       ],
       "elsewhere": [],
@@ -2845,48 +2929,77 @@
       "commands": [
         {
           "job": "sync",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "sync",
-          "step": "3",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "sync",
-          "step": "Sync logos from org repos",
-          "text": "set +e\nbash scripts/sync-org-logos.sh\ncode=$?\nset -e\nif [ \"$code\" -eq 10 ]; then\n  echo \"changed=true\" >> \"$GITHUB_OUTPUT\"\nelif [ \"$code\" -eq 0 ]; then\n  echo \"changed=false\" >> \"$GITHUB_OUTPUT\"\nelse\n  exit \"$code\"\nfi\n"
+          "programs": [
+            "bash",
+            "echo"
+          ],
+          "step": "Sync logos from org repos"
         },
         {
           "job": "sync",
-          "step": "Regenerate manifest",
-          "text": "node dist/cli.js manifest"
+          "programs": [
+            "node"
+          ],
+          "step": "Regenerate manifest"
         },
         {
           "job": "sync",
-          "step": "Verify regenerated manifest",
-          "text": "node dist/cli.js verify"
+          "programs": [
+            "node"
+          ],
+          "step": "Verify regenerated manifest"
         },
         {
           "job": "sync",
-          "step": "Create PR",
-          "text": "git config user.name \"github-actions[bot]\"\ngit config user.email \"41898282+github-actions[bot]@users.noreply.github.com\"\n# Stable branch name (not date/run_id-suffixed) so every daily run\n# updates the SAME branch instead of minting a new one. Previously\n# each run created auto/sync-logos-<date>-<run_id>, which meant a\n# brand-new PR every single day the sync found changes — 31+ open\n# auto-sync PRs accumulated with nobody merging or closing them.\n# `-B` + `push --force-with-lease` below intentionally overwrite the\n# branch's prior bot-authored content each run (this also subsumes\n# the old run_id suffix's original purpose of avoiding a same-day\n# rerun push collision — force-pushing never collides).\n#\n# Trade-off: this branch is a STABLE, shared name, so it may be the\n# head ref of an open, human-reviewed PR. If a reviewer pushes a\n# fixup commit directly onto it between scheduled runs, plain\n# `--force` would silently discard that commit. `--force-with-lease`\n# refuses to push when the remote tip has moved since the fetch\n# immediately below, so a human's commit makes THIS run fail loudly\n# instead of vanishing quietly. That fetch narrows the race window\n# (fetch, then push moments later) but does not close it completely\n# — a push landing in that gap is still possible, just far less\n# likely than with no fetch at all (the old code never fetched, so\n# it always overwrote blind).\nBRANCH=\"auto/sync-logos\"\n# actions/checkout only fetches the ref that triggered this run\n# (main, for schedule/workflow_dispatch) — never this stable side\n# branch — so without an explicit fetch here, git has no local\n# record of the branch's real remote tip and --force-with-lease\n# below would have nothing to compare against. `|| true`: the\n# branch may not exist yet on the very first run.\ngit fetch origin \"$BRANCH:refs/remotes/origin/$BRANCH\" 2>/dev/null || true\ngit checkout -B \"$BRANCH\"\ngit add logos/ manifest.json\ngit diff --cached --quiet && { echo 'nothing to commit'; exit 0; }\ngit commit -m \"chore: sync org logos ($(date -u +%Y-%m-%d))\"\ngit push --force-with-lease=\"$BRANCH\" -u origin \"$BRANCH\"\n# `gh pr create` fails hard when the repo setting \"Allow GitHub Actions\n# to create and approve pull requests\" is OFF and no SYNC_PAT is set —\n# this used to fail the daily run red AND (under the old per-run\n# dated-branch design) leave an orphan branch behind every single\n# day. Degrade gracefully instead: warn loudly with the likely\n# remediation, leave the already-pushed branch in place (the else\n# branch below intentionally no longer deletes it — see its\n# comment), and exit 0. Once the setting/secret is in place the same\n# step opens PRs normally; until then the run is a clean amber and\n# the stable branch is simply reused next time.\nPR_BODY=$(cat <<'EOF'\n## Auto-sync\n\nDaily logo sync from all repos in **mcp-tool-shop-org**.\n\n- New logos added to `logos/`\n- Updated logos replaced\n- `manifest.json` regenerated\n\n**Review:** Check the diff for any unexpected additions or hash changes before merging.\n\n**Do not push commits directly to this branch.** The next scheduled\nrun force-pushes it (via `--force-with-lease`) and will FAIL loudly\nif your commit is on top by then, rather than silently overwriting\nit — but it also won't merge your fix in. Make manual changes in a\nseparate branch/PR instead.\nEOF\n)\n# Dedup by branch, mirroring the label-based dedup the \"Open issue on\n# verify failure\" step already does below: an open PR on this stable\n# branch was just updated in place by the force-push above, so\n# creating another would only duplicate it.\nexisting=$(gh pr list --state open --head \"$BRANCH\" --json number --jq 'length')\nif [ \"${existing:-0}\" -gt 0 ]; then\n  echo \"Open PR already tracks $BRANCH — force-push above updated it in place; not creating a duplicate.\"\n  echo \"pr_opened=true\" >> \"$GITHUB_OUTPUT\"\nelif gh pr create \\\n  --title \"chore: sync org logos ($(date -u +%Y-%m-%d))\" \\\n  --body \"$PR_BODY\"; then\n  echo \"pr_opened=true\" >> \"$GITHUB_OUTPUT\"\nelse\n  # `gh pr create` can fail for reasons other than the permissions\n  # gap the warning used to assume: a transient API error, rate\n  # limiting, or a race where the dedup check above missed an\n  # already-open PR because of search-index lag right after the\n  # force-push. This branch is STABLE (auto/sync-logos, reused\n  # every run — see the comment above, not a per-run dated branch),\n  # so it may be the head ref of a currently-open, possibly\n  # human-reviewed PR. It is intentionally left in place — deleting\n  # it here could sever that PR's head ref, and under the\n  # stable-branch design a delete buys no cruft-avoidance benefit\n  # anyway (the next run's checkout -B + force-push recreates or\n  # overwrites it unconditionally regardless of whether it exists).\n  # The commit was already force-pushed above either way, so\n  # nothing is lost by leaving the branch as-is.\n  echo \"::warning title=Sync PR not opened::gh pr create failed. This may mean 'Allow GitHub Actions to create and approve pull requests' is OFF and no SYNC_PAT is set (Settings -> Actions -> General), or it may be a transient error (API/rate-limit/index-lag). Branch $BRANCH was force-pushed and left in place -- open the PR manually if needed, or re-run this workflow.\"\n  echo \"pr_opened=false\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "cat",
+            "date",
+            "echo",
+            "gh",
+            "git"
+          ],
+          "step": "Create PR"
         },
         {
           "job": "sync",
-          "step": "Write sync summary",
-          "text": "ADDED=\"${{ steps.sync.outputs.added }}\"\nCHANGED_COUNT=\"${{ steps.sync.outputs.changed_count }}\"\nUNCHANGED=\"${{ steps.sync.outputs.unchanged }}\"\nSKIPPED=\"${{ steps.sync.outputs.skipped }}\"\nREJECTED=\"${{ steps.sync.outputs.rejected }}\"\nNET_ERR=\"${{ steps.sync.outputs.network_errors }}\"\nSUSPICIOUS_COUNT=\"${{ steps.sync.outputs.suspicious_count }}\"\n{\n  echo \"## Daily sync — $(date -u +%Y-%m-%d)\"\n  echo \"\"\n  echo \"| Metric | Count |\"\n  echo \"| --- | --- |\"\n  echo \"| New logos | ${ADDED:-0} |\"\n  echo \"| Updated logos | ${CHANGED_COUNT:-0} |\"\n  echo \"| Unchanged | ${UNCHANGED:-0} |\"\n  echo \"| No logo found | ${SKIPPED:-0} |\"\n  echo \"| Rejected (not an image / too large) | ${REJECTED:-0} |\"\n  echo \"| Network errors | ${NET_ERR:-0} |\"\n  echo \"| Suspicious divergence | ${SUSPICIOUS_COUNT:-0} |\"\n  echo \"\"\n  echo \"Repo changes detected: ${{ steps.sync.outputs.changed }}\"\n  if [ \"${{ steps.verify.outcome }}\" = \"failure\" ]; then\n    echo \"\"\n    echo \"Manifest verification FAILED — see the Verify regenerated manifest step.\"\n  fi\n  if [ -n \"${SUSPICIOUS_COUNT:-}\" ] && [ \"${SUSPICIOUS_COUNT:-0}\" != \"0\" ]; then\n    echo \"\"\n    echo \"### Suspicious logo divergence\"\n    echo \"\"\n    echo \"The registry's copy differed from upstream for the logo(s) below, AND\"\n    echo \"the most recent commit to touch that file in this repo's history was\"\n    echo \"NOT the sync automation's own commit. This does not by itself prove\"\n    echo \"tampering -- git commit authorship is self-reported and this repo does\"\n    echo \"not require signed commits (see \\`.github/SECURITY-CONTROLS.md\\`) -- but\"\n    echo \"it is not explained by a normal sync cycle either. Tracked via a\"\n    echo \"labelled issue (\\`logo-divergence-suspicious\\`) so it isn't only visible\"\n    echo \"in this run's summary.\"\n    echo \"\"\n    echo '```'\n    echo \"$SUSPICIOUS_DETAILS\"\n    echo '```'\n  fi\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "date",
+            "echo"
+          ],
+          "step": "Write sync summary"
         },
         {
           "job": "sync",
-          "step": "Open issue on suspicious logo divergence",
-          "text": "existing=$(gh issue list --label logo-divergence-suspicious --state open --json number --jq 'length')\nif [ \"${existing:-0}\" -gt 0 ]; then\n  echo \"An open logo-divergence-suspicious issue already exists — not opening another.\"\n  exit 0\nfi\n# Idempotent: creates the label the first time this ever fires,\n# updates its color/description in place on later runs, and never\n# errors just because the label already exists.\ngh label create logo-divergence-suspicious \\\n  --color B60205 \\\n  --description \"Sync tripwire: registry logo diverged from upstream outside the normal sync flow\" \\\n  --force >/dev/null 2>&1 || true\n{\n  echo \"The daily logo sync found **$SUSPICIOUS_COUNT** logo(s) where the\"\n  echo \"registry's copy differed from upstream AND the most recent commit to\"\n  echo \"touch that file in this repo's history was not the sync automation's\"\n  echo \"own commit.\"\n  echo \"\"\n  echo \"Affected:\"\n  echo '```'\n  echo \"$SUSPICIOUS_DETAILS\"\n  echo '```'\n  echo \"\"\n  echo \"This does not by itself prove tampering — git commit authorship is\"\n  echo \"self-reported and this repo does not currently require signed commits\"\n  echo \"(see \\`.github/SECURITY-CONTROLS.md\\`). It means a human should confirm\"\n  echo \"who made that commit and why before assuming it's benign.\"\n  echo \"\"\n  echo \"The sync PR proceeds normally for review; this issue exists so the\"\n  echo \"anomaly itself is tracked and not lost in an Actions log nobody reads.\"\n  echo \"\"\n  echo \"See [run log]($RUN_URL).\"\n} > /tmp/suspicious-issue-body.md\ngh issue create \\\n  --title \"Suspicious logo divergence detected ($(date -u +%Y-%m-%d))\" \\\n  --label logo-divergence-suspicious \\\n  --body-file /tmp/suspicious-issue-body.md\n"
+          "programs": [
+            "1",
+            "date",
+            "echo",
+            "gh"
+          ],
+          "step": "Open issue on suspicious logo divergence"
         },
         {
           "job": "sync",
-          "step": "Open issue on verify failure",
-          "text": "existing=$(gh issue list --label sync-failure --state open --json number --jq 'length')\nif [ \"${existing:-0}\" -gt 0 ]; then\n  echo \"An open sync-failure issue already exists — not opening another.\"\n  exit 0\nfi\nRUN_URL=\"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"\ngh issue create \\\n  --title \"Daily sync: manifest verify failed ($(date -u +%Y-%m-%d))\" \\\n  --label sync-failure \\\n  --body \"The daily sync regenerated \\`manifest.json\\` but verification failed. See [run log]($RUN_URL).\"\n"
+          "programs": [
+            "date",
+            "echo",
+            "gh"
+          ],
+          "step": "Open issue on verify failure"
         }
       ],
       "elsewhere": [],
@@ -3096,8 +3209,8 @@
     }
   ],
   "generatedFrom": {
-    "commit": "8110f52ea4c2fb503c13234557b7eef669f5354a",
-    "tracked": 386
+    "commit": "5657ed46b83528aa6cb884a87e3af22722002cfb",
+    "tracked": 387
   },
   "landings": [
     {
@@ -5159,6 +5272,17 @@
         }
       ],
       "target": "logos/prov-spec/readme.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "logos/readouts/readme.png",
       "writers": []
     },
     {

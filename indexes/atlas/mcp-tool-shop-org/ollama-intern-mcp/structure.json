@@ -439,7 +439,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -771,6 +772,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -5125,103 +5134,168 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.16.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "verify",
-          "step": "Assert Node major version (20.x or 22.x)",
-          "text": "NODE_V=\"$(node --version)\"\necho \"node --version: $NODE_V\"\ncase \"$NODE_V\" in\n  v20.*|v22.*) echo \"ok\" ;;\n  *) echo \"::error::Unsupported Node version: $NODE_V (want v20.x or v22.x)\"; exit 1 ;;\nesac\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Assert Node major version (20.x or 22.x)"
         },
         {
           "job": "verify",
-          "step": "Install (npm ci, from the committed lockfile)",
-          "text": "npm ci --no-audit --no-fund"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install (npm ci, from the committed lockfile)"
         },
         {
           "job": "verify",
-          "step": "5",
-          "text": "npm run typecheck"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "verify",
-          "step": "6",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "6"
         },
         {
           "job": "verify",
-          "step": "Run tests",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "verify",
-          "step": "Run tests (ubuntu/20 — records the pass count)",
-          "text": "set -euo pipefail\n# Full treatment Phase 4b: coverage rides on the cell that ALREADY\n# runs the suite for the count parser — `test:coverage` is\n# `vitest run --coverage`, the same single run, so this adds no\n# second full-suite execution (the standing CI-minute rule). The\n# count parser below was verified against coverage output before\n# this swap: the `Tests N passed` line is unchanged.\nnpm run test:coverage 2>&1 | tee test-output.txt\nCLEAN=\"$(sed -E 's/\\x1b\\[[0-9;]*m//g' test-output.txt)\"\nPASSED=\"$(printf '%s\\n' \"$CLEAN\" | grep -E \"^\\s*Tests\\s+\" | tail -1 | sed -E 's/.*\\b([0-9]+)\\s+passed.*/\\1/' || true)\"\nif [ -z \"$PASSED\" ]; then\n  echo \"::error::Could not parse passing-test count from vitest output.\"\n  exit 1\nfi\necho \"Resolved passing test count: $PASSED\"\necho \"passed=$PASSED\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "1",
+            "echo",
+            "grep",
+            "npm",
+            "printf",
+            "sed",
+            "tail",
+            "tee"
+          ],
+          "step": "Run tests (ubuntu/20 — records the pass count)"
         },
         {
           "job": "verify",
-          "step": "Doc markers in sync (sync-docs:check)",
-          "text": "set -euo pipefail\nnode scripts/sync-doc-versions.mjs --check --test-count=\"$PASSED\"\n"
+          "programs": [
+            "node"
+          ],
+          "step": "Doc markers in sync (sync-docs:check)"
         },
         {
           "job": "audit",
-          "step": "Assert Node major version (20.x or 22.x)",
-          "text": "NODE_V=\"$(node --version)\"\necho \"node --version: $NODE_V\"\ncase \"$NODE_V\" in\n  v20.*|v22.*) echo \"ok\" ;;\n  *) echo \"::error::Unsupported Node version: $NODE_V (want v20.x or v22.x)\"; exit 1 ;;\nesac\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Assert Node major version (20.x or 22.x)"
         },
         {
           "job": "audit",
-          "step": "Install (npm ci, from the committed lockfile)",
-          "text": "npm ci --no-audit --no-fund"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install (npm ci, from the committed lockfile)"
         },
         {
           "job": "audit",
-          "step": "Dependency audit (production)",
-          "text": "npm audit --omit=dev --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Dependency audit (production)"
         },
         {
           "job": "lockfile-sync",
-          "step": "npm ci against the committed lockfile (fails on desync)",
-          "text": "npm ci --ignore-scripts"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm ci against the committed lockfile (fails on desync)"
         },
         {
           "job": "lockfile-sync",
-          "step": "Build (docgen reads schemas from dist)",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build (docgen reads schemas from dist)"
         },
         {
           "job": "lockfile-sync",
-          "step": "Tool docs match a fresh docgen (schema change without regen fails)",
-          "text": "npm run gen:tool-docs:check"
+          "programs": [
+            "npm"
+          ],
+          "step": "Tool docs match a fresh docgen (schema change without regen fails)"
         },
         {
           "job": "lockfile-sync",
-          "step": "Pack the tarball a user would install",
-          "text": "set -euo pipefail\n# --ignore-scripts: `prepack` is `clean && build`, which would wipe\n# the dist/ the previous two steps just produced and verified. The\n# tarball listing does not require prepack to run; tests/pack.test.ts\n# skips it for the same reason.\nTGZ=\"$(npm pack --ignore-scripts --silent | tail -n 1)\"\n# Guard the --silent contract: if a future npm stops printing the\n# filename on stdout, fail here rather than mv-ing a bogus name.\nif [ -z \"$TGZ\" ] || [ ! -f \"$TGZ\" ]; then\n  echo \"::error::npm pack --silent did not name a tarball (got: '$TGZ')\"\n  exit 1\nfi\nmv \"$TGZ\" \"$RUNNER_TEMP/$TGZ\"\necho \"tarball=$RUNNER_TEMP/$TGZ\" >> \"$GITHUB_OUTPUT\"\necho \"packed $TGZ into $RUNNER_TEMP\"\n"
+          "programs": [
+            "echo",
+            "mv",
+            "npm",
+            "tail"
+          ],
+          "step": "Pack the tarball a user would install"
         },
         {
           "job": "lockfile-sync",
-          "step": "Install the tarball and run the binary (no Ollama, no API key)",
-          "text": "set -euo pipefail\n\n# The whole point of this gate is the no-key path. A secret mapped\n# into this job later would silently turn it into a cloud test.\nif [ -n \"${OLLAMA_API_KEY:-}\" ]; then\n  echo \"::error::OLLAMA_API_KEY is set in this job — the tarball smoke must prove the zero-egress, no-key path. Put cloud assertions in cloud-smoke instead.\"\n  exit 1\nfi\n\nSMOKE=\"$RUNNER_TEMP/tarball-smoke\"\nrm -rf \"$SMOKE\"\nmkdir -p \"$SMOKE/install\" \"$SMOKE/cwd\"\n# Keep doctor's log lookup out of the runner's home dir.\nexport INTERN_LOG_PATH=\"$SMOKE/log.ndjson\"\n\n# Install what `npm i ollama-intern-mcp` installs: the packed tarball\n# plus its runtime deps, resolved fresh from the registry.\ncd \"$SMOKE/install\"\nnpm init -y >/dev/null 2>&1\nnpm i --no-audit --no-fund --loglevel=error \"$TARBALL\"\n\n# Through the bin shim, not `node dist/index.js` — the shim is what\n# proves package.json `bin` mapped and dist/index.js kept its shebang.\nBIN=\"$SMOKE/install/node_modules/.bin/ollama-intern-mcp\"\nif [ ! -x \"$BIN\" ]; then\n  echo \"::error::bin shim missing or not executable at $BIN — package.json \\\"bin\\\" did not install.\"\n  exit 1\nfi\n\n# 1. --version: it starts, and it agrees with the manifest it shipped from.\nWANT=\"$(node -p \"require('$GITHUB_WORKSPACE/package.json').version\")\"\nGOT=\"$(\"$BIN\" --version)\"\necho \"--version: $GOT (manifest says $WANT)\"\nif [ \"$GOT\" != \"$WANT\" ]; then\n  echo \"::error::installed binary reports $GOT but package.json says $WANT\"\n  exit 1\nfi\n\n# 2. --help: still advertises the verbs it advertises. `init` is\n#    listed here, which is what makes step 4 a contract and not a\n#    nice-to-have.\n\"$BIN\" --help > \"$SMOKE/help.txt\"\nfor verb in init doctor; do\n  if ! grep -qE \"^[[:space:]]+$verb[[:space:]]\" \"$SMOKE/help.txt\"; then\n    echo \"::error::--help no longer lists the $verb verb\"\n    exit 1\n  fi\ndone\necho \"--help: lists init + doctor\"\n\n# 3. doctor --json: exit 0 and a parseable envelope. NOT healthy —\n#    there is no Ollama here, and this deliberately does not pass\n#    --fail-unhealthy.\n\"$BIN\" doctor --json > \"$SMOKE/doctor.json\"\nnode -e '\n  const fs = require(\"node:fs\");\n  const d = JSON.parse(fs.readFileSync(process.argv[1], \"utf8\"));\n  for (const k of [\"healthy\", \"profile\", \"ollama\", \"models\", \"paths\", \"warnings\"]) {\n    if (!(k in d)) {\n      console.error(\"::error::doctor --json is missing the \\\"\" + k + \"\\\" key\");\n      process.exit(1);\n    }\n  }\n  if (d.ollama.reachable !== false) {\n    console.error(\"::error::doctor reports a reachable Ollama on a runner that has none — OLLAMA_HOST did not take effect, so this run proved nothing about the offline path\");\n    process.exit(1);\n  }\n  console.log(\"doctor --json: ok (healthy=\" + d.healthy + \", reachable=\" + d.ollama.reachable + \", warnings=\" + d.warnings.length + \")\");\n' \"$SMOKE/doctor.json\"\n\n# 4. init: the assertion this gate exists for. It copies\n#    hermes.config.example.yaml out of the installed package root, so\n#    it goes red the moment that file stops shipping — the exact\n#    defect a file-list test cannot see.\ncd \"$SMOKE/cwd\"\nif ! \"$BIN\" init; then\n  echo \"::error::\\`init\\` failed from a real npm install. If it printed \\\"example config not found\\\", then hermes.config.example.yaml is missing from package.json \\`files\\` — that is exactly the defect this gate exists for (F-c32cff48); a file-list test cannot see it.\"\n  exit 1\nfi\nif [ ! -s hermes.config.yaml ]; then\n  echo \"::error::init exited 0 but wrote no hermes.config.yaml\"\n  exit 1\nfi\necho \"init: wrote $(wc -c < hermes.config.yaml) bytes of hermes.config.yaml\"\n\necho \"tarball smoke: OK — the published artifact installs and runs.\"\n"
+          "programs": [
+            "1",
+            "cd",
+            "echo",
+            "grep",
+            "mkdir",
+            "node",
+            "npm",
+            "rm",
+            "wc"
+          ],
+          "step": "Install the tarball and run the binary (no Ollama, no API key)"
         },
         {
           "job": "cloud-smoke",
-          "step": "Install (npm ci, from the committed lockfile)",
-          "text": "npm ci --no-audit --no-fund"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install (npm ci, from the committed lockfile)"
         },
         {
           "job": "cloud-smoke",
-          "step": "Build",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build"
         },
         {
           "job": "cloud-smoke",
-          "step": "Cloud doctor probe (reachable: yes)",
-          "text": "set -euo pipefail\nif [ -z \"${OLLAMA_API_KEY:-}\" ]; then\n  echo \"::notice::OLLAMA_CLOUD secret not set (fork or unconfigured repo) — skipping cloud smoke test.\"\n  exit 0\nfi\n# doctor exits 0 even when unhealthy (its job is to REPORT). Capture\n# the human-readable report and assert the Cloud (primary) block.\nnode dist/index.js doctor | tee doctor.out\necho \"----------------------------------------\"\nif ! grep -q \"Cloud (primary):\" doctor.out; then\n  echo \"::error::doctor output is missing the 'Cloud (primary)' block — cloud config was not loaded.\"\n  exit 1\nfi\n# Extract just the Cloud block (header → next blank line) so we don't\n# accidentally match the local Ollama block's own 'reachable:' line.\ncloud_block=\"$(awk '/^Cloud \\(primary\\):/{f=1} f{print} /^$/{if(f)exit}' doctor.out)\"\necho \"--- Cloud (primary) block ---\"\necho \"$cloud_block\"\nif ! echo \"$cloud_block\" | grep -q \"reachable: yes\"; then\n  echo \"::error::Cloud (primary) block does not report 'reachable: yes' — cloud host did not answer.\"\n  exit 1\nfi\necho \"cloud-smoke (doctor): OK — Ollama Cloud is reachable.\"\n"
+          "programs": [
+            "awk",
+            "echo",
+            "grep",
+            "node",
+            "tee"
+          ],
+          "step": "Cloud doctor probe (reachable: yes)"
         },
         {
           "job": "cloud-smoke",
-          "step": "Cloud generate (backend == cloud)",
-          "text": "set -euo pipefail\nif [ -z \"${OLLAMA_API_KEY:-}\" ]; then\n  echo \"::notice::OLLAMA_CLOUD secret not set — skipping real cloud generate.\"\n  exit 0\nfi\nnode scripts/cloud-smoke-generate.mjs\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Cloud generate (backend == cloud)"
         }
       ],
       "elsewhere": [],
@@ -5291,18 +5365,21 @@
       "runs": [
         {
           "job": "docker-build",
+          "packed": true,
           "path": "hermes.config.example.yaml",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker-build",
+          "packed": true,
           "path": "package-lock.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker-build",
+          "packed": true,
           "path": "package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5667,6 +5744,7 @@
         },
         {
           "job": "docker-build",
+          "packed": true,
           "path": "tsconfig.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5854,28 +5932,48 @@
       "commands": [
         {
           "job": "drift",
-          "step": "Resolve package.json version",
-          "text": "VERSION=\"$(node -p \"require('./package.json').version\")\"\necho \"version=$VERSION\" >> \"$GITHUB_OUTPUT\"\necho \"Resolved package.json version: $VERSION\"\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Resolve package.json version"
         },
         {
           "job": "drift",
-          "step": "Check CHANGELOG entry exists for current version",
-          "text": "if ! grep -F -- \"## [$VERSION]\" CHANGELOG.md > /dev/null; then\n  echo \"::error file=CHANGELOG.md::No CHANGELOG entry found for version ${VERSION}. Expected a heading like '## [${VERSION}] — YYYY-MM-DD'.\"\n  echo \"\"\n  echo \"Most recent CHANGELOG headings:\"\n  grep -E \"^## \" CHANGELOG.md | head -5 || true\n  exit 1\nfi\necho \"ok — CHANGELOG entry found for v${VERSION}\"\n"
+          "programs": [
+            "echo",
+            "grep",
+            "head"
+          ],
+          "step": "Check CHANGELOG entry exists for current version"
         },
         {
           "job": "drift",
-          "step": "Check release notes do not contain TBD dates",
-          "text": "if [ ! -d docs/release-notes ]; then\n  echo \"ok — no docs/release-notes/ directory\"\n  exit 0\nfi\n# Match 'Released: TBD' or 'Released:**TBD' or 'TBD' alone on a date line\nif grep -RnE \"Released:\\s*\\*?\\*?\\s*TBD\" docs/release-notes/; then\n  echo \"::error::Found 'Released: TBD' in docs/release-notes/. Replace with the actual release date before merge.\"\n  exit 1\nfi\necho \"ok — no TBD dates in release notes\"\n"
+          "programs": [
+            "echo",
+            "grep"
+          ],
+          "step": "Check release notes do not contain TBD dates"
         },
         {
           "job": "drift",
-          "step": "Check README/HANDOFF test count matches TEST_COUNT marker",
-          "text": "if [ ! -f HANDOFF.md ]; then\n  echo \"::error file=HANDOFF.md::HANDOFF.md missing; cannot resolve TEST_COUNT marker.\"\n  exit 1\nfi\nACTUAL=\"$(grep -oE '<!-- TEST_COUNT:start -->[0-9]+<!-- TEST_COUNT:end -->' HANDOFF.md | head -1 | grep -oE '[0-9]+' || true)\"\nif [ -z \"$ACTUAL\" ]; then\n  echo \"::error file=HANDOFF.md::Could not parse TEST_COUNT marker.\"\n  exit 1\nfi\necho \"Resolved TEST_COUNT marker: $ACTUAL\"\nDRIFT=0\n\n# README: look for \"<N> tests\" or \"<N> passing\" near the badge / header.\n# We only scan files that are likely to make a load-bearing claim.\nfor file in README.md HANDOFF.md SHIP_GATE.md; do\n  if [ ! -f \"$file\" ]; then continue; fi\n  # Match patterns like '792 tests', '792 passing', 'Tests: 792'.\n  STATED=\"$(grep -oE '[0-9]{2,5}\\s+(tests|passing)|Tests:\\s*[0-9]{2,5}|tests:\\s*[0-9]{2,5}' \"$file\" | head -3 || true)\"\n  if [ -z \"$STATED\" ]; then continue; fi\n  while IFS= read -r line; do\n    NUM=\"$(echo \"$line\" | grep -oE '[0-9]+')\"\n    if [ -z \"$NUM\" ]; then continue; fi\n    if [ \"$NUM\" != \"$ACTUAL\" ]; then\n      echo \"::error file=$file::Stated test count '$line' (parsed: $NUM) does not match TEST_COUNT marker ($ACTUAL). Run 'npm run sync-docs' to refresh.\"\n      DRIFT=1\n    fi\n  done <<< \"$STATED\"\ndone\n\nif [ \"$DRIFT\" -ne 0 ]; then\n  exit 1\nfi\necho \"ok — stated test counts match TEST_COUNT marker ($ACTUAL)\"\n"
+          "programs": [
+            "echo",
+            "grep",
+            "head",
+            "read"
+          ],
+          "step": "Check README/HANDOFF test count matches TEST_COUNT marker"
         },
         {
           "job": "drift",
-          "step": "Check doc version/count markers (sync-docs:check)",
-          "text": "COUNT=\"$(grep -oE '<!-- TEST_COUNT:start -->[0-9]+<!-- TEST_COUNT:end -->' HANDOFF.md | head -1 | grep -oE '[0-9]+' || true)\"\nif [ -z \"$COUNT\" ]; then\n  echo \"::error file=HANDOFF.md::Could not parse TEST_COUNT marker for sync-docs:check.\"\n  exit 1\nfi\nnode scripts/sync-doc-versions.mjs --check --test-count=\"$COUNT\"\n"
+          "programs": [
+            "echo",
+            "grep",
+            "head",
+            "node"
+          ],
+          "step": "Check doc version/count markers (sync-docs:check)"
         }
       ],
       "elsewhere": [],
@@ -6293,18 +6391,25 @@
       "commands": [
         {
           "job": "build",
-          "step": "Assert Node major version (20.x or 22.x)",
-          "text": "NODE_V=\"$(node --version)\"\necho \"node --version: $NODE_V\"\ncase \"$NODE_V\" in\n  v20.*|v22.*) echo \"ok\" ;;\n  *) echo \"::error::Unsupported Node version: $NODE_V (want v20.x or v22.x)\"; exit 1 ;;\nesac\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Assert Node major version (20.x or 22.x)"
         },
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci --ignore-scripts"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -6322,7 +6427,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -6384,48 +6489,78 @@
       "commands": [
         {
           "job": "npm",
-          "step": "Resolve version",
-          "text": "if [ \"${GITHUB_REF_TYPE}\" = \"tag\" ]; then\n  VERSION=\"${GITHUB_REF_NAME#v}\"\nelse\n  VERSION=$(node -p \"require('./package.json').version\")\nfi\necho \"version=${VERSION}\" >> \"$GITHUB_OUTPUT\"\necho \"tag=v${VERSION}\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Resolve version"
         },
         {
           "job": "npm",
-          "step": "Verify tag matches package.json",
-          "text": "PKG=\"v$(node -p \"require('./package.json').version\")\"\nif [ \"${GITHUB_REF_NAME}\" != \"$PKG\" ]; then\n  echo \"::error::Tag ${GITHUB_REF_NAME} does not match package.json $PKG\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json"
         },
         {
           "job": "npm",
-          "step": "4",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "npm",
-          "step": "Verify (typecheck + build + test)",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify (typecheck + build + test)"
         },
         {
           "job": "npm",
-          "step": "Install npm >=11.5 for OIDC trusted publishing",
-          "text": "SANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\n( cd \"$SANDBOX\" \\\n  && echo '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json \\\n  && npm install --no-save --no-audit --no-fund --silent npm@latest )\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "cd",
+            "echo",
+            "mkdir",
+            "npm"
+          ],
+          "step": "Install npm >=11.5 for OIDC trusted publishing"
         },
         {
           "job": "npm",
-          "step": "Publish to npm (dry-run)",
-          "text": "npm publish --provenance --access public --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm (dry-run)"
         },
         {
           "job": "npm",
-          "step": "Publish to npm (live)",
-          "text": "NAME=$(node -p \"require('./package.json').name\")\nVER=$(node -p \"require('./package.json').version\")\nif npm view \"$NAME@$VER\" version >/dev/null 2>&1; then\n  echo \"skip $NAME@$VER (already published)\"\nelse\n  npm publish --provenance --access public\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "node",
+            "npm"
+          ],
+          "step": "Publish to npm (live)"
         },
         {
           "job": "npm",
-          "step": "Extract CHANGELOG section",
-          "text": "VERSION=\"${{ steps.ver.outputs.version }}\"\nSECTION=$(awk -v ver=\"$VERSION\" '\n  $0 ~ \"^## \\\\[?\" ver \"\\\\]?\" { found=1; next }\n  found && /^## / { exit }\n  found { print }\n' CHANGELOG.md)\nif [ -z \"$SECTION\" ]; then\n  echo \"::warning::No CHANGELOG section for v${VERSION}; falling back to auto-notes\"\n  echo \"has_section=false\" >> \"$GITHUB_OUTPUT\"\nelse\n  printf \"%s\\n\" \"$SECTION\" > .release-notes.md\n  echo \"has_section=true\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "awk",
+            "echo",
+            "printf"
+          ],
+          "step": "Extract CHANGELOG section"
         },
         {
           "job": "npm",
-          "step": "Create GitHub release",
-          "text": "TAG=\"${{ steps.ver.outputs.tag }}\"\nif gh release view \"$TAG\" >/dev/null 2>&1; then\n  echo \"Release $TAG already exists; skipping create.\"\nelif [ \"${{ steps.changelog.outputs.has_section }}\" = \"true\" ]; then\n  gh release create \"$TAG\" --title \"$TAG\" --notes-file .release-notes.md --verify-tag\nelse\n  gh release create \"$TAG\" --title \"$TAG\" --generate-notes --verify-tag\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "gh"
+          ],
+          "step": "Create GitHub release"
         }
       ],
       "elsewhere": [],
@@ -6504,18 +6639,21 @@
       "runs": [
         {
           "job": "docker",
+          "packed": true,
           "path": "hermes.config.example.yaml",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "package-lock.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -6830,6 +6968,7 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "tsconfig.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"

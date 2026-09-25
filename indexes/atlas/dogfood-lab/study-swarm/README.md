@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit ab907f0.
 
 ## What this is
 
-7 parts, mostly JavaScript (3 files) and TypeScript (2). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run study-swarm.
+7 parts, in JavaScript (3 files), CSS (2 files), TypeScript (2 files) and Astro (1 file). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run study-swarm.
 
 ## What changed since 2026-09-25 (d537ad2)
 

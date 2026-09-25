@@ -162,7 +162,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -235,6 +236,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1800,43 +1809,66 @@
       "commands": [
         {
           "job": "build-and-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.16.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "build-and-test",
-          "step": "4",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "build-and-test",
-          "step": "Audit dependencies",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Audit dependencies"
         },
         {
           "job": "build-and-test",
-          "step": "7",
-          "text": "npm run typecheck"
+          "programs": [
+            "npm"
+          ],
+          "step": "7"
         },
         {
           "job": "build-and-test",
-          "step": "8",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "8"
         },
         {
           "job": "build-and-test",
-          "step": "Built-CLI smoke",
-          "text": "BUILT_VERSION=$(node dist/cli.js --version)\nPKG_VERSION=$(node -p \"require('./package.json').version\")\nif [ \"$BUILT_VERSION\" != \"$PKG_VERSION\" ]; then\n  echo \"Version mismatch: built CLI says $BUILT_VERSION, package.json says $PKG_VERSION\"\n  exit 1\nfi\necho \"Built CLI smoke OK: $BUILT_VERSION\"\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Built-CLI smoke"
         },
         {
           "job": "build-and-test",
-          "step": "Tests",
-          "text": "npm test --if-present 2>&1 | tee test-output.log"
+          "programs": [
+            "1",
+            "npm",
+            "tee"
+          ],
+          "step": "Tests"
         },
         {
           "job": "build-and-test",
-          "step": "CI summary",
-          "text": "{\n  echo \"## rig-bridge CI summary\"\n  echo \"\"\n  if [ -f test-output.log ]; then\n    TEST_COUNT=$(grep -oP '\\d+(?= passed)' test-output.log | head -1 || echo \"n/a\")\n    echo \"- Tests: ${TEST_COUNT} passing\"\n  else\n    echo \"- Tests: log not found\"\n  fi\n  AUDIT_JSON=$(npm audit --json 2>/dev/null || echo '{}')\n  CRIT=$(echo \"$AUDIT_JSON\" | jq -r '.metadata.vulnerabilities.critical // 0')\n  HIGH=$(echo \"$AUDIT_JSON\" | jq -r '.metadata.vulnerabilities.high // 0')\n  MOD=$(echo \"$AUDIT_JSON\" | jq -r '.metadata.vulnerabilities.moderate // 0')\n  echo \"- Audit: ${CRIT} critical / ${HIGH} high / ${MOD} moderate\"\n  echo \"- Node: ${{ matrix.node-version || '20.11.0' }}\"\n  echo \"- OS: ${{ runner.os }}\"\n} >> $GITHUB_STEP_SUMMARY\n"
+          "programs": [
+            "echo",
+            "grep",
+            "head",
+            "jq",
+            "npm"
+          ],
+          "step": "CI summary"
         }
       ],
       "elsewhere": [],
@@ -2114,13 +2146,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -2138,7 +2174,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -2200,38 +2236,54 @@
       "commands": [
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "TAG=\"${GITHUB_REF_NAME#v}\"\nPKG_VERSION=$(node -p \"require('./package.json').version\")\nif [ \"$TAG\" != \"$PKG_VERSION\" ]; then\n  echo \"::error::Tag $GITHUB_REF_NAME does not match package.json version $PKG_VERSION\"\n  exit 1\nfi\necho \"Tag and package.json version match: $PKG_VERSION\"\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "release",
-          "step": "Audit dependencies",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Audit dependencies"
         },
         {
           "job": "release",
-          "step": "Verify (typecheck + build + tests)",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify (typecheck + build + tests)"
         },
         {
           "job": "release",
-          "step": "Built-CLI smoke",
-          "text": "BUILT_VERSION=$(node dist/cli.js --version)\nPKG_VERSION=$(node -p \"require('./package.json').version\")\nif [ \"$BUILT_VERSION\" != \"$PKG_VERSION\" ]; then\n  echo \"::error::Built CLI version $BUILT_VERSION does not match package.json $PKG_VERSION\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Built-CLI smoke"
         },
         {
           "job": "release",
-          "step": "Publish to npm (with provenance)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm (with provenance)"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release",
-          "text": "gh release create \"$GITHUB_REF_NAME\" \\\n  --title \"$GITHUB_REF_NAME\" \\\n  --generate-notes \\\n  --verify-tag\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         }
       ],
       "elsewhere": [],

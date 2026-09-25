@@ -6,6 +6,15 @@
     "root",
     "site/"
   ],
+  "authoredWritten": [
+    {
+      "place": "src/escape_the_valley/data/event_skeletons.json",
+      "untrackedInputs": true,
+      "writers": [
+        "scripts/yaml_to_json.py"
+      ]
+    }
+  ],
   "breaks": [
     {
       "doors": 5,
@@ -171,7 +180,7 @@
   "changesTogetherWithTests": 8,
   "commit": "25c0ecc42a1c8d1ab9de580a944993f01094ca4e",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly Python (61 files), JavaScript (2) and TypeScript (2). Work enters through 8 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. People run escape-the-valley and trail.",
+  "derived": "10 parts, mostly Python (61 files), CSS (2), JavaScript (2), TypeScript (2), HTML (1) and shell (1). Work enters through 8 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run escape-the-valley and trail.",
   "doors": [
     {
       "checks": [
@@ -459,19 +468,12 @@
       "to": "src"
     }
   ],
-  "generated": [
-    {
-      "place": "src/escape_the_valley/data/event_skeletons.json",
-      "writers": [
-        "scripts/yaml_to_json.py"
-      ]
-    }
-  ],
-  "generatedAt": "2026-09-25T09:15:40.889Z",
+  "generated": [],
+  "generatedAt": "2026-09-25T16:29:15.837Z",
   "limits": [
-    "2 writes and 1 read use paths built at run time and are not named here.",
-    "3 writes and 2 reads go to a path their caller passes, not to this repository.",
-    "1 read goes to the directory the command is run in (.trail/), not to this repository.",
+    "1 write uses a path built at run time and is not named here.",
+    "2 writes and 13 reads go to a path their caller passes, not to this repository.",
+    "5 writes go to the directory the command is run in (.trail/) or a path their caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -511,7 +513,7 @@
     "scripts": 1,
     "src": 23
   },
-  "unnamedWrites": 2,
+  "unnamedWrites": 1,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],

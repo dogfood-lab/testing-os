@@ -46,7 +46,7 @@
   "changesTogetherWithTests": 0,
   "commit": "72e9d2192606c42df73a34dff75e045f7cef28a7",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly TypeScript (128 files) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. People run forkctl and forkctl-mcp.",
+  "derived": "7 parts, mostly TypeScript (128 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp.",
   "doors": [
     {
       "builds": [
@@ -137,7 +137,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 4
+          "files": 6
         }
       ],
       "runs": [
@@ -244,7 +244,7 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-25T09:16:37.311Z",
+  "generatedAt": "2026-09-25T16:30:49.676Z",
   "limits": [
     "1 import could not be resolved: `src/lib/rename/symbols.ts` imports a path built at run time.",
     "8 writes and 8 reads use paths built at run time and are not named here.",
@@ -272,11 +272,8 @@
     ".github/workflows/ci.yml",
     "src/cli.ts",
     "src/dispatch.ts",
-    "src/lib/github.ts",
-    "src/lib/state.ts",
-    "src/lib/operations.ts",
-    "src/tools/registry.ts",
-    "src/tools/types.ts"
+    "src/lib/result.ts",
+    "src/lib/errors.ts"
   ],
   "summary": null,
   "summaryFrom": null,

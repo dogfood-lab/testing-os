@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 61d98b6.
 
 ## What this is
 
-9 parts, mostly Markdown (236 files); code in TypeScript (84) and JavaScript (7). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os to npm. People run ai-loadout, claude-memories, claude-rules and loadout-os.
+9 parts, mostly Markdown (236 files); code in TypeScript (84), CSS (8), JavaScript (7), Astro (4) and PowerShell (1). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os to npm. It deploys a site to GitHub Pages. People run ai-loadout, claude-memories, claude-rules and loadout-os.
 
 ## What changed since 2026-09-23 (741a092)
 
@@ -94,7 +94,7 @@ People write .claude/, .github/, packages/kernel/, packages/memories/, packages/
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/kernel/src/index.ts → packages/kernel/src/types.ts
+.github/workflows/ci.yml → packages/kernel/src/index.ts → packages/kernel/src/frontmatter.ts → packages/kernel/src/types.ts
 
 Read those in order to follow one pull request end to end.
 

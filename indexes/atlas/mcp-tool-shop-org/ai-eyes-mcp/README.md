@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 4fba7a2.
 
 ## What this is
 
-6 parts, mostly Python (11 files), TypeScript (2) and JavaScript (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. People run ai-eyes-mcp.
+6 parts, mostly Python (11 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run ai-eyes-mcp.
 
 ## What changed since 2026-09-25 (f8d83a6)
 
@@ -44,6 +44,8 @@ Window: 180 days; a pair counts from 3 shared commits, since 3 source files reac
 ## What no test touches
 
 Every code part is imported by at least one test.
+
+verify.sh runs in no workflow.
 
 ## Written but never read
 

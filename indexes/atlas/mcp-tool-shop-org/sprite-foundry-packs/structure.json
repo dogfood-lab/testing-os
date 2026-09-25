@@ -22931,6 +22931,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -28612,13 +28620,17 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.16.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "verify",
-          "step": "Verify all packs",
-          "text": "node tooling/verify-all.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Verify all packs"
         }
       ],
       "elsewhere": [],
@@ -28701,13 +28713,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -28725,7 +28741,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -28787,33 +28803,58 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth",
-          "text": "set -euo pipefail\n# Node 22's bundled npm 10.x signs provenance but cannot negotiate the\n# OIDC auth path (the PUT returns a misleading 404). An in-place\n# 'npm i -g npm@latest' races the bundled arborist and breaks, so we\n# install npm@latest into a sandbox dir and PATH-shadow the system npm.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Resolve tag -> package slug + version (+ remote-tag preflight)",
-          "text": "set -euo pipefail\nTAG=\"${{ github.event.inputs.tag || github.ref_name }}\"\necho \"Tag: $TAG\"\nif [[ \"$TAG\" =~ ^(.+)-v([0-9]+\\.[0-9]+\\.[0-9]+([-.+][0-9A-Za-z.-]+)?)$ ]]; then\n  SLUG=\"${BASH_REMATCH[1]}\"\n  VERSION=\"${BASH_REMATCH[2]}\"\nelse\n  echo \"::error::Tag '$TAG' must match <slug>-v<semver>, e.g. townsfolk-hd-v1.0.0\"\n  exit 1\nfi\n# Fail fast BEFORE any publish if the tag isn't on the remote (covers the\n# workflow_dispatch 'forgot to push' case — otherwise --verify-tag would\n# only catch it after the irreversible publish step).\ngit fetch --tags --force origin >/dev/null 2>&1 || true\nif ! git rev-parse \"refs/tags/$TAG\" >/dev/null 2>&1; then\n  echo \"::error::Tag '$TAG' not found on remote — push it first\"\n  exit 1\nfi\nPKG_DIR=\"packages/$SLUG\"\nif [ ! -f \"$PKG_DIR/package.json\" ]; then\n  echo \"::error::No package at $PKG_DIR (parsed from tag $TAG)\"\n  exit 1\nfi\nPKG_VERSION=$(node -p \"require('./$PKG_DIR/package.json').version\")\nif [ \"$PKG_VERSION\" != \"$VERSION\" ]; then\n  echo \"::error::Tag version $VERSION != $PKG_DIR/package.json version $PKG_VERSION\"\n  exit 1\nfi\nPKG_NAME=$(node -p \"require('./$PKG_DIR/package.json').name\")\nPRERELEASE=\"\"\ncase \"$VERSION\" in *-*|*+*) PRERELEASE=\"--prerelease\" ;; esac\necho \"Releasing $PKG_NAME@$VERSION from $PKG_DIR\"\n{\n  echo \"TAG=$TAG\"\n  echo \"PKG_DIR=$PKG_DIR\"\n  echo \"PKG_NAME=$PKG_NAME\"\n  echo \"VERSION=$VERSION\"\n  echo \"PRERELEASE=$PRERELEASE\"\n} >> \"$GITHUB_ENV\"\n"
+          "programs": [
+            "-v",
+            ".+",
+            "1",
+            "echo",
+            "git",
+            "node"
+          ],
+          "step": "Resolve tag -> package slug + version (+ remote-tag preflight)"
         },
         {
           "job": "release",
-          "step": "Verify pack assets are complete",
-          "text": "npm run --prefix \"$PKG_DIR\" verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify pack assets are complete"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (verify shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify shape)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher, idempotent)",
-          "text": "set -euo pipefail\n# No NODE_AUTH_TOKEN by design — OIDC trusted publishing (npm >= 11.5)\n# supersedes setup-node's .npmrc token line. Do NOT add NODE_AUTH_TOKEN;\n# it would bypass provenance binding.\nif npm view \"$PKG_NAME@$VERSION\" version >/dev/null 2>&1; then\n  echo \"$PKG_NAME@$VERSION already on npm — skipping publish\"\nelse\n  npm publish --provenance --access public\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher, idempotent)"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release (idempotent)",
-          "text": "set -euo pipefail\nif gh release view \"$TAG\" >/dev/null 2>&1; then\n  echo \"Release $TAG already exists — skipping\"\nelse\n  gh release create \"$TAG\" --title \"$PKG_NAME $VERSION\" --generate-notes --verify-tag $PRERELEASE\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "gh"
+          ],
+          "step": "Create GitHub Release (idempotent)"
         }
       ],
       "elsewhere": [],
@@ -28895,6 +28936,11 @@
     {
       "readers": [
         {
+          "by": "scripts/gen_previews.py",
+          "call": "read_text",
+          "confidence": "ast"
+        },
+        {
           "by": "tooling/verify-all.mjs",
           "call": "existsSync",
           "confidence": "ast"
@@ -28905,8 +28951,14 @@
           "confidence": "ast"
         }
       ],
+      "spans": 14,
       "target": "packages",
-      "writers": []
+      "writers": [
+        {
+          "by": "scripts/gen_previews.py",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [

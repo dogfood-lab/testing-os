@@ -256,6 +256,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -287,10 +295,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 14,
+      "dynamicReads": 8,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 15,
+      "dynamicWrites": 3,
       "entryPoints": [
         "src/mcp_stress_test/cli/__init__.py"
       ],
@@ -1120,6 +1128,17 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 21,
+          "where": [
+            "caller"
+          ],
+          "writes": 12
+        }
+      ],
+      "outsideReads": 21,
+      "outsideWrites": 12,
       "role": "code",
       "testedBy": 9,
       "unresolvedSites": 0
@@ -1365,58 +1384,81 @@
       "commands": [
         {
           "job": "lint",
-          "step": "Install linters",
-          "text": "pip install ruff==0.16.6"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install linters"
         },
         {
           "job": "lint",
-          "step": "Check formatting",
-          "text": "ruff format --check ."
+          "programs": [
+            "ruff"
+          ],
+          "step": "Check formatting"
         },
         {
           "job": "lint",
-          "step": "Check linting",
-          "text": "ruff check . --output-format=github"
+          "programs": [
+            "ruff"
+          ],
+          "step": "Check linting"
         },
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.14.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install package",
-          "text": "pip install --upgrade pip\npip install -e \".[dev]\"\n"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install package"
         },
         {
           "job": "test",
-          "step": "Run tests",
-          "text": "pytest tests/ -v --tb=short --cov=mcp_stress_test --cov-report=term-missing"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "test",
-          "step": "Test CLI",
-          "text": "mcp-stress --version\nmcp-stress info\nmcp-stress chain list\n"
+          "programs": [
+            "mcp-stress"
+          ],
+          "step": "Test CLI"
         },
         {
           "job": "typecheck",
-          "step": "Install dependencies",
-          "text": "pip install --upgrade pip\npip install -e \".[dev]\"\npip install pyright\n"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "typecheck",
-          "step": "Run Pyright",
-          "text": "pyright src/"
+          "programs": [
+            "pyright"
+          ],
+          "step": "Run Pyright"
         },
         {
           "job": "pip-audit",
-          "step": "Install package",
-          "text": "pip install --upgrade pip\npip install -e \".[dev]\"\n"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install package"
         },
         {
           "job": "pip-audit",
-          "step": "Audit installed graph",
-          "text": "pip install pip-audit==2.10.1\npip-audit\n"
+          "programs": [
+            "pip",
+            "pip-audit"
+          ],
+          "step": "Audit installed graph"
         }
       ],
       "elsewhere": [],
@@ -1520,13 +1562,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -1562,7 +1608,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1634,43 +1680,65 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install build tools",
-          "text": "python -m pip install --upgrade pip\npip install build twine\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install build tools"
         },
         {
           "job": "build",
-          "step": "Build package",
-          "text": "python -m build"
+          "programs": [
+            "python"
+          ],
+          "step": "Build package"
         },
         {
           "job": "build",
-          "step": "Check package",
-          "text": "twine check dist/*"
+          "programs": [
+            "twine"
+          ],
+          "step": "Check package"
         },
         {
           "job": "test",
-          "step": "Install package",
-          "text": "python -m pip install --upgrade pip\npip install -e \".[dev]\"\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install package"
         },
         {
           "job": "test",
-          "step": "Run tests",
-          "text": "pytest tests/ -v --tb=short"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "package-smoke",
-          "step": "Smoke-test wheel",
-          "text": "python -m venv .venv-wheel\n.venv-wheel/bin/pip install --upgrade pip\n.venv-wheel/bin/pip install dist/*.whl\nunset PYTHONPATH\n.venv-wheel/bin/mcp-stress --version\n.venv-wheel/bin/mcp-stress info\n.venv-wheel/bin/mcp-stress chain list\n"
+          "programs": [
+            ".venv-wheel/bin/mcp-stress",
+            ".venv-wheel/bin/pip",
+            "python"
+          ],
+          "step": "Smoke-test wheel"
         },
         {
           "job": "package-smoke",
-          "step": "Smoke-test sdist",
-          "text": "python -m venv .venv-sdist\n.venv-sdist/bin/pip install --upgrade pip\n.venv-sdist/bin/pip install dist/*.tar.gz\nunset PYTHONPATH\n.venv-sdist/bin/mcp-stress --version\n.venv-sdist/bin/mcp-stress info\n.venv-sdist/bin/mcp-stress chain list\n"
+          "programs": [
+            ".venv-sdist/bin/mcp-stress",
+            ".venv-sdist/bin/pip",
+            "python"
+          ],
+          "step": "Smoke-test sdist"
         },
         {
           "job": "release-assets",
-          "step": "Upload assets to release",
-          "text": "gh release upload \"${{ github.event.release.tag_name }}\" dist/*"
+          "programs": [
+            "gh"
+          ],
+          "step": "Upload assets to release"
         }
       ],
       "elsewhere": [],
@@ -1751,6 +1819,7 @@
       "runs": [
         {
           "job": "docker",
+          "packed": true,
           "path": "README.md",
           "runKind": "checks",
           "via": "docker build Dockerfile",
@@ -1762,6 +1831,7 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "pyproject.toml",
           "runKind": "checks",
           "via": "docker build Dockerfile",
@@ -1774,6 +1844,7 @@
         {
           "directory": true,
           "job": "docker",
+          "packed": true,
           "path": "src/",
           "runKind": "checks",
           "via": "docker build Dockerfile",
@@ -1991,6 +2062,11 @@
         {
           "by": "src/mcp_stress_test/chains/loader.py",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/mcp_stress_test/chains/loader.py",
+          "call": "read_text",
           "confidence": "ast"
         },
         {

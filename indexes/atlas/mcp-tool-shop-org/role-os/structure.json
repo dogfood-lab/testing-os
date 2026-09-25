@@ -1803,7 +1803,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -1885,10 +1886,26 @@
         },
         {
           "hash": "69f73df9efe5bcd68c6d75eae005024e6a5a6ff6ed6e25d89494267e4bf94453",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/404.astro"
         },
         {
           "hash": "257b7f107404268a56c0c139bbca72a37c8e0679a99bbc0622c913fabeb4e00b",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -4049,7 +4066,7 @@
           "where": [
             "cwd:.claude"
           ],
-          "writes": 0
+          "writes": 2
         },
         {
           "reads": 31,
@@ -4063,7 +4080,7 @@
           "where": [
             "cwd:.role-os/"
           ],
-          "writes": 8
+          "writes": 9
         },
         {
           "reads": 1,
@@ -4172,7 +4189,7 @@
         }
       ],
       "outsideReads": 133,
-      "outsideWrites": 59,
+      "outsideWrites": 62,
       "role": "code",
       "testedBy": 72,
       "unresolvedSites": 0
@@ -5073,10 +5090,10 @@
       "unresolvedSites": 3
     },
     {
-      "dynamicReads": 6,
+      "dynamicReads": 4,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 6,
+      "dynamicWrites": 3,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -5605,22 +5622,22 @@
       "origin": "mixed",
       "outsidePlaces": [
         {
-          "reads": 3,
+          "reads": 9,
           "where": [
             "caller"
           ],
-          "writes": 0
+          "writes": 8
         },
         {
           "reads": 0,
           "where": [
             "temp"
           ],
-          "writes": 1
+          "writes": 2
         }
       ],
-      "outsideReads": 3,
-      "outsideWrites": 1,
+      "outsideReads": 9,
+      "outsideWrites": 10,
       "role": "code",
       "testedBy": 3,
       "unresolvedSites": 0
@@ -5632,23 +5649,31 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "test",
-          "step": "4",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "test",
-          "step": "5",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         }
       ],
       "elsewhere": [],
@@ -5761,13 +5786,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -5785,7 +5814,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 6
         }
       ],
       "readers": [],
@@ -5847,33 +5876,46 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Use an OIDC-capable npm (Trusted Publishing needs npm >= 11.5)",
-          "text": "npm install -g npm@11.5.1"
+          "programs": [
+            "npm"
+          ],
+          "step": "Use an OIDC-capable npm (Trusted Publishing needs npm >= 11.5)"
         },
         {
           "job": "publish",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "publish",
-          "step": "4",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "publish",
-          "step": "Pack (dry-run)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "Pack (dry-run)"
         },
         {
           "job": "publish",
-          "step": "Assert package.json version matches release tag",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG=\"${RELEASE_TAG#v}\"\nif [ \"$PKG_VERSION\" != \"$TAG\" ]; then\n  echo \"package.json version ($PKG_VERSION) does not match release tag ($RELEASE_TAG)\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Assert package.json version matches release tag"
         },
         {
           "job": "publish",
-          "step": "Publish to npm via Trusted Publishing (OIDC)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm via Trusted Publishing (OIDC)"
         }
       ],
       "elsewhere": [],

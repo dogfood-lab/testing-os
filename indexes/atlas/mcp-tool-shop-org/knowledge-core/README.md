@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit f7dfb2e.
 
 ## What this is
 
-6 parts, mostly TypeScript (17 files) and JavaScript (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts.
+6 parts, mostly TypeScript (17 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages.
 
 ## What changed since 2026-09-23 (274af45)
 
@@ -68,7 +68,7 @@ People write .github/, knowledge/, the repository root and site/. Nothing in thi
 
 ## Where to start
 
-src/index.ts → src/types.ts
+src/index.ts → src/validate.ts → src/types.ts
 
 Read those in order to follow one import of @roleos/knowledge-core end to end. This path follows @roleos/knowledge-core (the package's entry, not published from here) from its entry, since CI runs only tests and checks.
 

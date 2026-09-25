@@ -138,8 +138,11 @@
           "path": "npm/README.md"
         },
         {
+          "entry": "embeddedVersion",
+          "entryRule": 1,
           "hash": "74ce95f7da1cab8f5520655a5ccce278d8a698debef9703485124624ae2654ab",
-          "path": "npm/bin/tool-compass.js"
+          "path": "npm/bin/tool-compass.js",
+          "sequences": []
         },
         {
           "hash": "4f817de1acf03c2f9389eb9fe7e838cef350e32722bc2fcfa1c505fa32229429",
@@ -162,11 +165,11 @@
       "origin": "mixed",
       "role": "code",
       "testedBy": 1,
-      "testedThroughSpawn": true,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 6,
+      "dynamicReads": 4,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 11,
@@ -4537,14 +4540,15 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 1,
+          "reads": 35,
           "where": [
             "caller"
           ],
-          "writes": 0
+          "writes": 5
         }
       ],
-      "outsideReads": 1,
+      "outsideReads": 35,
+      "outsideWrites": 5,
       "role": "code",
       "testedBy": 28,
       "unresolvedSites": 0
@@ -4639,6 +4643,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -5204,93 +5216,151 @@
       "commands": [
         {
           "job": "lint",
-          "step": "Check for stale org/user URLs",
-          "text": "bash scripts/check-org-urls.sh"
+          "programs": [
+            "bash"
+          ],
+          "step": "Check for stale org/user URLs"
         },
         {
           "job": "lint",
-          "step": "Verify SCORECARD is in sync",
-          "text": "if [ -f Makefile ] && grep -q \"^verify-scorecard:\" Makefile; then\n  make verify-scorecard\nelse\n  echo \"Makefile verify-scorecard target missing — skipping\"\nfi\n"
+          "programs": [
+            "echo",
+            "grep",
+            "make"
+          ],
+          "step": "Verify SCORECARD is in sync"
         },
         {
           "job": "lint",
-          "step": "Verify metrics surface (Four Golden Signals)",
-          "text": "if [ -f Makefile ] && grep -q \"^verify-metrics:\" Makefile; then\n  python -m pip install --upgrade pip\n  pip install -r requirements.txt || true\n  make verify-metrics || true\nelse\n  echo \"Makefile verify-metrics target missing — skipping\"\nfi\n"
+          "programs": [
+            "echo",
+            "grep",
+            "make",
+            "pip",
+            "python"
+          ],
+          "step": "Verify metrics surface (Four Golden Signals)"
         },
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "python -m pip install --upgrade pip\npip install -r requirements.txt\npip install -r requirements-dev.txt\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Run tests",
-          "text": "pytest -v --tb=short -m \"not integration\" \\\n  --junitxml=junit-${{ matrix.python-version }}-${{ matrix.os }}.xml\n"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "test",
-          "step": "Run tests with coverage",
-          "text": "pytest --cov=. --cov-report=xml --cov-report=term -m \"not integration\"\n"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run tests with coverage"
         },
         {
           "job": "test",
-          "step": "Run pip-audit (report only)",
-          "text": "pip-audit -r requirements.txt --format json --output pip-audit-report.json || true\n"
+          "programs": [
+            "pip-audit"
+          ],
+          "step": "Run pip-audit (report only)"
         },
         {
           "job": "test",
-          "step": "Audit dependencies for vulnerabilities",
-          "text": "pip-audit -r requirements.txt\n"
+          "programs": [
+            "pip-audit"
+          ],
+          "step": "Audit dependencies for vulnerabilities"
         },
         {
           "job": "npm-wrapper",
-          "step": "Install and test npm wrapper",
-          "text": "npm install --no-audit --no-fund\nnpm test\n"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install and test npm wrapper"
         },
         {
           "job": "nightly-fuzz",
-          "step": "Install dependencies",
-          "text": "python -m pip install --upgrade pip\npip install -r requirements.txt\npip install -r requirements-dev.txt\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "nightly-fuzz",
-          "step": "Run Hypothesis (nightly profile)",
-          "text": "HYPOTHESIS_PROFILE=nightly pytest -m \"not integration\"\n"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run Hypothesis (nightly profile)"
         },
         {
           "job": "integration",
-          "step": "Install dependencies",
-          "text": "python -m pip install --upgrade pip\npip install -r requirements.txt\npip install -r requirements-dev.txt\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "integration",
-          "step": "Install pinned Ollama",
-          "text": "set -euo pipefail\nOLLAMA_VERSION=\"v0.4.7\"\nBASE_URL=\"https://github.com/ollama/ollama/releases/download/${OLLAMA_VERSION}\"\nTARBALL=\"ollama-linux-amd64.tgz\"\ncurl -fsSL \"${BASE_URL}/${TARBALL}\" -o \"${TARBALL}\"\nif curl -fsSL \"${BASE_URL}/${TARBALL}.sha256\" -o \"${TARBALL}.sha256\" 2>/dev/null; then\n  sha256sum -c \"${TARBALL}.sha256\"\nelse\n  echo \"::warning::Ollama ${OLLAMA_VERSION} release has no .sha256 file; proceeding without checksum verification (known upstream gap).\"\nfi\nsudo tar -C /usr/local -xzf \"${TARBALL}\"\nrm -f \"${TARBALL}\" \"${TARBALL}.sha256\"\nollama --version\nollama serve &\n# Wait for the daemon to accept connections instead of a blind sleep.\nfor _ in $(seq 1 30); do\n  if curl -sf http://localhost:11434/api/version > /dev/null; then\n    break\n  fi\n  sleep 1\ndone\nollama pull nomic-embed-text\n"
+          "programs": [
+            "curl",
+            "echo",
+            "ollama",
+            "rm",
+            "seq",
+            "sha256sum",
+            "sleep",
+            "sudo"
+          ],
+          "step": "Install pinned Ollama"
         },
         {
           "job": "integration",
-          "step": "Run integration tests",
-          "text": "pytest -v -m integration\n"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run integration tests"
         },
         {
           "job": "docker",
-          "step": "Smoke run",
-          "text": "set -euo pipefail\ndocker run -d --name tc-smoke -p ${{ matrix.port }}:${{ matrix.port }} ${{ matrix.tag }}\ncleanup() { docker logs tc-smoke || true; docker rm -f tc-smoke || true; }\ntrap cleanup EXIT\nfor _ in $(seq 1 45); do\n  if [ \"${{ matrix.smoke }}\" = \"health\" ]; then\n    if curl -sf \"http://127.0.0.1:${{ matrix.port }}/health\"; then\n      echo \"gateway /health ok\"\n      exit 0\n    fi\n  else\n    # Bind smoke: any HTTP response (or even a reset after accept)\n    # means the UI process bound 7860. Do not use curl -f — Gradio\n    # may 4xx before the app is fully ready.\n    if curl -sS --connect-timeout 2 -o /dev/null \\\n         \"http://127.0.0.1:${{ matrix.port }}/\"; then\n      echo \"ui port ${{ matrix.port }} bound\"\n      exit 0\n    fi\n  fi\n  sleep 2\ndone\necho \"::error::docker smoke (${{ matrix.target }}) did not become ready on port ${{ matrix.port }}\"\nexit 1\n"
+          "programs": [
+            "cleanup",
+            "curl",
+            "docker",
+            "echo",
+            "seq",
+            "sleep",
+            "trap"
+          ],
+          "step": "Smoke run"
         },
         {
           "job": "pages-build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "pages-build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -5372,7 +5442,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         },
         {
           "boundary": "tests",
@@ -5384,66 +5454,77 @@
       "runs": [
         {
           "job": "docker",
+          "packed": true,
           "path": "LICENSE",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "README.md",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "_version.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "analytics.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "backend_client_mcp.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "backend_client_simple.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "bootstrap.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "chain_indexer.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "cli.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "compass_config.example.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "config.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5456,6 +5537,7 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "embedder.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5468,12 +5550,14 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "indexer.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "llms.txt",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5487,12 +5571,14 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "pyproject.toml",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "requirements.txt",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5548,6 +5634,7 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "sync_manager.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5582,12 +5669,14 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "tool_manifest.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "ui.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5682,38 +5771,63 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install build tools",
-          "text": "python -m pip install --upgrade pip\npip install build twine\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install build tools"
         },
         {
           "job": "build",
-          "step": "Build package",
-          "text": "python -m build"
+          "programs": [
+            "python"
+          ],
+          "step": "Build package"
         },
         {
           "job": "build",
-          "step": "Check package with twine",
-          "text": "twine check dist/*"
+          "programs": [
+            "twine"
+          ],
+          "step": "Check package with twine"
         },
         {
           "job": "docker",
-          "step": "Resolve release version",
-          "text": "set -euo pipefail\nREF=\"${{ github.event.workflow_run.head_branch || github.event.release.tag_name || github.ref_name }}\"\nV=\"${REF#v}\"\necho \"version=${V}\" >> \"$GITHUB_OUTPUT\"\necho \"major_minor=$(echo \"$V\" | cut -d. -f1-2)\" >> \"$GITHUB_OUTPUT\"\necho \"resolved=${V} (event=${{ github.event_name }} ref=${REF} stage=${{ matrix.stage }})\"\n"
+          "programs": [
+            "cut",
+            "echo"
+          ],
+          "step": "Resolve release version"
         },
         {
           "job": "release-smoke",
-          "step": "Derive version (strip leading v)",
-          "text": "set -euo pipefail\n# Resolve the tag across all trigger types. Under workflow_run\n# github.event.release.tag_name is null and github.ref is main —\n# workflow_run.head_branch carries the tag ref (e.g. v2.4.0).\nTAG=\"${{ github.event.workflow_run.head_branch || github.event.release.tag_name || github.ref_name }}\"\necho \"tag=${TAG}\" >> \"$GITHUB_OUTPUT\"\necho \"version=${TAG#v}\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Derive version (strip leading v)"
         },
         {
           "job": "release-smoke",
-          "step": "PyPI smoke — install + --version matches tag",
-          "text": "set -euo pipefail\nVERSION=\"${{ steps.ver.outputs.version }}\"\n# PyPI propagation is fast but not instant; retry briefly. If no\n# iteration succeeds the loop falls through and the subsequent\n# `tool-compass --version` invocation fails with a clear \"command\n# not found\", which is the desired loud failure mode (CT-B-014).\ninstall_ok=0\nfor _ in $(seq 1 12); do\n  if pip install \"tool-compass==${VERSION}\"; then\n    install_ok=1\n    break\n  fi\n  sleep 10\ndone\nif [ \"$install_ok\" -ne 1 ]; then\n  echo \"::error::PyPI smoke failed: tool-compass==${VERSION} did not become installable in the propagation window\"\n  exit 1\nfi\nOUT=\"$(tool-compass --version 2>&1 || true)\"\necho \"tool-compass --version → $OUT\"\necho \"$OUT\" | grep -Fq \"${VERSION}\" || {\n  echo \"::error::PyPI smoke failed: --version output did not contain ${VERSION}\"\n  exit 1\n}\n"
+          "programs": [
+            "1",
+            "echo",
+            "grep",
+            "pip",
+            "seq",
+            "sleep",
+            "tool-compass"
+          ],
+          "step": "PyPI smoke — install + --version matches tag"
         },
         {
           "job": "release-smoke",
-          "step": "Docker smoke — pull gateway + UI, --version matches tag",
-          "text": "set -euo pipefail\nTAG=\"${{ steps.ver.outputs.tag }}\"\nVERSION=\"${{ steps.ver.outputs.version }}\"\nGATEWAY=\"${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${VERSION}\"\nUI=\"${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:ui-${VERSION}\"\ndocker pull \"$GATEWAY\"\ndocker pull \"$UI\"\nOUT=\"$(docker run --rm --entrypoint tool-compass \"$GATEWAY\" --version 2>&1 || true)\"\necho \"docker gateway --version → $OUT\"\necho \"$OUT\" | grep -Fq \"${VERSION}\" || {\n  echo \"::error::Docker gateway smoke failed: --version output did not contain ${VERSION}\"\n  exit 1\n}\nOUT_UI=\"$(docker run --rm --entrypoint tool-compass \"$UI\" --version 2>&1 || true)\"\necho \"docker ui --version → $OUT_UI\"\necho \"$OUT_UI\" | grep -Fq \"${VERSION}\" || {\n  echo \"::error::Docker UI smoke failed: --version output did not contain ${VERSION}\"\n  exit 1\n}\n"
+          "programs": [
+            "1",
+            "docker",
+            "echo",
+            "grep"
+          ],
+          "step": "Docker smoke — pull gateway + UI, --version matches tag"
         }
       ],
       "elsewhere": [],
@@ -5740,54 +5854,63 @@
       "runs": [
         {
           "job": "docker",
+          "packed": true,
           "path": "LICENSE",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "README.md",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "_version.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "analytics.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "backend_client_mcp.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "backend_client_simple.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "bootstrap.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "chain_indexer.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "cli.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5799,12 +5922,14 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "compass_config.example.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "config.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5817,6 +5942,7 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "embedder.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5829,42 +5955,49 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "indexer.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "llms.txt",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "pyproject.toml",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "requirements.txt",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "sync_manager.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "tool_manifest.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "ui.py",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5927,28 +6060,43 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install package[ui] + PyInstaller",
-          "text": "python -m pip install --upgrade pip\n# [ui] pulls Gradio. A core-only `pip install .` freezes a binary\n# that cannot serve `tool-compass ui` (the npx zero-prerequisite path).\npip install \".[ui]\" \"pyinstaller>=6.9.0\"\npython -c \"import ui, gradio\"\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install package[ui] + PyInstaller"
         },
         {
           "job": "build",
-          "step": "Resolve version",
-          "text": "TAG=\"${{ inputs.tag || github.event.release.tag_name }}\"\nVERSION=\"${TAG#v}\"\necho \"version=${VERSION}\" >> \"$GITHUB_OUTPUT\"\necho \"tag=${TAG}\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Resolve version"
         },
         {
           "job": "build",
-          "step": "Build single-file binary",
-          "text": "VERSION=\"${{ steps.version.outputs.version }}\"\n# --collect-submodules covers dynamic imports MCP / Gradio / Rich pull in.\n# --hidden-import ui: cli._cmd_ui imports ui inside try/except ImportError,\n# which PyInstaller treats as optional and would drop from the freeze.\n# --console keeps stdout/stderr behavior identical to `python cli.py`.\npyinstaller --onefile \\\n  --name \"${{ env.TOOL_NAME }}\" \\\n  --console \\\n  --collect-submodules mcp.client \\\n  --collect-submodules mcp.server \\\n  --collect-submodules mcp.types \\\n  --collect-submodules mcp.shared \\\n  --exclude-module mcp.cli \\\n  --exclude-module typer \\\n  --collect-submodules hnswlib \\\n  --collect-submodules numpy \\\n  --collect-submodules httpx \\\n  --hidden-import ui \\\n  --collect-submodules gradio \\\n  \"${{ env.ENTRYPOINT }}\"\nOUTNAME=\"${{ env.TOOL_NAME }}-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\nmv \"dist/${{ env.TOOL_NAME }}${{ matrix.ext }}\" \"dist/${OUTNAME}\"\necho \"Built: dist/${OUTNAME}\"\nls -la \"dist/${OUTNAME}\"\n"
+          "programs": [
+            "echo",
+            "ls",
+            "mv",
+            "pyinstaller"
+          ],
+          "step": "Build single-file binary"
         },
         {
           "job": "build",
-          "step": "Smoke test binary",
-          "text": "VERSION=\"${{ steps.version.outputs.version }}\"\nBIN=\"dist/${{ env.TOOL_NAME }}-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\n# --version is wired on the root parser as of v2.2.1 (a942a67).\n\"$BIN\" --version\n\"$BIN\" --help\n# Zero-prerequisite `npx … ui` path. argparse prints this without\n# importing ui.py; the freeze still needs [ui] + --hidden-import ui\n# + --collect-submodules gradio or the launched binary cannot serve.\n\"$BIN\" ui --help\n"
+          "programs": [],
+          "step": "Smoke test binary"
         },
         {
           "job": "attach",
-          "step": "Generate checksums",
-          "text": "TAG=\"${{ inputs.tag || github.event.release.tag_name }}\"\nVERSION=\"${TAG#v}\"\ncd artifacts\nsha256sum * > \"checksums-${VERSION}.txt\"\necho \"--- checksums-${VERSION}.txt ---\"\ncat \"checksums-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "echo",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         }
       ],
       "elsewhere": [],
@@ -6031,78 +6179,127 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Verify tag matches npm/package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./npm/package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} → ${TAG_VERSION}\"\necho \"npm/package.json: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match npm/package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches npm/package.json version"
         },
         {
           "job": "verify",
-          "step": "Verify tag matches pyproject.toml version",
-          "text": "PY_VERSION=$(python3 -c \"import tomllib; print(tomllib.loads(open('pyproject.toml').read())['project']['version'])\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"pyproject.toml: ${PY_VERSION}\"\nif [ \"${PY_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match pyproject.toml version ${PY_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "python3"
+          ],
+          "step": "Verify tag matches pyproject.toml version"
         },
         {
           "job": "verify",
-          "step": "Verify npm/bin/tool-compass.js references the tag",
-          "text": "if ! grep -Fq \"${GITHUB_REF_NAME}\" npm/bin/tool-compass.js; then\n  echo \"::error::npm/bin/tool-compass.js does not reference ${GITHUB_REF_NAME} — run scripts/sync-version.mjs before tagging\"\n  exit 1\nfi\necho \"npm/bin/tool-compass.js references ${GITHUB_REF_NAME} ✓\"\n"
+          "programs": [
+            "echo",
+            "grep"
+          ],
+          "step": "Verify npm/bin/tool-compass.js references the tag"
         },
         {
           "job": "verify",
-          "step": "Install npm wrapper dependencies",
-          "text": "npm install --no-audit --no-fund"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install npm wrapper dependencies"
         },
         {
           "job": "verify",
-          "step": "npm pack dry-run (verify shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify shape)"
         },
         {
           "job": "create-release",
-          "step": "Create GitHub Release (idempotent)",
-          "text": "# Extract the [<version>] section from CHANGELOG.md as the release\n# notes. Falls back to the tag name if the section is missing/empty.\nVERSION=\"${GITHUB_REF_NAME#v}\"\nNOTES_FILE=\"$(mktemp)\"\nawk -v ver=\"${VERSION}\" '\n  $0 ~ \"^## \\\\[\" ver \"\\\\]\" {capture=1; next}\n  capture && /^## \\[/ {exit}\n  capture {print}\n' CHANGELOG.md > \"${NOTES_FILE}\"\n\nif [ ! -s \"${NOTES_FILE}\" ]; then\n  echo \"Tool Compass ${GITHUB_REF_NAME}\" > \"${NOTES_FILE}\"\n  echo \"\" >> \"${NOTES_FILE}\"\n  echo \"See CHANGELOG.md for details.\" >> \"${NOTES_FILE}\"\nfi\n\n# Create the release only if it doesn't already exist. Binaries attach\n# next; npm publish waits until those assets exist. Skipping when it\n# exists makes the step idempotent on workflow_dispatch re-runs /\n# second tag pushes (no HTTP 422 \"tag_name already exists\").\nif gh release view \"${GITHUB_REF_NAME}\" >/dev/null 2>&1; then\n  echo \"Release ${GITHUB_REF_NAME} already exists; skipping create.\"\nelse\n  gh release create \"${GITHUB_REF_NAME}\" \\\n    --title \"Tool Compass ${GITHUB_REF_NAME}\" \\\n    --notes-file \"${NOTES_FILE}\" \\\n    --verify-tag\nfi\n"
+          "programs": [
+            "1",
+            "awk",
+            "echo",
+            "gh",
+            "mktemp"
+          ],
+          "step": "Create GitHub Release (idempotent)"
         },
         {
           "job": "binaries/build",
-          "step": "Install package[ui] + PyInstaller",
-          "text": "python -m pip install --upgrade pip\n# [ui] pulls Gradio. A core-only `pip install .` freezes a binary\n# that cannot serve `tool-compass ui` (the npx zero-prerequisite path).\npip install \".[ui]\" \"pyinstaller>=6.9.0\"\npython -c \"import ui, gradio\"\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install package[ui] + PyInstaller"
         },
         {
           "job": "binaries/build",
-          "step": "Resolve version",
-          "text": "TAG=\"${{ inputs.tag || github.event.release.tag_name }}\"\nVERSION=\"${TAG#v}\"\necho \"version=${VERSION}\" >> \"$GITHUB_OUTPUT\"\necho \"tag=${TAG}\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Resolve version"
         },
         {
           "job": "binaries/build",
-          "step": "Build single-file binary",
-          "text": "VERSION=\"${{ steps.version.outputs.version }}\"\n# --collect-submodules covers dynamic imports MCP / Gradio / Rich pull in.\n# --hidden-import ui: cli._cmd_ui imports ui inside try/except ImportError,\n# which PyInstaller treats as optional and would drop from the freeze.\n# --console keeps stdout/stderr behavior identical to `python cli.py`.\npyinstaller --onefile \\\n  --name \"${{ env.TOOL_NAME }}\" \\\n  --console \\\n  --collect-submodules mcp.client \\\n  --collect-submodules mcp.server \\\n  --collect-submodules mcp.types \\\n  --collect-submodules mcp.shared \\\n  --exclude-module mcp.cli \\\n  --exclude-module typer \\\n  --collect-submodules hnswlib \\\n  --collect-submodules numpy \\\n  --collect-submodules httpx \\\n  --hidden-import ui \\\n  --collect-submodules gradio \\\n  \"${{ env.ENTRYPOINT }}\"\nOUTNAME=\"${{ env.TOOL_NAME }}-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\nmv \"dist/${{ env.TOOL_NAME }}${{ matrix.ext }}\" \"dist/${OUTNAME}\"\necho \"Built: dist/${OUTNAME}\"\nls -la \"dist/${OUTNAME}\"\n"
+          "programs": [
+            "echo",
+            "ls",
+            "mv",
+            "pyinstaller"
+          ],
+          "step": "Build single-file binary"
         },
         {
           "job": "binaries/build",
-          "step": "Smoke test binary",
-          "text": "VERSION=\"${{ steps.version.outputs.version }}\"\nBIN=\"dist/${{ env.TOOL_NAME }}-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\n# --version is wired on the root parser as of v2.2.1 (a942a67).\n\"$BIN\" --version\n\"$BIN\" --help\n# Zero-prerequisite `npx … ui` path. argparse prints this without\n# importing ui.py; the freeze still needs [ui] + --hidden-import ui\n# + --collect-submodules gradio or the launched binary cannot serve.\n\"$BIN\" ui --help\n"
+          "programs": [],
+          "step": "Smoke test binary"
         },
         {
           "job": "binaries/attach",
-          "step": "Generate checksums",
-          "text": "TAG=\"${{ inputs.tag || github.event.release.tag_name }}\"\nVERSION=\"${TAG#v}\"\ncd artifacts\nsha256sum * > \"checksums-${VERSION}.txt\"\necho \"--- checksums-${VERSION}.txt ---\"\ncat \"checksums-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "echo",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         },
         {
           "job": "publish-npm",
-          "step": "Install npm 11.5.2 in sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22 ships npm 10.9, which signs Sigstore provenance fine but\n# cannot negotiate the OIDC auth path for trusted publishing — the\n# PUT returns a misleading 404 \"not in this registry\". npm 11.5+ is\n# required. Pin an exact 11.5.x — never @latest — so a compromised\n# or unexpected latest tarball cannot inherit this job's OIDC identity.\n# Bump via PR / manual review (sandbox is not a Dependabot ecosystem).\n#\n# An in-place `npm install -g npm@latest` races on Node 22's bundled\n# npm 10.9 arborist rebuild and breaks irrecoverably (MODULE_NOT_FOUND:\n# promise-retry). Sandbox install + PATH shadow avoids the race.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@11.5.2\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\nINSTALLED=\"$(\"$SANDBOX/node_modules/.bin/npm\" --version)\"\necho \"sandboxed npm ${INSTALLED}\"\nif [ \"$INSTALLED\" != \"11.5.2\" ]; then\n  echo \"::error::sandboxed npm is ${INSTALLED}, expected 11.5.2 (do not float @latest)\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm 11.5.2 in sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "publish-npm",
-          "step": "Verify GitHub Release binaries and checksums exist",
-          "text": "set -euo pipefail\nTAG=\"${GITHUB_REF_NAME}\"\nVERSION=\"${TAG#v}\"\necho \"Checking Release ${TAG} assets before npm publish...\"\nASSETS=\"$(gh release view \"${TAG}\" --json assets --jq '.assets[].name')\"\necho \"${ASSETS}\"\nmissing=0\nfor f in \\\n  \"tool-compass-${VERSION}-linux-x64\" \\\n  \"tool-compass-${VERSION}-darwin-arm64\" \\\n  \"tool-compass-${VERSION}-win-x64.exe\" \\\n  \"checksums-${VERSION}.txt\"\ndo\n  if ! printf '%s\\n' \"${ASSETS}\" | grep -Fxq \"${f}\"; then\n    echo \"::error::GitHub Release ${TAG} is missing asset ${f} — refusing npm publish\"\n    missing=1\n  fi\ndone\nif [ \"${missing}\" -ne 0 ]; then\n  echo \"::error::npx @mcptoolshop/tool-compass would be unable to fetch/verify a binary. Fix Release assets, then re-run.\"\n  exit 1\nfi\necho \"All required Release assets present; npm publish may proceed.\"\n"
+          "programs": [
+            "echo",
+            "gh",
+            "grep",
+            "printf"
+          ],
+          "step": "Verify GitHub Release binaries and checksums exist"
         },
         {
           "job": "publish-npm",
-          "step": "Install npm wrapper dependencies",
-          "text": "npm install --no-audit --no-fund"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install npm wrapper dependencies"
         },
         {
           "job": "publish-npm",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         }
       ],
       "elsewhere": [],
@@ -6205,6 +6402,48 @@
         "softprops/action-gh-release"
       ],
       "usesWorkflowToken": true
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "npm/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "tool-compass",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "npm",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "npm/bin/tool-compass.js",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
     },
     {
       "checksCount": 0,

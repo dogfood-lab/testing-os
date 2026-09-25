@@ -18,6 +18,16 @@
     {
       "doors": 2,
       "importedBy": [],
+      "importedByTests": [
+        "test"
+      ],
+      "kind": "part",
+      "name": "tools",
+      "partLabel": "tools"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
       "importedByTests": [],
       "kind": "part",
       "name": "test",
@@ -34,8 +44,16 @@
     },
     "items": [
       {
+        "kind": "import-added",
+        "sentence": "test now imports tools.",
+        "subjects": [
+          "test",
+          "tools"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -43,7 +61,7 @@
       "commit": "87de092d1ed79e3e48d145f6a36d767d9786fe61",
       "generatedAt": "2026-09-25T09:32:10.148Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -52,7 +70,7 @@
   "changesTogetherWithTests": 0,
   "commit": "b5f1ba51730de2346327de4981d7bc860ad195d5",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly JavaScript (52 files) and TypeScript (2). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run sovereign. People import @mcptoolshop/sovereign.",
+  "derived": "8 parts, mostly JavaScript (52 files), HTML (39), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sovereign. People import @mcptoolshop/sovereign.",
   "doors": [
     {
       "checks": [],
@@ -73,6 +91,11 @@
           "boundary": "test",
           "depth": 0,
           "files": 4
+        },
+        {
+          "boundary": "tools",
+          "depth": 1,
+          "files": 1
         }
       ],
       "runs": [
@@ -110,6 +133,11 @@
           "boundary": "test",
           "depth": 0,
           "files": 4
+        },
+        {
+          "boundary": "tools",
+          "depth": 1,
+          "files": 1
         }
       ],
       "runs": [
@@ -142,7 +170,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -217,11 +245,16 @@
   "duplicates": [],
   "duplicatesLead": null,
   "duplicatesNote": [],
-  "edges": [],
+  "edges": [
+    {
+      "from": "test",
+      "fromTests": true,
+      "to": "tools"
+    }
+  ],
   "generated": [],
-  "generatedAt": "2026-09-25T10:06:37.273Z",
+  "generatedAt": "2026-09-25T16:37:01.756Z",
   "limits": [
-    "1 import could not be resolved: `test/determinism.test.mjs` imports a path built at run time.",
     "10 writes and 9 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
     "1 read goes to a path its caller passes, not to this repository.",
@@ -256,21 +289,16 @@
   "testFiles": 6,
   "testedBy": {
     "bin": 1,
-    "tools": 0
+    "tools": 1
   },
   "unnamedWrites": 10,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],
-  "untested": [
-    {
-      "part": "tools",
-      "partLabel": "tools",
-      "testedBy": 0
-    }
-  ],
+  "untested": [],
   "untestedNote": [
-    "bin is touched by tests only through a spawn: a test runs its files as a child process."
+    "bin is touched by tests only through a spawn: a test runs its files as a child process.",
+    "verify.sh runs in no workflow."
   ],
   "written": 0
 }

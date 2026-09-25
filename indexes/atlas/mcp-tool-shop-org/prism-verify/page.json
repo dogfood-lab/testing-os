@@ -125,8 +125,32 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "prism (npm/package.json) is a new command. It runs npm/bin/prism.js.",
+        "subjects": [
+          "npm/package.json",
+          "npm/bin/prism.js"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "eval/corpus-familyab-v3 is now written by src/prism/eval/familygen.py.",
+        "subjects": [
+          "eval/corpus-familyab-v3",
+          "src/prism/eval/familygen.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "eval/corpus-familyab-v3/FAMILYAB_MANIFEST.json is now written by src/prism/eval/familygen.py.",
+        "subjects": [
+          "eval/corpus-familyab-v3/FAMILYAB_MANIFEST.json",
+          "src/prism/eval/familygen.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -134,7 +158,7 @@
       "commit": "a89ace7eaf557b93958833d9011c31e72f9215ff",
       "generatedAt": "2026-09-25T09:47:43.437Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -221,7 +245,7 @@
   "changesTogetherWithTests": 1,
   "commit": "121ce89ec7fea9ee5f9998d6d36c3bd18be4a910",
   "defaultBranch": "main",
-  "derived": "18 parts, mostly Python (200 files), JavaScript (6) and TypeScript (2). Work enters through 4 doors; CI and Release each reach 9 parts, and CI is followed because a pull request goes through it. It publishes to PyPI and @mcptoolshop/prism-verify to npm. People run prism.",
+  "derived": "18 parts, mostly Python (200 files), JavaScript (6), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 9 parts, and CI is followed because a pull request goes through it. It publishes to PyPI and @mcptoolshop/prism-verify to npm. It deploys a site to GitHub Pages. People run prism.",
   "doors": [
     {
       "checks": [
@@ -292,7 +316,8 @@
         "on a pull request touching 8 paths",
         "on a push touching 8 paths",
         "or by hand"
-      ]
+      ],
+      "untracked": "eval/corpus-familyab-v3/, which is not tracked"
     },
     {
       "builds": [
@@ -382,7 +407,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -454,6 +479,32 @@
       ],
       "runs": [
         "src/prism/cli/main.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "npm/package.json",
+      "id": "npm/package.json#prism",
+      "kind": "command",
+      "landings": [],
+      "name": "prism",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "npm",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "npm/bin/prism.js"
       ],
       "runsCount": 1,
       "runsMore": 0,
@@ -644,12 +695,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T10:05:23.140Z",
+  "generatedAt": "2026-09-25T16:33:55.321Z",
   "limits": [
-    "6 import sites name a declared dependency that shares its name with a local module (mcp); they are read as the dependency, which is not in this repository.",
     "2 import sites name a path outside this repository, so what they load is not followed.",
-    "5 writes and 16 reads use paths built at run time and are not named here.",
-    "2 writes and 3 reads go to a path their caller passes, not to this repository.",
+    "3 writes and 5 reads use paths built at run time and are not named here.",
+    "2 writes go to places this repository does not track, so they are not listed as generated.",
+    "18 writes and 28 reads go to a path their caller passes, not to this repository.",
     "1 read goes to the directory the command is run in (eval/), not to this repository.",
     "There is a Dockerfile at eval/docker/labeler.Dockerfile that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -683,7 +734,7 @@
   "startHere": [
     "src/prism/cli/main.py"
   ],
-  "startReason": "This path follows prism (a command people run) from its entry, since CI runs only tests and checks.",
+  "startReason": "This path follows prism (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 63,
@@ -701,7 +752,7 @@
     "servers": 10,
     "specialist": 1
   },
-  "unnamedWrites": 5,
+  "unnamedWrites": 3,
   "unread": [
     {
       "place": "specialist/dataset/",

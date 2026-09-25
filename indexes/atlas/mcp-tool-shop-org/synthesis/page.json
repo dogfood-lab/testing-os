@@ -175,7 +175,7 @@
   "changesTogetherWithTests": 0,
   "commit": "dd0e1de4318d08e23e8da2649dd27df6f7e93548",
   "defaultBranch": "main",
-  "derived": "12 parts, mostly Markdown (83 files); code in TypeScript (36) and JavaScript (6). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.",
+  "derived": "12 parts, mostly Markdown (83 files) and JSON data (16); code in TypeScript (36), JavaScript (6), Astro (3) and CSS (2). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run synthesis. People import @mcptoolshop/synthesis.",
   "doors": [
     {
       "builds": [
@@ -280,7 +280,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 7
         }
       ],
       "runs": [
@@ -374,9 +374,8 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:22:55.421Z",
+  "generatedAt": "2026-09-25T16:39:07.355Z",
   "limits": [
-    "1 import could not be resolved: `scripts/eval-planted.mjs` imports a path built at run time.",
     "1 import site names a path outside this repository, so what it loads is not followed.",
     "3 writes and 6 reads go to a path their caller passes, not to this repository.",
     "3 reads go to the directory the command is run in (data/ and schemas/), not to this repository.",

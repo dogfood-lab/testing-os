@@ -4,14 +4,15 @@ Mapped at 2026-09-25 from commit 8b16ae0.
 
 ## What this is
 
-10 parts, mostly JSON data (242 files); code in TypeScript (148), Python (5) and JavaScript (4). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.
+10 parts, mostly JSON data (242 files); code in TypeScript (148), Python (5), JavaScript (4), CSS (2) and Astro (1). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run bp. People import @mcptoolshop/backprop-trace.
 
 ## What changed since 2026-09-24 (5611f68)
 
+- examples now imports scripts.
 - fixtures/bad/*.jsonl is now written by scripts/build-pytorch-helper-fixtures.mjs.
 - fixtures/bad/*.meta.json is now written by scripts/build-pytorch-helper-fixtures.mjs.
-- fixtures/bad/multi-step-external.bad-bundle-digest-tampered.jsonl is now read by test/cli.multi-step-import-pipe.test.ts.
-- And 7 more new writers and readers of places.
+- fixtures/external/pytorch.helper-emitted.adamw.sidecar.jsonl is now written by scripts/generate-pytorch-helper-goldens.py.
+- And 10 more new writers and readers of places.
 - No file changed.
 
 ## What comes in
@@ -40,7 +41,7 @@ ci writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**codeql** runs no file this map can see.
+**codeql** runs no file this map can see and scans code with CodeQL.
 
 **@mcptoolshop/backprop-trace** (the package people import) loads src/index.ts, src/activations.ts, src/emit.ts and 35 more.
 
@@ -49,9 +50,10 @@ ci writes nothing this map can see.
 ## What breaks what
 
 - **src** is imported by 1 part (scripts), and by 1 more only from tests; it sits on the path of 5 doors.
-- **scripts** is imported by no other part and sits on the path of 2 doors.
+- **scripts** is imported by 1 part (examples) and sits on the path of 2 doors.
 - **test** is imported by no other part and sits on the path of 2 doors.
-- **fixtures/bad/** is written by scripts and read by scripts; a hand edit reaches every reader.
+- **fixtures/bad/** is written by scripts and read by scripts, and by 27 tests; a hand edit reaches every reader.
+- **fixtures/external/pytorch.helper-emitted.adamw.sidecar.jsonl** is written by scripts and read by scripts, and by 3 tests; a hand edit reaches every reader.
 
 ## What tends to change together
 
@@ -103,7 +105,10 @@ No two parts export a helper that looks alike.
 - **fixtures/external/pytorch.adam.sidecar.jsonl** is written by scripts/generate-pytorch-adam-fixtures.ts.
 - **fixtures/external/pytorch.adamw.golden.jsonl** is written by scripts/generate-pytorch-adam-fixtures.ts.
 - **fixtures/external/pytorch.adamw.sidecar.jsonl** is written by scripts/generate-pytorch-adam-fixtures.ts.
+- **fixtures/external/pytorch.helper-emitted.adamw.sidecar.jsonl** is written by scripts/generate-pytorch-helper-goldens.py.
 - **fixtures/external/pytorch.helper-emitted.sgd-coupled-l2.sidecar.jsonl** is written by scripts/generate-pytorch-coupled-l2-helper-goldens.py.
+- **fixtures/external/pytorch.helper-emitted.sgd-momentum.sidecar.jsonl** is written by scripts/generate-pytorch-helper-goldens.py.
+- **fixtures/external/pytorch.helper-emitted.sgd.softmax-ce.sidecar.jsonl** is written by scripts/generate-pytorch-helper-goldens.py.
 - **fixtures/external/pytorch.sgd-coupled-l2.golden.jsonl** is written by scripts/emit-coupled-l2-observer-golden.mjs.
 - **fixtures/external/pytorch.sgd-momentum.dampening.golden.jsonl** is written by scripts/generate-pytorch-momentum-fixtures.ts.
 - **fixtures/external/pytorch.sgd-momentum.dampening.sidecar.jsonl** is written by scripts/generate-pytorch-momentum-fixtures.ts.
@@ -134,7 +139,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root, schemas/ and site/; 16 writes with paths built at run time may land here.
+People write .github/, docs/, the repository root, schemas/ and site/; 15 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -145,9 +150,8 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 1 import site names a declared dependency that shares its name with a local module (jax); it is read as the dependency, which is not in this repository.
-- 3 imports could not be resolved: `examples/pytorch/extract_step.py` imports `pytorch`, which is no module on its import path and no declared dependency; `scripts/generate-pytorch-coupled-l2-helper-goldens.py` imports `pytorch`, which is no module on its import path and no declared dependency; `scripts/generate-pytorch-helper-goldens.py` imports `pytorch`, which is no module on its import path and no declared dependency.
-- 16 writes and 11 reads use paths built at run time and are not named here.
-- 11 reads go to a path their caller passes, not to this repository.
+- 15 writes and 11 reads use paths built at run time and are not named here.
+- 13 reads go to a path their caller passes, not to this repository.
 - 10 reads go to the directory the command is run in (fixtures/ and scripts/), not to this repository.
 - 2 writes and 3 reads go to a temporary directory, not to this repository.
 - 7 commands are built at run time and not followed, 6 of them in tests.

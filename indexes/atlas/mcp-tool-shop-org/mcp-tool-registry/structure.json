@@ -460,7 +460,8 @@
       "name": "root",
       "origin": "mixed",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -653,6 +654,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -727,68 +736,94 @@
       "commands": [
         {
           "job": "validate",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "validate",
-          "step": "4",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "validate",
-          "step": "5",
-          "text": "npm run validate"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "validate",
-          "step": "6",
-          "text": "npm run build:derived"
+          "programs": [
+            "npm"
+          ],
+          "step": "6"
         },
         {
           "job": "validate",
-          "step": "7",
-          "text": "npm run report:health"
+          "programs": [
+            "npm"
+          ],
+          "step": "7"
         },
         {
           "job": "validate",
-          "step": "8",
-          "text": "npm run test:search"
+          "programs": [
+            "npm"
+          ],
+          "step": "8"
         },
         {
           "job": "validate",
-          "step": "9",
-          "text": "npm run verify-pack"
+          "programs": [
+            "npm"
+          ],
+          "step": "9"
         },
         {
           "job": "validate",
-          "step": "10",
-          "text": "npm run format:check"
+          "programs": [
+            "npm"
+          ],
+          "step": "10"
         },
         {
           "job": "dep-audit",
-          "step": "2",
-          "text": "npm audit --omit=dev || true"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "ecosystem",
-          "step": "Install Dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install Dependencies"
         },
         {
           "job": "ecosystem",
-          "step": "Build Registry Artifacts",
-          "text": "npm run prepack"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build Registry Artifacts"
         },
         {
           "job": "ecosystem",
-          "step": "Verify Site Build",
-          "text": "npm run build:site"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify Site Build"
         },
         {
           "job": "ecosystem",
-          "step": "Test Consumer - mcpt CLI",
-          "text": "# Simulate install/run of mcpt against local registry file\n# We assume npx @mcptoolshop/mcpt is the consumer\n# This step fails if the CLI cannot parse the registry.json\necho \"Simulating mcpt consumption...\"\nif [ -f \"registry.json\" ]; then\n   echo \"Registry file exists.\"\n   # In a real scenario: npx @mcptoolshop/mcpt check --registry ./registry.json\nelse\n   echo \"Registry file missing!\"\n   exit 1\nfi\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Test Consumer - mcpt CLI"
         }
       ],
       "elsewhere": [],
@@ -1097,73 +1132,102 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Install Dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install Dependencies"
         },
         {
           "job": "verify",
-          "step": "Build Derived Data",
-          "text": "npm run build:derived"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build Derived Data"
         },
         {
           "job": "verify",
-          "step": "Smoke Test Registry Artifacts",
-          "text": "npm run test:site"
+          "programs": [
+            "npm"
+          ],
+          "step": "Smoke Test Registry Artifacts"
         },
         {
           "job": "publish",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "publish",
-          "step": "Run validation",
-          "text": "npm run validate"
+          "programs": [
+            "npm"
+          ],
+          "step": "Run validation"
         },
         {
           "job": "publish",
-          "step": "Build derived data",
-          "text": "npm run build:derived"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build derived data"
         },
         {
           "job": "publish",
-          "step": "Build bundles",
-          "text": "npm run bundles:build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build bundles"
         },
         {
           "job": "publish",
-          "step": "Publish to npm",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm"
         },
         {
           "job": "create-submission-pr",
-          "step": "Submission Guard",
-          "text": "node scripts/submission-guard.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Submission Guard"
         },
         {
           "job": "create-submission-pr",
-          "step": "Create Branch",
-          "text": "git config user.name \"github-actions[bot]\"\ngit config user.email \"github-actions[bot]@users.noreply.github.com\"\ngit checkout -b \"tool/${{ steps.parse.outputs.tool_id }}\"\n"
+          "programs": [
+            "git"
+          ],
+          "step": "Create Branch"
         },
         {
           "job": "create-submission-pr",
-          "step": "Patch Registry",
-          "text": "node scripts/patch-registry.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Patch Registry"
         },
         {
           "job": "create-submission-pr",
-          "step": "Format Code (Prettier)",
-          "text": "npm run format || true"
+          "programs": [
+            "npm"
+          ],
+          "step": "Format Code (Prettier)"
         },
         {
           "job": "create-submission-pr",
-          "step": "Commit Changes",
-          "text": "git add registry.json\ngit commit -m \"feat: add/update tool ${{ steps.parse.outputs.tool_id }}\" || echo \"No changes to commit\"\n"
+          "programs": [
+            "echo",
+            "git"
+          ],
+          "step": "Commit Changes"
         },
         {
           "job": "create-submission-pr",
-          "step": "Push Branch",
-          "text": "git push -f origin \"tool/${{ steps.parse.outputs.tool_id }}\""
+          "programs": [
+            "git"
+          ],
+          "step": "Push Branch"
         }
       ],
       "elsewhere": [],
@@ -1560,13 +1624,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -1584,7 +1652,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1646,23 +1714,32 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Install dependencies",
-          "text": "if [ -f package-lock.json ]; then\n  npm ci\nelse\n  npm install\nfi\n"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "publish",
-          "step": "3",
-          "text": "npm run build --if-present"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "publish",
-          "step": "4",
-          "text": "npm test --if-present"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "publish",
-          "step": "Publish to npm",
-          "text": "if [ -z \"$NODE_AUTH_TOKEN\" ]; then\n  echo \"::warning::NPM_TOKEN secret not set — skipping npm publish\"\n  exit 0\nfi\nnpm publish --provenance --access public\n"
+          "programs": [
+            "echo",
+            "npm"
+          ],
+          "step": "Publish to npm"
         }
       ],
       "elsewhere": [],

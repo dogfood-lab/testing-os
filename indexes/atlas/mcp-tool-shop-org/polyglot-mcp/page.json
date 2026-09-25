@@ -14,7 +14,7 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 3,
       "changed": 127,
       "moved": 0,
       "parts": 6,
@@ -23,9 +23,10 @@
     "items": [
       {
         "kind": "door",
-        "sentence": "CI now also runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more.",
+        "sentence": "CI now also runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 18 more.",
         "subjects": [
           ".github/workflows/ci.yml",
+          "src/cache.concurrency.test.ts",
           "src/cache.test.ts",
           "src/codeSpans.test.ts",
           "src/errors.test.ts",
@@ -38,7 +39,9 @@
           "src/semaphore.test.ts",
           "src/translate.test.ts",
           "src/translateAll.test.ts",
+          "src/translateMarkdown.cache.test.ts",
           "src/translateMarkdown.codespans.test.ts",
+          "src/translateMarkdown.concurrency.test.ts",
           "src/translateMarkdown.roundtrip.test.ts",
           "src/translateMarkdown.test.ts",
           "src/translateReadme.test.ts",
@@ -57,9 +60,10 @@
       },
       {
         "kind": "door",
-        "sentence": "Publish to npm now also runs src/cache.test.ts, src/codeSpans.test.ts, src/errors.test.ts and 15 more.",
+        "sentence": "Publish to npm now also runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 18 more.",
         "subjects": [
           ".github/workflows/publish.yml",
+          "src/cache.concurrency.test.ts",
           "src/cache.test.ts",
           "src/codeSpans.test.ts",
           "src/errors.test.ts",
@@ -72,7 +76,9 @@
           "src/semaphore.test.ts",
           "src/translate.test.ts",
           "src/translateAll.test.ts",
+          "src/translateMarkdown.cache.test.ts",
           "src/translateMarkdown.codespans.test.ts",
+          "src/translateMarkdown.concurrency.test.ts",
           "src/translateMarkdown.roundtrip.test.ts",
           "src/translateMarkdown.test.ts",
           "src/translateReadme.test.ts",
@@ -112,12 +118,12 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 5 more new writers and readers of places.",
+        "sentence": "And 6 more new writers and readers of places.",
         "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "127 files changed content, across 6 parts.",
+        "sentence": "3 files added and 127 changed content, across 6 parts.",
         "subjects": []
       }
     ],
@@ -132,9 +138,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "c7c22e51d5414e9da6f70ad3312e3c4d719070e5",
+  "commit": "25e970d9d598fb840baabaa7c0762b2762f88e0e",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly Markdown (71 files); code in TypeScript (36) and JavaScript (4). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.",
+  "derived": "7 parts, mostly Markdown (71 files); code in TypeScript (39), JavaScript (4), CSS (2) and Astro (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.",
   "doors": [
     {
       "builds": [
@@ -152,10 +158,11 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 33
+          "files": 36
         }
       ],
       "runs": [
+        "src/cache.concurrency.test.ts",
         "src/cache.test.ts",
         "src/codeSpans.test.ts",
         "src/errors.test.ts",
@@ -168,15 +175,17 @@
         "src/semaphore.test.ts",
         "src/translate.test.ts",
         "src/translateAll.test.ts",
+        "src/translateMarkdown.cache.test.ts",
         "src/translateMarkdown.codespans.test.ts",
+        "src/translateMarkdown.concurrency.test.ts",
         "src/translateMarkdown.roundtrip.test.ts",
         "src/translateMarkdown.test.ts",
         "src/translateReadme.test.ts",
         "src/validate.test.ts",
         "src/version.test.ts"
       ],
-      "runsCount": 18,
-      "runsMore": 15,
+      "runsCount": 21,
+      "runsMore": 18,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -198,7 +207,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -232,10 +241,11 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 33
+          "files": 36
         }
       ],
       "runs": [
+        "src/cache.concurrency.test.ts",
         "src/cache.test.ts",
         "src/codeSpans.test.ts",
         "src/errors.test.ts",
@@ -248,15 +258,17 @@
         "src/semaphore.test.ts",
         "src/translate.test.ts",
         "src/translateAll.test.ts",
+        "src/translateMarkdown.cache.test.ts",
         "src/translateMarkdown.codespans.test.ts",
+        "src/translateMarkdown.concurrency.test.ts",
         "src/translateMarkdown.roundtrip.test.ts",
         "src/translateMarkdown.test.ts",
         "src/translateReadme.test.ts",
         "src/validate.test.ts",
         "src/version.test.ts"
       ],
-      "runsCount": 18,
-      "runsMore": 15,
+      "runsCount": 21,
+      "runsMore": 18,
       "sends": [
         "publishes to npm"
       ],
@@ -366,11 +378,11 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-25T09:19:02.707Z",
+  "generatedAt": "2026-09-25T16:33:29.757Z",
   "limits": [
     "3 writes and 5 reads use paths built at run time and are not named here.",
-    "3 writes and 5 reads go to a path their caller passes, not to this repository.",
-    "3 commands are built at run time and not followed, 1 of them in tests.",
+    "5 writes and 6 reads go to a path their caller passes, not to this repository.",
+    "4 commands are built at run time and not followed, 2 of them in tests.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -400,11 +412,11 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 18,
+  "testFiles": 21,
   "testedBy": {
     "scripts": 0,
     "site": 0,
-    "src": 17
+    "src": 20
   },
   "unnamedWrites": 3,
   "unread": [],

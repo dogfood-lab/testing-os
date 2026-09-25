@@ -67,7 +67,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 3,
+      "dynamicReads": 1,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 2,
@@ -102,7 +102,8 @@
             "comfy_headless/validation.py",
             "comfy_headless/video.py",
             "comfy_headless/workflows.py",
-            "comfy_headless/ui.py"
+            "comfy_headless/ui.py",
+            "comfy_headless/theme.py"
           ],
           "importsFiles": [
             "comfy_headless/_version.py",
@@ -123,6 +124,7 @@
             "comfy_headless/node_packs.py",
             "comfy_headless/retry.py",
             "comfy_headless/secrets_manager.py",
+            "comfy_headless/theme.py",
             "comfy_headless/three_d.py",
             "comfy_headless/ui.py",
             "comfy_headless/validation.py",
@@ -224,6 +226,7 @@
           ]
         },
         {
+          "constantOnly": true,
           "hash": "8dbdc168006f92b19f132685032395699a9c7fd3839c1fa22034a17eee891514",
           "path": "comfy_headless/_version.py"
         },
@@ -671,6 +674,13 @@
       "origin": "authored",
       "outsidePlaces": [
         {
+          "reads": 38,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        },
+        {
           "reads": 3,
           "where": [
             "temp"
@@ -678,17 +688,10 @@
           "writes": 0
         }
       ],
-      "outsideReads": 3,
+      "outsideReads": 41,
       "role": "code",
       "testedBy": 49,
-      "unresolvedNamed": [
-        {
-          "path": "comfy_headless/__init__.py",
-          "specifier": null,
-          "why": "dynamic"
-        }
-      ],
-      "unresolvedSites": 1
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -1141,6 +1144,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1843,53 +1854,78 @@
       "commands": [
         {
           "job": "lint",
-          "step": "Install linters",
-          "text": "python -m pip install --upgrade pip\n# Pinned: an unpinned lint tool makes CI non-reproducible. A newer\n# ruff began formatting Python inside markdown fences, which turned\n# 16 pre-existing docs into a surprise CI failure on an unrelated PR.\npip install ruff==0.15.17 mypy\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install linters"
         },
         {
           "job": "lint",
-          "step": "Run ruff",
-          "text": "ruff check ."
+          "programs": [
+            "ruff"
+          ],
+          "step": "Run ruff"
         },
         {
           "job": "lint",
-          "step": "Check formatting",
-          "text": "ruff format --check ."
+          "programs": [
+            "ruff"
+          ],
+          "step": "Check formatting"
         },
         {
           "job": "lint",
-          "step": "Run type checking",
-          "text": "mypy comfy_headless"
+          "programs": [
+            "mypy"
+          ],
+          "step": "Run type checking"
         },
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.21.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "python -m pip install --upgrade pip\npip install -e \".[dev,ai,websocket,validation,ui,health]\"\npip install httpx[http2]\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Run tests",
-          "text": "pytest tests/ -v --cov=comfy_headless --cov-report=xml --cov-report=term-missing"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "pip-audit",
-          "step": "Install pip-audit",
-          "text": "python -m pip install --upgrade pip\npip install pip-audit\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install pip-audit"
         },
         {
           "job": "pip-audit",
-          "step": "Run pip-audit on core dependencies",
-          "text": "echo \"requests>=2.28.0\" > /tmp/core-deps.txt\necho \"tenacity>=8.0.0\" >> /tmp/core-deps.txt\npip-audit -r /tmp/core-deps.txt\n"
+          "programs": [
+            "echo",
+            "pip-audit"
+          ],
+          "step": "Run pip-audit on core dependencies"
         },
         {
           "job": "pip-audit",
-          "step": "Run pip-audit on full dependencies",
-          "text": "pip install -e \".[full]\"\npip-audit\n"
+          "programs": [
+            "pip",
+            "pip-audit"
+          ],
+          "step": "Run pip-audit on full dependencies"
         }
       ],
       "elsewhere": [],
@@ -1998,13 +2034,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -2022,7 +2062,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -2084,38 +2124,53 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install build dependencies",
-          "text": "python -m pip install --upgrade pip\npip install build twine\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install build dependencies"
         },
         {
           "job": "build",
-          "step": "Build package",
-          "text": "python -m build"
+          "programs": [
+            "python"
+          ],
+          "step": "Build package"
         },
         {
           "job": "build",
-          "step": "Check package",
-          "text": "twine check dist/*"
+          "programs": [
+            "twine"
+          ],
+          "step": "Check package"
         },
         {
           "job": "build",
-          "step": "Test import",
-          "text": "python -m pip install dist/*.whl\npython -c \"from comfy_headless import ComfyClient; print('Import successful')\"\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Test import"
         },
         {
           "job": "test-install",
-          "step": "Install from wheel",
-          "text": "pip install dist/*.whl"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install from wheel"
         },
         {
           "job": "test-install",
-          "step": "Test import",
-          "text": "python -c \"from comfy_headless import ComfyClient; print('Import successful')\""
+          "programs": [
+            "python"
+          ],
+          "step": "Test import"
         },
         {
           "job": "test-install",
-          "step": "Test CLI",
-          "text": "comfy-headless --version"
+          "programs": [
+            "comfy-headless"
+          ],
+          "step": "Test CLI"
         }
       ],
       "elsewhere": [],
@@ -2175,6 +2230,7 @@
       "runs": [
         {
           "job": "docker",
+          "packed": true,
           "path": "LICENSE",
           "runKind": "checks",
           "via": "docker build Dockerfile",
@@ -2184,6 +2240,7 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "README.md",
           "runKind": "checks",
           "via": "docker build Dockerfile",
@@ -2201,6 +2258,7 @@
         {
           "directory": true,
           "job": "docker",
+          "packed": true,
           "path": "comfy_headless/",
           "runKind": "checks",
           "via": "docker build Dockerfile",
@@ -2234,6 +2292,7 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "pyproject.toml",
           "runKind": "checks",
           "via": "docker build Dockerfile",

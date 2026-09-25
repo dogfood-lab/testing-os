@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 838720f.
 
 ## What this is
 
-10 parts, mostly Markdown (79 files); code in JavaScript (5) and TypeScript (2). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run shipcheck.
+10 parts, mostly Markdown (79 files); code in JavaScript (5), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run shipcheck.
 
 ## What changed since 2026-09-23 (875a8ae)
 

@@ -490,6 +490,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -521,16 +529,17 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 5,
+      "dynamicWrites": 0,
       "entryPoints": [
         "src/portlight/app/cli.py"
       ],
       "externals": 0,
       "files": [
         {
+          "constantOnly": true,
           "hash": "feb0cba613892c4ebfdc8316704c3739bab46595bb328ce564303706d7c1a60d",
           "path": "src/portlight/__init__.py"
         },
@@ -9008,22 +9017,22 @@
       "origin": "authored",
       "outsidePlaces": [
         {
+          "reads": 124,
+          "where": [
+            "caller"
+          ],
+          "writes": 6
+        },
+        {
           "reads": 2,
           "where": [
             "cwd"
           ],
           "writes": 0
-        },
-        {
-          "reads": 1,
-          "where": [
-            "cwd:saves/"
-          ],
-          "writes": 1
         }
       ],
-      "outsideReads": 3,
-      "outsideWrites": 1,
+      "outsideReads": 126,
+      "outsideWrites": 6,
       "role": "code",
       "testedBy": 85,
       "unresolvedNamed": [
@@ -10604,28 +10613,39 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.15.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "python -m pip install --upgrade pip\npip install -e \".[dev,tui]\"\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Run tests",
-          "text": "python -m pytest tests/ -x -q --ignore=tests/test_tui_voyage_legacy.py\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "test",
-          "step": "Run tests with coverage (3.12 only)",
-          "text": "python -m pytest tests/ --cov=src/portlight --cov-report=xml --ignore=tests/test_tui_voyage_legacy.py\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Run tests with coverage (3.12 only)"
         },
         {
           "job": "test",
-          "step": "Maritime term guard",
-          "text": "python -m pytest tests/test_maritime_guard.py -v\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Maritime term guard"
         }
       ],
       "elsewhere": [],
@@ -10722,13 +10742,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -10746,7 +10770,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -10808,13 +10832,17 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Install build tools",
-          "text": "python -m pip install --upgrade pip build"
+          "programs": [
+            "python"
+          ],
+          "step": "Install build tools"
         },
         {
           "job": "publish",
-          "step": "Build wheel + sdist",
-          "text": "python -m build"
+          "programs": [
+            "python"
+          ],
+          "step": "Build wheel + sdist"
         }
       ],
       "elsewhere": [],
@@ -10881,28 +10909,42 @@
       "commands": [
         {
           "job": "build",
-          "step": "2",
-          "text": "uv python install 3.12"
+          "programs": [
+            "uv"
+          ],
+          "step": "2"
         },
         {
           "job": "build",
-          "step": "3",
-          "text": "uv venv"
+          "programs": [
+            "uv"
+          ],
+          "step": "3"
         },
         {
           "job": "build",
-          "step": "Install dependencies + PyInstaller",
-          "text": "uv pip install . \"pyinstaller>=6.9.0\""
+          "programs": [
+            "uv"
+          ],
+          "step": "Install dependencies + PyInstaller"
         },
         {
           "job": "build",
-          "step": "Build binary",
-          "text": "VERSION=${GITHUB_REF_NAME#v}\nuv run pyinstaller --onefile --name \"${{ env.TOOL_NAME }}\" --console \\\n  --collect-submodules rich \\\n  \"${{ env.ENTRYPOINT }}\"\nOUTNAME=\"${{ env.TOOL_NAME }}-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\nmv \"dist/${{ env.TOOL_NAME }}${{ matrix.ext }}\" \"dist/${OUTNAME}\"\necho \"ASSET_NAME=${OUTNAME}\" >> \"$GITHUB_ENV\"\n"
+          "programs": [
+            "echo",
+            "mv",
+            "uv"
+          ],
+          "step": "Build binary"
         },
         {
           "job": "release",
-          "step": "Generate checksums",
-          "text": "VERSION=${GITHUB_REF_NAME#v}\ncd artifacts\nsha256sum * > \"checksums-${VERSION}.txt\"\ncat \"checksums-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         }
       ],
       "elsewhere": [],
@@ -11058,6 +11100,16 @@
           "confidence": "ast"
         },
         {
+          "by": "src/portlight/engine/dogfood_runner.py",
+          "call": "glob",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/portlight/engine/dogfood_runner.py",
+          "call": "open",
+          "confidence": "ast"
+        },
+        {
           "by": "tests/test_dogfood_runner.py",
           "call": "glob",
           "confidence": "ast",
@@ -11096,6 +11148,11 @@
         {
           "by": "dogfood/run_wave3.py",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/portlight/engine/dogfood_runner.py",
+          "call": "open",
           "confidence": "ast"
         }
       ],

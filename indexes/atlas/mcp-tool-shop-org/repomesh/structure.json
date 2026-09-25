@@ -2099,6 +2099,14 @@
         },
         {
           "hash": "38175e231a5434177c106fccd396e46ae289a6f52a8988888b62a4ae6bd50ea7",
+          "importOrder": [
+            "verifiers/lib/anchor-notes.mjs",
+            "packages/repomesh-cli/src/verify/anchor-notes.mjs"
+          ],
+          "importsFiles": [
+            "packages/repomesh-cli/src/verify/anchor-notes.mjs",
+            "verifiers/lib/anchor-notes.mjs"
+          ],
           "path": "packages/repomesh-cli/tests/anchor-notes-drift.test.mjs"
         },
         {
@@ -2174,6 +2182,9 @@
         },
         {
           "hash": "88ae5c0a778f4c019fc061b74b2c6f4dea57b3580721e6ff3ec1f71182bb18b6",
+          "importsFiles": [
+            "packages/repomesh-cli/src/index.mjs"
+          ],
           "path": "packages/repomesh-cli/tests/lib-api.test.mjs"
         },
         {
@@ -2281,7 +2292,7 @@
       "outsideReads": 51,
       "outsideWrites": 17,
       "role": "code",
-      "testedBy": 26,
+      "testedBy": 28,
       "unresolvedNamed": [
         {
           "path": "packages/repomesh-cli/tests/anchor-leaf-window.test.mjs",
@@ -2289,17 +2300,17 @@
           "why": "dynamic"
         },
         {
-          "path": "packages/repomesh-cli/tests/anchor-notes-drift.test.mjs",
+          "path": "packages/repomesh-cli/tests/anchor-prev-chain.test.mjs",
           "specifier": null,
           "why": "dynamic"
         },
         {
-          "path": "packages/repomesh-cli/tests/anchor-notes-drift.test.mjs",
+          "path": "packages/repomesh-cli/tests/anchor-prev-chain.test.mjs",
           "specifier": null,
           "why": "dynamic"
         }
       ],
-      "unresolvedSites": 98
+      "unresolvedSites": 91
     },
     {
       "dynamicReads": 0,
@@ -2517,6 +2528,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -5119,48 +5138,125 @@
       "outsideReads": 21,
       "outsideWrites": 5,
       "role": "code",
-      "testedBy": 53,
+      "testedBy": 54,
       "unresolvedSites": 0
     }
   ],
   "doors": [
     {
+      "checksCount": 0,
+      "commands": [
+        {
+          "job": "action",
+          "programs": [
+            "0",
+            "1",
+            "3",
+            "echo",
+            "node",
+            "npx",
+            "printf"
+          ],
+          "step": "Run RepoMesh verify-release (markdown job summary)"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/actions/verify/action.yml",
+      "kind": "action",
+      "landings": [],
+      "mentions": [],
+      "name": "RepoMesh verify-release",
+      "permissions": [],
+      "pushes": false,
+      "reach": [],
+      "readers": [],
+      "runs": [],
+      "runsCount": 0,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [
+        "github/codeql-action/upload-sarif"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
       "checksCount": 8,
       "commands": [
         {
           "job": "anchor",
-          "step": "Compute partition root",
-          "text": "set -euo pipefail\nmkdir -p /tmp/repomesh-ci\nnode anchor/xrpl/scripts/compute-root.mjs --since-last | tee /tmp/repomesh-ci/compute-root.stdout.json\nnode -e 'const fs=require(\"node:fs\");const j=JSON.parse(fs.readFileSync(\"/tmp/repomesh-ci/compute-root.stdout.json\",\"utf8\"));process.stdout.write((j.eventCount===0||j.root==null)?\"true\":\"false\")' > /tmp/repomesh-ci/idle-flag\nIDLE=$(cat /tmp/repomesh-ci/idle-flag)\necho \"idle=${IDLE}\" >> \"$GITHUB_OUTPUT\"\nif [ \"$IDLE\" = \"true\" ]; then\n  echo \"::notice::idle epoch, same tree, nothing to post\"\nfi\n"
+          "programs": [
+            "cat",
+            "echo",
+            "mkdir",
+            "node",
+            "tee"
+          ],
+          "step": "Compute partition root"
         },
         {
           "job": "anchor",
-          "step": "Build anchor image",
-          "text": "docker build -t repomesh:local ."
+          "programs": [
+            "docker"
+          ],
+          "step": "Build anchor image"
         },
         {
           "job": "anchor",
-          "step": "Post anchor to XRPL",
-          "text": "set -euo pipefail\ncleanup() { docker rm -f repomesh-post >/dev/null 2>&1 || true; }\ntrap cleanup EXIT\ndocker run --name repomesh-post \\\n  -e XRPL_SEED \\\n  -e XRPL_WS_URL \\\n  -v \"$GITHUB_WORKSPACE/anchor/xrpl/partition-root.json:/opt/repomesh/anchor/xrpl/partition-root.json:ro\" \\\n  --entrypoint node \\\n  repomesh:local \\\n  anchor/xrpl/scripts/post-anchor.mjs\ndocker cp repomesh-post:/opt/repomesh/anchor/xrpl/anchor-result.json \"$GITHUB_WORKSPACE/anchor/xrpl/anchor-result.json\"\n"
+          "programs": [
+            "1",
+            "cleanup",
+            "docker",
+            "trap"
+          ],
+          "step": "Post anchor to XRPL"
         },
         {
           "job": "anchor",
-          "step": "Emit anchor event",
-          "text": "mkdir -p /tmp/repomesh-ci\nnode anchor/xrpl/scripts/emit-anchor-event.mjs --sign --output /tmp/repomesh-ci/anchor.jsonl\n"
+          "programs": [
+            "mkdir",
+            "node"
+          ],
+          "step": "Emit anchor event"
         },
         {
           "job": "anchor",
-          "step": "Check for anchor event",
-          "text": "ANCHOR=$(wc -l < /tmp/repomesh-ci/anchor.jsonl 2>/dev/null || echo 0)\necho \"anchor=$ANCHOR\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo",
+            "wc"
+          ],
+          "step": "Check for anchor event"
         },
         {
           "job": "anchor",
-          "step": "Append anchor event to ledger via PR",
-          "text": "BRANCH=\"anchor/$(date -u +%Y%m%d-%H%M%S)\"\ngit remote set-url origin \"https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git\"\ngit config user.name \"repomesh-bot\"\ngit config user.email \"repomesh-bot@users.noreply.github.com\"\ngit checkout -b \"$BRANCH\"\ncat /tmp/repomesh-ci/anchor.jsonl >> ledger/events/events.jsonl\n# LEDGER-A-001: regenerate the whole-ledger all.json manifest so validate-ledger's\n# LOCAL immutability coverage spans the just-appended event. The --since-last partition\n# (computed above) covers the new event ON-CHAIN; all.json keeps the FULL ledger locally\n# tamper-evident. Without this, all.json goes stale every cycle and post-anchor events\n# become unverifiable by `npm run validate:ledger` — the coverage gap the 2026-06-20\n# dogfood swarm closed. (ledger/tests/immutability-coverage.test.mjs is the drift guard.)\nrm -f anchor/xrpl/manifests/all.json\nnode anchor/xrpl/scripts/compute-root.mjs --all\n# ANC-B02: rebuild registry/anchors.json from the just-appended anchor event so\n# display surfaces (Pages dashboard, badges, snippets) pick up the new partition's\n# txHash in the SAME commit. Without this, anchors.json lags by a cycle and live\n# partitions render txHash:null (\"not yet anchored\") even after the on-chain post.\nnode registry/scripts/build-anchors.mjs\ngit add ledger/events/events.jsonl anchor/xrpl/manifests/*.json registry/anchors.json\ngit commit -m \"anchor: XRPL partition $(date -u +%Y-%m-%d)\"\ngit push origin \"$BRANCH\"\nPR_URL=$(gh pr create \\\n  --head \"$BRANCH\" \\\n  --title \"anchor: XRPL partition $(date -u +%Y-%m-%d)\" \\\n  --body \"$(cat <<'EOF'\n## RepoMesh XRPL Anchor\nMerkle root of ledger partition anchored to XRPL testnet.\nLedger CI verifies schema + signatures; this PR auto-merges once validate-ledger is green.\nEOF\n)\")\necho \"Opened $PR_URL\"\n# STGB-CI-001 (close the loop): enable auto-merge so the anchor lands on main as soon as\n# validate-ledger passes. Without this the daily anchor PRs pile up unmerged, the ledger on\n# main FREEZES, and the LEDGER-A-001 coverage gap re-forms (exactly what happened 2026-06-15..21).\n# Degrades gracefully if the repo hasn't enabled auto-merge yet (one-time operator action).\ngh pr merge --auto --merge \"$PR_URL\" \\\n  || echo \"::warning::Could not enable auto-merge on $PR_URL. Enable once: gh api -X PATCH repos/${{ github.repository }} -f allow_auto_merge=true (validate-ledger must be a required check).\"\n# STGB-CI-001 (staleness andon): if anchor PRs accumulate, the ledger on main is likely\n# frozen — surface it loudly instead of failing silently.\nOPEN_ANCHORS=$(gh pr list --search \"anchor: XRPL partition in:title\" --state open --json number --jq 'length' 2>/dev/null || echo 0)\nif [ \"${OPEN_ANCHORS:-0}\" -gt 2 ]; then\n  echo \"::warning::${OPEN_ANCHORS} anchor PRs are open — the ledger on main may be frozen. Drain oldest-first (gh pr update-branch then merge) and confirm auto-merge is enabled.\"\nfi\n"
+          "programs": [
+            "cat",
+            "date",
+            "echo",
+            "gh",
+            "git",
+            "node",
+            "rm"
+          ],
+          "step": "Append anchor event to ledger via PR"
         },
         {
           "job": "anchor",
-          "step": "Alert on failure",
-          "text": "TITLE=\"⚠ automation: anchor-xrpl is failing\"\nRUN=\"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"\nBODY=\"The daily XRPL anchor cron failed. The ledger on main may stop advancing (re-forming the LEDGER-A-001 coverage gap). Run: $RUN\"\nEXISTING=$(gh issue list --state open --search \"$TITLE in:title\" --json number --jq '.[0].number // empty' 2>/dev/null || echo \"\")\nif [ -n \"$EXISTING\" ]; then\n  gh issue comment \"$EXISTING\" --body \"Still failing — $RUN\"\nelse\n  gh issue create --title \"$TITLE\" --body \"$BODY\" --label automation-alert 2>/dev/null \\\n    || gh issue create --title \"$TITLE\" --body \"$BODY\"\nfi\n"
+          "programs": [
+            "echo",
+            "gh"
+          ],
+          "step": "Alert on failure"
         }
       ],
       "elsewhere": [],
@@ -5796,18 +5892,21 @@
       "runs": [
         {
           "job": "anchor",
+          "packed": true,
           "path": "anchor/xrpl/config.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "anchor",
+          "packed": true,
           "path": "anchor/xrpl/package-lock.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "anchor",
+          "packed": true,
           "path": "anchor/xrpl/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5815,6 +5914,7 @@
         {
           "directory": true,
           "job": "anchor",
+          "packed": true,
           "path": "anchor/xrpl/scripts/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5831,12 +5931,14 @@
         },
         {
           "job": "anchor",
+          "packed": true,
           "path": "package-lock.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "anchor",
+          "packed": true,
           "path": "package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5844,12 +5946,14 @@
         {
           "directory": true,
           "job": "anchor",
+          "packed": true,
           "path": "packages/repomesh-cli/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "anchor",
+          "packed": true,
           "path": "packages/repomesh-cli/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -5911,58 +6015,97 @@
       "commands": [
         {
           "job": "attest-and-check",
-          "step": "Install dependencies",
-          "text": "npm ci || npm install"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "attest-and-check",
-          "step": "Run attestor",
-          "text": "mkdir -p /tmp/repomesh-ci /tmp/repomesh-ci/logs\nnode attestor/scripts/attest-release.mjs --scan-new --sign --output /tmp/repomesh-ci/attestations.jsonl 2>/tmp/repomesh-ci/logs/attestor.log || { echo \"::warning::Attestor crashed (see logs)\"; echo \"attestor\" >> /tmp/repomesh-ci/failures.txt; }\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "node"
+          ],
+          "step": "Run attestor"
         },
         {
           "job": "attest-and-check",
-          "step": "Run license verifier",
-          "text": "node verifiers/license/scripts/verify-license.mjs --scan-new --sign --output /tmp/repomesh-ci/license.jsonl 2>/tmp/repomesh-ci/logs/license.log || { echo \"::warning::License verifier crashed (see logs)\"; echo \"license\" >> /tmp/repomesh-ci/failures.txt; }\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Run license verifier"
         },
         {
           "job": "attest-and-check",
-          "step": "Run security verifier",
-          "text": "node verifiers/security/scripts/verify-security.mjs --scan-new --sign --output /tmp/repomesh-ci/security.jsonl 2>/tmp/repomesh-ci/logs/security.log || { echo \"::warning::Security verifier crashed (see logs)\"; echo \"security\" >> /tmp/repomesh-ci/failures.txt; }\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Run security verifier"
         },
         {
           "job": "attest-and-check",
-          "step": "Run reproducibility verifier",
-          "text": "node verifiers/repro/scripts/verify-repro.mjs --scan-new --sign --output /tmp/repomesh-ci/repro.jsonl 2>/tmp/repomesh-ci/logs/repro.log || { echo \"::warning::Reproducibility verifier crashed (see logs)\"; echo \"repro\" >> /tmp/repomesh-ci/failures.txt; }\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Run reproducibility verifier"
         },
         {
           "job": "attest-and-check",
-          "step": "Run policy checks",
-          "text": "# Exit 2 means \"ledgerable violations were written\", not a crash. Exit 1 (and anything\n# else non-zero except 2) is a crash and must hit the andon below. Collapsing both into\n# `||` dropped real PolicyViolation events and, with the old blank-line output, never\n# distinguished \"warnings only\" from \"checker died\".\nset +e\nnode policy/scripts/check-policy.mjs --sign --output /tmp/repomesh-ci/violations.jsonl 2>/tmp/repomesh-ci/logs/policy.log\npolicy_status=$?\nset -e\nif [ \"$policy_status\" -eq 0 ] || [ \"$policy_status\" -eq 2 ]; then\n  echo \"Policy check finished (exit $policy_status).\"\nelse\n  echo \"::warning::Policy check crashed (see logs)\"\n  echo \"policy\" >> /tmp/repomesh-ci/failures.txt\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Run policy checks"
         },
         {
           "job": "attest-and-check",
-          "step": "Andon — halt on any verifier crash",
-          "text": "if [ -s /tmp/repomesh-ci/failures.txt ]; then\n  echo \"::error::Verifier(s) crashed: $(tr '\\n' ' ' < /tmp/repomesh-ci/failures.txt). Refusing to append a partial attestation set to the ledger — re-run after fixing.\"\n  exit 1\nfi\necho \"All verifiers completed without crashing.\"\n"
+          "programs": [
+            "echo",
+            "tr"
+          ],
+          "step": "Andon — halt on any verifier crash"
         },
         {
           "job": "attest-and-check",
-          "step": "Check for new events",
-          "text": "# Count non-blank lines. `wc -l` treats a warnings-only \"\\n\" file as 1 event, which\n# is what sent this job into the append step with nothing the normalizer would keep.\ncount_jsonl() {\n  local f=\"$1\"\n  if [ ! -s \"$f\" ]; then\n    echo 0\n    return\n  fi\n  local n\n  n=$(grep -cve '^[[:space:]]*$' \"$f\" || true)\n  echo \"${n:-0}\"\n}\nATTESTATIONS=$(count_jsonl /tmp/repomesh-ci/attestations.jsonl)\nLICENSE=$(count_jsonl /tmp/repomesh-ci/license.jsonl)\nSECURITY=$(count_jsonl /tmp/repomesh-ci/security.jsonl)\nREPRO=$(count_jsonl /tmp/repomesh-ci/repro.jsonl)\nVIOLATIONS=$(count_jsonl /tmp/repomesh-ci/violations.jsonl)\nTOTAL=$((ATTESTATIONS + LICENSE + SECURITY + REPRO + VIOLATIONS))\necho \"total=$TOTAL\" >> \"$GITHUB_OUTPUT\"\necho \"attestations=$ATTESTATIONS\" >> \"$GITHUB_OUTPUT\"\necho \"license=$LICENSE\" >> \"$GITHUB_OUTPUT\"\necho \"security=$SECURITY\" >> \"$GITHUB_OUTPUT\"\necho \"repro=$REPRO\" >> \"$GITHUB_OUTPUT\"\necho \"violations=$VIOLATIONS\" >> \"$GITHUB_OUTPUT\"\necho \"Attestations: $ATTESTATIONS, License: $LICENSE, Security: $SECURITY, Repro: $REPRO, Violations: $VIOLATIONS, Total: $TOTAL\"\n"
+          "programs": [
+            "ATTESTATIONS",
+            "count_jsonl",
+            "echo",
+            "grep"
+          ],
+          "step": "Check for new events"
         },
         {
           "job": "attest-and-check",
-          "step": "Check for existing attestor PR",
-          "text": "OPEN=$(gh pr list --search \"attestor/\" --state open --json number --jq 'length' 2>/dev/null || echo 0)\necho \"open=$OPEN\" >> \"$GITHUB_OUTPUT\"\nif [ \"$OPEN\" -gt \"0\" ]; then\n  echo \"Attestor PR already open — skipping to avoid PR pile-up.\"\nfi\n"
+          "programs": [
+            "echo",
+            "gh"
+          ],
+          "step": "Check for existing attestor PR"
         },
         {
           "job": "attest-and-check",
-          "step": "Append events to ledger via PR",
-          "text": "BRANCH=\"attestor/$(date -u +%Y%m%d-%H%M%S)\"\n\ngit remote set-url origin \"https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git\"\ngit config user.name \"repomesh-bot\"\ngit config user.email \"repomesh-bot@users.noreply.github.com\"\ngit checkout -b \"$BRANCH\"\n\n# Append attestation events\nif [ -s /tmp/repomesh-ci/attestations.jsonl ]; then\n  cat /tmp/repomesh-ci/attestations.jsonl >> ledger/events/events.jsonl\nfi\n\n# Append license verifier events\nif [ -s /tmp/repomesh-ci/license.jsonl ]; then\n  cat /tmp/repomesh-ci/license.jsonl >> ledger/events/events.jsonl\nfi\n\n# Append security verifier events\nif [ -s /tmp/repomesh-ci/security.jsonl ]; then\n  cat /tmp/repomesh-ci/security.jsonl >> ledger/events/events.jsonl\nfi\n\n# Append reproducibility verifier events\nif [ -s /tmp/repomesh-ci/repro.jsonl ]; then\n  cat /tmp/repomesh-ci/repro.jsonl >> ledger/events/events.jsonl\nfi\n\n# Append violation events\nif [ -s /tmp/repomesh-ci/violations.jsonl ]; then\n  cat /tmp/repomesh-ci/violations.jsonl >> ledger/events/events.jsonl\nfi\n\n# Normalize: concatenating multiple verifier outputs can leave a blank/whitespace-only line\n# (a source file without a trailing newline, or an empty one), which validate-ledger rejects\n# (LDG-004). Strip blank lines + guarantee a single trailing newline — one JSON event per line.\nnode -e \"const fs=require('fs');const f='ledger/events/events.jsonl';const ls=fs.readFileSync(f,'utf8').split('\\n').filter(l=>l.trim().length>0);fs.writeFileSync(f,ls.join('\\n')+'\\n');\"\n\ngit add ledger/events/events.jsonl\n# Blank-only appends normalize back to the committed ledger. `git commit` then exits 1\n# under `bash -e` (\"nothing to commit\") and the failure alert fires. An unchanged tree\n# is a clean no-op, not a failed run.\nif git diff --cached --quiet; then\n  echo \"Ledger unchanged after blank-line normalize — nothing to append.\"\n  exit 0\nfi\ngit commit -m \"attestor: ${{ steps.check.outputs.attestations }} attestation(s), ${{ steps.check.outputs.license }} license, ${{ steps.check.outputs.security }} security, ${{ steps.check.outputs.repro }} repro, ${{ steps.check.outputs.violations }} violation(s)\"\ngit push origin \"$BRANCH\"\n\nPR_URL=$(gh pr create \\\n  --head \"$BRANCH\" \\\n  --title \"attestor: ${{ steps.check.outputs.attestations }} attestation(s), ${{ steps.check.outputs.license }} license, ${{ steps.check.outputs.security }} security, ${{ steps.check.outputs.repro }} repro\" \\\n  --body \"$(cat <<'EOF'\n## RepoMesh Attestor Run\n\n**Attestations:** ${{ steps.check.outputs.attestations }}\n**License Audits:** ${{ steps.check.outputs.license }}\n**Security Scans:** ${{ steps.check.outputs.security }}\n**Repro Builds:** ${{ steps.check.outputs.repro }}\n**Policy Violations:** ${{ steps.check.outputs.violations }}\n\nAutomated attestor + verifier + policy scan. Ledger CI verifies schema + signatures; this PR auto-merges on green.\nEOF\n)\")\necho \"Opened $PR_URL\"\n# Close the loop (same as anchor-xrpl): auto-merge on green so attestor PRs don't pile up\n# unmerged + freeze the ledger. Degrades gracefully if allow_auto_merge isn't enabled.\ngh pr merge --auto --merge \"$PR_URL\" \\\n  || echo \"::warning::Could not enable auto-merge on $PR_URL. Enable once: gh api -X PATCH repos/${{ github.repository }} -f allow_auto_merge=true.\"\n"
+          "programs": [
+            "cat",
+            "date",
+            "echo",
+            "gh",
+            "git",
+            "node"
+          ],
+          "step": "Append events to ledger via PR"
         },
         {
           "job": "attest-and-check",
-          "step": "Alert on failure",
-          "text": "TITLE=\"⚠ automation: attestor-ci is failing\"\nRUN=\"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"\nBODY=\"The attestor/verifier/policy cron failed (a verifier crashed, or the run errored). Attestations may be missing from the ledger. Run: $RUN\"\nEXISTING=$(gh issue list --state open --search \"$TITLE in:title\" --json number --jq '.[0].number // empty' 2>/dev/null || echo \"\")\nif [ -n \"$EXISTING\" ]; then\n  gh issue comment \"$EXISTING\" --body \"Still failing — $RUN\"\nelse\n  gh issue create --title \"$TITLE\" --body \"$BODY\" --label automation-alert 2>/dev/null \\\n    || gh issue create --title \"$TITLE\" --body \"$BODY\"\nfi\n"
+          "programs": [
+            "echo",
+            "gh"
+          ],
+          "step": "Alert on failure"
         }
       ],
       "elsewhere": [],
@@ -6507,28 +6650,40 @@
       "commands": [
         {
           "job": "validate-ledger",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.14.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "validate-ledger",
-          "step": "Install ledger deps",
-          "text": "npm ci || npm install"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install ledger deps"
         },
         {
           "job": "validate-ledger",
-          "step": "Extract base ledger from main (fail-closed)",
-          "text": "set -euo pipefail\nBASE_REF=\"origin/main:ledger/events/events.jsonl\"\n\n# 1. The ref itself must resolve. If origin/main is missing, the checkout/fetch is\n#    broken — that is an ERROR, never an empty base.\nif ! git rev-parse --verify --quiet origin/main >/dev/null; then\n  echo \"::error::Cannot resolve origin/main. The base ledger could not be fetched\"\n  echo \"::error::(fetch-depth/checkout failure). Refusing to validate against an EMPTY base,\"\n  echo \"::error::which would silently skip the append-only/immutability check (LEDGER-A-007).\"\n  exit 1\nfi\n\n# 2. Does the ledger path exist in origin/main?\nif git cat-file -e \"${BASE_REF}\" 2>/dev/null; then\n  # Path exists → extract it. A failure HERE (blob unreadable) is a hard error.\n  git show \"${BASE_REF}\" > /tmp/base-events.jsonl\n  echo \"Base ledger extracted ($(wc -l < /tmp/base-events.jsonl) line(s)).\"\nelse\n  # Path absent on main. This is EITHER a legitimate first/bootstrap commit OR a\n  # path/ref error. Only accept the empty base when explicitly authorized.\n  if [ \"${LEDGER_ALLOW_EMPTY_BASE:-}\" = \"1\" ]; then\n    echo \"::warning::ledger/events/events.jsonl absent on origin/main and\"\n    echo \"::warning::LEDGER_ALLOW_EMPTY_BASE=1 — treating as first commit (empty base).\"\n    : > /tmp/base-events.jsonl\n  else\n    echo \"::error::ledger/events/events.jsonl not found in origin/main.\"\n    echo \"::error::Refusing to fall open to an empty base (LEDGER-A-007): an empty base\"\n    echo \"::error::SKIPS the append-only/immutability check. If this is a genuine first\"\n    echo \"::error::commit, set repo variable LEDGER_ALLOW_EMPTY_BASE=1 to authorize it.\"\n    exit 1\n  fi\nfi\n"
+          "programs": [
+            "echo",
+            "git",
+            "wc"
+          ],
+          "step": "Extract base ledger from main (fail-closed)"
         },
         {
           "job": "validate-ledger",
-          "step": "Validate append-only + schema + signature + uniqueness",
-          "text": "npm run validate:ledger"
+          "programs": [
+            "npm"
+          ],
+          "step": "Validate append-only + schema + signature + uniqueness"
         },
         {
           "job": "validate-ledger",
-          "step": "Report failure details",
-          "text": "echo \"::error::Ledger validation failed. Check the validator output above for details.\"\necho \"::error::Common causes: schema violation, invalid signature, duplicate event, or timestamp issue.\"\necho \"::error::See docs/handbook.md CI Troubleshooting section for resolution steps.\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Report failure details"
         }
       ],
       "elsewhere": [],
@@ -6616,48 +6771,68 @@
       "commands": [
         {
           "job": "build-and-deploy",
-          "step": "Build anchor index",
-          "text": "node registry/scripts/build-anchors.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Build anchor index"
         },
         {
           "job": "build-and-deploy",
-          "step": "Build badges",
-          "text": "node registry/scripts/build-badges.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Build badges"
         },
         {
           "job": "build-and-deploy",
-          "step": "Build snippets",
-          "text": "node registry/scripts/build-snippets.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Build snippets"
         },
         {
           "job": "build-and-deploy",
-          "step": "Build metrics",
-          "text": "node pages/build-metrics.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Build metrics"
         },
         {
           "job": "build-and-deploy",
-          "step": "Build timeline",
-          "text": "node pages/build-timeline.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Build timeline"
         },
         {
           "job": "build-and-deploy",
-          "step": "Build registry explorer",
-          "text": "node pages/build-pages.mjs\nmkdir -p site/public\ncp -r pages/out/* site/public/\n"
+          "programs": [
+            "cp",
+            "mkdir",
+            "node"
+          ],
+          "step": "Build registry explorer"
         },
         {
           "job": "build-and-deploy",
-          "step": "Build stats",
-          "text": "node pages/build-stats.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Build stats"
         },
         {
           "job": "build-and-deploy",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build-and-deploy",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -6690,7 +6865,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         },
         {
           "boundary": "anchor",
@@ -7051,18 +7226,27 @@
       "commands": [
         {
           "job": "build-registry",
-          "step": "Validate profile snapshots",
-          "text": "node -e \"\nconst fs = require('fs');\nconst path = require('path');\nconst nodesDir = 'ledger/nodes';\nconst validProfiles = ['baseline', 'open-source', 'regulated'];\nlet errors = 0;\nif (!fs.existsSync(nodesDir)) process.exit(0);\nfor (const org of fs.readdirSync(nodesDir, { withFileTypes: true }).filter(d => d.isDirectory())) {\n  for (const repo of fs.readdirSync(path.join(nodesDir, org.name), { withFileTypes: true }).filter(d => d.isDirectory())) {\n    const profilePath = path.join(nodesDir, org.name, repo.name, 'repomesh.profile.json');\n    if (!fs.existsSync(profilePath)) continue;\n    try {\n      const p = JSON.parse(fs.readFileSync(profilePath, 'utf8'));\n      if (!validProfiles.includes(p.profileId)) {\n        console.error('Invalid profile ' + p.profileId + ' in ' + profilePath);\n        errors++;\n      }\n      console.log('  OK ' + org.name + '/' + repo.name + ': ' + p.profileId);\n    } catch (e) {\n      console.error('Parse error in ' + profilePath + ': ' + e.message);\n      errors++;\n    }\n  }\n}\nif (errors > 0) { console.error(errors + ' profile validation error(s)'); process.exit(1); }\nconsole.log('All profile snapshots valid.');\n\"\n"
+          "programs": [
+            "node"
+          ],
+          "step": "Validate profile snapshots"
         },
         {
           "job": "build-registry",
-          "step": "Build registry (all indexes)",
-          "text": "set -e\nnode registry/scripts/build-registry.mjs\nnode registry/scripts/build-trust.mjs\nnode registry/scripts/build-dependencies.mjs\nnode registry/scripts/build-verifiers.mjs\nnode registry/scripts/build-anchors.mjs\nnode registry/scripts/build-badges.mjs\nnode registry/scripts/build-snippets.mjs\n"
+          "programs": [
+            "node"
+          ],
+          "step": "Build registry (all indexes)"
         },
         {
           "job": "build-registry",
-          "step": "Commit + PR registry changes (protected main)",
-          "text": "git add registry/nodes.json registry/capabilities.json registry/trust.json registry/dependencies.json registry/verifiers.json registry/anchors.json registry/badges/ registry/snippets/\nif git diff --cached --quiet; then\n  echo \"No registry changes — committed registry is in sync with the ledger.\"\n  exit 0\nfi\nBRANCH=\"registry/auto-$(date -u +%Y%m%d-%H%M%S)\"\ngit config user.name \"repomesh-bot\"\ngit config user.email \"repomesh-bot@users.noreply.github.com\"\ngit remote set-url origin \"https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git\"\ngit checkout -b \"$BRANCH\"\ngit commit -m \"registry: auto-update derived indexes (trust, verifiers, anchors, badges, snippets)\"\ngit push origin \"$BRANCH\"\nPR=$(gh pr create --head \"$BRANCH\" --base main \\\n  --title \"registry: auto-update derived indexes\" \\\n  --body \"Automated registry regeneration after a ledger change — registry-ci cannot push to protected main, so this lands the derived indexes via an auto-merging PR.\")\ngh pr merge --auto --merge \"$PR\" \\\n  || echo \"::warning::Could not enable auto-merge on $PR. Enable once: gh api -X PATCH repos/${{ github.repository }} -f allow_auto_merge=true.\"\n"
+          "programs": [
+            "date",
+            "echo",
+            "gh",
+            "git"
+          ],
+          "step": "Commit + PR registry changes (protected main)"
         }
       ],
       "elsewhere": [],
@@ -7474,58 +7658,88 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Install npm >= 11.5 in sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22 bundles npm 10.x, which cannot do OIDC trusted publishing,\n# and an in-place `npm i -g npm@latest` races its own arborist rebuild.\n# Install npm@latest into an isolated sandbox and shadow it via PATH.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >= 11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "publish",
-          "step": "Install dependencies (workspace root)",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies (workspace root)"
         },
         {
           "job": "publish",
-          "step": "Verify release tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} -> ${TAG_VERSION} | Package: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Release tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify release tag matches package.json version"
         },
         {
           "job": "publish",
-          "step": "Build (src -> dist)",
-          "text": "node scripts/build.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Build (src -> dist)"
         },
         {
           "job": "publish",
-          "step": "Test",
-          "text": "node --test tests/*.test.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Test"
         },
         {
           "job": "publish",
-          "step": "npm pack dry-run (verify tarball shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify tarball shape)"
         },
         {
           "job": "publish",
-          "step": "Audit production dependencies",
-          "text": "npm audit --audit-level=high --omit=dev\nnpm audit --audit-level=high --omit=dev --prefix anchor/xrpl\n"
+          "programs": [
+            "npm"
+          ],
+          "step": "Audit production dependencies"
         },
         {
           "job": "publish",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
           "job": "image",
-          "step": "Image tags",
-          "text": "VERSION=$(node -p \"require('./package.json').version\")\nif [ \"${{ github.event_name }}\" = \"release\" ]; then\n  TAG_VERSION=\"${GITHUB_REF_NAME#v}\"\n  if [ \"$VERSION\" != \"$TAG_VERSION\" ]; then\n    echo \"::error::Release tag ${TAG_VERSION} does not match package.json version ${VERSION}\"\n    exit 1\n  fi\nfi\nIMAGE=\"ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')\"\necho \"image=$IMAGE\" >> \"$GITHUB_OUTPUT\"\necho \"version=$VERSION\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "echo",
+            "node",
+            "tr"
+          ],
+          "step": "Image tags"
         },
         {
           "job": "image",
-          "step": "Log in to GHCR",
-          "text": "echo \"${{ github.token }}\" | docker login ghcr.io -u \"${{ github.actor }}\" --password-stdin"
+          "programs": [
+            "docker",
+            "echo"
+          ],
+          "step": "Log in to GHCR"
         },
         {
           "job": "image",
-          "step": "Build and push",
-          "text": "docker build \\\n  -t \"${{ steps.tags.outputs.image }}:${{ steps.tags.outputs.version }}\" \\\n  -t \"${{ steps.tags.outputs.image }}:sha-${GITHUB_SHA}\" \\\n  .\ndocker push \"${{ steps.tags.outputs.image }}:${{ steps.tags.outputs.version }}\"\ndocker push \"${{ steps.tags.outputs.image }}:sha-${GITHUB_SHA}\"\n"
+          "programs": [
+            "docker"
+          ],
+          "step": "Build and push"
         }
       ],
       "elsewhere": [],
@@ -7610,18 +7824,21 @@
       "runs": [
         {
           "job": "image",
+          "packed": true,
           "path": "anchor/xrpl/config.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "image",
+          "packed": true,
           "path": "anchor/xrpl/package-lock.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "image",
+          "packed": true,
           "path": "anchor/xrpl/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7629,18 +7846,21 @@
         {
           "directory": true,
           "job": "image",
+          "packed": true,
           "path": "anchor/xrpl/scripts/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "image",
+          "packed": true,
           "path": "package-lock.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "image",
+          "packed": true,
           "path": "package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7648,12 +7868,14 @@
         {
           "directory": true,
           "job": "image",
+          "packed": true,
           "path": "packages/repomesh-cli/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "image",
+          "packed": true,
           "path": "packages/repomesh-cli/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7725,43 +7947,76 @@
       "commands": [
         {
           "job": "broadcast",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "broadcast",
-          "step": "3",
-          "text": "npm run build --workspaces --if-present"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "broadcast",
-          "step": "Hash artifacts",
-          "text": "mkdir -p /tmp/repomesh\nnpm pack -w @mcptoolshop/repomesh --pack-destination /tmp/repomesh >/dev/null\nsha256sum /tmp/repomesh/*.tgz > /tmp/repomesh/artifact-hashes.txt\ncat /tmp/repomesh/artifact-hashes.txt\n"
+          "programs": [
+            "cat",
+            "mkdir",
+            "npm",
+            "sha256sum"
+          ],
+          "step": "Hash artifacts"
         },
         {
           "job": "broadcast",
-          "step": "Generate SBOM",
-          "text": "npm sbom --sbom-format cyclonedx > /tmp/repomesh/sbom.json 2>/dev/null || echo '{\"bomFormat\":\"CycloneDX\",\"specVersion\":\"1.4\",\"components\":[]}' > /tmp/repomesh/sbom.json\nsha256sum /tmp/repomesh/sbom.json | awk '{print $1}' > /tmp/repomesh/sbom-hash.txt\necho \"SBOM generated ($(wc -c < /tmp/repomesh/sbom.json) bytes)\"\n"
+          "programs": [
+            "awk",
+            "echo",
+            "npm",
+            "sha256sum",
+            "wc"
+          ],
+          "step": "Generate SBOM"
         },
         {
           "job": "broadcast",
-          "step": "Generate provenance",
-          "text": "cat > /tmp/repomesh/provenance.json << PROVEOF\n{\n  \"_type\": \"https://slsa.dev/provenance/v1\",\n  \"subject\": {\n    \"repo\": \"${REPO_ID}\",\n    \"version\": \"${VERSION}\",\n    \"commit\": \"${COMMIT}\"\n  },\n  \"buildDefinition\": {\n    \"buildType\": \"https://github.com/actions/runner\",\n    \"externalParameters\": {\n      \"workflow\": \".github/workflows/repomesh-broadcast.yml\",\n      \"trigger\": \"release:published\"\n    }\n  },\n  \"runDetails\": {\n    \"builder\": {\n      \"id\": \"https://github.com/actions/runner/${RUNNER_OS}/${RUNNER_ARCH}\"\n    },\n    \"metadata\": {\n      \"invocationId\": \"https://github.com/${REPO_ID}/actions/runs/${{ github.run_id }}\",\n      \"startedOn\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"\n    }\n  }\n}\nPROVEOF\nsha256sum /tmp/repomesh/provenance.json | awk '{print $1}' > /tmp/repomesh/provenance-hash.txt\necho \"Provenance generated\"\n"
+          "programs": [
+            "awk",
+            "cat",
+            "echo",
+            "sha256sum"
+          ],
+          "step": "Generate provenance"
         },
         {
           "job": "broadcast",
-          "step": "Upload attestation assets",
-          "text": "VERSION=\"${{ inputs.version || github.ref_name }}\"\ngh release upload \"$VERSION\" /tmp/repomesh/sbom.json --clobber 2>/dev/null || echo \"SBOM upload skipped\"\ngh release upload \"$VERSION\" /tmp/repomesh/provenance.json --clobber 2>/dev/null || echo \"Provenance upload skipped\"\n"
+          "programs": [
+            "echo",
+            "gh"
+          ],
+          "step": "Upload attestation assets"
         },
         {
           "job": "broadcast",
-          "step": "Create signed event",
-          "text": "cat > /tmp/repomesh/build-event.mjs << 'SCRIPT'\nimport fs from \"node:fs\";\nimport crypto from \"node:crypto\";\n\nfunction canonicalize(v) {\n  if (Array.isArray(v)) return v.map(canonicalize);\n  if (v && typeof v === \"object\") {\n    const out = {};\n    for (const k of Object.keys(v).sort()) out[k] = canonicalize(v[k]);\n    return out;\n  }\n  return v;\n}\n\nconst repo = process.env.REPO_ID;\nconst version = process.env.VERSION.replace(/^v/, \"\");\nconst commit = process.env.COMMIT;\nconst keyId = process.env.KEY_ID;\n\nif (!process.env.SIGNING_KEY) {\n  console.error(\"REPOMESH_SIGNING_KEY secret is not set.\");\n  process.exit(1);\n}\n\nconst artifacts = fs.readFileSync(\"/tmp/repomesh/artifact-hashes.txt\", \"utf8\")\n  .trim().split(\"\\n\").filter(Boolean)\n  .map(line => {\n    const [sha, ...rest] = line.trim().split(/\\s+/);\n    const file = rest.join(\" \");\n    return {\n      name: file.split(\"/\").pop(),\n      sha256: sha,\n      uri: `https://github.com/${repo}/releases/tag/v${version}`\n    };\n  });\n\n// Build attestations from generated SBOM + provenance\nconst attestations = [];\nconst releaseUrl = `https://github.com/${repo}/releases/download/v${version}`;\n\ntry {\n  fs.accessSync(\"/tmp/repomesh/sbom.json\");\n  attestations.push({\n    type: \"sbom\",\n    uri: `${releaseUrl}/sbom.json`\n  });\n} catch {}\n\ntry {\n  fs.accessSync(\"/tmp/repomesh/provenance.json\");\n  attestations.push({\n    type: \"provenance\",\n    uri: `${releaseUrl}/provenance.json`\n  });\n} catch {}\n\nconst ev = {\n  type: \"ReleasePublished\",\n  repo,\n  version,\n  commit,\n  timestamp: new Date().toISOString(),\n  artifacts,\n  attestations,\n  signature: { alg: \"ed25519\", keyId, value: \"\", canonicalHash: \"\" }\n};\n\n// Compute canonical hash (signature excluded)\nconst stripped = JSON.parse(JSON.stringify(ev));\ndelete stripped.signature;\nconst canonical = JSON.stringify(canonicalize(stripped));\nconst hash = crypto.createHash(\"sha256\").update(canonical, \"utf8\").digest(\"hex\");\n\n// Sign the canonical hash\nconst privKey = crypto.createPrivateKey(process.env.SIGNING_KEY);\nconst sig = crypto.sign(null, Buffer.from(hash, \"hex\"), privKey);\n\nev.signature.value = sig.toString(\"base64\");\nev.signature.canonicalHash = hash;\n\nfs.writeFileSync(\"/tmp/repomesh/event.json\", JSON.stringify(ev));\nconsole.log(`Event: ${ev.type} ${ev.repo}@${ev.version} (keyId: ${keyId})`);\nconsole.log(`Attestations: ${attestations.map(a => a.type).join(\", \") || \"none\"}`);\nSCRIPT\n\nnode /tmp/repomesh/build-event.mjs\n"
+          "programs": [
+            "cat",
+            "node"
+          ],
+          "step": "Create signed event"
         },
         {
           "job": "broadcast",
-          "step": "Append to ledger via PR",
-          "text": "REPO_SLUG=\"${{ github.event.repository.name }}\"\nVERSION=\"${{ inputs.version || github.ref_name }}\"\nBRANCH=\"event/${REPO_SLUG}/${VERSION}\"\n\ngh repo clone \"${{ env.REPOMESH_LEDGER_REPO }}\" /tmp/repomesh-ledger -- --depth 1\ncd /tmp/repomesh-ledger\n\ngit remote set-url origin \"https://x-access-token:${GH_TOKEN}@github.com/${{ env.REPOMESH_LEDGER_REPO }}.git\"\ngit config user.name \"repomesh-bot\"\ngit config user.email \"repomesh-bot@users.noreply.github.com\"\ngit checkout -b \"$BRANCH\"\n\ncat /tmp/repomesh/event.json >> ledger/events/events.jsonl\nprintf '\\n' >> ledger/events/events.jsonl\n\ngit add ledger/events/events.jsonl\ngit commit -m \"event: ${{ github.repository }}@${VERSION}\"\ngit push origin \"$BRANCH\"\n\nPR_URL=$(gh pr create \\\n  --repo \"${{ env.REPOMESH_LEDGER_REPO }}\" \\\n  --head \"$BRANCH\" \\\n  --title \"event: ${{ github.repository }}@${VERSION}\" \\\n  --body \"$(cat <<'EOF'\n## RepoMesh Broadcast\n\n**Repo:** ${{ github.repository }}\n**Version:** ${{ inputs.version || github.ref_name }}\n**Commit:** ${{ github.sha }}\n**Type:** ReleasePublished\n\nAutomated event from release workflow. Ledger CI verifies schema, signature, and append-only; this PR auto-merges on green.\nEOF\n)\")\necho \"Opened $PR_URL\"\n# Close the loop: auto-merge on green so release-event PRs don't pile up unmerged (the\n# ledger should record every release). Degrades gracefully if allow_auto_merge is off.\ngh pr merge --auto --merge --repo \"${{ env.REPOMESH_LEDGER_REPO }}\" \"$PR_URL\" \\\n  || echo \"::warning::Could not enable auto-merge on $PR_URL — ensure allow_auto_merge is enabled on ${{ env.REPOMESH_LEDGER_REPO }}.\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "echo",
+            "gh",
+            "git",
+            "printf"
+          ],
+          "step": "Append to ledger via PR"
         }
       ],
       "elsewhere": [
@@ -7851,18 +8106,30 @@
       "commands": [
         {
           "job": "watch",
-          "step": "Install XRPL client",
-          "text": "cd anchor/xrpl && npm ci"
+          "programs": [
+            "cd",
+            "npm"
+          ],
+          "step": "Install XRPL client"
         },
         {
           "job": "watch",
-          "step": "Compare rippled and amendments to the baseline",
-          "text": "set -euo pipefail\nnode anchor/xrpl/scripts/watch.mjs > /tmp/xrpl-watch.json\ncat /tmp/xrpl-watch.json >> \"$GITHUB_STEP_SUMMARY\"\nCHANGED=$(node -e 'const j=require(\"node:fs\").readFileSync(\"/tmp/xrpl-watch.json\",\"utf8\"); process.stdout.write(JSON.parse(j).changed ? \"true\" : \"false\")')\necho \"changed=$CHANGED\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "cat",
+            "echo",
+            "node"
+          ],
+          "step": "Compare rippled and amendments to the baseline"
         },
         {
           "job": "watch",
-          "step": "Open an issue when the watched surface changes",
-          "text": "TITLE=\"xrpl-watch: protocol surface changed\"\nBODY=$(cat /tmp/xrpl-watch.json)\nEXISTING=$(gh issue list --state open --search \"$TITLE in:title\" --json number --jq '.[0].number // empty' 2>/dev/null || echo \"\")\nif [ -n \"$EXISTING\" ]; then\n  gh issue comment \"$EXISTING\" --body \"$(printf '%s\\n\\n```json\\n%s\\n```' \"Still different from anchor/xrpl/watch-baseline.json.\" \"$BODY\")\"\nelse\n  gh issue create --title \"$TITLE\" --body \"$(printf '%s\\n\\n```json\\n%s\\n```' \"anchor/xrpl/watch-baseline.json does not match the live rippled release or the Batch/Sponsor enabled flags. Update the baseline only after a human accepts the change. Do not add those transaction types from this issue.\" \"$BODY\")\"\nfi\n"
+          "programs": [
+            "cat",
+            "echo",
+            "gh",
+            "printf"
+          ],
+          "step": "Open an issue when the watched surface changes"
         }
       ],
       "elsewhere": [],
@@ -8047,6 +8314,12 @@
       "from": "repomesh-cli",
       "kind": "spawns",
       "to": "tools"
+    },
+    {
+      "from": "repomesh-cli",
+      "fromTests": true,
+      "kind": "file",
+      "to": "verifiers"
     },
     {
       "from": "tools",
@@ -8465,18 +8738,6 @@
       "readers": [
         {
           "by": "tools/tests/forged-window-probe.test.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tools/tests/sec-b2-composed-cross-layer-probe.test.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tools/tests/sec-b3-end-to-end-exploit-probe.test.mjs",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -9481,18 +9742,6 @@
     {
       "readers": [
         {
-          "by": "packages/repomesh-cli/tests/lib-api.test.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "packages/repomesh-cli/src/index.mjs",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": "packages/repomesh-cli/tests/key-keygen.test.mjs",
           "call": "literal",
           "confidence": "ast",
@@ -10314,9 +10563,6 @@
       ],
       "target": "registry/anchors.json",
       "writers": [
-        {
-          "by": ".github/workflows/anchor-xrpl.yml"
-        },
         {
           "by": "verifiers/lib/common.mjs",
           "confidence": "ast"

@@ -231,7 +231,7 @@
   "changesTogetherWithTests": 0,
   "commit": "47e1a456d9ec50c9bec0e9fb73890e9e5da93621",
   "defaultBranch": "main",
-  "derived": "23 parts, mostly TypeScript (407 files) and JavaScript (2). Work enters through 5 doors; the busiest is Publish to GHCR, which reaches 16 parts. It publishes @mcptoolshop/attestia to npm and a container image. People import @mcptoolshop/attestia.",
+  "derived": "23 parts, mostly TypeScript (407 files), CSS (2), JavaScript (2) and Astro (1). Work enters through 5 doors; the busiest is Publish to GHCR, which reaches 16 parts. It publishes @mcptoolshop/attestia to npm and a container image. It deploys a site to GitHub Pages. People import @mcptoolshop/attestia.",
   "doors": [
     {
       "builds": [
@@ -263,19 +263,34 @@
         "packages/verify/src/",
         "packages/witness/src/"
       ],
-      "checks": [
-        "package.json",
-        "packages/",
-        "pnpm-lock.yaml",
-        "pnpm-workspace.yaml",
-        "tsconfig.json"
-      ],
-      "checksCount": 5,
-      "checksMore": 2,
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/docker.yml",
       "id": ".github/workflows/docker.yml",
       "landings": [],
       "name": "Publish to GHCR",
+      "packs": [
+        "package.json",
+        "packages/",
+        "packages/chain-observer/package.json",
+        "packages/demo/package.json",
+        "packages/event-store/package.json",
+        "packages/ledger/package.json",
+        "packages/node/package.json",
+        "packages/proof/package.json",
+        "packages/reconciler/package.json",
+        "packages/registrum/package.json",
+        "packages/sdk/package.json",
+        "packages/treasury/package.json",
+        "packages/types/package.json",
+        "packages/vault/package.json",
+        "packages/verify/package.json",
+        "packages/witness/package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        "tsconfig.json"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -588,7 +603,9 @@
       ],
       "runsCount": 96,
       "runsMore": 175,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main touching 12 paths",
@@ -834,7 +851,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -949,7 +966,7 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T09:13:40.655Z",
+  "generatedAt": "2026-09-25T16:25:01.469Z",
   "limits": [
     "5 writes and 7 reads use paths built at run time and are not named here.",
     "6 writes and 66 reads go to a path their caller passes, not to this repository.",

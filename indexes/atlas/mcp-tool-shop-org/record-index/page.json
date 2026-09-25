@@ -7,7 +7,7 @@
   ],
   "breaks": [
     {
-      "doors": 2,
+      "doors": 3,
       "importedBy": [],
       "importedByTests": [
         "tests"
@@ -27,8 +27,16 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "record_index (pyproject.toml) is a new package. It loads record_index/__init__.py.",
+        "subjects": [
+          "pyproject.toml",
+          "record_index/__init__.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -36,7 +44,7 @@
       "commit": "a9a84a20df735bd0eb1fcebd9714f918a160b3ab",
       "generatedAt": "2026-09-25T09:50:19.865Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -45,7 +53,7 @@
   "changesTogetherWithTests": 0,
   "commit": "b48f7b65034c0543d7c549545c392b88bd63e59e",
   "defaultBranch": "main",
-  "derived": "6 parts, mostly Python (26 files), TypeScript (2) and JavaScript (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI.",
+  "derived": "6 parts, mostly Python (26 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People import record_index.",
   "doors": [
     {
       "checks": [],
@@ -94,7 +102,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -140,6 +148,32 @@
       "triggers": [
         "when a release is published"
       ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "pyproject.toml",
+      "id": "pyproject.toml#record_index",
+      "kind": "package",
+      "landings": [],
+      "name": "record_index",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "record_index",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "record_index/__init__.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
     }
   ],
   "duplicates": [],
@@ -147,10 +181,11 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-25T10:05:26.188Z",
+  "generatedAt": "2026-09-25T16:34:24.381Z",
   "limits": [
     "1 import could not be resolved: `tests/test_packaging.py` imports a path built at run time.",
-    "1 write and 4 reads use paths built at run time and are not named here.",
+    "1 read uses a path built at run time and is not named here.",
+    "7 writes and 3 reads go to a path their caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -166,19 +201,19 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/record-index",
   "sequences": [],
-  "startDoor": ".github/workflows/ci.yml",
+  "startDoor": "pyproject.toml#record_index",
   "startHere": [
-    ".github/workflows/ci.yml",
     "record_index/__init__.py",
     "record_index/conventions.py"
   ],
+  "startReason": "This path follows record_index (the package people import) from its entry, since CI runs only tests.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 37,
   "testedBy": {
     "record_index": 16
   },
-  "unnamedWrites": 1,
+  "unnamedWrites": 0,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],

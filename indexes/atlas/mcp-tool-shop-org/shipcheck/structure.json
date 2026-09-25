@@ -602,7 +602,8 @@
       "name": "root",
       "origin": "authored",
       "role": "docs",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -656,6 +657,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -769,63 +778,104 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.14.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "verify",
-          "step": "3",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "verify",
-          "step": "4",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "verify",
-          "step": "5",
-          "text": "npm audit --audit-level=moderate"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "verify",
-          "step": "6",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "6"
         },
         {
           "job": "dogfood",
-          "step": "Step: run-help",
-          "text": "node bin/shipcheck.mjs help 2>&1 | tee /tmp/help.log\necho \"status=pass\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "1",
+            "echo",
+            "node",
+            "tee"
+          ],
+          "step": "Step: run-help"
         },
         {
           "job": "dogfood",
-          "step": "Step: run-init",
-          "text": "node bin/shipcheck.mjs init 2>&1 | tee /tmp/init.log\nif [ -f \"SHIP_GATE.md\" ]; then\n  echo \"status=pass\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"status=fail\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "node",
+            "tee"
+          ],
+          "step": "Step: run-init"
         },
         {
           "job": "dogfood",
-          "step": "Step: run-audit",
-          "text": "# audit may exit 3 (partial) which is valid\nset +e\nnode bin/shipcheck.mjs audit 2>&1 | tee /tmp/audit.log\nEXIT_CODE=$?\nset -e\nif [ \"$EXIT_CODE\" -eq 0 ] || [ \"$EXIT_CODE\" -eq 3 ]; then\n  echo \"status=pass\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"status=fail\" >> \"$GITHUB_OUTPUT\"\nfi\necho \"exit_code=$EXIT_CODE\" >> \"$GITHUB_OUTPUT\"\n"
+          "programs": [
+            "1",
+            "echo",
+            "node",
+            "tee"
+          ],
+          "step": "Step: run-audit"
         },
         {
           "job": "dogfood",
-          "step": "Step: verify-output",
-          "text": "# Check audit log contains gate results (shipcheck outputs summary lines)\nif grep -q -E \"(Checked:|Unchecked:|Skipped:|Pass rate:)\" /tmp/audit.log; then\n  echo \"status=pass\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"status=fail\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "echo",
+            "grep"
+          ],
+          "step": "Step: verify-output"
         },
         {
           "job": "dogfood",
-          "step": "Determine overall verdict",
-          "text": "HELP=\"${{ steps.help.outputs.status }}\"\nINIT=\"${{ steps.init.outputs.status }}\"\nAUDIT=\"${{ steps.audit.outputs.status }}\"\nVERIFY=\"${{ steps.verify_output.outputs.status }}\"\nif [ \"$HELP\" = \"pass\" ] && [ \"$INIT\" = \"pass\" ] && [ \"$AUDIT\" = \"pass\" ] && [ \"$VERIFY\" = \"pass\" ]; then\n  echo \"verdict=pass\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"verdict=fail\" >> \"$GITHUB_OUTPUT\"\nfi\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Determine overall verdict"
         },
         {
           "job": "dogfood",
-          "step": "Build submission",
-          "text": "FINISHED_AT=$(date -u +\"%Y-%m-%dT%H:%M:%SZ\")\ncat > /tmp/submission.json << 'INNER_EOF'\n{\n  \"schema_version\": \"1.0.0\",\n  \"run_id\": \"shipcheck-RUN_ID-ATTEMPT\",\n  \"repo\": \"REPO_SLUG\",\n  \"ref\": {\n    \"branch\": \"REF_NAME\",\n    \"commit_sha\": \"COMMIT_SHA\"\n  },\n  \"source\": {\n    \"provider\": \"github\",\n    \"workflow\": \"ci.yml\",\n    \"provider_run_id\": \"PROVIDER_RUN_ID\",\n    \"attempt\": ATTEMPT_NUM,\n    \"run_url\": \"RUN_URL_PLACEHOLDER\",\n    \"actor\": \"ACTOR_NAME\"\n  },\n  \"timing\": {\n    \"started_at\": \"STARTED_PLACEHOLDER\",\n    \"finished_at\": \"FINISHED_PLACEHOLDER\",\n    \"duration_ms\": 0\n  },\n  \"ci_checks\": [\n    { \"id\": \"unit-tests\", \"kind\": \"test\", \"status\": \"pass\", \"value\": 24 }\n  ],\n  \"scenario_results\": [\n    {\n      \"scenario_id\": \"self-gate-real-repo\",\n      \"scenario_name\": \"Self-gate against real repo\",\n      \"scenario_version\": \"1.0.0\",\n      \"product_surface\": \"cli\",\n      \"execution_mode\": \"bot\",\n      \"verdict\": \"VERDICT_PLACEHOLDER\",\n      \"step_results\": [\n        { \"step_id\": \"run-help\", \"status\": \"HELP_STATUS\" },\n        { \"step_id\": \"run-init\", \"status\": \"INIT_STATUS\" },\n        { \"step_id\": \"run-audit\", \"status\": \"AUDIT_STATUS\" },\n        { \"step_id\": \"verify-output\", \"status\": \"VERIFY_STATUS\" }\n      ],\n      \"evidence\": [\n        {\n          \"kind\": \"log\",\n          \"url\": \"RUN_URL_PLACEHOLDER\",\n          \"description\": \"CI run log with audit output\"\n        },\n        {\n          \"kind\": \"artifact\",\n          \"url\": \"RUN_URL_PLACEHOLDER/artifacts\",\n          \"description\": \"Audit log artifact (dogfood-audit-log)\"\n        }\n      ],\n      \"notes\": \"Self-gate audit exit code: EXIT_CODE_PLACEHOLDER\"\n    }\n  ],\n  \"overall_verdict\": \"VERDICT_PLACEHOLDER\",\n  \"notes\": \"Pilot 1: shipcheck self-dogfood.\"\n}\nINNER_EOF\n\n# Replace placeholders with actual values\nsed -i \"s|REPO_SLUG|${GITHUB_REPOSITORY}|g\" /tmp/submission.json\nsed -i \"s|REF_NAME|${GITHUB_REF_NAME}|g\" /tmp/submission.json\nsed -i \"s|COMMIT_SHA|${GITHUB_SHA}|g\" /tmp/submission.json\nsed -i \"s|PROVIDER_RUN_ID|${GITHUB_RUN_ID}|g\" /tmp/submission.json\nsed -i \"s|ATTEMPT_NUM|${GITHUB_RUN_ATTEMPT}|g\" /tmp/submission.json\nsed -i \"s|RUN_URL_PLACEHOLDER|https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}|g\" /tmp/submission.json\nsed -i \"s|ACTOR_NAME|${GITHUB_ACTOR}|g\" /tmp/submission.json\nsed -i \"s|STARTED_PLACEHOLDER|${{ github.event.head_commit.timestamp }}|g\" /tmp/submission.json\nsed -i \"s|FINISHED_PLACEHOLDER|${FINISHED_AT}|g\" /tmp/submission.json\nsed -i \"s|shipcheck-RUN_ID-ATTEMPT|shipcheck-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}|g\" /tmp/submission.json\nsed -i \"s|VERDICT_PLACEHOLDER|${{ steps.verdict.outputs.verdict }}|g\" /tmp/submission.json\nsed -i \"s|HELP_STATUS|${{ steps.help.outputs.status }}|g\" /tmp/submission.json\nsed -i \"s|INIT_STATUS|${{ steps.init.outputs.status }}|g\" /tmp/submission.json\nsed -i \"s|AUDIT_STATUS|${{ steps.audit.outputs.status }}|g\" /tmp/submission.json\nsed -i \"s|VERIFY_STATUS|${{ steps.verify_output.outputs.status }}|g\" /tmp/submission.json\nsed -i \"s|EXIT_CODE_PLACEHOLDER|${{ steps.audit.outputs.exit_code }}|g\" /tmp/submission.json\n\n# Validate JSON\njq empty /tmp/submission.json\necho \"Submission built:\"\njq '.run_id, .overall_verdict' /tmp/submission.json\n"
+          "programs": [
+            "cat",
+            "date",
+            "echo",
+            "jq",
+            "sed"
+          ],
+          "step": "Build submission"
         },
         {
           "job": "dogfood",
-          "step": "Dispatch to dogfood-labs",
-          "text": "SUBMISSION=$(cat /tmp/submission.json)\nRUN_ID=$(echo \"$SUBMISSION\" | jq -r '.run_id')\n\nif [ -z \"$GH_TOKEN\" ]; then\n  echo \"::warning::DOGFOOD_TOKEN not set — skipping dispatch\"\n  exit 0\nfi\n\n# Build payload with submission as a proper JSON object (not string).\n# Best-effort: the payload is already validated by the blocking `jq empty`\n# in \"Build submission\" above, so only the outbound call is tolerant here.\n# An expired or unscoped DOGFOOD_TOKEN must not redden a mainline whose\n# product gates all passed -- it surfaces as a run-summary warning instead.\nif jq -n --argjson sub \"$SUBMISSION\" \\\n  '{\"event_type\":\"dogfood_submission\",\"client_payload\":{\"submission\":$sub}}' \\\n  | gh api repos/dogfood-lab/testing-os/dispatches \\\n    --input - --silent\nthen\n  echo \"Dispatched $RUN_ID to testing-os\"\nelse\n  echo \"::warning::Dispatch of $RUN_ID to dogfood-lab/testing-os failed (check DOGFOOD_TOKEN validity and scope) -- not failing the build\"\nfi\n"
+          "programs": [
+            "cat",
+            "echo",
+            "gh",
+            "jq"
+          ],
+          "step": "Dispatch to dogfood-labs"
         }
       ],
       "elsewhere": [],
@@ -966,13 +1016,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -990,7 +1044,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1052,38 +1106,57 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Verify release tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} -> ${TAG_VERSION} | Package: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Release tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify release tag matches package.json version"
         },
         {
           "job": "publish",
-          "step": "Test",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Test"
         },
         {
           "job": "publish",
-          "step": "Verify (shipcheck self-audit + help)",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify (shipcheck self-audit + help)"
         },
         {
           "job": "publish",
-          "step": "Dependency audit",
-          "text": "npm audit --audit-level=moderate"
+          "programs": [
+            "npm"
+          ],
+          "step": "Dependency audit"
         },
         {
           "job": "publish",
-          "step": "npm pack dry-run (verify tarball shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify tarball shape)"
         },
         {
           "job": "publish",
-          "step": "Install npm >= 11.5 in sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22 bundles npm 10.x (no OIDC); an in-place `npm i -g npm@latest`\n# races its own arborist rebuild. Install into an isolated sandbox.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >= 11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "publish",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         }
       ],
       "elsewhere": [],
@@ -1175,43 +1248,75 @@
       "commands": [
         {
           "job": "broadcast",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "broadcast",
-          "step": "3",
-          "text": "npm run build || true"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "broadcast",
-          "step": "Hash artifacts",
-          "text": "mkdir -p /tmp/repomesh\nif compgen -G \"dist/*.tgz\" > /dev/null; then\n  sha256sum dist/*.tgz > /tmp/repomesh/artifact-hashes.txt\nelif compgen -G \"bin/*.mjs\" > /dev/null; then\n  sha256sum bin/*.mjs > /tmp/repomesh/artifact-hashes.txt\nelse\n  sha256sum package.json > /tmp/repomesh/artifact-hashes.txt\nfi\ncat /tmp/repomesh/artifact-hashes.txt\n"
+          "programs": [
+            "cat",
+            "compgen",
+            "mkdir",
+            "sha256sum"
+          ],
+          "step": "Hash artifacts"
         },
         {
           "job": "broadcast",
-          "step": "Generate SBOM",
-          "text": "npm sbom --sbom-format cyclonedx > /tmp/repomesh/sbom.json 2>/dev/null || echo '{\"bomFormat\":\"CycloneDX\",\"specVersion\":\"1.4\",\"components\":[]}' > /tmp/repomesh/sbom.json\nsha256sum /tmp/repomesh/sbom.json | awk '{print $1}' > /tmp/repomesh/sbom-hash.txt\necho \"SBOM generated ($(wc -c < /tmp/repomesh/sbom.json) bytes)\"\n"
+          "programs": [
+            "awk",
+            "echo",
+            "npm",
+            "sha256sum",
+            "wc"
+          ],
+          "step": "Generate SBOM"
         },
         {
           "job": "broadcast",
-          "step": "Generate provenance",
-          "text": "cat > /tmp/repomesh/provenance.json << PROVEOF\n{\n  \"_type\": \"https://slsa.dev/provenance/v1\",\n  \"subject\": {\n    \"repo\": \"${REPO_ID}\",\n    \"version\": \"${VERSION}\",\n    \"commit\": \"${COMMIT}\"\n  },\n  \"buildDefinition\": {\n    \"buildType\": \"https://github.com/actions/runner\",\n    \"externalParameters\": {\n      \"workflow\": \".github/workflows/repomesh-broadcast.yml\",\n      \"trigger\": \"release:published\"\n    }\n  },\n  \"runDetails\": {\n    \"builder\": {\n      \"id\": \"https://github.com/actions/runner/${RUNNER_OS}/${RUNNER_ARCH}\"\n    },\n    \"metadata\": {\n      \"invocationId\": \"https://github.com/${REPO_ID}/actions/runs/${{ github.run_id }}\",\n      \"startedOn\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"\n    }\n  }\n}\nPROVEOF\nsha256sum /tmp/repomesh/provenance.json | awk '{print $1}' > /tmp/repomesh/provenance-hash.txt\necho \"Provenance generated\"\n"
+          "programs": [
+            "awk",
+            "cat",
+            "echo",
+            "sha256sum"
+          ],
+          "step": "Generate provenance"
         },
         {
           "job": "broadcast",
-          "step": "Upload attestation assets",
-          "text": "VERSION=\"${{ github.ref_name }}\"\ngh release upload \"$VERSION\" /tmp/repomesh/sbom.json --clobber 2>/dev/null || echo \"SBOM upload skipped\"\ngh release upload \"$VERSION\" /tmp/repomesh/provenance.json --clobber 2>/dev/null || echo \"Provenance upload skipped\"\n"
+          "programs": [
+            "echo",
+            "gh"
+          ],
+          "step": "Upload attestation assets"
         },
         {
           "job": "broadcast",
-          "step": "Create signed event",
-          "text": "cat > /tmp/repomesh/build-event.mjs << 'SCRIPT'\nimport fs from \"node:fs\";\nimport crypto from \"node:crypto\";\n\nfunction canonicalize(v) {\n  if (Array.isArray(v)) return v.map(canonicalize);\n  if (v && typeof v === \"object\") {\n    const out = {};\n    for (const k of Object.keys(v).sort()) out[k] = canonicalize(v[k]);\n    return out;\n  }\n  return v;\n}\n\nconst repo = process.env.REPO_ID;\nconst version = process.env.VERSION.replace(/^v/, \"\");\nconst commit = process.env.COMMIT;\nconst keyId = process.env.KEY_ID;\n\nif (!process.env.SIGNING_KEY) {\n  console.error(\"REPOMESH_SIGNING_KEY secret is not set.\");\n  process.exit(1);\n}\n\nconst artifacts = fs.readFileSync(\"/tmp/repomesh/artifact-hashes.txt\", \"utf8\")\n  .trim().split(\"\\n\").filter(Boolean)\n  .map(line => {\n    const [sha, ...rest] = line.trim().split(/\\s+/);\n    const file = rest.join(\" \");\n    return {\n      name: file.split(\"/\").pop(),\n      sha256: sha,\n      uri: `https://github.com/${repo}/releases/tag/v${version}`\n    };\n  });\n\n// Build attestations from generated SBOM + provenance\nconst attestations = [];\nconst releaseUrl = `https://github.com/${repo}/releases/download/v${version}`;\n\ntry {\n  fs.accessSync(\"/tmp/repomesh/sbom.json\");\n  attestations.push({\n    type: \"sbom\",\n    uri: `${releaseUrl}/sbom.json`\n  });\n} catch {}\n\ntry {\n  fs.accessSync(\"/tmp/repomesh/provenance.json\");\n  attestations.push({\n    type: \"provenance\",\n    uri: `${releaseUrl}/provenance.json`\n  });\n} catch {}\n\nconst ev = {\n  type: \"ReleasePublished\",\n  repo,\n  version,\n  commit,\n  timestamp: new Date().toISOString(),\n  artifacts,\n  attestations,\n  signature: { alg: \"ed25519\", keyId, value: \"\", canonicalHash: \"\" }\n};\n\n// Compute canonical hash (signature excluded)\nconst stripped = JSON.parse(JSON.stringify(ev));\ndelete stripped.signature;\nconst canonical = JSON.stringify(canonicalize(stripped));\nconst hash = crypto.createHash(\"sha256\").update(canonical, \"utf8\").digest(\"hex\");\n\n// Sign the canonical hash\nconst privKey = crypto.createPrivateKey(process.env.SIGNING_KEY);\nconst sig = crypto.sign(null, Buffer.from(hash, \"hex\"), privKey);\n\nev.signature.value = sig.toString(\"base64\");\nev.signature.canonicalHash = hash;\n\nfs.writeFileSync(\"/tmp/repomesh/event.json\", JSON.stringify(ev));\nconsole.log(`Event: ${ev.type} ${ev.repo}@${ev.version} (keyId: ${keyId})`);\nconsole.log(`Attestations: ${attestations.map(a => a.type).join(\", \") || \"none\"}`);\nSCRIPT\n\nnode /tmp/repomesh/build-event.mjs\n"
+          "programs": [
+            "cat",
+            "node"
+          ],
+          "step": "Create signed event"
         },
         {
           "job": "broadcast",
-          "step": "Append to ledger via PR",
-          "text": "REPO_SLUG=\"${{ github.event.repository.name }}\"\nVERSION=\"${{ github.ref_name }}\"\nBRANCH=\"event/${REPO_SLUG}/${VERSION}\"\n\ngh repo clone \"${{ env.REPOMESH_LEDGER_REPO }}\" /tmp/repomesh-ledger -- --depth 1\ncd /tmp/repomesh-ledger\n\ngit remote set-url origin \"https://x-access-token:${GH_TOKEN}@github.com/${{ env.REPOMESH_LEDGER_REPO }}.git\"\ngit config user.name \"repomesh-bot\"\ngit config user.email \"repomesh-bot@users.noreply.github.com\"\ngit checkout -b \"$BRANCH\"\n\ncat /tmp/repomesh/event.json >> ledger/events/events.jsonl\nprintf '\\n' >> ledger/events/events.jsonl\n\ngit add ledger/events/events.jsonl\ngit commit -m \"event: ${{ github.repository }}@${VERSION}\"\ngit push origin \"$BRANCH\"\n\ngh pr create \\\n  --repo \"${{ env.REPOMESH_LEDGER_REPO }}\" \\\n  --head \"$BRANCH\" \\\n  --title \"event: ${{ github.repository }}@${VERSION}\" \\\n  --body \"$(cat <<'EOF'\n## RepoMesh Broadcast\n\n**Repo:** ${{ github.repository }}\n**Version:** ${{ github.ref_name }}\n**Commit:** ${{ github.sha }}\n**Type:** ReleasePublished\n\nAutomated event from release workflow. Ledger CI will verify schema, signature, and append-only rules.\nEOF\n)\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "gh",
+            "git",
+            "printf"
+          ],
+          "step": "Append to ledger via PR"
         }
       ],
       "elsewhere": [

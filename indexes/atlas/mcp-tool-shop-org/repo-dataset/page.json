@@ -85,7 +85,7 @@
   "changesTogetherWithTests": 0,
   "commit": "4198db586f87a4bb9d69a087dd0ce57bbd0c9a52",
   "defaultBranch": "main",
-  "derived": "5 parts, mostly TypeScript (78 files) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. People run repo-dataset. People import @mcptoolshop/repo-dataset.",
+  "derived": "5 parts, mostly TypeScript (78 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run repo-dataset. People import @mcptoolshop/repo-dataset.",
   "doors": [
     {
       "builds": [
@@ -145,7 +145,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -269,7 +269,7 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-25T09:19:52.143Z",
+  "generatedAt": "2026-09-25T16:34:38.648Z",
   "limits": [
     "8 reads use paths built at run time and are not named here.",
     "9 writes and 12 reads go to a path their caller passes, not to this repository.",
@@ -294,7 +294,12 @@
   "startHere": [
     ".github/workflows/ci.yml",
     "src/index.ts",
-    "src/types.ts"
+    "src/pipeline/runner.ts",
+    "src/discovery/scanner.ts",
+    "src/discovery/git.ts",
+    "src/extractors/registry.ts",
+    "src/formatters/registry.ts",
+    "src/pipeline/quality.ts"
   ],
   "summary": null,
   "summaryFrom": null,

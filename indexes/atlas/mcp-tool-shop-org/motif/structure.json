@@ -4446,6 +4446,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -5770,53 +5778,73 @@
       "commands": [
         {
           "job": "ci",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "ci",
-          "step": "Install",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install"
         },
         {
           "job": "ci",
-          "step": "Audit dependencies",
-          "text": "pnpm audit --prod --audit-level=high || true"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Audit dependencies"
         },
         {
           "job": "ci",
-          "step": "Lint",
-          "text": "pnpm lint"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Lint"
         },
         {
           "job": "ci",
-          "step": "Typecheck",
-          "text": "pnpm typecheck"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Typecheck"
         },
         {
           "job": "ci",
-          "step": "Build",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build"
         },
         {
           "job": "ci",
-          "step": "Test with coverage",
-          "text": "pnpm vitest run --coverage"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Test with coverage"
         },
         {
           "job": "security-audit",
-          "step": "Install",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install"
         },
         {
           "job": "security-audit",
-          "step": "Audit all dependencies",
-          "text": "pnpm audit --audit-level=moderate"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Audit all dependencies"
         },
         {
           "job": "security-audit",
-          "step": "Check for known vulnerabilities",
-          "text": "npx audit-ci --moderate"
+          "programs": [
+            "npx"
+          ],
+          "step": "Check for known vulnerabilities"
         }
       ],
       "elsewhere": [],
@@ -6404,13 +6432,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -6428,7 +6460,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -6490,28 +6522,44 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Install",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install"
         },
         {
           "job": "publish",
-          "step": "Typecheck",
-          "text": "pnpm typecheck"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Typecheck"
         },
         {
           "job": "publish",
-          "step": "Build",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build"
         },
         {
           "job": "publish",
-          "step": "Test",
-          "text": "pnpm vitest run"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Test"
         },
         {
           "job": "publish",
-          "step": "Publish packages",
-          "text": "npm install -g npm@latest\necho \"npm $(npm --version) — OIDC Trusted Publishing needs >= 11.5.1\"\npublished=0\nfor dir in packages/*/; do\n  [ -f \"${dir}package.json\" ] || continue\n  name=$(node -p \"require('./${dir}package.json').name\")\n  private=$(node -p \"require('./${dir}package.json').private === true\")\n  if [ \"$private\" = \"true\" ]; then\n    echo \"skip $name (private)\"\n    continue\n  fi\n  echo \"::group::publish $name\"\n  tarball=$(cd \"$dir\" && pnpm pack --pack-destination \"$RUNNER_TEMP\" | tail -1)\n  npm publish \"$tarball\" --access public\n  published=$((published + 1))\n  echo \"::endgroup::\"\ndone\necho \"published $published package(s)\"\n"
+          "programs": [
+            "cd",
+            "echo",
+            "node",
+            "npm",
+            "pnpm",
+            "published",
+            "tail"
+          ],
+          "step": "Publish packages"
         }
       ],
       "elsewhere": [],
@@ -8458,17 +8506,6 @@
           "stamps": true
         }
       ]
-    },
-    {
-      "readers": [
-        {
-          "by": "site/src/site-config.ts",
-          "call": "literal",
-          "confidence": "ast"
-        }
-      ],
-      "target": "handbook",
-      "writers": []
     },
     {
       "readers": [

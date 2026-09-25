@@ -713,13 +713,14 @@
       "dynamicReads": 5,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 9,
+      "dynamicWrites": 6,
       "entryPoints": [
         "foundry/cli.py"
       ],
       "externals": 0,
       "files": [
         {
+          "constantOnly": true,
           "hash": "5056ea20caa86f70c6b2fe0fee5af4f8c77385627948f59e9817c7dd03a296fa",
           "path": "foundry/__init__.py"
         },
@@ -1537,19 +1538,20 @@
           "where": [
             "caller"
           ],
-          "writes": 0
+          "writes": 4
         }
       ],
       "outsideReads": 1,
+      "outsideWrites": 4,
       "role": "code",
       "testedBy": 9,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 5,
+      "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 15,
+      "dynamicWrites": 5,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -1973,15 +1975,23 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 4,
+          "reads": 7,
           "where": [
             "caller"
           ],
-          "writes": 5
+          "writes": 1
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "cwd:bakeoff/"
+          ],
+          "writes": 7
         }
       ],
-      "outsideReads": 4,
-      "outsideWrites": 5,
+      "outsideReads": 7,
+      "outsideWrites": 8,
       "role": "code",
       "testedBy": 1,
       "unresolvedSites": 0
@@ -1990,7 +2000,7 @@
       "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -2073,7 +2083,7 @@
       ],
       "importConfidence": "full",
       "name": "preflight",
-      "origin": "authored",
+      "origin": "mixed",
       "role": "docs",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -2166,7 +2176,7 @@
       "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 2,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -2273,6 +2283,16 @@
       "importConfidence": "full",
       "name": "root",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 0,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        }
+      ],
+      "outsideWrites": 2,
       "role": "docs",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -2328,6 +2348,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -2525,15 +2553,12 @@
       "origin": "authored",
       "role": "test",
       "testedBy": 0,
-      "unresolvedNamed": [
-        {
-          "path": "tests/test_ingest.py",
-          "specifier": "pipeline",
-          "why": "unplaced"
-        }
-      ],
-      "unresolvedSites": 1
+      "unresolvedSites": 0
     }
+  ],
+  "collectIgnored": [
+    "pipeline/test_hunyuan3d_shape.py",
+    "pipeline/test_hunyuan3d_texture.py"
   ],
   "doors": [
     {
@@ -2541,38 +2566,52 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.21.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "verify",
-          "step": "Verify foundry module (fast pre-check)",
-          "text": "python -c \"from foundry import db; from foundry import cli; print('OK: imports')\"\npython -c \"from foundry.cli import build_parser; p = build_parser(); print('OK: parser')\"\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Verify foundry module (fast pre-check)"
         },
         {
           "job": "verify",
-          "step": "Syntax-check 3d-prerender scripts",
-          "text": "python -m py_compile 3d-prerender/*.py"
+          "programs": [
+            "python"
+          ],
+          "step": "Syntax-check 3d-prerender scripts"
         },
         {
           "job": "verify",
-          "step": "Install 3d-prerender test dependencies",
-          "text": "python -m pip install pytest numpy Pillow scipy trimesh hypothesis"
+          "programs": [
+            "python"
+          ],
+          "step": "Install 3d-prerender test dependencies"
         },
         {
           "job": "verify",
-          "step": "Run 3d-prerender pure-logic tests",
-          "text": "pytest 3d-prerender/test_texture_patch_region.py -v"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run 3d-prerender pure-logic tests"
         },
         {
           "job": "verify",
-          "step": "Run verify.sh",
-          "text": "bash verify.sh"
+          "programs": [
+            "bash"
+          ],
+          "step": "Run verify.sh"
         },
         {
           "job": "verify",
-          "step": "Validate export manifests",
-          "text": "python -c \"\nimport json, pathlib, sys\nmanifests = sorted(pathlib.Path('exports').rglob('manifest.json'))\nerrors = 0\nfor m in manifests:\n    try:\n        data = json.loads(m.read_text())\n        assert 'schema_version' in data, f'missing schema_version in {m}'\n    except Exception as e:\n        print(f'FAIL: {m} — {e}')\n        errors += 1\nprint(f'Checked {len(manifests)} manifests')\nsys.exit(1 if errors else 0)\n\"\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Validate export manifests"
         }
       ],
       "elsewhere": [],
@@ -2736,13 +2775,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -2760,7 +2803,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -2826,7 +2869,7 @@
       "kind": "command",
       "landings": [],
       "mentions": [],
-      "name": "the game",
+      "name": "the Godot project",
       "permissions": [],
       "pushes": false,
       "reach": [
@@ -3365,7 +3408,7 @@
     },
     {
       "readers": [],
-      "target": "pipeline/morph_refs/*_depth",
+      "target": "pipeline/morph_refs/*",
       "tracked": false,
       "writers": [
         {
@@ -3443,6 +3486,17 @@
     },
     {
       "readers": [],
+      "target": "pipeline/morph_refs/keth_healer_drone_depth/depth_ref_sheet.png",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "pipeline/morph_refs/gen_keth_healer_drone.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
       "target": "pipeline/morph_refs/void_raptor_edge",
       "tracked": false,
       "writers": [
@@ -3472,7 +3526,12 @@
         }
       ],
       "target": "preflight/contact-sheet-placeholder.png",
-      "writers": []
+      "writers": [
+        {
+          "by": "preflight/gen_contact_sheet.py",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [

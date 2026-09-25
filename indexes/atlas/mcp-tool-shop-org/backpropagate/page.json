@@ -107,11 +107,13 @@
       },
       {
         "kind": "landing",
-        "sentence": "backpropagate/ is now also read by CONTRIBUTING.md and pyproject.toml.",
+        "sentence": "backpropagate/ is now also read by CONTRIBUTING.md, pyproject.toml, scripts/check_doc_drift.py and tests/test_error_codes_catalog.py.",
         "subjects": [
           "backpropagate/",
           "CONTRIBUTING.md",
-          "pyproject.toml"
+          "pyproject.toml",
+          "scripts/check_doc_drift.py",
+          "tests/test_error_codes_catalog.py"
         ]
       },
       {
@@ -162,7 +164,7 @@
   "changesTogetherWithTests": 2,
   "commit": "fd35bebd05dc7bfe0e01a0fc6508b5864100e5ad",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly Python (125 files), JavaScript (2) and TypeScript (2). Work enters through 12 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. People run backprop and backpropagate.",
+  "derived": "11 parts, mostly Python (125 files), shell (5), Astro (2), CSS (2), JavaScript (2) and TypeScript (2). Work enters through 12 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run backprop and backpropagate.",
   "doors": [
     {
       "checks": [
@@ -203,7 +205,10 @@
       ],
       "runsCount": 2,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov",
+        "scans code with CodeQL"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main",
@@ -213,17 +218,19 @@
     },
     {
       "checks": [
-        "LICENSE",
-        "README.md",
-        "backpropagate/",
-        "pyproject.toml"
+        "backpropagate/"
       ],
-      "checksCount": 4,
-      "checksMore": 1,
+      "checksCount": 1,
+      "checksMore": 0,
       "file": ".github/workflows/publish.yml",
       "id": ".github/workflows/publish.yml",
       "landings": [],
       "name": "Publish",
+      "packs": [
+        "LICENSE",
+        "README.md",
+        "pyproject.toml"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -329,7 +336,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 6
         }
       ],
       "runs": [
@@ -414,7 +421,9 @@
       "runs": [],
       "runsCount": 0,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "scans code with CodeQL"
+      ],
       "stages": [],
       "triggers": [
         "on a `branch_protection_rule` event",
@@ -544,12 +553,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:14:26.920Z",
+  "generatedAt": "2026-09-25T16:27:57.328Z",
   "limits": [
     "40 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
-    "6 imports could not be resolved: `backpropagate/rxconfig.py` imports `ui_app.auth`, which is no module on its import path and no declared dependency; `backpropagate/trainer.py` imports a path built at run time; `tests/test_fp8_smoke.py` imports a path built at run time; and 3 more.",
-    "13 writes and 33 reads use paths built at run time and are not named here.",
-    "2 writes and 7 reads go to a path their caller passes, not to this repository.",
+    "5 imports could not be resolved: `backpropagate/trainer.py` imports a path built at run time; `tests/test_fp8_smoke.py` imports a path built at run time; `tests/test_kto_smoke.py` imports a path built at run time; and 2 more.",
+    "6 writes and 10 reads use paths built at run time and are not named here.",
+    "17 writes and 53 reads go to a path their caller passes, not to this repository.",
     "1 write goes to the home directory (AppData/, Library/ and backpropagate/) or a path its caller passes, not to this repository.",
     "1 read goes to the directory the command is run in, not to this repository.",
     "1 read goes to the home directory (.cache/), not to this repository.",
@@ -587,7 +596,7 @@
     "bin": 0,
     "scripts": 2
   },
-  "unnamedWrites": 13,
+  "unnamedWrites": 6,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],

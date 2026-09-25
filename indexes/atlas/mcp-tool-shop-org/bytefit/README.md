@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 0f920ec.
 
 ## What this is
 
-6 parts, mostly TypeScript (49 files) and JavaScript (1). Work enters through 5 doors; ci, Deploy site to GitHub Pages, Release, @mcptoolshop/bytefit and bytefit each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. People run bytefit. People import @mcptoolshop/bytefit.
+6 parts, mostly TypeScript (49 files), CSS (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 5 doors; ci, Deploy site to GitHub Pages, Release, @mcptoolshop/bytefit and bytefit each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run bytefit. People import @mcptoolshop/bytefit.
 
 ## What changed since 2026-09-24 (1941e05)
 
@@ -76,7 +76,7 @@ People write .github/, assets/, docs/, the repository root and site/. Nothing in
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts → src/types.ts
+.github/workflows/ci.yml → src/index.ts → src/constants.ts → src/types.ts
 
 Read those in order to follow one pull request end to end.
 

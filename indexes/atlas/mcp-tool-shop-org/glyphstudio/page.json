@@ -49,6 +49,7 @@
         "mcp-sprite-server"
       ],
       "target": "packages/mcp-sprite-server/fixtures/golden/",
+      "tests": 1,
       "writers": [
         "mcp-sprite-server"
       ]
@@ -126,7 +127,7 @@
   "changesTogetherWithTests": 0,
   "commit": "67678351f3646a253815501776980898dc612ef6",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly TypeScript (424 files), Rust (46) and JavaScript (20). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).",
+  "derived": "15 parts, mostly TypeScript (424 files), Rust (46), JavaScript (20), CSS (4), Astro (1) and HTML (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It deploys a site to GitHub Pages. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).",
   "doors": [
     {
       "checks": [
@@ -312,7 +313,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -571,7 +572,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:17:00.113Z",
+  "generatedAt": "2026-09-25T16:31:18.503Z",
   "limits": [
     "17 imports could not be resolved: `scripts/critique-sprite.mjs` imports a path built at run time; `scripts/critique-sprite.mjs` loads `fast-png` when it is installed, which is not declared; `scripts/dogfood-43-creature.mjs` imports a path built at run time; and 14 more.",
     "59 writes and 10 reads use paths built at run time and are not named here.",
@@ -702,7 +703,7 @@
     }
   ],
   "untestedNote": [
-    "64 test files run in no workflow: apps/desktop/src/components/AISettingsPanel.test.tsx, apps/desktop/src/components/AnchorPanel.test.tsx, apps/desktop/src/components/AssetBrowserPanel.test.tsx and 61 mores."
+    "64 test files run in no workflow: apps/desktop/src/components/AISettingsPanel.test.tsx, apps/desktop/src/components/AnchorPanel.test.tsx, apps/desktop/src/components/AssetBrowserPanel.test.tsx and 61 more."
   ],
   "written": 28
 }

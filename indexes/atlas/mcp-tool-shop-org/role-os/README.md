@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit c0ee720.
 
 ## What this is
 
-15 parts, mostly JavaScript (162 files), Python (30) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. People run roleos.
+15 parts, mostly JavaScript (162 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.
 
 ## What changed since 2026-09-25 (3877c03)
 
@@ -86,7 +86,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, .role-os/, assets/, design/, examples/, the repository root, site/, specs/ and starter-pack/; 19 writes with paths built at run time may land here.
+People write .github/, .role-os/, assets/, design/, examples/, the repository root, site/, specs/ and starter-pack/; 16 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -96,13 +96,13 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 3 imports could not be resolved: `test/knowledge-integration.test.mjs` imports a path built at run time; `test/knowledge-integration.test.mjs` imports a path built at run time; `test/knowledge-integration.test.mjs` imports a path built at run time.
-- 19 writes and 16 reads use paths built at run time and are not named here.
+- 3 imports could not be resolved: `test/knowledge-integration.test.mjs` imports a path built at run time, 3 times.
+- 16 writes and 14 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 25 writes and 88 reads go to the directory the command is run in, not to this repository.
-- 35 writes and 34 reads go to a path their caller passes, not to this repository.
+- 28 writes and 88 reads go to the directory the command is run in, not to this repository.
+- 43 writes and 40 reads go to a path their caller passes, not to this repository.
 - 23 writes and 23 reads go to the directory the command is run in or a path their caller passes, not to this repository.
-- 7 writes and 1 read go to a temporary directory, not to this repository.
+- 8 writes and 1 read go to a temporary directory, not to this repository.
 - 10 commands are built at run time and not followed, 2 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

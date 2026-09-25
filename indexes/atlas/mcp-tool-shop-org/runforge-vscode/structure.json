@@ -287,10 +287,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 7,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 2,
+      "dynamicWrites": 1,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -771,26 +771,20 @@
       "importConfidence": "full",
       "name": "python",
       "origin": "authored",
-      "role": "code",
-      "testedBy": 14,
-      "unresolvedNamed": [
+      "outsidePlaces": [
         {
-          "path": "python/ml_runner/test_cancellation_marker.py",
-          "specifier": "ml_runner.contracts",
-          "why": "unplaced"
-        },
-        {
-          "path": "python/ml_runner/test_cancellation_marker.py",
-          "specifier": "ml_runner.provenance",
-          "why": "unplaced"
-        },
-        {
-          "path": "python/ml_runner/test_cancellation_marker.py",
-          "specifier": "ml_runner",
-          "why": "unplaced"
+          "reads": 11,
+          "where": [
+            "caller"
+          ],
+          "writes": 12
         }
       ],
-      "unresolvedSites": 83
+      "outsideReads": 11,
+      "outsideWrites": 12,
+      "role": "code",
+      "testedBy": 14,
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -931,7 +925,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -981,6 +976,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -2914,68 +2917,94 @@
       "commands": [
         {
           "job": "quality-gates",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.16.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "quality-gates",
-          "step": "Install Python deps for ml_runner boundary tests",
-          "text": "pip install scikit-learn pandas numpy joblib jsonschema"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install Python deps for ml_runner boundary tests"
         },
         {
           "job": "quality-gates",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "quality-gates",
-          "step": "Run tests",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "quality-gates",
-          "step": "Run tests with coverage",
-          "text": "npx vitest run --coverage"
+          "programs": [
+            "npx"
+          ],
+          "step": "Run tests with coverage"
         },
         {
           "job": "quality-gates",
-          "step": "Compile (production)",
-          "text": "npm run compile"
+          "programs": [
+            "npm"
+          ],
+          "step": "Compile (production)"
         },
         {
           "job": "quality-gates",
-          "step": "Package VSIX",
-          "text": "npx vsce package --no-dependencies"
+          "programs": [
+            "npx"
+          ],
+          "step": "Package VSIX"
         },
         {
           "job": "dep-audit",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "dep-audit",
-          "step": "Run npm audit",
-          "text": "npm audit --omit=dev || true"
+          "programs": [
+            "npm"
+          ],
+          "step": "Run npm audit"
         },
         {
           "job": "extension-host-smoke",
-          "step": "Install Python deps for ml_runner subprocess",
-          "text": "pip install scikit-learn pandas numpy joblib jsonschema"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install Python deps for ml_runner subprocess"
         },
         {
           "job": "extension-host-smoke",
-          "step": "Install Node dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install Node dependencies"
         },
         {
           "job": "extension-host-smoke",
-          "step": "Install Xvfb (headless display for Extension Host)",
-          "text": "sudo apt-get update && sudo apt-get install -y xvfb"
+          "programs": [
+            "sudo"
+          ],
+          "step": "Install Xvfb (headless display for Extension Host)"
         },
         {
           "job": "extension-host-smoke",
-          "step": "Run Extension Host smoke tests",
-          "text": "xvfb-run -a npm run test:smoke"
+          "programs": [
+            "xvfb-run"
+          ],
+          "step": "Run Extension Host smoke tests"
         }
       ],
       "elsewhere": [],
@@ -3339,13 +3368,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -3363,7 +3396,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -3425,53 +3458,76 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "build",
-          "step": "Run tests",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "build",
-          "step": "Compile (production)",
-          "text": "npm run compile"
+          "programs": [
+            "npm"
+          ],
+          "step": "Compile (production)"
         },
         {
           "job": "build",
-          "step": "Verify tag matches package.json version",
-          "text": "TAG_VERSION=\"${GITHUB_REF#refs/tags/v}\"\nPKG_VERSION=\"$(node -p \"require('./package.json').version\")\"\nif [ \"$TAG_VERSION\" != \"$PKG_VERSION\" ]; then\n  echo \"::error::Tag version (v${TAG_VERSION}) does not match package.json version (${PKG_VERSION})\"\n  exit 1\nfi\necho \"✓ Tag v${TAG_VERSION} matches package.json ${PKG_VERSION}\"\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "build",
-          "step": "Package VSIX",
-          "text": "npx vsce package"
+          "programs": [
+            "npx"
+          ],
+          "step": "Package VSIX"
         },
         {
           "job": "build",
-          "step": "Get version",
-          "text": "echo \"version=$(node -p \"require('./package.json').version\")\" >> $GITHUB_OUTPUT"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Get version"
         },
         {
           "job": "build",
-          "step": "Generate SHA256",
-          "text": "sha256sum runforge-${{ steps.version.outputs.version }}.vsix > SHA256SUMS.txt\n"
+          "programs": [
+            "sha256sum"
+          ],
+          "step": "Generate SHA256"
         },
         {
           "job": "publish_marketplace",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "publish_marketplace",
-          "step": "Package VSIX",
-          "text": "npx vsce package"
+          "programs": [
+            "npx"
+          ],
+          "step": "Package VSIX"
         },
         {
           "job": "publish_marketplace",
-          "step": "Publish to VS Code Marketplace",
-          "text": "set -e\necho \"VSCE_PAT length: ${#VSCE_PAT}\"\nnpx --yes vsce verify-pat mcp-tool-shop -p \"$VSCE_PAT\"\nnpx --yes vsce publish -p \"$VSCE_PAT\" || {\n  echo \"\"\n  echo \"Marketplace publish failed (likely 401).\"\n  echo \"If verify-pat passes but publish fails, this is often due to Azure DevOps PAT org-scope quirks.\"\n  echo \"Local workaround: npx vsce publish\"\n  exit 1\n}\n"
+          "programs": [
+            "echo",
+            "npx"
+          ],
+          "step": "Publish to VS Code Marketplace"
         }
       ],
       "elsewhere": [],

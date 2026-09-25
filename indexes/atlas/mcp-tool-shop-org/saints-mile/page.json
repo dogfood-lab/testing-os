@@ -75,7 +75,7 @@
   "changesTogetherWithTests": 0,
   "commit": "18fa475285a51f90912f11e2984e018e2cb66167",
   "defaultBranch": "main",
-  "derived": "6 parts, mostly Rust (109 files), JavaScript (3) and TypeScript (2). Work enters through 4 doors; CI and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to crates.io. People run saints-mile.",
+  "derived": "6 parts, mostly Rust (109 files), JavaScript (3), CSS (2), TypeScript (2), Astro (1), PowerShell (1) and shell (1). Work enters through 4 doors; CI and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to crates.io. It deploys a site to GitHub Pages. People run saints-mile.",
   "doors": [
     {
       "checks": [
@@ -215,7 +215,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -273,7 +273,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:20:57.557Z",
+  "generatedAt": "2026-09-25T16:35:52.914Z",
   "limits": [
     "1 import could not be resolved: `msix/resize-logo.mjs` imports `sharp`, which is not declared.",
     "6 writes and 1 read go to a path their caller passes, not to this repository.",
@@ -323,6 +323,8 @@
       "testedBy": 0
     }
   ],
-  "untestedNote": [],
+  "untestedNote": [
+    "verify.sh runs in no workflow."
+  ],
   "written": 1
 }

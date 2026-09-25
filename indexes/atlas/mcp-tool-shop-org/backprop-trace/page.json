@@ -21,7 +21,9 @@
     },
     {
       "doors": 2,
-      "importedBy": [],
+      "importedBy": [
+        "examples"
+      ],
       "importedByTests": [],
       "kind": "part",
       "name": "scripts",
@@ -41,6 +43,18 @@
         "scripts"
       ],
       "target": "fixtures/bad/",
+      "tests": 27,
+      "writers": [
+        "scripts"
+      ]
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "scripts"
+      ],
+      "target": "fixtures/external/pytorch.helper-emitted.adamw.sidecar.jsonl",
+      "tests": 3,
       "writers": [
         "scripts"
       ]
@@ -55,6 +69,14 @@
       "removed": 0
     },
     "items": [
+      {
+        "kind": "import-added",
+        "sentence": "examples now imports scripts.",
+        "subjects": [
+          "examples",
+          "scripts"
+        ]
+      },
       {
         "kind": "landing",
         "sentence": "fixtures/bad/*.jsonl is now written by scripts/build-pytorch-helper-fixtures.mjs.",
@@ -73,15 +95,15 @@
       },
       {
         "kind": "landing",
-        "sentence": "fixtures/bad/multi-step-external.bad-bundle-digest-tampered.jsonl is now read by test/cli.multi-step-import-pipe.test.ts.",
+        "sentence": "fixtures/external/pytorch.helper-emitted.adamw.sidecar.jsonl is now written by scripts/generate-pytorch-helper-goldens.py.",
         "subjects": [
-          "fixtures/bad/multi-step-external.bad-bundle-digest-tampered.jsonl",
-          "test/cli.multi-step-import-pipe.test.ts"
+          "fixtures/external/pytorch.helper-emitted.adamw.sidecar.jsonl",
+          "scripts/generate-pytorch-helper-goldens.py"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "And 7 more new writers and readers of places.",
+        "sentence": "And 10 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -181,7 +203,7 @@
   "changesTogetherWithTests": 1,
   "commit": "8b16ae0a42ca1d8c0a9f6d9efa8247953dbeab2d",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly JSON data (242 files); code in TypeScript (148), Python (5) and JavaScript (4). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. People run bp. People import @mcptoolshop/backprop-trace.",
+  "derived": "10 parts, mostly JSON data (242 files); code in TypeScript (148), Python (5), JavaScript (4), CSS (2) and Astro (1). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run bp. People import @mcptoolshop/backprop-trace.",
   "doors": [
     {
       "builds": [
@@ -532,7 +554,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -563,7 +585,9 @@
       "runs": [],
       "runsCount": 0,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "scans code with CodeQL"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main",
@@ -767,9 +791,27 @@
       ]
     },
     {
+      "place": "fixtures/external/pytorch.helper-emitted.adamw.sidecar.jsonl",
+      "writers": [
+        "scripts/generate-pytorch-helper-goldens.py"
+      ]
+    },
+    {
       "place": "fixtures/external/pytorch.helper-emitted.sgd-coupled-l2.sidecar.jsonl",
       "writers": [
         "scripts/generate-pytorch-coupled-l2-helper-goldens.py"
+      ]
+    },
+    {
+      "place": "fixtures/external/pytorch.helper-emitted.sgd-momentum.sidecar.jsonl",
+      "writers": [
+        "scripts/generate-pytorch-helper-goldens.py"
+      ]
+    },
+    {
+      "place": "fixtures/external/pytorch.helper-emitted.sgd.softmax-ce.sidecar.jsonl",
+      "writers": [
+        "scripts/generate-pytorch-helper-goldens.py"
       ]
     },
     {
@@ -935,12 +977,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:14:12.811Z",
+  "generatedAt": "2026-09-25T16:26:40.293Z",
   "limits": [
     "1 import site names a declared dependency that shares its name with a local module (jax); it is read as the dependency, which is not in this repository.",
-    "3 imports could not be resolved: `examples/pytorch/extract_step.py` imports `pytorch`, which is no module on its import path and no declared dependency; `scripts/generate-pytorch-coupled-l2-helper-goldens.py` imports `pytorch`, which is no module on its import path and no declared dependency; `scripts/generate-pytorch-helper-goldens.py` imports `pytorch`, which is no module on its import path and no declared dependency.",
-    "16 writes and 11 reads use paths built at run time and are not named here.",
-    "11 reads go to a path their caller passes, not to this repository.",
+    "15 writes and 11 reads use paths built at run time and are not named here.",
+    "13 reads go to a path their caller passes, not to this repository.",
     "10 reads go to the directory the command is run in (fixtures/ and scripts/), not to this repository.",
     "2 writes and 3 reads go to a temporary directory, not to this repository.",
     "7 commands are built at run time and not followed, 6 of them in tests.",
@@ -980,7 +1021,7 @@
     "scripts": 0,
     "src": 99
   },
-  "unnamedWrites": 16,
+  "unnamedWrites": 15,
   "unread": [
     {
       "place": "fixtures/bad/*.jsonl",
@@ -1046,5 +1087,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 42
+  "written": 45
 }

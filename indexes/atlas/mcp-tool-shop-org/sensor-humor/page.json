@@ -141,24 +141,25 @@
   "changesTogetherWithTests": 1,
   "commit": "53be69f8bd3e3aca26a8cde1aa9e8f0b36f0cd84",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly TypeScript (86 files), JavaScript (3) and Python (1). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. People run sensor-humor.",
+  "derived": "8 parts, mostly TypeScript (86 files), JavaScript (3), CSS (2), Astro (1), Python (1) and shell (1). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run sensor-humor.",
   "doors": [
     {
       "builds": [
         "src/"
       ],
-      "checks": [
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "packs": [
         "package-lock.json",
         "package.json",
         "tsconfig.build.json",
         "tsconfig.json"
       ],
-      "checksCount": 4,
-      "checksMore": 1,
-      "file": ".github/workflows/release.yml",
-      "id": ".github/workflows/release.yml",
-      "landings": [],
-      "name": "Release",
       "pushes": false,
       "reach": [
         {
@@ -283,7 +284,9 @@
       ],
       "runsCount": 27,
       "runsMore": 24,
-      "sends": [],
+      "sends": [
+        "scans for secrets with TruffleHog"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request touching 12 paths",
@@ -304,7 +307,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -405,9 +408,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:21:02.086Z",
+  "generatedAt": "2026-09-25T16:35:56.644Z",
   "limits": [
-    "1 import could not be resolved: `swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs` imports a path built at run time.",
+    "1 import could not be resolved: `swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs` imports `../../../../E:/AI/role-os/src/verify-citations.mjs`, which is not in this repository.",
     "2 writes use paths built at run time and are not named here.",
     "5 writes and 19 reads go to a path their caller passes, not to this repository.",
     "3 writes and 2 reads go to the home directory (.sensor-humor/) or a path their caller passes, not to this repository.",
@@ -464,7 +467,8 @@
   "unreadNote": [],
   "untested": [],
   "untestedNote": [
-    "scripts is touched by tests only through a spawn: a test runs its files as a child process."
+    "scripts is touched by tests only through a spawn: a test runs its files as a child process.",
+    "verify.sh runs in no workflow."
   ],
   "written": 2
 }

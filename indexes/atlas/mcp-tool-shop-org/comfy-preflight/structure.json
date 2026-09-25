@@ -295,6 +295,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -325,7 +333,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 1,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -819,6 +827,16 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 5,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
+      "outsideReads": 5,
       "role": "code",
       "testedBy": 12,
       "unresolvedSites": 0
@@ -1643,23 +1661,34 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.21.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install",
-          "text": "python -m pip install -e \".[dev]\" build"
+          "programs": [
+            "python"
+          ],
+          "step": "Install"
         },
         {
           "job": "test",
-          "step": "Verify (suite x3 modes, build, clean-venv smoke)",
-          "text": "python verify.py"
+          "programs": [
+            "python"
+          ],
+          "step": "Verify (suite x3 modes, build, clean-venv smoke)"
         },
         {
           "job": "audit",
-          "step": "pip-audit (declared dependencies + every extra)",
-          "text": "python -m pip install --upgrade pip pip-audit\npython - > /tmp/declared-requirements.txt <<'PY'\nimport pathlib, tomllib\nproject = tomllib.loads(pathlib.Path(\"pyproject.toml\").read_text())[\"project\"]\nseen = []\nfor spec in project.get(\"dependencies\", []):\n    seen.append(spec)\nfor group in project.get(\"optional-dependencies\", {}).values():\n    seen.extend(group)\nprint(\"\\n\".join(dict.fromkeys(seen)))\nPY\necho \"--- auditing ---\"; cat /tmp/declared-requirements.txt\npip-audit --strict -r /tmp/declared-requirements.txt --progress-spinner off\n"
+          "programs": [
+            "cat",
+            "echo",
+            "pip-audit",
+            "python"
+          ],
+          "step": "pip-audit (declared dependencies + every extra)"
         }
       ],
       "elsewhere": [],
@@ -1684,6 +1713,11 @@
           "boundary": "src",
           "depth": 0,
           "files": 16
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 14
         }
       ],
       "readers": [],
@@ -1696,12 +1730,20 @@
           "via": "verify.py → build pyproject.toml"
         },
         {
+          "directory": true,
+          "job": "test",
+          "matched": true,
+          "path": "tests/",
+          "runKind": "executes",
+          "via": "verify.py → pytest pyproject.toml"
+        },
+        {
           "job": "test",
           "path": "verify.py",
           "runKind": "executes"
         }
       ],
-      "runsCount": 2,
+      "runsCount": 3,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -1759,13 +1801,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -1783,7 +1829,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1845,58 +1891,99 @@
       "commands": [
         {
           "job": "binaries",
-          "step": "Install the package with the mcp extra, and PyInstaller",
-          "text": "python -m pip install --upgrade pip\npython -m pip install \".[mcp]\"\npython -m pip install pyinstaller==6.22.0\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Install the package with the mcp extra, and PyInstaller"
         },
         {
           "job": "binaries",
-          "step": "Build the single-file binary",
-          "text": "pyinstaller --onefile --name comfy-preflight \\\n  --collect-submodules mcp.server \\\n  --exclude-module mcp.cli \\\n  --exclude-module typer \\\n  --exclude-module IPython \\\n  --console --noconfirm \\\n  src/comfy_preflight/cli.py\n"
+          "programs": [
+            "pyinstaller"
+          ],
+          "step": "Build the single-file binary"
         },
         {
           "job": "binaries",
-          "step": "Name it by the launcher's convention",
-          "text": "VERSION=\"${RELEASE_TAG#v}\"\nmkdir -p out\nmv \"dist/comfy-preflight${{ matrix.ext }}\" \\\n   \"out/comfy-preflight-${VERSION}-${{ matrix.label }}${{ matrix.ext }}\"\nls -l out/\n"
+          "programs": [
+            "ls",
+            "mkdir",
+            "mv"
+          ],
+          "step": "Name it by the launcher's convention"
         },
         {
           "job": "binaries",
-          "step": "Smoke-test the binary before it can ever reach a user",
-          "text": "set -euo pipefail\nVERSION=\"${RELEASE_TAG#v}\"\nBIN=\"$PWD/out/comfy-preflight-${VERSION}-${{ matrix.label }}${{ matrix.ext }}\"\nchmod +x \"$BIN\" || true\nmkdir -p /tmp/smoke\ncp tests/fixtures/graphs/facet_next__E12_twins__graphs__workflow_twin_0.json /tmp/smoke/graph.json\ncd /tmp/smoke\n\"$BIN\" --version\n\"$BIN\" check graph.json --json > out.json\npython -c \"import json;d=json.load(open('out.json'));assert d['checks_run']==[1,2,4,5,8],d['checks_run']\"\nrc=0\n\"$BIN\" check graph.json --input-dims 1066x1024 > /dev/null 2>&1 || rc=$?\nif [ \"$rc\" -ne 1 ]; then\n  echo \"::error::the recorded 1066 halt exited $rc, expected 1\" >&2\n  exit 1\nfi\necho \"the binary runs a verb and the 1066 halt still exits 1\"\n"
+          "programs": [
+            "1",
+            "2",
+            "cd",
+            "chmod",
+            "cp",
+            "echo",
+            "mkdir",
+            "python"
+          ],
+          "step": "Smoke-test the binary before it can ever reach a user"
         },
         {
           "job": "release",
-          "step": "Verify tag matches every declared version",
-          "text": "TAG=\"${RELEASE_TAG#v}\"\nPYPROJECT=$(python -c \"import tomllib,pathlib;print(tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['version'])\")\nPKGJSON=$(node -p \"require('./package.json').version\")\n# Extracted with python, NOT a node one-liner: the obvious node version\n# uses a regex replacement containing $1, and bash expands $1 inside\n# double quotes to an empty positional parameter.\nBINJS=$(python -c \"import re,pathlib;print(re.search(r'version:\\s*\\\"([^\\\"]+)\\\"', pathlib.Path('bin/comfy-preflight.js').read_text()).group(1))\")\nBINTAG=$(python -c \"import re,pathlib;print(re.search(r'tag:\\s*\\\"([^\\\"]+)\\\"', pathlib.Path('bin/comfy-preflight.js').read_text()).group(1))\")\nDUNDER=$(python -c \"import re,pathlib;print(re.search(r'__version__ = \\\"([^\\\"]+)\\\"', pathlib.Path('src/comfy_preflight/__init__.py').read_text()).group(1))\")\nif [ \"$BINTAG\" != \"$RELEASE_TAG\" ]; then\n  echo \"::error::bin/comfy-preflight.js pins tag $BINTAG but this release is $RELEASE_TAG - npm-launcher would fetch the wrong release\"\n  exit 1\nfi\necho \"tag=$TAG pyproject=$PYPROJECT package.json=$PKGJSON bin=$BINJS __version__=$DUNDER\"\nfail=0\nfor pair in \"pyproject:$PYPROJECT\" \"package.json:$PKGJSON\" \"bin/comfy-preflight.js:$BINJS\" \"__init__.py:$DUNDER\"; do\n  name=\"${pair%%:*}\"; val=\"${pair#*:}\"\n  if [ \"$val\" != \"$TAG\" ]; then echo \"::error::$name declares $val but the tag is $TAG\"; fail=1; fi\ndone\n[ \"$fail\" -eq 0 ]\n"
+          "programs": [
+            "echo",
+            "node",
+            "python"
+          ],
+          "step": "Verify tag matches every declared version"
         },
         {
           "job": "release",
-          "step": "Generate checksums",
-          "text": "VERSION=\"${RELEASE_TAG#v}\"\ncd assets\nsha256sum * > \"checksums-${VERSION}.txt\"\ncat \"checksums-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         },
         {
           "job": "release",
-          "step": "Verify",
-          "text": "python -m pip install --upgrade pip\npython -m pip install -e \".[dev]\" build\npython verify.py\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Verify"
         },
         {
           "job": "release",
-          "step": "Cut the GitHub Release with binaries + dists",
-          "text": "NOTES=\".github/release-notes-${RELEASE_TAG}.md\"\n# A partial release leaves the GitHub Release already created. Re-creating it would\n# abort the job before the registry publishes that still need to run, so an existing\n# release is uploaded into rather than treated as an error.\nif gh release view \"${RELEASE_TAG}\" >/dev/null 2>&1; then\n  echo \"release ${RELEASE_TAG} already exists; uploading assets into it\"\n  gh release upload \"${RELEASE_TAG}\" assets/* dist/* --clobber\n  exit 0\nfi\nif [ -f \"$NOTES\" ]; then\n  gh release create \"${RELEASE_TAG}\" \\\n    --title \"comfy-preflight ${RELEASE_TAG}\" \\\n    --notes-file \"$NOTES\" --verify-tag assets/* dist/*\nelse\n  gh release create \"${RELEASE_TAG}\" \\\n    --title \"comfy-preflight ${RELEASE_TAG}\" \\\n    --generate-notes --verify-tag assets/* dist/*\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "gh"
+          ],
+          "step": "Cut the GitHub Release with binaries + dists"
         },
         {
           "job": "release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC",
-          "text": "SANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (verify tarball shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify tarball shape)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         }
       ],
       "elsewhere": [],
@@ -1936,6 +2023,11 @@
           "boundary": "src",
           "depth": 0,
           "files": 16
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 14
         }
       ],
       "readers": [],
@@ -1954,12 +2046,20 @@
           "runKind": "executes"
         },
         {
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "tests/",
+          "runKind": "executes",
+          "via": "verify.py → pytest pyproject.toml"
+        },
+        {
           "job": "release",
           "path": "verify.py",
           "runKind": "executes"
         }
       ],
-      "runsCount": 3,
+      "runsCount": 4,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -2095,6 +2195,11 @@
     }
   ],
   "edges": [
+    {
+      "from": "root",
+      "kind": "spawns",
+      "to": "tests"
+    },
     {
       "from": "tests",
       "fromTests": true,
@@ -2287,6 +2392,12 @@
         {
           "by": "tests/test_no_assert_in_library.py",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_no_assert_in_library.py",
+          "call": "read_text",
           "confidence": "ast",
           "fromTests": true
         }

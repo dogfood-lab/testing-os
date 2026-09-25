@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 454f364.
 
 ## What this is
 
-11 parts, mostly Python (173 files), TypeScript (8) and JavaScript (2). Work enters through 8 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI. People run xrpl-lab.
+11 parts, mostly Python (173 files), Astro (13), TypeScript (8), CSS (4), JavaScript (2), HTML (1) and shell (1). Work enters through 8 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run xrpl-lab.
 
 ## What changed since 2026-09-25 (0b2dd2f)
 
@@ -65,6 +65,8 @@ Window: 180 days; a pair counts from 3 shared commits, since 13 source files rea
 
 - **bin** is imported by no test.
 
+verify.sh runs in no workflow.
+
 ## Written but never read
 
 No place this map can see is written, so none goes unread.
@@ -79,20 +81,21 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, design/, docs/, modules/, presets/, the repository root and site/; 7 writes with paths built at run time may land here.
+People write .github/, design/, docs/, modules/, presets/, the repository root and site/; 3 writes with paths built at run time may land here.
 
 ## Where to start
 
-xrpl_lab/cli.py → xrpl_lab/__init__.py → xrpl_lab/actions/verify.py → xrpl_lab/errors.py → xrpl_lab/modules.py → xrpl_lab/reporting.py → xrpl_lab/state.py
+xrpl_lab/cli.py → xrpl_lab/actions/verify.py → xrpl_lab/transport/base.py
 
 Read those in order to follow one run of xrpl-lab end to end. This path follows xrpl-lab (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 
 - 1 import could not be resolved: `tests/test_product_smoke.py` imports a path built at run time.
-- 7 writes and 20 reads use paths built at run time and are not named here.
-- 5 reads go to the home directory (.xrpl-lab/) or a path their caller passes, not to this repository.
-- 3 reads go to the directory the command is run in, not to this repository.
+- 3 writes and 7 reads use paths built at run time and are not named here.
+- 6 writes and 51 reads go to a path their caller passes, not to this repository.
+- 1 write and 6 reads go to the home directory (.xrpl-lab/) or a path their caller passes, not to this repository.
+- 4 reads go to the directory the command is run in, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

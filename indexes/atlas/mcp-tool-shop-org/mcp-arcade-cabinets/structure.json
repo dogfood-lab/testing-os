@@ -1294,7 +1294,7 @@
       ],
       "outsideReads": 3,
       "role": "code",
-      "testedBy": 22,
+      "testedBy": 23,
       "unresolvedSites": 0
     },
     {
@@ -2335,6 +2335,9 @@
             "restAfter"
           ],
           "hash": "edb0678157b6782238db7fcac3968d6c1c62353f80bdff959ff33091cdb6c0ea",
+          "importsFiles": [
+            "packages/cabinet-server/src/index.ts"
+          ],
           "path": "apps/cabinets/vite.config.ts"
         }
       ],
@@ -2357,19 +2360,7 @@
       "outsideWrites": 4,
       "role": "code",
       "testedBy": 13,
-      "unresolvedNamed": [
-        {
-          "path": "apps/cabinets/vite.config.ts",
-          "specifier": null,
-          "why": "dynamic"
-        },
-        {
-          "path": "apps/cabinets/vite.config.ts",
-          "specifier": null,
-          "why": "dynamic"
-        }
-      ],
-      "unresolvedSites": 2
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -4214,11 +4205,19 @@
           "hash": "7e9734c1512fe3e24ef75f5e122b87373a13be9dd2d964347115bbd8ec71b700",
           "importOrder": [
             "packages/tape-core/src/index.ts",
-            "packages/ghost-on-the-menu/src/play.ts"
+            "packages/ghost-on-the-menu/src/play.ts",
+            "scripts/play.mjs",
+            "scripts/sweep.mjs",
+            "scripts/sit.mjs",
+            "scripts/film.mjs"
           ],
           "importsFiles": [
             "packages/ghost-on-the-menu/src/play.ts",
-            "packages/tape-core/src/index.ts"
+            "packages/tape-core/src/index.ts",
+            "scripts/film.mjs",
+            "scripts/play.mjs",
+            "scripts/sit.mjs",
+            "scripts/sweep.mjs"
           ],
           "path": "packages/ghost-on-the-menu/test/cli.test.ts"
         },
@@ -4398,24 +4397,7 @@
       "outsideReads": 26,
       "role": "code",
       "testedBy": 31,
-      "unresolvedNamed": [
-        {
-          "path": "packages/ghost-on-the-menu/test/cli.test.ts",
-          "specifier": null,
-          "why": "dynamic"
-        },
-        {
-          "path": "packages/ghost-on-the-menu/test/cli.test.ts",
-          "specifier": null,
-          "why": "dynamic"
-        },
-        {
-          "path": "packages/ghost-on-the-menu/test/cli.test.ts",
-          "specifier": null,
-          "why": "dynamic"
-        }
-      ],
-      "unresolvedSites": 4
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 5,
@@ -5549,7 +5531,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -5897,7 +5880,7 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 4,
+          "reads": 3,
           "where": [
             "caller"
           ],
@@ -5924,6 +5907,14 @@
           "where": [
             "caller",
             "cwd:fixtures/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:ghost"
           ],
           "writes": 0
         },
@@ -6047,6 +6038,14 @@
         },
         {
           "hash": "29e3f6ea09440520a3cb10d5d49120fac7701d94c8c6f5e6066465340344d056",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -7082,13 +7081,15 @@
             "packages/vibe-typer/src/play.ts",
             "packages/vibe-typer/src/level.ts",
             "packages/vibe-typer/src/patterns.ts",
-            "packages/tape-core/src/index.ts"
+            "packages/tape-core/src/index.ts",
+            "scripts/play.mjs"
           ],
           "importsFiles": [
             "packages/tape-core/src/index.ts",
             "packages/vibe-typer/src/level.ts",
             "packages/vibe-typer/src/patterns.ts",
-            "packages/vibe-typer/src/play.ts"
+            "packages/vibe-typer/src/play.ts",
+            "scripts/play.mjs"
           ],
           "path": "packages/vibe-typer/test/play.test.ts"
         },
@@ -7178,20 +7179,15 @@
           "path": "packages/vibe-typer/scripts/sweep-levels.mjs",
           "specifier": null,
           "why": "dynamic"
-        },
-        {
-          "path": "packages/vibe-typer/test/play.test.ts",
-          "specifier": null,
-          "why": "dynamic"
         }
       ],
-      "unresolvedSites": 3
+      "unresolvedSites": 2
     },
     {
-      "dynamicReads": 6,
+      "dynamicReads": 4,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 1,
+      "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -7229,6 +7225,17 @@
       "importConfidence": "full",
       "name": "voice",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        }
+      ],
+      "outsideReads": 2,
+      "outsideWrites": 1,
       "role": "code",
       "testedBy": 1,
       "unresolvedSites": 0
@@ -7240,93 +7247,150 @@
       "commands": [
         {
           "job": "check",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "check",
-          "step": "Env files stay ignored",
-          "text": "failed=0\nprobe_ignore() {\n  local p=\"$1\"\n  if git check-ignore -- \"$p\"; then\n    echo \"ignored: $p\"\n  else\n    echo \"not ignored: $p\"\n    echo \"next: restore .env / .env.* / *.pem and !.env.example in .gitignore\"\n    {\n      echo \"not ignored: $p\"\n      echo \"next: restore .env / .env.* / *.pem and !.env.example in .gitignore\"\n    } >> \"$GITHUB_STEP_SUMMARY\"\n    failed=1\n  fi\n}\nprobe_ignore .env\nprobe_ignore .env.local\nprobe_ignore '*.pem'\nprobe_ignore apps/cabinets/.env\nprobe_ignore apps/cabinets/.env.local\nfor pkg in packages/*/; do\n  probe_ignore \"${pkg%/}/.env\"\n  probe_ignore \"${pkg%/}/.env.local\"\ndone\nif git check-ignore -- .env.example; then\n  echo \".env.example must not be ignored\"\n  echo \"next: restore .env / .env.* / *.pem and !.env.example in .gitignore\"\n  {\n    echo \".env.example must not be ignored\"\n    echo \"next: restore .env / .env.* / *.pem and !.env.example in .gitignore\"\n  } >> \"$GITHUB_STEP_SUMMARY\"\n  failed=1\nelse\n  echo \"not ignored (ok): .env.example\"\nfi\nexit \"$failed\"\n"
+          "programs": [
+            "echo",
+            "git",
+            "probe_ignore"
+          ],
+          "step": "Env files stay ignored"
         },
         {
           "job": "check",
-          "step": "Install",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install"
         },
         {
           "job": "check",
-          "step": "Audit",
-          "text": "pnpm audit --audit-level=high"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Audit"
         },
         {
           "job": "check",
-          "step": "Lint",
-          "text": "pnpm lint"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Lint"
         },
         {
           "job": "check",
-          "step": "Typecheck",
-          "text": "pnpm typecheck"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Typecheck"
         },
         {
           "job": "check",
-          "step": "Test",
-          "text": "pnpm test"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Test"
         },
         {
           "job": "check",
-          "step": "Build",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build"
         },
         {
           "job": "check",
-          "step": "Play-through",
-          "text": "pnpm test:play ghost --fixture naive-ndjson"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Play-through"
         },
         {
           "job": "check",
-          "step": "Voice worker syntax",
-          "text": "python3 -m py_compile voice/worker.py"
+          "programs": [
+            "python3"
+          ],
+          "step": "Voice worker syntax"
         },
         {
           "job": "check",
-          "step": "Job summary",
-          "text": "{\n  echo \"## CI / Verify\"\n  echo \"- sha: \\`${{ github.sha }}\\`\"\n  echo \"- audit: pnpm audit --audit-level=high (${{ steps.audit.outcome }})\"\n  echo \"- test:play: ghost --fixture naive-ndjson (${{ steps.play_through.outcome }})\"\n  echo \"- voice: python3 -m py_compile voice/worker.py (${{ steps.voice.outcome }})\"\n  echo \"- env-ignore: ${{ steps.env_ignore.outcome }}\"\n  echo \"- install: ${{ steps.install.outcome }}\"\n  echo \"- lint: ${{ steps.lint.outcome }}\"\n  echo \"- typecheck: ${{ steps.typecheck.outcome }}\"\n  echo \"- test: ${{ steps.test.outcome }}\"\n  echo \"- build: ${{ steps.build.outcome }}\"\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Job summary"
         },
         {
           "job": "check",
-          "step": "Next local command",
-          "text": "{\n  echo \"## CI / Verify failed\"\n  echo \"Re-run the failing gate locally:\"\n  [ \"${{ steps.env_ignore.outcome }}\" = \"failure\" ] && echo \"- next: restore .env / .env.* / *.pem and !.env.example in .gitignore\"\n  [ \"${{ steps.install.outcome }}\" = \"failure\" ] && echo \"- next: pnpm install --frozen-lockfile\"\n  [ \"${{ steps.audit.outcome }}\" = \"failure\" ] && echo \"- next: pnpm audit --audit-level=high\"\n  [ \"${{ steps.lint.outcome }}\" = \"failure\" ] && echo \"- next: pnpm lint\"\n  [ \"${{ steps.typecheck.outcome }}\" = \"failure\" ] && echo \"- next: pnpm typecheck\"\n  [ \"${{ steps.test.outcome }}\" = \"failure\" ] && echo \"- next: pnpm test\"\n  [ \"${{ steps.build.outcome }}\" = \"failure\" ] && echo \"- next: pnpm build\"\n  [ \"${{ steps.play_through.outcome }}\" = \"failure\" ] && echo \"- next: pnpm test:play ghost --fixture naive-ndjson\"\n  [ \"${{ steps.voice.outcome }}\" = \"failure\" ] && echo \"- next: python3 -m py_compile voice/worker.py\"\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Next local command"
         },
         {
           "job": "catalog",
-          "step": "Catalog contract",
-          "text": "if ! grep -qE '^[[:space:]]*disableNetwork:[[:space:]]*true[[:space:]]*$' catalog/server.yaml; then\n  echo \"catalog/server.yaml must set run.disableNetwork: true\"\n  echo \"next: set catalog/server.yaml run.disableNetwork: true\"\n  exit 1\nfi\necho \"disableNetwork: true\"\nimage=$(awk '/^image:/{print $2; exit}' catalog/server.yaml)\nimage=${image#\\\"}\nimage=${image%\\\"}\nimage=${image#\\'}\nimage=${image%\\'}\necho \"image=$image\"\nif printf '%s\\n' \"$image\" | grep -qE ':latest(@|$)'; then\n  echo \"catalog/server.yaml image: must not use :latest ($image)\"\n  echo \"next: pin catalog/server.yaml image by digest, not :latest\"\n  exit 1\nfi\npin=$(grep -A2 '^source:' catalog/server.yaml | awk '/commit:/{print $2; exit}')\necho \"source.commit=$pin\"\necho \"github.sha=${{ github.sha }}\"\nif [ -z \"$pin\" ]; then\n  echo \"catalog/server.yaml source.commit is empty\"\n  echo \"next: pin catalog/server.yaml source.commit to ${{ github.sha }}\"\n  exit 1\nfi\nif [ \"$pin\" = \"${{ github.sha }}\" ]; then\n  echo \"source.commit equals github.sha\"\nelif git merge-base --is-ancestor \"$pin\" \"${{ github.sha }}\"; then\n  echo \"source.commit is an ancestor of github.sha\"\nelse\n  echo \"source.commit $pin is not github.sha and is not an ancestor of ${{ github.sha }}\"\n  echo \"next: pin catalog/server.yaml source.commit to a commit in this history\"\n  exit 1\nfi\npython3 -c '\nimport json, pathlib, sys\ncat = {t[\"name\"] for t in json.loads(pathlib.Path(\"catalog/tools.json\").read_text(encoding=\"utf-8\"))}\npkg = {t[\"name\"] for t in json.loads(pathlib.Path(\"packages/cabinet-server/tools.json\").read_text(encoding=\"utf-8\"))[\"tools\"]}\nif cat != pkg:\n    print(\"catalog tools\", sorted(cat), \"!= cabinet-server tools\", sorted(pkg))\n    sys.exit(1)\nprint(\"tool names match:\", \",\".join(sorted(cat)))\n'\n"
+          "programs": [
+            "awk",
+            "echo",
+            "git",
+            "grep",
+            "printf",
+            "python3"
+          ],
+          "step": "Catalog contract"
         },
         {
           "job": "catalog",
-          "step": "Hub digest pin",
-          "text": "echo \"hub_digest=skipped\" >> \"$GITHUB_OUTPUT\"\necho \"ghcr_digest=skipped\" >> \"$GITHUB_OUTPUT\"\nset +e\ninspect_out=$(docker buildx imagetools inspect mcp/mcp-arcade-cabinets 2>/tmp/hub-inspect.err)\ninspect_status=$?\nset -e\nif [ \"$inspect_status\" -ne 0 ]; then\n  echo \"Hub listing not present; skip digest compare\"\n  if [ -s /tmp/hub-inspect.err ]; then\n    cat /tmp/hub-inspect.err >&2\n  fi\nelse\n  hub_digest=$(printf '%s\\n' \"$inspect_out\" | awk '/^Digest:/{print $2; exit}')\n  if [ -z \"$hub_digest\" ]; then\n    echo \"docker buildx imagetools inspect mcp/mcp-arcade-cabinets succeeded but Digest is empty\"\n    echo \"next: pin catalog/server.yaml image to mcp/mcp-arcade-cabinets@sha256:<Hub digest>\"\n    exit 1\n  fi\n  echo \"hub_digest=$hub_digest\" >> \"$GITHUB_OUTPUT\"\n  echo \"Hub digest: $hub_digest\"\n  image=$(awk '/^image:/{print $2; exit}' catalog/server.yaml)\n  image=${image#\\\"}\n  image=${image%\\\"}\n  image=${image#\\'}\n  image=${image%\\'}\n  if ! printf '%s\\n' \"$image\" | grep -q '@sha256:'; then\n    echo \"catalog/server.yaml image: must contain @sha256: now that Hub lists mcp/mcp-arcade-cabinets (got $image)\"\n    echo \"local docker image id is not the Hub pin\"\n    echo \"next: pin catalog/server.yaml image to mcp/mcp-arcade-cabinets@$hub_digest\"\n    exit 1\n  fi\n  yaml_digest=${image##*@}\n  if [ \"$yaml_digest\" != \"$hub_digest\" ]; then\n    echo \"catalog/server.yaml image digest $yaml_digest != Hub digest $hub_digest\"\n    echo \"local docker image id is not the Hub pin\"\n    echo \"next: pin catalog/server.yaml image to mcp/mcp-arcade-cabinets@$hub_digest\"\n    exit 1\n  fi\n  echo \"catalog/server.yaml image digest matches Hub\"\nfi\nset +e\nghcr_out=$(docker buildx imagetools inspect ghcr.io/mcp-tool-shop-org/mcp-arcade-cabinets:0.7.0 2>/tmp/ghcr-inspect.err)\nghcr_status=$?\nset -e\nif [ \"$ghcr_status\" -eq 0 ]; then\n  ghcr_digest=$(printf '%s\\n' \"$ghcr_out\" | awk '/^Digest:/{print $2; exit}')\n  if [ -n \"$ghcr_digest\" ]; then\n    echo \"ghcr_digest=$ghcr_digest\" >> \"$GITHUB_OUTPUT\"\n    echo \"GHCR digest: $ghcr_digest\"\n  else\n    echo \"GHCR inspect skipped\"\n  fi\nelse\n  echo \"GHCR inspect skipped\"\nfi\n"
+          "programs": [
+            "2",
+            "awk",
+            "cat",
+            "docker",
+            "echo",
+            "grep",
+            "printf"
+          ],
+          "step": "Hub digest pin"
         },
         {
           "job": "catalog",
-          "step": "Build Catalog image",
-          "text": "if ! command -v docker >/dev/null 2>&1; then\n  echo \"docker=missing\" >> \"$GITHUB_OUTPUT\"\n  echo \"docker is required on ubuntu-latest; Catalog image was not built\"\n  echo \"next: docker buildx build --platform linux/amd64,linux/arm64 -t mcp-arcade-cabinets:ci .\"\n  exit 1\nfi\necho \"docker=present\" >> \"$GITHUB_OUTPUT\"\necho \"platforms=linux/amd64,linux/arm64\" >> \"$GITHUB_OUTPUT\"\n# buildx cannot --load a multi-platform image; prove both, load amd64 only\ndocker buildx build --platform linux/amd64,linux/arm64 -t mcp-arcade-cabinets:ci --output=type=cacheonly .\ndocker buildx build --platform linux/amd64 -t mcp-arcade-cabinets:ci --load .\nid=$(docker image inspect -f '{{.Id}}' mcp-arcade-cabinets:ci)\necho \"image_id=$id\" >> \"$GITHUB_OUTPUT\"\necho \"image id: $id\"\necho \"platforms built: linux/amd64,linux/arm64\"\n"
+          "programs": [
+            "1",
+            "command",
+            "docker",
+            "echo"
+          ],
+          "step": "Build Catalog image"
         },
         {
           "job": "catalog",
-          "step": "Run Catalog image over stdio",
-          "text": "init='{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2025-11-25\",\"capabilities\":{},\"clientInfo\":{\"name\":\"ci\",\"version\":\"0\"}}}'\nnotified='{\"jsonrpc\":\"2.0\",\"method\":\"notifications/initialized\"}'\nlist='{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/list\"}'\nset +e\nprintf '%s\\n' \"$init\" \"$notified\" \"$list\" | timeout 20 docker run --rm -i --network=none --cpus 1 --memory 2g mcp-arcade-cabinets:ci > /tmp/cabinet-stdio.out 2>/tmp/cabinet-stdio.err\nstatus=$?\nset -e\nif [ -s /tmp/cabinet-stdio.err ]; then\n  cat /tmp/cabinet-stdio.err >&2\nfi\ncat /tmp/cabinet-stdio.out\nif ! python3 -c '\nimport json, sys\nneed = {\"fire\", \"say\", \"speak\", \"sfx\", \"view\", \"tapes\"}\nfound = set()\nraw = sys.stdin.read()\nfor line in raw.splitlines():\n    line = line.strip()\n    if not line:\n        continue\n    try:\n        msg = json.loads(line)\n    except json.JSONDecodeError:\n        continue\n    tools = (msg.get(\"result\") or {}).get(\"tools\")\n    if not isinstance(tools, list):\n        continue\n    for t in tools:\n        if isinstance(t, dict) and isinstance(t.get(\"name\"), str):\n            found.add(t[\"name\"])\nmissing = sorted(need - found)\nif missing:\n    print(\"tools/list missing:\", \",\".join(missing))\n    sys.exit(1)\nextra = sorted(found - need)\nif extra:\n    print(\"tools/list extra:\", \",\".join(extra))\n    sys.exit(1)\nprint(\"tools/list:\", \",\".join(sorted(found)))\n' < /tmp/cabinet-stdio.out; then\n  echo \"docker run exit $status (stdio tools/list under --network none)\"\n  echo \"next: docker run --rm -i --network=none mcp-arcade-cabinets:ci\"\n  exit 1\nfi\n"
+          "programs": [
+            "2",
+            "cat",
+            "echo",
+            "printf",
+            "python3",
+            "timeout"
+          ],
+          "step": "Run Catalog image over stdio"
         },
         {
           "job": "catalog",
-          "step": "Job summary",
-          "text": "{\n  echo \"## CI / Catalog\"\n  echo \"- sha: \\`${{ github.sha }}\\`\"\n  echo \"- docker: ${{ steps.docker_build.outputs.docker }}\"\n  plats=\"${{ steps.docker_build.outputs.platforms }}\"\n  [ -z \"$plats\" ] && plats=not-built\n  echo \"- platforms built: $plats\"\n  host_id=\"${{ steps.docker_build.outputs.image_id }}\"\n  [ -z \"$host_id\" ] && host_id=not-built\n  echo \"- host-arch image id: \\`$host_id\\`\"\n  hub=\"${{ steps.hub_digest.outputs.hub_digest }}\"\n  [ -z \"$hub\" ] && hub=skipped\n  echo \"- Hub digest: \\`$hub\\`\"\n  ghcr=\"${{ steps.hub_digest.outputs.ghcr_digest }}\"\n  [ -z \"$ghcr\" ] && ghcr=skipped\n  echo \"- GHCR digest: \\`$ghcr\\`\"\n  echo \"- contract: ${{ steps.catalog_contract.outcome }}\"\n  echo \"- qemu: ${{ steps.qemu.outcome }}\"\n  echo \"- buildx: ${{ steps.buildx.outcome }}\"\n  echo \"- hub digest: ${{ steps.hub_digest.outcome }}\"\n  echo \"- docker build: ${{ steps.docker_build.outcome }}\"\n  echo \"- docker run (stdio tools/list, --network none): ${{ steps.docker_run.outcome }}\"\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Job summary"
         },
         {
           "job": "catalog",
-          "step": "Next local command",
-          "text": "{\n  echo \"## CI / Catalog failed\"\n  echo \"Re-run the failing gate locally:\"\n  [ \"${{ steps.catalog_contract.outcome }}\" = \"failure\" ] && echo \"- next: check catalog/server.yaml disableNetwork: true, refuse :latest, source.commit, and catalog/tools.json names\"\n  [ \"${{ steps.qemu.outcome }}\" = \"failure\" ] && echo \"- next: docker/setup-qemu-action (linux/arm64)\"\n  [ \"${{ steps.buildx.outcome }}\" = \"failure\" ] && echo \"- next: docker/setup-buildx-action\"\n  [ \"${{ steps.hub_digest.outcome }}\" = \"failure\" ] && echo \"- next: pin catalog/server.yaml image to mcp/mcp-arcade-cabinets@sha256 matching docker buildx imagetools inspect mcp/mcp-arcade-cabinets\"\n  [ \"${{ steps.docker_build.outcome }}\" = \"failure\" ] && echo \"- next: docker buildx build --platform linux/amd64,linux/arm64 && docker buildx build --platform linux/amd64 -t mcp-arcade-cabinets:ci --load .\"\n  [ \"${{ steps.docker_run.outcome }}\" = \"failure\" ] && echo \"- next: docker run --rm -i --network=none --cpus 1 --memory 2g mcp-arcade-cabinets:ci\"\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Next local command"
         }
       ],
       "elsewhere": [],
@@ -7415,6 +7479,7 @@
         },
         {
           "job": "catalog",
+          "packed": true,
           "path": "apps/cabinets/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7452,12 +7517,14 @@
         {
           "directory": true,
           "job": "catalog",
+          "packed": true,
           "path": "fixtures/tapes/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "catalog",
+          "packed": true,
           "path": "package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7465,6 +7532,7 @@
         {
           "directory": true,
           "job": "catalog",
+          "packed": true,
           "path": "packages/",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7479,6 +7547,7 @@
         },
         {
           "job": "catalog",
+          "packed": true,
           "path": "packages/cabinet-server/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7526,6 +7595,7 @@
         },
         {
           "job": "catalog",
+          "packed": true,
           "path": "packages/ghost-on-the-menu/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7545,6 +7615,7 @@
         },
         {
           "job": "catalog",
+          "packed": true,
           "path": "packages/launcher-vibe-typer/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7559,6 +7630,7 @@
         },
         {
           "job": "catalog",
+          "packed": true,
           "path": "packages/launcher/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7573,6 +7645,7 @@
         },
         {
           "job": "catalog",
+          "packed": true,
           "path": "packages/tape-core/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7587,6 +7660,7 @@
         },
         {
           "job": "catalog",
+          "packed": true,
           "path": "packages/vibe-typer/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7710,12 +7784,14 @@
         },
         {
           "job": "catalog",
+          "packed": true,
           "path": "pnpm-lock.yaml",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "job": "catalog",
+          "packed": true,
           "path": "pnpm-workspace.yaml",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7785,6 +7861,7 @@
         },
         {
           "job": "catalog",
+          "packed": true,
           "path": "tsconfig.base.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
@@ -7805,6 +7882,7 @@
       "runsCount": 55,
       "secrets": [],
       "sends": {
+        "changesRepositories": true,
         "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,
@@ -7887,73 +7965,116 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install the workspace",
-          "text": "pnpm install --frozen-lockfile --ignore-scripts"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install the workspace"
         },
         {
           "job": "build",
-          "step": "Lint",
-          "text": "pnpm lint"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Lint"
         },
         {
           "job": "build",
-          "step": "Typecheck",
-          "text": "pnpm typecheck"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Typecheck"
         },
         {
           "job": "build",
-          "step": "Test",
-          "text": "pnpm test"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Test"
         },
         {
           "job": "build",
-          "step": "Build",
-          "text": "pnpm build"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build"
         },
         {
           "job": "build",
-          "step": "Build the game into the site at /play/",
-          "text": "pnpm build:play"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build the game into the site at /play/"
         },
         {
           "job": "build",
-          "step": "Play-through",
-          "text": "pnpm test:play ghost --fixture naive-ndjson"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Play-through"
         },
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci --ignore-scripts"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Audit site lockfile",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Audit site lockfile"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         },
         {
           "job": "build",
-          "step": "Require /play/ in the dist",
-          "text": "index=site/dist/play/index.html\nif [ ! -s \"$index\" ]; then\n  echo \"site/dist/play/index.html is missing or empty\"\n  echo \"next: pnpm build:play then cd site && npm run build\"\n  exit 1\nfi\nif grep -q '/src/main.ts' \"$index\"; then\n  echo \"site/dist/play/index.html still scripts /src/main.ts (Vite source stub, not the hashed bundle)\"\n  echo \"next: pnpm build:play then cd site && npm run build\"\n  exit 1\nfi\nif ! grep -q '/mcp-arcade-cabinets/play/' \"$index\"; then\n  echo \"site/dist/play/index.html is missing PLAY_BASE /mcp-arcade-cabinets/play/\"\n  echo \"next: pnpm build:play then cd site && npm run build\"\n  exit 1\nfi\njs_count=$(find site/dist/play/assets -type f -name '*.js' 2>/dev/null | wc -l | tr -d ' ')\nif [ \"${js_count:-0}\" -lt 1 ]; then\n  echo \"site/dist/play/assets/ has no hashed JS\"\n  echo \"next: pnpm build:play then cd site && npm run build\"\n  exit 1\nfi\n# Roster is derived from export const SPRITE_KEYS / TRACK_KEYS\n# (quoted string literals). Fail if either array is empty.\n# test:play is not proof of the uploaded Pages tree.\n# Do not hardcode the next class list here.\n# Current TRACK_KEYS (comment only; gate follows src/audio.ts):\n# inspect poison rug unlisted breather whisperer menu doorman\nsprite_src=packages/ghost-on-the-menu/src/render.ts\ntrack_src=packages/ghost-on-the-menu/src/audio.ts\nkeys_js=$(mktemp --suffix=.mjs)\ncat > \"$keys_js\" <<'EOF'\nimport { readFileSync } from 'node:fs';\nconst name = process.argv[2];\nconst file = process.argv[3];\nconst src = readFileSync(file, 'utf8');\nconst escaped = name.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\nconst m = src.match(\n  new RegExp('export\\\\s+const\\\\s+' + escaped + '\\\\s*=\\\\s*\\\\[([\\\\s\\\\S]*?)\\\\]'),\n);\nconst keys = m\n  ? [...m[1].matchAll(/['\"]([^'\"]+)['\"]/g)].map((x) => x[1])\n  : [];\nif (keys.length === 0) {\n  console.error('empty or missing export const ' + name + ' in ' + file);\n  process.exit(1);\n}\nprocess.stdout.write(keys.join('\\n') + '\\n');\nEOF\nsprite_keys=$(node \"$keys_js\" SPRITE_KEYS \"$sprite_src\") || {\n  echo \"failed to parse export const SPRITE_KEYS from $sprite_src\"\n  echo \"next: pnpm build:play then cd site && npm run build\"\n  exit 1\n}\ntrack_keys=$(node \"$keys_js\" TRACK_KEYS \"$track_src\") || {\n  echo \"failed to parse export const TRACK_KEYS from $track_src\"\n  echo \"next: pnpm build:play then cd site && npm run build\"\n  exit 1\n}\nif [ -z \"$sprite_keys\" ]; then\n  echo \"SPRITE_KEYS parsed empty from $sprite_src\"\n  echo \"next: pnpm build:play then cd site && npm run build\"\n  exit 1\nfi\nif [ -z \"$track_keys\" ]; then\n  echo \"TRACK_KEYS parsed empty from $track_src\"\n  echo \"next: pnpm build:play then cd site && npm run build\"\n  exit 1\nfi\nmissing_assets=0\nsprite_count=0\ntrack_count=0\nsample=\nsample_bytes=\nwhile IFS= read -r key; do\n  [ -z \"$key\" ] && continue\n  f=\"site/dist/play/sprites/${key}.png\"\n  if [ ! -s \"$f\" ]; then\n    echo \"site/dist/play/sprites/${key}.png is missing or empty\"\n    missing_assets=1\n  else\n    sprite_count=$((sprite_count + 1))\n    if [ -z \"$sample\" ]; then\n      sample=$f\n      sample_bytes=$(wc -c < \"$f\" | tr -d ' ')\n    fi\n  fi\ndone <<< \"$sprite_keys\"\nwhile IFS= read -r key; do\n  [ -z \"$key\" ] && continue\n  f=\"site/dist/play/tracks/${key}.mp3\"\n  if [ ! -s \"$f\" ]; then\n    echo \"site/dist/play/tracks/${key}.mp3 is missing or empty\"\n    missing_assets=1\n  else\n    track_count=$((track_count + 1))\n    if [ -z \"$sample\" ]; then\n      sample=$f\n      sample_bytes=$(wc -c < \"$f\" | tr -d ' ')\n    fi\n  fi\ndone <<< \"$track_keys\"\necho \"sprites=${sprite_count}\" >> \"$GITHUB_OUTPUT\"\necho \"tracks=${track_count}\" >> \"$GITHUB_OUTPUT\"\nif [ -n \"$sample\" ]; then\n  echo \"sample=${sample}\" >> \"$GITHUB_OUTPUT\"\n  echo \"sample_bytes=${sample_bytes}\" >> \"$GITHUB_OUTPUT\"\n  echo \"play sample: $sample ($sample_bytes bytes); sprites=$sprite_count; tracks=$track_count\"\nelse\n  echo \"play sample: missing; sprites=$sprite_count; tracks=$track_count\"\nfi\nif [ \"$missing_assets\" -ne 0 ]; then\n  echo \"next: pnpm build:play then cd site && npm run build\"\n  exit 1\nfi\nfailed_src=0\nwhile IFS= read -r raw; do\n  [ -z \"$raw\" ] && continue\n  src=${raw#src=}\n  src=${src#\\\"}\n  src=${src#\\'}\n  src=${src%\\\"}\n  src=${src%\\'}\n  case \"$src\" in\n    /mcp-arcade-cabinets/play/*) target=\"site/dist/play/${src#/mcp-arcade-cabinets/play/}\" ;;\n    ./*) target=\"site/dist/play/${src#./}\" ;;\n    /*) target=\"site/dist/play$src\" ;;\n    *) target=\"site/dist/play/$src\" ;;\n  esac\n  if [ ! -s \"$target\" ]; then\n    echo \"script src missing or empty: $src -> $target\"\n    failed_src=1\n  else\n    echo \"asset: $target ($(wc -c < \"$target\" | tr -d ' ') bytes)\"\n  fi\ndone < <(grep -oE \"src=[\\\"'][^\\\"']+[\\\"']\" \"$index\" || true)\nif [ \"$failed_src\" -ne 0 ]; then\n  echo \"next: pnpm build:play then cd site && npm run build\"\n  exit 1\nfi\necho \"play index: $(wc -c < \"$index\" | tr -d ' ') bytes; assets js=$js_count; sprites=$sprite_count; tracks=$track_count\"\n"
+          "programs": [
+            "cat",
+            "echo",
+            "find",
+            "grep",
+            "mktemp",
+            "node",
+            "read",
+            "sprite_count",
+            "tr",
+            "track_count",
+            "wc"
+          ],
+          "step": "Require /play/ in the dist"
         },
         {
           "job": "build",
-          "step": "Job summary",
-          "text": "{\n  echo \"## Site / Build handbook and play\"\n  echo \"- event: \\`${{ github.event_name }}\\`\"\n  echo \"- ref: \\`${{ github.ref }}\\`\"\n  echo \"- sha: \\`${{ github.sha }}\\`\"\n  echo \"- play_build: ${{ steps.play_build.outcome }}\"\n  echo \"- site_ci: ${{ steps.site_ci.outcome }}\"\n  echo \"- site_audit: ${{ steps.site_audit.outcome }}\"\n  echo \"- site_build: ${{ steps.site_build.outcome }}\"\n  echo \"- play_index: ${{ steps.play_index.outcome }}\"\n  if [ \"${{ github.ref }}\" = \"refs/heads/main\" ]; then\n    echo \"- lint: ${{ steps.lint.outcome }}\"\n    echo \"- typecheck: ${{ steps.typecheck.outcome }}\"\n    echo \"- test: ${{ steps.test.outcome }}\"\n    echo \"- product_build: ${{ steps.product_build.outcome }}\"\n    echo \"- play_through: ${{ steps.play_through.outcome }}\"\n    echo \"- upload-pages-artifact: ${{ steps.upload.outcome }}\"\n    if [ \"${{ job.status }}\" = \"success\" ]; then\n      echo \"- deploy: queued\"\n    else\n      echo \"- deploy: will not run\"\n    fi\n  else\n    echo \"- deploy skipped (not main; production was not deployed)\"\n  fi\n  if [ -s site/dist/play/index.html ]; then\n    echo \"- play index: present ($(wc -c < site/dist/play/index.html | tr -d ' ') bytes)\"\n    js=$(ls site/dist/play/assets/*.js 2>/dev/null | head -n 1 || true)\n    if [ -n \"$js\" ] && [ -s \"$js\" ]; then\n      echo \"- play asset: \\`$js\\` ($(wc -c < \"$js\" | tr -d ' ') bytes)\"\n    else\n      echo \"- play asset: missing\"\n    fi\n    sc=\"${{ steps.play_index.outputs.sprites }}\"\n    tc=\"${{ steps.play_index.outputs.tracks }}\"\n    if [ -z \"$sc\" ]; then\n      sc=$(find site/dist/play/sprites -type f -name '*.png' 2>/dev/null | wc -l | tr -d ' ')\n    fi\n    if [ -z \"$tc\" ]; then\n      tc=$(find site/dist/play/tracks -type f -name '*.mp3' 2>/dev/null | wc -l | tr -d ' ')\n    fi\n    echo \"- play sprites: ${sc:-0} files (derived SPRITE_KEYS); play tracks: ${tc:-0} files (derived TRACK_KEYS)\"\n    sample=\"${{ steps.play_index.outputs.sample }}\"\n    sample_bytes=\"${{ steps.play_index.outputs.sample_bytes }}\"\n    if [ -z \"$sample\" ] || [ ! -s \"$sample\" ]; then\n      sample=$(find site/dist/play/sprites site/dist/play/tracks -type f \\( -name '*.png' -o -name '*.mp3' \\) 2>/dev/null | head -n 1 || true)\n      if [ -n \"$sample\" ] && [ -s \"$sample\" ]; then\n        sample_bytes=$(wc -c < \"$sample\" | tr -d ' ')\n      else\n        sample=\n      fi\n    fi\n    if [ -n \"$sample\" ]; then\n      echo \"- play sample: \\`$sample\\` (${sample_bytes} bytes)\"\n    else\n      echo \"- play sample: missing\"\n    fi\n  elif [ -e site/dist/play/index.html ]; then\n    echo \"- play index: empty\"\n  else\n    echo \"- play index: missing\"\n  fi\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo",
+            "find",
+            "head",
+            "ls",
+            "tr",
+            "wc"
+          ],
+          "step": "Job summary"
         },
         {
           "job": "build",
-          "step": "Next local command",
-          "text": "{\n  echo \"## Site / Build handbook and play failed\"\n  echo \"Re-run the failing gate locally:\"\n  [ \"${{ steps.install.outcome }}\" = \"failure\" ] && echo \"- next: pnpm install --frozen-lockfile --ignore-scripts\"\n  [ \"${{ steps.lint.outcome }}\" = \"failure\" ] && echo \"- next: pnpm lint\"\n  [ \"${{ steps.typecheck.outcome }}\" = \"failure\" ] && echo \"- next: pnpm typecheck\"\n  [ \"${{ steps.test.outcome }}\" = \"failure\" ] && echo \"- next: pnpm test\"\n  [ \"${{ steps.product_build.outcome }}\" = \"failure\" ] && echo \"- next: pnpm build\"\n  [ \"${{ steps.play_build.outcome }}\" = \"failure\" ] && echo \"- next: pnpm build:play\"\n  [ \"${{ steps.play_through.outcome }}\" = \"failure\" ] && echo \"- next: pnpm test:play ghost --fixture naive-ndjson\"\n  [ \"${{ steps.site_ci.outcome }}\" = \"failure\" ] && echo \"- next: cd site && npm ci --ignore-scripts\"\n  [ \"${{ steps.site_audit.outcome }}\" = \"failure\" ] && echo \"- next: cd site && npm audit --audit-level=high\"\n  [ \"${{ steps.site_build.outcome }}\" = \"failure\" ] && echo \"- next: cd site && npm run build\"\n  [ \"${{ steps.play_index.outcome }}\" = \"failure\" ] && echo \"- next: pnpm build:play then cd site && npm run build\"\n  [ \"${{ steps.upload.outcome }}\" = \"failure\" ] && echo \"- next: inspect upload-pages-artifact (path: site/dist)\"\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Next local command"
         },
         {
           "job": "deploy",
-          "step": "Record deploy",
-          "text": "{\n  echo \"## Pages deploy\"\n  echo \"- event: \\`${{ github.event_name }}\\`\"\n  echo \"- ref: \\`${{ github.ref }}\\`\"\n  echo \"- sha: \\`${{ github.sha }}\\`\"\n  echo \"- url: \\`${{ steps.deployment.outputs.page_url }}\\`\"\n  if [ -z \"${{ steps.deployment.outputs.page_url }}\" ]; then\n    echo \"- deploy did not run\"\n    echo \"- next: inspect the github-pages environment / deploy-pages step\"\n  fi\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Record deploy"
         }
       ],
       "elsewhere": [],
@@ -8024,7 +8145,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         },
         {
           "boundary": "tape-core",
@@ -8551,6 +8672,7 @@
       "runsCount": 44,
       "secrets": [],
       "sends": {
+        "changesRepositories": true,
         "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,
@@ -8621,63 +8743,104 @@
       "commands": [
         {
           "job": "publish",
-          "step": "npm with Trusted Publishing",
-          "text": "npm install -g npm@latest\nnpm --version\n# OIDC Trusted Publishing landed in npm 11.5.1.\nnode -e '\nconst [maj, min, pat] = process.argv[1].split(\".\").map(Number);\nconst ok = maj > 11 || (maj === 11 && (min > 5 || (min === 5 && pat >= 1)));\nif (!ok) {\n  console.log(\"npm \" + process.argv[1] + \" is too old for Trusted Publishing\");\n  console.log(\"next: npm install -g npm@latest\");\n  process.exit(1);\n}\nconsole.log(\"npm \" + process.argv[1] + \" supports Trusted Publishing\");\n' \"$(npm --version)\"\n"
+          "programs": [
+            "node",
+            "npm"
+          ],
+          "step": "npm with Trusted Publishing"
         },
         {
           "job": "publish",
-          "step": "Install",
-          "text": "pnpm install --frozen-lockfile"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install"
         },
         {
           "job": "publish",
-          "step": "One version across the repo, and it matches the tag",
-          "text": "set -e\nroot=$(node -p \"require('./package.json').version\")\necho \"package=$root\" >> \"$GITHUB_OUTPUT\"\necho \"root: $root\"\n# Every package.json in the workspace, not just the two published\n# ones: the shell and the sim are bundled INTO the packages, so a\n# package left behind ships inside a tarball that claims the new\n# version. The published pair is checked by the same loop.\nbad=0\nfor manifest in package.json apps/*/package.json packages/*/package.json; do\n  # A glob that matched nothing is passed through as its own text.\n  [ -e \"$manifest\" ] || continue\n  v=$(node -p \"require('./$manifest').version || ''\")\n  [ -z \"$v\" ] && continue\n  echo \"- $manifest: $v\"\n  if [ \"$v\" != \"$root\" ]; then\n    echo \"$manifest is $v but the repo is $root\"\n    bad=1\n  fi\ndone\nif [ \"$bad\" != \"0\" ]; then\n  echo \"next: put every package.json on one version\"\n  exit 1\nfi\npkg=\"$root\"\n# SERVER_VERSION is what the MCP seat reports to a client in its\n# handshake. It is a hand-written constant, so it drifts silently:\n# v0.8.0 shipped announcing 0.7.0 because this check did not exist.\nsrv=$(node -p \"(require('fs').readFileSync('packages/cabinet-server/src/server.ts','utf8').match(/SERVER_VERSION[^0-9]+([0-9][0-9.]*)/) || ['',''])[1]\")\necho \"SERVER_VERSION: $srv\"\nif [ \"$srv\" != \"$pkg\" ]; then\n  echo \"SERVER_VERSION is $srv but the packages are $pkg\"\n  echo \"next: set SERVER_VERSION in packages/cabinet-server/src/server.ts to $pkg\"\n  exit 1\nfi\nif [ \"${{ github.event_name }}\" = \"release\" ]; then\n  tag=\"${{ github.event.release.tag_name }}\"\n  if [ \"$tag\" != \"v$pkg\" ]; then\n    echo \"release tag $tag does not name version $pkg\"\n    echo \"next: tag the release v$pkg, or bump the packages to match $tag\"\n    exit 1\n  fi\n  echo \"tag $tag matches\"\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "One version across the repo, and it matches the tag"
         },
         {
           "job": "publish",
-          "step": "Verify",
-          "text": "pnpm verify"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Verify"
         },
         {
           "job": "publish",
-          "step": "Build both packages",
-          "text": "pnpm build:launcher"
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build both packages"
         },
         {
           "job": "publish",
-          "step": "Both built bins run",
-          "text": "set -e\nwant=\"${{ steps.version.outputs.package }}\"\nfor dir in packages/launcher packages/launcher-vibe-typer; do\n  got=$(node \"$dir/dist/cli.js\" --version)\n  if [ \"$got\" != \"$want\" ]; then\n    echo \"$dir/dist/cli.js --version said $got, package.json says $want\"\n    echo \"next: pnpm build:launcher\"\n    exit 1\n  fi\n  echo \"- $dir --version: $got\"\ndone\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Both built bins run"
         },
         {
           "job": "publish",
-          "step": "Both seats list their own tools",
-          "text": "set -e\n# Each MCP seat must list its own tools over stdio with no network,\n# and neither may list the other's: two cabinets, two contracts,\n# two stdio entries, and the way that comes back wrong is silently.\ninit='{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2025-11-25\",\"capabilities\":{},\"clientInfo\":{\"name\":\"ci\",\"version\":\"0\"}}}'\nnotified='{\"jsonrpc\":\"2.0\",\"method\":\"notifications/initialized\"}'\nlist='{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/list\"}'\nseat() {\n  dir=\"$1\"\n  printf '%s\\n' \"$init\" \"$notified\" \"$list\" \\\n    | timeout 30 node \"$dir/dist/cli.js\" --mcp > /tmp/mcp.out 2>/tmp/mcp.err || true\n  cat /tmp/mcp.err >&2 || true\n  if ! WANT=\"$2\" DIR=\"$dir\" python3 -c '\nimport json, os, sys\nneed = set(os.environ[\"WANT\"].split(\",\"))\nfound = set()\nfor line in sys.stdin.read().splitlines():\n    line = line.strip()\n    if not line:\n        continue\n    try:\n        msg = json.loads(line)\n    except json.JSONDecodeError:\n        continue\n    tools = (msg.get(\"result\") or {}).get(\"tools\")\n    if isinstance(tools, list):\n        for t in tools:\n            if isinstance(t, dict) and isinstance(t.get(\"name\"), str):\n                found.add(t[\"name\"])\nif found != need:\n    print(os.environ[\"DIR\"], \"tools/list was\", \",\".join(sorted(found)) or \"(nothing)\", \"want\", \",\".join(sorted(need)))\n    sys.exit(1)\nprint(\"-\", os.environ[\"DIR\"], \"tools/list:\", \",\".join(sorted(found)))\n' < /tmp/mcp.out; then\n    echo \"next: node $dir/dist/cli.js --mcp\"\n    exit 1\n  fi\n}\nseat packages/launcher fire,say,speak,sfx,view,tapes\nseat packages/launcher-vibe-typer view,product,ask,react\n"
+          "programs": [
+            "2",
+            "cat",
+            "echo",
+            "printf",
+            "python3",
+            "seat",
+            "timeout"
+          ],
+          "step": "Both seats list their own tools"
         },
         {
           "job": "publish",
-          "step": "Both tarballs carry their cabinet and no sources",
-          "text": "set -e\nfor dir in packages/launcher packages/launcher-vibe-typer; do\n  ( cd \"$dir\" && npm pack --dry-run --json ) > /tmp/pack.json\n  PACK_DIR=\"$dir\" node -e '\n  const dir = process.env.PACK_DIR;\n  const pack = require(\"/tmp/pack.json\")[0];\n  const files = pack.files.map((f) => f.path);\n  // Each package carries its own cabinet and only its own. The\n  // \"gone\" list is what the split added: 0.9.0 shipped both\n  // cabinets inside the package named for one, and the way that\n  // comes back is silently, through a shell built without\n  // VITE_CABINET.\n  //\n  // The typing cabinet recorded beds are checked one file at a\n  // time, in \"need\", and not as a \"carries\" prefix: a prefix only\n  // proves that SOME file under it shipped, and six beds out of\n  // seven would pass that while one stack played no music. A bed\n  // missing at run time is silent by design — the procedural bed\n  // keeps the bar — so the tarball is the last place it can be\n  // noticed. An eighth stack is one edit to VIBE_BEDS.\n  const VIBE_BEDS =\n    [\"bash\", \"csharp\", \"java\", \"javascript\", \"python\", \"sql\", \"integration\"];\n  const spec = dir === \"packages/launcher\"\n    ? {\n        need: [\"dist/cli.js\", \"dist/cabinet-stdio.js\", \"dist/cabinet-server.js\"],\n        carries: [\"dist/play/sprites/\", \"dist/play/tracks/\"],\n        gone: [\"dist/play/keys/\", \"dist/play/vibe/\"],\n      }\n    : {\n        need: [\n          \"dist/cli.js\", \"dist/cabinet-stdio.js\", \"dist/cabinet-server.js\",\n          ...VIBE_BEDS.map((stack) => `dist/play/vibe/tracks/${stack}.mp3`),\n        ],\n        carries: [\"dist/play/keys/\", \"dist/play/vibe/\"],\n        gone: [\"dist/play/sprites/\", \"dist/play/tracks/\"],\n      };\n  const need = [...spec.need, \"dist/play/index.html\", \"README.md\", \"LICENSE\"];\n  const missing = need.filter((n) => !files.includes(n));\n  if (missing.length) {\n    console.log(dir + \" tarball is missing: \" + missing.join(\", \"));\n    console.log(\"next: pnpm build:launcher\");\n    process.exit(1);\n  }\n  const thin = spec.carries.filter((p) => !files.some((f) => f.startsWith(p)));\n  if (thin.length) {\n    console.log(dir + \" tarball carries no \" + thin.join(\", \"));\n    console.log(\"next: pnpm build:launcher\");\n    process.exit(1);\n  }\n  const other = files.filter((f) => spec.gone.some((p) => f === p || f.startsWith(p)));\n  if (other.length) {\n    console.log(dir + \" tarball carries the other cabinet: \" + other.slice(0, 5).join(\", \"));\n    console.log(\"next: check the public split in packages/launcher/scripts/build.mjs\");\n    process.exit(1);\n  }\n  const leaked = files.filter((f) => /\\.tsx?$|\\.map$|^src\\/|^test\\/|tsconfig/.test(f));\n  if (leaked.length) {\n    console.log(dir + \" tarball carries sources: \" + leaked.join(\", \"));\n    console.log(\"next: check the files field in \" + dir + \"/package.json\");\n    process.exit(1);\n  }\n  const tapes = files.filter((f) => f.startsWith(\"dist/tapes/\")).length;\n  if (tapes < 20) {\n    console.log(dir + \" tarball has \" + tapes + \" tapes, want 20\");\n    console.log(\"next: pnpm build:launcher\");\n    process.exit(1);\n  }\n  console.log(\n    \"- \" + dir + \": \" + pack.entryCount + \" files\" +\n    \", \" + tapes + \" tapes\" +\n    \", packed \" + (pack.size / 1048576).toFixed(1) + \" MB\" +\n    \", unpacked \" + (pack.unpackedSize / 1048576).toFixed(1) + \" MB\",\n  );\n  ' | tee -a \"$GITHUB_STEP_SUMMARY\"\ndone\n"
+          "programs": [
+            "cd",
+            "node",
+            "npm",
+            "tee"
+          ],
+          "step": "Both tarballs carry their cabinet and no sources"
         },
         {
           "job": "publish",
-          "step": "Publish both",
-          "text": "set -e\nfor dir in packages/launcher packages/launcher-vibe-typer; do\n  name=$(node -p \"require('./$dir/package.json').name\")\n  version=$(node -p \"require('./$dir/package.json').version\")\n  if npm view \"$name@$version\" version >/dev/null 2>&1; then\n    echo \"- $name@$version is already on the registry; skipping\"\n    continue\n  fi\n  echo \"- publishing $name@$version\"\n  ( cd \"$dir\" && npm publish --provenance --access public )\ndone\n"
+          "programs": [
+            "1",
+            "cd",
+            "echo",
+            "node",
+            "npm"
+          ],
+          "step": "Publish both"
         },
         {
           "job": "publish",
-          "step": "Dry run both",
-          "text": "set -e\nfor dir in packages/launcher packages/launcher-vibe-typer; do\n  ( cd \"$dir\" && npm publish --provenance --access public --dry-run )\ndone\n"
+          "programs": [
+            "cd",
+            "npm"
+          ],
+          "step": "Dry run both"
         },
         {
           "job": "publish",
-          "step": "Job summary",
-          "text": "{\n  echo \"## Publish / npm\"\n  echo \"- sha: \\`${{ github.sha }}\\`\"\n  echo \"- version: \\`${{ steps.version.outputs.package }}\\`\"\n  echo \"- event: ${{ github.event_name }}\"\n  published=\"no (dry run)\"\n  [ \"${{ steps.publish.outcome }}\" = \"success\" ] && published=\"yes\"\n  echo \"- published: $published\"\n  echo \"- npm: ${{ steps.npm_version.outcome }}\"\n  echo \"- version gate: ${{ steps.version.outcome }}\"\n  echo \"- verify: ${{ steps.verify.outcome }}\"\n  echo \"- build: ${{ steps.build.outcome }}\"\n  echo \"- bin smoke (both --version): ${{ steps.smoke.outcome }}\"\n  echo \"- both --mcp tools/list (six and four): ${{ steps.mcp.outcome }}\"\n  echo \"- tarball contract (both): ${{ steps.tarball.outcome }}\"\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Job summary"
         },
         {
           "job": "publish",
-          "step": "Next local command",
-          "text": "{\n  echo \"## Publish / npm failed\"\n  echo \"Nothing was published unless the publish step itself is the one that failed.\"\n  echo \"That step is idempotent: re-running it publishes only the package that is not on the registry yet.\"\n  echo \"Re-run the failing gate locally:\"\n  [ \"${{ steps.version.outcome }}\" = \"failure\" ] && echo \"- next: put every package.json on the tag's version\"\n  [ \"${{ steps.install.outcome }}\" = \"failure\" ] && echo \"- next: pnpm install --frozen-lockfile\"\n  [ \"${{ steps.verify.outcome }}\" = \"failure\" ] && echo \"- next: pnpm verify\"\n  [ \"${{ steps.build.outcome }}\" = \"failure\" ] && echo \"- next: pnpm build:launcher\"\n  [ \"${{ steps.smoke.outcome }}\" = \"failure\" ] && echo \"- next: node packages/launcher-vibe-typer/dist/cli.js --version\"\n  [ \"${{ steps.mcp.outcome }}\" = \"failure\" ] && echo \"- next: node packages/launcher/dist/cli.js --mcp, and the same in packages/launcher-vibe-typer\"\n  [ \"${{ steps.tarball.outcome }}\" = \"failure\" ] && echo \"- next: cd packages/launcher && npm pack --dry-run, and the same in packages/launcher-vibe-typer\"\n  [ \"${{ steps.publish.outcome }}\" = \"failure\" ] && echo \"- next: see docs/npm-launcher.md for what a half-finished publish leaves behind\"\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Next local command"
         }
       ],
       "elsewhere": [],
@@ -9083,6 +9246,7 @@
       "runsCount": 45,
       "secrets": [],
       "sends": {
+        "changesRepositories": true,
         "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,
@@ -9330,6 +9494,12 @@
     },
     {
       "from": "ghost-on-the-menu",
+      "fromTests": true,
+      "kind": "file",
+      "to": "scripts"
+    },
+    {
+      "from": "ghost-on-the-menu",
       "kind": "file",
       "to": "tape-core"
     },
@@ -9347,6 +9517,12 @@
       "from": "launcher-vibe-typer",
       "kind": "file",
       "to": "launcher"
+    },
+    {
+      "from": "vibe-typer",
+      "fromTests": true,
+      "kind": "file",
+      "to": "scripts"
     },
     {
       "from": "vibe-typer",
@@ -12078,12 +12254,6 @@
       "readers": [
         {
           "by": "packages/ghost-on-the-menu/test/cli.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/ghost-on-the-menu/test/cli.test.ts",
           "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
@@ -12102,12 +12272,6 @@
       "readers": [
         {
           "by": "packages/cabinet-server/test/surfaces.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/ghost-on-the-menu/test/cli.test.ts",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -12132,12 +12296,6 @@
       "readers": [
         {
           "by": "packages/ghost-on-the-menu/test/cli.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "packages/ghost-on-the-menu/test/cli.test.ts",
           "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
@@ -12148,12 +12306,6 @@
     },
     {
       "readers": [
-        {
-          "by": "packages/ghost-on-the-menu/test/cli.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
         {
           "by": "packages/ghost-on-the-menu/test/cli.test.ts",
           "call": "readFileSync",

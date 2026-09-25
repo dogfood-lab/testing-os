@@ -89,7 +89,7 @@
   "changesTogetherWithTests": 0,
   "commit": "f7dfb2efc4649fd8b6a2a17034113a6e18cb503d",
   "defaultBranch": "main",
-  "derived": "6 parts, mostly TypeScript (17 files) and JavaScript (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts.",
+  "derived": "6 parts, mostly TypeScript (17 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages.",
   "doors": [
     {
       "checks": [
@@ -140,7 +140,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -191,7 +191,7 @@
   "duplicatesNote": [],
   "edges": [],
   "generated": [],
-  "generatedAt": "2026-09-25T09:17:04.601Z",
+  "generatedAt": "2026-09-25T16:31:21.661Z",
   "limits": [
     "6 reads go to a path their caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
@@ -212,6 +212,7 @@
   "startDoor": "package.json#@roleos/knowledge-core",
   "startHere": [
     "src/index.ts",
+    "src/validate.ts",
     "src/types.ts"
   ],
   "startReason": "This path follows @roleos/knowledge-core (the package's entry, not published from here) from its entry, since CI runs only tests and checks.",

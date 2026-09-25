@@ -157,7 +157,7 @@
   "changesTogetherWithTests": 0,
   "commit": "8af7371876e940ba47b35af0bb39e9080d541074",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly Python (31 files), JavaScript (2) and TypeScript (2). Work enters through 7 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. People run xrpl-camp.",
+  "derived": "7 parts, mostly Python (31 files), shell (5), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 7 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run xrpl-camp.",
   "doors": [
     {
       "checks": [
@@ -219,13 +219,15 @@
             "xrpl_camp/__main__.py"
           ],
           "checks": [
-            "LICENSE",
-            "README.md",
-            "pyproject.toml",
             "xrpl_camp/"
           ],
-          "checksMore": 10,
+          "checksMore": 0,
           "lead": "on a tag push",
+          "packs": [
+            "LICENSE",
+            "README.md",
+            "pyproject.toml"
+          ],
           "runs": [
             "docker-entrypoint.sh",
             "scripts/verify-pypi-publish.sh",
@@ -281,7 +283,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -429,10 +431,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:23:42.401Z",
+  "generatedAt": "2026-09-25T16:40:10.064Z",
   "limits": [
     "1 import could not be resolved: `xrpl_camp/cli.py` imports a path built at run time.",
-    "4 writes and 11 reads use paths built at run time and are not named here.",
+    "6 reads use paths built at run time and are not named here.",
+    "4 writes and 9 reads go to a path their caller passes, not to this repository.",
     "1 write goes to a temporary directory, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
@@ -463,7 +466,7 @@
     "bin": 0,
     "xrpl_camp": 19
   },
-  "unnamedWrites": 4,
+  "unnamedWrites": 0,
   "unread": [
     {
       "place": ".github/freshness-report.md",

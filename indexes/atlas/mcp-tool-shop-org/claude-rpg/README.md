@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 55ff274.
 
 ## What this is
 
-8 parts, mostly TypeScript (218 files) and JavaScript (3). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run claude-rpg. People import @mcptoolshop/claude-rpg.
+8 parts, mostly TypeScript (218 files), JavaScript (3), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-rpg. People import @mcptoolshop/claude-rpg.
 
 ## What changed since 2026-09-24 (d22db12)
 
@@ -27,6 +27,7 @@ Mapped at 2026-09-25 from commit 55ff274.
 2. On a pull request, it also runs scripts/check-critical-coverage.mjs.
 3. It writes to dogfood/tuning/.
 4. It runs git.
+5. It uploads coverage to Codecov.
 
 ## Who reads the results
 

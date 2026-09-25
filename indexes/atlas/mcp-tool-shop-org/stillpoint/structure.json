@@ -758,6 +758,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -961,33 +969,45 @@
       "commands": [
         {
           "job": "build",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "build",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "build",
-          "step": "4",
-          "text": "npm run build --workspace=packages/ui"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "build",
-          "step": "5",
-          "text": "npx tsc --noEmit --project packages/ui/tsconfig.json"
+          "programs": [
+            "npx"
+          ],
+          "step": "5"
         },
         {
           "job": "build",
-          "step": "6",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "6"
         },
         {
           "job": "build",
-          "step": "7",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "7"
         }
       ],
       "elsewhere": [],
@@ -1107,18 +1127,24 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Audit site dependencies",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Audit site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -1151,7 +1177,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],

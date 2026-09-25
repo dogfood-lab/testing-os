@@ -75,7 +75,7 @@
   "changesTogetherWithTests": 0,
   "commit": "a2738c5c9f7afded9611a358288c880beafa3477",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly TypeScript (99 files), JavaScript (3) and Python (1). Work enters through 15 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run vocal-synth-engine-mcp, vse-analyze, vse-build-preset, vse-compare, vse-gen-vowel-wav, vse-inspect, vse-phonemize, vse-play-score, vse-resynth and vse-score-from-midi. People import @mcptoolshop/vocal-synth-engine.",
+  "derived": "10 parts, mostly TypeScript (99 files), JavaScript (3), Astro (2), CSS (2), shell (2), HTML (1) and Python (1). Work enters through 15 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run vocal-synth-engine-mcp, vse-analyze, vse-build-preset, vse-compare, vse-gen-vowel-wav, vse-inspect, vse-phonemize, vse-play-score, vse-resynth and vse-score-from-midi. People import @mcptoolshop/vocal-synth-engine.",
   "doors": [
     {
       "builds": [
@@ -210,7 +210,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -604,7 +604,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:23:15.634Z",
+  "generatedAt": "2026-09-25T16:39:34.844Z",
   "limits": [
     "4 reads use paths built at run time and are not named here.",
     "28 writes and 33 reads go to the directory the command is run in (.vscockpit/, assets/, calib/ and 2 more places) or a path their caller passes, not to this repository.",
@@ -638,9 +638,10 @@
     ".github/workflows/ci.yml",
     "src/index.ts",
     "src/engine/LiveSynthEngine.ts",
-    "src/preset/schema.ts",
     "src/engine/renderer.ts",
-    "src/engine/curves.ts"
+    "src/engine/curves.ts",
+    "src/types/score.ts",
+    "src/types/scoreSchema.ts"
   ],
   "summary": null,
   "summaryFrom": null,

@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 72e9d21.
 
 ## What this is
 
-7 parts, mostly TypeScript (128 files) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. People run forkctl and forkctl-mcp.
+7 parts, mostly TypeScript (128 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp.
 
 ## What changed since 2026-09-24 (31ad2f4)
 
@@ -68,7 +68,7 @@ People write .github/, assets/, design/, the repository root and site/; 8 writes
 
 ## Where to start
 
-.github/workflows/ci.yml → src/cli.ts → src/dispatch.ts → src/lib/github.ts → src/lib/state.ts → src/lib/operations.ts → src/tools/registry.ts → src/tools/types.ts
+.github/workflows/ci.yml → src/cli.ts → src/dispatch.ts → src/lib/result.ts → src/lib/errors.ts
 
 Read those in order to follow one pull request end to end.
 

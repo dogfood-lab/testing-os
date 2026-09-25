@@ -509,7 +509,8 @@
       "name": "root",
       "origin": "authored",
       "role": "docs",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -570,6 +571,9 @@
           "entry": "die",
           "entryRule": 1,
           "hash": "857610e958627f225723cb4f31d8b7ac8b7ea580b47807c3c840781537a81599",
+          "importsFiles": [
+            "src/index.ts"
+          ],
           "path": "scripts/eval-planted.mjs",
           "sequences": []
         },
@@ -599,14 +603,7 @@
       "outsideReads": 1,
       "role": "code",
       "testedBy": 0,
-      "unresolvedNamed": [
-        {
-          "path": "scripts/eval-planted.mjs",
-          "specifier": null,
-          "why": "dynamic"
-        }
-      ],
-      "unresolvedSites": 1
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -667,10 +664,30 @@
         },
         {
           "hash": "bff0f0589e93562006b8f904d4535fb5f9632d8e45af0498d04ef14746cde58d",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/layouts/BaseLayout.astro",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/layouts/BaseLayout.astro",
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/404.astro"
         },
         {
           "hash": "776728df772759c1225b33499bfc6e7ce08a2c81d198de6b1e239786d8a298b7",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/layouts/BaseLayout.astro",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/layouts/BaseLayout.astro",
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1492,38 +1509,52 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.14.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Verify (test + build + eval + report schema)",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify (test + build + eval + report schema)"
         },
         {
           "job": "test",
-          "step": "Check eval_report schema gold instances",
-          "text": "npm run check:report-schema"
+          "programs": [
+            "npm"
+          ],
+          "step": "Check eval_report schema gold instances"
         },
         {
           "job": "test",
-          "step": "Eval planted-RED pack",
-          "text": "npm run eval:planted"
+          "programs": [
+            "npm"
+          ],
+          "step": "Eval planted-RED pack"
         },
         {
           "job": "lint",
-          "step": "Install dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "lint",
-          "step": "Check TypeScript compilation",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Check TypeScript compilation"
         }
       ],
       "elsewhere": [],
@@ -1667,13 +1698,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci --ignore-scripts"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -1691,7 +1726,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 7
         }
       ],
       "readers": [],
@@ -1753,28 +1788,40 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Upgrade npm for Trusted Publishing",
-          "text": "npm install -g npm@latest"
+          "programs": [
+            "npm"
+          ],
+          "step": "Upgrade npm for Trusted Publishing"
         },
         {
           "job": "publish",
-          "step": "Install dependencies",
-          "text": "if [ -f package-lock.json ]; then\n  npm ci --ignore-scripts\nelse\n  npm install --ignore-scripts\nfi\n"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "publish",
-          "step": "Verify (test + build + eval)",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify (test + build + eval)"
         },
         {
           "job": "publish",
-          "step": "Assert package version matches GitHub release tag",
-          "text": "set -euo pipefail\nTAG=\"${RELEASE_TAG#v}\"\nPKG=\"$(node -p \"require('./package.json').version\")\"\nif [ \"$PKG\" != \"$TAG\" ]; then\n  echo \"::error::package.json version ($PKG) does not match release tag ($TAG)\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Assert package version matches GitHub release tag"
         },
         {
           "job": "publish",
-          "step": "Publish to npm (Trusted Publishing)",
-          "text": "set -euo pipefail\nPKG=\"$(node -p \"require('./package.json').version\")\"\nif [ \"${RELEASE_PRERELEASE}\" = \"true\" ] || [[ \"$PKG\" == *-* ]]; then\n  npm publish --provenance --access public --tag next\nelse\n  npm publish --provenance --access public\nfi\n"
+          "programs": [
+            "node",
+            "npm"
+          ],
+          "step": "Publish to npm (Trusted Publishing)"
         }
       ],
       "elsewhere": [],

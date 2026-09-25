@@ -58,7 +58,7 @@
   "changesTogetherWithTests": 0,
   "commit": "923204ef325bacbb02003bbcbbe5600c201bd3b4",
   "defaultBranch": "main",
-  "derived": "9 parts, mostly Python (83 files), TypeScript (2) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI and a container image. People run comfy-headless.",
+  "derived": "9 parts, mostly Python (83 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI and a container image. It deploys a site to GitHub Pages. People run comfy-headless.",
   "doors": [
     {
       "checks": [
@@ -94,7 +94,10 @@
       ],
       "runsCount": 1,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov",
+        "scans for secrets with TruffleHog"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main",
@@ -111,13 +114,14 @@
       "file": ".github/workflows/publish.yml",
       "held": [
         {
-          "checks": [
+          "checks": [],
+          "checksMore": 0,
+          "lead": "on a release event",
+          "packs": [
             "LICENSE",
             "README.md",
             "pyproject.toml"
           ],
-          "checksMore": 0,
-          "lead": "on a release event",
           "runs": [],
           "runsMore": 0,
           "when": "on a release event"
@@ -168,7 +172,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -231,10 +235,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T10:05:03.588Z",
+  "generatedAt": "2026-09-25T16:28:48.235Z",
   "limits": [
-    "2 imports could not be resolved: `comfy_headless/__init__.py` imports a path built at run time; `tests/run_fuzz.py` imports `comfy_headless.tests.test_fuzz`, which is no module on its import path and no declared dependency.",
-    "2 writes and 4 reads use paths built at run time and are not named here.",
+    "1 import could not be resolved: `tests/run_fuzz.py` imports `comfy_headless.tests.test_fuzz`, which is no module on its import path and no declared dependency.",
+    "2 writes and 2 reads use paths built at run time and are not named here.",
+    "38 reads go to a path their caller passes, not to this repository.",
     "3 reads go to a temporary directory, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],

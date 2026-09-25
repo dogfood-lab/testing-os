@@ -280,6 +280,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -311,16 +319,17 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 7,
+      "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 4,
+      "dynamicWrites": 2,
       "entryPoints": [
         "src/mcp_arcade/cli.py"
       ],
       "externals": 0,
       "files": [
         {
+          "constantOnly": true,
           "hash": "986890d973a24205283aca608e5b8cb1bb88687be7210497803cba38525d23de",
           "path": "src/mcp_arcade/__init__.py"
         },
@@ -1924,6 +1933,17 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 6,
+          "where": [
+            "caller"
+          ],
+          "writes": 5
+        }
+      ],
+      "outsideReads": 6,
+      "outsideWrites": 5,
       "role": "code",
       "testedBy": 14,
       "unresolvedSites": 0
@@ -2503,38 +2523,52 @@
       "commands": [
         {
           "job": "lint",
-          "step": "2",
-          "text": "pip install ruff==0.16.6"
+          "programs": [
+            "pip"
+          ],
+          "step": "2"
         },
         {
           "job": "lint",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.21.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "lint",
-          "step": "5",
-          "text": "ruff format --check ."
+          "programs": [
+            "ruff"
+          ],
+          "step": "5"
         },
         {
           "job": "lint",
-          "step": "6",
-          "text": "ruff check . --output-format=github"
+          "programs": [
+            "ruff"
+          ],
+          "step": "6"
         },
         {
           "job": "test",
-          "step": "2",
-          "text": "pip install --upgrade pip\npip install -e \".[dev]\"\n"
+          "programs": [
+            "pip"
+          ],
+          "step": "2"
         },
         {
           "job": "test",
-          "step": "3",
-          "text": "pytest tests/ -v --tb=short"
+          "programs": [
+            "pytest"
+          ],
+          "step": "3"
         },
         {
           "job": "test",
-          "step": "4",
-          "text": "mcp-arcade --version\nmcp-arcade atoms\nmcp-arcade bout --target fixture --agent task-only --no-prompt\n"
+          "programs": [
+            "mcp-arcade"
+          ],
+          "step": "4"
         }
       ],
       "elsewhere": [],
@@ -2648,13 +2682,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -2672,7 +2710,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -2734,23 +2772,33 @@
       "commands": [
         {
           "job": "pypi",
-          "step": "Install",
-          "text": "python -m pip install --upgrade pip\npip install -e \".[dev]\" build\npip install ruff==0.16.6\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install"
         },
         {
           "job": "pypi",
-          "step": "Verify",
-          "text": "ruff format --check .\nruff check .\npytest tests/ -v --tb=short\n"
+          "programs": [
+            "pytest",
+            "ruff"
+          ],
+          "step": "Verify"
         },
         {
           "job": "pypi",
-          "step": "Build",
-          "text": "python -m build"
+          "programs": [
+            "python"
+          ],
+          "step": "Build"
         },
         {
           "job": "pypi",
-          "step": "Attach dist to GitHub release",
-          "text": "gh release upload \"${{ github.event.release.tag_name }}\" dist/* --clobber"
+          "programs": [
+            "gh"
+          ],
+          "step": "Attach dist to GitHub release"
         }
       ],
       "elsewhere": [],

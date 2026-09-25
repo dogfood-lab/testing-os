@@ -84,7 +84,7 @@
   "changesTogetherWithTests": 0,
   "commit": "7e09d24fc09378541112ae8001a8d7b6a309f1be",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly TypeScript (328 files) and JavaScript (3). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. People run multi-claude.",
+  "derived": "11 parts, mostly TypeScript (328 files), CSS (3), JavaScript (3), Astro (1) and HTML (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. People run multi-claude.",
   "doors": [
     {
       "builds": [
@@ -162,7 +162,9 @@
       ],
       "runsCount": 42,
       "runsMore": 53,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request touching 12 paths",
@@ -183,7 +185,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -256,7 +258,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:18:47.245Z",
+  "generatedAt": "2026-09-25T16:33:14.559Z",
   "limits": [
     "3 writes and 5 reads use paths built at run time and are not named here.",
     "3 writes go to places this repository does not track, so they are not listed as generated.",

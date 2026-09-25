@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit dd0e1de.
 
 ## What this is
 
-12 parts, mostly Markdown (83 files); code in TypeScript (36) and JavaScript (6). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run synthesis. People import @mcptoolshop/synthesis.
+12 parts, mostly Markdown (83 files) and JSON data (16); code in TypeScript (36), JavaScript (6), Astro (3) and CSS (2). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run synthesis. People import @mcptoolshop/synthesis.
 
 ## What changed since 2026-09-23 (0128f11)
 
@@ -92,7 +92,6 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 import could not be resolved: `scripts/eval-planted.mjs` imports a path built at run time.
 - 1 import site names a path outside this repository, so what it loads is not followed.
 - 3 writes and 6 reads go to a path their caller passes, not to this repository.
 - 3 reads go to the directory the command is run in (data/ and schemas/), not to this repository.

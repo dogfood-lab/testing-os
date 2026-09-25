@@ -166,7 +166,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -220,6 +221,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1460,38 +1469,52 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.15.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "test",
-          "step": "4",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "test",
-          "step": "5",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         },
         {
           "job": "test",
-          "step": "6",
-          "text": "node dist/cli.js help"
+          "programs": [
+            "node"
+          ],
+          "step": "6"
         },
         {
           "job": "test",
-          "step": "7",
-          "text": "npm audit --audit-level=moderate"
+          "programs": [
+            "npm"
+          ],
+          "step": "7"
         },
         {
           "job": "test",
-          "step": "8",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "8"
         }
       ],
       "elsewhere": [],
@@ -1598,13 +1621,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -1622,7 +1649,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1684,23 +1711,31 @@
       "commands": [
         {
           "job": "publish",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
           "job": "publish",
-          "step": "3",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
           "job": "publish",
-          "step": "4",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "publish",
-          "step": "5",
-          "text": "npm publish --access public --provenance"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         }
       ],
       "elsewhere": [],

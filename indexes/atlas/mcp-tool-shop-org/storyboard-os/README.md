@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 66b9cce.
 
 ## What this is
 
-14 parts, mostly TypeScript (172 files) and JavaScript (6). Work enters through 9 doors; the busiest is CI, which reaches 11 parts. It publishes @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain), @storyboard-os/marketing-domain (packages/marketing-storyboard-domain), @storyboard-os/rpg-domain (packages/rpg-storyboard-domain), @storyboard-os/canvas (packages/storyboard-canvas), @storyboard-os/core (packages/storyboard-core) and @storyboard-os/routing (packages/storyboard-routing) to npm. People import @storyboard-os/canvas, @storyboard-os/cinematic-domain, @storyboard-os/core, @storyboard-os/marketing-domain, @storyboard-os/routing and @storyboard-os/rpg-domain.
+14 parts, mostly TypeScript (172 files), Astro (19), JavaScript (6) and CSS (2). Work enters through 9 doors; the busiest is CI, which reaches 11 parts. It publishes @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain), @storyboard-os/marketing-domain (packages/marketing-storyboard-domain), @storyboard-os/rpg-domain (packages/rpg-storyboard-domain), @storyboard-os/canvas (packages/storyboard-canvas), @storyboard-os/core (packages/storyboard-core) and @storyboard-os/routing (packages/storyboard-routing) to npm. It deploys a site to GitHub Pages. People import @storyboard-os/canvas, @storyboard-os/cinematic-domain, @storyboard-os/core, @storyboard-os/marketing-domain, @storyboard-os/routing and @storyboard-os/rpg-domain.
 
 ## What changed since 2026-09-25 (6714e4a)
 
@@ -95,11 +95,11 @@ These are candidates from names and call order, not a judgement.
 
 - **getFrameProgress** is exported by packages/marketing-storyboard-domain/src/project.ts (marketing-storyboard-domain) and packages/rpg-storyboard-domain/src/project.ts (rpg-storyboard-domain); the two look alike.
 - **getProjectProgress** is exported by packages/marketing-storyboard-domain/src/project.ts (marketing-storyboard-domain) and packages/rpg-storyboard-domain/src/project.ts (rpg-storyboard-domain); the two look alike.
+- **getStaticPaths** is exported by 3 parts (cinematic-storyboard, marketing-storyboard and rpg-storyboard); with the same name in this many parts it is most likely a shared contract, not a copy.
 - **humanizeConnectionType** is exported by packages/cinematic-storyboard-domain/src/labels.ts (cinematic-storyboard-domain) and packages/marketing-storyboard-domain/src/labels.ts (marketing-storyboard-domain); the two look alike.
 - **humanizeFrameType** is exported by packages/cinematic-storyboard-domain/src/labels.ts (cinematic-storyboard-domain) and packages/marketing-storyboard-domain/src/labels.ts (marketing-storyboard-domain); the two look alike.
-- **humanizeMissingReason** is exported by packages/cinematic-storyboard-domain/src/labels.ts (cinematic-storyboard-domain) and packages/marketing-storyboard-domain/src/labels.ts (marketing-storyboard-domain); the two look alike.
 
-And 5 more pairs.
+And 6 more pairs.
 
 ## Generated, never hand-edited
 
@@ -111,7 +111,7 @@ People write .github/, apps/cinematic-storyboard/, apps/marketing-storyboard/, a
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/cinematic-storyboard-domain/src/index.ts → packages/cinematic-storyboard-domain/src/schema.ts → packages/storyboard-core/src/density.ts
+.github/workflows/ci.yml → packages/cinematic-storyboard-domain/src/index.ts → packages/cinematic-storyboard-domain/src/beatStatus.ts → packages/cinematic-storyboard-domain/src/schema.ts → packages/storyboard-core/src/density.ts
 
 Read those in order to follow one pull request end to end.
 

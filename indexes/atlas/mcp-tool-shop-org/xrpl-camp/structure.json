@@ -253,6 +253,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -874,10 +882,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 11,
+      "dynamicReads": 6,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 4,
+      "dynamicWrites": 0,
       "entryPoints": [
         "xrpl_camp/cli.py"
       ],
@@ -6784,6 +6792,13 @@
       "origin": "authored",
       "outsidePlaces": [
         {
+          "reads": 9,
+          "where": [
+            "caller"
+          ],
+          "writes": 4
+        },
+        {
           "reads": 0,
           "where": [
             "temp"
@@ -6791,7 +6806,8 @@
           "writes": 1
         }
       ],
-      "outsideWrites": 1,
+      "outsideReads": 9,
+      "outsideWrites": 5,
       "role": "code",
       "testedBy": 19,
       "unresolvedNamed": [
@@ -6810,68 +6826,94 @@
       "commands": [
         {
           "job": "lint-and-test",
-          "step": "Set up Python ${{ matrix.python-version }}",
-          "text": "uv python install ${{ matrix.python-version }}"
+          "programs": [
+            "uv"
+          ],
+          "step": "Set up Python ${{ matrix.python-version }}"
         },
         {
           "job": "lint-and-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.15.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "lint-and-test",
-          "step": "Install dependencies",
-          "text": "uv sync --dev"
+          "programs": [
+            "uv"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "lint-and-test",
-          "step": "Dependency vulnerability scan",
-          "text": "uv run --with pip-audit pip-audit"
+          "programs": [
+            "uv"
+          ],
+          "step": "Dependency vulnerability scan"
         },
         {
           "job": "lint-and-test",
-          "step": "Verify (lint + test + build + smoke)",
-          "text": "bash scripts/verify.sh"
+          "programs": [
+            "bash"
+          ],
+          "step": "Verify (lint + test + build + smoke)"
         },
         {
           "job": "canary",
-          "step": "2",
-          "text": "uv python install 3.12"
+          "programs": [
+            "uv"
+          ],
+          "step": "2"
         },
         {
           "job": "canary",
-          "step": "3",
-          "text": "uv sync"
+          "programs": [
+            "uv"
+          ],
+          "step": "3"
         },
         {
           "job": "canary",
-          "step": "CLI smoke",
-          "text": "uv run xrpl-camp --help\nuv run xrpl-camp self-check\nuv run xrpl-camp start --dry-run < /dev/null\n"
+          "programs": [
+            "uv"
+          ],
+          "step": "CLI smoke"
         },
         {
           "job": "npm-check",
-          "step": "Syntax check launcher",
-          "text": "node -c bin/xrpl-camp.js"
+          "programs": [
+            "node"
+          ],
+          "step": "Syntax check launcher"
         },
         {
           "job": "npm-check",
-          "step": "Install npm dependencies (resolves @mcptoolshop/npm-launcher)",
-          "text": "npm install"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install npm dependencies (resolves @mcptoolshop/npm-launcher)"
         },
         {
           "job": "npm-check",
-          "step": "Packaging dry run",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "Packaging dry run"
         },
         {
           "job": "npm-check",
-          "step": "Launcher smoke test (real download + checksum + exec)",
-          "text": "node node_modules/@mcptoolshop/npm-launcher/bin/mcptoolshop-launch.js -- --help"
+          "programs": [
+            "node"
+          ],
+          "step": "Launcher smoke test (real download + checksum + exec)"
         },
         {
           "job": "npm-check",
-          "step": "Version consistency check",
-          "text": "bash scripts/check-versions.sh"
+          "programs": [
+            "bash"
+          ],
+          "step": "Version consistency check"
         }
       ],
       "elsewhere": [],
@@ -6999,13 +7041,20 @@
       "commands": [
         {
           "job": "check",
-          "step": "Run freshness check",
-          "text": "bash scripts/check-freshness.sh --out .github/freshness-report.md"
+          "programs": [
+            "bash"
+          ],
+          "step": "Run freshness check"
         },
         {
           "job": "check",
-          "step": "Open PR if the report changed",
-          "text": "if [ -z \"$(git status --porcelain -- .github/freshness-report.md)\" ]; then\n  echo \"Report content is unchanged since the last run -- nothing new to review, skipping PR.\"\n  exit 0\nfi\n\ngit config user.name \"github-actions[bot]\"\ngit config user.email \"41898282+github-actions[bot]@users.noreply.github.com\"\n\nBRANCH=\"freshness-check/$(date -u +%Y-%m-%d)\"\ngit checkout -b \"$BRANCH\"\ngit add .github/freshness-report.md\ngit commit -m \"chore: weekly freshness check ($(date -u +%Y-%m-%d))\"\ngit push origin \"$BRANCH\"\n\ngh pr create \\\n  --title \"Freshness check: pin / dependency drift ($(date -u +%Y-%m-%d))\" \\\n  --body-file .github/freshness-report.md \\\n  --base main \\\n  --head \"$BRANCH\"\n"
+          "programs": [
+            "date",
+            "echo",
+            "gh",
+            "git"
+          ],
+          "step": "Open PR if the report changed"
         }
       ],
       "elsewhere": [],
@@ -7076,13 +7125,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -7100,7 +7153,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -7162,53 +7215,80 @@
       "commands": [
         {
           "job": "build-binaries",
-          "step": "2",
-          "text": "uv python install 3.12"
+          "programs": [
+            "uv"
+          ],
+          "step": "2"
         },
         {
           "job": "build-binaries",
-          "step": "3",
-          "text": "uv venv"
+          "programs": [
+            "uv"
+          ],
+          "step": "3"
         },
         {
           "job": "build-binaries",
-          "step": "Install dependencies + PyInstaller",
-          "text": "uv pip install . \"pyinstaller>=6.9.0,<7.0\""
+          "programs": [
+            "uv"
+          ],
+          "step": "Install dependencies + PyInstaller"
         },
         {
           "job": "build-binaries",
-          "step": "Build binary",
-          "text": "VERSION=${GITHUB_REF_NAME#v}\nuv run pyinstaller --onefile --name \"xrpl-camp\" --console \\\n  --collect-submodules rich \\\n  --collect-data xrpl \\\n  xrpl_camp/__main__.py\nOUTNAME=\"xrpl-camp-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\nmv \"dist/xrpl-camp${{ matrix.ext }}\" \"dist/${OUTNAME}\"\necho \"ASSET_NAME=${OUTNAME}\" >> \"$GITHUB_ENV\"\n"
+          "programs": [
+            "echo",
+            "mv",
+            "uv"
+          ],
+          "step": "Build binary"
         },
         {
           "job": "github-release",
-          "step": "Generate checksums",
-          "text": "VERSION=${GITHUB_REF_NAME#v}\ncd artifacts\nsha256sum * > \"checksums-${VERSION}.txt\"\ncat \"checksums-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         },
         {
           "job": "publish-pypi",
-          "step": "Install build tools",
-          "text": "pip install build"
+          "programs": [
+            "pip"
+          ],
+          "step": "Install build tools"
         },
         {
           "job": "publish-pypi",
-          "step": "Build package",
-          "text": "python -m build"
+          "programs": [
+            "python"
+          ],
+          "step": "Build package"
         },
         {
           "job": "publish-pypi",
-          "step": "Verify PyPI actually serves this version",
-          "text": "bash scripts/verify-pypi-publish.sh \"${GITHUB_REF_NAME#v}\""
+          "programs": [
+            "bash"
+          ],
+          "step": "Verify PyPI actually serves this version"
         },
         {
           "job": "docker",
-          "step": "Verify the pushed image runs",
-          "text": "set -euo pipefail\nIMAGE=\"ghcr.io/mcp-tool-shop-org/xrpl-camp:${{ github.ref_name }}\"\nEXPECTED=\"${GITHUB_REF_NAME#v}\"\n# Match the version line by NAME, not by position. `awk '{print $2}'`\n# on raw stdout read the second word of the unmounted-/work warning\n# and reported a failure against a perfectly good image.\nLIVE=$(docker run --rm \"$IMAGE\" --version 2>/dev/null | tail -n 1 | awk '{print $2}')\nif [ \"$LIVE\" != \"$EXPECTED\" ]; then\n  echo \"::error::Image reports ${LIVE}, tag claims ${EXPECTED}.\"\n  exit 1\nfi\necho \"OK: ${IMAGE} reports ${LIVE}.\"\n"
+          "programs": [
+            "awk",
+            "docker",
+            "echo",
+            "tail"
+          ],
+          "step": "Verify the pushed image runs"
         },
         {
           "job": "release-outcome",
-          "step": "Check that GitHub Release and PyPI publish agree",
-          "text": "echo \"build-binaries: ${{ needs.build-binaries.result }}\"\necho \"github-release: ${{ needs.github-release.result }}\"\necho \"publish-pypi:   ${{ needs.publish-pypi.result }}\"\necho \"docker:         ${{ needs.docker.result }}\"\n\nif [ \"${{ needs.github-release.result }}\" = \"success\" ] && [ \"${{ needs.publish-pypi.result }}\" != \"success\" ]; then\n  echo \"::error::Release is INCONSISTENT for ${GITHUB_REF_NAME}: a GitHub Release was published, but publish-pypi did not succeed (result: ${{ needs.publish-pypi.result }}). PyPI does not have this release. Do not re-dispatch this workflow against the same tag -- check the Actions tab for an in-flight run first, then use 'Re-run failed jobs' rather than a fresh dispatch (see the concurrency comment near the top of this file).\"\n  exit 1\nfi\n\necho \"Release outcome is consistent (or nothing was expected to publish on this ref).\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Check that GitHub Release and PyPI publish agree"
         }
       ],
       "elsewhere": [],
@@ -7269,6 +7349,7 @@
       "runs": [
         {
           "job": "docker",
+          "packed": true,
           "path": "LICENSE",
           "runKind": "checks",
           "via": "docker build Dockerfile",
@@ -7279,6 +7360,7 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "README.md",
           "runKind": "checks",
           "via": "docker build Dockerfile",
@@ -7299,6 +7381,7 @@
         },
         {
           "job": "docker",
+          "packed": true,
           "path": "pyproject.toml",
           "runKind": "checks",
           "via": "docker build Dockerfile",
@@ -7319,6 +7402,7 @@
         {
           "directory": true,
           "job": "docker",
+          "packed": true,
           "path": "xrpl_camp/",
           "runKind": "checks",
           "via": "docker build Dockerfile",
@@ -7403,38 +7487,64 @@
       "commands": [
         {
           "job": "npm-publish",
-          "step": "Install npm >= 11.5 for OIDC",
-          "text": "set -euo pipefail\nmkdir -p \"$HOME/.npm-cli-sandbox\"\nnpm install --prefix \"$HOME/.npm-cli-sandbox\" npm@latest\necho \"$HOME/.npm-cli-sandbox/node_modules/.bin\" >> \"$GITHUB_PATH\"\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm"
+          ],
+          "step": "Install npm >= 11.5 for OIDC"
         },
         {
           "job": "npm-publish",
-          "step": "Confirm the npm in use can do OIDC",
-          "text": "set -euo pipefail\nNPM_VERSION=\"$(npm --version)\"\necho \"npm ${NPM_VERSION} / node $(node --version)\"\n# Fail here, loudly, rather than at the publish step where the\n# symptom is a 404 that reads like \"package not found\".\nMAJOR=\"${NPM_VERSION%%.*}\"\nREST=\"${NPM_VERSION#*.}\"\nMINOR=\"${REST%%.*}\"\nif [ \"$MAJOR\" -lt 11 ] || { [ \"$MAJOR\" -eq 11 ] && [ \"$MINOR\" -lt 5 ]; }; then\n  echo \"::error::npm ${NPM_VERSION} cannot negotiate OIDC; >= 11.5 required.\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node",
+            "npm"
+          ],
+          "step": "Confirm the npm in use can do OIDC"
         },
         {
           "job": "npm-publish",
-          "step": "Verify the tag matches every version surface",
-          "text": "set -euo pipefail\nTAG=\"${{ github.event.inputs.tag || github.ref_name }}\"\nbash scripts/check-versions.sh\nPKG=$(node -p \"require('./package.json').version\")\nif [ \"v${PKG}\" != \"$TAG\" ]; then\n  echo \"::error::Tag $TAG does not match package.json ${PKG}.\"\n  exit 1\nfi\n"
+          "programs": [
+            "bash",
+            "echo",
+            "node"
+          ],
+          "step": "Verify the tag matches every version surface"
         },
         {
           "job": "npm-publish",
-          "step": "Wait for the release binaries this launcher will fetch",
-          "text": "set -euo pipefail\nTAG=\"${{ github.event.inputs.tag || github.ref_name }}\"\n# publish.yml builds three binaries + a checksums file onto the same\n# tag. The launcher resolves them at runtime, so publishing npm first\n# would advertise a version that cannot actually run.\nfor attempt in $(seq 1 40); do\n  COUNT=$(gh release view \"$TAG\" --json assets \\\n    --jq '[.assets[] | select(.name | startswith(\"xrpl-camp-\"))] | length' \\\n    2>/dev/null || echo 0)\n  if [ \"${COUNT:-0}\" -ge 3 ]; then\n    echo \"Release $TAG has $COUNT binaries. Proceeding.\"\n    exit 0\n  fi\n  echo \"Attempt ${attempt}/40: $TAG has ${COUNT:-0} binaries, waiting 30s...\"\n  sleep 30\ndone\necho \"::error::Timed out waiting for $TAG binaries. npm was NOT published.\"\necho \"::error::Check publish.yml -- npx would fail for anyone installing this version.\"\nexit 1\n"
+          "programs": [
+            "echo",
+            "gh",
+            "seq",
+            "sleep"
+          ],
+          "step": "Wait for the release binaries this launcher will fetch"
         },
         {
           "job": "npm-publish",
-          "step": "6",
-          "text": "npm install"
+          "programs": [
+            "npm"
+          ],
+          "step": "6"
         },
         {
           "job": "npm-publish",
-          "step": "Publish to npm (OIDC trusted publishing, no token)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm (OIDC trusted publishing, no token)"
         },
         {
           "job": "npm-publish",
-          "step": "Verify npm actually serves this version",
-          "text": "set -euo pipefail\nTAG=\"${{ github.event.inputs.tag || github.ref_name }}\"\nEXPECTED=\"${TAG#v}\"\n# Same compensator as the PyPI side: a publish step can exit 0 while\n# the registry does not reflect it. The five-month gap this repo\n# carried was exactly that failure, unnoticed.\nfor attempt in $(seq 1 10); do\n  LIVE=$(npm view \"@mcptoolshop/xrpl-camp@${EXPECTED}\" version 2>/dev/null || true)\n  if [ \"$LIVE\" = \"$EXPECTED\" ]; then\n    echo \"OK: npm serves @mcptoolshop/xrpl-camp@${LIVE}.\"\n    exit 0\n  fi\n  echo \"Attempt ${attempt}/10: npm does not serve ${EXPECTED} yet, waiting 15s...\"\n  sleep 15\ndone\necho \"::error::npm publish exited 0 but the registry does not serve ${EXPECTED}.\"\nexit 1\n"
+          "programs": [
+            "echo",
+            "npm",
+            "seq",
+            "sleep"
+          ],
+          "step": "Verify npm actually serves this version"
         }
       ],
       "elsewhere": [],

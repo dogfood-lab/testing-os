@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 25c0ecc.
 
 ## What this is
 
-10 parts, mostly Python (61 files), JavaScript (2) and TypeScript (2). Work enters through 8 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. People run escape-the-valley and trail.
+10 parts, mostly Python (61 files), CSS (2), JavaScript (2), TypeScript (2), HTML (1) and shell (1). Work enters through 8 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run escape-the-valley and trail.
 
 ## What changed since 2026-09-25 (fa2660c)
 
@@ -83,11 +83,13 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **src/escape_the_valley/data/event_skeletons.json** is written by scripts/yaml_to_json.py.
+Every tracked place code writes here is edited by people too; see Hand-authored.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, the repository root and site/; 2 writes with paths built at run time may land here.
+People write .github/, assets/, docs/, the repository root and site/; 1 write with a path built at run time may land here.
+
+- **src/escape_the_valley/data/event_skeletons.json** is written by scripts/yaml_to_json.py from inputs this repository does not keep, and by people.
 
 ## Where to start
 
@@ -97,9 +99,9 @@ Read those in order to follow one run of trail end to end. This path follows tra
 
 ## What this map cannot see
 
-- 2 writes and 1 read use paths built at run time and are not named here.
-- 3 writes and 2 reads go to a path their caller passes, not to this repository.
-- 1 read goes to the directory the command is run in (.trail/), not to this repository.
+- 1 write uses a path built at run time and is not named here.
+- 2 writes and 13 reads go to a path their caller passes, not to this repository.
+- 5 writes go to the directory the command is run in (.trail/) or a path their caller passes, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

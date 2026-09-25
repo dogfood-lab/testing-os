@@ -77,10 +77,13 @@
     {
       "doors": 3,
       "importedBy": [],
-      "importedByTests": [],
+      "importedByTests": [
+        "ghost-on-the-menu",
+        "vibe-typer"
+      ],
       "kind": "part",
-      "name": "cabinets",
-      "partLabel": "cabinets"
+      "name": "scripts",
+      "partLabel": "scripts"
     },
     {
       "kind": "place",
@@ -88,6 +91,7 @@
         "vibe-typer"
       ],
       "target": "packages/vibe-typer/patterns/corpus/",
+      "tests": 2,
       "writers": [
         "vibe-typer"
       ]
@@ -102,6 +106,22 @@
       "removed": 0
     },
     "items": [
+      {
+        "kind": "import-added",
+        "sentence": "ghost-on-the-menu now imports scripts.",
+        "subjects": [
+          "ghost-on-the-menu",
+          "scripts"
+        ]
+      },
+      {
+        "kind": "import-added",
+        "sentence": "vibe-typer now imports scripts.",
+        "subjects": [
+          "vibe-typer",
+          "scripts"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "CI now also runs apps/cabinets/src/ and apps/cabinets/vite.config.ts.",
@@ -259,17 +279,11 @@
   "changesTogetherWithTests": 5,
   "commit": "745115cd1f0653a4e243b189e2cd0f749f795dc1",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly TypeScript (156 files), JavaScript (23) and Python (6). Work enters through 6 doors; CI and Site each reach 10 parts, and CI is followed because it comes first by name. It publishes @mcptoolshop/ghost-on-the-menu (packages/launcher) and @mcptoolshop/vibe-typer (packages/launcher-vibe-typer) to npm. People run ghost-on-the-menu and vibe-typer.",
+  "derived": "15 parts, mostly TypeScript (156 files), JavaScript (23), Python (6), CSS (2), Astro (1) and HTML (1). Work enters through 6 doors; CI and Site each reach 10 parts, and CI is followed because it comes first by name. It publishes @mcptoolshop/ghost-on-the-menu (packages/launcher) and @mcptoolshop/vibe-typer (packages/launcher-vibe-typer) to npm. It deploys a site to GitHub Pages. People run ghost-on-the-menu and vibe-typer.",
   "doors": [
     {
       "checks": [
-        "apps/cabinets/package.json",
-        "fixtures/tapes/",
-        "package.json",
         "packages/",
-        "pnpm-lock.yaml",
-        "pnpm-workspace.yaml",
-        "tsconfig.base.json",
         "voice/worker.py",
         "apps/",
         "eslint.config.js",
@@ -282,12 +296,26 @@
         "scripts/voice.mjs",
         "vitest.config.ts"
       ],
-      "checksCount": 18,
-      "checksMore": 177,
+      "checksCount": 12,
+      "checksMore": 10,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
       "name": "CI",
+      "packs": [
+        "apps/cabinets/package.json",
+        "fixtures/tapes/",
+        "package.json",
+        "packages/cabinet-server/package.json",
+        "packages/ghost-on-the-menu/package.json",
+        "packages/launcher-vibe-typer/package.json",
+        "packages/launcher/package.json",
+        "packages/tape-core/package.json",
+        "packages/vibe-typer/package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        "tsconfig.base.json"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -371,7 +399,9 @@
       ],
       "runsCount": 26,
       "runsMore": 61,
-      "sends": [],
+      "sends": [
+        "changes other repositories through the GitHub API"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request touching 20 paths",
@@ -479,7 +509,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         },
         {
           "boundary": "tape-core",
@@ -501,6 +531,7 @@
       "runsCount": 4,
       "runsMore": 2,
       "sends": [
+        "changes other repositories through the GitHub API",
         "deploys the site on main"
       ],
       "stages": [],
@@ -617,6 +648,7 @@
       "runsCount": 28,
       "runsMore": 86,
       "sends": [
+        "changes other repositories through the GitHub API",
         "publishes @mcptoolshop/ghost-on-the-menu (packages/launcher) and @mcptoolshop/vibe-typer (packages/launcher-vibe-typer) to npm (on a run by hand, only with dry_run false)"
       ],
       "stages": [],
@@ -830,29 +862,9 @@
       "to": "vibe-typer"
     },
     {
-      "from": "cabinets",
-      "fromTests": false,
-      "to": "cabinet-server"
-    },
-    {
-      "from": "cabinets",
-      "fromTests": false,
-      "to": "ghost-on-the-menu"
-    },
-    {
-      "from": "cabinets",
+      "from": "ghost-on-the-menu",
       "fromTests": true,
-      "to": "launcher"
-    },
-    {
-      "from": "cabinets",
-      "fromTests": false,
-      "to": "tape-core"
-    },
-    {
-      "from": "cabinets",
-      "fromTests": false,
-      "to": "vibe-typer"
+      "to": "scripts"
     },
     {
       "from": "ghost-on-the-menu",
@@ -873,6 +885,11 @@
       "from": "launcher-vibe-typer",
       "fromTests": false,
       "to": "launcher"
+    },
+    {
+      "from": "vibe-typer",
+      "fromTests": true,
+      "to": "scripts"
     },
     {
       "from": "vibe-typer",
@@ -970,13 +987,13 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:18:19.351Z",
+  "generatedAt": "2026-09-25T16:32:47.749Z",
   "limits": [
-    "17 imports could not be resolved: `apps/cabinets/vite.config.ts` imports a path built at run time; `apps/cabinets/vite.config.ts` imports a path built at run time; `packages/ghost-on-the-menu/test/cli.test.ts` imports a path built at run time; and 14 more.",
-    "7 writes and 14 reads use paths built at run time and are not named here.",
-    "6 writes and 97 reads go to a path their caller passes, not to this repository.",
+    "10 imports could not be resolved: `packages/launcher/src/serve.ts` imports a path built at run time, twice; `packages/vibe-typer/scripts/author.mjs` imports a path built at run time; `packages/vibe-typer/scripts/sweep-levels.mjs` imports a path built at run time; and 6 more.",
+    "6 writes and 12 reads use paths built at run time and are not named here.",
+    "7 writes and 98 reads go to a path their caller passes, not to this repository.",
     "5 writes and 9 reads go to the directory the command is run in (.venv/, catalog/, film/ and 1 more place), not to this repository.",
-    "2 writes and 4 reads go to the directory the command is run in (film/, fixtures/ and packages/) or a path their caller passes, not to this repository.",
+    "2 writes and 5 reads go to the directory the command is run in (film/, fixtures/, ghost and 1 more place) or a path their caller passes, not to this repository.",
     "4 writes go to a temporary directory, not to this repository.",
     "6 commands are built at run time and not followed, 3 of them in tests.",
     "There is a Dockerfile that a workflow builds and none pushes and Docker MCP Catalog entries at catalog/server.vibe.yaml and catalog/server.yaml; what ships from them goes from outside this repository, and is not on this page."
@@ -1013,7 +1030,7 @@
   "summaryFrom": null,
   "testFiles": 76,
   "testedBy": {
-    "cabinet-server": 22,
+    "cabinet-server": 23,
     "cabinets": 13,
     "ghost-on-the-menu": 31,
     "launcher": 9,
@@ -1023,7 +1040,7 @@
     "vibe-typer": 32,
     "voice": 1
   },
-  "unnamedWrites": 7,
+  "unnamedWrites": 6,
   "unread": [
     {
       "place": "docs/vibe-typer.author-sample.md",

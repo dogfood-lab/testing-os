@@ -441,6 +441,16 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
+      "outsideReads": 1,
       "role": "code",
       "testedBy": 1,
       "unresolvedSites": 0
@@ -512,6 +522,16 @@
         },
         {
           "hash": "d901a22ff877c082de87244e2e04cf9fe9facb1a46795c1f97dd7561b6011f49",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/styles/dashboard-fonts.css",
+            "site/src/styles/dashboard.css"
+          ],
+          "importsFiles": [
+            "site/src/styles/dashboard-fonts.css",
+            "site/src/styles/dashboard.css",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/layouts/DashboardLayout.astro"
         },
         {
@@ -599,50 +619,105 @@
         },
         {
           "hash": "914479376d1fa029124a292e14b1ab9f0c5cf488257e6cc50ea71bb81cf22e65",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/404.astro"
         },
         {
           "hash": "174190ea6e03f4dbd13328a21c29c1497d7d944e6f8f36f23439f6c2a5a7daa7",
+          "importsFiles": [
+            "site/src/layouts/DashboardLayout.astro"
+          ],
           "path": "site/src/pages/app/404.astro"
         },
         {
           "hash": "b98b49f7334a7fca0958c19a30fc7c3f37a976d205077a4457c5531c9d2eb177",
+          "importsFiles": [
+            "site/src/layouts/DashboardLayout.astro"
+          ],
           "path": "site/src/pages/app/artifacts.astro"
         },
         {
           "hash": "a5d0aa1270fb67f52b20683081eb95620a250b9335a45689089b977dd756a867",
+          "importsFiles": [
+            "site/src/layouts/DashboardLayout.astro"
+          ],
           "path": "site/src/pages/app/doctor.astro"
         },
         {
           "hash": "ca7309dffe57d3eb50cd708cb291ae4804dd62bb2a8eac13e36e7f3e48f1e554",
+          "importsFiles": [
+            "site/src/layouts/DashboardLayout.astro",
+            "site/src/lib/dashboard-ui.ts"
+          ],
           "path": "site/src/pages/app/facilitator/index.astro"
         },
         {
           "hash": "cf9f127c89b44d7b18bc8ec6f6dac66f06f94da3577f3ef1d0356df2a5cca990",
+          "importsFiles": [
+            "site/src/layouts/DashboardLayout.astro"
+          ],
           "path": "site/src/pages/app/facilitator/runs.astro"
         },
         {
           "hash": "00fd0c422b6bf5504207d476d1f1e7db90c355d93c1c71cfabd788f6fbe4f6bf",
+          "importsFiles": [
+            "site/src/layouts/DashboardLayout.astro"
+          ],
           "path": "site/src/pages/app/index.astro"
         },
         {
+          "exports": [
+            "getStaticPaths"
+          ],
           "hash": "cc8015f1aa906ad8c93854c6f27a62d4583f30801107ecd9cae0fa19ffa22a21",
+          "importsFiles": [
+            "site/src/layouts/DashboardLayout.astro",
+            "site/src/lib/module-ids.ts"
+          ],
           "path": "site/src/pages/app/modules/[id].astro"
         },
         {
           "hash": "51a4fce1e4ea80a443e9a8a0b035f295c51a23f6ff805bb5ac8bf38abb01c5c8",
+          "importsFiles": [
+            "site/src/layouts/DashboardLayout.astro"
+          ],
           "path": "site/src/pages/app/modules/index.astro"
         },
         {
+          "exports": [
+            "getStaticPaths"
+          ],
           "hash": "1aa2f76659bd75fd9e8ff08a2d4860575a83781327a70582177b55d4a06e8d93",
+          "importsFiles": [
+            "site/src/layouts/DashboardLayout.astro",
+            "site/src/lib/module-ids.ts"
+          ],
           "path": "site/src/pages/app/run/[id].astro"
         },
         {
           "hash": "2c104dee5956b6622d559a970eaf69f321da74e0c3d623031163969e913d0fbd",
+          "importsFiles": [
+            "site/src/layouts/DashboardLayout.astro"
+          ],
           "path": "site/src/pages/app/verify.astro"
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -2856,10 +2931,10 @@
       "unresolvedSites": 1
     },
     {
-      "dynamicReads": 19,
+      "dynamicReads": 6,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 6,
+      "dynamicWrites": 2,
       "entryPoints": [
         "xrpl_lab/cli.py"
       ],
@@ -7584,6 +7659,13 @@
       "origin": "authored",
       "outsidePlaces": [
         {
+          "reads": 50,
+          "where": [
+            "caller"
+          ],
+          "writes": 6
+        },
+        {
           "reads": 3,
           "where": [
             "caller",
@@ -7592,7 +7674,16 @@
           "writes": 0
         },
         {
-          "reads": 2,
+          "reads": 0,
+          "where": [
+            "caller",
+            "home:.xrpl-lab",
+            "home:.xrpl-lab/"
+          ],
+          "writes": 1
+        },
+        {
+          "reads": 3,
           "where": [
             "caller",
             "home:.xrpl-lab/"
@@ -7600,7 +7691,7 @@
           "writes": 0
         },
         {
-          "reads": 1,
+          "reads": 2,
           "where": [
             "cwd"
           ],
@@ -7621,7 +7712,8 @@
           "writes": 0
         }
       ],
-      "outsideReads": 8,
+      "outsideReads": 60,
+      "outsideWrites": 7,
       "role": "code",
       "testedBy": 115,
       "unresolvedSites": 0
@@ -7633,43 +7725,64 @@
       "commands": [
         {
           "job": "lint-and-test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "lint-and-test",
-          "step": "Install dependencies",
-          "text": "python -m pip install --upgrade pip\npip install -e \".[dev]\"\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "lint-and-test",
-          "step": "Lint with ruff",
-          "text": "ruff check xrpl_lab/ tests/ > ruff.log 2>&1 || RUFF_EXIT=$?\ncat ruff.log\nexit ${RUFF_EXIT:-0}\n"
+          "programs": [
+            "1",
+            "cat",
+            "ruff"
+          ],
+          "step": "Lint with ruff"
         },
         {
           "job": "lint-and-test",
-          "step": "Run tests",
-          "text": "pytest tests/ -v --tb=short --junitxml=pytest-report.xml"
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run tests"
         },
         {
           "job": "lint-and-test",
-          "step": "Lock file integrity (uv lock --check)",
-          "text": "python -m pip install uv\nif [ -f uv.lock ]; then\n  uv lock --check\nfi\n"
+          "programs": [
+            "python",
+            "uv"
+          ],
+          "step": "Lock file integrity (uv lock --check)"
         },
         {
           "job": "lint-and-test",
-          "step": "Dependency audit (pip-audit)",
-          "text": "set -o pipefail\npip-audit --skip-editable --ignore-vuln PYSEC-2026-196 | tee pip-audit.log\n"
+          "programs": [
+            "pip-audit",
+            "tee"
+          ],
+          "step": "Dependency audit (pip-audit)"
         },
         {
           "job": "site-test",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "site-test",
-          "step": "Run site tests",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Run site tests"
         }
       ],
       "elsewhere": [],
@@ -7802,13 +7915,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -7826,7 +7943,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 10
+          "files": 26
         }
       ],
       "readers": [],
@@ -7888,13 +8005,18 @@
       "commands": [
         {
           "job": "publish",
-          "step": "Verify tag matches pyproject.toml version",
-          "text": "if [ -z \"${TAG_REF}\" ]; then\n  echo \"No tag ref (workflow_dispatch) — skipping version gate.\"\n  exit 0\nfi\nPY_VERSION=$(python3 -c \"import tomllib; print(tomllib.loads(open('pyproject.toml').read())['project']['version'])\")\nTAG_VERSION=\"${TAG_REF#v}\"\necho \"pyproject.toml: ${PY_VERSION} | tag: ${TAG_REF} -> ${TAG_VERSION}\"\nif [ \"${PY_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match pyproject.toml version ${PY_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "python3"
+          ],
+          "step": "Verify tag matches pyproject.toml version"
         },
         {
           "job": "publish",
-          "step": "Build sdist + wheel",
-          "text": "python -m pip install --upgrade build\npython -m build\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Build sdist + wheel"
         }
       ],
       "elsewhere": [],
@@ -7975,33 +8097,49 @@
       "commands": [
         {
           "job": "build",
-          "step": "2",
-          "text": "uv python install 3.12"
+          "programs": [
+            "uv"
+          ],
+          "step": "2"
         },
         {
           "job": "build",
-          "step": "3",
-          "text": "uv venv"
+          "programs": [
+            "uv"
+          ],
+          "step": "3"
         },
         {
           "job": "build",
-          "step": "Install dependencies + PyInstaller",
-          "text": "uv pip install . \"pyinstaller>=6.9.0\""
+          "programs": [
+            "uv"
+          ],
+          "step": "Install dependencies + PyInstaller"
         },
         {
           "job": "build",
-          "step": "Set path separator",
-          "text": "echo \"sep=$([[ \"$RUNNER_OS\" == \"Windows\" ]] && echo ';' || echo ':')\" >> \"$GITHUB_OUTPUT\""
+          "programs": [
+            "echo"
+          ],
+          "step": "Set path separator"
         },
         {
           "job": "build",
-          "step": "Build binary",
-          "text": "REF_NAME=\"${{ github.event.workflow_run.head_branch || github.event.inputs.tag || github.event.release.tag_name || github.ref_name }}\"\nVERSION=${REF_NAME#v}\nuv run pyinstaller --onefile --name \"xrpl-lab\" --console \\\n  --collect-submodules rich \\\n  --collect-submodules pydantic \\\n  --collect-data xrpl \\\n  --add-data \"modules${{ steps.sep.outputs.sep }}modules\" \\\n  xrpl_lab/__main__.py\nOUTNAME=\"xrpl-lab-${VERSION}-${{ matrix.target }}${{ matrix.ext }}\"\nmv \"dist/xrpl-lab${{ matrix.ext }}\" \"dist/${OUTNAME}\"\necho \"ASSET_NAME=${OUTNAME}\" >> \"$GITHUB_ENV\"\n"
+          "programs": [
+            "echo",
+            "mv",
+            "uv"
+          ],
+          "step": "Build binary"
         },
         {
           "job": "release",
-          "step": "Generate checksums",
-          "text": "REF_NAME=\"${{ github.event.workflow_run.head_branch || github.event.inputs.tag || github.event.release.tag_name || github.ref_name }}\"\nVERSION=${REF_NAME#v}\ncd artifacts\nsha256sum * > \"checksums-${VERSION}.txt\"\ncat \"checksums-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         }
       ],
       "elsewhere": [],
@@ -8080,43 +8218,69 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22 ships npm 10.9, which signs Sigstore provenance but cannot\n# negotiate the OIDC auth path for trusted publishing (the PUT returns\n# a misleading 404 \"not in this registry\"). An in-place\n# `npm install -g npm@latest` races on the bundled npm's arborist\n# rebuild and breaks irrecoverably; a sandbox install + PATH shadow\n# avoids the race. See memory: npm-115-required-for-oidc.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} -> ${TAG_VERSION} | package.json: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "Verify tag matches pyproject.toml version",
-          "text": "PY_VERSION=$(python3 -c \"import tomllib; print(tomllib.loads(open('pyproject.toml').read())['project']['version'])\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"pyproject.toml: ${PY_VERSION}\"\nif [ \"${PY_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match pyproject.toml version ${PY_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "python3"
+          ],
+          "step": "Verify tag matches pyproject.toml version"
         },
         {
           "job": "release",
-          "step": "Verify tag matches bin/xrpl-lab.js launch config",
-          "text": "# export (not a bare shell var) so the child `node` process sees it in\n# process.env — the shell-var form read undefined in node and false-failed\n# every real tag push (the local test masked it; CI semantics differ).\nexport TAG_VERSION=\"${GITHUB_REF_NAME#v}\"\nnode -e '\n  const fs = require(\"fs\");\n  const src = fs.readFileSync(\"bin/xrpl-lab.js\", \"utf8\");\n  const m = src.match(/MCPTOOLSHOP_LAUNCH_CONFIG\\s*=\\s*JSON\\.stringify\\((\\{[\\s\\S]*?\\})\\)/);\n  if (!m) { console.error(\"::error::Could not locate MCPTOOLSHOP_LAUNCH_CONFIG in bin/xrpl-lab.js\"); process.exit(1); }\n  const cfg = eval(\"(\" + m[1] + \")\");\n  const tag = process.env.TAG_VERSION;\n  console.log(\"bin/xrpl-lab.js: version=\" + cfg.version + \" tag=\" + cfg.tag + \" | tag: \" + tag);\n  let ok = true;\n  if (cfg.version !== tag) { console.error(\"::error::Tag \" + tag + \" does not match bin/xrpl-lab.js version \" + cfg.version); ok = false; }\n  if (cfg.tag !== \"v\" + tag) { console.error(\"::error::Release tag v\" + tag + \" does not match bin/xrpl-lab.js tag \" + cfg.tag); ok = false; }\n  process.exit(ok ? 0 : 1);\n'\n"
+          "programs": [
+            "node"
+          ],
+          "step": "Verify tag matches bin/xrpl-lab.js launch config"
         },
         {
           "job": "release",
-          "step": "Install dependencies",
-          "text": "npm install --no-audit --no-fund"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (verify tarball shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify tarball shape)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release (idempotent)",
-          "text": "# Extract the `## <version> — ...` section from CHANGELOG.md as notes;\n# fall back to the tag name if the section is missing.\nVERSION=\"${GITHUB_REF_NAME#v}\"\nNOTES_FILE=\"$(mktemp)\"\nawk -v ver=\"${VERSION}\" '\n  $0 ~ \"^## \" ver \" \" {capture=1; next}\n  capture && /^## / {exit}\n  capture {print}\n' CHANGELOG.md > \"${NOTES_FILE}\"\n\nif [ ! -s \"${NOTES_FILE}\" ]; then\n  echo \"XRPL Lab ${GITHUB_REF_NAME}\" > \"${NOTES_FILE}\"\n  echo \"\" >> \"${NOTES_FILE}\"\n  echo \"See CHANGELOG.md for details.\" >> \"${NOTES_FILE}\"\nfi\n\n# Idempotent: skip creation if the release already exists (re-pushed\n# tag / workflow_dispatch re-run). Publishing the release fires\n# `release: published` -> publish-pypi.yml + release-binaries.yml.\nif gh release view \"${GITHUB_REF_NAME}\" >/dev/null 2>&1; then\n  echo \"Release ${GITHUB_REF_NAME} already exists; skipping create.\"\nelse\n  gh release create \"${GITHUB_REF_NAME}\" \\\n    --title \"XRPL Lab ${GITHUB_REF_NAME}\" \\\n    --notes-file \"${NOTES_FILE}\" \\\n    --verify-tag\nfi\n"
+          "programs": [
+            "1",
+            "awk",
+            "echo",
+            "gh",
+            "mktemp"
+          ],
+          "step": "Create GitHub Release (idempotent)"
         }
       ],
       "elsewhere": [],
@@ -8196,18 +8360,28 @@
       "commands": [
         {
           "job": "testnet-smoke",
-          "step": "Install xrpl-lab",
-          "text": "python -m pip install --upgrade pip\npip install -e .\n"
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install xrpl-lab"
         },
         {
           "job": "testnet-smoke",
-          "step": "Run smoke test",
-          "text": "# Tee the run to smoke.log so the WHY of a failure is captured, not\n# just a red X. The script prints only status lines and txid PREFIXES\n# — never wallet.seed — so the log is safe to surface/upload. `set -o\n# pipefail` keeps the python exit code (the tee would otherwise mask\n# a non-zero exit). On failure the on-failure step below and the\n# always-on artifact upload make smoke.log readable in the run UI.\nset -o pipefail\npython -c \"\nimport asyncio\nimport json\nfrom xrpl.wallet import Wallet\nfrom xrpl_lab.transport.xrpl_testnet import XRPLTestnetTransport\n\nasync def smoke():\n    transport = XRPLTestnetTransport()\n\n    # 1. Check network\n    info = await transport.get_network_info()\n    assert info.connected, f'RPC not connected: {info.rpc_url}'\n    print(f'RPC connected: ledger {info.ledger_index}')\n\n    # 2. Create temp wallet and fund\n    wallet = Wallet.create()\n    print(f'Temp wallet: {wallet.address}')\n\n    fund = await transport.fund_from_faucet(wallet.address)\n    assert fund.success, f'Faucet failed: {fund.message}'\n    print(f'Funded: {fund.balance} XRP')\n\n    # 3. Send self-payment\n    result = await transport.submit_payment(\n        wallet.seed, wallet.address, '10', 'XRPLLAB|SMOKE'\n    )\n    assert result.success, f'Payment failed: {result.error}'\n    print(f'Payment OK: {result.txid[:24]}...')\n\n    # 4. Verify tx\n    tx = await transport.fetch_tx(result.txid)\n    assert tx.result_code == 'tesSUCCESS', f'Verify failed: {tx.result_code}'\n    print(f'Verified: {tx.result_code}, ledger {tx.ledger_index}')\n\n    print('Smoke test passed.')\n\nasyncio.run(smoke())\n\" 2>&1 | tee smoke.log\n"
+          "programs": [
+            "1",
+            "python",
+            "tee"
+          ],
+          "step": "Run smoke test"
         },
         {
           "job": "testnet-smoke",
-          "step": "Surface failure detail",
-          "text": "{\n  echo '### Testnet smoke failed'\n  echo ''\n  echo 'Last output from the smoke run (no secrets — status lines and txid prefixes only):'\n  echo ''\n  echo '```'\n  cat smoke.log || echo '(smoke.log not produced — the run failed before any output)'\n  echo '```'\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "cat",
+            "echo"
+          ],
+          "step": "Surface failure detail"
         }
       ],
       "elsewhere": [],
@@ -8789,6 +8963,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tests/test_w6_dashboard_run_state.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "site/src/lib/api.ts",
@@ -8803,8 +8983,20 @@
           "fromTests": true
         },
         {
+          "by": "tests/test_w2_dashboard_dryrun_autostart.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tests/test_w5_dashboard_dryrun_behavior.py",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_w5_dashboard_dryrun_behavior.py",
+          "call": "read_text",
           "confidence": "ast",
           "fromTests": true
         }
@@ -8821,14 +9013,32 @@
           "fromTests": true
         },
         {
+          "by": "tests/test_w2_dashboard_dryrun_autostart.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tests/test_w5_dashboard_dryrun_behavior.py",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
         },
         {
+          "by": "tests/test_w5_dashboard_dryrun_behavior.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tests/test_w6_dashboard_run_state.py",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_w6_dashboard_run_state.py",
+          "call": "read_text",
           "confidence": "ast",
           "fromTests": true
         }
@@ -8841,6 +9051,12 @@
         {
           "by": "tests/test_w6_dashboard_run_state.py",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_w6_dashboard_run_state.py",
+          "call": "read_text",
           "confidence": "ast",
           "fromTests": true
         }

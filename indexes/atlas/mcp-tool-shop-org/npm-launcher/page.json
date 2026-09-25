@@ -44,8 +44,66 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "backpropagate (examples/backpropagate/package.json) is a new command. It runs examples/backpropagate/bin/backpropagate.js.",
+        "subjects": [
+          "examples/backpropagate/package.json",
+          "examples/backpropagate/bin/backpropagate.js"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "sovereignty (examples/sovereignty/package.json) is a new command. It runs examples/sovereignty/bin/sovereignty.js.",
+        "subjects": [
+          "examples/sovereignty/package.json",
+          "examples/sovereignty/bin/sovereignty.js"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "xrpl-camp (examples/xrpl-camp/package.json) is a new command. It runs examples/xrpl-camp/bin/xrpl-camp.js.",
+        "subjects": [
+          "examples/xrpl-camp/package.json",
+          "examples/xrpl-camp/bin/xrpl-camp.js"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 1 more change to a door.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": "examples/backpropagate/LICENSE is now read by .github/workflows/publish-wrapper.yml.",
+        "subjects": [
+          "examples/backpropagate/LICENSE",
+          ".github/workflows/publish-wrapper.yml"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "examples/backpropagate/README.md is now read by .github/workflows/publish-wrapper.yml.",
+        "subjects": [
+          "examples/backpropagate/README.md",
+          ".github/workflows/publish-wrapper.yml"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "examples/backpropagate/package.json is now read by .github/workflows/publish-wrapper.yml.",
+        "subjects": [
+          "examples/backpropagate/package.json",
+          ".github/workflows/publish-wrapper.yml"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 9 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -53,7 +111,7 @@
       "commit": "bb50ee9f783b06f651331192af9e353a93192761",
       "generatedAt": "2026-09-25T02:15:53.850Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -62,7 +120,7 @@
   "changesTogetherWithTests": 0,
   "commit": "07c7132c09eb143dfc0cbe1bbdedd3668eb4e8f0",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly JavaScript (15 files) and TypeScript (2). Work enters through 6 doors; the busiest is CI, which reaches 3 parts. It publishes @mcptoolshop/npm-launcher to npm, and a package to npm, chosen at run time. People run mcptoolshop-launch. People import @mcptoolshop/npm-launcher.",
+  "derived": "10 parts, mostly JavaScript (15 files), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 10 doors; the busiest is CI, which reaches 3 parts. It publishes @mcptoolshop/npm-launcher, @mcptoolshop/backpropagate (examples/backpropagate), @mcptoolshop/sovereignty (examples/sovereignty), @mcptoolshop/xrpl-camp (examples/xrpl-camp) and @mcptoolshop/xrpl-lab (examples/xrpl-lab) to npm. It deploys a site to GitHub Pages. People run backpropagate, mcptoolshop-launch, sovereignty, xrpl-camp and xrpl-lab. People import @mcptoolshop/npm-launcher.",
   "doors": [
     {
       "checks": [],
@@ -153,7 +211,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -185,7 +243,7 @@
       "runsCount": 0,
       "runsMore": 0,
       "sends": [
-        "publishes a package to npm, chosen at run time"
+        "publishes @mcptoolshop/backpropagate (examples/backpropagate), @mcptoolshop/sovereignty (examples/sovereignty), @mcptoolshop/xrpl-camp (examples/xrpl-camp) and @mcptoolshop/xrpl-lab (examples/xrpl-lab) to npm"
       ],
       "stages": [],
       "triggers": [
@@ -248,6 +306,110 @@
       "sends": [],
       "stages": [],
       "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "examples/backpropagate/package.json",
+      "id": "examples/backpropagate/package.json#backpropagate",
+      "kind": "command",
+      "landings": [],
+      "name": "backpropagate",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "backpropagate",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "examples/backpropagate/bin/backpropagate.js"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "examples/sovereignty/package.json",
+      "id": "examples/sovereignty/package.json#sovereignty",
+      "kind": "command",
+      "landings": [],
+      "name": "sovereignty",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "sovereignty",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "examples/sovereignty/bin/sovereignty.js"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "examples/xrpl-camp/package.json",
+      "id": "examples/xrpl-camp/package.json#xrpl-camp",
+      "kind": "command",
+      "landings": [],
+      "name": "xrpl-camp",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "xrpl-camp",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "examples/xrpl-camp/bin/xrpl-camp.js"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "examples/xrpl-lab/package.json",
+      "id": "examples/xrpl-lab/package.json#xrpl-lab",
+      "kind": "command",
+      "landings": [],
+      "name": "xrpl-lab",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "xrpl-lab",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "examples/xrpl-lab/bin/xrpl-lab.js"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
     }
   ],
   "duplicates": [],
@@ -266,7 +428,7 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T09:18:49.276Z",
+  "generatedAt": "2026-09-25T16:33:16.013Z",
   "limits": [
     "3 reads use paths built at run time and are not named here.",
     "4 writes and 5 reads go to a path their caller passes, not to this repository.",

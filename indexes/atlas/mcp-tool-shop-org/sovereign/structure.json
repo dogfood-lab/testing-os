@@ -476,7 +476,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -538,6 +539,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -584,6 +593,9 @@
           "entry": "check",
           "entryRule": 1,
           "hash": "310a1161fd367259d61f862a21dee1b85e64a1f919d279e06ee40febc92d5f92",
+          "importsFiles": [
+            "tools/diagnosis/sim.mjs"
+          ],
           "path": "test/determinism.test.mjs",
           "sequences": []
         },
@@ -630,14 +642,7 @@
       "origin": "authored",
       "role": "test",
       "testedBy": 0,
-      "unresolvedNamed": [
-        {
-          "path": "test/determinism.test.mjs",
-          "specifier": null,
-          "why": "dynamic"
-        }
-      ],
-      "unresolvedSites": 1
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 9,
@@ -1015,7 +1020,7 @@
       "name": "tools",
       "origin": "authored",
       "role": "code",
-      "testedBy": 0,
+      "testedBy": 1,
       "unresolvedSites": 0
     }
   ],
@@ -1025,33 +1030,45 @@
       "commands": [
         {
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.21.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "test",
-          "step": "Install dependencies",
-          "text": "npm ci || npm install"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "test",
-          "step": "Smoke tests",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Smoke tests"
         },
         {
           "job": "test",
-          "step": "npm pack dry-run",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run"
         },
         {
           "job": "test",
-          "step": "Verify CLI flags",
-          "text": "node bin/sovereign.js --version\nnode bin/sovereign.js --path > /dev/null\nnode bin/sovereign.js --help > /dev/null\n"
+          "programs": [
+            "node"
+          ],
+          "step": "Verify CLI flags"
         },
         {
           "job": "test",
-          "step": "Coverage (Node 20 only)",
-          "text": "npm run coverage"
+          "programs": [
+            "npm"
+          ],
+          "step": "Coverage (Node 20 only)"
         }
       ],
       "elsewhere": [],
@@ -1073,6 +1090,15 @@
           "boundary": "test",
           "depth": 0,
           "files": 4
+        },
+        {
+          "boundary": "tools",
+          "depth": 1,
+          "enters": {
+            "file": "tools/diagnosis/sim.mjs",
+            "from": "test/determinism.test.mjs"
+          },
+          "files": 1
         }
       ],
       "readers": [],
@@ -1158,18 +1184,25 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site deps",
-          "text": "npm ci || npm install"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site deps"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         },
         {
           "job": "build",
-          "step": "Copy release bundle into dist",
-          "text": "mkdir -p site/dist/release\ncp -r release/* site/dist/release/\n"
+          "programs": [
+            "cp",
+            "mkdir"
+          ],
+          "step": "Copy release bundle into dist"
         }
       ],
       "elsewhere": [],
@@ -1187,7 +1220,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1249,43 +1282,67 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth",
-          "text": "# The in-place 'npm install -g npm@latest' on Node 22's bundled npm\n# 10.9 races on its own arborist rebuild and breaks irrecoverably\n# (MODULE_NOT_FOUND: promise-retry). Workaround: install npm@latest\n# as a regular dependency into a sandbox directory and prepend its\n# bin to PATH. The system npm is left untouched; we just shadow it.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n# Smoke-test the sandboxed npm\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} → ${TAG_VERSION}\"\necho \"Package: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "Install dependencies",
-          "text": "npm ci || npm install"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install dependencies"
         },
         {
           "job": "release",
-          "step": "Smoke tests",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Smoke tests"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (verify shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify shape)"
         },
         {
           "job": "release",
-          "step": "Build release zip",
-          "text": "ZIP_NAME=\"sovereign-${GITHUB_REF_NAME}-release.zip\"\ncd release\nzip -r \"../${ZIP_NAME}\" .\ncd ..\nls -la \"${ZIP_NAME}\"\necho \"ZIP_NAME=${ZIP_NAME}\" >> \"$GITHUB_ENV\"\n"
+          "programs": [
+            "cd",
+            "echo",
+            "ls",
+            "zip"
+          ],
+          "step": "Build release zip"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
           "job": "release",
-          "step": "Create GitHub Release",
-          "text": "gh release create \"${GITHUB_REF_NAME}\" \\\n  --title \"Sovereign ${GITHUB_REF_NAME}\" \\\n  --notes-file CHANGELOG.md \\\n  --verify-tag \\\n  \"${ZIP_NAME}\"\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub Release"
         }
       ],
       "elsewhere": [],
@@ -1317,6 +1374,15 @@
           "boundary": "test",
           "depth": 0,
           "files": 4
+        },
+        {
+          "boundary": "tools",
+          "depth": 1,
+          "enters": {
+            "file": "tools/diagnosis/sim.mjs",
+            "from": "test/determinism.test.mjs"
+          },
+          "files": 1
         }
       ],
       "readers": [],
@@ -1467,7 +1533,14 @@
       "usesWorkflowToken": false
     }
   ],
-  "edges": [],
+  "edges": [
+    {
+      "from": "test",
+      "fromTests": true,
+      "kind": "file",
+      "to": "tools"
+    }
+  ],
   "generatedFrom": {
     "commit": "b5f1ba51730de2346327de4981d7bc860ad195d5",
     "tracked": 159
@@ -1631,11 +1704,6 @@
           "confidence": "ast"
         },
         {
-          "by": "site/src/site-config.ts",
-          "call": "literal",
-          "confidence": "ast"
-        },
-        {
           "by": "test/balance-revalidate.mjs",
           "call": "readFileSync",
           "confidence": "ast",
@@ -1727,18 +1795,6 @@
         }
       ],
       "target": "test/smoke.test.mjs",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "test/determinism.test.mjs",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "tools/diagnosis/sim.mjs",
       "writers": []
     }
   ],

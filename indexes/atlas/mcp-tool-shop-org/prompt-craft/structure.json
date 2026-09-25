@@ -95,7 +95,8 @@
       "name": "npm",
       "origin": "authored",
       "role": "code",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -241,7 +242,7 @@
       "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 4,
+      "dynamicWrites": 3,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -286,6 +287,16 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 0,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        }
+      ],
+      "outsideWrites": 1,
       "role": "code",
       "testedBy": 9,
       "unresolvedSites": 0
@@ -349,6 +360,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -380,10 +399,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 13,
+      "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 8,
+      "dynamicWrites": 2,
       "entryPoints": [
         "src/pcraft/cli/__init__.py"
       ],
@@ -5994,7 +6013,18 @@
       ],
       "importConfidence": "full",
       "name": "src",
-      "origin": "authored",
+      "origin": "mixed",
+      "outsidePlaces": [
+        {
+          "reads": 22,
+          "where": [
+            "caller"
+          ],
+          "writes": 8
+        }
+      ],
+      "outsideReads": 22,
+      "outsideWrites": 8,
       "role": "code",
       "testedBy": 37,
       "unresolvedNamed": [
@@ -7994,32 +8024,42 @@
   ],
   "doors": [
     {
-      "checksCount": 3,
+      "checksCount": 2,
       "commands": [
         {
           "job": "verify",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "verify",
-          "step": "install (editable, dev extra)",
-          "text": "python -m pip install -e \".[dev]\" build"
+          "programs": [
+            "python"
+          ],
+          "step": "install (editable, dev extra)"
         },
         {
           "job": "verify",
-          "step": "verify",
-          "text": "python verify.py --installed"
+          "programs": [
+            "python"
+          ],
+          "step": "verify"
         },
         {
           "job": "verify",
-          "step": "install pip-audit",
-          "text": "python -m pip install pip-audit \"setuptools>=83\""
+          "programs": [
+            "python"
+          ],
+          "step": "install pip-audit"
         },
         {
           "job": "verify",
-          "step": "dependency audit",
-          "text": "python -m pip_audit --skip-editable --progress-spinner off"
+          "programs": [
+            "python"
+          ],
+          "step": "dependency audit"
         }
       ],
       "elsewhere": [],
@@ -8075,7 +8115,7 @@
           "directory": true,
           "job": "verify",
           "path": "tests/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "verify.py"
         },
         {
@@ -8142,13 +8182,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -8166,7 +8210,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -8224,52 +8268,75 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 3,
+      "checksCount": 2,
       "commands": [
         {
           "job": "verify",
-          "step": "Install",
-          "text": "python -m pip install --upgrade pip\npython -m pip install -e \".[dev]\" build twine\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Install"
         },
         {
           "job": "verify",
-          "step": "Verify",
-          "text": "python verify.py --installed"
+          "programs": [
+            "python"
+          ],
+          "step": "Verify"
         },
         {
           "job": "verify",
-          "step": "Build",
-          "text": "python -m build"
+          "programs": [
+            "python"
+          ],
+          "step": "Build"
         },
         {
           "job": "verify",
-          "step": "Check metadata",
-          "text": "python -m twine check dist/*"
+          "programs": [
+            "python"
+          ],
+          "step": "Check metadata"
         },
         {
           "job": "verify",
-          "step": "The version in the tag must equal the version in the package",
-          "text": "PKG=$(python -c \"import tomllib;print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])\")\nNPM=$(node -p \"require('./npm/package.json').version\")\necho \"trigger=$GITHUB_EVENT_NAME ref_type=$GITHUB_REF_TYPE ref_name=$GITHUB_REF_NAME pyproject=$PKG npm=$NPM\"\n[ \"$PKG\" = \"$NPM\" ] || { echo \"::error::pyproject $PKG != npm $NPM -- the two manifests in this tree declare different versions, so publishing would put a number on one registry that the other does not claim. This is the cheap one: bump the lagging file to match the other, commit, and cut a fresh tag from that commit. Do not publish from this ref.\"; exit 1; }\nif [ \"$GITHUB_REF_TYPE\" != \"tag\" ]; then\n  echo \"::error::release.yml is standing on $GITHUB_REF_TYPE '$GITHUB_REF_NAME', not a tag, so the tag-vs-package version check could not run. This workflow publishes only from a v* tag; re-dispatch it against one. Refusing rather than reporting an unchecked version as checked.\"\n  exit 1\nfi\nTAG=\"${GITHUB_REF_NAME#v}\"\n[ \"$TAG\" = \"$PKG\" ] || { echo \"::error::tag $TAG != pyproject $PKG -- the tag names a version this tree does not declare, which is the tag-cut-before-the-version-bump case the comment above describes. There is no cheap fix and the obvious one is wrong: do not force-push or move this tag, because a GitHub Release may already point at it and moving it silently changes what that release refers to. Either cut a new release from a commit where pyproject.toml and npm/package.json already read $TAG, or delete this release and its tag and re-tag from such a commit.\"; exit 1; }\n"
+          "programs": [
+            "echo",
+            "node",
+            "python"
+          ],
+          "step": "The version in the tag must equal the version in the package"
         },
         {
           "job": "verify",
-          "step": "Dry run stops here -- nothing was published",
-          "text": "echo \"::notice::DRY RUN on $GITHUB_REF_NAME -- verify, build, twine check and the tag/version comparison all passed. The pypi and npm jobs are SKIPPED, the release environment was never entered, and no approval is armed. Re-dispatch with dry_run=false to arm it.\"\n{\n  echo \"## Dry run -- nothing was published\"\n  echo\n  echo \"Ref: \\`$GITHUB_REF_NAME\\` ($GITHUB_REF_TYPE)\"\n  echo\n  echo \"Passed: \\`verify.py --installed\\`, build, \\`twine check\\`, and tag == pyproject == npm.\"\n  echo\n  echo \"Skipped: the \\`pypi\\` and \\`npm\\` jobs. The \\`release\\` environment was never entered, so no deployment was created and no reviewer was asked.\"\n  echo\n  echo \"This proves the gates and the Node24 action majors on this ref. It does NOT prove the environment's reviewer rule or its \\`tag v*\\` branch policy: re-dispatch with \\`dry_run=false\\` and reject at the approval prompt for that.\"\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "Dry run stops here -- nothing was published"
         },
         {
           "job": "npm",
-          "step": "Upgrade npm for OIDC",
-          "text": "npm install -g npm@latest"
+          "programs": [
+            "npm"
+          ],
+          "step": "Upgrade npm for OIDC"
         },
         {
           "job": "npm",
-          "step": "Launcher self-test",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "Launcher self-test"
         },
         {
           "job": "npm",
-          "step": "Publish",
-          "text": "NAME=$(node -p \"require('./package.json').name\")\nVER=$(node -p \"require('./package.json').version\")\nif npm view \"$NAME@$VER\" version >/dev/null 2>&1; then\n  echo \"::notice::$NAME@$VER is already on the registry — nothing to publish.\"\nelse\n  npm publish --provenance --access public\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "node",
+            "npm"
+          ],
+          "step": "Publish"
         }
       ],
       "elsewhere": [],
@@ -8376,7 +8443,7 @@
           "directory": true,
           "job": "verify",
           "path": "tests/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "verify.py"
         },
         {
@@ -8417,6 +8484,48 @@
         "actions/upload-artifact",
         "pypa/gh-action-pypi-publish"
       ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "npm/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "pcraft",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "npm",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "npm/bin/pcraft.mjs",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
       "usesWorkflowToken": false
     },
     {
@@ -8472,6 +8581,11 @@
     }
   ],
   "edges": [
+    {
+      "from": "root",
+      "kind": "spawns",
+      "to": "tests"
+    },
     {
       "from": "scripts",
       "kind": "file",
@@ -8845,6 +8959,16 @@
       "writers": []
     },
     {
+      "readers": [],
+      "target": "src/pcraft/domains/image/subdomains/sprite/poses/turnaround",
+      "writers": [
+        {
+          "by": "scripts/draw_openpose_plates.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
       "readers": [
         {
           "by": "scripts/draw_openpose_plates.py",
@@ -8853,7 +8977,12 @@
         }
       ],
       "target": "src/pcraft/domains/image/subdomains/sprite/poses/two-hand-weapon.openpose.png",
-      "writers": []
+      "writers": [
+        {
+          "by": "scripts/draw_openpose_plates.py",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [

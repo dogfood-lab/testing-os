@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit c87c284.
 
 ## What this is
 
-11 parts, mostly TypeScript (142 files) and JavaScript (3). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. People run taste.
+11 parts, mostly TypeScript (142 files), shell (7), JavaScript (3), CSS (2), Astro (1) and HTML (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run taste.
 
 ## What changed since 2026-09-24 (ac181ee)
 
@@ -65,7 +65,7 @@ People write .claude/, .github/, canon/, docs/, migrations/, proving/, the repos
 
 ## Where to start
 
-.github/workflows/ci.yml → src/cli/index.ts → src/cli/commands/init.ts → src/cli/config.ts → src/db/sqlite.ts → src/db/migrate.ts → src/canon/canon-store.ts → src/cli/commands/doctor.ts
+.github/workflows/ci.yml → src/cli/index.ts → src/cli/commands/init.ts → src/cli/config.ts → src/core/types.ts → src/core/enums.ts
 
 Read those in order to follow one pull request end to end.
 

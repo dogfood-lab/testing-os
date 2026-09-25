@@ -448,25 +448,21 @@
   "changesTogetherWithTests": 11,
   "commit": "f7e56e65779e14e3b061a5e581fd13783abe2e98",
   "defaultBranch": "main",
-  "derived": "39 parts, mostly TypeScript (797 files), JavaScript (13) and GDScript (2). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. People run ai and ai-rpg-engine.",
+  "derived": "39 parts, mostly TypeScript (797 files), JavaScript (13), CSS (2), GDScript (2) and Astro (1). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run ai and ai-rpg-engine.",
   "doors": [
     {
       "builds": [
         "docs/mixed-game-viability-proof.ts"
       ],
       "checks": [
-        "package-lock.json",
-        "package.json",
-        "packages/",
         "templates/",
-        "tsconfig.json",
         "docs/",
         "eslint.config.js",
         "scripts/",
         "vitest.config.ts"
       ],
-      "checksCount": 9,
-      "checksMore": 21,
+      "checksCount": 5,
+      "checksMore": 5,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [
@@ -475,6 +471,12 @@
         "docs/c0-alignment/version-skew.json"
       ],
       "name": "CI",
+      "packs": [
+        "package-lock.json",
+        "package.json",
+        "packages/",
+        "tsconfig.json"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -816,7 +818,9 @@
       ],
       "runsCount": 393,
       "runsMore": 390,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request touching 15 paths",
@@ -829,18 +833,14 @@
         "docs/mixed-game-viability-proof.ts"
       ],
       "checks": [
-        "package-lock.json",
-        "package.json",
-        "packages/",
         "templates/",
-        "tsconfig.json",
         "docs/",
         "eslint.config.js",
         "scripts/",
         "vitest.config.ts"
       ],
-      "checksCount": 9,
-      "checksMore": 21,
+      "checksCount": 5,
+      "checksMore": 5,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [
@@ -849,6 +849,12 @@
         "docs/c0-alignment/version-skew.json"
       ],
       "name": "Release",
+      "packs": [
+        "package-lock.json",
+        "package.json",
+        "packages/",
+        "tsconfig.json"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -1212,7 +1218,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -1686,7 +1692,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:12:31.292Z",
+  "generatedAt": "2026-09-25T16:23:13.286Z",
   "limits": [
     "3 imports could not be resolved: `packages/cli/src/external-pack.ts` imports a path built at run time; `packages/pack-registry/src/discover.ts` imports a path built at run time; `packages/pack-registry/src/starter-readme-usage.test.ts` imports a path built at run time.",
     "21 writes and 34 reads use paths built at run time and are not named here.",
@@ -1942,7 +1948,10 @@
     "packages/cli/src/bin.ts",
     "packages/modules/src/ability-builders.ts",
     "packages/content-schema/src/build-catalog.ts",
-    "packages/content-schema/src/validate.ts"
+    "packages/content-schema/src/validate.ts",
+    "packages/content-schema/src/schemas.ts",
+    "packages/core/src/actions.ts",
+    "packages/core/src/world.ts"
   ],
   "summary": null,
   "summaryFrom": null,

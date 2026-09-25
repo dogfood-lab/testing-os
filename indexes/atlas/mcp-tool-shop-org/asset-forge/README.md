@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 2de16f4.
 
 ## What this is
 
-7 parts, mostly Rust (32 files), TypeScript (2) and JavaScript (1). Work enters through 2 doors; the busiest is CI, which reaches 4 parts.
+7 parts, mostly Rust (32 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 2 doors; the busiest is CI, which reaches 4 parts.
 
 ## What changed since 2026-09-24 (2b8956a)
 
@@ -63,7 +63,7 @@ People write .github/, the repository root and site/. Nothing in this repository
 
 ## Where to start
 
-.github/workflows/ci.yml → crates/ship-testkit/tests/golden_family.rs → crates/ship-hull/src/generate.rs → crates/ship-schema/src/validate.rs → crates/ship-schema/src/spec.rs → crates/ship-schema/src/defaults.rs
+.github/workflows/ci.yml → crates/ship-testkit/tests/golden_family.rs → crates/ship-hull/src/generate.rs → crates/ship-schema/src/validate.rs → crates/ship-schema/src/defaults.rs → crates/ship-schema/src/spec.rs
 
 Read those in order to follow one pull request end to end. This path starts at crates/ship-testkit/tests/golden_family.rs, the test CI runs that reaches the most parts, since CI runs only tests.
 

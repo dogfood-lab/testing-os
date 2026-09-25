@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 7e09d24.
 
 ## What this is
 
-11 parts, mostly TypeScript (328 files) and JavaScript (3). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. People run multi-claude.
+11 parts, mostly TypeScript (328 files), CSS (3), JavaScript (3), Astro (1) and HTML (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. People run multi-claude.
 
 ## What changed since 2026-09-24 (9d36a21)
 
@@ -22,6 +22,7 @@ Mapped at 2026-09-25 from commit 7e09d24.
 ## What happens through CI
 
 1. The workflow runs 69 files in test; it builds bin/ in bin and src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 

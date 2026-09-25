@@ -622,6 +622,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -659,18 +667,32 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "verify",
-          "step": "Smoke-test the CLI",
-          "text": "node scripts/smoke.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Smoke-test the CLI"
         },
         {
           "job": "verify",
-          "step": "Verify the packed tarball is runnable",
-          "text": "set -euo pipefail\n# The same check release.yml runs before publishing: pack, extract\n# outside the repository, and run the commands that need shipped\n# runtime files (PROTOCOL.md, examples/) against those files only.\nnpm pack\nTARBALL=$(ls -t ./*.tgz | head -1)\nWORK=$(mktemp -d)\ntar -xzf \"$TARBALL\" -C \"$WORK\"\nPKG=\"$WORK/package\"\nnode \"$PKG/bin/study-swarm.mjs\" version\nnode \"$PKG/bin/study-swarm.mjs\" protocol | grep -q \"Step 1\"\nnode \"$PKG/bin/study-swarm.mjs\" lint \"$PKG/examples/study-swarm-self.dispatch.md\"\nnode \"$PKG/bin/study-swarm.mjs\" lock --verify \\\n  \"$PKG/examples/study-swarm-lock.dispatch.md\" \\\n  --from \"$PKG/examples/study-swarm-lock.orchestration.json\"\nrm -f \"$TARBALL\"\necho \"OK: packed tarball is runnable from its shipped files only\"\n"
+          "programs": [
+            "echo",
+            "grep",
+            "head",
+            "ls",
+            "mktemp",
+            "node",
+            "npm",
+            "rm",
+            "tar"
+          ],
+          "step": "Verify the packed tarball is runnable"
         }
       ],
       "elsewhere": [],
@@ -769,13 +791,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -793,7 +819,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -855,28 +881,51 @@
       "commands": [
         {
           "job": "release",
-          "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth",
-          "text": "# Node 22 bundles npm 10.x, which cannot do OIDC trusted publishing,\n# and an in-place `npm i -g npm@latest` races its own arborist rebuild.\n# Install an EXACT npm (11.5.1 is the OIDC trusted-publishing floor) into an isolated\n# sandbox and shadow it via PATH. Exact, not a caret and not @latest, so this publish\n# step cannot move when a later 11.x release lands.\nSANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent 'npm@11.5.1'\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
           "job": "release",
-          "step": "Verify tag matches package.json version",
-          "text": "PKG_VERSION=$(node -p \"require('./package.json').version\")\nTAG_VERSION=\"${GITHUB_REF_NAME#v}\"\necho \"Tag: ${GITHUB_REF_NAME} -> ${TAG_VERSION} | Package: ${PKG_VERSION}\"\nif [ \"${PKG_VERSION}\" != \"${TAG_VERSION}\" ]; then\n  echo \"::error::Tag ${TAG_VERSION} does not match package.json version ${PKG_VERSION}\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches package.json version"
         },
         {
           "job": "release",
-          "step": "Smoke-test the CLI",
-          "text": "node scripts/smoke.mjs"
+          "programs": [
+            "node"
+          ],
+          "step": "Smoke-test the CLI"
         },
         {
           "job": "release",
-          "step": "Verify the PACKED tarball is runnable (gates a files-allowlist regression)",
-          "text": "set -euo pipefail\n# Pack, extract OUTSIDE the repo, and run the runtime-file-dependent commands against\n# ONLY the shipped files. A working-tree smoke test and `npm pack --dry-run` both pass\n# even if package.json \"files\" drops a runtime-required file (PROTOCOL.md, examples/);\n# this step fails closed on that, so the published tarball is proven runnable.\nnpm pack\nTARBALL=$(ls -t ./*.tgz | head -1)\nWORK=$(mktemp -d)\ntar -xzf \"$TARBALL\" -C \"$WORK\"\nPKG=\"$WORK/package\"\nnode \"$PKG/bin/study-swarm.mjs\" version\nnode \"$PKG/bin/study-swarm.mjs\" protocol | grep -q \"Step 1\"                     # reads shipped PROTOCOL.md\nnode \"$PKG/bin/study-swarm.mjs\" lint \"$PKG/examples/study-swarm-self.dispatch.md\"  # examples/ shipped\nnode \"$PKG/bin/study-swarm.mjs\" lock --verify \\\n  \"$PKG/examples/study-swarm-lock.dispatch.md\" \\\n  --from \"$PKG/examples/study-swarm-lock.orchestration.json\"                     # lock + PROTOCOL.md\nrm -f \"$TARBALL\"\necho \"OK: packed tarball is runnable from its shipped files only\"\n"
+          "programs": [
+            "echo",
+            "grep",
+            "head",
+            "ls",
+            "mktemp",
+            "node",
+            "npm",
+            "rm",
+            "tar"
+          ],
+          "step": "Verify the PACKED tarball is runnable (gates a files-allowlist regression)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         }
       ],
       "elsewhere": [],

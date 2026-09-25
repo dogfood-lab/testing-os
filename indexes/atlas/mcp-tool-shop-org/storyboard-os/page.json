@@ -265,7 +265,7 @@
   "changesTogetherWithTests": 2,
   "commit": "66b9cce3a15ae75e17b32ab6b1751091aee81da8",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly TypeScript (172 files) and JavaScript (6). Work enters through 9 doors; the busiest is CI, which reaches 11 parts. It publishes @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain), @storyboard-os/marketing-domain (packages/marketing-storyboard-domain), @storyboard-os/rpg-domain (packages/rpg-storyboard-domain), @storyboard-os/canvas (packages/storyboard-canvas), @storyboard-os/core (packages/storyboard-core) and @storyboard-os/routing (packages/storyboard-routing) to npm. People import @storyboard-os/canvas, @storyboard-os/cinematic-domain, @storyboard-os/core, @storyboard-os/marketing-domain, @storyboard-os/routing and @storyboard-os/rpg-domain.",
+  "derived": "14 parts, mostly TypeScript (172 files), Astro (19), JavaScript (6) and CSS (2). Work enters through 9 doors; the busiest is CI, which reaches 11 parts. It publishes @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain), @storyboard-os/marketing-domain (packages/marketing-storyboard-domain), @storyboard-os/rpg-domain (packages/rpg-storyboard-domain), @storyboard-os/canvas (packages/storyboard-canvas), @storyboard-os/core (packages/storyboard-core) and @storyboard-os/routing (packages/storyboard-routing) to npm. It deploys a site to GitHub Pages. People import @storyboard-os/canvas, @storyboard-os/cinematic-domain, @storyboard-os/core, @storyboard-os/marketing-domain, @storyboard-os/routing and @storyboard-os/rpg-domain.",
   "doors": [
     {
       "builds": [
@@ -293,7 +293,7 @@
         {
           "boundary": "cinematic-storyboard",
           "depth": 0,
-          "files": 11
+          "files": 16
         },
         {
           "boundary": "cinematic-storyboard-domain",
@@ -303,7 +303,7 @@
         {
           "boundary": "marketing-storyboard",
           "depth": 0,
-          "files": 10
+          "files": 14
         },
         {
           "boundary": "marketing-storyboard-domain",
@@ -313,7 +313,7 @@
         {
           "boundary": "rpg-storyboard",
           "depth": 0,
-          "files": 32
+          "files": 41
         },
         {
           "boundary": "rpg-storyboard-domain",
@@ -323,7 +323,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         },
         {
           "boundary": "storyboard-canvas",
@@ -436,7 +436,7 @@
         {
           "boundary": "cinematic-storyboard",
           "depth": 0,
-          "files": 11
+          "files": 16
         },
         {
           "boundary": "cinematic-storyboard-domain",
@@ -446,7 +446,7 @@
         {
           "boundary": "marketing-storyboard",
           "depth": 0,
-          "files": 10
+          "files": 14
         },
         {
           "boundary": "marketing-storyboard-domain",
@@ -456,7 +456,7 @@
         {
           "boundary": "rpg-storyboard",
           "depth": 0,
-          "files": 32
+          "files": 41
         },
         {
           "boundary": "rpg-storyboard-domain",
@@ -566,7 +566,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -794,6 +794,25 @@
       ]
     },
     {
+      "contract": true,
+      "files": [
+        "apps/cinematic-storyboard/src/pages/sequences/[sequenceId]/handoff.astro",
+        "apps/marketing-storyboard/src/pages/campaigns/[campaignId]/handoff.astro",
+        "apps/rpg-storyboard/src/pages/storyboards/[storyboardId]/handoff.astro"
+      ],
+      "name": "getStaticPaths",
+      "partLabels": [
+        "cinematic-storyboard",
+        "marketing-storyboard",
+        "rpg-storyboard"
+      ],
+      "parts": [
+        "cinematic-storyboard",
+        "marketing-storyboard",
+        "rpg-storyboard"
+      ]
+    },
+    {
       "files": [
         "packages/cinematic-storyboard-domain/src/labels.ts",
         "packages/marketing-storyboard-domain/src/labels.ts"
@@ -822,26 +841,11 @@
         "cinematic-storyboard-domain",
         "marketing-storyboard-domain"
       ]
-    },
-    {
-      "files": [
-        "packages/cinematic-storyboard-domain/src/labels.ts",
-        "packages/marketing-storyboard-domain/src/labels.ts"
-      ],
-      "name": "humanizeMissingReason",
-      "partLabels": [
-        "cinematic-storyboard-domain",
-        "marketing-storyboard-domain"
-      ],
-      "parts": [
-        "cinematic-storyboard-domain",
-        "marketing-storyboard-domain"
-      ]
     }
   ],
   "duplicatesLead": "These are candidates from names and call order, not a judgement.",
   "duplicatesNote": [
-    "And 5 more pairs."
+    "And 6 more pairs."
   ],
   "edges": [
     {
@@ -876,7 +880,7 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T09:22:22.656Z",
+  "generatedAt": "2026-09-25T16:38:36.679Z",
   "limits": [
     "1 read uses a path built at run time and is not named here.",
     "15 reads go to a path their caller passes, not to this repository.",
@@ -907,6 +911,7 @@
   "startHere": [
     ".github/workflows/ci.yml",
     "packages/cinematic-storyboard-domain/src/index.ts",
+    "packages/cinematic-storyboard-domain/src/beatStatus.ts",
     "packages/cinematic-storyboard-domain/src/schema.ts",
     "packages/storyboard-core/src/density.ts"
   ],

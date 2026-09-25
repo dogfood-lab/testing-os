@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 4435870.
 
 ## What this is
 
-11 parts, mostly Markdown (646 files); code in TypeScript (84) and JavaScript (10). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. People run rk. People import @mcptoolshop/repo-knowledge.
+11 parts, mostly Markdown (646 files); code in TypeScript (84), JavaScript (10), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run rk. People import @mcptoolshop/repo-knowledge.
 
 ## What changed since 2026-09-23 (8236017)
 
@@ -95,7 +95,7 @@ People write .claude/, .github/, assets/, data/, research/, site/ and templates/
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts → src/config.ts
+.github/workflows/ci.yml → src/index.ts → src/sync/publish.ts → src/db/init.ts
 
 Read those in order to follow one pull request end to end.
 

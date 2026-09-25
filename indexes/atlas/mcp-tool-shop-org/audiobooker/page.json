@@ -9,7 +9,7 @@
   ],
   "breaks": [
     {
-      "doors": 3,
+      "doors": 4,
       "importedBy": [
         "examples"
       ],
@@ -24,7 +24,7 @@
       ]
     },
     {
-      "doors": 3,
+      "doors": 4,
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
@@ -62,6 +62,46 @@
           "audiobooker/renderer/output.py",
           "audiobooker/renderer/progress.py",
           "audiobooker/renderer/protocols.py"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Audiobooker (action.yml) is a new action other repositories use. It runs audiobooker/cli.py and tools/read_project_version.py.",
+        "subjects": [
+          "action.yml",
+          "audiobooker/cli.py",
+          "tools/read_project_version.py"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "audiobooker (npm/package.json) is a new command. It runs npm/bin/audiobooker.js.",
+        "subjects": [
+          "npm/package.json",
+          "npm/bin/audiobooker.js"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "tools/pyright_baseline.txt is now written by tools/check_pyright_gate.py.",
+        "subjects": [
+          "tools/pyright_baseline.txt",
+          "tools/check_pyright_gate.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "pyproject.toml is now also read by action.yml.",
+        "subjects": [
+          "pyproject.toml",
+          "action.yml"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "tools was authored and is now mixed.",
+        "subjects": [
+          "tools"
         ]
       },
       {
@@ -160,7 +200,7 @@
   "changesTogetherWithTests": 0,
   "commit": "651511a388bc27568f2985b3960d09e7e7ef8d15",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly Python (131 files), JavaScript (2) and TypeScript (2). Work enters through 5 doors; CI and Publish to GHCR each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to PyPI, @mcptoolshop/audiobooker to npm, and a container image. People run audiobooker.",
+  "derived": "10 parts, mostly Python (131 files), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 7 doors; CI and Publish to GHCR each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to PyPI, @mcptoolshop/audiobooker to npm, and a container image. It deploys a site to GitHub Pages. People run audiobooker. Other repositories use the Audiobooker action.",
   "doors": [
     {
       "checks": [
@@ -170,7 +210,9 @@
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "tools/pyright_baseline.txt"
+      ],
       "name": "CI",
       "pushes": false,
       "reach": [
@@ -214,7 +256,9 @@
       ],
       "runsCount": 20,
       "runsMore": 97,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main",
@@ -223,14 +267,9 @@
       ]
     },
     {
-      "checks": [
-        "LICENSE",
-        "README.md",
-        "audiobooker/",
-        "pyproject.toml"
-      ],
-      "checksCount": 4,
-      "checksMore": 1,
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/docker.yml",
       "held": [
         {
@@ -247,6 +286,12 @@
       "id": ".github/workflows/docker.yml",
       "landings": [],
       "name": "Publish to GHCR",
+      "packs": [
+        "LICENSE",
+        "README.md",
+        "audiobooker/",
+        "pyproject.toml"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -292,7 +337,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -355,6 +400,64 @@
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
+      "file": "action.yml",
+      "id": "action.yml#Audiobooker",
+      "kind": "action",
+      "landings": [],
+      "name": "Audiobooker",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "audiobooker",
+          "depth": 0,
+          "files": 34
+        },
+        {
+          "boundary": "tools",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "audiobooker/cli.py",
+        "tools/read_project_version.py"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "npm/package.json",
+      "id": "npm/package.json#audiobooker",
+      "kind": "command",
+      "landings": [],
+      "name": "audiobooker",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "npm",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "npm/bin/audiobooker.js"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
       "file": "pyproject.toml",
       "id": "pyproject.toml#audiobooker",
       "kind": "command",
@@ -382,16 +485,25 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "generated": [],
-  "generatedAt": "2026-09-25T09:13:51.799Z",
+  "generated": [
+    {
+      "block": true,
+      "place": "tools/pyright_baseline.txt",
+      "writers": [
+        "tools/check_pyright_gate.py"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-25T16:26:15.585Z",
   "limits": [
     "14 import sites name a declared dependency that shares its name with a local module (docx); they are read as the dependency, which is not in this repository.",
-    "7 imports could not be resolved: `audiobooker/cli.py` imports a path built at run time; `audiobooker/cli.py` imports a path built at run time; `audiobooker/language/profile.py` imports a path built at run time; and 4 more.",
-    "31 writes and 25 reads use paths built at run time and are not named here.",
+    "7 imports could not be resolved: `audiobooker/cli.py` imports a path built at run time, twice; `audiobooker/language/profile.py` imports a path built at run time; `tests/test_feat_f5_cli.py` imports a path built at run time; and 3 more.",
+    "5 writes and 8 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
+    "27 writes and 39 reads go to a path their caller passes, not to this repository.",
     "3 writes and 5 reads go to the home directory (.local/, AppData/ and audiobooker/) or a path their caller passes, not to this repository.",
-    "6 reads go to a path their caller passes, not to this repository.",
     "1 write and 2 reads go to the home directory (.config/, AppData/ and audiobooker/), not to this repository.",
+    "1 read goes to the directory the command is run in (.audiobookerrc) or the home directory (.audiobookerrc), not to this repository.",
     "4 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -409,7 +521,14 @@
     "tools": "tools"
   },
   "parts": 10,
-  "readers": [],
+  "readers": [
+    {
+      "readers": [
+        "tools/check_ci_policy.py"
+      ],
+      "target": "tools/pyright_baseline.txt"
+    }
+  ],
   "repo": "mcp-tool-shop-org/audiobooker",
   "sequences": [
     {
@@ -559,10 +678,8 @@
     "audiobooker/cli.py",
     "audiobooker/renderer/engine.py",
     "audiobooker/__init__.py",
-    "audiobooker/labels.py",
-    "audiobooker/shell_quote.py",
-    "audiobooker/errors.py",
-    "audiobooker/renderer/__init__.py"
+    "audiobooker/models.py",
+    "audiobooker/errors.py"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -572,7 +689,7 @@
     "examples": 0,
     "tools": 0
   },
-  "unnamedWrites": 31,
+  "unnamedWrites": 5,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],
@@ -589,5 +706,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 0
+  "written": 1
 }

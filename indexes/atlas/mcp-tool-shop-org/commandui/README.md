@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 842976b.
 
 ## What this is
 
-15 parts, mostly TypeScript (59 files), Rust (53) and JavaScript (1). Work enters through 5 doors; the busiest is Release Desktop, which reaches 7 parts. People install the commandui-desktop desktop app. commandui-console is a command built from apps/console (nothing ships it).
+15 parts, in TypeScript (59 files), Rust (53 files), CSS (3 files), Astro (2 files), HTML (1 file) and JavaScript (1 file). Work enters through 5 doors; the busiest is Release Desktop, which reaches 7 parts. It deploys a site to GitHub Pages. People install the commandui-desktop desktop app. commandui-console is a command built from apps/console (nothing ships it).
 
 ## What changed since 2026-09-24 (cd989a3)
 
@@ -91,7 +91,7 @@ People write .claude/, .github/, docs/, the repository root, site/ and winget/. 
 
 ## Where to start
 
-apps/desktop/src-tauri/src/main.rs → apps/desktop/src-tauri/src/lib.rs → apps/desktop/src-tauri/src/commands/planner.rs → crates/runtime-planner/src/lib.rs → crates/runtime-planner/src/client.rs → crates/runtime-planner/src/mock.rs → crates/runtime-planner/src/parity.rs → crates/runtime-planner/src/prompt.rs
+apps/desktop/src-tauri/src/main.rs → apps/desktop/src-tauri/src/lib.rs → apps/desktop/src-tauri/src/commands/planner.rs → crates/runtime-planner/src/lib.rs → crates/runtime-planner/src/client.rs → crates/runtime-planner/src/prompt.rs → crates/runtime-planner/src/types.rs
 
 Read those in order to follow one run of commandui-desktop end to end. This path follows commandui-desktop (the desktop app people install) from its entry, since CI runs only tests and checks.
 

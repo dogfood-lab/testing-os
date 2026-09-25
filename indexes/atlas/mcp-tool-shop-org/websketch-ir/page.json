@@ -52,7 +52,7 @@
   "changesTogetherWithTests": 0,
   "commit": "d18f24a18416d9e3243ba26386b47fab1bb961d7",
   "defaultBranch": "main",
-  "derived": "6 parts, mostly TypeScript (46 files) and JavaScript (2). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. People import @mcptoolshop/websketch-ir.",
+  "derived": "6 parts, mostly TypeScript (46 files), CSS (2), JavaScript (2) and Astro (1). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People import @mcptoolshop/websketch-ir.",
   "doors": [
     {
       "builds": [
@@ -110,7 +110,10 @@
       ],
       "runsCount": 28,
       "runsMore": 25,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov",
+        "scans for secrets with TruffleHog"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main",
@@ -197,7 +200,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -257,7 +260,7 @@
     }
   ],
   "generated": [],
-  "generatedAt": "2026-09-25T09:23:20.186Z",
+  "generatedAt": "2026-09-25T16:39:39.174Z",
   "limits": [
     "1 read goes to a path its caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
@@ -279,7 +282,9 @@
   "startHere": [
     ".github/workflows/ci.yml",
     "src/index.ts",
-    "src/grammar.ts"
+    "src/text.ts",
+    "src/errors.ts",
+    "src/compat.ts"
   ],
   "summary": null,
   "summaryFrom": null,

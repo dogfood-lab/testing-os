@@ -4,7 +4,7 @@ Mapped at 2026-09-25 from commit 83531a1.
 
 ## What this is
 
-23 parts, mostly TypeScript (277 files) and JavaScript (3). Work enters through 19 doors; CI and Release each reach 17 parts, and CI is followed because a pull request goes through it. It publishes @motif-studio/asset-index (packages/asset-index), @motif-studio/audio-engine (packages/audio-engine), @motif-studio/automation (packages/automation), @motif-studio/clip-engine (packages/clip-engine), @motif-studio/instrument-rack (packages/instrument-rack), @motif-studio/library (packages/library), @motif-studio/music-theory (packages/music-theory), @motif-studio/playback-engine (packages/playback-engine), @motif-studio/review (packages/review), @motif-studio/runtime-pack (packages/runtime-pack), @motif-studio/sample-lab (packages/sample-lab), @motif-studio/scene-mapper (packages/scene-mapper), @motif-studio/schema (packages/schema), @motif-studio/score-map (packages/score-map), @motif-studio/test-kit (packages/test-kit) and @motif-studio/ui (packages/ui) to npm. People import @motif-studio/asset-index, @motif-studio/audio-engine, @motif-studio/automation, @motif-studio/clip-engine, @motif-studio/instrument-rack, @motif-studio/library, @motif-studio/music-theory, @motif-studio/playback-engine, @motif-studio/review, @motif-studio/runtime-pack and 6 more.
+23 parts, mostly TypeScript (277 files), CSS (3), JavaScript (3) and Astro (1). Work enters through 19 doors; CI and Release each reach 17 parts, and CI is followed because a pull request goes through it. It publishes @motif-studio/asset-index (packages/asset-index), @motif-studio/audio-engine (packages/audio-engine), @motif-studio/automation (packages/automation), @motif-studio/clip-engine (packages/clip-engine), @motif-studio/instrument-rack (packages/instrument-rack), @motif-studio/library (packages/library), @motif-studio/music-theory (packages/music-theory), @motif-studio/playback-engine (packages/playback-engine), @motif-studio/review (packages/review), @motif-studio/runtime-pack (packages/runtime-pack), @motif-studio/sample-lab (packages/sample-lab), @motif-studio/scene-mapper (packages/scene-mapper), @motif-studio/schema (packages/schema), @motif-studio/score-map (packages/score-map), @motif-studio/test-kit (packages/test-kit) and @motif-studio/ui (packages/ui) to npm. It deploys a site to GitHub Pages. People import @motif-studio/asset-index, @motif-studio/audio-engine, @motif-studio/automation, @motif-studio/clip-engine, @motif-studio/instrument-rack, @motif-studio/library, @motif-studio/music-theory, @motif-studio/playback-engine, @motif-studio/review, @motif-studio/runtime-pack and 6 more.
 
 ## What changed since 2026-09-25 (bed8634)
 
@@ -40,6 +40,7 @@ Mapped at 2026-09-25 from commit 83531a1.
 ## What happens through CI
 
 1. The workflow runs packages/asset-index/test/ in asset-index, packages/audio-engine/test/ in audio-engine, packages/automation/test/ in automation, packages/clip-engine/test/ in clip-engine, packages/instrument-rack/test/ in instrument-rack, and 97 files in 12 more parts; it builds packages/asset-index/src/ in asset-index, packages/audio-engine/src/ in audio-engine, packages/automation/src/ in automation, packages/clip-engine/src/ in clip-engine, packages/instrument-rack/src/ in instrument-rack, and 101 files in 11 more parts; it checks apps/studio/next-env.d.ts and apps/studio/src/ in studio.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -127,7 +128,7 @@ People write .claude/, .github/, examples/, handbook/, the repository root and s
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/asset-index/src/index.ts → packages/asset-index/src/types.ts → packages/schema/src/errors.ts → packages/schema/src/types.ts
+.github/workflows/ci.yml → packages/asset-index/src/index.ts → packages/asset-index/src/index-pack.ts → packages/schema/src/errors.ts → packages/schema/src/types.ts
 
 Read those in order to follow one pull request end to end.
 

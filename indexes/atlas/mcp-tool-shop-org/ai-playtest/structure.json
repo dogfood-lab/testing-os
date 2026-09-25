@@ -227,6 +227,14 @@
         },
         {
           "hash": "4fb84a646c4d833c33f4058e1ed1775849e855c65e5adb7e45d2a633674bd603",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -1985,33 +1993,48 @@
       "commands": [
         {
           "job": "verify",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "verify",
-          "step": "4",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
           "job": "verify",
-          "step": "Verify (typecheck + tests)",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "Verify (typecheck + tests)"
         },
         {
           "job": "verify",
-          "step": "Build emit + pack shape",
-          "text": "set -euo pipefail\nnpm run build\nfor f in dist/cli.js dist/index.js dist/index.d.ts dist/cli.js.map dist/index.js.map dist/index.d.ts.map; do\n  if [ ! -f \"$f\" ]; then\n    echo \"::error::missing $f after npm run build\"\n    exit 1\n  fi\ndone\nnpm pack --dry-run --json > \"${RUNNER_TEMP}/pack.json\"\ncat \"${RUNNER_TEMP}/pack.json\"\nmissing=0\nfor req in LICENSE CHANGELOG.md; do\n  if ! jq -e --arg p \"$req\" '\n    (if type == \"array\" then .[0] else . end).files\n    | map(.path | gsub(\"\\\\\\\\\"; \"/\"))\n    | index($p)\n  ' \"${RUNNER_TEMP}/pack.json\" >/dev/null; then\n    echo \"::error::npm pack omits ${req} (Shipcheck D5)\"\n    missing=1\n  fi\ndone\nif [ \"$missing\" -ne 0 ]; then\n  exit 1\nfi\n"
+          "programs": [
+            "cat",
+            "echo",
+            "jq",
+            "npm"
+          ],
+          "step": "Build emit + pack shape"
         },
         {
           "job": "verify",
-          "step": "Audit dependencies (consumer surface — blocking)",
-          "text": "npm audit --omit=dev --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Audit dependencies (consumer surface — blocking)"
         },
         {
           "job": "verify",
-          "step": "Audit dependencies (developer surface — advisory)",
-          "text": "npm audit --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "Audit dependencies (developer surface — advisory)"
         }
       ],
       "elsewhere": [],
@@ -2362,13 +2385,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci --ignore-scripts"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -2386,7 +2413,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],

@@ -4,14 +4,14 @@ Mapped at 2026-09-25 from commit aae7ad5.
 
 ## What this is
 
-19 parts, mostly images (6651 files); code in JavaScript (2), TypeScript (2) and Python (1). Work enters through 3 doors; CI and Deploy site to GitHub Pages each reach 1 part, and CI is followed because a pull request goes through it. It publishes one of the 14 packages under packages/ to npm, chosen by the tag.
+19 parts, mostly images (6651 files); code in CSS (2), JavaScript (2), TypeScript (2), Astro (1) and Python (1). Work enters through 3 doors; CI and Deploy site to GitHub Pages each reach 1 part, and CI is followed because a pull request goes through it. It publishes one of the 14 packages under packages/ to npm, chosen by the tag. It deploys a site to GitHub Pages.
 
 ## What changed since 2026-09-24 (09f49ca)
 
+- packages/ is now written by scripts/gen_previews.py.
+- packages/ is now also read by scripts/gen_previews.py.
 - packages/fantasy-heroes-48/assets/artificer/albedo/ is now read by packages/fantasy-heroes-48/assets/artificer/manifest.json.
-- packages/fantasy-heroes-48/assets/artificer/depth/ is now read by packages/fantasy-heroes-48/assets/artificer/manifest.json.
-- packages/fantasy-heroes-48/assets/artificer/normal/ is now read by packages/fantasy-heroes-48/assets/artificer/manifest.json.
-- And 5801 more new writers and readers of places.
+- And 5803 more new writers and readers of places.
 - 408 files changed content, across 19 parts.
 
 ## What comes in
