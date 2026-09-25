@@ -449,6 +449,7 @@ function held(ctx, door) {
     runs: runs(ctx, { found: door.found, runs: group.runs }),
     checks: arr(group.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
     builds: arr(group.builds).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+    packs: arr(group.packs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
     runsMore: moreOf(group.runsMore),
     checksMore: moreOf(group.checksMore),
   }));
@@ -460,6 +461,7 @@ function heldClause(group, verb, joiner, field, { withBuilds = false } = {}) {
   if (group.runs.length > 0) clauses.push(`${verb} ${shown(group.runs, group.runsMore)}`);
   if (withBuilds && group.builds.length > 0) clauses.push(`builds ${shown(group.builds)}`);
   if (group.checks.length > 0) clauses.push(`checks ${shown(group.checks, group.checksMore)}`);
+  if (group.packs.length > 0) clauses.push(`packs ${shown(group.packs)} into an image`);
   return clauses.length > 0 ? clauses.join(joiner) : null;
 }
 

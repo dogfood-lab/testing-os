@@ -1099,3 +1099,10 @@ test('the tests reading a place a hand edit breaks are counted, as the markdown 
   const html = plain(render.renderPage({ ...page, breaks }, { repo: page.repo }));
   assert.ok(html.includes('data/graphs.json is written by tools and read by scripts and site, and by 2 tests; a hand edit reaches every reader.'), html);
 });
+
+test('what a gated image build packs is said under its gate, as the markdown says it', () => {
+  const ci = page.doors.find((door) => door.name === 'CI');
+  const doors = page.doors.map((door) => (door === ci ? { ...door, held: [{ builds: [], checks: [], checksMore: 0, lead: 'on a release event', packs: ['app/', 'pyproject.toml'], runs: [], runsMore: 0, when: 'on a release event' }] } : door));
+  const html = plain(render.renderPage({ ...page, doors, mainDoor: ci.id }, { repo: page.repo }));
+  assert.ok(html.includes('On a release event, it also packs app/ and pyproject.toml into an image.'), html.slice(0, 5000));
+});

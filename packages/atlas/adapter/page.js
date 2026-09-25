@@ -410,9 +410,11 @@ function heldClause(ctx, door, group, verb, joiner = '; ', { builds = false } = 
   const ran = shownWithFinds(door, namedRuns(door, 'executes', group.paths));
   const built = builds ? shownRuns(door, 'builds', group.paths) : [];
   const checked = shownRuns(door, 'checks', group.paths);
+  const packed = shownRuns(door, 'packs', group.paths);
   if (ran.length > 0) clauses.push(`${verb} ${filesShown(ctx, ran)}`);
   if (built.length > 0) clauses.push(`builds ${filesShown(ctx, built)}`);
   if (checked.length > 0) clauses.push(`checks ${filesShown(ctx, checked)}`);
+  if (packed.length > 0) clauses.push(`packs ${filesShown(ctx, packed)} into an image`);
   return clauses.length > 0 ? clauses.join(joiner) : null;
 }
 
@@ -885,7 +887,11 @@ function runTotal(door, kind = null) {
   // Every binary a door builds is recorded, so only runs and checks are capped.
   const built = [...kinds.values()].filter((value) => value === 'builds').length;
   let counted = door.runsCount ?? recorded;
-  if (door.runsCount != null && kind === 'checks') counted = checks;
+  // The core counts what a Dockerfile packs among its checks; the page says
+  // those apart (packs), so they are no check left uncounted.
+  const packed = [...kinds.values()].filter((value) => value === 'packs').length;
+  if (door.runsCount != null && kind === 'checks') counted = Math.max(0, checks - packed);
+  else if (kind === 'packs') counted = packed;
   else if (door.runsCount != null && kind === 'executes') counted = door.runsCount - checks - built;
   else if (kind === 'builds') counted = built;
   return shownRuns(door, kind).length + Math.max(0, counted - held - recorded);
@@ -3460,7 +3466,7 @@ function doorData(ctx, door) {
     checksCount: runTotal(door, 'checks'),
     checksMore: moreFiles(ctx, shownRuns(door, 'checks'), unrecordedRuns(door, 'checks')),
     ...(gatedRuns(door).length > 0
-      ? { held: gatedRuns(door).map((group) => ({ ...(shownRuns(door, 'builds', group.paths).length > 0 ? { builds: shownRuns(door, 'builds', group.paths) } : {}), checks: shownRuns(door, 'checks', group.paths), checksMore: moreFiles(ctx, shownRuns(door, 'checks', group.paths)), lead: gateLead(group.when), runs: namedRuns(door, 'executes', group.paths), runsMore: moreFiles(ctx, namedRuns(door, 'executes', group.paths)), when: gatePhrase(group.when) })) }
+      ? { held: gatedRuns(door).map((group) => ({ ...(shownRuns(door, 'builds', group.paths).length > 0 ? { builds: shownRuns(door, 'builds', group.paths) } : {}), checks: shownRuns(door, 'checks', group.paths), checksMore: moreFiles(ctx, shownRuns(door, 'checks', group.paths)), lead: gateLead(group.when), ...(shownRuns(door, 'packs', group.paths).length > 0 ? { packs: shownRuns(door, 'packs', group.paths) } : {}), runs: namedRuns(door, 'executes', group.paths), runsMore: moreFiles(ctx, namedRuns(door, 'executes', group.paths)), when: gatePhrase(group.when) })) }
       : {}),
     ...(foundRuns(door).size > 0 ? { found: [...foundRuns(door)].map(([by, paths]) => ({ by, what: foundWhat(paths) })) } : {}),
     runs: namedRuns(door, 'executes'),
