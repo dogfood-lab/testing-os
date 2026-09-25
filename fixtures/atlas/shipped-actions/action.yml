@@ -1,0 +1,13 @@
+name: 'Renderer'
+description: Render a file.
+inputs:
+  source:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Render
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+      run: node "$ACTION_PATH/scripts/render.mjs" "${{ inputs.source }}"

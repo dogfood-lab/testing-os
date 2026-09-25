@@ -1,0 +1,16 @@
+name: CI
+on:
+  pull_request:
+jobs:
+  scaffold:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scaffold
+        run: |
+          mkdir -p /tmp/test-site
+          cd /tmp/test-site
+          node $GITHUB_WORKSPACE/cli/init.mjs init
+          node scripts/other.mjs
+      - name: Verify
+        run: node ${{ github.workspace }}/scripts/local.mjs

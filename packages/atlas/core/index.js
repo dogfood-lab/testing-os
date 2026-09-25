@@ -8,7 +8,7 @@ import { Language, Parser } from 'web-tree-sitter';
 import { readCommands, repositoryView } from './commands.js';
 import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
-import { declaredEntries, deriveEntryPoints, manifestCommands, memberPackage, pythonScripts } from './entry-points.js';
+import { declaredEntries, deriveEntryPoints, manifestCommands, memberCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
@@ -178,9 +178,23 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   // a publish, it is published.
   const members = publishedMembers(doors).map((dir) => memberPackage(repoPath, dir, trackedSet))
     .filter((entry) => entry != null && !doors.some((door) => door.kind === 'package' && door.file === entry.manifest));
+  // The commands of a manifest no workspace names are doors when a workflow
+  // publishes it or works in its directory: examples/<tool>/package.json a
+  // dispatch publishes, a package a CI matrix tests in src/<project>.
+  const installed = new Set(doors.filter((door) => door.kind === 'command').map((door) => door.file));
+  const binDirs = [...new Set([...publishedMembers(doors), ...doors.flatMap((door) => door.workedIn ?? [])])].sort()
+    .filter((dir) => !installed.has(`${dir}/package.json`));
+  for (const door of doors) delete door.workedIn;
+  members.push(...binDirs.flatMap((dir) => memberCommands(repoPath, dir, trackedSet)));
   const memberDoors = members.length > 0 ? mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands: members, builtFrom, emitted, unitTests, discovered }) : [];
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
   markPrivateCommands(doors, rootManifest(repoPath, trackedSet));
+  // A private manifest's command is installed by no one.
+  for (const door of memberDoors) {
+    if (door.kind !== 'command' || !members.some((entry) => entry.kind === 'command' && entry.privateMember && entry.manifest === door.file && entry.name === door.name)) continue;
+    door.unshipped = true;
+    door.privatePackage = true;
+  }
   doors.push(...memberDoors);
   markUnshipped(doors, cargoProject(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
@@ -248,7 +262,35 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     doors,
     landings,
     ...(unseen.length > 0 ? { unseen } : {}),
+    ...(collectIgnored(repoPath, trackedSet).length > 0 ? { collectIgnored: collectIgnored(repoPath, trackedSet) } : {}),
   };
+}
+
+/**
+ * The tracked files a conftest.py keeps out of pytest's collection with a
+ * literal collect_ignore or collect_ignore_glob list, relative to its own
+ * directory: scripts named like tests that are no tests (sprite-foundry's
+ * GPU pipeline scripts).
+ */
+function collectIgnored(repoPath, tracked) {
+  const out = new Set();
+  for (const path of [...tracked].filter((item) => item === 'conftest.py' || item.endsWith('/conftest.py'))) {
+    let text = '';
+    try {
+      text = readFileSync(join(repoPath, path), 'utf8');
+    } catch {
+      continue;
+    }
+    const dir = path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '';
+    for (const match of text.matchAll(/^collect_ignore(_glob)?\s*(?:\+)?=\s*\[([^\]]*)\]/gm)) {
+      const patterns = [...match[2].matchAll(/["']([^"']+)["']/g)].map((item) => (dir ? `${dir}/${item[1]}` : item[1]).replace(/^\.\//, ''));
+      const isMatch = picomatch(patterns, { dot: true });
+      for (const file of tracked) {
+        if (isMatch(file) || patterns.some((pattern) => file.startsWith(`${pattern.replace(/\/+$/, '')}/`))) out.add(file);
+      }
+    }
+  }
+  return [...out].sort();
 }
 
 // The files the runs held to each gate reach, one entry per gate, the
@@ -528,12 +570,16 @@ function symlinkTarget(repoPath, path) {
 function describeFile(repoPath, path, places, facts, spawned, attributes, builds) {
   const bytes = storedBytes(readFileSync(join(repoPath, path)), attributes);
   const hash = createHash('sha256').update(bytes).digest('hex');
-  const language = languageOf(path);
+  // An Astro file's frontmatter (the --- fenced script at its top) is
+  // TypeScript the component runs, read for its imports as a TypeScript
+  // file's are; the markup below it is not code.
+  const front = /\.astro$/i.test(path) ? astroFrontmatter(bytes.toString('utf8')) : null;
+  const language = front != null ? 'typescript' : languageOf(path);
   // A scene or resource Godot saves as text names what it instances and
   // reads line by line, read as text by rule (core/gdscript.js).
   if (language == null && GODOT_TEXT.test(path)) return { path, hash, language: null, ...godotResourceReadings(bytes.toString('utf8')), ...noLandings() };
   if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };
-  const extracted = parseFile(language, path, bytes.toString('utf8'), places);
+  const extracted = parseFile(language, path, front ?? bytes.toString('utf8'), places);
   if (extracted.parseError) {
     const syntax = extracted.unreadSyntax ? { unreadSyntax: extracted.unreadSyntax } : {};
     return { path, hash, language, parseError: true, ...syntax, imports: [], ...noLandings() };
@@ -584,7 +630,7 @@ function parseFile(language, path, original, places) {
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [], unreadSyntax: unreadSyntax(tree.rootNode, source) };
     if (!SCRIPT_LANGUAGES.has(language) && language !== 'python') return nativeReadings(language, tree.rootNode);
-    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode), ...typeSites];
+    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode, path), ...typeSites];
     return {
       imports,
       landings: astLandings(language, tree.rootNode, path, places),
@@ -593,7 +639,7 @@ function parseFile(language, path, original, places) {
       githubChanges: language === 'python' ? 0 : githubChanges(tree.rootNode),
       noStatements: statementless(tree.rootNode),
       startsOnLoad: language !== 'python' && startsOnLoad(tree.rootNode),
-      holds: language === 'python' ? null : onlyHolds(tree.rootNode),
+      holds: language === 'python' ? pythonHolds(tree.rootNode) : onlyHolds(tree.rootNode),
       http: language === 'python' ? null : httpFacts(tree.rootNode),
       builds: language === 'python' || isTestFile(path) ? [] : buildCalls(tree.rootNode, (node) => pathShape(node, path)),
     };
@@ -864,6 +910,23 @@ function statementless(root) {
  * A value that is a function, or a call made as the module loads, is work. A
  * reader following the work passes over both, to what the barrel hands on.
  */
+// A Python module of nothing but its docstring and literal constants
+// (__version__ = "1.2.0") holds a value and does no work, as a script of one
+// literal does: never a step of a path, nor its end.
+function pythonHolds(root) {
+  const statements = root.namedChildren.filter((child) => child.type !== 'comment');
+  if (statements.length === 0) return null;
+  const literal = (node) => ['string', 'integer', 'float', 'true', 'false', 'none', 'concatenated_string'].includes(node?.type)
+    || ((node?.type === 'list' || node?.type === 'tuple') && node.namedChildren.every((child) => child.type === 'string'));
+  const constants = statements.filter((statement) => {
+    const inner = statement.type === 'expression_statement' ? statement.namedChildren[0] : null;
+    if (inner?.type === 'string') return false;
+    return inner?.type === 'assignment' && inner.childForFieldName('left')?.type === 'identifier' && literal(inner.childForFieldName('right'));
+  });
+  const docstrings = statements.filter((statement) => statement.type === 'expression_statement' && statement.namedChildren[0]?.type === 'string');
+  return constants.length > 0 && constants.length + docstrings.length === statements.length ? 'constant' : null;
+}
+
 function onlyHolds(root) {
   const statements = root.namedChildren.filter((child) => child.type !== 'comment');
   if (statements.length === 0) return null;
@@ -894,11 +957,16 @@ const PY_SPAWNS = /(^|\.)(run|call|check_call|check_output|Popen)$/;
  */
 function pythonSpawns(root) {
   const interpreters = new Set();
+  // A command line bound to a name before it is handed on (pytest = [py,
+  // "-m", "pytest", "-q"]; _run("suite", pytest)) is the list the name holds,
+  // when the file binds the name to a list once.
+  const lists = new Map();
   walkNamed(root, (node) => {
     if (node.type !== 'assignment') return;
     const left = node.childForFieldName('left');
     const right = node.childForFieldName('right');
     if (left?.type === 'identifier' && right?.text === 'sys.executable') interpreters.add(left.text);
+    if (left?.type === 'identifier') lists.set(left.text, lists.has(left.text) || right?.type !== 'list' ? null : right);
   });
   // A function of the file that hands one of its parameters to subprocess
   // (def _run(label, cmd): subprocess.run(cmd)) runs the list each call
@@ -922,20 +990,80 @@ function pythonSpawns(root) {
     let list = null;
     if (helpers.has(callee)) list = args[helpers.get(callee)] ?? null;
     else if (PY_SPAWNS.test(callee)) list = args[0] ?? null;
-    if (list?.type !== 'list') return;
-    const items = list.namedChildren.filter((child) => child.type !== 'comment');
-    const head = items[0];
-    if (!(head?.text === 'sys.executable' || (head?.type === 'identifier' && interpreters.has(head.text)))) return;
-    const words = ['python'];
-    for (const item of items.slice(1)) {
-      if (item.type !== 'string') break;
-      const text = item.namedChildren.filter((child) => child.type === 'string_content').map((child) => child.text).join('');
-      if (/[\s'"]/.test(text) || text === '') break;
-      words.push(text);
+    // A name a loop binds from a literal list (for label, argv, env in legs:
+    // run(label, argv)) is each command line the list holds.
+    const candidates = list?.type === 'identifier' ? (lists.get(list.text) ? [lists.get(list.text)] : loopItems(node, list.text, lists)) : [list];
+    for (const candidate of candidates) {
+      if (candidate?.type !== 'list') continue;
+      const items = candidate.namedChildren.filter((child) => child.type !== 'comment');
+      const head = items[0];
+      if (!(head?.text === 'sys.executable' || (head?.type === 'identifier' && interpreters.has(head.text)))) continue;
+      const words = ['python'];
+      for (const item of items.slice(1)) {
+        if (item.type !== 'string') break;
+        const text = item.namedChildren.filter((child) => child.type === 'string_content').map((child) => child.text).join('');
+        if (/[\s'"]/.test(text) || text === '') break;
+        // An interpreter flag before -m (python -O -m pytest) runs the same
+        // module.
+        if (words.length === 1 && /^-[A-Za-z]$/.test(text) && text !== '-m' && text !== '-c') continue;
+        words.push(text);
+      }
+      if (words[1] === '-m' && words[2]) commands.add(words.join(' '));
     }
-    if (words[1] === '-m' && words[2]) commands.add(words.join(' '));
   });
   return { commands: [...commands].sort(), built: 0 };
+}
+
+/**
+ * The script an Astro file's frontmatter holds, with the lines before and
+ * after it blank so a site keeps its line, or null when the file opens with
+ * no --- fence.
+ */
+export function astroFrontmatter(text) {
+  const lines = text.replace(/^\uFEFF/, '').split('\n');
+  let first = 0;
+  while (first < lines.length && lines[first].trim() === '') first += 1;
+  if (lines[first]?.trim() !== '---') return null;
+  const end = lines.findIndex((line, index) => index > first && line.trim() === '---');
+  if (end === -1) return null;
+  return lines.map((line, index) => (index > first && index < end ? line : '')).join('\n');
+}
+
+// The path a file: URL built from a repository path names, relative to the
+// importing file: pathToFileURL(x).href, pathToFileURL(x), or a const
+// holding either. Null for anything else.
+function fileUrlImport(root, node, path) {
+  let value = node?.type === 'identifier' ? constValue(root, node.text) : node;
+  if (value?.type === 'member_expression' && value.childForFieldName('property')?.text === 'href') value = value.childForFieldName('object');
+  if (value?.type !== 'call_expression') return null;
+  const fn = value.childForFieldName('function');
+  const name = fn?.type === 'identifier' ? fn.text : fn?.type === 'member_expression' ? fn.childForFieldName('property')?.text : null;
+  if (name !== 'pathToFileURL') return null;
+  const argument = firstArgument(value);
+  const target = argument ? scriptPath(argument, path) : null;
+  if (target == null || target === '') return null;
+  const from = posix.dirname(path);
+  const relative = posix.relative(from === '.' ? '' : from, target);
+  return relative.startsWith('.') ? relative : `./${relative}`;
+}
+
+// The items a Python loop binds a name to from a literal list: each element,
+// or each tuple's element where an unpacked target holds the name, the list
+// spelled in the loop or bound once to a name.
+function loopItems(node, name, lists) {
+  for (let scope = node.parent; scope; scope = scope.parent) {
+    if (scope.type !== 'for_statement') continue;
+    const left = scope.childForFieldName('left');
+    const at = left?.type === 'identifier' ? (left.text === name ? -1 : null)
+      : (left?.type === 'pattern_list' || left?.type === 'tuple_pattern') ? left.namedChildren.findIndex((child) => child.type === 'identifier' && child.text === name) : null;
+    if (at == null || (at < 0 && left?.type !== 'identifier')) continue;
+    let right = scope.childForFieldName('right');
+    if (right?.type === 'identifier') right = lists.get(right.text) ?? null;
+    if (right?.type !== 'list' && right?.type !== 'tuple') return [];
+    const elements = right.namedChildren.filter((child) => child.type !== 'comment');
+    return at === -1 ? elements : elements.filter((item) => item.type === 'tuple').map((item) => item.namedChildren.filter((child) => child.type !== 'comment')[at]).filter(Boolean);
+  }
+  return [];
 }
 
 function walkNamed(root, visit) {
@@ -987,7 +1115,7 @@ function unreadSyntax(root, source) {
 // A string literal passed to import() or require() names its module as surely
 // as an import statement does, so it resolves as one, kind dynamic-literal.
 // Anything else passed is a dynamic site, left unresolved.
-function collectScript(root) {
+function collectScript(root, path = null) {
   const imports = [];
   walkNamed(root, (node) => {
     if (node.type === 'import_statement' || node.type === 'export_statement') {
@@ -1033,6 +1161,13 @@ function collectScript(root) {
     const table = tableValues(root, first);
     if (table.length > 0) {
       for (const specifier of table) imports.push({ specifier, kind: 'dynamic-literal', line: lineOf(node), table: true });
+      return;
+    }
+    // import(pathToFileURL(resolve(HERE, '../tools/sim.mjs')).href), or the
+    // same held in a const: the file the path names, as a relative import.
+    const located = isImport && path != null ? fileUrlImport(root, first, path) : null;
+    if (located != null) {
+      imports.push({ specifier: located, kind: 'dynamic-literal', line: lineOf(node), ...optional });
       return;
     }
     imports.push({ specifier: first ? first.text : '', kind: 'dynamic', line: lineOf(node) });
@@ -1127,6 +1262,23 @@ const PYTHON_LOCATION_CALLS = new Set(['importlib.util.spec_from_file_location',
 // one tracked file. Either is kind dynamic-literal and resolves as an import.
 function collectPython(root, path, places) {
   const imports = [];
+  // A directory the file puts on its own import path (sys.path.insert(0,
+  // join(dirname(__file__), "..", "scripts"))) is where its bare imports are
+  // looked up first, as Python does once the line has run.
+  const roots = [];
+  walkNamed(root, (node) => {
+    if (node.type !== 'call') return;
+    const name = pythonCallee(node.childForFieldName('function'));
+    if (name !== 'sys.path.insert' && name !== 'sys.path.append') return;
+    const args = (node.childForFieldName('arguments')?.namedChildren ?? []).filter((child) => child.type !== 'comment' && child.type !== 'keyword_argument');
+    const target = name === 'sys.path.insert' ? args[1] : args[0];
+    if (!target) return;
+    for (const value of pythonPathValues(target, path)) {
+      const dir = value === '.' ? '' : value.replace(/\/+$/, '');
+      if ((dir === '' || places.dirs.has(dir)) && !roots.includes(dir)) roots.push(dir);
+    }
+  });
+  const stamp = (site) => (roots.length > 0 && site.kind !== 'dynamic' ? { ...site, roots: [...roots] } : site);
   walkNamed(root, (node) => {
     if (node.type === 'import_statement') {
       for (const child of node.namedChildren) {
@@ -1140,10 +1292,17 @@ function collectPython(root, path, places) {
       const module = node.childForFieldName('module_name');
       if (!module) return;
       const wildcard = node.namedChildren.some((child) => child.type === 'wildcard_import');
+      // The names imported from it, which are its submodules when it is a
+      // namespace package (from pipeline import foundry_ingest).
+      const names = node.namedChildren
+        .filter((child) => child.startIndex !== module.startIndex && (child.type === 'dotted_name' || child.type === 'aliased_import'))
+        .map((child) => (child.type === 'aliased_import' ? child.childForFieldName('name')?.text : child.text))
+        .filter((name) => typeof name === 'string' && /^[A-Za-z_]\w*$/.test(name));
       imports.push({
         specifier: module.text,
         kind: wildcard ? 'wildcard' : 'static',
         line: lineOf(node),
+        ...(names.length > 0 && !module.text.startsWith('.') ? { names } : {}),
       });
       return;
     }
@@ -1154,7 +1313,14 @@ function collectPython(root, path, places) {
       const first = args?.namedChildren[0] ?? null;
       const literal = pythonLiteral(first);
       if (literal) imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node) });
-      else imports.push({ specifier: pythonDynamicSpecifier(first), kind: 'dynamic', line: lineOf(node) });
+      else {
+        // import_module(module, __package__) with module taken from a
+        // module-level table of literal names (_LAZY = {"X": ("ai",
+        // ".intelligence")}): every name the table holds is one it may load.
+        const table = first?.type === 'identifier' ? pythonTableModules(root, node, first.text) : [];
+        if (table.length > 0) for (const specifier of table) imports.push({ specifier, kind: 'dynamic-literal', line: lineOf(node), table: true });
+        else imports.push({ specifier: pythonDynamicSpecifier(first), kind: 'dynamic', line: lineOf(node) });
+      }
       return;
     }
     if (!PYTHON_LOCATION_CALLS.has(name)) return;
@@ -1163,7 +1329,41 @@ function collectPython(root, path, places) {
     if (named.length === 1) imports.push({ specifier: named[0], kind: 'dynamic-literal', line: lineOf(node), location: true });
     else imports.push({ specifier: location ? location.text : '', kind: 'dynamic', line: lineOf(node) });
   });
-  return imports;
+  return imports.map(stamp);
+}
+
+// The module names a name holds when the enclosing function binds it from a
+// subscript of a module-level dict literal, by itself (module = T[name]) or
+// unpacked from a tuple (feature, module = T[name]).
+function pythonTableModules(root, from, name) {
+  let scope = from.parent;
+  while (scope && scope.type !== 'function_definition') scope = scope.parent;
+  if (!scope) return [];
+  let found = null;
+  walkNamed(scope, (node) => {
+    if (found || node.type !== 'assignment') return;
+    const left = node.childForFieldName('left');
+    const right = node.childForFieldName('right');
+    if (right?.type !== 'subscript' || right.childForFieldName('value')?.type !== 'identifier') return;
+    const at = left?.type === 'identifier' ? (left.text === name ? -1 : null)
+      : (left?.type === 'pattern_list' || left?.type === 'tuple_pattern') ? left.namedChildren.findIndex((child) => child.text === name) : null;
+    if (at == null || (at < -1)) return;
+    if (at === -1 && left.type !== 'identifier') return;
+    found = { table: right.childForFieldName('value').text, at };
+  });
+  if (!found) return [];
+  const table = root.namedChildren
+    .map((child) => (child.type === 'expression_statement' ? child.namedChildren[0] : null))
+    .find((node) => node?.type === 'assignment' && node.childForFieldName('left')?.text === found.table)?.childForFieldName('right');
+  if (table?.type !== 'dictionary') return [];
+  const out = new Set();
+  for (const pair of table.namedChildren.filter((child) => child.type === 'pair')) {
+    let value = pair.childForFieldName('value');
+    if (found.at >= 0) value = value?.type === 'tuple' ? value.namedChildren.filter((child) => child.type !== 'comment')[found.at] : null;
+    const text = pythonLiteral(value);
+    if (text && /^\.*[A-Za-z_][\w.]*$/.test(text)) out.add(text);
+  }
+  return [...out].sort();
 }
 
 function pythonLiteral(node) {

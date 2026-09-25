@@ -50,7 +50,9 @@ const EXPECTED = {
     entry('a.b', 'static', 2, external),
     entry('a', 'static', 3, external),
     entry('b', 'static', 3, external),
-    entry('a.b', 'static', 4, external),
+    // from a.b import d carries the names it imports, which are a
+    // namespace package's modules when a.b is one.
+    { ...entry('a.b', 'static', 4, external), names: ['d'] },
     entry('.x', 'static', 5, missing),
     entry('..x', 'static', 6, missing),
     entry('.', 'static', 7, missing),

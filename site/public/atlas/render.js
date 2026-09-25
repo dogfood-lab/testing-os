@@ -190,7 +190,7 @@ function wordedName(ctx, text) {
 // A door a manifest installs, a command people run or the package they
 // import, has no trigger; page.js names what it is instead.
 function installed(door) {
-  return door?.kind === 'command' || door?.kind === 'package';
+  return door?.kind === 'command' || door?.kind === 'package' || door?.kind === 'action';
 }
 
 // page.json carries where an extension is installed from as the page words it,
@@ -198,7 +198,8 @@ function installed(door) {
 // is bundled into, and the app a Tauri binary or a Godot project is.
 function installedAs(door) {
   const bundled = arr(door.bundledInto).map(str);
-  const what = door.example ? `a command people run with <code>${esc(str(door.runWith))}</code>`
+  const what = door.kind === 'action' ? 'an action other repositories use'
+    : door.example ? `a command people run with <code>${esc(str(door.runWith))}</code>`
     : door.unshipped && door.privatePackage ? 'a command of a private package, which nothing ships'
     : door.unshipped ? `${door.app === 'desktop' ? 'a desktop app' : 'a command'} built from ${esc(str(door.builtFrom))}, which nothing ships`
     : door.app === 'desktop' ? 'the desktop app people install'
@@ -251,6 +252,11 @@ function checks(ctx, door) {
 // names apart; elsewhere the send that ships them names them.
 function builds(ctx, door) {
   return arr(door.builds).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
+}
+
+// What a Dockerfile copies into the image a door builds, as page.js names it.
+function packs(ctx, door) {
+  return arr(door.packs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
 }
 
 // runsCount and checksCount are how many paths the door runs and checks when
@@ -443,6 +449,7 @@ function held(ctx, door) {
     runs: runs(ctx, { found: door.found, runs: group.runs }),
     checks: arr(group.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
     builds: arr(group.builds).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+    packs: arr(group.packs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
     runsMore: moreOf(group.runsMore),
     checksMore: moreOf(group.checksMore),
   }));
@@ -454,6 +461,7 @@ function heldClause(group, verb, joiner, field, { withBuilds = false } = {}) {
   if (group.runs.length > 0) clauses.push(`${verb} ${shown(group.runs, group.runsMore)}`);
   if (withBuilds && group.builds.length > 0) clauses.push(`builds ${shown(group.builds)}`);
   if (group.checks.length > 0) clauses.push(`checks ${shown(group.checks, group.checksMore)}`);
+  if (group.packs.length > 0) clauses.push(`packs ${shown(group.packs)} into an image`);
   return clauses.length > 0 ? clauses.join(joiner) : null;
 }
 
@@ -476,8 +484,11 @@ function comesIn(ctx) {
     else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
     if (built.length > 0) clauses.push(`builds ${runsShown(built)}`);
     if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
+    if (packs(ctx, door).length > 0) clauses.push(`packs ${runsShown(packs(ctx, door))} into an image`);
     const heldText = heldSentences(ctx, door, startVerb(door), clauses.length > 0, { withBuilds: true });
-    const ran = [...(clauses.length > 0 || heldText.length === 0 ? [capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`)] : []), ...heldText].join(' ');
+    // A workflow that runs only echo, as page.js says it.
+    const nothing = door.echoOnly ? 'runs only echo' : `${startVerb(door)} no file this map can see`;
+    const ran = [...(clauses.length > 0 || heldText.length === 0 ? [capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${nothing}.`)] : []), ...heldText].join(' ');
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
     const when = capitalize(arr(door.triggers).map(str).join('; ')) || 'Nothing this map can read starts it';
     return `${name} ${inline(when)}. ${ran}`;
@@ -506,8 +517,9 @@ function doorSteps(ctx, door) {
   if (paths.length > 0) clauses.push(`${subject} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
   if (built.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} builds ${runsShown(built)}`);
   if (checked.length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
+  if (packs(ctx, door).length > 0) clauses.push(`${clauses.length > 0 ? 'it' : 'The workflow'} packs ${runsShown(packs(ctx, door))} into an image`);
   const heldText = heldSentences(ctx, door, 'runs', clauses.length > 0);
-  if (clauses.length > 0 || heldText.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : `${subject} no file this map can see.`);
+  if (clauses.length > 0 || heldText.length === 0) steps.push(clauses.length > 0 ? `${clauses.join('; ')}.` : door.echoOnly ? `${subject} only echo.` : `${subject} no file this map can see.`);
   steps.push(...heldText);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
@@ -647,13 +659,15 @@ function otherDoors(ctx) {
     else if (paths.length > 0 || (arr(door.builds).length === 0 && checked.length === 0 && arr(door.held).length === 0)) {
       clauses.push(paths.length > 0
         ? { html: `${verb} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`, text: `${verb} ${runsShownText(paths, runTotal(door, paths), moreOf(door.runsMore))}` }
-        : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
+        : door.echoOnly ? { html: 'runs only echo', text: 'runs only echo' } : { html: `${verb} no file this map can see`, text: `${verb} no file this map can see` });
     }
     const plain = plainBuilds(ctx, door);
     if (plain.length > 0) clauses.push({ html: `builds ${runsShown(plain)}`, text: `builds ${runsShownText(plain)}` });
     if (checked.length > 0) {
       clauses.push({ html: `checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`, text: `checks ${runsShownText(checked, checkTotal(door, checked), moreOf(door.checksMore))}` });
     }
+    const packed = packs(ctx, door);
+    if (packed.length > 0) clauses.push({ html: `packs ${runsShown(packed)} into an image`, text: `packs ${runsShownText(packed)} into an image` });
     for (const group of held(ctx, door)) {
       const html = heldClause(group, verb, ' and ', 'html');
       if (html) clauses.push({ html: `${html} ${esc(group.when)}`, text: `${heldClause(group, verb, ' and ', 'text')} ${group.when}` });
@@ -692,7 +706,8 @@ function breakLine(ctx, entry) {
     const writers = arr(entry.writers).map((part) => esc(ctx.name(part)));
     const readers = arr(entry.readers).map((part) => esc(ctx.name(part)));
     const comma = writers.length > 1 ? ',' : '';
-    return `<strong>${pathHtml(ctx, entry.target)}</strong> is written by ${list(writers)}${comma} and read by ${list(readers)}; a hand edit reaches every reader.`;
+    const tests = Number(entry.tests) > 0 ? `, and by ${count(Number(entry.tests), 'test')}` : '';
+    return `<strong>${pathHtml(ctx, entry.target)}</strong> is written by ${list(writers)}${comma} and read by ${list(readers)}${tests}; a hand edit reaches every reader.`;
   }
   const importedBy = arr(entry?.importedBy).map((part) => ctx.name(part));
   const imported = importedBy.length === 0
@@ -729,7 +744,9 @@ function breaksSection(ctx) {
     ? ul(entries.map((entry) => breakLine(ctx, entry)))
     : p(absence('breaks', unreadFiles(ctx)));
   const figure = renderBreaksFigure(ctx.page);
-  return section('What breaks what', figure ? `${body}\n${figure}` : body);
+  // A code part the map cannot read, said as page.js says it.
+  const unread = typeof ctx.page.unreadCodeUses === 'string' ? `\n${p(esc(ctx.page.unreadCodeUses))}` : '';
+  return section('What breaks what', figure ? `${body}${unread}\n${figure}` : `${body}${unread}`);
 }
 
 // "the tests part", as page.js words a part in a sentence about parts; the
@@ -777,7 +794,7 @@ function untestedSection(ctx) {
   const note = arr(ctx.page.untestedNote).map((line) => p(esc(line)));
   const body = items.length > 0
     ? [ul(items.map((item) => `<strong>${esc(partName(ctx, item) ?? '')}</strong> is imported by no test.`))]
-    : (Number(ctx.page.testFiles) === 0 ? [] : [p(arr(ctx.page.spawnTested).length > 0 || arr(ctx.page.testedInside).length > 0 ? 'Every code part is touched by at least one test.' : 'Every code part is imported by at least one test.')]);
+    : (Number(ctx.page.testFiles) === 0 ? [] : [p(`Every code part${arr(ctx.page.unreadCode).length > 0 ? ' this map reads' : ''} is ${arr(ctx.page.spawnTested).length > 0 || arr(ctx.page.testedInside).length > 0 || arr(ctx.page.testedByScript).length > 0 ? 'touched by' : 'imported by'} at least one test.`)]);
   return section('What no test touches', [...body, ...note].join('\n'));
 }
 
@@ -828,9 +845,14 @@ function generatedSection(ctx) {
       // A stamped file is written by people, with one block a script keeps.
       if (item.once) return `${place} is written once by ${by}.`;
       if (item.fromRoot) return `${place} is written by ${by} when run from the repository root, and committed.`;
-      return item.block ? `${place} has a block written by ${by}.` : `${place} is written by ${by}.`;
+      if (item.block) return `${place} has a block written by ${by}.`;
+      // A source the writer reads and people write, as page.js says it.
+      const sources = arr(item.sources).map(str);
+      return `${place} is written by ${by}${sources.length > 0 ? `, except ${list(sources.map((path) => pathHtml(ctx, path)))}, which it reads and people write` : ''}.`;
     }))
-    : p(absence('generated', unreadFiles(ctx)));
+    : arr(ctx.page.authoredWritten).length > 0
+      ? p('Every tracked place code writes here is edited by people too; see Hand-authored.')
+      : p(absence('generated', unreadFiles(ctx)));
   return section('Generated, never hand-edited', body);
 }
 
@@ -851,6 +873,8 @@ function authoredSection(ctx) {
   const shared = arr(ctx.page.authoredWritten).filter((item) => item && typeof item === 'object').map((item) => {
     const writers = list(arr(item.writers).map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
     const people = Number(item.byPeople) || 0;
+    // A writer reading inputs the repository does not keep, as page.js says it.
+    if (item.untrackedInputs) return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${writers} from inputs this repository does not keep, and by people.`;
     return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${writers}, and by people: ${people} of its ${count(Number(item.commits) || 0, 'commit')} in the window ${people === 1 ? 'is' : 'are'} theirs.`;
   });
   return section('Hand-authored', shared.length > 0 ? `${body}\n${ul(shared)}` : body);

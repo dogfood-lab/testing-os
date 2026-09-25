@@ -1,0 +1,23 @@
+name: Daily Refresh
+on:
+  schedule:
+    - cron: '0 6 * * *'
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/fetch.mjs
+      - name: Verify freshness
+        run: |
+          node -e '
+            const p = "data/stats.json";
+            JSON.parse(require("fs").readFileSync(p, "utf8"));
+          '
+      - name: Commit
+        run: |
+          git add data/stats.json
+          git commit -m "refresh"
+          git push

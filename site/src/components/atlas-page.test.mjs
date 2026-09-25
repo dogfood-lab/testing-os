@@ -1049,3 +1049,60 @@ test('a runner that finds its tests at run time reads with what it finds, as the
   const text = plain(render.renderPage({ ...page, doors: [...page.doors, ci] }, { repo: page.repo }));
   assert.ok(text.includes('ci. On a pull request. Runs tools/headless.gd, which runs the 2 test suites under tests/ it finds at run time.'), 'what comes in');
 });
+
+test('an action a repository ships is named as one other repositories use, as the markdown names it', () => {
+  const action = { file: 'action.yml', id: 'action.yml#Renderer', kind: 'action', landings: [], name: 'Renderer', pushes: false, runs: ['scripts/render.mjs'], sends: [], stages: [], triggers: [] };
+  const html = plain(render.renderPage({ ...page, doors: [...page.doors, action] }, { repo: page.repo }));
+  assert.ok(html.includes('Renderer (an action other repositories use)'), html.slice(html.indexOf('The other doors'), html.indexOf('The other doors') + 3000));
+});
+
+test('a place written from inputs the repository does not keep is people\'s too, as the markdown says', () => {
+  const html = plain(render.renderPage({ ...page, generated: [], authoredWritten: [{ place: 'src/game/data/events.json', untrackedInputs: true, writers: ['scripts/convert.py'] }] }, { repo: page.repo }));
+  assert.ok(html.includes('Every tracked place code writes here is edited by people too; see Hand-authored.'), html);
+  assert.ok(html.includes('src/game/data/events.json is written by scripts/convert.py from inputs this repository does not keep, and by people.'), html);
+});
+
+test('what a Dockerfile copies into an image is packed, as the markdown says, never checked', () => {
+  const ci = page.doors.find((door) => door.name === 'CI');
+  const doors = page.doors.map((door) => (door === ci ? { ...door, checks: [], packs: ['camp/', 'pyproject.toml'] } : door));
+  const html = plain(render.renderPage({ ...page, doors }, { repo: page.repo }));
+  assert.ok(html.includes('packs camp/ and pyproject.toml into an image'), html.slice(0, 4000));
+});
+
+test('a part only its package\'s own test script tests is touched by a test, as the markdown says', () => {
+  const html = plain(render.renderPage({ ...page, untested: [], spawnTested: [], testedInside: [], testedByScript: ['launcher'], testFiles: 3 }, { repo: page.repo }));
+  assert.ok(html.includes('Every code part is touched by at least one test.'), html);
+});
+
+test('a code part the map cannot read is named, and never counted among those a test imports', () => {
+  const line = 'components holds only Astro files, which this map does not read, so what uses it cannot be seen.';
+  const html = plain(render.renderPage({ ...page, untested: [], spawnTested: [], testedInside: [], testFiles: 3, unreadCode: ['components'], unreadCodeUses: line }, { repo: page.repo }));
+  assert.ok(html.includes(line), html);
+  assert.ok(html.includes('Every code part this map reads is'), html);
+});
+
+test('a workflow that runs only echo is said so, as the markdown says it', () => {
+  const ci = page.doors.find((door) => door.name === 'CI');
+  const doors = page.doors.map((door) => (door === ci ? { ...door, runs: [], runsCount: 0, builds: [], checks: [], packs: [], held: [], sends: [], landings: [], reach: [], echoOnly: true } : door));
+  const html = plain(render.renderPage({ ...page, doors }, { repo: page.repo }));
+  assert.ok(html.includes('CI runs only echo'), html.slice(html.indexOf('The other doors'), html.indexOf('The other doors') + 2000));
+});
+
+test('a source a generated place keeps is named as the markdown names it', () => {
+  const generated = [{ place: 'viewer/', sources: ['viewer/template.html'], writers: ['scripts/build_viewer.py'] }];
+  const html = plain(render.renderPage({ ...page, generated }, { repo: page.repo }));
+  assert.ok(html.includes('viewer/ is written by scripts/build_viewer.py, except viewer/template.html, which it reads and people write.'), html);
+});
+
+test('the tests reading a place a hand edit breaks are counted, as the markdown counts them', () => {
+  const breaks = [{ kind: 'place', target: 'data/graphs.json', writers: ['tools'], readers: ['scripts', 'site'], tests: 2 }];
+  const html = plain(render.renderPage({ ...page, breaks }, { repo: page.repo }));
+  assert.ok(html.includes('data/graphs.json is written by tools and read by scripts and site, and by 2 tests; a hand edit reaches every reader.'), html);
+});
+
+test('what a gated image build packs is said under its gate, as the markdown says it', () => {
+  const ci = page.doors.find((door) => door.name === 'CI');
+  const doors = page.doors.map((door) => (door === ci ? { ...door, held: [{ builds: [], checks: [], checksMore: 0, lead: 'on a release event', packs: ['app/', 'pyproject.toml'], runs: [], runsMore: 0, when: 'on a release event' }] } : door));
+  const html = plain(render.renderPage({ ...page, doors, mainDoor: ci.id }, { repo: page.repo }));
+  assert.ok(html.includes('On a release event, it also packs app/ and pyproject.toml into an image.'), html.slice(0, 5000));
+});

@@ -8,7 +8,7 @@ import { buildArtifact } from './artifact.js';
 import { buildPage } from './page.js';
 
 // fixtures/atlas/publish-root-and-wrapper: the repository's own package on
-// a tag, and a wrapper chosen at run time (see the fixture's README).
+// a tag, and a wrapper a dispatch input names (see the fixture's README).
 
 const FIXTURE = resolve(import.meta.dirname, '../../../fixtures/atlas/publish-root-and-wrapper');
 const roots = [];
@@ -24,6 +24,6 @@ describe('two publishes to one registry', () => {
     const boundaries = [{ name: 'examples', globs: ['examples/**'], role: 'code' }, { name: 'src', globs: ['src/**'], role: 'code' }];
     const structure = buildArtifact(mapRepository({ repoPath: root, boundaries }), '0'.repeat(40));
     const { markdown } = buildPage({ structure, statistics: {}, document: {}, repoName: 'fixture/publish-root-and-wrapper' });
-    assert.ok(markdown.includes('It publishes @l/launcher to npm, and a package to npm, chosen at run time.'), markdown.split('\n').find((line) => line.includes('It publishes')));
+    assert.ok(markdown.includes('It publishes @l/tool (examples/tool) and @l/launcher to npm.'), markdown.split('\n').find((line) => line.includes('It publishes')));
   });
 });

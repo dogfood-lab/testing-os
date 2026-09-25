@@ -63,7 +63,7 @@ after(() => {
 
 describe('doors on the page, by the conventions of their tools', () => {
   it('names what a Python CI runs and reaches, and follows it as the busiest door', () => {
-    has(py.markdown, '## What this is', '7 parts, mostly Python (10 files). Work enters through 5 doors; the busiest is CI, which reaches 5 parts. It publishes to PyPI and a container image.');
+    has(py.markdown, '## What this is', '7 parts, mostly Python (10 files) and shell (1). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes to PyPI and a container image. People import pkg.');
     has(py.markdown, '## What comes in', '1. **CI.** On a pull request touching 2 paths; on a push to main; when a tag matching `v*` is pushed; or by hand. Runs scripts/check.py, scripts/smoke.py, tests/ and 2 more; checks scripts/, src/ and tool/.');
     // ruff, bandit and flake8 read src/, scripts/ and tool/; pytest, python
     // and verify.sh run what they name.
@@ -177,7 +177,7 @@ describe('the busiest door', () => {
   it('says so when no door reaches a part, rather than following one', () => {
     const structure = { ...py.structure, doors: py.structure.doors.map((item) => ({ ...item, runs: [], runsCount: 0, reach: [] })) };
     const { markdown, json } = buildPage({ structure, statistics: py.statistics, document: py.document, repoName: 'acme/doors-py' });
-    has(markdown, '## What this is', '7 parts, mostly Python (10 files). Work enters through 5 doors, and none of them runs a file this map can see. It publishes to PyPI and a container image.');
+    has(markdown, '## What this is', '7 parts, mostly Python (10 files) and shell (1). Work enters through 6 doors, and none of them runs a file this map can see. It publishes to PyPI and a container image. People import pkg.');
     has(markdown, '## Where to start', 'No door runs a file this map can see, so there is no path through this repository to follow.');
     assert.equal(markdown.includes('## What happens through'), false);
     assert.equal(JSON.parse(json).mainDoor, null);

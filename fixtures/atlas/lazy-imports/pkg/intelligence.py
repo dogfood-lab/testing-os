@@ -1,0 +1,2 @@
+class Intelligence:
+    pass

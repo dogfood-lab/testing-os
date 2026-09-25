@@ -391,6 +391,13 @@ export function better(a, b) {
   delete out.passes;
   delete out.built;
   if (built) out.built = true;
+  // A file only packed into an image is packed; one anything else checks or
+  // runs is that.
+  delete out.packed;
+  if (a.packed && b.packed) out.packed = true;
+  delete out.testScript;
+  const testScript = a.testScript ?? b.testScript;
+  if (testScript != null) out.testScript = testScript;
   if (passes.length > 0) out.passes = passes;
   // A binary either way builds is built, whatever else checks it.
   if (a.builds || b.builds) out.builds = true;
@@ -431,6 +438,10 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       if (tokens[0] === 'cd' || tokens[0] === 'pushd') here = movedTo(here, tokens.slice(1));
       else if (tokens[0] === 'popd') here = dir;
       else if (here != null) shellLine(tokens, here, inner);
+      // Outside the checkout, only a path spelled from its root names a file
+      // of it (node $GITHUB_WORKSPACE/cli/init.mjs after cd /tmp/site); any
+      // other path is read from a directory no tracked file is in.
+      else if (tokens.some((token) => WORKSPACE_ROOT.test(token))) shellLine(tokens, OUTSIDE, inner);
     }
   }
 
@@ -521,7 +532,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     let first = 0;
     while (first < tokens.length && (PREFIX_WORDS.has(tokens[first]) || /^[A-Za-z_][A-Za-z0-9_]*=/.test(tokens[first]))) first += 1;
     if (first >= tokens.length) return;
-    for (const target of npmTargets(tokens, dir, repo)) npmScript(target.dir, target.script, frame);
+    for (const target of npmTargets(tokens, dir, repo)) npmScript(target.dir, target.script, frame, target.args ?? []);
     const argv = tokens.slice(first);
     // pnpm vitest run, with no script named vitest, is vitest.
     const binary = runnerBinary(argv, dir, repo);
@@ -566,7 +577,9 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     }
   }
 
-  function npmScript(target, script, frame) {
+  // What npm run hands the script after its name (npm run tauri build --
+  // --bundles deb) is appended to the script's own command, as npm does.
+  function npmScript(target, script, frame, args = []) {
     const key = `${target}\0${script}`;
     if (frame.active.has(key)) return;
     const pkg = repo.manifest(target);
@@ -575,9 +588,13 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     frame.active.add(key);
     // A package script runs in the manager's shell, sh or cmd, whatever
     // shell the step that started it names.
-    const next = frame.platforms ? { ...frame, expanding: frame.platforms.filter((os) => os !== 'windows') } : frame;
+    const shell = frame.platforms ? { ...frame, expanding: frame.platforms.filter((os) => os !== 'windows') } : frame;
+    // A package's own test script is a test of that package, whatever it
+    // runs (armature's launcher self-test is its bin run with a flag).
+    const next = script === 'test' ? { ...shell, testScript: target } : shell;
     for (const name of [`pre${script}`, script, `post${script}`]) {
-      if (typeof scripts[name] === 'string') read(scripts[name], target, next);
+      if (typeof scripts[name] !== 'string') continue;
+      read(name === script && args.length > 0 ? `${scripts[name]} ${args.join(' ')}` : scripts[name], target, next);
     }
     frame.active.delete(key);
   }
@@ -608,7 +625,12 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     const where = frame.platforms ? { platforms: frame.platforms } : {};
     const next = { level: 1, via: via(frame, path), active: frame.active, installed: frame.installed, ...where };
     if (isShellScript(path, repo)) {
-      read(repo.text(path) ?? '', dir, next);
+      // cd "$(dirname "$0")" moves to the script's own directory, which is
+      // where the rest of the script reads its paths from.
+      const own = posix.dirname(path) === '.' ? '' : posix.dirname(path);
+      const back = posix.relative(dir || '.', own || '.') || '.';
+      const text = (repo.text(path) ?? '').replace(/(^|[\s;&|])cd\s+"?\$\(\s*dirname\s+"?\$(?:0|\{0\}|\{BASH_SOURCE(?:\[0\])?\}|BASH_SOURCE)"?\s*\)"?/g, (whole, lead) => `${lead}cd ${back}`);
+      read(text, dir, next);
     } else {
       for (const command of repo.spawned.get(path) ?? []) read(command, dir, next);
     }
@@ -717,6 +739,34 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     }
   }
 
+  function unittestRuns(rest, dir, frame) {
+    const chain = via(frame, 'unittest');
+    const discover = rest[0] === 'discover' || rest.every((arg) => arg.startsWith('-'));
+    if (discover) {
+      const args = rest[0] === 'discover' ? rest.slice(1) : rest;
+      let start = null;
+      for (let i = 0; i < args.length; i += 1) {
+        if (args[i] === '-s' || args[i] === '--start-directory') start = args[i + 1] ?? null;
+        else if (['-p', '--pattern', '-t', '--top-level-directory', '-k'].includes(args[i])) i += 1;
+        else if (!args[i].startsWith('-') && start == null) start = args[i];
+        if (args[i] === '-s' || args[i] === '--start-directory') i += 1;
+      }
+      const path = pathFrom(dir, start ?? '.');
+      if (path != null && (path === '' || repo.dirs.has(path))) record(stamp({ path: path === '' ? '' : `${path}/`, directory: true, matched: true }, frame, chain));
+      return;
+    }
+    for (const token of rest.filter((arg) => !arg.startsWith('-'))) {
+      const parts = token.split('.');
+      for (let end = parts.length; end > 0; end -= 1) {
+        const path = pathFrom(dir, `${parts.slice(0, end).join('/')}.py`);
+        if (path != null && repo.tracked.has(path)) {
+          record(stamp({ path, matched: true }, frame, chain));
+          break;
+        }
+      }
+    }
+  }
+
   function pythonModule(name, rest, dir, frame) {
     if (name === 'build' && !['build.py', 'build/__main__.py', 'build/__init__.py'].some((file) => repo.tracked.has(pathFrom(dir, file) ?? ''))) {
       const parsed = split(['build', ...rest], 1, VALUE_SETS.build);
@@ -725,6 +775,12 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     }
     if (PY_COMPILERS.has(name)) {
       for (const token of rest.filter((arg) => !arg.startsWith('-'))) file(token, dir, { ...frame, runKind: 'checks' }, { directories: true });
+      return;
+    }
+    // python -m unittest discover -s tests runs the tests under its start
+    // directory; python -m unittest tests.test_x.Case runs that module.
+    if (name === 'unittest') {
+      unittestRuns(rest, dir, frame);
       return;
     }
     const parts = name.split('.');
@@ -793,7 +849,8 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
 
   /**
    * docker build, docker buildx build and podman build of a context: the
-   * Dockerfile's COPY and ADD sources the image is built from are checked,
+   * Dockerfile's COPY and ADD sources the image is built from are packed
+   * into it (checked, and marked packed: nothing runs them here),
    * its RUN lines are read as commands from the context, and the command line
    * its ENTRYPOINT and CMD start is read as a command the image runs. Returns
    * true when the words are a build.
@@ -815,7 +872,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     const dockerfile = fileArg != null ? pathFrom(dir, fileArg) : context ? `${context}/Dockerfile` : 'Dockerfile';
     if (dockerfile == null || !repo.tracked.has(dockerfile)) return;
     const chain = via(frame, `docker build ${dockerfile}`);
-    const checks = { ...frame, runKind: 'checks' };
+    const checks = { ...frame, runKind: 'checks', packed: true };
     const stages = [];
     let stage = null;
     for (const { op, args } of dockerInstructions(repo.text(dockerfile) ?? '')) {
@@ -1374,6 +1431,26 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
      * check, clippy, doc, fmt and install compile the targets and run none
      * of them. tauri hands on to the Tauri CLI.
      */
+    // dotnet test builds and runs the test project it is handed; dotnet
+    // build, publish and pack build theirs, as cargo build does, and run
+    // none of it.
+    dotnet(argv, dir, frame) {
+      const sub = argv[1];
+      if (!['test', 'build', 'publish', 'pack'].includes(sub)) return;
+      const chain = via(frame, `dotnet ${sub}`);
+      const next = sub === 'test' ? { ...frame, runKind: 'executes' } : { ...frame, runKind: 'executes', built: true };
+      const values = new Set(['-c', '--configuration', '-f', '--framework', '-r', '--runtime', '-o', '--output', '--filter', '-v', '--verbosity', '-p', '--property', '--logger', '-l', '--results-directory', '-s', '--settings']);
+      for (let i = 2; i < argv.length; i += 1) {
+        const word = argv[i];
+        if (values.has(word)) {
+          i += 1;
+          continue;
+        }
+        if (word.startsWith('-') || word.startsWith('/')) continue;
+        const path = pathFrom(dir, word);
+        if (path != null && repo.tracked.has(path) && /\.(?:csproj|fsproj|vbproj|sln|slnx)$/i.test(path)) record(stamp({ path, matched: true }, next, chain));
+      }
+    },
     cargo(argv, dir, frame) {
       let i = 1;
       let cwd = dir;
@@ -1729,6 +1806,8 @@ function stamp(entry, frame, via = frame.via) {
   if (via) out.via = via;
   if (frame.builds) out.builds = true;
   if (frame.built) out.built = true;
+  if (frame.packed) out.packed = true;
+  if (frame.testScript != null) out.testScript = frame.testScript;
   return out;
 }
 
@@ -1792,6 +1871,7 @@ function toolOf(word) {
   if (name === 'tox') return 'none';
   if (name === 'gdlint' || name === 'gdformat') return 'gdtoolkit';
   if (name === 'cargo') return 'cargo';
+  if (name === 'dotnet') return 'dotnet';
   if (name === 'tauri') return 'tauri';
   const known = ['tsx', 'ts-node', 'deno', 'bun', 'npx', 'uv', 'uvx', 'poetry', 'pipx', 'hatch', 'coverage', 'ruff', 'mypy', 'tsc', 'tsup', 'turbo', 'next', 'vitest', 'jest', 'mocha', 'eslint', 'make', 'astro', 'vite'];
   return known.includes(name) ? name : null;
@@ -2033,9 +2113,19 @@ function npmCommandTargets(args, dir, repo) {
   let allWorkspaces = false;
   let includeRoot = false;
   const named = [];
+  let passed = [];
   for (let i = 0; i < args.length; i += 1) {
     const token = args[i];
-    if (token === '--') break;
+    if (token === '--') {
+      if (script != null) passed.push(...args.slice(i + 1));
+      break;
+    }
+    // npm reads its own flags anywhere before --; a word after the script's
+    // name is the script's.
+    if (script != null && !token.startsWith('-')) {
+      passed.push(token);
+      continue;
+    }
     const eq = token.indexOf('=');
     const flag = token.startsWith('-') && eq !== -1 ? token.slice(0, eq) : token;
     if (NPM_VALUE_FLAGS.has(flag)) {
@@ -2063,7 +2153,8 @@ function npmCommandTargets(args, dir, repo) {
   else if (named.length > 0) dirs = named.map((value) => workspaceDir(repo, value, prefix)).filter((found) => found != null);
   else dirs = [prefix];
   if (includeRoot && (allWorkspaces || named.length > 0)) dirs = [prefix, ...dirs];
-  return [...new Set(dirs)].map((target) => ({ dir: target, script }));
+  if (!RUN_ALIASES.has(command)) passed = [];
+  return [...new Set(dirs)].map((target) => ({ dir: target, script, ...(passed.length > 0 ? { args: passed } : {}) }));
 }
 
 // pnpm's own commands. Any other first word is a script of the package, which
@@ -2272,7 +2363,16 @@ export function cleanDir(dir) {
   return normalized;
 }
 
+// The checkout's root as a workflow's shell spells it: $GITHUB_WORKSPACE,
+// ${GITHUB_WORKSPACE} or ${{ github.workspace }}. A path under it is this
+// repository's from its root, wherever the step has moved to.
+const WORKSPACE_ROOT = /^(?:\$GITHUB_WORKSPACE|\$\{GITHUB_WORKSPACE\}|\$\{\{\s*github\.workspace\s*\}\})\//;
+
+// The directory a step works in once it has left the checkout.
+const OUTSIDE = '\u0000outside';
+
 function pathFrom(dir, token) {
+  if (token && WORKSPACE_ROOT.test(token)) return pathFrom('', token.replace(WORKSPACE_ROOT, ''));
   if (!token || token.startsWith('/') || token.includes('://')) return null;
   const path = posix.normalize(dir ? `${dir}/${token}` : token).replace(/\/+$/, '');
   if (path === '..' || path.startsWith('../')) return null;

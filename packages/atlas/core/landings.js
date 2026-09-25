@@ -751,7 +751,7 @@ export function astLandings(language, root, path, places) {
     visiting: new Set(),
     assignments: new Map(),
   };
-  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, outsideWhere: [], pendingWrites: [], pendingReads: [], pendingParams: [] };
+  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, outsideWhere: [], pendingWrites: [], pendingReads: [], pendingParams: [], untrackedReads: 0 };
   // The build outputs the file names by a path this repository does not
   // track (packages/server/dist/server.js), for the commands a build bundles
   // (index.js bundledCommands).
@@ -831,6 +831,9 @@ export function astLandings(language, root, path, places) {
       if (target != null && value.rooted && placeholder(target, places)) unplaced = true;
       else if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}), ...compared });
       else if (value.open) unplaced = true;
+      // A file read by a path spelled out in full that this repository does
+      // not keep: an input its output cannot be made again from here.
+      else if (kind === 'read' && CONTENT_READS.has(call) && untrackedInput(value.text)) found.untrackedReads += 1;
     }
     // A root another file's function returns is settled once that file is
     // known: the caller's place when every such function returns one, and
@@ -862,6 +865,15 @@ export function astLandings(language, root, path, places) {
     else scriptSite(node, site);
   }
   if (!ctx.python && ASTRO_CONFIG.test(path)) found.reads.push(...starlightReads(root, ctx, places));
+  // A path made into a file: URL (pathToFileURL) is one the code loads as a
+  // module or hands on as a URL; the conversion reads nothing, so what it
+  // names is no literal read (core/index.js reads the import).
+  if (!ctx.python) {
+    walk(root, (node) => {
+      if (node.type !== 'call_expression' || finalName(node.childForFieldName('function')) !== 'pathToFileURL') return;
+      walk(node, (inner) => ctx.seen.add(key(inner)));
+    });
+  }
 
   walk(root, (node) => {
     if (isStringNode(node, ctx.python)) {
@@ -871,6 +883,9 @@ export function astLandings(language, root, path, places) {
     }
     if (ctx.seen.has(key(node))) return;
     if (!isStringNode(node, ctx.python) && !isPathConstructor(node, ctx.python)) return;
+    // { href: 'viewer/' } in a site's config is a link on the site's own
+    // URL, served from wherever the build puts it, and no file read.
+    if (!ctx.python && linkValue(node)) return;
     for (const raw of evaluate(node, ctx, 0)) {
       named(raw);
       const value = isHelper(raw) ? asRoot(raw) : raw;
@@ -893,6 +908,7 @@ export function astLandings(language, root, path, places) {
     ...(found.outsideWrites > 0 ? { outsideWrites: found.outsideWrites } : {}),
     ...(found.outsideReads > 0 ? { outsideReads: found.outsideReads } : {}),
     ...(found.outsideWhere.length > 0 ? { outsideWhere: found.outsideWhere } : {}),
+    ...(found.untrackedReads > 0 ? { readsUntracked: true } : {}),
     ...(found.pendingWrites.length > 0 ? { pendingWrites: found.pendingWrites } : {}),
     ...(found.pendingReads.length > 0 ? { pendingReads: found.pendingReads } : {}),
     ...(Object.keys(rooted).length > 0 ? { callerRooted: rooted, callerRootedWhere: rootedWhere } : {}),
@@ -916,7 +932,7 @@ function boundParam(value) {
  * argument of which reads as anything is left out.
  */
 function recordedCalls(root, calls, ctx) {
-  if (ctx.python) return [];
+  if (ctx.python) return recordedCallsPy(root, calls, ctx);
   const local = new Set(moduleFunctions(root, false).map(([name]) => name));
   const imports = scriptImports(root);
   const scratch = { ...ctx, seen: new Set(), visiting: new Set() };
@@ -943,6 +959,26 @@ function recordedCalls(root, calls, ctx) {
  * passed undefined) and whether it runs only when the file is the program,
  * for the defaults settleParamPaths settles.
  */
+// The calls a Python file makes to a module-level function of its own or
+// one it imports from a module of this repository, with what each
+// positional argument evaluates to, for settleParamPaths.
+function recordedCallsPy(root, calls, ctx) {
+  const local = new Set(moduleFunctions(root, true).map(([name]) => name));
+  const imports = pythonImports(root);
+  const scratch = { ...ctx, seen: new Set(), visiting: new Set() };
+  const out = [];
+  for (const node of calls) {
+    if (node.type !== 'call') continue;
+    const fn = node.childForFieldName('function');
+    if (fn?.type !== 'identifier') continue;
+    const target = local.has(fn.text) ? { local: fn.text } : imports.has(fn.text) ? { specifier: imports.get(fn.text).specifier, name: imports.get(fn.text).name } : null;
+    if (target == null) continue;
+    const args = argumentNodes(node).map((arg) => ({ values: (arg.type === 'list_splat' || arg.type === 'dictionary_splat' ? [] : evalPy(arg, scratch, 0)).map(compactValue) }));
+    if (args.some((arg) => arg.values.length > 0)) out.push({ ...target, args, ...(mainOnly(node, true) ? { main: true } : {}) });
+  }
+  return out;
+}
+
 function leftOutCalls(root, calls, ctx) {
   if (ctx.python) return [];
   const local = new Set(moduleFunctions(root, false).map(([name]) => name));
@@ -1020,7 +1056,7 @@ export function settleParamPaths(files, places) {
   // writer's own main guard is written only when that file is the program,
   // and is marked so (guards.js).
   const roots = (path, fn, param, rest, depth, writer, guarded = false) => {
-    const out = { places: [], outside: false, unread: false, unreadFree: false, where: new Set() };
+    const out = { places: [], cwd: [], outside: false, unread: false, unreadFree: false, where: new Set() };
     const calls = (callers.get(`${path}#${fn}`) ?? []).filter((call) => !isTestMaterial(call.path) || call.path === path);
     if (calls.length === 0) {
       out.outside = true;
@@ -1044,6 +1080,7 @@ export function settleParamPaths(files, places) {
           const joined = appendRest(value, rest);
           const deeper = roots(call.path, value.param.fn, value.param, { text: joined.text, open: joined.open, ...(joined.tail != null ? { tail: joined.tail } : {}) }, depth + 1, writer, main);
           out.places.push(...deeper.places);
+          out.cwd.push(...deeper.cwd);
           out.outside ||= deeper.outside;
           out.unread ||= deeper.unread;
           out.unreadFree ||= deeper.unreadFree;
@@ -1058,6 +1095,9 @@ export function settleParamPaths(files, places) {
             for (const key of rootedAt) out.where.add(key);
           } else unread();
         } else if (outside(value)) {
+          // A place under the directory the command runs in, kept for the
+          // write that may name a tracked place from there.
+          if (value.anchor === 'cwd') out.cwd.push(appendRest(value, rest));
           out.outside = true;
           for (const key of whereSet([appendRest(value, rest)], null)) out.where.add(key);
         }
@@ -1075,7 +1115,14 @@ export function settleParamPaths(files, places) {
       for (const bound of pending.values) {
         const rest = { text: bound.text, open: bound.open, ...(bound.tail != null ? { tail: bound.tail } : {}) };
         const found = roots(file.path, bound.param.fn, bound.param, rest, 0, file.path);
-        theirs ||= found.outside;
+        // A write a caller hands a path under the directory the command runs
+        // in, which from there names a place this repository tracks, is the
+        // committed output of a run from the root (astLandings has it so for
+        // a write made there): an argparse default of artifacts/balance.
+        const fromRoot = pending.kind === 'write' ? found.cwd.map((value) => cwdPlace(value, pending.call, places)).filter((target) => target != null) : [];
+        for (const target of fromRoot) entries.push({ target, call: pending.call, confidence: 'ast', fromCwd: true, ...(pending.unless?.length > 0 ? { unless: [...pending.unless] } : {}) });
+        const settledCwd = fromRoot.length > 0 && found.places.length === 0 && !found.unread && [...found.where].every((key) => key.startsWith('cwd'));
+        theirs ||= found.outside && !settledCwd;
         for (const key of found.where) where.add(key);
         const before = entries.length;
         const land = (value) => {
@@ -1199,13 +1246,68 @@ function callerRootedFunctions(root, ctx) {
       : body && body.type !== 'statement_block'
         ? evalJs(body, scratch, 0)
         : union(returnExpressions(body, 'return_statement', JS_FUNCTIONS).map((expr) => evalJs(expr, scratch, 0))));
-    // A path under the function's own parameter is the calls' to decide.
-    if (values.length > 0 && values.every((value) => outside(value) && !boundParam(value))) {
-      out[name] = values.some((value) => value.anchor === 'home') ? 'home' : values[0].anchor;
-      where[name] = whereSet(values, null);
+    const theirs = callersPlace(values);
+    if (theirs) {
+      out[name] = theirs.anchor;
+      where[name] = theirs.where;
+    }
+  }
+  // A module constant holding such a place is one as well: export const
+  // REPO_ROOT = getWorkspaceRoot().
+  for (const [name, value] of moduleConstants(root, ctx.python)) {
+    if (out[name] != null) continue;
+    const theirs = callersPlace(ctx.python ? evalPy(value, scratch, 0) : evalJs(value, scratch, 0));
+    if (theirs) {
+      out[name] = theirs.anchor;
+      where[name] = theirs.where;
     }
   }
   Object.defineProperty(out, 'where', { value: where, enumerable: false, configurable: true });
+  return out;
+}
+
+/**
+ * Whether a function's or a constant's every path is the caller's place, and
+ * which: the home directory, the working directory, an environment variable
+ * or a command-line argument. A path under the function's own parameter is
+ * the calls' to decide. A root that falls back to the working directory is
+ * the caller's though another of its alternatives is the code's own
+ * directory or a root this map cannot read: resolveWorkspaceRootFrom(process.cwd()) trying SDLAB_ROOT, a
+ * walk up from cwd, the module root and cwd itself finds a checkout only
+ * when the command is run from one, and the user's directory otherwise.
+ */
+function callersPlace(values) {
+  if (values.length === 0 || values.some(boundParam)) return null;
+  const theirs = values.filter(outside);
+  const own = values.filter((value) => !outside(value));
+  // The others may be the code's own directory, or a root read at run time
+  // this map cannot follow (resolve(env.SDLAB_ROOT)).
+  const fallsBack = theirs.some((value) => value.anchor === 'cwd' && value.text === '')
+    && own.every((value) => !value.open && ((value.anchor === 'file') || (value.rooted && value.text === '')));
+  if (own.length > 0 && !fallsBack) return null;
+  return { anchor: theirs.some((value) => value.anchor === 'home') ? 'home' : theirs[0].anchor, where: whereSet(theirs, null) };
+}
+
+// The module-level constants a file binds to a value that is no function:
+// const X = ..., export const X = ..., and X = ... at a Python module's top.
+function moduleConstants(root, python) {
+  const out = [];
+  for (const child of root.namedChildren) {
+    if (python) {
+      const assignment = child.type === 'expression_statement' ? child.namedChildren[0] : null;
+      const left = assignment?.type === 'assignment' ? assignment.childForFieldName('left') : null;
+      const right = assignment?.childForFieldName('right');
+      if (left?.type === 'identifier' && right) out.push([left.text, right]);
+      continue;
+    }
+    const declaration = child.type === 'export_statement' ? child.childForFieldName('declaration') : child;
+    if (declaration?.type !== 'lexical_declaration' && declaration?.type !== 'variable_declaration') continue;
+    for (const declarator of declaration.namedChildren) {
+      const value = declarator.type === 'variable_declarator' ? declarator.childForFieldName('value') : null;
+      const id = declarator.childForFieldName?.('name');
+      if (value && id?.type === 'identifier' && !JS_FUNCTIONS.has(value.type)) out.push([id.text, value]);
+    }
+  }
   return out;
 }
 
@@ -1286,6 +1388,15 @@ function withoutRedundantDirectories(writes, places) {
 
 // A bare relative path, with nothing fixing where it starts, is relative to
 // whoever runs the code; attachLandings decides whose directory that is.
+// A path inside the repository that names a file, not a dependency's or a
+// tool's own directory.
+function untrackedInput(text) {
+  const path = posix.normalize(String(text ?? '').replaceAll('\\', '/'));
+  if (path === '' || path === '.' || path.startsWith('../') || path.startsWith('/') || path.includes('://')) return false;
+  if (path.split('/').some((part) => part === 'node_modules' || part.startsWith('.venv') || part === '__pycache__' || BUILD_OUTPUTS.has(part))) return false;
+  return /\.[A-Za-z0-9]+$/.test(path);
+}
+
 function landingEntry(target, call, value, places, { settled = false } = {}) {
   const entry = { target, call, confidence: confidenceOf(value, target, places) };
   if (value.defaultOf) entry.defaultOf = value.defaultOf;
@@ -1506,6 +1617,9 @@ function pythonSite(node, site, pil = false) {
   if (owner === 'os' && (attribute === 'listdir' || attribute === 'scandir')) return site('read', call, args[0]);
   if (owner === 'shutil' && PY_SHUTIL_WRITES.has(attribute)) return site('write', call, args[1]);
   if (owner === 'glob' && attribute === 'glob') return site('read', call, args[0]);
+  // sqlite3.connect(path) opens the database file, making it when absent,
+  // and whatever the connection commits is written there.
+  if (owner === 'sqlite3' && attribute === 'connect' && args[0]?.text !== '":memory:"' && args[0]?.text !== "':memory:'") return site('write', call, args[0]);
   if (PY_RECEIVER_WRITES.has(attribute)) return site('write', attribute, object);
   if (pil && attribute === 'save' && args[0]) return site('write', 'save', args[0]);
   if (PY_RECEIVER_READS.has(attribute)) return site('read', attribute, object);
@@ -1559,7 +1673,7 @@ function evalJs(node, ctx, depth) {
     case 'identifier':
       if (node.text === '__dirname') return [anchored(ctx.dir)];
       if (node.text === '__filename') return [anchored(ctx.file)];
-      return bindingJs(node.text, node, ctx, next);
+      return orImported(bindingJs(node.text, node, ctx, next), node, ctx);
     case 'member_expression': {
       const object = node.childForFieldName('object');
       const property = node.childForFieldName('property')?.text;
@@ -1781,6 +1895,25 @@ function passedFor(arg, param) {
   return arg.values ?? [];
 }
 
+// A Python function's parameter, by its place among the positional ones,
+// bound to the function when the function is at the module's top.
+function paramValuePy(fn, name) {
+  const params = (fn.childForFieldName('parameters')?.namedChildren ?? []).filter((param) => param.type !== 'comment');
+  let index = null;
+  for (let i = 0; i < params.length; i += 1) {
+    const param = params[i];
+    if (param.type === 'list_splat_pattern' || param.type === 'dictionary_splat_pattern' || param.type === 'keyword_separator' || param.type === 'positional_separator') break;
+    const id = param.type === 'identifier' ? param : param.childForFieldName('name') ?? param.namedChildren.find((child) => child.type === 'identifier');
+    if (id?.text === name) {
+      index = i;
+      break;
+    }
+  }
+  const atTop = fn.parent?.type === 'module' || (fn.parent?.type === 'decorated_definition' && fn.parent.parent?.type === 'module');
+  const owner = atTop ? fn.childForFieldName('name')?.text ?? null : null;
+  return { text: '', open: false, anchor: 'param', ...(owner != null && index != null ? { param: { fn: owner, index } } : {}) };
+}
+
 function moduleFunctionName(fn) {
   const atTop = (node) => node?.type === 'program' || (node?.type === 'export_statement' && node.parent?.type === 'program');
   if (fn.type === 'function_declaration') return atTop(fn.parent) ? fn.childForFieldName('name')?.text ?? null : null;
@@ -1934,11 +2067,16 @@ function evalPy(node, ctx, depth) {
       return union([evalPy(node.namedChildren[0], ctx, next), evalPy(node.namedChildren[2], ctx, next)]);
     case 'identifier':
       if (node.text === '__file__') return [anchored(ctx.file)];
-      return bindingPy(node.text, node, ctx, next);
+      return orImported(bindingPy(node.text, node, ctx, next), node, ctx);
     case 'attribute': {
       if (node.childForFieldName('attribute')?.text === 'parent') return dirnameValues(evalPy(node.childForFieldName('object'), ctx, next));
       const object = node.childForFieldName('object');
-      if (object?.type === 'identifier' && CLI_BAGS.has(object.text) && !isPythonModule(object.text, node, ctx)) return [atCaller('', 'argument')];
+      if (object?.type === 'identifier' && CLI_BAGS.has(object.text) && !isPythonModule(object.text, node, ctx)) {
+        // args.output with --output's argparse default a literal path: what
+        // the caller passes, or else that path from where the command runs.
+        const fallbackTo = argparseDefault(node, node.childForFieldName('attribute')?.text);
+        return [atCaller('', 'argument'), ...(fallbackTo != null ? [{ text: fallbackTo, open: false, anchor: 'cwd' }] : [])];
+      }
       return [];
     }
     case 'call': {
@@ -1986,6 +2124,13 @@ function imported(name, from, ctx) {
   ctx.imports ??= ctx.python ? pythonImports(from) : scriptImports(from);
   const found = ctx.imports.get(name);
   return found ? [{ text: '', open: false, anchor: `${HELPER}${found.specifier}#${found.name}` }] : [];
+}
+
+// A name this file binds nowhere but imports from a module of its own
+// repository is that module's value (REPO_ROOT from '../lib/paths.js'), read
+// as its return is, for settleHelperPaths.
+function orImported(values, node, ctx) {
+  return values.length > 0 ? values : imported(node.text, node, ctx);
 }
 
 function programOf(node) {
@@ -2289,7 +2434,9 @@ function returnExpressions(body, returnType, nested) {
 // function, or else in the module.
 function bindingPy(name, from, ctx, depth) {
   for (let scope = from.parent; scope; scope = scope.parent) {
-    if (PY_SCOPES.has(scope.type) && declaresPythonParameter(scope, name)) return [];
+    // What a module-level function is handed is the caller's place, until
+    // the calls to it say otherwise (settleParamPaths), as in a script.
+    if (PY_SCOPES.has(scope.type) && declaresPythonParameter(scope, name)) return scope.type === 'function_definition' ? [paramValuePy(scope, name)] : [];
     if (scope.type !== 'function_definition' && scope.type !== 'module') continue;
     const body = scope.type === 'module' ? scope : scope.childForFieldName('body');
     const rights = [];
@@ -2305,7 +2452,14 @@ function bindingPy(name, from, ctx, depth) {
           const right = node.childForFieldName('right');
           if (right) rights.push(right);
         }
-      } else if ((node.type === 'for_statement' && node.childForFieldName('left')?.text === name) || (node.type === 'as_pattern_target' && node.text === name)) {
+      } else if (node.type === 'for_statement' && node.childForFieldName('left')?.text === name) {
+        bound = true;
+      } else if (node.type === 'for_statement' && pyUnpacks(node.childForFieldName('left'), name) !== -1) {
+        // for prefix, path in files: the path of each tuple a literal list
+        // holds, the list spelled there or bound to a name once.
+        bound = true;
+        rights.push(...pyLoopItems(node, name, scope));
+      } else if (node.type === 'as_pattern_target' && node.text === name) {
         bound = true;
       }
       stack.push(...node.namedChildren);
@@ -2321,6 +2475,64 @@ function bindingPy(name, from, ctx, depth) {
   return [];
 }
 
+
+/**
+ * The literal default the file's argparse gives an option, by the name the
+ * parsed namespace holds it under: parser.add_argument("--output",
+ * default="artifacts/balance") is args.output's. Null when no add_argument
+ * of the file names it, or its default is not a string literal.
+ */
+function argparseDefault(node, name) {
+  if (typeof name !== 'string' || name === '') return null;
+  let root = node;
+  while (root.parent) root = root.parent;
+  let found = null;
+  walk(root, (call) => {
+    if (found != null || call.type !== 'call' || !/(^|\.)add_argument$/.test(dottedName(call.childForFieldName('function')) ?? '')) return;
+    const args = argumentNodes(call);
+    const flags = args.filter((arg) => arg.type === 'string').map((arg) => stringTexts(arg, true).join(''));
+    const dest = keywordArgument(call, 'dest');
+    const names = dest?.type === 'string' ? [stringTexts(dest, true).join('')] : flags.filter((flag) => flag.startsWith('--')).map((flag) => flag.slice(2).replaceAll('-', '_'));
+    if (!names.includes(name)) return;
+    const value = keywordArgument(call, 'default');
+    if (value?.type === 'string') found = stringTexts(value, true).join('');
+  });
+  return found != null && found !== '' && !found.startsWith('/') ? found : null;
+}
+
+const LINK_KEYS = new Set(['href', 'link', 'url', 'to']);
+
+function linkValue(node) {
+  const pair = node.parent;
+  if (pair?.type !== 'pair' || pair.childForFieldName('value')?.startIndex !== node.startIndex) return false;
+  const key = pair.childForFieldName('key');
+  const name = key?.type === 'property_identifier' ? key.text : key?.type === 'string' ? jsStringText(key) : null;
+  return name != null && LINK_KEYS.has(name);
+}
+
+// Where a name sits in a loop's unpacked target, for prefix, path in ...:
+// its index, or -1.
+function pyUnpacks(left, name) {
+  if (left?.type !== 'pattern_list' && left?.type !== 'tuple_pattern') return -1;
+  return left.namedChildren.findIndex((child) => child.type === 'identifier' && child.text === name);
+}
+
+// The items a loop's unpacked name takes from a literal list of tuples.
+function pyLoopItems(loop, name, scope) {
+  const at = pyUnpacks(loop.childForFieldName('left'), name);
+  let right = loop.childForFieldName('right');
+  if (right?.type === 'identifier') {
+    const body = scope.type === 'module' ? scope : scope.childForFieldName('body');
+    const assigned = (body?.namedChildren ?? [])
+      .map((child) => (child.type === 'expression_statement' ? child.namedChildren[0] : null))
+      .filter((node) => node?.type === 'assignment' && node.childForFieldName('left')?.text === right.text);
+    right = assigned.length === 1 ? assigned[0].childForFieldName('right') : null;
+  }
+  if (right?.type !== 'list' && right?.type !== 'tuple') return [];
+  return right.namedChildren
+    .filter((item) => item.type === 'tuple' && item.namedChildren.length > at)
+    .map((item) => item.namedChildren[at]);
+}
 
 function declaresPythonParameter(fn, name) {
   const params = fn.childForFieldName('parameters');
@@ -3061,6 +3273,11 @@ function heldLandings(door, byPath, places, targets) {
       if (group.when == null) open = true;
       else gates.set(JSON.stringify(group.when), group.when);
     }
+    const own = door.ownWriteGates?.get(target);
+    if (own) {
+      if (own.open) open = true;
+      for (const [key, when] of own.gates) gates.set(key, when);
+    } else if ((door.handedWrites ?? []).includes(target)) open = true;
     if (!open && gates.size === 1) out.push({ target, when: [...gates.values()][0] });
   }
   return out;
@@ -3123,11 +3340,17 @@ export function attachLandings({ files, doors, boundaries, places }) {
   };
   for (const file of [...own, ...tests]) {
     for (const write of file.writes) {
-      const entry = { by: file.path, confidence: write.confidence, ...(write.fromCwd ? { fromCwd: true } : {}) };
+      const entry = { by: file.path, confidence: write.confidence, ...(write.fromCwd ? { fromCwd: true } : {}), ...(file.readsUntracked ? { untrackedInputs: true } : {}) };
       // A write made only when a committed file is absent bootstraps it:
       // it happens once, before the commit, and stamps nothing.
       if (bootstraps(write, places)) entry.unless = ['exists'];
-      else if (stamps(file, write.target, places)) entry.stamps = true;
+      else if (stamps(file, write.target, places)) {
+        // A test that reads a tracked file and writes it back restores what
+        // it found (fx-dub's test_kb puts kb/fxdub.db's bytes back): no
+        // writer of it.
+        if (isTestMaterial(file.path)) continue;
+        entry.stamps = true;
+      }
       add(writers, write.target, entry);
     }
   }
@@ -3143,11 +3366,29 @@ export function attachLandings({ files, doors, boundaries, places }) {
     // A job that commits only on one trigger still commits what it stages.
     door.stagedTargets = stagedTargets([...door.stages, ...(door.gated ?? []).flatMap((entry) => entry.stages)], places);
     const named = new Set(door.mentions.map((mention) => mention.path));
+    // What a step's own shell writes keeps the step's gate, as a run's
+    // writes keep its (heldLandings): a redirect in a job run only by hand
+    // writes only then.
+    const shellWrites = (door.commands ?? []).filter((command) => command.dir != null)
+      .flatMap((command) => shellLandings(command.text, places, { dir: command.dir, follow: true }).writes.map((write) => ({ target: write.target, when: command.when ?? null, job: command.job })));
+    // The jobs whose own shell writes each place, for whether a mention in
+    // another job reads it.
+    door.writingJobs = new Map();
+    for (const { target, job } of shellWrites) door.writingJobs.set(target, new Set([...(door.writingJobs.get(target) ?? []), job]));
+    door.ownWriteGates = new Map();
+    for (const { target, when } of shellWrites) {
+      const entry = door.ownWriteGates.get(target) ?? { open: false, gates: new Map() };
+      if (when == null) entry.open = true;
+      else entry.gates.set(JSON.stringify(when), when);
+      door.ownWriteGates.set(target, entry);
+    }
     door.ownWrites = [...new Set([
       ...(door.handedWrites ?? []),
-      ...(door.commands ?? []).filter((command) => command.dir != null)
-        .flatMap((command) => shellLandings(command.text, places, { dir: command.dir, follow: true }).writes.map((write) => write.target)),
-      ...door.stagedTargets.filter((place) => named.has(place)),
+      ...shellWrites.map((write) => write.target),
+      // A staged place code here writes is that code's: the step that names
+      // it reads what the code wrote (registry-stats checks stats.json's
+      // freshness before git add stages it), and writes nothing.
+      ...door.stagedTargets.filter((place) => named.has(place) && !writers.has(place)),
     ])].sort(compare);
     for (const target of door.ownWrites) add(writers, target, { by: door.file });
     for (const mention of door.mentions) add(readers, mention.path, { by: door.file });
@@ -3225,6 +3466,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     door.landings = [...targets].filter((target) => !spans.has(target) && !untracked.has(target)).sort(compare);
     // A place only work held to one gate writes is written on that gate.
     const held = heldLandings(door, byPath, places, door.landings);
+    delete door.ownWriteGates;
     if (held.length > 0) door.landingGates = held;
     // Output the repository does not keep is counted, never placed, and the
     // door names where it goes: a place spelled whole, not a shape.
@@ -3238,15 +3480,21 @@ export function attachLandings({ files, doors, boundaries, places }) {
   }
   // A workflow that names a place its own run writes (echo refreshed
   // indexes/latest.json) is describing its output, not reading it.
+  // A job that only reads the place (a gate handing a baseline another job
+  // writes to its action) reads it, though the workflow writes it too.
   for (const door of mapped) {
     for (const target of door.landings) {
       for (const [place, entries] of readers) {
         if (place !== target && !place.startsWith(`${target}/`)) continue;
+        const writing = door.writingJobs?.get(place);
+        const readingJobs = door.mentions.filter((mention) => mention.path === place).map((mention) => mention.job);
+        if (writing && readingJobs.some((job) => !writing.has(job))) continue;
         entries.delete(canonicalEntry({ by: door.file }));
         if (entries.size === 0 && !writers.has(place)) readers.delete(place);
       }
     }
   }
+  for (const door of mapped) delete door.writingJobs;
   for (const door of mapped) {
     const found = new Map();
     for (const target of door.landings) {

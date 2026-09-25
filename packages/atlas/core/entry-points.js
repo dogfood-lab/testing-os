@@ -5,7 +5,7 @@ import { cargoProject } from './cargo.js';
 import { godotProjects } from './godot.js';
 import { repositoryView } from './commands.js';
 import { isTestFile, isTestMaterial } from './landings.js';
-import { declaredScripts } from './python-manifest.js';
+import { declaredScripts, pythonLibrary } from './python-manifest.js';
 import { resolveDeclaredPath, resolvePythonModule, unplacedBuildOutput } from './resolve.js';
 
 const FALLBACKS = [
@@ -60,7 +60,11 @@ export function pythonScripts(repoPath, tracked) {
   for (const script of declaredScripts(repoPath, [...tracked].sort())) {
     const base = script.manifest.includes('/') ? script.manifest.slice(0, script.manifest.lastIndexOf('/')) : '';
     const roots = script.packageDir ? [base ? `${base}/${script.packageDir}` : script.packageDir] : [];
-    const path = resolvePythonModule(script.module, tracked, roots);
+    const mappedDir = script.mapped ? (base ? `${base}/${script.mapped.dir}` : script.mapped.dir) : null;
+    const rest = script.mapped ? script.module.split('.').slice(1).join('.') : '';
+    const path = mappedDir != null
+      ? (rest ? resolvePythonModule(rest, tracked, [mappedDir]) : (tracked.has(`${mappedDir}/__init__.py`) ? `${mappedDir}/__init__.py` : null))
+      : resolvePythonModule(script.module, tracked, roots);
     if (path) out.push({ path, fn: script.fn, name: script.name, manifest: script.manifest });
   }
   return out;
@@ -114,6 +118,9 @@ export function manifestCommands(repoPath, tracked, scripts = []) {
   for (const script of scripts) {
     if (!isTestMaterial(script.manifest)) out.push({ kind: 'command', name: script.name, manifest: script.manifest, path: script.path });
   }
+  // A Python project that installs no command is a library people import.
+  const library = pythonLibrary(repoPath, tracked);
+  if (library) out.push(library);
   for (const crate of cargoProject(repoPath, tracked).crates) {
     for (const bin of crate.bins) out.push({ kind: 'command', name: bin.name, manifest: crate.manifest, path: bin.path, ...(desktopBin(crate, bin) ? { app: 'desktop' } : {}) });
     // An example is a program people run from a checkout with cargo run
@@ -121,8 +128,11 @@ export function manifestCommands(repoPath, tracked, scripts = []) {
     for (const path of crate.examples) out.push({ kind: 'command', name: exampleName(path), manifest: crate.manifest, path, example: true });
   }
   // A Godot project is a game the engine runs from its main scene.
+  // One whose name says it is a lab, a tool or a test bench (sprite-foundry's
+  // Foundry Render Lab) is no game, and is called the Godot project.
   for (const project of godotProjects(repoPath, tracked)) {
-    if (project.mainScene) out.push({ kind: 'command', name: 'the game', manifest: project.file, path: project.mainScene, app: 'game' });
+    const tool = /\b(?:lab|labs|tool|tools|editor|test|tests|bench|harness|sandbox|demo)\b/i.test(project.name ?? '');
+    if (project.mainScene) out.push({ kind: 'command', name: tool ? 'the Godot project' : 'the game', manifest: project.file, path: project.mainScene, app: 'game' });
   }
   const unique = new Map(out.map((entry) => [`${entry.manifest}\0${entry.name}\0${entry.kind}${entry.example ? '\0example' : ''}`, entry]));
   return [...unique.values()].sort((a, b) => compare(a.manifest, b.manifest) || compare(a.name, b.name) || compare(a.kind, b.kind));
@@ -140,6 +150,28 @@ export function memberPackage(repoPath, dir, tracked) {
   const manifest = dir ? `${dir}/package.json` : 'package.json';
   const pkg = readManifest(repoPath, manifest, tracked);
   return pkg ? packageEntry(repoPath, dir, pkg, tracked) : null;
+}
+
+/**
+ * The commands a manifest below the root installs, as manifestCommands reads
+ * a workspace member's: each bin, marked privateMember when the manifest is
+ * private. index.js asks for them for a manifest no workspace names that a
+ * workflow publishes or works in.
+ */
+export function memberCommands(repoPath, dir, tracked) {
+  const manifest = `${dir}/package.json`;
+  if (isTestMaterial(manifest)) return [];
+  const pkg = readManifest(repoPath, manifest, tracked);
+  if (!pkg) return [];
+  const out = [];
+  for (const [name, spec] of binEntries(pkg)) {
+    const path = declaredFile(repoPath, dir, spec, tracked);
+    const unplaced = path ? null : unplacedFile(repoPath, dir, spec, tracked);
+    const privately = pkg.private === true ? { privateMember: true, declared: joinRelative(dir, spec) } : {};
+    if (path) out.push({ kind: 'command', name, manifest, path, ...privately });
+    else if (unplaced) out.push({ kind: 'command', name, manifest, path: null, unplaced, ...privately });
+  }
+  return out.sort((a, b) => compare(a.name, b.name));
 }
 
 function packageEntry(repoPath, dir, pkg, tracked) {

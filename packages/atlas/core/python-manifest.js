@@ -87,6 +87,28 @@ export function declaredDependencies(repoPath, tracked) {
  * @param {Iterable<string>} tracked
  * @returns {Array<{ manifest: string, name: string, module: string, fn: string | null }>}
  */
+/**
+ * The package a Python project people import is, when its root
+ * pyproject.toml names a project and installs no command: the import name
+ * the project folds to, and the __init__.py that name loads from the root,
+ * src/ or a package-dir mapping. Null for anything else.
+ */
+export function pythonLibrary(repoPath, tracked) {
+  if (!tracked.has('pyproject.toml')) return null;
+  const tables = readToml(repoPath, 'pyproject.toml');
+  const name = tables.get('project')?.name;
+  if (typeof name !== 'string' || name.trim() === '') return null;
+  for (const table of ['project.scripts', 'project.gui-scripts', 'tool.poetry.scripts']) if (Object.keys(tables.get(table) ?? {}).length > 0) return null;
+  const mapped = packageDirs(tables);
+  const root = rootPackageDir(tables);
+  for (const module of importNames(name.replace(/^["']|["']$/g, ''))) {
+    const dirs = [mapped.get(module), root ? `${root}/${module}` : null, module, `src/${module}`].filter(Boolean);
+    const found = dirs.map((dir) => `${dir}/__init__.py`).find((path) => tracked.has(path));
+    if (found) return { kind: 'package', name: module, manifest: 'pyproject.toml', path: found };
+  }
+  return null;
+}
+
 export function declaredScripts(repoPath, tracked) {
   const out = [];
   for (const path of tracked) {
@@ -101,9 +123,26 @@ export function declaredScripts(repoPath, tracked) {
         if (!/^[A-Za-z_][\w.]*$/.test(module)) continue;
         const script = { manifest: path, name, module, fn: fn && /^[A-Za-z_]\w*$/.test(fn) ? fn : null };
         if (root) script.packageDir = root;
+        // package-dir = { fxdub = "tools" }: the package the module is in
+        // installs from that directory, so fxdub.cli is tools/cli.py.
+        const mapped = packageDirs(tables).get(module.split('.')[0]);
+        if (mapped) script.mapped = { name: module.split('.')[0], dir: mapped };
         out.push(script);
       }
     }
+  }
+  return out;
+}
+
+// [tool.setuptools] package-dir = { fxdub = "tools" }: each named package and
+// the directory, beside the manifest, it installs from.
+function packageDirs(tables) {
+  const text = tables.get('tool.setuptools')?.['package-dir'];
+  const out = new Map();
+  if (typeof text !== 'string') return out;
+  for (const match of text.matchAll(/(?:^|[{,\s])["']?([A-Za-z_][\w.]*)["']?\s*=\s*["']([^"']+)["']/g)) {
+    const dir = match[2].replace(/^\.\/|\/+$/g, '');
+    if (dir && !dir.startsWith('/') && !dir.split('/').includes('..')) out.set(match[1], dir);
   }
   return out;
 }

@@ -1,0 +1,9 @@
+name: Gate
+inputs:
+  baseline:
+    required: false
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: python tool/gate.py --baseline ${{ inputs.baseline }}

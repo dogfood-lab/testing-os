@@ -8,7 +8,7 @@ import { isTestFile } from './landings.js';
 import { storedText } from './text.js';
 
 const WORKFLOW = /^\.github\/workflows\/[^/]+\.ya?ml$/;
-const TRIGGER_LISTS = ['paths', 'branches', 'tags', 'types', 'workflows'];
+const TRIGGER_LISTS = ['paths', 'paths-ignore', 'branches', 'tags', 'types', 'workflows'];
 
 // Words that start the program a command line runs without being it.
 const RUNNER_WORDS = new Set(['sudo', 'env', 'time', 'exec', 'command', 'nohup']);
@@ -51,10 +51,57 @@ const ACTION_SENDS = [
  */
 export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom, emitted, unitTests, discovered }) {
   const repo = repositoryView({ repoPath, tracked, spawned, commands, builtFrom, emitted, unitTests, discovered });
-  return [...tracked]
-    .filter(isWorkflow)
-    .sort()
-    .map((file) => readDoor(repoPath, file, repo));
+  const workflows = [...tracked].filter(isWorkflow).sort();
+  const doors = workflows.map((file) => readDoor(repoPath, file, repo));
+  // An action this repository defines that none of its workflows uses is
+  // one it ships for other repositories: a root action.yml, or one under
+  // .github/actions/ that no workflow names as ./.github/actions/<name>.
+  const used = new Set();
+  for (const file of workflows) {
+    let text = '';
+    try {
+      text = readFileSync(join(repoPath, file), 'utf8');
+    } catch {
+      continue;
+    }
+    for (const match of text.matchAll(/\buses:\s*['"]?\.\/([^'"\s@#]+)/g)) used.add(match[1].replace(/\/+$/, '').replace(/\/action\.ya?ml$/, ''));
+  }
+  const actions = [...tracked].filter((path) => /^action\.ya?ml$/.test(path) || /^\.github\/actions\/[^/]+\/action\.ya?ml$/.test(path))
+    .filter((path) => path.includes('/') ? !used.has(posix.dirname(path)) : true)
+    .sort();
+  for (const file of actions) doors.push(readDoor(repoPath, file, repo, actionAsWorkflow));
+  return doors;
+}
+
+/**
+ * An action a repository ships, read as a workflow of one job: a composite
+ * action's steps, or a JavaScript action's main run with node. Its steps
+ * run in the caller's workspace, so a path is this repository's only when
+ * spelled through github.action_path, which is the action's directory. An
+ * action has no trigger of its own; what it does is what other
+ * repositories' workflows run.
+ */
+function actionAsWorkflow(doc, file) {
+  const dir = posix.dirname(file);
+  const here = dir === '.' ? '.' : `./${dir}`;
+  const name = typeof doc.name === 'string' && doc.name.trim() !== '' ? doc.name : (dir === '.' ? 'action' : posix.basename(dir));
+  const runs = isMapping(doc.runs) ? doc.runs : {};
+  const through = (text) => (typeof text === 'string' ? text.replace(/\$\{\{\s*github\.action_path\s*\}\}/g, here) : text);
+  let steps = [];
+  if (runs.using === 'composite' && Array.isArray(runs.steps)) {
+    steps = runs.steps.filter(isMapping).map((step) => {
+      const env = isMapping(step.env) ? step.env : {};
+      let run = through(step.run);
+      for (const [variable, value] of Object.entries(env)) {
+        if (typeof run !== 'string' || typeof value !== 'string' || !/^\s*\$\{\{\s*github\.action_path\s*\}\}\s*$/.test(value)) continue;
+        run = run.replace(new RegExp(`\\$\\{${variable}\\}|\\$${variable}\\b`, 'g'), here);
+      }
+      return { ...step, ...(run !== undefined ? { run } : {}), ...(step['working-directory'] !== undefined ? { 'working-directory': through(step['working-directory']) } : {}) };
+    });
+  } else if (typeof runs.using === 'string' && /^node\d+$/.test(runs.using) && typeof runs.main === 'string') {
+    steps = [{ name: 'main', run: `node ${posix.join(here, runs.main)}` }];
+  }
+  return { name, on: {}, jobs: { action: { steps } } };
 }
 
 /**
@@ -148,8 +195,12 @@ export function markUnpublished(doors, manifest) {
   const toNpm = sent.some((sends) => sends.publishesTo.includes('npm') && rootSent(sends.packages));
   const declared = manifest?.private === false
     && workflows.some((door) => /publish|release/i.test(`${posix.basename(door.file)} ${door.name}`));
-  if (toNpm || declared) return;
-  for (const door of doors) if (door.kind === 'package') door.unpublished = true;
+  // A Python library is published by an upload to PyPI.
+  const toPypi = sent.some((sends) => sends.publishesTo.includes('pypi'));
+  for (const door of doors) {
+    if (door.kind !== 'package') continue;
+    if (door.file === 'pyproject.toml' ? !toPypi : !(toNpm || declared)) door.unpublished = true;
+  }
 }
 
 const MARKETPLACES = ['open-vsx', 'vscode-marketplace'];
@@ -227,13 +278,32 @@ function localSteps(repoPath, repo, steps, depth = 0) {
       out.push(step);
       continue;
     }
-    const held = inner.map((item) => (isMapping(item) && step.if != null && item.if == null ? { ...item, if: step.if } : item));
+    // The action's steps read its inputs as the calling step hands them
+    // (with: baseline: docs/baselines/a11y.scorecard.json), or as the
+    // action's defaults, so a path handed in is one its steps name.
+    const given = isMapping(step.with) ? step.with : {};
+    const declared = isMapping(action.inputs) ? action.inputs : {};
+    const input = (name) => {
+      const value = given[name] ?? (isMapping(declared[name]) ? declared[name].default : undefined);
+      return value == null || typeof value === 'object' ? null : String(value);
+    };
+    const fill = (text) => (typeof text === 'string' ? text.replace(/\$\{\{\s*inputs\.([\w-]+)\s*\}\}/g, (whole, name) => input(name) ?? whole) : text);
+    const held = inner.map((item) => {
+      if (!isMapping(item)) return item;
+      const filled = {
+        ...item,
+        ...(item.run !== undefined ? { run: fill(item.run) } : {}),
+        ...(item['working-directory'] !== undefined ? { 'working-directory': fill(item['working-directory']) } : {}),
+        ...(isMapping(item.env) ? { env: Object.fromEntries(Object.entries(item.env).map(([key, value]) => [key, fill(value)])) } : {}),
+      };
+      return step.if != null && item.if == null ? { ...filled, if: step.if } : filled;
+    });
     out.push(...localSteps(repoPath, repo, held, depth + 1));
   }
   return out;
 }
 
-function readDoor(repoPath, file, repo) {
+function readDoor(repoPath, file, repo, asWorkflow = null) {
   const fallback = posix.basename(file).replace(/\.ya?ml$/, '');
   let text;
   let doc;
@@ -244,7 +314,11 @@ function readDoor(repoPath, file, repo) {
     return { file, name: fallback, parseError: true };
   }
   if (!isMapping(doc)) return { file, name: fallback, parseError: true };
+  if (asWorkflow) return { ...readWorkflow(repoPath, file, repo, asWorkflow(doc, file), fallback, text), kind: 'action' };
+  return readWorkflow(repoPath, file, repo, doc, fallback, text);
+}
 
+function readWorkflow(repoPath, file, repo, doc, fallback, text) {
   const permissions = new Set(permissionList(doc.permissions));
   const commands = [];
   const uses = new Set();
@@ -253,6 +327,9 @@ function readDoor(repoPath, file, repo) {
   // Places of this repository a command run from another checkout is handed
   // to write, by an output flag (index.js attachLandings).
   const handed = new Set();
+  // The directories below the root holding a package.json that a step works
+  // in, whose commands index.js makes doors when no workspace does.
+  const workedIn = new Set();
   const stages = new Set();
   let pushes = false;
   const sidePushes = [];
@@ -359,59 +436,72 @@ function readDoor(repoPath, file, repo) {
       scope.texts.push(step.run);
       const stepEnv = envOf(step.env);
       const lookup = (variable) => [stepEnv, jobEnv, workflowEnv].find((env) => env.has(variable))?.get(variable) ?? null;
-      const rawDir = step['working-directory'] ?? rawJobDir;
-      const ownDir = own(rawDir);
-      const start = ownDir == null ? { here: false, dir: String(rawDir ?? ''), clone: null } : placeOf({ here: true, dir: '' }, ownDir, clones, repo, lookup);
-      // The directory the step's shell starts in, when it is this repository's,
-      // for the files its own redirects write (landings.js attachLandings).
-      commands.push({ job, step: name, text: step.run, ...(start.here ? { dir: start.dir } : {}) });
-      const work = gitWork(step.run, lookup, start, clones, repo, branch);
-      for (const staged of work.stages) scope.stages.add(staged);
-      if (work.pushes) scope.pushes = true;
-      scope.sidePushes.push(...work.sidePushes);
-      for (const entry of work.elsewhere) {
-        const key = `${entry.dir}\0${entry.clone ?? ''}`;
-        if (!elsewhere.has(key)) elsewhere.set(key, { clone: entry.clone, dir: entry.dir, pushes: false, stages: new Set() });
-        const found = elsewhere.get(key);
-        for (const staged of entry.stages) found.stages.add(staged);
-        if (entry.pushes) found.pushes = true;
+      // A working directory spelled with a matrix value or a dispatch input
+      // (src/${{ matrix.project }}, examples/${{ inputs.tool }}) is each
+      // directory it can be: the matrix's values, the input's options, or
+      // every tracked directory its glob matches.
+      const stepDirs = expandedDirs(step['working-directory'], body, doc.on, repo);
+      const jobDirs = step['working-directory'] === undefined ? expandedDirs(rawJobDir === '' ? undefined : rawJobDir, body, doc.on, repo) : null;
+      const expanded = stepDirs ?? jobDirs;
+      const rawDirs = expanded ?? [step['working-directory'] ?? rawJobDir];
+      // The directory the step's shell starts in, when it is this repository's
+      // and one, for the files its own redirects write (landings.js
+      // attachLandings).
+      const firstDir = own(rawDirs[0]);
+      const firstStart = firstDir == null ? { here: false } : placeOf({ here: true, dir: '' }, firstDir, clones, repo, lookup);
+      commands.push({ job, step: name, text: step.run, ...(firstStart.here && rawDirs.length === 1 ? { dir: firstStart.dir } : {}), ...held });
+      for (const rawDir of rawDirs) {
+        const ownDir = own(rawDir);
+        const start = ownDir == null ? { here: false, dir: String(rawDir ?? ''), clone: null } : placeOf({ here: true, dir: '' }, ownDir, clones, repo, lookup);
+        const work = gitWork(step.run, lookup, start, clones, repo, branch);
+        for (const staged of work.stages) scope.stages.add(staged);
+        if (work.pushes) scope.pushes = true;
+        scope.sidePushes.push(...work.sidePushes);
+        for (const entry of work.elsewhere) {
+          const key = `${entry.dir}\0${entry.clone ?? ''}`;
+          if (!elsewhere.has(key)) elsewhere.set(key, { clone: entry.clone, dir: entry.dir, pushes: false, stages: new Set() });
+          const found = elsewhere.get(key);
+          for (const staged of entry.stages) found.stages.add(staged);
+          if (entry.pushes) found.pushes = true;
+        }
+        const place = { raw: ownDir ?? rawDir, jobTexts, repo, tagged: triggers.some((trigger) => (trigger.tags?.length ?? 0) > 0) };
+        commandSends(expandEnv(step.run, lookup), scope.sends, place);
+        // A step outside this repository's checkout names this repository by
+        // a path through that checkout: stage/.github/pins.env from the
+        // workspace, ../stage/fixtures from a sibling checkout.
+        if (selfPath != null && ownDir == null) {
+          const through = throughCheckout(expandEnv(step.run, lookup), String(rawDir ?? ''), selfPath, repo);
+          for (const path of through.named) mentions.set(`${path}\0${job}`, { path, job });
+          for (const path of through.written) handed.add(path);
+        }
+        // A step whose working directory cannot be read as a repository path
+        // names nothing Atlas can place, so its tokens are left unresolved.
+        const dir = selfPath != null ? ownDir : expanded ? cleanDir(rawDir) : step['working-directory'] === undefined ? jobDir : cleanDir(step['working-directory']);
+        if (dir == null) continue;
+        if (dir !== '' && repo.tracked.has(`${dir}/package.json`)) workedIn.add(dir);
+        // Actions spells ${{ env.X }} out before the shell sees the step.
+        const named = readCommands(expandEnv(step.run, lookup), dir, repo, platforms);
+        for (const entry of named.shellMissed) {
+          const key = `${entry.base}\0${entry.platform}`;
+          const found = missed.get(key) ?? { base: entry.base, files: new Set(), platform: entry.platform, twoStars: false };
+          for (const path of entry.files) found.files.add(path);
+          found.twoStars ||= entry.twoStars;
+          missed.set(key, found);
+        }
+        for (const entry of named.runs.values()) {
+          const key = `${entry.path}\0${job}`;
+          const run = { ...entry, job, ...held };
+          runs.set(key, runs.has(key) ? mergeRun(runs.get(key), run) : run);
+          if (entry.builds) shipped.builds.add(entry.path);
+        }
+        for (const path of named.mentions) mentions.set(`${path}\0${job}`, { path, job });
       }
-      const place = { raw: ownDir ?? rawDir, jobTexts, repo, tagged: triggers.some((trigger) => (trigger.tags?.length ?? 0) > 0) };
-      commandSends(expandEnv(step.run, lookup), scope.sends, place);
       jobTexts.push(step.run);
       const released = releaseUploads(expandEnv(step.run, lookup));
       if (released) shipped.uploads.push({ when, files: released, creates: false });
       if (/\bmakeappx(?:\.exe)?["']?\s+pack\b/i.test(step.run)) shipped.packs = true;
       for (const target of buildTargets(expandEnv(step.run, lookup), body)) shipped.targets.add(target);
       if (/\bgh\s+issue\s+create\b/.test(step.run)) scope.issues.push(onlyOnFailure(step.if) || onlyOnFailure(body.if));
-      // A step outside this repository's checkout names this repository by
-      // a path through that checkout: stage/.github/pins.env from the
-      // workspace, ../stage/fixtures from a sibling checkout.
-      if (selfPath != null && ownDir == null) {
-        const through = throughCheckout(expandEnv(step.run, lookup), String(rawDir ?? ''), selfPath, repo);
-        for (const path of through.named) mentions.set(`${path}\0${job}`, { path, job });
-        for (const path of through.written) handed.add(path);
-      }
-      // A step whose working directory cannot be read as a repository path
-      // names nothing Atlas can place, so its tokens are left unresolved.
-      const dir = selfPath != null ? ownDir : step['working-directory'] === undefined ? jobDir : cleanDir(step['working-directory']);
-      if (dir == null) return;
-      // Actions spells ${{ env.X }} out before the shell sees the step.
-      const named = readCommands(expandEnv(step.run, lookup), dir, repo, platforms);
-      for (const entry of named.shellMissed) {
-        const key = `${entry.base}\0${entry.platform}`;
-        const found = missed.get(key) ?? { base: entry.base, files: new Set(), platform: entry.platform, twoStars: false };
-        for (const path of entry.files) found.files.add(path);
-        found.twoStars ||= entry.twoStars;
-        missed.set(key, found);
-      }
-      for (const entry of named.runs.values()) {
-        const key = `${entry.path}\0${job}`;
-        const run = { ...entry, job, ...held };
-        runs.set(key, runs.has(key) ? mergeRun(runs.get(key), run) : run);
-        if (entry.builds) shipped.builds.add(entry.path);
-      }
-      for (const path of named.mentions) mentions.set(`${path}\0${job}`, { path, job });
     });
     if (!gate && jobScope.pushes) pushes = true;
     if (!gate) sidePushes.push(...jobScope.sidePushes);
@@ -419,6 +509,10 @@ function readDoor(repoPath, file, repo) {
 
   shipBuilds(shipping, runs, triggers, (when) => (when ? scopeOfGate(when) : { sends }));
   unionPathGates([...runs.values()], triggers);
+  // The packages whose own test script a step runs, kept on the door so a
+  // run reads the same whichever script reached it.
+  const testScripts = [...new Set([...runs.values()].map((run) => run.testScript).filter((dir) => dir != null))].sort();
+  for (const run of runs.values()) delete run.testScript;
   const recorded = recordedRuns([...runs.values()]);
   const runKeys = new Set(recorded.all.map((run) => `${run.path}\0${run.job}`));
   const underRun = (path, job) => recorded.all.some((run) => run.job === job && run.directory && path.startsWith(run.path));
@@ -460,6 +554,8 @@ function readDoor(repoPath, file, repo) {
     ...(missed.size > 0 ? { shellMissed: shellMissed(missed) } : {}),
     uses: [...uses].sort(),
     ...(handed.size > 0 ? { handedWrites: [...handed].sort() } : {}),
+    ...(workedIn.size > 0 ? { workedIn: [...workedIn].sort() } : {}),
+    ...(testScripts.length > 0 ? { testScripts } : {}),
     // Read by index.js markUnshipped, then dropped.
     publishedCrates: [sends, ...[...gates.values()].map((entry) => entry.sends)].flatMap((scope) => scope.crates),
   };
@@ -533,7 +629,29 @@ function finishSends(sends, issues, texts) {
     opensIssues: issues.length > 0,
     opensIssuesOnFailure: issues.length > 0 && issues.every(Boolean),
     opensPullRequests: sends.opensPullRequests,
+    ...(readsRepositories(joined) ? { readsRepositories: true } : {}),
   };
+}
+
+/**
+ * Whether a gh api call reads repositories other than this one: an
+ * organization's repository list, or a repository whose name the shell
+ * fills in (repos/${ORG}/${repo}/readme), never github.repository, with no
+ * method or field that makes it a write.
+ */
+function readsRepositories(text) {
+  const own = /^\/?repos\/(?:\$\{\{\s*github\.repository\s*\}\}|\$\{?GITHUB_REPOSITORY\}?|\{owner\}\/\{repo\})(?:\/|$)/;
+  const other = /^\/?(?:orgs\/[^/]+\/repos\b|repos\/[^/]+\/[^/]+)/;
+  return commandLines(text).some((tokens) => {
+    const at = tokens.findIndex((word, index) => word === 'api' && tokens[index - 1] === 'gh');
+    if (at === -1) return false;
+    const args = tokens.slice(at + 1);
+    if (args.some((word, index) => ((word === '-X' || word === '--method') && !/^get$/i.test(args[index + 1] ?? '')) || /^--method=(?!get$)/i.test(word) || /^-[fF]$|^--(?:raw-)?field$|^--input$/.test(word))) return false;
+    // repos/${REPO}/issues spells owner/name as one variable, the workflow's
+    // own repository by convention (REPO: ${{ github.repository }}).
+    const whole = /^\/?repos\/\$\{?[A-Za-z_][A-Za-z0-9_]*\}?\/(?:issues|pulls|contents|readme|branches|actions|releases|commits|git|dispatches|labels|milestones|deployments|environments|hooks|check-runs|check-suites|statuses|compare|tags|collaborators)(?:\/|$)/;
+    return args.some((word) => other.test(word) && !own.test(word) && !whole.test(word) && (/^\/?orgs\//.test(word) || word.includes('$')));
+  });
 }
 
 // A gated job's sends as a list, the shape the page reads them back from.
@@ -545,7 +663,7 @@ function sendKeys(sends) {
   for (const entry of sends.packages ?? []) keys.push(`packages:${JSON.stringify(entry)}`);
   for (const platform of sends.exports ?? []) keys.push(`exports:${platform}`);
   for (const asset of sends.assets ?? []) keys.push(`assets:${asset}`);
-  for (const flag of ['releases', 'deploysPages', 'opensIssues', 'opensIssuesOnFailure', 'opensPullRequests']) if (sends[flag]) keys.push(flag);
+  for (const flag of ['releases', 'deploysPages', 'opensIssues', 'opensIssuesOnFailure', 'opensPullRequests', 'readsRepositories']) if (sends[flag]) keys.push(flag);
   return keys;
 }
 
@@ -863,6 +981,33 @@ function matrixValues(matrix, key) {
   return [...new Set(values)];
 }
 
+/**
+ * The directories a working-directory spelled with a matrix value or a
+ * dispatch input can be, as raw directories, or null when it spells
+ * neither: src/${{ matrix.project }} is src/<each value of the project
+ * axis>; examples/${{ inputs.tool }} is examples/<each option of a choice
+ * input>, or every tracked directory examples/* matches.
+ */
+function expandedDirs(raw, body, on, repo) {
+  if (typeof raw !== 'string' || !raw.includes('${{')) return null;
+  const matrix = isMapping(body.strategy) && isMapping(body.strategy.matrix) ? body.strategy.matrix : {};
+  const inputs = isMapping(on) && isMapping(on.workflow_dispatch) && isMapping(on.workflow_dispatch.inputs) ? on.workflow_dispatch.inputs : {};
+  const expression = /\$\{\{\s*(?:matrix\.([\w-]+)|(?:github\.event\.)?inputs\.([\w-]+))\s*\}\}/g;
+  const found = [...raw.matchAll(expression)];
+  if (found.length !== 1 || raw.replace(expression, '').includes('${{')) return null;
+  const [whole, axis, input] = found[0];
+  let values = null;
+  if (axis != null) values = matrixValues(matrix, axis);
+  else if (isMapping(inputs[input]) && Array.isArray(inputs[input].options)) values = inputs[input].options.filter((value) => typeof value === 'string' || typeof value === 'number').map(String);
+  if (values != null) return values.length > 0 ? values.map((value) => raw.replace(whole, value)) : null;
+  if (input == null || !isMapping(inputs[input])) return null;
+  const pattern = cleanDir(raw.replace(whole, '*'));
+  if (pattern == null || pattern.includes('$')) return null;
+  const isMatch = picomatch(pattern);
+  const dirs = [...repo.dirs].filter((dir) => isMatch(dir)).sort(compare);
+  return dirs.length > 0 ? dirs : null;
+}
+
 // The --target each cargo build of a step names: a literal, or the values of
 // the matrix key an expression spells.
 function buildTargets(run, body) {
@@ -1063,6 +1208,9 @@ function commandSends(run, sends, place) {
     }
     const registry = publishRegistry(words);
     if (registry == null || words.includes('--dry-run')) continue;
+    // npm refuses to publish a private package, so such a publish sends
+    // nothing (accessibility-suite's root).
+    if (registry === 'npm' && packed == null && refusedByNpm(words, cwd, place)) continue;
     sends.publishesTo.add(registry);
     // The crate a cargo publish sends: the one -p names, or the one found
     // from where it runs (index.js markUnshipped).
@@ -1218,6 +1366,19 @@ function joinDir(dir, next) {
  * is one of the packages there, chosen by the tag when a tag starts the
  * workflow.
  */
+// An npm publish of one directory, spelled out, whose manifest is private.
+function refusedByNpm(words, cwd, place) {
+  const args = words.slice(words.indexOf('publish') + 1);
+  if (words[0] !== 'npm' || args.some((word) => /^(?:-w|--workspaces?|-ws)(?:=|$)/.test(word))) return false;
+  const handed = args.find((word, index) => !word.startsWith('-') && !(index > 0 && ['--tag', '--access', '--otp', '--registry'].includes(args[index - 1])));
+  if (handed != null && /\.tgz$/.test(handed)) return false;
+  const dir = handed != null ? joinDir(cwd, handed) : cwd;
+  if (dir == null || dir.includes('$')) return false;
+  const clean = dir.replace(/^\.\/?/, '').replace(/\/+$/, '');
+  const manifest = place.repo.manifest(clean);
+  return manifest?.private === true;
+}
+
 function publishedPackages(words, cwd, place) {
   const at = words.indexOf('publish');
   const args = words.slice(at + 1);
@@ -1354,8 +1515,12 @@ function topLevel(text, operator) {
   return parts.map((part) => part.trim()).filter((part) => part !== '');
 }
 
+// Actions spells ${{ env.X }} out before the shell sees the step, and a
+// PowerShell step reads $env:X from the same environment.
 function expandEnv(text, lookup) {
-  return text.replace(/\$\{\{\s*env\.([A-Za-z_][A-Za-z0-9_]*)\s*\}\}/g, (whole, name) => lookup(name) ?? whole);
+  return text
+    .replace(/\$\{\{\s*env\.([A-Za-z_][A-Za-z0-9_]*)\s*\}\}/g, (whole, name) => lookup(name) ?? whole)
+    .replace(/\$env:([A-Za-z_][A-Za-z0-9_]*)/g, (whole, name) => lookup(name) ?? whole);
 }
 
 function envOf(value) {

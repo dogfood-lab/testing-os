@@ -1,0 +1,16 @@
+name: Desktop CI
+on:
+  pull_request:
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      APP_PROJECT: app/App.csproj
+    steps:
+      - uses: actions/checkout@v4
+      - run: dotnet test tests/Tests.csproj -c Release
+      - name: Publish
+        shell: pwsh
+        run: |
+          dotnet publish $env:APP_PROJECT -c Release `
+            /p:GenerateAppxPackageOnBuild=true

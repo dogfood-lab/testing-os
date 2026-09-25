@@ -1,0 +1,46 @@
+name: Release
+on:
+  release:
+    types: [published]
+jobs:
+  build-tauri:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            tauri-args: "--bundles deb"
+          - os: windows-latest
+            tauri-args: ""
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install frontend deps
+        run: npm --prefix app ci
+      - name: Build Tauri app
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+            if ! npm --prefix app run tauri build -- ${{ matrix.tauri-args }} --verbose; then
+              npm --prefix app run tauri build -- --bundles deb --verbose
+            fi
+          else
+            npm --prefix app run tauri build -- ${{ matrix.tauri-args }}
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tauri-${{ matrix.os }}
+          path: app/src-tauri/target/release/bundle/**
+  upload:
+    needs: [build-tauri]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tauri-*
+          path: dist
+          merge-multiple: true
+      - name: Generate latest.json
+        run: echo '{}' > dist/latest.json
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*

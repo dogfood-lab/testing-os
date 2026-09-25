@@ -1,0 +1,7 @@
+name: Dependency audit
+description: Audit a pull request's dependencies.
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: node "${{ github.action_path }}/../../../scripts/audit.mjs"

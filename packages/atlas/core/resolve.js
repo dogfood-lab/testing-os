@@ -153,7 +153,7 @@ function resolveSite(ctx, fromAbs, language, site) {
     return { outcome: 'unresolved', reason: site.kind };
   }
   if (site.location) return resolveLocation(ctx, site.specifier);
-  if (language === 'python') return resolvePython(ctx, fromAbs, site.specifier);
+  if (language === 'python') return resolvePython(ctx, fromAbs, site.specifier, site.roots ?? [], site.names ?? []);
   return resolveJavaScript(ctx, fromAbs, site.specifier);
 }
 
@@ -169,7 +169,7 @@ function resolveLocation(ctx, path) {
 function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
   const repo = resolve(repoPath);
   const view = repositoryView({ repoPath: repo, tracked });
-  const workspaces = workspaceMap(repo, view);
+  const workspaces = workspaceMap(repo, view, tracked);
   const plugin = workspacePlugin(workspaces);
   // enhanced-resolve's default cache is one per process, kept four seconds, so
   // a map drawn right after another would be told what the disk held then.
@@ -260,10 +260,30 @@ function splitBare(specifier) {
 // pnpm-workspace.yaml, read by the reader the commands use (core/commands.js),
 // by package name. An unnamed or unreadable manifest is not a member an
 // import can name.
-function workspaceMap(repo, view) {
+function workspaceMap(repo, view, tracked) {
   const map = new Map();
   for (const [dir, name] of view.workspaces()) {
     if (typeof name === 'string' && name !== '' && !map.has(name)) map.set(name, join(repo, dir));
+  }
+  // A dependency a tracked manifest takes from a directory of this
+  // repository (site/package.json's "@mcptoolshop/site-theme": "file:..")
+  // is that directory's package, read from its own directory as a member
+  // is, when the manifest there carries the name.
+  for (const path of [...tracked].filter((item) => item === 'package.json' || item.endsWith('/package.json')).sort()) {
+    if (path.split('/').includes('node_modules')) continue;
+    const dir = path === 'package.json' ? '' : path.slice(0, -'/package.json'.length);
+    const pkg = view.manifest(dir);
+    for (const field of DEPENDENCY_FIELDS) {
+      const deps = pkg?.[field];
+      if (deps == null || typeof deps !== 'object' || Array.isArray(deps)) continue;
+      for (const [name, spec] of Object.entries(deps)) {
+        if (map.has(name) || typeof spec !== 'string' || !/^(?:file|link):/.test(spec)) continue;
+        const target = posix.normalize(posix.join(dir || '.', spec.replace(/^(?:file|link):/, ''))).replace(/\/+$/, '');
+        const at = target === '.' ? '' : target;
+        if (at.startsWith('..') || !tracked.has(at === '' ? 'package.json' : `${at}/package.json`)) continue;
+        if (view.manifest(at)?.name === name) map.set(name, join(repo, at));
+      }
+    }
   }
   return map;
 }
@@ -724,16 +744,26 @@ function repoRelative(repo, absPath) {
   return rel;
 }
 
-function resolvePython(ctx, fromAbs, specifier) {
+function resolvePython(ctx, fromAbs, specifier, inserted = [], names = []) {
   const fromRel = relative(ctx.repo, fromAbs).replaceAll('\\', '/');
   if (specifier.startsWith('.')) {
     const hit = pythonRelative(fromRel, specifier, ctx.tracked);
     if (hit) return { outcome: 'file', path: hit };
     return { outcome: 'unresolved', reason: 'python-module-not-found' };
   }
+  // The directories the file inserts on its import path come first.
+  const added = inserted.length > 0 ? pythonAbsolute(specifier, inserted.map((dir) => dir || '.'), ctx.tracked) : null;
+  if (added) return { outcome: 'file', path: added };
   const python = ctx.python();
   const hit = pythonAbsolute(specifier, python.roots, ctx.tracked);
   if (hit) return { outcome: 'file', path: hit };
+  // A namespace package (a directory with no __init__.py at a source root)
+  // is imported through its modules: from pipeline import foundry_ingest is
+  // pipeline/foundry_ingest.py.
+  for (const name of names) {
+    const inside = pythonAbsolute(`${specifier}.${name}`, python.roots, ctx.tracked);
+    if (inside) return { outcome: 'file', path: inside };
+  }
   // A script's own directory is first on its import path, and pytest puts a
   // test's there too: a helper, a stub or a conftest beside the file.
   // A module inside a package (its directory holds __init__.py) is imported
@@ -744,7 +774,7 @@ function resolvePython(ctx, fromAbs, specifier) {
   if (beside) return { outcome: 'file', path: beside };
   const first = specifier.split('.')[0];
   if (PYTHON_STDLIB.has(first)) return { outcome: 'external' };
-  const present = segmentPresent(ctx.tracked, first);
+  const present = segmentPresent(ctx.tracked, first, python.roots);
   // Python looks a bare name up from the source roots, so a local module of
   // the same name deeper in the tree does not shadow a dependency the project
   // declares: `from datasets import Dataset` beside backpropagate/datasets.py
@@ -833,11 +863,19 @@ function sourceRoots(tracked, repo = null) {
   return roots;
 }
 
-function segmentPresent(tracked, name) {
+// Whether a module of this name is in the tree where a reader could take a
+// bare import for it: a file name.py anywhere, or a directory of that name
+// at a source root. A package nested under another (src/prism/mcp/) is
+// that package's module, never the top-level name, so an import of an
+// installed mcp is the dependency and nothing here shares its name.
+function segmentPresent(tracked, name, roots = []) {
   const file = `${name}.py`;
+  const tops = new Set(['', ...roots].map((root) => (root === '.' ? '' : root)));
   for (const path of tracked) {
     if (path === file || path.endsWith(`/${file}`)) return true;
-    if (path.split('/').includes(name)) return true;
+    const parts = path.split('/');
+    const at = parts.indexOf(name);
+    if (at !== -1 && at < parts.length - 1 && tops.has(parts.slice(0, at).join('/'))) return true;
   }
   return false;
 }

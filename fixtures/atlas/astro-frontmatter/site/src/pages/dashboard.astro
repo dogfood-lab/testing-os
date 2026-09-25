@@ -1,0 +1,8 @@
+---
+import AppShell from '../components/AppShell.astro';
+
+const stats = (await import('../data/stats.json')).default;
+---
+<AppShell title="Dashboard">
+  <p>{stats.total}</p>
+</AppShell>

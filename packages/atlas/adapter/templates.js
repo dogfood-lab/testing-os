@@ -91,7 +91,15 @@ function commonDirectory(paths) {
  */
 function roleByFiles(paths, kinds) {
   if (paths.some((path) => SITE_CONFIG.test(path) || SITE_CONTENT.test(path))) return 'site';
-  if (paths.some((path) => WORKFLOW.test(path))) return 'config';
+  // A package of its own (a manifest at the directory's top and code under
+  // it) that carries the workflows of the repository it came from
+  // (accessibility-suite's src/a11y-assist) is read by its files, as any
+  // other part is, never made config by those workflows.
+  const top = commonDirectory(paths);
+  const manifestAtTop = ['pyproject.toml', 'package.json', 'Cargo.toml', 'setup.py'].some((name) => paths.includes(`${top}${name}`));
+  const packageCode = paths.some((path, index) => kinds[index] === 'code' && !WORKFLOW.test(path) && !path.slice(top.length).startsWith('.github/'));
+  const ownPackage = manifestAtTop && packageCode;
+  if (!ownPackage && paths.some((path) => WORKFLOW.test(path))) return 'config';
   // An npm package with a command of its own (a wrapper: package.json, bin/
   // and its READMEs) is code, however many READMEs it carries.
   const root = commonDirectory(paths);
@@ -119,11 +127,15 @@ function isData(paths) {
   const kept = paths.filter((path) => baseName(path) !== '.gitkeep');
   if (kept.length === 0) return false;
   const bases = kept.map(baseName);
-  if (bases.some((base) => CODE_EXT.has(extensionOf(base)) || SCRIPT_EXT.has(extensionOf(base)))) return false;
-  if (bases.some((base) => MANIFEST_NAME.has(base))) return bases.filter((base) => IMAGE_EXT.has(extensionOf(base))).length * 2 > kept.length;
+  const scripts = bases.filter((base) => CODE_EXT.has(extensionOf(base)) || SCRIPT_EXT.has(extensionOf(base))).length;
+  if (bases.some((base) => MANIFEST_NAME.has(base))) return scripts === 0 && bases.filter((base) => IMAGE_EXT.has(extensionOf(base))).length * 2 > kept.length;
   const home = commonDirectory(kept).replace(/\/$/, '');
   if (SETTINGS_DIRS.has(home.slice(home.lastIndexOf('/') + 1).toLowerCase())) return false;
   const data = bases.filter((base) => !SETTINGS_NAME.test(base) && (DATA_EXT.has(extensionOf(base)) || IMAGE_EXT.has(extensionOf(base))));
+  // A few scripts beside a directory of projects kept as JSON (style-dataset-
+  // lab's projects/: 2,770 data files, 32 scripts) leave it data; any more
+  // code than one file in ten of its data makes it code.
+  if (scripts > 0) return data.length >= scripts * 10 && data.length * 2 > kept.length;
   // Reports a run writes (a JSON and a Markdown file per run) are data too:
   // the prose beside as many data files is the same output read by people.
   const prose = bases.filter((base) => /\.mdx?$/i.test(base) && !/^readme/i.test(base));

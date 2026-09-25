@@ -1,0 +1,18 @@
+name: Org Guard
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scan the organization
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ORG="example-org"
+          repos="$(gh api -H "Accept: application/vnd.github+json" \
+            "/orgs/${ORG}/repos?per_page=100" --paginate --jq '.[].name')"
+          for repo in $repos; do
+            gh api "repos/${ORG}/${repo}/readme" --jq '.content' > /dev/null || echo "$repo has no README"
+          done

@@ -1,3 +1,4 @@
+import { commandLines } from '../core/commands.js';
 import { loadsManifest } from '../core/languages.js';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
 import { roleFor } from './templates.js';
@@ -190,9 +191,22 @@ function testReach(mapped) {
   // A part no test imports that a test runs as a child process is touched
   // only through that spawn, which the page says, and so is one only the
   // unit tests in its own files test.
-  const throughSpawn = new Set([...testedBy.keys()].filter((part) => !imported.has(part) && !insideParts.has(part)));
+  // A package's own test script a workflow runs (npm test in its
+  // directory) tests the part holding its manifest, though no test file
+  // imports it.
+  const scriptParts = new Set();
+  for (const door of mapped.doors ?? []) {
+    if (door.kind || door.parseError) continue;
+    for (const dir of door.testScripts ?? []) {
+      const part = boundaryOf.get(dir === '' ? 'package.json' : `${dir}/package.json`);
+      if (part != null) scriptParts.add(part);
+    }
+  }
+  for (const part of scriptParts) if (!testedBy.has(part)) testedBy.set(part, 1);
+  const throughSpawn = new Set([...testedBy.keys()].filter((part) => !imported.has(part) && !insideParts.has(part) && !scriptParts.has(part)));
   const testedInside = new Set([...insideParts].filter((part) => !imported.has(part)));
-  return { testFiles: tests.length + inside.length, testedBy, throughSpawn, testedInside };
+  const testedByScript = new Set([...scriptParts].filter((part) => !imported.has(part) && !insideParts.has(part)));
+  return { testFiles: tests.length + inside.length, testedBy, throughSpawn, testedInside, testedByScript };
 }
 
 // A boundary file may leave a role out; the role is then derived from the
@@ -230,6 +244,7 @@ export function buildArtifact(mapped, commit) {
       testedBy: tested.testedBy.get(boundary.name) ?? 0,
       ...(tested.testedInside.has(boundary.name) ? { testedInside: true } : {}),
       ...(tested.throughSpawn.has(boundary.name) ? { testedThroughSpawn: true } : {}),
+      ...(tested.testedByScript.has(boundary.name) ? { testedByScript: true } : {}),
       unresolvedSites: sites.unresolved,
       ...(sites.named.length > 0 ? { unresolvedNamed: sites.named } : {}),
     };
@@ -241,6 +256,7 @@ export function buildArtifact(mapped, commit) {
   const tracked = boundaries.reduce((sum, boundary) => sum + boundary.files.length, 0) + overlaps.length + unassigned.length;
   return {
     boundaries,
+    ...(mapped.collectIgnored?.length > 0 ? { collectIgnored: mapped.collectIgnored.filter((path) => !inAtlas(path)) } : {}),
     // One manifest can declare several commands, so a door sorts by its file
     // and then its name.
     doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => cmp(a.file, b.file) || cmp(a.name, b.name) || cmp(a.kind ?? '', b.kind ?? '')),
@@ -369,6 +385,7 @@ function carryWriter(entry) {
   if (entry.confidence != null) out.confidence = entry.confidence;
   if (entry.fromCwd) out.fromCwd = true;
   if (entry.stamps) out.stamps = true;
+  if (entry.untrackedInputs) out.untrackedInputs = true;
   if (entry.unless) out.unless = [...entry.unless];
   return out;
 }
@@ -396,6 +413,8 @@ function carryRun(run) {
   if (run.via) out.via = run.via;
   // A binary the door builds and ships, which it runs nowhere.
   if (run.built) out.built = true;
+  // A file a Dockerfile copies into the image it builds, and nothing runs.
+  if (run.packed) out.packed = true;
   // A script a runner the door runs finds at run time and runs.
   if (run.foundBy) out.foundBy = run.foundBy;
   if (run.when) out.when = { ...run.when, ...(run.when.inputs ? { inputs: { ...run.when.inputs } } : {}) };
@@ -414,7 +433,7 @@ function carryDoor(door) {
     ...(door.app ? { app: door.app } : {}),
     ...(door.example ? { example: true } : {}),
     ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
-    commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
+    commands: door.commands.map((command) => ({ job: command.job, programs: stepPrograms(command.text), step: command.step })),
     ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),
     elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
     ...(door.entry ? { entry: door.entry } : {}),
@@ -452,6 +471,7 @@ function carryDoor(door) {
       opensPullRequests: door.sends.opensPullRequests,
       publishes: door.sends.publishes,
       publishesTo: [...door.sends.publishesTo],
+      ...(door.sends.readsRepositories ? { readsRepositories: true } : {}),
       releases: door.sends.releases,
     },
     ...(door.shellMissed?.length > 0 ? { shellMissed: door.shellMissed.map((entry) => ({ ...entry })) } : {}),
@@ -466,6 +486,28 @@ function carryDoor(door) {
     uses: [...door.uses],
     usesWorkflowToken: door.usesWorkflowToken,
   };
+}
+
+// A step is kept as the programs its script runs, never the script: the map
+// is committed, so script text in it is republished to every tool that scans
+// the tree, and a scan's own pattern list then matches the map (site-theme's
+// secret scan). What the engine reads from a script (the files it runs,
+// checks and writes, its gate) is recorded on the door already.
+const SHELL_WORDS = new Set(['!', 'if', 'then', 'else', 'elif', 'fi', 'while', 'until', 'do', 'done', 'time', 'in', 'esac']);
+const LOOP_HEADS = new Set(['for', 'select', 'case', 'function']);
+// Builtins that steer the shell and run nothing.
+const STEERING = new Set(['break', 'continue', 'return', 'exit', 'set', 'shift', 'export', 'unset', 'local', 'readonly', 'declare', 'true', 'false', ':']);
+
+function stepPrograms(text) {
+  const programs = new Set();
+  for (const words of commandLines(text ?? '')) {
+    let i = 0;
+    while (i < words.length && (SHELL_WORDS.has(words[i]) || /^[A-Za-z_][A-Za-z0-9_]*\+?=/.test(words[i]))) i += 1;
+    const first = words[i];
+    if (first == null || LOOP_HEADS.has(first) || STEERING.has(first)) continue;
+    if (/^[A-Za-z0-9_.@+-][A-Za-z0-9_./@+-]*$/.test(first)) programs.add(first);
+  }
+  return [...programs].sort();
 }
 
 function carryReach(entry) {
