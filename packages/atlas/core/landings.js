@@ -883,6 +883,9 @@ export function astLandings(language, root, path, places) {
     }
     if (ctx.seen.has(key(node))) return;
     if (!isStringNode(node, ctx.python) && !isPathConstructor(node, ctx.python)) return;
+    // { href: 'viewer/' } in a site's config is a link on the site's own
+    // URL, served from wherever the build puts it, and no file read.
+    if (!ctx.python && linkValue(node)) return;
     for (const raw of evaluate(node, ctx, 0)) {
       named(raw);
       const value = isHelper(raw) ? asRoot(raw) : raw;
@@ -2495,6 +2498,16 @@ function argparseDefault(node, name) {
     if (value?.type === 'string') found = stringTexts(value, true).join('');
   });
   return found != null && found !== '' && !found.startsWith('/') ? found : null;
+}
+
+const LINK_KEYS = new Set(['href', 'link', 'url', 'to']);
+
+function linkValue(node) {
+  const pair = node.parent;
+  if (pair?.type !== 'pair' || pair.childForFieldName('value')?.startIndex !== node.startIndex) return false;
+  const key = pair.childForFieldName('key');
+  const name = key?.type === 'property_identifier' ? key.text : key?.type === 'string' ? jsStringText(key) : null;
+  return name != null && LINK_KEYS.has(name);
 }
 
 // Where a name sits in a loop's unpacked target, for prefix, path in ...:
