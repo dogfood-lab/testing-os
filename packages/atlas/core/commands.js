@@ -701,6 +701,22 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     return parsed;
   }
 
+  // The module an import names, as the package's code loads it: a module
+  // file or a package's __init__.py, from the directory the step runs in or
+  // a packaging root.
+  function importedModule(name, dir, frame) {
+    const stem = name.split('.').join('/');
+    for (const base of [dir, dir ? `${dir}/src` : 'src', ...packagingRoots(repo)]) {
+      for (const candidate of [`${stem}.py`, `${stem}/__init__.py`]) {
+        const path = pathFrom(base, candidate);
+        if (path != null && repo.tracked.has(path)) {
+          record(stamp({ path }, frame));
+          return;
+        }
+      }
+    }
+  }
+
   function pythonModule(name, rest, dir, frame) {
     if (name === 'build' && !['build.py', 'build/__main__.py', 'build/__init__.py'].some((file) => repo.tracked.has(pathFrom(dir, file) ?? ''))) {
       const parsed = split(['build', ...rest], 1, VALUE_SETS.build);
@@ -958,7 +974,11 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     python(argv, dir, frame) {
       for (let i = 1; i < argv.length; i += 1) {
         const token = argv[i];
-        if (token === '-c') return;
+        // python -c "..." runs the modules its code imports.
+        if (token === '-c') {
+          if (i + 1 < argv.length) for (const name of inlineImports(argv[i + 1])) importedModule(name, dir, frame);
+          return;
+        }
         if (token === '-m') {
           if (i + 1 < argv.length) pythonModule(argv[i + 1], argv.slice(i + 2), dir, frame);
           return;
@@ -1685,6 +1705,16 @@ function imageStage(words, stages) {
   const base = plain[0] != null ? stages.find((earlier) => earlier.name === plain[0].toLowerCase()) : null;
   const name = plain.length >= 3 && plain[1].toLowerCase() === 'as' ? plain[2].toLowerCase() : null;
   return { name, workdir: base?.workdir ?? '/', copies: [...(base?.copies ?? [])], entry: base?.entry ?? null, cmd: base?.cmd ?? null };
+}
+
+// The modules the code handed to python -c imports, in order.
+function inlineImports(code) {
+  const names = [];
+  for (const match of String(code).matchAll(/(?:^|[;\n])\s*(?:from\s+([A-Za-z_][\w.]*)\s+import\b|import\s+([A-Za-z_][\w.]*(?:\s*,\s*[A-Za-z_][\w.]*)*))/g)) {
+    if (match[1]) names.push(match[1]);
+    else for (const name of match[2].split(',')) names.push(name.trim());
+  }
+  return [...new Set(names)];
 }
 
 // A word as the shell would read it back as one word.

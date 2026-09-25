@@ -589,7 +589,7 @@ function parseFile(language, path, original, places) {
       imports,
       landings: astLandings(language, tree.rootNode, path, places),
       sequence: sequenceFacts(language, tree.rootNode),
-      spawned: language === 'python' ? { commands: [], built: 0 } : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
+      spawned: language === 'python' ? pythonSpawns(tree.rootNode) : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
       githubChanges: language === 'python' ? 0 : githubChanges(tree.rootNode),
       noStatements: statementless(tree.rootNode),
       startsOnLoad: language !== 'python' && startsOnLoad(tree.rootNode),
@@ -881,6 +881,43 @@ function onlyHolds(root) {
   // One literal held beside nothing it imports is the version string case;
   // an object or array beside imports is a tool's config, and still no work.
   return literal ? 'constant' : null;
+}
+
+const PY_SPAWNS = /(^|\.)(run|call|check_call|check_output|Popen)$/;
+
+/**
+ * The command lines a Python file hands to a child process that run a
+ * module under the interpreter running the file: subprocess.run([
+ * sys.executable, "-m", "pytest", ...]), or with the interpreter held in a
+ * name (py = sys.executable). Read as python -m <module> with the words
+ * spelled out, up to the first one built at run time.
+ */
+function pythonSpawns(root) {
+  const interpreters = new Set();
+  walkNamed(root, (node) => {
+    if (node.type !== 'assignment') return;
+    const left = node.childForFieldName('left');
+    const right = node.childForFieldName('right');
+    if (left?.type === 'identifier' && right?.text === 'sys.executable') interpreters.add(left.text);
+  });
+  const commands = new Set();
+  walkNamed(root, (node) => {
+    if (node.type !== 'call' || !PY_SPAWNS.test(node.childForFieldName('function')?.text ?? '')) return;
+    const list = node.childForFieldName('arguments')?.namedChildren.find((child) => child.type !== 'comment');
+    if (list?.type !== 'list') return;
+    const items = list.namedChildren.filter((child) => child.type !== 'comment');
+    const head = items[0];
+    if (!(head?.text === 'sys.executable' || (head?.type === 'identifier' && interpreters.has(head.text)))) return;
+    const words = ['python'];
+    for (const item of items.slice(1)) {
+      if (item.type !== 'string') break;
+      const text = item.namedChildren.filter((child) => child.type === 'string_content').map((child) => child.text).join('');
+      if (/[\s'"]/.test(text) || text === '') break;
+      words.push(text);
+    }
+    if (words[1] === '-m' && words[2]) commands.add(words.join(' '));
+  });
+  return { commands: [...commands].sort(), built: 0 };
 }
 
 function walkNamed(root, visit) {
