@@ -62,6 +62,9 @@ function dynamicCounts(files) {
   let outsideWrites = 0;
   let userDataReads = 0;
   let userDataWrites = 0;
+  // Where the caller's places a part's code writes and reads go, when the
+  // reading knows (core/landings.js whereSet), by the set of places.
+  const where = new Map();
   for (const file of files) {
     spawns += file.dynamicSpawns ?? 0;
     if (isTestFile(file.path)) spawnsInTests += file.dynamicSpawns ?? 0;
@@ -70,10 +73,16 @@ function dynamicCounts(files) {
     writes += file.dynamicWrites ?? 0;
     outsideReads += file.outsideReads ?? 0;
     outsideWrites += file.outsideWrites ?? 0;
+    for (const site of file.outsideWhere ?? []) {
+      const key = site.where.join('\0');
+      if (!where.has(key)) where.set(key, { reads: 0, where: [...site.where], writes: 0 });
+      where.get(key)[site.kind === 'write' ? 'writes' : 'reads'] += 1;
+    }
     userDataReads += file.userDataReads ?? 0;
     userDataWrites += file.userDataWrites ?? 0;
   }
-  return { outsideReads, outsideWrites, reads, spawns, spawnsInTests, userDataReads, userDataWrites, writes };
+  const outsidePlaces = [...where.entries()].sort(([a], [b]) => cmp(a, b)).map(([, entry]) => entry);
+  return { outsidePlaces, outsideReads, outsideWrites, reads, spawns, spawnsInTests, userDataReads, userDataWrites, writes };
 }
 
 function resolvedFiles(file) {
@@ -172,6 +181,7 @@ export function buildArtifact(mapped, commit) {
       ...(sites.outside > 0 ? { outsideImports: sites.outside } : {}),
       ...(dynamic.outsideReads > 0 ? { outsideReads: dynamic.outsideReads } : {}),
       ...(dynamic.outsideWrites > 0 ? { outsideWrites: dynamic.outsideWrites } : {}),
+      ...(dynamic.outsidePlaces.length > 0 ? { outsidePlaces: dynamic.outsidePlaces } : {}),
       ...(dynamic.userDataReads > 0 ? { userDataReads: dynamic.userDataReads } : {}),
       ...(dynamic.userDataWrites > 0 ? { userDataWrites: dynamic.userDataWrites } : {}),
     };

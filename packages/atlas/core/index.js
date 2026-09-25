@@ -17,7 +17,7 @@ import { attachResolution, emittedFiles, registerBuilds, resolveDeclaredPath } f
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
 import { storedBytes, textAttributes } from './text.js';
-import { rustImports, rustPaths, rustSequence, settleRustPaths } from './rust.js';
+import { rustCalls, rustImports, rustPaths, rustSequence, settleRustPaths } from './rust.js';
 import { cargoProject, owningCrate } from './cargo.js';
 import { unseenParts } from './unseen.js';
 import { godotResourceReadings, gdscriptReadings, settleGodotPaths } from './gdscript.js';
@@ -149,7 +149,11 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     tracked: tracked.regular,
   });
   const project = cargoProject(repoPath, trackedSet);
-  settleRustPaths({ files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places, crateDirOf: (path) => owningCrate(project, path)?.dir ?? null });
+  settleRustPaths({ files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places, crateDirOf: (path) => owningCrate(project, path)?.dir ?? null, isTest: isTestMaterial });
+  for (const file of [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]) {
+    delete file.rustBound;
+    delete file.rustNames;
+  }
   settleGodotPaths({ repoPath, tracked: trackedSet, files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places });
   settleHelperPaths([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]);
   settleParamPaths([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places);
@@ -537,12 +541,12 @@ function parseFile(language, path, original, places) {
 // past its imports: testsInside, for a file holding its own unit tests, and
 // what resolution reads once every file is known and then drops.
 function nativeReadings(language, root) {
-  const rust = language === 'rust' ? { ...rustImports(root), paths: rustPaths(root) } : null;
+  const rust = language === 'rust' ? { ...rustImports(root), paths: rustPaths(root), calls: rustCalls(root) } : null;
   const gd = language === 'gdscript' ? gdscriptReadings(root) : null;
   return {
     imports: rust ? rust.imports : gd ? gd.imports : [],
     ...(gd ? { native: { godot: gd.godot, ...(gd.testSuite ? { testSuite: true } : {}) } } : {}),
-    ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}), ...(rust.paths.length > 0 ? { rustPaths: rust.paths } : {}), ...(rust.tests ? { testsInside: true } : {}) } } : {}),
+    ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}), ...(rust.paths.length > 0 ? { rustPaths: rust.paths } : {}), ...(rust.calls.calls.length + rust.calls.fields.length > 0 ? { rustCalls: rust.calls } : {}), ...(rust.tests ? { testsInside: true } : {}) } } : {}),
     landings: noLandings(),
     sequence: rust ? rustSequence(root, rust.imports) : gd ? gd.sequence : { functions: [], topLevel: [], reexports: [] },
     spawned: { commands: [], built: 0 },

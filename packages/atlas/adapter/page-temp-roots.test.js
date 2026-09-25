@@ -68,9 +68,9 @@ describe('a root made in a temporary directory, or returned from the home direct
   it('counts every such write as outside, a temporary directory among the places it can go', () => {
     const outside = structure.boundaries.reduce((sum, boundary) => sum + (boundary.outsideWrites ?? 0), 0);
     assert.equal(outside, 3);
-    assert.ok(section('## What this map cannot see').includes(
-      '- 3 writes go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.',
-    ));
+    const limits = section('## What this map cannot see');
+    assert.ok(limits.includes('- 2 writes go to the home directory (.jam), a temporary directory or a path their caller passes, not to this repository.'), limits.join('\n'));
+    assert.ok(limits.includes('- 1 write goes to a temporary directory, not to this repository.'), limits.join('\n'));
   });
 
   it('keeps songs/ written by people', () => {

@@ -2544,13 +2544,7 @@ function limits(ctx, shownText) {
   if (ctx.untrackedWrites > 0) {
     lines.push(`${count(ctx.untrackedWrites, 'write')} ${ctx.untrackedWrites === 1 ? 'goes' : 'go'} to places this repository does not track, so ${ctx.untrackedWrites === 1 ? 'it is' : 'they are'} not listed as generated.`);
   }
-  const outsideWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.outsideWrites ?? 0), 0);
-  const outsideReads = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.outsideReads ?? 0), 0);
-  if (outsideWrites + outsideReads > 0) {
-    const what = [outsideWrites > 0 ? count(outsideWrites, 'write') : null, outsideReads > 0 ? count(outsideReads, 'read') : null].filter(Boolean);
-    const verb = outsideWrites + outsideReads === 1 ? 'goes' : 'go';
-    lines.push(`${list(what)} ${verb} to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.`);
-  }
+  lines.push(...outsideLines(ctx));
   // A Godot game's user:// is the player's own data directory, on their
   // machine, never this repository.
   const userWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.userDataWrites ?? 0), 0);
@@ -2588,6 +2582,74 @@ function limits(ctx, shownText) {
 }
 
 const PLATFORM_NAMES = { linux: 'Linux', macos: 'macOS', windows: 'Windows' };
+
+/**
+ * Where the writes and reads to the caller's places go, one line per kind of
+ * place, or kinds a site may be any of (core/landings.js whereSet), the most
+ * first, with the directories and files spelled under each: "4 writes go to
+ * the directory the command is run in (saves/) or a path their caller
+ * passes, not to this repository." A place spelled once as a directory is
+ * that directory wherever else it is spelled. What no reading placed is said
+ * together, as every place it may be.
+ */
+function outsideLines(ctx) {
+  const lines = [];
+  const outsideWrites = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.outsideWrites ?? 0), 0);
+  const outsideReads = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.outsideReads ?? 0), 0);
+  const entries = ctx.boundaries.flatMap((boundary) => boundary.outsidePlaces ?? []);
+  const directories = new Set(entries.flatMap((entry) => entry.where).filter((key) => key.endsWith('/')).map((key) => key.slice(0, -1)));
+  const groups = new Map();
+  for (const entry of entries) {
+    const kinds = [...new Set(entry.where.map((key) => key.split(':')[0]))].sort(cmp);
+    const key = kinds.join('\0');
+    if (!groups.has(key)) groups.set(key, { where: new Set(), bare: new Set(), writes: 0, reads: 0 });
+    const group = groups.get(key);
+    for (const place of entry.where) group.where.add(directories.has(place) ? `${place}/` : place);
+    // A site of a kind that names no place under it: the places the others
+    // name are not all of where the line goes.
+    for (const place of entry.where) if (!place.includes(':')) group.bare.add(place);
+    group.writes += entry.writes ?? 0;
+    group.reads += entry.reads ?? 0;
+  }
+  for (const group of groups.values()) group.where = [...group.where].sort(cmp);
+  const sentence = (writes, reads, where) => {
+    const what = [writes > 0 ? count(writes, 'write') : null, reads > 0 ? count(reads, 'read') : null].filter(Boolean);
+    return `${list(what)} ${writes + reads === 1 ? 'goes' : 'go'} to ${where}, not to this repository.`;
+  };
+  // The counts are what was counted; a breakdown never says more than they do.
+  let placedWrites = 0;
+  let placedReads = 0;
+  for (const group of [...groups.values()].sort((a, b) => (b.writes + b.reads) - (a.writes + a.reads) || cmp(a.where.join(), b.where.join()))) {
+    const writes = Math.min(group.writes, outsideWrites - placedWrites);
+    const reads = Math.min(group.reads, outsideReads - placedReads);
+    if (writes + reads === 0) continue;
+    placedWrites += writes;
+    placedReads += reads;
+    lines.push(sentence(writes, reads, wherePhrase(group.where.filter((key) => !(key.includes(':') && group.bare.has(key.split(':')[0]))), writes + reads)));
+  }
+  const writes = Math.max(0, outsideWrites - placedWrites);
+  const reads = Math.max(0, outsideReads - placedReads);
+  if (writes + reads > 0) lines.push(sentence(writes, reads, 'the directory the command is run in, the home directory, a temporary directory or a path its caller passes'));
+  return lines;
+}
+
+const WHERE_KINDS = ['cwd', 'home', 'temp', 'caller'];
+
+// "the directory the command is run in (saves/) or a path their caller passes".
+function wherePhrase(where, total) {
+  const phrases = [];
+  for (const kind of WHERE_KINDS) {
+    const keys = where.filter((key) => key === kind || key.startsWith(`${kind}:`));
+    if (keys.length === 0) continue;
+    const names = keys.filter((key) => key.includes(':')).map((key) => key.slice(key.indexOf(':') + 1));
+    const shown = names.length === 0 ? '' : ` (${names.length <= RUNS_SHOWN ? list(names) : `${names.slice(0, RUNS_SHOWN).join(', ')} and ${count(names.length - RUNS_SHOWN, 'more place')}`})`;
+    if (kind === 'cwd') phrases.push(`the directory the command is run in${shown}`);
+    else if (kind === 'home') phrases.push(`the home directory${shown}`);
+    else if (kind === 'temp') phrases.push('a temporary directory');
+    else phrases.push(`a path ${total === 1 ? 'its' : 'their'} caller passes`);
+  }
+  return phrases.length <= 1 ? phrases.join('') : `${phrases.slice(0, -1).join(', ')} or ${phrases[phrases.length - 1]}`;
+}
 
 // A call over HTTP is drawn as an edge, but no door's reach crosses it, so
 // the page says each one.

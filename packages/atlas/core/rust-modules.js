@@ -89,6 +89,17 @@ export function resolveRust({ repoPath, tracked, files }) {
     file.imports = kept;
   }
   for (const file of rust) {
+    // What the file's names bind to, for the calls settleRustPaths follows:
+    // a use by its last segment or alias, and a mod by its name, each to the
+    // file it resolved to; and the items the file declares.
+    const bound = {};
+    for (const site of file.imports) {
+      if (site.resolved?.outcome !== 'file' || !site.rust || site.rust.expression || site.rust.glob || site.rust.crate) continue;
+      const name = site.rust.mod ?? site.rust.alias ?? site.rust.use?.[site.rust.use.length - 1];
+      if (name && site.rust.scope.length === 0 && !(name in bound)) bound[name] = site.resolved.path;
+    }
+    if (Object.keys(bound).length > 0) file.rustBound = bound;
+    if (file.rustModule?.names?.length > 0) file.rustNames = file.rustModule.names;
     for (const site of file.imports) delete site.rust;
     delete file.rustModule;
   }

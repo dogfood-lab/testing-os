@@ -1,5 +1,5 @@
 import { posix } from 'node:path';
-import { placeLandings } from './landings.js';
+import { placeLandings, whereSet } from './landings.js';
 
 /**
  * What a Rust file says of the modules it is made of and the code it uses,
@@ -118,6 +118,9 @@ const FILE_CALLS = { create: 'write', open: 'read', create_new: 'write' };
 // A place the caller decides, by the function that returns it.
 const HOME_CALLS = new Set(['home_dir', 'data_dir', 'data_local_dir', 'config_dir', 'config_local_dir', 'cache_dir', 'document_dir', 'download_dir', 'desktop_dir', 'state_dir', 'runtime_dir', 'executable_dir', 'audio_dir', 'picture_dir', 'video_dir']);
 const PASS_THROUGH = new Set(['unwrap', 'expect', 'unwrap_or_default', 'to_path_buf', 'to_owned', 'clone', 'as_path', 'into', 'as_ref', 'canonicalize', 'to_string', 'as_str']);
+// The directories Tauri's path resolver (app.path(), or app_handle.path())
+// names for the app on the person's machine.
+const TAURI_DIRS = new Set(['app_data_dir', 'app_config_dir', 'app_local_data_dir', 'app_cache_dir', 'app_log_dir']);
 // The functions clap and argh parse the command line with; what they return
 // holds the arguments.
 const ARGUMENT_CALLS = new Set(['parse', 'parse_from', 'try_parse', 'try_parse_from', 'from_env', 'from_args']);
@@ -214,8 +217,16 @@ function rustValues(node, ctx, depth) {
     case 'identifier':
       return bindingValues(node, ctx, depth);
     case 'field_expression': {
+      // self.save_dir, a field of the value a method is called on, is what
+      // the constructors that build it set it to (settleRustPaths).
+      const object = node.childForFieldName('value');
+      const name = node.childForFieldName('field')?.text;
+      if (object?.type === 'self' && name) {
+        const type = implTypeOf(node);
+        return type ? [{ text: '', open: false, anchor: 'field', field: { type, name } }] : [];
+      }
       // args.out, a field of what clap or argh parsed.
-      const values = rustValues(node.childForFieldName('value'), ctx, depth + 1);
+      const values = rustValues(object, ctx, depth + 1);
       return values.filter((value) => value.anchor === 'argument').map(() => ({ text: '', open: false, anchor: 'argument' }));
     }
     case 'macro_invocation':
@@ -235,7 +246,10 @@ function callValues(node, ctx, depth) {
     const receiver = fn.childForFieldName('value');
     if (PASS_THROUGH.has(method) || method === 'unwrap_or_else' || method === 'unwrap_or') return rustValues(receiver, ctx, depth + 1);
     if (method === 'join' || method === 'push') return joinValues(rustValues(receiver, ctx, depth + 1), rustValues(args[0], ctx, depth + 1));
-    if (method === 'parent') return [];
+    // The directory above a caller's place is the caller's; above a literal
+    // it names nothing this reader follows.
+    if (method === 'parent') return rustValues(receiver, ctx, depth + 1).filter((value) => CALLER_PLACES.has(value.anchor)).map((value) => ({ ...value, text: '', open: false }));
+    if (TAURI_DIRS.has(method)) return [{ text: '', open: false, anchor: 'home' }];
     return [];
   }
   const segments = pathSegments(fn);
@@ -288,7 +302,13 @@ function bindingValues(node, ctx, depth) {
     if (scope.type === 'function_item' || scope.type === 'closure_expression') {
       const params = scope.childForFieldName('parameters');
       const bound = (params?.namedChildren ?? []).some((param) => param.childForFieldName('pattern')?.text === name || param.text === name);
-      if (bound) return [{ text: '', open: false, anchor: 'param' }];
+      if (bound) {
+        // A parameter of a function calls can be followed to: which one it
+        // is, for settleRustPaths.
+        const key = scope.type === 'function_item' ? functionKey(scope) : null;
+        const index = (params?.namedChildren ?? []).filter((param) => param.type === 'parameter').findIndex((param) => param.childForFieldName('pattern')?.text === name);
+        return [{ text: '', open: false, anchor: 'param', ...(key != null && index !== -1 ? { param: { fn: key, index } } : {}) }];
+      }
       if (scope.type === 'function_item') break;
     }
   }
@@ -601,7 +621,77 @@ function conditionText(node) {
 }
 
 // The places a caller decides, which a write or read under them names.
-const CALLER_PLACES = new Set(['cwd', 'home', 'temp', 'env', 'argument', 'param']);
+const CALLER_PLACES = new Set(['cwd', 'home', 'temp', 'env', 'argument', 'param', 'field']);
+
+// The type an impl block is for, of the item a node is in; null outside one.
+function implTypeOf(node) {
+  for (let at = node.parent; at; at = at.parent) {
+    if (at.type === 'impl_item') {
+      const type = at.childForFieldName('type');
+      const named = type?.type === 'generic_type' ? type.childForFieldName('type') : type;
+      return named?.type === 'type_identifier' ? named.text : null;
+    }
+    if (at.type === 'mod_item') return null;
+  }
+  return null;
+}
+
+// How calls name a function of the file's own module: name for a free
+// function, Type::name for one of an impl block; null for one in an inline
+// module, which this reader does not follow calls into.
+function functionKey(fn) {
+  const name = fn.childForFieldName('name')?.text;
+  if (!name) return null;
+  const parent = fn.parent;
+  if (parent?.type === 'source_file') return name;
+  if (parent?.type === 'declaration_list' && parent.parent?.type === 'impl_item' && parent.parent.parent?.type === 'source_file') {
+    const type = implTypeOf(fn);
+    return type ? `${type}::${name}` : null;
+  }
+  return null;
+}
+
+/**
+ * The calls a Rust file makes by path (load(), Store::new(), crate::a::b()),
+ * with what each argument reads as a path, and the values each struct
+ * literal sets a field to (Store { save_dir: dir }), for settleRustPaths to
+ * follow a parameter-rooted or field-rooted path back to what it is. A
+ * method called on a value names nothing this reader can resolve. Test code
+ * is left out, as rustPaths leaves it.
+ *
+ * @param {object} root tree-sitter root node
+ * @returns {{ calls: object[], fields: object[] }}
+ */
+export function rustCalls(root) {
+  const consts = new Map();
+  for (const child of root.namedChildren) {
+    if ((child.type === 'const_item' || child.type === 'static_item') && child.childForFieldName('name')) consts.set(child.childForFieldName('name').text, child.childForFieldName('value'));
+  }
+  const calls = [];
+  const fields = [];
+  const visit = (node) => {
+    if (node.type === 'mod_item' && attributesOf(node).test) return;
+    if (node.type === 'function_item' && hasTestAttribute(node)) return;
+    if (node.type === 'call_expression') {
+      const segments = pathSegments(node.childForFieldName('function'));
+      const args = (node.childForFieldName('arguments')?.namedChildren ?? []).filter((child) => !/comment$/.test(child.type));
+      const values = args.map((arg) => rustValues(arg, { consts }, 0));
+      if (segments != null && segments[0] !== '' && values.some((list) => list.length > 0)) calls.push({ segments, args: values, ...(implTypeOf(node) ? { self: implTypeOf(node) } : {}) });
+    }
+    if (node.type === 'struct_expression') {
+      const name = node.childForFieldName('name');
+      const type = name?.text === 'Self' ? implTypeOf(node) : name?.type === 'type_identifier' ? name.text : null;
+      for (const init of type ? node.childForFieldName('body')?.namedChildren ?? [] : []) {
+        const field = init.type === 'field_initializer' ? init.childForFieldName('field')?.text : init.type === 'shorthand_field_initializer' ? init.namedChildren[0]?.text : null;
+        const value = init.type === 'field_initializer' ? init.childForFieldName('value') : init.type === 'shorthand_field_initializer' ? init.namedChildren[0] : null;
+        if (field && value) fields.push({ type, field, values: rustValues(value, { consts }, 0) });
+      }
+    }
+    for (const child of node.namedChildren) visit(child);
+  };
+  visit(root);
+  return { calls, fields };
+}
 
 /**
  * The writes and reads each Rust file's include macros and std::fs calls
@@ -613,7 +703,8 @@ const CALLER_PLACES = new Set(['cwd', 'home', 'temp', 'env', 'argument', 'param'
  *
  * @param {{ files: object[], places: { files: Set<string>, dirs: Set<string> }, crateDirOf: (path: string) => string | null }} input
  */
-export function settleRustPaths({ files, places, crateDirOf }) {
+export function settleRustPaths({ files, places, crateDirOf, isTest = () => false }) {
+  const follow = followRust(files.filter((file) => file.language === 'rust' && !file.parseError), isTest);
   for (const file of files) {
     if (file.language !== 'rust' || file.parseError) continue;
     const dir = posix.dirname(file.path) === '.' ? '' : posix.dirname(file.path);
@@ -629,9 +720,21 @@ export function settleRustPaths({ files, places, crateDirOf }) {
       sites.push({ kind: 'read', call: include.call, values: value ? [value] : [] });
     }
     for (const site of file.rustPaths ?? []) {
-      if (site.values.some((value) => CALLER_PLACES.has(value.anchor))) {
-        const count = site.kind === 'write' ? 'outsideWrites' : 'outsideReads';
-        file[count] = (file[count] ?? 0) + 1;
+      const theirs = site.values.filter((value) => CALLER_PLACES.has(value.anchor));
+      if (theirs.length > 0) {
+        // A parameter or a field is followed to what the calls and the
+        // constructors here hand it: the caller's place, where that is said;
+        // a path of this repository, which is placed; or nothing this reader
+        // follows, a path built at run time.
+        const found = { where: new Set(), places: [], unread: false, call: site.call };
+        for (const value of theirs) follow(file.path, value, 0, found);
+        if (found.where.size > 0) {
+          const count = site.kind === 'write' ? 'outsideWrites' : 'outsideReads';
+          file[count] = (file[count] ?? 0) + 1;
+          (file.outsideWhere ??= []).push({ kind: site.kind, where: [...found.where].sort() });
+          continue;
+        }
+        sites.push({ kind: site.kind, call: site.call, values: found.places });
         continue;
       }
       const values = site.values.map((value) => (value.anchor === 'crate' ? (value.open ? { ...fixed(crateDir, value.text), open: true } : fixed(crateDir, value.text)) : value)).filter(Boolean);
@@ -646,6 +749,125 @@ export function settleRustPaths({ files, places, crateDirOf }) {
     file.dynamicWrites = (file.dynamicWrites ?? 0) + placed.dynamicWrites;
     file.dynamicReads = (file.dynamicReads ?? 0) + placed.dynamicReads;
   }
+}
+
+// A parameter is followed back through at most this many calls, and a
+// field through the constructors that set it, as the other languages'
+// parameters are (landings.js settleParamPaths).
+const FOLLOW_HOPS = 4;
+
+/**
+ * The follower settleRustPaths reads a caller's place with: for a value at
+ * the working directory, the home directory, a temporary directory, an
+ * environment variable or a command-line argument, where it goes; for a
+ * parameter of a function this repository calls by path (load(),
+ * Store::new(), crate::a::b()), what each call outside test code hands it;
+ * for self.field, what each struct literal of the type in the same file
+ * sets the field to, read where the literal is. A call no argument of which
+ * the reader can read, and a function nothing here calls, is a path the
+ * caller passes; a field no literal here sets is a path built at run time;
+ * a literal a call hands over is a place of this repository, joined with the
+ * rest of the path. Drops what the readings carried for this.
+ */
+function followRust(files, isTest) {
+  const byPath = new Map(files.map((file) => [file.path, file]));
+  const callsTo = new Map();
+  const inits = new Map();
+  const push = (map, key, value) => {
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(value);
+  };
+  for (const file of files) {
+    for (const call of file.rustCalls?.calls ?? []) {
+      if (isTest(file.path)) continue;
+      const key = calleeOf(file, call);
+      if (key) push(callsTo, key, { path: file.path, args: call.args });
+    }
+    for (const init of file.rustCalls?.fields ?? []) push(inits, `${file.path}#${init.type}.${init.field}`, init.values);
+  }
+  for (const file of files) {
+    delete file.rustCalls;
+  }
+  const follow = (path, value, depth, found, seen = new Set()) => {
+    if (['cwd', 'home', 'temp', 'env', 'argument'].includes(value.anchor)) {
+      for (const key of whereSet([value], found.call ?? null)) found.where.add(key);
+      return;
+    }
+    if (value.anchor !== 'param' && value.anchor !== 'field') {
+      found.places.push(value);
+      return;
+    }
+    const key = value.anchor === 'param' ? (value.param ? `${path}#${value.param.fn}` : null) : `${path}#${value.field.type}.${value.field.name}`;
+    if (key == null || depth >= FOLLOW_HOPS || seen.has(key)) {
+      if (value.anchor === 'field') found.unread = true;
+      else found.where.add('caller');
+      return;
+    }
+    const next = new Set([...seen, key]);
+    if (value.anchor === 'field') {
+      const sets = inits.get(key) ?? [];
+      if (sets.length === 0) found.unread = true;
+      for (const values of sets) {
+        if (values.length === 0) found.unread = true;
+        for (const root of values) follow(path, joinRest(root, value), depth + 1, found, next);
+      }
+      return;
+    }
+    const calls = callsTo.get(key) ?? [];
+    if (calls.length === 0) found.where.add('caller');
+    for (const call of calls) {
+      const values = call.args[value.param.index] ?? [];
+      if (values.length === 0) found.where.add('caller');
+      for (const root of values) follow(call.path, joinRest(root, value), depth + 1, found, next);
+    }
+  };
+  return (path, value, depth, found) => {
+    if (byPath.has(path)) follow(path, value, depth, found);
+    else found.where.add('caller');
+  };
+}
+
+// A root a call or a constructor hands over, with the rest of the path the
+// parameter or the field was joined with.
+function joinRest(root, rest) {
+  // A rest read wholly at run time (a name under the root) leaves the root a
+  // directory, as a join with it does.
+  if (rest.text === '') return rest.open && !root.open && root.text !== '' ? { ...root, text: `${root.text.replace(/\/+$/, '')}/`, open: true } : { ...root, open: root.open || rest.open };
+  if (root.open) return root;
+  return { ...root, text: root.text === '' ? rest.text : `${root.text.replace(/\/+$/, '')}/${rest.text}`, open: rest.open };
+}
+
+/**
+ * The function a call by path names, as path#key: a free function by its
+ * name, one of an impl block as Type::name; Self is the impl the call is in.
+ * The path before the name resolves through what the file binds by use and
+ * mod, the items it declares, and the module paths its code spells, which
+ * resolution already placed. Null for a call this reader cannot place.
+ */
+function calleeOf(file, call) {
+  const segments = call.segments;
+  const name = segments[segments.length - 1];
+  const prefix = segments.slice(0, -1);
+  const owner = prefix[prefix.length - 1] ?? null;
+  const local = new Set(file.rustNames ?? []);
+  const bound = file.rustBound ?? {};
+  const spelled = (parts) => {
+    const site = Array.isArray(file.imports) ? file.imports.find((item) => item.specifier === parts.join('::') && item.resolved?.outcome === 'file') : null;
+    return site?.resolved.path ?? null;
+  };
+  // A name a use or a mod binds is that file's; any other name the file
+  // spells is an item of its own (rustNames holds both).
+  if (owner == null) {
+    if (bound[name]) return `${bound[name]}#${name}`;
+    return local.has(name) ? `${file.path}#${name}` : null;
+  }
+  if (owner === 'Self') return call.self ? `${file.path}#${call.self}::${name}` : null;
+  if (/^[A-Z]/.test(owner)) {
+    const at = prefix.length === 1 ? (bound[owner] ?? (local.has(owner) ? file.path : null)) : spelled(prefix) ?? spelled(prefix.slice(0, -1));
+    return at ? `${at}#${owner}::${name}` : null;
+  }
+  const at = prefix.length === 1 ? bound[owner] ?? null : spelled(prefix);
+  return at ? `${at}#${name}` : null;
 }
 
 function lineOf(node) {
