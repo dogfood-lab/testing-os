@@ -15,7 +15,7 @@ FROM node:22-alpine@sha256:b6f26b36c8ff49624cfdac716b8ea1138d606df02586a77d364bb
 
 # The version to install. The default is the root package.json version,
 # stamped here by scripts/sync-version.mjs; the release job passes the tag's.
-ARG ATLAS_VERSION=1.19.0
+ARG ATLAS_VERSION=1.20.0
 
 # git reads every repository, mounted or cloned. A mounted checkout belongs to
 # the host's user, not the container's, so git is told to trust it; the
