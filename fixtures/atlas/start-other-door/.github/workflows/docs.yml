@@ -1,0 +1,9 @@
+name: Docs Quality
+on:
+  pull_request:
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/check-catalog.mjs

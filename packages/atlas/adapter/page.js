@@ -2279,11 +2279,13 @@ function startHere(ctx, main, first = null) {
   // door's entry.
   const unitRun = (path) => !named.has(path) && ctx.fileOf.get(path)?.testsInside === true;
   const spelled = ran.filter((path) => named.has(path));
-  // A script that imports nothing here and writes nothing (a gate that checks
-  // a tarball) goes nowhere a reader can follow: a path never ends on it, and
-  // what the door runs besides it is followed instead.
+  // A script that imports nothing here, writes nothing and reads nothing
+  // code here writes (a gate that checks a tarball) goes nowhere a reader can
+  // follow: a path never ends on it, and what the door runs besides it is
+  // followed instead.
   const deadEnd = (path) => !path.endsWith('/') && !isTestFile(path) && (ctx.fileOf.get(path)?.importsFiles ?? []).length === 0
-    && !ctx.landings.some((landing) => landing.writers.some((entry) => entry.by === path));
+    && !ctx.landings.some((landing) => landing.writers.some((entry) => entry.by === path))
+    && sourceOf(ctx, path, []) == null;
   const live = spelled.filter((path) => !deadEnd(path));
   const paths = (live.length > 0 ? live : ran.filter((path) => !deadEnd(path))).filter((path) => path.endsWith('/') || runsAsCode(path));
   const filesIn = (path) => depthZero.find((entry) => entry.boundary === runPart(ctx, path))?.files ?? 0;
@@ -2440,7 +2442,17 @@ function startHere(ctx, main, first = null) {
       break;
     }
     let following = next(current);
-    if (following == null) break;
+    if (following == null) {
+      // A script that imports nothing here but reads a place code here writes
+      // (a check of a generated catalog) is followed to that place and to the
+      // file that writes it.
+      const source = (ctx.fileOf.get(current)?.importsFiles ?? []).length === 0 ? sourceOf(ctx, current, chain) : null;
+      if (source) {
+        add(source.place);
+        add(source.writer);
+      }
+      break;
+    }
     if (ctx.fileOf.get(following)?.reexportsOnly) {
       following = working(ctx, following, current);
       if (following == null || chain.includes(following)) break;
@@ -2466,6 +2478,19 @@ function startHere(ctx, main, first = null) {
     current = following;
   }
   return { chain, words: [...chain] };
+}
+
+/**
+ * The tracked place a file reads that code here writes, with the first file
+ * that writes it (not the reader, not already on the path), or null.
+ */
+function sourceOf(ctx, path, chain) {
+  for (const landing of [...ctx.landings].sort((a, b) => cmp(a.target, b.target))) {
+    if (!landing.readers.some((entry) => entry.by === path && !quotedOnly(entry))) continue;
+    const writer = landing.writers.map((entry) => entry.by).filter((by) => by !== path && !chain.includes(by) && runsAsCode(by) && !isTestFile(by)).sort(cmp)[0];
+    if (writer) return { place: ctx.place(landing.target), writer };
+  }
+  return null;
 }
 
 // A barrel is followed through as many hops as a package's index usually
@@ -3187,6 +3212,20 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     if (fallback.chain.length > 0) {
       starting = main;
       start = fallback;
+    }
+  }
+  // Before there is no path, another door a pull request starts that runs
+  // code is followed, the widest first, and the page says why.
+  if (start.chain.length === 0 && starting) {
+    const passed = starting;
+    for (const door of reaching(ctx.doors).filter((entry) => entry !== passed && !installed(entry) && pullRequested(entry))) {
+      const found = startHere(ctx, door);
+      if (found.chain.length === 0) continue;
+      const checks = shownRuns(passed, 'checks').some((path) => path.endsWith('/') || isCodePath(path));
+      reason = `This path follows ${door.name}, since ${passed.name} ${checks ? 'only checks code' : 'runs no code this map can follow'}.`;
+      starting = door;
+      start = found;
+      break;
     }
   }
   const found = main ? sequences(ctx, main) : [];
