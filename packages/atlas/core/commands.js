@@ -625,7 +625,12 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     const where = frame.platforms ? { platforms: frame.platforms } : {};
     const next = { level: 1, via: via(frame, path), active: frame.active, installed: frame.installed, ...where };
     if (isShellScript(path, repo)) {
-      read(repo.text(path) ?? '', dir, next);
+      // cd "$(dirname "$0")" moves to the script's own directory, which is
+      // where the rest of the script reads its paths from.
+      const own = posix.dirname(path) === '.' ? '' : posix.dirname(path);
+      const back = posix.relative(dir || '.', own || '.') || '.';
+      const text = (repo.text(path) ?? '').replace(/(^|[\s;&|])cd\s+"?\$\(\s*dirname\s+"?\$(?:0|\{0\}|\{BASH_SOURCE(?:\[0\])?\}|BASH_SOURCE)"?\s*\)"?/g, (whole, lead) => `${lead}cd ${back}`);
+      read(text, dir, next);
     } else {
       for (const command of repo.spawned.get(path) ?? []) read(command, dir, next);
     }
@@ -734,6 +739,34 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     }
   }
 
+  function unittestRuns(rest, dir, frame) {
+    const chain = via(frame, 'unittest');
+    const discover = rest[0] === 'discover' || rest.every((arg) => arg.startsWith('-'));
+    if (discover) {
+      const args = rest[0] === 'discover' ? rest.slice(1) : rest;
+      let start = null;
+      for (let i = 0; i < args.length; i += 1) {
+        if (args[i] === '-s' || args[i] === '--start-directory') start = args[i + 1] ?? null;
+        else if (['-p', '--pattern', '-t', '--top-level-directory', '-k'].includes(args[i])) i += 1;
+        else if (!args[i].startsWith('-') && start == null) start = args[i];
+        if (args[i] === '-s' || args[i] === '--start-directory') i += 1;
+      }
+      const path = pathFrom(dir, start ?? '.');
+      if (path != null && (path === '' || repo.dirs.has(path))) record(stamp({ path: path === '' ? '' : `${path}/`, directory: true, matched: true }, frame, chain));
+      return;
+    }
+    for (const token of rest.filter((arg) => !arg.startsWith('-'))) {
+      const parts = token.split('.');
+      for (let end = parts.length; end > 0; end -= 1) {
+        const path = pathFrom(dir, `${parts.slice(0, end).join('/')}.py`);
+        if (path != null && repo.tracked.has(path)) {
+          record(stamp({ path, matched: true }, frame, chain));
+          break;
+        }
+      }
+    }
+  }
+
   function pythonModule(name, rest, dir, frame) {
     if (name === 'build' && !['build.py', 'build/__main__.py', 'build/__init__.py'].some((file) => repo.tracked.has(pathFrom(dir, file) ?? ''))) {
       const parsed = split(['build', ...rest], 1, VALUE_SETS.build);
@@ -742,6 +775,12 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     }
     if (PY_COMPILERS.has(name)) {
       for (const token of rest.filter((arg) => !arg.startsWith('-'))) file(token, dir, { ...frame, runKind: 'checks' }, { directories: true });
+      return;
+    }
+    // python -m unittest discover -s tests runs the tests under its start
+    // directory; python -m unittest tests.test_x.Case runs that module.
+    if (name === 'unittest') {
+      unittestRuns(rest, dir, frame);
       return;
     }
     const parts = name.split('.');
