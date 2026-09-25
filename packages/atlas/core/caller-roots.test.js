@@ -58,9 +58,11 @@ describe('a write whose place the caller decides', () => {
   it('is said under the limits line, and Hand-authored says nothing may land in it', () => {
     const structure = buildArtifact(map(), '0'.repeat(40));
     const { markdown } = buildPage({ structure, statistics: {}, document: {}, repoName: 'fixture/caller-roots' });
-    assert.match(markdown, /- 5 writes go to a path their caller passes, not to this repository\./);
+    // save(name, text, base=None) roots at base or ".": a parameter's
+    // default is resolved where the parameter would have been, the caller's.
+    assert.match(markdown, /- 6 writes go to a path their caller passes, not to this repository\./);
     assert.match(markdown, /- 5 writes go to the home directory \(\.camp and \.guard\/\), not to this repository\./);
-    assert.match(markdown, /- 2 writes go to the directory the command is run in, not to this repository\./);
+    assert.match(markdown, /- 1 write goes to the directory the command is run in, not to this repository\./);
     assert.doesNotMatch(markdown, /may land here/);
     assert.doesNotMatch(markdown, /0 (writes|reads)/);
   });

@@ -920,7 +920,7 @@ function boundParam(value) {
  * argument of which reads as anything is left out.
  */
 function recordedCalls(root, calls, ctx) {
-  if (ctx.python) return [];
+  if (ctx.python) return recordedCallsPy(root, calls, ctx);
   const local = new Set(moduleFunctions(root, false).map(([name]) => name));
   const imports = scriptImports(root);
   const scratch = { ...ctx, seen: new Set(), visiting: new Set() };
@@ -947,6 +947,26 @@ function recordedCalls(root, calls, ctx) {
  * passed undefined) and whether it runs only when the file is the program,
  * for the defaults settleParamPaths settles.
  */
+// The calls a Python file makes to a module-level function of its own or
+// one it imports from a module of this repository, with what each
+// positional argument evaluates to, for settleParamPaths.
+function recordedCallsPy(root, calls, ctx) {
+  const local = new Set(moduleFunctions(root, true).map(([name]) => name));
+  const imports = pythonImports(root);
+  const scratch = { ...ctx, seen: new Set(), visiting: new Set() };
+  const out = [];
+  for (const node of calls) {
+    if (node.type !== 'call') continue;
+    const fn = node.childForFieldName('function');
+    if (fn?.type !== 'identifier') continue;
+    const target = local.has(fn.text) ? { local: fn.text } : imports.has(fn.text) ? { specifier: imports.get(fn.text).specifier, name: imports.get(fn.text).name } : null;
+    if (target == null) continue;
+    const args = argumentNodes(node).map((arg) => ({ values: (arg.type === 'list_splat' || arg.type === 'dictionary_splat' ? [] : evalPy(arg, scratch, 0)).map(compactValue) }));
+    if (args.some((arg) => arg.values.length > 0)) out.push({ ...target, args, ...(mainOnly(node, true) ? { main: true } : {}) });
+  }
+  return out;
+}
+
 function leftOutCalls(root, calls, ctx) {
   if (ctx.python) return [];
   const local = new Set(moduleFunctions(root, false).map(([name]) => name));
@@ -1024,7 +1044,7 @@ export function settleParamPaths(files, places) {
   // writer's own main guard is written only when that file is the program,
   // and is marked so (guards.js).
   const roots = (path, fn, param, rest, depth, writer, guarded = false) => {
-    const out = { places: [], outside: false, unread: false, unreadFree: false, where: new Set() };
+    const out = { places: [], cwd: [], outside: false, unread: false, unreadFree: false, where: new Set() };
     const calls = (callers.get(`${path}#${fn}`) ?? []).filter((call) => !isTestMaterial(call.path) || call.path === path);
     if (calls.length === 0) {
       out.outside = true;
@@ -1048,6 +1068,7 @@ export function settleParamPaths(files, places) {
           const joined = appendRest(value, rest);
           const deeper = roots(call.path, value.param.fn, value.param, { text: joined.text, open: joined.open, ...(joined.tail != null ? { tail: joined.tail } : {}) }, depth + 1, writer, main);
           out.places.push(...deeper.places);
+          out.cwd.push(...deeper.cwd);
           out.outside ||= deeper.outside;
           out.unread ||= deeper.unread;
           out.unreadFree ||= deeper.unreadFree;
@@ -1062,6 +1083,9 @@ export function settleParamPaths(files, places) {
             for (const key of rootedAt) out.where.add(key);
           } else unread();
         } else if (outside(value)) {
+          // A place under the directory the command runs in, kept for the
+          // write that may name a tracked place from there.
+          if (value.anchor === 'cwd') out.cwd.push(appendRest(value, rest));
           out.outside = true;
           for (const key of whereSet([appendRest(value, rest)], null)) out.where.add(key);
         }
@@ -1079,7 +1103,14 @@ export function settleParamPaths(files, places) {
       for (const bound of pending.values) {
         const rest = { text: bound.text, open: bound.open, ...(bound.tail != null ? { tail: bound.tail } : {}) };
         const found = roots(file.path, bound.param.fn, bound.param, rest, 0, file.path);
-        theirs ||= found.outside;
+        // A write a caller hands a path under the directory the command runs
+        // in, which from there names a place this repository tracks, is the
+        // committed output of a run from the root (astLandings has it so for
+        // a write made there): an argparse default of artifacts/balance.
+        const fromRoot = pending.kind === 'write' ? found.cwd.map((value) => cwdPlace(value, pending.call, places)).filter((target) => target != null) : [];
+        for (const target of fromRoot) entries.push({ target, call: pending.call, confidence: 'ast', fromCwd: true, ...(pending.unless?.length > 0 ? { unless: [...pending.unless] } : {}) });
+        const settledCwd = fromRoot.length > 0 && found.places.length === 0 && !found.unread && [...found.where].every((key) => key.startsWith('cwd'));
+        theirs ||= found.outside && !settledCwd;
         for (const key of found.where) where.add(key);
         const before = entries.length;
         const land = (value) => {
@@ -1849,6 +1880,25 @@ function passedFor(arg, param) {
   return arg.values ?? [];
 }
 
+// A Python function's parameter, by its place among the positional ones,
+// bound to the function when the function is at the module's top.
+function paramValuePy(fn, name) {
+  const params = (fn.childForFieldName('parameters')?.namedChildren ?? []).filter((param) => param.type !== 'comment');
+  let index = null;
+  for (let i = 0; i < params.length; i += 1) {
+    const param = params[i];
+    if (param.type === 'list_splat_pattern' || param.type === 'dictionary_splat_pattern' || param.type === 'keyword_separator' || param.type === 'positional_separator') break;
+    const id = param.type === 'identifier' ? param : param.childForFieldName('name') ?? param.namedChildren.find((child) => child.type === 'identifier');
+    if (id?.text === name) {
+      index = i;
+      break;
+    }
+  }
+  const atTop = fn.parent?.type === 'module' || (fn.parent?.type === 'decorated_definition' && fn.parent.parent?.type === 'module');
+  const owner = atTop ? fn.childForFieldName('name')?.text ?? null : null;
+  return { text: '', open: false, anchor: 'param', ...(owner != null && index != null ? { param: { fn: owner, index } } : {}) };
+}
+
 function moduleFunctionName(fn) {
   const atTop = (node) => node?.type === 'program' || (node?.type === 'export_statement' && node.parent?.type === 'program');
   if (fn.type === 'function_declaration') return atTop(fn.parent) ? fn.childForFieldName('name')?.text ?? null : null;
@@ -2006,7 +2056,12 @@ function evalPy(node, ctx, depth) {
     case 'attribute': {
       if (node.childForFieldName('attribute')?.text === 'parent') return dirnameValues(evalPy(node.childForFieldName('object'), ctx, next));
       const object = node.childForFieldName('object');
-      if (object?.type === 'identifier' && CLI_BAGS.has(object.text) && !isPythonModule(object.text, node, ctx)) return [atCaller('', 'argument')];
+      if (object?.type === 'identifier' && CLI_BAGS.has(object.text) && !isPythonModule(object.text, node, ctx)) {
+        // args.output with --output's argparse default a literal path: what
+        // the caller passes, or else that path from where the command runs.
+        const fallbackTo = argparseDefault(node, node.childForFieldName('attribute')?.text);
+        return [atCaller('', 'argument'), ...(fallbackTo != null ? [{ text: fallbackTo, open: false, anchor: 'cwd' }] : [])];
+      }
       return [];
     }
     case 'call': {
@@ -2364,7 +2419,9 @@ function returnExpressions(body, returnType, nested) {
 // function, or else in the module.
 function bindingPy(name, from, ctx, depth) {
   for (let scope = from.parent; scope; scope = scope.parent) {
-    if (PY_SCOPES.has(scope.type) && declaresPythonParameter(scope, name)) return [];
+    // What a module-level function is handed is the caller's place, until
+    // the calls to it say otherwise (settleParamPaths), as in a script.
+    if (PY_SCOPES.has(scope.type) && declaresPythonParameter(scope, name)) return scope.type === 'function_definition' ? [paramValuePy(scope, name)] : [];
     if (scope.type !== 'function_definition' && scope.type !== 'module') continue;
     const body = scope.type === 'module' ? scope : scope.childForFieldName('body');
     const rights = [];
@@ -2403,6 +2460,30 @@ function bindingPy(name, from, ctx, depth) {
   return [];
 }
 
+
+/**
+ * The literal default the file's argparse gives an option, by the name the
+ * parsed namespace holds it under: parser.add_argument("--output",
+ * default="artifacts/balance") is args.output's. Null when no add_argument
+ * of the file names it, or its default is not a string literal.
+ */
+function argparseDefault(node, name) {
+  if (typeof name !== 'string' || name === '') return null;
+  let root = node;
+  while (root.parent) root = root.parent;
+  let found = null;
+  walk(root, (call) => {
+    if (found != null || call.type !== 'call' || !/(^|\.)add_argument$/.test(dottedName(call.childForFieldName('function')) ?? '')) return;
+    const args = argumentNodes(call);
+    const flags = args.filter((arg) => arg.type === 'string').map((arg) => stringTexts(arg, true).join(''));
+    const dest = keywordArgument(call, 'dest');
+    const names = dest?.type === 'string' ? [stringTexts(dest, true).join('')] : flags.filter((flag) => flag.startsWith('--')).map((flag) => flag.slice(2).replaceAll('-', '_'));
+    if (!names.includes(name)) return;
+    const value = keywordArgument(call, 'default');
+    if (value?.type === 'string') found = stringTexts(value, true).join('');
+  });
+  return found != null && found !== '' && !found.startsWith('/') ? found : null;
+}
 
 // Where a name sits in a loop's unpacked target, for prefix, path in ...:
 // its index, or -1.
