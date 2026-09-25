@@ -542,12 +542,16 @@ function symlinkTarget(repoPath, path) {
 function describeFile(repoPath, path, places, facts, spawned, attributes, builds) {
   const bytes = storedBytes(readFileSync(join(repoPath, path)), attributes);
   const hash = createHash('sha256').update(bytes).digest('hex');
-  const language = languageOf(path);
+  // An Astro file's frontmatter (the --- fenced script at its top) is
+  // TypeScript the component runs, read for its imports as a TypeScript
+  // file's are; the markup below it is not code.
+  const front = /\.astro$/i.test(path) ? astroFrontmatter(bytes.toString('utf8')) : null;
+  const language = front != null ? 'typescript' : languageOf(path);
   // A scene or resource Godot saves as text names what it instances and
   // reads line by line, read as text by rule (core/gdscript.js).
   if (language == null && GODOT_TEXT.test(path)) return { path, hash, language: null, ...godotResourceReadings(bytes.toString('utf8')), ...noLandings() };
   if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };
-  const extracted = parseFile(language, path, bytes.toString('utf8'), places);
+  const extracted = parseFile(language, path, front ?? bytes.toString('utf8'), places);
   if (extracted.parseError) {
     const syntax = extracted.unreadSyntax ? { unreadSyntax: extracted.unreadSyntax } : {};
     return { path, hash, language, parseError: true, ...syntax, imports: [], ...noLandings() };
@@ -956,6 +960,21 @@ function pythonSpawns(root) {
     if (words[1] === '-m' && words[2]) commands.add(words.join(' '));
   });
   return { commands: [...commands].sort(), built: 0 };
+}
+
+/**
+ * The script an Astro file's frontmatter holds, with the lines before and
+ * after it blank so a site keeps its line, or null when the file opens with
+ * no --- fence.
+ */
+export function astroFrontmatter(text) {
+  const lines = text.replace(/^\uFEFF/, '').split('\n');
+  let first = 0;
+  while (first < lines.length && lines[first].trim() === '') first += 1;
+  if (lines[first]?.trim() !== '---') return null;
+  const end = lines.findIndex((line, index) => index > first && line.trim() === '---');
+  if (end === -1) return null;
+  return lines.map((line, index) => (index > first && index < end ? line : '')).join('\n');
 }
 
 function walkNamed(root, visit) {

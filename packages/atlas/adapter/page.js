@@ -3196,7 +3196,8 @@ function unreadCodeParts(ctx) {
     .filter((boundary) => boundary.role === 'code')
     .map((boundary) => {
       const paths = (boundary.files ?? []).map((file) => file.path);
-      if (paths.some((path) => languageOf(path) != null)) return null;
+      // An Astro file's frontmatter is read (core/index.js).
+      if (paths.some((path) => languageOf(path) != null || /\.astro$/i.test(path))) return null;
       const languages = [...new Set(paths.map(languageName).filter(Boolean))].sort(cmp);
       return languages.length > 0 ? { part: boundary.name, partLabel: ctx.shown(boundary.name), languages } : null;
     })

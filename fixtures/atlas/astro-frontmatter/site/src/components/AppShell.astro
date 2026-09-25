@@ -1,0 +1,6 @@
+---
+import { format } from '../../../lib/format.ts';
+
+const { title } = Astro.props;
+---
+<main><h1>{format(title)}</h1><slot /></main>
