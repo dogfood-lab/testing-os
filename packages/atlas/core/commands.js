@@ -1911,6 +1911,12 @@ export function commandLines(text, globs = null) {
     } else if (/\s/.test(ch)) {
       if (ch === '\n') endLine();
       else endWord();
+    } else if (ch === '(' && inWord && /^[A-Za-z_][A-Za-z0-9_]*\+?=$/.test(word)) {
+      // NAME=( a b c ) is an array of values, one word; the lines inside it
+      // are no commands (a list of manifests jq later reads).
+      const end = closingParen(source, i);
+      word += '()';
+      i = end;
     } else if (';&|()`{}'.includes(ch)) {
       endLine();
     } else {
