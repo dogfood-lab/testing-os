@@ -1,7 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, readlinkSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { join, posix, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
 import { Language, Parser } from 'web-tree-sitter';
@@ -17,7 +17,7 @@ import { attachResolution, emittedFiles, registerBuilds, resolveDeclaredPath } f
 import { attachSequences, sequenceFacts } from './sequence.js';
 import { settleSpawnHelpers, spawnedCommands } from './spawned.js';
 import { storedBytes, textAttributes } from './text.js';
-import { rustImports, rustPaths, rustSequence, settleRustPaths } from './rust.js';
+import { rustCalls, rustImports, rustPaths, rustSequence, settleRustPaths } from './rust.js';
 import { cargoProject, owningCrate } from './cargo.js';
 import { unseenParts } from './unseen.js';
 import { godotResourceReadings, gdscriptReadings, settleGodotPaths } from './gdscript.js';
@@ -133,7 +133,8 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     boundary.files.sort(byPath);
     boundary.holdsManifest = boundary.files.some((file) => manifests.includes(file.path));
     boundary.parseErrors = boundary.files.filter((file) => file.parseError).length;
-    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts, commands, crates });
+    // A Cargo example is a door of its own, never its part's way in.
+    boundary.entryPoints = deriveEntryPoints({ repoPath, globs: boundary.globs, tracked: trackedSet, scripts, commands: commands.filter((command) => !command.example), crates });
   }
   unassigned.sort(byPath);
   overlaps.sort(byPath);
@@ -148,7 +149,15 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     tracked: tracked.regular,
   });
   const project = cargoProject(repoPath, trackedSet);
-  settleRustPaths({ files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places, crateDirOf: (path) => owningCrate(project, path)?.dir ?? null });
+  // A crate's build script is run by every build of the crate; the page says
+  // what a writer that is one is.
+  const buildScripts = new Set(project.crates.map((crate) => crate.build).filter(Boolean));
+  for (const file of [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]) if (buildScripts.has(file.path)) file.buildScript = true;
+  settleRustPaths({ files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places, crateDirOf: (path) => owningCrate(project, path)?.dir ?? null, isTest: isTestMaterial });
+  for (const file of [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]) {
+    delete file.rustBound;
+    delete file.rustNames;
+  }
   settleGodotPaths({ repoPath, tracked: trackedSet, files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places });
   settleHelperPaths([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]);
   settleParamPaths([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], places);
@@ -157,11 +166,15 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const builtFrom = (path) => (trackedSet.has(path) ? null : resolveDeclaredPath(repoPath, path, trackedSet));
   const emitted = () => emittedFiles(repoPath, trackedSet);
   const unitTests = new Set([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps].filter((file) => file.testsInside).map((file) => file.path));
+  // What a runner finds at run time and runs, by the runner (gdscript.js).
+  const discovered = new Map([...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps].filter((file) => file.discovers).map((file) => [file.path, file.discovers]));
+  for (const file of [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]) delete file.discovers;
   const doors = settleInstalled([
-    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests }),
-    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests }),
+    ...mapDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests, discovered }),
+    ...mapCommandDoors({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted, unitTests, discovered }),
   ], [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps], repoPath, trackedSet);
   markUnpublished(doors, rootManifest(repoPath, trackedSet));
+  markUnshipped(doors, cargoProject(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }));
   const edges = [...resolution.edges, ...spawnEdges(graph), ...httpEdges(graph.files, graph.boundaryOf, isTestMaterial)]
@@ -173,7 +186,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     // run; what the door writes is read only from the files it runs.
     const walked = walkReach(door.runs.map((run) => run.path), graph);
     door.reach = walked.reach;
-    const ran = walkReach(door.runs.filter((run) => run.runKind !== 'checks').map((run) => run.path), graph);
+    // A binary a door builds to ship runs nowhere here, so what it writes is
+    // not the door's.
+    const ran = walkReach(door.runs.filter((run) => run.runKind !== 'checks' && !run.built).map((run) => run.path), graph);
     door.reachFiles = ran.files;
     // A package is imported, never run as a program.
     door.executed = door.kind === 'package' ? [] : ran.executed;
@@ -182,7 +197,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     // file runs it against its own stand-ins, and a package only loaded
     // calls nothing, so neither is the door's reach for this.
     if (door.kind !== 'package') {
-      const runs = door.runs.filter((run) => run.runKind !== 'checks' && !isTestFile(run.path)).map((run) => run.path);
+      const runs = door.runs.filter((run) => run.runKind !== 'checks' && !run.built && !isTestFile(run.path)).map((run) => run.path);
       const walkedRuns = walkReach(runs, graph).files;
       if (walkedRuns.some((path) => (graph.files.get(path)?.githubChanges ?? 0) > 0)) door.sends.changesRepositories = true;
       // git and gh the code it runs starts, which change no part here.
@@ -222,6 +237,47 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     landings,
     ...(unseen.length > 0 ? { unseen } : {}),
   };
+}
+
+/**
+ * Mark a crate's binary unshipped when nothing here ships it: no workflow
+ * builds or installs it (cargo build, cargo install, the Tauri CLI's build,
+ * a release that uploads it) and no cargo publish sends its crate. It is
+ * still a door, as a package no door publishes is, and the page says it is
+ * built from its crate and that nothing ships it. Drops what the doors
+ * carried for this. Mutates the doors.
+ *
+ * @param {object[]} doors every door of the map
+ * @param {{ crates: object[], workspaces: object[] }} project
+ */
+function markUnshipped(doors, project) {
+  const workflows = doors.filter((door) => !door.kind && !door.parseError);
+  const built = new Set(workflows.flatMap((door) => (door.runs ?? []).filter((run) => run.builds || run.built).map((run) => run.path)));
+  const published = new Set();
+  for (const entry of workflows.flatMap((door) => door.publishedCrates ?? [])) {
+    if (entry.name != null) {
+      for (const crate of project.crates) if (crate.name === entry.name) published.add(crate.manifest);
+      continue;
+    }
+    // The manifest cargo finds from where it runs; a virtual workspace's
+    // root publishes its members.
+    for (let at = entry.dir; ; at = at.includes('/') ? at.slice(0, at.lastIndexOf('/')) : '') {
+      const manifest = at ? `${at}/Cargo.toml` : 'Cargo.toml';
+      const crate = project.crates.find((item) => item.manifest === manifest);
+      const workspace = project.workspaces.find((item) => item.manifest === manifest);
+      if (crate) published.add(crate.manifest);
+      else if (workspace) for (const member of workspace.members) published.add(member);
+      if (crate || workspace || at === '') break;
+    }
+  }
+  for (const door of doors) {
+    delete door.publishedCrates;
+    for (const run of door.runs ?? []) delete run.builds;
+    // An example is run from a checkout, which is how it reaches people.
+    if (door.kind !== 'command' || door.example || posix.basename(door.file) !== 'Cargo.toml') continue;
+    if (published.has(door.file) || (door.runs ?? []).some((run) => built.has(run.path))) continue;
+    door.unshipped = true;
+  }
 }
 
 function rootManifest(repoPath, tracked) {
@@ -492,12 +548,12 @@ function parseFile(language, path, original, places) {
 // past its imports: testsInside, for a file holding its own unit tests, and
 // what resolution reads once every file is known and then drops.
 function nativeReadings(language, root) {
-  const rust = language === 'rust' ? { ...rustImports(root), paths: rustPaths(root) } : null;
+  const rust = language === 'rust' ? { ...rustImports(root), paths: rustPaths(root), calls: rustCalls(root) } : null;
   const gd = language === 'gdscript' ? gdscriptReadings(root) : null;
   return {
     imports: rust ? rust.imports : gd ? gd.imports : [],
     ...(gd ? { native: { godot: gd.godot, ...(gd.testSuite ? { testSuite: true } : {}) } } : {}),
-    ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}), ...(rust.paths.length > 0 ? { rustPaths: rust.paths } : {}), ...(rust.tests ? { testsInside: true } : {}) } } : {}),
+    ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}), ...(rust.paths.length > 0 ? { rustPaths: rust.paths } : {}), ...(rust.calls.calls.length + rust.calls.fields.length > 0 ? { rustCalls: rust.calls } : {}), ...(rust.tests ? { testsInside: true } : {}) } } : {}),
     landings: noLandings(),
     sequence: rust ? rustSequence(root, rust.imports) : gd ? gd.sequence : { functions: [], topLevel: [], reexports: [] },
     spawned: { commands: [], built: 0 },

@@ -1,0 +1,19 @@
+summary: ""
+boundaries:
+  - name: desktop
+    globs:
+      - apps/desktop/**
+    role: code
+  - name: game
+    globs:
+      - src/**
+    role: code
+  - name: notes
+    globs:
+      - notes/**
+    role: data
+  - name: root
+    globs:
+      - "*"
+      - .github/**
+    role: config

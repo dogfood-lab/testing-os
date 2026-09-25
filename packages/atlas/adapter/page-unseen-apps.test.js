@@ -50,8 +50,9 @@ describe('what runs where no workflow reaches', () => {
     assert.ok(data.limits.includes('There is a Dockerfile, a fly.toml and a render.yaml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.'), data.limits.join('\n'));
   });
 
-  it('reads the Tauri app as the desktop app people install, so it is no longer unseen', () => {
+  it('reads the Tauri app as a desktop app, so it is no longer unseen', () => {
     assert.ok(!data.limits.some((line) => line.includes('Tauri')), data.limits.join('\n'));
-    assert.match(markdown, /\*\*fixture\*\* \(the desktop app people install\)\. Runs apps\/desktop\/src-tauri\/src\/main\.rs\./);
+    // No workflow here builds it (fixtures/atlas/release-binaries has one that does).
+    assert.match(markdown, /\*\*fixture\*\* \(a desktop app built from apps\/desktop\/src-tauri, which nothing ships\)\. Runs apps\/desktop\/src-tauri\/src\/main\.rs\./);
   });
 });

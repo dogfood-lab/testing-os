@@ -62,6 +62,9 @@ function dynamicCounts(files) {
   let outsideWrites = 0;
   let userDataReads = 0;
   let userDataWrites = 0;
+  // Where the caller's places a part's code writes and reads go, when the
+  // reading knows (core/landings.js whereSet), by the set of places.
+  const where = new Map();
   for (const file of files) {
     spawns += file.dynamicSpawns ?? 0;
     if (isTestFile(file.path)) spawnsInTests += file.dynamicSpawns ?? 0;
@@ -70,10 +73,16 @@ function dynamicCounts(files) {
     writes += file.dynamicWrites ?? 0;
     outsideReads += file.outsideReads ?? 0;
     outsideWrites += file.outsideWrites ?? 0;
+    for (const site of file.outsideWhere ?? []) {
+      const key = site.where.join('\0');
+      if (!where.has(key)) where.set(key, { reads: 0, where: [...site.where], writes: 0 });
+      where.get(key)[site.kind === 'write' ? 'writes' : 'reads'] += 1;
+    }
     userDataReads += file.userDataReads ?? 0;
     userDataWrites += file.userDataWrites ?? 0;
   }
-  return { outsideReads, outsideWrites, reads, spawns, spawnsInTests, userDataReads, userDataWrites, writes };
+  const outsidePlaces = [...where.entries()].sort(([a], [b]) => cmp(a, b)).map(([, entry]) => entry);
+  return { outsidePlaces, outsideReads, outsideWrites, reads, spawns, spawnsInTests, userDataReads, userDataWrites, writes };
 }
 
 function resolvedFiles(file) {
@@ -172,6 +181,7 @@ export function buildArtifact(mapped, commit) {
       ...(sites.outside > 0 ? { outsideImports: sites.outside } : {}),
       ...(dynamic.outsideReads > 0 ? { outsideReads: dynamic.outsideReads } : {}),
       ...(dynamic.outsideWrites > 0 ? { outsideWrites: dynamic.outsideWrites } : {}),
+      ...(dynamic.outsidePlaces.length > 0 ? { outsidePlaces: dynamic.outsidePlaces } : {}),
       ...(dynamic.userDataReads > 0 ? { userDataReads: dynamic.userDataReads } : {}),
       ...(dynamic.userDataWrites > 0 ? { userDataWrites: dynamic.userDataWrites } : {}),
     };
@@ -233,6 +243,9 @@ function carryFile(file) {
   if (file.testsInside) out.testsInside = true;
   if (file.testSuite) out.testSuite = true;
   if (file.reexportsOnly) out.reexportsOnly = true;
+  if (file.buildScript) out.buildScript = true;
+  // The root of the library a Rust binary uses from its own package.
+  if (file.library && !inAtlas(file.library)) out.library = file.library;
   if (file.constantOnly) out.constantOnly = true;
   if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
   const imported = importTargets(file);
@@ -250,13 +263,15 @@ function carryFile(file) {
  * The places a file's resolved imports land on, deduplicated and sorted: a
  * tracked file by its path, and a build chunk whose sources share a part as
  * @part, since no one file is what it imports. The files it re-exports whole
- * (export * from) are listed apart as well.
+ * (export * from) are listed apart as well. A manifest a file loads for a
+ * field is read, not imported (languages.js), and is the file's read of it.
  */
 function importTargets(file) {
   const files = new Set();
   const all = new Set();
   if (!Array.isArray(file.imports)) return { files: [], all: [] };
   for (const site of file.imports) {
+    if (loadsManifest(site)) continue;
     const resolved = site.resolved;
     let target = null;
     if (resolved?.outcome === 'file') target = resolved.path;
@@ -337,6 +352,10 @@ function carryRun(run) {
   if (run.directory) out.directory = true;
   if (run.matched) out.matched = true;
   if (run.via) out.via = run.via;
+  // A binary the door builds and ships, which it runs nowhere.
+  if (run.built) out.built = true;
+  // A script a runner the door runs finds at run time and runs.
+  if (run.foundBy) out.foundBy = run.foundBy;
   if (run.when) out.when = { ...run.when, ...(run.when.inputs ? { inputs: { ...run.when.inputs } } : {}) };
   return out;
 }
@@ -351,6 +370,7 @@ function carryDoor(door) {
   return {
     ...(door.kind ? { kind: door.kind } : {}),
     ...(door.app ? { app: door.app } : {}),
+    ...(door.example ? { example: true } : {}),
     ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
     commands: door.commands.map((command) => ({ job: command.job, step: command.step, text: command.text })),
     ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),
@@ -378,6 +398,7 @@ function carryDoor(door) {
     checksCount: door.checksCount ?? 0,
     secrets: [...door.secrets],
     sends: {
+      ...(door.sends.assets?.length > 0 ? { assets: [...door.sends.assets] } : {}),
       ...(door.sends.changesRepositories ? { changesRepositories: true } : {}),
       deploysPages: door.sends.deploysPages,
       ...(door.sends.exports?.length > 0 ? { exports: [...door.sends.exports] } : {}),
@@ -394,8 +415,10 @@ function carryDoor(door) {
     stages: [...door.stages],
     ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
+    ...(door.untrackedLandings?.length > 0 ? { untrackedLandings: door.untrackedLandings.filter((target) => !inAtlas(target)) } : {}),
     ...(door.unplaced ? { unplaced: door.unplaced } : {}),
     ...(door.unpublished ? { unpublished: true } : {}),
+    ...(door.unshipped ? { unshipped: true } : {}),
     uses: [...door.uses],
     usesWorkflowToken: door.usesWorkflowToken,
   };

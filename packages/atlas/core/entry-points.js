@@ -120,13 +120,25 @@ export function manifestCommands(repoPath, tracked, scripts = []) {
   }
   for (const crate of cargoProject(repoPath, tracked).crates) {
     for (const bin of crate.bins) out.push({ kind: 'command', name: bin.name, manifest: crate.manifest, path: bin.path, ...(desktopBin(crate, bin) ? { app: 'desktop' } : {}) });
+    // An example is a program people run from a checkout with cargo run
+    // --example; it is no way into its crate.
+    for (const path of crate.examples) out.push({ kind: 'command', name: exampleName(path), manifest: crate.manifest, path, example: true });
   }
   // A Godot project is a game the engine runs from its main scene.
   for (const project of godotProjects(repoPath, tracked)) {
     if (project.mainScene) out.push({ kind: 'command', name: 'the game', manifest: project.file, path: project.mainScene, app: 'game' });
   }
-  const unique = new Map(out.map((entry) => [`${entry.manifest}\0${entry.name}\0${entry.kind}`, entry]));
+  const unique = new Map(out.map((entry) => [`${entry.manifest}\0${entry.name}\0${entry.kind}${entry.example ? '\0example' : ''}`, entry]));
   return [...unique.values()].sort((a, b) => compare(a.manifest, b.manifest) || compare(a.name, b.name) || compare(a.kind, b.kind));
+}
+
+// The name cargo gives an example found by convention: examples/x.rs and
+// examples/x/main.rs are x.
+function exampleName(path) {
+  const base = path.slice(path.lastIndexOf('/') + 1);
+  if (base !== 'main.rs') return base.replace(/\.rs$/, '');
+  const dir = path.slice(0, path.lastIndexOf('/'));
+  return dir.slice(dir.lastIndexOf('/') + 1);
 }
 
 /**

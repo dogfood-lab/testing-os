@@ -34,13 +34,15 @@ after(() => {
 });
 
 describe('what a Rust program writes and reads', () => {
+  // save() is handed PathBuf::from("snapshots") by main's one call, so its
+  // write lands there, as a parameter a call hands a literal does.
   it('writes a place a literal names, and reads one its crate\'s directory names', () => {
-    assert.deepEqual(main.writes.map((write) => [write.target, write.call]), [['reports/summary.txt', 'write']]);
+    assert.deepEqual(main.writes.map((write) => [write.target, write.call]), [['reports/summary.txt', 'write'], ['snapshots/state.ron', 'write']]);
     assert.deepEqual(main.reads.map((read) => [read.target, read.call]), [['data/rates.csv', 'read_to_string']]);
   });
 
   it('counts a write to a place the caller decides as outside, and one built at run time as unnamed', () => {
-    assert.equal(main.outsideWrites, 5);
+    assert.equal(main.outsideWrites, 4);
     assert.equal(main.dynamicWrites, 1);
   });
 
@@ -50,10 +52,12 @@ describe('what a Rust program writes and reads', () => {
 
   it('credits the workflow that runs the binary with the report, and says where the rest goes', () => {
     const nightly = mapped.doors.find((door) => door.name === 'Nightly');
-    assert.deepEqual(nightly.landings, ['reports/summary.txt']);
+    assert.deepEqual(nightly.landings, ['reports/summary.txt', 'snapshots/state.ron']);
     const structure = buildArtifact(mapped, '0'.repeat(40));
     const data = JSON.parse(buildPage({ structure, statistics: {}, document: {}, repoName: 'fixture/rust-landings' }).json);
-    assert.ok(data.limits.includes('5 writes go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.'), data.limits.join('\n'));
+    assert.ok(data.limits.includes('2 writes go to a path their caller passes, not to this repository.'), data.limits.join('\n'));
+    assert.ok(data.limits.includes('1 write goes to the directory the command is run in (cache/), not to this repository.'), data.limits.join('\n'));
+    assert.ok(data.limits.includes('1 write goes to the home directory (.ledger), not to this repository.'), data.limits.join('\n'));
     assert.ok(data.limits.includes('1 write uses a path built at run time and is not named here.'), data.limits.join('\n'));
   });
 });

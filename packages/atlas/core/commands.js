@@ -122,7 +122,7 @@ const VALUE_SETS = Object.fromEntries(Object.entries(VALUES).map(([tool, flags])
  * unitTests is every Rust file that holds its own unit tests, which cargo
  * test runs with the crate's test targets.
  */
-export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null, emitted = () => new Map(), unitTests = new Set() }) {
+export function repositoryView({ repoPath, tracked, spawned = new Map(), commands = [], builtFrom = () => null, emitted = () => new Map(), unitTests = new Set(), discovered = new Map() }) {
   const dirs = new Set(['']);
   // The commands the repository installs, by the name a step types.
   const installed = new Map();
@@ -144,6 +144,8 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
     commands,
     builtFrom,
     unitTests,
+    // The scripts a runner finds and runs at run time, by the runner.
+    discovered,
     text(path) {
       if (!tracked.has(path)) return null;
       if (!texts.has(path)) {
@@ -380,6 +382,8 @@ export function better(a, b) {
   const out = { ...pick, runKind };
   delete out.passes;
   if (passes.length > 0) out.passes = passes;
+  // A binary either way builds is built, whatever else checks it.
+  if (a.builds || b.builds) out.builds = true;
   return out;
 }
 
@@ -1076,9 +1080,10 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     pybuild(argv, dir, frame) {
       if (argv[1] === 'build') pythonBuild('.', dir, frame);
     },
-    // pyinstaller bundles the script it is handed into a program that runs it.
+    // pyinstaller bundles the script it is handed into a program that runs
+    // it: a binary it builds, which a later step may ship (core/doors.js).
     pyinstaller(argv, dir, frame) {
-      for (const token of split(argv, 1, VALUE_SETS.pyinstaller).positional) file(token, dir, frame);
+      for (const token of split(argv, 1, VALUE_SETS.pyinstaller).positional) file(token, dir, { ...frame, builds: true });
     },
     hatch(argv, dir, frame) {
       if (argv[1] === 'build') {
@@ -1283,19 +1288,28 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const packages = cargoPackages(repo, cwd, parsed);
       const chain = via(frame, `cargo ${sub}`);
       const targets = (crate) => cargoTargets(repo, crate, sub, parsed);
+      // Every subcommand that compiles a crate first runs its build script.
+      if (sub !== 'fmt') for (const crate of packages) if (crate.build) record(stamp({ path: crate.build, matched: true }, { ...frame, runKind: 'executes' }, chain));
       if (sub === 'test' || (sub === 'nextest' && argv[i + 1] === 'run')) {
         const files = packages.flatMap((crate) => targets(crate));
         for (const entry of repo.compact([...new Set(files)])) record(stamp({ ...entry, matched: true }, frame, chain));
       } else if (sub === 'run') {
-        for (const crate of packages) {
-          const bin = runBinary(crate, valueOf(parsed, '--bin'));
-          if (bin) record(stamp({ path: bin.path }, frame));
+        // --example runs the example of that name of the packages selected,
+        // or of any member when cargo is at a virtual workspace's root.
+        const example = valueOf(parsed, '--example');
+        const project = cargoProject(repo.repoPath, repo.tracked);
+        for (const crate of example != null && packages.length === 0 ? project.crates : packages) {
+          const path = example != null ? crate.examples.find((item) => exampleTarget(item) === example) : runBinary(crate, valueOf(parsed, '--bin'))?.path;
+          if (path) record(stamp({ path }, frame));
         }
       } else if (sub === 'bench') {
         for (const path of packages.flatMap((crate) => crate.benches)) record(stamp({ path, matched: true }, frame, chain));
       } else if (CARGO_CHECKS.has(sub)) {
         const checks = { ...frame, runKind: 'checks' };
-        for (const path of [...new Set(packages.flatMap((crate) => targets(crate)))]) record(stamp({ path, matched: true }, checks, chain));
+        // cargo build makes each binary it compiles, which a later step may
+        // ship (core/doors.js); it runs none of them.
+        const bins = new Set(sub === 'build' || sub === 'install' ? packages.flatMap((crate) => crate.bins.map((bin) => bin.path)) : []);
+        for (const path of [...new Set(packages.flatMap((crate) => targets(crate)))]) record(stamp({ path, matched: true, ...(bins.has(path) ? { builds: true } : {}) }, checks, chain));
       }
     },
     /**
@@ -1315,9 +1329,11 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const at = typeof before?.cwd === 'string' ? cleanDir(posix.join(app.web || '.', before.cwd)) : app.web;
       if (script && at != null) read(script, at, { level: 1, via: chain, active: frame.active, installed: frame.installed });
       if (!app.crate) return;
+      if (app.crate.build) record(stamp({ path: app.crate.build, matched: true }, { ...frame, runKind: 'executes' }, chain));
       const kind = sub === 'build' ? { ...frame, runKind: 'checks' } : frame;
-      const roots = [...app.crate.bins.map((bin) => bin.path), ...(sub === 'build' && app.crate.lib ? [app.crate.lib.path] : [])];
-      for (const path of roots) record(stamp({ path, matched: true }, kind, chain));
+      const bins = app.crate.bins.map((bin) => bin.path);
+      const roots = [...bins, ...(sub === 'build' && app.crate.lib ? [app.crate.lib.path] : [])];
+      for (const path of roots) record(stamp({ path, matched: true, ...(sub === 'build' && bins.includes(path) ? { builds: true } : {}) }, kind, chain));
     },
     /**
      * Godot, from the project --path names or the directory it runs in: a
@@ -1342,6 +1358,8 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       if (script != null) {
         const path = place(script);
         if (path) record(stamp({ path }, checks));
+        // A runner that finds its tests at run time runs each it finds.
+        for (const found of path ? repo.discovered?.get(path) ?? [] : []) record(stamp({ path: found, matched: true, foundBy: path }, checks, via(frame, path)));
         const base = path ? posix.basename(path) : posix.basename(script);
         const runner = base === 'gut_cmdln.gd' ? 'gut' : /^GdUnitCmdTool\.gd$/i.test(base) ? 'gdUnit4' : null;
         if (runner) matched(repo.compact(godotTests(repo, project, runner, argv, place)), frame, runner);
@@ -1487,6 +1505,12 @@ function cargoTargets(repo, crate, sub, parsed) {
   ];
 }
 
+// The name cargo gives an example: examples/x.rs and examples/x/main.rs are x.
+function exampleTarget(path) {
+  const base = posix.basename(path);
+  return base === 'main.rs' ? posix.basename(posix.dirname(path)) : base.replace(/\.rs$/, '');
+}
+
 // The binary cargo run starts: the one --bin names, the one default-run
 // names, or the package's only one.
 function runBinary(crate, name) {
@@ -1588,6 +1612,7 @@ function shellWord(word) {
 function stamp(entry, frame, via = frame.via) {
   const out = { ...entry, runKind: frame.runKind ?? 'executes' };
   if (via) out.via = via;
+  if (frame.builds) out.builds = true;
   return out;
 }
 

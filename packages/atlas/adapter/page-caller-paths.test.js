@@ -75,10 +75,11 @@ describe('a path relative to the caller or the home directory', () => {
     assert.equal(part('bin').outsideWrites, 6);
     assert.equal(part('bin').outsideReads, 1);
     assert.equal(part('tools').outsideWrites, 3);
-    assert.ok(
-      page.limits.includes('9 writes and 1 read go to the directory the command is run in, the home directory, a temporary directory or a path its caller passes, not to this repository.'),
-      page.limits.join('\n'),
-    );
+    for (const line of [
+      '4 writes go to the directory the command is run in (data/), not to this repository.',
+      '3 writes and 1 read go to the home directory (.stash/), not to this repository.',
+      '2 writes go to a path their caller passes, not to this repository.',
+    ]) assert.ok(page.limits.includes(line), page.limits.join('\n'));
   });
 
   it('lists none of those places as generated', () => {

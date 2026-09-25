@@ -727,7 +727,7 @@ export function astLandings(language, root, path, places) {
     visiting: new Set(),
     assignments: new Map(),
   };
-  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, pendingWrites: [], pendingReads: [], pendingParams: [] };
+  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, outsideWhere: [], pendingWrites: [], pendingReads: [], pendingParams: [] };
   // The build outputs the file names by a path this repository does not
   // track (packages/server/dist/server.js), for the commands a build bundles
   // (index.js bundledCommands).
@@ -784,7 +784,10 @@ export function astLandings(language, root, path, places) {
     const values = all.filter((value) => !boundParam(value) && !settled.has(value)).map((value) => (isHelper(value) ? asRoot(value) : value));
     if (values.length === 0) return;
     const theirs = values.some(outside);
-    if (theirs) found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
+    if (theirs) {
+      found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
+      found.outsideWhere.push({ kind, where: whereSet(values.filter(outside), call) });
+    }
     const before = list.length;
     let unplaced = false;
     for (const value of values) {
@@ -796,7 +799,9 @@ export function astLandings(language, root, path, places) {
       }
       // A path built at run time shaped like no tracked file makes files this
       // repository does not keep, under the place it is built in.
-      const target = shapedLikeNothing(value, call, places) ? shapedTarget(value) : kind === 'write' ? writtenPlace(value, places) : landingOf(value, places);
+      // A literal a caller's place falls back to (homedir() || '.') is the
+      // caller's place too, already counted, so it names no untracked one.
+      const target = shapedLikeNothing(value, call, places) ? shapedTarget(value) : kind === 'write' ? writtenPlace(value, places, theirs ? null : call, !theirs) : landingOf(value, places);
       // A root read at run time is never a placeholder's: canon/ holding only
       // a .gitkeep marks where a user's files go, not where this code writes.
       if (target != null && value.rooted && placeholder(target, places)) unplaced = true;
@@ -852,6 +857,8 @@ export function astLandings(language, root, path, places) {
   });
 
   const rooted = callerRootedFunctions(root, ctx);
+  const rootedWhere = rooted.where;
+  delete rooted.where;
   const paramCalls = recordedCalls(root, calls, ctx);
   const defaultCalls = leftOutCalls(root, calls, ctx);
   return {
@@ -861,9 +868,10 @@ export function astLandings(language, root, path, places) {
     dynamicReads: found.dynamicReads,
     ...(found.outsideWrites > 0 ? { outsideWrites: found.outsideWrites } : {}),
     ...(found.outsideReads > 0 ? { outsideReads: found.outsideReads } : {}),
+    ...(found.outsideWhere.length > 0 ? { outsideWhere: found.outsideWhere } : {}),
     ...(found.pendingWrites.length > 0 ? { pendingWrites: found.pendingWrites } : {}),
     ...(found.pendingReads.length > 0 ? { pendingReads: found.pendingReads } : {}),
-    ...(Object.keys(rooted).length > 0 ? { callerRooted: rooted } : {}),
+    ...(Object.keys(rooted).length > 0 ? { callerRooted: rooted, callerRootedWhere: rootedWhere } : {}),
     ...(found.pendingParams.length > 0 ? { pendingParams: found.pendingParams } : {}),
     ...(paramCalls.length > 0 ? { paramCalls } : {}),
     ...(defaultCalls.length > 0 ? { defaultCalls } : {}),
@@ -988,10 +996,11 @@ export function settleParamPaths(files, places) {
   // writer's own main guard is written only when that file is the program,
   // and is marked so (guards.js).
   const roots = (path, fn, param, rest, depth, writer, guarded = false) => {
-    const out = { places: [], outside: false, unread: false, unreadFree: false };
+    const out = { places: [], outside: false, unread: false, unreadFree: false, where: new Set() };
     const calls = (callers.get(`${path}#${fn}`) ?? []).filter((call) => !isTestMaterial(call.path) || call.path === path);
     if (calls.length === 0) {
       out.outside = true;
+      out.where.add('caller');
       return out;
     }
     for (const call of calls) {
@@ -1014,13 +1023,20 @@ export function settleParamPaths(files, places) {
           out.outside ||= deeper.outside;
           out.unread ||= deeper.unread;
           out.unreadFree ||= deeper.unreadFree;
+          for (const key of deeper.where) out.where.add(key);
         } else if (isHelper(value)) {
           // A root another file's function returns from the home directory
           // or the environment is the caller's through every call it is
           // handed down; any other such root stays unread.
-          if (helperRooted(byPath, call.path, value)) out.outside = true;
-          else unread();
-        } else if (outside(value)) out.outside = true;
+          const rootedAt = helperWhere(byPath, call.path, value);
+          if (rootedAt) {
+            out.outside = true;
+            for (const key of rootedAt) out.where.add(key);
+          } else unread();
+        } else if (outside(value)) {
+          out.outside = true;
+          for (const key of whereSet([appendRest(value, rest)], null)) out.where.add(key);
+        }
         else out.places.push({ ...appendRest(value, rest), ...(main ? { main: true } : {}) });
       }
     }
@@ -1031,16 +1047,18 @@ export function settleParamPaths(files, places) {
       const [kind, outsideCount, dynamicCount] = pending.kind === 'write' ? ['writes', 'outsideWrites', 'dynamicWrites'] : ['reads', 'outsideReads', 'dynamicReads'];
       const entries = [];
       let theirs = false;
+      const where = new Set();
       for (const bound of pending.values) {
         const rest = { text: bound.text, open: bound.open, ...(bound.tail != null ? { tail: bound.tail } : {}) };
         const found = roots(file.path, bound.param.fn, bound.param, rest, 0, file.path);
         theirs ||= found.outside;
+        for (const key of found.where) where.add(key);
         const before = entries.length;
         const land = (value) => {
-          const target = shapedLikeNothing(value, pending.call, places) ? shapedTarget(value) : pending.kind === 'write' ? writtenPlace(value, places) : landingOf(value, places);
+          const target = shapedLikeNothing(value, pending.call, places) ? shapedTarget(value) : pending.kind === 'write' ? writtenPlace(value, places, pending.call, !found.outside && !pending.counted) : landingOf(value, places);
           if (target == null || (value.rooted && placeholder(target, places))) return;
           const unless = [...new Set([...(pending.unless ?? []), ...(value.main && pending.kind === 'write' ? ['main'] : [])])].sort();
-          entries.push({ ...landingEntry(target, pending.call, value, places), ...(unless.length > 0 ? { unless } : {}) });
+          entries.push({ ...landingEntry(target, pending.call, value, places, { settled: true }), ...(unless.length > 0 ? { unless } : {}) });
         };
         for (const value of found.places) land(value);
         // An argument read as nothing is still what the caller passes: the
@@ -1049,10 +1067,16 @@ export function settleParamPaths(files, places) {
         if (found.unread) {
           const kept = entries.length;
           land({ ...rest, rooted: true, ...(found.unreadFree ? {} : { main: true }) });
-          if (entries.length === kept && entries.length === before) theirs = true;
+          if (entries.length === kept && entries.length === before) {
+            theirs = true;
+            where.add('caller');
+          }
         }
       }
-      if (theirs && !pending.counted) file[outsideCount] = (file[outsideCount] ?? 0) + 1;
+      if (theirs && !pending.counted) {
+        file[outsideCount] = (file[outsideCount] ?? 0) + 1;
+        (file.outsideWhere ??= []).push({ kind: pending.kind, where: [...where].sort(compare) });
+      }
       // A directory made where the file also writes inside it is only
       // evidence of that write, as astLandings has it.
       if (entries.length > 0) file[kind] = sortEntries(kind === 'writes' ? withoutRedundantDirectories([...(file[kind] ?? []), ...entries], places) : [...(file[kind] ?? []), ...entries]);
@@ -1074,7 +1098,22 @@ export function settleParamPaths(files, places) {
   for (const file of byPath.values()) {
     delete file.defaultCalls;
     delete file.callerRooted;
+    delete file.callerRootedWhere;
   }
+}
+
+// Where a root another file's function returns goes, when its every return
+// is the caller's place (callerRootedFunctions); null otherwise.
+function helperWhere(byPath, path, value) {
+  const helper = value.anchor.slice(HELPER.length);
+  const at = helper.lastIndexOf('#');
+  const specifier = helper.slice(0, at);
+  const imports = byPath.get(path)?.imports;
+  const site = Array.isArray(imports) ? imports.find((item) => item.specifier === specifier && item.resolved?.outcome === 'file') : null;
+  const owner = site ? byPath.get(site.resolved.path) : null;
+  const name = helper.slice(at + 1);
+  if (owner?.callerRooted?.[name] == null) return null;
+  return owner.callerRootedWhere?.[name] ?? ['caller'];
 }
 
 // Whether a value is the return of a function another file exports whose
@@ -1128,6 +1167,7 @@ function appendRest(value, rest) {
 function callerRootedFunctions(root, ctx) {
   const scratch = { ...ctx, seen: new Set(), visiting: new Set() };
   const out = {};
+  const where = {};
   for (const [name, fn] of moduleFunctions(root, ctx.python)) {
     const body = fn.childForFieldName('body');
     const values = (ctx.python
@@ -1136,8 +1176,12 @@ function callerRootedFunctions(root, ctx) {
         ? evalJs(body, scratch, 0)
         : union(returnExpressions(body, 'return_statement', JS_FUNCTIONS).map((expr) => evalJs(expr, scratch, 0))));
     // A path under the function's own parameter is the calls' to decide.
-    if (values.length > 0 && values.every((value) => outside(value) && !boundParam(value))) out[name] = values.some((value) => value.anchor === 'home') ? 'home' : values[0].anchor;
+    if (values.length > 0 && values.every((value) => outside(value) && !boundParam(value))) {
+      out[name] = values.some((value) => value.anchor === 'home') ? 'home' : values[0].anchor;
+      where[name] = whereSet(values, null);
+    }
   }
+  Object.defineProperty(out, 'where', { value: where, enumerable: false, configurable: true });
   return out;
 }
 
@@ -1177,14 +1221,21 @@ export function settleHelperPaths(files) {
       if (!file[pending]) continue;
       const kept = [];
       for (const { helpers, entries, dynamic } of file[pending]) {
+        const where = new Set();
         const theirs = helpers.every((key) => {
           const at = key.lastIndexOf('#');
           const specifier = key.slice(0, at);
           const name = key.slice(at + 1);
           const site = Array.isArray(file.imports) ? file.imports.find((item) => item.specifier === specifier && item.resolved?.outcome === 'file') : null;
-          return site != null && byPath.get(site.resolved.path)?.callerRooted?.[name] != null;
+          const owner = site != null ? byPath.get(site.resolved.path) : null;
+          if (owner?.callerRooted?.[name] == null) return false;
+          for (const place of owner.callerRootedWhere?.[name] ?? ['caller']) where.add(place);
+          return true;
         });
-        if (theirs) file[outsideCount] = (file[outsideCount] ?? 0) + 1;
+        if (theirs) {
+          file[outsideCount] = (file[outsideCount] ?? 0) + 1;
+          (file.outsideWhere ??= []).push({ kind: kind === 'writes' ? 'write' : 'read', where: [...where].sort(compare) });
+        }
         else {
           kept.push(...entries);
           file[dynamicCount] = (file[dynamicCount] ?? 0) + dynamic;
@@ -1211,7 +1262,7 @@ function withoutRedundantDirectories(writes, places) {
 
 // A bare relative path, with nothing fixing where it starts, is relative to
 // whoever runs the code; attachLandings decides whose directory that is.
-function landingEntry(target, call, value, places) {
+function landingEntry(target, call, value, places, { settled = false } = {}) {
   const entry = { target, call, confidence: confidenceOf(value, target, places) };
   if (value.defaultOf) entry.defaultOf = value.defaultOf;
   // A path built from the file's own location with its tail read at run
@@ -1220,6 +1271,11 @@ function landingEntry(target, call, value, places) {
   if (DIRECTORY_MAKERS.has(call) && value.open && value.tail != null) entry.child = true;
   if (value.anchor == null && !value.rooted) entry.relative = true;
   if (value.anchor === 'file' && !value.open) entry.fixed = true;
+  // A place nothing tracks that the write makes a directory of, or writes
+  // files under, is a directory, which the page names as one. A maker handed
+  // a path through a parameter may make the directory above it, which the
+  // parameter's reading does not keep, so the place is not called one.
+  if (!places.files.has(target) && !places.dirs.has(target) && (value.open || (DIRECTORY_MAKERS.has(call) && !settled))) entry.directory = true;
   return entry;
 }
 
@@ -1243,7 +1299,7 @@ export function placeLandings(file, sites, places) {
     const list = site.kind === 'write' ? found.writes : found.reads;
     const before = list.length;
     for (const value of site.values) {
-      const target = shapedLikeNothing(value, site.call, places) ? shapedTarget(value) : site.kind === 'write' ? writtenPlace(value, places) : landingOf(value, places);
+      const target = shapedLikeNothing(value, site.call, places) ? shapedTarget(value) : site.kind === 'write' ? writtenPlace(value, places, site.call) : landingOf(value, places);
       if (target != null) list.push(landingEntry(target, site.call, value, places));
     }
     if (list.length === before) found[site.kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
@@ -2319,6 +2375,42 @@ function outside(value) {
   return value.anchor === 'cwd' || value.anchor === 'home' || value.anchor === 'temp' || value.anchor === 'argument' || value.anchor === 'env' || value.anchor === 'param';
 }
 
+/**
+ * Where caller's places go, for the page to say (adapter/page.js): the
+ * directory the command is run in (cwd), the home directory (home), each
+ * with the first directory or file of the path spelled under it (cwd:saves/,
+ * home:.state/), a temporary directory (temp), and a path the caller passes
+ * (caller), which an environment variable, a command-line argument and a
+ * parameter no call here settles all are.
+ *
+ * @param {Array<{ text?: string, open?: boolean, anchor?: string }>} values
+ * @param {string|null} call the write or read call, whose kind says whether a whole path is a directory
+ * @returns {string[]} sorted
+ */
+export function whereSet(values, call) {
+  const out = new Set();
+  for (const value of values) {
+    const kind = value.anchor === 'cwd' ? 'cwd' : value.anchor === 'home' ? 'home' : value.anchor === 'temp' ? 'temp' : 'caller';
+    if (kind === 'caller' || kind === 'temp') {
+      out.add(kind);
+      continue;
+    }
+    let text = String(value.text ?? '').replaceAll('\\', '/');
+    while (text.startsWith('./')) text = text.slice(2);
+    const parts = text.split('/');
+    const head = parts[0];
+    // A name read at run time after the head without a / between them
+    // (.session.json + ".tmp") is a name only partly spelled, and no place.
+    if (head === '' || head === '.' || head === '..' || /[*?[\]{}$:]/.test(head) || (value.open && parts.length === 1)) {
+      out.add(kind);
+      continue;
+    }
+    const directory = parts.length > 1 || DIRECTORY_MAKERS.has(call);
+    out.add(`${kind}:${head}${directory ? '/' : ''}`);
+  }
+  return [...out].sort(compare);
+}
+
 function isHelper(value) {
   return typeof value.anchor === 'string' && value.anchor.startsWith(HELPER);
 }
@@ -2694,8 +2786,8 @@ function landingOf(value, places) {
 // Where a write lands. One through a build or dependency directory (a copy
 // into packages/cli/dist/) makes that output, which the repository does not
 // keep, so it lands there and not on the package above, as a read of it does.
-function writtenPlace(value, places) {
-  const target = landingOf(value, places);
+function writtenPlace(value, places, call = null, untracked = true) {
+  const target = landingOf(value, places) ?? (untracked ? untrackedPlace(value, call) : null);
   if (target == null) return null;
   let text = value.text.replaceAll('\\', '/');
   while (text.startsWith('./')) text = text.slice(2);
@@ -2703,6 +2795,30 @@ function writtenPlace(value, places) {
   const parts = spelled.split('/');
   const at = parts.findIndex((part) => part === 'node_modules' || part === 'dist');
   return at === -1 ? target : parts.slice(0, at + 1).join('/');
+}
+
+/**
+ * The directory a write names by a path spelled whole from where the code
+ * runs though nothing there is tracked: the directory it makes
+ * (create_dir_all("output")), or the one it writes a file under whose name is
+ * read at run time (output/<name>.glb). A directory a build or a run makes,
+ * often one the repository ignores, is a place all the same, output the
+ * repository does not keep, never a path built at run time. A literal file
+ * that names nothing tracked (a temporary file renamed onto a tracked one)
+ * still lands nowhere; a root read at run time, a path above the repository
+ * and a URL name none.
+ */
+function untrackedPlace(value, call) {
+  if (!value.open && !DIRECTORY_MAKERS.has(call)) return null;
+  if (value.rooted || (value.anchor != null && value.anchor !== 'file')) return null;
+  let text = value.text.replaceAll('\\', '/');
+  // An absolute path, on any system, and the home directory are no place here.
+  if (text.startsWith('/') || /^[A-Za-z]:/.test(text) || text.startsWith('~') || text.includes('://')) return null;
+  while (text.startsWith('./')) text = text.slice(2);
+  const spelled = value.open ? text.slice(0, Math.max(text.lastIndexOf('/'), 0)) : text.replace(/\/+$/, '');
+  if (spelled === '' || /[*?[\]{}]/.test(spelled)) return null;
+  const normal = posix.normalize(spelled);
+  return normal === '.' || normal === '..' || normal.startsWith('../') ? null : normal;
 }
 
 function holdingDirectory(text, places) {
@@ -2942,6 +3058,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
     door.stagedTargets = stagedTargets([...door.stages, ...(door.gated ?? []).flatMap((entry) => entry.stages)], places);
     const named = new Set(door.mentions.map((mention) => mention.path));
     door.ownWrites = [...new Set([
+      ...(door.handedWrites ?? []),
       ...(door.commands ?? []).filter((command) => command.dir != null)
         .flatMap((command) => shellLandings(command.text, places, { dir: command.dir, follow: true }).writes.map((write) => write.target)),
       ...door.stagedTargets.filter((place) => named.has(place)),
@@ -2994,6 +3111,9 @@ export function attachLandings({ files, doors, boundaries, places }) {
     }
   }
 
+  // The untracked places written as directories, which a door names so.
+  const directories = new Set();
+  for (const file of [...own, ...tests]) for (const write of file.writes) if (write.directory) directories.add(write.target);
   const skipped = new Map();
   for (const door of mapped) {
     const targets = new Set(door.ownWrites);
@@ -3007,9 +3127,15 @@ export function attachLandings({ files, doors, boundaries, places }) {
       }
     }
     door.landings = [...targets].filter((target) => !spans.has(target) && !untracked.has(target)).sort(compare);
+    // Output the repository does not keep is counted, never placed, and the
+    // door names where it goes: a place spelled whole, not a shape.
+    const outputs = [...targets].filter((target) => untracked.has(target) && !spans.has(target) && !target.includes('*'))
+      .map((target) => (directories.has(target) ? `${target}/` : target)).sort(compare);
+    if (outputs.length > 0) door.untrackedLandings = outputs;
     const written = (place) => door.landings.some((target) => target === place || target.startsWith(`${place}/`) || place.startsWith(`${target}/`));
     door.unwrittenStages = door.stagedTargets.filter((place) => (places.files.has(place) || places.dirs.has(place)) && !written(place));
     delete door.stagedTargets;
+    delete door.handedWrites;
   }
   // A workflow that names a place its own run writes (echo refreshed
   // indexes/latest.json) is describing its output, not reading it.
@@ -3069,7 +3195,9 @@ function settleRelativePaths(files, doors) {
   const byWorkflow = new Set();
   const byInstall = new Set();
   for (const door of doors) {
-    const into = door.kind === 'command' || door.kind === 'package' ? byInstall : byWorkflow;
+    // A Cargo example is run from a checkout of this repository, as a
+    // workflow's code is.
+    const into = (door.kind === 'command' && !door.example) || door.kind === 'package' ? byInstall : byWorkflow;
     for (const path of door.reachFiles ?? []) into.add(path);
   }
   for (const file of files) {
@@ -3083,7 +3211,10 @@ function settleRelativePaths(files, doors) {
         // people run from wherever they are, whatever else a workflow has
         // the file do from the root: shipcheck init writes SHIP_GATE.md into
         // the repository it is run in, not this one's committed copy.
-        if ((theirs && relative) || (byInstall.has(file.path) && entry.fromCwd)) file[count] = (file[count] ?? 0) + 1;
+        if ((theirs && relative) || (byInstall.has(file.path) && entry.fromCwd)) {
+          file[count] = (file[count] ?? 0) + 1;
+          (file.outsideWhere ??= []).push({ kind: kind === 'writes' ? 'write' : 'read', where: whereSet([{ text: entry.target, open: entry.directory === true, anchor: 'cwd' }], entry.call) });
+        }
         else if (isTestMaterial(file.path)) kept.push({ ...rest, ...(fixed ? { fixed } : {}), ...(relative ? { relative } : {}) });
         else kept.push(rest);
       }

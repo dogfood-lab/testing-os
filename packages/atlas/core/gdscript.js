@@ -122,6 +122,11 @@ export function gdscriptReadings(root) {
   // A GUT test and a gdUnit4 suite are tests by what they extend, wherever
   // they are kept.
   const suite = TEST_BASES.has(extendsName) || imports.some((entry) => /(^|\/)addons\/gut\/test\.gd$/.test(entry.specifier) && entry.line === 1);
+  // A runner that lists a res:// directory with DirAccess and loads a path
+  // built at run time runs what it finds there: the scripts whose names the
+  // file tests with begins_with and ends_with (settleGodotPaths).
+  const listed = files.filter((access) => access.call === 'open' && access.kind === 'read' && access.values.length === 1 && !access.values[0].open && access.values[0].text.startsWith('res://'));
+  const discovers = dynamicReads > 0 ? listed.map((access) => ({ dir: access.values[0].text, ...nameTests(root) })) : [];
   return {
     imports,
     ...(suite ? { testSuite: true } : {}),
@@ -129,6 +134,7 @@ export function gdscriptReadings(root) {
       loads,
       files,
       dynamicReads,
+      ...(discovers.length > 0 ? { discovers } : {}),
       names: [...names.entries()].map(([name, line]) => ({ name, line })),
       ...(extendsName ? { extendsName } : {}),
       ...(className ? { className } : {}),
@@ -210,6 +216,19 @@ export function settleGodotPaths({ repoPath, tracked, files, places }) {
   for (const file of files) {
     if (!file.godot) continue;
     const project = projectOf(projects, file.path);
+    // The scripts a runner finds under the directory it lists, one level
+    // down, as Godot's DirAccess lists them; its load of each is no path
+    // built at run time any more.
+    for (const found of file.godot.discovers ?? []) {
+      const dir = resText(project, file.path, found.dir);
+      if (dir == null) continue;
+      const prefix = `${dir ? `${dir}/` : ''}${found.prefix ?? ''}`;
+      const paths = [...tracked].filter((path) => path.startsWith(prefix) && !path.slice(dir ? dir.length + 1 : 0).includes('/')
+        && path.endsWith(found.suffix ?? '.gd') && path.endsWith('.gd')).sort();
+      if (paths.length === 0) continue;
+      file.discovers = [...new Set([...(file.discovers ?? []), ...paths])].sort();
+      if ((file.godot.dynamicReads ?? 0) > 0) file.godot.dynamicReads -= 1;
+    }
     const sites = [];
     for (const load of file.godot.loads ?? []) {
       if (load.text.startsWith('user://')) {
@@ -255,6 +274,19 @@ export function settleGodotPaths({ repoPath, tracked, files, places }) {
  * literal, a const holding one, or a literal with the rest added at run time
  * ("user://" + name, "res://levels/%s.tres" % id).
  */
+// The literals a file tests names with: x.begins_with("test_") and
+// x.ends_with(".gd").
+function nameTests(root) {
+  const out = {};
+  walk(root, (node) => {
+    if (node.type !== 'attribute_call') return;
+    const method = node.namedChildren[0]?.text;
+    const arg = node.childForFieldName('arguments')?.namedChildren[0];
+    if ((method === 'begins_with' || method === 'ends_with') && arg?.type === 'string') out[method === 'begins_with' ? 'prefix' : 'suffix'] = stringText(arg);
+  });
+  return out;
+}
+
 function fileAccess(node, literal) {
   const base = node.namedChildren[0];
   const call = node.namedChildren[1];

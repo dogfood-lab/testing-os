@@ -172,23 +172,34 @@ function checkedOnly(door, path) {
   return runs.length > 0 && runs.every((run) => run.runKind === 'checks');
 }
 
+// A binary the door builds to ship, and runs nowhere (core/doors.js).
+function builtOnly(door, path) {
+  const runs = (door.runs ?? []).filter((run) => run.path === path);
+  return runs.some((run) => run.built) && runs.every((run) => run.built || run.runKind === 'checks');
+}
+
 function runsSentence(door) {
   const paths = runPaths(door);
-  const ran = paths.filter((path) => !checkedOnly(door, path));
+  const ran = paths.filter((path) => !checkedOnly(door, path) && !builtOnly(door, path));
+  const built = paths.filter((path) => builtOnly(door, path));
   const checked = paths.filter((path) => checkedOnly(door, path));
   if (paths.length === 0) return 'It runs no file this map can see.';
   const clauses = [];
   if (ran.length > 0) clauses.push(`It runs ${runsShown(ran)}.`);
+  if (built.length > 0) clauses.push(`It builds ${runsShown(built)}.`);
   if (checked.length > 0) clauses.push(`It checks ${runsShown(checked)}.`);
   return clauses.join(' ');
 }
 
-// "now also runs X" and "now also checks Y", each only when it has paths.
+// "now also runs X", "now also builds Y" and "now also checks Z", each only
+// when it has paths.
 function runChangeItems(name, file, door, paths, lead) {
   const items = [];
-  const ran = paths.filter((path) => !checkedOnly(door, path));
+  const ran = paths.filter((path) => !checkedOnly(door, path) && !builtOnly(door, path));
+  const built = paths.filter((path) => builtOnly(door, path));
   const checked = paths.filter((path) => checkedOnly(door, path));
   if (ran.length > 0) items.push({ kind: 'door', sentence: `${name} ${lead} runs ${runsShown(ran)}.`, subjects: [file, ...ran] });
+  if (built.length > 0) items.push({ kind: 'door', sentence: `${name} ${lead} builds ${runsShown(built)}.`, subjects: [file, ...built] });
   if (checked.length > 0) items.push({ kind: 'door', sentence: `${name} ${lead} checks ${runsShown(checked)}.`, subjects: [file, ...checked] });
   return items;
 }

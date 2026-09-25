@@ -1,0 +1,12 @@
+name: Publish
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  crate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo publish -p pub-tool

@@ -18,8 +18,10 @@ import { cargoProject, crateRoots, RUST_STD } from './cargo.js';
  * declares is unresolved.
  *
  * Mutates each Rust file: fills `resolved` on its sites, drops the sites a
- * path in code named that are not a module here, and drops what the
- * readings carried for this (`rust` on each site, `rustModule`).
+ * path in code named that are not a module here, sets `library` to the root
+ * of its package's own library on a binary, test, example or bench that
+ * uses it, and drops what the readings carried for this (`rust` on each
+ * site, `rustModule`).
  *
  * @param {{ repoPath: string, tracked: Set<string>, files: object[] }} input
  */
@@ -73,16 +75,31 @@ export function resolveRust({ repoPath, tracked, files }) {
         kept.push(site);
         continue;
       }
-      const resolved = resolveUse(info, file, context, { libOf, crateAt });
+      const through = {};
+      const resolved = resolveUse(info, file, context, { libOf, crateAt }, through);
       // A path in code that names no module here is a type, a function in
       // scope or another crate's item, and was never an import to count.
       if (info.expression && (resolved.outcome !== 'file' || resolved.path === file.path)) continue;
       site.resolved = resolved;
       kept.push(site);
+      // A binary, test or example that uses its own package's library goes
+      // through that library's root, whichever module the path ends in.
+      if (through.own && resolved.outcome === 'file') file.library = context.tree.crate.lib.path;
     }
     file.imports = kept;
   }
   for (const file of rust) {
+    // What the file's names bind to, for the calls settleRustPaths follows:
+    // a use by its last segment or alias, and a mod by its name, each to the
+    // file it resolved to; and the items the file declares.
+    const bound = {};
+    for (const site of file.imports) {
+      if (site.resolved?.outcome !== 'file' || !site.rust || site.rust.expression || site.rust.glob || site.rust.crate) continue;
+      const name = site.rust.mod ?? site.rust.alias ?? site.rust.use?.[site.rust.use.length - 1];
+      if (name && site.rust.scope.length === 0 && !(name in bound)) bound[name] = site.resolved.path;
+    }
+    if (Object.keys(bound).length > 0) file.rustBound = bound;
+    if (file.rustModule?.names?.length > 0) file.rustNames = file.rustModule.names;
     for (const site of file.imports) delete site.rust;
     delete file.rustModule;
   }
@@ -118,7 +135,7 @@ function moduleFile(path, owner, info, tracked) {
  *
  * @returns {{ outcome: 'file', path: string } | { outcome: 'external' } | { outcome: 'unresolved', reason: string }}
  */
-function resolveUse(info, file, context, { libOf, crateAt }) {
+function resolveUse(info, file, context, { libOf, crateAt }, through = {}) {
   const segments = [...info.use];
   const here = context ? [...context.modulePath, ...info.scope] : null;
   let tree = context?.tree ?? null;
@@ -128,6 +145,7 @@ function resolveUse(info, file, context, { libOf, crateAt }) {
   if (first === '') {
     const found = externCrate(segments.shift(), tree, { libOf, crateAt });
     if (found.tree == null) return found.resolved;
+    if (found.own) through.own = true;
     tree = found.tree;
     at = [];
   } else if (first === 'crate') {
@@ -148,6 +166,7 @@ function resolveUse(info, file, context, { libOf, crateAt }) {
   } else {
     const found = externCrate(first, tree, { libOf, crateAt });
     if (found.tree != null) {
+      if (found.own) through.own = true;
       tree = found.tree;
       at = [];
     } else if (found.resolved.outcome !== 'unresolved' || info.crate) {
@@ -181,7 +200,7 @@ function externCrate(name, tree, { libOf, crateAt }) {
   const crate = tree.crate;
   if (tree.kind !== 'lib' && crate.lib?.name === name) {
     const lib = libOf(crate);
-    return lib ? { tree: lib, resolved: null } : unresolved;
+    return lib ? { tree: lib, resolved: null, own: true } : unresolved;
   }
   const dep = crate.deps.get(name);
   if (!dep) return unresolved;

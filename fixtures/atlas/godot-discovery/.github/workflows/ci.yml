@@ -1,0 +1,11 @@
+name: ci
+
+on:
+  pull_request:
+
+jobs:
+  headless:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: ~/godot/godot --headless --path . --script res://tools/headless.gd

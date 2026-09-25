@@ -1,0 +1,27 @@
+name: ci
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  suite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: stage
+      - name: Load pins
+        run: grep -E "^FORGE_REF=" stage/.github/pins.env >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+        with:
+          repository: acme/forge
+          path: forge
+      - name: Export
+        working-directory: forge
+        run: |
+          npx tsx export.ts --out=../stage/fixtures
+          test -f ../stage/fixtures/world.json
+      - name: Check export
+        working-directory: forge
+        run: npx tsx export.ts --check --out ../stage/fixtures

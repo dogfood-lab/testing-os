@@ -1,0 +1,12 @@
+name: Desktop
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm run tauri:build
+        working-directory: app

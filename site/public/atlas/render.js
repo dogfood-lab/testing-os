@@ -198,7 +198,9 @@ function installed(door) {
 // is bundled into, and the app a Tauri binary or a Godot project is.
 function installedAs(door) {
   const bundled = arr(door.bundledInto).map(str);
-  const what = door.app === 'desktop' ? 'the desktop app people install'
+  const what = door.example ? `a command people run with <code>${esc(str(door.runWith))}</code>`
+    : door.unshipped ? `${door.app === 'desktop' ? 'a desktop app' : 'a command'} built from ${esc(str(door.builtFrom))}, which nothing ships`
+    : door.app === 'desktop' ? 'the desktop app people install'
     : door.app === 'game' ? 'what Godot runs'
     : door.kind !== 'package' ? (bundled.length > 0 ? `a command bundled into ${esc(list(bundled))}` : 'a command people run')
     : door.runsCommand != null ? `the package&#39;s entry, which ${typeof door.runsCommand === 'string' ? `runs the command ${esc(door.runsCommand)}` : 'runs a program as it loads'}; it is not a library`
@@ -226,8 +228,15 @@ function leadName(door) {
   return door?.app === 'game' ? capitalize(name) : name;
 }
 
+// A runner that finds its scripts at run time is named with what it finds,
+// as page.js names it: "tools/headless.gd, which runs the 11 test suites
+// under tests/ it finds at run time".
 function runs(ctx, door) {
-  return arr(door.runs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
+  const found = new Map(arr(door.found).map((entry) => [str(entry.by), str(entry.what)]));
+  return arr(door.runs).map((path) => {
+    const what = found.get(str(path));
+    return what ? { html: `${pathHtml(ctx, path)}, which runs ${esc(what)} it finds at run time`, text: `${str(path)}, which runs ${what} it finds at run time` } : { html: pathHtml(ctx, path), text: str(path) };
+  });
 }
 
 // The paths a door only checks (a linter or a type-checker reads them and
@@ -235,6 +244,12 @@ function runs(ctx, door) {
 // written before the two were told apart lists every path under runs.
 function checks(ctx, door) {
   return arr(door.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
+}
+
+// The binaries a door builds to ship and runs nowhere, which "What comes in"
+// names apart; elsewhere the send that ships them names them.
+function builds(ctx, door) {
+  return arr(door.builds).map((path) => ({ html: pathHtml(ctx, path), text: str(path) }));
 }
 
 // runsCount and checksCount are how many paths the door runs and checks when
@@ -424,24 +439,26 @@ function held(ctx, door) {
   return arr(door.held).map((group) => ({
     lead: str(group.lead),
     when: str(group.when),
-    runs: arr(group.runs).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+    runs: runs(ctx, { found: door.found, runs: group.runs }),
     checks: arr(group.checks).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
+    builds: arr(group.builds).map((path) => ({ html: pathHtml(ctx, path), text: str(path) })),
     runsMore: moreOf(group.runsMore),
     checksMore: moreOf(group.checksMore),
   }));
 }
 
-function heldClause(group, verb, joiner, field) {
+function heldClause(group, verb, joiner, field, { withBuilds = false } = {}) {
   const clauses = [];
   const shown = (items, more) => (field === 'html' ? runsShown(items, items.length, more) : runsShownText(items, items.length, more));
   if (group.runs.length > 0) clauses.push(`${verb} ${shown(group.runs, group.runsMore)}`);
+  if (withBuilds && group.builds.length > 0) clauses.push(`builds ${shown(group.builds)}`);
   if (group.checks.length > 0) clauses.push(`checks ${shown(group.checks, group.checksMore)}`);
   return clauses.length > 0 ? clauses.join(joiner) : null;
 }
 
-function heldSentences(ctx, door, verb, also) {
+function heldSentences(ctx, door, verb, also, { withBuilds = false } = {}) {
   return held(ctx, door).map((group) => {
-    const clause = heldClause(group, verb, '; ', 'html');
+    const clause = heldClause(group, verb, '; ', 'html', { withBuilds });
     return clause ? `${capitalize(esc(group.lead))}, it ${also ? 'also ' : ''}${clause}.` : null;
   }).filter(Boolean);
 }
@@ -451,12 +468,14 @@ function comesIn(ctx) {
     const name = `<strong>${esc(door.name)}.</strong>`;
     if (door.parseError) return `${name} This workflow could not be read.`;
     const paths = runs(ctx, door);
+    const built = builds(ctx, door);
     const checked = checks(ctx, door);
     const clauses = [];
     if (door.unplaced) clauses.push(unplacedClause(door));
     else if (paths.length > 0) clauses.push(`${startVerb(door)} ${runsShown(paths, runTotal(door, paths), moreOf(door.runsMore))}`);
+    if (built.length > 0) clauses.push(`builds ${runsShown(built)}`);
     if (checked.length > 0) clauses.push(`checks ${runsShown(checked, checkTotal(door, checked), moreOf(door.checksMore))}`);
-    const heldText = heldSentences(ctx, door, startVerb(door), clauses.length > 0);
+    const heldText = heldSentences(ctx, door, startVerb(door), clauses.length > 0, { withBuilds: true });
     const ran = [...(clauses.length > 0 || heldText.length === 0 ? [capitalize(clauses.length > 0 ? `${clauses.join('; ')}.` : `${startVerb(door)} no file this map can see.`)] : []), ...heldText].join(' ');
     if (installed(door)) return `<strong>${esc(door.name)}</strong> (${installedAs(door)}). ${ran}`;
     const when = capitalize(arr(door.triggers).map(str).join('; ')) || 'Nothing this map can read starts it';
@@ -483,6 +502,7 @@ function doorSteps(ctx, door) {
   steps.push(...heldText);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
+  if (door.untracked) steps.push(`It ${arr(door.landings).length > 0 ? 'also ' : ''}writes to ${esc(str(door.untracked))}.`);
   if (arr(door.stages).length > 0) steps.push(`It commits ${commitsClause(ctx, door)}.`);
   if (arr(door.programs).length > 0) steps.push(`It runs ${esc(list(arr(door.programs).map(str)))}.`);
   for (const send of arr(door.sends)) steps.push(`It ${inline(send)}.`);
@@ -582,7 +602,10 @@ function unreadFiles(ctx) {
 
 function readsSection(ctx) {
   const name = esc(ctx.main.name);
-  if (arr(ctx.main.landings).length === 0) return section('Who reads the results', p(absence('writes', unreadFiles(ctx), esc(leadName(ctx.main)))));
+  if (arr(ctx.main.landings).length === 0) {
+    const outputs = ctx.main.untracked ? `${esc(leadName(ctx.main))} writes only to ${esc(str(ctx.main.untracked))}.` : null;
+    return section('Who reads the results', p(outputs ?? absence('writes', unreadFiles(ctx), esc(leadName(ctx.main)))));
+  }
   const groups = arr(ctx.page.readers);
   if (groups.length === 0) return section('Who reads the results', p(`Only ${name} itself reads what it writes.`));
   const bullets = groups.map((group) => {
@@ -622,7 +645,11 @@ function otherDoors(ctx) {
     const reached = [...new Set(deeper(door).flatMap((level) => level.entries.map((entry) => str(entry.boundary))))].sort(cmp).map((part) => ctx.name(part));
     if (reached.length > 0) clauses.push({ html: `reaches ${list(reached.map(esc))}`, text: `reaches ${list(reached)}` });
     const landings = arr(door.landings).map(str);
-    if (landings.length > 0) clauses.push({ html: `writes to ${placesHtml(ctx, landings)}`, text: `writes to ${list(landings)}` });
+    // Output the repository does not keep is named as page.js names it.
+    const joiner = landings.length > 1 ? ', and to ' : ' and to ';
+    const outputs = door.untracked ? [{ html: esc(str(door.untracked)), text: str(door.untracked) }] : [];
+    const written = [...(landings.length > 0 ? [{ html: placesHtml(ctx, landings), text: list(landings) }] : []), ...outputs];
+    if (written.length > 0) clauses.push({ html: `writes to ${written.map((item) => item.html).join(joiner)}`, text: `writes to ${written.map((item) => item.text).join(joiner)}` });
     const stages = arr(door.stages).map((place) => `${str(place)}${peopleWrite(door, place) ? ' (written by people)' : ''}`);
     if (stages.length > 0) {
       const push = pushWords(door);

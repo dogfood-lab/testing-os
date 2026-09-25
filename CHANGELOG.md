@@ -2,6 +2,29 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **A release build is a build.** A job's `cargo build`, Tauri build or PyInstaller output that the job uploads to a release, or uploads as an artifact the releasing job downloads, is run as `built`, never a check: "builds src/main.rs into an MSIX package and binaries for darwin-arm64, linux-x64 and win-x64, and uploads them to the release". Assets are named from the upload paths (MSI, NSIS, MSIX, DMG, deb, rpm, AppImage) or per target; an upload of files no build here makes is named ("uploads sbom.json to the release"); `softprops/action-gh-release` on a release event uploads to that release and creates none. saints-mile's Release Binaries and commandui's Release Desktop had been said to "check" the crate and "create a GitHub release".
+- **Cargo examples are doors.** Each `examples/*.rs` or `[[example]]` is "a command people run with `cargo run --example export_all`", and `cargo run --example` runs it; it is not installed, so it is never a start.
+- **A crate's build script runs and writes.** Every cargo subcommand but `fmt`, and Tauri build and dev, run the crate's `build.rs`; `tauri_build::build()` writes `gen/schemas/`, listed as Generated "(a build script)".
+- **Tests a Godot runner finds at run time are run.** A GDScript file that opens a literal `res://` directory with `DirAccess` and loads a path built at run time runs the scripts it finds there: "runs tools/headless.gd, which runs the 11 test suites under tests/ it finds at run time".
+- **A fork gate is read.** `head.repo.fork` and `head.repo.full_name` compared with `github.repository` hold a job to a push or a fork's pull request ("On a push, or a pull request from a fork, it runs …"), and "follow one push, or pull request from a fork, end to end" says so.
+
+### Fixed
+- **The first line names every language.** "mostly TypeScript (59 files), Rust (53) and JavaScript (1)"; commandui's page had omitted its Rust.
+- **A manifest is read, not imported.** A file that loads `package.json` for a field lists it under Reads only; repo-knowledge's CLI had been said to import it and read it.
+- **A Rust binary goes into its own library.** `use <crate>::…` from `main.rs` resolves to the package's own `src/lib.rs` and on to the module it uses, so "Where to start" continues past `main.rs` (commandui now reaches the runtime planner through it).
+- **A bin nothing ships says so.** A crate's binary no workflow builds, installs or releases and no `cargo publish` sends is "(a command built from apps/console, which nothing ships)", and What this is says "commandui-console is a command built from apps/console (nothing ships it)"; glyphstudio's and stillpoint's desktop apps read the same way.
+- **A literal directory is named, even when untracked.** A directory spelled whole from where the code runs, which the code makes or writes under, is an untracked place, never a path built at run time: "writes to output/, which is not tracked". asset-forge's three export writes had been "built at run time".
+- **Caller paths are said by where they go.** A Rust write under a struct field is followed to the literals that set it and one under a parameter to the calls that pass it, up to four hops; Tauri's `app_*_dir()` is the home directory; every language's caller-place count now records the kind of place, and the limits give one line per kind ("4 writes go to the directory the command is run in (saves/) or a path their caller passes").
+- **The widest test starts a tests-only Rust chain.** When a door runs a file only for its unit tests and nothing installed can be followed, the chain starts at the test that reaches the most parts and says so; asset-forge's chain had begun at an arbitrary unit-test file.
+- **Paths through a job's own checkout map back.** A step outside the checkout directory that names a path through it names this repository's path, and one handed to `--out`/`-o` is a door write unless `--check` or `--dry-run` is on the line; ai-rpg-stage's pins file had been "read by nothing else" and its regenerated `fixtures/` hand-authored.
+- **Calls inside a Rust macro's arguments are read** into the order of work when they are calls by path.
+
+### Changed
+- **This repository's own page:** the first line names every language (the Rust and GDScript are fixtures); Release, CI and the swarm say "and to swarms/control-plane.db, which is not tracked"; the one outside-writes line is five lines by kind of place; unresolved sites rise from 123 to 154, all from the new Rust fixtures, which no crate compiles.
+
 ## [1.19.0] — 2026-09-24
 
 ### Added

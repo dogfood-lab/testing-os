@@ -108,8 +108,9 @@ test('the sentences are the ones the committed markdown carries', () => {
     // it; the build's prebuild step stamps the version blocks.
     'self-dogfood runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs, checks packages/schemas/src/, writes to README.md, docker/Dockerfile and package-lock.json, and sends a dispatch to dogfood-lab/testing-os.',
     // The swarm runs the ingest runner as a child process, so it reaches what
-    // the runner does and writes where the runner writes.
-    'swarm (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, ingest, report, schemas and verify, writes to dogfood/roadmap/, indexes/, policies/repos/ and records/, and runs git.',
+    // the runner does and writes where the runner writes; its control plane's
+    // database is a place the repository does not track.
+    'swarm (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, ingest, report, schemas and verify, writes to dogfood/roadmap/, indexes/, policies/repos/ and records/, and to swarms/control-plane.db, which is not tracked, and runs git.',
     'Read those in order to follow one dogfood submission end to end.',
     'Regenerate with npx --yes @dogfood-lab/atlas map.',
     'Inside packages/ingest/run.js, ingest does, in order: log stage (dogfood-swarm), is duplicate, load context (3 steps), verify (verify), write record and rebuild indexes.',
@@ -955,4 +956,56 @@ test('a part only its own unit tests touch reads as touched, as the markdown say
   const text = plain(render.renderPage({ ...page, testFiles: 2, untested: [], untestedNote: note, testedInside: ['inline'], spawnTested: undefined }, { repo: page.repo }));
   assert.ok(text.includes('Every code part is touched by at least one test.'));
   assert.ok(text.includes(note[0]));
+});
+
+// A release that builds a binary and ships it, as page.js words it:
+// fixtures/atlas/release-binaries gives these sentences in the markdown
+// (packages/atlas/adapter/page-release-binaries.test.js).
+test('a binary a release builds reads apart from what it runs, as the markdown words it', () => {
+  const release = { builds: ['src/main.rs'], checks: ['src/lib.rs'], checksCount: 1, checksMore: 0, file: '.github/workflows/release.yml', id: '.github/workflows/release.yml', landings: [], name: 'Release Binaries', pushes: false, reach: [], runs: [], runsCount: 0, runsMore: 0, sends: ['builds src/main.rs into an MSIX package and binaries for linux-x64 and win-x64, and uploads them to the release'], stages: [], triggers: ['when a release is published', 'or by hand'] };
+  const held = { ...release, builds: [], checks: [], checksCount: 0, file: '.github/workflows/desktop.yml', id: '.github/workflows/desktop.yml', name: 'Release Desktop', sends: [], held: [{ builds: ['app/main.rs'], checks: [], checksMore: 0, lead: 'on a release event', runs: [], runsMore: 0, when: 'on a release event' }] };
+  const text = plain(render.renderPage({ ...page, doors: [...page.doors, release, held] }, { repo: page.repo }));
+  assert.ok(text.includes('Release Binaries. When a release is published; or by hand. Builds src/main.rs; checks src/lib.rs.'), 'what comes in');
+  assert.ok(text.includes('On a release event, it builds app/main.rs.'), 'what comes in, held to a trigger');
+  assert.ok(text.includes('Release Binaries checks src/lib.rs and builds src/main.rs into an MSIX package and binaries for linux-x64 and win-x64, and uploads them to the release.'), 'the other doors name it with what ships');
+});
+
+// A crate's binary nothing ships, as page.js words it:
+// fixtures/atlas/unshipped-bins gives this sentence in the markdown
+// (packages/atlas/adapter/page-unshipped-bins.test.js).
+test('a binary nothing ships reads as built from its crate, as the markdown words it', () => {
+  const console = { builtFrom: 'crates/console', checks: [], checksCount: 0, checksMore: 0, file: 'crates/console/Cargo.toml', id: 'crates/console/Cargo.toml#console', kind: 'command', landings: [], name: 'console', pushes: false, reach: [], runs: ['crates/console/src/main.rs'], runsCount: 1, runsMore: 0, sends: [], stages: [], triggers: [], unshipped: true };
+  const text = plain(render.renderPage({ ...page, doors: [...page.doors, console] }, { repo: page.repo }));
+  assert.ok(text.includes('console (a command built from crates/console, which nothing ships). Runs crates/console/src/main.rs.'), 'what comes in');
+});
+
+// A Cargo example, as page.js words it: fixtures/atlas/cargo-examples gives
+// this sentence in the markdown (packages/atlas/adapter/page-cargo-examples.test.js).
+test('a Cargo example reads as a command people run with cargo run, as the markdown words it', () => {
+  const example = { checks: [], checksCount: 0, checksMore: 0, example: true, file: 'Cargo.toml', id: 'Cargo.toml#export_all', kind: 'command', landings: [], name: 'export_all', pushes: false, reach: [], runWith: 'cargo run --example export_all', runs: ['examples/export_all.rs'], runsCount: 1, runsMore: 0, sends: [], stages: [], triggers: [] };
+  const html = render.renderPage({ ...page, doors: [...page.doors, example] }, { repo: page.repo });
+  assert.ok(plain(html).includes('export_all (a command people run with cargo run --example export_all). Runs examples/export_all.rs.'), 'what comes in');
+  assert.ok(html.includes('<code>cargo run --example export_all</code>'), 'the command is code, as the markdown marks it');
+});
+
+// Output the repository does not keep, as page.js words it:
+// fixtures/atlas/untracked-literal gives these sentences in the markdown
+// (packages/atlas/adapter/page-untracked-literal.test.js).
+test('a write to a place nothing tracks is named as not tracked, as the markdown words it', () => {
+  const door = (fields) => ({ checks: [], checksCount: 0, checksMore: 0, landings: [], pushes: false, reach: [{ boundary: 'examples', depth: 0, files: 1 }], runsCount: 1, runsMore: 0, sends: [], stages: [], ...fields });
+  const example = door({ example: true, file: 'Cargo.toml', id: 'Cargo.toml#export_all', kind: 'command', name: 'export_all', runWith: 'cargo run --example export_all', runs: ['examples/export_all.rs'], triggers: [], untracked: 'output/, which is not tracked' });
+  const ci = door({ file: '.github/workflows/ci.yml', id: '.github/workflows/ci.yml', name: 'CI', runs: ['scripts/report.mjs'], triggers: ['on a pull request'], untracked: 'reports/, which is not tracked' });
+  const text = plain(render.renderPage({ ...page, doors: [example, ci], mainDoor: example.id, readers: [] }, { repo: page.repo }));
+  assert.ok(text.includes('It writes to output/, which is not tracked.'), 'what happens through the door');
+  assert.ok(text.includes('export_all writes only to output/, which is not tracked.'), 'who reads the results');
+  assert.ok(text.includes('CI runs scripts/report.mjs and writes to reports/, which is not tracked.'), 'the other doors');
+});
+
+// A runner that finds its tests at run time, as page.js words it:
+// fixtures/atlas/godot-discovery gives this sentence in the markdown
+// (packages/atlas/adapter/page-godot-discovery.test.js).
+test('a runner that finds its tests at run time reads with what it finds, as the markdown words it', () => {
+  const ci = { checks: [], checksCount: 0, checksMore: 0, file: '.github/workflows/ci.yml', found: [{ by: 'tools/headless.gd', what: 'the 2 test suites under tests/' }], id: '.github/workflows/ci.yml', landings: [], name: 'ci', pushes: false, reach: [], runs: ['tools/headless.gd'], runsCount: 1, runsMore: 0, sends: [], stages: [], triggers: ['on a pull request'] };
+  const text = plain(render.renderPage({ ...page, doors: [...page.doors, ci] }, { repo: page.repo }));
+  assert.ok(text.includes('ci. On a pull request. Runs tools/headless.gd, which runs the 2 test suites under tests/ it finds at run time.'), 'what comes in');
 });
