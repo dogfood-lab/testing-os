@@ -459,7 +459,10 @@ describe('atlas page', () => {
     // it is the one the page follows, and the page says why.
     // The file count moves with every fixture added, so it is matched, not pinned.
     const derived = section(own.markdown, '## What this is').split('\n').find((line) => line.startsWith('23 parts'));
-    assert.match(derived ?? '', /^23 parts, mostly JavaScript \(\d+ files\), TypeScript \(\d+\), Python \(\d+\), Rust \(\d+\) and GDScript \(\d+\)\. Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository \(Release reaches 12 but commits nothing\)\. It publishes workspace packages to npm and a container image\. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm\.$/);
+    // The other languages follow by how many files each has, which moves with
+    // every fixture, so each is matched and not their order.
+    for (const language of ['TypeScript', 'Python', 'Rust', 'GDScript']) assert.match(derived ?? '', new RegExp(`^23 parts, mostly JavaScript \\(\\d+ files\\)[^.]*\\b${language} \\(\\d+\\)`));
+    assert.match(derived ?? '', /^23 parts, mostly JavaScript \(\d+ files\)(, [A-Za-z]+ \(\d+\))* and [A-Za-z]+ \(\d+\)\. Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository \(Release reaches 12 but commits nothing\)\. It publishes workspace packages to npm and a container image\. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm\.$/);
     const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
     assert.ok(followed.length <= 5);
