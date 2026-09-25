@@ -1,0 +1,16 @@
+name: CI
+on:
+  push:
+    branches: [main]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: node bin/tool.js init
+      - run: |
+          git add reports/
+          git commit -m "report"
+          git push

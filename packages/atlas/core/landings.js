@@ -3275,13 +3275,29 @@ function settleRelativePaths(files, doors) {
     const into = (door.kind === 'command' && !door.example) || door.kind === 'package' ? byInstall : byWorkflow;
     for (const path of door.reachFiles ?? []) into.add(path);
   }
+  // What a workflow that reaches a file commits is that workflow's output,
+  // made from this repository's root.
+  const staged = new Map();
+  for (const door of doors) {
+    if ((door.kind === 'command' && !door.example) || door.kind === 'package') continue;
+    const targets = [...(door.stages ?? []), ...(door.gated ?? []).flatMap((entry) => entry.stages ?? [])]
+      .map((stage) => String(stage).replace(/^\.\//, '').replace(/\/+$/, '')).filter((stage) => stage !== '' && stage !== '.');
+    if (targets.length === 0) continue;
+    for (const path of door.reachFiles ?? []) staged.set(path, [...(staged.get(path) ?? []), ...targets]);
+  }
+  const committed = (path, target) => (staged.get(path) ?? []).some((stage) => target === stage || target.startsWith(`${stage}/`) || stage.startsWith(`${target}/`));
   for (const file of files) {
-    const theirs = byInstall.has(file.path) && !byWorkflow.has(file.path);
+    // A command people install runs where they are, so what it writes under
+    // the directory it is run in is theirs, though a workflow also runs it
+    // once from this repository's root; only what such a workflow commits
+    // is this repository's.
+    const installed = byInstall.has(file.path);
     for (const [kind, count] of [['writes', 'outsideWrites'], ['reads', 'outsideReads']]) {
       if (!Array.isArray(file[kind])) continue;
       const kept = [];
       for (const entry of file[kind]) {
         const { relative, fixed, ...rest } = entry;
+        const theirs = installed && (!byWorkflow.has(file.path) || !committed(file.path, entry.target));
         // Under the working directory is under the person's, for a command
         // people run from wherever they are, whatever else a workflow has
         // the file do from the root: shipcheck init writes SHIP_GATE.md into
