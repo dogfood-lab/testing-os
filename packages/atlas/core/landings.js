@@ -2981,6 +2981,28 @@ function key(node) {
 }
 
 /**
+ * The places a door writes only through runs held to one gate, with that
+ * gate: every file that writes the place is reached by gated runs alone,
+ * and all of them by the same gate.
+ */
+function heldLandings(door, byPath, places, targets) {
+  const out = [];
+  for (const target of targets) {
+    const gates = new Map();
+    let open = false;
+    for (const group of door.reachByGate ?? []) {
+      const writes = group.files.some((path) => (byPath.get(path)?.writes ?? []).some((write) => write.target === target && write.confidence !== 'weak'
+        && guardsHit(door, path, write, places).length === 0));
+      if (!writes) continue;
+      if (group.when == null) open = true;
+      else gates.set(JSON.stringify(group.when), group.when);
+    }
+    if (!open && gates.size === 1) out.push({ target, when: [...gates.values()][0] });
+  }
+  return out;
+}
+
+/**
  * Where each door and each file lands, and who reads those places.
  *
  * A door lands on what it stages and on what every file in its reach writes;
@@ -3127,6 +3149,9 @@ export function attachLandings({ files, doors, boundaries, places }) {
       }
     }
     door.landings = [...targets].filter((target) => !spans.has(target) && !untracked.has(target)).sort(compare);
+    // A place only work held to one gate writes is written on that gate.
+    const held = heldLandings(door, byPath, places, door.landings);
+    if (held.length > 0) door.landingGates = held;
     // Output the repository does not keep is counted, never placed, and the
     // door names where it goes: a place spelled whole, not a shape.
     const outputs = [...targets].filter((target) => untracked.has(target) && !spans.has(target) && !target.includes('*'))

@@ -354,6 +354,7 @@ function readDoor(repoPath, file, repo) {
   }
 
   shipBuilds(shipping, runs, triggers, (when) => (when ? scopeOfGate(when) : { sends }));
+  unionPathGates([...runs.values()], triggers);
   const recorded = recordedRuns([...runs.values()]);
   const runKeys = new Set(recorded.all.map((run) => `${run.path}\0${run.job}`));
   const underRun = (path, job) => recorded.all.some((run) => run.job === job && run.directory && path.startsWith(run.path));
@@ -875,6 +876,31 @@ function settleExcept(gate, triggers) {
   }
   const branches = left.map((trigger) => trigger.branches ?? []);
   if (branches.every((list) => list.length > 0)) gate.branches = [...new Set([...(gate.branches ?? []), ...branches.flat()])].sort();
+}
+
+/**
+ * A path two gated jobs run runs on the triggers either holds on: each of
+ * its runs is held to that union (none, when it covers every trigger), so
+ * the page says the path under one gate rather than under none. A gate on
+ * inputs or on where a pull request comes from is left as it is.
+ */
+function unionPathGates(runs, triggers) {
+  const byPath = new Map();
+  for (const run of runs) {
+    if (!byPath.has(run.path)) byPath.set(run.path, []);
+    byPath.get(run.path).push(run);
+  }
+  for (const group of byPath.values()) {
+    const keys = new Set(group.map((run) => (run.when ? canonical(run.when) : null)));
+    if (keys.size < 2 || keys.has(null)) continue;
+    if (group.some((run) => run.when.inputs || run.when.fork != null || run.when.also)) continue;
+    const covered = triggers.filter((trigger) => group.some((run) => meets(trigger, run.when)));
+    const gate = coveredGate(covered, triggers);
+    for (const run of group) {
+      if (Object.keys(gate).length === 0) delete run.when;
+      else run.when = { ...gate };
+    }
+  }
 }
 
 function meets(trigger, gate) {

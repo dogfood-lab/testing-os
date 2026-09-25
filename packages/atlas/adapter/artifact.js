@@ -396,6 +396,7 @@ function carryDoor(door) {
       ? { gated: door.gated.map((entry) => ({ jobs: [...entry.jobs], pushes: entry.pushes, ...(entry.pushesForReview ? { pushesForReview: true } : {}), ...(entry.pushesTo ? { pushesTo: [...entry.pushesTo] } : {}), sends: [...entry.sends], stages: [...entry.stages], when: { ...entry.when } })) }
       : {}),
     landings: door.landings.filter((target) => !inAtlas(target)),
+    ...(door.landingGates?.length > 0 ? { landingGates: door.landingGates.filter((entry) => !inAtlas(entry.target)).map((entry) => ({ target: entry.target, when: { ...entry.when } })) } : {}),
     mentions: door.mentions.map((mention) => ({ job: mention.job, path: mention.path })),
     name: door.name,
     permissions: [...door.permissions],

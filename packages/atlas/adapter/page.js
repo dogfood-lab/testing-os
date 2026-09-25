@@ -984,8 +984,23 @@ function deeper(door) {
   }));
 }
 
+// The places a door writes on every run; a place only gated work writes is
+// said under its gate (heldWrites).
 function writes(ctx, door) {
-  return cover(door.landings ?? []).map(ctx.place);
+  const held = new Set((door.landingGates ?? []).map((entry) => entry.target));
+  return cover((door.landings ?? []).filter((target) => !held.has(target))).map(ctx.place);
+}
+
+// The places a door writes only on one trigger, a group per gate: "writes to
+// bundles/ on a schedule or by hand".
+function heldWrites(ctx, door) {
+  const groups = new Map();
+  for (const entry of door.landingGates ?? []) {
+    const key = JSON.stringify(sortKeys(entry.when));
+    if (!groups.has(key)) groups.set(key, { when: entry.when, targets: [] });
+    groups.get(key).targets.push(entry.target);
+  }
+  return [...groups.entries()].sort(([a], [b]) => cmp(a, b)).map(([, group]) => ({ places: cover(group.targets).map(ctx.place), when: gatePhrase(group.when), lead: gateLead(group.when) }));
 }
 
 // The places a door writes that the repository does not track, said so:
@@ -1024,6 +1039,7 @@ function doorSteps(ctx, door) {
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   const places = writes(ctx, door);
   if (places.length > 0) steps.push(`It writes to ${list(places)}.`);
+  for (const group of heldWrites(ctx, door)) steps.push(`${capitalize(group.lead)}, it writes to ${list(group.places)}.`);
   const outputs = untrackedWrites(door);
   if (outputs) steps.push(`It ${places.length > 0 ? 'also ' : ''}writes to ${outputs}.`);
   if ((door.stages ?? []).length > 0) steps.push(`It commits ${commitsClause(door)}.`);
@@ -1462,6 +1478,7 @@ function otherDoors(ctx, main) {
     const places = writes(ctx, door);
     const outputs = untrackedWrites(door);
     if (places.length > 0 || outputs) clauses.push(`writes to ${[...(places.length > 0 ? [list(places)] : []), ...(outputs ? [outputs] : [])].join(places.length > 1 ? ', and to ' : ' and to ')}`);
+    for (const group of heldWrites(ctx, door)) clauses.push(`writes to ${list(group.places)} ${group.when}`);
     const stages = door.stages ?? [];
     if (stages.length > 0) clauses.push(`commits ${commitsClause(door)}`);
     if ((door.programs ?? []).length > 0) clauses.push(`runs ${list(door.programs)}`);
@@ -3137,6 +3154,7 @@ function doorData(ctx, door) {
     id: doorKey(door),
     ...(installed(door) ? { kind: door.kind } : {}),
     landings: writes(ctx, door),
+    ...(heldWrites(ctx, door).length > 0 ? { landingsHeld: heldWrites(ctx, door) } : {}),
     name: door.name,
     ...(door.programs?.length > 0 ? { programs: [...door.programs] } : {}),
     pushes: door.pushes === true,

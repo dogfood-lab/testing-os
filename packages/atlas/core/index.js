@@ -190,6 +190,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     // not the door's.
     const ran = walkReach(door.runs.filter((run) => run.runKind !== 'checks' && !run.built).map((run) => run.path), graph);
     door.reachFiles = ran.files;
+    // The files each gate's runs reach, so a place only gated work writes
+    // is said under that gate (landings.js).
+    door.reachByGate = gateReach(door, graph);
     // A package is imported, never run as a program.
     door.executed = door.kind === 'package' ? [] : ran.executed;
     // A file the door runs that changes other repositories through the API
@@ -211,6 +214,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   // the door is credited with, which attachLandings has now decided.
   for (const door of doors) {
     delete door.reachFiles;
+    delete door.reachByGate;
     delete door.executed;
     for (const run of door.runs ?? []) delete run.passes;
   }
@@ -237,6 +241,25 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     landings,
     ...(unseen.length > 0 ? { unseen } : {}),
   };
+}
+
+// The files the runs held to each gate reach, one entry per gate, the
+// ungated runs under a null gate.
+function gateReach(door, graph) {
+  const groups = new Map();
+  for (const run of door.runs ?? []) {
+    if (run.runKind === 'checks' || run.built) continue;
+    const key = run.when ? JSON.stringify(sortedKeys(run.when)) : '';
+    if (!groups.has(key)) groups.set(key, { when: run.when ?? null, paths: [] });
+    groups.get(key).paths.push(run.path);
+  }
+  return [...groups.values()].map((group) => ({ when: group.when, files: walkReach(group.paths, graph).files }));
+}
+
+function sortedKeys(value) {
+  if (Array.isArray(value)) return value.map(sortedKeys);
+  if (value && typeof value === 'object') return Object.fromEntries(Object.keys(value).sort().map((key) => [key, sortedKeys(value[key])]));
+  return value;
 }
 
 /**

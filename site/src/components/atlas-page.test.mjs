@@ -452,6 +452,16 @@ test('a branch on a loop variable is said with its loop, as the markdown says it
   assert.ok(html.includes('Or, when <code>!command</code>, main does usage instead.'), 'a plain branch is unchanged');
 });
 
+test('a place only gated work writes is said under its gate, in the steps and among the other doors', () => {
+  const ci = page.doors.find((door) => door.name === 'CI');
+  const doors = page.doors.map((door) => (door === ci ? { ...door, landingsHeld: [{ lead: 'on a schedule or by hand', places: ['indexes/'], when: 'on a schedule or by hand' }] } : door));
+  const main = plain(render.renderPage({ ...page, doors, mainDoor: ci.id }, { repo: page.repo }));
+  assert.ok(main.includes('On a schedule or by hand, it writes to indexes/.'), 'the steps say the gate');
+  const other = plain(render.renderPage({ ...page, doors }, { repo: page.repo }));
+  const at = other.indexOf('CI runs', other.indexOf('The other doors'));
+  assert.ok(other.slice(at, at + 600).includes('writes to indexes/ on a schedule or by hand'), other.slice(at, at + 600));
+});
+
 test('with nothing written, the never-read section says so rather than that every place is read', () => {
   const html = render.renderPage({ ...page, unread: [], unreadNote: [], written: 0, unreadFiles: 0 }, { repo: page.repo });
   assert.ok(html.includes('<h2>Written but never read</h2>\n<p>No place this map can see is written, so none goes unread.</p></section>'));

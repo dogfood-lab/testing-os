@@ -510,6 +510,8 @@ function doorSteps(ctx, door) {
   steps.push(...heldText);
   for (const level of deeper(door)) steps.push(`That reaches ${list(level.entries.map((entry) => fileCount(ctx, entry)))}.`);
   if (arr(door.landings).length > 0) steps.push(`It writes to ${placesHtml(ctx, door.landings)}.`);
+  // A place only gated work writes is said under its gate, as page.js says it.
+  for (const group of arr(door.landingsHeld)) steps.push(`${capitalize(esc(str(group.lead)))}, it writes to ${placesHtml(ctx, arr(group.places))}.`);
   if (door.untracked) steps.push(`It ${arr(door.landings).length > 0 ? 'also ' : ''}writes to ${esc(str(door.untracked))}.`);
   if (arr(door.stages).length > 0) steps.push(`It commits ${commitsClause(ctx, door)}.`);
   if (arr(door.programs).length > 0) steps.push(`It runs ${esc(list(arr(door.programs).map(str)))}.`);
@@ -662,6 +664,7 @@ function otherDoors(ctx) {
     const outputs = door.untracked ? [{ html: esc(str(door.untracked)), text: str(door.untracked) }] : [];
     const written = [...(landings.length > 0 ? [{ html: placesHtml(ctx, landings), text: list(landings) }] : []), ...outputs];
     if (written.length > 0) clauses.push({ html: `writes to ${written.map((item) => item.html).join(joiner)}`, text: `writes to ${written.map((item) => item.text).join(joiner)}` });
+    for (const group of arr(door.landingsHeld)) clauses.push({ html: `writes to ${placesHtml(ctx, arr(group.places))} ${esc(str(group.when))}`, text: `writes to ${list(arr(group.places).map(str))} ${str(group.when)}` });
     const stages = arr(door.stages).map((place) => `${str(place)}${peopleWrite(door, place) ? ' (written by people)' : ''}`);
     if (stages.length > 0) {
       const push = pushWords(door);
