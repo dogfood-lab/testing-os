@@ -262,7 +262,35 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     doors,
     landings,
     ...(unseen.length > 0 ? { unseen } : {}),
+    ...(collectIgnored(repoPath, trackedSet).length > 0 ? { collectIgnored: collectIgnored(repoPath, trackedSet) } : {}),
   };
+}
+
+/**
+ * The tracked files a conftest.py keeps out of pytest's collection with a
+ * literal collect_ignore or collect_ignore_glob list, relative to its own
+ * directory: scripts named like tests that are no tests (sprite-foundry's
+ * GPU pipeline scripts).
+ */
+function collectIgnored(repoPath, tracked) {
+  const out = new Set();
+  for (const path of [...tracked].filter((item) => item === 'conftest.py' || item.endsWith('/conftest.py'))) {
+    let text = '';
+    try {
+      text = readFileSync(join(repoPath, path), 'utf8');
+    } catch {
+      continue;
+    }
+    const dir = path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '';
+    for (const match of text.matchAll(/^collect_ignore(_glob)?\s*(?:\+)?=\s*\[([^\]]*)\]/gm)) {
+      const patterns = [...match[2].matchAll(/["']([^"']+)["']/g)].map((item) => (dir ? `${dir}/${item[1]}` : item[1]).replace(/^\.\//, ''));
+      const isMatch = picomatch(patterns, { dot: true });
+      for (const file of tracked) {
+        if (isMatch(file) || patterns.some((pattern) => file.startsWith(`${pattern.replace(/\/+$/, '')}/`))) out.add(file);
+      }
+    }
+  }
+  return [...out].sort();
 }
 
 // The files the runs held to each gate reach, one entry per gate, the

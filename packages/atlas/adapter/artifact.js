@@ -256,6 +256,7 @@ export function buildArtifact(mapped, commit) {
   const tracked = boundaries.reduce((sum, boundary) => sum + boundary.files.length, 0) + overlaps.length + unassigned.length;
   return {
     boundaries,
+    ...(mapped.collectIgnored?.length > 0 ? { collectIgnored: mapped.collectIgnored.filter((path) => !inAtlas(path)) } : {}),
     // One manifest can declare several commands, so a door sorts by its file
     // and then its name.
     doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => cmp(a.file, b.file) || cmp(a.name, b.name) || cmp(a.kind ?? '', b.kind ?? '')),

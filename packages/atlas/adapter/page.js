@@ -2043,7 +2043,9 @@ function unrunTests(ctx) {
   // A test is a file named as one; a package's __init__.py or a conftest
   // under tests/ is none.
   const named = (path) => /(\.(test|spec)\.[cm]?[jt]sx?|(^|\/)test_[^/]*\.py|_test\.py)$/.test(path);
-  const left = [...ctx.fileOf.keys()].filter((path) => named(path) && !/(^|\/)(fixtures|__fixtures__|testdata)\//.test(path) && !ran(path)).sort(cmp);
+  // A script a conftest.py keeps out of collection is no test.
+  const ignored = new Set(ctx.structure.collectIgnored ?? []);
+  const left = [...ctx.fileOf.keys()].filter((path) => named(path) && !ignored.has(path) && !/(^|\/)(fixtures|__fixtures__|testdata)\//.test(path) && !ran(path)).sort(cmp);
   if (left.length === 0) return [];
   if (left.length === 1) return [`${left[0]} runs in no workflow.`];
   const shown = left.length > RUNS_SHOWN ? `${left.slice(0, RUNS_SHOWN).join(', ')} and ${count(left.length - RUNS_SHOWN, 'more', 'more')}` : list(left);
