@@ -2015,7 +2015,7 @@ function unrunTests(ctx) {
   const left = [...ctx.fileOf.keys()].filter((path) => named(path) && !/(^|\/)(fixtures|__fixtures__|testdata)\//.test(path) && !ran(path)).sort(cmp);
   if (left.length === 0) return [];
   if (left.length === 1) return [`${left[0]} runs in no workflow.`];
-  const shown = left.length > RUNS_SHOWN ? `${left.slice(0, RUNS_SHOWN).join(', ')} and ${count(left.length - RUNS_SHOWN, 'more')}` : list(left);
+  const shown = left.length > RUNS_SHOWN ? `${left.slice(0, RUNS_SHOWN).join(', ')} and ${count(left.length - RUNS_SHOWN, 'more', 'more')}` : list(left);
   return [`${count(left.length, 'test file')} run in no workflow: ${shown}.`];
 }
 
@@ -2966,7 +2966,7 @@ function limits(ctx, shownText) {
   // A tracked file no glob claims is in no part, so nothing above counts it.
   const loose = (ctx.structure.unassigned ?? []).map((file) => file.path).sort(cmp);
   if (loose.length > 0) {
-    const named = loose.length > RUNS_SHOWN ? `${loose.slice(0, RUNS_SHOWN).join(', ')} and ${count(loose.length - RUNS_SHOWN, 'more')}` : list(loose);
+    const named = loose.length > RUNS_SHOWN ? `${loose.slice(0, RUNS_SHOWN).join(', ')} and ${count(loose.length - RUNS_SHOWN, 'more', 'more')}` : list(loose);
     lines.push(`${count(loose.length, 'file')} ${loose.length === 1 ? 'belongs' : 'belong'} to no part: ${named}.`);
   }
   if (shownText) lines.push('Readers marked (found by text) come from scanning unparsed files.');
