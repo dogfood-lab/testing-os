@@ -2,6 +2,26 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Runners and frameworks the map now follows.** `turbo run <task>` runs the task in every workspace member that defines it; `pnpm <tool>` with no script of that name runs the tool; vitest `projects` run every member's tests; `next build` and `next dev` run `next.config.*` and the app's pages, layouts and routes, which are entries of the app's part; a dynamic import through a const table of paths imports every path; local reusable workflows and composite actions are followed into their steps; `subprocess` calls with `sys.executable -m` and the imports inside a `python -c` step are read. motif's CI and Release had "run no file"; they now reach seventeen parts.
+- **Publishes named by member.** A `for` over a directory glob that publishes is expanded (private members skipped, a `pnpm pack` tarball read as its package), `pnpm publish --filter` names its members, and each member a workflow publishes is a package door; the repository's own package is named beside another publish. motif's sixteen packages and storyboard-os's six are named where the page had said "a package, chosen at run time".
+- **Unresolved imports are named.** Up to three by file and specifier, with why ("`vitest.config.ts` probes `@vitest/coverage-v8`, which is not declared"); tracked files in no part and test files no workflow runs are said.
+- **A `.github` repository is described as one** when it holds `profile/README.md`, and a JSON-only package is "the data package people import".
+- **`init` keeps the map out of markdownlint** (markdownlint-cli2 ignores or `.markdownlintignore`), as it does prettier.
+
+### Fixed
+- **"Where to start" follows the entry inside its own part.** The chain goes to the next file the entry calls, then the order it imports in, a tie going to the file called first, then the one reaching most parts; a path of one file says "Start at X"; a script that imports and writes nothing is never an end and a one-object config never a start; a package's own entry is kept when a door builds it; when no path exists the widest other pull-request door that yields one is followed. ai-playtest, research-os and websketch-ir had one-file chains; storyboard-os ended on a tarball check.
+- **A build is a build.** tsup, a tsc that emits to an outDir and a library's vite build are builds, not checks; "since CI runs only tests" becomes "tests and checks" when it also checks, and names what it builds.
+- **Gates read as they are.** A gate on one event plus a run by hand is "on a schedule or by hand", `!=` gates keep the run by hand, a path several gated jobs run keeps the union of their gates and a place one gated job writes is said under it, a github-script `pulls.create` opens a pull request, the pull request's branch is said, and "an `issues` event" takes its article.
+- **Places.** A tracked `dist/` is a place like any tracked directory (mcp-tool-registry's eleven committed `dist/` files are now Generated); a file named at run time lands on its shape (`bundles/*.json`); an installed command's working-directory writes and reads belong to the person running it; `APPDATA`, `LOCALAPPDATA` and the `XDG_*` directories are the home directory.
+- **Python resolution.** setuptools `package-dir` and `packages.find` `where` are source roots, a module beside a script outside any package resolves first, and a distribution is known by its import name (armature's 1629 unresolved sites fall to 43; sovereignty's `xrpl-py` and audiobooker's `python-docx` resolve).
+- **Words.** Each site is named by its part when there is more than one; the first line leads with JSON data or Markdown when they hold most files; the order of work lists only calls into this repository's code, in code style; one published package is named without its directory; a private package's command says nothing ships it; `init` gives a docs/config tie to docs, report directories to data and an npm wrapper directory to code; a bash array is one assignment, never commands.
+
+### Changed
+- **This repository's own page:** the order of work is written as code; the start chain ends at `packages/findings/derive/load-records.js`, because dogfood-report's working-directory reads now belong to the person running it; the 159 unresolved imports are named with reasons; "1 file belongs to no part: packages/.gitkeep".
+
 ## [1.20.0] — 2026-09-25
 
 ### Added
