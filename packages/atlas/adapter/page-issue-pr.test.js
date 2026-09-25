@@ -23,7 +23,9 @@ describe('a gated job that opens a pull request', () => {
     roots.push(root);
     const structure = buildArtifact(mapRepository({ repoPath: root, boundaries: [{ name: 'scripts', globs: ['scripts/**'], role: 'code' }] }), '0'.repeat(40));
     const { markdown } = buildPage({ structure, statistics: {}, document: {}, repoName: 'fixture/issue-pr' });
-    assert.match(markdown, /It commits registry\.json and pushes to a branch for review, never to main, and opens a pull request, on an? `issues` event\./);
+    assert.match(markdown, /It commits registry\.json and pushes to a branch for review, never to main, and opens a pull request, on an `issues` event\./);
     assert.ok(!/never to main on an? `issues`/.test(markdown), markdown);
+    // The event's name takes the article its first sound does.
+    assert.ok(markdown.includes('On an `issues` event; on a push to main.'), markdown);
   });
 });

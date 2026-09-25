@@ -456,6 +456,12 @@ function cronWhen(cron) {
 }
 
 // A push filtered by tags and by branches starts on either, so both are named.
+// "a `push` event", "an `issues` event": the article the name's first
+// sound takes.
+function eventNoun(name) {
+  return `${/^[aeiou]/i.test(name) ? 'an' : 'a'} \`${name}\` event`;
+}
+
 function pushPhrases(trigger) {
   const tagged = trigger.tags?.length > 0
     ? `when a tag matching ${list(trigger.tags.map((tag) => `\`${tag}\``)).replace(/ and /g, ' or ')} is pushed`
@@ -474,7 +480,7 @@ export function triggerPhrases(door) {
     switch (trigger.event) {
       case 'repository_dispatch':
         if (trigger.types?.length > 0) {
-          for (const type of trigger.types) phrases.push(`when a repository sends a \`${type}\` event`);
+          for (const type of trigger.types) phrases.push(`when a repository sends ${eventNoun(type)}`);
         } else phrases.push('when a repository sends a dispatch');
         break;
       case 'schedule':
@@ -507,7 +513,7 @@ export function triggerPhrases(door) {
         byHand = true;
         break;
       default:
-        phrases.push(`on a \`${trigger.event}\` event`);
+        phrases.push(`on ${eventNoun(trigger.event)}`);
     }
   }
   if (byHand) phrases.push(phrases.length > 0 ? 'or by hand' : 'by hand');
@@ -733,7 +739,7 @@ export function gatePhrase(when) {
   if (when.fork != null) {
     const from = when.fork ? 'a pull request from a fork' : 'a pull request from this repository';
     if (when.event === 'pull_request' || !(when.also?.length > 0)) return `on ${from}`;
-    return `${list(when.also.map((event) => (event === 'push' ? 'on a push' : GATE_EVENTS[event] ?? `on a \`${event}\` event`))).replace(/ and /g, ', ')}, or ${from}`;
+    return `${list(when.also.map((event) => (event === 'push' ? 'on a push' : GATE_EVENTS[event] ?? `on ${eventNoun(event)}`))).replace(/ and /g, ', ')}, or ${from}`;
   }
   const inputs = inputWords(when.inputs);
   if (inputs) {
@@ -745,7 +751,7 @@ export function gatePhrase(when) {
   const branches = when.branches?.length > 0 ? list(when.branches).replace(/ and /g, ' or ') : null;
   if (when.tags) return 'on a tag push';
   if (when.event === 'push') return branches ? `on a push to ${branches}` : 'on a push';
-  const phrase = (event) => GATE_EVENTS[event] ?? `on a \`${event}\` event`;
+  const phrase = (event) => GATE_EVENTS[event] ?? `on ${eventNoun(event)}`;
   if (!when.event && when.except?.length > 0) {
     const held = `except ${list(when.except.map(phrase)).replace(/ and /g, ' or ')}`;
     return branches ? `on ${branches}, ${held}` : held;
