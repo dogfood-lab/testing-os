@@ -2,6 +2,21 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **The map no longer republishes workflow script text.** `structure.json` kept each step's `run:` text verbatim, so a repository whose CI greps its tree for secret-like strings (site-theme: `PRIVATE.KEY`, `sk_live_`, `sk_test_`, `aws_secret`) failed on its own committed map. A step is now kept as the job, the step and the programs it runs, never the script; the page's sentences are unchanged. site-theme's scan passes over a map from this engine and failed over one from 1.21.0.
+- **Tests and runs the map now recognises.** `python -m unittest discover` runs its start directory (`cd "$(dirname "$0")"` followed); a Python loop over a literal list of commands runs each; a `working-directory` holding a matrix value or a dispatch input is each directory it can be (accessibility-suite's three missed packages); files `conftest.py` keeps out of collection are no tests; a package's own `npm test` a workflow runs tests that part; `dotnet test` runs its project and `dotnet build`/`publish` are builds; `npm run <script> <args>` hands the args on, so a Tauri build through `npm --prefix app run tauri build` is read.
+- **Imports that now resolve.** Astro frontmatter; a `file:` dependency on this repository's own package; `import(pathToFileURL(x).href)` as an import, not a read; a directory put on `sys.path`; namespace packages; lazy-import tables; `[project.scripts]` targets under a `package-dir` mapping; "shares its name with a local module" only for a same-named file or a source-root directory. fx-dub's seventeen unresolved imports fall to one.
+- **The start chain.** Every arrow is an import or a call of the file before it, never the next name in an import list; a Python module holding only constants is no step or end.
+- **Doors and publishes.** A shipped root `action.yml`, or an unused `.github/actions/*`, is "an action other repositories use"; bins of a manifest outside the workspace that a workflow publishes or works in are doors; a Python library with no command gives "People import <name>"; a publish of a `"private": true` manifest sends nothing; lint, scan and coverage actions are said by what they do; `gh api` reads of other repositories are said; Dockerfile `COPY` sources are "packs … into an image", never "checks"; a `paths-ignore` trigger is "except when only the N paths it ignores change", and an echo-only workflow "runs only echo".
+- **Places.** A workflow that only reads and stages a place code writes is not its writer; a writer that reads untracked inputs makes its place mixed; a place with one writer that keeps its source inside says "except Z, which it reads and people write"; `sqlite3.connect` is a write and a test's restore is not; an `href` in a JavaScript object is a link; a literal argparse default is a path from where the command runs, and Python parameters settle through calls; a root that falls back to the working directory is the user's (style-dataset-lab's `projects/`); a step's own shell write keeps its job's gate; local action inputs are filled from `with:`; tests count among a place's readers.
+- **Words.** The first line counts languages the map does not parse (Astro, C#, HTML, CSS, shell), names a second kind of data, and says "It deploys a site to GitHub Pages."; code parts the map cannot read are named and never counted tested; "N more", never "N mores"; a repeated unresolved import is said once; a directory is never named beside its parent; a Godot project named as a lab or tool is "the Godot project"; "verify.sh runs in no workflow"; `init` gives JSON-heavy directories the data role and never calls a package directory config.
+- **A test that could not fail.** `caller-roots.test.js` asserted the page never says "0 writes" with a regex whose word boundaries had been written as literal backspace characters, so `doesNotMatch` always passed; it now uses `\b`.
+
+### Changed
+- **This repository's own page** is regenerated for the new rules.
+
 ## [1.21.0] — 2026-09-25
 
 ### Added
