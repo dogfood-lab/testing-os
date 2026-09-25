@@ -1093,3 +1093,9 @@ test('a source a generated place keeps is named as the markdown names it', () =>
   const html = plain(render.renderPage({ ...page, generated }, { repo: page.repo }));
   assert.ok(html.includes('viewer/ is written by scripts/build_viewer.py, except viewer/template.html, which it reads and people write.'), html);
 });
+
+test('the tests reading a place a hand edit breaks are counted, as the markdown counts them', () => {
+  const breaks = [{ kind: 'place', target: 'data/graphs.json', writers: ['tools'], readers: ['scripts', 'site'], tests: 2 }];
+  const html = plain(render.renderPage({ ...page, breaks }, { repo: page.repo }));
+  assert.ok(html.includes('data/graphs.json is written by tools and read by scripts and site, and by 2 tests; a hand edit reaches every reader.'), html);
+});

@@ -704,7 +704,8 @@ function breakLine(ctx, entry) {
     const writers = arr(entry.writers).map((part) => esc(ctx.name(part)));
     const readers = arr(entry.readers).map((part) => esc(ctx.name(part)));
     const comma = writers.length > 1 ? ',' : '';
-    return `<strong>${pathHtml(ctx, entry.target)}</strong> is written by ${list(writers)}${comma} and read by ${list(readers)}; a hand edit reaches every reader.`;
+    const tests = Number(entry.tests) > 0 ? `, and by ${count(Number(entry.tests), 'test')}` : '';
+    return `<strong>${pathHtml(ctx, entry.target)}</strong> is written by ${list(writers)}${comma} and read by ${list(readers)}${tests}; a hand edit reaches every reader.`;
   }
   const importedBy = arr(entry?.importedBy).map((part) => ctx.name(part));
   const imported = importedBy.length === 0

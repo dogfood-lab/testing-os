@@ -1762,7 +1762,7 @@ function breaks(ctx) {
   // A stamped file is written by people; a hand edit is how it changes.
   // A test reading a place is how it is checked, not what it breaks.
   const places = writtenPlaces(ctx)
-    .map((place) => ({ ...place, readers: place.readers.filter((reader) => !reader.fromTests) }))
+    .map((place) => ({ ...place, tests: new Set(place.readers.filter((reader) => reader.fromTests).map((reader) => reader.path)).size, readers: place.readers.filter((reader) => !reader.fromTests) }))
     .filter((place) => !place.stamped && place.readers.length >= 2)
     .sort((a, b) => b.readers.length - a.readers.length || cmp(a.target, b.target))
     .slice(0, PLACE_BREAKS)
@@ -1771,6 +1771,8 @@ function breaks(ctx) {
       target: ctx.place(place.target),
       writers: partsOf(ctx, place.writers),
       readers: partsOf(ctx, place.readers.map((reader) => reader.path)),
+      // The tests that read it are readers a hand edit reaches too.
+      ...(place.tests > 0 ? { tests: place.tests } : {}),
     }));
   const parts = ctx.boundaries
     .map((boundary) => ({
@@ -1816,7 +1818,8 @@ function breakLine(ctx, entry) {
   if (entry.kind === 'place') {
     const comma = entry.writers.length > 1 ? ',' : '';
     const writers = list(entry.writers.map(ctx.shown));
-    return `- **${entry.target}** is written by ${writers}${comma} and read by ${list(entry.readers.map(ctx.shown))}; a hand edit reaches every reader.`;
+    const tests = entry.tests > 0 ? `, and by ${count(entry.tests, 'test')}` : '';
+    return `- **${entry.target}** is written by ${writers}${comma} and read by ${list(entry.readers.map(ctx.shown))}${tests}; a hand edit reaches every reader.`;
   }
   const fromTests = entry.importedByTests ?? [];
   const path = entry.doors === 0 ? 'no door' : count(entry.doors, 'door');
