@@ -113,14 +113,14 @@ describe('F-d2d06af3 — buildAmendPrompt neutralizes the invisible/deception cl
       phase: 'amend',
       findings: [{
         finding_id: 'F-4', severity: 'LOW',
-        file_path: 'C:\\Users\\dev\\repo\\file.js',
+        file_path: 'D:\\work\\repo\\file.js',
         description: 'a description mentioning a "quoted term" verbatim',
         line_number: 9,
       }],
     });
-    assert.ok(prompt.includes('C:\\Users\\dev\\repo\\file.js'),
+    assert.ok(prompt.includes('D:\\work\\repo\\file.js'),
       `a Windows-style path must survive with single backslashes, got:\n${JSON.stringify(prompt)}`);
-    assert.ok(!prompt.includes('C:\\\\Users'), 'must NOT contain a doubled backslash');
+    assert.ok(!prompt.includes('D:\\\\work'), 'must NOT contain a doubled backslash');
     assert.ok(prompt.includes('"quoted term"'), 'a literal double-quote must survive unescaped');
   });
 

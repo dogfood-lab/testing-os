@@ -51,7 +51,7 @@ describe('neutralizeInvisibleControls — the security half only (F-d2d06af3)', 
     // This is the whole point: on an agent-read prompt, legitimate quoted
     // paths/code must survive byte-for-byte. escapeReasonForDisplay would
     // double the backslash and escape the quote; the neutralizer must not.
-    const input = 'const p = "C:\\\\Users\\\\a"; // a "quoted" path';
+    const input = 'const p = "D:\\\\work\\\\a"; // a "quoted" path';
     assert.equal(neutralizeInvisibleControls(input), input,
       'ordinary backslash/quote prose must pass through unmodified');
 
