@@ -668,7 +668,7 @@ function publishPhrase(sends) {
  */
 export function sendPhrases(door) {
   const sends = door.sends ?? {};
-  const phrases = [];
+  const phrases = [...actionPhrases(door.uses ?? [])];
   const clones = new Map();
   for (const entry of door.elsewhere ?? []) {
     if (entry.clone == null || (entry.stages ?? []).length === 0) continue;
@@ -703,6 +703,32 @@ export function sendPhrases(door) {
     if (held.length === 0) continue;
     const joined = clauseList(held);
     phrases.push(`${joined}${joined.includes(',') ? ',' : ''} ${when}`);
+  }
+  return phrases;
+}
+
+// What a job does through an action, for the actions whose work is a check
+// or a report of its own: a job made only of `uses:` steps runs no file this
+// map can see, and is said by what its actions do.
+const ACTIONS = new Map([
+  ['davidanson/markdownlint-cli2-action', 'lints Markdown with markdownlint-cli2'],
+  ['lycheeverse/lychee-action', 'checks links with lychee'],
+  ['trufflesecurity/trufflehog', 'scans for secrets with TruffleHog'],
+  ['gitleaks/gitleaks-action', 'scans for secrets with Gitleaks'],
+  ['github/codeql-action', 'scans code with CodeQL'],
+  ['actions/dependency-review-action', 'reviews dependency changes'],
+  ['ludeeus/action-shellcheck', 'lints shell scripts with ShellCheck'],
+  ['pre-commit/action', 'runs the pre-commit hooks'],
+  ['codecov/codecov-action', 'uploads coverage to Codecov'],
+]);
+
+function actionPhrases(uses) {
+  const phrases = [];
+  for (const action of uses) {
+    const name = String(action).toLowerCase();
+    const found = [...ACTIONS.keys()].find((key) => name === key || name.startsWith(`${key}/`));
+    const phrase = found ? ACTIONS.get(found) : null;
+    if (phrase && !phrases.includes(phrase)) phrases.push(phrase);
   }
   return phrases;
 }
