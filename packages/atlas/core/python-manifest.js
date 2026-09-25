@@ -94,6 +94,27 @@ function rootPackageDir(tables) {
   return dir && !dir.startsWith('/') && !dir.split('/').includes('..') ? dir : null;
 }
 
+/**
+ * The directories, relative to a pyproject.toml's own, that setuptools
+ * installs top-level modules from: package-dir's "" entry, and each where
+ * of packages.find. They are source roots, as src/ is.
+ *
+ * @param {string} text the pyproject.toml
+ * @returns {string[]}
+ */
+export function setuptoolsRoots(text) {
+  const tables = parseToml(text);
+  const out = [];
+  const add = (dir) => {
+    const clean = String(dir).replace(/^\.\//, '').replace(/\/+$/, '');
+    if (clean && clean !== '.' && !clean.startsWith('/') && !clean.split('/').includes('..') && !out.includes(clean)) out.push(clean);
+  };
+  const root = rootPackageDir(tables);
+  if (root) add(root);
+  for (const dir of strings(tables.get('tool.setuptools.packages.find')?.where ?? '')) add(dir);
+  return out;
+}
+
 function projectNames(tables) {
   const names = [];
   for (const table of ['project', 'tool.poetry']) {

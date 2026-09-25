@@ -6,7 +6,7 @@ import enhancedResolve from 'enhanced-resolve';
 import { bundledSource, bundleIndex } from './bundles.js';
 import { commandLines, repositoryView } from './commands.js';
 import { isTestFile, isTestMaterial } from './landings.js';
-import { declaredDependencies, importName } from './python-manifest.js';
+import { declaredDependencies, importName, setuptoolsRoots } from './python-manifest.js';
 import { resolveRust } from './rust-modules.js';
 import { resolveGodot } from './gdscript.js';
 import { projectFile, tscOutput } from './tool-configs.js';
@@ -188,7 +188,7 @@ function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
     // Read once per map, on the first Python site: the roots imports are
     // looked up from and the names the project declares it depends on.
     python() {
-      python ??= { roots: sourceRoots(tracked), declared: declaredDependencies(repo, tracked) };
+      python ??= { roots: sourceRoots(tracked, repo), declared: declaredDependencies(repo, tracked) };
       return python;
     },
     resolverFor(dir) {
@@ -734,6 +734,14 @@ function resolvePython(ctx, fromAbs, specifier) {
   const python = ctx.python();
   const hit = pythonAbsolute(specifier, python.roots, ctx.tracked);
   if (hit) return { outcome: 'file', path: hit };
+  // A script's own directory is first on its import path, and pytest puts a
+  // test's there too: a helper, a stub or a conftest beside the file.
+  // A module inside a package (its directory holds __init__.py) is imported
+  // by its package name, so its own directory is on no path.
+  const own = posixDirname(fromRel);
+  const packaged = ctx.tracked.has(own ? `${own}/__init__.py` : '__init__.py');
+  const beside = packaged ? null : pythonAbsolute(specifier, [own || '.'], ctx.tracked);
+  if (beside) return { outcome: 'file', path: beside };
   const first = specifier.split('.')[0];
   if (PYTHON_STDLIB.has(first)) return { outcome: 'external' };
   const present = segmentPresent(ctx.tracked, first);
@@ -787,7 +795,7 @@ function pythonAbsolute(specifier, roots, tracked) {
 
 // Each packaging directory and its src/, then the repository's own src/ and
 // root, which is where a script run from a checkout imports from.
-function sourceRoots(tracked) {
+function sourceRoots(tracked, repo = null) {
   const packaging = [];
   const dirs = new Set();
   for (const file of tracked) {
@@ -802,6 +810,20 @@ function sourceRoots(tracked) {
     if (!roots.includes(dir)) roots.push(dir);
   };
   for (const dir of packaging) {
+    // setuptools' package-dir and packages.find where are roots as src/ is.
+    const manifest = dir === '.' ? 'pyproject.toml' : `${dir}/pyproject.toml`;
+    if (repo != null && tracked.has(manifest)) {
+      let text = '';
+      try {
+        text = readFileSync(join(repo, manifest), 'utf8');
+      } catch {
+        text = '';
+      }
+      for (const root of setuptoolsRoots(text)) {
+        const at = dir === '.' ? root : `${dir}/${root}`;
+        if (dirs.has(at)) add(at);
+      }
+    }
     const src = dir === '.' ? 'src' : `${dir}/src`;
     if (dirs.has(src)) add(src);
     add(dir);
