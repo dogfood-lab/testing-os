@@ -642,7 +642,10 @@ function publishPhrase(sends) {
     const where = REGISTRIES[name] ?? name;
     const entries = packages.filter((entry) => entry.registry === name);
     const named = entries.filter((entry) => entry.name != null);
-    if (named.length > 0) items.push({ text: `${list(named.map((entry) => (entry.dir ? `${entry.name} (${entry.dir})` : entry.name)))} to ${where}`, compound: named.length > 1 || entries.length > named.length });
+    // A package's directory tells two apart; one alone is named by itself,
+    // so a wrapper under npm/ never reads "@s/tool (npm) to npm".
+    const spell = (entry) => (entry.dir && named.length > 1 ? `${entry.name} (${entry.dir})` : entry.name);
+    if (named.length > 0) items.push({ text: `${list(named.map(spell))} to ${where}`, compound: named.length > 1 || entries.length > named.length });
     for (const entry of entries.filter((item) => item.name == null)) items.push({ text: `${chosenPackage(entry)} to ${where}${chosenBy(entry)}`, compound: entry.chosenBy != null });
   }
   if (to.includes(IMAGE)) items.push({ text: 'a container image', compound: false });
