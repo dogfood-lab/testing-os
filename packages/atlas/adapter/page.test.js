@@ -466,7 +466,8 @@ describe('atlas page', () => {
     // The other languages follow by how many files each has, which moves with
     // every fixture, so each is matched and not their order.
     for (const language of ['TypeScript', 'Python', 'Rust', 'GDScript']) assert.match(derived ?? '', new RegExp(`^23 parts, mostly JavaScript \\(\\d+ files\\)[^.]*\\b${language} \\(\\d+\\)`));
-    assert.match(derived ?? '', /^23 parts, mostly JavaScript \(\d+ files\)(, [A-Za-z]+ \(\d+\))* and [A-Za-z]+ \(\d+\)\. Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository \(Release reaches 12 but commits nothing\)\. It publishes workspace packages to npm and a container image\. It deploys a site to GitHub Pages\. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm\.$/);
+    // A language this map does not parse is named too, C# among them.
+    assert.match(derived ?? '', /^23 parts, mostly JavaScript \(\d+ files\)(, [A-Za-z#+]+ \(\d+\))* and [A-Za-z#+]+ \(\d+\)\. Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository \(Release reaches 12 but commits nothing\)\. It publishes workspace packages to npm and a container image\. It deploys a site to GitHub Pages\. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm\.$/);
     const happens = section(own.markdown, '## What happens through Ingest dogfood submission').split('\n');
     const followed = happens.filter((line) => /^ {3}\d+\. \*\*/.test(line));
     assert.ok(followed.length <= 5);
