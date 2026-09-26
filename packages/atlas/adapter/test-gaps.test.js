@@ -73,6 +73,9 @@ describe('G3 command-untested', () => {
     assert.equal(g3.facts.command, 'gapcli');
     assert.equal(g3.facts.entry, 'bin/gapcli.js');
     assert.match(g3.source.text, /shipcheck hard gate D1/);
+    // One entry installed under two names is one finding, naming both.
+    assert.equal(ofRule(fired, 'G3').length, 1);
+    assert.deepEqual(g3.facts.commands, ['gapcli', 'gc']);
   });
 
   it('stays silent when a test runs the command', () => {

@@ -5,7 +5,8 @@ An Atlas fixture where every test-gap rule fires (docs/atlas-test-gaps.spec.md):
 - G1: tools/ is Python, and nothing in this JavaScript repository runs or
   holds a Python test.
 - G2: e2e/flow.test.ts runs in no workflow, since CI runs `vitest run --dir test`.
-- G3: package.json installs gapcli, and no test runs it.
+- G3: package.json installs gapcli, also as gc, and no test runs it: one
+  finding for the one entry, naming both.
 - G4: CI runs Vitest without coverage.
 - G6: src/parse.ts catches and throws, and no test imports or runs it.
 

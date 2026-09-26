@@ -254,20 +254,23 @@ function coverageRule({ attributed, notAttributed }) {
 // installs.
 function commandRule(doors, reach, workflows) {
   const started = new Set(workflows.flatMap((door) => (door.runs ?? []).filter((run) => run.runKind === 'executes' && !run.built && !run.directory).map((run) => run.path)));
-  const out = [];
+  // One entry installed under several names is one finding: a test that
+  // runs it by any of them runs it.
+  const byEntry = new Map();
   for (const door of doors) {
     if (door.kind !== 'command' || door.app || door.example) continue;
     const entry = (door.runs ?? []).find((run) => run.runKind === 'executes')?.path;
     if (!entry || reach.files.has(entry) || reach.ran.has(entry) || started.has(entry)) continue;
-    out.push({
-      rule: 'G3',
-      path: entry,
-      facts: { command: door.name, entry, manifest: door.file, reach: 'no test imports or runs it, and no workflow starts it' },
-      suggest: { text: `an end-to-end test that runs ${door.name} as a person does: start it with its arguments and check its output and exit code` },
-      source: SMOKE_GATE,
-    });
+    if (!byEntry.has(entry)) byEntry.set(entry, { entry, manifest: door.file, names: [] });
+    byEntry.get(entry).names.push(door.name);
   }
-  return out;
+  return [...byEntry.values()].map(({ entry, manifest, names }) => ({
+    rule: 'G3',
+    path: entry,
+    facts: { command: names[0], ...(names.length > 1 ? { commands: names } : {}), entry, manifest, reach: 'no test imports or runs it, and no workflow starts it' },
+    suggest: { text: `an end-to-end test that runs ${names[0]} as a person does: start it with its arguments and check its output and exit code` },
+    source: SMOKE_GATE,
+  }));
 }
 
 // The order of the code gaps, fixed: on a door's path first, then fan-in,
