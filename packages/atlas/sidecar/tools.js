@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { answered, CANNOT_SEE_SCHEMA, FACT_GROUP_SCHEMA, failed, freshnessSentences, provenance, PROVENANCE_SCHEMA } from './answer.js';
 import { changesAnswer } from './changes-tool.js';
+import { checkChangeAnswer } from './check-change-tool.js';
 import { explainAnswer } from './explain-tool.js';
 import { changedFiles, checkoutState, mapHashes } from './freshness.js';
 import { head, topLevel } from './git.js';
@@ -158,6 +159,69 @@ const TOOLS = [
     }, { base: { type: 'object', properties: { commit: { type: 'string' } }, required: ['commit'] } })),
     answer: (snapshot, repo, args) => changesAnswer(snapshot, repo, args.since),
   },
+  {
+    name: 'atlas_check_change',
+    title: 'Check a change against the map',
+    description: 'What a change does before it is committed, from the Atlas map and a re-read of only the changed files: '
+      + 'the tests that reach them, the doors that run them or pass through their parts, the imports between parts '
+      + 'gained or lost, files in no part, writers and readers gained or lost, and whether the map must be regenerated '
+      + 'before commit. A change to a manifest, a workflow, a configuration file the engine reads or the boundary file, '
+      + 'or a deleted file, gets "a full refresh is needed" and no partial answer. Give the changed files, or none to '
+      + 'take every file that differs from the map.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        files: {
+          type: 'array',
+          minItems: 1,
+          maxItems: 200,
+          items: { type: 'string', minLength: 1, maxLength: 1024 },
+          description: 'The changed files, from the repository root; left out, every file that differs from the map.',
+        },
+      },
+      additionalProperties: false,
+    },
+    outputSchema: outputSchema(PROVENANCE_SCHEMA, answerSchema({
+      type: 'object',
+      properties: { files: { type: ['array', 'null'], items: { type: 'string' } }, from: { type: 'string', enum: ['given', 'checkout'] } },
+      required: ['files', 'from'],
+    }, {
+      changed: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            path: { type: 'string' },
+            status: { type: 'string', enum: ['modified', 'added', 'deleted', 'untracked', 'unmerged', 'unchanged'] },
+            committed: { type: 'boolean' },
+            uncommitted: { type: 'boolean' },
+            part: { type: ['string', 'null'] },
+          },
+          required: ['path', 'status', 'committed', 'uncommitted', 'part'],
+        },
+      },
+      verdict: {
+        type: 'object',
+        properties: {
+          fullRefresh: {
+            type: 'object',
+            properties: { needed: { type: 'boolean' }, because: { type: 'array' } },
+            required: ['needed', 'because'],
+          },
+          regenerate: {
+            type: 'object',
+            properties: { needed: { type: 'boolean' }, because: { type: 'array', items: { type: 'string' } }, alsoStale: { type: 'array', items: { type: 'string' } } },
+            required: ['needed', 'because'],
+          },
+        },
+        required: ['fullRefresh', 'regenerate'],
+      },
+    })),
+    // It reads the changed files again itself, as they are and as the map
+    // read them; the generic re-read beside the map's view would repeat it.
+    rereadsItself: true,
+    answer: (snapshot, repo, args) => checkChangeAnswer(snapshot, repo, args),
+  },
 ];
 
 // The order the specification lists the questions in, by how often the
@@ -202,7 +266,7 @@ export async function callTool(name, args, context) {
   const sentences = [...freshnessSentences(snapshot, changed), ...result.sentences];
   // A file asked about that changed after the map is read again, and what
   // it does now is set beside what the map says it did.
-  const asked = new Set(result.files);
+  const asked = new Set(tool.rereadsItself ? [] : result.files);
   const rereadable = changed.map((entry) => entry.path).filter((path) => asked.has(path) && existsSync(join(repo.root, path))).slice(0, REREAD_CAP);
   if (rereadable.length > 0) {
     for (const reading of reread(snapshot, repo, rereadable)) {

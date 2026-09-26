@@ -22,10 +22,10 @@ export const READ_ONLY_ENV = Object.freeze({ GIT_NO_LAZY_FETCH: '1', GIT_OPTIONA
 /**
  * @param {string} cwd
  * @param {string[]} args the subcommand first
- * @param {{ encoding?: 'utf8' | 'buffer' }} [options]
+ * @param {{ encoding?: 'utf8' | 'buffer', input?: string }} [options]
  * @returns {{ ok: boolean, status: number|null, stdout: string|Buffer, stderr: string }}
  */
-export function git(cwd, args, { encoding = 'utf8' } = {}) {
+export function git(cwd, args, { encoding = 'utf8', input } = {}) {
   if (!READ_COMMANDS.has(args[0])) throw new Error(`atlas sidecar: git ${args[0]} is not a read command`);
   const result = spawnSync('git', ['-c', 'core.fsmonitor=false', ...args], {
     cwd,
@@ -33,6 +33,8 @@ export function git(cwd, args, { encoding = 'utf8' } = {}) {
     env: { ...process.env, ...READ_ONLY_ENV },
     maxBuffer: MAX_BUFFER,
     windowsHide: true,
+    // As bytes: spawnSync would read a string through the output encoding.
+    ...(input == null ? {} : { input: Buffer.from(input, 'utf8') }),
   });
   const stderr = Buffer.isBuffer(result.stderr) ? result.stderr.toString('utf8') : String(result.stderr ?? '');
   return { ok: result.status === 0, status: result.status, stdout: result.stdout ?? '', stderr };
@@ -60,6 +62,38 @@ export function inHistory(root, commit) {
   if (!/^[0-9a-f]{40}$/.test(String(commit))) return false;
   if (!git(root, ['cat-file', '-e', `${commit}^{commit}`]).ok) return false;
   return git(root, ['merge-base', '--is-ancestor', commit, 'HEAD']).ok;
+}
+
+/**
+ * The bytes of files at a commit, read in one git process: a map from each
+ * path to its content, a path the commit does not hold left out.
+ *
+ * @param {string} root
+ * @param {string} commit
+ * @param {string[]} paths
+ * @returns {Map<string, Buffer>}
+ */
+export function filesAt(root, commit, paths) {
+  const out = new Map();
+  if (paths.length === 0) return out;
+  const result = git(root, ['cat-file', '--batch'], { encoding: 'buffer', input: paths.map((path) => `${commit}:${path}`).join('\n') + '\n' });
+  if (!result.ok) return out;
+  const bytes = result.stdout;
+  let at = 0;
+  for (const path of paths) {
+    const end = bytes.indexOf(0x0a, at);
+    if (end === -1) break;
+    const header = bytes.subarray(at, end).toString('utf8');
+    at = end + 1;
+    // "<object> <type> <size>" then the content and a newline; "<name>
+    // missing" alone when the commit holds no such path.
+    const match = /^[0-9a-f]+ (\w+) (\d+)$/.exec(header);
+    if (!match) continue;
+    const size = Number(match[2]);
+    if (match[1] === 'blob') out.set(path, bytes.subarray(at, at + size));
+    at += size + 1;
+  }
+  return out;
 }
 
 /** Whether the clone holds only part of its history (a shallow clone). */

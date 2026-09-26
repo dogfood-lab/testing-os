@@ -25,7 +25,7 @@ function placeOf(snapshot, target) {
 // Whether the map holds a place: a tracked file, a directory of tracked
 // files, or a shape (records/*) inside one. A write elsewhere lands on
 // nothing the repository keeps, as the map counts it.
-function trackedPlace(snapshot, target) {
+export function trackedPlace(snapshot, target) {
   const files = snapshot.ctx.fileOf;
   if (files.has(target)) return true;
   const dir = target.includes('*') ? target.slice(0, Math.max(0, target.lastIndexOf('/'))) : target;

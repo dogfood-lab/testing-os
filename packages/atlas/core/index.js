@@ -308,7 +308,9 @@ export function rereadFiles({ repoPath, boundaries, paths, content = null, doors
   // what is, though nothing in the map can import it yet.
   const all = [...listed, ...paths.filter((path) => !known.has(path))];
   const tracked = new Set(all);
-  const places = trackedPlaces(all);
+  // What is tracked decides how a path in a file is placed, so a reading is
+  // reused only in a tree with the same tracked files.
+  const places = { ...trackedPlaces(all), key: createHash('sha256').update(all.join('\n')).digest('hex') };
   const matchers = boundaries.map(validateBoundary).map((boundary) => ({ ...boundary, isMatch: picomatch(boundary.globs, { dot: true }) }));
   const bytesOf = (path) => {
     if (content && paths.includes(path)) return content(path);
@@ -329,7 +331,7 @@ export function rereadFiles({ repoPath, boundaries, paths, content = null, doors
     for (const path of fresh) {
       const raw = bytesOf(path);
       if (raw == null) continue;
-      described.set(path, describeFile(repoPath, path, places, facts, spawned, attributes.get(path), builds, raw));
+      described.set(path, describeCached(repoPath, path, raw, attributes.get(path), places, { facts, spawned, builds }));
     }
   };
   const asked = paths.filter((path) => tracked.has(path));
@@ -358,9 +360,18 @@ export function rereadFiles({ repoPath, boundaries, paths, content = null, doors
   // path through a parameter, the files that call it. Reading every import
   // would read the largest modules of the repository for most changes.
   const pendingParams = [...described.values()].filter((file) => paths.includes(file.path) && (file.pendingParams ?? []).length > 0);
+  // A caller that settles a parameter's path names the function it calls;
+  // an importer that never names it cannot, and is not read.
+  const naming = (caller, names) => {
+    const text = bytesOf(caller)?.toString('utf8') ?? '';
+    return names.some((name) => text.includes(name));
+  };
   const settling = [
     ...helperOwners([...described.values()]),
-    ...(callersOf ? pendingParams.flatMap((file) => callersOf(file.path)) : []),
+    ...(callersOf ? pendingParams.flatMap((file) => {
+      const names = [...new Set((file.pendingParams ?? []).flatMap((pending) => pending.values.map((value) => value.param?.fn)).filter(Boolean))];
+      return callersOf(file.path).filter((caller) => naming(caller, names));
+    }) : []),
   ].filter((path) => tracked.has(path));
   if (settling.length > 0) {
     describe([...new Set(settling)].sort());
@@ -405,6 +416,39 @@ export function rereadFiles({ repoPath, boundaries, paths, content = null, doors
       ...(file.testsInside ? { testsInside: true } : {}),
     };
   });
+}
+
+// Readings of files by the re-read, kept whole for the next re-read of the
+// same bytes in the same tree: a change check reads the files that settle a
+// path once for each side of the change, and a session asks again. The
+// oldest go first past this many.
+const READINGS = new Map();
+const READINGS_KEPT = 500;
+
+/**
+ * describeFile, answered from READINGS when the same bytes of the same path
+ * were read in the same tree with the same text attributes. Resolution and
+ * settling change a reading in place, so each caller gets a copy.
+ */
+function describeCached(repoPath, path, raw, attributes, places, sinks) {
+  const key = [repoPath, places.key, path, createHash('sha256').update(raw).digest('hex'), JSON.stringify(attributes ?? {})].join('\0');
+  let entry = READINGS.get(key);
+  if (entry) {
+    READINGS.delete(key);
+  } else {
+    const facts = new Map();
+    const spawned = new Map();
+    const builds = new Map();
+    const file = describeFile(repoPath, path, places, facts, spawned, attributes, builds, raw);
+    entry = structuredClone({ file, fact: facts.get(path), spawned: spawned.get(path), builds: builds.get(path) });
+    if (READINGS.size >= READINGS_KEPT) READINGS.delete(READINGS.keys().next().value);
+  }
+  READINGS.set(key, entry);
+  const copy = structuredClone(entry);
+  if (copy.fact !== undefined) sinks.facts.set(path, copy.fact);
+  if (copy.spawned !== undefined) sinks.spawned.set(path, copy.spawned);
+  if (copy.builds !== undefined) sinks.builds.set(path, copy.builds);
+  return copy.file;
 }
 
 // The files that define the helpers the given files call for a path they

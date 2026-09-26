@@ -140,19 +140,34 @@ function commandFunction(fn, lang, hops) {
 function findCommandFunction(fn, lang, hops) {
   const named = lang.moduleFunction(fn);
   if (named == null || named.exported) return false;
-  let program = fn;
-  while (program.parent) program = program.parent;
   // An export clause, module.exports = { fn } and a recursive call are
   // mentions too; only the first two are ever outside the guard.
-  const mentions = [];
+  const mentions = mentionsOf(fn.tree, fn).get(named.name) ?? [];
+  const outside = mentions.filter((mention) => !(mention.startIndex >= fn.startIndex && mention.endIndex <= fn.endIndex));
+  return outside.length > 0 && outside.every((mention) => guardsAt(mention, lang, null, hops + 1).includes('main'));
+}
+
+const MENTION_INDEX = new WeakMap();
+
+// Every node of the tree that can mention a function, by the name it spells,
+// found in one walk of the whole file for all the functions asked about.
+function mentionsOf(tree, node) {
+  if (MENTION_INDEX.has(tree)) return MENTION_INDEX.get(tree);
+  let program = node;
+  while (program.parent) program = program.parent;
+  const index = new Map();
   const stack = [program];
   while (stack.length > 0) {
     const current = stack.pop();
-    const inside = current.startIndex >= fn.startIndex && current.endIndex <= fn.endIndex;
-    if (MENTIONS.has(current.type) && current.text === named.name && !inside) mentions.push(current);
+    if (MENTIONS.has(current.type)) {
+      const name = current.text;
+      if (!index.has(name)) index.set(name, []);
+      index.get(name).push(current);
+    }
     stack.push(...current.namedChildren);
   }
-  return mentions.length > 0 && mentions.every((mention) => guardsAt(mention, lang, null, hops + 1).includes('main'));
+  MENTION_INDEX.set(tree, index);
+  return index;
 }
 
 function within(node, container) {
