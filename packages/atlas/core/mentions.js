@@ -69,7 +69,7 @@ function isImportSource(node) {
   const parent = node.parent;
   if (parent == null) return false;
   if (parent.type === 'import_statement' || parent.type === 'export_statement') return true;
-  // require('./x.js') and import('./x.js') load what they name.
+  // A call of require, or of import, loads what it names.
   if (parent.type === 'arguments') {
     const callee = parent.parent?.childForFieldName('function');
     return callee?.type === 'import' || callee?.text === 'require';
