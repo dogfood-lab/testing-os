@@ -123,7 +123,7 @@ export function provenance({ repo = null, snapshot = null, head = null, changed 
   if (snapshot) {
     atlas.map = { snapshot: snapshot.id, commit: snapshot.commit, date: snapshot.date, engine: snapshot.engine, engineAge: engineAge(snapshot.engine) };
     const by = snapshot.engine ? `made by Atlas ${snapshot.engine}` : 'made by an Atlas that did not record its version';
-    const name = snapshot.id === 'committed' ? 'map' : snapshot.label;
+    const name = snapshot.id === 'committed' ? 'map' : 'refresh';
     parts.push(`${name} ${short(snapshot.commit)}, ${snapshot.date || 'undated'}, ${by}`);
   }
   if (repo) {

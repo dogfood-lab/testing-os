@@ -19,6 +19,8 @@ export const ERRORS = {
   ATLAS_SIDECAR_MAP_FORMAT: 'The map is not in a format this engine reads.',
   ATLAS_SIDECAR_MAP_FOREIGN: "The map names a commit that is not in this checkout's history.",
   ATLAS_SIDECAR_INVALID_ARGUMENTS: 'The tool was called with arguments it does not take.',
+  ATLAS_SIDECAR_CACHE_INSIDE: 'The refresh cache would be inside the repository.',
+  ATLAS_SIDECAR_REFRESH_FAILED: 'The refresh could not map the checkout.',
 };
 
 export function formatFailure(code, details, { exitCode = 1, whatToDo } = {}) {

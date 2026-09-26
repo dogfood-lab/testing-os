@@ -1,5 +1,5 @@
 import { createProtocol } from './protocol.js';
-import { callTool, listTools } from './tools.js';
+import { callTool, listTools, stopTools } from './tools.js';
 
 /**
  * `atlas mcp`: the sidecar on stdio. It reads one JSON-RPC message per line
@@ -51,6 +51,9 @@ export function serve({ cwd = process.cwd(), input = process.stdin, output = pro
       buffered = '';
       while (pending.size > 0) await Promise.allSettled([...pending]);
       await protocol.idle();
+      // A map still being made in the background is stopped, and its
+      // unfinished directory removed: the session it served has ended.
+      await stopTools();
       // A pipe takes writes asynchronously, and the caller exits once this
       // settles: the empty write's callback runs after every answer before it.
       await new Promise((done) => writeOut('', done));

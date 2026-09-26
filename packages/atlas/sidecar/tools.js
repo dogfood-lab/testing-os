@@ -9,6 +9,8 @@ import { head, topLevel } from './git.js';
 import { readCommittedMap } from './map.js';
 import { overviewAnswer } from './overview-tool.js';
 import { reachAnswer } from './reach-tool.js';
+import { createRefresher } from './refresh.js';
+import { refreshAnswer, REFRESH_ANSWER } from './refresh-tool.js';
 import { reread, rereadFacts } from './reread.js';
 import { outputSchema, problems } from './schema.js';
 
@@ -222,62 +224,105 @@ const TOOLS = [
     rereadsItself: true,
     answer: (snapshot, repo, args) => checkChangeAnswer(snapshot, repo, args),
   },
+  {
+    name: 'atlas_refresh',
+    title: 'Map the checkout again',
+    description: 'Maps this checkout again with this Atlas engine, in the background, into a cache outside the repository; '
+      + 'the repository is never written. The first call starts the map; later calls report its progress, then that it '
+      + 'finished. Answers keep using the map they had until the new one is swapped in whole, and every answer names '
+      + 'the map it used.',
+    inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+    outputSchema: outputSchema(PROVENANCE_SCHEMA, REFRESH_ANSWER),
+    refresh: true,
+  },
 ];
 
 // The order the specification lists the questions in, by how often the
 // evidence says each is asked: reachability first.
 const ORDER = ['atlas_reach', 'atlas_explain', 'atlas_overview', 'atlas_check_change', 'atlas_changes', 'atlas_refresh'];
 
-/** The tools as tools/list gives them, in a fixed order. */
-export function listTools() {
-  return [...TOOLS].sort((a, b) => ORDER.indexOf(a.name) - ORDER.indexOf(b.name)).map((tool) => ({
-    name: tool.name,
-    title: tool.title,
-    description: tool.description,
-    inputSchema: tool.inputSchema,
-    outputSchema: tool.outputSchema,
-    annotations: { title: tool.title, ...READ_ONLY },
-  }));
+/**
+ * The tools of one server process, with the refresher whose snapshots they
+ * answer from.
+ *
+ * @param {{ refresher?: ReturnType<typeof createRefresher> }} [options]
+ */
+export function createTools({ refresher = createRefresher() } = {}) {
+  /** The tools as tools/list gives them, in a fixed order. */
+  function listTools() {
+    return [...TOOLS].sort((a, b) => ORDER.indexOf(a.name) - ORDER.indexOf(b.name)).map((tool) => ({
+      name: tool.name,
+      title: tool.title,
+      description: tool.description,
+      inputSchema: tool.inputSchema,
+      outputSchema: tool.outputSchema,
+      annotations: { title: tool.title, ...READ_ONLY },
+    }));
+  }
+
+  /**
+   * The snapshot one answer is read from, chosen once: the newest refresh of
+   * this checkout that its history holds and the committed map does not
+   * postdate, else the committed map.
+   */
+  function snapshotFor(repo) {
+    const committed = readCommittedMap(repo.root);
+    const refreshed = refresher.snapshotFor(repo.root, committed.ok ? committed.snapshot.commit : null);
+    if (refreshed) return { ok: true, snapshot: refreshed };
+    return committed;
+  }
+
+  /**
+   * @param {string} name a tool listTools names
+   * @param {unknown} args the call's arguments
+   * @param {{ roots: string[], cwd: string }} context
+   * @returns {Promise<object>} the tool result: one text block and the structured content
+   */
+  async function callTool(name, args, context) {
+    const tool = TOOLS.find((entry) => entry.name === name);
+    const invalid = problems(tool.inputSchema, args);
+    if (invalid.length > 0) {
+      return failed(provenance(), { code: 'ATLAS_SIDECAR_INVALID_ARGUMENTS', details: invalid.slice(0, 8), whatToDo: `call ${name} with the arguments its input schema names` });
+    }
+    const repo = repositoryFor(context);
+    if (repo.error) return failed(provenance(), repo.error);
+    const read = snapshotFor(repo);
+    if (tool.refresh) return refreshAnswer(refresher, repo, read.ok ? read.snapshot : null);
+    if (!read.ok) return failed(provenance({ repo, head: head(repo.root) }), read.error);
+    const { snapshot } = read;
+    const state = checkoutState(repo.root, snapshot.commit);
+    const result = tool.answer(snapshot, repo, args);
+    if (!result.ok) return failed(provenance({ repo, snapshot, head: state.head }), result.error);
+    const known = mapHashes(snapshot.structure);
+    const files = [...result.files, ...pathsIn(result.answer, known)];
+    const changed = changedFiles(repo.root, snapshot, state, files);
+    const sentences = [...freshnessSentences(snapshot, changed), ...result.sentences];
+    // A file asked about that changed after the map is read again, and what
+    // it does now is set beside what the map says it did.
+    const asked = new Set(tool.rereadsItself ? [] : result.files);
+    const rereadable = changed.map((entry) => entry.path).filter((path) => asked.has(path) && existsSync(join(repo.root, path))).slice(0, REREAD_CAP);
+    if (rereadable.length > 0) {
+      for (const reading of reread(snapshot, repo, rereadable)) {
+        const view = rereadFacts(snapshot, reading);
+        result.answer.facts.push(...view.facts);
+        result.answer.cannotSee.push(...view.cannotSee);
+        sentences.push(view.sentence);
+      }
+    }
+    return answered(provenance({ repo, snapshot, head: state.head, changed }), result.answer, sentences);
+  }
+
+  return { listTools, callTool, stop: () => refresher.stopAll() };
 }
 
-/**
- * @param {string} name a tool listTools names
- * @param {unknown} args the call's arguments
- * @param {{ roots: string[], cwd: string }} context
- * @returns {Promise<object>} the tool result: one text block and the structured content
- */
-export async function callTool(name, args, context) {
-  const tool = TOOLS.find((entry) => entry.name === name);
-  const invalid = problems(tool.inputSchema, args);
-  if (invalid.length > 0) {
-    return failed(provenance(), { code: 'ATLAS_SIDECAR_INVALID_ARGUMENTS', details: invalid.slice(0, 8), whatToDo: `call ${name} with the arguments its input schema names` });
-  }
-  const repo = repositoryFor(context);
-  if (repo.error) return failed(provenance(), repo.error);
-  const read = readCommittedMap(repo.root);
-  if (!read.ok) return failed(provenance({ repo, head: head(repo.root) }), read.error);
-  const { snapshot } = read;
-  const state = checkoutState(repo.root, snapshot.commit);
-  const result = tool.answer(snapshot, repo, args);
-  if (!result.ok) return failed(provenance({ repo, snapshot, head: state.head }), result.error);
-  const known = mapHashes(snapshot.structure);
-  const files = [...result.files, ...pathsIn(result.answer, known)];
-  const changed = changedFiles(repo.root, snapshot, state, files);
-  const sentences = [...freshnessSentences(snapshot, changed), ...result.sentences];
-  // A file asked about that changed after the map is read again, and what
-  // it does now is set beside what the map says it did.
-  const asked = new Set(tool.rereadsItself ? [] : result.files);
-  const rereadable = changed.map((entry) => entry.path).filter((path) => asked.has(path) && existsSync(join(repo.root, path))).slice(0, REREAD_CAP);
-  if (rereadable.length > 0) {
-    for (const reading of reread(snapshot, repo, rereadable)) {
-      const view = rereadFacts(snapshot, reading);
-      result.answer.facts.push(...view.facts);
-      result.answer.cannotSee.push(...view.cannotSee);
-      sentences.push(view.sentence);
-    }
-  }
-  return answered(provenance({ repo, snapshot, head: state.head, changed }), result.answer, sentences);
-}
+const shared = createTools();
+
+/** The tools of this process, as the server lists them. */
+export const listTools = shared.listTools;
+/** A call to one of this process's tools. */
+export const callTool = shared.callTool;
+/** Stops a refresh still running when the server's input closes. */
+export const stopTools = shared.stop;
 
 // Every tracked path an answer's facts name, in the order they appear, so
 // the provenance can say which of them changed after the map.

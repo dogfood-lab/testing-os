@@ -90,30 +90,8 @@ export function mapCommand(cwd, argv = []) {
   process.stdout.write(ignoredNotice(boundary));
   const commit = head(repo);
   if (!commit) return usage('atlas: git rev-parse HEAD failed');
-  const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
-  const artifact = buildArtifact(mapped, commit);
-  const committed = committedMap(repo);
-  const statistics = buildStatistics({
-    repo,
-    commit,
-    document: boundary,
-    artifact,
-    generatedAt: new Date().toISOString(),
-    priorFloor: priorFloor(committed, previous, boundary),
-  });
-  const page = buildPage({
-    structure: artifact,
-    statistics,
-    document: boundary,
-    repoName: origin ?? manifestName(repo) ?? basename(repo),
-    defaultBranch: defaultBranch(repo),
-    changes: changesSince(committed ?? baseline, artifact, { repoPath: repo }),
-  });
-  const atlasDir = join(repo, 'atlas');
-  writeArtifactSync(join(atlasDir, 'structure.json'), serializeArtifact(artifact));
-  writeArtifactSync(join(atlasDir, 'statistics.json'), serializeStatistics(statistics));
-  writeArtifactSync(join(atlasDir, 'README.md'), page.markdown);
-  writeArtifactSync(join(atlasDir, 'page.json'), page.json);
+  const { mapped, artifact, statistics, page } = buildMap({ repo, boundary, commit, origin, previous, baseline });
+  writeMap(join(repo, 'atlas'), { artifact, statistics, page });
   let divergenceMs = null;
   if (flags.divergence) {
     const started = Date.now();
@@ -149,6 +127,48 @@ export function mapCommand(cwd, argv = []) {
     ].join('\n'),
   );
   return 0;
+}
+
+/**
+ * A map of a checkout, made and not written: the structure, the statistics
+ * and the page, as atlas map writes them to atlas/ and the sidecar's refresh
+ * writes them to its cache. progress is told each stage as it starts.
+ *
+ * @param {{ repo: string, boundary: object, commit: string, origin?: string|null,
+ *   previous?: object|null, baseline?: object|null, progress?: (phase: string) => void }} input
+ */
+export function buildMap({ repo, boundary, commit, origin = null, previous = null, baseline = null, progress = () => {} }) {
+  progress('reading the tracked files');
+  const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
+  const artifact = buildArtifact(mapped, commit);
+  const committed = committedMap(repo);
+  progress('reading the history');
+  const statistics = buildStatistics({
+    repo,
+    commit,
+    document: boundary,
+    artifact,
+    generatedAt: new Date().toISOString(),
+    priorFloor: priorFloor(committed, previous, boundary),
+  });
+  progress('writing the page');
+  const page = buildPage({
+    structure: artifact,
+    statistics,
+    document: boundary,
+    repoName: origin ?? manifestName(repo) ?? basename(repo),
+    defaultBranch: defaultBranch(repo),
+    changes: changesSince(committed ?? baseline, artifact, { repoPath: repo }),
+  });
+  return { mapped, artifact, statistics, page };
+}
+
+/** The four map files, each written whole or not at all. */
+export function writeMap(dir, { artifact, statistics, page }) {
+  writeArtifactSync(join(dir, 'structure.json'), serializeArtifact(artifact));
+  writeArtifactSync(join(dir, 'statistics.json'), serializeStatistics(statistics));
+  writeArtifactSync(join(dir, 'README.md'), page.markdown);
+  writeArtifactSync(join(dir, 'page.json'), page.json);
 }
 
 export function checkCommand(cwd) {
@@ -320,7 +340,8 @@ function parseDiffArgs(argv) {
   return { base, json };
 }
 
-function repositoryName(repo) {
+/** The org/repo a GitHub origin names, or null for any other origin or none. */
+export function repositoryName(repo) {
   const result = spawnSync('git', ['remote', 'get-url', 'origin'], { cwd: repo, encoding: 'utf8' });
   if (result.status !== 0) return null;
   const match = /github\.com[:/]([^/\s]+)\/([^/\s]+?)(?:\.git)?\s*$/i.exec(result.stdout.trim());

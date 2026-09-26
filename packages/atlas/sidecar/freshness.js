@@ -88,24 +88,28 @@ function hashAt(root, path, attributes, fromHead) {
  */
 export function changedFiles(root, snapshot, state, paths) {
   const hashes = mapHashes(snapshot.structure);
-  // A committed change is one the map does not already hold: a file whose
-  // bytes still hash to what the map recorded was mapped as it is now.
-  const settled = new Map();
-  const heldByMap = (path) => {
-    if (!settled.has(path)) settled.set(path, hashes.has(path) && hashAt(root, path, attributes(), state.uncommitted.has(path)) === hashes.get(path));
-    return settled.get(path);
-  };
   let cached = null;
   const attributes = () => {
-    cached ??= textAttributes(root, [...hashes.keys()].filter((path) => path === '.gitattributes' || path.endsWith('/.gitattributes') || state.committed.has(path)));
+    cached ??= textAttributes(root, [...hashes.keys()].filter((path) => path === '.gitattributes' || path.endsWith('/.gitattributes') || state.committed.has(path) || state.uncommitted.has(path)));
     return cached;
+  };
+  // Whether the map holds a file's bytes as they are in the working tree, or
+  // at HEAD: a map made on a working tree, committed or refreshed, recorded
+  // the edit it was made with, and that edit is no change after it.
+  const held = new Map();
+  const heldAt = (path, fromHead) => {
+    const key = `${fromHead ? 'head' : 'tree'}\0${path}`;
+    if (!held.has(key)) held.set(key, hashes.has(path) && hashAt(root, path, attributes(), fromHead) === hashes.get(path));
+    return held.get(key);
   };
   // A directory changed when a file under it did.
   const under = (keys, path) => [...keys].filter((key) => key === path || key.startsWith(`${path}/`));
   const out = [];
   for (const path of [...new Set(paths)].filter((item) => !inAtlas(item))) {
-    const uncommitted = under(state.uncommitted.keys(), path).length > 0;
-    const committed = under(state.committed, path).some((key) => !heldByMap(key));
+    const dirty = under(state.uncommitted.keys(), path).filter((key) => !heldAt(key, false));
+    const since = under(state.committed, path).filter((key) => !heldAt(key, state.uncommitted.has(key)));
+    const uncommitted = dirty.length > 0;
+    const committed = since.length > 0;
     if (committed || uncommitted) out.push({ path, committed, uncommitted });
   }
   return out;
