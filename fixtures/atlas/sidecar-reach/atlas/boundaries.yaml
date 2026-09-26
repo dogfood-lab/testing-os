@@ -1,0 +1,33 @@
+boundaries:
+  - name: app
+    globs:
+      - app/**
+    role: code
+  - name: build
+    globs:
+      - build/**
+    role: code
+  - name: data
+    globs:
+      - data/**
+    role: data
+  - name: lib
+    globs:
+      - lib/**
+    role: code
+  - name: root
+    globs:
+      - "*"
+    role: config
+  - name: site
+    globs:
+      - site/**
+    role: docs
+  - name: tools
+    globs:
+      - tools/**
+    role: code
+  - name: workflows
+    globs:
+      - .github/**
+    role: config

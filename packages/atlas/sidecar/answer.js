@@ -173,6 +173,7 @@ export const FACT_GROUP_SCHEMA = {
     cursor: { type: 'string' },
     grain: { type: 'string', enum: ['file', 'part'] },
     tests: { type: 'boolean' },
+    followed: { type: 'boolean' },
     window: { type: 'object' },
     confidence: { type: 'object' },
     source: { type: 'string', enum: ['map', 're-read'] },

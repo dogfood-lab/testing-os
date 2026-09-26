@@ -2,7 +2,7 @@
  * The part of JSON Schema the sidecar's own tool schemas use, and a checker
  * for tool arguments against them. The keywords are the ones draft-07 and
  * 2020-12 read alike (type, properties, required, additionalProperties,
- * items, enum, the length and range bounds, oneOf), so a client validates
+ * items, enum, pattern, the length and range bounds, oneOf), so a client validates
  * the output schemas whichever dialect it defaults to, and no reference is
  * used, so none has to be resolved.
  */
@@ -39,6 +39,7 @@ export function problems(schema, value, at = 'the arguments') {
   if (typeof value === 'string') {
     if (schema.minLength != null && value.length < schema.minLength) out.push(`${at} must not be empty`);
     if (schema.maxLength != null && value.length > schema.maxLength) out.push(`${at} must be at most ${schema.maxLength} characters`);
+    if (schema.pattern != null && !new RegExp(schema.pattern, 'u').test(value)) out.push(`${at} must match ${schema.pattern}`);
   }
   if (typeof value === 'number') {
     if (schema.minimum != null && value < schema.minimum) out.push(`${at} must be at least ${schema.minimum}`);

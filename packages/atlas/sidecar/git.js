@@ -61,3 +61,9 @@ export function inHistory(root, commit) {
   if (!git(root, ['cat-file', '-e', `${commit}^{commit}`]).ok) return false;
   return git(root, ['merge-base', '--is-ancestor', commit, 'HEAD']).ok;
 }
+
+/** Whether the clone holds only part of its history (a shallow clone). */
+export function isShallow(root) {
+  const result = git(root, ['rev-parse', '--is-shallow-repository']);
+  return result.ok && String(result.stdout).trim() === 'true';
+}

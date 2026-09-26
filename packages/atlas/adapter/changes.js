@@ -650,15 +650,18 @@ function when(since) {
 }
 
 /**
- * @param {object} previous the structure committed at HEAD
- * @param {object} current the structure just derived
- * @param {{ repoPath?: string, since?: { commit?: string, generatedAt?: string } }} [options]
- *   repoPath lets the new-unassigned rule read file sizes the way the check does
- * @returns {{ items: Array<{ kind: string, sentence: string, subjects: string[] }>, fileCounts: object, unchanged: boolean }}
+ * Every structural change between two structures, in the order of KINDS and,
+ * within a kind, as each kind orders its own; nothing is cut. The page and
+ * atlas diff cap this list; the sidecar pages through it.
+ *
+ * @param {object} previous
+ * @param {object} current
+ * @param {{ repoPath?: string|null }} [options]
+ * @returns {Array<{ kind: string, sentence: string, subjects: string[] }>}
  */
-export function compareStructures(previous, current, { repoPath = null, since = null } = {}) {
+export function structuralChanges(previous, current, { repoPath = null } = {}) {
   const shown = names(previous, current);
-  const structural = [
+  return [
     ...importItems(previous, current, shown),
     ...doorItems(previous, current),
     ...landingItems(previous, current),
@@ -667,6 +670,17 @@ export function compareStructures(previous, current, { repoPath = null, since = 
     ...partItems(previous, current, shown),
     ...unassignedItems(previous, current, repoPath),
   ];
+}
+
+/**
+ * @param {object} previous the structure committed at HEAD
+ * @param {object} current the structure just derived
+ * @param {{ repoPath?: string, since?: { commit?: string, generatedAt?: string } }} [options]
+ *   repoPath lets the new-unassigned rule read file sizes the way the check does
+ * @returns {{ items: Array<{ kind: string, sentence: string, subjects: string[] }>, fileCounts: object, unchanged: boolean }}
+ */
+export function compareStructures(previous, current, { repoPath = null, since = null } = {}) {
+  const structural = structuralChanges(previous, current, { repoPath });
   const counts = fileCounts(previous, current);
   if (structural.length === 0) {
     return {

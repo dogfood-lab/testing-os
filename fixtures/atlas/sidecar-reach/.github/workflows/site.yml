@@ -1,0 +1,12 @@
+name: Site
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node build/pack.js

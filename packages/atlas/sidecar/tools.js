@@ -1,8 +1,11 @@
 import { answered, CANNOT_SEE_SCHEMA, FACT_GROUP_SCHEMA, failed, provenance, PROVENANCE_SCHEMA } from './answer.js';
+import { changesAnswer } from './changes-tool.js';
 import { explainAnswer } from './explain-tool.js';
 import { changedFiles, checkoutState, mapHashes } from './freshness.js';
 import { head, topLevel } from './git.js';
 import { readCommittedMap } from './map.js';
+import { overviewAnswer } from './overview-tool.js';
+import { reachAnswer } from './reach-tool.js';
 import { outputSchema, problems } from './schema.js';
 
 /**
@@ -29,16 +32,25 @@ const FOUND = {
   required: ['kind', 'path', 'part'],
 };
 
-const EXPLAIN_ANSWER = {
-  type: 'object',
-  properties: {
-    question: QUESTION_PATH,
-    found: FOUND,
-    facts: { type: 'array', items: FACT_GROUP_SCHEMA },
-    cannotSee: { type: 'array', items: CANNOT_SEE_SCHEMA },
-  },
-  required: ['question', 'found', 'facts', 'cannotSee'],
-};
+// Every answer: the question as asked, the facts in groups of one basis, and
+// what Atlas cannot see for it; a tool adds what else it names.
+function answerSchema(question, extra = {}) {
+  return {
+    type: 'object',
+    properties: {
+      question,
+      facts: { type: 'array', items: FACT_GROUP_SCHEMA },
+      cannotSee: { type: 'array', items: CANNOT_SEE_SCHEMA },
+      ...extra,
+    },
+    required: ['question', 'facts', 'cannotSee', ...Object.keys(extra)],
+  };
+}
+
+const EXPLAIN_ANSWER = answerSchema(QUESTION_PATH, { found: FOUND });
+
+// A ref git reads: a commit, a branch, a tag, HEAD~3; never an option.
+const REF = '^[A-Za-z0-9._/~^@{}][A-Za-z0-9._/~^@{}-]*$';
 
 const TOOLS = [
   {
@@ -74,11 +86,80 @@ const TOOLS = [
       };
     },
   },
+  {
+    name: 'atlas_overview',
+    title: 'Overview of the repository',
+    description: 'What this repository is, from its Atlas map: its parts, every door work comes in by (its trigger, '
+      + 'what it runs and what it sends), how far each door reaches, the main flow and the order of work in it, '
+      + 'and where to start reading. Every fact says how it was known, and the answer lists what Atlas cannot see.',
+    inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+    outputSchema: outputSchema(PROVENANCE_SCHEMA, answerSchema({ type: 'object' })),
+    answer: (snapshot) => overviewAnswer(snapshot),
+  },
+  {
+    name: 'atlas_reach',
+    title: 'What a change to these files reaches',
+    description: 'What a change to these files reaches, from the Atlas map: the doors that run them or pass through their part, '
+      + 'the files and parts that import them or read what they write (production and tests apart), followed as far as '
+      + 'the code says; what is known only by text, a guess or history is listed one step out and not followed, and '
+      + 'where the map stops is listed with what Atlas cannot see.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        paths: {
+          type: 'array',
+          minItems: 1,
+          maxItems: 100,
+          items: { type: 'string', minLength: 1, maxLength: 1024 },
+          description: 'Files or directories, from the repository root.',
+        },
+      },
+      required: ['paths'],
+      additionalProperties: false,
+    },
+    outputSchema: outputSchema(PROVENANCE_SCHEMA, answerSchema({
+      type: 'object',
+      properties: { paths: { type: 'array', items: { type: 'string' } } },
+      required: ['paths'],
+    })),
+    answer: (snapshot, repo, args) => reachAnswer(snapshot, args.paths),
+  },
+  {
+    name: 'atlas_changes',
+    title: 'What changed structurally since a commit',
+    description: 'What changed structurally between the Atlas map committed at a commit and the map Atlas answers from: '
+      + 'imports between parts gained or lost (a new cycle first), doors, new writers and readers of places, origins, '
+      + 'the order of work, parts, and new files in no part, with the file counts.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        since: {
+          type: 'string',
+          minLength: 1,
+          maxLength: 200,
+          pattern: REF,
+          description: 'A commit or ref whose tree holds an Atlas map, such as the base of a pull request.',
+        },
+      },
+      required: ['since'],
+      additionalProperties: false,
+    },
+    outputSchema: outputSchema(PROVENANCE_SCHEMA, answerSchema({
+      type: 'object',
+      properties: { since: { type: 'string' } },
+      required: ['since'],
+    }, { base: { type: 'object', properties: { commit: { type: 'string' } }, required: ['commit'] } })),
+    answer: (snapshot, repo, args) => changesAnswer(snapshot, repo, args.since),
+  },
 ];
 
-/** The tools as tools/list gives them. */
+// The order the specification lists the questions in, by how often the
+// evidence says each is asked: reachability first.
+const ORDER = ['atlas_reach', 'atlas_explain', 'atlas_overview', 'atlas_check_change', 'atlas_changes', 'atlas_refresh'];
+
+/** The tools as tools/list gives them, in a fixed order. */
 export function listTools() {
-  return TOOLS.map((tool) => ({
+  return [...TOOLS].sort((a, b) => ORDER.indexOf(a.name) - ORDER.indexOf(b.name)).map((tool) => ({
     name: tool.name,
     title: tool.title,
     description: tool.description,

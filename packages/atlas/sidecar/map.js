@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pageFacts } from '../adapter/page.js';
-import { inHistory } from './git.js';
+import { inHistory, isShallow } from './git.js';
 
 /**
  * The map an answer is read from, checked before any answer is given: each
@@ -78,12 +78,15 @@ export function readSnapshot(root, dir, identity) {
   }
   const commit = structure.generatedFrom.commit;
   if (!inHistory(root, commit)) {
+    const shallow = isShallow(root);
     return {
       ok: false,
       error: {
         code: 'ATLAS_SIDECAR_MAP_FOREIGN',
-        details: [`${identity.label} was made from ${commit.slice(0, 7)}, which is not in this checkout's history`],
-        whatToDo: 'fetch the full history if the clone is shallow, or run atlas map and commit atlas/',
+        details: [shallow
+          ? `${identity.label} was made from ${commit.slice(0, 7)}, which this shallow clone does not hold`
+          : `${identity.label} was made from ${commit.slice(0, 7)}, which is not in this checkout's history`],
+        whatToDo: shallow ? 'fetch the history (git fetch --unshallow), or run atlas map and commit atlas/' : 'run atlas map and commit atlas/',
       },
     };
   }
