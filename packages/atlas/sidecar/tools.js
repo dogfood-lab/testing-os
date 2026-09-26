@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { answered, CANNOT_SEE_SCHEMA, FACT_GROUP_SCHEMA, failed, freshnessSentences, provenance, PROVENANCE_SCHEMA } from './answer.js';
+import { answered, CANNOT_SEE_SCHEMA, cutMarks, FACT_GROUP_SCHEMA, failed, freshnessSentences, provenance, PROVENANCE_SCHEMA } from './answer.js';
 import { changesAnswer } from './changes-tool.js';
 import { checkChangeAnswer } from './check-change-tool.js';
 import { explainAnswer } from './explain-tool.js';
@@ -13,6 +13,7 @@ import { createRefresher } from './refresh.js';
 import { refreshAnswer, REFRESH_ANSWER } from './refresh-tool.js';
 import { reread, rereadFacts } from './reread.js';
 import { outputSchema, problems } from './schema.js';
+import { SIZE_NOTE, SIZE_PROPERTIES, sizeAnswer } from './size.js';
 
 /**
  * The sidecar's tools. Names, titles, descriptions and schemas are static
@@ -42,9 +43,24 @@ const FOUND = {
   required: ['kind', 'path', 'part'],
 };
 
+// What an answer narrowed by part or kind says it was narrowed to, and how
+// many entries that did not match it leaves out.
+const FILTER = {
+  type: 'object',
+  properties: { part: { type: 'string' }, kind: { type: 'string' }, left: { type: 'integer', minimum: 0 } },
+  required: ['left'],
+};
+
+// The count and cut marks beside a list other than a fact list.
+function listMarks(list) {
+  return { [`${list}Total`]: { type: 'integer', minimum: 0 }, ...cutMarks(list) };
+}
+
 // Every answer: the question as asked, the facts in groups of one basis, and
-// what Atlas cannot see for it; a tool adds what else it names.
+// what Atlas cannot see for it; a tool adds what else it names. Any list may
+// be cut to fit the answer's size, and then carries its marks.
 function answerSchema(question, extra = {}) {
+  const lists = Object.entries(extra).filter(([, schema]) => [schema.type].flat().includes('array')).map(([key]) => key);
   return {
     type: 'object',
     properties: {
@@ -52,6 +68,10 @@ function answerSchema(question, extra = {}) {
       facts: { type: 'array', items: FACT_GROUP_SCHEMA },
       cannotSee: { type: 'array', items: CANNOT_SEE_SCHEMA },
       ...extra,
+      ...listMarks('facts'),
+      ...listMarks('cannotSee'),
+      ...Object.assign({}, ...lists.map(listMarks)),
+      filter: FILTER,
     },
     required: ['question', 'facts', 'cannotSee', ...Object.keys(extra)],
   };
@@ -62,7 +82,7 @@ const EXPLAIN_ANSWER = answerSchema(QUESTION_PATH, { found: FOUND });
 // A ref git reads: a commit, a branch, a tag, HEAD~3; never an option.
 const REF = '^[A-Za-z0-9._/~^@{}][A-Za-z0-9._/~^@{}-]*$';
 
-const TOOLS = [
+const DEFINED = [
   {
     name: 'atlas_explain',
     title: 'Explain a file, directory or part',
@@ -237,6 +257,14 @@ const TOOLS = [
   },
 ];
 
+// Every tool that answers from a map takes the size arguments (full, part,
+// kind, cursor) and says in its description how its answers are cut.
+const TOOLS = DEFINED.map((tool) => (tool.refresh ? tool : {
+  ...tool,
+  description: `${tool.description}${SIZE_NOTE}`,
+  inputSchema: { ...tool.inputSchema, properties: { ...tool.inputSchema.properties, ...SIZE_PROPERTIES } },
+}));
+
 // The order the specification lists the questions in, by how often the
 // evidence says each is asked: reachability first.
 const ORDER = ['atlas_reach', 'atlas_explain', 'atlas_overview', 'atlas_check_change', 'atlas_changes', 'atlas_refresh'];
@@ -309,7 +337,10 @@ export function createTools({ refresher = createRefresher() } = {}) {
         sentences.push(view.sentence);
       }
     }
-    return answered(provenance({ repo, snapshot, head: state.head, changed }), result.answer, sentences);
+    // Narrowed as asked, most important first, and cut to its size.
+    const sized = sizeAnswer({ tool: name, snapshot, args, atlas: provenance({ repo, snapshot, head: state.head, changed }), answer: result.answer, sentences });
+    if (sized.error) return failed(provenance({ repo, snapshot, head: state.head }), sized.error);
+    return answered(sized.atlas, sized.answer, sized.sentences);
   }
 
   return { listTools, callTool, stop: () => refresher.stopAll() };

@@ -147,7 +147,9 @@ describe('the time atlas_check_change takes on 20 changed files of this reposito
     const result = await check(clone, { files });
     const elapsed = Date.now() - started;
     t.diagnostic(`atlas_check_change on 20 changed files of this repository: ${elapsed} ms, server start and exit included`);
-    assert.equal(result.structuredContent.answer.changed.length, 20);
-    assert.equal(result.structuredContent.answer.verdict.fullRefresh.needed, false);
+    // The answer is cut to its size, so the count stands beside the list.
+    const { answer } = result.structuredContent;
+    assert.equal(answer.changedTotal ?? answer.changed.length, 20);
+    assert.equal(answer.verdict.fullRefresh.needed, false);
   });
 });

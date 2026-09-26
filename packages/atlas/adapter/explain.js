@@ -398,7 +398,12 @@ function placeLines(ctx, place) {
   return lines;
 }
 
-function pairFacts(ctx, found) {
+/**
+ * The files that change with what was found, strongest first: the page and
+ * explain name the first PAIRS_SHOWN; the sidecar lists them all, cut only
+ * by the size of its answer.
+ */
+export function pairFacts(ctx, found, limit = PAIRS_SHOWN) {
   const inside = (path) => {
     if (found.kind === 'file') return path === found.path;
     if (found.kind === 'part') return ctx.boundaryOf.get(path) === found.part;
@@ -407,7 +412,7 @@ function pairFacts(ctx, found) {
   return (ctx.statistics.pairs ?? [])
     .filter((pair) => inside(pair.a) || inside(pair.b))
     .sort((x, y) => y.strength - x.strength || y.shared - x.shared || cmp(x.a, y.a) || cmp(x.b, y.b))
-    .slice(0, PAIRS_SHOWN)
+    .slice(0, limit)
     .map((pair) => {
       if (found.kind === 'file') {
         return { either: pair.either, file: pair.a === found.path ? pair.b : pair.a, shared: pair.shared, strength: pair.strength };

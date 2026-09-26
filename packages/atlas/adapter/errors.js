@@ -21,6 +21,8 @@ export const ERRORS = {
   ATLAS_SIDECAR_INVALID_ARGUMENTS: 'The tool was called with arguments it does not take.',
   ATLAS_SIDECAR_CACHE_INSIDE: 'The refresh cache would be inside the repository.',
   ATLAS_SIDECAR_REFRESH_FAILED: 'The refresh could not map the checkout.',
+  ATLAS_SIDECAR_CURSOR_STALE: 'The cursor was given for another map than the one answering now.',
+  ATLAS_SIDECAR_TOO_LARGE: 'The answer does not fit its size even with every list cut.',
 };
 
 export function formatFailure(code, details, { exitCode = 1, whatToDo } = {}) {

@@ -52,6 +52,25 @@ export function explainJson(root, target) {
   return JSON.parse(result.stdout);
 }
 
+// The entries of a fact list that state a fact: an entry too large for the
+// answer is named only by its size (sidecar/size.js), and states nothing.
+function stated(group) {
+  return group.items.filter((item) => !(item && typeof item === 'object' && 'omitted' in item));
+}
+
+// A list inside an entry equals its source, or, cut to fit the answer, is
+// the source's first entries and says it is cut, with the count when the
+// entry does not already carry one.
+function sameOrCut(item, key, whole, where) {
+  if (item[`${key}Complete`] === false) {
+    assert.deepEqual(item[key], whole.slice(0, item[key].length), where);
+    assert.ok(item[key].length < whole.length, where);
+    if (`${key}Total` in item) assert.equal(item[`${key}Total`], whole.length, where);
+  } else {
+    assert.deepEqual(item[key], whole, where);
+  }
+}
+
 function landingWith(map, side, by, place) {
   return map.structure.landings.some((landing) => (under(landing.target, strip(place)) || under(strip(place), landing.target))
     && (landing[side] ?? []).some((entry) => entry.by === by));
@@ -71,7 +90,7 @@ function pair(map, a, b) {
 
 function checkExplain(map, answer, explained) {
   for (const group of answer.facts) {
-    for (const item of group.items) {
+    for (const item of stated(group)) {
       const where = `${group.fact} [${group.basis}] ${JSON.stringify(item)}`;
       switch (group.fact) {
         case 'part':
@@ -122,9 +141,15 @@ function checkExplain(map, answer, explained) {
         case 'sequences':
           assert.ok(explained.sequences.includes(item), where);
           break;
-        case 'changesWith':
-          assert.ok(explained.changesWith.some((entry) => JSON.stringify(entry) === JSON.stringify(item)), where);
+        case 'changesWith': {
+          // Every pair, where explain --json names the strongest few: each
+          // is checked against the pairs the statistics recorded.
+          const a = item.a ?? answer.found.path;
+          const b = item.b ?? item.file;
+          const source = (map.statistics.pairs ?? []).find((entry) => (entry.a === a && entry.b === b) || (entry.a === b && entry.b === a));
+          assert.ok(source && source.shared === item.shared && source.either === item.either && source.strength === item.strength, where);
           break;
+        }
         default:
           assert.fail(`an explain fact with no source to check it against: ${where}`);
       }
@@ -135,7 +160,7 @@ function checkExplain(map, answer, explained) {
 function checkOverview(map, answer) {
   const page = map.page;
   for (const group of answer.facts) {
-    for (const item of group.items) {
+    for (const item of stated(group)) {
       const where = `${group.fact} [${group.basis}] ${JSON.stringify(item)}`;
       switch (group.fact) {
         case 'summary':
@@ -147,9 +172,9 @@ function checkOverview(map, answer) {
         case 'doors': {
           const source = page.doors.find((entry) => entry.name === item.name && entry.file === item.file);
           assert.ok(source, where);
-          assert.deepEqual(item.triggers, source.triggers ?? [], where);
-          assert.deepEqual(item.runs, source.runs ?? [], where);
-          assert.deepEqual(item.sends, source.sends ?? [], where);
+          sameOrCut(item, 'triggers', source.triggers ?? [], where);
+          sameOrCut(item, 'runs', source.runs ?? [], where);
+          sameOrCut(item, 'sends', source.sends ?? [], where);
           break;
         }
         case 'reaches':
@@ -162,7 +187,7 @@ function checkOverview(map, answer) {
           assert.equal(page.doors.find((entry) => (entry.id ?? entry.file) === page.mainDoor)?.name, item.name, where);
           break;
         case 'mainFlow':
-          assert.ok(page.sequences.some((sequence) => sequence.file === item.file && JSON.stringify(sequence.steps) === JSON.stringify(item.steps)), where);
+          sameOrCut(item, 'steps', page.sequences.find((sequence) => sequence.file === item.file)?.steps ?? [], where);
           break;
         case 'startDoor':
           assert.equal(page.startDoor.split('#')[0], item.file, where);
@@ -180,8 +205,9 @@ function checkOverview(map, answer) {
 function checkReach(map, answer) {
   const listed = new Set();
   for (const group of answer.facts) for (const item of group.items) if (item?.path) listed.add(item.path);
+  const cut = answer.facts.some((group) => group.complete === false && group.grain === 'file');
   for (const group of answer.facts) {
-    for (const item of group.items) {
+    for (const item of stated(group)) {
       const where = `${group.fact} [${group.basis}] ${JSON.stringify(item)}`;
       switch (group.fact) {
         case 'asked':
@@ -194,7 +220,9 @@ function checkReach(map, answer) {
           assert.ok((door(map, item.door)?.runs ?? []).some((run) => run.runKind === 'checks' && (run.path === item.file || item.file.startsWith(run.path))), where);
           break;
         case 'reachedThrough':
-          assert.ok(runs(map, item.door, item.through) && listed.has(item.through), where);
+          // The file it is reached through is listed among what the walk
+          // reached, unless the lists that hold it were cut to fit.
+          assert.ok(runs(map, item.door, item.through) && (listed.has(item.through) || cut), where);
           break;
         case 'passesThrough':
           assert.ok((door(map, item.door)?.reach ?? []).some((entry) => entry.boundary === item.part && entry.depth === item.depth), where);
@@ -207,7 +235,9 @@ function checkReach(map, answer) {
           assert.ok(map.structure.landings.some((landing) => (under(strip(item.place), landing.target) || under(landing.target, strip(item.place))) && landing.writers.some((entry) => entry.by === item.via)), where);
           break;
         case 'parts':
-          assert.ok([...listed].some((path) => map.boundaryOf.get(path) === item), where);
+          // A part reached holds a file the walk reached; when the file lists
+          // were cut to fit, it is at least a part of the map.
+          assert.ok([...listed].some((path) => map.boundaryOf.get(path) === item) || (cut && map.structure.boundaries.some((boundary) => boundary.name === item)), where);
           break;
         case 'partEdges':
           assert.ok(map.structure.edges.some((edge) => edge.from === item.from && edge.to === item.to && edge.kind === item.kind), where);
@@ -225,7 +255,7 @@ function checkReach(map, answer) {
 function checkChanges(map, answer, base) {
   const items = structuralChanges(base, map.structure, { repoPath: map.root });
   for (const group of answer.facts) {
-    for (const item of group.items) {
+    for (const item of stated(group)) {
       const where = `${group.fact} [${group.basis}] ${JSON.stringify(item)}`;
       if (group.fact === 'files') continue;
       const sources = items.filter((entry) => entry.kind === group.fact);

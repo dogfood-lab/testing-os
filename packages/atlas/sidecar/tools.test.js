@@ -183,7 +183,7 @@ describe('atlas_reach follows what the code says and lists the rest one step out
 
   it('lists the doors first, then production files, then tests, then what is not followed', () => {
     const order = answer.facts.map((entry) => `${entry.fact}${entry.tests ? '/tests' : ''}${entry.followed === false ? '/not followed' : ''}`);
-    assert.deepEqual(order, ['asked', 'reachedThrough', 'importedBy', 'readBy', 'importedBy/tests', 'parts', 'parts/tests', 'readBy/not followed', 'changesWith/not followed']);
+    assert.deepEqual(order, ['asked', 'reachedThrough', 'importedBy', 'readBy', 'parts', 'importedBy/tests', 'parts/tests', 'readBy/not followed', 'changesWith/not followed']);
     assert.deepEqual(items(answer, 'reachedThrough'), [{ door: 'CI', through: 'app/main.js' }]);
     assert.deepEqual(items(answer, 'importedBy', { tests: true }), [{ path: 'app/main.test.js', via: 'app/main.js', depth: 2 }]);
   });

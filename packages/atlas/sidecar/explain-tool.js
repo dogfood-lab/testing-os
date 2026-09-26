@@ -1,5 +1,5 @@
 import { isTestFile } from '../core/landings.js';
-import { explainTarget } from '../adapter/explain.js';
+import { explainTarget, pairFacts } from '../adapter/explain.js';
 import { boundaryRoot } from '../adapter/page.js';
 import { basisOf, byBasis, firmest, group } from './answer.js';
 import { cannotSeeFor, cannotSeeSentence } from './limits.js';
@@ -137,10 +137,13 @@ export function explainAnswer(snapshot, repo, target) {
   if (facts.sequence) groups.push(group('sequence', 'parsed', facts.sequence.steps, { grain: 'file' }));
   if ((facts.sequences ?? []).length > 0) groups.push(group('sequences', 'parsed', facts.sequences, { grain: 'file' }));
 
-  if ((facts.changesWith ?? []).length > 0) {
+  // Every pair, where explain's text names the strongest few; the answer's
+  // size cuts the list, and says so, when it is long.
+  const pairs = pairFacts(ctx, found, Infinity);
+  if (pairs.length > 0) {
     const parameters = snapshot.statistics?.parameters ?? {};
     const confidence = snapshot.statistics?.confidence ?? {};
-    groups.push(group('changesWith', 'history', facts.changesWith, {
+    groups.push(group('changesWith', 'history', pairs, {
       window: { since: parameters.since ?? null, until: parameters.headDate ?? null },
       confidence: { level: confidence.level ?? null, reason: confidence.reason ?? null },
     }));

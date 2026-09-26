@@ -164,6 +164,19 @@ export function failed(atlas, { code, details, whatToDo }) {
 
 /* ---------- schemas ---------- */
 
+/**
+ * The marks beside a list other than a fact list when it is cut to fit
+ * (sidecar/size.js): <list>Complete false, <list>From where it starts when it
+ * continues a cursor, and <list>Cursor for the rest.
+ */
+export function cutMarks(list) {
+  return {
+    [`${list}Complete`]: { type: 'boolean' },
+    [`${list}From`]: { type: 'integer', minimum: 0 },
+    [`${list}Cursor`]: { type: 'string' },
+  };
+}
+
 export const PROVENANCE_SCHEMA = {
   type: 'object',
   properties: {
@@ -194,6 +207,7 @@ export const PROVENANCE_SCHEMA = {
           },
         },
         changedTotal: { type: 'integer', minimum: 0 },
+        ...cutMarks('changed'),
       },
       required: ['root', 'rootFrom', 'head', 'changed', 'changedTotal'],
     },
@@ -210,6 +224,7 @@ export const FACT_GROUP_SCHEMA = {
     items: { type: 'array' },
     total: { type: 'integer', minimum: 0 },
     complete: { type: 'boolean' },
+    from: { type: 'integer', minimum: 0 },
     cursor: { type: 'string' },
     grain: { type: 'string', enum: ['file', 'part'] },
     tests: { type: 'boolean' },
@@ -235,6 +250,10 @@ export const CANNOT_SEE_SCHEMA = {
     named: { type: 'array' },
     places: { type: 'array', items: { type: 'string' } },
     source: { type: 'string', enum: ['map', 're-read'] },
+    namedTotal: { type: 'integer', minimum: 0 },
+    ...cutMarks('named'),
+    placesTotal: { type: 'integer', minimum: 0 },
+    ...cutMarks('places'),
   },
   required: ['basis', 'what', 'grain', 'count', 'named'],
 };
