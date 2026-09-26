@@ -109,6 +109,16 @@ describe('Vitest --dir', () => {
   });
 });
 
+describe('arguments handed to a test script', () => {
+  it('appends what follows npm test --, and pnpm or yarn test, to the test script (claude-guardian\'s shape)', () => {
+    assert.deepEqual(testsOf(doorsOf('runners-test-args'), '.github/workflows/ci.yml'), [
+      { job: 'npm', step: 'Test with coverage', runner: 'vitest', through: ['npm test'], coverage: true, files: 1 },
+      { job: 'pnpm', step: 'Test with coverage', runner: 'vitest', through: ['pnpm test'], coverage: true, files: 1 },
+      { job: 'yarn', step: 'Test with coverage', runner: 'vitest', through: ['yarn test'], coverage: true, files: 1 },
+    ]);
+  });
+});
+
 describe('coverage and JUnit results', () => {
   it('reads them from wrappers, flags, a step\'s environment and a runner\'s configuration', () => {
     assert.deepEqual(testsOf(doorsOf('runners-coverage'), '.github/workflows/ci.yml'), [

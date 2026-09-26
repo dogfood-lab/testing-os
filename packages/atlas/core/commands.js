@@ -2370,7 +2370,7 @@ function npmCommandTargets(args, dir, repo) {
   for (let i = 0; i < args.length; i += 1) {
     const token = args[i];
     if (token === '--') {
-      if (script != null) passed.push(...args.slice(i + 1));
+      if (script != null || TEST_ALIASES.has(command) || LIFECYCLE.has(command)) passed.push(...args.slice(i + 1));
       break;
     }
     // npm reads its own flags anywhere before --; a word after the script's
@@ -2406,7 +2406,7 @@ function npmCommandTargets(args, dir, repo) {
   else if (named.length > 0) dirs = named.map((value) => workspaceDir(repo, value, prefix)).filter((found) => found != null);
   else dirs = [prefix];
   if (includeRoot && (allWorkspaces || named.length > 0)) dirs = [prefix, ...dirs];
-  if (!RUN_ALIASES.has(command)) passed = [];
+  if (!RUN_ALIASES.has(command) && !TEST_ALIASES.has(command) && !LIFECYCLE.has(command)) passed = [];
   return [...new Set(dirs)].map((target) => ({ dir: target, script, ...(passed.length > 0 ? { args: passed } : {}) }));
 }
 
@@ -2436,9 +2436,16 @@ function pnpmTargets(args, dir, repo) {
   let script = null;
   let recursive = false;
   const filters = [];
-  for (let i = 0; i < args.length && script == null; i += 1) {
+  // pnpm hands the script whatever follows its name that is not one of
+  // pnpm's own options: pnpm test --coverage runs the test script with it.
+  const passed = [];
+  const named = () => script != null || (command != null && !RUN_ALIASES.has(command));
+  for (let i = 0; i < args.length; i += 1) {
     const token = args[i];
-    if (token === '--') break;
+    if (token === '--') {
+      if (named()) passed.push(...args.slice(i + 1));
+      break;
+    }
     const eq = token.indexOf('=');
     const flag = token.startsWith('-') && eq !== -1 ? token.slice(0, eq) : token;
     if (PNPM_VALUE_FLAGS.has(flag)) {
@@ -2452,6 +2459,7 @@ function pnpmTargets(args, dir, repo) {
       continue;
     }
     if (token === '-r' || token === '--recursive') recursive = true;
+    else if (named()) passed.push(token);
     else if (token.startsWith('-')) continue;
     else if (command == null) command = token;
     else if (RUN_ALIASES.has(command)) script = token;
@@ -2466,7 +2474,7 @@ function pnpmTargets(args, dir, repo) {
   let dirs = [prefix];
   if (filters.length > 0) dirs = filters.flatMap((selector) => pnpmSelected(repo, selector, prefix));
   else if (recursive) dirs = workspaceDirs(repo);
-  return [...new Set(dirs)].map((target) => ({ dir: target, script }));
+  return [...new Set(dirs)].map((target) => ({ dir: target, script, ...(passed.length > 0 ? { args: passed } : {}) }));
 }
 
 /**
@@ -2521,7 +2529,10 @@ function yarnTargets(args, dir, repo) {
   const words = [];
   for (let i = 0; i < args.length; i += 1) {
     const token = args[i];
-    if (token === '--') break;
+    if (token === '--') {
+      if (words.length > 0) words.push(...args.slice(i + 1));
+      break;
+    }
     if (token === '--cwd') {
       const cleaned = cleanDir(posix.join(dir || '.', args[++i] ?? ''));
       if (cleaned == null) return [];
@@ -2549,10 +2560,15 @@ function yarnTargets(args, dir, repo) {
     return script == null ? [] : workspaceDirs(repo).map((target) => ({ dir: target, script }));
   }
   let script = command;
-  if (RUN_ALIASES.has(command)) script = rest.find((token) => !token.startsWith('-')) ?? null;
-  else if (TEST_ALIASES.has(command)) script = 'test';
+  let passed = rest;
+  if (RUN_ALIASES.has(command)) {
+    const at = rest.findIndex((token) => !token.startsWith('-'));
+    script = at === -1 ? null : rest[at];
+    passed = rest.slice(at + 1);
+  } else if (TEST_ALIASES.has(command)) script = 'test';
   else if (YARN_COMMANDS.has(command)) return [];
-  return script == null ? [] : [{ dir: prefix, script }];
+  // yarn hands the script whatever follows its name: yarn test --coverage.
+  return script == null ? [] : [{ dir: prefix, script, ...(passed.length > 0 ? { args: passed } : {}) }];
 }
 
 function workspaceMembers(repo) {
