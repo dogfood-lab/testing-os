@@ -82,6 +82,25 @@ describe('a change the scoped reading settles', () => {
     assert.match(content[0].text, /^Atlas: atlas check passes on this change as it stands; regenerating the map keeps the hashes of the changed files current\.$/m);
   });
 
+  it('carries what reaches each changed code file, as atlas_test_gaps reads it from the map', async () => {
+    const root = fresh();
+    appendFileSync(join(root, 'lib', 'core.js'), 'export const version = 2;\n');
+    const { structuredContent } = await check(root);
+    const reach = structuredContent.answer.facts.find((entry) => entry.fact === 'testReach');
+    assert.equal(reach.basis, 'parsed');
+    assert.deepEqual(reach.items.map((item) => [item.path, item.kind, item.test]), [['lib/core.js', 'imports', 'app/main.test.js']]);
+  });
+
+  it('names the failure paths a changed file no test reaches holds as it is now', async () => {
+    const root = fresh();
+    appendFileSync(join(root, 'tools', 'report.js'), "export function safe(text) {\n  try {\n    return JSON.parse(text);\n  } catch {\n    throw new Error('not JSON');\n  }\n}\n");
+    const { structuredContent, content } = await check(root);
+    const [entry] = items(structuredContent.answer, 'noTestReaches');
+    assert.equal(entry.path, 'tools/report.js');
+    assert.deepEqual(entry.failurePaths.map((site) => [site.kind, site.in]), [['catch', 'safe'], ['throw', 'safe']]);
+    assert.match(content[0].text, /^Atlas: no test imports or runs tools\/report\.js; it holds 2 failure paths as it is now\.$/m);
+  });
+
   it('finds a writer or reader gained, read from the file as it is and as the map read it', async () => {
     const root = fresh();
     appendFileSync(join(root, 'app', 'main.js'), "import { readFileSync } from 'node:fs';\nexport const state = () => readFileSync('data/state.json', 'utf8');\n");

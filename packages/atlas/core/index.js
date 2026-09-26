@@ -419,6 +419,7 @@ export function rereadFiles({ repoPath, boundaries, paths, content = null, doors
       userDataReads: file.userDataReads ?? 0,
       userDataWrites: file.userDataWrites ?? 0,
       ...(file.testsInside ? { testsInside: true } : {}),
+      ...(file.failurePaths?.length > 0 ? { failurePaths: file.failurePaths.map((site) => ({ ...site })) } : {}),
     };
   });
 }
