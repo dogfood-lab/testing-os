@@ -16,6 +16,7 @@ import { tmpdir } from 'node:os';
 import { basename, extname, isAbsolute, join, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parse } from 'yaml';
+import { ENGINE } from './engine.js';
 import { writeArtifactSync } from './write.js';
 
 // All three waits are used, so a transport failure is four attempts. The 60s wait is not dropped.
@@ -33,7 +34,7 @@ const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 // installs the published package, stamps its version; the weekly job passes a
 // stamp that carries the commit of the tree it runs, since the engine on main
 // changes between releases without the version moving.
-export const ENGINE = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version;
+export { ENGINE };
 const REPO_NAME = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/;
 // A clone whose newest commit is older than the window selects nothing; git
 // says so in these words, and one commit is then the honest tree to map.

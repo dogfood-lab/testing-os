@@ -1,0 +1,15 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Notes from the changelog
+        run: node tools/notes.js CHANGELOG.md
+      - name: Stamp the release
+        run: echo "released" > docs/released.txt

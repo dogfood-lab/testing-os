@@ -1,6 +1,7 @@
 import { commandLines } from '../core/commands.js';
 import { loadsManifest } from '../core/languages.js';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
+import { ENGINE } from './engine.js';
 import { roleFor } from './templates.js';
 
 const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
@@ -261,6 +262,11 @@ export function buildArtifact(mapped, commit) {
     // and then its name.
     doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => cmp(a.file, b.file) || cmp(a.name, b.name) || cmp(a.kind ?? '', b.kind ?? '')),
     edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to, ...(edge.fromTests ? { fromTests: true } : {}), ...(edge.routes ? { routes: edge.routes } : {}) })),
+    // The version that made the map, beside the commit it was made from: the
+    // adopters pin many versions, and a map read later has to say which one
+    // drew it. It is the same for every map one version makes, so a map
+    // stays byte for byte the same at one commit.
+    engine: ENGINE,
     generatedFrom: { commit, tracked },
     landings: carryLandings(mapped.landings ?? []),
     overlaps,

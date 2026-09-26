@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import { analyzeHistory } from '../core/history.js';
 import { readBoundaryFile } from './boundary-file.js';
+import { ENGINE } from './engine.js';
 import { buildPage, displayName } from './page.js';
 
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
@@ -121,7 +122,7 @@ describe('atlas page', () => {
     }
     const commit = doors.statistics.generatedFrom.commit.slice(0, 7);
     const date = doors.statistics.generatedAt.slice(0, 10);
-    assert.ok(markdown.startsWith(`# doors: how it works\n\nMapped at ${date} from commit ${commit}.\n`));
+    assert.ok(markdown.startsWith(`# doors: how it works\n\nMapped at ${date} from commit ${commit} by Atlas ${ENGINE}.\n`));
     const exact = {
       // Checks reaches one part more, but Ingest is the door that commits into
       // the repository, so the page follows it and says why.

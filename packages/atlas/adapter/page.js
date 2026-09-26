@@ -1376,14 +1376,17 @@ function worded(items, name) {
 }
 
 // A reader is found by text only when every read it makes of the place is. A
-// test is a reader from tests.
+// test is a reader from tests. A configuration file that names the place is
+// marked by its read, not by its confidence: a workflow's entries share the
+// config confidence (both are stated, not parsed), and a workflow is named by
+// its path alone.
 function readerFiles(entries) {
   const byPath = new Map();
   const config = new Map();
   const tests = new Set();
   for (const entry of entries) {
     const text = entry.confidence === 'text';
-    const configures = entry.confidence === 'config';
+    const configures = entry.call === 'configuration';
     byPath.set(entry.by, byPath.has(entry.by) ? byPath.get(entry.by) && text : text);
     config.set(entry.by, config.has(entry.by) ? config.get(entry.by) && configures : configures);
     if (entry.fromTests) tests.add(entry.by);
@@ -3494,6 +3497,14 @@ function doorData(ctx, door) {
   };
 }
 
+// The page's dated line: when, from which commit, and by which engine. A
+// structure made before maps carried their engine names none, rather than
+// the version reading it now.
+function mappedLine(generatedAt, commit, engine) {
+  const by = engine ? ` by Atlas ${engine}` : '';
+  return `Mapped at ${generatedAt.slice(0, 10)} from commit ${commit.slice(0, 7)}${by}.`;
+}
+
 /**
  * @param {{ structure: object, statistics: object, document: object, repoName: string, defaultBranch?: string, changes?: object }} input
  *   changes is the delta from the map committed at HEAD (adapter/changes.js);
@@ -3506,6 +3517,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   const ctx = facts({ structure, statistics: statistics ?? {} });
   const commit = String(statistics?.generatedFrom?.commit ?? structure.generatedFrom?.commit ?? '');
   const generatedAt = String(statistics?.generatedAt ?? '');
+  const engine = typeof structure.engine === 'string' && structure.engine !== '' ? structure.engine : null;
   const name = String(repoName ?? '').split('/').pop() || 'this repository';
   const summary = summaryOf(document);
   const main = mainDoor(ctx.doors);
@@ -3582,7 +3594,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   whatThisIs.push(derived);
 
   const sections = [
-    [`# ${name}: how it works`, `Mapped at ${generatedAt.slice(0, 10)} from commit ${commit.slice(0, 7)}.`].join('\n\n'),
+    [`# ${name}: how it works`, mappedLine(generatedAt, commit, engine)].join('\n\n'),
     whatThisIs.join('\n\n'),
   ];
   if (changes) sections.push(changesSection(changes));
@@ -3621,6 +3633,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesLead: duplicated.lead,
     duplicatesNote: duplicated.note,
     edges: breakEdges(ctx, breakEntries),
+    ...(engine ? { engine } : {}),
     generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), ...(item.fromRoot ? { fromRoot: true } : {}), ...(item.once ? { once: true } : {}), place: item.place, ...(item.sources ? { sources: item.sources } : {}), writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
