@@ -61,7 +61,10 @@ function mapFiles(structure) {
  *
  * @param {object} structure a map, as structure.json holds it
  * @param {{ tests?: string[] }} [options] the test files to start from
- * @returns {{ files: Map<string, object>, parts: Map<string, object> }}
+ * @returns {{ files: Map<string, object>, parts: Map<string, object>, ran: Map<string, object> }}
+ *   files holds each file's strongest fact; ran holds, apart, every file a
+ *   test runs, whether or not a test also imports it, since a command a test
+ *   imports is not a command a test runs end to end.
  */
 export function testReachOf(structure, { tests = null } = {}) {
   const listed = mapFiles(structure);
@@ -70,23 +73,30 @@ export function testReachOf(structure, { tests = null } = {}) {
     .filter((path) => byPath.has(path))
     .sort();
   const files = new Map();
+  const ran = new Map();
   const chunks = new Map();
-  const reach = (path, fact) => {
-    if (files.has(path)) return;
+  const counted = (path) => {
     const file = byPath.get(path);
-    if (file && !isTest(file) && isCodePath(path)) files.set(path, fact);
+    return file != null && !isTest(file) && isCodePath(path);
+  };
+  const reach = (path, fact) => {
+    if (!files.has(path) && counted(path)) files.set(path, fact);
+  };
+  const run = (path, fact) => {
+    reach(path, fact);
+    if (!ran.has(path) && counted(path)) ran.set(path, fact);
   };
 
   // Breadth first from all the starts at once, so each file is reached by
   // its shortest chain and, among chains as short, from the first test in
   // path order. A file a stronger kind reached first keeps that fact.
-  const walk = (starts, kind) => {
+  const walk = (starts, kind, sink) => {
     const visited = new Set();
     const queue = [];
     for (const start of starts) {
       if (visited.has(start.path)) continue;
       visited.add(start.path);
-      if (start.reached) reach(start.path, fact(kind, start.basis, start.test, []));
+      if (start.reached) sink(start.path, fact(kind, start.basis, start.test, []));
       queue.push(start);
     }
     for (let i = 0; i < queue.length; i += 1) {
@@ -100,20 +110,20 @@ export function testReachOf(structure, { tests = null } = {}) {
         }
         if (visited.has(target)) continue;
         visited.add(target);
-        reach(target, fact(kind, at.basis, at.test, through));
+        sink(target, fact(kind, at.basis, at.test, through));
         queue.push({ path: target, test: at.test, basis: at.basis, through, reached: true });
       }
     }
   };
 
-  walk(sources.map((path) => ({ path, test: path, basis: 'parsed', through: [], reached: false })), 'imports');
+  walk(sources.map((path) => ({ path, test: path, basis: 'parsed', through: [], reached: false })), 'imports', reach);
   const spawned = [];
   for (const test of sources) {
     const file = byPath.get(test);
     const installed = new Set(file.spawnsInstalled ?? []);
     for (const target of file.spawns ?? []) spawned.push({ path: target, test, basis: installed.has(target) ? 'declared' : 'parsed', through: [], reached: true });
   }
-  walk(spawned, 'runs');
+  walk(spawned, 'runs', run);
   if (tests == null) {
     for (const { file } of listed) if (file.testsInside && !isTest(file)) reach(file.path, { kind: 'discovers', basis: 'parsed' });
   }
@@ -127,7 +137,7 @@ export function testReachOf(structure, { tests = null } = {}) {
     const best = [...facts, ...(chunk ? [chunk] : [])].sort(strongerFirst)[0];
     parts.set(boundary.name, { kind: best.kind, basis: best.basis, reached: facts.length, files: code.length });
   }
-  return { files, parts };
+  return { files, parts, ran };
 }
 
 function fact(kind, basis, test, through) {

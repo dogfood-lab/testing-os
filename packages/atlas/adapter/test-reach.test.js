@@ -51,6 +51,13 @@ describe('reach, with its basis', () => {
     assert.deepEqual(reach.files.get('bin/cli.js'), { kind: 'runs', basis: 'declared', test: 'test/cli.test.js' });
   });
 
+  it('keeps the run of a file a test also imports, apart from its stronger fact', () => {
+    assert.deepEqual(reach.files.get('bin/both.js'), { kind: 'imports', basis: 'parsed', test: 'test/both.test.js' });
+    assert.deepEqual(reach.ran.get('bin/both.js'), { kind: 'runs', basis: 'parsed', test: 'test/both.test.js' });
+    assert.deepEqual(reach.ran.get('bin/cli.js'), { kind: 'runs', basis: 'declared', test: 'test/cli.test.js' });
+    assert.equal(reach.ran.has('src/direct.js'), false);
+  });
+
   it('says a file holding the tests a runner finds is reached by discovery', () => {
     assert.deepEqual(reach.files.get('crate/src/lib.rs'), { kind: 'discovers', basis: 'parsed' });
   });
@@ -66,7 +73,7 @@ describe('reach, with its basis', () => {
 
   it('says how much of each code part is reached, and how', () => {
     assert.deepEqual(reach.parts.get('src'), { kind: 'imports', basis: 'parsed', reached: 4, files: 5 });
-    assert.deepEqual(reach.parts.get('bin'), { kind: 'runs', basis: 'parsed', reached: 2, files: 2 });
+    assert.deepEqual(reach.parts.get('bin'), { kind: 'imports', basis: 'parsed', reached: 3, files: 3 });
     assert.deepEqual(reach.parts.get('crate'), { kind: 'discovers', basis: 'parsed', reached: 1, files: 1 });
     assert.equal(reach.parts.has('tests'), false);
   });

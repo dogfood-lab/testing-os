@@ -10,6 +10,7 @@ import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
 import { declaredEntries, deriveEntryPoints, manifestCommands, memberCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
+import { failurePaths } from './failure-paths.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, settleRelativePaths, testReadsKept, testWritesKept, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
 import { walkReach } from './reach.js';
@@ -249,6 +250,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   attachExports(graph.files, facts);
   const unseenView = repositoryView({ repoPath, tracked: trackedSet });
   const unseen = unseenParts(trackedSet, doors, (path) => unseenView.text(path));
+  // The members a root package.json or pnpm-workspace.yaml declares: a part
+  // among them is a package of a monorepo (adapter/test-kinds.js).
+  const workspaces = [...unseenView.workspaces().keys()].sort();
 
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },
@@ -263,6 +267,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     landings,
     ...(unseen.length > 0 ? { unseen } : {}),
     ...(collectIgnored(repoPath, trackedSet).length > 0 ? { collectIgnored: collectIgnored(repoPath, trackedSet) } : {}),
+    ...(workspaces.length > 0 ? { workspaces } : {}),
   };
 }
 
@@ -817,7 +822,9 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
   // Read once every file and manifest is known, then dropped (core/rust-modules.js).
   const native = extracted.native ?? {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts, ...native };
+  // A test's own error handling is the test's; the file's are what G6 names.
+  const failures = extracted.failurePaths?.length > 0 && !isTestFile(path) ? { failurePaths: extracted.failurePaths } : {};
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts, ...native, ...failures };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -858,6 +865,7 @@ function parseFile(language, path, original, places) {
       holds: language === 'python' ? pythonHolds(tree.rootNode) : onlyHolds(tree.rootNode),
       http: language === 'python' ? null : httpFacts(tree.rootNode),
       builds: language === 'python' || isTestFile(path) ? [] : buildCalls(tree.rootNode, (node) => pathShape(node, path)),
+      failurePaths: failurePaths(language, tree.rootNode),
     };
   } finally {
     tree.delete();
@@ -884,6 +892,7 @@ function nativeReadings(language, root) {
     holds: null,
     http: null,
     builds: [],
+    failurePaths: failurePaths(language, root),
   };
 }
 

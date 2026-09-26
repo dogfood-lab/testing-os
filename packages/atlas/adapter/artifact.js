@@ -212,6 +212,28 @@ function testReach(mapped) {
   return { testFiles: tests.length + inside.length, testedBy, throughSpawn, testedInside, testedByScript };
 }
 
+// The frameworks a part's code imports that decide what kind of code it is,
+// and so which test runner a suggestion names (adapter/test-kinds.js): the
+// Model Context Protocol SDK in JavaScript (@modelcontextprotocol/sdk),
+// Python (mcp, fastmcp) or Rust (rmcp); Tauri's API; and the VS Code API.
+const FRAMEWORKS = [
+  { name: 'mcp', test: (specifier) => /^@modelcontextprotocol\/sdk(?:\/|$)|^(?:mcp|fastmcp|rmcp)(?:[.:]|$)/.test(specifier) },
+  { name: 'tauri', test: (specifier) => /^@tauri-apps\/api(?:\/|$)|^tauri(?:::|$)/.test(specifier) },
+  { name: 'vscode', test: (specifier) => specifier === 'vscode' },
+];
+
+function frameworks(files) {
+  const out = new Set();
+  for (const file of files) {
+    if (!Array.isArray(file.imports) || isTestFile(file.path)) continue;
+    for (const site of file.imports) {
+      if (typeof site.specifier !== 'string') continue;
+      for (const framework of FRAMEWORKS) if (framework.test(site.specifier)) out.add(framework.name);
+    }
+  }
+  return [...out].sort();
+}
+
 /**
  * What the workflows' tests do, from every path their steps run rather than
  * the list each door keeps: for each part, the runners whose tests reach it
@@ -264,9 +286,11 @@ export function buildArtifact(mapped, commit) {
       ...(dynamic.userDataReads > 0 ? { userDataReads: dynamic.userDataReads } : {}),
       ...(dynamic.userDataWrites > 0 ? { userDataWrites: dynamic.userDataWrites } : {}),
     };
+    const used = frameworks(files);
     return {
       ...named,
       ...outside,
+      ...(used.length > 0 ? { frameworks: used } : {}),
       dynamicReads: dynamic.reads,
       dynamicSpawns: dynamic.spawns,
       dynamicSpawnsInTests: dynamic.spawnsInTests,
@@ -316,6 +340,7 @@ export function buildArtifact(mapped, commit) {
     ...(notRun.length > 0 ? { testsNotRun: notRun } : {}),
     unassigned,
     ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map(carryUnseen) } : {}),
+    ...(mapped.workspaces?.length > 0 ? { workspaces: mapped.workspaces.filter((dir) => !inAtlas(dir)) } : {}),
   };
 }
 
@@ -333,6 +358,7 @@ function carryFile(file) {
   if (file.noStatements) out.noStatements = true;
   if (file.testsInside) out.testsInside = true;
   if (file.testSuite) out.testSuite = true;
+  if (file.failurePaths?.length > 0) out.failurePaths = file.failurePaths.map((site) => ({ ...site }));
   // What a test runs as a child process, and which of those it runs by the
   // name a manifest installs them as: a test reaches them by running them.
   if ((isTestFile(file.path) || file.testSuite) && file.spawns?.length > 0) {
